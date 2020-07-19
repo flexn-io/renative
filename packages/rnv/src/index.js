@@ -1,15 +1,15 @@
-import Common, { initializeBuilder } from './common';
-import Logger, { logComplete, logError } from './systemTools/logger';
+import Common, { initializeBuilder } from './core/common';
+import Logger, { logComplete, logError } from './core/systemManager/logger';
 import CLI from './cli';
-import * as Constants from './constants';
-import Exec from './systemTools/exec';
-import FileUtils from './systemTools/fileutils';
-import Doctor from './systemTools/doctor';
-import PluginTools from './pluginTools';
-import SetupTools from './setupTools';
-import Config from './config';
-import { doResolve, doResolvePath } from './resolve';
-import Analytics from './systemTools/analytics';
+import * as Constants from './core/constants';
+import Exec from './core/systemManager/exec';
+import FileUtils from './core/systemManager/fileutils';
+import Doctor from './core/systemManager/doctor';
+import PluginTools from './core/pluginManager';
+import SetupTools from './core/setupManager';
+import Config from './core/configManager/config';
+import { doResolve, doResolvePath } from './core/resolve';
+import Analytics from './core/systemManager/analytics';
 
 import 'source-map-support/register';
 

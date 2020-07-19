@@ -3,24 +3,24 @@ import open from 'better-opn';
 import {
     logErrorPlatform,
     waitForWebpack,
-} from '../common';
-import { configureGenericPlatform } from '../platformTools';
-import { configureGenericProject } from '../projectTools';
-import { logTask, logError } from '../systemTools/logger';
+} from '../core/common';
+import { configureGenericPlatform } from '../core/platformManager';
+import { configureGenericProject } from '../core/projectManager';
+import { logTask, logError } from '../core/systemManager/logger';
 import {
     MACOS,
     WINDOWS,
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
     TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE
-} from '../constants';
+} from '../core/constants';
 import {
     runElectron,
     buildElectron,
     runElectronDevServer,
     configureElectronProject,
     exportElectron
-} from '../platformTools/electron';
-import { executeTask as _executeTask } from '../engineTools';
+} from '../sdk-electron';
+import { executeTask as _executeTask } from '../core/engineManager';
 
 const TASKS = {};
 

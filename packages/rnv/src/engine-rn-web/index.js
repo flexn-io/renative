@@ -7,10 +7,10 @@ import {
     logErrorPlatform,
     waitForWebpack,
     getConfigProp
-} from '../common';
-import { configureGenericPlatform } from '../platformTools';
-import { configureGenericProject } from '../projectTools';
-import { logTask, logError, logDebug } from '../systemTools/logger';
+} from '../core/common';
+import { configureGenericPlatform } from '../core/platformManager';
+import { configureGenericProject } from '../core/projectManager';
+import { logTask, logError, logDebug } from '../core/systemManager/logger';
 import {
     WEB,
     TIZEN,
@@ -23,16 +23,16 @@ import {
     CHROMECAST,
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
     TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE
-} from '../constants';
-import { buildWeb, runWeb, deployWeb, exportWeb, configureWebProject } from '../platformTools/web';
-import { runTizen, buildTizenProject, configureTizenProject } from '../platformTools/tizen';
-import { runWebOS, buildWebOSProject, configureWebOSProject } from '../platformTools/webos';
-import { runFirefoxProject, buildFirefoxProject, configureKaiOSProject } from '../platformTools/firefox';
-import { runChromecast, configureChromecastProject } from '../platformTools/chromecast';
-import { copyFolderContentsRecursiveSync, writeCleanFile } from '../systemTools/fileutils';
-import { executeAsync } from '../systemTools/exec';
-import Config from '../config';
-import { executeTask as _executeTask } from '../engineTools';
+} from '../core/constants';
+import { buildWeb, runWeb, deployWeb, exportWeb, configureWebProject } from '../sdk-webpack';
+import { runTizen, buildTizenProject, configureTizenProject } from '../sdk-tizen';
+import { runWebOS, buildWebOSProject, configureWebOSProject } from '../sdk-webos';
+import { runFirefoxProject, buildFirefoxProject, configureKaiOSProject } from '../sdk-firefox';
+import { runChromecast, configureChromecastProject } from '../sdk-webpack/chromecast';
+import { copyFolderContentsRecursiveSync, writeCleanFile } from '../core/systemManager/fileutils';
+import { executeAsync } from '../core/systemManager/exec';
+import Config from '../core/configManager/config';
+import { executeTask as _executeTask } from '../core/engineManager';
 
 const _configureHostedIfRequired = async (c) => {
     logTask('_configureHostedIfRequired');

@@ -6,10 +6,10 @@ import {
     getConfigProp,
     confirmActiveBundler,
     getEntryFile
-} from '../common';
-import { doResolve } from '../resolve';
-import { configureGenericPlatform } from '../platformTools';
-import { chalk, logTask, logError, logSummary, logInfo, logRaw } from '../systemTools/logger';
+} from '../core/common';
+import { doResolve } from '../core/resolve';
+import { configureGenericPlatform } from '../core/platformManager';
+import { chalk, logTask, logError, logSummary, logInfo, logRaw } from '../core/systemManager/logger';
 import {
     IOS,
     TVOS,
@@ -19,8 +19,8 @@ import {
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
     TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE,
     RN_CLI_CONFIG_NAME
-} from '../constants';
-import { configureGenericProject } from '../projectTools';
+} from '../core/constants';
+import { configureGenericProject } from '../core/projectManager';
 import {
     runXcodeProject,
     exportXcodeProject,
@@ -28,19 +28,19 @@ import {
     packageBundleForXcode,
     runAppleLog,
     configureXcodeProject
-} from '../platformTools/apple';
+} from '../sdk-xcode';
 import {
     packageAndroid,
     runAndroid,
     configureGradleProject,
     buildAndroid,
     runAndroidLog
-} from '../platformTools/android';
-import { executeAsync } from '../systemTools/exec';
+} from '../sdk-android';
+import { executeAsync } from '../core/systemManager/exec';
 
-import { isBundlerActive, waitForBundler } from '../platformTools/bundler';
-import { mkdirSync, writeFileSync, copyFileSync } from '../systemTools/fileutils';
-import { executeTask as _executeTask } from '../engineTools';
+import { isBundlerActive, waitForBundler } from './bundler';
+import { mkdirSync, writeFileSync, copyFileSync } from '../core/systemManager/fileutils';
+import { executeTask as _executeTask } from '../core/engineManager';
 
 const TASKS = {};
 

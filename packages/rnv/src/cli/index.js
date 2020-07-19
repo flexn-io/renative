@@ -8,45 +8,45 @@ import {
     logAppInfo,
     logError,
     logWarning
-} from '../systemTools/logger';
+} from '../core/systemManager/logger';
 import {
     rnvWorkspaceList,
     rnvWorkspaceAdd,
     rnvWorkspaceConnect,
     rnvWorkspaceUpdate
-} from '../projectTools/workspace';
-import { createNewProject } from '../projectTools/projectGenerator';
+} from '../core/projectManager/workspace';
+import { createNewProject } from '../core/projectManager/projectGenerator';
 import {
     rnvTemplateAdd,
     rnvTemplateApply,
     rnvTemplateList,
     applyTemplate,
     checkIfTemplateInstalled
-} from '../templateTools';
+} from '../core/templateManager';
 import {
     rnvTargetLaunch,
     rnvTargetList
-} from '../platformTools/target';
+} from '../core/targetManager';
 import {
     rnvPluginAdd,
     rnvPluginList,
     rnvPluginUpdate,
     configurePlugins
-} from '../pluginTools';
+} from '../core/pluginManager';
 import {
     rnvPlatformEject,
     rnvPlatformList,
     rnvPlatformConnect,
     rnvPlatformConfigure,
     rnvPlatformSetup
-} from '../platformTools';
+} from '../core/platformManager';
 import {
     executePipe,
     rnvHooksList,
     rnvHooksRun,
     rnvHooksPipes
-} from '../projectTools/buildHooks';
-import { rnvSwitch, rnvLink } from '../projectTools';
+} from '../core/projectManager/buildHooks';
+import { rnvSwitch, rnvLink } from '../core/projectManager';
 import {
     rnvCryptoDecrypt,
     rnvCryptoEncrypt,
@@ -55,10 +55,10 @@ import {
     rnvCryptoUpdateProfiles,
     rnvCryptoInstallProfiles,
     checkCrypto
-} from '../systemTools/crypto';
-import { rnvFastlane } from '../deployTools/fastlane';
-import { rnvClean } from '../systemTools/cleaner';
-import { inquirerPrompt } from '../systemTools/prompt';
+} from '../core/systemManager/crypto';
+import { rnvFastlane } from '../integration-fastlane';
+import { rnvClean } from '../core/systemManager/cleaner';
+import { inquirerPrompt } from './prompt';
 import {
     rnvRun,
     rnvBuild,
@@ -68,9 +68,9 @@ import {
     rnvDeploy,
     rnvStart,
     rnvConfigure
-} from '../platformTools/runner';
-import { getEngineByPlatform } from '../engineTools';
-import { isSystemWin } from '../utils';
+} from '../core/taskManager';
+import { getEngineByPlatform } from '../core/engineManager';
+import { isSystemWin } from '../core/utils';
 import {
     PLATFORMS,
     SUPPORTED_PLATFORMS,
@@ -87,23 +87,23 @@ import {
     WINDOWS,
     TIZEN_WATCH,
     configSchema
-} from '../constants';
-// import { getBinaryPath } from '../common';
-import Config from '../config';
-import { checkAndMigrateProject } from '../projectTools/migrator';
+} from '../core/constants';
+// import { getBinaryPath } from '../core/common';
+import Config from '../core/configManager/config';
+import { checkAndMigrateProject } from '../core/projectManager/migrator';
 import {
     parseRenativeConfigs,
     updateConfig,
     fixRenativeConfigsSync,
     configureRnvGlobal,
     checkIsRenativeProject
-} from '../configTools/configParser';
+} from '../core/configManager/configParser';
 import {
     configureNodeModules,
     checkAndCreateProjectPackage,
-} from '../projectTools/projectParser';
-import rnvPublish from '../projectTools/publish';
-import rnvPkg from '../projectTools/package';
+} from '../core/projectManager/projectParser';
+import rnvPublish from '../core/projectManager/publish';
+import rnvPkg from '../core/projectManager/package';
 
 export const rnvHelp = () => {
     let cmdsString = '';

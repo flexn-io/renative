@@ -5,22 +5,22 @@ import {
     isBuildSchemeSupported,
     logErrorPlatform,
     waitForWebpack,
-} from '../common';
-import { isPlatformSupported, configureGenericPlatform } from '../platformTools';
-import { configureGenericProject } from '../projectTools';
-import { logTask, logError } from '../systemTools/logger';
+} from '../core/common';
+import { isPlatformSupported, configureGenericPlatform } from '../core/platformManager';
+import { configureGenericProject } from '../core/projectManager';
+import { logTask, logError } from '../core/systemManager/logger';
 import {
     WEB,
     CHROMECAST,
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
     TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE
-} from '../constants';
-import { deployWeb } from '../platformTools/web';
-import { runWebNext, buildWebNext, exportWebNext, deployWebNext, configureNextIfRequired } from '../platformTools/web/webNext';
-import Config from '../config';
-import Analytics from '../systemTools/analytics';
-import { checkSdk } from '../platformTools/sdkManager';
-import { resolvePluginDependants } from '../pluginTools';
+} from '../core/constants';
+import { deployWeb } from '../sdk-webpack';
+import { runWebNext, buildWebNext, exportWebNext, deployWebNext, configureNextIfRequired } from '../sdk-webpack/webNext';
+import Config from '../core/configManager/config';
+import Analytics from '../core/systemManager/analytics';
+import { checkSdk } from '../core/sdkManager';
+import { resolvePluginDependants } from '../core/pluginManager';
 
 const TASKS = {};
 
