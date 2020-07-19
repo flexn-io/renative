@@ -237,7 +237,7 @@ const runElectron = async (c, platform, port) => {
                 .then(() => _runElectronSimulator(c, platform))
                 .catch(logError);
             // await _runElectronSimulator(c, platform);
-            await runElectronDevServer(c, platform, port);
+            await runElectronDevServer(c);
         } else {
             await confirmActiveBundler(c);
             await _runElectronSimulator(c, platform);
@@ -261,10 +261,10 @@ const _runElectronSimulator = async (c) => {
     child.unref();
 };
 
-const runElectronDevServer = async (c, platform, port) => {
-    logTask(`runElectronDevServer:${platform}`);
+const runElectronDevServer = async (c) => {
+    logTask('runElectronDevServer');
 
-    return runWeb(c, platform, port);
+    return runWeb(c);
 };
 
 const _generateICNS = (c, platform) => new Promise((resolve, reject) => {

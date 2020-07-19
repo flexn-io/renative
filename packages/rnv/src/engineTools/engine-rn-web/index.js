@@ -4,11 +4,11 @@ import ip from 'ip';
 import path from 'path';
 
 import {
-    isBuildSchemeSupported,
     logErrorPlatform,
     waitForWebpack,
+    getConfigProp
 } from '../../common';
-import { isPlatformSupported, configureGenericPlatform } from '../../platformTools';
+import { configureGenericPlatform } from '../../platformTools';
 import { configureGenericProject } from '../../projectTools';
 import { logTask, logError, logDebug } from '../../systemTools/logger';
 import {
@@ -32,42 +32,13 @@ import { runChromecast, configureChromecastProject } from '../../platformTools/c
 import { copyFolderContentsRecursiveSync, writeCleanFile } from '../../systemTools/fileutils';
 import { executeAsync } from '../../systemTools/exec';
 import Config from '../../config';
-import Analytics from '../../systemTools/analytics';
-import { checkSdk } from '../../platformTools/sdkManager';
-import { resolvePluginDependants } from '../../pluginTools';
-
-const TASKS = {};
-
-export const _taskConfigure = async (c, parentTask) => {
-    logTask('_taskConfigure', `parent:${parentTask}`);
-
-    await configureGenericPlatform(c);
-    await configureGenericProject(c);
-
-    switch (c.platform) {
-        case WEB:
-            return configureWebProject(c);
-        case TIZEN:
-        case TIZEN_MOBILE:
-        case TIZEN_WATCH:
-            return configureTizenProject(c);
-        case WEBOS:
-            return configureWebOSProject(c);
-        case CHROMECAST:
-            return configureChromecastProject(c);
-        case FIREFOX_OS:
-        case FIREFOX_TV:
-        case KAIOS:
-            return configureKaiOSProject(c);
-        default:
-            return logErrorPlatform(c, c.platform);
-    }
-};
-TASKS[TASK_CONFIGURE] = _taskConfigure;
+import { executeTask as _executeTask } from '..';
 
 const _configureHostedIfRequired = async (c) => {
-    logTask(`_configureHostedIfRequired:${c.platform}`);
-    if (Config.isWebHostEnabled) {
+    logTask('_configureHostedIfRequired');
+    const { hosted } = c.program;
+
+    if (hosted) {
         logDebug('Running hosted build');
         const { project, rnv } = c.paths;
         copyFolderContentsRecursiveSync(
@@ -98,22 +69,53 @@ const _configureHostedIfRequired = async (c) => {
     }
 };
 
-export const _taskStart = async (c, parentTask) => {
+const TASKS = {};
+
+export const _taskConfigure = async (c, parentTask) => {
+    logTask('_taskConfigure', `parent:${parentTask}`);
+
+    await configureGenericPlatform(c);
+    await configureGenericProject(c);
+
+    switch (c.platform) {
+        case WEB:
+            return configureWebProject(c);
+        case TIZEN:
+        case TIZEN_MOBILE:
+        case TIZEN_WATCH:
+            return configureTizenProject(c);
+        case WEBOS:
+            return configureWebOSProject(c);
+        case CHROMECAST:
+            return configureChromecastProject(c);
+        case FIREFOX_OS:
+        case FIREFOX_TV:
+        case KAIOS:
+            return configureKaiOSProject(c);
+        default:
+            return logErrorPlatform(c, c.platform);
+    }
+};
+TASKS[TASK_CONFIGURE] = _taskConfigure;
+
+const WEINRE_ENABLED_PLATFORMS = [TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH];
+
+export const _taskStart = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;
 
-    logTask('_taskStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
+    logTask('_taskStart', `parent:${parentTask} port:${port} hosted:${!!hosted}`);
 
-    if (!c.program.only) {
-        await _taskConfigure(c);
-    }
+    await _executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
 
     if (Config.isWebHostEnabled && hosted) {
         waitForWebpack(c)
             .then(() => open(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    const isWeinreEnabled = WEINRE_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
 
     switch (platform) {
         case WEB:
@@ -121,7 +123,7 @@ export const _taskStart = async (c, parentTask) => {
         case WEBOS:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            return runWeb(c, platform, port);
+            return runWeb(c, isWeinreEnabled);
         default:
             if (hosted) {
                 return logError(
@@ -134,7 +136,7 @@ export const _taskStart = async (c, parentTask) => {
 };
 TASKS[TASK_START] = _taskStart;
 
-const _taskRun = async (c, parentTask) => {
+const _taskRun = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
@@ -146,14 +148,12 @@ const _taskRun = async (c, parentTask) => {
         return _taskStart(c);
     }
 
-    if (!c.program.only) {
-        await _taskConfigure(c);
-    }
+    await _executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
         case WEB:
             c.runtime.shouldOpenBrowser = true;
-            return runWeb(c, platform, port, true);
+            return runWeb(c);
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
@@ -181,13 +181,11 @@ const _taskRun = async (c, parentTask) => {
 };
 TASKS[TASK_RUN] = _taskRun;
 
-const _taskPackage = async (c, parentTask) => {
+const _taskPackage = async (c, parentTask, originTask) => {
     logTask('_taskPackage', `parent:${parentTask}`);
     const { platform } = c;
 
-    if (!c.program.only) {
-        await _taskConfigure(c);
-    }
+    await _executeTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
 
     switch (platform) {
         default:
@@ -197,14 +195,12 @@ const _taskPackage = async (c, parentTask) => {
 };
 TASKS[TASK_PACKAGE] = _taskPackage;
 
-const _taskExport = async (c, parentTask) => {
+const _taskExport = async (c, parentTask, originTask) => {
     logTask('_taskExport', `parent:${parentTask}`);
 
     const { platform } = c;
 
-    if (!c.program.only) {
-        await _taskBuild(c);
-    }
+    await _executeTask(c, TASK_BUILD, TASK_EXPORT, originTask);
 
     switch (platform) {
         case WEB:
@@ -215,14 +211,12 @@ const _taskExport = async (c, parentTask) => {
 };
 TASKS[TASK_EXPORT] = _taskExport;
 
-const _taskBuild = async (c, parentTask) => {
+const _taskBuild = async (c, parentTask, originTask) => {
     logTask('_taskBuild', `parent:${parentTask}`);
 
     const { platform } = c;
 
-    if (!c.program.only) {
-        await _taskConfigure(c);
-    }
+    await _executeTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
 
     switch (platform) {
         case WEB:
@@ -248,14 +242,12 @@ const _taskBuild = async (c, parentTask) => {
 };
 TASKS[TASK_BUILD] = _taskBuild;
 
-const _taskDeploy = async (c, parentTask) => {
+const _taskDeploy = async (c, parentTask, originTask) => {
     logTask('_taskDeploy', `parent:${parentTask}`);
 
     const { platform } = c;
 
-    if (!c.program.only) {
-        await _taskExport(c);
-    }
+    await _executeTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
 
     switch (platform) {
         case WEB:
@@ -295,25 +287,11 @@ export const _taskLog = async (c, parentTask) => {
 };
 TASKS[TASK_LOG] = _taskLog;
 
-const runTask = async (c, task) => {
-    logTask('runTask', '(engine-rn-web)');
-
-    await isPlatformSupported(c);
-    await isBuildSchemeSupported(c);
-    await checkSdk(c);
-    await applyTemplate(c);
-    await resolvePluginDependants(c);
-
-    Analytics.captureEvent({
-        type: `${task}Project`,
-        platform: c.platform
-    });
-    return TASKS[task](c);
-};
+const executeTask = async (c, task, parentTask, originTask) => TASKS[task](c, parentTask, originTask);
 
 const applyTemplate = async () => true;
 
 export default {
-    runTask,
+    executeTask,
     applyTemplate
 };

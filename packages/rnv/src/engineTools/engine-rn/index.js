@@ -270,7 +270,7 @@ const _taskExport = async (c, parentTask, originTask) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            // return _taskBuild(c, TASK_EXPORT);
+            // Android Platforms don't need extra export step
             return true;
         default:
             return logErrorPlatform(c, platform);
@@ -338,21 +338,6 @@ export const _taskLog = async (c, parentTask) => {
     }
 };
 TASKS[TASK_LOG] = _taskLog;
-
-// const runTask = async (c, task) => {
-//     logTask('runTask', `task:${task} engine:engine-rn`);
-//     await isPlatformSupported(c);
-//     await isBuildSchemeSupported(c);
-//     await checkSdk(c);
-//     await applyTemplate(c);
-//     await resolvePluginDependants(c);
-//
-//     Analytics.captureEvent({
-//         type: `${task}Project`,
-//         platform: c.platform
-//     });
-//     return TASKS[task](c);
-// };
 
 const executeTask = async (c, task, parentTask, originTask) => TASKS[task](c, parentTask, originTask);
 

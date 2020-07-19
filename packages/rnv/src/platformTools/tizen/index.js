@@ -264,7 +264,7 @@ const startHostedServerIfRequired = (c) => {
 };
 
 export const runTizen = async (c, platform, target) => {
-    logTask(`runTizen:${platform}:${target}`);
+    logTask('runTizen', `target:${target}`);
 
     const platformConfig = c.buildConfig.platforms[platform];
     const { hosted } = c.program;
@@ -531,7 +531,7 @@ export const configureTizenProject = async (c) => {
 };
 
 export const configureProject = (c, platform) => new Promise((resolve) => {
-    logTask(`configureProject:${platform}`);
+    logTask('configureProject');
 
     const appFolder = getAppFolder(c, platform);
 

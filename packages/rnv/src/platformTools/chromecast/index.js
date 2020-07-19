@@ -21,5 +21,5 @@ export const configureProject = async (c) => {
 
 export const runChromecast = async (c) => {
     logTask(`runChromecast:${c.platform}`);
-    await runWeb(c, c.platform, c.runtime.port);
+    await runWeb(c);
 };

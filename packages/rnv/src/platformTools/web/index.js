@@ -43,6 +43,7 @@ import {
 } from '../../deployTools/webTools';
 import { getValidLocalhost } from '../../utils';
 import { doResolvePath } from '../../resolve';
+import { WEINRE_PORT } from '../../constants';
 
 const _generateWebpackConfigs = (c, platform) => {
     logTask('_generateWebpackConfigs');
@@ -232,8 +233,10 @@ const _parseCssSync = (c, platform) => {
 };
 
 
-const runWeb = async (c, platform, port) => {
-    logTask('runWeb', `port:${port}`);
+const runWeb = async (c, enableRemoteDebugger) => {
+    const { port } = c.runtime;
+    const { platform } = c;
+    logTask('runWeb', `port:${port} debugger:${!!enableRemoteDebugger}`);
 
     let devServerHost = c.runtime.localhost;
 
@@ -256,7 +259,7 @@ const runWeb = async (c, platform, port) => {
             )} is not running. Starting it up for you...`
         );
         await _runWebBrowser(c, platform, devServerHost, port, false);
-        await runWebDevServer(c, platform, port);
+        await runWebDevServer(c, platform, port, enableRemoteDebugger);
     } else {
         await confirmActiveBundler(c);
         await _runWebBrowser(c, platform, devServerHost, port, true);
@@ -279,7 +282,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
-const runWebDevServer = async (c, platform, port) => {
+const runWebDevServer = async (c, platform, port, enableRemoteDebugger) => {
     logTask('runWebDevServer');
     const { debug, debugIp } = c.program;
 
@@ -289,7 +292,7 @@ const runWebDevServer = async (c, platform, port) => {
 
     let debugVariables = '';
     let lineBreaks = '\n\n\n';
-    if (debug) {
+    if (debug || enableRemoteDebugger) {
         const resolvedDebugIp = debugIp
                 || ip.address();
         logInfo(
@@ -298,17 +301,17 @@ const runWebDevServer = async (c, platform, port) => {
         );
         debugVariables += `DEBUG=true DEBUG_IP=${resolvedDebugIp}`;
         lineBreaks = '\n';
-        const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:8079/client/#${platform}`);
+        const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${platform}`);
 
 
-        const command = 'weinre --boundHost -all- --httpPort 8079';
+        const command = `weinre --boundHost -all- --httpPort ${WEINRE_PORT}`;
         try {
             executeAsync(c, command, { stdio: 'inherit', silent: true });
-            await waitForUrl(`http://${resolvedDebugIp}:8079`);
+            await waitForUrl(`http://${resolvedDebugIp}:${WEINRE_PORT}`);
             logRaw(`
 
 Debugger running at: ${debugUrl}`);
-            open(`http://${resolvedDebugIp}:8079/client/#${platform}`);
+            open(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${platform}`);
         } catch (e) {
             logError(e);
         }
