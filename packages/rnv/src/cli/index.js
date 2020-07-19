@@ -20,12 +20,7 @@ import {
     applyTemplate,
     checkIfTemplateInstalled
 } from '../core/templateManager';
-import {
-    rnvPluginAdd,
-    rnvPluginList,
-    rnvPluginUpdate,
-    configurePlugins
-} from '../core/pluginManager';
+import { configurePlugins } from '../core/pluginManager';
 import {
     executePipe,
     rnvHooksList,
@@ -52,6 +47,9 @@ import { rnvPlatformSetup } from '../core/tasks/task.rnv.platform.setup';
 import { rnvTemplateAdd } from '../core/tasks/task.rnv.template.add';
 import { rnvTemplateApply } from '../core/tasks/task.rnv.template.apply';
 import { rnvTemplateList } from '../core/tasks/task.rnv.template.list';
+import { rnvPluginAdd } from '../core/tasks/task.rnv.plugin.add';
+import { rnvPluginList } from '../core/tasks/task.rnv.plugin.list';
+import { rnvPluginUpdate } from '../core/tasks/task.rnv.plugin.update';
 
 import { rnvFastlane } from '../integration-fastlane';
 import { rnvClean } from '../core/systemManager/cleaner';

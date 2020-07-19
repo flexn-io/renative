@@ -1,12 +1,10 @@
 /* eslint-disable import/no-cycle */
-import inquirer from 'inquirer';
+/* eslint-disable no-await-in-loop */
 import fs from 'fs';
 import path from 'path';
-import ora from 'ora';
 import merge from 'deepmerge';
 import {
     mergeObjects,
-    writeFileSync,
     sanitizeDynamicProps,
     readObjectSync,
     copyFolderContentsRecursiveSync,
@@ -22,7 +20,6 @@ import {
     logTask,
     logWarning,
     logError,
-    logToSummary,
     logDebug
 } from '../systemManager/logger';
 import { doResolve } from '../resolve';
@@ -31,18 +28,8 @@ import {
     configureNodeModules,
 } from '../projectManager/projectParser';
 
-export const rnvPluginList = c => new Promise((resolve) => {
-    logTask('_runList');
 
-    const o = _getPluginList(c);
-
-    // console.log(o.asString);
-    logToSummary(`Plugins:\n\n${o.asString}`);
-
-    resolve();
-});
-
-const _getPluginList = (c, isUpdate = false) => {
+export const getPluginList = (c, isUpdate = false) => {
     const output = {
         asString: '',
         asArray: [],
@@ -121,111 +108,6 @@ const _getPluginList = (c, isUpdate = false) => {
     return output;
 };
 
-/* eslint-disable no-await-in-loop */
-export const rnvPluginAdd = async (c) => {
-    logTask('rnvPluginAdd');
-
-    if (c.runtime.isWrapper) {
-        return Promise.reject('Adding plugins in wrapper project is not supported.');
-    }
-
-    const selPluginKey = c.program.rawArgs[4];
-
-    const o = _getPluginList(c);
-
-    const selPlugin = selPluginKey && o.allPlugins[selPluginKey];
-    const selectedPlugins = {};
-    const installMessage = [];
-
-    if (!selPlugin) {
-        const { plugin } = await inquirer.prompt({
-            name: 'plugin',
-            type: 'rawlist',
-            message: 'Select the plugins you want to add',
-            choices: o.asArray,
-            pageSize: 50
-        });
-
-        selectedPlugins[plugin] = o.allPlugins[plugin];
-        installMessage.push(
-            `${chalk().white(plugin)} v(${chalk().green(
-                o.allPlugins[plugin].version
-            )})`
-        );
-    } else {
-        selectedPlugins[selPluginKey] = selPlugin;
-        installMessage.push(
-            `${chalk().white(selPluginKey)} v(${chalk().green(selPlugin.version)})`
-        );
-    }
-
-    const questionPlugins = {};
-
-    Object.keys(selectedPlugins).forEach((key) => {
-        // c.buildConfig.plugins[key] = 'source:rnv';
-        const plugin = selectedPlugins[key];
-        if (plugin.props) questionPlugins[key] = plugin;
-
-        c.files.project.config.plugins[key] = 'source:rnv';
-
-        // c.buildConfig.plugins[key] = selectedPlugins[key];
-    });
-
-    const pluginKeys = Object.keys(questionPlugins);
-    for (let i = 0; i < pluginKeys.length; i++) {
-        const pluginKey = pluginKeys[i];
-        const plugin = questionPlugins[pluginKey];
-        const pluginProps = Object.keys(plugin.props);
-        const finalProps = {};
-        for (let i2 = 0; i2 < pluginProps.length; i2++) {
-            const { propValue } = await inquirer.prompt({
-                name: 'propValue',
-                type: 'input',
-                message: `${pluginKey}: Add value for ${
-                    pluginProps[i2]
-                } (You can do this later in ./renative.json file)`
-            });
-            finalProps[pluginProps[i2]] = propValue;
-        }
-        c.files.project.config.plugins[pluginKey] = {};
-        c.files.project.config.plugins[pluginKey].props = finalProps;
-    }
-
-    const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
-
-    writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
-
-    await resolvePluginDependants(c);
-
-    spinner.succeed('All plugins installed!');
-    logSuccess('Plugins installed successfully!');
-};
-
-export const rnvPluginUpdate = async (c) => {
-    logTask('rnvPluginUpdate');
-
-    const o = _getPluginList(c, true);
-
-    // console.log(o.asString);
-
-    const { confirm } = await inquirer.prompt({
-        name: 'confirm',
-        type: 'confirm',
-        message: 'Above installed plugins will be updated with RNV'
-    });
-
-    if (confirm) {
-        const { plugins } = c.buildConfig;
-        Object.keys(plugins).forEach((key) => {
-            // c.buildConfig.plugins[key] = o.json[key];
-            c.files.project.config.plugins[key] = o.json[key];
-        });
-
-        writeFileSync(c.paths.project.config, c.files.project.config);
-
-        logSuccess('Plugins updated successfully!');
-    }
-};
 
 const _getPluginScope = (plugin) => {
     if (typeof plugin === 'string' || plugin instanceof String) {
@@ -621,30 +503,6 @@ const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'roo
         });
     }
 };
-
-// const overridePlugins = async (c, pluginsPath) => {
-//     logDebug(`overridePlugins:${pluginsPath}`, chalk().grey);
-//
-//     if (!fs.existsSync(pluginsPath)) {
-//         logInfo(
-//             `Your project plugin folder ${chalk().white(
-//                 pluginsPath
-//             )} does not exists. skipping plugin configuration`
-//         );
-//         return;
-//     }
-//
-//     fs.readdirSync(pluginsPath).forEach((dir) => {
-//         if (dir.startsWith('@')) {
-//             const pluginsPathNested = path.join(pluginsPath, dir);
-//             fs.readdirSync(pluginsPathNested).forEach((subDir) => {
-//                 _overridePlugin(c, pluginsPath, `${dir}/${subDir}`);
-//             });
-//         } else {
-//             _overridePlugin(c, pluginsPath, dir);
-//         }
-//     });
-// };
 
 const _overridePlugin = (c, pluginsPath, dir) => {
     const source = path.resolve(pluginsPath, dir, 'overrides');
