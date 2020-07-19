@@ -50,7 +50,30 @@ jobs:
         - nvm install 13.13.0
         - echo yes | sdkmanager "platforms;android-28"
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
-      script: ci/run_linux_android.sh
+      script: ci/run_linux_android.sh android
+    - name: "RNV Android TV: Build"
+      language: android
+      dist: trusty
+      cache:
+        directories:
+          - node_modules
+          - $HOME/.gradle
+      sudo: required
+      jdk: oraclejdk8
+      android:
+        components:
+          - tools-26.1.1
+          - build-tools-28.0.3
+          - extra-google-m2repository
+          - extra-android-m2repository
+          - platform-tools-28.0.2
+          - android-28
+          - sys-img-x86-android-28
+      install:
+        - nvm install 13.13.0
+        - echo yes | sdkmanager "platforms;android-28"
+        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
+      script: ci/run_linux_android.sh androidtv
     - name: "HelloWorld Web: E2E"
       dist: trusty
       language: node_js
