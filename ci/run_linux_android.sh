@@ -27,7 +27,7 @@ cd packages/app
 
 # RUN
 
-npx rnv template apply --template renative-template-hello-world --ci --mono
+npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
 npx rnv build -p $1 -s test -r --ci --mono
 
 # TODO: Travis sucks at android emulation. will tackle it separately

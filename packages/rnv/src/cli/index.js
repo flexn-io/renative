@@ -24,10 +24,6 @@ import {
     checkIfTemplateInstalled
 } from '../core/templateManager';
 import {
-    rnvTargetLaunch,
-    rnvTargetList
-} from '../core/targetManager';
-import {
     rnvPluginAdd,
     rnvPluginList,
     rnvPluginUpdate,
@@ -48,14 +44,17 @@ import {
 } from '../core/projectManager/buildHooks';
 import { rnvSwitch, rnvLink } from '../core/projectManager';
 import {
-    rnvCryptoDecrypt,
-    rnvCryptoEncrypt,
-    rnvCryptoInstallCerts,
-    rnvCryptoUpdateProfile,
-    rnvCryptoUpdateProfiles,
-    rnvCryptoInstallProfiles,
     checkCrypto
 } from '../core/systemManager/crypto';
+import { rnvCryptoDecrypt } from '../core/tasks/task.rnv.crypto.decrypt';
+import { rnvCryptoEncrypt } from '../core/tasks/task.rnv.crypto.encrypt';
+import { rnvCryptoInstallCerts } from '../core/tasks/task.rnv.crypto.installCerts';
+import { rnvCryptoUpdateProfile } from '../core/tasks/task.rnv.crypto.updateProfile';
+import { rnvCryptoUpdateProfiles } from '../core/tasks/task.rnv.crypto.updateProfiles';
+import { rnvCryptoInstallProfiles } from '../core/tasks/task.rnv.crypto.installProfiles';
+import { rnvTargetList } from '../core/tasks/task.rnv.target.list';
+import { rnvTargetLaunch } from '../core/tasks/task.rnv.target.launch';
+
 import { rnvFastlane } from '../integration-fastlane';
 import { rnvClean } from '../core/systemManager/cleaner';
 import { inquirerPrompt } from './prompt';
