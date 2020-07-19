@@ -341,7 +341,7 @@ export const getBinaryPath = (c, platform) => {
 
 export const isMonorepo = () => {
     try {
-        fs.existsSync(path.resolve(__dirname, '../../../lerna.json'));
+        fs.existsSync(path.resolve(__dirname, '../../../../lerna.json'));
         return true;
     } catch (_err) {
         return false;
@@ -350,7 +350,7 @@ export const isMonorepo = () => {
 
 export const getMonorepoRoot = () => {
     if (isMonorepo()) {
-        return path.resolve(__dirname, '../../..');
+        return path.resolve(__dirname, '../../../..');
     }
 };
 

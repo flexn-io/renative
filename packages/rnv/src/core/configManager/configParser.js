@@ -1103,7 +1103,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.subCommand = subCmd;
     c.platformDefaults = PLATFORMS;
 
-    c.paths.rnv.dir = path.join(__dirname, '../..');
+    c.paths.rnv.dir = path.join(__dirname, '../../..');
     // c.paths.rnv.nodeModulesDir = path.join(c.paths.rnv.dir, 'node_modules');
     c.paths.rnv.platformTemplates.dir = path.join(
         c.paths.rnv.dir,
