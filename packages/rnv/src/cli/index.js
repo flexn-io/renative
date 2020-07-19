@@ -12,16 +12,10 @@ import {
 import { createNewProject } from '../core/projectManager/projectGenerator';
 import { applyTemplate, checkIfTemplateInstalled } from '../core/templateManager';
 import { configurePlugins } from '../core/pluginManager';
-import {
-    executePipe,
-    rnvHooksList,
-    rnvHooksRun,
-    rnvHooksPipes
-} from '../core/projectManager/buildHooks';
+import { executePipe } from '../core/projectManager/buildHooks';
 import { rnvSwitch, rnvLink } from '../core/projectManager';
-import {
-    checkCrypto
-} from '../core/systemManager/crypto';
+import { checkCrypto } from '../core/systemManager/crypto';
+
 import { rnvCryptoDecrypt } from '../core/tasks/task.rnv.crypto.decrypt';
 import { rnvCryptoEncrypt } from '../core/tasks/task.rnv.crypto.encrypt';
 import { rnvCryptoInstallCerts } from '../core/tasks/task.rnv.crypto.installCerts';
@@ -45,6 +39,10 @@ import { rnvWorkspaceList } from '../core/tasks/task.rnv.workspace.list';
 import { rnvWorkspaceAdd } from '../core/tasks/task.rnv.workspace.add';
 import { rnvWorkspaceConnect } from '../core/tasks/task.rnv.workspace.connect';
 import { rnvWorkspaceUpdate } from '../core/tasks/task.rnv.workspace.update';
+import { rnvHooksList } from '../core/tasks/task.rnv.hooks.list';
+import { rnvHooksRun } from '../core/tasks/task.rnv.hooks.run';
+import { rnvHooksPipes } from '../core/tasks/task.rnv.hooks.pipes';
+
 
 import { rnvFastlane } from '../integration-fastlane';
 import { rnvClean } from '../core/systemManager/cleaner';

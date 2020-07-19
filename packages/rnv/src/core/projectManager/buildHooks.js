@@ -1,38 +1,9 @@
 /* eslint-disable import/no-cycle */
 import fs from 'fs';
-import { chalk, logToSummary, logTask, logRaw, logHook } from '../systemManager/logger';
-import { generateOptions } from '../../cli/prompt';
+import { logTask, logHook } from '../systemManager/logger';
 import { executeAsync } from '../systemManager/exec';
 
-// ##########################################
-// PUBLIC API
-// ##########################################
-
-const rnvHooksRun = c => new Promise((resolve, reject) => {
-    logTask('rnvHooksRun');
-
-    buildHooks(c)
-        .then(() => {
-            if (!c.buildHooks) {
-                reject('Build hooks have not been compiled properly!');
-                return;
-            }
-            if (c.buildHooks[c.program?.exeMethod]) {
-                c.buildHooks[c.program?.exeMethod](c)
-                    .then(() => resolve())
-                    .catch(e => reject(e));
-            } else {
-                reject(
-                    `Method name ${chalk().white(
-                        c.program.exeMethod
-                    )} does not exists in your buildHooks!`
-                );
-            }
-        })
-        .catch(e => reject(e));
-});
-
-const executePipe = async (c, key) => {
+export const executePipe = async (c, key) => {
     logHook('executePipe', `${key}`);
 
     const pipesConfig = c.buildConfig?.pipes;
@@ -58,7 +29,7 @@ const executePipe = async (c, key) => {
 };
 
 /* eslint-disable import/no-dynamic-require, global-require */
-const buildHooks = async (c) => {
+export const buildHooks = async (c) => {
     logTask('buildHooks');
 
     if (fs.existsSync(c.paths.buildHooks.index)) {
@@ -91,38 +62,3 @@ const buildHooks = async (c) => {
     }
     return true;
 };
-
-const rnvHooksList = c => new Promise((resolve, reject) => {
-    logTask('rnvHooksList');
-
-    buildHooks(c)
-        .then(() => {
-            if (c.buildHooks) {
-                const hookOpts = generateOptions(c.buildHooks);
-                let hooksAsString = `\n${'Hooks:'}\n${hookOpts.asString}`;
-
-                if (c.buildPipes) {
-                    const pipeOpts = generateOptions(c.buildPipes);
-                    hooksAsString += `\n${'Pipes:'}\n${pipeOpts.asString}`;
-                }
-                logToSummary(hooksAsString);
-                resolve();
-            } else {
-                reject('Your buildHooks object is empty!');
-            }
-        })
-        .catch(e => reject(e));
-});
-
-const rnvHooksPipes = c => new Promise((resolve, reject) => {
-    logTask('rnvHooksPipes');
-
-    buildHooks(c)
-        .then(() => {
-            const pipeOpts = generateOptions(c.buildPipes);
-            logRaw(`Pipes:\n${pipeOpts.asString}`);
-        })
-        .catch(e => reject(e));
-});
-
-export { buildHooks, rnvHooksList, rnvHooksRun, executePipe, rnvHooksPipes };
