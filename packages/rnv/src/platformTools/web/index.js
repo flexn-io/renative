@@ -154,9 +154,10 @@ const _generateWebpackConfigs = (c, platform) => {
     fsWriteFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
 };
 
-const buildWeb = (c, platform) => new Promise((resolve, reject) => {
+const buildWeb = async (c) => {
     const { debug, debugIp } = c.program;
-    logTask(`buildWeb:${platform}`);
+    const { platform } = c;
+    logTask('buildWeb');
 
     const appFolder = getAppFolder(c, platform);
 
@@ -172,22 +173,19 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 
     const wbp = doResolvePath('webpack/bin/webpack.js');
 
-    executeAsync(
+    await executeAsync(
         c,
         `npx cross-env PLATFORM=${platform} NODE_ENV=production ${
             debugVariables
         } node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`
-    )
-        .then(() => {
-            logSuccess(
-                `Your Build is located in ${chalk().white(
-                    path.join(appFolder, 'public')
-                )} .`
-            );
-            resolve();
-        })
-        .catch(e => reject(e));
-});
+    );
+    logSuccess(
+        `Your Build is located in ${chalk().white(
+            path.join(appFolder, 'public')
+        )} .`
+    );
+    return true;
+};
 
 const configureWebProject = async (c) => {
     logTask('configureWebProject');

@@ -41,7 +41,7 @@ import {
     writeCleanFile
 } from '../../systemTools/fileutils';
 
-const configureElectronProject = async (c) => {
+export const configureElectronProject = async (c) => {
     logTask('configureElectronProject');
 
     const { platform } = c;
@@ -183,10 +183,11 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const buildElectron = (c, platform) => {
-    logTask(`buildElectron:${platform}`);
+const buildElectron = async (c) => {
+    logTask('buildElectron');
 
-    return buildWeb(c, platform);
+    await buildWeb(c);
+    return true;
 };
 
 const exportElectron = async (c, platform) => {
@@ -214,14 +215,17 @@ const exportElectron = async (c, platform) => {
     );
 };
 
-const runElectron = async (c, platform, port) => {
-    logTask(`runElectron:${platform}`);
+export const runElectron = async (c) => {
+    logTask('runElectron');
 
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
+    const { platform } = c;
+    const { port } = c.runtime;
+
+    // const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
     if (bundleAssets) {
-        await buildElectron(c, platform, bundleIsDev);
+        await buildElectron(c);
         await _runElectronSimulator(c, platform);
     } else {
         const isPortActive = await checkPortInUse(c, platform, port);
@@ -313,8 +317,6 @@ const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
 });
 
 export {
-    configureElectronProject,
-    runElectron,
     buildElectron,
     exportElectron,
     runElectronDevServer

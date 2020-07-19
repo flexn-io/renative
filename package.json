@@ -85,7 +85,7 @@
         "test:rnv": "lerna run test:local --stream --scope rnv",
         "test:rnv:unit": "lerna run test --stream --scope rnv",
         "ut": "lerna run test --stream --scope rnv",
-        "watch": "lerna run --parallel --concurrency 1 watch",
+        "watch": "lerna run --parallel --concurrency 2 watch",
         "version": "cd website && yarn run version",
         "website": "cd website && yarn start"
     },

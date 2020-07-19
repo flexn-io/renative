@@ -7,10 +7,10 @@ import {
     logErrorPlatform,
     waitForWebpack,
     getConfigProp
-} from '../../common';
-import { configureGenericPlatform } from '../../platformTools';
-import { configureGenericProject } from '../../projectTools';
-import { logTask, logError, logDebug } from '../../systemTools/logger';
+} from '../common';
+import { configureGenericPlatform } from '../platformTools';
+import { configureGenericProject } from '../projectTools';
+import { logTask, logError, logDebug } from '../systemTools/logger';
 import {
     WEB,
     TIZEN,
@@ -23,16 +23,16 @@ import {
     CHROMECAST,
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
     TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE
-} from '../../constants';
-import { buildWeb, runWeb, deployWeb, exportWeb, configureWebProject } from '../../platformTools/web';
-import { runTizen, buildTizenProject, configureTizenProject } from '../../platformTools/tizen';
-import { runWebOS, buildWebOSProject, configureWebOSProject } from '../../platformTools/webos';
-import { runFirefoxProject, buildFirefoxProject, configureKaiOSProject } from '../../platformTools/firefox';
-import { runChromecast, configureChromecastProject } from '../../platformTools/chromecast';
-import { copyFolderContentsRecursiveSync, writeCleanFile } from '../../systemTools/fileutils';
-import { executeAsync } from '../../systemTools/exec';
-import Config from '../../config';
-import { executeTask as _executeTask } from '..';
+} from '../constants';
+import { buildWeb, runWeb, deployWeb, exportWeb, configureWebProject } from '../platformTools/web';
+import { runTizen, buildTizenProject, configureTizenProject } from '../platformTools/tizen';
+import { runWebOS, buildWebOSProject, configureWebOSProject } from '../platformTools/webos';
+import { runFirefoxProject, buildFirefoxProject, configureKaiOSProject } from '../platformTools/firefox';
+import { runChromecast, configureChromecastProject } from '../platformTools/chromecast';
+import { copyFolderContentsRecursiveSync, writeCleanFile } from '../systemTools/fileutils';
+import { executeAsync } from '../systemTools/exec';
+import Config from '../config';
+import { executeTask as _executeTask } from '../engineTools';
 
 const _configureHostedIfRequired = async (c) => {
     logTask('_configureHostedIfRequired');
@@ -221,7 +221,7 @@ const _taskBuild = async (c, parentTask, originTask) => {
     switch (platform) {
         case WEB:
         case CHROMECAST:
-            await buildWeb(c, platform);
+            await buildWeb(c);
             return;
         case KAIOS:
         case FIREFOX_OS:

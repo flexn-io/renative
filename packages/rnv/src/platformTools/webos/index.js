@@ -195,7 +195,7 @@ const runWebOS = async (c) => {
     }
 
     // Start the fun
-    !isHosted && (await buildWeb(c, platform));
+    !isHosted && (await buildWeb(c));
     await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
     // List all devices
@@ -298,7 +298,7 @@ const buildWebOSProject = async (c) => {
 
     const { platform } = c;
 
-    await buildWeb(c, platform);
+    await buildWeb(c);
 
     if (!c.program.hosted) {
         const tDir = path.join(getAppFolder(c, platform), 'public');

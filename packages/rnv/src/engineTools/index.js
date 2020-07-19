@@ -12,12 +12,11 @@ import {
     executePipe
 } from '../projectTools/buildHooks';
 
-import EngineRn from './engine-rn';
-import EngineRnWeb from './engine-rn-web';
-import EngineRnElectron from './engine-rn-electron';
-import EngineRnNext from './engine-rn-next';
+import EngineRn from '../engine-rn';
+import EngineRnWeb from '../engine-rn-web';
+import EngineRnElectron from '../engine-rn-electron';
+import EngineRnNext from '../engine-rn-next';
 // import EngineRnElectronNext from './engine-rn-electron-next';
-
 const ENGINES = {
     'engine-rn': EngineRn,
     'engine-rn-web': EngineRnWeb,

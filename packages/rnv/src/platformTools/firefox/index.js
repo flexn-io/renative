@@ -92,22 +92,20 @@ const configureProject = (c, platform) => new Promise((resolve) => {
     resolve();
 });
 
-const runFirefoxProject = (c, platform) => new Promise((resolve, reject) => {
+const runFirefoxProject = async (c, platform) => {
     logTask(`runFirefoxProject:${platform}`);
 
-    buildWeb(c, platform)
-        .then(() => launchKaiOSSimulator(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await buildWeb(c);
+    await launchKaiOSSimulator(c, platform);
+    return true;
+};
 
-const buildFirefoxProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`buildFirefoxProject:${platform}`);
+const buildFirefoxProject = async (c) => {
+    logTask('buildFirefoxProject');
 
-    buildWeb(c, platform)
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await buildWeb(c);
+    return true;
+};
 
 export {
     launchKaiOSSimulator,

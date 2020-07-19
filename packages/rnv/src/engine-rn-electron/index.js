@@ -3,24 +3,24 @@ import open from 'better-opn';
 import {
     logErrorPlatform,
     waitForWebpack,
-} from '../../common';
-import { configureGenericPlatform } from '../../platformTools';
-import { configureGenericProject } from '../../projectTools';
-import { logTask, logError } from '../../systemTools/logger';
+} from '../common';
+import { configureGenericPlatform } from '../platformTools';
+import { configureGenericProject } from '../projectTools';
+import { logTask, logError } from '../systemTools/logger';
 import {
     MACOS,
     WINDOWS,
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
     TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE
-} from '../../constants';
+} from '../constants';
 import {
     runElectron,
     buildElectron,
     runElectronDevServer,
     configureElectronProject,
     exportElectron
-} from '../../platformTools/electron';
-import { executeTask as _executeTask } from '..';
+} from '../platformTools/electron';
+import { executeTask as _executeTask } from '../engineTools';
 
 const TASKS = {};
 
@@ -77,7 +77,7 @@ const _taskRun = async (c, parentTask, originTask) => {
     switch (platform) {
         case MACOS:
         case WINDOWS:
-            return runElectron(c, platform, port);
+            return runElectron(c);
         default:
             return logErrorPlatform(c, platform);
     }
@@ -86,15 +86,11 @@ TASKS[TASK_RUN] = _taskRun;
 
 const _taskPackage = async (c, parentTask, originTask) => {
     logTask('_taskPackage', `parent:${parentTask}`);
-    const { platform } = c;
 
     await _executeTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
 
-    switch (platform) {
-        default:
-            logErrorPlatform(c, platform);
-            return false;
-    }
+    // macOS does not require packaging
+    return true;
 };
 TASKS[TASK_PACKAGE] = _taskPackage;
 
@@ -119,11 +115,10 @@ const _taskBuild = async (c, parentTask, originTask) => {
     const { platform } = c;
 
     await _executeTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
-
     switch (platform) {
         case MACOS:
         case WINDOWS:
-            await buildElectron(c, platform);
+            await buildElectron(c);
             return;
         default:
             logErrorPlatform(c, platform);

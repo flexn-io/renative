@@ -353,7 +353,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
     const continueLaunching = async () => {
         let hasDevice = false;
 
-        !isHosted && (await buildWeb(c, platform));
+        !isHosted && (await buildWeb(c));
         await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
         await execCLI(
             c,
@@ -485,7 +485,7 @@ export const buildTizenProject = async (c) => {
     const platformConfig = c.buildConfig.platforms[platform];
     const tDir = getAppFolder(c, platform);
 
-    await buildWeb(c, platform);
+    await buildWeb(c);
     if (!c.program.hosted) {
         const tOut = path.join(tDir, 'output');
         const tBuild = path.join(tDir, 'build');
