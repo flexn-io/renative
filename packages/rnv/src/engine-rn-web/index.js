@@ -93,7 +93,7 @@ export const _taskConfigure = async (c, parentTask, originTask) => {
         case KAIOS:
             return configureKaiOSProject(c);
         default:
-            return logErrorPlatform(c, c.platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_CONFIGURE] = _taskConfigure;
@@ -131,7 +131,7 @@ export const _taskStart = async (c, parentTask, originTask) => {
                     true
                 );
             }
-            return logErrorPlatform(c, platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_START] = _taskStart;
@@ -176,22 +176,17 @@ const _taskRun = async (c, parentTask, originTask) => {
             }
             return runChromecast(c, platform, target);
         default:
-            return logErrorPlatform(c, platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_RUN] = _taskRun;
 
 const _taskPackage = async (c, parentTask, originTask) => {
     logTask('_taskPackage', `parent:${parentTask}`);
-    const { platform } = c;
 
     await _executeTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
 
-    switch (platform) {
-        default:
-            logErrorPlatform(c, platform);
-            return false;
-    }
+    return true;
 };
 TASKS[TASK_PACKAGE] = _taskPackage;
 
@@ -206,7 +201,7 @@ const _taskExport = async (c, parentTask, originTask) => {
         case WEB:
             return exportWeb(c, platform);
         default:
-            logErrorPlatform(c, platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_EXPORT] = _taskExport;
@@ -237,7 +232,7 @@ const _taskBuild = async (c, parentTask, originTask) => {
             await buildWebOSProject(c, platform);
             return;
         default:
-            logErrorPlatform(c, platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_BUILD] = _taskBuild;
@@ -272,7 +267,7 @@ const _taskDebug = async (c, parentTask) => {
         case TIZEN:
             return executeAsync(c, 'npx weinre --boundHost -all-');
         default:
-            logErrorPlatform(c, platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_DEBUG] = _taskDebug;
@@ -282,7 +277,7 @@ export const _taskLog = async (c, parentTask) => {
 
     switch (c.platform) {
         default:
-            logErrorPlatform(c, c.platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_LOG] = _taskLog;

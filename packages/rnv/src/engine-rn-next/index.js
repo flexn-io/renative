@@ -2,11 +2,10 @@
 import open from 'better-opn';
 
 import {
-    isBuildSchemeSupported,
     logErrorPlatform,
     waitForWebpack,
 } from '../core/common';
-import { isPlatformSupported, configureGenericPlatform } from '../core/platformManager';
+import { configureGenericPlatform } from '../core/platformManager';
 import { configureGenericProject } from '../core/projectManager';
 import { logTask, logError } from '../core/systemManager/logger';
 import {
@@ -18,14 +17,12 @@ import {
 import { deployWeb } from '../sdk-webpack';
 import { runWebNext, buildWebNext, exportWebNext, deployWebNext, configureNextIfRequired } from '../sdk-webpack/webNext';
 import Config from '../core/configManager/config';
-import Analytics from '../core/systemManager/analytics';
-import { checkSdk } from '../core/sdkManager';
-import { resolvePluginDependants } from '../core/pluginManager';
+import { executeTask as _executeTask } from '../core/engineManager';
 
 const TASKS = {};
 
-export const _taskConfigure = async (c, parentTask) => {
-    logTask('_taskConfigure', `parent:${parentTask}`);
+export const _taskConfigure = async (c, parentTask, originTask) => {
+    logTask('_taskConfigure', `parent:${parentTask} origin:${originTask}`);
 
     await configureGenericPlatform(c);
     await configureGenericProject(c);
@@ -35,12 +32,12 @@ export const _taskConfigure = async (c, parentTask) => {
         case CHROMECAST:
             return configureNextIfRequired(c);
         default:
-            return logErrorPlatform(c, c.platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_CONFIGURE] = _taskConfigure;
 
-export const _taskStart = async (c, parentTask) => {
+export const _taskStart = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;
@@ -53,33 +50,33 @@ export const _taskStart = async (c, parentTask) => {
             .catch(logError);
     }
 
-    if (!c.program.only) {
-        await _taskConfigure(c);
-    }
+    await _executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
 
+    if (hosted) {
+        return logError(
+            'This platform does not support hosted mode',
+            true
+        );
+    }
     switch (platform) {
+        case WEB:
+        case CHROMECAST:
+            c.runtime.shouldOpenBrowser = false;
+            return runWebNext(c, platform, port, true);
         default:
-            if (hosted) {
-                return logError(
-                    'This platform does not support hosted mode',
-                    true
-                );
-            }
-            return logErrorPlatform(c, platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_START] = _taskStart;
 
-const _taskRun = async (c, parentTask) => {
+const _taskRun = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
     logTask('_taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    if (!c.program.only) {
-        await _taskConfigure(c);
-    }
+    await _executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
         case WEB:
@@ -87,50 +84,41 @@ const _taskRun = async (c, parentTask) => {
             c.runtime.shouldOpenBrowser = true;
             return runWebNext(c, platform, port, true);
         default:
-            return logErrorPlatform(c, platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_RUN] = _taskRun;
 
-const _taskPackage = async (c, parentTask) => {
+const _taskPackage = async (c, parentTask, originTask) => {
     logTask('_taskPackage', `parent:${parentTask}`);
-    const { platform } = c;
 
-    await checkSdk(c);
+    await _executeTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
 
-    switch (platform) {
-        default:
-            logErrorPlatform(c, platform);
-            return false;
-    }
+    return true;
 };
 TASKS[TASK_PACKAGE] = _taskPackage;
 
-const _taskExport = async (c, parentTask) => {
+const _taskExport = async (c, parentTask, originTask) => {
     logTask('_taskExport', `parent:${parentTask}`);
     const { platform } = c;
 
-    if (!c.program.only) {
-        await _taskBuild(c);
-    }
+    await _executeTask(c, TASK_BUILD, TASK_EXPORT, originTask);
 
     switch (platform) {
         case WEB:
         case CHROMECAST:
             return exportWebNext(c);
         default:
-            logErrorPlatform(c, platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_EXPORT] = _taskExport;
 
-const _taskBuild = async (c, parentTask) => {
+const _taskBuild = async (c, parentTask, originTask) => {
     logTask('_taskBuild', `parent:${parentTask}`);
     const { platform } = c;
 
-    if (!c.program.only) {
-        await _taskConfigure(c);
-    }
+    await _executeTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
 
     switch (platform) {
         case WEB:
@@ -138,18 +126,16 @@ const _taskBuild = async (c, parentTask) => {
             await buildWebNext(c);
             return;
         default:
-            logErrorPlatform(c, platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_BUILD] = _taskBuild;
 
-const _taskDeploy = async (c, parentTask) => {
+const _taskDeploy = async (c, parentTask, originTask) => {
     logTask('_taskDeploy', `parent:${parentTask}`);
     const { platform } = c;
 
-    if (!c.program.only) {
-        await _taskBuild(c);
-    }
+    await _executeTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
 
     switch (platform) {
         case WEB:
@@ -170,7 +156,7 @@ const _taskDebug = async (c, parentTask) => {
 
     switch (platform) {
         default:
-            logErrorPlatform(c, platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_DEBUG] = _taskDebug;
@@ -179,30 +165,16 @@ export const _taskLog = async (c, parentTask) => {
     logTask('_taskLog', `parent:${parentTask}`);
     switch (c.platform) {
         default:
-            logErrorPlatform(c, c.platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_LOG] = _taskLog;
 
-const runTask = async (c, task) => {
-    logTask('runTask', '(engine-rn-next)');
-
-    await isPlatformSupported(c);
-    await isBuildSchemeSupported(c);
-    await checkSdk(c);
-    await applyTemplate(c);
-    await resolvePluginDependants(c);
-
-    Analytics.captureEvent({
-        type: `${task}Project`,
-        platform: c.platform
-    });
-    return TASKS[task](c);
-};
+const executeTask = async (c, task, parentTask, originTask) => TASKS[task](c, parentTask, originTask);
 
 const applyTemplate = async () => true;
 
 export default {
-    runTask,
+    executeTask,
     applyTemplate
 };

@@ -60,7 +60,7 @@ export const _taskStart = async (c, parentTask, originTask) => {
         case WINDOWS:
             return runElectronDevServer(c, platform, port);
         default:
-            return logErrorPlatform(c, platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_START] = _taskStart;
@@ -79,7 +79,7 @@ const _taskRun = async (c, parentTask, originTask) => {
         case WINDOWS:
             return runElectron(c);
         default:
-            return logErrorPlatform(c, platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_RUN] = _taskRun;
@@ -105,7 +105,7 @@ const _taskExport = async (c, parentTask, originTask) => {
         case WINDOWS:
             return exportElectron(c, platform);
         default:
-            logErrorPlatform(c, platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_EXPORT] = _taskExport;
@@ -121,7 +121,7 @@ const _taskBuild = async (c, parentTask, originTask) => {
             await buildElectron(c);
             return;
         default:
-            logErrorPlatform(c, platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_BUILD] = _taskBuild;
@@ -142,7 +142,7 @@ const _taskDebug = async (c) => {
 
     switch (platform) {
         default:
-            logErrorPlatform(c, platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_DEBUG] = _taskDebug;
@@ -151,7 +151,7 @@ export const _taskLog = async (c) => {
     logTask(`_taskLog:${c.platform}`);
     switch (c.platform) {
         default:
-            logErrorPlatform(c, c.platform);
+            logErrorPlatform(c);
     }
 };
 TASKS[TASK_LOG] = _taskLog;

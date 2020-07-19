@@ -38,7 +38,7 @@ jobs:
         - yarn bootstrap
         - cd packages/rnv
       script: yarn test:integration
-    - name: "RNV Android: Build"
+    - name: "HelloWorld Android: Build"
       language: android
       dist: trusty
       cache:
@@ -61,7 +61,7 @@ jobs:
         - echo yes | sdkmanager "platforms;android-28"
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
       script: ci/run_linux_android.sh android
-    - name: "RNV Android TV: Build"
+    - name: "HelloWorld Android TV: Build"
       language: android
       dist: trusty
       cache:
@@ -94,6 +94,20 @@ jobs:
       install:
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
       script: ci/run_linux_web.sh
+    - name: "HelloWorld Web (Next): E2E"
+      dist: trusty
+      language: node_js
+      cache:
+        directories:
+          - node_modules
+      node_js: 13.13.0
+      install:
+        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
+      script:
+        - yarn bootstrap
+        - cd packages/app
+        - npx rnv template apply --template renative-template-hello-world --ci --mono
+        - yarn e2e-web-next
     - name: "HelloWorld Tizen: Build"
       language: node_js
       cache:

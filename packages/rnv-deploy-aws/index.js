@@ -1,6 +1,9 @@
 /* eslint-disable global-require, import/no-dynamic-require */
-import path from 'path';
-import { Constants: {CHROMECAST, WEB} } from 'rnv';
+import _path from 'path';
+
+const { CHROMECAST, WEB } = require(_path.default.join(this.rnvPath, 'dist/core/constants')).default;
+const { DOCKERHUB_USER, DOCKERHUB_PASS } = process.env;
+
 
 class Aws {
     setRNVPath(pth) {
@@ -9,15 +12,14 @@ class Aws {
 
     async doDeploy() {
         // rnv paths
-        const config = require(_path.default.join(this.rnvPath, 'dist/config'))
-            .default;
+        const config = require(_path.default.join(this.rnvPath, 'dist/core/config')).default;
 
         const { inquirerPrompt } = require(_path.default.join(
             this.rnvPath,
             'dist/core/systemManager/prompt'
         ));
 
-        const { logInfo, logTask } = require(_path.default.join(
+        const { logTask } = require(_path.default.join(
             this.rnvPath,
             'dist/core/systemManager/logger'
         ));
@@ -29,12 +31,12 @@ class Aws {
 
         const { runtime, files } = config.getConfig();
 
-        const { subdomain } = await inquirerPrompt({
+        await inquirerPrompt({
             name: 'client',
             type: 'input',
             message: 'The client name (will be used as subdomain)'
         });
-        const { env } = await inquirerPrompt({
+        await inquirerPrompt({
             name: 'env',
             type: 'list',
             choices: [{ name: 'staging' }, { name: 'production' }]

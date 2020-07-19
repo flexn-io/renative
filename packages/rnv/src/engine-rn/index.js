@@ -175,7 +175,7 @@ Dev server running at: ${url}
         }
         default:
 
-            return logErrorPlatform(c, platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_START] = _taskStart;
@@ -222,7 +222,7 @@ const _taskRun = async (c, parentTask, originTask) => {
             }
             return runAndroid(c, platform, target);
         default:
-            return logErrorPlatform(c, platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_RUN] = _taskRun;
@@ -250,7 +250,7 @@ const _taskPackage = async (c, parentTask, originTask) => {
                 platform === ANDROID_WEAR
             );
         default:
-            logErrorPlatform(c, platform);
+            logErrorPlatform(c);
             return false;
     }
 };
@@ -273,7 +273,7 @@ const _taskExport = async (c, parentTask, originTask) => {
             // Android Platforms don't need extra export step
             return true;
         default:
-            return logErrorPlatform(c, platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_EXPORT] = _taskExport;
@@ -297,7 +297,7 @@ const _taskBuild = async (c, parentTask, originTask) => {
             }
             return buildXcodeProject(c, platform);
         default:
-            return logErrorPlatform(c, platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_BUILD] = _taskBuild;
@@ -318,7 +318,7 @@ const _taskDebug = async (c, parentTask) => {
 
     switch (platform) {
         default:
-            return logErrorPlatform(c, platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_DEBUG] = _taskDebug;
@@ -334,7 +334,7 @@ export const _taskLog = async (c, parentTask) => {
         case TVOS:
             return runAppleLog(c);
         default:
-            return logErrorPlatform(c, c.platform);
+            return logErrorPlatform(c);
     }
 };
 TASKS[TASK_LOG] = _taskLog;

@@ -26,11 +26,11 @@ const ENGINES = {
 };
 
 const EngineNoOp = {
-    runTask: async (c, task) => {
-        logTask('EngineNoOp:runTask');
+    executeTask: async (c, task, parentTask, originTask) => {
+        logTask('EngineNoOp:executeTask', `task:${task} parent:${parentTask} origin:${originTask}`);
         await isPlatformSupported(c);
         await isBuildSchemeSupported(c);
-        return getEngineRunner(c).runTask(c, task);
+        return getEngineRunner(c).executeTask(c, task);
     },
     applyTemplate: () => {
     }
@@ -52,8 +52,8 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
 };
 
 
-export const getEngineRunner = (c, platform) => {
-    const selectedEngine = getEngineByPlatform(c, platform || c.platform);
+export const getEngineRunner = (c) => {
+    const selectedEngine = getEngineByPlatform(c, c.platform);
     if (!selectedEngine) {
         return EngineNoOp;
         // throw new Error(`Cound not find engine with ${chalk().white(c.platform)} platform support`);
