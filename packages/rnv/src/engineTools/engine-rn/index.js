@@ -111,8 +111,8 @@ BUNDLER_PLATFORMS[ANDROID] = [ANDROID];
 BUNDLER_PLATFORMS[ANDROID_TV] = [ANDROID];
 BUNDLER_PLATFORMS[ANDROID_WEAR] = [ANDROID];
 
-export const _taskConfigure = async (c, parentTask) => {
-    logTask('_taskConfigure', `parent:${parentTask}`);
+export const _taskConfigure = async (c, parentTask, originTask) => {
+    logTask('_taskConfigure', `parent:${parentTask} origin:${originTask}`);
 
     await configureGenericPlatform(c);
     await configureGenericProject(c);

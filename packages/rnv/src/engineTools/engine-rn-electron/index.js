@@ -1,11 +1,10 @@
 /* eslint-disable import/no-cycle */
 import open from 'better-opn';
 import {
-    isBuildSchemeSupported,
     logErrorPlatform,
     waitForWebpack,
 } from '../../common';
-import { isPlatformSupported, configureGenericPlatform } from '../../platformTools';
+import { configureGenericPlatform } from '../../platformTools';
 import { configureGenericProject } from '../../projectTools';
 import { logTask, logError } from '../../systemTools/logger';
 import {
@@ -21,15 +20,12 @@ import {
     configureElectronProject,
     exportElectron
 } from '../../platformTools/electron';
-import Config from '../../config';
-import Analytics from '../../systemTools/analytics';
-import { checkSdk } from '../../platformTools/sdkManager';
-import { resolvePluginDependants } from '../../pluginTools';
+import { executeTask as _executeTask } from '..';
 
 const TASKS = {};
 
-export const _taskConfigure = async (c, parentTask) => {
-    logTask('_taskConfigure', `parent:${parentTask}`);
+export const _taskConfigure = async (c, parentTask, originTask) => {
+    logTask('_taskConfigure', `parent:${parentTask} origin:${originTask}`);
 
     await configureGenericPlatform(c);
     await configureGenericProject(c);
@@ -44,22 +40,20 @@ export const _taskConfigure = async (c, parentTask) => {
 };
 TASKS[TASK_CONFIGURE] = _taskConfigure;
 
-export const _taskStart = async (c, parentTask) => {
+export const _taskStart = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;
 
     logTask('_taskStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
 
-    if (Config.isWebHostEnabled && hosted) {
+    if (hosted) {
         waitForWebpack(c)
             .then(() => open(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }
 
-    if (!c.program.only) {
-        await _taskConfigure(c);
-    }
+    await _executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
 
     switch (platform) {
         case MACOS:
@@ -71,16 +65,14 @@ export const _taskStart = async (c, parentTask) => {
 };
 TASKS[TASK_START] = _taskStart;
 
-const _taskRun = async (c, parentTask) => {
+const _taskRun = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
     logTask('_taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    if (!c.program.only) {
-        await _taskConfigure(c);
-    }
+    await _executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
         case MACOS:
@@ -92,10 +84,11 @@ const _taskRun = async (c, parentTask) => {
 };
 TASKS[TASK_RUN] = _taskRun;
 
-const _taskPackage = async (c, parentTask) => {
+const _taskPackage = async (c, parentTask, originTask) => {
     logTask('_taskPackage', `parent:${parentTask}`);
     const { platform } = c;
 
+    await _executeTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
 
     switch (platform) {
         default:
@@ -105,13 +98,11 @@ const _taskPackage = async (c, parentTask) => {
 };
 TASKS[TASK_PACKAGE] = _taskPackage;
 
-const _taskExport = async (c, parentTask) => {
+const _taskExport = async (c, parentTask, originTask) => {
     logTask('_taskExport', `parent:${parentTask}`);
     const { platform } = c;
 
-    if (!c.program.only) {
-        await _taskBuild(c);
-    }
+    await _executeTask(c, TASK_BUILD, TASK_EXPORT, originTask);
 
     switch (platform) {
         case MACOS:
@@ -123,15 +114,11 @@ const _taskExport = async (c, parentTask) => {
 };
 TASKS[TASK_EXPORT] = _taskExport;
 
-const _taskBuild = async (c, parentTask) => {
+const _taskBuild = async (c, parentTask, originTask) => {
     logTask('_taskBuild', `parent:${parentTask}`);
     const { platform } = c;
 
-    // const engi getEngineByPlatform(c, c.platform)
-
-    if (!c.program.only) {
-        await _taskConfigure(c);
-    }
+    await _executeTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
 
     switch (platform) {
         case MACOS:
@@ -144,16 +131,13 @@ const _taskBuild = async (c, parentTask) => {
 };
 TASKS[TASK_BUILD] = _taskBuild;
 
-const _taskDeploy = async (c, parentTask) => {
+const _taskDeploy = async (c, parentTask, originTask) => {
     logTask('_taskDeploy', `parent:${parentTask}`);
-    const { platform } = c;
 
-    switch (platform) {
-        default:
-            if (!c.program.only) {
-                await _taskExport(c);
-            }
-    }
+    await _executeTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
+
+    // Deploy simply trggets hook
+    return true;
 };
 TASKS[TASK_DEPLOY] = _taskDeploy;
 
@@ -168,22 +152,6 @@ const _taskDebug = async (c) => {
 };
 TASKS[TASK_DEBUG] = _taskDebug;
 
-const runTask = async (c, task) => {
-    logTask('runTask', '(engine-rn-electron)');
-
-    await isPlatformSupported(c);
-    await isBuildSchemeSupported(c);
-    await checkSdk(c);
-    await applyTemplate(c);
-    await resolvePluginDependants(c);
-
-    Analytics.captureEvent({
-        type: `${task}Project`,
-        platform: c.platform
-    });
-    return TASKS[task](c);
-};
-
 export const _taskLog = async (c) => {
     logTask(`_taskLog:${c.platform}`);
     switch (c.platform) {
@@ -193,9 +161,11 @@ export const _taskLog = async (c) => {
 };
 TASKS[TASK_LOG] = _taskLog;
 
+const executeTask = async (c, task, parentTask, originTask) => TASKS[task](c, parentTask, originTask);
+
 const applyTemplate = async () => true;
 
 export default {
-    runTask,
+    executeTask,
     applyTemplate
 };

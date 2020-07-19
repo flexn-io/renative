@@ -71,8 +71,8 @@ const _configureHostedIfRequired = async (c) => {
 
 const TASKS = {};
 
-export const _taskConfigure = async (c, parentTask) => {
-    logTask('_taskConfigure', `parent:${parentTask}`);
+export const _taskConfigure = async (c, parentTask, originTask) => {
+    logTask('_taskConfigure', `parent:${parentTask} origin:${originTask}`);
 
     await configureGenericPlatform(c);
     await configureGenericProject(c);
