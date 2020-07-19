@@ -4,7 +4,7 @@ import { getAppFolder } from '../core/common';
 import Config from '../core/configManager/config';
 import PlatformSetup from '../core/setupManager';
 
-const rnvFastlane = async () => {
+export const rnvFastlane = async () => {
     const args = Config.rnvArguments;
     args.shift(); // we know the first one is fastlane, trash it
 
@@ -25,5 +25,3 @@ const rnvFastlane = async () => {
         cwd: appFolder
     });
 };
-
-export { rnvFastlane };

@@ -22,7 +22,7 @@ import {
     fsWriteFileSync
 } from '../systemManager/fileutils';
 import { listAppConfigsFoldersSync } from '../configManager/configParser';
-import { rnvClean } from '../systemManager/cleaner';
+import { rnvClean } from '../tasks/task.rnv.clean';
 import { RN_CLI_CONFIG_NAME } from '../constants';
 import { configureNodeModules } from './projectParser';
 import { inquirerPrompt } from '../../cli/prompt';

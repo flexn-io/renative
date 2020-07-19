@@ -1,21 +1,8 @@
 /* eslint-disable import/no-cycle */
 import { printTable } from 'console-table-printer';
-import {
-    chalk,
-    logTask,
-    rnvStatus,
-    logToSummary,
-    logAppInfo,
-    logError,
-    logWarning
-} from '../core/systemManager/logger';
-import { createNewProject } from '../core/projectManager/projectGenerator';
-import { applyTemplate, checkIfTemplateInstalled } from '../core/templateManager';
-import { configurePlugins } from '../core/pluginManager';
-import { executePipe } from '../core/projectManager/buildHooks';
-import { rnvSwitch, rnvLink } from '../core/projectManager';
-import { checkCrypto } from '../core/systemManager/crypto';
 
+import { rnvLink } from '../core/tasks/task.rnv.link';
+import { rnvSwitch } from '../core/tasks/task.rnv.switch';
 import { rnvCryptoDecrypt } from '../core/tasks/task.rnv.crypto.decrypt';
 import { rnvCryptoEncrypt } from '../core/tasks/task.rnv.crypto.encrypt';
 import { rnvCryptoInstallCerts } from '../core/tasks/task.rnv.crypto.installCerts';
@@ -42,10 +29,23 @@ import { rnvWorkspaceUpdate } from '../core/tasks/task.rnv.workspace.update';
 import { rnvHooksList } from '../core/tasks/task.rnv.hooks.list';
 import { rnvHooksRun } from '../core/tasks/task.rnv.hooks.run';
 import { rnvHooksPipes } from '../core/tasks/task.rnv.hooks.pipes';
+import { rnvClean } from '../core/tasks/task.rnv.clean';
+import { rnvFastlane } from '../integration-fastlane/task.rnv.fastlane';
 
-
-import { rnvFastlane } from '../integration-fastlane';
-import { rnvClean } from '../core/systemManager/cleaner';
+import {
+    chalk,
+    logTask,
+    rnvStatus,
+    logToSummary,
+    logAppInfo,
+    logError,
+    logWarning
+} from '../core/systemManager/logger';
+import { createNewProject } from '../core/projectManager/projectGenerator';
+import { applyTemplate, checkIfTemplateInstalled } from '../core/templateManager';
+import { configurePlugins } from '../core/pluginManager';
+import { executePipe } from '../core/projectManager/buildHooks';
+import { checkCrypto } from '../core/systemManager/crypto';
 import { inquirerPrompt } from './prompt';
 import {
     rnvRun,

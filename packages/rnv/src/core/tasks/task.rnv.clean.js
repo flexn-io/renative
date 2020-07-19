@@ -3,11 +3,11 @@ import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
 
-import { removeDirs } from './fileutils';
-import { chalk, logTask, logToSummary, logDebug } from './logger';
-import { executeAsync } from './exec';
+import { removeDirs } from '../systemManager/fileutils';
+import { chalk, logTask, logToSummary, logDebug } from '../systemManager/logger';
+import { executeAsync } from '../systemManager/exec';
 
-const rnvClean = async (c, skipQuestionParam = false) => {
+export const rnvClean = async (c, skipQuestionParam = false) => {
     logTask('rnvClean');
     const skipQuestion = c.program.ci ? true : skipQuestionParam;
     const pathsToRemove = [];
@@ -126,5 +126,3 @@ const rnvClean = async (c, skipQuestionParam = false) => {
         );
     }
 };
-
-export { rnvClean };
