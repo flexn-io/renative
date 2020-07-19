@@ -30,13 +30,6 @@ import {
     configurePlugins
 } from '../core/pluginManager';
 import {
-    rnvPlatformEject,
-    rnvPlatformList,
-    rnvPlatformConnect,
-    rnvPlatformConfigure,
-    rnvPlatformSetup
-} from '../core/platformManager';
-import {
     executePipe,
     rnvHooksList,
     rnvHooksRun,
@@ -54,6 +47,12 @@ import { rnvCryptoUpdateProfiles } from '../core/tasks/task.rnv.crypto.updatePro
 import { rnvCryptoInstallProfiles } from '../core/tasks/task.rnv.crypto.installProfiles';
 import { rnvTargetList } from '../core/tasks/task.rnv.target.list';
 import { rnvTargetLaunch } from '../core/tasks/task.rnv.target.launch';
+import { rnvPlatformEject } from '../core/tasks/task.rnv.platform.eject';
+import { rnvPlatformConnect } from '../core/tasks/task.rnv.platform.connect';
+import { rnvPlatformList } from '../core/tasks/task.rnv.platform.list';
+import { rnvPlatformConfigure } from '../core/tasks/task.rnv.platform.configure';
+import { rnvPlatformSetup } from '../core/tasks/task.rnv.platform.setup';
+
 
 import { rnvFastlane } from '../integration-fastlane';
 import { rnvClean } from '../core/systemManager/cleaner';
