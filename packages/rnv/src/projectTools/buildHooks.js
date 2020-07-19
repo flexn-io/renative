@@ -33,7 +33,7 @@ const rnvHooksRun = c => new Promise((resolve, reject) => {
 });
 
 const executePipe = async (c, key) => {
-    logTask('executePipe', `${key}`);
+    logHook('executePipe', `${key}`);
 
     const pipesConfig = c.buildConfig?.pipes;
     if (!pipesConfig || (pipesConfig && pipesConfig.includes(key))) {

@@ -205,6 +205,24 @@ export const logSummary = (header = 'SUMMARY') => {
                 1
             );
         }
+        if (_c.runtime?.target) {
+            str += printIntoBox(
+                `Target (-t): ${_highlightColor(_c.runtime?.target)}`,
+                1
+            );
+        }
+        if (_c.program?.reset) {
+            str += printIntoBox(
+                `Reset Project (-r): ${_highlightColor(!!_c.program?.reset)}`,
+                1
+            );
+        }
+        if (_c.program?.resetHard) {
+            str += printIntoBox(
+                `Reset Project and Assets (-R): ${_highlightColor(!!_c.program?.resetHard)}`,
+                1
+            );
+        }
         if (_c.files.project.config) {
             const defaultProjectConfigs = _c.files.project.config.defaults;
             if (defaultProjectConfigs?.supportedPlatforms) {

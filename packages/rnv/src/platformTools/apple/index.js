@@ -504,13 +504,28 @@ export const buildXcodeProject = async (c) => {
 
     const appFolderName = getAppFolderName(c, platform);
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
-    let sdk = getConfigProp(c, platform, 'sdk');
-    if (!sdk) {
-        if (platform === IOS) sdk = 'iphoneos';
-        if (platform === TVOS) sdk = 'appletvos';
-        if (platform === MACOS) sdk = 'macosx';
+
+    let destinationPlatform = '';
+    switch (c.platform) {
+        case TVOS: {
+            if (c.program.device) {
+                destinationPlatform = 'tvOS';
+            } else {
+                destinationPlatform = 'tvOS Simulator';
+            }
+            break;
+        }
+        case IOS: {
+            if (c.program.device) {
+                destinationPlatform = 'iOS';
+            } else {
+                destinationPlatform = 'iOS Simulator';
+            }
+            break;
+        }
+        default:
+            logError(`platform ${c.platform} not supported`);
     }
-    const sdkArr = [sdk];
 
     const scheme = getConfigProp(c, platform, 'scheme');
     const appPath = getAppFolder(c, platform);
@@ -536,10 +551,6 @@ export const buildXcodeProject = async (c) => {
         p.push('-scheme');
         p.push(scheme);
     }
-    if (!ps.includes('-sdk')) {
-        p.push('-sdk');
-        p.push(...sdkArr);
-    }
     if (!ps.includes('-configuration')) {
         p.push('-configuration');
         p.push(runScheme);
@@ -548,13 +559,17 @@ export const buildXcodeProject = async (c) => {
         p.push('-derivedDataPath');
         p.push(buildPath);
     }
+    if (!ps.includes('-destination')) {
+        p.push('-destination');
+        p.push(`platform=${destinationPlatform},name=${c.runtime.target}`);
+    }
 
     p.push('build');
 
     if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) { p.push('-allowProvisioningUpdates'); }
     if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
 
-    logTask('buildXcodeProject: STARTING xcodebuild BUILD...');
+    logTask('buildXcodeProject', 'STARTING xcodebuild BUILD...');
 
     if (c.buildConfig.platforms[platform].runScheme === 'Release') {
         await executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`);
@@ -629,7 +644,7 @@ const archiveXcodeProject = (c, platform) => {
     if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
     // if (sdk === 'iphonesimulator') p.push('ONLY_ACTIVE_ARCH=NO', "-destination='name=iPhone 7,OS=10.2'");
 
-    logTask('archiveXcodeProject: STARTING xcodebuild ARCHIVE...');
+    logTask('archiveXcodeProject', 'STARTING xcodebuild ARCHIVE...');
 
 
     const args = ps !== '' ? [...composeXcodeArgsFromCLI(ps), ...p] : p;
@@ -681,7 +696,7 @@ const exportXcodeProject = async (c) => {
 
     logDebug('running', p);
 
-    logTask('exportXcodeProject: STARTING xcodebuild EXPORT...');
+    logTask('exportXcodeProject', 'STARTING xcodebuild EXPORT...');
 
     return executeAsync(c, `xcodebuild ${p.join(' ')}`).then(() => {
         logSuccess(`Your IPA is located in ${chalk().white(exportPath)} .`);

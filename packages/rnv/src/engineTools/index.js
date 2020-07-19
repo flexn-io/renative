@@ -94,8 +94,11 @@ const _executePipe = async (c, task, phase) => {
 };
 
 export const executeTask = async (c, task, parentTask, originTask) => {
-    if ((!c.program.only && !parentTask) || !parentTask) {
-        logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask}`);
+    logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask}`);
+    if (c.program.only && !!parentTask) {
+        logTask('executeTask', `task:${task} SKIPPING...`);
+    } else {
+        logTask('executeTask', `task:${task} EXECUTING...`);
         await _executePipe(c, task, 'before');
         await getEngineRunner(c).executeTask(c, task, parentTask, originTask);
         await _executePipe(c, task, 'after');
