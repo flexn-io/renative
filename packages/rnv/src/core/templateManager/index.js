@@ -18,7 +18,6 @@ import {
 } from '../systemManager/fileutils';
 import {
     chalk,
-    logToSummary,
     logError,
     logInfo,
     logWarning,
@@ -35,28 +34,6 @@ import {
     parseRenativeConfigs
 } from '../configManager/configParser';
 import { doResolve } from '../resolve';
-
-// let templateName = c.buildConfig.currentTemplate;
-// if (!templateName) {
-//     templateName = 'renative-template-hello-world';
-//     logWarning(`You're missing template name in your ${chalk().white(c.paths.project.config)}. ReNative will add default ${chalk().white(templateName)} for you`);
-//     c.buildConfig.defaults.template = templateName;
-//     fs.writeFileSync(c.paths.project.config, JSON.stringify(c.files.project.config, null, 2));
-// }
-
-export const addTemplate = (c, template) => {
-    logTask('addTemplate');
-
-    c.files.project.config.templates = c.files.project.config.templates || {};
-
-    if (!c.files.project.config.templates[template]) {
-        c.files.project.config.templates[template] = {
-            version: 'latest'
-        };
-    }
-
-    _writeObjectSync(c, c.paths.project.config, c.files.project.config);
-};
 
 export const checkIfTemplateInstalled = c => new Promise((resolve) => {
     logTask('checkIfTemplateInstalled');
@@ -268,39 +245,6 @@ const _configureRenativeConfig = async (c) => {
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
     logDebug('configureProject:check renative.json');
 
-    //     const missingPlugins = {};
-    //     const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
-    //     if (supPlats) {
-    //         supPlats.forEach((pk) => {
-    //             const selectedEngine = getEngineByPlatform(c, pk);
-    //             if (selectedEngine?.plugins) {
-    //                 const ePlugins = Object.keys(selectedEngine.plugins);
-    //
-    //                 if (ePlugins?.length) {
-    //                     ePlugins.forEach((pluginKey) => {
-    //                         if (!c.buildConfig?.plugins?.[pluginKey]) {
-    //                             missingPlugins[pluginKey] = { key: pluginKey, plugin: selectedEngine.plugins[pluginKey], engine: selectedEngine.id };
-    //                         }
-    //                     });
-    //                 }
-    //             }
-    //         });
-    //     }
-    //
-    //     const missingPluginsArr = Object.values(missingPlugins);
-    //     const involvedEngines = {};
-    //     if (missingPluginsArr.length) {
-    //         c.runtime.requiresForcedTemplateApply = true;
-    //
-    //         missingPluginsArr.forEach(({ key, plugin, engine }) => {
-    //             templateConfig.plugins[key] = plugin;
-    //             involvedEngines[engine] = true;
-    //         });
-    //
-    //         logInfo(`Adding following plugins required by ${chalk().white(Object.keys(involvedEngines).join(', '))} engines:
-    // ${chalk().white(missingPluginsArr.map(v => v.key).join(', '))}`);
-    //     }
-
     if (!c.runtime.isWrapper) {
         if (
             c.runtime.selectedTemplate
@@ -472,27 +416,6 @@ export const getInstalledTemplateOptions = (c) => {
     return [];
 };
 
-export const rnvTemplateList = c => new Promise((resolve) => {
-    logTask('rnvTemplateList');
-    const opts = getTemplateOptions(c);
-    logToSummary(`Templates:\n\n${opts.asString}`);
-    resolve();
-});
-
-export const rnvTemplateAdd = async (c) => {
-    logTask('rnvTemplateAdd');
-
-    const opts = getTemplateOptions(c);
-
-    const { template } = await inquirer.prompt({
-        type: 'list',
-        message: 'Pick which template to install',
-        name: 'template',
-        choices: opts.keysAsArray
-    });
-
-    addTemplate(c, template);
-};
 
 export const applyTemplate = async (c, selectedTemplate) => {
     logTask(
@@ -522,22 +445,4 @@ export const applyTemplate = async (c, selectedTemplate) => {
     await _configureProjectConfig(c);
     await _configureRenativeConfig(c);
     await configureEntryPoints(c);
-};
-
-export const rnvTemplateApply = async (c) => {
-    logTask(`rnvTemplateApply:${c.program.template}`);
-
-    if (c.program.template) {
-        return applyTemplate(c, c.program.template);
-    }
-    const opts = getInstalledTemplateOptions(c);
-
-    const { template } = await inquirer.prompt({
-        type: 'list',
-        message: 'Pick which template to install',
-        name: 'template',
-        choices: opts.keysAsArray
-    });
-
-    applyTemplate(c, template);
 };

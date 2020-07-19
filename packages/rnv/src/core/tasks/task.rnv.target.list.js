@@ -26,10 +26,6 @@ export const rnvTargetList = async (c) => {
 
     const { platform } = c;
 
-    // const throwError = (err) => {
-    //     throw err;
-    // };
-
     await checkSdk(c);
 
     switch (platform) {

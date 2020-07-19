@@ -17,9 +17,6 @@ import {
 } from '../core/projectManager/workspace';
 import { createNewProject } from '../core/projectManager/projectGenerator';
 import {
-    rnvTemplateAdd,
-    rnvTemplateApply,
-    rnvTemplateList,
     applyTemplate,
     checkIfTemplateInstalled
 } from '../core/templateManager';
@@ -52,7 +49,9 @@ import { rnvPlatformConnect } from '../core/tasks/task.rnv.platform.connect';
 import { rnvPlatformList } from '../core/tasks/task.rnv.platform.list';
 import { rnvPlatformConfigure } from '../core/tasks/task.rnv.platform.configure';
 import { rnvPlatformSetup } from '../core/tasks/task.rnv.platform.setup';
-
+import { rnvTemplateAdd } from '../core/tasks/task.rnv.template.add';
+import { rnvTemplateApply } from '../core/tasks/task.rnv.template.apply';
+import { rnvTemplateList } from '../core/tasks/task.rnv.template.list';
 
 import { rnvFastlane } from '../integration-fastlane';
 import { rnvClean } from '../core/systemManager/cleaner';
