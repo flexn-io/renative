@@ -1,5 +1,5 @@
-import { createRnvConfig, generateBuildConfig } from '../../src/configTools/configParser';
-import { getAppVersionCode } from '../../src/common';
+import { createRnvConfig, generateBuildConfig } from '../../src/core/configManager/configParser';
+import { getAppVersionCode } from '../../src/core/common';
 
 let c;
 

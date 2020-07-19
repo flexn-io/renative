@@ -8,11 +8,11 @@ class Docker {
     }
 
     async buildImage() {
-        const { getConfigProp } = require(path.join(this.rnvPath, 'dist/common'));
-        const { logTask, logInfo } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
-        const config = require(path.join(this.rnvPath, 'dist/config')).default;
-        const { executeAsync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
-        const { copyFolderRecursiveSync, cleanFolder, writeCleanFile } = require(path.join(this.rnvPath, 'dist/systemTools/fileutils'));
+        const { getConfigProp } = require(path.join(this.rnvPath, 'dist/core/common'));
+        const { logTask, logInfo } = require(path.join(this.rnvPath, 'dist/core/systemManager/logger'));
+        const config = require(path.join(this.rnvPath, 'dist/core/config')).default;
+        const { executeAsync } = require(path.join(this.rnvPath, 'dist/core/systemManager/exec'));
+        const { copyFolderRecursiveSync, cleanFolder, writeCleanFile } = require(path.join(this.rnvPath, 'dist/core/systemManager/fileutils'));
 
         const { paths, runtime, platform, files, program } = config.getConfig();
         const projectBuilds = paths.project.builds.dir;
@@ -65,11 +65,11 @@ class Docker {
     }
 
     async saveImage() {
-        const { getConfigProp } = require(path.join(this.rnvPath, 'dist/common'));
-        const config = require(path.join(this.rnvPath, 'dist/config')).default;
+        const { getConfigProp } = require(path.join(this.rnvPath, 'dist/core/common'));
+        const config = require(path.join(this.rnvPath, 'dist/core/config')).default;
         const { runtime, files, paths, platform, program: { scheme = 'debug' } } = config.getConfig();
-        const { logTask, logInfo, logSuccess } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
-        const { executeAsync, commandExistsSync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
+        const { logTask, logInfo, logSuccess } = require(path.join(this.rnvPath, 'dist/core/systemManager/logger'));
+        const { executeAsync, commandExistsSync } = require(path.join(this.rnvPath, 'dist/core/systemManager/exec'));
         const imageName = runtime.appId.toLowerCase();
         const appVersion = files.project.package.version;
 
@@ -102,10 +102,10 @@ class Docker {
 
     async doDeploy() {
     // rnv paths
-        const config = require(path.join(this.rnvPath, 'dist/config')).default;
-        const { inquirerPrompt } = require(path.join(this.rnvPath, 'dist/systemTools/prompt'));
-        const { logInfo, logTask } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
-        const { executeAsync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
+        const config = require(path.join(this.rnvPath, 'dist/core/config')).default;
+        const { inquirerPrompt } = require(path.join(this.rnvPath, 'dist/core/systemManager/prompt'));
+        const { logInfo, logTask } = require(path.join(this.rnvPath, 'dist/core/systemManager/logger'));
+        const { executeAsync } = require(path.join(this.rnvPath, 'dist/core/systemManager/exec'));
 
         const { runtime, files } = config.getConfig();
 

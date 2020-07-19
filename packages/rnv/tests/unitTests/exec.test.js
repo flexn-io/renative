@@ -1,4 +1,4 @@
-import { executeAsync, commandExistsSync, commandExists, executeTelnet, parseErrorMessage } from '../../src/systemTools/exec';
+import { executeAsync, commandExistsSync, commandExists, executeTelnet, parseErrorMessage } from '../../src/core/systemManager/exec';
 
 describe('Testing exec functions', () => {
     it('should execute command', async () => {

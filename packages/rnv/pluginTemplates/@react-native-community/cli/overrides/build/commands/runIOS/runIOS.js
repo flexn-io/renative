@@ -45,7 +45,7 @@ const _errors = require('../../tools/errors');
 
 const _logger = _interopRequireDefault(require('../../tools/logger'));
 
-const _commandExistsSync = require('rnv/dist/systemTools/exec').commandExistsSync;
+const _commandExistsSync = require('rnv/dist/systemManager/exec').commandExistsSync;
 
 const _shell = require('shelljs');
 

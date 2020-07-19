@@ -1,4 +1,4 @@
-import { createRnvConfig, generateBuildConfig } from '../../src/configTools/configParser';
+import { createRnvConfig, generateBuildConfig } from '../../src/core/configManager/configParser';
 import cli from '../../src/cli';
 
 const itShouldResolve = (cmd) => {

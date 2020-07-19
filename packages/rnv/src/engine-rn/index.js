@@ -78,7 +78,7 @@ const _configureMetroConfigs = async (c, platform) => {
     if (!fs.existsSync(dest)) {
         writeFileSync(
             dest,
-            `const { EXTENSIONS } = require('rnv/dist/constants');
+            `const { Constants: { EXTENSIONS } } = require('rnv');
 const config = require('../metro.config');
 
 config.resolver.sourceExts = EXTENSIONS.${platform};
