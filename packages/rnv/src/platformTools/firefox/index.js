@@ -53,8 +53,10 @@ const launchKaiOSSimulator = c => new Promise((resolve, reject) => {
     });
 });
 
-const configureKaiOSProject = async (c, platform) => {
+const configureKaiOSProject = async (c) => {
     logTask('configureKaiOSProject');
+
+    const { platform } = c;
 
     c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
 

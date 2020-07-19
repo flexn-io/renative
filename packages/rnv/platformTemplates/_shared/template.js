@@ -23,7 +23,7 @@ const constructMetaTags = tags => Object.keys(tags).map(tag => `<meta name="${ta
 const htmlTemp = (options) => {
     const config = merge(DEFAULT_CONFIG, options);
     const {
-        docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment, linkTags
+        docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment, linkTags, debugPort
     } = config;
 
     // Moved to dynamic config
@@ -39,7 +39,7 @@ const htmlTemp = (options) => {
     let remoteDebugScript;
 
     if (debug === 'true' && debugIp) {
-        remoteDebugScript = `<script src="http://${debugIp}:8080/target/target-script-min.js#anonymous"></script>`;
+        remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target/target-script-min.js#${platform}"></script>`;
     }
 
     let webosScripts = '';

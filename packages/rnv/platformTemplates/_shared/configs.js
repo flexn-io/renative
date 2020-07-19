@@ -84,6 +84,7 @@ function generateConfig(config) {
             ...config,
             debug: process.env.DEBUG,
             debugIp: process.env.DEBUG_IP,
+            debugPort: 8079,
             platform: process.env.PLATFORM,
             environment: config.environment,
         },

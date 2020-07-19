@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.31.0-alpha.9",
+            "version": "0.31.0-alpha.11",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -2534,7 +2534,7 @@
             }
         },
         "@noriginmedia/react-spatial-navigation": {
-            "version": "2.12.1"
+            "version": "2.12.3"
         },
         "react-native-view-shot": {
             "version": "3.1.2",
@@ -2570,6 +2570,17 @@
                         "SplashScreen.show(this)"
                     ]
                 }
+            },
+            "androidtv": {
+                "package": "org.devio.rn.splashscreen.SplashScreenReactPackage",
+                "mainActivity": {
+                    "imports": [
+                        "org.devio.rn.splashscreen.SplashScreen"
+                    ],
+                    "createMethods": [
+                        "SplashScreen.show(this)"
+                    ]
+                }
             }
         },
         "tipsi-stripe": {
@@ -2585,6 +2596,15 @@
                 "afterEvaluate": [
                     "com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true"
                 ]
+            }
+        },
+        "react-native-iap": {
+            "version": "4.5.0",
+            "ios": {
+                "podName": "RNIap"
+            },
+            "android": {
+                "package": "com.dooboolab.RNIap.RNIapPackage"
             }
         },
         "next": {

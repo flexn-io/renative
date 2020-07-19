@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.31.0-alpha.9",
+    "version": "0.31.0-alpha.11",
     "currentRelease": "0.30",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV` and `Chromecast` platforms",
     "keywords": [
@@ -59,11 +59,12 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "bootstrap": "yarn run link && npx lerna bootstrap && yarn build",
+        "bootstrap": "yarn run link:rnv && yarn run link:rnv-builder && npx lerna bootstrap && yarn build",
         "bootstrap-clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run --parallel --concurrency 1 build",
         "build:clean": "lerna run --parallel --concurrency 1 build:clean",
-        "link": "cd packages/rnv && (yarn unlink || true) && yarn link",
+        "link:rnv": "cd packages/rnv && (yarn unlink || true) && yarn link",
+        "link:rnv-builder": "cd packages/rnv-builder && (yarn unlink || true) && yarn link",
         "postinstall": "lerna link --force-local && npx jetify",
         "lint": "npx eslint ./packages/rnv",
         "publish": "npm run pre-publish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank && npm run publish:sink",

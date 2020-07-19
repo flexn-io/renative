@@ -41,8 +41,10 @@ import {
     writeCleanFile
 } from '../../systemTools/fileutils';
 
-const configureElectronProject = async (c, platform) => {
-    logTask(`configureElectronProject:${platform}`);
+const configureElectronProject = async (c) => {
+    logTask('configureElectronProject');
+
+    const { platform } = c;
 
     c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
 

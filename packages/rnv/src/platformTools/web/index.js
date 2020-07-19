@@ -17,7 +17,8 @@ import {
     sanitizeColor,
     confirmActiveBundler,
     getAppVersion,
-    getTimestampPathsConfig
+    getTimestampPathsConfig,
+    waitForUrl
 } from '../../common';
 import { isPlatformActive } from '..';
 import {
@@ -27,9 +28,9 @@ import {
     logDebug,
     logSuccess,
     logWarning,
-    logRaw
+    logRaw,
+    logError
 } from '../../systemTools/logger';
-import { WEB } from '../../constants';
 import {
     copyBuildsFolder,
     copyAssetsFolder
@@ -44,6 +45,7 @@ import { getValidLocalhost } from '../../utils';
 import { doResolvePath } from '../../resolve';
 
 const _generateWebpackConfigs = (c, platform) => {
+    logTask('_generateWebpackConfigs');
     const appFolder = getAppFolder(c, platform);
     const templateFolder = getAppTemplateFolder(c, platform);
 
@@ -186,8 +188,10 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const configureWebProject = async (c, platform) => {
+const configureWebProject = async (c) => {
     logTask('configureWebProject');
+
+    const { platform } = c;
 
     c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}/public`;
 
@@ -233,23 +237,11 @@ const runWeb = async (c, platform, port) => {
 
     let devServerHost = c.runtime.localhost;
 
-    if (platform === WEB) {
-        const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-        devServerHost = getValidLocalhost(
-            extendConfig.devServerHost,
-            c.runtime.localhost
-        );
-
-        // if (extendConfig.customScripts) {
-        //     const timestampBuildFiles = getConfigProp(c, c.platform, 'timestampBuildFiles', []);
-        //     if (timestampBuildFiles.length) {
-        //         const sanitisedCustomScripts = [];
-        //         extendConfig.customScripts.forEach((customScript) => {
-        //             console.log('ABBAAB', customScript, timestampBuildFiles.includes(customScript));
-        //         });
-        //     }
-        // }
-    }
+    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
+    devServerHost = getValidLocalhost(
+        extendConfig.devServerHost,
+        c.runtime.localhost
+    );
 
     const isPortActive = await checkPortInUse(c, platform, port);
 
@@ -287,7 +279,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
-const runWebDevServer = (c, platform, port) => new Promise((resolve) => {
+const runWebDevServer = async (c, platform, port) => {
     logTask('runWebDevServer');
     const { debug, debugIp } = c.program;
 
@@ -296,21 +288,36 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve) => {
     const wpConfig = path.join(appFolder, 'webpack.config.js');
 
     let debugVariables = '';
-
+    let lineBreaks = '\n\n\n';
     if (debug) {
+        const resolvedDebugIp = debugIp
+                || ip.address();
         logInfo(
-            `Starting a remote debugger build with ip ${debugIp
-                    || ip.address()}. If this IP is not correct, you can always override it with --debugIp`
+            `Starting a remote debugger build with ip ${
+                resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
         );
-        debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
+        debugVariables += `DEBUG=true DEBUG_IP=${resolvedDebugIp}`;
+        lineBreaks = '\n';
+        const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:8079/client/#${platform}`);
+
+
+        const command = 'weinre --boundHost -all- --httpPort 8079';
+        try {
+            executeAsync(c, command, { stdio: 'inherit', silent: true });
+            await waitForUrl(`http://${resolvedDebugIp}:8079`);
+            logRaw(`
+
+Debugger running at: ${debugUrl}`);
+            open(`http://${resolvedDebugIp}:8079/client/#${platform}`);
+        } catch (e) {
+            logError(e);
+        }
     }
 
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'webpackConfig', {}).devServerHost, c.runtime.localhost);
 
     const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
-    logRaw(`
-
-Dev server running at: ${url}
+    logRaw(`${lineBreaks}Dev server running at: ${url}
 
 `);
 
@@ -321,16 +328,15 @@ Dev server running at: ${url}
     }  --inline --hot --colors --content-base ${
         wpPublic
     } --history-api-fallback --port ${port} --mode=development`;
-    executeAsync(c, command, { stdio: 'inherit', silent: true })
-        .then(() => {
-            logDebug('runWebDevServer: running');
-            resolve();
-        })
-        .catch((e) => {
-            logDebug(e);
-            resolve();
-        });
-});
+    try {
+        await executeAsync(c, command, { stdio: 'inherit', silent: true });
+
+        logDebug('runWebDevServer: running');
+    } catch (e) {
+        logDebug(e);
+        return true;
+    }
+};
 
 const deployWeb = (c, platform) => {
     logTask(`deployWeb:${platform}`);

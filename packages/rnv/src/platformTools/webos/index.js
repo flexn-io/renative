@@ -293,8 +293,10 @@ const runWebOS = async (c) => {
     }
 };
 
-const buildWebOSProject = async (c, platform) => {
-    logTask(`buildWebOSProject:${platform}`);
+const buildWebOSProject = async (c) => {
+    logTask('buildWebOSProject');
+
+    const { platform } = c;
 
     await buildWeb(c, platform);
 
