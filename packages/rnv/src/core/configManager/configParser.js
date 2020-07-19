@@ -18,7 +18,7 @@ import {
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
-import { rnvTemplateApply } from '../templateManager';
+import { rnvTemplateApply } from '../tasks/task.rnv.template.apply';
 
 import {
     copyFileSync,

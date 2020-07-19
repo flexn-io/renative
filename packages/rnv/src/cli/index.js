@@ -9,17 +9,8 @@ import {
     logError,
     logWarning
 } from '../core/systemManager/logger';
-import {
-    rnvWorkspaceList,
-    rnvWorkspaceAdd,
-    rnvWorkspaceConnect,
-    rnvWorkspaceUpdate
-} from '../core/projectManager/workspace';
 import { createNewProject } from '../core/projectManager/projectGenerator';
-import {
-    applyTemplate,
-    checkIfTemplateInstalled
-} from '../core/templateManager';
+import { applyTemplate, checkIfTemplateInstalled } from '../core/templateManager';
 import { configurePlugins } from '../core/pluginManager';
 import {
     executePipe,
@@ -50,6 +41,10 @@ import { rnvTemplateList } from '../core/tasks/task.rnv.template.list';
 import { rnvPluginAdd } from '../core/tasks/task.rnv.plugin.add';
 import { rnvPluginList } from '../core/tasks/task.rnv.plugin.list';
 import { rnvPluginUpdate } from '../core/tasks/task.rnv.plugin.update';
+import { rnvWorkspaceList } from '../core/tasks/task.rnv.workspace.list';
+import { rnvWorkspaceAdd } from '../core/tasks/task.rnv.workspace.add';
+import { rnvWorkspaceConnect } from '../core/tasks/task.rnv.workspace.connect';
+import { rnvWorkspaceUpdate } from '../core/tasks/task.rnv.workspace.update';
 
 import { rnvFastlane } from '../integration-fastlane';
 import { rnvClean } from '../core/systemManager/cleaner';
