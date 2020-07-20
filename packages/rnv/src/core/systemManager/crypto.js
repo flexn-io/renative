@@ -12,7 +12,7 @@ import {
     fsExistsSync,
     fsReadFileSync
 } from './fileutils';
-import { taskRnvCryptoDecrypt } from '../tasks/task.rnv.crypto.decrypt';
+import { taskRnvCryptoDecrypt } from '../../engine-core/task.rnv.crypto.decrypt';
 
 export const getEnvExportCmd = (envVar, key) => {
     if (isSystemWin) {

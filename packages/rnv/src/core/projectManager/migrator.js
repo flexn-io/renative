@@ -23,7 +23,7 @@ import {
     fsReadFileSync
 } from '../systemManager/fileutils';
 import { listAppConfigsFoldersSync } from '../configManager/configParser';
-import { taskRnvClean } from '../tasks/task.rnv.clean';
+import { taskRnvClean } from '../../engine-core/task.rnv.clean';
 import { RN_CLI_CONFIG_NAME } from '../constants';
 import { configureNodeModules } from './projectParser';
 import { inquirerPrompt } from '../../cli/prompt';
