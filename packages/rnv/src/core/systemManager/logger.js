@@ -441,8 +441,6 @@ export const printBoxStart = (str, str2) => {
     return output;
 };
 
-export const rnvStatus = async () => Promise.resolve();
-
 export const printBoxEnd = () => _defaultColor(
     '└──────────────────────────────────────────────────────────────────────────────┘'
 );

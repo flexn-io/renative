@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import { printTable } from 'console-table-printer';
 
 import { rnvLink } from '../core/tasks/task.rnv.link';
 import { rnvSwitch } from '../core/tasks/task.rnv.switch';
@@ -33,7 +32,10 @@ import { rnvClean } from '../core/tasks/task.rnv.clean';
 import { rnvFastlane } from '../integration-fastlane/task.rnv.fastlane';
 import { rnvPublish } from '../core/tasks/task.rnv.publish';
 import { rnvPkg } from '../core/tasks/task.rnv.pkg';
-
+import { rnvStatus } from '../core/tasks/task.rnv.status';
+import { rnvConfig } from '../core/tasks/task.rnv.config';
+import { rnvHelp } from '../core/tasks/task.rnv.help';
+import { rnvNew } from '../core/tasks/task.rnv.new';
 
 import {
     rnvRun,
@@ -49,13 +51,10 @@ import {
 import {
     chalk,
     logTask,
-    rnvStatus,
     logToSummary,
     logAppInfo,
-    logError,
-    logWarning
+    logError
 } from '../core/systemManager/logger';
-import { createNewProject } from '../core/projectManager/projectGenerator';
 import { applyTemplate, checkIfTemplateInstalled } from '../core/templateManager';
 import { configurePlugins } from '../core/pluginManager';
 import { executePipe } from '../core/projectManager/buildHooks';
@@ -78,9 +77,7 @@ import {
     MACOS,
     WINDOWS,
     TIZEN_WATCH,
-    configSchema
 } from '../core/constants';
-import Config from '../core/configManager/config';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
 import {
     parseRenativeConfigs,
@@ -94,78 +91,26 @@ import {
     checkAndCreateProjectPackage,
 } from '../core/projectManager/projectParser';
 
+export const NO_OP_COMMANDS = [
+    'fix',
+    'clean',
+    'tool',
+    'status',
+    'log',
+    'new',
+    'target',
+    'help',
+    'config'
+];
+export const SKIP_APP_CONFIG_CHECK = ['crypto', 'config'];
 
-export const rnvHelp = () => {
-    let cmdsString = '';
-    Object.keys(COMMANDS).forEach((key) => {
-        cmdsString += `${key}, `;
-    });
-
-    logToSummary(`
-${chalk().bold.white('COMMANDS:')}
-
-${cmdsString}
-
-${chalk().bold.white('OPTIONS:')}
-
-'-i, --info', 'Show full debug info'
-'-u, --update', 'Force update dependencies (iOS only)'
-'-p, --platform <value>', 'Select specific platform' // <ios|android|web|...>
-'-c, --appConfigID <value>', 'Select specific appConfigID' // <ios|android|web|...>
-'-t, --target <value>', 'Select specific simulator' // <.....>
-'-d, --device [value]', 'Select connected device'
-'-s, --scheme <value>', 'Select build scheme' // <Debug | Release>
-'-f, --filter <value>', 'Filter Value'
-'-l, --list', 'Return list of items related to command' // <alpha|beta|prod>
-'-r, --reset', 'Also perform reset'
-'-b, --blueprint', 'Blueprint for targets'
-'-h, --host <value>', 'Custom Host IP'
-'-x, --exeMethod <value>', 'Executable method in buildHooks'
-'-P, --port <value>', 'Custom Port'
-'-H, --help', 'Help'
-'-D, --debug', 'enable remote debugger'
-'-G, --global', 'Flag for setting a config value for all RNV projects'
-'--hosted', 'Run in a hosted environment (skip bundleAssets)'
-'--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
-`);
-};
-
-const _rnvConfigHandler = () => {
-    const [, key, value] = Config.rnvArguments; // first arg is config so it's useless
-    if (key === 'list') {
-        const rows = [];
-        Object.keys(configSchema).forEach(k => rows.push(Config.listConfigValue(k)));
-
-        printTable([].concat(...rows));
-        return true;
-    }
-
-    // validate args
-    if (!key) {
-        // @todo add inquirer with list of options
-        logWarning('Please specify a config');
-        return true;
-    }
-    if (!configSchema[key]) {
-        logWarning(`Unknown config ${key}`);
-        return true;
-    }
-
-    if (!value) {
-        // list the value
-        printTable(Config.listConfigValue(key));
-    } else if (Config.setConfigValue(key, value)) { printTable(Config.listConfigValue(key)); }
-
-    return true;
-};
-
-const COMMANDS = {
+const _generateCommands = () => ({
     start: {
         fn: rnvStart,
         platforms: SUPPORTED_PLATFORMS
     },
     config: {
-        fn: _rnvConfigHandler,
+        fn: rnvConfig,
         desc: 'Edit or display RNV configs'
     },
     run: {
@@ -205,7 +150,7 @@ const COMMANDS = {
         fn: rnvLog
     },
     new: {
-        fn: createNewProject,
+        fn: rnvNew,
         desc: 'Creates new project',
         params: ['mono', 'ci']
     },
@@ -285,7 +230,7 @@ const COMMANDS = {
     },
     hooks: {
         desc:
-            'Manages project based build hooks. This allows you to extend functionality of RNV CLI',
+              'Manages project based build hooks. This allows you to extend functionality of RNV CLI',
         subCommands: {
             run: {
                 fn: rnvHooksRun
@@ -304,7 +249,7 @@ const COMMANDS = {
     },
     clean: {
         desc:
-            'Automatically removes all node_modules and lock in your project and its dependencies',
+              'Automatically removes all node_modules and lock in your project and its dependencies',
         fn: rnvClean
     },
     template: {
@@ -323,7 +268,7 @@ const COMMANDS = {
     },
     crypto: {
         desc:
-            'Utility to manage encrytped files in your project, provisioning profiles, kestores and other sensitive information',
+              'Utility to manage encrytped files in your project, provisioning profiles, kestores and other sensitive information',
         subCommands: {
             encrypt: {
                 fn: rnvCryptoEncrypt
@@ -369,33 +314,21 @@ const COMMANDS = {
     },
     fastlane: {
         desc:
-            'Run fastlane commands on currectly active app/platform directly via rnv command',
+              'Run fastlane commands on currectly active app/platform directly via rnv command',
         platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
         fn: rnvFastlane
     },
     publish: {
         desc:
-            'Provides help deploying a new version, like tagging a commit, pushing it, etc',
+              'Provides help deploying a new version, like tagging a commit, pushing it, etc',
         fn: rnvPublish
     },
     pkg: {
         desc:
-            'Provides help deploying a new version, like tagging a commit, pushing it, etc',
+              'Provides help deploying a new version, like tagging a commit, pushing it, etc',
         fn: rnvPkg
     }
-};
-export const NO_OP_COMMANDS = [
-    'fix',
-    'clean',
-    'tool',
-    'status',
-    'log',
-    'new',
-    'target',
-    'help',
-    'config'
-];
-export const SKIP_APP_CONFIG_CHECK = ['crypto', 'config'];
+});
 
 const _handleUnknownPlatform = async (c, platforms) => {
     logTask('_handleUnknownPlatform');
@@ -418,7 +351,7 @@ const _handleUnknownPlatform = async (c, platforms) => {
 // ##########################################
 
 let _builderStarted = false;
-export const _startBuilder = async (c) => {
+const _startBuilder = async (c) => {
     logTask('_startBuilder', `isActive:${!!_builderStarted}`);
 
     if (_builderStarted) return;
@@ -496,7 +429,7 @@ More info at ${chalk().grey(`https://renative.org/docs/rnv-${c.command}`)}
 
 const _handleUnknownSubCommand = async (c) => {
     logTask('_handleUnknownSubCommand');
-    const cmds = COMMANDS[c.command]?.subCommands;
+    const cmds = c.COMMANDS[c.command]?.subCommands;
 
     const { subCommand } = await inquirerPrompt({
         type: 'list',
@@ -522,7 +455,7 @@ const _handleUnknownCommand = async (c) => {
         name: 'command',
         message: 'Pick a command',
         pageSize: 7,
-        choices: Object.keys(COMMANDS).sort(),
+        choices: Object.keys(c.COMMANDS).sort(),
         logMessage: `cli: Command ${chalk().bold(c.command)} not supported!`
     });
     c.command = command;
@@ -568,8 +501,9 @@ export const _spawnCommand = (c, overrideParams) => {
 // ##########################################
 
 const run = async (c, spawnC, skipStartBuilder) => {
+    c.COMMANDS = _generateCommands();
     const currC = c;
-    const cmd = COMMANDS[currC.command];
+    const cmd = c.COMMANDS[currC.command];
     const cmdFn = cmd?.fn;
     const subCmd = cmd?.subCommands?.[currC.subCommand];
     const subCmdFn = subCmd?.fn;

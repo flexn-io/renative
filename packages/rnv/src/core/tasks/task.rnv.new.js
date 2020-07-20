@@ -21,7 +21,7 @@ import {
     logDebug,
     logWarning
 } from '../systemManager/logger';
-import { getWorkspaceOptions } from './workspace';
+import { getWorkspaceOptions } from '../projectManager/workspace';
 import { parseRenativeConfigs } from '../configManager/configParser';
 import Analytics from '../systemManager/analytics';
 
@@ -177,8 +177,9 @@ const _prepareProjectOverview = (c, data) => {
     data.confirmString = str;
 };
 
-export const createNewProject = async (c) => {
-    logTask('createNewProject');
+
+export const rnvNew = async (c) => {
+    logTask('rnvNew');
     const { args } = c.program;
 
     let data = {
