@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-// @todo fix cycle dep
 import path from 'path';
 import fs from 'fs';
 import { doResolve } from '../resolve';

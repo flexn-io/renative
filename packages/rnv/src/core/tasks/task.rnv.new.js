@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-// @todo fix cycle dep
 import path from 'path';
 import inquirer from 'inquirer';
 import semver from 'semver';

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
@@ -125,4 +124,13 @@ export const rnvClean = async (c, skipQuestionParam = false) => {
             'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*'
         );
     }
+};
+
+export default {
+    description: 'Automatically removes all node_modules and lock in your project and its dependencies',
+    fn: rnvClean,
+    task: 'clean',
+    subTask: null,
+    params: [],
+    platforms: [],
 };

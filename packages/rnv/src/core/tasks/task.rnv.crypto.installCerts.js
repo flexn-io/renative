@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import {
     logWarning,
     logError,

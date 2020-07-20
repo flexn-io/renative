@@ -15,7 +15,10 @@ import { runWebNext, buildWebNext, exportWebNext, deployWebNext, configureNextIf
 import Config from '../core/configManager/config';
 import { executeTask as _executeTask } from '../core/engineManager';
 
+import { taskRnvRun } from './task.rnv.run';
+
 const TASKS = {};
+TASKS[TASK_RUN] = taskRnvRun;
 
 export const _taskConfigure = async (c, parentTask, originTask) => {
     logTask('_taskConfigure', `parent:${parentTask} origin:${originTask}`);
@@ -64,26 +67,6 @@ export const _taskStart = async (c, parentTask, originTask) => {
     }
 };
 TASKS[TASK_START] = _taskStart;
-
-const _taskRun = async (c, parentTask, originTask) => {
-    const { platform } = c;
-    const { port } = c.runtime;
-    const { target } = c.runtime;
-    const { hosted } = c.program;
-    logTask('_taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
-
-    await _executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
-
-    switch (platform) {
-        case WEB:
-        case CHROMECAST:
-            c.runtime.shouldOpenBrowser = true;
-            return runWebNext(c, platform, port, true);
-        default:
-            return logErrorPlatform(c);
-    }
-};
-TASKS[TASK_RUN] = _taskRun;
 
 const _taskPackage = async (c, parentTask, originTask) => {
     logTask('_taskPackage', `parent:${parentTask}`);

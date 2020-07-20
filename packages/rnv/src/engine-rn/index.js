@@ -40,21 +40,15 @@ import { executeAsync } from '../core/systemManager/exec';
 import { isBundlerActive, waitForBundler } from './bundler';
 import { mkdirSync, writeFileSync, copyFileSync } from '../core/systemManager/fileutils';
 import { executeTask as _executeTask } from '../core/engineManager';
+import { taskRnvRun } from './task.rnv.run';
 
 const TASKS = {};
+TASKS[TASK_RUN] = taskRnvRun;
 
 let keepRNVRunning = false;
 
-const waitForBundlerIfRequired = async (c) => {
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
-    if (bundleAssets === true) return;
-    // return a new promise that does...nothing, just to keep RNV running while the bundler is running
-    if (keepRNVRunning) return new Promise(() => {});
-    return true;
-};
-
-const _startBundlerIfRequired = async (c, parentTask, originTask) => {
-    logTask('_startBundlerIfRequired');
+export const startBundlerIfRequired = async (c, parentTask, originTask) => {
+    logTask('startBundlerIfRequired');
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
 
@@ -66,6 +60,14 @@ const _startBundlerIfRequired = async (c, parentTask, originTask) => {
     } else {
         await confirmActiveBundler(c);
     }
+};
+
+export const waitForBundlerIfRequired = async (c) => {
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    if (bundleAssets === true) return;
+    // return a new promise that does...nothing, just to keep RNV running while the bundler is running
+    if (keepRNVRunning) return new Promise(() => {});
+    return true;
 };
 
 const _configureMetroConfigs = async (c, platform) => {
@@ -194,7 +196,7 @@ const _taskRun = async (c, parentTask, originTask) => {
         case IOS:
         case TVOS:
             if (!c.program.only) {
-                await _startBundlerIfRequired(c, TASK_RUN, originTask);
+                await startBundlerIfRequired(c, TASK_RUN, originTask);
                 await runXcodeProject(c);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
@@ -206,7 +208,7 @@ const _taskRun = async (c, parentTask, originTask) => {
         case ANDROID_TV:
         case ANDROID_WEAR:
             if (!c.program.only) {
-                await _startBundlerIfRequired(c, TASK_RUN, originTask);
+                await startBundlerIfRequired(c, TASK_RUN, originTask);
                 if (
                     getConfigProp(c, platform, 'bundleAssets') === true
                   || platform === ANDROID_WEAR

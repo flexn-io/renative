@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { chalk, logTask } from '../systemManager/logger';
 import { buildHooks } from '../projectManager/buildHooks';
 

@@ -759,6 +759,7 @@ export const TASK_DEBUG = 'debug';
 export const TASK_PACKAGE = 'package';
 export const TASK_DEPLOY = 'deploy';
 export const TASK_LOG = 'log';
+export const TASK_CLEAN = 'clean';
 
 export const configSchema = {
     analytics: {
