@@ -11,7 +11,7 @@ import {
 } from '../core/constants';
 import { waitForWebpack } from '../sdk-webpack';
 import { runWebNext } from '../sdk-webpack/webNext';
-import { executeTask as _executeTask } from '../core/engineManager';
+import { executeTask } from '../core/engineManager';
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -26,7 +26,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
             .catch(logError);
     }
 
-    await _executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
+    await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
 
     if (hosted) {
         return logError(

@@ -4,12 +4,13 @@ import {
     TASK_PACKAGE,
     TASK_CONFIGURE
 } from '../core/constants';
-import { executeTask } from '../core/engineManager';
+
+import { executeTask as _executeTask } from '../core/engineManager';
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
 
-    await executeTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
+    await _executeTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
 
     return true;
 };
