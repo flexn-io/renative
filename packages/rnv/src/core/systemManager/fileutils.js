@@ -22,6 +22,34 @@ export const fsCopyFileSync = (source, dest) => {
     fs.copyFileSync(source, dest);
 };
 
+export const fsExistsSync = dest => fs.existsSync(dest);
+
+export const fsReaddirSync = dest => fs.readdirSync(dest);
+
+export const fsLstatSync = dest => fs.lstatSync(dest);
+
+export const fsReadFileSync = dest => fs.readFileSync(dest);
+
+export const fsChmodSync = (dest, flag) => fs.chmodSync(dest, flag);
+
+export const fsRenameSync = (arg1, arg2) => fs.renameSync(arg1, arg2);
+
+export const fsStatSync = arg1 => fs.statSync(arg1);
+
+export const fsMkdirSync = arg1 => fs.mkdirSync(arg1);
+
+export const fsUnlinkSync = arg1 => fs.unlinkSync(arg1);
+
+export const fsSymlinkSync = (arg1, arg2) => {
+    fs.symlinkSync(arg1, arg2);
+};
+
+export const fsReadFile = (arg1, arg2) => {
+    fs.readFile(arg1, arg2);
+};
+
+export const fsReaddir = (arg1, arg2) => fs.readdir(arg1, arg2);
+
 
 const _getSanitizedPath = (origPath, timestampPathsConfig) => {
     if (timestampPathsConfig?.paths?.length && timestampPathsConfig?.timestamp) {

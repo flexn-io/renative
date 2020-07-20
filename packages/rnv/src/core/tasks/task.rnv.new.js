@@ -2,11 +2,10 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import semver from 'semver';
-import fs from 'fs';
 import { generateOptions } from '../../cli/prompt';
 import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS } from '../constants';
 import { getTemplateOptions } from '../templateManager';
-import { mkdirSync, writeFileSync, cleanFolder } from '../systemManager/fileutils';
+import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync } from '../systemManager/fileutils';
 import { executeAsync, commandExistsSync } from '../systemManager/exec';
 import {
     chalk,
@@ -30,7 +29,7 @@ const configureGit = async (c) => {
     const projectPath = c.paths.project.dir;
     logTask(`configureGit:${projectPath}`);
 
-    if (!fs.existsSync(path.join(projectPath, '.git'))) {
+    if (!fsExistsSync(path.join(projectPath, '.git'))) {
         logInfo('Your project does not have a git repo. Creating one...');
         if (commandExistsSync('git')) {
             await executeAsync('git init', { cwd: projectPath });
@@ -61,7 +60,7 @@ const _generateProject = async (c, data) => {
 
     data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
 
-    if (fs.existsSync(c.paths.project.dir)) {
+    if (fsExistsSync(c.paths.project.dir)) {
         const { confirm } = await inquirer.prompt({
             type: 'confirm',
             name: 'confirm',

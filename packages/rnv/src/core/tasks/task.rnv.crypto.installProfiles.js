@@ -1,5 +1,4 @@
 import path from 'path';
-import fs from 'fs';
 import {
     logWarning,
     logError,
@@ -10,6 +9,7 @@ import {
     getFileListSync,
     copyFileSync,
     mkdirSync,
+    fsExistsSync
 } from '../systemManager/fileutils';
 
 export const rnvCryptoInstallProfiles = c => new Promise((resolve) => {
@@ -27,7 +27,7 @@ export const rnvCryptoInstallProfiles = c => new Promise((resolve) => {
         'Library/MobileDevice/Provisioning Profiles'
     );
 
-    if (!fs.existsSync(ppFolder)) {
+    if (!fsExistsSync(ppFolder)) {
         logWarning(`folder ${ppFolder} does not exist!`);
         mkdirSync(ppFolder);
     }

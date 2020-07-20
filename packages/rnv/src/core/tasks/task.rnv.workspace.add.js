@@ -1,12 +1,12 @@
 /* eslint-disable import/no-cycle */
 
 import path from 'path';
-import fs from 'fs';
 import { inquirerPrompt } from '../../cli/prompt';
 import {
     logTask,
 } from '../systemManager/logger';
 import { createWorkspace } from '../projectManager/workspace';
+import { fsExistsSync } from '../systemManager/fileutils';
 
 export const rnvWorkspaceAdd = async (c) => {
     logTask('rnvWorkspaceAdd');
@@ -20,7 +20,7 @@ export const rnvWorkspaceAdd = async (c) => {
 
     const workspacePath = path.join(workspace);
 
-    if (fs.existsSync(workspacePath)) {
+    if (fsExistsSync(workspacePath)) {
         const { confirm } = await inquirerPrompt({
             name: 'confirm',
             type: 'confirm',

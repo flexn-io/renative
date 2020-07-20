@@ -1,12 +1,19 @@
 /* eslint-disable import/no-cycle */
 // @todo fix circular
 import path from 'path';
-import fs from 'fs';
 import net from 'net';
 import shell from 'shelljs';
 import inquirer from 'inquirer';
 import execa from 'execa';
-
+import {
+    fsExistsSync,
+    copyFileSync,
+    mkdirSync,
+    getRealPath,
+    updateObjectSync,
+    fsWriteFileSync,
+    fsChmodSync
+} from '../core/systemManager/fileutils';
 import { executeAsync, execCLI } from '../core/systemManager/exec';
 import {
     getAppFolder,
@@ -25,13 +32,7 @@ import {
     logSuccess,
     logRaw
 } from '../core/systemManager/logger';
-import {
-    copyFileSync,
-    mkdirSync,
-    getRealPath,
-    updateObjectSync,
-    fsWriteFileSync
-} from '../core/systemManager/fileutils';
+
 import {
     copyAssetsFolder,
     copyBuildsFolder,
@@ -420,13 +421,13 @@ const _runGradleApp = async (c, platform, device) => {
         appFolder,
         `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`
     );
-    if (!fs.existsSync(apkPath)) {
+    if (!fsExistsSync(apkPath)) {
         apkPath = path.join(
             appFolder,
             `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`
         );
     }
-    if (!fs.existsSync(apkPath)) {
+    if (!fsExistsSync(apkPath)) {
         apkPath = path.join(
             appFolder,
             `app/build/outputs/apk/${outputFolder}/app-${arch}-${outputFolder}.apk`
@@ -558,7 +559,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
 
     const gradlew = path.join(appFolder, 'gradlew');
 
-    if (!fs.existsSync(gradlew)) {
+    if (!fsExistsSync(gradlew)) {
         logWarning(
             `Looks like your ${chalk().white(
                 platform
@@ -578,7 +579,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`),
         '{}'
     );
-    fs.chmodSync(gradlew, '755');
+    fsChmodSync(gradlew, '755');
 
     // INJECTORS
     c.pluginConfigAndroid = {
@@ -657,7 +658,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
                 ) {
                     if (font) {
                         const fontSource = path.join(dir, font);
-                        if (fs.existsSync(fontSource)) {
+                        if (fsExistsSync(fontSource)) {
                             const fontFolder = path.join(
                                 appFolder,
                                 'app/src/main/assets/fonts'

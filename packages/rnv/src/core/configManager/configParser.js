@@ -29,7 +29,14 @@ import {
     sanitizeDynamicRefs,
     sanitizeDynamicProps,
     mergeObjects,
-    fsWriteFileSync
+    fsWriteFileSync,
+    fsExistsSync,
+    fsReaddir,
+    fsReadFileSync,
+    fsReaddirSync,
+    fsRenameSync,
+    fsStatSync,
+    fsLstatSync
 } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
 import { getEngineByPlatform } from '../engineManager';
@@ -53,16 +60,16 @@ import { loadPluginTemplates } from '../pluginManager';
 const base = path.resolve('.');
 const homedir = require('os').homedir();
 
-const readdirAsync = promisify(fs.readdir);
+const readdirAsync = promisify(fsReaddir);
 
 const IGNORE_FOLDERS = ['.git'];
 
 const _loadAppConfigIDfromDir = (dir, appConfigsDir) => {
     logDebug(`_loadAppConfigIDfromDir:${dir}:${appConfigsDir}`, chalk().grey);
     const filePath = path.join(appConfigsDir, dir, 'renative.json');
-    if (fs.existsSync(filePath)) {
+    if (fsExistsSync(filePath)) {
         try {
-            const renativeConf = JSON.parse(fs.readFileSync(filePath));
+            const renativeConf = JSON.parse(fsReadFileSync(filePath));
             return { dir, id: renativeConf.id };
         } catch (e) {
             logError(`File ${filePath} is MALFORMED:\n${e}`);
@@ -108,12 +115,12 @@ const askUserAboutConfigs = async (c, dir, id, basePath) => {
     }
 
     if (choice === 'keepID') {
-        fs.renameSync(path.join(basePath, dir), path.join(basePath, id));
+        fsRenameSync(path.join(basePath, dir), path.join(basePath, id));
     }
 
     if (choice === 'keepFolder') {
         const filePath = path.join(basePath, dir, 'renative.json');
-        const fileContents = JSON.parse(fs.readFileSync(filePath));
+        const fileContents = JSON.parse(fsReadFileSync(filePath));
         fileContents.id = dir;
 
         writeFileSync(filePath, fileContents);
@@ -134,7 +141,7 @@ const matchAppConfigID = async (c, appConfigID) => {
 
         const appConfigDirContents = await (await readdirAsync(
             appConfigsDir
-        )).filter(folder => fs.statSync(path.join(appConfigsDir, folder)).isDirectory());
+        )).filter(folder => fsStatSync(path.join(appConfigsDir, folder)).isDirectory());
 
         const appConfigs = appConfigDirContents
             .map(dir => _loadAppConfigIDfromDir(dir, appConfigsDir))
@@ -211,7 +218,7 @@ export const fixRenativeConfigsSync = async (c) => {
 
     // Check babel-config
     logDebug('configureProject:check babel config');
-    if (!fs.existsSync(c.paths.project.babelConfig)) {
+    if (!fsExistsSync(c.paths.project.babelConfig)) {
         logInfo(
             `Looks like your babel config file ${chalk().white(
                 c.paths.project.babelConfig
@@ -284,14 +291,14 @@ It is recommended that you run your rnv command with npx prefix: ${
 };
 
 export const loadFile = (fileObj, pathObj, key) => {
-    if (!fs.existsSync(pathObj[key])) {
+    if (!fsExistsSync(pathObj[key])) {
         pathObj[`${key}Exists`] = false;
         logDebug(`WARNING: loadFile: Path ${pathObj[key]} does not exists!`);
         return false;
     }
     pathObj[`${key}Exists`] = true;
     try {
-        fileObj[key] = JSON.parse(fs.readFileSync(pathObj[key]).toString());
+        fileObj[key] = JSON.parse(fsReadFileSync(pathObj[key]).toString());
         pathObj[`${key}Exists`] = true;
         return true;
     } catch (e) {
@@ -313,7 +320,7 @@ const _findAndSwitchAppConfigDir = (c, appId) => {
     if (appConfigsDirs && appConfigsDirs.forEach && appId) {
         appConfigsDirs.forEach((v) => {
             const altPath = path.join(v, appId);
-            if (fs.existsSync(altPath)) {
+            if (fsExistsSync(altPath)) {
                 logInfo(
                     `Found config in following location: ${altPath}. Will use it`
                 );
@@ -390,7 +397,7 @@ export const generateBuildConfig = (c) => {
     ];
     const cleanPaths = mergeOrder.filter(v => v);
     const existsPaths = cleanPaths.filter((v) => {
-        const exists = fs.existsSync(v);
+        const exists = fsExistsSync(v);
         if (exists) {
             logDebug(`Merged: ${v}`);
             // console.log(chalk().green(v));
@@ -476,7 +483,7 @@ export const generateBuildConfig = (c) => {
     c.buildConfig = sanitizeDynamicRefs(c, out);
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs, {}, c.runtime);
 
-    if (fs.existsSync(c.paths.project.builds.dir)) {
+    if (fsExistsSync(c.paths.project.builds.dir)) {
         writeFileSync(c.paths.project.builds.config, c.buildConfig);
     }
     // DEPRECATED
@@ -485,7 +492,7 @@ export const generateBuildConfig = (c) => {
     //
     //     if (c.platform) {
     //         fsWriteFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
-    //     } else if (!fs.existsSync(localMetroPath)) {
+    //     } else if (!fsExistsSync(localMetroPath)) {
     //         fsWriteFileSync(localMetroPath, 'module.exports = []');
     //     }
     // }
@@ -551,7 +558,7 @@ export const generateRuntimeConfig = async (c) => {
         getConfigProp(c, c.platform, 'runtime') || {}
     );
 
-    if (fs.existsSync(c.paths.project.assets.dir)) {
+    if (fsExistsSync(c.paths.project.assets.dir)) {
         writeFileSync(c.paths.project.assets.config, c.assetConfig);
     }
     return true;
@@ -614,16 +621,16 @@ const _listAppConfigsFoldersSync = (
     ignoreHiddenConfigs
 ) => {
     logDebug(`_listAppConfigsFoldersSync:${dirPath}`);
-    if (!fs.existsSync(dirPath)) return;
-    fs.readdirSync(dirPath).forEach((dir) => {
+    if (!fsExistsSync(dirPath)) return;
+    fsReaddirSync(dirPath).forEach((dir) => {
         const appConfigDir = path.join(dirPath, dir);
         if (
             !IGNORE_FOLDERS.includes(dir)
-            && fs.lstatSync(appConfigDir).isDirectory()
+            && fsLstatSync(appConfigDir).isDirectory()
         ) {
             if (ignoreHiddenConfigs) {
                 const appConfig = path.join(appConfigDir, RENATIVE_CONFIG_NAME);
-                if (fs.existsSync(appConfig)) {
+                if (fsExistsSync(appConfig)) {
                     try {
                         const config = readObjectSync(appConfig);
                         if (config?.hidden !== true) {
@@ -679,7 +686,7 @@ export const loadEngines = (c) => {
 
 const _loadWorkspacesSync = (c) => {
     // CHECK WORKSPACES
-    if (fs.existsSync(c.paths.rnv.configWorkspaces)) {
+    if (fsExistsSync(c.paths.rnv.configWorkspaces)) {
         logDebug(`${c.paths.rnv.configWorkspaces} file exists!`);
         c.files.rnv.configWorkspaces = readObjectSync(
             c.paths.rnv.configWorkspaces
@@ -785,7 +792,7 @@ export const updateConfig = async (c, appConfigId) => {
 
     const isPureRnv = !c.command && !c.subCommand;
 
-    if (!fs.existsSync(c.paths.appConfig.dir) || isPureRnv) {
+    if (!fsExistsSync(c.paths.appConfig.dir) || isPureRnv) {
         const configDirs = listAppConfigsFoldersSync(c, true);
 
         if (!appConfigId) {
@@ -919,7 +926,7 @@ export const configureRnvGlobal = async (c) => {
     logTask('configureRnvGlobal');
 
     // Check globalConfig Dir
-    if (fs.existsSync(c.paths.workspace.dir)) {
+    if (fsExistsSync(c.paths.workspace.dir)) {
         logDebug(`${c.paths.workspace.dir} folder exists!`);
     } else {
         logInfo(
@@ -929,7 +936,7 @@ export const configureRnvGlobal = async (c) => {
     }
 
     // Check globalConfig
-    if (fs.existsSync(c.paths.workspace.config)) {
+    if (fsExistsSync(c.paths.workspace.config)) {
         logDebug(
             `${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME} file exists!`
         );
@@ -938,7 +945,7 @@ export const configureRnvGlobal = async (c) => {
             c.paths.workspace.dir,
             'config.json'
         );
-        if (fs.existsSync(oldGlobalConfigPath)) {
+        if (fsExistsSync(oldGlobalConfigPath)) {
             logWarning(
                 'Found old version of your config. will copy it to new renative.json config'
             );
@@ -960,13 +967,13 @@ export const configureRnvGlobal = async (c) => {
         }
     }
 
-    if (fs.existsSync(c.paths.workspace.config)) {
+    if (fsExistsSync(c.paths.workspace.config)) {
         c.files.workspace.config = JSON.parse(
-            fs.readFileSync(c.paths.workspace.config).toString()
+            fsReadFileSync(c.paths.workspace.config).toString()
         );
 
         if (c.files.workspace.config?.appConfigsPath) {
-            if (!fs.existsSync(c.files.workspace.config.appConfigsPath)) {
+            if (!fsExistsSync(c.files.workspace.config.appConfigsPath)) {
                 logWarning(
                     `Looks like your custom global appConfig is pointing to ${chalk().white(
                         c.files.workspace.config.appConfigsPath
@@ -1144,7 +1151,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
         'projectTemplate'
     );
     c.files.rnv.package = JSON.parse(
-        fs.readFileSync(c.paths.rnv.package).toString()
+        fsReadFileSync(c.paths.rnv.package).toString()
     );
 
     c.platform = c.program.platform;
@@ -1159,7 +1166,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
         RENATIVE_CONFIG_WORKSPACES_NAME
     );
 
-    if (!fs.existsSync(c.paths.GLOBAL_RNV_DIR)) {
+    if (!fsExistsSync(c.paths.GLOBAL_RNV_DIR)) {
         mkdirSync(c.paths.GLOBAL_RNV_DIR);
     }
 

@@ -1,7 +1,6 @@
 import path from 'path';
 import tar from 'tar';
 import { promisify } from 'util';
-import fs from 'fs';
 import {
     chalk,
     logWarning,
@@ -15,13 +14,16 @@ import {
     mkdirSync,
     writeFileSync,
     fsWriteFileSync,
+    fsExistsSync,
+    fsReadFileSync,
+    fsReaddir
 } from '../systemManager/fileutils';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../systemManager/crypto';
 
 const iocane = require('iocane');
 
-const readdirAsync = promisify(fs.readdir);
+const readdirAsync = promisify(fsReaddir);
 
 const generateRandomKey = length => Array(length)
     .fill(
@@ -55,7 +57,7 @@ const _checkAndConfigureCrypto = async (c) => {
 
     // check if src folder actually exists
     const sourceFolder = path.join(c.paths.workspace.dir, source);
-    if (!fs.existsSync(sourceFolder)) {
+    if (!fsExistsSync(sourceFolder)) {
         logInfo(
             `It seems you are running encrypt for the first time. Directory ${chalk().white(
                 sourceFolder
@@ -146,7 +148,7 @@ export const rnvCryptoEncrypt = async (c) => {
 
         // check if dest folder actually exists
         const destFolder = path.join(dest, '../');
-        !fs.existsSync(destFolder) && mkdirSync(destFolder);
+        !fsExistsSync(destFolder) && mkdirSync(destFolder);
 
         await tar.c(
             {
@@ -160,7 +162,7 @@ export const rnvCryptoEncrypt = async (c) => {
 
         const data = await iocane.createSession()
             .use('cbc')
-            .encrypt(fs.readFileSync(destTemp), key);
+            .encrypt(fsReadFileSync(destTemp), key);
 
         fsWriteFileSync(dest, data);
 

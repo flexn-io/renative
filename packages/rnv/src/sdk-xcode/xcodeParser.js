@@ -1,12 +1,12 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import {
     getAppFolder,
     getAppId,
     getConfigProp,
     getFlavouredProp
 } from '../core/common';
+import { fsExistsSync, writeFileSync, fsWriteFileSync } from '../core/systemManager/fileutils';
 import { doResolve } from '../core/resolve';
 import { chalk, logTask, logWarning } from '../core/systemManager/logger';
 import { inquirerPrompt } from '../cli/prompt';
@@ -14,7 +14,7 @@ import { IOS, TVOS } from '../core/constants';
 import { parsePlugins } from '../core/pluginManager';
 import { getAppFolderName } from './index';
 import { parseProvisioningProfiles } from './provisionParser';
-import { writeFileSync, fsWriteFileSync } from '../core/systemManager/fileutils';
+
 
 export const parseXcodeProject = async (c) => {
     logTask('parseXcodeProject');
@@ -201,7 +201,7 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
         if (xcodeprojObj1?.sourceFiles) {
             xcodeprojObj1.sourceFiles.forEach((v) => {
                 const filePath = path.join(appFolder, v);
-                if (fs.existsSync(filePath)) {
+                if (fsExistsSync(filePath)) {
                     xcodeProj.addSourceFile(
                         filePath,
                         null,

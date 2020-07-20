@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 
 import path from 'path';
-import fs from 'fs';
 import {
     getAppFolder,
     getAppTitle,
@@ -9,6 +8,7 @@ import {
     getAppDescription,
     getAppAuthor,
 } from '../core/common';
+import { fsExistsSync, getRealPath, fsWriteFileSync, fsReadFileSync } from '../core/systemManager/fileutils';
 import { chalk, logTask } from '../core/systemManager/logger';
 import { isPlatformActive } from '../core/platformManager';
 import {
@@ -16,7 +16,7 @@ import {
     copyAssetsFolder
 } from '../core/projectManager/projectParser';
 import { KAIOS_SDK } from '../core/constants';
-import { getRealPath, fsWriteFileSync } from '../core/systemManager/fileutils';
+
 import { buildWeb, configureCoreWebProject } from '../sdk-webpack';
 
 const childProcess = require('child_process');
@@ -39,7 +39,7 @@ const launchKaiOSSimulator = c => new Promise((resolve, reject) => {
         path.join(c.buildConfig?.sdks?.KAIOS_SDK)
     );
 
-    if (!fs.existsSync(ePath)) {
+    if (!fsExistsSync(ePath)) {
         reject(`Can't find emulator at path: ${ePath}`);
         return;
     }
@@ -78,7 +78,7 @@ const configureProject = (c, platform) => new Promise((resolve) => {
 
     const manifestFilePath = path.join(templateFolder, 'manifest.webapp');
     const manifestFilePath2 = path.join(appFolder, 'manifest.webapp');
-    const manifestFile = JSON.parse(fs.readFileSync(manifestFilePath));
+    const manifestFile = JSON.parse(fsReadFileSync(manifestFilePath));
 
     manifestFile.name = `${getAppTitle(c, platform)}`;
     manifestFile.description = `${getAppDescription(c, platform)}`;

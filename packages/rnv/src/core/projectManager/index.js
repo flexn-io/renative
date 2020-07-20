@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
-import fs from 'fs';
 import { getAppFolder } from '../common';
 import { chalk, logTask, logWarning } from '../systemManager/logger';
+import { fsExistsSync } from '../systemManager/fileutils';
 import CLI from '../../cli';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configManager/configParser';
@@ -23,7 +23,7 @@ export const configureGenericProject = async (c) => {
 const _checkAndCreatePlatforms = async (c) => {
     logTask('_checkAndCreatePlatforms');
     const { platform } = c;
-    if (!fs.existsSync(c.paths.project.builds.dir)) {
+    if (!fsExistsSync(c.paths.project.builds.dir)) {
         logWarning('Platforms not created yet. creating them for you...');
         await CLI(c, {
             command: 'platform',
@@ -34,7 +34,7 @@ const _checkAndCreatePlatforms = async (c) => {
     }
     if (platform) {
         const appFolder = getAppFolder(c, platform);
-        if (!fs.existsSync(appFolder)) {
+        if (!fsExistsSync(appFolder)) {
             logWarning(
                 `Platform ${platform} not created yet. creating them for you at ${appFolder}`
             );
@@ -59,7 +59,7 @@ const _checkAndCreatePlatforms = async (c) => {
         for (let i = 0; i < ks.length; i++) {
             const k = ks[i];
             const appFolder = getAppFolder(c, k);
-            if (!fs.existsSync(appFolder)) {
+            if (!fsExistsSync(appFolder)) {
                 logWarning(
                     `Platform ${k} not created yet. creating one for you at ${appFolder}`
                 );

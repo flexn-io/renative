@@ -1,13 +1,12 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import inquirer from 'inquirer';
 import dotenv from 'dotenv';
-
+import { fsExistsSync, fsWriteFileSync, fsReadFileSync } from '../core/systemManager/fileutils';
 import { executeAsync } from '../core/systemManager/exec';
 import { getAppFolder, getConfigProp } from '../core/common';
 import { chalk, logInfo } from '../core/systemManager/logger';
-import { fsWriteFileSync } from '../core/systemManager/fileutils';
+
 
 const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) => {
     dotenv.config();
@@ -30,7 +29,7 @@ const _createConfigFiles = async (
     _envContent = ''
 ) => {
     let envContent = _envContent;
-    if (!fs.existsSync(configFilePath)) {
+    if (!fsExistsSync(configFilePath)) {
         const content = { public: true, version: 2 };
         logInfo(
             `${chalk().white(
@@ -84,7 +83,7 @@ const deployToNow = c => new Promise((resolve, reject) => {
 
     let envContent;
     try {
-        envContent = fs.readFileSync(envConfigPath).toString();
+        envContent = fsReadFileSync(envConfigPath).toString();
     } catch (err) {
         envContent = '';
     }

@@ -3,7 +3,7 @@
 /* eslint-disable no-bitwise */
 
 import path from 'path';
-import fs, { access, accessSync, constants } from 'fs';
+import { access, accessSync, constants } from 'fs';
 import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
@@ -11,7 +11,7 @@ import Config from '../configManager/config';
 import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
 
 import { chalk, logDebug, logTask, logError, logWarning, logRaw } from './logger';
-import { removeDirs, invalidatePodsChecksum } from './fileutils';
+import { removeDirs, invalidatePodsChecksum, fsExistsSync } from './fileutils';
 import { inquirerPrompt } from '../../cli/prompt';
 import { replaceOverridesInString } from '../utils';
 import { doResolve } from '../resolve';
@@ -177,7 +177,7 @@ const execCLI = (c, cli, command, opts = {}) => {
     }
     const p = c.cli[cli];
 
-    if (!fs.existsSync(p)) {
+    if (!fsExistsSync(p)) {
         logDebug(`execCLI error: ${cli} | ${command}`, '\nCLI Config:\n', c.cli, '\nSDK Config:\n', c.buildConfig?.sdks);
         return Promise.reject(
             `Location of your cli ${chalk().white(
@@ -497,9 +497,9 @@ export const installPackageDependencies = async (failOnError = false) => {
     const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');
     const npmLockPath = path.join(Config.projectPath, 'package-lock.json');
     let command = 'npm install';
-    if (fs.existsSync(yarnLockPath)) {
+    if (fsExistsSync(yarnLockPath)) {
         command = 'yarn';
-    } else if (fs.existsSync(npmLockPath)) {
+    } else if (fsExistsSync(npmLockPath)) {
         command = 'npm install';
     } else if (isYarnInstalled) {
         const { packageManager } = await inquirerPrompt({

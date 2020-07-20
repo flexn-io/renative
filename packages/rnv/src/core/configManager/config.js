@@ -1,8 +1,7 @@
 /* eslint-disable global-require, import/no-dynamic-require, valid-typeof */
 /* eslint-disable import/no-cycle */
 
-import fs from 'fs';
-import { writeFileSync } from '../systemManager/fileutils';
+import { writeFileSync, fsExistsSync } from '../systemManager/fileutils';
 import { logWarning } from '../systemManager/logger';
 import { configSchema, WEB_HOSTED_PLATFORMS } from '../constants';
 import { getConfigProp } from '../common';
@@ -71,7 +70,7 @@ class Config {
     getConfigValueSeparate(key, global = false) {
         const { paths } = this.config;
 
-        if (!global && !fs.existsSync(paths.project.config)) return 'N/A'; // string because there might be a setting where we will use null
+        if (!global && !fsExistsSync(paths.project.config)) return 'N/A'; // string because there might be a setting where we will use null
         const cfg = global
             ? require(paths.GLOBAL_RNV_CONFIG)
             : require(paths.project.config);

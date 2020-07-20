@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
 import ip from 'ip';
@@ -7,6 +6,7 @@ import axios from 'axios';
 import lGet from 'lodash.get';
 import colorString from 'color-string';
 import { doResolve } from './resolve';
+import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
 import {
     chalk,
     logError,
@@ -21,7 +21,6 @@ import {
     PLATFORMS
 } from './constants';
 import { generateOptions, inquirerPrompt } from '../cli/prompt';
-import { writeCleanFile } from './systemManager/fileutils';
 
 
 export const getTimestampPathsConfig = (c, platform) => {
@@ -265,7 +264,7 @@ export const getAppVersionCode = (c, platform) => {
 
 export const isMonorepo = () => {
     try {
-        fs.existsSync(path.resolve(__dirname, '../../../../lerna.json'));
+        fsExistsSync(path.resolve(__dirname, '../../../../lerna.json'));
         return true;
     } catch (_err) {
         return false;
@@ -282,11 +281,11 @@ export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
 export const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfig.dir;
-    // if (!fs.existsSync(pp)) {
+    // if (!fsExistsSync(pp)) {
     //     logWarning(`Path ${chalk().white(pp)} does not exist! creating one for you..`);
     // }
     const p = path.join(pp, `builds/${platform}@${c.runtime.scheme}`);
-    if (fs.existsSync(p)) return p;
+    if (fsExistsSync(p)) return p;
     return path.join(pp, `builds/${platform}`);
 };
 
@@ -317,10 +316,10 @@ export const getBuildFilePath = (c, platform, filePath) => {
         getBuildsFolder(c, platform, c.paths.project.projectConfig.dir),
         filePath
     );
-    if (fs.existsSync(sp2)) sp = sp2;
+    if (fsExistsSync(sp2)) sp = sp2;
     // P3 => appConfigs + @buildSchemes
     const sp3 = path.join(getBuildsFolder(c, platform), filePath);
-    if (fs.existsSync(sp3)) sp = sp3;
+    if (fsExistsSync(sp3)) sp = sp3;
     return sp;
 };
 

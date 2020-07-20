@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 
 import path from 'path';
-import fs from 'fs';
 import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import {
     chalk,
@@ -10,7 +9,7 @@ import {
     logDebug,
     logInfo,
 } from '../systemManager/logger';
-import { writeFileSync, mkdirSync } from '../systemManager/fileutils';
+import { writeFileSync, mkdirSync, fsExistsSync } from '../systemManager/fileutils';
 
 
 export const createWorkspace = async (c, workspaceID, workspacePath) => {
@@ -39,7 +38,7 @@ export const getWorkspaceDirPath = async (c) => {
         dirPath = wss.workspaces[ws]?.path;
         if (!dirPath) {
             const wsDir = path.join(c.paths.home.dir, `.${ws}`);
-            if (fs.existsSync(wsDir)) {
+            if (fsExistsSync(wsDir)) {
                 wss.workspaces[ws] = {
                     path: wsDir
                 };

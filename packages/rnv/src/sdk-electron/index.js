@@ -1,9 +1,16 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import { spawn } from 'child_process';
 import { createPlatformBuild, isPlatformActive } from '../core/platformManager';
 import { executeAsync } from '../core/systemManager/exec';
+import {
+    fsExistsSync,
+    mkdirSync,
+    writeFileSync,
+    readObjectSync,
+    removeDirs,
+    writeCleanFile
+} from '../core/systemManager/fileutils';
 import {
     getAppFolder,
     getAppVersion,
@@ -32,13 +39,7 @@ import {
 } from '../core/projectManager/projectParser';
 import { MACOS } from '../core/constants';
 import { buildWeb, runWeb, configureCoreWebProject, waitForWebpack } from '../sdk-webpack';
-import {
-    mkdirSync,
-    writeFileSync,
-    readObjectSync,
-    removeDirs,
-    writeCleanFile
-} from '../core/systemManager/fileutils';
+
 
 export const configureElectronProject = async (c) => {
     logTask('configureElectronProject');
@@ -70,7 +71,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const packagePath = path.join(appFolder, 'package.json');
     const appId = getAppId(c, platform);
 
-    if (!fs.existsSync(packagePath)) {
+    if (!fsExistsSync(packagePath)) {
         logWarning(
             `Looks like your ${chalk().white(
                 platform
@@ -194,7 +195,7 @@ const exportElectron = async (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const buildPath = path.join(appFolder, 'build');
 
-    if (fs.existsSync(buildPath)) {
+    if (fsExistsSync(buildPath)) {
         logInfo(`exportElectron: removing old build ${buildPath}`);
         await removeDirs([buildPath]);
     }
@@ -278,7 +279,7 @@ const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
             const pf = path.join(v, `assets/${platform}/AppIcon.iconset`);
-            if (fs.existsSync(pf)) {
+            if (fsExistsSync(pf)) {
                 source = pf;
             }
         });
@@ -294,7 +295,7 @@ const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
         'resources/icon.icns'
     );
 
-    if (!fs.existsSync(source)) {
+    if (!fsExistsSync(source)) {
         logWarning(
             `Your app config is missing ${chalk().white(
                 source

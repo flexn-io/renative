@@ -1,10 +1,10 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import open from 'better-opn';
 import axios from 'axios';
 import ip from 'ip';
+import { fsExistsSync, copyFileSync, readObjectSync, writeCleanFile, fsWriteFileSync } from '../core/systemManager/fileutils';
 import { executeAsync } from '../core/systemManager/exec';
 import {
     getAppFolder,
@@ -35,7 +35,7 @@ import {
     copyBuildsFolder,
     copyAssetsFolder
 } from '../core/projectManager/projectParser';
-import { copyFileSync, readObjectSync, writeCleanFile, fsWriteFileSync } from '../core/systemManager/fileutils';
+
 import { parsePlugins } from '../core/pluginManager';
 import {
     selectWebToolAndDeploy,
@@ -103,7 +103,7 @@ const _generateWebpackConfigs = (c, platform) => {
     const modulePath = path.join(c.paths.project.builds.dir, '_shared', 'modules.json');
     let externalModulePaths = [];
     let localModulePaths = [];
-    if (fs.existsSync(modulePath)) {
+    if (fsExistsSync(modulePath)) {
         const modules = readObjectSync(modulePath);
         externalModulePaths = modules.externalPaths;
         localModulePaths = modules.localPaths;

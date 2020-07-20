@@ -1,15 +1,14 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import { getConfigProp, confirmActiveBundler } from '../core/common';
 import { chalk, logTask, logInfo } from '../core/systemManager/logger';
+import { fsExistsSync, mkdirSync, writeFileSync, copyFileSync } from '../core/systemManager/fileutils';
 import {
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
     TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE,
     RN_CLI_CONFIG_NAME
 } from '../core/constants';
 import { isBundlerActive, waitForBundler } from './bundler';
-import { mkdirSync, writeFileSync, copyFileSync } from '../core/systemManager/fileutils';
 import { executeTask as _executeTask } from '../core/engineManager';
 import { taskRnvRun } from './task.rnv.run';
 import { taskRnvPackage } from './task.rnv.package';
@@ -62,11 +61,11 @@ export const waitForBundlerIfRequired = async (c) => {
 
 const _configureMetroConfigs = async (c, platform) => {
     const configDir = path.join(c.paths.project.dir, 'configs');
-    if (!fs.existsSync(configDir)) {
+    if (!fsExistsSync(configDir)) {
         mkdirSync(configDir);
     }
     const dest = path.join(configDir, `metro.config.${platform}.js`);
-    if (!fs.existsSync(dest)) {
+    if (!fsExistsSync(dest)) {
         writeFileSync(
             dest,
             `const { Constants: { EXTENSIONS } } = require('rnv');
@@ -80,7 +79,7 @@ module.exports = config;
 
 
     // Check rn-cli-config
-    if (!fs.existsSync(c.paths.project.rnCliConfig)) {
+    if (!fsExistsSync(c.paths.project.rnCliConfig)) {
         logInfo(
             `Looks like your rn-cli config file ${chalk().white(
                 c.paths.project.rnCliConfig

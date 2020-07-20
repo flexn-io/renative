@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import tar from 'tar';
-import fs from 'fs';
 import {
     chalk,
     logWarning,
@@ -13,7 +12,9 @@ import {
     removeFilesSync,
     copyFileSync,
     fsWriteFileSync,
-    cleanFolder
+    cleanFolder,
+    fsExistsSync,
+    fsReadFileSync
 } from '../systemManager/fileutils';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../systemManager/crypto';
@@ -38,7 +39,7 @@ const _unzipAndCopy = async (
     });
 
     removeFilesSync([destTemp]);
-    if (fs.existsSync(ts)) {
+    if (fsExistsSync(ts)) {
         copyFileSync(
             ts,
             path.join(
@@ -96,7 +97,7 @@ export const rnvCryptoDecrypt = async (c) => {
             shouldCleanFolder = true;
         }
 
-        if (fs.existsSync(destTemp)) {
+        if (fsExistsSync(destTemp)) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 message: `Found existing decrypted file at ${chalk().white(
@@ -126,7 +127,7 @@ ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
 
 `);
         }
-        if (!fs.existsSync(source)) {
+        if (!fsExistsSync(source)) {
             return Promise.reject(
                 `Can't decrypt. ${chalk().white(source)} is missing!`
             );
@@ -136,7 +137,7 @@ ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
         try {
             data = await iocane.createSession()
                 .use('cbc')
-                .decrypt(fs.readFileSync(source), key);
+                .decrypt(fsReadFileSync(source), key);
         } catch (e) {
             if (e?.message?.includes) {
                 if (e.message.includes('Signature mismatch')) {

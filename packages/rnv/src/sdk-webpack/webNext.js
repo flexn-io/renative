@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import open from 'better-opn';
 import { executeAsync } from '../core/systemManager/exec';
 import {
@@ -10,11 +9,19 @@ import {
     getAppFolder
 } from '../core/common';
 import { waitForWebpack } from '.';
-
+import {
+    fsExistsSync,
+    writeCleanFile,
+    fsWriteFileSync,
+    fsMkdirSync,
+    fsUnlinkSync,
+    fsReaddirSync,
+    fsSymlinkSync
+} from '../core/systemManager/fileutils';
 import { chalk, logTask, logInfo, logWarning, logDebug, logRaw } from '../core/systemManager/logger';
 import { NEXT_CONFIG_NAME } from '../core/constants';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../core/deployManager/webTools';
-import { writeCleanFile, fsWriteFileSync } from '../core/systemManager/fileutils';
+
 import { getValidLocalhost } from '../core/utils';
 
 export const configureNextIfRequired = async (c) => {
@@ -30,25 +37,25 @@ export const configureNextIfRequired = async (c) => {
     const configFile = path.join(dir, NEXT_CONFIG_NAME);
 
     // handle fonts
-    !fs.existsSync(publicDir) && fs.mkdirSync(publicDir);
+    !fsExistsSync(publicDir) && fsMkdirSync(publicDir);
     const fontsSymLinkPath = path.join(publicDir, 'fonts');
 
-    if (fs.existsSync(baseFontsDir)) {
-        if (!fs.existsSync(fontsSymLinkPath)) {
+    if (fsExistsSync(baseFontsDir)) {
+        if (!fsExistsSync(fontsSymLinkPath)) {
             try {
-                fs.unlinkSync(fontsSymLinkPath);
+                fsUnlinkSync(fontsSymLinkPath);
             } catch (e) {
                 logDebug(e);
             }
-            fs.symlinkSync(baseFontsDir, fontsSymLinkPath);
+            fsSymlinkSync(baseFontsDir, fontsSymLinkPath);
         }
 
         // create styles dir and global fonts.css file
-        if (!fs.existsSync(stylesDir)) {
-            fs.mkdirSync(stylesDir);
+        if (!fsExistsSync(stylesDir)) {
+            fsMkdirSync(stylesDir);
             let cssOutput = '';
 
-            const fontFiles = fs.readdirSync(baseFontsDir);
+            const fontFiles = fsReaddirSync(baseFontsDir);
             fontFiles.forEach((file) => {
                 cssOutput += `
                   @font-face {
@@ -64,15 +71,15 @@ export const configureNextIfRequired = async (c) => {
     }
 
     // add wrapper _app
-    if (!fs.existsSync(_appFile)) {
-        if (!fs.existsSync(pagesDir)) {
-            fs.mkdirSync(pagesDir);
+    if (!fsExistsSync(_appFile)) {
+        if (!fsExistsSync(pagesDir)) {
+            fsMkdirSync(pagesDir);
         }
         writeCleanFile(path.join(platformTemplateDir, '_app.js'), _appFile, [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }], null, c);
     }
 
     // add config
-    if (!fs.existsSync(configFile)) {
+    if (!fsExistsSync(configFile)) {
         writeCleanFile(path.join(platformTemplateDir, NEXT_CONFIG_NAME), configFile, null, null, c);
     }
 };

@@ -1,11 +1,17 @@
 /* eslint-disable import/no-cycle */
 // @todo fix circular dep
 import path from 'path';
-import fs from 'fs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 import crypto from 'crypto';
-
+import {
+    fsExistsSync,
+    copyFileSync,
+    mkdirSync,
+    writeFileSync,
+    fsWriteFileSync,
+    fsReadFileSync
+} from '../core/systemManager/fileutils';
 import { executeAsync, commandExistsSync } from '../core/systemManager/exec';
 import { getAppleDevices } from './deviceManager';
 import { registerDevice } from './fastlane';
@@ -21,12 +27,7 @@ import {
     copyBuildsFolder,
     parseFonts
 } from '../core/projectManager/projectParser';
-import {
-    copyFileSync,
-    mkdirSync,
-    writeFileSync,
-    fsWriteFileSync
-} from '../core/systemManager/fileutils';
+
 import { IOS, TVOS, MACOS } from '../core/constants';
 import {
     parseExportOptionsPlist,
@@ -56,10 +57,10 @@ export const generateChecksum = (str, algorithm, encoding) => crypto
 const checkIfPodsIsRequired = async (c) => {
     const appFolder = getAppFolder(c, c.platform);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
-    if (!fs.existsSync(podChecksumPath)) return true;
-    const podChecksum = fs.readFileSync(podChecksumPath).toString();
+    if (!fsExistsSync(podChecksumPath)) return true;
+    const podChecksum = fsReadFileSync(podChecksumPath).toString();
     const podContentChecksum = generateChecksum(
-        fs.readFileSync(path.join(appFolder, 'Podfile')).toString()
+        fsReadFileSync(path.join(appFolder, 'Podfile')).toString()
     );
 
     if (podChecksum !== podContentChecksum) {
@@ -77,10 +78,10 @@ const updatePodsChecksum = (c) => {
     const appFolder = getAppFolder(c, c.platform);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
     const podContentChecksum = generateChecksum(
-        fs.readFileSync(path.join(appFolder, 'Podfile')).toString()
+        fsReadFileSync(path.join(appFolder, 'Podfile')).toString()
     );
-    if (fs.existsSync(podChecksumPath)) {
-        const existingContent = fs.readFileSync(podChecksumPath).toString();
+    if (fsExistsSync(podChecksumPath)) {
+        const existingContent = fsReadFileSync(podChecksumPath).toString();
         if (existingContent !== podContentChecksum) {
             logDebug(`updatePodsChecksum:${podContentChecksum}`);
             return fsWriteFileSync(podChecksumPath, podContentChecksum);
@@ -96,7 +97,7 @@ const runPod = async (c, platform) => {
 
     const appFolder = getAppFolder(c, platform);
 
-    if (!fs.existsSync(appFolder)) {
+    if (!fsExistsSync(appFolder)) {
         return Promise.reject(`Location ${appFolder} does not exists!`);
     }
     const podsRequired = c.program.updatePods || (await checkIfPodsIsRequired(c));
@@ -840,7 +841,7 @@ const configureXcodeProject = async (c) => {
                 && (includedFonts.includes('*') || includedFonts.includes(key))
             ) {
                 const fontSource = path.join(dir, font);
-                if (fs.existsSync(fontSource)) {
+                if (fsExistsSync(fontSource)) {
                     const fontFolder = path.join(appFolder, 'fonts');
                     mkdirSync(fontFolder);
                     const fontDest = path.join(fontFolder, font);

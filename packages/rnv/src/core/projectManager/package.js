@@ -1,7 +1,6 @@
 /* eslint-disable global-require, import/no-dynamic-require */
 /* eslint-disable import/no-cycle */
 
-import fs from 'fs';
 import path from 'path';
 import semver from 'semver';
 
@@ -10,7 +9,10 @@ import { executeAsync } from '../systemManager/exec';
 import {
     writeObjectSync,
     copyFileSync,
-    updateObjectSync
+    updateObjectSync,
+    fsExistsSync,
+    fsReaddirSync,
+    fsLstatSync
 } from '../systemManager/fileutils';
 import { logError } from '../systemManager/logger';
 
@@ -21,14 +23,14 @@ const bumpVersions = (version) => {
     } = Config.getConfig().paths;
     // check for packages to bump
     const packagesDir = path.join(dir, 'packages');
-    if (fs.existsSync(packagesDir)) {
-        const packages = fs.readdirSync(packagesDir);
+    if (fsExistsSync(packagesDir)) {
+        const packages = fsReaddirSync(packagesDir);
         packages.forEach((name) => {
             const pkgPath = path.join(packagesDir, name);
             const pkgJsonPath = path.join(pkgPath, 'package.json');
             if (
-                fs.lstatSync(pkgPath).isDirectory()
-                && fs.existsSync(pkgJsonPath)
+                fsLstatSync(pkgPath).isDirectory()
+                && fsExistsSync(pkgJsonPath)
             ) {
                 // we found a packaaaage, fist-bumpin' it
                 const existingPkgJson = require(pkgJsonPath);
@@ -38,7 +40,7 @@ const bumpVersions = (version) => {
         });
         // check if it's our turf and do some extra magic
         const renativePkgPath = path.join(packagesDir, 'renative');
-        if (fs.existsSync(renativePkgPath)) {
+        if (fsExistsSync(renativePkgPath)) {
             copyFileSync(
                 path.join(dir, 'README.md'),
                 path.join(renativePkgPath, 'README.md')
@@ -59,8 +61,8 @@ const publishAll = () => {
         project: { dir }
     } = Config.getConfig().paths;
     const packagesDir = path.join(dir, 'packages');
-    if (fs.existsSync(packagesDir)) {
-        const packages = fs.readdirSync(packagesDir);
+    if (fsExistsSync(packagesDir)) {
+        const packages = fsReaddirSync(packagesDir);
         return Promise.all(
             packages.map((name) => {
                 const pkgPath = path.join(packagesDir, name);

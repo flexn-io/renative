@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
 
@@ -14,7 +13,8 @@ import {
     removeDirsSync,
     removeFilesSync,
     mergeObjects,
-    readObjectSync
+    readObjectSync,
+    fsExistsSync
 } from '../systemManager/fileutils';
 import {
     chalk,
@@ -114,7 +114,7 @@ const _applyTemplate = async (c) => {
         RENATIVE_CONFIG_TEMPLATE_NAME
     );
 
-    if (!fs.existsSync(c.paths.template.configTemplate)) {
+    if (!fsExistsSync(c.paths.template.configTemplate)) {
         logWarning(
             `Template file ${chalk().white(
                 c.paths.template.configTemplate
@@ -154,7 +154,7 @@ const _applyTemplate = async (c) => {
 const _configureSrc = c => new Promise((resolve) => {
     // Check src
     logDebug('configureProject:check src');
-    if (!fs.existsSync(c.paths.project.srcDir)) {
+    if (!fsExistsSync(c.paths.project.srcDir)) {
         logInfo(
             `Looks like your src folder ${chalk().white(
                 c.paths.project.srcDir
@@ -172,7 +172,7 @@ const _configureAppConfigs = async (c) => {
     // Check appConfigs
     logDebug('configureProject:check appConfigs');
     //
-    if (!fs.existsSync(c.paths.project.appConfigsDir)) {
+    if (!fsExistsSync(c.paths.project.appConfigsDir)) {
         logInfo(
             `Looks like your appConfig folder ${chalk().white(
                 c.paths.project.appConfigsDir
@@ -226,7 +226,7 @@ const _configureAppConfigs = async (c) => {
 const _configureProjectConfig = c => new Promise((resolve) => {
     // Check projectConfigs
     logDebug('configureProject:check projectConfigs');
-    if (!fs.existsSync(c.paths.project.projectConfig.dir)) {
+    if (!fsExistsSync(c.paths.project.projectConfig.dir)) {
         logInfo(
             `Looks like your projectConfig folder ${chalk().white(
                 c.paths.project.projectConfig.dir
@@ -327,7 +327,7 @@ export const configureEntryPoints = async (c) => {
     // Check entry
     // TODO: RN bundle command fails if entry files are not at root
     // logDebug('configureProject:check entry');
-    // if (!fs.existsSync(c.paths.entryDir)) {
+    // if (!fsExistsSync(c.paths.entryDir)) {
     //     logWarning(`Looks like your entry folder ${chalk().white(c.paths.entryDir)} is missing! Let's create one for you.`);
     copyFolderContentsRecursiveSync(
         path.join(c.paths.rnv.dir, 'entry'),
@@ -336,7 +336,7 @@ export const configureEntryPoints = async (c) => {
     // }
 
     try {
-        if (!fs.existsSync(c.paths.appConfig.config)) {
+        if (!fsExistsSync(c.paths.appConfig.config)) {
             logWarning(
                 `c.paths.appConfig.config at path: ${
                     c.paths.appConfig.config
@@ -355,7 +355,7 @@ export const configureEntryPoints = async (c) => {
                 `${plat.entryFile}.js`
             );
             const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
-            if (!fs.existsSync(dest)) {
+            if (!fsExistsSync(dest)) {
                 if (!plat.entryFile) {
                     logWarning(
                         `You missing entryFile key for ${chalk().white(
@@ -364,7 +364,7 @@ export const configureEntryPoints = async (c) => {
                             c.paths.appConfig.config
                         )}.`
                     );
-                } else if (!fs.existsSync(source)) {
+                } else if (!fsExistsSync(source)) {
                     logInfo(
                         `You missing entry file ${chalk().white(
                             source

@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import semver from 'semver';
 import inquirer from 'inquirer';
 import net from 'net';
@@ -31,6 +30,7 @@ import {
 } from '../core/systemManager/logger';
 import { waitForEmulator } from '../core/targetManager';
 import { isPlatformActive } from '../core/platformManager';
+import { fsExistsSync, writeCleanFile } from '../core/systemManager/fileutils';
 import {
     copyAssetsFolder,
     copyBuildsFolder
@@ -38,7 +38,7 @@ import {
 import { buildWeb, configureCoreWebProject, waitForWebpack } from '../sdk-webpack';
 import { rnvStart } from '../core/taskManager';
 import Config from '../core/configManager/config';
-import { writeCleanFile } from '../core/systemManager/fileutils';
+
 
 const xml2js = require('xml2js');
 
@@ -69,7 +69,7 @@ export const configureTizenGlobal = c => new Promise((resolve, reject) => {
     // Check Tizen Cert
     // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
     const tizenAuthorCert = path.join(c.paths.workspace.dir, DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION);
-    if (fs.existsSync(tizenAuthorCert)) {
+    if (fsExistsSync(tizenAuthorCert)) {
         logDebug(`${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file exists!`);
         resolve();
     } else {

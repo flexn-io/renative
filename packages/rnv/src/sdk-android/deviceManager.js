@@ -2,10 +2,9 @@
 // @todo fix circular
 import path from 'path';
 import os from 'os';
-import fs from 'fs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
-
+import { fsExistsSync, fsReaddirSync, fsLstatSync, fsReadFileSync } from '../core/systemManager/fileutils';
 import { execCLI, executeTelnet } from '../core/systemManager/exec';
 import { waitForEmulator } from '../core/targetManager';
 import { isSystemWin } from '../core/utils';
@@ -413,20 +412,19 @@ const getAvdDetails = (c, deviceName) => {
     const results = {};
 
     avdConfigPaths.forEach((cPath) => {
-        if (fs.existsSync(cPath)) {
-            const filesPath = fs.readdirSync(cPath);
+        if (fsExistsSync(cPath)) {
+            const filesPath = fsReaddirSync(cPath);
 
             filesPath.forEach((fName) => {
                 const fPath = path.join(cPath, fName);
-                const dirent = fs.lstatSync(fPath);
+                const dirent = fsLstatSync(fPath);
                 if (!dirent.isDirectory() && fName === `${deviceName}.ini`) {
-                    const avdData = fs.readFileSync(fPath).toString();
+                    const avdData = fsReadFileSync(fPath).toString();
                     const lines = avdData.trim().split(/\r?\n/);
                     lines.forEach((line) => {
                         const [key, value] = line.split('=');
                         if (key === 'path') {
-                            const initData = fs
-                                .readFileSync(`${value}/config.ini`)
+                            const initData = fsReadFileSync(`${value}/config.ini`)
                                 .toString();
                             const initLines = initData.trim().split(/\r?\n/);
                             const avdConfig = {};

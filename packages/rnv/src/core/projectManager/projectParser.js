@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import { WEB_HOSTED_PLATFORMS, INJECTABLE_CONFIG_PROPS } from '../constants';
 import {
     getAppFolder,
@@ -16,7 +15,10 @@ import {
     copyFileSync,
     mkdirSync,
     writeFileSync,
-    fsWriteFileSync
+    fsWriteFileSync,
+    fsExistsSync,
+    fsReaddirSync,
+    fsReadFileSync
 } from '../systemManager/fileutils';
 import { isPlatformActive } from '../platformManager';
 import { installPackageDependencies } from '../systemManager/exec';
@@ -28,7 +30,7 @@ import { inquirerPrompt } from '../../cli/prompt';
 export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
     logTask('checkAndCreateProjectPackage');
 
-    if (!fs.existsSync(c.paths.project.package)) {
+    if (!fsExistsSync(c.paths.project.package)) {
         logInfo(
             `Looks like your ${c.paths.project.package} is missing. Let's create one for you!`
         );
@@ -62,7 +64,7 @@ export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
 export const checkAndCreateGitignore = (c) => {
     logTask('checkAndCreateGitignore');
     const ignrPath = path.join(c.paths.project.dir, '.gitignore');
-    if (!fs.existsSync(ignrPath)) {
+    if (!fsExistsSync(ignrPath)) {
         logInfo(
             "Looks like your .gitignore is missing. Let's create one for you!"
         );
@@ -125,7 +127,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
                     if (font && !duplicateFontCheck.includes(font)) {
                         duplicateFontCheck.push(font);
                         const fontSource = path.join(dir, font).replace(/\\/g, '\\\\');
-                        if (fs.existsSync(fontSource)) {
+                        if (fsExistsSync(fontSource)) {
                             // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                             // mkdirSync(fontFolder);
                             // const fontDest = path.join(fontFolder, font);
@@ -148,7 +150,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     });
 
     fontsObj += '];';
-    if (!fs.existsSync(c.paths.project.assets.runtimeDir)) {
+    if (!fsExistsSync(c.paths.project.assets.runtimeDir)) {
         mkdirSync(c.paths.project.assets.runtimeDir);
     }
     const fontJsPath = path.join(
@@ -156,8 +158,8 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         'runtime',
         'fonts.web.js'
     );
-    if (fs.existsSync(fontJsPath)) {
-        const existingFileContents = fs.readFileSync(fontJsPath).toString();
+    if (fsExistsSync(fontJsPath)) {
+        const existingFileContents = fsReadFileSync(fontJsPath).toString();
 
         if (existingFileContents !== fontsObj) {
             logDebug('newFontsJsFile');
@@ -202,8 +204,8 @@ export const parseFonts = (c, callback) => {
 
     if (c.buildConfig) {
         // FONTS - PROJECT CONFIG
-        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
-            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach(
+        if (fsExistsSync(c.paths.project.projectConfig.fontsDir)) {
+            fsReaddirSync(c.paths.project.projectConfig.fontsDir).forEach(
                 (font) => {
                     if (callback) { callback(font, c.paths.project.projectConfig.fontsDir); }
                 }
@@ -212,14 +214,14 @@ export const parseFonts = (c, callback) => {
         // FONTS - APP CONFIG
         if (c.paths.appConfig.fontsDirs) {
             c.paths.appConfig.fontsDirs.forEach((v) => {
-                if (fs.existsSync(v)) {
-                    fs.readdirSync(v).forEach((font) => {
+                if (fsExistsSync(v)) {
+                    fsReaddirSync(v).forEach((font) => {
                         if (callback) callback(font, v);
                     });
                 }
             });
-        } else if (fs.existsSync(c.paths.appConfig.fontsDir)) {
-            fs.readdirSync(c.paths.appConfig.fontsDir).forEach((font) => {
+        } else if (fsExistsSync(c.paths.appConfig.fontsDir)) {
+            fsReaddirSync(c.paths.appConfig.fontsDir).forEach((font) => {
                 if (callback) callback(font, c.paths.appConfig.fontsDir);
             });
         }
@@ -287,7 +289,7 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
         const hasAssetFolder = c.paths.appConfig.dirs
-            .filter(v => fs.existsSync(path.join(v, `assets/${platform}`))).length;
+            .filter(v => fsExistsSync(path.join(v, `assets/${platform}`))).length;
         if (!hasAssetFolder) {
             await generateDefaultAssets(
                 c,
@@ -304,7 +306,7 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
             c.paths.appConfig.dir,
             `assets/${platform}`
         );
-        if (!fs.existsSync(sourcePath)) {
+        if (!fsExistsSync(sourcePath)) {
             await generateDefaultAssets(c, platform, sourcePath);
         }
         copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, null, tsPathsConfig);
@@ -373,7 +375,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
     );
     copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, false, false, configPropsInject, tsPathsConfig);
 
-    if (fs.existsSync(sourcePath1secLegacy)) {
+    if (fsExistsSync(sourcePath1secLegacy)) {
         logWarning(`Path: ${chalk().red(sourcePath1secLegacy)} is DEPRECATED.
 Move your files to: ${chalk().white(sourcePath1sec)} instead`);
     }

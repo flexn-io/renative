@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import {
     getAppFolder,
     getAppVersion,
@@ -9,9 +8,10 @@ import {
     getBuildFilePath,
     getConfigProp
 } from '../core/common';
+import { fsExistsSync, writeCleanFile, fsWriteFileSync } from '../core/systemManager/fileutils';
 import { doResolve, doResolvePath } from '../core/resolve';
 import { chalk, logTask, logWarning, logDebug } from '../core/systemManager/logger';
-import { writeCleanFile, fsWriteFileSync } from '../core/systemManager/fileutils';
+
 
 export const parseBuildGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -136,7 +136,7 @@ export const parseAppBuildGradleSync = (c, platform) => {
             }
         }
 
-        if (fs.existsSync(keystorePathFull)) {
+        if (fsExistsSync(keystorePathFull)) {
             const genPropsPath = path.join(appFolder, 'keystore.properties');
             fsWriteFileSync(
                 genPropsPath,
@@ -569,7 +569,7 @@ const _fixAndroidLegacy = (c, modulePath) => {
         'build.gradle'
     );
 
-    if (fs.existsSync(buildGradle)) {
+    if (fsExistsSync(buildGradle)) {
         logDebug('FIX:', buildGradle);
         writeCleanFile(buildGradle, buildGradle, [
             { pattern: " compile '", override: "  implementation '" },
@@ -587,7 +587,7 @@ const _fixAndroidLegacy = (c, modulePath) => {
 
 // const _getPrivateConfig = (c, platform) => {
 //     let privateConfigFolder = path.join(c.paths.workspace.dir, c.files.project.package.name, c.buildConfig.id);
-//     if (!fs.existsSync(privateConfigFolder)) {
+//     if (!fsExistsSync(privateConfigFolder)) {
 //         privateConfigFolder = path.join(c.paths.workspace.dir, c.files.project.package.name, 'appConfigs', c.buildConfig.id);
 //     }
 //     const appConfigSPP = c.buildConfig.platforms[platform] ? c.buildConfig.platforms[platform].signingPropertiesPath : null;
@@ -595,9 +595,9 @@ const _fixAndroidLegacy = (c, modulePath) => {
 //     const privateConfigPath = appConfigSPPClean || path.join(privateConfigFolder, 'config.private.json');
 //     c.paths.workspaceConfigPath = privateConfigPath;
 //     c.paths.workspace.appConfig.dir = privateConfigPath.replace('/config.private.json', '');
-//     if (fs.existsSync(privateConfigPath)) {
+//     if (fsExistsSync(privateConfigPath)) {
 //         try {
-//             const output = JSON.parse(fs.readFileSync(privateConfigPath));
+//             const output = JSON.parse(fsReadFileSync(privateConfigPath));
 //             output.parentFolder = c.paths.workspace.appConfig.dir;
 //             output.path = privateConfigPath;
 //             logInfo(

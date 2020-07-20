@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
 
@@ -19,7 +18,9 @@ import {
     writeFileSync,
     copyFolderContentsRecursiveSync,
     removeDirs,
-    fsWriteFileSync
+    fsWriteFileSync,
+    fsExistsSync,
+    fsReadFileSync
 } from '../systemManager/fileutils';
 import { listAppConfigsFoldersSync } from '../configManager/configParser';
 import { rnvClean } from '../tasks/task.rnv.clean';
@@ -56,7 +57,7 @@ export const checkAndMigrateProject = async (c) => {
         logWarning(e);
     }
 
-    if (fs.existsSync(paths.config)) {
+    if (fsExistsSync(paths.config)) {
         if (c.program.ci) {
             return Promise.reject(
                 'Your project has been created with previous version of ReNative'
@@ -99,7 +100,7 @@ const _migrateProjectSoft = async (c, paths) => {
     try {
         let requiresSave = false;
         files = {
-            configNew: fs.existsSync(paths.configNew)
+            configNew: fsExistsSync(paths.configNew)
                 ? readObjectSync(paths.configNew)
                 : null
         };
@@ -121,21 +122,21 @@ const _migrateProjectSoft = async (c, paths) => {
             });
         }
 
-        if (fs.existsSync(paths.package)) {
-            // const packageString = fs.readFileSync(paths.package).toString();
+        if (fsExistsSync(paths.package)) {
+            // const packageString = fsReadFileSync(paths.package).toString();
             // No longer necessary. covered in installPackageDependencies
             // if (!packageString.includes('jetify') && !packageString.includes('postinstall')) {
             //     logWarning(`You're missing ${chalk().white('"scripts": { "postinstall": "jetify" }')} in your package.json. Your android build might fail!`);
             // }
         }
 
-        if (fs.existsSync(paths.metroConfig)) {
+        if (fsExistsSync(paths.metroConfig)) {
             logWarning(
                 `Found deprecated metro config ${
                     paths.metroConfig
                 } and it needs to be migrated to ${paths.metroConfigNew}. ReNative will try to fix it for you!`
             );
-            const metroConfig = fs.readFileSync(paths.metroConfig).toString();
+            const metroConfig = fsReadFileSync(paths.metroConfig).toString();
             fsWriteFileSync(paths.metroConfigNew, metroConfig);
             removeFilesSync([paths.metroConfig]);
         }
@@ -190,7 +191,7 @@ const _migrateProjectSoft = async (c, paths) => {
             requiresSave = true;
         }
 
-        if (fs.existsSync(paths.permissions)) {
+        if (fsExistsSync(paths.permissions)) {
             logWarning(
                 `Found legacy object ${chalk().red(
                     paths.permissions
@@ -200,7 +201,7 @@ const _migrateProjectSoft = async (c, paths) => {
             );
         }
 
-        if (fs.existsSync(paths.plugins)) {
+        if (fsExistsSync(paths.plugins)) {
             logWarning(
                 `Found legacy object ${chalk().red(
                     paths.plugins
@@ -212,7 +213,7 @@ const _migrateProjectSoft = async (c, paths) => {
 
         if (requiresSave) writeFileSync(paths.configNew, files.configNew);
 
-        if (fs.existsSync(paths.projectConfigDir)) {
+        if (fsExistsSync(paths.projectConfigDir)) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 message:
@@ -241,8 +242,8 @@ const _migrateProjectSoft = async (c, paths) => {
 };
 
 // const _migrateFile = (oldPath, newPath) => {
-//     if (!fs.existsSync(newPath)) {
-//         if (fs.existsSync(oldPath)) {
+//     if (!fsExistsSync(newPath)) {
+//         if (fsExistsSync(oldPath)) {
 //             logWarning(
 //                 `Found old app config at ${chalk().white(
 //                     oldPath
@@ -256,8 +257,8 @@ const _migrateProjectSoft = async (c, paths) => {
 const _migrateProject = (c, paths) => new Promise((resolve) => {
     logTask('MIGRATION STARTED');
 
-    if (!fs.existsSync(c.paths.workspace.config)) {
-        if (fs.existsSync(paths.globalConfig)) {
+    if (!fsExistsSync(c.paths.workspace.config)) {
+        if (fsExistsSync(paths.globalConfig)) {
             copyFileSync(paths.globalConfig, c.paths.workspace.config);
         }
     }
@@ -341,7 +342,7 @@ const _migrateProject = (c, paths) => new Promise((resolve) => {
     ].concat(paths.appConfigDirs);
 
     paths.appConfigDirs.forEach((v) => {
-        if (fs.existsSync(v)) {
+        if (fsExistsSync(v)) {
             copyFileSync(v, v.replace('/config.json', '/renative.json'));
         }
     });

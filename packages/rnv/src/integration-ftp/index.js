@@ -1,10 +1,13 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import inquirer from 'inquirer';
-
+import {
+    fsExistsSync,
+    writeFileSync,
+    fsWriteFileSync,
+    fsReadFile
+} from '../core/systemManager/fileutils';
 import { logInfo, logTask } from '../core/systemManager/logger';
-import { writeFileSync, fsWriteFileSync } from '../core/systemManager/fileutils';
 import { DEPLOY_TARGET_FTP } from '../core/deployManager/webTools';
 
 const FtpDeploy = require('ftp-deploy');
@@ -14,12 +17,12 @@ const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_deployToFtp:${platform}`);
     let promise;
     const envPath = path.resolve(c.paths.project.dir, '.env');
-    if (!fs.existsSync(envPath)) {
+    if (!fsExistsSync(envPath)) {
         logInfo('.env file does not exist. Creating one for you');
         promise = _createEnvFtpConfig(envPath);
     } else {
         promise = new Promise((resolve2) => {
-            fs.readFile(envPath, (err, data) => {
+            fsReadFile(envPath, (err, data) => {
                 if (err) return reject(err);
                 resolve2(data.toString());
             });

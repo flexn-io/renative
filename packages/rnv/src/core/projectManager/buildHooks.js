@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
-import fs from 'fs';
 import { logTask, logHook } from '../systemManager/logger';
 import { executeAsync } from '../systemManager/exec';
+import { fsExistsSync } from '../systemManager/fileutils';
 
 export const executePipe = async (c, key) => {
     logHook('executePipe', `${key}`);
@@ -32,7 +32,7 @@ export const executePipe = async (c, key) => {
 export const buildHooks = async (c) => {
     logTask('buildHooks');
 
-    if (fs.existsSync(c.paths.buildHooks.index)) {
+    if (fsExistsSync(c.paths.buildHooks.index)) {
         if (c.isBuildHooksReady) {
             return true;
         }

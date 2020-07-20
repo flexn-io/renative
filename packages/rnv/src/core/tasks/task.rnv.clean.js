@@ -1,8 +1,7 @@
-import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
 
-import { removeDirs } from '../systemManager/fileutils';
+import { removeDirs, fsExistsSync, fsReaddirSync } from '../systemManager/fileutils';
 import { chalk, logTask, logToSummary, logDebug } from '../systemManager/logger';
 import { executeAsync } from '../systemManager/exec';
 
@@ -15,22 +14,22 @@ export const rnvClean = async (c, skipQuestionParam = false) => {
         'node_modules'
     );
     const pkgLock = path.join(c.paths.project.dir, 'package-lock.json');
-    if (fs.existsSync(immediateNodeModuleDir)) { pathsToRemove.push(immediateNodeModuleDir); }
-    if (fs.existsSync(pkgLock)) pathsToRemove.push(pkgLock);
+    if (fsExistsSync(immediateNodeModuleDir)) { pathsToRemove.push(immediateNodeModuleDir); }
+    if (fsExistsSync(pkgLock)) pathsToRemove.push(pkgLock);
     let msg = chalk().red(`${pkgLock}\n${immediateNodeModuleDir}`);
     const packagesFolder = path.join(c.paths.project.dir, 'packages');
-    if (fs.existsSync(packagesFolder)) {
-        fs.readdirSync(packagesFolder).forEach((dir) => {
+    if (fsExistsSync(packagesFolder)) {
+        fsReaddirSync(packagesFolder).forEach((dir) => {
             if (dir === '.DS_Store') {
                 const pth = path.join(packagesFolder, dir);
 
-                if (fs.existsSync(pth)) {
+                if (fsExistsSync(pth)) {
                     pathsToRemove.push(pth);
                     msg += chalk().red(`${pth}\n`);
                 }
             } else {
                 const pth2 = path.join(packagesFolder, dir, 'node_modules');
-                if (fs.existsSync(pth2)) {
+                if (fsExistsSync(pth2)) {
                     pathsToRemove.push(pth2);
                     msg += chalk().red(`${pth2}\n`);
                 }
@@ -40,7 +39,7 @@ export const rnvClean = async (c, skipQuestionParam = false) => {
                     dir,
                     'package-lock.json'
                 );
-                if (fs.existsSync(pth3)) {
+                if (fsExistsSync(pth3)) {
                     pathsToRemove.push(pth3);
                     msg += chalk().red(`${pth3}\n`);
                 }
@@ -49,8 +48,8 @@ export const rnvClean = async (c, skipQuestionParam = false) => {
     }
 
     const buildDirs = [];
-    if (fs.existsSync(c.paths.project.builds.dir)) { buildDirs.push(c.paths.project.builds.dir); }
-    if (fs.existsSync(c.paths.project.assets.dir)) { buildDirs.push(c.paths.project.assets.dir); }
+    if (fsExistsSync(c.paths.project.builds.dir)) { buildDirs.push(c.paths.project.builds.dir); }
+    if (fsExistsSync(c.paths.project.assets.dir)) { buildDirs.push(c.paths.project.assets.dir); }
 
     const answers = {
         modules: false,

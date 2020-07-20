@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import {
     chalk,
     logWarning,
@@ -10,6 +9,8 @@ import {
 import { isSystemWin } from '../utils';
 import {
     getRealPath,
+    fsExistsSync,
+    fsReadFileSync
 } from './fileutils';
 import { rnvCryptoDecrypt } from '../tasks/task.rnv.crypto.decrypt';
 
@@ -52,23 +53,23 @@ export const checkCrypto = async (c) => {
                 c.files.project.package.name
             );
             const tsWorkspacePath = path.join(wsPath, 'timestamp');
-            if (!fs.existsSync(source)) {
+            if (!fsExistsSync(source)) {
                 logWarning(
                     "This project uses encrypted files but you don't have them installed"
                 );
             } else {
                 let tsWorkspace = 0;
                 let tsProject = 0;
-                if (fs.existsSync(tsWorkspacePath)) {
+                if (fsExistsSync(tsWorkspacePath)) {
                     tsWorkspace = parseInt(
-                        fs.readFileSync(tsWorkspacePath).toString(),
+                        fsReadFileSync(tsWorkspacePath).toString(),
                         10
                     );
                 }
 
-                if (fs.existsSync(tsProjectPath)) {
+                if (fsExistsSync(tsProjectPath)) {
                     tsProject = parseInt(
-                        fs.readFileSync(tsProjectPath).toString(),
+                        fsReadFileSync(tsProjectPath).toString(),
                         10
                     );
                 }

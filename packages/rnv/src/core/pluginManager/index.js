@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-await-in-loop */
-import fs from 'fs';
 import path from 'path';
 import merge from 'deepmerge';
 import {
@@ -8,7 +7,10 @@ import {
     sanitizeDynamicProps,
     readObjectSync,
     copyFolderContentsRecursiveSync,
-    fsWriteFileSync
+    fsWriteFileSync,
+    fsExistsSync,
+    fsLstatSync,
+    fsReadFileSync
 } from '../systemManager/fileutils';
 import { getConfigProp, getBuildsFolder, getAppFolder } from '../common';
 import { versionCheck, writeRenativeConfigFile } from '../configManager/configParser';
@@ -490,7 +492,7 @@ const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'roo
                         RENATIVE_CONFIG_PLUGINS_NAME
                     );
                     c.paths.rnv.pluginTemplates.dirs[k] = ptPath;
-                    if (fs.existsSync(ptConfig)) {
+                    if (fsExistsSync(ptConfig)) {
                         c.files.rnv.pluginTemplates.configs[k] = readObjectSync(
                             ptConfig
                         );
@@ -519,11 +521,11 @@ const _overridePlugin = (c, pluginsPath, dir) => {
         );
     }
 
-    if (flavourSource && fs.existsSync(flavourSource)) {
+    if (flavourSource && fsExistsSync(flavourSource)) {
         copyFolderContentsRecursiveSync(flavourSource, dest, false);
-    } else if (fs.existsSync(source)) {
+    } else if (fsExistsSync(source)) {
         copyFolderContentsRecursiveSync(source, dest, false);
-        // fs.readdirSync(pp).forEach((dir) => {
+        // fsReaddirSync(pp).forEach((dir) => {
         //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
         // });
     } else {
@@ -542,13 +544,13 @@ const _overridePlugin = (c, pluginsPath, dir) => {
         Object.keys(overrideConfig.overrides).forEach((k) => {
             const override = overrideConfig.overrides[k];
             const ovDir = path.join(dest, k);
-            if (fs.existsSync(ovDir)) {
-                if (fs.lstatSync(ovDir).isDirectory()) {
+            if (fsExistsSync(ovDir)) {
+                if (fsLstatSync(ovDir).isDirectory()) {
                     logWarning(
                         'overrides.json: Directories not supported yet. specify path to actual file'
                     );
                 } else {
-                    let fileToFix = fs.readFileSync(ovDir).toString();
+                    let fileToFix = fsReadFileSync(ovDir).toString();
                     Object.keys(override).forEach((fk) => {
                         const regEx = new RegExp(fk, 'g');
                         const count = (fileToFix.match(regEx) || []).length;
@@ -652,7 +654,7 @@ export const copyTemplatePluginsSync = (c, platform) => {
         );
         copyFolderContentsRecursiveSync(sourcePath3sec, destPath, true, false, false, objectInject);
 
-        if (fs.existsSync(sourcePath3secLegacy)) {
+        if (fsExistsSync(sourcePath3secLegacy)) {
             logWarning(`Path: ${chalk().red(sourcePath3secLegacy)} is DEPRECATED.
     Move your files to: ${chalk().white(sourcePath3sec)} instead`);
         }

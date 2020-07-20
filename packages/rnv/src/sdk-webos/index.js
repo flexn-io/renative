@@ -1,8 +1,8 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import semver from 'semver';
 import inquirer from 'inquirer';
+import { fsExistsSync, getRealPath, writeCleanFile, fsReadFileSync } from '../core/systemManager/fileutils';
 import { executeAsync, execCLI, openCommand } from '../core/systemManager/exec';
 import {
     getAppFolder,
@@ -36,7 +36,7 @@ import {
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE
 } from '../core/constants';
-import { getRealPath, writeCleanFile } from '../core/systemManager/fileutils';
+
 
 import { rnvStart } from '../core/taskManager';
 import Config from '../core/configManager/config';
@@ -52,7 +52,7 @@ const launchWebOSimulator = (c) => {
         }`
     );
 
-    if (!fs.existsSync(ePath)) {
+    if (!fsExistsSync(ePath)) {
         return Promise.reject(`Can't find emulator at path: ${ePath}`);
     }
     if (isSystemWin) { return executeAsync(c, ePath, { detached: true, stdio: 'ignore' }); }
@@ -182,7 +182,7 @@ const runWebOS = async (c) => {
 
     logTask(`runWebOS:${platform}:${target}:${isHosted}`, chalk().grey);
 
-    const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+    const cnfg = JSON.parse(fsReadFileSync(configFilePath, 'utf-8'));
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
