@@ -1,49 +1,37 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
+import { getConfigProp, confirmActiveBundler } from '../core/common';
+import { chalk, logTask, logInfo } from '../core/systemManager/logger';
 import {
-    getConfigProp,
-    confirmActiveBundler,
-    getEntryFile
-} from '../core/common';
-import { doResolve } from '../core/resolve';
-import { configureGenericPlatform, logErrorPlatform } from '../core/platformManager';
-import { chalk, logTask, logError, logSummary, logInfo, logRaw } from '../core/systemManager/logger';
-import {
-    IOS,
-    TVOS,
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
     TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE,
     RN_CLI_CONFIG_NAME
 } from '../core/constants';
-import { configureGenericProject } from '../core/projectManager';
-import {
-    runXcodeProject,
-    exportXcodeProject,
-    buildXcodeProject,
-    packageBundleForXcode,
-    runAppleLog,
-    configureXcodeProject
-} from '../sdk-xcode';
-import {
-    packageAndroid,
-    runAndroid,
-    configureGradleProject,
-    buildAndroid,
-    runAndroidLog
-} from '../sdk-android';
-import { executeAsync } from '../core/systemManager/exec';
-
 import { isBundlerActive, waitForBundler } from './bundler';
 import { mkdirSync, writeFileSync, copyFileSync } from '../core/systemManager/fileutils';
 import { executeTask as _executeTask } from '../core/engineManager';
 import { taskRnvRun } from './task.rnv.run';
+import { taskRnvPackage } from './task.rnv.package';
+import { taskRnvBuild } from './task.rnv.build';
+import { taskRnvConfigure } from './task.rnv.configure';
+import { taskRnvStart } from './task.rnv.start';
+import { taskRnvExport } from './task.rnv.export';
+import { taskRnvDeploy } from './task.rnv.deploy';
+import { taskRnvDebug } from './task.rnv.debug';
+import { taskRnvLog } from './task.rnv.log';
 
 const TASKS = {};
 TASKS[TASK_RUN] = taskRnvRun;
+TASKS[TASK_PACKAGE] = taskRnvPackage;
+TASKS[TASK_BUILD] = taskRnvBuild;
+TASKS[TASK_CONFIGURE] = taskRnvConfigure;
+TASKS[TASK_START] = taskRnvStart;
+TASKS[TASK_EXPORT] = taskRnvExport;
+TASKS[TASK_DEPLOY] = taskRnvDeploy;
+TASKS[TASK_DEBUG] = taskRnvDebug;
+TASKS[TASK_LOG] = taskRnvLog;
+
 
 let keepRNVRunning = false;
 
@@ -54,7 +42,9 @@ export const startBundlerIfRequired = async (c, parentTask, originTask) => {
 
     const isRunning = await isBundlerActive(c);
     if (!isRunning) {
-        _taskStart(c, parentTask, originTask);
+        // _taskStart(c, parentTask, originTask);
+        await _executeTask(c, TASK_START, parentTask, originTask);
+
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
@@ -102,243 +92,6 @@ module.exports = config;
         );
     }
 };
-
-
-const BUNDLER_PLATFORMS = {};
-
-BUNDLER_PLATFORMS[IOS] = IOS;
-BUNDLER_PLATFORMS[TVOS] = IOS;
-BUNDLER_PLATFORMS[ANDROID] = [ANDROID];
-BUNDLER_PLATFORMS[ANDROID_TV] = [ANDROID];
-BUNDLER_PLATFORMS[ANDROID_WEAR] = [ANDROID];
-
-export const _taskConfigure = async (c, parentTask, originTask) => {
-    logTask('_taskConfigure', `parent:${parentTask} origin:${originTask}`);
-
-    await configureGenericPlatform(c);
-    await configureGenericProject(c);
-
-    switch (c.platform) {
-        case IOS:
-        case TVOS:
-            return configureXcodeProject(c);
-        case ANDROID:
-        case ANDROID_TV:
-        case ANDROID_WEAR:
-            return configureGradleProject(c);
-        default:
-            return logErrorPlatform(c);
-    }
-};
-TASKS[TASK_CONFIGURE] = _taskConfigure;
-
-export const _taskStart = async (c, parentTask, originTask) => {
-    const { platform } = c;
-    const { hosted } = c.program;
-
-    logTask('_taskStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
-
-    if (hosted) {
-        return logError(
-            'This platform does not support hosted mode',
-            true
-        );
-    }
-
-    await _executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
-
-    switch (platform) {
-        case IOS:
-        case TVOS:
-        case ANDROID:
-        case ANDROID_TV:
-        case ANDROID_WEAR: {
-            let startCmd = `node ${doResolve(
-                'react-native'
-            )}/local-cli/cli.js start --port ${
-                c.runtime.port
-            } --config=configs/metro.config.${c.platform}.js`;
-
-            if (c.program.resetHard) {
-                startCmd += ' --reset-cache';
-            } else if (c.program.reset && c.command === 'start') {
-                startCmd += ' --reset-cache';
-            }
-            // logSummary('BUNDLER STARTED');
-            const url = chalk().cyan(`http://${c.runtime.localhost}:${c.runtime.port}/${
-                getEntryFile(c, c.platform)}.bundle?platform=${BUNDLER_PLATFORMS[platform]}`);
-            logRaw(`
-
-Dev server running at: ${url}
-
-`);
-            return executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
-        }
-        default:
-
-            return logErrorPlatform(c);
-    }
-};
-TASKS[TASK_START] = _taskStart;
-
-const _taskRun = async (c, parentTask, originTask) => {
-    const { platform } = c;
-    const { port } = c.runtime;
-    const { target } = c.runtime;
-    const { hosted } = c.program;
-    logTask('_taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
-
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
-
-    await _executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
-
-    switch (platform) {
-        case IOS:
-        case TVOS:
-            if (!c.program.only) {
-                await startBundlerIfRequired(c, TASK_RUN, originTask);
-                await runXcodeProject(c);
-                if (!bundleAssets) {
-                    logSummary('BUNDLER STARTED');
-                }
-                return waitForBundlerIfRequired(c);
-            }
-            return runXcodeProject(c);
-        case ANDROID:
-        case ANDROID_TV:
-        case ANDROID_WEAR:
-            if (!c.program.only) {
-                await startBundlerIfRequired(c, TASK_RUN, originTask);
-                if (
-                    getConfigProp(c, platform, 'bundleAssets') === true
-                  || platform === ANDROID_WEAR
-                ) {
-                    await packageAndroid(c, platform);
-                }
-                await runAndroid(c, platform, target);
-                if (!bundleAssets) {
-                    logSummary('BUNDLER STARTED');
-                }
-                return waitForBundlerIfRequired(c);
-            }
-            return runAndroid(c, platform, target);
-        default:
-            return logErrorPlatform(c);
-    }
-};
-TASKS[TASK_RUN] = _taskRun;
-
-
-const _taskPackage = async (c, parentTask, originTask) => {
-    logTask('_taskPackage', `parent:${parentTask}`);
-    const { platform } = c;
-
-    const target = c.program.target || c.files.workspace.config.defaultTargets[platform];
-
-    await _executeTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
-
-    switch (platform) {
-        case IOS:
-        case TVOS:
-            return packageBundleForXcode(c);
-        case ANDROID:
-        case ANDROID_TV:
-        case ANDROID_WEAR:
-            return packageAndroid(
-                c,
-                platform,
-                target,
-                platform === ANDROID_WEAR
-            );
-        default:
-            logErrorPlatform(c);
-            return false;
-    }
-};
-TASKS[TASK_PACKAGE] = _taskPackage;
-
-
-const _taskExport = async (c, parentTask, originTask) => {
-    logTask('_taskExport', `parent:${parentTask}`);
-    const { platform } = c;
-
-    await _executeTask(c, TASK_BUILD, TASK_EXPORT, originTask);
-
-    switch (platform) {
-        case IOS:
-        case TVOS:
-            return exportXcodeProject(c, platform);
-        case ANDROID:
-        case ANDROID_TV:
-        case ANDROID_WEAR:
-            // Android Platforms don't need extra export step
-            return true;
-        default:
-            return logErrorPlatform(c);
-    }
-};
-TASKS[TASK_EXPORT] = _taskExport;
-
-const _taskBuild = async (c, parentTask, originTask) => {
-    logTask('_taskBuild', `parent:${parentTask}`);
-    const { platform } = c;
-
-    await _executeTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
-
-    switch (platform) {
-        case ANDROID:
-        case ANDROID_TV:
-        case ANDROID_WEAR:
-            return buildAndroid(c, platform);
-        case IOS:
-        case TVOS:
-            if (parentTask === TASK_EXPORT) {
-                // build task is not necessary when exporting ios
-                return true;
-            }
-            return buildXcodeProject(c, platform);
-        default:
-            return logErrorPlatform(c);
-    }
-};
-TASKS[TASK_BUILD] = _taskBuild;
-
-const _taskDeploy = async (c, parentTask, originTask) => {
-    logTask('_taskDeploy', `parent:${parentTask}`);
-
-    await _executeTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
-
-    // Deploy simply trggets hook
-    return true;
-};
-TASKS[TASK_DEPLOY] = _taskDeploy;
-
-const _taskDebug = async (c, parentTask) => {
-    logTask('_taskDebug', `parent:${parentTask}`);
-    const { platform } = c;
-
-    switch (platform) {
-        default:
-            return logErrorPlatform(c);
-    }
-};
-TASKS[TASK_DEBUG] = _taskDebug;
-
-export const _taskLog = async (c, parentTask) => {
-    logTask('_taskLog', `parent:${parentTask}`);
-    switch (c.platform) {
-        case ANDROID:
-        case ANDROID_TV:
-        case ANDROID_WEAR:
-            return runAndroidLog(c);
-        case IOS:
-        case TVOS:
-            return runAppleLog(c);
-        default:
-            return logErrorPlatform(c);
-    }
-};
-TASKS[TASK_LOG] = _taskLog;
 
 const executeTask = async (c, task, parentTask, originTask) => TASKS[task](c, parentTask, originTask);
 

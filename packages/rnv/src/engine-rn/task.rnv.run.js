@@ -22,19 +22,19 @@ import {
     runAndroid
 } from '../sdk-android';
 
-import { executeTask as _executeTask } from '../core/engineManager';
-import { startBundlerIfRequired, waitForBundlerIfRequired } from '.';
+import { executeTask } from '../core/engineManager';
+import { startBundlerIfRequired, waitForBundlerIfRequired } from './index';
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask('_taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
+    logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
-    await _executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
         case IOS:

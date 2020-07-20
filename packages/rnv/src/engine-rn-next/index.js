@@ -12,7 +12,6 @@ import {
 } from '../core/constants';
 import { deployWeb, waitForWebpack } from '../sdk-webpack';
 import { runWebNext, buildWebNext, exportWebNext, deployWebNext, configureNextIfRequired } from '../sdk-webpack/webNext';
-import Config from '../core/configManager/config';
 import { executeTask as _executeTask } from '../core/engineManager';
 
 import { taskRnvRun } from './task.rnv.run';
@@ -43,7 +42,7 @@ export const _taskStart = async (c, parentTask, originTask) => {
 
     logTask('_taskStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
 
-    if (Config.isWebHostEnabled && hosted) {
+    if (hosted) {
         waitForWebpack(c)
             .then(() => open(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
