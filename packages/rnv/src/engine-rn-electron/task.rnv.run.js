@@ -10,7 +10,7 @@ import {
 import {
     runElectron,
 } from '../sdk-electron';
-import { executeTask as _executeTask } from '../core/engineManager';
+import { executeTask } from '../core/engineManager';
 
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
@@ -18,9 +18,9 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask('_taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
+    logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await _executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
         case MACOS:

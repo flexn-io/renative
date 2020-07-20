@@ -292,8 +292,6 @@ const runWeb = async (c, enableRemoteDebugger) => {
 
     const isPortActive = await checkPortInUse(c, platform, port);
 
-    console.log('FFOOFFOF', isPortActive, 'DGDGDG', port);
-
     if (!isPortActive) {
         logInfo(
             `Looks like your ${chalk().white(
