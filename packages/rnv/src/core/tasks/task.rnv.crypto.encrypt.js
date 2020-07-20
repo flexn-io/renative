@@ -185,3 +185,12 @@ export const taskRnvCryptoEncrypt = async (c) => {
         );
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvCryptoEncrypt,
+    task: 'crypto',
+    subTask: 'encrypt',
+    params: [],
+    platforms: [],
+};

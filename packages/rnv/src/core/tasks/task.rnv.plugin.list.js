@@ -16,3 +16,12 @@ export const taskRnvPluginList = c => new Promise((resolve) => {
 
     resolve();
 });
+
+export default {
+    description: '',
+    fn: taskRnvPluginList,
+    task: 'plugin',
+    subTask: 'list',
+    params: [],
+    platforms: [],
+};

@@ -30,3 +30,12 @@ export const taskRnvCryptoInstallCerts = c => new Promise((resolve) => {
             resolve();
         });
 });
+
+export default {
+    description: '',
+    fn: taskRnvCryptoInstallCerts,
+    task: 'crypto',
+    subTask: 'installCerts',
+    params: [],
+    platforms: [],
+};

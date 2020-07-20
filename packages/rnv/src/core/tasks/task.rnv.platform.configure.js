@@ -68,3 +68,12 @@ export const taskRnvPlatformConfigure = async (c) => {
     await cleanPlaformAssets(c, c.platform);
     await _runCopyPlatforms(c, c.platform);
 };
+
+export default {
+    description: '',
+    fn: taskRnvPlatformConfigure,
+    task: 'platform',
+    subTask: 'configure',
+    params: [],
+    platforms: [],
+};

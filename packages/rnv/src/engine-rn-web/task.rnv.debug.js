@@ -22,3 +22,12 @@ export const taskRnvDebug = async (c, parentTask) => {
             logErrorPlatform(c);
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvDebug,
+    task: 'debug',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

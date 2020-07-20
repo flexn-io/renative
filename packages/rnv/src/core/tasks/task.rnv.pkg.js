@@ -99,3 +99,12 @@ export const taskRnvPkg = async () => {
             break;
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvPkg,
+    task: 'pkg',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

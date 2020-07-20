@@ -26,3 +26,12 @@ export const taskRnvWorkspaceConnect = async (c) => {
 
     logRaw(selectedWS);
 };
+
+export default {
+    description: '',
+    fn: taskRnvWorkspaceConnect,
+    task: 'workspace',
+    subTask: 'connect',
+    params: [],
+    platforms: [],
+};

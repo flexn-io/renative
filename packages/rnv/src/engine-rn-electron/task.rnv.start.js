@@ -37,3 +37,12 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
             return logErrorPlatform(c);
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvStart,
+    task: 'start',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

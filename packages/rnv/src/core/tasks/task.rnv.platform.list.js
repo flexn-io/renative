@@ -28,3 +28,12 @@ export const taskRnvPlatformList = c => new Promise((resolve) => {
     logToSummary(`Platforms:\n\n${opts.asString}`);
     resolve();
 });
+
+export default {
+    description: '',
+    fn: taskRnvPlatformList,
+    task: 'platform',
+    subTask: 'list',
+    params: [],
+    platforms: [],
+};

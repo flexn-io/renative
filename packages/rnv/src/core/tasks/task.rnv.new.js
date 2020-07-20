@@ -345,3 +345,12 @@ export const taskRnvNew = async (c) => {
         await _generateProject(c, data);
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvNew,
+    task: 'new',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

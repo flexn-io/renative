@@ -35,3 +35,12 @@ export const taskRnvPluginUpdate = async (c) => {
         logSuccess('Plugins updated successfully!');
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvPluginUpdate,
+    task: 'plugin',
+    subTask: 'update',
+    params: [],
+    platforms: [],
+};

@@ -25,3 +25,12 @@ export const taskRnvHooksRun = c => new Promise((resolve, reject) => {
         })
         .catch(e => reject(e));
 });
+
+export default {
+    description: '',
+    fn: taskRnvHooksRun,
+    task: 'hooks',
+    subTask: 'run',
+    params: [],
+    platforms: [],
+};

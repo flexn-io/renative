@@ -20,3 +20,12 @@ export const taskRnvPlatformSetup = async (c) => {
 
     updateProjectPlatforms(c, inputSupportedPlatforms);
 };
+
+export default {
+    description: '',
+    fn: taskRnvPlatformSetup,
+    task: 'platform',
+    subTask: 'setup',
+    params: [],
+    platforms: [],
+};

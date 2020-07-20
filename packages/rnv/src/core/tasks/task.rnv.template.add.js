@@ -45,3 +45,12 @@ export const taskRnvTemplateAdd = async (c) => {
 
     _addTemplate(c, template);
 };
+
+export default {
+    description: '',
+    fn: taskRnvTemplateAdd,
+    task: 'template',
+    subTask: 'add',
+    params: [],
+    platforms: [],
+};

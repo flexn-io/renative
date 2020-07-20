@@ -48,3 +48,12 @@ export const taskRnvTargetList = async (c) => {
             );
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvTargetList,
+    task: 'target',
+    subTask: 'list',
+    params: [],
+    platforms: [],
+};

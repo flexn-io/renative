@@ -71,3 +71,12 @@ Dev server running at: ${url}
             return logErrorPlatform(c);
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvStart,
+    task: 'start',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

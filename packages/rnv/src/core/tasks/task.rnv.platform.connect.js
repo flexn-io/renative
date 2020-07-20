@@ -72,3 +72,12 @@ export const taskRnvPlatformConnect = async (c) => {
         )} now!`
     );
 };
+
+export default {
+    description: '',
+    fn: taskRnvPlatformConnect,
+    task: 'platform',
+    subTask: 'connect',
+    params: [],
+    platforms: [],
+};

@@ -15,3 +15,12 @@ export const taskRnvDeploy = async (c, parentTask, originTask) => {
     // Deploy simply trggets hook
     return true;
 };
+
+export default {
+    description: '',
+    fn: taskRnvDeploy,
+    task: 'deploy',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

@@ -13,3 +13,12 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
 
     return true;
 };
+
+export default {
+    description: '',
+    fn: taskRnvPackage,
+    task: 'package',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

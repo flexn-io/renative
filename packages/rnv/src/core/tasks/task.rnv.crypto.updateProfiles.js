@@ -42,3 +42,12 @@ export const taskRnvCryptoUpdateProfiles = async (c) => {
         `updateProfiles: Platform ${c.platform} not supported`
     );
 };
+
+export default {
+    description: '',
+    fn: taskRnvCryptoUpdateProfiles,
+    task: 'crypto',
+    subTask: 'updateProfiles',
+    params: [],
+    platforms: [],
+};

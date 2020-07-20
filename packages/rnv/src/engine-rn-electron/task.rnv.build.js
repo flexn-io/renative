@@ -23,3 +23,12 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
             logErrorPlatform(c);
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvBuild,
+    task: 'build',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

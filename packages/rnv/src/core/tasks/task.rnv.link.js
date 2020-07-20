@@ -27,3 +27,12 @@ export const taskRnvLink = c => new Promise((resolve) => {
         resolve();
     }
 });
+
+export default {
+    description: '',
+    fn: taskRnvLink,
+    task: 'link',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

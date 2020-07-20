@@ -45,3 +45,12 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
             return logErrorPlatform(c);
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvConfigure,
+    task: 'configure',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

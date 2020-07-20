@@ -43,3 +43,12 @@ export const taskRnvWorkspaceAdd = async (c) => {
     workspaceID = workspaceIDInput || workspaceID;
     createWorkspace(c, workspaceID, workspacePath);
 };
+
+export default {
+    description: '',
+    fn: taskRnvWorkspaceAdd,
+    task: 'workspace',
+    subTask: 'add',
+    params: [],
+    platforms: [],
+};

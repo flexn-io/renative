@@ -89,3 +89,12 @@ export const taskRnvPluginAdd = async (c) => {
     spinner.succeed('All plugins installed!');
     logSuccess('Plugins installed successfully!');
 };
+
+export default {
+    description: '',
+    fn: taskRnvPluginAdd,
+    task: 'plugin',
+    subTask: 'add',
+    params: [],
+    platforms: [],
+};

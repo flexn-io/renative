@@ -13,3 +13,12 @@ export const taskRnvTemplateList = c => new Promise((resolve) => {
     logToSummary(`Templates:\n\n${opts.asString}`);
     resolve();
 });
+
+export default {
+    description: '',
+    fn: taskRnvTemplateList,
+    task: 'template',
+    subTask: 'list',
+    params: [],
+    platforms: [],
+};

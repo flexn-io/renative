@@ -10,3 +10,12 @@ export const taskRnvLog = async (c, parentTask) => {
             logErrorPlatform(c);
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvLog,
+    task: 'log',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

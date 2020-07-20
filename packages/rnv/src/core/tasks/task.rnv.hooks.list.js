@@ -24,3 +24,12 @@ export const taskRnvHooksList = c => new Promise((resolve, reject) => {
         })
         .catch(e => reject(e));
 });
+
+export default {
+    description: '',
+    fn: taskRnvHooksList,
+    task: 'hooks',
+    subTask: 'list',
+    params: [],
+    platforms: [],
+};

@@ -142,3 +142,12 @@ export const taskRnvPublish = async (c) => {
 
     return releaseIt();
 };
+
+export default {
+    description: '',
+    fn: taskRnvPublish,
+    task: 'publish',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

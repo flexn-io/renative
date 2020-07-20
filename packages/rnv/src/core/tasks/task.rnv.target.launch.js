@@ -50,3 +50,12 @@ export const taskRnvTargetLaunch = async (c) => {
             );
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvTargetLaunch,
+    task: 'target',
+    subTask: 'launch',
+    params: [],
+    platforms: [],
+};

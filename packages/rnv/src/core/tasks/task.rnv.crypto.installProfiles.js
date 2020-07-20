@@ -46,3 +46,12 @@ export const taskRnvCryptoInstallProfiles = c => new Promise((resolve) => {
 
     resolve();
 });
+
+export default {
+    description: '',
+    fn: taskRnvCryptoInstallProfiles,
+    task: 'crypto',
+    subTask: 'installProfiles',
+    params: [],
+    platforms: [],
+};

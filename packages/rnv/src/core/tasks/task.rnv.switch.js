@@ -13,3 +13,12 @@ export const taskRnvSwitch = c => new Promise((resolve, reject) => {
         .then(() => resolve())
         .catch(e => reject(e));
 });
+
+export default {
+    description: '',
+    fn: taskRnvSwitch,
+    task: 'switch',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

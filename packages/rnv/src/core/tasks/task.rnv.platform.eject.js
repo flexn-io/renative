@@ -68,3 +68,12 @@ export const taskRnvPlatformEject = async (c) => {
 TIP: You can select options with ${chalk().white('SPACE')} key before pressing ENTER!`);
     }
 };
+
+export default {
+    description: '',
+    fn: taskRnvPlatformEject,
+    task: 'platform',
+    subTask: 'eject',
+    params: [],
+    platforms: [],
+};

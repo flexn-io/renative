@@ -34,3 +34,12 @@ ${chalk().bold.white('OPTIONS:')}
 '--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
 `);
 };
+
+export default {
+    description: '',
+    fn: taskRnvHelp,
+    task: 'help',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

@@ -12,3 +12,12 @@ export const taskRnvHooksPipes = c => new Promise((resolve, reject) => {
         })
         .catch(e => reject(e));
 });
+
+export default {
+    description: '',
+    fn: taskRnvHooksPipes,
+    task: 'hooks',
+    subTask: 'pipes',
+    params: [],
+    platforms: [],
+};

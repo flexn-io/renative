@@ -25,3 +25,12 @@ export const taskRnvWorkspaceList = async (c) => {
 
     logToSummary(`Workspaces:\n\n${opts.asString}`);
 };
+
+export default {
+    description: '',
+    fn: taskRnvWorkspaceList,
+    task: 'workspace',
+    subTask: 'list',
+    params: [],
+    platforms: [],
+};

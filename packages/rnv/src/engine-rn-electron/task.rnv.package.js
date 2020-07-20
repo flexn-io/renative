@@ -14,3 +14,12 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
     // macOS does not require packaging
     return true;
 };
+
+export default {
+    description: '',
+    fn: taskRnvPackage,
+    task: 'package',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

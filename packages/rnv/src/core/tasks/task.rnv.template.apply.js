@@ -25,3 +25,12 @@ export const taskRnvTemplateApply = async (c) => {
 
     applyTemplate(c, template);
 };
+
+export default {
+    description: '',
+    fn: taskRnvTemplateApply,
+    task: 'template',
+    subTask: 'apply',
+    params: [],
+    platforms: [],
+};
