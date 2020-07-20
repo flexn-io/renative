@@ -8,6 +8,14 @@ import { executeAsync } from '../systemManager/exec';
 import { logWarning } from '../systemManager/logger';
 import { writeFileSync } from '../systemManager/fileutils';
 
+const includesPre = (version) => {
+    if (version.includes('alpha')) return 'alpha';
+    if (version.includes('beta')) return 'beta';
+    if (version.includes('rc')) return 'rc';
+    return false;
+};
+
+
 /*
  *
  * Usage
@@ -23,14 +31,8 @@ import { writeFileSync } from '../systemManager/fileutils';
  *
  */
 
-const includesPre = (version) => {
-    if (version.includes('alpha')) return 'alpha';
-    if (version.includes('beta')) return 'beta';
-    if (version.includes('rc')) return 'rc';
-    return false;
-};
 
-const rnvPublish = async (c) => {
+export const rnvPublish = async (c) => {
     // make sure release-it is installed
     await Config.checkRequiredPackage(c,
         'release-it',
@@ -140,5 +142,3 @@ const rnvPublish = async (c) => {
 
     return releaseIt();
 };
-
-export default rnvPublish;

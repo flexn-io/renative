@@ -31,6 +31,20 @@ import { rnvHooksRun } from '../core/tasks/task.rnv.hooks.run';
 import { rnvHooksPipes } from '../core/tasks/task.rnv.hooks.pipes';
 import { rnvClean } from '../core/tasks/task.rnv.clean';
 import { rnvFastlane } from '../integration-fastlane/task.rnv.fastlane';
+import { rnvPublish } from '../core/tasks/task.rnv.publish';
+import { rnvPkg } from '../core/tasks/task.rnv.pkg';
+
+
+import {
+    rnvRun,
+    rnvBuild,
+    rnvPackage,
+    rnvExport,
+    rnvLog,
+    rnvDeploy,
+    rnvStart,
+    rnvConfigure
+} from '../core/taskManager';
 
 import {
     chalk,
@@ -47,16 +61,6 @@ import { configurePlugins } from '../core/pluginManager';
 import { executePipe } from '../core/projectManager/buildHooks';
 import { checkCrypto } from '../core/systemManager/crypto';
 import { inquirerPrompt } from './prompt';
-import {
-    rnvRun,
-    rnvBuild,
-    rnvPackage,
-    rnvExport,
-    rnvLog,
-    rnvDeploy,
-    rnvStart,
-    rnvConfigure
-} from '../core/taskManager';
 import { getEngineByPlatform } from '../core/engineManager';
 import { isSystemWin } from '../core/utils';
 import {
@@ -89,8 +93,7 @@ import {
     configureNodeModules,
     checkAndCreateProjectPackage,
 } from '../core/projectManager/projectParser';
-import rnvPublish from '../core/projectManager/publish';
-import rnvPkg from '../core/projectManager/package';
+
 
 export const rnvHelp = () => {
     let cmdsString = '';
