@@ -2,13 +2,8 @@
 import { configureGenericPlatform, logErrorPlatform } from '../core/platformManager';
 import { configureGenericProject } from '../core/projectManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    MACOS,
-    WINDOWS,
-} from '../core/constants';
-import {
-    configureElectronProject,
-} from '../sdk-electron';
+import { MACOS, WINDOWS } from '../core/constants';
+import { configureElectronProject } from '../sdk-electron';
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure', `parent:${parentTask} origin:${originTask}`);

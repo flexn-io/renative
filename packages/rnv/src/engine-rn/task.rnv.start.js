@@ -36,8 +36,10 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
             true
         );
     }
+    if (!parentTask) {
+        await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
+    }
 
-    await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
 
     switch (platform) {
         case IOS:
@@ -64,7 +66,11 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 Dev server running at: ${url}
 
 `);
-            return executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
+            if (!parentTask) {
+                return executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
+            }
+            executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
+            return true;
         }
         default:
 

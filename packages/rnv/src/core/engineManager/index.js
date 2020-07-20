@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { logDebug, logTask } from '../systemManager/logger';
+import { logDebug, logTask, logInitTask } from '../systemManager/logger';
 import { isPlatformSupported } from '../platformManager';
 import {
     getConfigProp,
@@ -93,15 +93,18 @@ const _executePipe = async (c, task, phase) => {
 };
 
 export const executeTask = async (c, task, parentTask, originTask) => {
-    logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask}`);
+    const pt = parentTask ? ` => ${parentTask}` : '';
+    c._currentTask = task;
+    logInitTask(`executeTask${pt} => ${task}`);
     if (c.program.only && !!parentTask) {
-        logTask('executeTask', `task:${task} SKIPPING...`);
+        logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} SKIPPING...`);
     } else {
-        logTask('executeTask', `task:${task} EXECUTING...`);
+        logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} EXECUTING...`);
         await _executePipe(c, task, 'before');
         await getEngineRunner(c).executeTask(c, task, parentTask, originTask);
         await _executePipe(c, task, 'after');
     }
+    c._currentTask = parentTask;
 };
 
 // export const registerEngine = (c) => {
