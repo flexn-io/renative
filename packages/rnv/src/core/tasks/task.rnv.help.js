@@ -1,6 +1,6 @@
 import { chalk, logToSummary } from '../systemManager/logger';
 
-export const rnvHelp = (c) => {
+export const taskRnvHelp = (c) => {
     let cmdsString = '';
     Object.keys(c.COMMANDS).forEach((key) => {
         cmdsString += `${key}, `;

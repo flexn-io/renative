@@ -20,7 +20,7 @@ import { launchAppleSimulator } from '../../sdk-xcode/deviceManager';
 import { launchKaiOSSimulator } from '../../sdk-firefox';
 
 
-export const rnvTargetLaunch = async (c) => {
+export const taskRnvTargetLaunch = async (c) => {
     logTask('_runLaunch');
 
     await isPlatformSupported(c);

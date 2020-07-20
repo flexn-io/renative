@@ -8,8 +8,8 @@ import {
 import { createWorkspace } from '../projectManager/workspace';
 import { fsExistsSync } from '../systemManager/fileutils';
 
-export const rnvWorkspaceAdd = async (c) => {
-    logTask('rnvWorkspaceAdd');
+export const taskRnvWorkspaceAdd = async (c) => {
+    logTask('taskRnvWorkspaceAdd');
 
     const { workspace } = await inquirerPrompt({
         name: 'workspace',

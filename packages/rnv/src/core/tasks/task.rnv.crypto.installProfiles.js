@@ -12,11 +12,11 @@ import {
     fsExistsSync
 } from '../systemManager/fileutils';
 
-export const rnvCryptoInstallProfiles = c => new Promise((resolve) => {
-    logTask('rnvCryptoInstallProfiles');
+export const taskRnvCryptoInstallProfiles = c => new Promise((resolve) => {
+    logTask('taskRnvCryptoInstallProfiles');
     if (c.platform !== 'ios') {
         logError(
-            `rnvCryptoInstallProfiles: platform ${c.platform} not supported`
+            `taskRnvCryptoInstallProfiles: platform ${c.platform} not supported`
         );
         resolve();
         return;
@@ -37,7 +37,7 @@ export const rnvCryptoInstallProfiles = c => new Promise((resolve) => {
 
     try {
         mobileprovisionArr.forEach((v) => {
-            logDebug(`rnvCryptoInstallProfiles: Installing: ${v}`);
+            logDebug(`taskRnvCryptoInstallProfiles: Installing: ${v}`);
             copyFileSync(v, ppFolder);
         });
     } catch (e) {

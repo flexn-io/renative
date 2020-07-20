@@ -19,8 +19,8 @@ import { listWebOSTargets } from '../../sdk-webos';
 import { listAppleDevices } from '../../sdk-xcode/deviceManager';
 
 
-export const rnvTargetList = async (c) => {
-    logTask('rnvTargetList');
+export const taskRnvTargetList = async (c) => {
+    logTask('taskRnvTargetList');
 
     await isPlatformSupported(c);
 

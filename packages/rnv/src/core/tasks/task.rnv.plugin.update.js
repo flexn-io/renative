@@ -10,8 +10,8 @@ import {
 import { getPluginList } from '../pluginManager';
 
 
-export const rnvPluginUpdate = async (c) => {
-    logTask('rnvPluginUpdate');
+export const taskRnvPluginUpdate = async (c) => {
+    logTask('taskRnvPluginUpdate');
 
     const o = getPluginList(c, true);
 

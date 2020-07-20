@@ -176,8 +176,8 @@ const _prepareProjectOverview = (c, data) => {
 };
 
 
-export const rnvNew = async (c) => {
-    logTask('rnvNew');
+export const taskRnvNew = async (c) => {
+    logTask('taskRnvNew');
     const { args } = c.program;
 
     let data = {

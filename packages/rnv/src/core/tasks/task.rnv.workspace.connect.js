@@ -8,8 +8,8 @@ import {
 import { getWorkspaceConnectionString } from '../projectManager/workspace';
 
 
-export const rnvWorkspaceConnect = async (c) => {
-    logTask('rnvWorkspaceConnect');
+export const taskRnvWorkspaceConnect = async (c) => {
+    logTask('taskRnvWorkspaceConnect');
 
     const opts = Object.keys(c.files.rnv.configWorkspaces?.workspaces).map(
         v => `${v} ${getWorkspaceConnectionString(

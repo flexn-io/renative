@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import { updateProfile } from '../../sdk-xcode/fastlane';
 
-export const rnvCryptoUpdateProfile = async (c) => {
+export const taskRnvCryptoUpdateProfile = async (c) => {
     await updateProfile(c);
 };

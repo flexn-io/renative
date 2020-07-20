@@ -73,7 +73,7 @@ const publishAll = () => {
     return true;
 };
 
-const rnvPkg = async () => {
+const taskRnvPkg = async () => {
     let args = [...Config.getConfig().program.rawArgs];
     args = args.slice(3);
 
@@ -100,4 +100,4 @@ const rnvPkg = async () => {
     }
 };
 
-export default rnvPkg;
+export default taskRnvPkg;

@@ -8,8 +8,8 @@ import {
 } from '../systemManager/logger';
 
 
-export const rnvWorkspaceList = async (c) => {
-    logTask('rnvWorkspaceList');
+export const taskRnvWorkspaceList = async (c) => {
+    logTask('taskRnvWorkspaceList');
 
     const opts = generateOptions(
         c.files.rnv.configWorkspaces?.workspaces,

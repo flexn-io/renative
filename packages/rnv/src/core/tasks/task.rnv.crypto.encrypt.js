@@ -122,8 +122,8 @@ ${getEnvExportCmd(envVar, key)}
     }
 };
 
-export const rnvCryptoEncrypt = async (c) => {
-    logTask('rnvCryptoEncrypt');
+export const taskRnvCryptoEncrypt = async (c) => {
+    logTask('taskRnvCryptoEncrypt');
 
     const source = `./${c.files.project.package.name}`;
 

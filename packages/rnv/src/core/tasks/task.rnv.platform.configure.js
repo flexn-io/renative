@@ -59,9 +59,9 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve) => {
     });
 });
 
-export const rnvPlatformConfigure = async (c) => {
+export const taskRnvPlatformConfigure = async (c) => {
     // c.platform = c.program.platform || 'all';
-    logTask(`rnvPlatformConfigure:${c.platform}`);
+    logTask(`taskRnvPlatformConfigure:${c.platform}`);
 
     await isPlatformSupported(c);
     await cleanPlatformBuild(c, c.platform);

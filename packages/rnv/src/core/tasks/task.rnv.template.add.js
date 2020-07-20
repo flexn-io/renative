@@ -31,8 +31,8 @@ export const _addTemplate = (c, template) => {
     _writeObjectSync(c, c.paths.project.config, c.files.project.config);
 };
 
-export const rnvTemplateAdd = async (c) => {
-    logTask('rnvTemplateAdd');
+export const taskRnvTemplateAdd = async (c) => {
+    logTask('taskRnvTemplateAdd');
 
     const opts = getTemplateOptions(c);
 

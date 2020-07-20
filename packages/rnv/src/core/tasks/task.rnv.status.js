@@ -1,1 +1,1 @@
-export const rnvStatus = async () => Promise.resolve();
+export const taskRnvStatus = async () => Promise.resolve();

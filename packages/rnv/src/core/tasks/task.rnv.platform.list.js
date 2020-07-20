@@ -23,7 +23,7 @@ const _genPlatOptions = (c) => {
     return opts;
 };
 
-export const rnvPlatformList = c => new Promise((resolve) => {
+export const taskRnvPlatformList = c => new Promise((resolve) => {
     const opts = _genPlatOptions(c);
     logToSummary(`Platforms:\n\n${opts.asString}`);
     resolve();

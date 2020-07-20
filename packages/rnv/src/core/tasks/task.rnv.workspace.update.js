@@ -5,7 +5,7 @@ import {
 } from '../systemManager/logger';
 
 
-export const rnvWorkspaceUpdate = async () => {
-    // TODO: rnvWorkspaceUpdate
-    logTask('rnvWorkspaceUpdate');
+export const taskRnvWorkspaceUpdate = async () => {
+    // TODO: taskRnvWorkspaceUpdate
+    logTask('taskRnvWorkspaceUpdate');
 };

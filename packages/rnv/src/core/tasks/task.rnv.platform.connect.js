@@ -10,8 +10,8 @@ import {
 } from '../systemManager/fileutils';
 import { generatePlatformChoices } from '../platformManager';
 
-export const rnvPlatformConnect = async (c) => {
-    logTask('rnvPlatformConnect');
+export const taskRnvPlatformConnect = async (c) => {
+    logTask('taskRnvPlatformConnect');
 
     const { connectedPlatforms } = await inquirer.prompt({
         name: 'connectedPlatforms',

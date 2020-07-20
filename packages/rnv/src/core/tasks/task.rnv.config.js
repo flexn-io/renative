@@ -4,7 +4,7 @@ import { logWarning } from '../systemManager/logger';
 import { configSchema } from '../constants';
 import Config from '../configManager/config';
 
-export const rnvConfig = () => {
+export const taskRnvConfig = () => {
     const [, key, value] = Config.rnvArguments; // first arg is config so it's useless
     if (key === 'list') {
         const rows = [];
@@ -31,4 +31,13 @@ export const rnvConfig = () => {
     } else if (Config.setConfigValue(key, value)) { printTable(Config.listConfigValue(key)); }
 
     return true;
+};
+
+export default {
+    description: '',
+    fn: taskRnvConfig,
+    task: 'config',
+    subTask: null,
+    params: [],
+    platforms: [],
 };

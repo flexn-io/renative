@@ -8,8 +8,8 @@ import {
 import { applyTemplate, getInstalledTemplateOptions } from '../templateManager';
 
 
-export const rnvTemplateApply = async (c) => {
-    logTask(`rnvTemplateApply:${c.program.template}`);
+export const taskRnvTemplateApply = async (c) => {
+    logTask(`taskRnvTemplateApply:${c.program.template}`);
 
     if (c.program.template) {
         return applyTemplate(c, c.program.template);

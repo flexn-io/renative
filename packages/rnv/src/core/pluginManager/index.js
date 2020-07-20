@@ -36,7 +36,7 @@ export const getPluginList = (c, isUpdate = false) => {
         asString: '',
         asArray: [],
         plugins: [],
-        allPlugins: {} // this is used by rnvPluginAdd
+        allPlugins: {} // this is used by taskRnvPluginAdd
     };
 
     let i = 1;
@@ -76,7 +76,7 @@ export const getPluginList = (c, isUpdate = false) => {
                     name: `${k} ${versionString}`,
                     value: k
                 });
-                output.allPlugins[k] = p; // this is used by rnvPluginAdd
+                output.allPlugins[k] = p; // this is used by taskRnvPluginAdd
                 i++;
             } else if (!isUpdate) {
                 output.plugins.push(k);
@@ -89,7 +89,7 @@ export const getPluginList = (c, isUpdate = false) => {
                     )}) [${platforms}] - ${installedString}`,
                     value: k
                 });
-                output.allPlugins[k] = p; // this is used by rnvPluginAdd
+                output.allPlugins[k] = p; // this is used by taskRnvPluginAdd
 
                 i++;
             }

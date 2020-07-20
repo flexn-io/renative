@@ -5,7 +5,7 @@ import { SUPPORTED_PLATFORMS } from '../constants';
 import { updateProjectPlatforms } from '../platformManager';
 
 
-export const rnvPlatformSetup = async (c) => {
+export const taskRnvPlatformSetup = async (c) => {
     const currentPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
 
     const { inputSupportedPlatforms } = await inquirer.prompt({

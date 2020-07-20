@@ -7,8 +7,8 @@ import {
 import { getTemplateOptions } from '../templateManager';
 
 
-export const rnvTemplateList = c => new Promise((resolve) => {
-    logTask('rnvTemplateList');
+export const taskRnvTemplateList = c => new Promise((resolve) => {
+    logTask('taskRnvTemplateList');
     const opts = getTemplateOptions(c);
     logToSummary(`Templates:\n\n${opts.asString}`);
     resolve();

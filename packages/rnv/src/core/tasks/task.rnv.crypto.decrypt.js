@@ -52,8 +52,8 @@ const _unzipAndCopy = async (
     logSuccess(`Files succesfully extracted into ${destFolder}`);
 };
 
-export const rnvCryptoDecrypt = async (c) => {
-    logTask('rnvCryptoDecrypt');
+export const taskRnvCryptoDecrypt = async (c) => {
+    logTask('taskRnvCryptoDecrypt');
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
 
@@ -232,4 +232,13 @@ and we will try to help!
         );
         return true;
     }
+};
+
+export default {
+    description: '',
+    fn: taskRnvCryptoDecrypt,
+    task: 'crypto',
+    subTask: 'decrypt',
+    params: [],
+    platforms: [],
 };

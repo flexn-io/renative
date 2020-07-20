@@ -3,8 +3,8 @@ import { generateOptions } from '../../cli/prompt';
 import { buildHooks } from '../projectManager/buildHooks';
 
 
-export const rnvHooksList = c => new Promise((resolve, reject) => {
-    logTask('rnvHooksList');
+export const taskRnvHooksList = c => new Promise((resolve, reject) => {
+    logTask('taskRnvHooksList');
 
     buildHooks(c)
         .then(() => {

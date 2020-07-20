@@ -5,7 +5,7 @@ import {
     copyFolderContentsRecursiveSync, fsExistsSync, fsReadFileSync
 } from '../systemManager/fileutils';
 
-export const rnvLink = c => new Promise((resolve) => {
+export const taskRnvLink = c => new Promise((resolve) => {
     if (fsExistsSync(c.paths.project.npmLinkPolyfill)) {
         const l = JSON.parse(
             fsReadFileSync(c.paths.project.npmLinkPolyfill).toString()

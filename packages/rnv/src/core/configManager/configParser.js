@@ -18,7 +18,7 @@ import {
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
-import { rnvTemplateApply } from '../tasks/task.rnv.template.apply';
+import { taskRnvTemplateApply } from '../tasks/task.rnv.template.apply';
 
 import {
     copyFileSync,
@@ -842,7 +842,7 @@ export const updateConfig = async (c, appConfigId) => {
         });
 
         if (conf) {
-            await rnvTemplateApply(c);
+            await taskRnvTemplateApply(c);
             await setAppConfig(c);
         }
     }

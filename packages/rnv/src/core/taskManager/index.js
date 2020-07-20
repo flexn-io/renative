@@ -7,8 +7,8 @@ import {
 } from '../constants';
 
 
-export const rnvConfigure = async (c) => {
-    logTask('rnvConfigure');
+export const taskRnvConfigure = async (c) => {
+    logTask('taskRnvConfigure');
     return initializeTask(c, TASK_CONFIGURE);
 };
 

@@ -23,7 +23,7 @@ import {
     fsReadFileSync
 } from '../systemManager/fileutils';
 import { listAppConfigsFoldersSync } from '../configManager/configParser';
-import { rnvClean } from '../tasks/task.rnv.clean';
+import { taskRnvClean } from '../tasks/task.rnv.clean';
 import { RN_CLI_CONFIG_NAME } from '../constants';
 import { configureNodeModules } from './projectParser';
 import { inquirerPrompt } from '../../cli/prompt';
@@ -74,7 +74,7 @@ export const checkAndMigrateProject = async (c) => {
             c.program.reset = true;
             await _migrateProject(c, paths);
             await _migrateProjectSoft(c, paths);
-            await rnvClean(c);
+            await taskRnvClean(c);
             await configureNodeModules(c);
             return true;
         }

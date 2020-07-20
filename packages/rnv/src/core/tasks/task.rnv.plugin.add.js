@@ -11,8 +11,8 @@ import {
 import { getPluginList, resolvePluginDependants } from '../pluginManager';
 
 /* eslint-disable no-await-in-loop */
-export const rnvPluginAdd = async (c) => {
-    logTask('rnvPluginAdd');
+export const taskRnvPluginAdd = async (c) => {
+    logTask('taskRnvPluginAdd');
 
     if (c.runtime.isWrapper) {
         return Promise.reject('Adding plugins in wrapper project is not supported.');

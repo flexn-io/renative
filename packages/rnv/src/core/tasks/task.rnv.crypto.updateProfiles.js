@@ -27,8 +27,8 @@ const _updateProfiles = (c) => {
     );
 };
 
-export const rnvCryptoUpdateProfiles = async (c) => {
-    logTask('rnvCryptoUpdateProfiles');
+export const taskRnvCryptoUpdateProfiles = async (c) => {
+    logTask('taskRnvCryptoUpdateProfiles');
     switch (c.platform) {
         case IOS:
         case TVOS:

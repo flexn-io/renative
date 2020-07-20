@@ -32,7 +32,7 @@ const includesPre = (version) => {
  */
 
 
-export const rnvPublish = async (c) => {
+export const taskRnvPublish = async (c) => {
     // make sure release-it is installed
     await Config.checkRequiredPackage(c,
         'release-it',

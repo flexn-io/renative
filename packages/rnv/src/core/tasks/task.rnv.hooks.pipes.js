@@ -2,8 +2,8 @@ import { logTask, logRaw } from '../systemManager/logger';
 import { generateOptions } from '../../cli/prompt';
 import { buildHooks } from '../projectManager/buildHooks';
 
-export const rnvHooksPipes = c => new Promise((resolve, reject) => {
-    logTask('rnvHooksPipes');
+export const taskRnvHooksPipes = c => new Promise((resolve, reject) => {
+    logTask('taskRnvHooksPipes');
 
     buildHooks(c)
         .then(() => {

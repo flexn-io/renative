@@ -5,8 +5,8 @@ import { removeDirs, fsExistsSync, fsReaddirSync } from '../systemManager/fileut
 import { chalk, logTask, logToSummary, logDebug } from '../systemManager/logger';
 import { executeAsync } from '../systemManager/exec';
 
-export const rnvClean = async (c, skipQuestionParam = false) => {
-    logTask('rnvClean');
+export const taskRnvClean = async (c, skipQuestionParam = false) => {
+    logTask('taskRnvClean');
     const skipQuestion = c.program.ci ? true : skipQuestionParam;
     const pathsToRemove = [];
     const immediateNodeModuleDir = path.join(
@@ -127,7 +127,7 @@ export const rnvClean = async (c, skipQuestionParam = false) => {
 
 export default {
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
-    fn: rnvClean,
+    fn: taskRnvClean,
     task: 'clean',
     subTask: null,
     params: [],

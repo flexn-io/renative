@@ -3,9 +3,9 @@ import { logTask } from '../systemManager/logger';
 import { copyRuntimeAssets, copySharedPlatforms } from '../projectManager/projectParser';
 import { generateRuntimeConfig } from '../configManager/configParser';
 
-export const rnvSwitch = c => new Promise((resolve, reject) => {
+export const taskRnvSwitch = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
-    logTask(`rnvSwitch:${p}`);
+    logTask(`taskRnvSwitch:${p}`);
 
     copyRuntimeAssets(c)
         .then(() => copySharedPlatforms(c))

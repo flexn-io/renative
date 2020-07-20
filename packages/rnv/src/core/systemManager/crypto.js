@@ -12,7 +12,7 @@ import {
     fsExistsSync,
     fsReadFileSync
 } from './fileutils';
-import { rnvCryptoDecrypt } from '../tasks/task.rnv.crypto.decrypt';
+import { taskRnvCryptoDecrypt } from '../tasks/task.rnv.crypto.decrypt';
 
 export const getEnvExportCmd = (envVar, key) => {
     if (isSystemWin) {
@@ -79,7 +79,7 @@ export const checkCrypto = async (c) => {
 project timestamp: ${chalk().grey(`${tsProject} - ${new Date(tsProject)}`)}
 workspace timestamp: ${chalk().grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
 you should run decrypt`);
-                    await rnvCryptoDecrypt(c);
+                    await taskRnvCryptoDecrypt(c);
                     return;
                 }
 

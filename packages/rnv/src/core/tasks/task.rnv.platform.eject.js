@@ -11,8 +11,8 @@ import {
 import { PLATFORMS } from '../constants';
 import { generatePlatformChoices } from '../platformManager';
 
-export const rnvPlatformEject = async (c) => {
-    logTask('rnvPlatformEject');
+export const taskRnvPlatformEject = async (c) => {
+    logTask('taskRnvPlatformEject');
 
     const { ejectedPlatforms } = await inquirer.prompt({
         name: 'ejectedPlatforms',

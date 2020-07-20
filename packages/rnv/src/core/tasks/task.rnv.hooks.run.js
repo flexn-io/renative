@@ -2,8 +2,8 @@ import { chalk, logTask } from '../systemManager/logger';
 import { buildHooks } from '../projectManager/buildHooks';
 
 
-export const rnvHooksRun = c => new Promise((resolve, reject) => {
-    logTask('rnvHooksRun');
+export const taskRnvHooksRun = c => new Promise((resolve, reject) => {
+    logTask('taskRnvHooksRun');
 
     buildHooks(c)
         .then(() => {

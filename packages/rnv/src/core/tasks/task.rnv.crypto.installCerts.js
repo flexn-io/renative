@@ -8,8 +8,8 @@ import {
 } from '../systemManager/fileutils';
 import { executeAsync } from '../systemManager/exec';
 
-export const rnvCryptoInstallCerts = c => new Promise((resolve) => {
-    logTask('rnvCryptoInstallCerts');
+export const taskRnvCryptoInstallCerts = c => new Promise((resolve) => {
+    logTask('taskRnvCryptoInstallCerts');
 
     if (c.platform !== 'ios') {
         logError(`_installTempCerts: platform ${c.platform} not supported`);

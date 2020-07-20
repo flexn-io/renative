@@ -6,7 +6,7 @@ import {
 
 import { getPluginList } from '../pluginManager';
 
-export const rnvPluginList = c => new Promise((resolve) => {
+export const taskRnvPluginList = c => new Promise((resolve) => {
     logTask('_runList');
 
     const o = getPluginList(c);
