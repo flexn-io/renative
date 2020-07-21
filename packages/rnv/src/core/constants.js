@@ -760,6 +760,7 @@ export const TASK_PACKAGE = 'package';
 export const TASK_DEPLOY = 'deploy';
 export const TASK_LOG = 'log';
 export const TASK_CLEAN = 'clean';
+export const TASK_PLATFORM_CONFIGURE = 'platform configure';
 
 export const configSchema = {
     analytics: {

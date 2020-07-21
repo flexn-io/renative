@@ -16,13 +16,13 @@ import EngineRn from '../../engine-rn';
 import EngineRnWeb from '../../engine-rn-web';
 import EngineRnElectron from '../../engine-rn-electron';
 import EngineRnNext from '../../engine-rn-next';
-// import EngineRnElectronNext from './engine-rn-electron-next';
+import EngineCore from '../../engine-core';
+
 const ENGINES = {
     'engine-rn': EngineRn,
     'engine-rn-web': EngineRnWeb,
     'engine-rn-electron': EngineRnElectron,
     'engine-rn-next': EngineRnNext,
-    // 'engine-rn-electron-next': EngineRnElectronNext
 };
 
 const EngineNoOp = {
@@ -30,7 +30,7 @@ const EngineNoOp = {
         logTask('EngineNoOp:executeTask', `task:${task} parent:${parentTask} origin:${originTask}`);
         await isPlatformSupported(c);
         await isBuildSchemeSupported(c);
-        return getEngineRunner(c).executeTask(c, task);
+        return getEngineRunner(c, task).executeTask(c, task);
     },
     applyTemplate: () => {
     }
@@ -52,7 +52,7 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
 };
 
 
-export const getEngineRunner = (c) => {
+export const getEngineRunner = (c, task) => {
     const selectedEngine = getEngineByPlatform(c, c.platform);
     if (!selectedEngine) {
         return EngineNoOp;
@@ -64,7 +64,10 @@ export const getEngineRunner = (c) => {
         //         throw new Error(`Cound not find active engine with id ${selectedEngine?.id}. Available engines:
         // ${Object.keys(ENGINES).join(', ')}`);
     }
-    return engine;
+    if (engine.hasTask(task)) return engine;
+    if (EngineCore.hasTask(task)) return EngineCore;
+
+    throw new Error(`Cound not find engine capable to execute task ${task}`);
 };
 
 export const initializeTask = async (c, task) => {
@@ -73,7 +76,7 @@ export const initializeTask = async (c, task) => {
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
     await checkSdk(c);
-    await getEngineRunner(c).applyTemplate(c);
+    await getEngineRunner(c, task).applyTemplate(c);
     await resolvePluginDependants(c);
 
     Analytics.captureEvent({
@@ -101,7 +104,7 @@ export const executeTask = async (c, task, parentTask, originTask) => {
     } else {
         logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} EXECUTING...`);
         await _executePipe(c, task, 'before');
-        await getEngineRunner(c).executeTask(c, task, parentTask, originTask);
+        await getEngineRunner(c, task).executeTask(c, task, parentTask, originTask);
         await _executePipe(c, task, 'after');
     }
     c._currentTask = parentTask;

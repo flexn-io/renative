@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { configureGenericPlatform, logErrorPlatform } from '../core/platformManager';
-import { configureGenericProject } from '../core/projectManager';
+import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
 import {
     WEB,
@@ -11,20 +10,20 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    CHROMECAST
+    CHROMECAST,
+    TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE
 } from '../core/constants';
 import { configureWebProject } from '../sdk-webpack';
 import { configureTizenProject } from '../sdk-tizen';
 import { configureWebOSProject } from '../sdk-webos';
 import { configureKaiOSProject } from '../sdk-firefox';
 import { configureChromecastProject } from '../sdk-webpack/chromecast';
-
+import { executeTask } from '../core/engineManager';
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure', `parent:${parentTask} origin:${originTask}`);
 
-    await configureGenericPlatform(c);
-    await configureGenericProject(c);
+    await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
 
     switch (c.platform) {
         case WEB:

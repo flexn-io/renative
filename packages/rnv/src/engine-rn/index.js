@@ -99,7 +99,10 @@ const applyTemplate = async (c) => {
     return true;
 };
 
+const hasTask = task => !!TASKS[task];
+
 export default {
     executeTask,
+    hasTask,
     applyTemplate
 };

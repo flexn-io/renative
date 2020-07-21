@@ -1,15 +1,14 @@
 /* eslint-disable import/no-cycle */
-import { configureGenericPlatform, logErrorPlatform } from '../core/platformManager';
-import { configureGenericProject } from '../core/projectManager';
+import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import { MACOS, WINDOWS } from '../core/constants';
+import { MACOS, WINDOWS, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE } from '../core/constants';
 import { configureElectronProject } from '../sdk-electron';
+import { executeTask } from '../core/engineManager';
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure', `parent:${parentTask} origin:${originTask}`);
 
-    await configureGenericPlatform(c);
-    await configureGenericProject(c);
+    await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
 
     switch (c.platform) {
         case MACOS:

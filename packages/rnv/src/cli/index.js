@@ -462,45 +462,7 @@ const _handleUnknownCommand = async (c) => {
     return run(c);
 };
 
-const _arrayMergeOverride = (destinationArray, sourceArray) => sourceArray;
-
-const merge = require('deepmerge');
-
-export const _spawnCommand = (c, overrideParams) => {
-    const newCommand = {};
-
-    Object.keys(c).forEach((k) => {
-        if (
-            typeof newCommand[k] === 'object'
-            && !(newCommand[k] instanceof 'String')
-        ) {
-            newCommand[k] = { ...c[k] };
-        } else {
-            newCommand[k] = c[k];
-        }
-    });
-
-    Object.keys(overrideParams).forEach((k) => {
-        if (newCommand[k] && typeof overrideParams[k] === 'object') {
-            newCommand[k] = merge(newCommand[k], overrideParams[k], {
-                arrayMerge: _arrayMergeOverride
-            });
-        } else {
-            newCommand[k] = overrideParams[k];
-        }
-    });
-
-    // This causes stack overflow on Linux
-    // const merge = require('deepmerge');
-    // const newCommand = merge(c, overrideParams, { arrayMerge: _arrayMergeOverride });
-    return newCommand;
-};
-
-// ##########################################
-// PUBLIC API
-// ##########################################
-
-const run = async (c, spawnC, skipStartBuilder) => {
+const run = async (c) => {
     c.COMMANDS = _generateCommands();
     const currC = c;
     const cmd = c.COMMANDS[currC.command];
@@ -508,10 +470,10 @@ const run = async (c, spawnC, skipStartBuilder) => {
     const subCmd = cmd?.subCommands?.[currC.subCommand];
     const subCmdFn = subCmd?.fn;
 
-    logTask('cli', `cmd:${currC.command} subCmd:${currC.subCommand} skipStartBuilder:${!!skipStartBuilder}`);
+    logTask('cli', `cmd:${currC.command} subCmd:${currC.subCommand}`);
 
     setDefaults(currC);
-    if (!skipStartBuilder) await _startBuilder(currC);
+    await _startBuilder(currC);
 
     if (cmd) {
         if (currC.subCommand === 'help') {

@@ -28,7 +28,10 @@ const executeTask = async (c, task, parentTask, originTask) => TASKS[task](c, pa
 
 const applyTemplate = async () => true;
 
+const hasTask = task => !!TASKS[task];
+
 export default {
     executeTask,
+    hasTask,
     applyTemplate
 };

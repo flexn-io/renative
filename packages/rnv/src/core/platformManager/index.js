@@ -1,14 +1,13 @@
 /* eslint-disable import/no-cycle */
 // @todo fix cycle dep
 import path from 'path';
-import { chalk, logTask, logError, logWarning, logInfo } from '../systemManager/logger';
+import { chalk, logTask, logError, logWarning } from '../systemManager/logger';
 import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import {
     cleanFolder,
     copyFolderContentsRecursiveSync,
     writeFileSync,
 } from '../systemManager/fileutils';
-import { cleanPlaformAssets } from '../projectManager/projectParser';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import { checkAndConfigureSdks } from '../sdkManager';
 import { configureEntryPoints } from '../templateManager';
@@ -78,25 +77,6 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve) => {
         resolve();
     });
 });
-
-export const configureGenericPlatform = async (c) => {
-    logTask('configureGenericPlatform');
-    // await configurePlatformIfRequired(c, c.platform);
-    if (c.program.reset) {
-        logInfo(
-            `You passed ${chalk().white('-r')} argument. paltform ${chalk().white(
-                c.platform
-            )} will be cleaned up first!`
-        );
-        await cleanPlatformBuild(c, c.platform);
-    }
-
-    if (c.program.resetHard) {
-        await cleanPlaformAssets(c);
-    }
-    await createPlatformBuild(c, c.platform);
-    return true;
-};
 
 export const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     logTask('createPlatformBuild');
