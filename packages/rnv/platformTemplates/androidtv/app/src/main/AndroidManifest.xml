@@ -1,5 +1,5 @@
 <!--
 Generate by ReNative (https://renative.org)
-BASE: packages/rnv/src/platformTools/android/supportFiles/AndroidManifest_androidtv.json
+BASE: packages/rnv/src/sdk-android/supportFiles/AndroidManifest_androidtv.json
 -->
 {{PLUGIN_MANIFEST_FILE}}
