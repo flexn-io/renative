@@ -215,3 +215,13 @@ const deployToFtp = (c, platform) => {
 };
 
 export { deployToFtp };
+
+
+export default {
+    description: '',
+    fn: deployToFtp,
+    task: 'deploy ftp',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

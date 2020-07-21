@@ -113,3 +113,13 @@ const deployToNow = c => new Promise((resolve, reject) => {
 });
 
 export { deployToNow };
+
+
+export default {
+    description: '',
+    fn: deployToNow,
+    task: 'deploy now',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

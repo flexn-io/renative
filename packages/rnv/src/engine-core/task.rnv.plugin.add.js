@@ -9,6 +9,7 @@ import {
     logTask
 } from '../core/systemManager/logger';
 import { getPluginList, resolvePluginDependants } from '../core/pluginManager';
+import { taskRnvInstall } from './task.rnv.install';
 
 /* eslint-disable no-await-in-loop */
 export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
@@ -85,6 +86,7 @@ export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
     writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
 
     await resolvePluginDependants(c);
+    await taskRnvInstall(c);
 
     spinner.succeed('All plugins installed!');
     logSuccess('Plugins installed successfully!');

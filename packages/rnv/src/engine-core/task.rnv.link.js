@@ -5,7 +5,7 @@ import {
     copyFolderContentsRecursiveSync, fsExistsSync, fsReadFileSync
 } from '../core/systemManager/fileutils';
 
-export const taskRnvLink = (c, parentTask, originTask) => new Promise((resolve) => {
+export const taskRnvLink = async (c, parentTask, originTask) => {
     logTask('taskRnvLink', `parent:${parentTask} origin:${originTask}`);
 
     if (fsExistsSync(c.paths.project.npmLinkPolyfill)) {
@@ -26,9 +26,9 @@ export const taskRnvLink = (c, parentTask, originTask) => new Promise((resolve) 
         logWarning(
             `${c.paths.project.npmLinkPolyfill} file not found. nothing to link!`
         );
-        resolve();
     }
-});
+    return true;
+};
 
 export default {
     description: '',

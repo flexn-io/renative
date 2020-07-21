@@ -14,7 +14,7 @@ import {
     checkPortInUse,
     confirmActiveBundler
 } from '../core/common';
-import { waitForWebpack, buildWeb, configureCoreWebProject } from '../sdk-webpack';
+import { buildWeb, configureCoreWebProject } from '../sdk-webpack';
 import { waitForEmulator } from '../core/targetManager';
 import { isPlatformActive } from '../core/platformManager';
 import {
@@ -36,10 +36,6 @@ import {
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE
 } from '../core/constants';
-
-
-import { rnvStart } from '../core/taskManager';
-import Config from '../core/configManager/config';
 import { isSystemWin, isUrlLocalhost } from '../core/utils';
 
 const launchWebOSimulator = (c) => {
@@ -59,11 +55,11 @@ const launchWebOSimulator = (c) => {
     return executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
 };
 
-const startHostedServerIfRequired = (c) => {
-    if (Config.isWebHostEnabled) {
-        return rnvStart(c);
-    }
-};
+// const startHostedServerIfRequired = (c) => {
+//     if (Config.isWebHostEnabled) {
+//         return rnvStart(c);
+//     }
+// };
 
 const parseDevices = (c, devicesResponse) => {
     const linesArray = devicesResponse
@@ -117,14 +113,14 @@ const installAndLaunchApp = async (c, target, appPath, tId) => {
             `--device ${target} ${appPath}`
         );
     }
-    const { hosted } = c.program;
-    const { platform } = c;
-    const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
-    let toReturn = true;
-    if (isHosted) {
-        toReturn = startHostedServerIfRequired(c);
-        await waitForWebpack(c);
-    }
+    // const { hosted } = c.program;
+    // const { platform } = c;
+    // const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+    const toReturn = true;
+    // if (isHosted) {
+    //     toReturn = startHostedServerIfRequired(c);
+    //     await waitForWebpack(c);
+    // }
     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${target} ${tId}`);
     return toReturn;
 };

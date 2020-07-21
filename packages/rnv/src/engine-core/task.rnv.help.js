@@ -41,7 +41,6 @@ export default {
     description: '',
     fn: taskRnvHelp,
     task: 'help',
-    subTask: null,
     params: [],
     platforms: [],
 };

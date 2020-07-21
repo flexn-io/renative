@@ -1,12 +1,6 @@
 /* eslint-disable import/no-cycle */
-import { logDebug, logTask, logInitTask } from '../systemManager/logger';
-import { isPlatformSupported } from '../platformManager';
-import {
-    getConfigProp,
-    isBuildSchemeSupported
-} from '../common';
-import { checkSdk } from '../sdkManager';
-import { resolvePluginDependants } from '../pluginManager';
+import { logDebug, logTask, logInitTask, chalk } from '../systemManager/logger';
+import { getConfigProp } from '../common';
 import Analytics from '../systemManager/analytics';
 import {
     executePipe
@@ -25,17 +19,14 @@ const ENGINES = {
     'engine-rn-next': EngineRnNext,
 };
 
-const EngineNoOp = {
-    executeTask: async (c, task, parentTask, originTask) => {
-        logTask('EngineNoOp:executeTask', `task:${task} parent:${parentTask} origin:${originTask}`);
-        await isPlatformSupported(c);
-        await isBuildSchemeSupported(c);
-        return getEngineRunner(c, task).executeTask(c, task);
-    },
-    applyTemplate: () => {
-    }
-};
-
+// const EngineNoOp = {
+//     executeTask: async (c, task, parentTask, originTask) => {
+//         logTask('EngineNoOp:executeTask', `task:${task} parent:${parentTask} origin:${originTask}`);
+//         return getEngineRunner(c, task).executeTask(c, task);
+//     },
+//     applyTemplate: () => {
+//     }
+// };
 
 export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
     let selectedEngineKey;
@@ -55,29 +46,24 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
 export const getEngineRunner = (c, task) => {
     const selectedEngine = getEngineByPlatform(c, c.platform);
     if (!selectedEngine) {
-        return EngineNoOp;
-        // throw new Error(`Cound not find engine with ${chalk().white(c.platform)} platform support`);
+        if (EngineCore.hasTask(task)) return EngineCore;
+        // return EngineNoOp;
+        throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
     }
     const engine = ENGINES[selectedEngine?.id];
     if (!engine) {
-        return EngineNoOp;
-        //         throw new Error(`Cound not find active engine with id ${selectedEngine?.id}. Available engines:
-        // ${Object.keys(ENGINES).join(', ')}`);
+        if (EngineCore.hasTask(task)) return EngineCore;
+        throw new Error(`Cound not find active engine with id ${selectedEngine?.id}. Available engines:
+        ${Object.keys(ENGINES).join(', ')}`);
     }
     if (engine.hasTask(task)) return engine;
     if (EngineCore.hasTask(task)) return EngineCore;
 
-    throw new Error(`Cound not find engine capable to execute task ${task}`);
+    throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
 };
 
 export const initializeTask = async (c, task) => {
     c.runtime.task = task;
-
-    await isPlatformSupported(c);
-    await isBuildSchemeSupported(c);
-    await checkSdk(c);
-    await getEngineRunner(c, task).applyTemplate(c);
-    await resolvePluginDependants(c);
 
     Analytics.captureEvent({
         type: `${task}Project`,

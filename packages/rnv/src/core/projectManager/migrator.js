@@ -24,8 +24,8 @@ import {
 } from '../systemManager/fileutils';
 import { listAppConfigsFoldersSync } from '../configManager/configParser';
 import { taskRnvClean } from '../../engine-core/task.rnv.clean';
+import { taskRnvInstall } from '../../engine-core/task.rnv.install';
 import { RN_CLI_CONFIG_NAME } from '../constants';
-import { configureNodeModules } from './projectParser';
 import { inquirerPrompt } from '../../cli/prompt';
 
 export const checkAndMigrateProject = async (c) => {
@@ -75,7 +75,7 @@ export const checkAndMigrateProject = async (c) => {
             await _migrateProject(c, paths);
             await _migrateProjectSoft(c, paths);
             await taskRnvClean(c);
-            await configureNodeModules(c);
+            await taskRnvInstall(c);
             return true;
         }
     } else {

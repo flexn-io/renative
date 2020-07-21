@@ -25,3 +25,12 @@ export const rnvFastlane = async () => {
         cwd: appFolder
     });
 };
+
+export default {
+    description: '',
+    fn: rnvFastlane,
+    task: 'fastlane',
+    subTask: null,
+    params: [],
+    platforms: [],
+};

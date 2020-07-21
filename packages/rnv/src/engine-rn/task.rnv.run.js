@@ -23,7 +23,7 @@ import {
 } from '../sdk-android';
 
 import { executeTask } from '../core/engineManager';
-import { startBundlerIfRequired, waitForBundlerIfRequired } from './index';
+import { startBundlerIfRequired, waitForBundlerIfRequired } from './commonEngine';
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;

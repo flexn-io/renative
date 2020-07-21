@@ -72,8 +72,7 @@ TIP: You can select options with ${chalk().white('SPACE')} key before pressing E
 export default {
     description: '',
     fn: taskRnvPlatformEject,
-    task: 'platform',
-    subTask: 'eject',
+    task: 'platform eject',
     params: [],
     platforms: [],
 };

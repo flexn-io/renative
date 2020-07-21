@@ -5,7 +5,6 @@ import {
     getAppFolder,
     getAppSubFolder,
     getBuildsFolder,
-    areNodeModulesInstalled,
     getConfigProp,
     getTimestampPathsConfig
 } from '../common';
@@ -21,7 +20,6 @@ import {
     fsReadFileSync
 } from '../systemManager/fileutils';
 import { isPlatformActive } from '../platformManager';
-import { installPackageDependencies } from '../systemManager/exec';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/logger';
 import { copyTemplatePluginsSync } from '../pluginManager';
 import { loadFile } from '../configManager/configParser';
@@ -452,32 +450,6 @@ export const upgradeProjectDependencies = (c, version) => {
 
     writeFileSync(c.paths.project.config, c.files.project.config);
 };
-
-export const configureNodeModules = c => new Promise((resolve, reject) => {
-    logTask('configureNodeModules', `requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
-    // Check node_modules
-    if (!areNodeModulesInstalled() || (c._requiresNpmInstall && !c.runtime.skipPackageUpdate)) {
-        if (!areNodeModulesInstalled()) {
-            logWarning(
-                `Looks like your node_modules folder is missing! Let's run ${chalk().white(
-                    'npm install'
-                )} first!`
-            );
-        } else {
-            logWarning(
-                `Looks like your node_modules out of date! Let's run ${chalk().white(
-                    'npm install'
-                )} first!`
-            );
-        }
-        c._requiresNpmInstall = false;
-        installPackageDependencies()
-            .then(() => resolve())
-            .catch(e => reject(e));
-    } else {
-        resolve();
-    }
-});
 
 export const cleanPlaformAssets = async (c) => {
     logTask('cleanPlaformAssets');

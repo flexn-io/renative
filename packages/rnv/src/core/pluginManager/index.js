@@ -26,10 +26,6 @@ import {
 } from '../systemManager/logger';
 import { doResolve } from '../resolve';
 import { inquirerPrompt } from '../../cli/prompt';
-import {
-    configureNodeModules,
-} from '../projectManager/projectParser';
-
 
 export const getPluginList = (c, isUpdate = false) => {
     const output = {
@@ -329,7 +325,6 @@ export const resolvePluginDependants = async (c) => {
 
     if (c._requiresNpmInstall) {
         await configurePlugins(c);
-        await configureNodeModules(c);
     }
 
     return true;

@@ -35,10 +35,7 @@ import {
     copyAssetsFolder,
     copyBuildsFolder
 } from '../core/projectManager/projectParser';
-import { buildWeb, configureCoreWebProject, waitForWebpack } from '../sdk-webpack';
-import { rnvStart } from '../core/taskManager';
-import Config from '../core/configManager/config';
-
+import { buildWeb, configureCoreWebProject } from '../sdk-webpack';
 
 const xml2js = require('xml2js');
 
@@ -256,11 +253,11 @@ const _composeDevicesString = devices => devices.map(device => ({
     value: device.id
 }));
 
-const startHostedServerIfRequired = (c) => {
-    if (Config.isWebHostEnabled) {
-        return rnvStart(c);
-    }
-};
+// const startHostedServerIfRequired = (c) => {
+//     if (Config.isWebHostEnabled) {
+//         return rnvStart(c);
+//     }
+// };
 
 export const runTizen = async (c, platform, target) => {
     logTask('runTizen', `target:${target}`);
@@ -396,12 +393,12 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             hasDevice = await _waitForEmulatorToBeReady(c, target);
         }
 
-        let toReturn = true;
+        const toReturn = true;
 
-        if (isHosted) {
-            toReturn = startHostedServerIfRequired(c);
-            await waitForWebpack(c);
-        }
+        // if (isHosted) {
+        //     toReturn = startHostedServerIfRequired(c);
+        //     await waitForWebpack(c);
+        // }
 
         if (
             platform !== 'tizenwatch'

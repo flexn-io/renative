@@ -1,66 +1,18 @@
 /* eslint-disable import/no-cycle */
 
-import { taskRnvLink } from '../engine-core/task.rnv.link';
-import { taskRnvSwitch } from '../engine-core/task.rnv.switch';
-import { taskRnvCryptoDecrypt } from '../engine-core/task.rnv.crypto.decrypt';
-import { taskRnvCryptoEncrypt } from '../engine-core/task.rnv.crypto.encrypt';
-import { taskRnvCryptoInstallCerts } from '../engine-core/task.rnv.crypto.installCerts';
-import { taskRnvCryptoUpdateProfile } from '../engine-core/task.rnv.crypto.updateProfile';
-import { taskRnvCryptoUpdateProfiles } from '../engine-core/task.rnv.crypto.updateProfiles';
-import { taskRnvCryptoInstallProfiles } from '../engine-core/task.rnv.crypto.installProfiles';
-import { taskRnvTargetList } from '../engine-core/task.rnv.target.list';
-import { taskRnvTargetLaunch } from '../engine-core/task.rnv.target.launch';
-import { taskRnvPlatformEject } from '../engine-core/task.rnv.platform.eject';
-import { taskRnvPlatformConnect } from '../engine-core/task.rnv.platform.connect';
-import { taskRnvPlatformList } from '../engine-core/task.rnv.platform.list';
-import { taskRnvPlatformConfigure } from '../engine-core/task.rnv.platform.configure';
-import { taskRnvPlatformSetup } from '../engine-core/task.rnv.platform.setup';
-import { taskRnvTemplateAdd } from '../engine-core/task.rnv.template.add';
-import { taskRnvTemplateApply } from '../engine-core/task.rnv.template.apply';
-import { taskRnvTemplateList } from '../engine-core/task.rnv.template.list';
-import { taskRnvPluginAdd } from '../engine-core/task.rnv.plugin.add';
-import { taskRnvPluginList } from '../engine-core/task.rnv.plugin.list';
-import { taskRnvPluginUpdate } from '../engine-core/task.rnv.plugin.update';
-import { taskRnvWorkspaceList } from '../engine-core/task.rnv.workspace.list';
-import { taskRnvWorkspaceAdd } from '../engine-core/task.rnv.workspace.add';
-import { taskRnvWorkspaceConnect } from '../engine-core/task.rnv.workspace.connect';
-import { taskRnvWorkspaceUpdate } from '../engine-core/task.rnv.workspace.update';
-import { taskRnvHooksList } from '../engine-core/task.rnv.hooks.list';
-import { taskRnvHooksRun } from '../engine-core/task.rnv.hooks.run';
-import { taskRnvHooksPipes } from '../engine-core/task.rnv.hooks.pipes';
-import { taskRnvClean } from '../engine-core/task.rnv.clean';
-import { rnvFastlane } from '../integration-fastlane/task.rnv.fastlane';
-import { taskRnvPublish } from '../engine-core/task.rnv.publish';
-import { taskRnvPkg } from '../engine-core/task.rnv.pkg';
-import { taskRnvStatus } from '../engine-core/task.rnv.status';
-import { taskRnvConfig } from '../engine-core/task.rnv.config';
-import { taskRnvHelp } from '../engine-core/task.rnv.help';
-import { taskRnvNew } from '../engine-core/task.rnv.new';
 
-import {
-    rnvRun,
-    rnvBuild,
-    rnvPackage,
-    rnvExport,
-    rnvLog,
-    rnvDeploy,
-    rnvStart,
-    taskRnvConfigure
-} from '../core/taskManager';
+import { taskRnvInstall } from '../engine-core/task.rnv.install';
 
-import {
-    chalk,
-    logTask,
-    logToSummary,
-    logAppInfo,
-    logError
-} from '../core/systemManager/logger';
+import { isPlatformSupported } from '../core/platformManager';
+import { isBuildSchemeSupported } from '../core/common';
+import { checkSdk } from '../core/sdkManager';
+import { resolvePluginDependants, configurePlugins } from '../core/pluginManager';
+import { chalk, logTask, logToSummary, logAppInfo, logError } from '../core/systemManager/logger';
 import { applyTemplate, checkIfTemplateInstalled } from '../core/templateManager';
-import { configurePlugins } from '../core/pluginManager';
 import { executePipe } from '../core/projectManager/buildHooks';
 import { checkCrypto } from '../core/systemManager/crypto';
 import { inquirerPrompt } from './prompt';
-import { getEngineByPlatform } from '../core/engineManager';
+import { getEngineByPlatform, initializeTask } from '../core/engineManager';
 import { isSystemWin } from '../core/utils';
 import {
     PLATFORMS,
@@ -77,6 +29,8 @@ import {
     MACOS,
     WINDOWS,
     TIZEN_WATCH,
+    TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT,
+    TASK_DEPLOY, TASK_START, TASK_LOG, TASK_CONFIGURE
 } from '../core/constants';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
 import {
@@ -86,10 +40,7 @@ import {
     configureRnvGlobal,
     checkIsRenativeProject
 } from '../core/configManager/configParser';
-import {
-    configureNodeModules,
-    checkAndCreateProjectPackage,
-} from '../core/projectManager/projectParser';
+import { checkAndCreateProjectPackage } from '../core/projectManager/projectParser';
 
 export const NO_OP_COMMANDS = [
     'fix',
@@ -104,31 +55,42 @@ export const NO_OP_COMMANDS = [
 ];
 export const SKIP_APP_CONFIG_CHECK = ['crypto', 'config'];
 
+export const RUN_COMMANDS = [
+    'run',
+    'build',
+    'package',
+    'export',
+    'log',
+    'deploy',
+    'start',
+    'configure'
+];
+
 const _generateCommands = () => ({
     start: {
-        fn: rnvStart,
+        fn: c => initializeTask(c, TASK_START),
         platforms: SUPPORTED_PLATFORMS
     },
     config: {
-        fn: taskRnvConfig,
+        fn: c => initializeTask(c, 'config'),
         desc: 'Edit or display RNV configs'
     },
     run: {
         desc: 'Run your app on target device or emulator',
-        fn: rnvRun
+        fn: c => initializeTask(c, TASK_RUN)
     },
     package: {
         desc: 'Package JS Code',
         platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
-        fn: rnvPackage
+        fn: c => initializeTask(c, TASK_PACKAGE)
     },
     deploy: {
         desc: 'Deploy whole app via preconfigured or custom integration',
-        fn: rnvDeploy
+        fn: c => initializeTask(c, TASK_DEPLOY)
     },
     build: {
         desc: 'Build your app',
-        fn: rnvBuild
+        fn: c => initializeTask(c, TASK_BUILD)
     },
     export: {
         desc: 'Export your app (ios only)',
@@ -142,53 +104,53 @@ const _generateCommands = () => ({
             ANDROID_TV,
             ANDROID_WEAR
         ],
-        fn: rnvExport
+        fn: c => initializeTask(c, TASK_EXPORT)
     },
     log: {
         desc: 'Attach logger to device or emulator and print out logs',
         platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
-        fn: rnvLog
+        fn: c => initializeTask(c, TASK_LOG)
     },
     new: {
-        fn: taskRnvNew,
+        fn: c => initializeTask(c, 'new'),
         desc: 'Creates new project',
         params: ['mono', 'ci']
     },
     help: {
         desc: 'Displays help',
-        fn: taskRnvHelp
+        fn: c => initializeTask(c, 'help')
     },
     configure: {
         desc: 'Configures app config',
-        fn: taskRnvConfigure,
+        fn: c => initializeTask(c, TASK_CONFIGURE),
         params: ['appConfigID', 'mono', 'ci']
     },
     switch: {
         desc: 'Switches to app confing without rebuilding',
-        fn: taskRnvSwitch,
+        fn: c => initializeTask(c, 'switch'),
         params: ['appConfigID', 'mono', 'ci']
     },
     link: {
         desc: 'Local dependency linking of your project',
-        fn: taskRnvLink
+        fn: c => initializeTask(c, 'link')
     },
     platform: {
         desc: 'Manages native platform projects',
         subCommands: {
             eject: {
-                fn: taskRnvPlatformEject
+                fn: c => initializeTask(c, 'platform eject')
             },
             list: {
-                fn: taskRnvPlatformList
+                fn: c => initializeTask(c, 'platform list')
             },
             connect: {
-                fn: taskRnvPlatformConnect
+                fn: c => initializeTask(c, 'platform connect')
             },
             configure: {
-                fn: taskRnvPlatformConfigure
+                fn: c => initializeTask(c, 'platform configure')
             },
             setup: {
-                fn: taskRnvPlatformSetup
+                fn: c => initializeTask(c, 'platform setup')
             }
         }
     },
@@ -207,10 +169,10 @@ const _generateCommands = () => ({
         ],
         subCommands: {
             launch: {
-                fn: taskRnvTargetLaunch
+                fn: c => initializeTask(c, 'target launch')
             },
             list: {
-                fn: taskRnvTargetList
+                fn: c => initializeTask(c, 'target list')
             }
         }
     },
@@ -218,13 +180,13 @@ const _generateCommands = () => ({
         desc: 'Manages all plugins',
         subCommands: {
             add: {
-                fn: taskRnvPluginAdd
+                fn: c => initializeTask(c, 'plugin add')
             },
             list: {
-                fn: taskRnvPluginList
+                fn: c => initializeTask(c, 'plugin list')
             },
             update: {
-                fn: taskRnvPluginUpdate
+                fn: c => initializeTask(c, 'plugin update')
             }
         }
     },
@@ -233,36 +195,36 @@ const _generateCommands = () => ({
               'Manages project based build hooks. This allows you to extend functionality of RNV CLI',
         subCommands: {
             run: {
-                fn: taskRnvHooksRun
+                fn: c => initializeTask(c, 'hooks run')
             },
             list: {
-                fn: taskRnvHooksList
+                fn: c => initializeTask(c, 'hooks list')
             },
             pipes: {
-                fn: taskRnvHooksPipes
+                fn: c => initializeTask(c, 'hooks pipes')
             }
         }
     },
     status: {
         desc: 'Prints out summary of your project',
-        fn: taskRnvStatus
+        fn: c => initializeTask(c, 'status')
     },
     clean: {
         desc:
               'Automatically removes all node_modules and lock in your project and its dependencies',
-        fn: taskRnvClean
+        fn: c => initializeTask(c, 'clean')
     },
     template: {
         desc: 'Manages rnv and project templates',
         subCommands: {
             add: {
-                fn: taskRnvTemplateAdd
+                fn: c => initializeTask(c, 'template add')
             },
             list: {
-                fn: taskRnvTemplateList
+                fn: c => initializeTask(c, 'template list')
             },
             apply: {
-                fn: taskRnvTemplateApply
+                fn: c => initializeTask(c, 'template apply')
             }
         }
     },
@@ -271,27 +233,27 @@ const _generateCommands = () => ({
               'Utility to manage encrytped files in your project, provisioning profiles, kestores and other sensitive information',
         subCommands: {
             encrypt: {
-                fn: taskRnvCryptoEncrypt
+                fn: c => initializeTask(c, 'crypto encrypt')
             },
             decrypt: {
-                fn: taskRnvCryptoDecrypt
+                fn: c => initializeTask(c, 'crypto decrypt')
             },
             installCerts: {
                 platforms: [IOS, TVOS],
-                fn: taskRnvCryptoInstallCerts
+                fn: c => initializeTask(c, 'crypto installCerts')
             },
             updateProfile: {
                 requiredParams: ['scheme', 'platform'],
                 platforms: [IOS, TVOS],
-                fn: taskRnvCryptoUpdateProfile
+                fn: c => initializeTask(c, 'crypto updateProfile')
             },
             updateProfiles: {
                 platforms: [IOS, TVOS],
-                fn: taskRnvCryptoUpdateProfiles
+                fn: c => initializeTask(c, 'crypto updateProfiles')
             },
             installProfiles: {
                 platforms: [IOS, TVOS],
-                fn: taskRnvCryptoInstallProfiles
+                fn: c => initializeTask(c, 'crypto installProfiles')
             }
         }
     },
@@ -299,16 +261,16 @@ const _generateCommands = () => ({
         desc: 'Manages global workspaces for ReNative projects',
         subCommands: {
             add: {
-                fn: taskRnvWorkspaceAdd
+                fn: c => initializeTask(c, 'workspace add')
             },
             connect: {
-                fn: taskRnvWorkspaceConnect
+                fn: c => initializeTask(c, 'workspace connect')
             },
             list: {
-                fn: taskRnvWorkspaceList
+                fn: c => initializeTask(c, 'workspace list')
             },
             update: {
-                fn: taskRnvWorkspaceUpdate
+                fn: c => initializeTask(c, 'workspace update')
             }
         }
     },
@@ -316,17 +278,17 @@ const _generateCommands = () => ({
         desc:
               'Run fastlane commands on currectly active app/platform directly via rnv command',
         platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
-        fn: rnvFastlane
+        fn: c => initializeTask(c, 'fastlane')
     },
     publish: {
         desc:
               'Provides help deploying a new version, like tagging a commit, pushing it, etc',
-        fn: taskRnvPublish
+        fn: c => initializeTask(c, 'publish')
     },
     pkg: {
         desc:
               'Provides help deploying a new version, like tagging a commit, pushing it, etc',
-        fn: taskRnvPkg
+        fn: c => initializeTask(c, 'pkg')
     }
 });
 
@@ -389,16 +351,24 @@ const _startBuilder = async (c) => {
     await configureRnvGlobal(c);
     await checkIfTemplateInstalled(c);
     await fixRenativeConfigsSync(c);
-    await configureNodeModules(c);
+    await taskRnvInstall(c);
     await applyTemplate(c);
     await configurePlugins(c);
-    await configureNodeModules(c);
+    await taskRnvInstall(c);
     await checkCrypto(c);
 
     if (!SKIP_APP_CONFIG_CHECK.includes(c.command)) {
         await updateConfig(c, c.runtime.appId);
     }
     await logAppInfo(c);
+
+    if (RUN_COMMANDS.includes(c.command)) {
+        await isPlatformSupported(c);
+        await isBuildSchemeSupported(c);
+        await checkSdk(c);
+        await resolvePluginDependants(c);
+        await taskRnvInstall(c);
+    }
 };
 
 const _execCommandHep = async (c, cmd) => {
@@ -464,35 +434,34 @@ const _handleUnknownCommand = async (c) => {
 
 const run = async (c) => {
     c.COMMANDS = _generateCommands();
-    const currC = c;
-    const cmd = c.COMMANDS[currC.command];
+    const cmd = c.COMMANDS[c.command];
     const cmdFn = cmd?.fn;
-    const subCmd = cmd?.subCommands?.[currC.subCommand];
+    const subCmd = cmd?.subCommands?.[c.subCommand];
     const subCmdFn = subCmd?.fn;
 
-    logTask('cli', `cmd:${currC.command} subCmd:${currC.subCommand}`);
+    logTask('cli', `cmd:${c.command} subCmd:${c.subCommand}`);
 
-    setDefaults(currC);
-    await _startBuilder(currC);
+    setDefaults(c);
+    await _startBuilder(c);
 
     if (cmd) {
-        if (currC.subCommand === 'help') {
-            await _execCommandHep(currC, cmd);
+        if (c.subCommand === 'help') {
+            await _execCommandHep(c, cmd);
         } else if (cmdFn) {
             if (subCmdFn) {
-                await _execute(currC, subCmdFn, cmd);
+                await _execute(c, subCmdFn, cmd);
             } else {
                 // There is no subCommand function available so reset the key not to confuse pipe hooks
-                currC.subCommand = null;
-                await _execute(currC, cmdFn, cmd);
+                c.subCommand = null;
+                await _execute(c, cmdFn, cmd);
             }
         } else if (subCmdFn) {
-            await _execute(currC, subCmdFn, cmd);
+            await _execute(c, subCmdFn, cmd);
         } else {
-            await _handleUnknownSubCommand(currC);
+            await _handleUnknownSubCommand(c);
         }
     } else {
-        await _handleUnknownCommand(currC);
+        await _handleUnknownCommand(c);
     }
 };
 

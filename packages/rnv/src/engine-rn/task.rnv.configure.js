@@ -12,11 +12,13 @@ import {
 } from '../core/constants';
 import { configureXcodeProject } from '../sdk-xcode';
 import { configureGradleProject } from '../sdk-android';
+import { configureMetroConfigs } from './commonEngine';
 import { executeTask } from '../core/engineManager';
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure', `parent:${parentTask} origin:${originTask}`);
 
+    await configureMetroConfigs(c, c.platform);
     await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
 
     switch (c.platform) {
