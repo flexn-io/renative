@@ -57,6 +57,6 @@ export default {
     task: 'target launch',
     params: [],
     platforms: [],
-    skipSetup: true,
+    skipProjectSetup: true,
     skipPlatforms: true,
 };

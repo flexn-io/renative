@@ -295,15 +295,16 @@ export const setCurrentJob = () => {
     // _currentCommand = job;
 };
 
+const _getCurrentTask = () => (_c?._currentTask ? currentChalk.grey(` [${_c._currentTask}]`) : '');
+
 export const logTask = (task, customChalk) => {
     let msg = '';
-    const currentTask = _c?._currentTask ? currentChalk.grey(` [${_c._currentTask}]`) : '';
     if (typeof customChalk === 'string') {
-        msg = `${currentChalk.green(`[ task ]${currentTask} ${task}`)} ${currentChalk.grey(customChalk)}`;
+        msg = `${currentChalk.green(`[ task ]${_getCurrentTask()} ${task}`)} ${currentChalk.grey(customChalk)}`;
     } else if (customChalk) {
-        msg = customChalk(`[ task ]${currentTask} ${task}`);
+        msg = customChalk(`[ task ]${_getCurrentTask()} ${task}`);
     } else {
-        msg = currentChalk.green(`[ task ]${currentTask} ${task}`);
+        msg = currentChalk.green(`[ task ]${_getCurrentTask()} ${task}`);
     }
 
     console.log(msg);
@@ -323,15 +324,15 @@ export const logInitTask = (task, customChalk) => {
 };
 
 export const logHook = (hook = '', msg = '') => {
-    console.log(`${currentChalk.rgb(127, 255, 212)(`[ hook ] ${hook}`)} ${currentChalk.grey(msg)}`);
+    console.log(`${currentChalk.rgb(127, 255, 212)(`[ hook ]${_getCurrentTask()} ${hook}`)} ${currentChalk.grey(msg)}`);
 };
 
 export const logWarning = (msg) => {
-    logAndSave(currentChalk.yellow(`[ warn ] ${msg}`));
+    logAndSave(currentChalk.yellow(`[ warn ]${_getCurrentTask()} ${msg}`));
 };
 
 export const logInfo = (msg) => {
-    console.log(currentChalk.cyan(`[ info ] ${msg}`));
+    console.log(currentChalk.cyan(`[ info ]${_getCurrentTask()} ${msg}`));
 };
 
 export const logDebug = (...args) => {
@@ -346,7 +347,7 @@ export const logComplete = (isEnd = false) => {
 };
 
 export const logSuccess = (msg) => {
-    logAndSave(currentChalk.magenta(`[ success ] ${msg}`));
+    logAndSave(currentChalk.magenta(`[ success ]${_getCurrentTask()} ${msg}`));
 };
 
 export const logError = (e, isEnd = false, skipAnalytics = false) => {
@@ -356,11 +357,11 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
 
     if (e && e.message) {
         logAndSave(
-            currentChalk.red(`[ error ] ${e.message}\n${e.stack}`),
+            currentChalk.red(`[ error ]${_getCurrentTask()} ${e.message}\n${e.stack}`),
             isEnd
         );
     } else {
-        logAndSave(currentChalk.red(`[ error ] ${e}`), isEnd);
+        logAndSave(currentChalk.red(`[ error ]${_getCurrentTask()} ${e}`), isEnd);
     }
 
     if (isEnd) logEnd(1);

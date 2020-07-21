@@ -33,10 +33,13 @@ const getTask = task => TASKS[task];
 
 const getSubTasks = task => Object.values(TASKS).filter(v => v.task.startsWith(task)).map(v => v.task.replace(task, '').trim());
 
+const getTasks = () => Object.values(TASKS);
+
 export default {
     executeTask,
     addTask,
     hasTask,
     getTask,
     getSubTasks,
+    getTasks,
 };

@@ -352,6 +352,6 @@ export default {
     task: 'new',
     params: [],
     platforms: [],
-    skipSetup: true,
+    skipProjectSetup: true,
     skipPlatforms: true,
 };

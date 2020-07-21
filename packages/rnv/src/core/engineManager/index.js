@@ -22,16 +22,6 @@ const ENGINES = {
     'engine-rn-next': EngineRnNext,
 };
 
-// const EngineNoOp = {
-//     executeTask: async (c, task, parentTask, originTask) => {
-//         logTask('EngineNoOp:executeTask', `task:${task} parent:${parentTask} origin:${originTask}`);
-//         return getEngineRunner(c, task).executeTask(c, task);
-//     },
-//     applyTemplate: () => {
-//     }
-// };
-
-
 export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
     let selectedEngineKey;
     if (c.buildConfig && !!platform) {
@@ -92,7 +82,7 @@ export const executeTask = async (c, task, parentTask, originTask) => {
     if (c.program.only && !!parentTask) {
         logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} SKIPPING...`);
     } else {
-        logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} EXECUTING...`);
+        // logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} EXECUTING...`);
         await _executePipe(c, task, 'before');
         await getEngineRunner(c, task).executeTask(c, task, parentTask, originTask);
         await _executePipe(c, task, 'after');
@@ -101,6 +91,34 @@ export const executeTask = async (c, task, parentTask, originTask) => {
 };
 
 export const findSuitableTask = async (c) => {
+    if (!c.command) {
+        const suitableTaskInstances = {};
+        REGISTERED_ENGINES.forEach((engine) => {
+            engine.getTasks().forEach((taskInstance) => {
+                suitableTaskInstances[taskInstance.task.split(' ')[0]] = taskInstance;
+            });
+        });
+        const taskInstances = Object.values(suitableTaskInstances);
+        let tasks;
+        let defaultCmd = 'new';
+        if (!c.paths.project.configExists) {
+            tasks = taskInstances.filter(tskInstance => tskInstance.skipProjectSetup).map(v => v.task.split(' ')[0]).sort();
+        } else {
+            tasks = taskInstances.map(v => v.task.split(' ')[0]).sort();
+            defaultCmd = 'run';
+        }
+
+        const { command } = await inquirerPrompt({
+            type: 'list',
+            default: defaultCmd,
+            name: 'command',
+            message: 'Pick a command',
+            choices: tasks,
+            pageSize: 15,
+            logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
+        });
+        c.command = command;
+    }
     let task = c.command;
     if (c.subCommand) task += ` ${c.subCommand}`;
 
@@ -140,7 +158,7 @@ export const findSuitableTask = async (c) => {
             const { platform } = await inquirerPrompt({
                 type: 'list',
                 name: 'platform',
-                message: 'pick one of the following',
+                message: `Pick a platform for ${task}`,
                 choices: platforms,
             });
             c.platform = platform;
