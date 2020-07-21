@@ -79,4 +79,5 @@ export default {
     task: 'platform connect',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

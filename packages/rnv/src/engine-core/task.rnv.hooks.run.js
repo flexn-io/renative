@@ -1,30 +1,25 @@
 import { chalk, logTask } from '../core/systemManager/logger';
 import { buildHooks } from '../core/projectManager/buildHooks';
 
-
-export const taskRnvHooksRun = (c, parentTask, originTask) => new Promise((resolve, reject) => {
+export const taskRnvHooksRun = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksRun', `parent:${parentTask} origin:${originTask}`);
 
-    buildHooks(c)
-        .then(() => {
-            if (!c.buildHooks) {
-                reject('Build hooks have not been compiled properly!');
-                return;
-            }
-            if (c.buildHooks[c.program?.exeMethod]) {
-                c.buildHooks[c.program?.exeMethod](c)
-                    .then(() => resolve())
-                    .catch(e => reject(e));
-            } else {
-                reject(
-                    `Method name ${chalk().white(
-                        c.program.exeMethod
-                    )} does not exists in your buildHooks!`
-                );
-            }
-        })
-        .catch(e => reject(e));
-});
+    await buildHooks(c);
+
+    if (!c.buildHooks) {
+        return Promise.reject('Build hooks have not been compiled properly!');
+    }
+    if (c.buildHooks[c.program?.exeMethod]) {
+        await c.buildHooks[c.program?.exeMethod](c);
+    } else {
+        return Promise.reject(
+            `Method name ${chalk().white(
+                c.program.exeMethod
+            )} does not exists in your buildHooks!`
+        );
+    }
+    return true;
+};
 
 export default {
     description: '',
@@ -32,4 +27,6 @@ export default {
     task: 'hooks run',
     params: [],
     platforms: [],
+    skipAppConfig: true,
+    skipPlatforms: true,
 };

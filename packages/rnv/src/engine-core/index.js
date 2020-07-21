@@ -41,7 +41,7 @@ import taskRnvInstall from './task.rnv.install';
 const TASKS = {};
 
 const addTask = (taskInstance) => {
-    TASKS[taskInstance.task] = taskInstance.fn;
+    TASKS[taskInstance.task] = taskInstance;
 };
 
 addTask(taskRnvLink);
@@ -82,12 +82,18 @@ addTask(taskRnvHelp);
 addTask(taskRnvNew);
 addTask(taskRnvInstall);
 
-const executeTask = async (c, task, parentTask, originTask) => TASKS[task](c, parentTask, originTask);
+const executeTask = async (c, task, parentTask, originTask) => TASKS[task].fn(c, parentTask, originTask);
 
 const hasTask = task => !!TASKS[task];
+
+const getTask = task => TASKS[task];
+
+const getSubTasks = task => Object.values(TASKS).filter(v => v.task.startsWith(task)).map(v => v.task.replace(task, '').trim());
 
 export default {
     executeTask,
     addTask,
-    hasTask
+    hasTask,
+    getTask,
+    getSubTasks
 };

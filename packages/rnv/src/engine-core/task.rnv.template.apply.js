@@ -32,4 +32,5 @@ export default {
     task: 'template apply',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

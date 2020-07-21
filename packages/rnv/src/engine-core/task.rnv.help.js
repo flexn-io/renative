@@ -3,10 +3,10 @@ import { chalk, logToSummary, logTask } from '../core/systemManager/logger';
 export const taskRnvHelp = (c, parentTask, originTask) => {
     logTask('taskRnvHelp', `parent:${parentTask} origin:${originTask}`);
 
-    let cmdsString = '';
-    Object.keys(c.COMMANDS).forEach((key) => {
-        cmdsString += `${key}, `;
-    });
+    const cmdsString = '';
+    // Object.keys(c.COMMANDS).forEach((key) => {
+    //     cmdsString += `${key}, `;
+    // });
 
     logToSummary(`
 ${chalk().bold.white('COMMANDS:')}
@@ -43,4 +43,6 @@ export default {
     task: 'help',
     params: [],
     platforms: [],
+    skipSetup: true,
+    skipPlatforms: true,
 };

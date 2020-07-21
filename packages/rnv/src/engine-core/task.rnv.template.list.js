@@ -20,4 +20,5 @@ export default {
     task: 'template list',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

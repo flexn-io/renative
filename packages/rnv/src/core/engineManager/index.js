@@ -5,12 +5,15 @@ import Analytics from '../systemManager/analytics';
 import {
     executePipe
 } from '../projectManager/buildHooks';
+import { inquirerPrompt } from '../../cli/prompt';
 
 import EngineRn from '../../engine-rn';
 import EngineRnWeb from '../../engine-rn-web';
 import EngineRnElectron from '../../engine-rn-electron';
 import EngineRnNext from '../../engine-rn-next';
 import EngineCore from '../../engine-core';
+
+const REGISTERED_ENGINES = [EngineRn, EngineRnWeb, EngineRnElectron, EngineRnNext, EngineCore];
 
 const ENGINES = {
     'engine-rn': EngineRn,
@@ -27,6 +30,7 @@ const ENGINES = {
 //     applyTemplate: () => {
 //     }
 // };
+
 
 export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
     let selectedEngineKey;
@@ -96,6 +100,52 @@ export const executeTask = async (c, task, parentTask, originTask) => {
     c._currentTask = parentTask;
 };
 
-// export const registerEngine = (c) => {
-//     console.log('REGISTER ENGINE');
-// };
+export const findSuitableTask = async (c) => {
+    let task = c.command;
+    if (c.subCommand) task += ` ${c.subCommand}`;
+
+    const suitableEngines = REGISTERED_ENGINES.filter(engine => engine.hasTask(task));
+
+    if (!suitableEngines.length) {
+        const supportedSubtasks = {};
+        REGISTERED_ENGINES.forEach((engine) => {
+            engine.getSubTasks(task).forEach((subtask) => {
+                supportedSubtasks[subtask] = true;
+            });
+        });
+        const subTasks = Object.keys(supportedSubtasks);
+        if (subTasks.length) {
+            const { subCommand } = await inquirerPrompt({
+                type: 'list',
+                name: 'subCommand',
+                message: `Pick a subCommand for ${c.command}`,
+                choices: subTasks,
+            });
+
+            c.subCommand = subCommand;
+            task = `${c.command} ${c.subCommand}`;
+        }
+    }
+
+    if (!c.platform) {
+        const supportedPlatforms = {};
+        suitableEngines.forEach((engine) => {
+            engine.getTask(task).platforms.forEach((plat) => {
+                supportedPlatforms[plat] = true;
+            });
+        });
+        const platforms = Object.keys(supportedPlatforms);
+
+        if (platforms.length) {
+            const { platform } = await inquirerPrompt({
+                type: 'list',
+                name: 'platform',
+                message: 'pick one of the following',
+                choices: platforms,
+            });
+            c.platform = platform;
+            return getEngineRunner(c, task).getTask(task);
+        }
+    }
+    return getEngineRunner(c, task).getTask(task);
+};

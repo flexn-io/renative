@@ -19,4 +19,5 @@ export default {
     task: 'switch',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

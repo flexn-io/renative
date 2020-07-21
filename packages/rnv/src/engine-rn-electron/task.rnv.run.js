@@ -36,5 +36,8 @@ export default {
     fn: taskRnvRun,
     task: 'run',
     params: [],
-    platforms: [],
+    platforms: [
+        MACOS,
+        WINDOWS,
+    ],
 };

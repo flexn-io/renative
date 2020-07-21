@@ -75,4 +75,5 @@ export default {
     task: 'platform eject',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

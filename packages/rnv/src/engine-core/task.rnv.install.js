@@ -34,4 +34,5 @@ export default {
     task: 'install',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

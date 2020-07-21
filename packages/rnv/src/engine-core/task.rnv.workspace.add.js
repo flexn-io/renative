@@ -50,4 +50,5 @@ export default {
     task: 'workspace add',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

@@ -6,4 +6,6 @@ export default {
     task: 'status',
     params: [],
     platforms: [],
+    skipSetup: true,
+    skipPlatforms: true,
 };

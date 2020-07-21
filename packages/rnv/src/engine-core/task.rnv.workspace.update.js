@@ -16,4 +16,5 @@ export default {
     task: 'workspace update',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

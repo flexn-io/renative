@@ -33,4 +33,5 @@ export default {
     task: 'workspace connect',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

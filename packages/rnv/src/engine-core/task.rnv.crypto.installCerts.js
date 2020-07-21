@@ -37,4 +37,5 @@ export default {
     task: 'crypto installCerts',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

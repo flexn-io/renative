@@ -49,4 +49,5 @@ export default {
     task: 'crypto updateProfiles',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

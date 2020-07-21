@@ -55,4 +55,6 @@ export default {
     task: 'target list',
     params: [],
     platforms: [],
+    skipSetup: true,
+    skipPlatforms: true,
 };

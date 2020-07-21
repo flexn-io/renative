@@ -151,4 +151,5 @@ export default {
     task: 'publish',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

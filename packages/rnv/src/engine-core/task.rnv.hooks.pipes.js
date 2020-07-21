@@ -2,16 +2,14 @@ import { logTask, logRaw } from '../core/systemManager/logger';
 import { generateOptions } from '../cli/prompt';
 import { buildHooks } from '../core/projectManager/buildHooks';
 
-export const taskRnvHooksPipes = (c, parentTask, originTask) => new Promise((resolve, reject) => {
+export const taskRnvHooksPipes = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksPipes', `parent:${parentTask} origin:${originTask}`);
 
-    buildHooks(c)
-        .then(() => {
-            const pipeOpts = generateOptions(c.buildPipes);
-            logRaw(`Pipes:\n${pipeOpts.asString}`);
-        })
-        .catch(e => reject(e));
-});
+    await buildHooks(c);
+
+    const pipeOpts = generateOptions(c.buildPipes);
+    logRaw(`Pipes:\n${pipeOpts.asString}`);
+};
 
 export default {
     description: '',
@@ -19,4 +17,6 @@ export default {
     task: 'hooks pipes',
     params: [],
     platforms: [],
+    skipAppConfig: true,
+    skipPlatforms: true,
 };

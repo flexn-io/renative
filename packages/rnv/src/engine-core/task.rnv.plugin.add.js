@@ -98,4 +98,5 @@ export default {
     task: 'plugin add',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

@@ -192,4 +192,5 @@ export default {
     task: 'crypto encrypt',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

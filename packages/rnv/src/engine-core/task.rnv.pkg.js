@@ -108,4 +108,5 @@ export default {
     task: 'pkg',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

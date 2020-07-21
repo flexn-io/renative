@@ -42,4 +42,5 @@ export default {
     task: 'plugin update',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

@@ -37,4 +37,5 @@ export default {
     task: 'platform list',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

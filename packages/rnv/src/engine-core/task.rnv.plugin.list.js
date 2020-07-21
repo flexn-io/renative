@@ -23,4 +23,5 @@ export default {
     task: 'plugin list',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

@@ -53,4 +53,5 @@ export default {
     task: 'crypto installProfiles',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

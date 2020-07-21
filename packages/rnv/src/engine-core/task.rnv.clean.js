@@ -131,4 +131,6 @@ export default {
     task: 'clean',
     params: [],
     platforms: [],
+    skipSetup: true,
+    skipPlatforms: true,
 };

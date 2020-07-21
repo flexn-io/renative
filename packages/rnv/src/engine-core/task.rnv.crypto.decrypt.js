@@ -240,4 +240,5 @@ export default {
     task: 'crypto decrypt',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

@@ -30,4 +30,5 @@ export default {
     task: 'platform setup',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

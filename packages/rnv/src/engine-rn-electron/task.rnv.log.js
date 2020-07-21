@@ -17,4 +17,5 @@ export default {
     task: 'log',
     params: [],
     platforms: [],
+    skipSetup: true,
 };

@@ -52,4 +52,5 @@ export default {
     task: 'template add',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

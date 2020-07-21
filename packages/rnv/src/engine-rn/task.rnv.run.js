@@ -76,5 +76,11 @@ export default {
     fn: taskRnvRun,
     task: 'run',
     params: [],
-    platforms: [],
+    platforms: [
+        IOS,
+        TVOS,
+        ANDROID,
+        ANDROID_TV,
+        ANDROID_WEAR,
+    ],
 };

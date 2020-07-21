@@ -36,4 +36,5 @@ export default {
     task: 'link',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };

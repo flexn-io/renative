@@ -111,5 +111,15 @@ export default {
     fn: taskRnvRun,
     task: 'run',
     params: [],
-    platforms: [],
+    platforms: [
+        WEB,
+        TIZEN,
+        WEBOS,
+        TIZEN_MOBILE,
+        TIZEN_WATCH,
+        KAIOS,
+        FIREFOX_OS,
+        FIREFOX_TV,
+        CHROMECAST,
+    ],
 };

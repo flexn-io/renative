@@ -32,4 +32,5 @@ export default {
     task: 'workspace list',
     params: [],
     platforms: [],
+    skipPlatforms: true,
 };
