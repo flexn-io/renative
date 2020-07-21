@@ -32,10 +32,9 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Run your app on target device or emulator',
     fn: taskRnvRun,
     task: 'run',
-    subTask: null,
     params: [],
     platforms: [],
 };

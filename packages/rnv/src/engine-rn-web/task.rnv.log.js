@@ -15,7 +15,6 @@ export default {
     description: '',
     fn: taskRnvLog,
     task: 'log',
-    subTask: null,
     params: [],
     platforms: [],
 };

@@ -189,8 +189,7 @@ export const taskRnvCryptoEncrypt = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvCryptoEncrypt,
-    task: 'crypto',
-    subTask: 'encrypt',
+    task: 'crypto encrypt',
     params: [],
     platforms: [],
 };

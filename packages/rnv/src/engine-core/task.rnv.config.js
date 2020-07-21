@@ -36,10 +36,9 @@ export const taskRnvConfig = (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Edit or display RNV configs',
     fn: taskRnvConfig,
     task: 'config',
-    subTask: null,
     params: [],
     platforms: [],
 };

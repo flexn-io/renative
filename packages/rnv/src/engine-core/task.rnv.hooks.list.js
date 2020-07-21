@@ -28,8 +28,7 @@ export const taskRnvHooksList = (c, parentTask, originTask) => new Promise((reso
 export default {
     description: '',
     fn: taskRnvHooksList,
-    task: 'hooks',
-    subTask: 'list',
+    task: 'hooks list',
     params: [],
     platforms: [],
 };

@@ -350,7 +350,6 @@ export default {
     description: '',
     fn: taskRnvNew,
     task: 'new',
-    subTask: null,
     params: [],
     platforms: [],
 };

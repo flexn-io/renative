@@ -27,7 +27,6 @@ export default {
     description: '',
     fn: taskRnvDebug,
     task: 'debug',
-    subTask: null,
     params: [],
     platforms: [],
 };

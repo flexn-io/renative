@@ -49,7 +49,6 @@ export default {
     description: '',
     fn: taskRnvConfigure,
     task: 'configure',
-    subTask: null,
     params: [],
     platforms: [],
 };

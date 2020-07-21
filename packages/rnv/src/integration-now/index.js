@@ -119,7 +119,6 @@ export default {
     description: '',
     fn: deployToNow,
     task: 'deploy now',
-    subTask: null,
     params: [],
     platforms: [],
 };

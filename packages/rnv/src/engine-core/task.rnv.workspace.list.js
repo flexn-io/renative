@@ -29,8 +29,7 @@ export const taskRnvWorkspaceList = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvWorkspaceList,
-    task: 'workspace',
-    subTask: 'list',
+    task: 'workspace list',
     params: [],
     platforms: [],
 };

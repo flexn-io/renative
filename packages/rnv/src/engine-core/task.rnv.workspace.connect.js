@@ -30,8 +30,7 @@ export const taskRnvWorkspaceConnect = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvWorkspaceConnect,
-    task: 'workspace',
-    subTask: 'connect',
+    task: 'workspace connect',
     params: [],
     platforms: [],
 };

@@ -17,7 +17,6 @@ export default {
     description: '',
     fn: taskRnvSwitch,
     task: 'switch',
-    subTask: null,
     params: [],
     platforms: [],
 };

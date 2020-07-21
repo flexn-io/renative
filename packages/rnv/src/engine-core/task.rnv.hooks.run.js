@@ -29,8 +29,7 @@ export const taskRnvHooksRun = (c, parentTask, originTask) => new Promise((resol
 export default {
     description: '',
     fn: taskRnvHooksRun,
-    task: 'hooks',
-    subTask: 'run',
+    task: 'hooks run',
     params: [],
     platforms: [],
 };

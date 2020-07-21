@@ -13,8 +13,7 @@ export const taskRnvWorkspaceUpdate = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvWorkspaceUpdate,
-    task: 'workspace',
-    subTask: 'update',
+    task: 'workspace update',
     params: [],
     platforms: [],
 };

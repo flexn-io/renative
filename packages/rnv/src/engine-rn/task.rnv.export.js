@@ -34,10 +34,9 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Export your app (ipa or apk)',
     fn: taskRnvExport,
     task: 'export',
-    subTask: null,
     params: [],
     platforms: [],
 };

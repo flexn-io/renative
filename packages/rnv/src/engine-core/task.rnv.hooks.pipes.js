@@ -16,8 +16,7 @@ export const taskRnvHooksPipes = (c, parentTask, originTask) => new Promise((res
 export default {
     description: '',
     fn: taskRnvHooksPipes,
-    task: 'hooks',
-    subTask: 'pipes',
+    task: 'hooks pipes',
     params: [],
     platforms: [],
 };

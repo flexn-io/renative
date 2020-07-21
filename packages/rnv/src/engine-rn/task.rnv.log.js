@@ -27,10 +27,9 @@ export const taskRnvLog = async (c, parentTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Attach logger to device or emulator and print out logs',
     fn: taskRnvLog,
     task: 'log',
-    subTask: null,
     params: [],
     platforms: [],
 };

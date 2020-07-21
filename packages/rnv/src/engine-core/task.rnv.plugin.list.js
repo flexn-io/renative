@@ -20,8 +20,7 @@ export const taskRnvPluginList = (c, parentTask, originTask) => new Promise((res
 export default {
     description: '',
     fn: taskRnvPluginList,
-    task: 'plugin',
-    subTask: 'list',
+    task: 'plugin list',
     params: [],
     platforms: [],
 };

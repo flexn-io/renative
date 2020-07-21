@@ -73,14 +73,11 @@ const _generateCommands = () => ({
     },
     config: {
         fn: c => initializeTask(c, 'config'),
-        desc: 'Edit or display RNV configs'
     },
     run: {
-        desc: 'Run your app on target device or emulator',
         fn: c => initializeTask(c, TASK_RUN)
     },
     package: {
-        desc: 'Package JS Code',
         platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
         fn: c => initializeTask(c, TASK_PACKAGE)
     },
@@ -93,7 +90,6 @@ const _generateCommands = () => ({
         fn: c => initializeTask(c, TASK_BUILD)
     },
     export: {
-        desc: 'Export your app (ios only)',
         platforms: [
             IOS,
             TVOS,
@@ -107,7 +103,6 @@ const _generateCommands = () => ({
         fn: c => initializeTask(c, TASK_EXPORT)
     },
     log: {
-        desc: 'Attach logger to device or emulator and print out logs',
         platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
         fn: c => initializeTask(c, TASK_LOG)
     },

@@ -49,8 +49,7 @@ export const taskRnvTemplateAdd = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvTemplateAdd,
-    task: 'template',
-    subTask: 'add',
+    task: 'template add',
     params: [],
     platforms: [],
 };

@@ -54,8 +54,7 @@ export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvTargetLaunch,
-    task: 'target',
-    subTask: 'launch',
+    task: 'target launch',
     params: [],
     platforms: [],
 };

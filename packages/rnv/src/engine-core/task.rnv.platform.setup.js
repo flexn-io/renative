@@ -27,8 +27,7 @@ export const taskRnvPlatformSetup = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvPlatformSetup,
-    task: 'platform',
-    subTask: 'setup',
+    task: 'platform setup',
     params: [],
     platforms: [],
 };

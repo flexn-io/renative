@@ -32,7 +32,6 @@ export default {
     description: '',
     fn: taskRnvInstall,
     task: 'install',
-    subTask: null,
     params: [],
     platforms: [],
 };

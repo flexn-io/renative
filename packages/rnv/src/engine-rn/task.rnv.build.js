@@ -42,7 +42,6 @@ export default {
     description: '',
     fn: taskRnvBuild,
     task: 'build',
-    subTask: null,
     params: [],
     platforms: [],
 };

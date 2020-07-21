@@ -95,7 +95,6 @@ export default {
     description: '',
     fn: taskRnvPlatformConfigure,
     task: 'platform configure',
-    subTask: 'configure',
     params: [],
     platforms: [],
 };

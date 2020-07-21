@@ -17,8 +17,7 @@ export const taskRnvTemplateList = (c, parentTask, originTask) => new Promise((r
 export default {
     description: '',
     fn: taskRnvTemplateList,
-    task: 'template',
-    subTask: 'list',
+    task: 'template list',
     params: [],
     platforms: [],
 };

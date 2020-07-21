@@ -31,7 +31,6 @@ export default {
     description: '',
     fn: taskRnvDeploy,
     task: 'deploy',
-    subTask: null,
     params: [],
     platforms: [],
 };

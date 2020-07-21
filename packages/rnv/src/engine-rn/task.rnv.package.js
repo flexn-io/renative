@@ -48,10 +48,9 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Package JS Code',
     fn: taskRnvPackage,
     task: 'package',
-    subTask: null,
     params: [],
     platforms: [],
 };

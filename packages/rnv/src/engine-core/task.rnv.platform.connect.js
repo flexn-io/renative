@@ -76,8 +76,7 @@ export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvPlatformConnect,
-    task: 'platform',
-    subTask: 'connect',
+    task: 'platform connect',
     params: [],
     platforms: [],
 };

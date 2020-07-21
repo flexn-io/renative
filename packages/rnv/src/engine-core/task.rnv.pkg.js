@@ -106,7 +106,6 @@ export default {
     description: '',
     fn: taskRnvPkg,
     task: 'pkg',
-    subTask: null,
     params: [],
     platforms: [],
 };

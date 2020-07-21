@@ -28,7 +28,6 @@ export default {
     description: '',
     fn: taskRnvExport,
     task: 'export',
-    subTask: null,
     params: [],
     platforms: [],
 };

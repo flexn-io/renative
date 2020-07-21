@@ -221,7 +221,6 @@ export default {
     description: '',
     fn: deployToFtp,
     task: 'deploy ftp',
-    subTask: null,
     params: [],
     platforms: [],
 };

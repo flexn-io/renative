@@ -34,8 +34,7 @@ export const taskRnvCryptoInstallCerts = (c, parentTask, originTask) => new Prom
 export default {
     description: '',
     fn: taskRnvCryptoInstallCerts,
-    task: 'crypto',
-    subTask: 'installCerts',
+    task: 'crypto installCerts',
     params: [],
     platforms: [],
 };

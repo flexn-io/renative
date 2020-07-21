@@ -129,7 +129,6 @@ export default {
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
     fn: taskRnvClean,
     task: 'clean',
-    subTask: null,
     params: [],
     platforms: [],
 };

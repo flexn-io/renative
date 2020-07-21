@@ -19,7 +19,6 @@ export default {
     description: '',
     fn: taskRnvPackage,
     task: 'package',
-    subTask: null,
     params: [],
     platforms: [],
 };

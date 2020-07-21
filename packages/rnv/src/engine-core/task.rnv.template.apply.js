@@ -29,8 +29,7 @@ export const taskRnvTemplateApply = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvTemplateApply,
-    task: 'template',
-    subTask: 'apply',
+    task: 'template apply',
     params: [],
     platforms: [],
 };

@@ -30,7 +30,6 @@ export default {
     description: '',
     fn: rnvFastlane,
     task: 'fastlane',
-    subTask: null,
     params: [],
     platforms: [],
 };

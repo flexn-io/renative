@@ -149,7 +149,6 @@ export default {
     description: '',
     fn: taskRnvPublish,
     task: 'publish',
-    subTask: null,
     params: [],
     platforms: [],
 };

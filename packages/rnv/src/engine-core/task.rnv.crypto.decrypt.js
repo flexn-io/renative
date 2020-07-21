@@ -237,8 +237,7 @@ and we will try to help!
 export default {
     description: '',
     fn: taskRnvCryptoDecrypt,
-    task: 'crypto',
-    subTask: 'decrypt',
+    task: 'crypto decrypt',
     params: [],
     platforms: [],
 };

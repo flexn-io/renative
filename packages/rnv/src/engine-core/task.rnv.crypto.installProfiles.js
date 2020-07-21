@@ -50,8 +50,7 @@ export const taskRnvCryptoInstallProfiles = (c, parentTask, originTask) => new P
 export default {
     description: '',
     fn: taskRnvCryptoInstallProfiles,
-    task: 'crypto',
-    subTask: 'installProfiles',
+    task: 'crypto installProfiles',
     params: [],
     platforms: [],
 };

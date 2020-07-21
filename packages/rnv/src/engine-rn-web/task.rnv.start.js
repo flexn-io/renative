@@ -58,7 +58,6 @@ export default {
     description: '',
     fn: taskRnvStart,
     task: 'start',
-    subTask: null,
     params: [],
     platforms: [],
 };

@@ -46,8 +46,7 @@ export const taskRnvCryptoUpdateProfiles = async (c, parentTask, originTask) => 
 export default {
     description: '',
     fn: taskRnvCryptoUpdateProfiles,
-    task: 'crypto',
-    subTask: 'updateProfiles',
+    task: 'crypto updateProfiles',
     params: [],
     platforms: [],
 };

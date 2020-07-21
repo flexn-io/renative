@@ -34,8 +34,7 @@ export const taskRnvPlatformList = (c, parentTask, originTask) => new Promise((r
 export default {
     description: '',
     fn: taskRnvPlatformList,
-    task: 'platform',
-    subTask: 'list',
+    task: 'platform list',
     params: [],
     platforms: [],
 };
