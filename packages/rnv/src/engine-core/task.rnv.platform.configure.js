@@ -61,34 +61,35 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve) => {
 
 export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     // c.platform = c.program.platform || 'all';
-    logTask('taskRnvPlatformConfigure', `parent:${parentTask} origin:${originTask}`);
+    const hasBuild = fsExistsSync(c.paths.project.builds.dir);
+    logTask('taskRnvPlatformConfigure', `parent:${parentTask} origin:${originTask} hasBuild:${hasBuild}`);
 
-    if (!parentTask || !fsExistsSync(c.paths.project.builds.dir)) {
-        if (c.program.reset) {
-            logInfo(
-                `You passed ${chalk().white('-r')} argument. paltform ${chalk().white(
-                    c.platform
-                )} will be cleaned up first!`
-            );
-            await cleanPlatformBuild(c, c.platform);
-        }
-
-        if (c.program.resetHard) {
-            await cleanPlaformAssets(c);
-        }
-        await createPlatformBuild(c, c.platform);
-
-        await injectPlatformDependencies(c);
-
-        await isPlatformSupported(c);
+    // if (!parentTask || !hasBuild) {
+    if (c.program.reset) {
+        logInfo(
+            `You passed ${chalk().white('-r')} argument. paltform ${chalk().white(
+                c.platform
+            )} will be cleaned up first!`
+        );
         await cleanPlatformBuild(c, c.platform);
-        await _runCopyPlatforms(c, c.platform);
-
-        await copyRuntimeAssets(c);
-        await copySharedPlatforms(c);
-        await generateRuntimeConfig(c);
-        await overrideTemplatePlugins(c);
     }
+
+    if (c.program.resetHard) {
+        await cleanPlaformAssets(c);
+    }
+    await createPlatformBuild(c, c.platform);
+
+    await injectPlatformDependencies(c);
+
+    await isPlatformSupported(c);
+    await cleanPlatformBuild(c, c.platform);
+    await _runCopyPlatforms(c, c.platform);
+
+    await copyRuntimeAssets(c);
+    await copySharedPlatforms(c);
+    await generateRuntimeConfig(c);
+    await overrideTemplatePlugins(c);
+    // }
 };
 
 export default {

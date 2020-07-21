@@ -1,10 +1,10 @@
 /* eslint-disable import/no-cycle */
-import { logTask, logHook } from '../systemManager/logger';
+import { logDebug, logHook } from '../systemManager/logger';
 import { executeAsync } from '../systemManager/exec';
 import { fsExistsSync } from '../systemManager/fileutils';
 
 export const executePipe = async (c, key) => {
-    logHook('executePipe', `${key}`);
+    logHook('executePipe', `('${key}')`);
 
     const pipesConfig = c.buildConfig?.pipes;
     if (!pipesConfig || (pipesConfig && pipesConfig.includes(key))) {
@@ -30,7 +30,7 @@ export const executePipe = async (c, key) => {
 
 /* eslint-disable import/no-dynamic-require, global-require */
 export const buildHooks = async (c) => {
-    logTask('buildHooks');
+    logDebug('buildHooks');
 
     if (fsExistsSync(c.paths.buildHooks.index)) {
         if (c.isBuildHooksReady) {
