@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import inquirer from 'inquirer';
 import {
     writeFileSync

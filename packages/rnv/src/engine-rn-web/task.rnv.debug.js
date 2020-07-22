@@ -1,13 +1,7 @@
-/* eslint-disable import/no-cycle */
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
-    TIZEN,
-} from '../core/constants';
-
+import { WEB, TIZEN } from '../core/constants';
 import { executeAsync } from '../core/systemManager/exec';
-
 
 export const taskRnvDebug = async (c, parentTask) => {
     logTask('taskRnvDebug', `parent:${parentTask}`);
@@ -28,5 +22,8 @@ export default {
     fn: taskRnvDebug,
     task: 'debug',
     params: [],
-    platforms: [],
+    platforms: [
+        WEB,
+        TIZEN
+    ],
 };

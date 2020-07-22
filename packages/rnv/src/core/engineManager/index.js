@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logDebug, logTask, logInitTask, logExitTask, chalk } from '../systemManager/logger';
 import { getConfigProp } from '../common';
 import Analytics from '../systemManager/analytics';
@@ -7,24 +6,11 @@ import {
 } from '../projectManager/buildHooks';
 import { inquirerPrompt } from '../../cli/prompt';
 
-// import EngineRn from '../../engine-rn';
-// import EngineRnWeb from '../../engine-rn-web';
-// import EngineRnElectron from '../../engine-rn-electron';
-// import EngineRnNext from '../../engine-rn-next';
-// import EngineCore from '../../engine-core';
-
-const REGISTERED_ENGINES = []; // [EngineRn, EngineRnWeb, EngineRnElectron, EngineRnNext, EngineCore];
-
-const ENGINES = {
-    // 'engine-rn': EngineRn,
-    // 'engine-rn-web': EngineRnWeb,
-    // 'engine-rn-electron': EngineRnElectron,
-    // 'engine-rn-next': EngineRnNext,
-};
+const REGISTERED_ENGINES = [];
+const ENGINES = {};
 const ENGINE_CORE = 'engine-core';
 
 export const registerEngine = (engine) => {
-    // console.log(`Register engine: ${engine.getId()}`);
     ENGINES[engine.getId()] = engine;
     REGISTERED_ENGINES.push(engine);
 };
@@ -98,21 +84,42 @@ export const executeTask = async (c, task, parentTask, originTask) => {
     logExitTask(`[${parentTask}] <= ${task}`);
 };
 
+const _getTaskOption = ({ taskInstance, hasMultipleSubTasks }) => {
+    if (hasMultipleSubTasks) {
+        return `${taskInstance.task.split(' ')[0]}${chalk().grey('...')}`;
+    }
+    if (taskInstance.description && taskInstance.description !== '') {
+        return `${taskInstance.task.split(' ')[0]} ${chalk().grey(`(${taskInstance.description})`)}`;
+    }
+    return `${taskInstance.task.split(' ')[0]}`;
+};
+
 export const findSuitableTask = async (c) => {
     if (!c.command) {
         const suitableTaskInstances = {};
         REGISTERED_ENGINES.forEach((engine) => {
             engine.getTasks().forEach((taskInstance) => {
-                suitableTaskInstances[taskInstance.task.split(' ')[0]] = taskInstance;
+                const key = taskInstance.task.split(' ')[0];
+                let hasMultipleSubTasks = false;
+                if (suitableTaskInstances[key] && taskInstance.task.includes(' ')) hasMultipleSubTasks = true;
+                suitableTaskInstances[key] = {
+                    taskInstance,
+                    hasMultipleSubTasks
+                };
             });
         });
         const taskInstances = Object.values(suitableTaskInstances);
         let tasks;
         let defaultCmd = 'new';
+        let tasksCommands;
+        let filteredTasks;
         if (!c.paths.project.configExists) {
-            tasks = taskInstances.filter(tskInstance => tskInstance.skipProjectSetup).map(v => v.task.split(' ')[0]).sort();
+            filteredTasks = taskInstances.filter(v => v.taskInstance.skipProjectSetup);
+            tasks = filteredTasks.map(v => _getTaskOption(v)).sort();
+            tasksCommands = filteredTasks.map(v => v.taskInstance.task.split(' ')[0]).sort();
         } else {
-            tasks = taskInstances.map(v => v.task.split(' ')[0]).sort();
+            tasks = taskInstances.map(v => _getTaskOption(v)).sort();
+            tasksCommands = taskInstances.map(v => v.taskInstance.task.split(' ')[0]).sort();
             defaultCmd = 'run';
         }
 
@@ -125,7 +132,7 @@ export const findSuitableTask = async (c) => {
             pageSize: 15,
             logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
         });
-        c.command = command;
+        c.command = tasksCommands[tasks.indexOf(command)];
     }
     let task = c.command;
     if (c.subCommand) task += ` ${c.subCommand}`;
@@ -135,8 +142,13 @@ export const findSuitableTask = async (c) => {
     if (!suitableEngines.length) {
         const supportedSubtasks = {};
         REGISTERED_ENGINES.forEach((engine) => {
-            engine.getSubTasks(task).forEach((subtask) => {
-                supportedSubtasks[subtask] = true;
+            engine.getSubTasks(task).forEach((taskInstance) => {
+                const taskKey = taskInstance.task.replace(task, '').trim();
+                const desc = taskInstance.description ? `(${taskInstance.description})` : '';
+                const key = `${taskKey} ${chalk().grey(desc)}`;
+                supportedSubtasks[key] = {
+                    taskKey
+                };
             });
         });
         const subTasks = Object.keys(supportedSubtasks);
@@ -148,7 +160,7 @@ export const findSuitableTask = async (c) => {
                 choices: subTasks,
             });
 
-            c.subCommand = subCommand;
+            c.subCommand = supportedSubtasks[subCommand].taskKey;
             task = `${c.command} ${c.subCommand}`;
         }
     }

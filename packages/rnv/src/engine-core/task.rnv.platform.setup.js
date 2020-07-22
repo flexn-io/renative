@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-// @todo fix cycle dep
 import inquirer from 'inquirer';
 import { SUPPORTED_PLATFORMS, TASK_PLATFORM_SETUP, TASK_PROJECT_CONFIGURE } from '../core/constants';
 import { updateProjectPlatforms } from '../core/platformManager';

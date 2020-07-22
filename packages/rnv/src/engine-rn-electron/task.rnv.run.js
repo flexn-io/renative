@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
 import {
@@ -7,11 +6,8 @@ import {
     TASK_RUN,
     TASK_CONFIGURE
 } from '../core/constants';
-import {
-    runElectron,
-} from '../sdk-electron';
+import { runElectron } from '../sdk-electron';
 import { executeTask } from '../core/engineManager';
-
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;

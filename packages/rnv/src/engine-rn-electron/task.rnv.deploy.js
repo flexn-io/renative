@@ -1,6 +1,7 @@
-/* eslint-disable import/no-cycle */
 import { logTask } from '../core/systemManager/logger';
 import {
+    MACOS,
+    WINDOWS,
     TASK_EXPORT,
     TASK_DEPLOY,
 } from '../core/constants';
@@ -21,5 +22,8 @@ export default {
     fn: taskRnvDeploy,
     task: 'deploy',
     params: [],
-    platforms: [],
+    platforms: [
+        MACOS,
+        WINDOWS,
+    ],
 };

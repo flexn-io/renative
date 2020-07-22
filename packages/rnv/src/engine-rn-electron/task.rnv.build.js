@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logTask } from '../core/systemManager/logger';
 import {
     MACOS,
@@ -29,5 +28,8 @@ export default {
     fn: taskRnvBuild,
     task: 'build',
     params: [],
-    platforms: [],
+    platforms: [
+        MACOS,
+        WINDOWS,
+    ],
 };

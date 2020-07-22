@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import minimist from 'minimist';
 
-import { deployToNow } from '../../integration-now';
+import { taskRnvDeployNow } from '../../integration-now';
 import { deployToFtp } from '../../integration-ftp';
 import { importPackageFromProject } from '../common';
 import { chalk, logInfo } from '../systemManager/logger';
@@ -20,9 +20,9 @@ const DEPLOY_TARGET_NONE = 'none';
 const _runDeployment = async (c, platform, deployType) => {
     switch (deployType) {
         case DEPLOY_TARGET_FTP:
-            return deployToFtp(c, platform);
+            return deployToFtp(c);
         case DEPLOY_TARGET_NOW:
-            return deployToNow(c, platform);
+            return taskRnvDeployNow(c);
         case DEPLOY_TARGET_NONE:
             return Promise.resolve();
         case DEPLOY_TARGET_DOCKER: {

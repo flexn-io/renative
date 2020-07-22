@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { areNodeModulesInstalled } from '../core/common';
 
 import { installPackageDependencies } from '../core/systemManager/exec';
@@ -29,7 +28,7 @@ export const taskRnvInstall = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Install package node_modules via yarn or npm',
     fn: taskRnvInstall,
     task: 'install',
     params: [],

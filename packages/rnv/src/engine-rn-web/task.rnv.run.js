@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import ip from 'ip';
 import path from 'path';
 
@@ -24,7 +23,7 @@ import { runFirefoxProject } from '../sdk-firefox';
 import { runChromecast } from '../sdk-webpack/chromecast';
 import { copyFolderContentsRecursiveSync, writeCleanFile } from '../core/systemManager/fileutils';
 import Config from '../core/configManager/config';
-import { executeTask as _executeTask } from '../core/engineManager';
+import { executeTask } from '../core/engineManager';
 
 const _configureHostedIfRequired = async (c) => {
     logTask('_configureHostedIfRequired');
@@ -66,15 +65,15 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask('_taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
+    logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
     if (Config.isWebHostEnabled && hosted) {
         c.runtime.shouldOpenBrowser = true;
         // return _taskStart(c);
-        return _executeTask(c, TASK_START);
+        return executeTask(c, TASK_START);
     }
 
-    await _executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
         case WEB:

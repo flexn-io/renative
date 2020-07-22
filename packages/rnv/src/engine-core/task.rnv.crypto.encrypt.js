@@ -192,7 +192,7 @@ export const taskRnvCryptoEncrypt = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Encrypts secure files from ~/<wokspace>/<project>/.. to project',
     fn: taskRnvCryptoEncrypt,
     task: TASK_CRYPTO_ENCRYPT,
     params: [],

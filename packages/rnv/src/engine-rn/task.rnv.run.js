@@ -1,8 +1,4 @@
-
-/* eslint-disable import/no-cycle */
-import {
-    getConfigProp,
-} from '../core/common';
+import { getConfigProp } from '../core/common';
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask, logSummary } from '../core/systemManager/logger';
 import {
@@ -14,14 +10,8 @@ import {
     TASK_RUN,
     TASK_CONFIGURE,
 } from '../core/constants';
-import {
-    runXcodeProject
-} from '../sdk-xcode';
-import {
-    packageAndroid,
-    runAndroid
-} from '../sdk-android';
-
+import { runXcodeProject } from '../sdk-xcode';
+import { packageAndroid, runAndroid } from '../sdk-android';
 import { executeTask } from '../core/engineManager';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from './commonEngine';
 

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logTask } from '../core/systemManager/logger';
 import { copyRuntimeAssets, copySharedPlatforms } from '../core/projectManager/projectParser';
 import { generateRuntimeConfig } from '../core/configManager/configParser';

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { configurePlugins } from '../core/pluginManager';
 import { logTask, logAppInfo } from '../core/systemManager/logger';
 import { parseRenativeConfigs,

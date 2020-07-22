@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { chalk, logTask } from '../core/systemManager/logger';
 import { listAppConfigsFoldersSync, setAppConfig } from '../core/configManager/configParser';
 import { IOS, TVOS, TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE } from '../core/constants';

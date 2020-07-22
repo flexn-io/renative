@@ -1,21 +1,27 @@
-/* eslint-disable import/no-cycle */
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
 import {
     WEB,
+    TIZEN,
+    WEBOS,
+    TIZEN_MOBILE,
+    TIZEN_WATCH,
+    KAIOS,
+    FIREFOX_OS,
+    FIREFOX_TV,
     CHROMECAST,
     TASK_EXPORT,
     TASK_DEPLOY,
 } from '../core/constants';
 import { deployWeb } from '../sdk-webpack';
-import { executeTask as _executeTask } from '../core/engineManager';
+import { executeTask } from '../core/engineManager';
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);
 
     const { platform } = c;
 
-    await _executeTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
+    await executeTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
 
     switch (platform) {
         case WEB:
@@ -32,5 +38,15 @@ export default {
     fn: taskRnvDeploy,
     task: 'deploy',
     params: [],
-    platforms: [],
+    platforms: [
+        WEB,
+        TIZEN,
+        WEBOS,
+        TIZEN_MOBILE,
+        TIZEN_WATCH,
+        KAIOS,
+        FIREFOX_OS,
+        FIREFOX_TV,
+        CHROMECAST,
+    ],
 };

@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-
 import path from 'path';
 import { inquirerPrompt } from '../cli/prompt';
 import { logTask } from '../core/systemManager/logger';

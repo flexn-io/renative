@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-
 import { generateOptions } from '../cli/prompt';
 import {
     chalk,

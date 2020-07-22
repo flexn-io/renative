@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logToSummary, logTask } from '../core/systemManager/logger';
 import { getTemplateOptions } from '../core/templateManager';
 import { executeTask } from '../core/engineManager';

@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-// @todo fix cycle dep
 import { chalk, logToSummary, logTask } from '../core/systemManager/logger';
 import { generateOptions } from '../cli/prompt';
 import { executeTask } from '../core/engineManager';

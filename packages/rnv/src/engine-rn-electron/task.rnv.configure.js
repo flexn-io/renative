@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
 import { MACOS, WINDOWS, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE } from '../core/constants';
@@ -24,5 +23,8 @@ export default {
     fn: taskRnvConfigure,
     task: 'configure',
     params: [],
-    platforms: [],
+    platforms: [
+        MACOS,
+        WINDOWS,
+    ],
 };

@@ -239,7 +239,7 @@ and we will try to help!
 };
 
 export default {
-    description: '',
+    description: 'Decrypt encrypted project files into local ~/<wokspace>/<project>/..',
     fn: taskRnvCryptoDecrypt,
     task: TASK_CRYPTO_DECRYPT,
     params: [],

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
 import {
@@ -50,5 +49,15 @@ export default {
     fn: taskRnvConfigure,
     task: 'configure',
     params: [],
-    platforms: [],
+    platforms: [
+        WEB,
+        TIZEN,
+        WEBOS,
+        TIZEN_MOBILE,
+        TIZEN_WATCH,
+        KAIOS,
+        FIREFOX_OS,
+        FIREFOX_TV,
+        CHROMECAST,
+    ],
 };

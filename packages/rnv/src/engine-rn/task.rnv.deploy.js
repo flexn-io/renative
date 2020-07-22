@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logTask } from '../core/systemManager/logger';
 import {
     TASK_EXPORT,

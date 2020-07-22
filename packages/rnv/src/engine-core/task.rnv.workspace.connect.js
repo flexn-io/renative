@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-
 import { inquirerPrompt } from '../cli/prompt';
 import { logTask, logRaw } from '../core/systemManager/logger';
 import { getWorkspaceConnectionString } from '../core/projectManager/workspace';

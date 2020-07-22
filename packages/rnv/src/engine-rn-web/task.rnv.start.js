@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import open from 'better-opn';
 import { getConfigProp } from '../core/common';
 import { logErrorPlatform } from '../core/platformManager';
@@ -9,12 +8,16 @@ import {
     WEBOS,
     TIZEN_MOBILE,
     TIZEN_WATCH,
+    KAIOS,
+    FIREFOX_OS,
+    FIREFOX_TV,
+    CHROMECAST,
     TASK_START,
     TASK_CONFIGURE
 } from '../core/constants';
 import { runWeb, waitForWebpack } from '../sdk-webpack';
 import Config from '../core/configManager/config';
-import { executeTask as _executeTask } from '../core/engineManager';
+import { executeTask } from '../core/engineManager';
 
 const WEINRE_ENABLED_PLATFORMS = [TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH];
 
@@ -26,7 +29,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 
     logTask('taskRnvStart', `parent:${parentTask} port:${port} hosted:${!!hosted}`);
 
-    await _executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
+    await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
 
     if (Config.isWebHostEnabled && hosted) {
         waitForWebpack(c)
@@ -55,9 +58,19 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Starts bundler / server',
     fn: taskRnvStart,
     task: 'start',
     params: [],
-    platforms: [],
+    platforms: [
+        WEB,
+        TIZEN,
+        WEBOS,
+        TIZEN_MOBILE,
+        TIZEN_WATCH,
+        KAIOS,
+        FIREFOX_OS,
+        FIREFOX_TV,
+        CHROMECAST,
+    ],
 };

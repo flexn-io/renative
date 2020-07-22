@@ -93,7 +93,7 @@ const hasTask = task => !!TASKS[task];
 
 const getTask = task => TASKS[task];
 
-const getSubTasks = task => Object.values(TASKS).filter(v => v.task.startsWith(task)).map(v => v.task.replace(task, '').trim());
+const getSubTasks = task => Object.values(TASKS).filter(v => v.task.startsWith(task));
 
 const getTasks = () => Object.values(TASKS);
 

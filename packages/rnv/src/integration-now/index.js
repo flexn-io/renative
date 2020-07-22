@@ -1,11 +1,10 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import inquirer from 'inquirer';
 import dotenv from 'dotenv';
 import { fsExistsSync, fsWriteFileSync, fsReadFileSync } from '../core/systemManager/fileutils';
 import { executeAsync } from '../core/systemManager/exec';
 import { getAppFolder, getConfigProp } from '../core/common';
-import { chalk, logInfo } from '../core/systemManager/logger';
+import { chalk, logInfo, logTask } from '../core/systemManager/logger';
 
 
 const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) => {
@@ -77,7 +76,9 @@ const _createConfigFiles = async (
     }
 };
 
-const deployToNow = c => new Promise((resolve, reject) => {
+export const taskRnvDeployNow = (c, parentTask, originTask) => new Promise((resolve, reject) => {
+    logTask('taskRnvDeployNow', `parent:${parentTask} origin:${originTask}`);
+
     const nowConfigPath = path.resolve(c.paths.project.dir, 'configs', `now.${c.platform}.json`);
     const envConfigPath = path.resolve(c.paths.project.dir, '.env');
 
@@ -112,12 +113,9 @@ const deployToNow = c => new Promise((resolve, reject) => {
     });
 });
 
-export { deployToNow };
-
-
 export default {
     description: '',
-    fn: deployToNow,
+    fn: taskRnvDeployNow,
     task: 'deploy now',
     params: [],
     platforms: [],

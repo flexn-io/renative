@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logTask } from '../core/systemManager/logger';
 import { setRuntimeDefaults, parseRenativeConfigs } from '../core/configManager/configParser';
 import { initializeTask, findSuitableTask, registerEngine } from '../core/engineManager';

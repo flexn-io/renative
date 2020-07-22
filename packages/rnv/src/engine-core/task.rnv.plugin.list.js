@@ -1,8 +1,4 @@
-/* eslint-disable import/no-cycle */
-import {
-    logTask,
-    logToSummary,
-} from '../core/systemManager/logger';
+import { logTask, logToSummary } from '../core/systemManager/logger';
 import { getPluginList } from '../core/pluginManager';
 import { executeTask } from '../core/engineManager';
 import { TASK_PLUGIN_LIST, TASK_PROJECT_CONFIGURE } from '../core/constants';

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { isPlatformSupported } from '../core/platformManager';
 import { chalk, logTask } from '../core/systemManager/logger';
 import {

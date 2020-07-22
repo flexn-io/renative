@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { getEntryFile } from '../core/common';
 import { doResolve } from '../core/resolve';
 import { logErrorPlatform } from '../core/platformManager';
@@ -14,7 +13,6 @@ import {
 } from '../core/constants';
 import { executeAsync } from '../core/systemManager/exec';
 import { executeTask } from '../core/engineManager';
-
 
 const BUNDLER_PLATFORMS = {};
 
@@ -79,7 +77,7 @@ Dev server running at: ${url}
 };
 
 export default {
-    description: '',
+    description: 'Starts bundler / server',
     fn: taskRnvStart,
     task: 'start',
     params: [],

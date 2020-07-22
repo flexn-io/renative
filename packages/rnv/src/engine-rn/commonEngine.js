@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import axios from 'axios';
 import ora from 'ora';

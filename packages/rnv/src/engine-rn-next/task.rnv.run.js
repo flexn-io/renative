@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
 import {
@@ -14,7 +13,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask('_taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
+    logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
     await executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 

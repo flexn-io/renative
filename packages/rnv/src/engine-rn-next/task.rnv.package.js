@@ -1,6 +1,7 @@
-/* eslint-disable import/no-cycle */
 import { logTask } from '../core/systemManager/logger';
 import {
+    WEB,
+    CHROMECAST,
     TASK_PACKAGE,
     TASK_CONFIGURE
 } from '../core/constants';
@@ -19,5 +20,8 @@ export default {
     fn: taskRnvPackage,
     task: 'package',
     params: [],
-    platforms: [],
+    platforms: [
+        WEB,
+        CHROMECAST,
+    ],
 };

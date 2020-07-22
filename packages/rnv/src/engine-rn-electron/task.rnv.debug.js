@@ -1,6 +1,6 @@
-/* eslint-disable import/no-cycle */
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
+import { MACOS, WINDOWS } from '../core/constants';
 
 export const taskRnvDebug = async (c) => {
     logTask('taskRnvDebug');
@@ -17,5 +17,8 @@ export default {
     fn: taskRnvDebug,
     task: 'debug',
     params: [],
-    platforms: [],
+    platforms: [
+        MACOS,
+        WINDOWS,
+    ],
 };

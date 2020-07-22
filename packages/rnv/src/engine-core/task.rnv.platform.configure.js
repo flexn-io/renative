@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import { chalk, logTask, logWarning, logInfo } from '../core/systemManager/logger';
 import { copyFolderContentsRecursiveSync, fsExistsSync } from '../core/systemManager/fileutils';

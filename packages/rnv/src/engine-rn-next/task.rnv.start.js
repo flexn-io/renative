@@ -45,9 +45,12 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Starts bundler / server',
     fn: taskRnvStart,
     task: 'start',
     params: [],
-    platforms: [],
+    platforms: [
+        WEB,
+        CHROMECAST,
+    ],
 };

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logTask } from '../core/systemManager/logger';
 import { executeTask } from '../core/engineManager';
 import { TASK_WORKSPACE_UPDATE, TASK_PROJECT_CONFIGURE } from '../core/constants';

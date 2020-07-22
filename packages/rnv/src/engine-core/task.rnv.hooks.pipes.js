@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logTask, logRaw } from '../core/systemManager/logger';
 import { generateOptions } from '../cli/prompt';
 import { buildHooks } from '../core/projectManager/buildHooks';

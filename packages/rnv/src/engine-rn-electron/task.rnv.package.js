@@ -1,9 +1,5 @@
-/* eslint-disable import/no-cycle */
 import { logTask } from '../core/systemManager/logger';
-import {
-    TASK_PACKAGE,
-    TASK_CONFIGURE
-} from '../core/constants';
+import { MACOS, WINDOWS, TASK_PACKAGE, TASK_CONFIGURE } from '../core/constants';
 import { executeTask } from '../core/engineManager';
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
@@ -18,7 +14,10 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvPackage,
-    task: 'package',
+    task: TASK_PACKAGE,
     params: [],
-    platforms: [],
+    platforms: [
+        MACOS,
+        WINDOWS,
+    ],
 };

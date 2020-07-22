@@ -1,6 +1,12 @@
-/* eslint-disable import/no-cycle */
 import { executeAsync, commandExistsSync } from '../core/systemManager/exec';
 import { getAppFolder } from '../core/common';
+import {
+    IOS,
+    TVOS,
+    ANDROID,
+    ANDROID_TV,
+    ANDROID_WEAR,
+} from '../core/constants';
 import Config from '../core/configManager/config';
 import PlatformSetup from '../core/setupManager';
 
@@ -31,5 +37,11 @@ export default {
     fn: rnvFastlane,
     task: 'fastlane',
     params: [],
-    platforms: [],
+    platforms: [
+        IOS,
+        TVOS,
+        ANDROID,
+        ANDROID_TV,
+        ANDROID_WEAR,
+    ],
 };

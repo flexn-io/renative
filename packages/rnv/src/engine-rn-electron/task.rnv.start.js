@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import open from 'better-opn';
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask, logError } from '../core/systemManager/logger';
@@ -39,9 +38,12 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Starts bundler / server',
     fn: taskRnvStart,
     task: 'start',
     params: [],
-    platforms: [],
+    platforms: [
+        MACOS,
+        WINDOWS,
+    ],
 };

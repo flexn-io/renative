@@ -1,11 +1,9 @@
-/* eslint-disable import/no-cycle */
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
 import {
     WEB,
     CHROMECAST,
     TASK_BUILD, TASK_PACKAGE,
-
 } from '../core/constants';
 import { buildWebNext } from '../sdk-webpack/webNext';
 import { executeTask } from '../core/engineManager';
@@ -31,5 +29,8 @@ export default {
     fn: taskRnvBuild,
     task: 'build',
     params: [],
-    platforms: [],
+    platforms: [
+        WEB,
+        CHROMECAST,
+    ],
 };

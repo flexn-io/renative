@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
 import {
@@ -29,5 +28,8 @@ export default {
     fn: taskRnvExport,
     task: 'export',
     params: [],
-    platforms: [],
+    platforms: [
+        WEB,
+        CHROMECAST,
+    ],
 };
