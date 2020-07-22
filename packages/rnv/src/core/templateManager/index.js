@@ -144,7 +144,6 @@ const _applyTemplate = async (c) => {
         )[0];
         c.runtime.requiresForcedTemplateApply = true;
     }
-
     await setAppConfig(c, c.runtime.appId);
     generateLocalConfig(c, !!c.runtime.selectedTemplate);
 
@@ -215,8 +214,10 @@ const _configureAppConfigs = async (c) => {
                     _writeObjectSync(c, appConfigPath, appConfig);
                 }
             });
-
-            await updateConfig(c, true);
+            await parseRenativeConfigs(c);
+            // if (!c.program.ci) {
+            //     await updateConfig(c, true);
+            // }
         } catch (e) {
             logError(e);
         }

@@ -131,6 +131,7 @@ const askUserAboutConfigs = async (c, dir, id, basePath) => {
 };
 
 export const setRuntimeDefaults = async (c) => {
+    logTask('setRuntimeDefaults');
     c.runtime.port = c.program.port
   || c.buildConfig?.defaults?.ports?.[c.platform]
   || PLATFORMS[c.platform]?.defaultPort;
@@ -153,59 +154,62 @@ const matchAppConfigID = async (c, appConfigID) => {
     const appConfigsDirs = c.buildConfig?.paths?.appConfigsDirs || [
         c.paths.project?.appConfigsDir
     ];
+
+
     for (let i = 0; i < appConfigsDirs.length; i++) {
         const appConfigsDir = appConfigsDirs[i];
+        if (fsExistsSync(appConfigsDir)) {
+            const appConfigDirContents = await (await readdirAsync(
+                appConfigsDir
+            )).filter(folder => fsStatSync(path.join(appConfigsDir, folder)).isDirectory());
 
-        const appConfigDirContents = await (await readdirAsync(
-            appConfigsDir
-        )).filter(folder => fsStatSync(path.join(appConfigsDir, folder)).isDirectory());
+            const appConfigs = appConfigDirContents
+                .map(dir => _loadAppConfigIDfromDir(dir, appConfigsDir))
+                .filter(conf => conf.id !== null);
+            // find duplicates
+            const ids = [];
+            const dirs = [];
+            await Promise.all(
+                appConfigs.map(async (conf) => {
+                    const id = conf.id.toLowerCase();
+                    const dir = conf.dir.toLowerCase();
+                    // find mismatches
+                    if (id !== dir) {
+                        await askUserAboutConfigs(
+                            c,
+                            conf.dir,
+                            conf.id,
+                            appConfigsDir
+                        );
+                    }
+                    if (ids.includes(id)) {
+                        throw new Error(
+                            `AppConfig error - You have 2 duplicate app configs with ID ${
+                                id
+                            }. Keep in mind that ID is case insensitive.
+  Please edit one of them in /appConfigs/<folder>/renative.json`
+                        );
+                    }
+                    ids.push(id);
+                    if (dirs.includes(dir)) {
+                        throw new Error(
+                            `AppConfig error - You have 2 duplicate app config folders named ${
+                                dir
+                            }. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`
+                        );
+                    }
+                    dirs.push(dir);
+                })
+            );
 
-        const appConfigs = appConfigDirContents
-            .map(dir => _loadAppConfigIDfromDir(dir, appConfigsDir))
-            .filter(conf => conf.id !== null);
-        // find duplicates
-        const ids = [];
-        const dirs = [];
-        await Promise.all(
-            appConfigs.map(async (conf) => {
-                const id = conf.id.toLowerCase();
-                const dir = conf.dir.toLowerCase();
-                // find mismatches
-                if (id !== dir) {
-                    await askUserAboutConfigs(
-                        c,
-                        conf.dir,
-                        conf.id,
-                        appConfigsDir
-                    );
-                }
-                if (ids.includes(id)) {
-                    throw new Error(
-                        `AppConfig error - You have 2 duplicate app configs with ID ${
-                            id
-                        }. Keep in mind that ID is case insensitive.
-Please edit one of them in /appConfigs/<folder>/renative.json`
-                    );
-                }
-                ids.push(id);
-                if (dirs.includes(dir)) {
-                    throw new Error(
-                        `AppConfig error - You have 2 duplicate app config folders named ${
-                            dir
-                        }. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`
-                    );
-                }
-                dirs.push(dir);
-            })
-        );
-
-        const foundConfig = appConfigs.filter(
-            cfg => cfg.id === appConfigID
-                || cfg.id.toLowerCase() === appConfigID
-                || cfg.dir === appConfigID
-                || cfg.dir.toLowerCase() === appConfigID
-        );
-        if (foundConfig.length) return foundConfig[0].id.toLowerCase();
+            const foundConfig = appConfigs.filter(
+                cfg => cfg.id === appConfigID
+                  || cfg.id.toLowerCase() === appConfigID
+                  || cfg.dir === appConfigID
+                  || cfg.dir.toLowerCase() === appConfigID
+            );
+            if (foundConfig.length) return foundConfig[0].id.toLowerCase();
+        }
     }
     return false;
 };
