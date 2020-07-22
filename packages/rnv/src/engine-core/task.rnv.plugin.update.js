@@ -8,10 +8,13 @@ import {
     logTask,
 } from '../core/systemManager/logger';
 import { getPluginList } from '../core/pluginManager';
-
+import { executeTask } from '../core/engineManager';
+import { TASK_PLUGIN_UPDATE, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvPluginUpdate = async (c, parentTask, originTask) => {
     logTask('taskRnvPluginUpdate', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_UPDATE, originTask);
 
     const o = getPluginList(c, true);
 
@@ -42,5 +45,4 @@ export default {
     task: 'plugin update',
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

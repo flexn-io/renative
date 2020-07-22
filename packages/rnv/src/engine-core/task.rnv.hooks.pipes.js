@@ -1,9 +1,14 @@
+/* eslint-disable import/no-cycle */
 import { logTask, logRaw } from '../core/systemManager/logger';
 import { generateOptions } from '../cli/prompt';
 import { buildHooks } from '../core/projectManager/buildHooks';
+import { executeTask } from '../core/engineManager';
+import { TASK_HOOKS_PIPES, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvHooksPipes = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksPipes', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_PIPES, originTask);
 
     await buildHooks(c);
 
@@ -12,9 +17,9 @@ export const taskRnvHooksPipes = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Get the list of all available pipes',
     fn: taskRnvHooksPipes,
-    task: 'hooks pipes',
+    task: TASK_HOOKS_PIPES,
     params: [],
     platforms: [],
     skipAppConfig: true,

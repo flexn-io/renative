@@ -9,9 +9,13 @@ import {
     removeDirs
 } from '../core/systemManager/fileutils';
 import { generatePlatformChoices } from '../core/platformManager';
+import { executeTask } from '../core/engineManager';
+import { TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT } from '../core/constants';
 
 export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformConnect', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, originTask);
 
     const { connectedPlatforms } = await inquirer.prompt({
         name: 'connectedPlatforms',
@@ -76,8 +80,7 @@ export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvPlatformConnect,
-    task: 'platform connect',
+    task: TASK_PLATFORM_CONNECT,
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

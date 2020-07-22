@@ -1,13 +1,16 @@
 /* eslint-disable import/no-cycle */
 // @todo fix cycle dep
 import inquirer from 'inquirer';
-import { SUPPORTED_PLATFORMS } from '../core/constants';
+import { SUPPORTED_PLATFORMS, TASK_PLATFORM_SETUP, TASK_PROJECT_CONFIGURE } from '../core/constants';
 import { updateProjectPlatforms } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
+import { executeTask } from '../core/engineManager';
 
 
 export const taskRnvPlatformSetup = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformSetup', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_SETUP, originTask);
 
     const currentPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
 
@@ -27,7 +30,7 @@ export const taskRnvPlatformSetup = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvPlatformSetup,
-    task: 'platform setup',
+    task: TASK_PLATFORM_SETUP,
     params: [],
     platforms: [],
     skipPlatforms: true,

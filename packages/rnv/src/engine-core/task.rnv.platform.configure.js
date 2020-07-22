@@ -114,5 +114,4 @@ export default {
     task: 'platform configure',
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

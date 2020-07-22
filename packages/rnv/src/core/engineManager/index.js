@@ -7,19 +7,26 @@ import {
 } from '../projectManager/buildHooks';
 import { inquirerPrompt } from '../../cli/prompt';
 
-import EngineRn from '../../engine-rn';
-import EngineRnWeb from '../../engine-rn-web';
-import EngineRnElectron from '../../engine-rn-electron';
-import EngineRnNext from '../../engine-rn-next';
-import EngineCore from '../../engine-core';
+// import EngineRn from '../../engine-rn';
+// import EngineRnWeb from '../../engine-rn-web';
+// import EngineRnElectron from '../../engine-rn-electron';
+// import EngineRnNext from '../../engine-rn-next';
+// import EngineCore from '../../engine-core';
 
-const REGISTERED_ENGINES = [EngineRn, EngineRnWeb, EngineRnElectron, EngineRnNext, EngineCore];
+const REGISTERED_ENGINES = []; // [EngineRn, EngineRnWeb, EngineRnElectron, EngineRnNext, EngineCore];
 
 const ENGINES = {
-    'engine-rn': EngineRn,
-    'engine-rn-web': EngineRnWeb,
-    'engine-rn-electron': EngineRnElectron,
-    'engine-rn-next': EngineRnNext,
+    // 'engine-rn': EngineRn,
+    // 'engine-rn-web': EngineRnWeb,
+    // 'engine-rn-electron': EngineRnElectron,
+    // 'engine-rn-next': EngineRnNext,
+};
+const ENGINE_CORE = 'engine-core';
+
+export const registerEngine = (engine) => {
+    // console.log(`Register engine: ${engine.getId()}`);
+    ENGINES[engine.getId()] = engine;
+    REGISTERED_ENGINES.push(engine);
 };
 
 export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
@@ -40,18 +47,18 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
 export const getEngineRunner = (c, task) => {
     const selectedEngine = getEngineByPlatform(c, c.platform);
     if (!selectedEngine) {
-        if (EngineCore.hasTask(task)) return EngineCore;
+        if (ENGINES[ENGINE_CORE].hasTask(task)) return ENGINES[ENGINE_CORE];
         // return EngineNoOp;
         throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
     }
     const engine = ENGINES[selectedEngine?.id];
     if (!engine) {
-        if (EngineCore.hasTask(task)) return EngineCore;
+        if (ENGINES[ENGINE_CORE].hasTask(task)) return ENGINES[ENGINE_CORE];
         throw new Error(`Cound not find active engine with id ${selectedEngine?.id}. Available engines:
         ${Object.keys(ENGINES).join(', ')}`);
     }
     if (engine.hasTask(task)) return engine;
-    if (EngineCore.hasTask(task)) return EngineCore;
+    if (ENGINES[ENGINE_CORE].hasTask(task)) return ENGINES[ENGINE_CORE];
 
     throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
 };

@@ -8,11 +8,15 @@ import {
     copyFolderContentsRecursiveSync,
     writeFileSync,
 } from '../core/systemManager/fileutils';
-import { PLATFORMS } from '../core/constants';
+import { PLATFORMS, TASK_PLATFORM_EJECT, TASK_PROJECT_CONFIGURE } from '../core/constants';
 import { generatePlatformChoices } from '../core/platformManager';
+import { executeTask } from '../core/engineManager';
+
 
 export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformEject', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_EJECT, originTask);
 
     const { ejectedPlatforms } = await inquirer.prompt({
         name: 'ejectedPlatforms',
@@ -75,5 +79,4 @@ export default {
     task: 'platform eject',
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

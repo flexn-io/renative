@@ -35,6 +35,8 @@ const getSubTasks = task => Object.values(TASKS).filter(v => v.task.startsWith(t
 
 const getTasks = () => Object.values(TASKS);
 
+const getId = () => 'engine-rn-web';
+
 export default {
     executeTask,
     addTask,
@@ -42,4 +44,5 @@ export default {
     getTask,
     getSubTasks,
     getTasks,
+    getId
 };

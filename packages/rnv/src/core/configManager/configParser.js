@@ -16,9 +16,11 @@ import {
     RN_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
     PLATFORMS,
-    SUPPORTED_PLATFORMS
+    SUPPORTED_PLATFORMS,
+    TASK_TEMPLATE_APPLY
 } from '../constants';
-import { taskRnvTemplateApply } from '../../engine-core/task.rnv.template.apply';
+import { executeTask, getEngineByPlatform } from '../engineManager';
+// import { taskRnvTemplateApply } from '../../engine-core/task.rnv.template.apply';
 import { isSystemWin } from '../utils';
 
 import {
@@ -40,7 +42,7 @@ import {
     fsLstatSync
 } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
-import { getEngineByPlatform } from '../engineManager';
+
 import { getWorkspaceDirPath } from '../projectManager/workspace';
 import {
     chalk,
@@ -857,7 +859,9 @@ export const updateConfig = async (c, appConfigId) => {
         });
 
         if (conf) {
-            await taskRnvTemplateApply(c);
+            // taskRnvTemplateApply(c);
+            await executeTask(c, TASK_TEMPLATE_APPLY);
+
             await setAppConfig(c);
         }
     }

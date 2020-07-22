@@ -1,8 +1,13 @@
+/* eslint-disable import/no-cycle */
 import { chalk, logTask } from '../core/systemManager/logger';
 import { buildHooks } from '../core/projectManager/buildHooks';
+import { executeTask } from '../core/engineManager';
+import { TASK_HOOKS_RUN, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvHooksRun = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksRun', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_RUN, originTask);
 
     await buildHooks(c);
 
@@ -22,9 +27,9 @@ export const taskRnvHooksRun = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Run specific build hook',
     fn: taskRnvHooksRun,
-    task: 'hooks run',
+    task: TASK_HOOKS_RUN,
     params: [],
     platforms: [],
     skipAppConfig: true,

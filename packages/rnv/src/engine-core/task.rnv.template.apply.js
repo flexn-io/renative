@@ -1,15 +1,13 @@
-/* eslint-disable import/no-cycle */
 import inquirer from 'inquirer';
-
-import {
-    logTask,
-} from '../core/systemManager/logger';
-
+import { logTask } from '../core/systemManager/logger';
 import { applyTemplate, getInstalledTemplateOptions } from '../core/templateManager';
-
+import { executeTask } from '../core/engineManager';
+import { TASK_TEMPLATE_APPLY, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvTemplateApply = async (c, parentTask, originTask) => {
     logTask('taskRnvTemplateApply', `parent:${parentTask} origin:${originTask} template: ${c.program.template}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, originTask);
 
     if (c.program.template) {
         return applyTemplate(c, c.program.template);
@@ -32,5 +30,4 @@ export default {
     task: 'template apply',
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

@@ -41,6 +41,4 @@ export default {
     task: 'config',
     params: [],
     platforms: [],
-    skipProjectSetup: true,
-    skipAppConfig: true
 };

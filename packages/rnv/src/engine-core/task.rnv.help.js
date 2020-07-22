@@ -43,6 +43,4 @@ export default {
     task: 'help',
     params: [],
     platforms: [],
-    skipProjectSetup: true,
-    skipPlatforms: true,
 };

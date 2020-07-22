@@ -1,9 +1,14 @@
+/* eslint-disable import/no-cycle */
 import { logToSummary, logTask } from '../core/systemManager/logger';
 import { generateOptions } from '../cli/prompt';
 import { buildHooks } from '../core/projectManager/buildHooks';
+import { executeTask } from '../core/engineManager';
+import { TASK_HOOKS_LIST, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvHooksList = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksList', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_LIST, originTask);
 
     await buildHooks(c);
 
@@ -22,9 +27,9 @@ export const taskRnvHooksList = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Get list of all available hooks',
     fn: taskRnvHooksList,
-    task: 'hooks list',
+    task: TASK_HOOKS_LIST,
     params: [],
     platforms: [],
     skipAppConfig: true,

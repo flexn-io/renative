@@ -1,14 +1,10 @@
 /* eslint-disable import/no-cycle */
 import inquirer from 'inquirer';
-import {
-    writeFileSync
-} from '../core/systemManager/fileutils';
-import {
-    logTask
-} from '../core/systemManager/logger';
-import {
-    generateBuildConfig,
-} from '../core/configManager/configParser';
+import { writeFileSync } from '../core/systemManager/fileutils';
+import { logTask } from '../core/systemManager/logger';
+import { generateBuildConfig } from '../core/configManager/configParser';
+import { executeTask } from '../core/engineManager';
+import { TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD } from '../core/constants';
 
 import { getTemplateOptions } from '../core/templateManager';
 
@@ -34,6 +30,8 @@ export const _addTemplate = (c, template) => {
 export const taskRnvTemplateAdd = async (c, parentTask, originTask) => {
     logTask('taskRnvTemplateAdd', `parent:${parentTask} origin:${originTask}`);
 
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD, originTask);
+
     const opts = getTemplateOptions(c);
 
     const { template } = await inquirer.prompt({
@@ -52,5 +50,4 @@ export default {
     task: 'template add',
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

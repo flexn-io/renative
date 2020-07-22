@@ -15,6 +15,8 @@ import {
     fsLstatSync
 } from '../core/systemManager/fileutils';
 import { logError, logTask } from '../core/systemManager/logger';
+import { executeTask } from '../core/engineManager';
+import { TASK_PKG, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 const bumpVersions = (version) => {
     const {
@@ -76,6 +78,8 @@ const publishAll = () => {
 export const taskRnvPkg = async (c, parentTask, originTask) => {
     logTask('taskRnvPkg', `parent:${parentTask} origin:${originTask}`);
 
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PKG, originTask);
+
     let args = [...Config.getConfig().program.rawArgs];
     args = args.slice(3);
 
@@ -105,8 +109,7 @@ export const taskRnvPkg = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvPkg,
-    task: 'pkg',
+    task: TASK_PKG,
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

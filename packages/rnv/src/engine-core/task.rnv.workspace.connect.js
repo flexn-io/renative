@@ -1,15 +1,15 @@
 /* eslint-disable import/no-cycle */
 
 import { inquirerPrompt } from '../cli/prompt';
-import {
-    logTask,
-    logRaw
-} from '../core/systemManager/logger';
+import { logTask, logRaw } from '../core/systemManager/logger';
 import { getWorkspaceConnectionString } from '../core/projectManager/workspace';
-
+import { executeTask } from '../core/engineManager';
+import { TASK_WORKSPACE_CONNECT, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvWorkspaceConnect = async (c, parentTask, originTask) => {
     logTask('taskRnvWorkspaceConnect', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_WORKSPACE_CONNECT, originTask);
 
     const opts = Object.keys(c.files.rnv.configWorkspaces?.workspaces).map(
         v => `${v} ${getWorkspaceConnectionString(
@@ -30,8 +30,7 @@ export const taskRnvWorkspaceConnect = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvWorkspaceConnect,
-    task: 'workspace connect',
+    task: TASK_WORKSPACE_CONNECT,
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

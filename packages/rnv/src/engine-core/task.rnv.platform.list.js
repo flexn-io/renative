@@ -2,7 +2,8 @@
 // @todo fix cycle dep
 import { chalk, logToSummary, logTask } from '../core/systemManager/logger';
 import { generateOptions } from '../cli/prompt';
-
+import { executeTask } from '../core/engineManager';
+import { TASK_PLATFORM_LIST, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 const _genPlatOptions = (c) => {
     const opts = generateOptions(
@@ -23,13 +24,14 @@ const _genPlatOptions = (c) => {
     return opts;
 };
 
-export const taskRnvPlatformList = (c, parentTask, originTask) => new Promise((resolve) => {
+export const taskRnvPlatformList = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformList', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_LIST, originTask);
 
     const opts = _genPlatOptions(c);
     logToSummary(`Platforms:\n\n${opts.asString}`);
-    resolve();
-});
+};
 
 export default {
     description: '',

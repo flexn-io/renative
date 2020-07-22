@@ -2,7 +2,7 @@
 import inquirer from 'inquirer';
 import ora from 'ora';
 import { writeRenativeConfigFile } from '../core/configManager/configParser';
-import { TASK_INSTALL, TASK_PLUGIN_ADD } from '../core/constants';
+import { TASK_INSTALL, TASK_PLUGIN_ADD, TASK_PROJECT_CONFIGURE } from '../core/constants';
 import {
     chalk,
     logSuccess,
@@ -11,9 +11,12 @@ import {
 import { getPluginList, resolvePluginDependants } from '../core/pluginManager';
 import { executeTask } from '../core/engineManager';
 
+
 /* eslint-disable no-await-in-loop */
 export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
     logTask('taskRnvPluginAdd', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_ADD, originTask);
 
     if (c.runtime.isWrapper) {
         return Promise.reject('Adding plugins in wrapper project is not supported.');
@@ -91,6 +94,7 @@ export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
 
     spinner.succeed('All plugins installed!');
     logSuccess('Plugins installed successfully!');
+    return true;
 };
 
 export default {
@@ -99,5 +103,4 @@ export default {
     task: 'plugin add',
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

@@ -1,12 +1,12 @@
 /* eslint-disable global-require, import/no-dynamic-require */
 /* eslint-disable import/no-cycle */
-
 import semver from 'semver';
-
 import Config from '../core/configManager/config';
 import { executeAsync } from '../core/systemManager/exec';
 import { logWarning, logTask } from '../core/systemManager/logger';
 import { writeFileSync } from '../core/systemManager/fileutils';
+import { executeTask } from '../core/engineManager';
+import { TASK_PUBLISH, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 const includesPre = (version) => {
     if (version.includes('alpha')) return 'alpha';
@@ -30,10 +30,10 @@ const includesPre = (version) => {
  * if you are publishing a beta/alpha/rc. That is done automatically by checking if the second arg is alpha, beta, rc.
  *
  */
-
-
 export const taskRnvPublish = async (c, parentTask, originTask) => {
     logTask('taskRnvPublish', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PUBLISH, originTask);
 
     // make sure release-it is installed
     await Config.checkRequiredPackage(c,
@@ -151,5 +151,4 @@ export default {
     task: 'publish',
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

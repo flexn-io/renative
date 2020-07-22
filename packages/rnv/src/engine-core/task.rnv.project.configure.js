@@ -40,5 +40,4 @@ export default {
     task: TASK_PROJECT_CONFIGURE,
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

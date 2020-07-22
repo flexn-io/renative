@@ -42,6 +42,9 @@ import taskRnvProjectConfigure from './task.rnv.project.configure';
 const TASKS = {};
 
 const addTask = (taskInstance) => {
+    if (!taskInstance?.task) {
+        throw new Error('taskInstance has missing task name!');
+    }
     TASKS[taskInstance.task] = taskInstance;
 };
 
@@ -94,6 +97,8 @@ const getSubTasks = task => Object.values(TASKS).filter(v => v.task.startsWith(t
 
 const getTasks = () => Object.values(TASKS);
 
+const getId = () => 'engine-core';
+
 export default {
     executeTask,
     addTask,
@@ -101,4 +106,5 @@ export default {
     getTask,
     getSubTasks,
     getTasks,
+    getId
 };

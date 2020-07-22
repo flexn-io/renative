@@ -6,10 +6,13 @@ import {
     logTask,
     logToSummary,
 } from '../core/systemManager/logger';
-
+import { executeTask } from '../core/engineManager';
+import { TASK_WORKSPACE_LIST, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvWorkspaceList = async (c, parentTask, originTask) => {
     logTask('taskRnvWorkspaceList', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_WORKSPACE_LIST, originTask);
 
     const opts = generateOptions(
         c.files.rnv.configWorkspaces?.workspaces,
@@ -29,8 +32,7 @@ export const taskRnvWorkspaceList = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvWorkspaceList,
-    task: 'workspace list',
+    task: TASK_WORKSPACE_LIST,
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };

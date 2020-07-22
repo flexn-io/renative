@@ -2,14 +2,16 @@
 
 import path from 'path';
 import { inquirerPrompt } from '../cli/prompt';
-import {
-    logTask,
-} from '../core/systemManager/logger';
+import { logTask } from '../core/systemManager/logger';
 import { createWorkspace } from '../core/projectManager/workspace';
 import { fsExistsSync } from '../core/systemManager/fileutils';
+import { executeTask } from '../core/engineManager';
+import { TASK_WORKSPACE_ADD, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvWorkspaceAdd = async (c, parentTask, originTask) => {
     logTask('taskRnvWorkspaceAdd', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_WORKSPACE_ADD, originTask);
 
     const { workspace } = await inquirerPrompt({
         name: 'workspace',
@@ -47,8 +49,7 @@ export const taskRnvWorkspaceAdd = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvWorkspaceAdd,
-    task: 'workspace add',
+    task: TASK_WORKSPACE_ADD,
     params: [],
     platforms: [],
-    skipPlatforms: true,
 };
