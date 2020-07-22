@@ -187,7 +187,7 @@ const matchAppConfigID = async (c, appConfigID) => {
                             `AppConfig error - You have 2 duplicate app configs with ID ${
                                 id
                             }. Keep in mind that ID is case insensitive.
-  Please edit one of them in /appConfigs/<folder>/renative.json`
+Please edit one of them in /appConfigs/<folder>/renative.json`
                         );
                     }
                     ids.push(id);
@@ -195,7 +195,8 @@ const matchAppConfigID = async (c, appConfigID) => {
                         throw new Error(
                             `AppConfig error - You have 2 duplicate app config folders named ${
                                 dir
-                            }. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`
+                            }. Keep in mind that folder names are case insensitive.
+Please rename one /appConfigs/<folder>`
                         );
                     }
                     dirs.push(dir);
@@ -824,7 +825,8 @@ export const updateConfig = async (c, appConfigId) => {
                     appConfigId
                 )} present in your config folder: ${chalk().white(
                     c.paths.project.appConfigsDir
-                )} !`
+                )} !
+checked path: ${c.paths.appConfig.dir}`
             );
         }
 

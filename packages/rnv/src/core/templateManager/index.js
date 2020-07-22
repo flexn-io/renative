@@ -30,7 +30,7 @@ import {
     listAppConfigsFoldersSync,
     generateBuildConfig,
     generateLocalConfig,
-    updateConfig,
+    // updateConfig,
     parseRenativeConfigs
 } from '../configManager/configParser';
 import { doResolve } from '../resolve';
