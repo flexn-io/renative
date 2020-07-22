@@ -19,6 +19,7 @@ import {
     SUPPORTED_PLATFORMS
 } from '../constants';
 import { taskRnvTemplateApply } from '../../engine-core/task.rnv.template.apply';
+import { isSystemWin } from '../utils';
 
 import {
     copyFileSync,
@@ -125,6 +126,20 @@ const askUserAboutConfigs = async (c, dir, id, basePath) => {
 
         writeFileSync(filePath, fileContents);
     }
+};
+
+export const setRuntimeDefaults = async (c) => {
+    c.runtime.port = c.program.port
+  || c.buildConfig?.defaults?.ports?.[c.platform]
+  || PLATFORMS[c.platform]?.defaultPort;
+    if (c.program.target !== true) {
+        c.runtime.target = c.program.target
+      || c.files.workspace.config?.defaultTargets?.[c.platform];
+    } else c.runtime.target = c.program.target;
+    c.runtime.scheme = c.program.scheme || 'debug';
+    c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
+    c.runtime.timestamp = c.runtime.timestamp || Date.now();
+    c.runtime.engine = getEngineByPlatform(c, c.platform);
 };
 
 /* eslint-disable no-await-in-loop */

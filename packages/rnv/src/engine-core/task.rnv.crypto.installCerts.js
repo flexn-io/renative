@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
     logWarning,
     logError,
@@ -7,34 +8,37 @@ import {
     getFileListSync,
 } from '../core/systemManager/fileutils';
 import { executeAsync } from '../core/systemManager/exec';
+import { executeTask } from '../core/engineManager';
+import { TASK_CRYPTO_INSTALL_CERTS, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
-export const taskRnvCryptoInstallCerts = (c, parentTask, originTask) => new Promise((resolve) => {
+export const taskRnvCryptoInstallCerts = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoInstallCerts', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_INSTALL_CERTS, originTask);
 
     if (c.platform !== 'ios') {
         logError(`_installTempCerts: platform ${c.platform} not supported`);
-        resolve();
-        return;
+        return true;
     }
     const kChain = c.program.keychain || 'ios-build.keychain';
 
     const list = getFileListSync(c.paths.workspace.project.dir);
     const cerArr = list.filter(v => v.endsWith('.cer'));
 
-    Promise.all(
-        cerArr.map(v => executeAsync(c, `security import ${v} -k ${kChain} -A`))
-    )
-        .then(() => resolve())
-        .catch((e) => {
-            logWarning(e);
-            resolve();
-        });
-});
+    try {
+        Promise.all(
+            cerArr.map(v => executeAsync(c, `security import ${v} -k ${kChain} -A`))
+        );
+    } catch (e) {
+        logWarning(e);
+        return true;
+    }
+};
 
 export default {
     description: '',
     fn: taskRnvCryptoInstallCerts,
-    task: 'crypto installCerts',
+    task: TASK_CRYPTO_INSTALL_CERTS,
     params: [],
     platforms: [],
     skipPlatforms: true,

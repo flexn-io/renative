@@ -760,7 +760,17 @@ export const TASK_PACKAGE = 'package';
 export const TASK_DEPLOY = 'deploy';
 export const TASK_LOG = 'log';
 export const TASK_CLEAN = 'clean';
+export const TASK_INSTALL = 'install';
 export const TASK_PLATFORM_CONFIGURE = 'platform configure';
+export const TASK_PROJECT_CONFIGURE = 'project configure';
+export const TASK_PLUGIN_ADD = 'plugin add';
+export const TASK_CRYPTO_ENCRYPT = 'crypto encrypt';
+export const TASK_CRYPTO_DECRYPT = 'crypto decrypt';
+export const TASK_CRYPTO_INSTALL_CERTS = 'crypto installCerts';
+export const TASK_CRYPTO_INSTALL_PROFILES = 'crypto installProfiles';
+export const TASK_CRYPTO_INSTALL_PROFILE = 'crypto installProfile';
+export const TASK_CRYPTO_UPDATE_PROFILE = 'crypto updateProfile';
+export const TASK_CRYPTO_UPDATE_PROFILES = 'crypto updateProfiles';
 
 export const configSchema = {
     analytics: {

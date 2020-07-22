@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import {
     logWarning,
@@ -11,15 +12,19 @@ import {
     mkdirSync,
     fsExistsSync
 } from '../core/systemManager/fileutils';
+import { executeTask } from '../core/engineManager';
+import { TASK_CRYPTO_INSTALL_PROFILES, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
-export const taskRnvCryptoInstallProfiles = (c, parentTask, originTask) => new Promise((resolve) => {
+export const taskRnvCryptoInstallProfiles = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoInstallProfiles', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_INSTALL_PROFILES, originTask);
+
     if (c.platform !== 'ios') {
         logError(
             `taskRnvCryptoInstallProfiles: platform ${c.platform} not supported`
         );
-        resolve();
-        return;
+        return true;
     }
 
     const ppFolder = path.join(
@@ -44,13 +49,13 @@ export const taskRnvCryptoInstallProfiles = (c, parentTask, originTask) => new P
         logError(e);
     }
 
-    resolve();
-});
+    return true;
+};
 
 export default {
     description: '',
     fn: taskRnvCryptoInstallProfiles,
-    task: 'crypto installProfiles',
+    task: TASK_CRYPTO_INSTALL_PROFILES,
     params: [],
     platforms: [],
     skipPlatforms: true,

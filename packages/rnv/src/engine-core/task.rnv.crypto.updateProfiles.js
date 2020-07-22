@@ -7,8 +7,10 @@ import {
     listAppConfigsFoldersSync,
     setAppConfig
 } from '../core/configManager/configParser';
-import { IOS, TVOS } from '../core/constants';
+import { IOS, TVOS, TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE } from '../core/constants';
 import { updateProfile } from '../sdk-xcode/fastlane';
+import { executeTask } from '../core/engineManager';
+
 
 const _updateProfile = (c, v) => new Promise((resolve, reject) => {
     logTask(`_updateProfile:${v}`, chalk().grey);
@@ -29,6 +31,9 @@ const _updateProfiles = (c) => {
 
 export const taskRnvCryptoUpdateProfiles = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoUpdateProfiles', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_UPDATE_PROFILES, originTask);
+
     switch (c.platform) {
         case IOS:
         case TVOS:
@@ -46,7 +51,7 @@ export const taskRnvCryptoUpdateProfiles = async (c, parentTask, originTask) => 
 export default {
     description: '',
     fn: taskRnvCryptoUpdateProfiles,
-    task: 'crypto updateProfiles',
+    task: TASK_CRYPTO_UPDATE_PROFILES,
     params: [],
     platforms: [],
     skipPlatforms: true,

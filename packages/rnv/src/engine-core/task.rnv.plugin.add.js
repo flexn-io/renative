@@ -2,14 +2,14 @@
 import inquirer from 'inquirer';
 import ora from 'ora';
 import { writeRenativeConfigFile } from '../core/configManager/configParser';
-
+import { TASK_INSTALL, TASK_PLUGIN_ADD } from '../core/constants';
 import {
     chalk,
     logSuccess,
     logTask
 } from '../core/systemManager/logger';
 import { getPluginList, resolvePluginDependants } from '../core/pluginManager';
-import { taskRnvInstall } from './task.rnv.install';
+import { executeTask } from '../core/engineManager';
 
 /* eslint-disable no-await-in-loop */
 export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
@@ -86,7 +86,8 @@ export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
     writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
 
     await resolvePluginDependants(c);
-    await taskRnvInstall(c);
+
+    await executeTask(c, TASK_INSTALL, TASK_PLUGIN_ADD, originTask);
 
     spinner.succeed('All plugins installed!');
     logSuccess('Plugins installed successfully!');

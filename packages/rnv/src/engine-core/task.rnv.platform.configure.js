@@ -2,12 +2,17 @@
 import path from 'path';
 import { chalk, logTask, logWarning, logInfo } from '../core/systemManager/logger';
 import { copyFolderContentsRecursiveSync, fsExistsSync } from '../core/systemManager/fileutils';
+import { setRuntimeDefaults, generateRuntimeConfig } from '../core/configManager/configParser';
 import { cleanPlaformAssets, copyRuntimeAssets, copySharedPlatforms } from '../core/projectManager/projectParser';
-import { getTimestampPathsConfig } from '../core/common';
+import { getTimestampPathsConfig, isBuildSchemeSupported } from '../core/common';
 import { isPlatformSupportedSync, isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../core/platformManager';
-import { generateRuntimeConfig } from '../core/configManager/configParser';
 import { injectPlatformDependencies } from '../core/configManager/packageParser';
-import { overrideTemplatePlugins } from '../core/pluginManager';
+import { overrideTemplatePlugins, resolvePluginDependants } from '../core/pluginManager';
+import { executeTask } from '../core/engineManager';
+import { TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../core/constants';
+
+
+import { checkSdk } from '../core/sdkManager';
 
 
 const _runCopyPlatforms = (c, platform) => new Promise((resolve) => {
@@ -60,9 +65,21 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve) => {
 });
 
 export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
-    // c.platform = c.program.platform || 'all';
+    logTask('taskRnvPlatformConfigure', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONFIGURE, originTask);
+
+    await isPlatformSupported(c);
+    await isBuildSchemeSupported(c);
+    await checkSdk(c);
+    await resolvePluginDependants(c);
+
+    await executeTask(c, TASK_INSTALL, TASK_PLATFORM_CONFIGURE, originTask);
+
+    await setRuntimeDefaults(c);
+
     const hasBuild = fsExistsSync(c.paths.project.builds.dir);
-    logTask('taskRnvPlatformConfigure', `parent:${parentTask} origin:${originTask} hasBuild:${hasBuild}`);
+    logTask('', `taskRnvPlatformConfigure hasBuildFolderPresent:${hasBuild}`);
 
     // if (!parentTask || !hasBuild) {
     if (c.program.reset) {
@@ -81,7 +98,6 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
 
     await injectPlatformDependencies(c);
 
-    await isPlatformSupported(c);
     await cleanPlatformBuild(c, c.platform);
     await _runCopyPlatforms(c, c.platform);
 

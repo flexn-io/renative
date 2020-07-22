@@ -323,6 +323,19 @@ export const logInitTask = (task, customChalk) => {
     console.log(msg);
 };
 
+export const logExitTask = (task, customChalk) => {
+    let msg = '';
+    if (typeof customChalk === 'string') {
+        msg = `${currentChalk.rgb(170, 106, 170)(`[ task ] ${task}`)} ${currentChalk.grey(customChalk)}`;
+    } else if (customChalk) {
+        msg = customChalk(`[ task ] ${task}`);
+    } else {
+        msg = currentChalk.rgb(170, 106, 170)(`[ task ] ${task}`);
+    }
+
+    console.log(msg);
+};
+
 export const logHook = (hook = '', msg = '') => {
     console.log(`${currentChalk.rgb(127, 255, 212)(`[ hook ]${_getCurrentTask()} ${hook}`)} ${currentChalk.grey(msg)}`);
 };

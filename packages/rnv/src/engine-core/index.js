@@ -37,6 +37,7 @@ import taskRnvConfig from './task.rnv.config';
 import taskRnvHelp from './task.rnv.help';
 import taskRnvNew from './task.rnv.new';
 import taskRnvInstall from './task.rnv.install';
+import taskRnvProjectConfigure from './task.rnv.project.configure';
 
 const TASKS = {};
 
@@ -81,6 +82,7 @@ addTask(taskRnvConfig);
 addTask(taskRnvHelp);
 addTask(taskRnvNew);
 addTask(taskRnvInstall);
+addTask(taskRnvProjectConfigure);
 
 const executeTask = async (c, task, parentTask, originTask) => TASKS[task].fn(c, parentTask, originTask);
 

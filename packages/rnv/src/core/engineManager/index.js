@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { logDebug, logTask, logInitTask, chalk } from '../systemManager/logger';
+import { logDebug, logTask, logInitTask, logExitTask, chalk } from '../systemManager/logger';
 import { getConfigProp } from '../common';
 import Analytics from '../systemManager/analytics';
 import {
@@ -88,6 +88,7 @@ export const executeTask = async (c, task, parentTask, originTask) => {
         await _executePipe(c, task, 'after');
     }
     c._currentTask = parentTask;
+    logExitTask(`[${parentTask}] <= ${task}`);
 };
 
 export const findSuitableTask = async (c) => {

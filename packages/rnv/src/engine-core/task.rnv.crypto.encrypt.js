@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import tar from 'tar';
 import { promisify } from 'util';
@@ -20,6 +21,8 @@ import {
 } from '../core/systemManager/fileutils';
 import { inquirerPrompt } from '../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../core/systemManager/crypto';
+import { executeTask } from '../core/engineManager';
+import { TASK_CRYPTO_ENCRYPT, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 const iocane = require('iocane');
 
@@ -125,6 +128,8 @@ ${getEnvExportCmd(envVar, key)}
 export const taskRnvCryptoEncrypt = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoEncrypt', `parent:${parentTask} origin:${originTask}`);
 
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_ENCRYPT, originTask);
+
     const source = `./${c.files.project.package.name}`;
 
     await _checkAndConfigureCrypto(c);
@@ -189,7 +194,7 @@ export const taskRnvCryptoEncrypt = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvCryptoEncrypt,
-    task: 'crypto encrypt',
+    task: TASK_CRYPTO_ENCRYPT,
     params: [],
     platforms: [],
     skipPlatforms: true,

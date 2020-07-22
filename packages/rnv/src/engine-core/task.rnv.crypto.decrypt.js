@@ -18,6 +18,8 @@ import {
 } from '../core/systemManager/fileutils';
 import { inquirerPrompt } from '../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../core/systemManager/crypto';
+import { executeTask } from '../core/engineManager';
+import { TASK_CRYPTO_DECRYPT, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 const iocane = require('iocane');
 
@@ -54,6 +56,8 @@ const _unzipAndCopy = async (
 
 export const taskRnvCryptoDecrypt = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoDecrypt', `parent:${parentTask} origin:${originTask}`);
+
+    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_DECRYPT, originTask);
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
 
@@ -237,7 +241,7 @@ and we will try to help!
 export default {
     description: '',
     fn: taskRnvCryptoDecrypt,
-    task: 'crypto decrypt',
+    task: TASK_CRYPTO_DECRYPT,
     params: [],
     platforms: [],
     skipPlatforms: true,
