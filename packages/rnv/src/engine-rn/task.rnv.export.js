@@ -33,7 +33,7 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: 'Export your app (ipa or apk)',
+    description: 'Export the app into deployable binary',
     fn: taskRnvExport,
     task: 'export',
     params: [],

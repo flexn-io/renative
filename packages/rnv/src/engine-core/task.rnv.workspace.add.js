@@ -45,7 +45,7 @@ export const taskRnvWorkspaceAdd = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Add new workspace',
     fn: taskRnvWorkspaceAdd,
     task: TASK_WORKSPACE_ADD,
     params: [],

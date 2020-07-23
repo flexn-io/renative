@@ -51,7 +51,7 @@ export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Launch specific emulator',
     fn: taskRnvTargetLaunch,
     task: 'target launch',
     params: [],

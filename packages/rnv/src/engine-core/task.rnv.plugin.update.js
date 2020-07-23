@@ -39,7 +39,7 @@ export const taskRnvPluginUpdate = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Update specific plugin to latest supported version (rnv)',
     fn: taskRnvPluginUpdate,
     task: 'plugin update',
     params: [],

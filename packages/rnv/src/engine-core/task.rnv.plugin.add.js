@@ -97,7 +97,7 @@ export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Add selected plugin to the project',
     fn: taskRnvPluginAdd,
     task: 'plugin add',
     params: [],

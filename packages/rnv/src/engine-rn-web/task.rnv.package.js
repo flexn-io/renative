@@ -24,7 +24,7 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Package source files into bundle',
     fn: taskRnvPackage,
     task: 'package',
     params: [],

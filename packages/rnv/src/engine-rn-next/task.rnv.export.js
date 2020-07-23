@@ -24,7 +24,7 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Export the app into deployable binary',
     fn: taskRnvExport,
     task: 'export',
     params: [],

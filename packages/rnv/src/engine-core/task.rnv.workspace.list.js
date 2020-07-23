@@ -28,7 +28,7 @@ export const taskRnvWorkspaceList = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Show list of all available workspaces',
     fn: taskRnvWorkspaceList,
     task: TASK_WORKSPACE_LIST,
     params: [],

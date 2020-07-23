@@ -17,7 +17,7 @@ export const taskRnvPluginList = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Show list of all available plugins',
     fn: taskRnvPluginList,
     task: 'plugin list',
     params: [],

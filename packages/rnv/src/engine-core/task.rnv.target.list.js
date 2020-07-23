@@ -49,7 +49,7 @@ export const taskRnvTargetList = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'List all available devices / emulators for specific platform',
     fn: taskRnvTargetList,
     task: 'target list',
     params: [],

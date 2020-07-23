@@ -72,7 +72,7 @@ TIP: You can select options with ${chalk().white('SPACE')} key before pressing E
 };
 
 export default {
-    description: '',
+    description: 'Copy all platform files directly to project',
     fn: taskRnvPlatformEject,
     task: 'platform eject',
     params: [],

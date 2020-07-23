@@ -40,12 +40,11 @@ export const buildHooks = async (c) => {
         const cmd = 'babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining,@babel/plugin-proposal-nullish-coalescing-operator';
 
         try {
+            logHook('buildHooks', 'Build hooks not complied. BUILDING...');
             await executeAsync(
                 c,
                 `${cmd} ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`,
-                {
-                    cwd: c.paths.buildHooks.dir
-                }
+                { cwd: c.paths.buildHooks.dir, silent: true }
             );
 
             const h = require(c.paths.buildHooks.dist.index);

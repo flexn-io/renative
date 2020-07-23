@@ -76,7 +76,7 @@ export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Connect platform template back to rnv',
     fn: taskRnvPlatformConnect,
     task: TASK_PLATFORM_CONNECT,
     params: [],

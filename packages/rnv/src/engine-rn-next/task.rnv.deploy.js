@@ -28,7 +28,7 @@ export const taskRnvDeploy = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Deploy the binary via selected deployment intgeration or buld hook',
     fn: taskRnvDeploy,
     task: 'deploy',
     params: [],

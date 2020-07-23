@@ -26,7 +26,7 @@ export const taskRnvWorkspaceConnect = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Connect project with selected workspace',
     fn: taskRnvWorkspaceConnect,
     task: TASK_WORKSPACE_CONNECT,
     params: [],

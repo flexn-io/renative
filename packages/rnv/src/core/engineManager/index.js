@@ -69,9 +69,9 @@ const _executePipe = async (c, task, phase) => {
 };
 
 export const executeTask = async (c, task, parentTask, originTask) => {
-    const pt = parentTask ? ` => ${parentTask}` : '';
+    const pt = parentTask ? ` => [${parentTask}]` : '';
     c._currentTask = task;
-    logInitTask(`executeTask${pt} => ${task}`);
+    logInitTask(`executeTask${pt} => [${task}]`);
     if (c.program.only && !!parentTask) {
         logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} SKIPPING...`);
     } else {

@@ -40,7 +40,7 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: 'Package JS Code',
+    description: 'Package source files into bundle',
     fn: taskRnvPackage,
     task: 'package',
     params: [],

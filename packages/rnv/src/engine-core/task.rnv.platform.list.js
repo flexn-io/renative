@@ -32,7 +32,7 @@ export const taskRnvPlatformList = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'List all available platforms',
     fn: taskRnvPlatformList,
     task: 'platform list',
     params: [],

@@ -19,7 +19,7 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Configure current project',
     fn: taskRnvConfigure,
     task: 'configure',
     params: [],
