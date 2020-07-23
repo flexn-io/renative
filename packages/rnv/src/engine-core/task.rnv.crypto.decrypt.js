@@ -56,7 +56,9 @@ const _unzipAndCopy = async (
 export const taskRnvCryptoDecrypt = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoDecrypt', `parent:${parentTask} origin:${originTask}`);
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_DECRYPT, originTask);
+    if (!parentTask) {
+        await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_DECRYPT, originTask);
+    }
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
 

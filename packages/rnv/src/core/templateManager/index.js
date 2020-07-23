@@ -212,10 +212,6 @@ const _configureAppConfigs = async (c) => {
                     _writeObjectSync(c, appConfigPath, appConfig);
                 }
             });
-            // await parseRenativeConfigs(c);
-            // if (!c.program.ci) {
-            //     await updateConfig(c, true);
-            // }
         } catch (e) {
             logError(e);
         }

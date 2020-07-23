@@ -37,7 +37,7 @@ export const getEnvVar = (c) => {
 };
 
 
-export const checkCrypto = async (c) => {
+export const checkCrypto = async (c, parentTask, originTask) => {
     logTask('checkCrypto');
 
     if (c.program.ci) return;
@@ -80,7 +80,7 @@ export const checkCrypto = async (c) => {
 project timestamp: ${chalk().grey(`${tsProject} - ${new Date(tsProject)}`)}
 workspace timestamp: ${chalk().grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
 you should run decrypt`);
-                    await executeTask(c, TASK_CRYPTO_DECRYPT);
+                    await executeTask(c, TASK_CRYPTO_DECRYPT, parentTask, originTask);
                     return;
                 }
 

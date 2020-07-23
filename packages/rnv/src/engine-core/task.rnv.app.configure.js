@@ -306,7 +306,7 @@ export const taskRnvAppConfigure = async (c, parentTask, originTask) => {
     }
 
     await parseRenativeConfigs(c);
-    await logAppInfo(c);
+    logAppInfo(c);
 
 
     return true;

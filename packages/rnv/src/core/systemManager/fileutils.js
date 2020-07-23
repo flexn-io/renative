@@ -474,8 +474,9 @@ export const writeFileSync = (filePath, obj, spaces = 4, addNewLine = true) => {
     if (fs.existsSync(filePath)) {
         if (fs.readFileSync(filePath).toString() === output) return;
     }
-    logDebug('writeFileSync', filePath, 'executed');
+    logDebug('writeFileSync', filePath, 'executed', `size:${output?.length}`);
     fsWriteFileSync(filePath, output);
+    return output?.length;
 };
 
 export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {

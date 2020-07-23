@@ -316,14 +316,15 @@ export const logTask = (task, customChalk) => {
     console.log(msg);
 };
 
+
 export const logInitTask = (task, customChalk) => {
     let msg = '';
     if (typeof customChalk === 'string') {
-        msg = `${currentChalk.rgb(255, 56, 100)(`[ task ] ${task}`)} ${currentChalk.grey(customChalk)}`;
+        msg = `${currentChalk.rgb(183, 84, 117)(`[ task ] ${task}`)} ${currentChalk.grey(customChalk)}`;
     } else if (customChalk) {
         msg = customChalk(`[ task ] ${task}`);
     } else {
-        msg = currentChalk.rgb(255, 56, 100)(`[ task ] ${task}`);
+        msg = currentChalk.rgb(183, 84, 117)(`[ task ] ${task}`);
     }
 
     console.log(msg);
@@ -399,13 +400,11 @@ export const logInitialize = () => {
     logWelcome();
 };
 
-export const logAppInfo = c => new Promise((resolve) => {
+export const logAppInfo = (c) => {
     logInfo(`Current App Config: ${currentChalk.bold.white(
-        c.buildConfig.id
+        c.runtime.appId
     )}`);
-
-    resolve();
-});
+};
 
 export const printIntoBox = (str2, intent = 0) => {
     let output = _defaultColor('│  ');

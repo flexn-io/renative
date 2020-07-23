@@ -344,7 +344,12 @@ export const generateBuildConfig = (c) => {
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs, {}, c.runtime);
 
     if (fsExistsSync(c.paths.project.builds.dir)) {
-        writeFileSync(c.paths.project.builds.config, c.buildConfig);
+        const result = writeFileSync(c.paths.project.builds.config, c.buildConfig);
+        if (result) {
+            logTask(chalk().grey('generateBuildConfig'), `size:${result}`);
+        }
+    } else {
+        logDebug(`Missing ${c.paths.project.builds.dir}`);
     }
     // DEPRECATED
     // if (Config.isRenativeProject) {
