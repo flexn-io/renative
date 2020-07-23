@@ -346,7 +346,7 @@ export const taskRnvNew = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Create new ReNative project',
     fn: taskRnvNew,
     task: 'new',
     params: [],

@@ -10,7 +10,7 @@ import {
 import Config from '../core/configManager/config';
 import PlatformSetup from '../core/setupManager';
 
-export const rnvFastlane = async () => {
+export const taskRnvFastlane = async () => {
     const args = Config.rnvArguments;
     args.shift(); // we know the first one is fastlane, trash it
 
@@ -33,8 +33,8 @@ export const rnvFastlane = async () => {
 };
 
 export default {
-    description: '',
-    fn: rnvFastlane,
+    description: 'Run fstalane commands directly',
+    fn: taskRnvFastlane,
     task: 'fastlane',
     params: [],
     platforms: [

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import { promisify } from 'util';
 import inquirer from 'inquirer';
@@ -283,21 +282,19 @@ const _findAndSwitchAppConfigDir = async (c) => {
 };
 
 const _setAppId = (c, appId) => {
-    c.runtime.appId = appId || c.runtime.appId || c.files.project?.configLocal?._meta?.currentAppConfigId;
+    const currentAppConfigId = c.files.project?.configLocal?._meta?.currentAppConfigId;
+    logTask('_setAppId', `appId:${appId} runtime.appId:${c.runtime.appId} _meta.appId:${currentAppConfigId}`);
+    c.runtime.appId = appId || c.runtime.appId || currentAppConfigId;
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
 };
 
-export const taskAppConfigure = async (c, parentTask, originTask) => {
-    logTask('taskRnvConfigSet', `parent:${parentTask} origin:${originTask}`);
+export const taskRnvAppConfigure = async (c, parentTask, originTask) => {
+    logTask('taskRnvAppConfigure', `parent:${parentTask} origin:${originTask}`);
+
     if (c.program.appConfigID === true || (!c.program.appConfigID && !c.runtime.appId)) {
         const hasAppConfig = await _findAndSwitchAppConfigDir(c);
         if (!hasAppConfig) {
-            // const { conf } = await inquirerPrompt({
-            //     name: 'conf',
-            //     type: 'confirm',
-            //     message: 'Do you want ReNative to create new sample appConfig for you?',
-            //     warningMessage: `No app configs found for this project \nMaybe you forgot to run ${chalk().white('rnv template apply')} ?`
-            // });
+            // await executeTask(c, TASK_APP_CREATE, TASK_APP_CONFIGURE);
             return Promise.reject('No app configs found for this project');
         }
     } else if (c.program.appConfigID) {
@@ -316,8 +313,8 @@ export const taskAppConfigure = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: 'Sets current app config',
-    fn: taskAppConfigure,
+    description: 'Configure project with specific appConfig',
+    fn: taskRnvAppConfigure,
     task: TASK_APP_CONFIGURE,
     params: [],
     platforms: [],

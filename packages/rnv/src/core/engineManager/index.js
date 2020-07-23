@@ -81,12 +81,13 @@ export const executeTask = async (c, task, parentTask, originTask) => {
         await _executePipe(c, task, 'after');
     }
     c._currentTask = parentTask;
-    logExitTask(`[${parentTask}] <= ${task}`);
+    const prt = parentTask ? `[${parentTask}]` : '';
+    logExitTask(`${prt} <= ${task}`);
 };
 
 const _getTaskOption = ({ taskInstance, hasMultipleSubTasks }) => {
     if (hasMultipleSubTasks) {
-        return `${taskInstance.task.split(' ')[0]}${chalk().grey('...')}`;
+        return `${taskInstance.task.split(' ')[0]}...`;
     }
     if (taskInstance.description && taskInstance.description !== '') {
         return `${taskInstance.task.split(' ')[0]} ${chalk().grey(`(${taskInstance.description})`)}`;
@@ -101,7 +102,7 @@ export const findSuitableTask = async (c) => {
             engine.getTasks().forEach((taskInstance) => {
                 const key = taskInstance.task.split(' ')[0];
                 let hasMultipleSubTasks = false;
-                if (suitableTaskInstances[key] && taskInstance.task.includes(' ')) hasMultipleSubTasks = true;
+                if (taskInstance.task.includes(' ')) hasMultipleSubTasks = true;
                 suitableTaskInstances[key] = {
                     taskInstance,
                     hasMultipleSubTasks

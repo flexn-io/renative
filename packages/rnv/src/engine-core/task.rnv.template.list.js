@@ -14,7 +14,7 @@ export const taskRnvTemplateList = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Show list of available templates',
     fn: taskRnvTemplateList,
     task: 'template list',
     params: [],

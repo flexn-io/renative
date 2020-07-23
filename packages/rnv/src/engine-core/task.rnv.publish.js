@@ -1,4 +1,3 @@
-/* eslint-disable global-require, import/no-dynamic-require */
 import semver from 'semver';
 import Config from '../core/configManager/config';
 import { executeAsync } from '../core/systemManager/exec';

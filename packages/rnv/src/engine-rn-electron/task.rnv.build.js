@@ -24,7 +24,7 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Build project binary',
     fn: taskRnvBuild,
     task: 'build',
     params: [],

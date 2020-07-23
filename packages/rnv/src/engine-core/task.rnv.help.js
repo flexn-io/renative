@@ -38,7 +38,7 @@ ${chalk().bold.white('OPTIONS:')}
 };
 
 export default {
-    description: '',
+    description: 'Display generic help',
     fn: taskRnvHelp,
     task: 'help',
     params: [],

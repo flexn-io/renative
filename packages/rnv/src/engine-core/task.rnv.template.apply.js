@@ -2,7 +2,7 @@ import inquirer from 'inquirer';
 import { logTask } from '../core/systemManager/logger';
 import { applyTemplate, getInstalledTemplateOptions } from '../core/templateManager';
 import { executeTask } from '../core/engineManager';
-import { TASK_TEMPLATE_APPLY, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_TEMPLATE_APPLY, TASK_PROJECT_CONFIGURE, TASK_APP_CONFIGURE } from '../core/constants';
 
 export const taskRnvTemplateApply = async (c, parentTask, originTask) => {
     logTask('taskRnvTemplateApply', `parent:${parentTask} origin:${originTask} template: ${c.program.template}`);
@@ -11,6 +11,10 @@ export const taskRnvTemplateApply = async (c, parentTask, originTask) => {
 
     if (c.program.template) {
         await applyTemplate(c, c.program.template);
+        if (c.program.appConfigID) {
+            await executeTask(c, TASK_APP_CONFIGURE, TASK_TEMPLATE_APPLY, originTask);
+        }
+
         return true;
     }
     const opts = getInstalledTemplateOptions(c);
@@ -23,11 +27,14 @@ export const taskRnvTemplateApply = async (c, parentTask, originTask) => {
     });
 
     await applyTemplate(c, template);
+    if (c.program.appConfigID) {
+        await executeTask(c, TASK_APP_CONFIGURE, TASK_TEMPLATE_APPLY, originTask);
+    }
     return true;
 };
 
 export default {
-    description: '',
+    description: 'Reset project to specific template',
     fn: taskRnvTemplateApply,
     task: 'template apply',
     params: [],
