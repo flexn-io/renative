@@ -36,4 +36,4 @@ cd packages/app
 # RUN
 
 npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
-npx rnv build -p tvos -t "Apple TV" -r --ci --mono
+npx rnv build -p tvos -t "Apple TV" -c helloworld -r --ci --mono

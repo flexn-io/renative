@@ -121,7 +121,7 @@ jobs:
         - yarn bootstrap
         - cd packages/app
         - npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
-        - npx rnv build -p tizen -r --mono --ci
+        - npx rnv build -p tizen -c helloworld -r --mono --ci
     - name: "HelloWorld macOS: Build"
       language: node_js
       cache:
@@ -135,7 +135,7 @@ jobs:
         - yarn bootstrap
         - cd packages/app
         - npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
-        - npx rnv build -p macos -r --mono --ci
+        - npx rnv build -p macos -c helloworld -r --mono --ci
     - name: "RNV iOS: Integration"
       language: node_js
       cache:
