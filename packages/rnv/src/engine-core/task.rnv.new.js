@@ -117,7 +117,7 @@ const _generateProject = async (c, data) => {
         `Your project is ready! navigate to project ${chalk().white(
             `cd ${data.projectName}`
         )} and run ${chalk().white(
-            `rnv run -p ${data.optionPlatforms.selectedOptions[0]}`
+            'rnv run'
         )} to see magic happen!`
     );
 };

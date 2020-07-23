@@ -26,7 +26,7 @@ import {
 } from '../systemManager/logger';
 import { generateOptions } from '../../cli/prompt';
 import {
-    setAppConfig,
+    // setAppConfig,
     listAppConfigsFoldersSync,
     generateBuildConfig,
     generateLocalConfig,
@@ -144,8 +144,6 @@ const _applyTemplate = async (c) => {
         )[0];
         c.runtime.requiresForcedTemplateApply = true;
     }
-    await setAppConfig(c, c.runtime.appId);
-    generateLocalConfig(c, !!c.runtime.selectedTemplate);
 
     return true;
 };
@@ -214,7 +212,7 @@ const _configureAppConfigs = async (c) => {
                     _writeObjectSync(c, appConfigPath, appConfig);
                 }
             });
-            await parseRenativeConfigs(c);
+            // await parseRenativeConfigs(c);
             // if (!c.program.ci) {
             //     await updateConfig(c, true);
             // }
@@ -288,8 +286,9 @@ const _configureRenativeConfig = async (c) => {
                 }
             }
         };
-
-        _writeObjectSync(c, c.paths.project.configLocal, templateConfig);
+        c.files.project.configLocal = templateConfig;
+        generateLocalConfig(c);
+        // _writeObjectSync(c, c.paths.project.configLocal, templateConfig);
     }
     return true;
 };
@@ -391,6 +390,7 @@ export const configureEntryPoints = async (c) => {
     return true;
 };
 
+
 const _writeObjectSync = (c, p, s) => {
     writeFileSync(p, s);
     generateBuildConfig(c);
@@ -445,5 +445,4 @@ export const applyTemplate = async (c, selectedTemplate) => {
     await _configureAppConfigs(c);
     await _configureProjectConfig(c);
     await _configureRenativeConfig(c);
-    await configureEntryPoints(c);
 };

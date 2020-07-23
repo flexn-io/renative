@@ -10,7 +10,7 @@ import {
 } from '../systemManager/fileutils';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import { checkAndConfigureSdks } from '../sdkManager';
-import { configureEntryPoints } from '../templateManager';
+// import { configureEntryPoints } from '../templateManager';
 import { getTimestampPathsConfig } from '../common';
 
 
@@ -139,7 +139,7 @@ export const isPlatformSupported = async (c) => {
             const newPlatforms = [...configuredPlatforms, c.platform];
             updateProjectPlatforms(c, newPlatforms);
             c.buildConfig.defaults.supportedPlatforms = newPlatforms;
-            await configureEntryPoints(c);
+            // await configureEntryPoints(c);
         } else {
             throw new Error('User canceled');
         }

@@ -4,7 +4,6 @@ import { getConfigProp, getAppId } from '../core/common';
 import { chalk, logTask, logWarning, logSuccess } from '../core/systemManager/logger';
 import { executeAsync } from '../core/systemManager/exec';
 import { IOS, TVOS } from '../core/constants';
-import { setAppConfig } from '../core/configManager/configParser';
 
 export const registerDevice = async (c) => {
     logTask(`registerDevice:${c.platform}`);
@@ -47,7 +46,7 @@ export const updateProfile = async (c, appConfigId) => {
     //   c.program.scheme = k
     // }
 
-    if (appConfigId) await setAppConfig(c, appConfigId);
+    // if (appConfigId) await setAppConfig(c, appConfigId);
 
     if (c.platform !== IOS && c.platform !== TVOS) {
         return Promise.reject(

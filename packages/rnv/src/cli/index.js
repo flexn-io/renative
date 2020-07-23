@@ -1,5 +1,5 @@
 import { logTask } from '../core/systemManager/logger';
-import { setRuntimeDefaults, parseRenativeConfigs } from '../core/configManager/configParser';
+import { configureRuntimeDefaults, parseRenativeConfigs } from '../core/configManager/configParser';
 import { initializeTask, findSuitableTask, registerEngine } from '../core/engineManager';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
 
@@ -21,7 +21,7 @@ const registerEngines = () => {
 
 const run = async (c) => {
     registerEngines();
-    setRuntimeDefaults(c);
+    configureRuntimeDefaults(c);
     await checkAndMigrateProject(c);
     await parseRenativeConfigs(c);
 

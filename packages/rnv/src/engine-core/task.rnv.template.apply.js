@@ -10,7 +10,7 @@ export const taskRnvTemplateApply = async (c, parentTask, originTask) => {
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, originTask);
 
     if (c.program.template) {
-        return applyTemplate(c, c.program.template);
+        await applyTemplate(c, c.program.template);
     }
     const opts = getInstalledTemplateOptions(c);
 

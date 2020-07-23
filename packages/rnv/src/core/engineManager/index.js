@@ -57,7 +57,7 @@ export const initializeTask = async (c, task) => {
         platform: c.platform
     });
 
-    return executeTask(c, task);
+    return executeTask(c, task, null, task);
 };
 
 const _executePipe = async (c, task, phase) => {

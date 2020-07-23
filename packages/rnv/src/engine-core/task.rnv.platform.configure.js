@@ -1,12 +1,11 @@
 import path from 'path';
 import { chalk, logTask, logWarning, logInfo } from '../core/systemManager/logger';
 import { copyFolderContentsRecursiveSync, fsExistsSync } from '../core/systemManager/fileutils';
-import { setRuntimeDefaults, generateRuntimeConfig } from '../core/configManager/configParser';
-import { cleanPlaformAssets, copyRuntimeAssets, copySharedPlatforms } from '../core/projectManager/projectParser';
+import { cleanPlaformAssets, copySharedPlatforms } from '../core/projectManager/projectParser';
 import { getTimestampPathsConfig, isBuildSchemeSupported } from '../core/common';
 import { isPlatformSupportedSync, isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../core/platformManager';
 import { injectPlatformDependencies } from '../core/configManager/packageParser';
-import { overrideTemplatePlugins, resolvePluginDependants } from '../core/pluginManager';
+import { resolvePluginDependants } from '../core/pluginManager';
 import { executeTask } from '../core/engineManager';
 import { TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../core/constants';
 
@@ -14,8 +13,9 @@ import { TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '.
 import { checkSdk } from '../core/sdkManager';
 
 
-const _runCopyPlatforms = (c, platform) => new Promise((resolve) => {
-    logTask(`_runCopyPlatforms:${platform}`);
+const _runCopyPlatforms = c => new Promise((resolve) => {
+    logTask('_runCopyPlatforms');
+    const { platform } = c;
     const copyPlatformTasks = [];
 
     if (platform === 'all') {
@@ -75,12 +75,9 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
 
     await executeTask(c, TASK_INSTALL, TASK_PLATFORM_CONFIGURE, originTask);
 
-    await setRuntimeDefaults(c);
-
     const hasBuild = fsExistsSync(c.paths.project.builds.dir);
     logTask('', `taskRnvPlatformConfigure hasBuildFolderPresent:${hasBuild}`);
 
-    // if (!parentTask || !hasBuild) {
     if (c.program.reset) {
         logInfo(
             `You passed ${chalk().white('-r')} argument. paltform ${chalk().white(
@@ -94,17 +91,10 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
         await cleanPlaformAssets(c);
     }
     await createPlatformBuild(c, c.platform);
-
     await injectPlatformDependencies(c);
-
     await cleanPlatformBuild(c, c.platform);
-    await _runCopyPlatforms(c, c.platform);
-
-    await copyRuntimeAssets(c);
+    await _runCopyPlatforms(c);
     await copySharedPlatforms(c);
-    await generateRuntimeConfig(c);
-    await overrideTemplatePlugins(c);
-    // }
 };
 
 export default {

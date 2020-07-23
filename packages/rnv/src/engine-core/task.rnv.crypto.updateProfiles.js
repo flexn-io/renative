@@ -1,5 +1,5 @@
 import { chalk, logTask } from '../core/systemManager/logger';
-import { listAppConfigsFoldersSync, setAppConfig } from '../core/configManager/configParser';
+import { listAppConfigsFoldersSync } from '../core/configManager/configParser';
 import { IOS, TVOS, TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE } from '../core/constants';
 import { updateProfile } from '../sdk-xcode/fastlane';
 import { executeTask } from '../core/engineManager';
@@ -31,7 +31,6 @@ export const taskRnvCryptoUpdateProfiles = async (c, parentTask, originTask) => 
         case IOS:
         case TVOS:
             await _updateProfiles(c);
-            await setAppConfig(c, c.runtime?.appId);
             break;
         default:
             return true;
