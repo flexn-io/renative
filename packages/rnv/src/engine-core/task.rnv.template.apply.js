@@ -11,6 +11,7 @@ export const taskRnvTemplateApply = async (c, parentTask, originTask) => {
 
     if (c.program.template) {
         await applyTemplate(c, c.program.template);
+        return true;
     }
     const opts = getInstalledTemplateOptions(c);
 
@@ -21,7 +22,8 @@ export const taskRnvTemplateApply = async (c, parentTask, originTask) => {
         choices: opts.keysAsArray
     });
 
-    applyTemplate(c, template);
+    await applyTemplate(c, template);
+    return true;
 };
 
 export default {
