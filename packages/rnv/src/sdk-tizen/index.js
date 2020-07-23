@@ -522,12 +522,13 @@ export const configureTizenProject = async (c) => {
 
     await copyAssetsFolder(c, platform);
     await configureCoreWebProject(c, platform);
-    await configureProject(c, platform);
+    await configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 
-export const configureProject = (c, platform) => new Promise((resolve) => {
+export const configureProject = c => new Promise((resolve) => {
     logTask('configureProject');
+    const { platform } = c;
 
     const appFolder = getAppFolder(c, platform);
 

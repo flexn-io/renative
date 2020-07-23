@@ -14,7 +14,7 @@ const FtpDeploy = require('ftp-deploy');
 const dotEnv = require('dotenv');
 
 const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_deployToFtp:${platform}`);
+    logTask('_deployToFtp');
     let promise;
     const envPath = path.resolve(c.paths.project.dir, '.env');
     if (!fsExistsSync(envPath)) {
@@ -137,7 +137,7 @@ const _createEnvFtpConfig = async (configFilePath, previousContent = '') => {
 };
 
 const _createDeployConfig = async (c, platform) => {
-    logTask(`_createDeployConfig:${platform}`);
+    logTask('_createDeployConfig');
 
     const deploy = c.buildConfig.platforms[platform].deploy || {};
 
@@ -206,7 +206,7 @@ const _createDeployConfig = async (c, platform) => {
 };
 
 const deployToFtp = (c, platform) => {
-    logTask(`checkDeployConfigTarget:${platform}`);
+    logTask('checkDeployConfigTarget');
     const targetConfig = c.buildConfig.platforms[platform];
     if (targetConfig?.deploy?.[DEPLOY_TARGET_FTP]?.type) {
         return _deployToFtp(c, platform);

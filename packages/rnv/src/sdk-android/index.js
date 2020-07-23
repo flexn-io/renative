@@ -90,8 +90,9 @@ const _getEntryOutputName = (c) => {
     return outputFile;
 };
 
-export const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`packageAndroid:${platform}`);
+export const packageAndroid = c => new Promise((resolve, reject) => {
+    logTask('packageAndroid');
+    const { platform } = c;
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
 
@@ -178,7 +179,7 @@ export const runAndroid = async (c, platform, defaultTarget) => {
                     response.chosenEmulator,
                     true
                 );
-                const devices = await checkForActiveEmulator(c, platform);
+                const devices = await checkForActiveEmulator(c);
                 await _runGradleApp(c, platform, devices);
             }
         } else if (activeDevices.length > 1) {
@@ -200,7 +201,7 @@ export const runAndroid = async (c, platform, defaultTarget) => {
             }
         } else {
             await askForNewEmulator(c, platform);
-            const devices = await checkForActiveEmulator(c, platform);
+            const devices = await checkForActiveEmulator(c);
             await _runGradleApp(c, platform, devices);
         }
     };
@@ -215,8 +216,8 @@ export const runAndroid = async (c, platform, defaultTarget) => {
             if (foundDevice.isActive) {
                 await _runGradleApp(c, platform, foundDevice);
             } else {
-                await launchAndroidSimulator(c, platform, foundDevice, true);
-                const device = await checkForActiveEmulator(c, platform);
+                await launchAndroidSimulator(c, foundDevice, true);
+                const device = await checkForActiveEmulator(c);
                 await _runGradleApp(c, platform, device);
             }
         } else {
@@ -237,8 +238,8 @@ export const runAndroid = async (c, platform, defaultTarget) => {
             logDebug('Target not provided, asking where to run');
             await askWhereToRun();
         } else {
-            await launchAndroidSimulator(c, platform, foundDevice, true);
-            const device = await checkForActiveEmulator(c, platform);
+            await launchAndroidSimulator(c, foundDevice, true);
+            const device = await checkForActiveEmulator(c);
             await _runGradleApp(c, platform, device);
         }
     } else {
@@ -381,7 +382,7 @@ const _checkSigningCerts = async (c) => {
                     c.paths.workspace.appConfig.dir
                 )}.`
             );
-            await configureProject(c, c.platform);
+            await configureProject(c);
         } else {
             return Promise.reject("You selected no. Can't proceed");
         }
@@ -476,8 +477,9 @@ const _runGradleApp = async (c, platform, device) => {
     }
 };
 
-export const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`buildAndroid:${platform}`);
+export const buildAndroid = c => new Promise((resolve, reject) => {
+    logTask('buildAndroid');
+    const { platform } = c;
 
     const appFolder = getAppFolder(c, platform);
     const signingConfig = getConfigProp(
@@ -548,12 +550,13 @@ export const configureGradleProject = async (c) => {
 
     await copyAssetsFolder(c, platform);
     await configureAndroidProperties(c, platform);
-    await configureProject(c, platform);
+    await configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 
-export const configureProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`configureProject:${platform}`);
+export const configureProject = c => new Promise((resolve, reject) => {
+    logTask('configureProject');
+    const { platform } = c;
 
     const appFolder = getAppFolder(c, platform);
 
@@ -687,7 +690,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
     parseSplashActivitySync(c, platform);
     parseValuesStringsSync(c, platform);
     parseValuesColorsSync(c, platform);
-    parseAndroidManifestSync(c, platform);
+    parseAndroidManifestSync(c);
     parseGradlePropertiesSync(c, platform);
 
     resolve();

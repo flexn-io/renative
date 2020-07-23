@@ -297,14 +297,20 @@ export const setCurrentJob = () => {
 
 const _getCurrentTask = () => (_c?._currentTask ? currentChalk.grey(` [${_c._currentTask}]`) : '');
 
+const TASK_COUNTER = {};
+
 export const logTask = (task, customChalk) => {
+    if (!TASK_COUNTER[task]) TASK_COUNTER[task] = 0;
+    TASK_COUNTER[task] += 1;
+    const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
     let msg = '';
     if (typeof customChalk === 'string') {
-        msg = `${currentChalk.green(`[ task ]${_getCurrentTask()} ${task}`)} ${currentChalk.grey(customChalk)}`;
+        msg = `${currentChalk.green(`[ task ]${
+            _getCurrentTask()} ${task}`)}${taskCount} ${currentChalk.grey(customChalk)}`;
     } else if (customChalk) {
-        msg = customChalk(`[ task ]${_getCurrentTask()} ${task}`);
+        msg = customChalk(`[ task ]${_getCurrentTask()} ${task}${taskCount}`);
     } else {
-        msg = currentChalk.green(`[ task ]${_getCurrentTask()} ${task}`);
+        msg = currentChalk.green(`[ task ]${_getCurrentTask()} ${task}${taskCount}`);
     }
 
     console.log(msg);

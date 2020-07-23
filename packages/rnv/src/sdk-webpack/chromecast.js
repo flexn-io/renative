@@ -11,7 +11,7 @@ export const configureChromecastProject = async (c) => {
 
     await copyAssetsFolder(c, c.platform);
     await configureCoreWebProject(c, c.platform);
-    await configureProject(c, c.platform);
+    await configureProject(c);
     return copyBuildsFolder(c, c.platform);
 };
 

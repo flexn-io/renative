@@ -20,7 +20,7 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
     switch (platform) {
         case MACOS:
         case WINDOWS:
-            return exportElectron(c, platform);
+            return exportElectron(c);
         default:
             logErrorPlatform(c);
     }

@@ -7,13 +7,13 @@ import { executeAsync } from '../core/systemManager/exec';
 
 export const getAppleDevices = async (
     c,
-    platform,
     ignoreDevices,
     ignoreSimulators
 ) => {
-    logTask(
-        `getAppleDevices:${platform},ignoreDevices:${ignoreDevices},ignoreSimulators${ignoreSimulators}`
-    );
+    const { platform } = c;
+
+    logTask('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators${ignoreSimulators}`);
+
     const {
         program: { skipTargetCheck }
     } = c;
@@ -144,10 +144,10 @@ const _parseIOSDevicesList = (
     return devices;
 };
 
-export const launchAppleSimulator = async (c, platform, target) => {
-    logTask(`launchAppleSimulator:${platform}:${target}`);
+export const launchAppleSimulator = async (c, target) => {
+    logTask('launchAppleSimulator', `${target}`);
 
-    const devicesArr = await getAppleDevices(c, platform, true);
+    const devicesArr = await getAppleDevices(c, true);
     let selectedDevice;
     for (let i = 0; i < devicesArr.length; i++) {
         if (devicesArr[i].name === target) {
@@ -198,10 +198,10 @@ const _launchSimulator = (selectedDevice) => {
     }
 };
 
-export const listAppleDevices = async (c, platform) => {
-    logTask(`listAppleDevices:${platform}`);
-
-    const devicesArr = await getAppleDevices(c, platform);
+export const listAppleDevices = async (c) => {
+    logTask('listAppleDevices');
+    const { platform } = c;
+    const devicesArr = await getAppleDevices(c);
     let devicesString = '';
     devicesArr.forEach((v, i) => {
         devicesString += ` [${i + 1}]> ${chalk().bold(v.name)} | ${

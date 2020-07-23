@@ -125,8 +125,10 @@ const _mergeNodeChildren = (node, nodeChildrenExt = []) => {
     });
 };
 
-export const parseAndroidManifestSync = (c, platform) => {
-    logTask(`parseAndroidManifestSync:${platform}`);
+export const parseAndroidManifestSync = (c) => {
+    logTask('parseAndroidManifestSync');
+    const { platform } = c;
+
     try {
         const baseManifestFilePath = path.join(
             c.paths.rnv.dir,

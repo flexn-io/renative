@@ -158,12 +158,16 @@ Dev server running at: ${url}
     return executeAsync(c, `npx next --pagesDir ${pagesDir || 'src/app'} --port ${port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
 };
 
-export const deployWebNext = (c, platform) => {
-    logTask(`deployWeb:${platform}`);
+export const deployWebNext = (c) => {
+    logTask('deployWebNext');
+    const { platform } = c;
+
     return selectWebToolAndDeploy(c, platform);
 };
 
-export const exportWebNext = (c, platform) => {
-    logTask(`exportWeb:${platform}`);
+export const exportWebNext = (c) => {
+    logTask('exportWebNext');
+    const { platform } = c;
+
     return selectWebToolAndExport(c, platform);
 };

@@ -47,7 +47,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
                     getConfigProp(c, platform, 'bundleAssets') === true
                   || platform === ANDROID_WEAR
                 ) {
-                    await packageAndroid(c, platform);
+                    await packageAndroid(c);
                 }
                 await runAndroid(c, platform, target);
                 if (!bundleAssets) {

@@ -51,7 +51,7 @@ export const generatePlatformChoices = c => c.buildConfig.defaults.supportedPlat
 });
 
 export const cleanPlatformBuild = (c, platform) => new Promise((resolve) => {
-    logTask('cleanPlatformBuild', `platforms:${platform}`);
+    logTask('cleanPlatformBuild');
 
     const cleanTasks = [];
 

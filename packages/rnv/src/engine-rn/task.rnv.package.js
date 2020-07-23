@@ -23,8 +23,6 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
     const { platform } = c;
 
-    const target = c.program.target || c.files.workspace.config.defaultTargets[platform];
-
     await executeTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
 
     switch (platform) {
@@ -34,12 +32,7 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            return packageAndroid(
-                c,
-                platform,
-                target,
-                platform === ANDROID_WEAR
-            );
+            return packageAndroid(c);
         default:
             logErrorPlatform(c);
             return false;

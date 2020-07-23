@@ -385,13 +385,17 @@ Debugger running at: ${debugUrl}`);
     }
 };
 
-const deployWeb = (c, platform) => {
-    logTask(`deployWeb:${platform}`);
+const deployWeb = (c) => {
+    logTask('deployWeb');
+    const { platform } = c;
+
     return selectWebToolAndDeploy(c, platform);
 };
 
-const exportWeb = (c, platform) => {
-    logTask(`exportWeb:${platform}`);
+const exportWeb = (c) => {
+    logTask('exportWeb');
+    const { platform } = c;
+
     return selectWebToolAndExport(c, platform);
 };
 

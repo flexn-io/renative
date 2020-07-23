@@ -24,7 +24,7 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            return buildAndroid(c, platform);
+            return buildAndroid(c);
         case IOS:
         case TVOS:
             if (parentTask === TASK_EXPORT) {

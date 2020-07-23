@@ -41,12 +41,7 @@ export const composeDevicesString = (devices, returnArray) => {
     return `\n${devicesArray.join('')}`;
 };
 
-export const launchAndroidSimulator = async (
-    c,
-    platform,
-    target,
-    isIndependentThread = false
-) => {
+export const launchAndroidSimulator = async (c, target, isIndependentThread = false) => {
     logTask(
         'launchAndroidSimulator', `target${target} independentThread:${!!isIndependentThread}`
     );
@@ -607,15 +602,15 @@ export const askForNewEmulator = async (c, platform) => {
         switch (platform) {
             case 'android':
                 return _createEmulator(c, '28', 'google_apis', emuName).then(
-                    () => launchAndroidSimulator(c, platform, emuName, true)
+                    () => launchAndroidSimulator(c, emuName, true)
                 );
             case 'androidtv':
                 return _createEmulator(c, '28', 'android-tv', emuName).then(
-                    () => launchAndroidSimulator(c, platform, emuName, true)
+                    () => launchAndroidSimulator(c, emuName, true)
                 );
             case 'androidwear':
                 return _createEmulator(c, '28', 'android-wear', emuName).then(
-                    () => launchAndroidSimulator(c, platform, emuName, true)
+                    () => launchAndroidSimulator(c, emuName, true)
                 );
             default:
                 return Promise.reject(
@@ -649,8 +644,9 @@ const waitForEmulatorToBeReady = (c, emulator) => waitForEmulator(
     res => res.includes('stopped')
 );
 
-export const checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`checkForActiveEmulator:${platform}`);
+export const checkForActiveEmulator = c => new Promise((resolve, reject) => {
+    logTask('checkForActiveEmulator');
+    const { platform } = c;
     let attempts = 1;
     const maxAttempts = isSystemWin ? 20 : 10;
     let running = false;

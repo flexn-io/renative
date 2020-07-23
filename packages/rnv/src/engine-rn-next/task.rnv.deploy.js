@@ -19,9 +19,9 @@ export const taskRnvDeploy = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case WEB:
-            return deployWebNext(c, platform);
+            return deployWebNext(c);
         case CHROMECAST:
-            return deployWeb(c, platform);
+            return deployWeb(c);
         default:
             logErrorPlatform(c);
     }

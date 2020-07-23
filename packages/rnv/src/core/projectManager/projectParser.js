@@ -312,7 +312,7 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
 };
 
 const generateDefaultAssets = async (c, platform, sourcePath) => {
-    logTask(`generateDefaultAssets:${platform}`);
+    logTask('generateDefaultAssets');
     let confirmAssets = true;
     if (c.program.ci === false) {
         const { confirm } = await inquirerPrompt({

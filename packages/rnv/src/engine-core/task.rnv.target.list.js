@@ -34,7 +34,7 @@ export const taskRnvTargetList = async (c, parentTask, originTask) => {
             return listAndroidTargets(c, platform);
         case IOS:
         case TVOS:
-            return listAppleDevices(c, platform);
+            return listAppleDevices(c);
         case TIZEN:
             return listTizenTargets(c, platform);
         case WEBOS:

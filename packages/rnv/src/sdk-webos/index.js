@@ -176,7 +176,7 @@ const runWebOS = async (c) => {
         'public/appinfo.json'
     );
 
-    logTask(`runWebOS:${platform}:${target}:${isHosted}`, chalk().grey);
+    logTask(`runWebOS:${target}:${isHosted}`, chalk().grey);
 
     const cnfg = JSON.parse(fsReadFileSync(configFilePath, 'utf-8'));
     const tId = cnfg.id;
@@ -318,12 +318,13 @@ const configureWebOSProject = async (c) => {
 
     await copyAssetsFolder(c, platform);
     await configureCoreWebProject(c, platform);
-    await configureProject(c, platform);
+    await configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 
-const configureProject = (c, platform) => new Promise((resolve) => {
-    logTask(`configureProject:${platform}`);
+const configureProject = c => new Promise((resolve) => {
+    logTask('configureProject');
+    const { platform } = c;
 
     const appFolder = getAppFolder(c, platform);
 

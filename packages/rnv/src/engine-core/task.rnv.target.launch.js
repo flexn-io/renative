@@ -31,10 +31,10 @@ export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            return launchAndroidSimulator(c, platform, target);
+            return launchAndroidSimulator(c, target);
         case IOS:
         case TVOS:
-            return launchAppleSimulator(c, platform, target);
+            return launchAppleSimulator(c, target);
         case TIZEN:
             return launchTizenSimulator(c, target);
         case WEBOS:

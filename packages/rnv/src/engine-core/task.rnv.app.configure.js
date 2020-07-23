@@ -250,6 +250,7 @@ Please rename one /appConfigs/<folder>`
 };
 
 const _findAndSwitchAppConfigDir = async (c) => {
+    logTask('_findAndSwitchAppConfigDir');
     const configDirs = listAppConfigsFoldersSync(c, true);
     if (configDirs.length) {
         if (configDirs.length === 1) {
@@ -288,8 +289,7 @@ const _setAppId = (c, appId) => {
 
 export const taskAppConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigSet', `parent:${parentTask} origin:${originTask}`);
-
-    if (c.program.appConfigID === true || !c.runtime.appId) {
+    if (c.program.appConfigID === true || (!c.program.appConfigID && !c.runtime.appId)) {
         const hasAppConfig = await _findAndSwitchAppConfigDir(c);
         if (!hasAppConfig) {
             // const { conf } = await inquirerPrompt({

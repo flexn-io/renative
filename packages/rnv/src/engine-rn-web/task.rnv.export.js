@@ -25,7 +25,7 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case WEB:
-            return exportWeb(c, platform);
+            return exportWeb(c);
         default:
             logErrorPlatform(c);
     }

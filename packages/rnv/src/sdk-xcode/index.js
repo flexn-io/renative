@@ -176,9 +176,9 @@ export const runXcodeProject = async (c) => {
 
     let devicesArr;
     if (device === true) {
-        devicesArr = await getAppleDevices(c, c.platform, false, true);
+        devicesArr = await getAppleDevices(c, false, true);
     } else if (c.runtime.target === true) {
-        devicesArr = await getAppleDevices(c, c.platform, true, false);
+        devicesArr = await getAppleDevices(c, true, false);
     }
 
     if (device === true) {
@@ -593,8 +593,9 @@ export const buildXcodeProject = async (c) => {
     });
 };
 
-const archiveXcodeProject = (c, platform) => {
-    logTask(`archiveXcodeProject:${platform}`);
+const archiveXcodeProject = (c) => {
+    logTask('archiveXcodeProject');
+    const { platform } = c;
 
     const appFolderName = getAppFolderName(c, platform);
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
@@ -667,7 +668,7 @@ const exportXcodeProject = async (c) => {
 
     const { platform } = c;
 
-    await archiveXcodeProject(c, platform);
+    await archiveXcodeProject(c);
 
     const appPath = getAppFolder(c, platform);
     const exportPath = path.join(appPath, 'release');

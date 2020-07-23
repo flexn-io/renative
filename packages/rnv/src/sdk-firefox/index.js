@@ -64,12 +64,13 @@ const configureKaiOSProject = async (c) => {
 
     await copyAssetsFolder(c, platform);
     await configureCoreWebProject(c, platform);
-    await configureProject(c, platform);
+    await configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 
-const configureProject = (c, platform) => new Promise((resolve) => {
-    logTask(`configureProject:${platform}`);
+const configureProject = c => new Promise((resolve) => {
+    logTask('configureProject');
+    const { platform } = c;
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
@@ -92,8 +93,9 @@ const configureProject = (c, platform) => new Promise((resolve) => {
     resolve();
 });
 
-const runFirefoxProject = async (c, platform) => {
-    logTask(`runFirefoxProject:${platform}`);
+const runFirefoxProject = async (c) => {
+    logTask('runFirefoxProject');
+    const { platform } = c;
 
     await buildWeb(c);
     await launchKaiOSSimulator(c, platform);

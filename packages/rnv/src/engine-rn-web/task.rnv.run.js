@@ -94,7 +94,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
         case KAIOS:
         case FIREFOX_OS:
         case FIREFOX_TV:
-            return runFirefoxProject(c, platform);
+            return runFirefoxProject(c);
         case CHROMECAST:
             if (!c.program.only) {
                 await _configureHostedIfRequired(c);

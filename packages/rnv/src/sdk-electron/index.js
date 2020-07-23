@@ -54,13 +54,14 @@ export const configureElectronProject = async (c) => {
         platform === MACOS ? _generateICNS : null
     );
     await configureCoreWebProject(c, platform);
-    await configureProject(c, platform);
+    await configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 const merge = require('deepmerge');
 
-const configureProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`configureProject:${platform}`);
+const configureProject = c => new Promise((resolve, reject) => {
+    logTask('configureProject');
+    const { platform } = c;
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
@@ -190,8 +191,10 @@ const buildElectron = async (c) => {
     return true;
 };
 
-const exportElectron = async (c, platform) => {
-    logTask(`exportElectron:${platform}`);
+const exportElectron = async (c) => {
+    logTask('exportElectron');
+    const { platform } = c;
+
     const appFolder = getAppFolder(c, platform);
     const buildPath = path.join(appFolder, 'build');
 
@@ -271,8 +274,9 @@ const runElectronDevServer = async (c) => {
     return runWeb(c);
 };
 
-const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_generateICNS:${platform}`);
+const _generateICNS = c => new Promise((resolve, reject) => {
+    logTask('_generateICNS');
+    const { platform } = c;
 
     let source;
 
