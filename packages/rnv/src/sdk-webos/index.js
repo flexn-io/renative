@@ -302,7 +302,7 @@ const buildWebOSProject = async (c) => {
         await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
         logSuccess(
-            `Your IPK package is located in ${chalk().white(tOut)} .`
+            `Your IPK package is located in ${chalk().cyan(tOut)} .`
         );
     }
 };

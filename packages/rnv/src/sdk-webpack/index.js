@@ -226,7 +226,7 @@ const buildWeb = async (c) => {
         } node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`
     );
     logSuccess(
-        `Your Build is located in ${chalk().white(
+        `Your Build is located in ${chalk().cyan(
             path.join(appFolder, 'public')
         )} .`
     );

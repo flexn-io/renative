@@ -495,7 +495,7 @@ export const buildAndroid = c => new Promise((resolve, reject) => {
         ))
         .then(() => {
             logSuccess(
-                `Your APK is located in ${chalk().white(
+                `Your APK is located in ${chalk().cyan(
                     path.join(
                         appFolder,
                         `app/build/outputs/apk/${signingConfig.toLowerCase()}`

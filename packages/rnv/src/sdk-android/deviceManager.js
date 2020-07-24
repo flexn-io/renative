@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 // @todo fix circular
 import path from 'path';
-import os from 'os';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 import { fsExistsSync, fsReaddirSync, fsLstatSync, fsReadFileSync } from '../core/systemManager/fileutils';
@@ -26,7 +25,8 @@ import {
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_ADB,
     CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_SDKMANAGER
+    CLI_ANDROID_SDKMANAGER,
+    USER_HOME_DIR
 } from '../core/constants';
 
 const CHECK_INTEVAL = 5000;
@@ -401,7 +401,7 @@ const getAvdDetails = (c, deviceName) => {
     const avdConfigPaths = [
         `${ANDROID_AVD_HOME}`,
         `${ANDROID_SDK_HOME}/.android/avd`,
-        `${os.homedir()}/.android/avd`
+        `${USER_HOME_DIR}/.android/avd`
     ];
 
     const results = {};

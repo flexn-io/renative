@@ -1,4 +1,11 @@
 // PLATFORM
+import { homedir } from 'os';
+import path from 'path';
+
+export const USER_HOME_DIR = homedir();
+export const RNV_HOME_DIR = path.join(__dirname, '../../');
+export const CURRENT_DIR = path.resolve('.');
+
 export const ANDROID = 'android';
 export const ANDROID_AUTO = 'androidauto';
 export const ANDROID_TV = 'androidtv';

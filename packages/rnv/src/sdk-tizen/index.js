@@ -495,7 +495,7 @@ export const buildTizenProject = async (c) => {
         );
 
         logSuccess(
-            `Your WGT package is located in ${chalk().white(tOut)} .`
+            `Your WGT package is located in ${chalk().cyan(tOut)} .`
         );
     }
 

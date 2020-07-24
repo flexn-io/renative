@@ -2,7 +2,7 @@ import path from 'path';
 import inquirer from 'inquirer';
 import semver from 'semver';
 import { generateOptions } from '../cli/prompt';
-import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS } from '../core/constants';
+import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS, CURRENT_DIR } from '../core/constants';
 import { getTemplateOptions } from '../core/templateManager';
 import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync } from '../core/systemManager/fileutils';
 import { executeAsync, commandExistsSync } from '../core/systemManager/exec';
@@ -45,10 +45,8 @@ const configureGit = async (c) => {
 const _generateProject = async (c, data) => {
     logTask('_generateProject');
 
-    const base = path.resolve('.');
-
     c.paths.project.dir = path.join(
-        base,
+        CURRENT_DIR,
         data.projectName.replace(/(\s+)/g, '_')
     );
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');

@@ -580,7 +580,7 @@ export const buildXcodeProject = async (c) => {
     if (c.buildConfig.platforms[platform].runScheme === 'Release') {
         await executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`);
         logSuccess(
-            `Your Build is located in ${chalk().white(buildPath)} .`
+            `Your Build is located in ${chalk().cyan(buildPath)} .`
         );
     }
 
@@ -589,7 +589,7 @@ export const buildXcodeProject = async (c) => {
     logDebug('xcodebuild args', args);
 
     return executeAsync('xcodebuild', { rawCommand: { args } }).then(() => {
-        logSuccess(`Your Build is located in ${chalk().white(buildPath)} .`);
+        logSuccess(`Your Build is located in ${chalk().cyan(buildPath)} .`);
     });
 };
 
@@ -659,7 +659,7 @@ const archiveXcodeProject = (c) => {
     logDebug('xcodebuild args', args);
 
     return executeAsync('xcodebuild', { rawCommand: { args } }).then(() => {
-        logSuccess(`Your Archive is located in ${chalk().white(exportPath)} .`);
+        logSuccess(`Your Archive is located in ${chalk().cyan(exportPath)} .`);
     });
 };
 
@@ -706,7 +706,7 @@ const exportXcodeProject = async (c) => {
     logTask('exportXcodeProject', 'STARTING xcodebuild EXPORT...');
 
     return executeAsync(c, `xcodebuild ${p.join(' ')}`).then(() => {
-        logSuccess(`Your IPA is located in ${chalk().white(exportPath)} .`);
+        logSuccess(`Your IPA is located in ${chalk().cyan(exportPath)} .`);
     });
 };
 

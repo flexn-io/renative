@@ -476,7 +476,7 @@ export const writeFileSync = (filePath, obj, spaces = 4, addNewLine = true) => {
     }
     logDebug('writeFileSync', filePath, 'executed', `size:${output?.length}`);
     fsWriteFileSync(filePath, output);
-    return output?.length;
+    return output;
 };
 
 export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {

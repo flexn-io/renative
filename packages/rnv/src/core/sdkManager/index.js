@@ -23,7 +23,8 @@ import {
     ANDROID_WEAR,
     TIZEN_MOBILE,
     TIZEN_WATCH,
-    SDK_PLATFORMS
+    SDK_PLATFORMS,
+    USER_HOME_DIR
 } from '../constants';
 import { isSystemWin } from '../utils';
 import { getRealPath, writeFileSync, fsExistsSync } from '../systemManager/fileutils';
@@ -37,19 +38,17 @@ import {
 import PlatformSetup from '../setupManager';
 import { generateBuildConfig } from '../configManager/configParser';
 
-const homedir = require('os').homedir();
-
 const SDK_LOACTIONS = {
     android: [
         path.join('/usr/local/android-sdk'),
-        path.join(homedir, 'Library/Android/sdk'),
-        path.join(homedir, 'AppData/Local/Android/android-sdk'),
-        path.join(homedir, 'AppData/Local/Android/sdk'),
+        path.join(USER_HOME_DIR, 'Library/Android/sdk'),
+        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk'),
+        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk'),
         path.join('Program Files (x86)/Android/android-sdk')
     ],
     tizen: [
         path.join('usr/local/tizen-studio'),
-        path.join(homedir, 'tizen-studio')
+        path.join(USER_HOME_DIR, 'tizen-studio')
     ],
     webos: [path.join('/opt/webOS_TV_SDK')]
 };

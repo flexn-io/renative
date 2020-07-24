@@ -55,7 +55,7 @@ export const logWelcome = () => {
     }
     str += printIntoBox(`      ${currentChalk.grey('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${currentChalk.yellow('Firing up!...')}`, 1);
-    str += printIntoBox(`      ${getCurrentCommand()}`);
+    str += printIntoBox(`      $ ${currentChalk.cyan(getCurrentCommand(true))}`, 1);
     if (_c?.timeStart) {
         str += printIntoBox(
             `      Start Time: ${_c.timeStart.toLocaleString()}`
@@ -272,7 +272,7 @@ export const logSummary = (header = 'SUMMARY') => {
     str += printIntoBox('');
     if (_c?.runtime?.platformBuildsProjectPath) {
         str += currentChalk.grey(`│ Project location:
-│ ${currentChalk.cyan(_c.runtime.platformBuildsProjectPath)}\n`);
+│ ${currentChalk.cyan(_sanitizePaths(_c.runtime.platformBuildsProjectPath))}\n`);
     }
     str += printBoxEnd();
 
@@ -297,6 +297,13 @@ export const setCurrentJob = () => {
 
 const _getCurrentTask = () => (_c?._currentTask ? currentChalk.grey(` [${_c._currentTask}]`) : '');
 
+const _sanitizePaths = (msg) => {
+    if (_c?.paths?.project?.dir) {
+        return msg.replace(_c.paths.project.dir, '.');
+    }
+    return msg;
+};
+
 const TASK_COUNTER = {};
 
 export const logTask = (task, customChalk) => {
@@ -312,10 +319,8 @@ export const logTask = (task, customChalk) => {
     } else {
         msg = currentChalk.green(`[ task ]${_getCurrentTask()} ${task}${taskCount}`);
     }
-    if (_c.paths?.project?.dir) {
-        msg = msg.replace(_c.paths.project.dir, '.');
-    }
-    console.log(msg);
+
+    console.log(_sanitizePaths(msg));
 };
 
 
@@ -346,15 +351,16 @@ export const logExitTask = (task, customChalk) => {
 };
 
 export const logHook = (hook = '', msg = '') => {
-    console.log(`${currentChalk.rgb(127, 255, 212)(`[ hook ]${_getCurrentTask()} ${hook}`)} ${currentChalk.grey(msg)}`);
+    console.log(`${currentChalk.rgb(127, 255, 212)(`[ hook ]${_getCurrentTask()} ${
+        hook}`)} ${currentChalk.grey(_sanitizePaths(msg))}`);
 };
 
 export const logWarning = (msg) => {
-    logAndSave(currentChalk.yellow(`[ warn ]${_getCurrentTask()} ${msg}`));
+    logAndSave(currentChalk.yellow(`[ warn ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
 export const logInfo = (msg) => {
-    console.log(currentChalk.cyan(`[ info ]${_getCurrentTask()} ${msg}`));
+    console.log(currentChalk.cyan(`[ info ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
 export const logDebug = (...args) => {
@@ -369,7 +375,7 @@ export const logComplete = (isEnd = false) => {
 };
 
 export const logSuccess = (msg) => {
-    logAndSave(currentChalk.magenta(`[ success ]${_getCurrentTask()} ${msg}`));
+    logAndSave(currentChalk.magenta(`[ success ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
 export const logError = (e, isEnd = false, skipAnalytics = false) => {

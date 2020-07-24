@@ -8,8 +8,8 @@ const entypo = require('react-native-vector-icons/Entypo').default;
 const evilIcons = require('react-native-vector-icons/EvilIcons').default;
 const foundation = require('react-native-vector-icons/Foundation').default;
 const ionicons = require('react-native-vector-icons/Ionicons').default;
-const materialCommunityIcons = require('react-native-vector-icons/MaterialCommunityIcons')
-    .default;
+// const materialCommunityIcons = require('react-native-vector-icons/MaterialCommunityIcons')
+//     .default;
 const materialIcons = require('react-native-vector-icons/MaterialIcons')
     .default;
 const octicons = require('react-native-vector-icons/Octicons').default;
@@ -25,7 +25,7 @@ const IconMap = {
     evilIcons,
     foundation,
     ionicons,
-    materialCommunityIcons,
+    // materialCommunityIcons,
     materialIcons,
     octicons,
     simpleLineIcons,

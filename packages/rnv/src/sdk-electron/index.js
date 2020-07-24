@@ -212,7 +212,7 @@ const exportElectron = async (c) => {
     );
 
     logSuccess(
-        `Your Exported App is located in ${chalk().white(
+        `Your Exported App is located in ${chalk().cyan(
             path.join(appFolder, 'build/release')
         )} .`
     );

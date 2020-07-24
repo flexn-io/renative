@@ -14,7 +14,10 @@ import {
     RN_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
     PLATFORMS,
-    SUPPORTED_PLATFORMS
+    SUPPORTED_PLATFORMS,
+    USER_HOME_DIR,
+    RNV_HOME_DIR,
+    CURRENT_DIR
 } from '../constants';
 import { getEngineByPlatform } from '../engineManager';
 import { isSystemWin } from '../utils';
@@ -51,9 +54,6 @@ import {
 } from '../projectManager/projectParser';
 import { inquirerPrompt } from '../../cli/prompt';
 import { loadPluginTemplates } from '../pluginManager';
-
-const base = path.resolve('.');
-const homedir = require('os').homedir();
 
 const IGNORE_FOLDERS = ['.git'];
 
@@ -229,6 +229,18 @@ export const writeRenativeConfigFile = (c, configPath, configData) => {
     generateBuildConfig(c);
 };
 
+const _formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return `${parseFloat((bytes / (k ** i)).toFixed(dm))} ${sizes[i]}`;
+};
+
 export const generateBuildConfig = (c) => {
     logDebug('generateBuildConfig');
 
@@ -330,29 +342,35 @@ export const generateBuildConfig = (c) => {
     out = merge({}, out);
     out.pluginTemplates = pluginTemplates;
 
-    c.paths.project.builds.config = path.join(
-        c.paths.project.builds.dir,
-        `${c.runtime.appId}_${c.platform}.json`
-    );
-
-    logDebug(
-        `generateBuildConfig: will sanitize file at: ${
-            c.paths.project.builds.config
-        }`
-    );
     c.buildConfig = sanitizeDynamicRefs(c, out);
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs, {}, c.runtime);
 
-    if (fsExistsSync(c.paths.project.builds.dir)) {
-        const result = writeFileSync(c.paths.project.builds.config, c.buildConfig);
-        if (result) {
-            logTask(chalk().grey('generateBuildConfig'), `size:${result}`);
+    if (c.runtime.appId) {
+        c.paths.project.builds.config = path.join(
+            c.paths.project.builds.dir,
+            `${c.runtime.appId}_${c.platform}.json`
+        );
+
+        logDebug(
+            `generateBuildConfig: will sanitize file at: ${
+                c.paths.project.builds.config
+            }`
+        );
+
+        if (c.paths.project.builds.dir) {
+            const result = writeFileSync(c.paths.project.builds.config, c.buildConfig);
+            if (result) {
+                const size = _formatBytes(Buffer.byteLength(result || '', 'utf8'));
+                logTask(chalk().grey('generateBuildConfig'), `size:${size}`);
+            } else {
+                logDebug(`generateBuildConfig NOT SAVED: ${c.paths.project.builds.config}`);
+            }
         } else {
-            logDebug(`generateBuildConfig NOT SAVED: ${c.paths.project.builds.config}`);
+            logWarning('Cannot save buildConfig as c.paths.project.builds.dir is not defined');
         }
-    } else {
-        logDebug(`Missing ${c.paths.project.builds.dir}`);
     }
+
+
     // DEPRECATED
     // if (Config.isRenativeProject) {
     //     const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
@@ -807,7 +825,7 @@ export const taskRnvWorkspaceConfigure = async (c) => {
     return true;
 };
 
-export const createRnvConfig = (program, process, cmd, subCmd) => {
+export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } = {}) => {
     const c = {
         cli: {},
         runtime: {},
@@ -896,7 +914,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.subCommand = subCmd;
     c.platformDefaults = PLATFORMS;
 
-    c.paths.rnv.dir = path.join(__dirname, '../../..');
+    c.paths.rnv.dir = RNV_HOME_DIR;
     // c.paths.rnv.nodeModulesDir = path.join(c.paths.rnv.dir, 'node_modules');
     c.paths.rnv.platformTemplates.dir = path.join(
         c.paths.rnv.dir,
@@ -941,7 +959,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     );
 
     c.platform = c.program.platform;
-    c.paths.home.dir = homedir;
+    c.paths.home.dir = USER_HOME_DIR;
     c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
     c.paths.GLOBAL_RNV_CONFIG = path.join(
         c.paths.GLOBAL_RNV_DIR,
@@ -956,7 +974,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
         mkdirSync(c.paths.GLOBAL_RNV_DIR);
     }
 
-    _generateConfigPaths(c.paths.project, base);
+    _generateConfigPaths(c.paths.project, projectRoot || CURRENT_DIR);
 
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
     c.paths.buildHooks.dist.dir = path.join(
