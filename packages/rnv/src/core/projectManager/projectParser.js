@@ -94,6 +94,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     }
 
     if (!c.buildConfig?.common) {
+        logDebug('BUILD_CONFIG', c.buildConfig);
         reject(
             `Your ${chalk().white(
                 c.paths.appConfig.config
@@ -101,6 +102,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
                 '{ common: {} }'
             )} object at root`
         );
+
         return;
     }
 

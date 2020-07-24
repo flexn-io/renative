@@ -349,6 +349,8 @@ export const generateBuildConfig = (c) => {
     c.buildConfig = sanitizeDynamicRefs(c, out);
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs, {}, c.runtime);
 
+    logDebug('BUILD_CONFIG', Object.keys(c.buildConfig));
+
     if (c.runtime.appId) {
         c.paths.project.builds.config = path.join(
             c.paths.project.builds.dir,
