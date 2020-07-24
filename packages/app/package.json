@@ -122,8 +122,8 @@
         "runner-config": "./e2e/config.json",
         "configurations": {
             "android.emu.debug": {
-                "binaryPath": "platformBuilds/helloWorld_android/app/build/outputs/apk/debug/app-debug.apk",
-                "build": "rnv package -p android -s test -r --ci --mono && cd platformBuilds/helloWorld_android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
+                "binaryPath": "platformBuilds/helloworld_android/app/build/outputs/apk/debug/app-debug.apk",
+                "build": "rnv package -p android -s test -r --ci --mono && cd platformBuilds/helloworld_android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
                 "type": "android.emulator",
                 "device": {
                     "avdName": "android_test"
