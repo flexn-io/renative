@@ -43,7 +43,7 @@ export const composeDevicesString = (devices, returnArray) => {
 
 export const launchAndroidSimulator = async (c, target, isIndependentThread = false) => {
     logTask(
-        'launchAndroidSimulator', `target${target} independentThread:${!!isIndependentThread}`
+        'launchAndroidSimulator', `target:${target} independentThread:${!!isIndependentThread}`
     );
     let newTarget = target;
     if (target === true) {

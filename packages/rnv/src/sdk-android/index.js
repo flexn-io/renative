@@ -173,12 +173,7 @@ export const runAndroid = async (c, platform, defaultTarget) => {
                 }
             ]);
             if (response.chosenEmulator) {
-                await launchAndroidSimulator(
-                    c,
-                    platform,
-                    response.chosenEmulator,
-                    true
-                );
+                await launchAndroidSimulator(c, response.chosenEmulator, true);
                 const devices = await checkForActiveEmulator(c);
                 await _runGradleApp(c, platform, devices);
             }

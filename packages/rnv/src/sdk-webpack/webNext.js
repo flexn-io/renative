@@ -8,7 +8,7 @@ import {
     confirmActiveBundler,
     getAppFolder
 } from '../core/common';
-import { waitForWebpack } from '.';
+import { waitForWebpack } from './index';
 import {
     fsExistsSync,
     writeCleanFile,

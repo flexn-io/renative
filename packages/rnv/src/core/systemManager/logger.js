@@ -312,7 +312,9 @@ export const logTask = (task, customChalk) => {
     } else {
         msg = currentChalk.green(`[ task ]${_getCurrentTask()} ${task}${taskCount}`);
     }
-
+    if (_c.paths?.project?.dir) {
+        msg = msg.replace(_c.paths.project.dir, '.');
+    }
     console.log(msg);
 };
 

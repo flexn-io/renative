@@ -417,7 +417,7 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
     );
     copyFolderContentsRecursiveSync(sourcePath0sec, destPath, true, false, false, configPropsInject, tsPathsConfig);
 
-    copyTemplatePluginsSync(c, platform);
+    copyTemplatePluginsSync(c);
 
     resolve();
 });
