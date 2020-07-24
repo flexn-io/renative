@@ -20,7 +20,7 @@ GLOBAL_PATH="$GLOBAL_ROOT/$PROJECT_NAME"
 
 mkdir -p $GLOBAL_PATH
 
-yarn bootstrap
+yarn bootstrap-clean
 cd packages/app
 
 # RUN

@@ -22,7 +22,7 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 
 mkdir -p $GLOBAL_PATH
 
-yarn bootstrap
+yarn bootstrap-clean
 cd packages/app
 
 # RUN

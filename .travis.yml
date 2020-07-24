@@ -35,7 +35,7 @@ jobs:
       node_js: 13.13.0
       install:
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
-        - yarn bootstrap
+        - yarn bootstrap-clean
         - cd packages/rnv
       script: yarn test:integration
     - name: "HelloWorld Android: Build"
@@ -104,7 +104,7 @@ jobs:
       install:
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
       script:
-        - yarn bootstrap
+        - yarn bootstrap-clean
         - cd packages/app
         - npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
         - yarn e2e-web
@@ -118,7 +118,7 @@ jobs:
       osx_image: xcode11.3
       install: skip
       script:
-        - yarn bootstrap
+        - yarn bootstrap-clean
         - cd packages/app
         - npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
         - npx rnv build -p tizen -c helloworld -r --mono --ci
@@ -132,7 +132,7 @@ jobs:
       osx_image: xcode11.3
       install: skip
       script:
-        - yarn bootstrap
+        - yarn bootstrap-clean
         - cd packages/app
         - npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
         - npx rnv build -p macos -c helloworld -r --mono --ci
@@ -145,7 +145,7 @@ jobs:
       os: osx
       osx_image: xcode11.3
       install:
-        - yarn bootstrap
+        - yarn bootstrap-clean
         - cd packages/rnv
       script: yarn test:ios
     - name: "RNV Node: Unit Tests"
@@ -157,7 +157,7 @@ jobs:
       node_js: 13.13.0
       install:
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
-        - yarn bootstrap
+        - yarn bootstrap-clean
         - cd packages/rnv
       script: npm run test:setup
     - name: "RNV Node: Lint"
@@ -169,5 +169,5 @@ jobs:
       node_js: 13.13.0
       install:
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
-        - yarn bootstrap
+        - yarn bootstrap-clean
       script: yarn lint
