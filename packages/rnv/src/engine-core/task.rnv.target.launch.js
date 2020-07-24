@@ -1,5 +1,6 @@
 import { isPlatformSupported } from '../core/platformManager';
 import { chalk, logTask } from '../core/systemManager/logger';
+import { taskRnvWorkspaceConfigure } from '../core/configManager/configParser';
 import {
     IOS,
     ANDROID,
@@ -23,6 +24,7 @@ export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetLaunch', `parent:${parentTask} origin:${originTask}`);
 
     await isPlatformSupported(c);
+    await taskRnvWorkspaceConfigure(c);
 
     const { platform, program } = c;
     const target = program.target || c.files.workspace.config.defaultTargets[platform];

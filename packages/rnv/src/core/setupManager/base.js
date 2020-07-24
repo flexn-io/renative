@@ -3,7 +3,7 @@ import shell from 'shelljs';
 import inquirer from 'inquirer';
 
 import { commandExistsSync } from '../systemManager/exec';
-import { configureRnvGlobal } from '../configManager/configParser';
+import { taskRnvWorkspaceConfigure } from '../configManager/configParser';
 import { replaceHomeFolder, updateConfigFile } from '../systemManager/fileutils';
 import setupConfig from './config';
 import Config from '../configManager/config';
@@ -44,7 +44,7 @@ class BasePlatformSetup {
                 { androidSdk: location },
                 this.globalConfigPath
             );
-            await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
+            await taskRnvWorkspaceConfigure(this.c); // trigger the configure to update the paths for clis
         }
 
         if (sdk === 'tizen') {
@@ -52,7 +52,7 @@ class BasePlatformSetup {
                 { tizenSdk: this.tizenSdkPath },
                 this.globalConfigPath
             );
-            await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
+            await taskRnvWorkspaceConfigure(this.c); // trigger the configure to update the paths for clis
         }
 
         if (sdk === 'webos') {
@@ -60,7 +60,7 @@ class BasePlatformSetup {
                 { webosSdk: this.webosSdkPath },
                 this.globalConfigPath
             );
-            await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
+            await taskRnvWorkspaceConfigure(this.c); // trigger the configure to update the paths for clis
         }
     }
 

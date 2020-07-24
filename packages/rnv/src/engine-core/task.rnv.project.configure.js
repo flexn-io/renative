@@ -2,7 +2,7 @@ import { configurePlugins, overrideTemplatePlugins } from '../core/pluginManager
 import { logTask } from '../core/systemManager/logger';
 import { parseRenativeConfigs,
     fixRenativeConfigsSync,
-    configureRnvGlobal,
+    taskRnvWorkspaceConfigure,
     checkIsRenativeProject, configureRuntimeDefaults, generateRuntimeConfig } from '../core/configManager/configParser';
 import { applyTemplate, checkIfTemplateInstalled, configureEntryPoints } from '../core/templateManager';
 import { checkCrypto } from '../core/systemManager/crypto';
@@ -19,7 +19,7 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
     await parseRenativeConfigs(c);
     await checkIsRenativeProject(c);
     await checkAndCreateProjectPackage(c);
-    await configureRnvGlobal(c);
+    await taskRnvWorkspaceConfigure(c);
     await checkIfTemplateInstalled(c);
     await fixRenativeConfigsSync(c);
     await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);

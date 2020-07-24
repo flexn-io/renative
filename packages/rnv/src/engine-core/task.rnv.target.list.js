@@ -1,5 +1,6 @@
 import { isPlatformSupported } from '../core/platformManager';
 import { chalk, logTask } from '../core/systemManager/logger';
+import { taskRnvWorkspaceConfigure } from '../core/configManager/configParser';
 import {
     listAndroidTargets,
 } from '../sdk-android/deviceManager';
@@ -22,6 +23,7 @@ export const taskRnvTargetList = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetList', `parent:${parentTask} origin:${originTask}`);
 
     await isPlatformSupported(c);
+    await taskRnvWorkspaceConfigure(c);
 
     const { platform } = c;
 

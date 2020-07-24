@@ -347,6 +347,8 @@ export const generateBuildConfig = (c) => {
         const result = writeFileSync(c.paths.project.builds.config, c.buildConfig);
         if (result) {
             logTask(chalk().grey('generateBuildConfig'), `size:${result}`);
+        } else {
+            logDebug(`generateBuildConfig NOT SAVED: ${c.paths.project.builds.config}`);
         }
     } else {
         logDebug(`Missing ${c.paths.project.builds.dir}`);
@@ -706,8 +708,8 @@ export const parseRenativeConfigs = async (c) => {
     }
 };
 
-export const configureRnvGlobal = async (c) => {
-    logTask('configureRnvGlobal');
+export const taskRnvWorkspaceConfigure = async (c) => {
+    logTask('taskRnvWorkspaceConfigure');
 
     // Check globalConfig Dir
     if (fsExistsSync(c.paths.workspace.dir)) {
