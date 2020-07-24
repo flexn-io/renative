@@ -23,8 +23,7 @@ export const initializeBuilder = async (cmd, subCmd, process, program) => {
         c,
         c.process,
         c.command,
-        c.subCommand,
-        program.info === true
+        c.subCommand
     );
     logInitialize();
 

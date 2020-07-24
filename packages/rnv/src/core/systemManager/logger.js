@@ -72,6 +72,7 @@ let _messages = [];
 // let _currentCommand;
 let _currentProcess;
 let _isInfoEnabled = false;
+let _infoFilter = [];
 let _c;
 let _isMono = false;
 let _defaultColor;
@@ -79,10 +80,7 @@ let _highlightColor;
 
 export const configureLogger = (
     c,
-    process,
-    command,
-    subCommand,
-    isInfoEnabled
+    process
 ) => {
     _messages = [];
     _c = c;
@@ -90,7 +88,8 @@ export const configureLogger = (
     _currentProcess = process;
     // _currentCommand = command;
     // _currentSubCommand = subCommand;
-    _isInfoEnabled = isInfoEnabled;
+    _isInfoEnabled = !!c.program.info;
+    _infoFilter = c.program.info?.split?.(',');
     _isMono = c.program.mono;
     if (_isMono) {
         currentChalk = _chalkMono;
@@ -298,7 +297,7 @@ export const setCurrentJob = () => {
 const _getCurrentTask = () => (_c?._currentTask ? currentChalk.grey(` [${_c._currentTask}]`) : '');
 
 const _sanitizePaths = (msg) => {
-    if (_c?.paths?.project?.dir) {
+    if (msg?.replace && _c?.paths?.project?.dir) {
         return msg.replace(_c.paths.project.dir, '.');
     }
     return msg;
@@ -364,7 +363,17 @@ export const logInfo = (msg) => {
 };
 
 export const logDebug = (...args) => {
-    if (_isInfoEnabled) console.log.apply(null, args);
+    if (_isInfoEnabled) {
+        if (_infoFilter) {
+            const firstArg = args[0];
+
+            if (_infoFilter.filter(v => firstArg?.includes?.(v)).length) {
+                console.log.apply(null, args);
+            }
+        } else {
+            console.log.apply(null, args);
+        }
+    }
 };
 
 export const isInfoEnabled = () => _isInfoEnabled;

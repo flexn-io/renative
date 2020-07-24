@@ -174,15 +174,19 @@ It is recommended that you run your rnv command with npx prefix: ${
 };
 
 export const loadFile = (fileObj, pathObj, key) => {
+    const pKey = `${key}Exists`;
     if (!fsExistsSync(pathObj[key])) {
-        pathObj[`${key}Exists`] = false;
+        pathObj[pKey] = false;
         logDebug(`WARNING: loadFile: Path ${pathObj[key]} does not exists!`);
+        logDebug(`FILE_EXISTS: ${key}:false`);
         return false;
     }
-    pathObj[`${key}Exists`] = true;
+    pathObj[pKey] = true;
     try {
-        fileObj[key] = JSON.parse(fsReadFileSync(pathObj[key]).toString());
-        pathObj[`${key}Exists`] = true;
+        const fileString = fsReadFileSync(pathObj[key]).toString();
+        fileObj[key] = JSON.parse(fileString);
+        pathObj[pKey] = true;
+        logDebug(`FILE_EXISTS: ${key}:true size:${_formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
         return true;
     } catch (e) {
         logError(`loadFile: ${pathObj[key]} :: ${e}`, true); // crash if there's an error in the config file
@@ -565,6 +569,7 @@ export const loadProjectTemplates = (c) => {
 // };
 
 export const loadEngines = (c) => {
+    logTask('loadEngines');
     c.files.rnv.engines.config = readObjectSync(
         c.paths.rnv.engines.config
     );

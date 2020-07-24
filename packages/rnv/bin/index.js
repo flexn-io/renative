@@ -15,7 +15,7 @@ let cmdOption;
 
 program
     .version(packageJson.version)
-    .option('-i, --info', 'show full debug Info')
+    .option('-i, --info [value]', 'show full debug Info')
     .option('-u, --updatePods', 'force Update dependencies (iOS only)')
     .option('-p, --platform [value]', 'select specific Platform')
     .option('-c, --appConfigID [value]', 'select specific app Config id')
