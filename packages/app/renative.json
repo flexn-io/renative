@@ -58,19 +58,19 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "^0.29.1-alpha.9",
+            "version": "^0.31.0-alpha.11",
             "webpack": {
                 "moduleAliases": true
             }
         },
         "renative-template-blank": {
-            "version": "^0.29.1-alpha.9",
+            "version": "^0.31.0-alpha.11",
             "webpack": {
                 "moduleAliases": true
             }
         },
         "renative-template-kitchen-sink": {
-            "version": "^0.29.1-alpha.9",
+            "version": "^0.31.0-alpha.11",
             "webpack": {
                 "moduleAliases": true
             }
