@@ -178,7 +178,7 @@ export const loadFile = (fileObj, pathObj, key) => {
     if (!fsExistsSync(pathObj[key])) {
         pathObj[pKey] = false;
         logDebug(`WARNING: loadFile: Path ${pathObj[key]} does not exists!`);
-        logDebug(`FILE_EXISTS: ${key}:false`);
+        logDebug(`FILE_EXISTS: ${key}:false path:${pathObj[key]}`);
         return false;
     }
     pathObj[pKey] = true;
@@ -470,6 +470,7 @@ export const generateLocalConfig = (c, resetAppId) => {
 };
 
 const _generatePlatformTemplatePaths = (c) => {
+    logTask('_generatePlatformTemplatePaths');
     if (!c.buildConfig.paths) {
         logWarning(`You're missing paths object in your ${chalk().white(c.paths.project.config)}`);
         c.buildConfig.paths = {};
@@ -664,7 +665,9 @@ export const parseRenativeConfigs = async (c) => {
     // LOAD ENGINES
     loadEngines(c);
 
-    if (!c.files.project.config) return;
+    if (!c.files.project.config) {
+        logDebug(`BUILD_CONFIG: c.files.project.config does not exists. path: ${c.paths.project.config}`);
+    }
 
     // LOAD WORKSPACE /[PROJECT_NAME]/RENATIVE.*.JSON
     _generateConfigPaths(
