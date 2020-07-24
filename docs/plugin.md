@@ -44,7 +44,7 @@ rnv plugin add @monterosa/react-native-parallax-scroll
 ## @noriginmedia/react-spatial-navigation
 
 
-Version: `2.12.1`
+Version: `2.12.3`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -656,7 +656,7 @@ rnv plugin add native-base-shoutem-theme
 ## next
 
 
-Version: `9.3.1`
+Version: `9.4.3`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -2206,7 +2206,7 @@ rnv plugin add react-native-sound
 
 Version: `3.2.0`
 
-Platforms: `ios`,`android`
+Platforms: `ios`,`android`,`androidtv`
 
 
 
@@ -2672,7 +2672,7 @@ rnv plugin add react-web-vector-icons
 ## renative
 
 
-Version: `0.30.4`
+Version: `0.30.5-alpha.1`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
