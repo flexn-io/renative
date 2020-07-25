@@ -5,7 +5,8 @@ import {
     getAppId,
     getBuildFilePath,
     getConfigProp,
-    getFlavouredProp
+    getFlavouredProp,
+    addSystemInjects
 } from '../core/common';
 import { logTask, logError, logWarning, logDebug } from '../core/systemManager/logger';
 import { readObjectSync, writeCleanFile } from '../core/systemManager/fileutils';
@@ -270,17 +271,21 @@ export const parseAndroidManifestSync = (c) => {
         // get correct source of manifest
         const manifestFile = 'app/src/main/AndroidManifest.xml';
 
+        const injects = [
+            { pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml },
+            { pattern: '{{PERMISIONS}}', override: prms },
+            {
+                pattern: '{{APPLICATION_ID}}',
+                override: baseManifestFile.package
+            }
+        ];
+
+        addSystemInjects(c, injects);
+
         writeCleanFile(
             getBuildFilePath(c, platform, manifestFile),
             path.join(appFolder, manifestFile),
-            [
-                { pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml },
-                { pattern: '{{PERMISIONS}}', override: prms },
-                {
-                    pattern: '{{APPLICATION_ID}}',
-                    override: baseManifestFile.package
-                }
-            ], null, c
+            injects, null, c
         );
 
         return;

@@ -341,14 +341,15 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
     const destPath = path.join(getAppFolder(c, platform));
     const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
-    const configPropsInject = [];
+    const configPropsInjects = [];
     INJECTABLE_CONFIG_PROPS.forEach((v) => {
-        configPropsInject.push({
+        configPropsInjects.push({
             pattern: `{{configProps.${v}}}`,
             override: getConfigProp(c, c.platform, v)
         });
     });
-    c.runtime.configPropsInject = configPropsInject;
+    c.configPropsInjects = configPropsInjects;
+    const allInjects = [...c.configPropsInjects, ...c.systemPropsInjects, ...c.runtimePropsInjects];
 
     // FOLDER MERGERS PROJECT CONFIG
     const sourcePath1 = getBuildsFolder(
@@ -356,7 +357,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
         platform,
         c.paths.project.projectConfig.dir
     );
-    copyFolderContentsRecursiveSync(sourcePath1, destPath, true, false, false, configPropsInject, tsPathsConfig);
+    copyFolderContentsRecursiveSync(sourcePath1, destPath, true, false, false, allInjects, tsPathsConfig);
 
     // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
     const sourcePath1secLegacy = getBuildsFolder(
@@ -365,7 +366,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
         c.paths.workspace.project.projectConfig.dir_LEGACY
     );
     copyFolderContentsRecursiveSync(sourcePath1secLegacy, destPath, true,
-        false, false, configPropsInject, tsPathsConfig);
+        false, false, allInjects, tsPathsConfig);
 
     // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
     const sourcePath1sec = getBuildsFolder(
@@ -373,7 +374,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
         platform,
         c.paths.workspace.project.projectConfig.dir
     );
-    copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, false, false, configPropsInject, tsPathsConfig);
+    copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, false, false, allInjects, tsPathsConfig);
 
     if (fsExistsSync(sourcePath1secLegacy)) {
         logWarning(`Path: ${chalk().red(sourcePath1secLegacy)} is DEPRECATED.
@@ -389,7 +390,7 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
         copyFolderContentsRecursiveSync(
             sourcePathShared,
             path.join(c.paths.project.builds.dir, '_shared'),
-            true, false, false, configPropsInject
+            true, false, false, allInjects
         );
     }
 
@@ -400,14 +401,14 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
             copyFolderContentsRecursiveSync(
                 sourceV,
                 destPath,
-                true, false, false, configPropsInject, tsPathsConfig
+                true, false, false, allInjects, tsPathsConfig
             );
         });
     } else {
         copyFolderContentsRecursiveSync(
             getBuildsFolder(c, platform, c.paths.appConfig.dir),
             destPath,
-            true, false, false, configPropsInject, tsPathsConfig
+            true, false, false, allInjects, tsPathsConfig
         );
     }
 
@@ -417,7 +418,7 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
         platform,
         c.paths.workspace.appConfig.dir
     );
-    copyFolderContentsRecursiveSync(sourcePath0sec, destPath, true, false, false, configPropsInject, tsPathsConfig);
+    copyFolderContentsRecursiveSync(sourcePath0sec, destPath, true, false, false, allInjects, tsPathsConfig);
 
     copyTemplatePluginsSync(c);
 

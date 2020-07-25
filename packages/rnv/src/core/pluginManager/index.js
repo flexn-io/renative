@@ -164,9 +164,9 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes) => {
     if (typeof plugin === 'string' || plugin instanceof String) {
         currentPlugin = {};
     }
-    const configPropsInject = {};
+    const configPropsInjects = {};
     INJECTABLE_CONFIG_PROPS.forEach((v) => {
-        configPropsInject[v] = getConfigProp(c, c.platform, v);
+        configPropsInjects[v] = getConfigProp(c, c.platform, v);
     });
     if (currentPlugin.pluginDependencies) {
         Object.keys(currentPlugin.pluginDependencies).forEach((plugDepKey) => {
@@ -179,7 +179,7 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes) => {
         mergeObjects(c, parentPlugin, currentPlugin, true, true),
             c.buildConfig?._refs
     );
-    const mergedPlugin = sanitizeDynamicProps(obj, obj.props, configPropsInject);
+    const mergedPlugin = sanitizeDynamicProps(obj, obj.props, configPropsInjects);
     return mergedPlugin;
 };
 
@@ -603,7 +603,7 @@ export const copyTemplatePluginsSync = (c) => {
 
 
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        const objectInject = [...c.runtime.configPropsInject];
+        const objectInject = [...c.configPropsInjects];
         if (plugin.props) {
             Object.keys(plugin.props).forEach((v) => {
                 objectInject.push({

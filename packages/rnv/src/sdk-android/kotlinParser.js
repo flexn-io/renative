@@ -7,7 +7,8 @@ import {
     getEntryFile,
     getGetJsBundleFile,
     getConfigProp,
-    getIP
+    getIP,
+    addSystemInjects
 } from '../core/common';
 import { logWarning } from '../core/systemManager/logger';
 import { writeCleanFile } from '../core/systemManager/fileutils';
@@ -42,62 +43,71 @@ export const parseMainApplicationSync = (c, platform) => {
         += `    mPreferences?.edit().putString("debug_http_host", "${bundlerIp}:${c.runtime.port}").apply()\n`;
     }
 
+    const injects = [
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
+        { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
+        {
+            pattern: '{{PLUGIN_IMPORTS}}',
+            override: c.pluginConfigAndroid.pluginApplicationImports
+        },
+        {
+            pattern: '{{PLUGIN_PACKAGES}}',
+            override: c.pluginConfigAndroid.pluginPackages
+        },
+        {
+            pattern: '{{PLUGIN_METHODS}}',
+            override: c.pluginConfigAndroid.pluginApplicationMethods
+        },
+        {
+            pattern: '{{PLUGIN_ON_CREATE}}',
+            override: c.pluginConfigAndroid.pluginApplicationCreateMethods
+        },
+        {
+            pattern: '{{PLUGIN_DEBUG_SERVER}}',
+            override: c.pluginConfigAndroid.pluginApplicationDebugServer
+        }
+    ];
+
+    addSystemInjects(c, injects);
+
     writeCleanFile(
         getBuildFilePath(c, platform, applicationPath),
         path.join(appFolder, applicationPath),
-        [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-            { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
-            { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
-            {
-                pattern: '{{PLUGIN_IMPORTS}}',
-                override: c.pluginConfigAndroid.pluginApplicationImports
-            },
-            {
-                pattern: '{{PLUGIN_PACKAGES}}',
-                override: c.pluginConfigAndroid.pluginPackages
-            },
-            {
-                pattern: '{{PLUGIN_METHODS}}',
-                override: c.pluginConfigAndroid.pluginApplicationMethods
-            },
-            {
-                pattern: '{{PLUGIN_ON_CREATE}}',
-                override: c.pluginConfigAndroid.pluginApplicationCreateMethods
-            },
-            {
-                pattern: '{{PLUGIN_DEBUG_SERVER}}',
-                override: c.pluginConfigAndroid.pluginApplicationDebugServer
-            }
-        ], null, c
+        injects, null, c
     );
 };
 
 export const parseMainActivitySync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
+
+    const injects = [
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        {
+            pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}',
+            override: c.pluginConfigAndroid.pluginActivityImports
+        },
+        {
+            pattern: '{{PLUGIN_ACTIVITY_METHODS}}',
+            override: c.pluginConfigAndroid.pluginActivityMethods
+        },
+        {
+            pattern: '{{PLUGIN_ON_CREATE}}',
+            override: c.pluginConfigAndroid.pluginActivityCreateMethods
+        },
+        {
+            pattern: '{{PLUGIN_ON_ACTIVITY_RESULT}}',
+            override: c.pluginConfigAndroid.pluginActivityResultMethods
+        }
+    ];
+
+    addSystemInjects(c, injects);
+
     writeCleanFile(
         getBuildFilePath(c, platform, activityPath),
         path.join(appFolder, activityPath),
-        [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-            {
-                pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}',
-                override: c.pluginConfigAndroid.pluginActivityImports
-            },
-            {
-                pattern: '{{PLUGIN_ACTIVITY_METHODS}}',
-                override: c.pluginConfigAndroid.pluginActivityMethods
-            },
-            {
-                pattern: '{{PLUGIN_ON_CREATE}}',
-                override: c.pluginConfigAndroid.pluginActivityCreateMethods
-            },
-            {
-                pattern: '{{PLUGIN_ON_ACTIVITY_RESULT}}',
-                override: c.pluginConfigAndroid.pluginActivityResultMethods
-            }
-        ], null, c
+        injects, null, c
     );
 };
 
@@ -115,16 +125,20 @@ export const parseSplashActivitySync = (c, platform) => {
             += 'import android.support.v7.app.AppCompatActivity\n';
     }
 
+    const injects = [
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        {
+            pattern: '{{PLUGIN_SPLASH_ACTIVITY_IMPORTS}}',
+            override: c.pluginConfigAndroid.pluginSplashActivityImports
+        }
+    ];
+
+    addSystemInjects(c, injects);
+
     writeCleanFile(
         getBuildFilePath(c, platform, splashPath),
         path.join(appFolder, splashPath),
-        [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-            {
-                pattern: '{{PLUGIN_SPLASH_ACTIVITY_IMPORTS}}',
-                override: c.pluginConfigAndroid.pluginSplashActivityImports
-            }
-        ], null, c
+        injects, null, c
     );
 };
 

@@ -5,7 +5,8 @@ import {
     getAppTitle,
     getBuildFilePath,
     getConfigProp,
-    sanitizeColor
+    sanitizeColor,
+    addSystemInjects
 } from '../core/common';
 import { writeFileSync, writeCleanFile } from '../core/systemManager/fileutils';
 
@@ -27,18 +28,23 @@ export const parseValuesStringsSync = (c) => {
 export const parseValuesColorsSync = (c) => {
     const appFolder = getAppFolder(c, c.platform);
     const stringsPath = 'app/src/main/res/values/colors.xml';
+
+    const injects = [
+        {
+            pattern: '{{PLUGIN_COLORS_BG}}',
+            override: sanitizeColor(
+                getConfigProp(c, c.platform, 'backgroundColor'),
+                'backgroundColor'
+            ).hex
+        }
+    ];
+
+    addSystemInjects(c, injects);
+
     writeCleanFile(
         getBuildFilePath(c, c.platform, stringsPath),
         path.join(appFolder, stringsPath),
-        [
-            {
-                pattern: '{{PLUGIN_COLORS_BG}}',
-                override: sanitizeColor(
-                    getConfigProp(c, c.platform, 'backgroundColor'),
-                    'backgroundColor'
-                ).hex
-            }
-        ], null, c
+        injects, null, c
     );
 };
 

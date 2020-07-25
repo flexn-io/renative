@@ -53,6 +53,15 @@ export const getSourceExtsAsString = (c, p) => {
     return sourceExts.length ? `['${sourceExts.join("','")}']` : '[]';
 };
 
+export const addSystemInjects = (c, injects) => {
+    if (!c.systemPropsInjects) c.systemPropsInjects = [];
+    if (injects) {
+        injects.forEach((item) => {
+            c.systemPropsInjects.push(item);
+        });
+    }
+};
+
 export const sanitizeColor = (val, key) => {
     if (!val) {
         logWarning(

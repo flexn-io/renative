@@ -193,6 +193,7 @@ export const readCleanFile = (source, overrides) => {
 export const copyFileWithInjectSync = (source, target, skipOverride, injectObject, timestampPathsConfig, c) => {
     logDebug('copyFileWithInjectSync', source);
 
+
     let targetFile = target;
     // if target is a directory a new file with the same name will be created
     if (source.indexOf('.DS_Store') !== -1) return;
@@ -629,7 +630,6 @@ export const sanitizeDynamicProps = (obj, props = {}, configProps = {}, runtimeP
     if (!obj) {
         return obj;
     }
-
     if (Array.isArray(obj)) {
         obj.forEach((v, i) => {
             let val = v;
@@ -669,10 +669,12 @@ export const sanitizeDynamicProps = (obj, props = {}, configProps = {}, runtimeP
                             .replace(`{{props.${pk}}}`, props?.[pk]);
                         obj[newKey] = fixResolve(val);
                     });
+
                     Object.keys(configProps).forEach((pk2) => {
                         val = val.replace(`{{configProps.${pk2}}}`, configProps[pk2]);
                         obj[newKey] = fixResolve(val);
                     });
+
                     Object.keys(runtimeProps).forEach((pk3) => {
                         val = val.replace(`{{runtimeProps.${pk3}}}`, runtimeProps[pk3]);
                         obj[newKey] = fixResolve(val);

@@ -17,7 +17,8 @@ import {
     SUPPORTED_PLATFORMS,
     USER_HOME_DIR,
     RNV_HOME_DIR,
-    CURRENT_DIR
+    CURRENT_DIR,
+    INJECTABLE_RUNTIME_PROPS
 } from '../constants';
 import { getEngineByPlatform } from '../engineManager';
 import { isSystemWin } from '../utils';
@@ -74,6 +75,15 @@ export const configureRuntimeDefaults = async (c) => {
     c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
     c.runtime.timestamp = c.runtime.timestamp || Date.now();
     c.runtime.engine = getEngineByPlatform(c, c.platform);
+
+    c.runtimePropsInjects = [];
+
+    INJECTABLE_RUNTIME_PROPS.forEach((key) => {
+        c.runtimePropsInjects.push({
+            pattern: `{{runtimeProps.${key}}}`,
+            override: c.runtime[key]
+        });
+    });
 };
 
 export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
