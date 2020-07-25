@@ -5,6 +5,7 @@ import path from 'path';
 export const USER_HOME_DIR = homedir();
 export const RNV_HOME_DIR = path.join(__dirname, '../..');
 export const CURRENT_DIR = path.resolve('.');
+export const RNV_NODE_MODULES_DIR = path.join(RNV_HOME_DIR, 'node_modules');
 
 export const ANDROID = 'android';
 export const ANDROID_AUTO = 'androidauto';

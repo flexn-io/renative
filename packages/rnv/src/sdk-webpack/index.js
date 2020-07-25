@@ -43,7 +43,10 @@ import {
 } from '../core/deployManager/webTools';
 import { getValidLocalhost } from '../core/utils';
 import { doResolvePath } from '../core/resolve';
-import { WEINRE_PORT } from '../core/constants';
+import { WEINRE_PORT, RNV_NODE_MODULES_DIR } from '../core/constants';
+
+const WEBPACK = path.join(RNV_NODE_MODULES_DIR, 'webpack/bin/webpack.js');
+const WEBPACK_DEV_SERVER = path.join(RNV_NODE_MODULES_DIR, 'webpack-dev-server/bin/webpack-dev-server.js');
 
 export const waitForWebpack = async (c, engine) => {
     logTask('waitForWebpack', `port:${c.runtime.port} engine:${engine}`);
@@ -217,14 +220,9 @@ const buildWeb = async (c) => {
         debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
     }
 
-    const wbp = doResolvePath('webpack/bin/webpack.js');
-
-    await executeAsync(
-        c,
-        `npx cross-env PLATFORM=${platform} NODE_ENV=production ${
-            debugVariables
-        } node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`
-    );
+    await executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=production ${
+        debugVariables
+    } node ${WEBPACK} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`);
     logSuccess(
         `Your Build is located in ${chalk().cyan(
             path.join(appFolder, 'public')
@@ -370,7 +368,7 @@ Debugger running at: ${debugUrl}`);
 
     const command = `npx cross-env PLATFORM=${platform} ${
         debugVariables
-    } webpack-dev-server -d --devtool source-map --config ${
+    } ${WEBPACK_DEV_SERVER} -d --devtool source-map --config ${
         wpConfig
     }  --inline --hot --colors --content-base ${
         wpPublic
