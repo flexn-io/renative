@@ -22,7 +22,6 @@ import { runWebOS } from '../sdk-webos';
 import { runFirefoxProject } from '../sdk-firefox';
 import { runChromecast } from '../sdk-webpack/chromecast';
 import { copyFolderContentsRecursiveSync, writeCleanFile } from '../core/systemManager/fileutils';
-import Config from '../core/configManager/config';
 import { executeTask } from '../core/engineManager';
 
 const _configureHostedIfRequired = async (c) => {
@@ -67,10 +66,11 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    if (Config.isWebHostEnabled && hosted) {
+    if (hosted) {
         c.runtime.shouldOpenBrowser = true;
         // return _taskStart(c);
-        return executeTask(c, TASK_START);
+        await _configureHostedIfRequired(c);
+        return executeTask(c, TASK_START, TASK_RUN, originTask);
     }
 
     await executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
@@ -83,12 +83,12 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
             if (!c.program.only) {
-                await _configureHostedIfRequired(c);
+                await executeTask(c, TASK_START, TASK_RUN, originTask);
             }
             return runTizen(c, platform, target);
         case WEBOS:
             if (!c.program.only) {
-                await _configureHostedIfRequired(c);
+                await executeTask(c, TASK_START, TASK_RUN, originTask);
             }
             return runWebOS(c);
         case KAIOS:
@@ -96,9 +96,6 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
         case FIREFOX_TV:
             return runFirefoxProject(c);
         case CHROMECAST:
-            if (!c.program.only) {
-                await _configureHostedIfRequired(c);
-            }
             return runChromecast(c, platform, target);
         default:
             return logErrorPlatform(c);

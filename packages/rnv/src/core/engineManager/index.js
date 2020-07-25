@@ -49,8 +49,11 @@ export const getEngineRunner = (c, task) => {
     throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
 };
 
+let executedTasks = {};
+
 export const initializeTask = async (c, task) => {
     c.runtime.task = task;
+    executedTasks = {};
 
     Analytics.captureEvent({
         type: `${task}Project`,
@@ -68,6 +71,8 @@ const _executePipe = async (c, task, phase) => {
     return executePipe(c, `${task}${subCmd}:${phase}`);
 };
 
+const TASK_LIMIT = 20;
+
 export const executeTask = async (c, task, parentTask, originTask) => {
     const pt = parentTask ? ` => [${parentTask}]` : '';
     c._currentTask = task;
@@ -76,9 +81,19 @@ export const executeTask = async (c, task, parentTask, originTask) => {
         logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} SKIPPING...`);
     } else {
         // logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} EXECUTING...`);
+        if (!executedTasks[task]) executedTasks[task] = 0;
+        if (executedTasks[task] > TASK_LIMIT) {
+            return Promise.reject(`You reached maximum amount of executions per one task (${TASK_LIMIT}) task: ${task}.
+This is to warn you ended up in task loop.
+(${task} calls same or another task which calls ${task} again)
+but issue migh not be necessarily with this task
+
+To avoid that test your task code against parentTask and avoid executing same task X from within task X`);
+        }
         await _executePipe(c, task, 'before');
         await getEngineRunner(c, task).executeTask(c, task, parentTask, originTask);
         await _executePipe(c, task, 'after');
+        executedTasks[task]++;
     }
     c._currentTask = parentTask;
     const prt = parentTask ? `[${parentTask}]` : '';
