@@ -667,6 +667,7 @@ export const parseRenativeConfigs = async (c) => {
 
     if (!c.files.project.config) {
         logDebug(`BUILD_CONFIG: c.files.project.config does not exists. path: ${c.paths.project.config}`);
+        return;
     }
 
     // LOAD WORKSPACE /[PROJECT_NAME]/RENATIVE.*.JSON
