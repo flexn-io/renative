@@ -6,6 +6,89 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.12 (2020-7-25)
+
+### Fixed
+
+- ci chores 7
+- ci chores 6
+- ci chores 5
+- rename hack
+- ci chores 4
+- ci chores
+- filterable logger -i "<value>,<value>.."
+- auto generate platformBuilds, better logging
+- ci chores 3
+- ci chores 2
+- ci chores 1
+- migration fixes
+- fix crypto, better logging
+- task descriptors
+- app config edge cases, task descriptions
+- log fixes
+- fix template selection
+- refactor app config  logic
+- ci chores 2
+- ci chores 1
+- fix missing appConfig crash
+- fix cycled deps, platform support for tasks
+- abstract engine injections
+- decouple project configure task
+- fix platform configure
+- task options helper
+- abstracted task execution
+- update tasks info
+- task runner abstraction
+- update task executors
+- fix android support files paths
+- improved task handlers
+- engine-core
+- task export configs
+- refactor task names
+- filesystem abstraction
+- decouple engine-rn-web tasks
+- decouple engine-rn-next tasks
+- decouple engine-rn-electron tasks
+- decouple engine-rn tasks
+- decouple rnv run tasks
+- decouple project and support tasks
+- decouple publish tasks
+- decouple utility tasks
+- decouple hook tasks
+- decouple workspace tasks
+- decouple plugin tasks
+- decouple template tasks
+- decouple platform tasks
+- decouple crypto tasks
+- refactor common dependencies
+- engine-rn-next fixes + E2E
+- migration fixes
+- migration fixes
+- big structure refactoring (preparation for decoupled packages)
+- migrate engines
+- electron engine task refactor
+- engine-rn-web improvements
+- ci chores 1
+- ci build for AppleTV
+- rnv build ios/tvos upgrades
+- travis updates
+- Merge branch 'feat/plugin-dep-resolvers' into feat/tasks
+- rnv builder
+- ci chores 1
+- normalize platform tools APIs
+- imporved debugger
+- changelog
+- refactor task engine
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.11 (2020-7-16)
 
 ### Fixed
