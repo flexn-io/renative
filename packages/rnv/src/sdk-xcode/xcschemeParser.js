@@ -3,6 +3,7 @@ import path from 'path';
 import {
     getAppFolder,
     getAppTemplateFolder,
+    addSystemInjects
 } from '../core/common';
 import { logTask } from '../core/systemManager/logger';
 import { getAppFolderName } from './index';
@@ -37,12 +38,17 @@ export const parseXcscheme = async (c, platform) => {
         ? 'Xcode.IDEFoundation.Launcher.PosixSpawn'
         : 'Xcode.DebuggerFoundation.Launcher.LLDB';
     const schemePath = `${appFolderName}.xcodeproj/xcshareddata/xcschemes/${appFolderName}.xcscheme`;
+
+    const injects = [
+        { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
+        { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId }
+    ];
+
+    addSystemInjects(c, injects);
+
     writeCleanFile(
         path.join(appTemplateFolder, schemePath),
         path.join(appFolder, schemePath),
-        [
-            { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
-            { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId }
-        ], null, c
+        injects, null, c
     );
 };

@@ -13,7 +13,8 @@ import {
     getAppVersionCode,
     getConfigProp,
     getBuildFilePath,
-    getFlavouredProp
+    getFlavouredProp,
+    addSystemInjects
 } from '../core/common';
 import { logTask, logError, logWarning } from '../core/systemManager/logger';
 import { parsePlugins } from '../core/pluginManager';
@@ -39,13 +40,18 @@ export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) =>
     }
 
     const bPath = getBuildFilePath(c, platform, 'exportOptions.plist');
-    writeCleanFile(bPath, path.join(appFolder, 'exportOptions.plist'), [
+
+    const injects = [
         { pattern: '{{TEAM_ID}}', override: tId },
         {
             pattern: '{{PLUGIN_EXPORT_OPTIONS}}',
             override: c.pluginConfigiOS.exportOptions
         }
-    ], null, c);
+    ];
+
+    addSystemInjects(c, injects);
+
+    writeCleanFile(bPath, path.join(appFolder, 'exportOptions.plist'), injects, null, c);
     resolve();
 });
 

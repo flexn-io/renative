@@ -22,7 +22,8 @@ import {
     getAppLicense,
     getConfigProp,
     checkPortInUse,
-    confirmActiveBundler
+    confirmActiveBundler,
+    addSystemInjects
 } from '../core/common';
 import { doResolve } from '../core/resolve';
 import {
@@ -109,31 +110,40 @@ const configureProject = c => new Promise((resolve, reject) => {
     }
     const browserWindowStr = JSON.stringify(browserWindow, null, 2);
 
+
     if (bundleAssets) {
+        const injects = [
+            {
+                pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
+                override: browserWindowStr
+            }
+        ];
+
+        addSystemInjects(c, injects);
+
         writeCleanFile(
             path.join(templateFolder, '_privateConfig', 'main.js'),
             path.join(appFolder, 'main.js'),
-            [
-                {
-                    pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
-                    override: browserWindowStr
-                }
-            ], null, c
+            injects, null, c
         );
     } else {
+        const injects = [
+            {
+                pattern: '{{DEV_SERVER}}',
+                override: `http://${c.runtime.localhost}:${c.runtime.port}`
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
+                override: browserWindowStr
+            }
+        ];
+
+        addSystemInjects(c, injects);
+
         writeCleanFile(
             path.join(templateFolder, '_privateConfig', 'main.dev.js'),
             path.join(appFolder, 'main.js'),
-            [
-                {
-                    pattern: '{{DEV_SERVER}}',
-                    override: `http://${c.runtime.localhost}:${c.runtime.port}`
-                },
-                {
-                    pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
-                    override: browserWindowStr
-                }
-            ], null, c
+            injects, null, c
         );
     }
 

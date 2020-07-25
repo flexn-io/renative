@@ -18,7 +18,8 @@ import {
     confirmActiveBundler,
     getAppVersion,
     getTimestampPathsConfig,
-    waitForUrl
+    waitForUrl,
+    addSystemInjects
 } from '../core/common';
 import { isPlatformActive } from '../core/platformManager';
 import {
@@ -258,18 +259,23 @@ const _parseCssSync = (c, platform) => {
     const stringsPath = 'public/app.css';
     const timestampPathsConfig = getTimestampPathsConfig(c, platform);
     const backgroundColor = getConfigProp(c, platform, 'backgroundColor');
+
+    const injects = [
+        {
+            pattern: '{{PLUGIN_COLORS_BG}}',
+            override: sanitizeColor(
+                backgroundColor,
+                'backgroundColor'
+            ).hex
+        }
+    ];
+
+    addSystemInjects(c, injects);
+
     writeCleanFile(
         getBuildFilePath(c, platform, stringsPath),
         path.join(appFolder, stringsPath),
-        [
-            {
-                pattern: '{{PLUGIN_COLORS_BG}}',
-                override: sanitizeColor(
-                    backgroundColor,
-                    'backgroundColor'
-                ).hex
-            }
-        ],
+        injects,
         timestampPathsConfig, c
     );
 };

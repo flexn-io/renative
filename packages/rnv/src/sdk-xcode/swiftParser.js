@@ -6,7 +6,8 @@ import {
     getConfigProp,
     getGetJsBundleFile,
     sanitizeColor,
-    getFlavouredProp
+    getFlavouredProp,
+    addSystemInjects
 } from '../core/common';
 import { chalk, logTask, logDebug, logWarning } from '../core/systemManager/logger';
 import { parsePlugins } from '../core/pluginManager';
@@ -182,6 +183,24 @@ export const parseAppDelegate = (
         });
     });
 
+    const injects = [
+        { pattern: '{{BUNDLE}}', override: bundle },
+        { pattern: '{{ENTRY_FILE}}', override: entryFile },
+        { pattern: '{{IP}}', override: ip },
+        { pattern: '{{PORT}}', override: newPort },
+        { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
+        {
+            pattern: '{{APPDELEGATE_IMPORTS}}',
+            override: c.pluginConfigiOS.pluginAppDelegateImports
+        },
+        {
+            pattern: '{{APPDELEGATE_METHODS}}',
+            override: c.pluginConfigiOS.pluginAppDelegateMethods
+        }
+    ];
+
+    addSystemInjects(c, injects);
+
     writeCleanFile(
         path.join(
             getAppTemplateFolder(c, platform),
@@ -189,21 +208,7 @@ export const parseAppDelegate = (
             appDelegate
         ),
         path.join(appFolder, appFolderName, appDelegate),
-        [
-            { pattern: '{{BUNDLE}}', override: bundle },
-            { pattern: '{{ENTRY_FILE}}', override: entryFile },
-            { pattern: '{{IP}}', override: ip },
-            { pattern: '{{PORT}}', override: newPort },
-            { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
-            {
-                pattern: '{{APPDELEGATE_IMPORTS}}',
-                override: c.pluginConfigiOS.pluginAppDelegateImports
-            },
-            {
-                pattern: '{{APPDELEGATE_METHODS}}',
-                override: c.pluginConfigiOS.pluginAppDelegateMethods
-            }
-        ], null, c
+        injects, null, c
     );
     resolve();
 });

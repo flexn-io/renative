@@ -76,6 +76,8 @@ export const configureRuntimeDefaults = async (c) => {
     c.runtime.timestamp = c.runtime.timestamp || Date.now();
     c.runtime.engine = getEngineByPlatform(c, c.platform);
 
+    c.configPropsInjects = c.configPropsInjects || [];
+    c.systemPropsInjects = c.systemPropsInjects || [];
     c.runtimePropsInjects = [];
 
     INJECTABLE_RUNTIME_PROPS.forEach((key) => {

@@ -12,7 +12,8 @@ import {
     getAppTemplateFolder,
     getConfigProp,
     checkPortInUse,
-    confirmActiveBundler
+    confirmActiveBundler,
+    addSystemInjects
 } from '../core/common';
 import { buildWeb, configureCoreWebProject } from '../sdk-webpack';
 import { waitForEmulator } from '../core/targetManager';
@@ -329,23 +330,28 @@ const configureProject = c => new Promise((resolve) => {
     const appFolder = getAppFolder(c, platform);
 
     const configFile = 'public/appinfo.json';
+
+    const injects = [
+        {
+            pattern: '{{APPLICATION_ID}}',
+            override: getAppId(c, platform).toLowerCase()
+        },
+        {
+            pattern: '{{APP_TITLE}}',
+            override: getAppTitle(c, platform)
+        },
+        {
+            pattern: '{{APP_VERSION}}',
+            override: semver.coerce(getAppVersion(c, platform))
+        }
+    ];
+
+    addSystemInjects(c, injects);
+
     writeCleanFile(
         path.join(getAppTemplateFolder(c, platform), configFile),
         path.join(appFolder, configFile),
-        [
-            {
-                pattern: '{{APPLICATION_ID}}',
-                override: getAppId(c, platform).toLowerCase()
-            },
-            {
-                pattern: '{{APP_TITLE}}',
-                override: getAppTitle(c, platform)
-            },
-            {
-                pattern: '{{APP_VERSION}}',
-                override: semver.coerce(getAppVersion(c, platform))
-            }
-        ], null, c
+        injects, null, c
     );
 
     resolve();

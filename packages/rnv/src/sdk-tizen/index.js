@@ -17,7 +17,8 @@ import {
     getAppTemplateFolder,
     getConfigProp,
     checkPortInUse,
-    confirmActiveBundler
+    confirmActiveBundler,
+    addSystemInjects
 } from '../core/common';
 import {
     chalk,
@@ -534,15 +535,20 @@ export const configureProject = c => new Promise((resolve) => {
 
     const configFile = 'config.xml';
     const p = c.buildConfig.platforms[platform];
+
+    const injects = [
+        { pattern: '{{PACKAGE}}', override: p.package },
+        { pattern: '{{ID}}', override: p.id },
+        { pattern: '{{APP_NAME}}', override: p.appName },
+        { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) }
+    ];
+
+    addSystemInjects(c, injects);
+
     writeCleanFile(
         path.join(getAppTemplateFolder(c, platform), configFile),
         path.join(appFolder, configFile),
-        [
-            { pattern: '{{PACKAGE}}', override: p.package },
-            { pattern: '{{ID}}', override: p.id },
-            { pattern: '{{APP_NAME}}', override: p.appName },
-            { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) }
-        ], null, c
+        injects, null, c
     );
 
     resolve();

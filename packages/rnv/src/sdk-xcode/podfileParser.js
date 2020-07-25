@@ -5,7 +5,8 @@ import {
     getAppFolder,
     getAppTemplateFolder,
     getConfigProp,
-    getFlavouredProp
+    getFlavouredProp,
+    addSystemInjects
 } from '../core/common';
 import { logTask, logWarning } from '../core/systemManager/logger';
 import { parsePlugins } from '../core/pluginManager';
@@ -96,41 +97,45 @@ export const parsePodFile = async (c, platform) => {
         // Ignore
     }
 
+    const injects = [
+        { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
+        { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
+        {
+            pattern: '{{PLUGIN_PODFILE_INJECT}}',
+            override: c.pluginConfigiOS.podfileInject
+        },
+        {
+            pattern: '{{PLUGIN_PODFILE_SOURCES}}',
+            override: c.pluginConfigiOS.podfileSources
+        },
+        {
+            pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}',
+            override: c.pluginConfigiOS.deploymentTarget
+        },
+        {
+            pattern: '{{PLUGIN_STATIC_FRAMEWORKS}}',
+            override: c.pluginConfigiOS.staticFrameworks.join(',')
+        },
+        {
+            pattern: '{{PATH_JSC_ANDROID}}',
+            override: doResolve('jsc-android')
+        },
+        {
+            pattern: '{{PATH_REACT_NATIVE}}',
+            override: doResolve('react-native')
+        },
+        {
+            pattern: '{{PLUGIN_STATIC_POD_DEFINITION}}',
+            override: c.pluginConfigiOS.staticPodDefinition
+        }
+    ];
+
+    addSystemInjects(c, injects);
+
     writeCleanFile(
         path.join(getAppTemplateFolder(c, platform), 'Podfile'),
         path.join(appFolder, 'Podfile'),
-        [
-            { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
-            { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
-            {
-                pattern: '{{PLUGIN_PODFILE_INJECT}}',
-                override: c.pluginConfigiOS.podfileInject
-            },
-            {
-                pattern: '{{PLUGIN_PODFILE_SOURCES}}',
-                override: c.pluginConfigiOS.podfileSources
-            },
-            {
-                pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}',
-                override: c.pluginConfigiOS.deploymentTarget
-            },
-            {
-                pattern: '{{PLUGIN_STATIC_FRAMEWORKS}}',
-                override: c.pluginConfigiOS.staticFrameworks.join(',')
-            },
-            {
-                pattern: '{{PATH_JSC_ANDROID}}',
-                override: doResolve('jsc-android')
-            },
-            {
-                pattern: '{{PATH_REACT_NATIVE}}',
-                override: doResolve('react-native')
-            },
-            {
-                pattern: '{{PLUGIN_STATIC_POD_DEFINITION}}',
-                override: c.pluginConfigiOS.staticPodDefinition
-            }
-        ], null, c
+        injects, null, c
     );
     return true;
 };
