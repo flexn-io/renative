@@ -5,6 +5,21 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.13 (2020-7-25)
+
+### Fixed
+
+- dynamic android build file injectors
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.12 (2020-7-25)
 
 ### Fixed
