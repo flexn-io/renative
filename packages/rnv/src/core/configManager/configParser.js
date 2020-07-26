@@ -86,6 +86,9 @@ export const configureRuntimeDefaults = async (c) => {
             override: c.runtime[key]
         });
     });
+    if (c.buildConfig) {
+        c.runtime.scheme.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    }
 };
 
 export const checkIsRenativeProject = c => new Promise((resolve, reject) => {

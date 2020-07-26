@@ -176,7 +176,6 @@ const execCLI = (c, cli, command, opts = {}) => {
         );
     }
     const p = c.cli[cli];
-
     if (!fsExistsSync(p)) {
         logDebug(`execCLI error: ${cli} | ${command}`, '\nCLI Config:\n', c.cli, '\nSDK Config:\n', c.buildConfig?.sdks);
         return Promise.reject(
@@ -263,8 +262,14 @@ const executeTelnet = (c, port, command) => new Promise((resolve) => {
 //     return extractError(text);
 // };
 
+
 export const parseErrorMessage = (text, maxErrorLength = 800) => {
     if (!text) return '';
+
+    const gradleFailIndex = text.indexOf('FAILURE: Build failed with an exception.');
+    if (gradleFailIndex) {
+        return text.substring(gradleFailIndex);
+    }
     const toSearch = /(exception|error|fatal|\[!])/i;
     let arr = text.split('\n');
 

@@ -71,6 +71,9 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
     await checkSdk(c);
+
+    if (c.program.only && !!parentTask) return true;
+
     await resolvePluginDependants(c);
 
     await executeTask(c, TASK_INSTALL, TASK_PLATFORM_CONFIGURE, originTask);

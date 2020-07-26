@@ -20,6 +20,10 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
     await configureMetroConfigs(c, c.platform);
     await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
 
+    if (c.program.only && !!parentTask) {
+        return true;
+    }
+
     switch (c.platform) {
         case IOS:
         case TVOS:

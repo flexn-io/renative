@@ -23,6 +23,14 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
     await checkIsRenativeProject(c);
     await checkAndCreateProjectPackage(c);
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
+
+    if (c.program.only && !!parentTask) {
+        await configureRuntimeDefaults(c);
+        await executeTask(c, TASK_APP_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
+        await generateRuntimeConfig(c);
+        return true;
+    }
+
     await checkIfTemplateInstalled(c);
     await fixRenativeConfigsSync(c);
     await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);

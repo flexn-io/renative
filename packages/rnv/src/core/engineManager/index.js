@@ -78,24 +78,29 @@ export const executeTask = async (c, task, parentTask, originTask) => {
     const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
     logInitTask(`${pt}=> [${chalk().rgb(170, 106, 170).bold(task)}]`);
-    if (c.program.only && !!parentTask) {
-        logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} SKIPPING...`);
-    } else {
-        // logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} EXECUTING...`);
-        if (!executedTasks[task]) executedTasks[task] = 0;
-        if (executedTasks[task] > TASK_LIMIT) {
-            return Promise.reject(`You reached maximum amount of executions per one task (${TASK_LIMIT}) task: ${task}.
+    const inOnlyMode = c.program.only && !!parentTask;
+    // if (c.program.only && !!parentTask && task !== TASK_WORKSPACE_CONFIGURE) {
+    //     logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} SKIPPING...`);
+    //     await executeTask(c, TASK_WORKSPACE_CONFIGURE, task, originTask);
+    //     await parseRenativeConfigs(c);
+    //     await configureRuntimeDefaults(c);
+    //     await isPlatformSupported(c);
+    // } else {
+    // logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} EXECUTING...`);
+    if (!executedTasks[task]) executedTasks[task] = 0;
+    if (executedTasks[task] > TASK_LIMIT) {
+        return Promise.reject(`You reached maximum amount of executions per one task (${TASK_LIMIT}) task: ${task}.
 This is to warn you ended up in task loop.
 (${task} calls same or another task which calls ${task} again)
 but issue migh not be necessarily with this task
 
 To avoid that test your task code against parentTask and avoid executing same task X from within task X`);
-        }
-        await _executePipe(c, task, 'before');
-        await getEngineRunner(c, task).executeTask(c, task, parentTask, originTask);
-        await _executePipe(c, task, 'after');
-        executedTasks[task]++;
     }
+    if (!inOnlyMode) await _executePipe(c, task, 'before');
+    await getEngineRunner(c, task).executeTask(c, task, parentTask, originTask);
+    if (!inOnlyMode) await _executePipe(c, task, 'after');
+    executedTasks[task]++;
+    // }
     c._currentTask = parentTask;
     const prt = parentTask ? `<= [${chalk().rgb(170, 106, 170)(parentTask)}] ` : '';
     logExitTask(`${prt}<= ${task}`);

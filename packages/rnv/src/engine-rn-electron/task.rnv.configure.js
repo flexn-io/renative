@@ -9,6 +9,10 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
 
     await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
 
+    if (c.program.only && !!parentTask) {
+        return true;
+    }
+
     switch (c.platform) {
         case MACOS:
         case WINDOWS:
