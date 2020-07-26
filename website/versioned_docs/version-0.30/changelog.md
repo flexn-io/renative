@@ -6,6 +6,28 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.16 (2020-7-26)
+
+### Fixed
+
+- support for --only , better android error logs
+- enable executor override via -e <engine>
+- migrate platform templates to engines
+- 0.31.0-alpha.15
+- android sdk bundleAssets fix, remove cycle references
+- clean log
+- clean getAppFolder API
+- fix clean platformAssets when --resetHard (-R)
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.15 (2020-7-26)
 
 ### Fixed
