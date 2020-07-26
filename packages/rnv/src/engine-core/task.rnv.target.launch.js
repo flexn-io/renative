@@ -1,6 +1,5 @@
 import { isPlatformSupported } from '../core/platformManager';
 import { chalk, logTask } from '../core/systemManager/logger';
-import { taskRnvWorkspaceConfigure } from '../core/configManager/configParser';
 import {
     IOS,
     ANDROID,
@@ -9,7 +8,9 @@ import {
     WEBOS,
     ANDROID_TV,
     ANDROID_WEAR,
-    KAIOS
+    KAIOS,
+    TASK_WORKSPACE_CONFIGURE,
+    TASK_TARGET_LAUNCH
 } from '../core/constants';
 import { launchTizenSimulator } from '../sdk-tizen';
 import { launchWebOSimulator } from '../sdk-webos';
@@ -18,13 +19,13 @@ import {
 } from '../sdk-android/deviceManager';
 import { launchAppleSimulator } from '../sdk-xcode/deviceManager';
 import { launchKaiOSSimulator } from '../sdk-firefox';
-
+import { executeTask } from '../core/engineManager';
 
 export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetLaunch', `parent:${parentTask} origin:${originTask}`);
 
     await isPlatformSupported(c);
-    await taskRnvWorkspaceConfigure(c);
+    await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH, originTask);
 
     const { platform, program } = c;
     const target = program.target || c.files.workspace.config.defaultTargets[platform];

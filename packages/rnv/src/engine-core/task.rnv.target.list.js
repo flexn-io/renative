@@ -1,6 +1,5 @@
 import { isPlatformSupported } from '../core/platformManager';
 import { chalk, logTask } from '../core/systemManager/logger';
-import { taskRnvWorkspaceConfigure } from '../core/configManager/configParser';
 import {
     listAndroidTargets,
 } from '../sdk-android/deviceManager';
@@ -13,17 +12,18 @@ import {
     WEBOS,
     ANDROID_TV,
     ANDROID_WEAR,
+    TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH
 } from '../core/constants';
 import { listTizenTargets } from '../sdk-tizen';
 import { listWebOSTargets } from '../sdk-webos';
 import { listAppleDevices } from '../sdk-xcode/deviceManager';
-
+import { executeTask } from '../core/engineManager';
 
 export const taskRnvTargetList = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetList', `parent:${parentTask} origin:${originTask}`);
 
     await isPlatformSupported(c);
-    await taskRnvWorkspaceConfigure(c);
+    await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH, originTask);
 
     const { platform } = c;
 
