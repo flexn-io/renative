@@ -5,6 +5,24 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.15 (2020-7-26)
+
+### Fixed
+
+- android sdk bundleAssets fix, remove cycle references
+- clean log
+- clean getAppFolder API
+- fix clean platformAssets when --resetHard (-R)
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.14 (2020-7-26)
 
 ### Fixed
