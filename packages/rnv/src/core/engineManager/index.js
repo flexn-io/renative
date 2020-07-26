@@ -1,4 +1,4 @@
-import { logDebug, logTask, logInitTask, logExitTask, chalk } from '../systemManager/logger';
+import { logDebug, logTask, logInitTask, logExitTask, chalk, logInfo } from '../systemManager/logger';
 import { getConfigProp } from '../common';
 import Analytics from '../systemManager/analytics';
 import {
@@ -52,6 +52,7 @@ export const getEngineRunner = (c, task) => {
 let executedTasks = {};
 
 export const initializeTask = async (c, task) => {
+    logTask('initializeTask', task);
     c.runtime.task = task;
     executedTasks = {};
 
@@ -74,9 +75,9 @@ const _executePipe = async (c, task, phase) => {
 const TASK_LIMIT = 20;
 
 export const executeTask = async (c, task, parentTask, originTask) => {
-    const pt = parentTask ? ` => [${parentTask}]` : '';
+    const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
-    logInitTask(`executeTask${pt} => [${task}]`);
+    logInitTask(`${pt}=> [${chalk().rgb(170, 106, 170).bold(task)}]`);
     if (c.program.only && !!parentTask) {
         logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} SKIPPING...`);
     } else {
@@ -96,8 +97,8 @@ To avoid that test your task code against parentTask and avoid executing same ta
         executedTasks[task]++;
     }
     c._currentTask = parentTask;
-    const prt = parentTask ? `[${parentTask}]` : '';
-    logExitTask(`${prt} <= ${task}`);
+    const prt = parentTask ? `<= [${chalk().rgb(170, 106, 170)(parentTask)}] ` : '';
+    logExitTask(`${prt}<= ${task}`);
 };
 
 const _getTaskOption = ({ taskInstance, hasMultipleSubTasks }) => {
@@ -198,8 +199,11 @@ export const findSuitableTask = async (c) => {
                 choices: platforms,
             });
             c.platform = platform;
-            return getEngineRunner(c, task).getTask(task);
         }
     }
-    return getEngineRunner(c, task).getTask(task);
+    c.runtime.engine = getEngineRunner(c, task);
+    logInfo(`Current Engine: ${chalk().bold.white(
+        c.runtime.engine.getId()
+    )}`);
+    return c.runtime.engine.getTask(task);
 };

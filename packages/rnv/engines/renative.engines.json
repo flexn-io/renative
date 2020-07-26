@@ -5,6 +5,9 @@
             "id": "engine-rn",
             "overview": "Default react-native based engine. Runs standard react native apps with native support",
             "requiresMetroConfig": true,
+            "paths": {
+              "platformTemplatesDir": "$RNV_HOME/src/engine-rn/platformTemplates"
+            },
             "plugins": {
                 "react": "source:rnv",
                 "react-art": "source:rnv",
@@ -63,6 +66,9 @@
         "engine-rn-web": {
             "id": "engine-rn-web",
             "overview": "React native based engine with web transpiler provided by react-native-web",
+            "paths": {
+              "platformTemplatesDir": "$RNV_HOME/src/engine-rn-web/platformTemplates"
+            },
             "plugins": {
                 "react": "source:rnv",
                 "react-art": "source:rnv",
@@ -95,6 +101,9 @@
         "engine-rn-electron": {
             "id": "engine-rn-electron",
             "overview": "React native based engine with web transpiler provided by react-native-web and native desktop wrapper provided by electron",
+            "paths": {
+              "platformTemplatesDir": "$RNV_HOME/src/engine-rn-electron/platformTemplates"
+            },
             "plugins": {
                 "react": "source:rnv",
                 "react-art": "source:rnv",
@@ -126,6 +135,9 @@
         "engine-rn-next": {
             "id": "engine-rn-next",
             "overview": "React native based engine with web transpiler provided by react-native-web and render by nextjs",
+            "paths": {
+              "platformTemplatesDir": "$RNV_HOME/src/engine-rn-next/platformTemplates"
+            },
             "plugins": {
                 "react": "source:rnv",
                 "react-art": "source:rnv",
@@ -153,63 +165,6 @@
                     }
                 }
             }
-        },
-        "engine-rn-electron-next": {
-            "id": "engine-rn-electron-next",
-            "overview": "React native based engine with web transpiler provided by react-native-web and render by nextjs and native desktop wrapper provided by electron",
-            "plugins": {
-                "react": "source:rnv",
-                "react-art": "source:rnv",
-                "react-dom": "source:rnv",
-                "react-native": "source:rnv",
-                "react-native-web": "source:rnv",
-                "next": "source:rnv"
-            },
-            "platforms": {
-                "macos": {
-                    "npm": {
-                        "dependencies": {
-                            "html-webpack-harddisk-plugin": "0.2.0",
-                            "html-webpack-plugin": "3.2.0",
-                            "@zeit/next-css": "1.0.1",
-                            "next": "9.3.1",
-                            "next-routes": "1.4.2",
-                            "@expo/next-adapter": "2.0.5",
-                            "next-compose-plugins": "^2.2.0",
-                            "next-fonts": "^1.0.3",
-                            "next-images": "^1.3.1",
-                            "babel-preset-expo": "^8.0.0",
-                            "next-transpile-modules": "^3.0.2"
-                        },
-                        "devDependencies": {
-                            "electron": "7.0.0",
-                            "electron-builder": "21.1.1"
-                        }
-                    }
-                },
-                "windows": {
-                    "npm": {
-                        "dependencies": {
-                            "html-webpack-harddisk-plugin": "0.2.0",
-                            "html-webpack-plugin": "3.2.0",
-                            "@zeit/next-css": "1.0.1",
-                            "next": "9.3.1",
-                            "next-routes": "1.4.2",
-                            "@expo/next-adapter": "2.0.5",
-                            "next-compose-plugins": "^2.2.0",
-                            "next-fonts": "^1.0.3",
-                            "next-images": "^1.3.1",
-                            "babel-preset-expo": "^8.0.0",
-                            "next-transpile-modules": "^3.0.2"
-                        },
-                        "devDependencies": {
-                            "electron": "7.0.0",
-                            "electron-builder": "21.1.1"
-                        }
-                    }
-                }
-            }
-
         }
     }
 }

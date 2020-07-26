@@ -187,7 +187,7 @@ export const logSummary = (header = 'SUMMARY') => {
         }
         if (_c?.runtime?.engine) {
             str += printIntoBox(`Engine ($.platforms.${_c?.platform}.engine): ${
-                _highlightColor(_c.runtime.engine?.id)
+                _highlightColor(_c.runtime.engine?.getId?.())
             }`, 1);
         }
         if (_c.buildConfig?._meta?.currentAppConfigId) {
@@ -339,11 +339,11 @@ export const logInitTask = (task, customChalk) => {
 export const logExitTask = (task, customChalk) => {
     let msg = '';
     if (typeof customChalk === 'string') {
-        msg = `${currentChalk.rgb(170, 106, 170)(`[ task ] ${task}`)} ${currentChalk.grey(customChalk)}`;
+        msg = `${currentChalk.rgb(183, 84, 117)(`[ task ] ${task}`)} ${currentChalk.grey(customChalk)}`;
     } else if (customChalk) {
         msg = customChalk(`[ task ] ${task}`);
     } else {
-        msg = currentChalk.rgb(170, 106, 170)(`[ task ] ${task}`);
+        msg = currentChalk.rgb(183, 84, 117)(`[ task ] ${task}`);
     }
 
     console.log(msg);

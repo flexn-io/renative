@@ -32,7 +32,7 @@ export const configureNextIfRequired = async (c) => {
     const stylesDir = path.join(dir, 'styles');
     const pagesDir = path.resolve(getConfigProp(c, c.platform, 'pagesDir') || 'src/app');
     const _appFile = path.join(pagesDir, '_app.js');
-    const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], '_web-next');
+    const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], 'web');
     const configFile = path.join(dir, NEXT_CONFIG_NAME);
 
     // handle fonts
@@ -83,8 +83,10 @@ export const configureNextIfRequired = async (c) => {
     }
 };
 
-export const runWebNext = async (c, platform, port) => {
+export const runWebNext = async (c) => {
+    const { port } = c.runtime;
     logTask('runWebNext', `port:${port}`);
+    const { platform } = c;
 
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
 

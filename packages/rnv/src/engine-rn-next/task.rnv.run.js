@@ -10,10 +10,7 @@ import { executeTask } from '../core/engineManager';
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;
-    const { port } = c.runtime;
-    const { target } = c.runtime;
-    const { hosted } = c.program;
-    logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
+    logTask('taskRnvRun', `parent:${parentTask}`);
 
     await executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
@@ -21,7 +18,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
         case WEB:
         case CHROMECAST:
             c.runtime.shouldOpenBrowser = true;
-            return runWebNext(c, platform, port, true);
+            return runWebNext(c, true);
         default:
             return logErrorPlatform(c);
     }

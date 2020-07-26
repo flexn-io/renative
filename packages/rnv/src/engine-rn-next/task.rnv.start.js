@@ -38,7 +38,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
         case WEB:
         case CHROMECAST:
             c.runtime.shouldOpenBrowser = false;
-            return runWebNext(c, platform, port, true);
+            return runWebNext(c, port, true);
         default:
             return logErrorPlatform(c);
     }

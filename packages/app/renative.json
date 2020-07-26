@@ -7,7 +7,6 @@
     "isWrapper": true,
     "paths": {
         "appConfigsDir": "./appConfigs",
-        "platformTemplatesDir": "RNV_HOME/platformTemplates",
         "entryDir": "./",
         "platformAssetsDir": "./platformAssets",
         "platformBuildsDir": "./platformBuilds",
@@ -74,6 +73,11 @@
             "webpack": {
                 "moduleAliases": true
             }
+        }
+    },
+    "platforms": {
+        "web": {
+            "engine": "engine-rn-next"
         }
     },
     "currentTemplate": "renative-template-hello-world"

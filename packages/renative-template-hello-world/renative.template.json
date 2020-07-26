@@ -61,6 +61,11 @@
                     }
                 ]
             }
+        },
+        "platforms": {
+            "web": {
+                "engine": "engine-rn-next"
+            }
         }
     },
     "permissions": {

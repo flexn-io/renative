@@ -74,7 +74,7 @@ export const configureRuntimeDefaults = async (c) => {
     c.runtime.scheme = c.program.scheme || 'debug';
     c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
     c.runtime.timestamp = c.runtime.timestamp || Date.now();
-    c.runtime.engine = getEngineByPlatform(c, c.platform);
+    // c.runtime.engine = getEngineByPlatform(c, c.platform);
 
     c.configPropsInjects = c.configPropsInjects || [];
     c.systemPropsInjects = c.systemPropsInjects || [];
@@ -217,23 +217,36 @@ const getEnginesPluginDelta = (c) => {
 
     const enginePlugins = {};
     const missingEnginePlugins = {};
-    const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
-    if (supPlats) {
-        supPlats.forEach((pk) => {
-            const selectedEngine = getEngineByPlatform(c, pk, true);
-            if (selectedEngine?.plugins) {
-                const ePlugins = Object.keys(selectedEngine.plugins);
+    // const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
+    // if (supPlats) {
+    //     supPlats.forEach((pk) => {
+    //         const selectedEngine = getEngineByPlatform(c, pk, true);
+    //         if (selectedEngine?.plugins) {
+    //             const ePlugins = Object.keys(selectedEngine.plugins);
+    //
+    //             if (ePlugins?.length) {
+    //                 ePlugins.forEach((pluginKey) => {
+    //                     if (!c.files?.project?.config?.[pluginKey]) {
+    //                         missingEnginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
+    //                     }
+    //                     enginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
+    //                 });
+    //             }
+    //         }
+    //     });
+    // }
+    const selectedEngine = getEngineByPlatform(c, c.platform, true);
+    if (selectedEngine?.plugins) {
+        const ePlugins = Object.keys(selectedEngine.plugins);
 
-                if (ePlugins?.length) {
-                    ePlugins.forEach((pluginKey) => {
-                        if (!c.files?.project?.config?.[pluginKey]) {
-                            missingEnginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
-                        }
-                        enginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
-                    });
+        if (ePlugins?.length) {
+            ePlugins.forEach((pluginKey) => {
+                if (!c.files?.project?.config?.[pluginKey]) {
+                    missingEnginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
                 }
-            }
-        });
+                enginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
+            });
+        }
     }
     c.runtime.missingEnginePlugins = missingEnginePlugins;
     return enginePlugins;
@@ -487,18 +500,16 @@ const _generatePlatformTemplatePaths = (c) => {
         logWarning(`You're missing paths object in your ${chalk().white(c.paths.project.config)}`);
         c.buildConfig.paths = {};
     }
-    if (c.buildConfig.platformTemplatesDirs) {
-        logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${
-            chalk().white(c.paths.project.config)
-        }`);
-    }
-    if (c.buildConfig.platformTemplatesDir) {
-        logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${
-            chalk().white(c.paths.project.config)
-        }`);
+    if (c.buildConfig.platformTemplatesDirs || c.buildConfig.platformTemplatesDir
+      || c.buildConfig.paths.platformTemplatesDir) {
+        logWarning(`DEPRECATED: platformTemplatesDirs in ${
+            chalk().white(c.paths.project.config)} has been moved to engine config`);
     }
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
-    const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
+    const engine = getEngineByPlatform(c, c.platform);
+    const originalPath = engine?.paths?.platformTemplatesDir || '$RNV_HOME/platformTemplates';
+    // const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || engineTemplDir;
+
     const result = {};
     SUPPORTED_PLATFORMS.forEach((v) => {
         if (!pt[v]) {
