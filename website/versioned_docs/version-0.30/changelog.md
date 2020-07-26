@@ -6,6 +6,24 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.14 (2020-7-26)
+
+### Fixed
+
+- fix plugin props
+- integrate task.rnv.workspace.configure
+- fix run task. loop task warning
+- build file system prop injectors
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.13 (2020-7-25)
 
 ### Fixed
