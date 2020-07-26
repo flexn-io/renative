@@ -23,7 +23,7 @@ const _genPlatOptions = (c) => {
 };
 
 export const taskRnvPlatformList = async (c, parentTask, originTask) => {
-    logTask('taskRnvPlatformList', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvPlatformList');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_LIST, originTask);
 

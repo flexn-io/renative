@@ -4,8 +4,8 @@ import { logWarning, logTask } from '../core/systemManager/logger';
 import { configSchema } from '../core/constants';
 import Config from '../core/configManager/config';
 
-export const taskRnvConfig = (c, parentTask, originTask) => {
-    logTask('taskRnvConfig', `parent:${parentTask} origin:${originTask}`);
+export const taskRnvConfig = () => {
+    logTask('taskRnvConfig');
 
     const [, key, value] = Config.rnvArguments; // first arg is config so it's useless
     if (key === 'list') {

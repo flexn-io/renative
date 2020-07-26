@@ -125,7 +125,7 @@ ${getEnvExportCmd(envVar, key)}
 };
 
 export const taskRnvCryptoEncrypt = async (c, parentTask, originTask) => {
-    logTask('taskRnvCryptoEncrypt', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvCryptoEncrypt');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_ENCRYPT, originTask);
 

@@ -5,7 +5,7 @@ import { executeTask } from '../core/engineManager';
 import { TASK_WORKSPACE_CONNECT, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvWorkspaceConnect = async (c, parentTask, originTask) => {
-    logTask('taskRnvWorkspaceConnect', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvWorkspaceConnect');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_WORKSPACE_CONNECT, originTask);
 

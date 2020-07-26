@@ -11,7 +11,7 @@ import { executeTask } from '../core/engineManager';
 import { TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT } from '../core/constants';
 
 export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
-    logTask('taskRnvPlatformConnect', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvPlatformConnect');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, originTask);
 

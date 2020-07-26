@@ -23,7 +23,7 @@ const _updateProfiles = (c) => {
 };
 
 export const taskRnvCryptoUpdateProfiles = async (c, parentTask, originTask) => {
-    logTask('taskRnvCryptoUpdateProfiles', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvCryptoUpdateProfiles');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_UPDATE_PROFILES, originTask);
 

@@ -5,7 +5,7 @@ import { executeTask } from '../core/engineManager';
 import { TASK_SWITCH, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvSwitch = async (c, parentTask, originTask) => {
-    logTask('taskRnvSwitch', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvSwitch');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_SWITCH, originTask);
 

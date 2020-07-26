@@ -5,7 +5,7 @@ import { configureElectronProject } from '../sdk-electron';
 import { executeTask } from '../core/engineManager';
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
-    logTask('taskRnvConfigure', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvConfigure');
 
     await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
 

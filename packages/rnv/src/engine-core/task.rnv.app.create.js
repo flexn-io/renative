@@ -6,8 +6,8 @@ import {
 import { inquirerPrompt } from '../cli/prompt';
 
 
-export const taskRnvAppCreate = async (c, parentTask, originTask) => {
-    logTask('taskRnvAppCreate', `parent:${parentTask} origin:${originTask}`);
+export const taskRnvAppCreate = async (c) => {
+    logTask('taskRnvAppCreate');
 
     const { conf } = await inquirerPrompt({
         name: 'conf',
@@ -15,7 +15,7 @@ export const taskRnvAppCreate = async (c, parentTask, originTask) => {
         message: 'Do you want ReNative to create new sample appConfig for you?',
         warningMessage: `No app configs found for this project \nMaybe you forgot to run ${chalk().white('rnv template apply')} ?`
     });
-    logTask('taskRnvAppCreate', conf);
+    logTask('taskRnvAppCreate', `${conf} ${c.runtime?.appId}`);
 
     return true;
 };

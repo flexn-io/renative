@@ -12,7 +12,7 @@ import { executeTask } from '../core/engineManager';
 
 
 export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
-    logTask('taskRnvPlatformConfigure', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvPlatformConfigure');
 
     if (c.paths.project.builds.dir && !fsExistsSync(c.paths.project.builds.dir)) {
         logInfo(`Creating folder ${c.paths.project.builds.dir}`);

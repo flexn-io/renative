@@ -13,7 +13,7 @@ import { executeTask } from '../core/engineManager';
 
 /* eslint-disable no-await-in-loop */
 export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
-    logTask('taskRnvPluginAdd', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvPluginAdd');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_ADD, originTask);
 

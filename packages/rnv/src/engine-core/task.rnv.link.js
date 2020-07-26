@@ -5,8 +5,8 @@ import {
     copyFolderContentsRecursiveSync, fsExistsSync, fsReadFileSync
 } from '../core/systemManager/fileutils';
 
-export const taskRnvLink = async (c, parentTask, originTask) => {
-    logTask('taskRnvLink', `parent:${parentTask} origin:${originTask}`);
+export const taskRnvLink = async (c) => {
+    logTask('taskRnvLink');
 
     if (fsExistsSync(c.paths.project.npmLinkPolyfill)) {
         const l = JSON.parse(

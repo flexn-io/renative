@@ -11,7 +11,7 @@ import { executeTask } from '../core/engineManager';
 import { TASK_PLUGIN_UPDATE, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvPluginUpdate = async (c, parentTask, originTask) => {
-    logTask('taskRnvPluginUpdate', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvPluginUpdate');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_UPDATE, originTask);
 

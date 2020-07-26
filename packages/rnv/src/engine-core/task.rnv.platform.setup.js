@@ -6,7 +6,7 @@ import { executeTask } from '../core/engineManager';
 
 
 export const taskRnvPlatformSetup = async (c, parentTask, originTask) => {
-    logTask('taskRnvPlatformSetup', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvPlatformSetup');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_SETUP, originTask);
 

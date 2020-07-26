@@ -22,7 +22,7 @@ import { launchKaiOSSimulator } from '../sdk-firefox';
 import { executeTask } from '../core/engineManager';
 
 export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
-    logTask('taskRnvTargetLaunch', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvTargetLaunch');
 
     await isPlatformSupported(c);
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH, originTask);

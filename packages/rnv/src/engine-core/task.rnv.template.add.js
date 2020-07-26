@@ -27,7 +27,7 @@ export const _addTemplate = (c, template) => {
 };
 
 export const taskRnvTemplateAdd = async (c, parentTask, originTask) => {
-    logTask('taskRnvTemplateAdd', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvTemplateAdd');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD, originTask);
 

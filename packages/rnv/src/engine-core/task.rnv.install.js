@@ -3,8 +3,10 @@ import { areNodeModulesInstalled } from '../core/common';
 import { installPackageDependencies } from '../core/systemManager/exec';
 import { chalk, logTask, logWarning } from '../core/systemManager/logger';
 
-export const taskRnvInstall = async (c, parentTask, originTask) => {
-    logTask('taskRnvInstall', `parent:${parentTask} origin:${originTask} requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
+export const taskRnvInstall = async (c, parentTask) => {
+    logTask('taskRnvInstall', `requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
+
+    if (c.program.only && !!parentTask) return true;
 
     // Check node_modules
     if (!areNodeModulesInstalled() || (c._requiresNpmInstall && !c.runtime.skipPackageUpdate)) {

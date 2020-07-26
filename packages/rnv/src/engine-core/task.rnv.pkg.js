@@ -74,7 +74,7 @@ const publishAll = () => {
 };
 
 export const taskRnvPkg = async (c, parentTask, originTask) => {
-    logTask('taskRnvPkg', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvPkg');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PKG, originTask);
 

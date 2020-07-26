@@ -4,7 +4,7 @@ import { executeTask } from '../core/engineManager';
 import { TASK_PLUGIN_LIST, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvPluginList = async (c, parentTask, originTask) => {
-    logTask('taskRnvPluginList', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvPluginList');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_LIST, originTask);
 

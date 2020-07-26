@@ -29,7 +29,7 @@ const includesPre = (version) => {
  *
  */
 export const taskRnvPublish = async (c, parentTask, originTask) => {
-    logTask('taskRnvPublish', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvPublish');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PUBLISH, originTask);
 

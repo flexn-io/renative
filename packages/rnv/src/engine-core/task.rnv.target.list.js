@@ -20,7 +20,7 @@ import { listAppleDevices } from '../sdk-xcode/deviceManager';
 import { executeTask } from '../core/engineManager';
 
 export const taskRnvTargetList = async (c, parentTask, originTask) => {
-    logTask('taskRnvTargetList', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvTargetList');
 
     await isPlatformSupported(c);
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH, originTask);

@@ -4,7 +4,7 @@ import { executeTask } from '../core/engineManager';
 import { TASK_HOOKS_RUN, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvHooksRun = async (c, parentTask, originTask) => {
-    logTask('taskRnvHooksRun', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvHooksRun');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_RUN, originTask);
 

@@ -4,7 +4,7 @@ import { TASK_WORKSPACE_UPDATE, TASK_PROJECT_CONFIGURE } from '../core/constants
 
 export const taskRnvWorkspaceUpdate = async (c, parentTask, originTask) => {
     // TODO: taskRnvWorkspaceUpdate
-    logTask('taskRnvWorkspaceUpdate', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvWorkspaceUpdate');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_WORKSPACE_UPDATE, originTask);
 

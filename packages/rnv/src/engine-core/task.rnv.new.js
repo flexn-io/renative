@@ -173,8 +173,8 @@ const _prepareProjectOverview = (c, data) => {
 };
 
 
-export const taskRnvNew = async (c, parentTask, originTask) => {
-    logTask('taskRnvNew', `parent:${parentTask} origin:${originTask}`);
+export const taskRnvNew = async (c) => {
+    logTask('taskRnvNew');
     const { args } = c.program;
 
     let data = {

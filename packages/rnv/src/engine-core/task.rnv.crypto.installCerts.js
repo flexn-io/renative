@@ -11,7 +11,7 @@ import { executeTask } from '../core/engineManager';
 import { TASK_CRYPTO_INSTALL_CERTS, TASK_PROJECT_CONFIGURE } from '../core/constants';
 
 export const taskRnvCryptoInstallCerts = async (c, parentTask, originTask) => {
-    logTask('taskRnvCryptoInstallCerts', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvCryptoInstallCerts');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_INSTALL_CERTS, originTask);
 

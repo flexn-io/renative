@@ -64,7 +64,7 @@ const _runCopyPlatforms = c => new Promise((resolve) => {
 });
 
 export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
-    logTask('taskRnvPlatformConfigure', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvPlatformConfigure', '');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONFIGURE, originTask);
 

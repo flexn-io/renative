@@ -76,8 +76,8 @@ const _createConfigFiles = async (
     }
 };
 
-export const taskRnvDeployNow = (c, parentTask, originTask) => new Promise((resolve, reject) => {
-    logTask('taskRnvDeployNow', `parent:${parentTask} origin:${originTask}`);
+export const taskRnvDeployNow = async (c) => {
+    logTask('taskRnvDeployNow');
 
     const nowConfigPath = path.resolve(c.paths.project.dir, 'configs', `now.${c.platform}.json`);
     const envConfigPath = path.resolve(c.paths.project.dir, '.env');
@@ -99,19 +99,14 @@ export const taskRnvDeployNow = (c, parentTask, originTask) => new Promise((reso
             }
         });
 
-    _createConfigFiles(
+    await _createConfigFiles(
         nowConfigPath,
         envConfigPath,
         matched,
         envContent
-    ).then(() => {
-        _runDeploymentTask(c, nowConfigPath)
-            .then(() => {
-                resolve();
-            })
-            .catch(err => reject(err));
-    });
-});
+    );
+    await _runDeploymentTask(c, nowConfigPath);
+};
 
 export default {
     description: '',

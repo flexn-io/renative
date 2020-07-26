@@ -288,8 +288,8 @@ const _setAppId = (c, appId) => {
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
 };
 
-export const taskRnvAppConfigure = async (c, parentTask, originTask) => {
-    logTask('taskRnvAppConfigure', `parent:${parentTask} origin:${originTask}`);
+export const taskRnvAppConfigure = async (c) => {
+    logTask('taskRnvAppConfigure');
 
     if (c.program.appConfigID === true || (!c.program.appConfigID && !c.runtime.appId)) {
         const hasAppConfig = await _findAndSwitchAppConfigDir(c);

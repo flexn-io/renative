@@ -1,7 +1,7 @@
 import { chalk, logToSummary, logTask } from '../core/systemManager/logger';
 
-export const taskRnvHelp = (c, parentTask, originTask) => {
-    logTask('taskRnvHelp', `parent:${parentTask} origin:${originTask}`);
+export const taskRnvHelp = () => {
+    logTask('taskRnvHelp');
 
     const cmdsString = '';
     // Object.keys(c.COMMANDS).forEach((key) => {

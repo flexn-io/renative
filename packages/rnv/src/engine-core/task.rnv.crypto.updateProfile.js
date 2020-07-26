@@ -4,7 +4,7 @@ import { executeTask } from '../core/engineManager';
 import { TASK_CRYPTO_UPDATE_PROFILE, TASK_PROJECT_CONFIGURE, IOS, TVOS } from '../core/constants';
 
 export const taskRnvCryptoUpdateProfile = async (c, parentTask, originTask) => {
-    logTask('taskRnvCryptoUpdateProfile', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvCryptoUpdateProfile');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_UPDATE_PROFILE, originTask);
 

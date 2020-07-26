@@ -15,7 +15,7 @@ import {
 import { executeTask } from '../core/engineManager';
 
 export const taskRnvBuild = async (c, parentTask, originTask) => {
-    logTask('taskRnvBuild', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvBuild');
     const { platform } = c;
 
     await executeTask(c, TASK_PACKAGE, TASK_BUILD, originTask);

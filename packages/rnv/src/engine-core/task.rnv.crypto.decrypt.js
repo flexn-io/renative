@@ -54,7 +54,7 @@ const _unzipAndCopy = async (
 };
 
 export const taskRnvCryptoDecrypt = async (c, parentTask, originTask) => {
-    logTask('taskRnvCryptoDecrypt', `parent:${parentTask} origin:${originTask}`);
+    logTask('taskRnvCryptoDecrypt');
 
     if (!parentTask) {
         await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_DECRYPT, originTask);
