@@ -62,6 +62,9 @@ export default {
     description: 'Run your app on target device or emulator',
     fn: taskRnvRun,
     task: 'run',
+    dependencies: {
+        before: TASK_CONFIGURE
+    },
     params: [],
     platforms: [
         IOS,

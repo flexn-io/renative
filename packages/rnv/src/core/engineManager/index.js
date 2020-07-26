@@ -18,7 +18,7 @@ export const registerEngine = (engine) => {
 export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
     let selectedEngineKey;
     if (c.buildConfig && !!platform) {
-        selectedEngineKey = getConfigProp(c, platform, 'engine');
+        selectedEngineKey = c.program.engine || getConfigProp(c, platform, 'engine');
         const selectedEngine = c.files.rnv.engines.config?.engines?.[selectedEngineKey];
         if (!selectedEngine && !ignoreMissingError) {
             logDebug(`ERROR: Engine: ${selectedEngineKey} does not exists or is not registered ${new Error()}`);

@@ -39,6 +39,7 @@ export const waitForBundlerIfRequired = async (c) => {
 };
 
 export const configureMetroConfigs = async (c, platform) => {
+    logTask('configureMetroConfigs');
     const configDir = path.join(c.paths.project.dir, 'configs');
     if (!fsExistsSync(configDir)) {
         mkdirSync(configDir);

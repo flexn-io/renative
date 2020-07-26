@@ -245,6 +245,9 @@
             },
             "androidtv": {
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"
+            },
+            "webpack": {
+                "modulePaths": true
             }
         },
         "react-native-camera": {
