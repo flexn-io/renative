@@ -403,7 +403,7 @@ const _runGradleApp = async (c, platform, device) => {
         `${isSystemWin ? 'gradlew.bat' : './gradlew'} ${
             outputAab ? 'bundle' : 'assemble'
         }${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`,
-        { interactive: true }
+        // { interactive: true }
     );
     if (outputAab) {
         const aabPath = path.join(
