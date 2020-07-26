@@ -64,7 +64,7 @@ const checkIfPodsIsRequired = async (c) => {
     );
 
     if (podChecksum !== podContentChecksum) {
-        logDebug('runPod:isMandatory');
+        logDebug('runCocoaPods:isMandatory');
         return true;
     }
     logInfo(
@@ -92,8 +92,8 @@ const updatePodsChecksum = (c) => {
     return fsWriteFileSync(podChecksumPath, podContentChecksum);
 };
 
-const runPod = async (c, platform) => {
-    logTask('runPod', `forceUpdate:${!!c.program.updatePods}`);
+const runCocoaPods = async (c, platform) => {
+    logTask('runCocoaPods', `forceUpdate:${!!c.program.updatePods}`);
 
     const appFolder = getAppFolder(c, platform);
 
@@ -896,13 +896,13 @@ const configureXcodeProject = async (c) => {
     await parseEntitlementsPlist(c, platform);
     await parseInfoPlist(c, platform);
     await copyBuildsFolder(c, platform);
-    await runPod(c, platform);
+    await runCocoaPods(c, platform);
     await parseXcodeProject(c, platform);
     return true;
 };
 
 export {
-    runPod,
+    runCocoaPods,
     copyAppleAssets,
     configureXcodeProject,
     exportXcodeProject,

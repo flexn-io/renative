@@ -298,7 +298,7 @@ const _getCurrentTask = () => (_c?._currentTask ? currentChalk.grey(` [${_c._cur
 
 const _sanitizePaths = (msg) => {
     if (msg?.replace && _c?.paths?.project?.dir) {
-        return msg.replace(_c.paths.project.dir, '.');
+        return msg.replace(new RegExp(_c.paths.project.dir, 'g'), '.');
     }
     return msg;
 };

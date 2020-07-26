@@ -691,13 +691,7 @@ export const sanitizeDynamicProps = (obj, props = {}, configProps = {}, runtimeP
     return obj;
 };
 
-export const mergeObjects = (
-    c,
-    obj1,
-    obj2,
-    dynamicRefs = true,
-    replaceArrays = false
-) => {
+export const mergeObjects = (c, obj1, obj2, dynamicRefs = true, replaceArrays = false) => {
     if (!obj2) return obj1;
     if (!obj1) return obj2;
     const obj = merge(obj1, obj2, {

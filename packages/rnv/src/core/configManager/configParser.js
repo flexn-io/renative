@@ -646,10 +646,18 @@ export const parseRenativeConfigs = async (c) => {
     // LOAD ./RENATIVE.*.JSON
     _loadConfigFiles(c, c.files.project, c.paths.project);
 
-    c.paths.project.builds.config = path.join(
-        c.paths.project.builds.dir,
-        `${c.runtime.appId}_${c.platform}.json`
-    );
+    if (c.runtime.appId) {
+        c.paths.project.builds.config = path.join(
+            c.paths.project.builds.dir,
+            `${c.runtime.appId}_${c.platform}.json`
+        );
+    } else {
+        c.paths.project.builds.config = path.join(
+            c.paths.project.builds.dir,
+            `*_${c.platform}.json`
+        );
+    }
+
 
     // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
     loadFile(c.files.project.builds, c.paths.project.builds, 'config');
