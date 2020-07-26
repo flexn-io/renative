@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import { getConfigProp, getAppId } from '../core/common';
 import { chalk, logTask, logWarning, logSuccess } from '../core/systemManager/logger';

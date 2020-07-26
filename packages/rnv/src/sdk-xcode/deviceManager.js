@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import inquirer from 'inquirer';
 import child_process from 'child_process';
 import { chalk, logToSummary, logTask, logWarning, logDebug } from '../core/systemManager/logger';

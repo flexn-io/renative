@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-// @todo fix circular
 import path from 'path';
 import child_process from 'child_process';
 import inquirer from 'inquirer';

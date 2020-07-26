@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import {
     getAppFolder,
@@ -14,8 +13,9 @@ import { doResolve, doResolvePath } from '../core/resolve';
 import { chalk, logTask, logWarning, logDebug } from '../core/systemManager/logger';
 
 
-export const parseBuildGradleSync = (c, platform) => {
+export const parseBuildGradleSync = (c) => {
     const appFolder = getAppFolder(c);
+    const { platform } = c;
 
     let dexOptions = '';
 
@@ -72,9 +72,10 @@ export const parseBuildGradleSync = (c, platform) => {
 };
 
 /* eslint-disable max-len */
-export const parseAppBuildGradleSync = (c, platform) => {
+export const parseAppBuildGradleSync = (c) => {
     logTask('parseAppBuildGradleSync');
     const appFolder = getAppFolder(c);
+    const { platform } = c;
 
     // ANDROID PROPS
     c.pluginConfigAndroid.minSdkVersion = getConfigProp(
@@ -382,9 +383,9 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`
     );
 };
 
-export const parseSettingsGradleSync = (c, platform) => {
+export const parseSettingsGradleSync = (c) => {
     const appFolder = getAppFolder(c);
-
+    const { platform } = c;
     const injects = [
         {
             pattern: '{{PLUGIN_INCLUDES}}',
@@ -405,8 +406,9 @@ export const parseSettingsGradleSync = (c, platform) => {
     );
 };
 
-export const parseGradlePropertiesSync = (c, platform) => {
+export const parseGradlePropertiesSync = (c) => {
     const appFolder = getAppFolder(c);
+    const { platform } = c;
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
     const pluginConfigAndroid = c.buildConfig?.platforms?.[platform] || {};

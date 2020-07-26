@@ -22,9 +22,9 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
-
     await executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     switch (platform) {
         case IOS:
@@ -43,19 +43,16 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
         case ANDROID_WEAR:
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
-                if (
-                    getConfigProp(c, platform, 'bundleAssets') === true
-                  || platform === ANDROID_WEAR
-                ) {
+                if (bundleAssets || platform === ANDROID_WEAR) {
                     await packageAndroid(c);
                 }
-                await runAndroid(c, platform, target);
+                await runAndroid(c, target);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
                 return waitForBundlerIfRequired(c);
             }
-            return runAndroid(c, platform, target);
+            return runAndroid(c, target);
         default:
             return logErrorPlatform(c);
     }

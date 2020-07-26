@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import { spawn } from 'child_process';
 import { createPlatformBuild, isPlatformActive } from '../core/platformManager';

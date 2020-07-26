@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import semver from 'semver';
 import inquirer from 'inquirer';

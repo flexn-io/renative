@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { runWeb, configureCoreWebProject } from './index';
 import { logTask } from '../core/systemManager/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../core/projectManager/projectParser';

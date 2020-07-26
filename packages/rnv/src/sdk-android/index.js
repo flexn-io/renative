@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-// @todo fix circular
 import path from 'path';
 import net from 'net';
 import shell from 'shelljs';
@@ -90,15 +88,14 @@ const _getEntryOutputName = (c) => {
     return outputFile;
 };
 
-export const packageAndroid = c => new Promise((resolve, reject) => {
+export const packageAndroid = async (c) => {
     logTask('packageAndroid');
     const { platform } = c;
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
 
     if (!bundleAssets && platform !== ANDROID_WEAR) {
-        resolve();
-        return;
+        return true;
     }
 
     const outputFile = _getEntryOutputName(c);
@@ -113,25 +110,27 @@ export const packageAndroid = c => new Promise((resolve, reject) => {
     }
 
     logInfo('ANDROID PACKAGE STARTING...');
-    executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${
-        appFolder
-    }/app/src/main/res --entry-file ${
-      c.buildConfig.platforms[c.platform]?.entryFile
-    }.js --bundle-output ${appFolder}/app/src/main/assets/${
-        outputFile
-    }.bundle --config=configs/metro.config.${c.platform}.js`)
-        .then(() => {
-            logInfo('ANDROID PACKAGE FINISHED');
-            return resolve();
-        })
-        .catch((e) => {
-            logInfo('ANDROID PACKAGE FAILED');
-            return reject(e);
-        });
-});
 
-export const runAndroid = async (c, platform, defaultTarget) => {
+    try {
+        await executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${
+            appFolder
+        }/app/src/main/res --entry-file ${
+        c.buildConfig.platforms[c.platform]?.entryFile
+        }.js --bundle-output ${appFolder}/app/src/main/assets/${
+            outputFile
+        }.bundle --config=configs/metro.config.${c.platform}.js`);
+
+        logInfo('ANDROID PACKAGE FINISHED');
+        return true;
+    } catch (e) {
+        logInfo('ANDROID PACKAGE FAILED');
+        return Promise.reject(e);
+    }
+};
+
+export const runAndroid = async (c, defaultTarget) => {
     const { target } = c.program;
+    const { platform } = c;
     logTask('runAndroid', `target:${target} default:${defaultTarget}`);
 
     const outputAab = getConfigProp(c, platform, 'aab', false);
@@ -472,7 +471,7 @@ const _runGradleApp = async (c, platform, device) => {
     }
 };
 
-export const buildAndroid = c => new Promise((resolve, reject) => {
+export const buildAndroid = async (c) => {
     logTask('buildAndroid');
     const { platform } = c;
 
@@ -486,28 +485,21 @@ export const buildAndroid = c => new Promise((resolve, reject) => {
 
     shell.cd(`${appFolder}`);
 
-    _checkSigningCerts(c)
-        .then(() => executeAsync(
-            c,
-            `${
-                isSystemWin ? 'gradlew.bat' : './gradlew'
-            } assemble${signingConfig} -x bundleReleaseJsAndAssets`
-        ))
-        .then(() => {
-            logSuccess(
-                `Your APK is located in ${chalk().cyan(
-                    path.join(
-                        appFolder,
-                        `app/build/outputs/apk/${signingConfig.toLowerCase()}`
-                    )
-                )} .`
-            );
-            resolve();
-        })
-        .catch(e => reject(e));
-});
+    await _checkSigningCerts(c);
+    await executeAsync(c, `${isSystemWin ? 'gradlew.bat' : './gradlew'} assemble${signingConfig} -x bundleReleaseJsAndAssets`);
 
-export const configureAndroidProperties = c => new Promise((resolve) => {
+    logSuccess(
+        `Your APK is located in ${chalk().cyan(
+            path.join(
+                appFolder,
+                `app/build/outputs/apk/${signingConfig.toLowerCase()}`
+            )
+        )} .`
+    );
+    return true;
+};
+
+export const configureAndroidProperties = async (c) => {
     logTask('configureAndroidProperties');
 
     const appFolder = getAppFolder(c);
@@ -534,8 +526,8 @@ ${addNDK ? ndkString : ''}
 sdk.dir=${sdkDir}`
     );
 
-    resolve();
-});
+    return true;
+};
 
 export const configureGradleProject = async (c) => {
     const { platform } = c;
@@ -546,10 +538,11 @@ export const configureGradleProject = async (c) => {
     await copyAssetsFolder(c, platform);
     await configureAndroidProperties(c);
     await configureProject(c);
-    return copyBuildsFolder(c, platform);
+    await copyBuildsFolder(c, platform);
+    return true;
 };
 
-export const configureProject = c => new Promise((resolve, reject) => {
+export const configureProject = async (c) => {
     logTask('configureProject');
     const { platform } = c;
 
@@ -563,11 +556,10 @@ export const configureProject = c => new Promise((resolve, reject) => {
                 platform
             )} platformBuild is misconfigured!. let's repair it.`
         );
-        createPlatformBuild(c, platform)
-            .then(() => configureGradleProject(c, platform))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-        return;
+        await createPlatformBuild(c, platform);
+        await configureGradleProject(c, platform);
+
+        return true;
     }
 
     const outputFile = _getEntryOutputName(c);
@@ -609,34 +601,10 @@ export const configureProject = c => new Promise((resolve, reject) => {
 
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        injectPluginGradleSync(
-            c,
-            pluginPlat,
-            key,
-            pluginPlat.package,
-            plugin
-        );
-        injectPluginKotlinSync(
-            c,
-            pluginPlat,
-            key,
-            pluginPlat.package,
-            plugin
-        );
-        injectPluginManifestSync(
-            c,
-            pluginPlat,
-            key,
-            pluginPlat.package,
-            plugin
-        );
-        injectPluginXmlValuesSync(
-            c,
-            pluginPlat,
-            key,
-            pluginPlat.package,
-            plugin
-        );
+        injectPluginGradleSync(c, pluginPlat, key, pluginPlat.package, plugin);
+        injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package, plugin);
+        injectPluginManifestSync(c, pluginPlat, key, pluginPlat.package, plugin);
+        injectPluginXmlValuesSync(c, pluginPlat, key, pluginPlat.package, plugin);
     });
 
     c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(
@@ -677,19 +645,19 @@ export const configureProject = c => new Promise((resolve, reject) => {
         }
     });
 
-    parseSettingsGradleSync(c, platform);
-    parseAppBuildGradleSync(c, platform);
-    parseBuildGradleSync(c, platform);
-    parseMainActivitySync(c, platform);
-    parseMainApplicationSync(c, platform);
-    parseSplashActivitySync(c, platform);
-    parseValuesStringsSync(c, platform);
-    parseValuesColorsSync(c, platform);
+    parseSettingsGradleSync(c);
+    parseAppBuildGradleSync(c);
+    parseBuildGradleSync(c);
+    parseMainActivitySync(c);
+    parseMainApplicationSync(c);
+    parseSplashActivitySync(c);
+    parseValuesStringsSync(c);
+    parseValuesColorsSync(c);
     parseAndroidManifestSync(c);
-    parseGradlePropertiesSync(c, platform);
+    parseGradlePropertiesSync(c);
 
-    resolve();
-});
+    return true;
+};
 
 // Resolve or reject will not be called so this will keep running
 export const runAndroidLog = async (c) => {

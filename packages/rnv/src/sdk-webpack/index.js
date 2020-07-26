@@ -1,5 +1,4 @@
 /* eslint-disable no-restricted-syntax */
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import open from 'better-opn';
 import axios from 'axios';

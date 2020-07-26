@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { provision, cert } from 'ios-mobileprovision-finder';
 import path from 'path';
 import { getConfigProp } from '../core/common';
