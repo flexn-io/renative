@@ -103,7 +103,7 @@ export const packageAndroid = c => new Promise((resolve, reject) => {
 
     const outputFile = _getEntryOutputName(c);
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     let reactNative = 'react-native';
 
     if (isSystemWin) {
@@ -388,7 +388,7 @@ const _runGradleApp = async (c, platform, device) => {
     logTask('_runGradleApp');
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const bundleId = getAppId(c, platform);
     const outputAab = getConfigProp(c, platform, 'aab', false);
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
@@ -476,7 +476,7 @@ export const buildAndroid = c => new Promise((resolve, reject) => {
     logTask('buildAndroid');
     const { platform } = c;
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const signingConfig = getConfigProp(
         c,
         platform,
@@ -507,10 +507,10 @@ export const buildAndroid = c => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-export const configureAndroidProperties = (c, platform) => new Promise((resolve) => {
+export const configureAndroidProperties = c => new Promise((resolve) => {
     logTask('configureAndroidProperties');
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
 
     c.runtime.platformBuildsProjectPath = appFolder;
 
@@ -544,7 +544,7 @@ export const configureGradleProject = async (c) => {
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);
-    await configureAndroidProperties(c, platform);
+    await configureAndroidProperties(c);
     await configureProject(c);
     return copyBuildsFolder(c, platform);
 };
@@ -553,7 +553,7 @@ export const configureProject = c => new Promise((resolve, reject) => {
     logTask('configureProject');
     const { platform } = c;
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
 
     const gradlew = path.join(appFolder, 'gradlew');
 

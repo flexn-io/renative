@@ -289,7 +289,7 @@ export const runTizen = async (c, platform, target) => {
         );
     }
 
-    const tDir = getAppFolder(c, platform);
+    const tDir = getAppFolder(c);
     const tBuild = path.join(tDir, 'build');
     const tOut = path.join(tDir, 'output');
     const tId = platformConfig.id;
@@ -480,7 +480,7 @@ export const buildTizenProject = async (c) => {
     const { platform } = c;
 
     const platformConfig = c.buildConfig.platforms[platform];
-    const tDir = getAppFolder(c, platform);
+    const tDir = getAppFolder(c);
 
     await buildWeb(c);
     if (!c.program.hosted) {
@@ -510,7 +510,7 @@ export const configureTizenProject = async (c) => {
 
     const { platform } = c;
 
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, platform)}`;
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c)}`;
 
     if (!isPlatformActive(c, platform)) {
         return;
@@ -531,7 +531,7 @@ export const configureProject = c => new Promise((resolve) => {
     logTask('configureProject');
     const { platform } = c;
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
 
     const configFile = 'config.xml';
     const p = c.buildConfig.platforms[platform];

@@ -66,7 +66,7 @@ const configureProject = c => new Promise((resolve, reject) => {
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const templateFolder = getAppTemplateFolder(c, platform);
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     const electronConfigPath = path.join(appFolder, 'electronConfig.json');
@@ -203,9 +203,8 @@ const buildElectron = async (c) => {
 
 const exportElectron = async (c) => {
     logTask('exportElectron');
-    const { platform } = c;
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const buildPath = path.join(appFolder, 'build');
 
     if (fsExistsSync(buildPath)) {
@@ -305,7 +304,7 @@ const _generateICNS = c => new Promise((resolve, reject) => {
     }
 
     const dest = path.join(
-        getAppFolder(c, platform),
+        getAppFolder(c),
         'resources/icon.icns'
     );
 
@@ -319,7 +318,7 @@ const _generateICNS = c => new Promise((resolve, reject) => {
         return;
     }
 
-    mkdirSync(path.join(getAppFolder(c, platform), 'resources'));
+    mkdirSync(path.join(getAppFolder(c), 'resources'));
 
     const p = ['--convert', 'icns', source, '--output', dest];
     try {

@@ -169,11 +169,11 @@ const runWebOS = async (c) => {
 
     logTask('runWebOS', `target:${target} hosted:${!!isHosted}`);
 
-    const tDir = path.join(getAppFolder(c, platform), 'public');
-    const tOut = path.join(getAppFolder(c, platform), 'output');
+    const tDir = path.join(getAppFolder(c), 'public');
+    const tOut = path.join(getAppFolder(c), 'output');
     const tSim = c.program.target || 'emulator';
     const configFilePath = path.join(
-        getAppFolder(c, platform),
+        getAppFolder(c),
         'public/appinfo.json'
     );
 
@@ -293,13 +293,11 @@ const runWebOS = async (c) => {
 const buildWebOSProject = async (c) => {
     logTask('buildWebOSProject');
 
-    const { platform } = c;
-
     await buildWeb(c);
 
     if (!c.program.hosted) {
-        const tDir = path.join(getAppFolder(c, platform), 'public');
-        const tOut = path.join(getAppFolder(c, platform), 'output');
+        const tDir = path.join(getAppFolder(c), 'public');
+        const tOut = path.join(getAppFolder(c), 'output');
         await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
         logSuccess(
@@ -313,7 +311,7 @@ const configureWebOSProject = async (c) => {
 
     const { platform } = c;
 
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, platform)}`;
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c)}`;
 
     if (!isPlatformActive(c, platform)) return;
 
@@ -327,7 +325,7 @@ const configureProject = c => new Promise((resolve) => {
     logTask('configureProject');
     const { platform } = c;
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
 
     const configFile = 'public/appinfo.json';
 

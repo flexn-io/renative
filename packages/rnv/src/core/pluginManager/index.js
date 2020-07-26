@@ -599,7 +599,7 @@ export const overrideTemplatePlugins = async (c) => {
 
 export const copyTemplatePluginsSync = (c) => {
     const { platform } = c;
-    const destPath = path.join(getAppFolder(c, platform));
+    const destPath = path.join(getAppFolder(c));
 
     logTask('copyTemplatePluginsSync', `(${destPath})`);
 

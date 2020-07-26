@@ -136,7 +136,7 @@ export const parseAndroidManifestSync = (c) => {
             `src/sdk-android/supportFiles/AndroidManifest_${platform}.json`
         );
         const baseManifestFile = readObjectSync(baseManifestFilePath);
-        const appFolder = getAppFolder(c, platform);
+        const appFolder = getAppFolder(c);
         const application = _findChildNode(
             'application',
             '.MainApplication',

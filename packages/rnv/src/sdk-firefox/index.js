@@ -74,7 +74,7 @@ const configureProject = c => new Promise((resolve) => {
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const templateFolder = getAppTemplateFolder(c, platform);
 
     const manifestFilePath = path.join(templateFolder, 'manifest.webapp');

@@ -24,7 +24,7 @@ import { readObjectSync, mergeObjects, writeCleanFile, fsWriteFileSync } from '.
 export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) => {
     // EXPORT OPTIONS
     const tId = getConfigProp(c, platform, 'teamID');
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const exportOptions = getConfigProp(c, platform, 'exportOptions') || {};
     const id = getConfigProp(c, platform, 'id');
 
@@ -58,7 +58,7 @@ export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) =>
 export const parseEntitlementsPlist = (c, platform) => new Promise((resolve) => {
     logTask('parseEntitlementsPlist');
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const appFolderName = getAppFolderName(c, platform);
     const entitlementsPath = path.join(
         appFolder,
@@ -82,7 +82,7 @@ export const parseEntitlementsPlist = (c, platform) => new Promise((resolve) => 
 export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
     logTask('parseInfoPlist');
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const appFolderName = getAppFolderName(c, platform);
     const plat = c.buildConfig.platforms[platform];
     const { orientationSupport, urlScheme } = plat;

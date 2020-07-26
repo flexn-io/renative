@@ -28,7 +28,7 @@ const JS_BUNDLE_DEFAULTS_BUNDLED = {
 };
 
 export const parseMainApplicationSync = (c, platform) => {
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const bundleFile = getGetJsBundleFile(c, platform) || bundleAssets
@@ -79,7 +79,7 @@ export const parseMainApplicationSync = (c, platform) => {
 };
 
 export const parseMainActivitySync = (c, platform) => {
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
 
     const injects = [
@@ -112,7 +112,7 @@ export const parseMainActivitySync = (c, platform) => {
 };
 
 export const parseSplashActivitySync = (c, platform) => {
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future

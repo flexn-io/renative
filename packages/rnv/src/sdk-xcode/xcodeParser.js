@@ -110,7 +110,7 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
     // eslint-disable-next-line global-require, import/no-dynamic-require
     const xcode = require(doResolve('xcode'));
     // const xcode = require(`${c.paths.project.nodeModulesDir}/xcode`);
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const appFolderName = getAppFolderName(c, platform);
     const projectPath = path.join(
         appFolder,

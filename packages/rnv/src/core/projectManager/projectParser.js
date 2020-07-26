@@ -338,7 +338,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
     logTask('copyBuildsFolder');
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const destPath = path.join(getAppFolder(c, platform));
+    const destPath = path.join(getAppFolder(c));
     const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
     const configPropsInjects = [];

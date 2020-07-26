@@ -97,7 +97,7 @@ export const waitForWebpack = async (c, engine) => {
 
 const _generateWebpackConfigs = (c, platform) => {
     logTask('_generateWebpackConfigs');
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const templateFolder = getAppTemplateFolder(c, platform);
 
     let modulePaths = [];
@@ -209,7 +209,7 @@ const buildWeb = async (c) => {
     const { platform } = c;
     logTask('buildWeb');
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
 
     let debugVariables = '';
 
@@ -255,7 +255,7 @@ export const configureCoreWebProject = async (c) => {
 };
 
 const _parseCssSync = (c, platform) => {
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const stringsPath = 'public/app.css';
     const timestampPathsConfig = getTimestampPathsConfig(c, platform);
     const backgroundColor = getConfigProp(c, platform, 'backgroundColor');
@@ -334,7 +334,7 @@ const runWebDevServer = async (c, platform, port, enableRemoteDebugger) => {
     logTask('runWebDevServer');
     const { debug, debugIp } = c.program;
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     const wpPublic = path.join(appFolder, 'public');
     const wpConfig = path.join(appFolder, 'webpack.config.js');
 

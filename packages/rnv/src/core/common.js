@@ -139,13 +139,13 @@ export const confirmActiveBundler = async (c) => {
     return Promise.reject('Cancelled by user');
 };
 
-export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
+export const getAppFolder = c => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
 
 export const getAppSubFolder = (c, platform) => {
     let subFolder = '';
     if (platform === IOS) subFolder = 'RNVApp';
     else if (platform === TVOS) subFolder = 'RNVAppTVOS';
-    return path.join(getAppFolder(c, platform), subFolder);
+    return path.join(getAppFolder(c), subFolder);
 };
 
 export const getAppTemplateFolder = (c, platform) => path.join(

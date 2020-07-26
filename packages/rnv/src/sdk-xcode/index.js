@@ -92,10 +92,10 @@ const updatePodsChecksum = (c) => {
     return fsWriteFileSync(podChecksumPath, podContentChecksum);
 };
 
-const runCocoaPods = async (c, platform) => {
+const runCocoaPods = async (c) => {
     logTask('runCocoaPods', `forceUpdate:${!!c.program.updatePods}`);
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
 
     if (!fsExistsSync(appFolder)) {
         return Promise.reject(`Location ${appFolder} does not exists!`);
@@ -141,7 +141,7 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
     logTask('copyAppleAssets');
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
 
     // ASSETS
     fsWriteFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
@@ -534,7 +534,7 @@ export const buildXcodeProject = async (c) => {
     }
 
     const scheme = getConfigProp(c, platform, 'scheme');
-    const appPath = getAppFolder(c, platform);
+    const appPath = getAppFolder(c);
     const buildPath = path.join(appPath, `build/${scheme}`);
     const allowProvisioningUpdates = getConfigProp(
         c,
@@ -607,7 +607,7 @@ const archiveXcodeProject = (c) => {
     }
     const sdkArr = [sdk];
 
-    const appPath = getAppFolder(c, platform);
+    const appPath = getAppFolder(c);
     const exportPath = path.join(appPath, 'release');
 
     const scheme = getConfigProp(c, platform, 'scheme');
@@ -670,7 +670,7 @@ const exportXcodeProject = async (c) => {
 
     await archiveXcodeProject(c);
 
-    const appPath = getAppFolder(c, platform);
+    const appPath = getAppFolder(c);
     const exportPath = path.join(appPath, 'release');
 
     const scheme = getConfigProp(c, platform, 'scheme');
@@ -779,7 +779,7 @@ const configureXcodeProject = async (c) => {
     const { device } = c.program;
     const { platform } = c;
     const bundlerIp = device ? getIP() : 'localhost';
-    const appFolder = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c);
     c.runtime.platformBuildsProjectPath = `${appFolder}/RNVApp.xcworkspace`;
     const appFolderName = getAppFolderName(c, platform);
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
@@ -896,7 +896,7 @@ const configureXcodeProject = async (c) => {
     await parseEntitlementsPlist(c, platform);
     await parseInfoPlist(c, platform);
     await copyBuildsFolder(c, platform);
-    await runCocoaPods(c, platform);
+    await runCocoaPods(c);
     await parseXcodeProject(c, platform);
     return true;
 };
