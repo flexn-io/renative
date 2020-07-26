@@ -1,5 +1,5 @@
 import { configurePlugins, overrideTemplatePlugins } from '../core/pluginManager';
-import { logTask, logInfo } from '../core/systemManager/logger';
+import { chalk, logTask, logInfo } from '../core/systemManager/logger';
 import { parseRenativeConfigs, fixRenativeConfigsSync,
     checkIsRenativeProject, configureRuntimeDefaults, generateRuntimeConfig } from '../core/configManager/configParser';
 import { applyTemplate, checkIfTemplateInstalled, configureEntryPoints } from '../core/templateManager';
@@ -7,7 +7,7 @@ import { fsExistsSync, fsMkdirSync } from '../core/systemManager/fileutils';
 import { checkCrypto } from '../core/systemManager/crypto';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
 import { TASK_INSTALL, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, TASK_APP_CONFIGURE, TASK_WORKSPACE_CONFIGURE } from '../core/constants';
-import { checkAndCreateProjectPackage, copyRuntimeAssets } from '../core/projectManager/projectParser';
+import { checkAndCreateProjectPackage, copyRuntimeAssets, cleanPlaformAssets } from '../core/projectManager/projectParser';
 import { executeTask } from '../core/engineManager';
 
 
@@ -35,6 +35,13 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         await configurePlugins(c);
         await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);
         await executeTask(c, TASK_APP_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
+        if (c.program.resetHard) {
+            logInfo(
+                `You passed ${chalk().white('-R')} argument. "${chalk().white('./platformAssets')}" will be cleaned up first`
+            );
+
+            await cleanPlaformAssets(c);
+        }
         await copyRuntimeAssets(c);
         await configureEntryPoints(c);
         await generateRuntimeConfig(c);

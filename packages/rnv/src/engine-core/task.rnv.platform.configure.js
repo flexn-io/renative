@@ -1,8 +1,8 @@
 import path from 'path';
 import { chalk, logTask, logWarning, logInfo } from '../core/systemManager/logger';
 import { copyFolderContentsRecursiveSync, fsExistsSync } from '../core/systemManager/fileutils';
-import { cleanPlaformAssets, copySharedPlatforms } from '../core/projectManager/projectParser';
-import { getTimestampPathsConfig, isBuildSchemeSupported } from '../core/common';
+import { copySharedPlatforms } from '../core/projectManager/projectParser';
+import { getTimestampPathsConfig, isBuildSchemeSupported, getAppFolder } from '../core/common';
 import { isPlatformSupportedSync, isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../core/platformManager';
 import { injectPlatformDependencies } from '../core/configManager/packageParser';
 import { resolvePluginDependants } from '../core/pluginManager';
@@ -78,18 +78,13 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     const hasBuild = fsExistsSync(c.paths.project.builds.dir);
     logTask('', `taskRnvPlatformConfigure hasBuildFolderPresent:${hasBuild}`);
 
-    if (c.program.reset) {
+    if (c.program.reset || c.program.resetHard) {
         logInfo(
-            `You passed ${chalk().white('-r')} argument. paltform ${chalk().white(
-                c.platform
-            )} will be cleaned up first!`
+            `You passed ${chalk().white(c.program.reset ? '-r' : '-R')} argument. "${chalk().white(getAppFolder(c, c.platform))}" will be cleaned up first!`
         );
         await cleanPlatformBuild(c, c.platform);
     }
 
-    if (c.program.resetHard) {
-        await cleanPlaformAssets(c);
-    }
     await createPlatformBuild(c, c.platform);
     await injectPlatformDependencies(c);
     await cleanPlatformBuild(c, c.platform);
