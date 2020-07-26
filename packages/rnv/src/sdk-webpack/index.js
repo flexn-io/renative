@@ -29,7 +29,8 @@ import {
     logSuccess,
     logWarning,
     logRaw,
-    logError
+    logError,
+    logSummary
 } from '../core/systemManager/logger';
 import {
     copyBuildsFolder,
@@ -294,6 +295,7 @@ const runWeb = async (c, enableRemoteDebugger) => {
     );
 
     const isPortActive = await checkPortInUse(c, platform, port);
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     if (!isPortActive) {
         logInfo(
@@ -306,10 +308,16 @@ const runWeb = async (c, enableRemoteDebugger) => {
             )} is not running. Starting it up for you...`
         );
         await _runWebBrowser(c, platform, devServerHost, port, false);
+        if (!bundleAssets) {
+            logSummary('BUNDLER STARTED');
+        }
         await runWebDevServer(c, platform, port, enableRemoteDebugger);
     } else {
         await confirmActiveBundler(c);
         await _runWebBrowser(c, platform, devServerHost, port, true);
+        if (!bundleAssets) {
+            logSummary('BUNDLER STARTED');
+        }
     }
 };
 

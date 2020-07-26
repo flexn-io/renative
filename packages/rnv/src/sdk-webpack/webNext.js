@@ -17,7 +17,7 @@ import {
     fsReaddirSync,
     fsSymlinkSync
 } from '../core/systemManager/fileutils';
-import { chalk, logTask, logInfo, logWarning, logDebug, logRaw } from '../core/systemManager/logger';
+import { chalk, logTask, logInfo, logWarning, logDebug, logRaw, logSummary } from '../core/systemManager/logger';
 import { NEXT_CONFIG_NAME } from '../core/constants';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../core/deployManager/webTools';
 
@@ -91,6 +91,7 @@ export const runWebNext = async (c) => {
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
 
     const isPortActive = await checkPortInUse(c, platform, port);
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     if (!isPortActive) {
         logInfo(
@@ -100,10 +101,17 @@ export const runWebNext = async (c) => {
             )} is not running. Starting it up for you...`
         );
         await _runWebBrowser(c, platform, devServerHost, port, false);
+
+        if (!bundleAssets) {
+            logSummary('BUNDLER STARTED');
+        }
         await runWebDevServer(c, platform, port);
     } else {
         await confirmActiveBundler(c);
         await _runWebBrowser(c, platform, devServerHost, port, true);
+        if (!bundleAssets) {
+            logSummary('BUNDLER STARTED');
+        }
     }
 };
 
