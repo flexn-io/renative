@@ -35,20 +35,14 @@ export const updateProjectPlatforms = (c, platforms) => {
 };
 
 
-export const generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.map((platform) => {
-    const isConnected = c.paths.project.platformTemplatesDirs[
-        platform
-    ].includes(c.paths.rnv.platformTemplates.dir);
-    return {
-        name: `${platform} - ${
-            isConnected
-                ? chalk().green('(connected)')
-                : chalk().yellow('(ejected)')
-        }`,
-        value: platform,
-        isConnected
-    };
-});
+export const generatePlatformChoices = (c) => {
+    const options = c.runtime.supportedPlatforms.map(v => ({
+        name: `${v.platform} - ${v.isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')}`,
+        value: v.platform,
+        isConnected: v.isConnected
+    }));
+    return options;
+};
 
 export const cleanPlatformBuild = (c, platform) => new Promise((resolve) => {
     logTask('cleanPlatformBuild');

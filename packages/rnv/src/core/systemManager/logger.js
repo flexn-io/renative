@@ -222,26 +222,13 @@ export const logSummary = (header = 'SUMMARY') => {
                 1
             );
         }
-        if (_c.files.project.config) {
+        if (_c?.runtime?.supportedPlatforms?.length) {
+            const plats = _c.runtime.supportedPlatforms.map(v => `${v.platform}${v.isConnected ? '' : '(ejected)'}`);
+            str += printArrIntoBox(plats, 'Supported Engine Platforms: ');
+        }
+
+        if (_c?.files?.project?.config?.defaults) {
             const defaultProjectConfigs = _c.files.project.config.defaults;
-            if (defaultProjectConfigs?.supportedPlatforms) {
-                const plats = [];
-                const supPlatforms = _c.buildConfig?.defaults?.supportedPlatforms;
-                if (supPlatforms) {
-                    supPlatforms.forEach((item) => {
-                        let isEjected = '';
-                        if (_c.paths.project.platformTemplatesDirs) {
-                            isEjected = _c.paths.project.platformTemplatesDirs[
-                                item
-                            ]?.includes(_c.paths.rnv.platformTemplates.dir)
-                                ? ''
-                                : '(ejected)';
-                        }
-                        plats.push(`${item}${isEjected}`);
-                    });
-                }
-                str += printArrIntoBox(plats, 'Supported Platforms: ');
-            }
             if (defaultProjectConfigs?.template) {
                 str += printIntoBox(
                     `Master Template: ${_highlightColor(
@@ -251,6 +238,7 @@ export const logSummary = (header = 'SUMMARY') => {
                 );
             }
         }
+
         if (_c.process) {
             const envString = `${_c.process.platform} | ${_c.process.arch} | node v${_c.process.versions?.node}`;
             str += printIntoBox(`Env Info: ${currentChalk.gray(envString)}`, 1);

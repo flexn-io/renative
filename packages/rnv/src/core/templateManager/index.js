@@ -363,17 +363,15 @@ export const configureEntryPoints = async (c) => {
                 } else if (!fsExistsSync(source)) {
                     logInfo(
                         `You missing entry file ${chalk().white(
-                            source
-                        )} in your template. ReNative Will use default backup entry from ${chalk().white(
-                            backupSource
-                        )}!`
+                            `${plat.entryFile}.js`
+                        )}. COPYING from RNV...DONE`
                     );
                     copyFileSync(backupSource, dest);
                 } else {
                     logInfo(
                         `You missing entry file ${chalk().white(
-                            plat.entryFile
-                        )} in your project. let's create one for you!`
+                            `${plat.entryFile}.js`
+                        )}. COPYING from TEMPATE...DONE`
                     );
                     copyFileSync(source, dest);
                 }

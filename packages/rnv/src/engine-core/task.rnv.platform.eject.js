@@ -1,15 +1,10 @@
 import path from 'path';
 import inquirer from 'inquirer';
-
 import { chalk, logTask, logSuccess, logError } from '../core/systemManager/logger';
-import {
-    copyFolderContentsRecursiveSync,
-    writeFileSync,
-} from '../core/systemManager/fileutils';
+import { copyFolderContentsRecursiveSync, writeFileSync } from '../core/systemManager/fileutils';
 import { PLATFORMS, TASK_PLATFORM_EJECT, TASK_PROJECT_CONFIGURE } from '../core/constants';
 import { generatePlatformChoices } from '../core/platformManager';
 import { executeTask } from '../core/engineManager';
-
 
 export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformEject');

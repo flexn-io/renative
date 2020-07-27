@@ -18,7 +18,7 @@ export const taskRnvDebug = async (c, parentTask) => {
 };
 
 export default {
-    description: '',
+    description: 'Debug your app on target device or emulator',
     fn: taskRnvDebug,
     task: 'debug',
     params: [],

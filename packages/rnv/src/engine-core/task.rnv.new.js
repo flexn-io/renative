@@ -88,7 +88,6 @@ const _generateProject = async (c, data) => {
         workspaceID: data.optionWorkspaces.selectedOption,
         paths: {
             appConfigsDir: './appConfigs',
-            platformTemplatesDir: '$RNV_HOME/platformTemplates',
             entryDir: './',
             platformAssetsDir: './platformAssets',
             platformBuildsDir: './platformBuilds',

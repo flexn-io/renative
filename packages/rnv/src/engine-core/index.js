@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 
-import taskRnvLink from './task.rnv.link';
-import taskRnvSwitch from './task.rnv.switch';
+// import taskRnvLink from './task.rnv.link';
+// import taskRnvSwitch from './task.rnv.switch';
 import taskRnvCryptoDecrypt from './task.rnv.crypto.decrypt';
 import taskRnvCryptoEncrypt from './task.rnv.crypto.encrypt';
 import taskRnvCryptoInstallCerts from './task.rnv.crypto.installCerts';
@@ -50,8 +50,8 @@ const addTask = (taskInstance) => {
     TASKS[taskInstance.task] = taskInstance;
 };
 
-addTask(taskRnvLink);
-addTask(taskRnvSwitch);
+// addTask(taskRnvLink);
+// addTask(taskRnvSwitch);
 addTask(taskRnvCryptoDecrypt);
 addTask(taskRnvCryptoEncrypt);
 addTask(taskRnvCryptoInstallCerts);

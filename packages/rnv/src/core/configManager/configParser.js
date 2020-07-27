@@ -88,6 +88,18 @@ export const configureRuntimeDefaults = async (c) => {
         c.runtime.scheme.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
         const { hosted } = c.program;
         c.runtime.hosted = (hosted || !c.runtime.scheme.bundleAssets) && WEB_HOSTED_PLATFORMS.includes(c.platform);
+
+        c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms.map((platform) => {
+            const engine = getEngineByPlatform(c, platform);
+            const dir = engine?.paths?.platformTemplatesDir;
+            const isConnected = c.paths.project.platformTemplatesDirs[platform].includes(getRealPath(c, dir));
+            return {
+                // name: `${platform} - ${isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')}`,
+                engine,
+                platform,
+                isConnected
+            };
+        });
     }
 };
 
@@ -509,34 +521,47 @@ const _generatePlatformTemplatePaths = (c) => {
             chalk().white(c.paths.project.config)} has been moved to engine config`);
     }
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
-    const engine = getEngineByPlatform(c, c.platform);
-    const originalPath = engine?.paths?.platformTemplatesDir || '$RNV_HOME/platformTemplates';
-    // const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || engineTemplDir;
     const result = {};
-    if (engine?.platforms) {
-        const supportedPlatforms = Object.keys(engine.platforms);
 
-        supportedPlatforms.forEach((v) => {
-            if (!pt[v]) {
-                result[v] = getRealPath(
-                    c,
-                    originalPath,
-                    'platformTemplatesDir',
-                    originalPath
-                );
-            } else {
-                result[v] = getRealPath(
-                    c,
-                    pt[v],
-                    'platformTemplatesDir',
-                    originalPath
-                );
-            }
-        });
-        return result;
-    }
+    c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
+        const engine = getEngineByPlatform(c, platform);
+        const originalPath = engine?.paths?.platformTemplatesDir;
+        if (!pt[platform]) {
+            result[platform] = getRealPath(
+                c,
+                originalPath,
+                'platformTemplatesDir',
+                originalPath
+            );
+        } else {
+            result[platform] = getRealPath(
+                c,
+                pt[platform],
+                'platformTemplatesDir',
+                originalPath
+            );
+        }
+    });
 
-    return null;
+
+    // c.paths.rnv.platformTemplates.dir = getRealPath(
+    //     c,
+    //     originalPath,
+    //     'platformTemplatesDir',
+    //     originalPath
+    // );
+    // // const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || engineTemplDir;
+    //
+    // if (engine?.platforms) {
+    //     const supportedPlatforms = Object.keys(engine.platforms);
+    //
+    //     supportedPlatforms.forEach((v) => {
+    //
+    //     });
+    //     return result;
+    // }
+
+    return result;
 };
 
 const _listAppConfigsFoldersSync = (
@@ -888,10 +913,10 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
 
     c.paths.rnv.dir = RNV_HOME_DIR;
     // c.paths.rnv.nodeModulesDir = path.join(c.paths.rnv.dir, 'node_modules');
-    c.paths.rnv.platformTemplates.dir = path.join(
-        c.paths.rnv.dir,
-        'platformTemplates'
-    );
+    // c.paths.rnv.platformTemplates.dir = path.join(
+    //     c.paths.rnv.dir,
+    //     'platformTemplates'
+    // );
     c.paths.rnv.engines.dir = path.join(
         c.paths.rnv.dir,
         'engineTemplates'

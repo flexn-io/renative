@@ -37,6 +37,7 @@ export const getEngineRunner = (c, task) => {
         // return EngineNoOp;
         throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
     }
+    c.runtime.engineConfig = selectedEngine;
     const engine = ENGINES[selectedEngine?.id];
     if (!engine) {
         if (ENGINES[ENGINE_CORE].hasTask(task)) return ENGINES[ENGINE_CORE];
@@ -142,7 +143,7 @@ export const findSuitableTask = async (c) => {
         } else {
             tasks = taskInstances.map(v => _getTaskOption(v)).sort();
             tasksCommands = taskInstances.map(v => v.taskInstance.task.split(' ')[0]).sort();
-            defaultCmd = 'run';
+            defaultCmd = tasks.find(v => v.startsWith('run'));
         }
 
         const { command } = await inquirerPrompt({
@@ -152,14 +153,14 @@ export const findSuitableTask = async (c) => {
             message: 'Pick a command',
             choices: tasks,
             pageSize: 15,
-            logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
+            logMessage: 'Welcome to the brave new world...'
         });
         c.command = tasksCommands[tasks.indexOf(command)];
     }
     let task = c.command;
     if (c.subCommand) task += ` ${c.subCommand}`;
 
-    const suitableEngines = REGISTERED_ENGINES.filter(engine => engine.hasTask(task));
+    let suitableEngines = REGISTERED_ENGINES.filter(engine => engine.hasTask(task));
 
     if (!suitableEngines.length) {
         const supportedSubtasks = {};
@@ -184,6 +185,7 @@ export const findSuitableTask = async (c) => {
 
             c.subCommand = supportedSubtasks[subCommand].taskKey;
             task = `${c.command} ${c.subCommand}`;
+            suitableEngines = REGISTERED_ENGINES.filter(engine => engine.hasTask(task));
         }
     }
 
