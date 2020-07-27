@@ -107,21 +107,21 @@ jobs:
         - yarn bootstrap-clean
         - cd packages/app
         - npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
-        - yarn e2e-web
-    - name: "HelloWorld Tizen: Build"
-      language: node_js
-      cache:
-        directories:
-          - node_modules
-      node_js: 13.13.0
-      os: osx
-      osx_image: xcode11.3
-      install: skip
-      script:
-        - yarn bootstrap-clean
-        - cd packages/app
-        - npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
-        - npx rnv build -p tizen -c helloworld -r --mono --ci
+        - yarn e2e-web-next
+    # - name: "HelloWorld Tizen: Build"
+    #   language: node_js
+    #   cache:
+    #     directories:
+    #       - node_modules
+    #   node_js: 13.13.0
+    #   os: osx
+    #   osx_image: xcode11.3
+    #   install: skip
+    #   script:
+    #     - yarn bootstrap-clean
+    #     - cd packages/app
+    #     - npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
+    #     - npx rnv build -p tizen -c helloworld -r --mono --ci
     - name: "HelloWorld macOS: Build"
       language: node_js
       cache:

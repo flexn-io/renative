@@ -15,10 +15,10 @@ const _chalkCols = {
     cyan: v => v,
     magenta: v => v
 };
+_chalkCols.rgb = () => v => v;
+_chalkCols.bold = _chalkCols;
 const _chalkMono = {
-    ..._chalkCols,
-    bold: _chalkCols,
-    rgb: () => v => v
+    ..._chalkCols
 };
 
 let currentChalk = _chalk;
