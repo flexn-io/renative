@@ -725,23 +725,44 @@ export const parseRenativeConfigs = async (c) => {
         'projectConfig'
     );
 
-    // _findAndSwitchAppConfigDir(c);
-
     c.runtime.isWrapper = c.buildConfig.isWrapper;
     c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
 
     if (c.runtime.appId) {
-        _generateConfigPaths(
-            c.paths.appConfig,
-            path.join(c.paths.project.appConfigsDir, c.runtime.appId)
-        );
-        c.paths.appConfig.fontsDir = path.join(c.paths.appConfig.dir, 'fonts');
-        _loadConfigFiles(
-            c,
-            c.files.appConfig,
-            c.paths.appConfig,
-            c.paths.project.appConfigsDir
-        );
+        const appConfigsDirs = c.buildConfig?.paths?.appConfigsDirs;
+        // If user configured multiple appConfigsDirs, traverse and find right one
+        if (appConfigsDirs?.length) {
+            for (let i = 0; i < appConfigsDirs.length; i++) {
+                const appConfigsDir = appConfigsDirs[i];
+                _generateConfigPaths(
+                    c.paths.appConfig,
+                    path.join(appConfigsDir, c.runtime.appId)
+                );
+                c.paths.appConfig.fontsDir = path.join(c.paths.appConfig.dir, 'fonts');
+                _loadConfigFiles(
+                    c,
+                    c.files.appConfig,
+                    c.paths.appConfig,
+                    appConfigsDir
+                );
+                if (c.files.appConfig.config) {
+                    break;
+                }
+            }
+        }
+        // Fallback if nothing found
+        if (!c.files.appConfig.config) {
+            _generateConfigPaths(
+                c.paths.appConfig,
+                path.join(c.paths.project.appConfigsDir, c.runtime.appId)
+            );
+            _loadConfigFiles(
+                c,
+                c.files.appConfig,
+                c.paths.appConfig,
+                c.paths.project.appConfigsDir
+            );
+        }
 
         const workspaceAppConfigsDir = getRealPath(
             c,
