@@ -14,7 +14,6 @@ import {
     RN_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
     PLATFORMS,
-    SUPPORTED_PLATFORMS,
     USER_HOME_DIR,
     RNV_HOME_DIR,
     CURRENT_DIR,
@@ -515,26 +514,31 @@ const _generatePlatformTemplatePaths = (c) => {
     const engine = getEngineByPlatform(c, c.platform);
     const originalPath = engine?.paths?.platformTemplatesDir || '$RNV_HOME/platformTemplates';
     // const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || engineTemplDir;
-
     const result = {};
-    SUPPORTED_PLATFORMS.forEach((v) => {
-        if (!pt[v]) {
-            result[v] = getRealPath(
-                c,
-                originalPath,
-                'platformTemplatesDir',
-                originalPath
-            );
-        } else {
-            result[v] = getRealPath(
-                c,
-                pt[v],
-                'platformTemplatesDir',
-                originalPath
-            );
-        }
-    });
-    return result;
+    if (engine?.platforms) {
+        const supportedPlatforms = Object.keys(engine.platforms);
+
+        supportedPlatforms.forEach((v) => {
+            if (!pt[v]) {
+                result[v] = getRealPath(
+                    c,
+                    originalPath,
+                    'platformTemplatesDir',
+                    originalPath
+                );
+            } else {
+                result[v] = getRealPath(
+                    c,
+                    pt[v],
+                    'platformTemplatesDir',
+                    originalPath
+                );
+            }
+        });
+        return result;
+    }
+
+    return null;
 };
 
 const _listAppConfigsFoldersSync = (

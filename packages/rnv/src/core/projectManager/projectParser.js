@@ -228,29 +228,6 @@ export const parseFonts = (c, callback) => {
     }
 };
 
-export const copySharedPlatforms = c => new Promise((resolve) => {
-    logTask('copySharedPlatforms');
-
-    if (c.platform) {
-        mkdirSync(
-            path.resolve(
-                c.paths.project.platformTemplatesDirs[c.platform],
-                '_shared'
-            )
-        );
-
-        copyFolderContentsRecursiveSync(
-            path.resolve(
-                c.paths.project.platformTemplatesDirs[c.platform],
-                '_shared'
-            ),
-            path.resolve(c.paths.project.builds.dir, '_shared')
-        );
-    }
-
-    resolve();
-});
-
 const ASSET_PATH_ALIASES = {
     android: 'app/src/main',
     androidtv: 'app/src/main',

@@ -1,4 +1,4 @@
-import { logErrorPlatform } from '../core/platformManager';
+import { logErrorPlatform, copySharedPlatforms } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
 import { MACOS, WINDOWS, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE } from '../core/constants';
 import { configureElectronProject } from '../sdk-electron';
@@ -8,6 +8,8 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
     await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
+
+    await copySharedPlatforms(c);
 
     if (c.program.only && !!parentTask) {
         return true;

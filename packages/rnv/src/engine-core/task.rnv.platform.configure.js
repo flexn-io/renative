@@ -1,7 +1,6 @@
 import path from 'path';
 import { chalk, logTask, logWarning, logInfo } from '../core/systemManager/logger';
 import { copyFolderContentsRecursiveSync, fsExistsSync } from '../core/systemManager/fileutils';
-import { copySharedPlatforms } from '../core/projectManager/projectParser';
 import { getTimestampPathsConfig, getAppFolder } from '../core/common';
 import { isBuildSchemeSupported } from '../core/configManager/schemeParser';
 import { isPlatformSupportedSync, isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../core/platformManager';
@@ -93,7 +92,6 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     await injectPlatformDependencies(c);
     await cleanPlatformBuild(c, c.platform);
     await _runCopyPlatforms(c);
-    await copySharedPlatforms(c);
 };
 
 export default {

@@ -6,7 +6,7 @@ import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import {
     cleanFolder,
     copyFolderContentsRecursiveSync,
-    writeFileSync,
+    writeFileSync, mkdirSync
 } from '../systemManager/fileutils';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import { checkAndConfigureSdks } from '../sdkManager';
@@ -198,3 +198,25 @@ export const isPlatformActive = (c, platform, resolve) => {
     }
     return true;
 };
+export const copySharedPlatforms = c => new Promise((resolve) => {
+    logTask('copySharedPlatforms');
+
+    if (c.platform) {
+        mkdirSync(
+            path.resolve(
+                c.paths.project.platformTemplatesDirs[c.platform],
+                '_shared'
+            )
+        );
+
+        copyFolderContentsRecursiveSync(
+            path.resolve(
+                c.paths.project.platformTemplatesDirs[c.platform],
+                '_shared'
+            ),
+            path.resolve(c.paths.project.builds.dir, '_shared')
+        );
+    }
+
+    resolve();
+});
