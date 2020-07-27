@@ -16,7 +16,6 @@ import {
     TASK_CONFIGURE
 } from '../core/constants';
 import { runWeb, waitForWebpack } from '../sdk-webpack';
-import Config from '../core/configManager/config';
 import { executeTask } from '../core/engineManager';
 
 const WEINRE_ENABLED_PLATFORMS = [TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH];
@@ -31,7 +30,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 
     await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
 
-    if (Config.isWebHostEnabled && hosted) {
+    if (hosted) {
         waitForWebpack(c)
             .then(() => open(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);

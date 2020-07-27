@@ -3,8 +3,7 @@
 
 import { writeFileSync, fsExistsSync } from '../systemManager/fileutils';
 import { logWarning } from '../systemManager/logger';
-import { configSchema, WEB_HOSTED_PLATFORMS } from '../constants';
-import { getConfigProp } from '../common';
+import { configSchema } from '../constants';
 
 class Config {
     constructor() {
@@ -147,20 +146,6 @@ class Config {
             return true;
         }
         return false;
-    }
-
-    get isWebHostEnabled() {
-        const { hosted } = this.config.program;
-        // if (debug) return false;
-        const bundleAssets = getConfigProp(
-            this.config,
-            this.platform,
-            'bundleAssets'
-        );
-        return (
-            (hosted || !bundleAssets)
-            && WEB_HOSTED_PLATFORMS.includes(this.platform)
-        );
     }
 
     get isAnalyticsEnabled() {

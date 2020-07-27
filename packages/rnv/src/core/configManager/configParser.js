@@ -18,7 +18,8 @@ import {
     USER_HOME_DIR,
     RNV_HOME_DIR,
     CURRENT_DIR,
-    INJECTABLE_RUNTIME_PROPS
+    INJECTABLE_RUNTIME_PROPS,
+    WEB_HOSTED_PLATFORMS
 } from '../constants';
 import { getEngineByPlatform } from '../engineManager';
 import { isSystemWin } from '../utils';
@@ -88,6 +89,8 @@ export const configureRuntimeDefaults = async (c) => {
     });
     if (c.buildConfig) {
         c.runtime.scheme.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+        const { hosted } = c.program;
+        c.runtime.hosted = (hosted || !c.runtime.scheme.bundleAssets) && WEB_HOSTED_PLATFORMS.includes(c.platform);
     }
 };
 
@@ -967,7 +970,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     );
     c.paths.rnv.engines.dir = path.join(
         c.paths.rnv.dir,
-        'engines'
+        'engineTemplates'
     );
     c.paths.rnv.pluginTemplates.dir = path.join(
         c.paths.rnv.dir,

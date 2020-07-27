@@ -15,6 +15,17 @@
             "build": "release",
             "export": "release"
         },
+        "buildSchemes": {
+            "debug": {
+                "description": "Use for local development"
+            },
+            "test": {
+                "description": "Use to run automation"
+            },
+            "release": {
+                "description": "Use for production deployments"
+            }
+        },
         "backgroundColor": "#111111",
         "runtime": {
             "welcomeMessage": "Hello ReNative!"

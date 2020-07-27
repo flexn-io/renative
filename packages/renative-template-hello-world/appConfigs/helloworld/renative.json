@@ -9,8 +9,7 @@
             "debug": {
                 "id": "renative.helloworld.debug",
                 "title": "ReNative Debug"
-            },
-            "release": {}
+            }
         }
     },
     "platforms": {
@@ -21,8 +20,7 @@
         },
         "androidtv": {
             "buildSchemes": {
-                "debug": {
-                }
+                "debug": {}
             }
         },
         "androidwear": {

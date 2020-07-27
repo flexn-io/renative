@@ -20,7 +20,7 @@ import {
     TVOS,
     PLATFORMS
 } from './constants';
-import { generateOptions, inquirerPrompt } from '../cli/prompt';
+import { inquirerPrompt } from '../cli/prompt';
 
 
 export const getTimestampPathsConfig = (c, platform) => {
@@ -82,47 +82,6 @@ export const sanitizeColor = (val, key) => {
         rgbDecimal: rgb.map(v => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
         hex
     };
-};
-
-export const isBuildSchemeSupported = async (c) => {
-    logTask('isBuildSchemeSupported');
-
-    const { scheme } = c.program;
-
-    if (!c.buildConfig.platforms[c.platform]) {
-        c.buildConfig.platforms[c.platform] = {};
-    }
-
-    const { buildSchemes } = c.buildConfig.platforms[c.platform];
-
-    if (!buildSchemes) {
-        logWarning(
-            `Your appConfig for platform ${
-                c.platform
-            } has no buildSchemes. Will continue with defaults`
-        );
-        return false;
-    }
-
-    const schemeDoesNotExist = scheme && !buildSchemes[scheme];
-    if (scheme === true || schemeDoesNotExist) {
-        if (schemeDoesNotExist && scheme && scheme !== true) {
-            logError('Build scheme you picked does not exists.');
-        }
-        const opts = generateOptions(buildSchemes);
-
-        const { selectedScheme } = await inquirerPrompt({
-            name: 'selectedScheme',
-            type: 'list',
-            message: 'Pick one of available buildSchemes',
-            choices: opts.keysAsArray,
-            logMessage: 'You need to specify scheme'
-        });
-
-        c.program.scheme = selectedScheme;
-        return selectedScheme;
-    }
-    return scheme;
 };
 
 export const confirmActiveBundler = async (c) => {
@@ -365,7 +324,6 @@ export const importPackageFromProject = (name) => {
 export default {
     getBuildFilePath,
     getBuildsFolder,
-    isBuildSchemeSupported,
     getAppFolder,
     getAppTemplateFolder,
     getAppId,
