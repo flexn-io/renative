@@ -1,9 +1,7 @@
-import { logDebug, logTask, logInitTask, logExitTask, chalk, logInfo } from '../systemManager/logger';
+import { logDebug, logTask, logInitTask, logExitTask, chalk, logInfo, logError } from '../systemManager/logger';
 import { getConfigProp } from '../common';
 import Analytics from '../systemManager/analytics';
-import {
-    executePipe
-} from '../projectManager/buildHooks';
+import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt } from '../../cli/prompt';
 
 const REGISTERED_ENGINES = [];
@@ -131,6 +129,7 @@ export const findSuitableTask = async (c) => {
                 };
             });
         });
+
         const taskInstances = Object.values(suitableTaskInstances);
         let tasks;
         let defaultCmd = 'new';
@@ -161,32 +160,74 @@ export const findSuitableTask = async (c) => {
     if (c.subCommand) task += ` ${c.subCommand}`;
 
     let suitableEngines = REGISTERED_ENGINES.filter(engine => engine.hasTask(task));
+    const isAutoComplete = !suitableEngines.length && !!c.command;
+    const message = isAutoComplete ? `Autocomplete action for "${c.command}"` : `Pick a subCommand for ${c.command}`;
 
     if (!suitableEngines.length) {
-        const supportedSubtasks = {};
+        // Get all supported tasks
+        const supportedSubtasksArr = [];
         REGISTERED_ENGINES.forEach((engine) => {
             engine.getSubTasks(task).forEach((taskInstance) => {
-                const taskKey = taskInstance.task.replace(task, '').trim();
-                const desc = taskInstance.description ? `(${taskInstance.description})` : '';
-                const key = `${taskKey} ${chalk().grey(desc)}`;
-                supportedSubtasks[key] = {
+                const taskKey = isAutoComplete ? taskInstance.task : taskInstance.task.split(' ')[1];
+
+                supportedSubtasksArr.push({
+                    desc: taskInstance.description?.toLowerCase?.(),
                     taskKey
-                };
+                });
             });
         });
+        const supportedSubtasks = {};
+        // Normalize task options
+        const supportedSubtasksFilter = {};
+        supportedSubtasksArr.forEach((tsk) => {
+            const mergedTask = supportedSubtasksFilter[tsk.taskKey];
+            if (!mergedTask) {
+                supportedSubtasksFilter[tsk.taskKey] = tsk;
+            } else if (!mergedTask.desc.includes(tsk.desc)) {
+                mergedTask.desc += `, ${tsk.desc}`;
+            }
+        });
+        // Generate final list object
+        Object.values(supportedSubtasksFilter).forEach((v) => {
+            const desc = v.desc ? `(${v.desc})` : '';
+            const key = `${v.taskKey} ${chalk().grey(desc)}`;
+            supportedSubtasks[key] = {
+                taskKey: v.taskKey
+            };
+        });
+
         const subTasks = Object.keys(supportedSubtasks);
         if (subTasks.length) {
             const { subCommand } = await inquirerPrompt({
                 type: 'list',
                 name: 'subCommand',
-                message: `Pick a subCommand for ${c.command}`,
+                message,
                 choices: subTasks,
             });
+            if (isAutoComplete) {
+                task = supportedSubtasks[subCommand].taskKey;
+                c.command = task.split(' ')[0];
+                c.subCommand = task.split(' ')[1];
+                if (c.subCommand) {
+                    task = `${c.command} ${c.subCommand}`;
+                } else {
+                    task = `${c.command}`;
+                }
+            } else {
+                c.subCommand = supportedSubtasks[subCommand].taskKey;
+                task = `${c.command} ${c.subCommand}`;
+            }
 
-            c.subCommand = supportedSubtasks[subCommand].taskKey;
-            task = `${c.command} ${c.subCommand}`;
+
             suitableEngines = REGISTERED_ENGINES.filter(engine => engine.hasTask(task));
         }
+    }
+
+    if (!suitableEngines.length) {
+        logError(`could not find suitable task for ${chalk().white(c.command)}`);
+        c.command = null;
+        c.subCommand = null;
+        return findSuitableTask(c);
     }
 
     if (!c.platform) {
