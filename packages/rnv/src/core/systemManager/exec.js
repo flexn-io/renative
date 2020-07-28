@@ -76,6 +76,9 @@ const _execute = (c, command, opts = {}) => {
     logDebug(`_execute: ${logMessage}`);
     const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
     const spinner = !silent && !mono && ora({ text: `Executing: ${logMessage}` }).start();
+    if (opts.interactive) {
+        logRaw(`${chalk().green('✔')} Executing: ${logMessage}\n`);
+    }
 
     if (mono) {
         interval = setInterval(() => {
