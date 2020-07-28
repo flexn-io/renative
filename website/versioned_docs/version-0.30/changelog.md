@@ -6,6 +6,30 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.18 (2020-7-28)
+
+### Fixed
+
+- feat: autocomplete
+- ejected check fixes
+- migrate workspace task
+- 0.31.0-alpha.17
+- platform support fixes
+- fix support for custom appConfig folders
+- fix chalk --mono, web next e2e
+- support for custom build scheme descriptions in prompt
+- bundler start log helpers for web
+- clean logs
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.17 (2020-7-27)
 
 ### Fixed
