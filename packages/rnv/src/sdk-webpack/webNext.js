@@ -149,7 +149,6 @@ export const runWebDevServer = (c, platform, port) => {
     logTask('runWebDevServer');
     const env = getConfigProp(c, platform, 'environment');
     const pagesDir = getConfigProp(c, platform, 'pagesDir');
-    const appFolder = getAppFolder(c);
     if (!pagesDir) logWarning(`You're missing ${platform}.pagesDir config. Defaulting to 'src/app'`);
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
 

@@ -89,17 +89,25 @@ export const configureRuntimeDefaults = async (c) => {
         const { hosted } = c.program;
         c.runtime.hosted = (hosted || !c.runtime.scheme.bundleAssets) && WEB_HOSTED_PLATFORMS.includes(c.platform);
 
-        c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms.map((platform) => {
-            const engine = getEngineByPlatform(c, platform);
-            const dir = engine?.paths?.platformTemplatesDir;
-            const isConnected = c.paths.project.platformTemplatesDirs[platform].includes(getRealPath(c, dir));
-            return {
-                // name: `${platform} - ${isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')}`,
-                engine,
-                platform,
-                isConnected
-            };
-        });
+        c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms
+
+            .map((platform) => {
+                const engine = getEngineByPlatform(c, platform);
+                const dir = engine?.paths?.platformTemplatesDir;
+                let isConnected = false;
+                let isValid = false;
+                const pDir = c.paths.project.platformTemplatesDirs?.[platform];
+                if (pDir) {
+                    isValid = true;
+                    isConnected = pDir?.includes?.(getRealPath(c, dir));
+                }
+                return {
+                    engine,
+                    platform,
+                    isConnected,
+                    isValid
+                };
+            });
     }
 };
 
@@ -526,20 +534,24 @@ const _generatePlatformTemplatePaths = (c) => {
     c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
         const engine = getEngineByPlatform(c, platform);
         const originalPath = engine?.paths?.platformTemplatesDir;
-        if (!pt[platform]) {
-            result[platform] = getRealPath(
-                c,
-                originalPath,
-                'platformTemplatesDir',
-                originalPath
-            );
+        if (originalPath) {
+            if (!pt[platform]) {
+                result[platform] = getRealPath(
+                    c,
+                    originalPath,
+                    'platformTemplatesDir',
+                    originalPath
+                );
+            } else {
+                result[platform] = getRealPath(
+                    c,
+                    pt[platform],
+                    'platformTemplatesDir',
+                    originalPath
+                );
+            }
         } else {
-            result[platform] = getRealPath(
-                c,
-                pt[platform],
-                'platformTemplatesDir',
-                originalPath
-            );
+            logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
         }
     });
 

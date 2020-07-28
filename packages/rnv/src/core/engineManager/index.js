@@ -77,7 +77,7 @@ export const executeTask = async (c, task, parentTask, originTask) => {
     const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
     logInitTask(`${pt}=> [${chalk().bold.rgb(170, 106, 170)(task)}]`);
-    const inOnlyMode = c.program.only && !!parentTask;
+    const inOnlyMode = c.program.only; // && !!parentTask;
     // if (c.program.only && !!parentTask && task !== TASK_WORKSPACE_CONFIGURE) {
     //     logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} SKIPPING...`);
     //     await executeTask(c, TASK_WORKSPACE_CONFIGURE, task, originTask);
