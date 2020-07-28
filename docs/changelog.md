@@ -5,6 +5,23 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.20 (2020-7-28)
+
+### Fixed
+
+- check against unsupported platforms
+- support for multiple next versions
+- add exec cmd message for interactive commands
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.19 (2020-7-28)
 
 ### Fixed
