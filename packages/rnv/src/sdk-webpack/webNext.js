@@ -17,7 +17,7 @@ import {
     fsReaddirSync,
     fsSymlinkSync
 } from '../core/systemManager/fileutils';
-import { chalk, logTask, logInfo, logWarning, logDebug, logRaw, logSummary } from '../core/systemManager/logger';
+import { chalk, logTask, logInfo, logWarning, logDebug, logRaw, logSummary, logSuccess } from '../core/systemManager/logger';
 import { NEXT_CONFIG_NAME } from '../core/constants';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../core/deployManager/webTools';
 
@@ -32,7 +32,7 @@ export const configureNextIfRequired = async (c) => {
     const stylesDir = path.join(dir, 'styles');
     const pagesDir = path.resolve(getConfigProp(c, c.platform, 'pagesDir') || 'src/app');
     const _appFile = path.join(pagesDir, '_app.js');
-    const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], 'web');
+    const supportFilesDir = path.join(platformTemplatesDirs[c.platform], '../supportFiles');
     const configFile = path.join(dir, NEXT_CONFIG_NAME);
 
     // handle fonts
@@ -74,12 +74,12 @@ export const configureNextIfRequired = async (c) => {
         if (!fsExistsSync(pagesDir)) {
             fsMkdirSync(pagesDir);
         }
-        writeCleanFile(path.join(platformTemplateDir, '_app.js'), _appFile, [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }], null, c);
+        writeCleanFile(path.join(supportFilesDir, '_app.js'), _appFile, [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }], null, c);
     }
 
     // add config
     if (!fsExistsSync(configFile)) {
-        writeCleanFile(path.join(platformTemplateDir, NEXT_CONFIG_NAME), configFile, null, null, c);
+        writeCleanFile(path.join(supportFilesDir, NEXT_CONFIG_NAME), configFile, null, null, c);
     }
 };
 
@@ -131,23 +131,28 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
-const exportNext = async (c) => {
-    logTask('exportWebNext');
+const _exportNext = async (c) => {
+    logTask('_exportNext');
+    const appFolder = getAppFolder(c);
     const env = getConfigProp(c, c.platform, 'environment');
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
 
-    return executeAsync(c, `npx next export ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' }, interactive: true });
+    await executeAsync(c, `npx next export ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' } });
+    logSuccess(
+        `Your build is located in ${chalk().cyan(path.join(appFolder, 'out'))} .`
+    );
 };
 
 export const buildWebNext = async (c) => {
     logTask('buildWebNext');
     const env = getConfigProp(c, c.platform, 'environment');
+    const appFolder = getAppFolder(c);
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
 
-    await executeAsync(c, `npx next build ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' }, interactive: true });
-    return exportNext(c);
+    await executeAsync(c, `npx next build ${appFolder} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' } });
+    return _exportNext(c);
 };
 
 export const runWebDevServer = (c, platform, port) => {
@@ -164,7 +169,7 @@ Dev server running at: ${url}
 
 `);
 
-    return executeAsync(c, `npx next --pagesDir ${pagesDir || 'src/app'} --port ${port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
+    return executeAsync(c, `npx next ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'} --port ${port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
 };
 
 export const deployWebNext = (c) => {
