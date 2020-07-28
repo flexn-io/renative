@@ -6,6 +6,27 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.19 (2020-7-28)
+
+### Fixed
+
+- move legacy next to proper versioning folder
+- Merge branch 'feat/update_next' into feat/tasks
+- better next logs
+- next improvements / fixes
+- also added patch file
+- next update
+- Merge pull request #541 from pavjacko/feat/engines
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.18 (2020-7-28)
 
 ### Fixed

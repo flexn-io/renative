@@ -138,6 +138,14 @@
             "paths": {
               "platformTemplatesDir": "$RNV_HOME/src/engine-rn-next/platformTemplates"
             },
+            "plugins": {
+                "react": "source:rnv",
+                "react-art": "source:rnv",
+                "react-dom": "source:rnv",
+                "react-native": "source:rnv",
+                "react-native-web": "source:rnv",
+                "next": "source:rnv"
+            },
             "platforms": {
                 "web": {
                     "npm": {
