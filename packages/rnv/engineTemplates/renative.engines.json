@@ -153,7 +153,6 @@
                             "html-webpack-harddisk-plugin": "0.2.0",
                             "html-webpack-plugin": "3.2.0",
                             "@zeit/next-css": "1.0.1",
-                            "next": "9.4.3",
                             "next-routes": "1.4.2",
                             "@expo/next-adapter": "2.0.5",
                             "next-compose-plugins": "^2.2.0",

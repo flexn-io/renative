@@ -9,6 +9,7 @@ const { Common: { getSourceExts }, Constants: { EXTENSIONS } } = require('rnv');
 const config = {
     projectRoot: path.resolve(__dirname),
     pageExtensionsRnv: EXTENSIONS.web,
+    distDir: 'platformBuilds/.next',
     webpack: (cfg, { isServer }) => {
         cfg.resolve.extensions = EXTENSIONS.web.map(e => `.${e}`).filter(ext => isServer || !ext.includes('server.'));
         cfg.resolve.modules.unshift(path.resolve(__dirname));

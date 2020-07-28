@@ -131,19 +131,6 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
-const _exportNext = async (c) => {
-    logTask('_exportNext');
-    const appFolder = getAppFolder(c);
-    const env = getConfigProp(c, c.platform, 'environment');
-    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
-    if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
-
-    await executeAsync(c, `npx next export ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' } });
-    logSuccess(
-        `Your build is located in ${chalk().cyan(path.join(appFolder, 'out'))} .`
-    );
-};
-
 export const buildWebNext = async (c) => {
     logTask('buildWebNext');
     const env = getConfigProp(c, c.platform, 'environment');
@@ -152,13 +139,17 @@ export const buildWebNext = async (c) => {
     if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
 
     await executeAsync(c, `npx next build ${appFolder} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' } });
-    return _exportNext(c);
+    logSuccess(
+        `Your build is located in ${chalk().cyan(path.join(appFolder, 'platformBuilds'))} .`
+    );
+    return true;
 };
 
 export const runWebDevServer = (c, platform, port) => {
     logTask('runWebDevServer');
     const env = getConfigProp(c, platform, 'environment');
     const pagesDir = getConfigProp(c, platform, 'pagesDir');
+    const appFolder = getAppFolder(c);
     if (!pagesDir) logWarning(`You're missing ${platform}.pagesDir config. Defaulting to 'src/app'`);
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
 
@@ -169,7 +160,7 @@ Dev server running at: ${url}
 
 `);
 
-    return executeAsync(c, `npx next ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'} --port ${port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
+    return executeAsync(c, `npx next dev --pagesDir ${pagesDir || 'src/app'} --port ${port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
 };
 
 export const deployWebNext = (c) => {
@@ -179,9 +170,20 @@ export const deployWebNext = (c) => {
     return selectWebToolAndDeploy(c, platform);
 };
 
-export const exportWebNext = (c) => {
+export const exportWebNext = async (c) => {
     logTask('exportWebNext');
     const { platform } = c;
 
-    return selectWebToolAndExport(c, platform);
+    logTask('_exportNext');
+    const appFolder = getAppFolder(c);
+    const env = getConfigProp(c, c.platform, 'environment');
+    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
+    if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
+    await executeAsync(c, `npx next export ${appFolder} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' } });
+    logSuccess(
+        `Your export is located in ${chalk().cyan(path.join(appFolder, 'out'))} .`
+    );
+
+    await selectWebToolAndExport(c, platform);
+    return true;
 };
