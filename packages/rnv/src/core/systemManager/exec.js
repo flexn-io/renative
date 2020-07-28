@@ -132,7 +132,6 @@ const _execute = (c, command, opts = {}) => {
             }
 
             if (!silent && !mono && !ignoreErrors) { spinner.fail(`FAILED: ${logMessage}`); } // parseErrorMessage will return false if nothing is found, default to previous implementation
-
             logDebug(
                 replaceOverridesInString(err.all, privateParams, privateMask)
             );
@@ -265,11 +264,17 @@ const executeTelnet = (c, port, command) => new Promise((resolve) => {
 
 export const parseErrorMessage = (text, maxErrorLength = 800) => {
     if (!text) return '';
-
+    // Gradle specific
     const gradleFailIndex = text.indexOf('FAILURE: Build failed with an exception.');
     if (gradleFailIndex) {
         return text.substring(gradleFailIndex);
     }
+    // NextJS Specific
+    const nextFailIndex = text.indexOf('> Build error occurred');
+    if (nextFailIndex) {
+        return text.substring(nextFailIndex);
+    }
+
     const toSearch = /(exception|error|fatal|\[!])/i;
     let arr = text.split('\n');
 
