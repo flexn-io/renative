@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-
 import path from 'path';
 import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import {

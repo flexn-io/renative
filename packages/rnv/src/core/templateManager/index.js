@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import inquirer from 'inquirer';
 
@@ -26,11 +25,9 @@ import {
 } from '../systemManager/logger';
 import { generateOptions } from '../../cli/prompt';
 import {
-    // setAppConfig,
     listAppConfigsFoldersSync,
     generateBuildConfig,
     generateLocalConfig,
-    // updateConfig,
     parseRenativeConfigs
 } from '../configManager/configParser';
 import { doResolve } from '../resolve';

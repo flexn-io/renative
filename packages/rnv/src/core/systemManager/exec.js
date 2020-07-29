@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 /* eslint-disable no-control-regex */
 /* eslint-disable no-bitwise */
 

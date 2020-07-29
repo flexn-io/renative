@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import shell from 'shelljs';
 import path from 'path';
 

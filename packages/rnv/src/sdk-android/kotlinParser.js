@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import {
     getAppFolder,
@@ -12,7 +11,6 @@ import {
 } from '../core/common';
 import { logWarning } from '../core/systemManager/logger';
 import { writeCleanFile } from '../core/systemManager/fileutils';
-// import { doResolve } from '../core/resolve';
 
 const JS_BUNDLE_DEFAULTS = {
     android: '"super.getJSBundleFile()"',

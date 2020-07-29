@@ -1,7 +1,5 @@
-/* eslint-disable import/no-cycle */
 /* eslint-disable no-console */
 import _chalk from 'chalk';
-import Analytics from './analytics';
 
 const _chalkCols = {
     white: v => v,
@@ -77,20 +75,17 @@ let _c;
 let _isMono = false;
 let _defaultColor;
 let _highlightColor;
+let _analytics;
 
-export const configureLogger = (
-    c,
-    process
-) => {
+export const configureLogger = (c, analytics) => {
     _messages = [];
     _c = c;
     _c.timeStart = new Date();
-    _currentProcess = process;
-    // _currentCommand = command;
-    // _currentSubCommand = subCommand;
+    _currentProcess = c.process;
     _isInfoEnabled = !!c.program.info;
     _infoFilter = c.program.info?.split?.(',');
     _isMono = c.program.mono;
+    _analytics = analytics;
     if (_isMono) {
         currentChalk = _chalkMono;
     }
@@ -383,8 +378,8 @@ export const logSuccess = (msg) => {
 };
 
 export const logError = (e, isEnd = false, skipAnalytics = false) => {
-    if (!skipAnalytics) {
-        Analytics.captureException(e);
+    if (!skipAnalytics && !!_analytics) {
+        _analytics.captureException(e);
     }
 
     if (e && e.message) {
@@ -401,8 +396,8 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
 
 export const logEnd = (code) => {
     logSummary();
-    if (_currentProcess) {
-        Analytics.teardown().then(() => {
+    if (_currentProcess && !!_analytics) {
+        _analytics.teardown().then(() => {
             _currentProcess.exit(code);
         });
     }

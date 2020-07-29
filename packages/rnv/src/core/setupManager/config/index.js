@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { isSystemWin } from '../../utils';
 
 let androidPlatform = 'linux';

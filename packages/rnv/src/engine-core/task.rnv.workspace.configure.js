@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import { RENATIVE_CONFIG_NAME } from '../core/constants';
 import {

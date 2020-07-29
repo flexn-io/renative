@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 const isObject = value => value && typeof value === 'object' && value.constructor === Object;
 
 const isArray = value => value && typeof value === 'object' && value.constructor === Array;

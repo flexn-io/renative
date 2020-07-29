@@ -1,5 +1,3 @@
-/* eslint-disable import/no-cycle */
-
 import semver from 'semver';
 
 import { installPackageDependencies, executeAsync } from '../systemManager/exec';
