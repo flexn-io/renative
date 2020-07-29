@@ -21,7 +21,7 @@ const registerEngines = () => {
 
 const run = async (c) => {
     registerEngines();
-    configureRuntimeDefaults(c);
+    await configureRuntimeDefaults(c);
     await checkAndMigrateProject(c);
     await parseRenativeConfigs(c);
 

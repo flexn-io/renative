@@ -204,6 +204,13 @@ export const logSummary = (header = 'SUMMARY') => {
                 1
             );
         }
+        if (_c?.runtime?.bundleAssets) {
+            str += printIntoBox(
+                `Bundle assets ($.platforms.${_c?.platform}.bundleAssets): ${
+                    _highlightColor(!!_c.runtime?.bundleAssets)}`,
+                1
+            );
+        }
         if (_c.runtime?.target) {
             str += printIntoBox(
                 `Target (-t): ${_highlightColor(_c.runtime?.target)}`,
@@ -224,7 +231,7 @@ export const logSummary = (header = 'SUMMARY') => {
         }
         if (_c?.runtime?.supportedPlatforms?.length) {
             const plats = _c.runtime.supportedPlatforms.map(v => `${v.platform}${v.isConnected ? '' : '(ejected)'}`);
-            str += printArrIntoBox(plats, 'Supported Engine Platforms: ');
+            str += printArrIntoBox(plats, 'Supported Platforms: ');
         }
 
         if (_c?.files?.project?.config?.defaults) {
@@ -258,8 +265,8 @@ export const logSummary = (header = 'SUMMARY') => {
     str += logContent.replace(/\n\s*\n\s*\n/g, '\n\n');
     str += printIntoBox('');
     if (_c?.runtime?.platformBuildsProjectPath) {
-        str += currentChalk.grey(`│ Project location:
-│ ${currentChalk.cyan(_sanitizePaths(_c.runtime.platformBuildsProjectPath))}\n`);
+        str += printIntoBox('Project location:');
+        str += printIntoBox(`${currentChalk.cyan(_sanitizePaths(_c.runtime.platformBuildsProjectPath))}`, 1);
     }
     str += printBoxEnd();
 

@@ -5,6 +5,7 @@ import { getTimestampPathsConfig, getAppFolder } from '../core/common';
 import { isBuildSchemeSupported } from '../core/configManager/schemeParser';
 import { isPlatformSupportedSync, isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../core/platformManager';
 import { injectPlatformDependencies } from '../core/configManager/packageParser';
+import { configureRuntimeDefaults } from '../core/configManager/configParser';
 import { resolvePluginDependants } from '../core/pluginManager';
 import { executeTask } from '../core/engineManager';
 import { TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../core/constants';
@@ -71,6 +72,7 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
     await checkSdk(c);
+    await configureRuntimeDefaults(c);
 
     if (c.program.only && !!parentTask) return true;
 

@@ -43,6 +43,7 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         await configurePlugins(c);
         await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);
         await executeTask(c, TASK_APP_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
+        await configureRuntimeDefaults(c);
         if (c.program.resetHard) {
             logInfo(
                 `You passed ${chalk().white('-R')} argument. "${chalk().white('./platformAssets')}" will be cleaned up first`

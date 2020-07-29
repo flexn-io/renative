@@ -85,7 +85,7 @@ export const configureRuntimeDefaults = async (c) => {
         });
     });
     if (c.buildConfig) {
-        c.runtime.scheme.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+        c.runtime.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
         const { hosted } = c.program;
         c.runtime.hosted = (hosted || !c.runtime.scheme.bundleAssets) && WEB_HOSTED_PLATFORMS.includes(c.platform);
 
@@ -109,6 +109,7 @@ export const configureRuntimeDefaults = async (c) => {
                 };
             });
     }
+    return true;
 };
 
 export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
