@@ -5,6 +5,23 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.21 (2020-7-29)
+
+### Fixed
+
+- fix macos fonts, layout, helloworld improvements
+- decouple analytics from loggers, fileutils DI, clean import/no-cycle
+- build scheme management improvements / fixes
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.20 (2020-7-28)
 
 ### Fixed
