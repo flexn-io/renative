@@ -2,6 +2,9 @@ import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop,
     isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker, StyleSheet } from 'renative';
 import '../platformAssets/runtime/fontManager';
 
+export CONFIG from '../platformAssets/renative.runtime.json';
+export ICON_LOGO from '../platformAssets/runtime/logo.png';
+
 if (isFactorBrowser) registerServiceWorker();
 
 export const hasMobileWebUI = isFactorMobile && isEngineWeb;
@@ -21,7 +24,7 @@ const theme = {
     color5: '#AAAAAA',
     primaryFontFamily: 'TimeBurner',
     iconSize: getScaledValue(40),
-    menuWidth: hasHorizontalMenu || hasFullScreenMenu ? '100%' : 280,
+    menuWidth: hasHorizontalMenu || hasFullScreenMenu ? '100%' : getScaledValue(280),
     menuHeight: hasHorizontalMenu ? getScaledValue(80) : '100%',
     statusBar: 'light-content'
 };
@@ -29,6 +32,13 @@ const theme = {
 export const themeStyles = StyleSheet.create({
     app: {
         flexDirection: isFactorDesktop ? 'row' : 'column', position: 'absolute', top: 0, right: 0, left: 0, bottom: 0
+    },
+    appContainer: {
+        position: 'absolute',
+        left: hasVerticalMenu ? getScaledValue(280) : 0,
+        right: 0,
+        top: hasHorizontalMenu ? getScaledValue(80) : 0,
+        bottom: 0
     },
     container: {
         justifyContent: 'center',

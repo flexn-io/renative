@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const ScreenModal = props => {
+const ScreenModal = (props) => {
     const pop = usePop(props);
     if (hasWebFocusableUI) {
         useEffect(() => {
@@ -46,7 +46,9 @@ const ScreenModal = props => {
                 />
             </View>
             <ScrollView contentContainerStyle={themeStyles.container}>
-                <Text style={themeStyles.textH2}>This is my Modal!</Text>
+                <Text style={themeStyles.textH2}>
+This is my Modal!
+                </Text>
             </ScrollView>
         </View>
     );

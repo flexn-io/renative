@@ -58,10 +58,11 @@ const styles = StyleSheet.create({
 });
 
 const Menu = (props) => {
+    const { setFocus } = props;
     const navigate = useNavigate(props);
     if (hasWebFocusableUI) {
         useEffect(() => {
-            props.setFocus();
+            setFocus();
         }, []);
     }
 

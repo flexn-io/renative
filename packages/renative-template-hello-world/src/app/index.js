@@ -41,7 +41,9 @@ const StackNavigator = ({ navigation }) => (
             component={ScreenHome}
             options={{
                 headerLeft: () => <DrawerButton navigation={navigation} />,
-                headerRight: () => <CastButton style={{ width: Theme.iconSize, height: Theme.iconSize, tintColor: Theme.color3 }} />
+                headerRight: () => (
+                    <CastButton style={{ width: Theme.iconSize, height: Theme.iconSize, tintColor: Theme.color3 }} />
+                )
             }}
         />
         <Stack.Screen name="my-page" component={ScreenMyPage} />

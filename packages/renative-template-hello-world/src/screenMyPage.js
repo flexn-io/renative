@@ -6,11 +6,11 @@ import { themeStyles, hasWebFocusableUI } from './theme';
 const ScreenMyPage = () => (
     <View style={themeStyles.screen}>
         <ScrollView contentContainerStyle={themeStyles.container}>
-            <Text style={themeStyles.textH2}>This is my Page!</Text>
+            <Text style={themeStyles.textH2}>
+This is my Page!
+            </Text>
         </ScrollView>
     </View>
 );
 
-export default (hasWebFocusableUI
-    ? withFocusable()(ScreenMyPage)
-    : ScreenMyPage);
+export default (hasWebFocusableUI ? withFocusable()(ScreenMyPage) : ScreenMyPage);
