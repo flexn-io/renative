@@ -1,17 +1,26 @@
 import { logErrorPlatform } from '../core/platformManager';
+import { checkAndConfigureSdks } from '../core/sdkManager';
 import { logTask } from '../core/systemManager/logger';
 import {
     IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
-    ANDROID_WEAR
+    ANDROID_WEAR,
+    TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE
 } from '../core/constants';
 import { runAppleLog } from '../sdk-xcode';
 import { runAndroidLog } from '../sdk-android';
+import { executeTask } from '../core/engineManager';
 
-export const taskRnvLog = async (c, parentTask) => {
+export const taskRnvLog = async (c, parentTask, originTask) => {
     logTask('taskRnvLog', `parent:${parentTask}`);
+
+    await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
+
+    // await checkSdk(c);
+    await checkAndConfigureSdks(c);
+
     switch (c.platform) {
         case ANDROID:
         case ANDROID_TV:
@@ -30,6 +39,12 @@ export default {
     fn: taskRnvLog,
     task: 'log',
     params: [],
-    platforms: [],
+    platforms: [
+        IOS,
+        TVOS,
+        ANDROID,
+        ANDROID_TV,
+        ANDROID_WEAR,
+    ],
     skipProjectSetup: true,
 };

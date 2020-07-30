@@ -42,5 +42,11 @@ export default {
     fn: taskRnvBuild,
     task: 'build',
     params: [],
-    platforms: [],
+    platforms: [
+        IOS,
+        TVOS,
+        ANDROID,
+        ANDROID_TV,
+        ANDROID_WEAR,
+    ],
 };

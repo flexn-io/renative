@@ -9,15 +9,9 @@ import {
     TASK_PACKAGE,
     TASK_CONFIGURE
 } from '../core/constants';
-import {
-    packageBundleForXcode
-} from '../sdk-xcode';
-import {
-    packageAndroid,
-} from '../sdk-android';
-
+import { packageBundleForXcode } from '../sdk-xcode';
+import { packageAndroid } from '../sdk-android';
 import { executeTask } from '../core/engineManager';
-
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
@@ -44,5 +38,11 @@ export default {
     fn: taskRnvPackage,
     task: 'package',
     params: [],
-    platforms: [],
+    platforms: [
+        IOS,
+        TVOS,
+        ANDROID,
+        ANDROID_TV,
+        ANDROID_WEAR,
+    ],
 };

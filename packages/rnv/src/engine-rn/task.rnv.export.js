@@ -37,5 +37,11 @@ export default {
     fn: taskRnvExport,
     task: 'export',
     params: [],
-    platforms: [],
+    platforms: [
+        IOS,
+        TVOS,
+        ANDROID,
+        ANDROID_TV,
+        ANDROID_WEAR,
+    ],
 };

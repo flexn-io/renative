@@ -6,7 +6,6 @@ import taskRnvStart from './task.rnv.start';
 import taskRnvExport from './task.rnv.export';
 import taskRnvDeploy from './task.rnv.deploy';
 import taskRnvDebug from './task.rnv.debug';
-import taskRnvLog from './task.rnv.log';
 
 const TASKS = {};
 
@@ -22,7 +21,6 @@ addTask(taskRnvStart);
 addTask(taskRnvExport);
 addTask(taskRnvDeploy);
 addTask(taskRnvDebug);
-addTask(taskRnvLog);
 
 const executeTask = async (c, task, parentTask, originTask) => TASKS[task].fn(c, parentTask, originTask);
 
