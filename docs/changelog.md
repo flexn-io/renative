@@ -5,6 +5,22 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.22 (2020-7-30)
+
+### Fixed
+
+- rn engine platform support task fixes, fix rnv log
+- update legacy docs. fixes #554
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.21 (2020-7-29)
 
 ### Fixed
@@ -181,17 +197,9 @@ sidebar_label: Changelog
 
 ### Fixed
 
-- ci chores 7
-- ci chores 6
-- ci chores 5
 - rename hack
-- ci chores 4
-- ci chores
 - filterable logger -i "<value>,<value>.."
 - auto generate platformBuilds, better logging
-- ci chores 3
-- ci chores 2
-- ci chores 1
 - migration fixes
 - fix crypto, better logging
 - task descriptors
@@ -199,8 +207,6 @@ sidebar_label: Changelog
 - log fixes
 - fix template selection
 - refactor app config  logic
-- ci chores 2
-- ci chores 1
 - fix missing appConfig crash
 - fix cycled deps, platform support for tasks
 - abstract engine injections
@@ -239,13 +245,11 @@ sidebar_label: Changelog
 - migrate engines
 - electron engine task refactor
 - engine-rn-web improvements
-- ci chores 1
 - ci build for AppleTV
 - rnv build ios/tvos upgrades
 - travis updates
 - Merge branch 'feat/plugin-dep-resolvers' into feat/tasks
 - rnv builder
-- ci chores 1
 - normalize platform tools APIs
 - imporved debugger
 - changelog
@@ -258,7 +262,6 @@ sidebar_label: Changelog
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.11 (2020-7-16)
 
@@ -583,13 +586,7 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 - hotfix: correct tizen extensions. thx @TheDuc
 - 0.30.2
 - Merge pull request #529 from pavjacko/fix/#528-sdk-filed-merges
-- ci chores
-- ci chores
-- ci chores
-- ci chores
-- ci chores
 - revert typo
-- ci chores
 - fix: improved handling of autofixes
 - fix: prevent crash if provisioning folder does not exist
 - fix: regenerate buildConfig after sdk update fix: change default tvos config from manual to auto signing
@@ -601,7 +598,6 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 ### Breaking Changes
 
 - none
-
 
 ## v0.30.2-alpha.2 (2020-6-24)
 
@@ -731,7 +727,6 @@ NOTE: Following plugins have been updated to newer versions:
 - fix sdk discovery for rnv build tasks
 - remove unnecessary plugins from templates (moved to core engine definitions)
 - engine plugin overrides , improved summary logging
-- ci chores 32
 
 ### Added Features
 
@@ -741,12 +736,10 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.23 (2020-6-19)
 
 ### Fixed
 
-- ci chores
 - update extension support
 - cleanup logging
 
@@ -758,13 +751,11 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.22 (2020-6-18)
 
 ### Fixed
 
 - add only missing plugins
-- ci chores 31
 - engine base compatibility
 - Merge branch 'develop' into feat/e2e-ci
 - fix #522
@@ -776,7 +767,6 @@ NOTE: Following plugins have been updated to newer versions:
 - fix export for ios
 - add engine configs
 - Merge branch 'develop' into feat/e2e-ci
-- ci chores 22
 - dynamic  injectors via json functions
 - downgrade detox workaround for https://github.com/wix/detox/issues/152
 - init detox
