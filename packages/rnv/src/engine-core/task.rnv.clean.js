@@ -131,4 +131,5 @@ export default {
     task: 'clean',
     params: [],
     platforms: [],
+    isGlobalScope: true
 };

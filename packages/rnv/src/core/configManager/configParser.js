@@ -711,7 +711,7 @@ export const parseRenativeConfigs = async (c) => {
     } else {
         c.paths.project.builds.config = path.join(
             c.paths.project.builds.dir,
-            `*_${c.platform}.json`
+            `<TBC>_${c.platform}.json`
         );
     }
 

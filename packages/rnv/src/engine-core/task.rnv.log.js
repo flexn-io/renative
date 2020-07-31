@@ -46,5 +46,5 @@ export default {
         ANDROID_TV,
         ANDROID_WEAR,
     ],
-    skipProjectSetup: true,
+    isGlobalScope: true
 };

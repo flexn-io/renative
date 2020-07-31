@@ -43,4 +43,5 @@ export default {
     task: 'help',
     params: [],
     platforms: [],
+    isGlobalScope: true
 };

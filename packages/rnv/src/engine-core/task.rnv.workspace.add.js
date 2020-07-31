@@ -50,4 +50,5 @@ export default {
     task: TASK_WORKSPACE_ADD,
     params: [],
     platforms: [],
+    isGlobalScope: true
 };

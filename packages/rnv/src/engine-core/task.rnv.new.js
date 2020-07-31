@@ -348,4 +348,5 @@ export default {
     task: 'new',
     params: [],
     platforms: [],
+    isGlobalScope: true
 };

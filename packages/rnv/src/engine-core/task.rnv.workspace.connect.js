@@ -31,4 +31,5 @@ export default {
     task: TASK_WORKSPACE_CONNECT,
     params: [],
     platforms: [],
+    isGlobalScope: true
 };
