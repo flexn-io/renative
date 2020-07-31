@@ -8,7 +8,7 @@ import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
 import Config from '../configManager/config';
-import { ANDROID, ANDROID_TV, ANDROID_WEAR, CURRENT_DIR } from '../constants';
+import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
 
 import { chalk, logDebug, logTask, logError, logWarning, logRaw } from './logger';
 import { removeDirs, invalidatePodsChecksum, fsExistsSync } from './fileutils';

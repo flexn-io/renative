@@ -5,6 +5,23 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.23 (2020-7-31)
+
+### Fixed
+
+- ensure executeAsync returns value
+- support for custom script executions in tasks.rnv.install
+- fix support for global tasks
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.22 (2020-7-30)
 
 ### Fixed
