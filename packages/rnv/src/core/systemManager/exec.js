@@ -1,5 +1,6 @@
 /* eslint-disable no-control-regex */
 /* eslint-disable no-bitwise */
+/* eslint-disable no-await-in-loop */
 
 import path from 'path';
 import { access, accessSync, constants } from 'fs';
@@ -7,7 +8,7 @@ import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
 import Config from '../configManager/config';
-import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
+import { ANDROID, ANDROID_TV, ANDROID_WEAR, CURRENT_DIR } from '../constants';
 
 import { chalk, logDebug, logTask, logError, logWarning, logRaw } from './logger';
 import { removeDirs, invalidatePodsChecksum, fsExistsSync } from './fileutils';
@@ -200,7 +201,7 @@ const execCLI = (c, cli, command, opts = {}) => {
  * @returns {Promise}
  *
  */
-const executeAsync = (_c, _cmd, _opts) => {
+const executeAsync = async (_c, _cmd, _opts) => {
     // swap values if c is not specified and get it from it's rightful place, config :)
     let c = _c;
     let cmd = _cmd;
@@ -210,8 +211,20 @@ const executeAsync = (_c, _cmd, _opts) => {
         cmd = c;
         c = Config.getConfig();
     }
+    opts = opts || {};
     if (cmd.includes('npm') && process.platform === 'win32') { cmd.replace('npm', 'npm.cmd'); }
-    return _execute(c, cmd, opts);
+    const cmdArr = cmd.split('&&');
+    for (let i = 0; i < cmdArr.length; i++) {
+        if (cmdArr[i].startsWith('cd ')) {
+            // TODO: flaky. will need to improve
+            const newCwd = path.join(CURRENT_DIR, cmdArr[i].replace('cd ', ''));
+            opts.cwd = newCwd;
+        } else {
+            await _execute(c, cmdArr[i], opts);
+        }
+    }
+
+    return true;
 };
 
 /**
@@ -504,6 +517,13 @@ export const cleanNodeModules = () => new Promise((resolve, reject) => {
 export const installPackageDependencies = async (failOnError = false) => {
     logTask('installPackageDependencies');
     const c = Config.getConfig();
+
+    const customScript = c.buildConfig?.tasks?.install?.script;
+
+    if (customScript) {
+        await executeAsync(customScript);
+        return true;
+    }
 
     const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
     const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');

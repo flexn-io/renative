@@ -23,6 +23,7 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
+        "bootstrap": "cd ../.. && yarn bootstrap",
         "e2e-android": "yarn e2e-android:build && yarn e2e-android:run",
         "e2e-android:build": "detox build -c android.emu.debug",
         "e2e-android:run": "detox test -c android.emu.debug --headless --gpu swiftshader --cleanup",
