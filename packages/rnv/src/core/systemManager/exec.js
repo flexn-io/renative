@@ -214,17 +214,21 @@ const executeAsync = async (_c, _cmd, _opts) => {
     opts = opts || {};
     if (cmd.includes('npm') && process.platform === 'win32') { cmd.replace('npm', 'npm.cmd'); }
     const cmdArr = cmd.split('&&');
-    for (let i = 0; i < cmdArr.length; i++) {
-        if (cmdArr[i].startsWith('cd ')) {
-            // TODO: flaky. will need to improve
-            const newCwd = path.join(CURRENT_DIR, cmdArr[i].replace('cd ', ''));
-            opts.cwd = newCwd;
-        } else {
-            await _execute(c, cmdArr[i], opts);
+    let result;
+    if (cmdArr.length) {
+        for (let i = 0; i < cmdArr.length; i++) {
+            // if (cmdArr[i].startsWith('cd ')) {
+            //     // TODO: flaky. will need to improve
+            //     const newCwd = path.join(CURRENT_DIR, cmdArr[i].replace('cd ', ''));
+            //     opts.cwd = newCwd;
+            // } else {
+            //     await _execute(c, cmdArr[i], opts);
+            // }
+            result = await _execute(c, cmdArr[i], opts);
         }
     }
 
-    return true;
+    return result;
 };
 
 /**
