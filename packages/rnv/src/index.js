@@ -1,10 +1,11 @@
-import Common from './core/common';
+import Common, { getConfigProp } from './core/common';
+import { isSystemWin } from './core/utils';
 import Logger, { logComplete, logError, configureLogger, logInitialize } from './core/systemManager/logger';
 import { createRnvConfig } from './core/configManager/configParser';
 import CLI from './cli';
 import * as Constants from './core/constants';
 import Exec from './core/systemManager/exec';
-import FileUtils from './core/systemManager/fileutils';
+import FileUtils, { configureFilesystem } from './core/systemManager/fileutils';
 import Doctor from './core/systemManager/doctor';
 import PluginTools from './core/pluginManager';
 import SetupTools from './core/setupManager';
@@ -17,14 +18,10 @@ import 'source-map-support/register';
 Analytics.initialize();
 
 export const initializeBuilder = async (cmd, subCmd, process, program) => {
+    configureFilesystem(getConfigProp, doResolve, isSystemWin);
     const c = createRnvConfig(program, process, cmd, subCmd);
 
-    configureLogger(
-        c,
-        c.process,
-        c.command,
-        c.subCommand
-    );
+    configureLogger(c, Analytics);
     logInitialize();
 
     return c;

@@ -6,7 +6,6 @@ import taskRnvStart from './task.rnv.start';
 import taskRnvExport from './task.rnv.export';
 import taskRnvDeploy from './task.rnv.deploy';
 import taskRnvDebug from './task.rnv.debug';
-import taskRnvLog from './task.rnv.log';
 
 const TASKS = {};
 
@@ -22,15 +21,14 @@ addTask(taskRnvStart);
 addTask(taskRnvExport);
 addTask(taskRnvDeploy);
 addTask(taskRnvDebug);
-addTask(taskRnvLog);
 
 const executeTask = async (c, task, parentTask, originTask) => TASKS[task].fn(c, parentTask, originTask);
 
-const hasTask = task => !!TASKS[task];
+const hasTask = (task, isProjectScope) => (isProjectScope ? !!TASKS[task] : TASKS[task]?.isGlobalScope);
 
 const getTask = task => TASKS[task];
 
-const getSubTasks = task => Object.values(TASKS).filter(v => v.task.startsWith(task));
+const getSubTasks = (task, exactMatch) => Object.values(TASKS).filter(v => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
 
 const getTasks = () => Object.values(TASKS);
 

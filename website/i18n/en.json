@@ -237,8 +237,71 @@
       "changelog/0.30.3": {
         "title": "changelog/0.30.3"
       },
+      "changelog/0.30.4": {
+        "title": "changelog/0.30.4"
+      },
       "changelog/0.31.0-alpha.1": {
         "title": "changelog/0.31.0-alpha.1"
+      },
+      "changelog/0.31.0-alpha.10": {
+        "title": "changelog/0.31.0-alpha.10"
+      },
+      "changelog/0.31.0-alpha.11": {
+        "title": "changelog/0.31.0-alpha.11"
+      },
+      "changelog/0.31.0-alpha.12": {
+        "title": "changelog/0.31.0-alpha.12"
+      },
+      "changelog/0.31.0-alpha.13": {
+        "title": "changelog/0.31.0-alpha.13"
+      },
+      "changelog/0.31.0-alpha.14": {
+        "title": "changelog/0.31.0-alpha.14"
+      },
+      "changelog/0.31.0-alpha.15": {
+        "title": "changelog/0.31.0-alpha.15"
+      },
+      "changelog/0.31.0-alpha.16": {
+        "title": "changelog/0.31.0-alpha.16"
+      },
+      "changelog/0.31.0-alpha.17": {
+        "title": "changelog/0.31.0-alpha.17"
+      },
+      "changelog/0.31.0-alpha.18": {
+        "title": "changelog/0.31.0-alpha.18"
+      },
+      "changelog/0.31.0-alpha.19": {
+        "title": "changelog/0.31.0-alpha.19"
+      },
+      "changelog/0.31.0-alpha.2": {
+        "title": "changelog/0.31.0-alpha.2"
+      },
+      "changelog/0.31.0-alpha.20": {
+        "title": "changelog/0.31.0-alpha.20"
+      },
+      "changelog/0.31.0-alpha.21": {
+        "title": "changelog/0.31.0-alpha.21"
+      },
+      "changelog/0.31.0-alpha.3": {
+        "title": "changelog/0.31.0-alpha.3"
+      },
+      "changelog/0.31.0-alpha.4": {
+        "title": "changelog/0.31.0-alpha.4"
+      },
+      "changelog/0.31.0-alpha.5": {
+        "title": "changelog/0.31.0-alpha.5"
+      },
+      "changelog/0.31.0-alpha.6": {
+        "title": "changelog/0.31.0-alpha.6"
+      },
+      "changelog/0.31.0-alpha.7": {
+        "title": "changelog/0.31.0-alpha.7"
+      },
+      "changelog/0.31.0-alpha.8": {
+        "title": "changelog/0.31.0-alpha.8"
+      },
+      "changelog/0.31.0-alpha.9": {
+        "title": "changelog/0.31.0-alpha.9"
       },
       "config-app": {
         "title": "App Configs",
@@ -283,6 +346,10 @@
       "config-workspaces": {
         "title": "Workspace Configs",
         "sidebar_label": "Workspace Configs"
+      },
+      "engine-rn-electron-next": {
+        "title": "React Native Electron Next Engine",
+        "sidebar_label": "React Native Electron Next"
       },
       "engine-rn-electron": {
         "title": "React Native Electron Engine",

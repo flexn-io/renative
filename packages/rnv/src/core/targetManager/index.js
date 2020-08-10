@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import ora from 'ora';
 import { execCLI } from '../systemManager/exec';
 

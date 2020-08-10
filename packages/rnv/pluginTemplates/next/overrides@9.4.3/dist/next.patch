@@ -1,0 +1,273 @@
+diff --git a/packages/next/build/entries.ts b/packages/next/build/entries.ts
+index 1cd104772..f9f46b7bf 100644
+--- a/packages/next/build/entries.ts
++++ b/packages/next/build/entries.ts
+@@ -49,6 +49,10 @@ export function createPagesMapping(
+   pages['/_error'] = pages['/_error'] || 'next/dist/pages/_error'
+   pages['/_document'] = pages['/_document'] || 'next/dist/pages/_document'
+ 
++  Object.keys(pages).forEach(key => {
++    if (key.includes('.')) delete pages[key]
++  })
++
+   return pages
+ }
+ 
+diff --git a/packages/next/build/index.ts b/packages/next/build/index.ts
+index 2ef7065c8..7c3708e92 100644
+--- a/packages/next/build/index.ts
++++ b/packages/next/build/index.ts
+@@ -98,7 +98,7 @@ export type PrerenderManifest = {
+   preview: __ApiPreviewProps
+ }
+ 
+-export default async function build(dir: string, conf = null): Promise<void> {
++export default async function build(dir: string, conf = null, destDir): Promise<void> {
+   if (!(await isWriteable(dir))) {
+     throw new Error(
+       '> Build directory is not writeable. https://err.sh/vercel/next.js/build-dir-not-writeable'
+@@ -111,7 +111,7 @@ export default async function build(dir: string, conf = null): Promise<void> {
+   const config = loadConfig(PHASE_PRODUCTION_BUILD, dir, conf)
+   const { target } = config
+   const buildId = await generateBuildId(config.generateBuildId, nanoid)
+-  const distDir = path.join(dir, config.distDir)
++  const distDir = path.join(destDir, config.distDir)
+   const headers: Header[] = []
+   const rewrites: Rewrite[] = []
+   const redirects: Redirect[] = []
+@@ -196,7 +196,7 @@ export default async function build(dir: string, conf = null): Promise<void> {
+ 
+   const pagePaths: string[] = await collectPages(
+     pagesDir,
+-    config.pageExtensions
++    config.pageExtensionsRnv || config.pageExtensions
+   )
+ 
+   // needed for static exporting since we want to replace with HTML
+@@ -347,7 +347,7 @@ export default async function build(dir: string, conf = null): Promise<void> {
+   )
+ 
+   const configs = await Promise.all([
+-    getBaseWebpackConfig(dir, {
++    getBaseWebpackConfig(destDir || dir, {
+       tracer,
+       buildId,
+       isServer: false,
+@@ -356,7 +356,7 @@ export default async function build(dir: string, conf = null): Promise<void> {
+       pagesDir,
+       entrypoints: entrypoints.client,
+     }),
+-    getBaseWebpackConfig(dir, {
++    getBaseWebpackConfig(destDir || dir, {
+       tracer,
+       buildId,
+       isServer: true,
+@@ -822,7 +822,7 @@ export default async function build(dir: string, conf = null): Promise<void> {
+       exportTrailingSlash: false,
+     }
+ 
+-    await exportApp(dir, exportOptions, exportConfig)
++    await exportApp(destDir || dir, exportOptions, exportConfig)
+ 
+     // remove server bundles that were exported
+     for (const page of staticPages) {
+diff --git a/packages/next/cli/next-build.ts b/packages/next/cli/next-build.ts
+index 21bf0bfd7..7d7a67c24 100755
+--- a/packages/next/cli/next-build.ts
++++ b/packages/next/cli/next-build.ts
+@@ -1,17 +1,19 @@
+ #!/usr/bin/env node
+ import { existsSync } from 'fs'
+ import arg from 'next/dist/compiled/arg/index.js'
+-import { resolve } from 'path'
++import { resolve, join } from 'path'
+ 
+ import { cliCommand } from '../bin/next'
+ import build from '../build'
+ import { printAndExit } from '../server/lib/utils'
++import { setPagesDir } from '../lib/find-pages-dir'
+ 
+ const nextBuild: cliCommand = (argv) => {
+   const args = arg(
+     {
+       // Types
+       '--help': Boolean,
++      '--pagesDir': String,
+       // Aliases
+       '-h': '--help',
+     },
+@@ -24,6 +26,9 @@ const nextBuild: cliCommand = (argv) => {
+       Description
+         Compiles the application for production deployment
+ 
++      Options
++        --pagesDir      Location of pages dir
++    
+       Usage
+         $ next build <dir>
+ 
+@@ -34,14 +39,17 @@ const nextBuild: cliCommand = (argv) => {
+     )
+   }
+ 
+-  const dir = resolve(args._[0] || '.')
++  const dir = resolve('.');
++  const destDir = resolve(args._[0] || '.')
++
++  if (args['--pagesDir']) setPagesDir(join(dir, args['--pagesDir']))
+ 
+   // Check if the provided directory exists
+   if (!existsSync(dir)) {
+     printAndExit(`> No such directory exists as the project root: ${dir}`)
+   }
+ 
+-  build(dir)
++  build(dir, null, destDir)
+     .then(() => process.exit(0))
+     .catch((err) => {
+       console.error('')
+diff --git a/packages/next/cli/next-dev.ts b/packages/next/cli/next-dev.ts
+index e010277ff..a65caca0e 100755
+--- a/packages/next/cli/next-dev.ts
++++ b/packages/next/cli/next-dev.ts
+@@ -1,11 +1,12 @@
+ #!/usr/bin/env node
+-import { resolve } from 'path'
++import { resolve, join } from 'path'
+ import arg from 'next/dist/compiled/arg/index.js'
+ import { existsSync } from 'fs'
+ import startServer from '../server/lib/start-server'
+ import { printAndExit } from '../server/lib/utils'
+ import { startedDevelopmentServer } from '../build/output'
+ import { cliCommand } from '../bin/next'
++import { setPagesDir } from '../lib/find-pages-dir'
+ 
+ const nextDev: cliCommand = (argv) => {
+   const args = arg(
+@@ -14,6 +15,7 @@ const nextDev: cliCommand = (argv) => {
+       '--help': Boolean,
+       '--port': Number,
+       '--hostname': String,
++      '--pagesDir': String,
+ 
+       // Aliases
+       '-h': '--help',
+@@ -40,11 +42,13 @@ const nextDev: cliCommand = (argv) => {
+         --port, -p      A port number on which to start the application
+         --hostname, -H  Hostname on which to start the application
+         --help, -h      Displays this message
++        --pagesDir      Location of pages dir
+     `)
+     process.exit(0)
+   }
+ 
+-  const dir = resolve(args._[0] || '.')
++  const dir = resolve('.')
++  if (args['--pagesDir']) setPagesDir(join(dir, args['--pagesDir']))
+ 
+   // Check if pages dir exists and warn if not
+   if (!existsSync(dir)) {
+diff --git a/packages/next/cli/next-export.ts b/packages/next/cli/next-export.ts
+index 29e8085d0..1aaaa0649 100755
+--- a/packages/next/cli/next-export.ts
++++ b/packages/next/cli/next-export.ts
+@@ -5,6 +5,7 @@ import arg from 'next/dist/compiled/arg/index.js'
+ import exportApp from '../export'
+ import { printAndExit } from '../server/lib/utils'
+ import { cliCommand } from '../bin/next'
++import { setPagesDir } from '../lib/find-pages-dir'
+ 
+ const nextExport: cliCommand = (argv) => {
+   const args = arg(
+@@ -14,6 +15,7 @@ const nextExport: cliCommand = (argv) => {
+       '--silent': Boolean,
+       '--outdir': String,
+       '--threads': Number,
++      '--pagesDir': String,
+ 
+       // Aliases
+       '-h': '--help',
+@@ -39,11 +41,14 @@ const nextExport: cliCommand = (argv) => {
+         -h - list this help
+         -o - set the output dir (defaults to 'out')
+         -s - do not print any messages to console
++        --pagesDir      Location of pages dir
+     `)
+     process.exit(0)
+   }
+ 
+-  const dir = resolve(args._[0] || '.')
++  const dir = resolve('.')
++  const destDir = resolve(args._[0] || '.')
++  if (args['--pagesDir']) setPagesDir(join(dir, args['--pagesDir']))
+ 
+   // Check if pages dir exists and warn if not
+   if (!existsSync(dir)) {
+@@ -56,7 +61,7 @@ const nextExport: cliCommand = (argv) => {
+     outdir: args['--outdir'] ? resolve(args['--outdir']) : join(dir, 'out'),
+   }
+ 
+-  exportApp(dir, options)
++  exportApp(dir, options, null, destDir)
+     .then(() => {
+       printAndExit('Export successful', 0)
+     })
+diff --git a/packages/next/export/index.ts b/packages/next/export/index.ts
+index 5d4bd0da9..e222aad1a 100644
+--- a/packages/next/export/index.ts
++++ b/packages/next/export/index.ts
+@@ -98,7 +98,8 @@ interface ExportOptions {
+ export default async function exportApp(
+   dir: string,
+   options: ExportOptions,
+-  configuration?: any
++  configuration?: any,
++  destDir?: string
+ ): Promise<void> {
+   function log(message: string): void {
+     if (options.silent) {
+@@ -114,7 +115,7 @@ export default async function exportApp(
+ 
+   const nextConfig = configuration || loadConfig(PHASE_EXPORT, dir)
+   const threads = options.threads || Math.max(cpus().length - 1, 1)
+-  const distDir = join(dir, nextConfig.distDir)
++  const distDir = join(destDir || dir, nextConfig.distDir)
+ 
+   const telemetry = options.buildExport ? null : new Telemetry({ distDir })
+ 
+@@ -194,7 +195,7 @@ export default async function exportApp(
+   }
+ 
+   // Initialize the output directory
+-  const outDir = options.outdir
++  const outDir = destDir ? join(destDir, 'out') : options.outdir
+ 
+   if (outDir === join(dir, 'public')) {
+     throw new Error(
+diff --git a/packages/next/lib/find-pages-dir.ts b/packages/next/lib/find-pages-dir.ts
+index a4acde163..7722c7a64 100644
+--- a/packages/next/lib/find-pages-dir.ts
++++ b/packages/next/lib/find-pages-dir.ts
+@@ -1,6 +1,8 @@
+ import fs from 'fs'
+ import path from 'path'
+ 
++let pagesDir = null;
++
+ export const existsSync = (f: string): boolean => {
+   try {
+     fs.accessSync(f, fs.constants.F_OK)
+@@ -10,7 +12,13 @@ export const existsSync = (f: string): boolean => {
+   }
+ }
+ 
++export function setPagesDir(dir) {
++    pagesDir = dir;
++    console.log('set dir', pagesDir);
++}
++
+ export function findPagesDir(dir: string): string {
++  if (pagesDir) return pagesDir;
+   // prioritize ./pages over ./src/pages
+   let curDir = path.join(dir, 'pages')
+   if (existsSync(curDir)) return curDir

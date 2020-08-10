@@ -1,7 +1,7 @@
 import { areNodeModulesInstalled } from '../core/common';
 
 import { installPackageDependencies } from '../core/systemManager/exec';
-import { chalk, logTask, logWarning } from '../core/systemManager/logger';
+import { logTask, logWarning } from '../core/systemManager/logger';
 
 export const taskRnvInstall = async (c, parentTask) => {
     logTask('taskRnvInstall', `requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
@@ -12,15 +12,11 @@ export const taskRnvInstall = async (c, parentTask) => {
     if (!areNodeModulesInstalled() || (c._requiresNpmInstall && !c.runtime.skipPackageUpdate)) {
         if (!areNodeModulesInstalled()) {
             logWarning(
-                `Looks like your node_modules folder is missing! Let's run ${chalk().white(
-                    'npm install'
-                )} first!`
+                'Looks like your node_modules folder is missing. INSTALLING...'
             );
         } else {
             logWarning(
-                `Looks like your node_modules out of date! Let's run ${chalk().white(
-                    'npm install'
-                )} first!`
+                'Looks like your node_modules out of date. INSTALLING...'
             );
         }
         c._requiresNpmInstall = false;

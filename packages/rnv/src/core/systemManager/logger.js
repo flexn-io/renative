@@ -1,7 +1,5 @@
-/* eslint-disable import/no-cycle */
 /* eslint-disable no-console */
 import _chalk from 'chalk';
-import Analytics from './analytics';
 
 const _chalkCols = {
     white: v => v,
@@ -77,20 +75,17 @@ let _c;
 let _isMono = false;
 let _defaultColor;
 let _highlightColor;
+let _analytics;
 
-export const configureLogger = (
-    c,
-    process
-) => {
+export const configureLogger = (c, analytics) => {
     _messages = [];
     _c = c;
     _c.timeStart = new Date();
-    _currentProcess = process;
-    // _currentCommand = command;
-    // _currentSubCommand = subCommand;
+    _currentProcess = c.process;
     _isInfoEnabled = !!c.program.info;
     _infoFilter = c.program.info?.split?.(',');
     _isMono = c.program.mono;
+    _analytics = analytics;
     if (_isMono) {
         currentChalk = _chalkMono;
     }
@@ -204,6 +199,13 @@ export const logSummary = (header = 'SUMMARY') => {
                 1
             );
         }
+        if (_c?.runtime?.bundleAssets) {
+            str += printIntoBox(
+                `Bundle assets ($.platforms.${_c?.platform}.bundleAssets): ${
+                    _highlightColor(!!_c.runtime?.bundleAssets)}`,
+                1
+            );
+        }
         if (_c.runtime?.target) {
             str += printIntoBox(
                 `Target (-t): ${_highlightColor(_c.runtime?.target)}`,
@@ -222,26 +224,13 @@ export const logSummary = (header = 'SUMMARY') => {
                 1
             );
         }
-        if (_c.files.project.config) {
+        if (_c?.runtime?.supportedPlatforms?.length) {
+            const plats = _c.runtime.supportedPlatforms.map(v => `${v.platform}${v.isConnected ? '' : '(ejected)'}`);
+            str += printArrIntoBox(plats, 'Supported Platforms: ');
+        }
+
+        if (_c?.files?.project?.config?.defaults) {
             const defaultProjectConfigs = _c.files.project.config.defaults;
-            if (defaultProjectConfigs?.supportedPlatforms) {
-                const plats = [];
-                const supPlatforms = _c.buildConfig?.defaults?.supportedPlatforms;
-                if (supPlatforms) {
-                    supPlatforms.forEach((item) => {
-                        let isEjected = '';
-                        if (_c.paths.project.platformTemplatesDirs) {
-                            isEjected = _c.paths.project.platformTemplatesDirs[
-                                item
-                            ]?.includes(_c.paths.rnv.platformTemplates.dir)
-                                ? ''
-                                : '(ejected)';
-                        }
-                        plats.push(`${item}${isEjected}`);
-                    });
-                }
-                str += printArrIntoBox(plats, 'Supported Platforms: ');
-            }
             if (defaultProjectConfigs?.template) {
                 str += printIntoBox(
                     `Master Template: ${_highlightColor(
@@ -251,6 +240,7 @@ export const logSummary = (header = 'SUMMARY') => {
                 );
             }
         }
+
         if (_c.process) {
             const envString = `${_c.process.platform} | ${_c.process.arch} | node v${_c.process.versions?.node}`;
             str += printIntoBox(`Env Info: ${currentChalk.gray(envString)}`, 1);
@@ -270,8 +260,8 @@ export const logSummary = (header = 'SUMMARY') => {
     str += logContent.replace(/\n\s*\n\s*\n/g, '\n\n');
     str += printIntoBox('');
     if (_c?.runtime?.platformBuildsProjectPath) {
-        str += currentChalk.grey(`│ Project location:
-│ ${currentChalk.cyan(_sanitizePaths(_c.runtime.platformBuildsProjectPath))}\n`);
+        str += printIntoBox('Project location:');
+        str += printIntoBox(`${currentChalk.cyan(_sanitizePaths(_c.runtime.platformBuildsProjectPath))}`, 1);
     }
     str += printBoxEnd();
 
@@ -388,8 +378,8 @@ export const logSuccess = (msg) => {
 };
 
 export const logError = (e, isEnd = false, skipAnalytics = false) => {
-    if (!skipAnalytics) {
-        Analytics.captureException(e);
+    if (!skipAnalytics && !!_analytics) {
+        _analytics.captureException(e);
     }
 
     if (e && e.message) {
@@ -406,8 +396,8 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
 
 export const logEnd = (code) => {
     logSummary();
-    if (_currentProcess) {
-        Analytics.teardown().then(() => {
+    if (_currentProcess && !!_analytics) {
+        _analytics.teardown().then(() => {
             _currentProcess.exit(code);
         });
     }

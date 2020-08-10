@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import merge from 'deepmerge';
 import {
     RENATIVE_CONFIG_NAME,
@@ -14,7 +13,6 @@ import {
     RN_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
     PLATFORMS,
-    SUPPORTED_PLATFORMS,
     USER_HOME_DIR,
     RNV_HOME_DIR,
     CURRENT_DIR,
@@ -32,7 +30,6 @@ import {
     sanitizeDynamicRefs,
     sanitizeDynamicProps,
     mergeObjects,
-    fsWriteFileSync,
     fsExistsSync,
     fsReadFileSync,
     fsReaddirSync,
@@ -88,10 +85,31 @@ export const configureRuntimeDefaults = async (c) => {
         });
     });
     if (c.buildConfig) {
-        c.runtime.scheme.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+        c.runtime.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
         const { hosted } = c.program;
         c.runtime.hosted = (hosted || !c.runtime.scheme.bundleAssets) && WEB_HOSTED_PLATFORMS.includes(c.platform);
+
+        c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms
+
+            .map((platform) => {
+                const engine = getEngineByPlatform(c, platform);
+                const dir = engine?.paths?.platformTemplatesDir;
+                let isConnected = false;
+                let isValid = false;
+                const pDir = c.paths.project.platformTemplatesDirs?.[platform];
+                if (pDir) {
+                    isValid = true;
+                    isConnected = pDir?.includes?.(getRealPath(c, dir));
+                }
+                return {
+                    engine,
+                    platform,
+                    isConnected,
+                    isValid
+                };
+            });
     }
+    return true;
 };
 
 export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
@@ -512,28 +530,50 @@ const _generatePlatformTemplatePaths = (c) => {
             chalk().white(c.paths.project.config)} has been moved to engine config`);
     }
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
-    const engine = getEngineByPlatform(c, c.platform);
-    const originalPath = engine?.paths?.platformTemplatesDir || '$RNV_HOME/platformTemplates';
-    // const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || engineTemplDir;
-
     const result = {};
-    SUPPORTED_PLATFORMS.forEach((v) => {
-        if (!pt[v]) {
-            result[v] = getRealPath(
-                c,
-                originalPath,
-                'platformTemplatesDir',
-                originalPath
-            );
+
+    c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
+        const engine = getEngineByPlatform(c, platform);
+        const originalPath = engine?.paths?.platformTemplatesDir;
+        if (originalPath) {
+            if (!pt[platform]) {
+                result[platform] = getRealPath(
+                    c,
+                    originalPath,
+                    'platformTemplatesDir',
+                    originalPath
+                );
+            } else {
+                result[platform] = getRealPath(
+                    c,
+                    pt[platform],
+                    'platformTemplatesDir',
+                    originalPath
+                );
+            }
         } else {
-            result[v] = getRealPath(
-                c,
-                pt[v],
-                'platformTemplatesDir',
-                originalPath
-            );
+            logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
         }
     });
+
+
+    // c.paths.rnv.platformTemplates.dir = getRealPath(
+    //     c,
+    //     originalPath,
+    //     'platformTemplatesDir',
+    //     originalPath
+    // );
+    // // const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || engineTemplDir;
+    //
+    // if (engine?.platforms) {
+    //     const supportedPlatforms = Object.keys(engine.platforms);
+    //
+    //     supportedPlatforms.forEach((v) => {
+    //
+    //     });
+    //     return result;
+    // }
+
     return result;
 };
 
@@ -671,7 +711,7 @@ export const parseRenativeConfigs = async (c) => {
     } else {
         c.paths.project.builds.config = path.join(
             c.paths.project.builds.dir,
-            `*_${c.platform}.json`
+            `<TBC>_${c.platform}.json`
         );
     }
 
@@ -725,23 +765,44 @@ export const parseRenativeConfigs = async (c) => {
         'projectConfig'
     );
 
-    // _findAndSwitchAppConfigDir(c);
-
     c.runtime.isWrapper = c.buildConfig.isWrapper;
     c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
 
     if (c.runtime.appId) {
-        _generateConfigPaths(
-            c.paths.appConfig,
-            path.join(c.paths.project.appConfigsDir, c.runtime.appId)
-        );
-        c.paths.appConfig.fontsDir = path.join(c.paths.appConfig.dir, 'fonts');
-        _loadConfigFiles(
-            c,
-            c.files.appConfig,
-            c.paths.appConfig,
-            c.paths.project.appConfigsDir
-        );
+        const appConfigsDirs = c.buildConfig?.paths?.appConfigsDirs;
+        // If user configured multiple appConfigsDirs, traverse and find right one
+        if (appConfigsDirs?.length) {
+            for (let i = 0; i < appConfigsDirs.length; i++) {
+                const appConfigsDir = appConfigsDirs[i];
+                _generateConfigPaths(
+                    c.paths.appConfig,
+                    path.join(appConfigsDir, c.runtime.appId)
+                );
+                c.paths.appConfig.fontsDir = path.join(c.paths.appConfig.dir, 'fonts');
+                _loadConfigFiles(
+                    c,
+                    c.files.appConfig,
+                    c.paths.appConfig,
+                    appConfigsDir
+                );
+                if (c.files.appConfig.config) {
+                    break;
+                }
+            }
+        }
+        // Fallback if nothing found
+        if (!c.files.appConfig.config) {
+            _generateConfigPaths(
+                c.paths.appConfig,
+                path.join(c.paths.project.appConfigsDir, c.runtime.appId)
+            );
+            _loadConfigFiles(
+                c,
+                c.files.appConfig,
+                c.paths.appConfig,
+                c.paths.project.appConfigsDir
+            );
+        }
 
         const workspaceAppConfigsDir = getRealPath(
             c,
@@ -772,105 +833,6 @@ export const parseRenativeConfigs = async (c) => {
         generateLocalConfig(c);
         generateBuildConfig(c);
     }
-};
-
-export const taskRnvWorkspaceConfigure = async (c) => {
-    logTask('taskRnvWorkspaceConfigure');
-
-    // Check globalConfig Dir
-    if (fsExistsSync(c.paths.workspace.dir)) {
-        logDebug(`${c.paths.workspace.dir} folder exists!`);
-    } else {
-        logInfo(
-            `${c.paths.workspace.dir} folder missing! Creating one for you...`
-        );
-        mkdirSync(c.paths.workspace.dir);
-    }
-
-    // Check globalConfig
-    if (fsExistsSync(c.paths.workspace.config)) {
-        logDebug(
-            `${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME} file exists!`
-        );
-    } else {
-        const oldGlobalConfigPath = path.join(
-            c.paths.workspace.dir,
-            'config.json'
-        );
-        if (fsExistsSync(oldGlobalConfigPath)) {
-            logWarning(
-                'Found old version of your config. will copy it to new renative.json config'
-            );
-            copyFileSync(oldGlobalConfigPath, c.paths.workspace.config);
-        } else {
-            logInfo(
-                `${
-                    c.paths.workspace.dir
-                }/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`
-            );
-            copyFileSync(
-                path.join(
-                    c.paths.rnv.dir,
-                    'supportFiles',
-                    'global-config-template.json'
-                ),
-                c.paths.workspace.config
-            );
-        }
-    }
-
-    if (fsExistsSync(c.paths.workspace.config)) {
-        c.files.workspace.config = JSON.parse(
-            fsReadFileSync(c.paths.workspace.config).toString()
-        );
-
-        if (c.files.workspace.config?.appConfigsPath) {
-            if (!fsExistsSync(c.files.workspace.config.appConfigsPath)) {
-                logWarning(
-                    `Looks like your custom global appConfig is pointing to ${chalk().white(
-                        c.files.workspace.config.appConfigsPath
-                    )} which doesn't exist! Make sure you create one in that location`
-                );
-            } else {
-                logInfo(
-                    `Found custom appConfing location pointing to ${chalk().white(
-                        c.files.workspace.config.appConfigsPath
-                    )}. ReNativewill now swith to that location!`
-                );
-                c.paths.project.appConfigsDir = c.files.workspace.config.appConfigsPath;
-            }
-        }
-
-        // Check config sanity
-        if (c.files.workspace.config.defaultTargets === undefined) {
-            logWarning(
-                `Looks like you're missing defaultTargets in your config ${chalk().white(
-                    c.paths.workspace.config
-                )}. Let's add them!`
-            );
-            const defaultConfig = JSON.parse(
-                fs
-                    .readFileSync(
-                        path.join(
-                            c.paths.rnv.dir,
-                            'supportFiles',
-                            'global-config-template.json'
-                        )
-                    )
-                    .toString()
-            );
-            const newConfig = {
-                ...c.files.workspace.config,
-                defaultTargets: defaultConfig.defaultTargets
-            };
-            fsWriteFileSync(
-                c.paths.workspace.config,
-                JSON.stringify(newConfig, null, 2)
-            );
-        }
-    }
-
-    return true;
 };
 
 export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } = {}) => {
@@ -964,10 +926,10 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
 
     c.paths.rnv.dir = RNV_HOME_DIR;
     // c.paths.rnv.nodeModulesDir = path.join(c.paths.rnv.dir, 'node_modules');
-    c.paths.rnv.platformTemplates.dir = path.join(
-        c.paths.rnv.dir,
-        'platformTemplates'
-    );
+    // c.paths.rnv.platformTemplates.dir = path.join(
+    //     c.paths.rnv.dir,
+    //     'platformTemplates'
+    // );
     c.paths.rnv.engines.dir = path.join(
         c.paths.rnv.dir,
         'engineTemplates'

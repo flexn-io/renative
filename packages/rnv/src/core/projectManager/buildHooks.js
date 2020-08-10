@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { logDebug, logHook } from '../systemManager/logger';
 import { executeAsync } from '../systemManager/exec';
 import { fsExistsSync } from '../systemManager/fileutils';

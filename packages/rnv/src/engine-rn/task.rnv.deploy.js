@@ -2,6 +2,11 @@ import { logTask } from '../core/systemManager/logger';
 import {
     TASK_EXPORT,
     TASK_DEPLOY,
+    IOS,
+    TVOS,
+    ANDROID,
+    ANDROID_TV,
+    ANDROID_WEAR,
 } from '../core/constants';
 import { executeTask } from '../core/engineManager';
 
@@ -19,5 +24,11 @@ export default {
     fn: taskRnvDeploy,
     task: 'deploy',
     params: [],
-    platforms: [],
+    platforms: [
+        IOS,
+        TVOS,
+        ANDROID,
+        ANDROID_TV,
+        ANDROID_WEAR,
+    ],
 };

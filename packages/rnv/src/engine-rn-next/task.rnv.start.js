@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import open from 'better-opn';
 
 import { logErrorPlatform } from '../core/platformManager';

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import inquirer from 'inquirer';
 import { chalk, logWarning, logTask, logDebug } from '../core/systemManager/logger';
 import Config from '../core/configManager/config';

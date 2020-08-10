@@ -1,6 +1,6 @@
-/* eslint-disable import/no-cycle */
 /* eslint-disable no-control-regex */
 /* eslint-disable no-bitwise */
+/* eslint-disable no-await-in-loop */
 
 import path from 'path';
 import { access, accessSync, constants } from 'fs';
@@ -76,6 +76,9 @@ const _execute = (c, command, opts = {}) => {
     logDebug(`_execute: ${logMessage}`);
     const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
     const spinner = !silent && !mono && ora({ text: `Executing: ${logMessage}` }).start();
+    if (opts.interactive) {
+        logRaw(`${chalk().green('✔')} Executing: ${logMessage}\n`);
+    }
 
     if (mono) {
         interval = setInterval(() => {
@@ -132,7 +135,6 @@ const _execute = (c, command, opts = {}) => {
             }
 
             if (!silent && !mono && !ignoreErrors) { spinner.fail(`FAILED: ${logMessage}`); } // parseErrorMessage will return false if nothing is found, default to previous implementation
-
             logDebug(
                 replaceOverridesInString(err.all, privateParams, privateMask)
             );
@@ -199,7 +201,7 @@ const execCLI = (c, cli, command, opts = {}) => {
  * @returns {Promise}
  *
  */
-const executeAsync = (_c, _cmd, _opts) => {
+const executeAsync = async (_c, _cmd, _opts) => {
     // swap values if c is not specified and get it from it's rightful place, config :)
     let c = _c;
     let cmd = _cmd;
@@ -209,8 +211,24 @@ const executeAsync = (_c, _cmd, _opts) => {
         cmd = c;
         c = Config.getConfig();
     }
+    opts = opts || {};
     if (cmd.includes('npm') && process.platform === 'win32') { cmd.replace('npm', 'npm.cmd'); }
-    return _execute(c, cmd, opts);
+    const cmdArr = cmd.split('&&');
+    let result;
+    if (cmdArr.length) {
+        for (let i = 0; i < cmdArr.length; i++) {
+            // if (cmdArr[i].startsWith('cd ')) {
+            //     // TODO: flaky. will need to improve
+            //     const newCwd = path.join(CURRENT_DIR, cmdArr[i].replace('cd ', ''));
+            //     opts.cwd = newCwd;
+            // } else {
+            //     await _execute(c, cmdArr[i], opts);
+            // }
+            result = await _execute(c, cmdArr[i], opts);
+        }
+    }
+
+    return result;
 };
 
 /**
@@ -265,11 +283,17 @@ const executeTelnet = (c, port, command) => new Promise((resolve) => {
 
 export const parseErrorMessage = (text, maxErrorLength = 800) => {
     if (!text) return '';
-
+    // Gradle specific
     const gradleFailIndex = text.indexOf('FAILURE: Build failed with an exception.');
     if (gradleFailIndex) {
         return text.substring(gradleFailIndex);
     }
+    // NextJS Specific
+    const nextFailIndex = text.indexOf('> Build error occurred');
+    if (nextFailIndex) {
+        return text.substring(nextFailIndex);
+    }
+
     const toSearch = /(exception|error|fatal|\[!])/i;
     let arr = text.split('\n');
 
@@ -497,6 +521,13 @@ export const cleanNodeModules = () => new Promise((resolve, reject) => {
 export const installPackageDependencies = async (failOnError = false) => {
     logTask('installPackageDependencies');
     const c = Config.getConfig();
+
+    const customScript = c.buildConfig?.tasks?.install?.script;
+
+    if (customScript) {
+        await executeAsync(customScript);
+        return true;
+    }
 
     const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
     const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');

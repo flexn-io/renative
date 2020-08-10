@@ -117,7 +117,7 @@ rnv run -p chromecast --port 9999
 
 ## Modifying index.html
 
-In order for you to do that you'll need to run the project first, so it generates the files you need first. Then you can copy `platformBuilds/_shared/template.js` to `platformConfig/builds/_shared/template.js` and modify it. If `platformConfig` or other folders do not exist manually create them.
+In order for you to do that you'll need to run the project first, so it generates the files you need first. Then you can copy `platformBuilds/_shared/template.js` to `appConfigs/base/builds/_shared/template.js` and modify it. 
 
 ## App Config
 

@@ -6,7 +6,7 @@ import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import {
     cleanFolder,
     copyFolderContentsRecursiveSync,
-    writeFileSync,
+    writeFileSync, mkdirSync
 } from '../systemManager/fileutils';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import { checkAndConfigureSdks } from '../sdkManager';
@@ -35,20 +35,14 @@ export const updateProjectPlatforms = (c, platforms) => {
 };
 
 
-export const generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.map((platform) => {
-    const isConnected = c.paths.project.platformTemplatesDirs[
-        platform
-    ].includes(c.paths.rnv.platformTemplates.dir);
-    return {
-        name: `${platform} - ${
-            isConnected
-                ? chalk().green('(connected)')
-                : chalk().yellow('(ejected)')
-        }`,
-        value: platform,
-        isConnected
-    };
-});
+export const generatePlatformChoices = (c) => {
+    const options = c.runtime.supportedPlatforms.map(v => ({
+        name: `${v.platform} - ${v.isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')}`,
+        value: v.platform,
+        isConnected: v.isConnected
+    }));
+    return options;
+};
 
 export const cleanPlatformBuild = (c, platform) => new Promise((resolve) => {
     logTask('cleanPlatformBuild');
@@ -198,3 +192,25 @@ export const isPlatformActive = (c, platform, resolve) => {
     }
     return true;
 };
+export const copySharedPlatforms = c => new Promise((resolve) => {
+    logTask('copySharedPlatforms');
+
+    if (c.platform) {
+        mkdirSync(
+            path.resolve(
+                c.paths.project.platformTemplatesDirs[c.platform],
+                '_shared'
+            )
+        );
+
+        copyFolderContentsRecursiveSync(
+            path.resolve(
+                c.paths.project.platformTemplatesDirs[c.platform],
+                '_shared'
+            ),
+            path.resolve(c.paths.project.builds.dir, '_shared')
+        );
+    }
+
+    resolve();
+});

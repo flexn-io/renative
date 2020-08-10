@@ -56,4 +56,5 @@ export default {
     task: 'target list',
     params: [],
     platforms: [],
+    isGlobalScope: true
 };

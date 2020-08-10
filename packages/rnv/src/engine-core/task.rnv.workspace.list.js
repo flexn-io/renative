@@ -33,4 +33,5 @@ export default {
     task: TASK_WORKSPACE_LIST,
     params: [],
     platforms: [],
+    isGlobalScope: true
 };

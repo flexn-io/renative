@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import fs from 'fs';
 import path from 'path';
 import rimraf from 'rimraf';
@@ -6,11 +5,16 @@ import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import ncp from 'ncp';
-import { isSystemWin } from '../utils';
-
 import { chalk, logDebug, logError, logWarning } from './logger';
-import { getConfigProp } from '../common';
-import { doResolve } from '../resolve';
+
+let getConfigProp;
+let doResolve;
+let isSystemWin;
+export const configureFilesystem = (_getConfigProp, _doResolve, _isSystemWin) => {
+    getConfigProp = _getConfigProp;
+    doResolve = _doResolve;
+    isSystemWin = _isSystemWin;
+};
 
 export const fsWriteFileSync = (dest, data, encoding) => {
     // console.log('FS_WRITE', dest);
@@ -64,14 +68,6 @@ const _getSanitizedPath = (origPath, timestampPathsConfig) => {
     }
     return origPath;
 };
-
-// const getValidatedPath = (c, platform, targetPath) => {
-//     const bFilesArr = getTimestampBuildFiles(c, platform);
-//     if(bFilesArr?.) {
-//       if()
-//     }
-//     return targetPath
-// }
 
 export const copyFileSync = (source, target, skipOverride, timestampPathsConfig) => {
     logDebug('copyFileSync', source);
@@ -144,31 +140,6 @@ export const writeCleanFile = (source, destination, overrides, timestampPathsCon
         }
     }
 };
-
-// TODO: remove and use fileutils one
-// export const writeCleanFile = (source, destination, overrides) => {
-//     // logTask(`writeCleanFile`)
-//     if (!fs.existsSync(source)) {
-//         logError(`Cannot write file. source path doesn't exists: ${source}`);
-//         return;
-//     }
-//     if (!fs.existsSync(destination)) {
-//         logWarning(
-//             `destination path doesn't exists: ${destination}. will create new one`
-//         );
-//         // return;
-//     }
-//     const pFile = fs.readFileSync(source, 'utf8');
-//     let pFileClean = pFile;
-//     if (overrides) {
-//         overrides.forEach((v) => {
-//             const regEx = new RegExp(v.pattern, 'g');
-//             pFileClean = pFileClean.replace(regEx, v.override);
-//         });
-//     }
-//
-//     fsWriteFileSync(destination, pFileClean, 'utf8');
-// };
 
 export const readCleanFile = (source, overrides) => {
     // logTask(`writeCleanFile`)
@@ -282,17 +253,6 @@ export const copyFolderRecursiveSync = (
         });
     }
 };
-
-// let newPath = v;
-//
-// const fileNameArr = v.split('.');
-// if(fileNameArr.length > 1) {
-//   const noExtPath = fileNameArr
-//   newPath = fileNameArr.join('.')
-// }
-//
-// return path.join(pPath, newPath)
-// }));
 
 export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true,
     skipPaths, skipOverride, injectObject = null, timestampPathsConfig = null, c) => {

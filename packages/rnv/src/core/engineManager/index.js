@@ -1,9 +1,7 @@
-import { logDebug, logTask, logInitTask, logExitTask, chalk, logInfo } from '../systemManager/logger';
+import { logDebug, logTask, logInitTask, logExitTask, chalk, logInfo, logError } from '../systemManager/logger';
 import { getConfigProp } from '../common';
 import Analytics from '../systemManager/analytics';
-import {
-    executePipe
-} from '../projectManager/buildHooks';
+import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt } from '../../cli/prompt';
 
 const REGISTERED_ENGINES = [];
@@ -32,19 +30,21 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
 
 export const getEngineRunner = (c, task) => {
     const selectedEngine = getEngineByPlatform(c, c.platform);
+    const { configExists } = c.paths.project;
     if (!selectedEngine) {
-        if (ENGINES[ENGINE_CORE].hasTask(task)) return ENGINES[ENGINE_CORE];
+        if (ENGINES[ENGINE_CORE].hasTask(task, configExists)) return ENGINES[ENGINE_CORE];
         // return EngineNoOp;
         throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
     }
+    c.runtime.engineConfig = selectedEngine;
     const engine = ENGINES[selectedEngine?.id];
     if (!engine) {
-        if (ENGINES[ENGINE_CORE].hasTask(task)) return ENGINES[ENGINE_CORE];
+        if (ENGINES[ENGINE_CORE].hasTask(task, configExists)) return ENGINES[ENGINE_CORE];
         throw new Error(`Cound not find active engine with id ${selectedEngine?.id}. Available engines:
         ${Object.keys(ENGINES).join(', ')}`);
     }
-    if (engine.hasTask(task)) return engine;
-    if (ENGINES[ENGINE_CORE].hasTask(task)) return ENGINES[ENGINE_CORE];
+    if (engine.hasTask(task, configExists)) return engine;
+    if (ENGINES[ENGINE_CORE].hasTask(task, configExists)) return ENGINES[ENGINE_CORE];
 
     throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
 };
@@ -78,7 +78,7 @@ export const executeTask = async (c, task, parentTask, originTask) => {
     const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
     logInitTask(`${pt}=> [${chalk().bold.rgb(170, 106, 170)(task)}]`);
-    const inOnlyMode = c.program.only && !!parentTask;
+    const inOnlyMode = c.program.only; // && !!parentTask;
     // if (c.program.only && !!parentTask && task !== TASK_WORKSPACE_CONFIGURE) {
     //     logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} SKIPPING...`);
     //     await executeTask(c, TASK_WORKSPACE_CONFIGURE, task, originTask);
@@ -130,61 +130,112 @@ export const findSuitableTask = async (c) => {
                 };
             });
         });
+
         const taskInstances = Object.values(suitableTaskInstances);
         let tasks;
         let defaultCmd = 'new';
         let tasksCommands;
         let filteredTasks;
+        let addendum = '';
         if (!c.paths.project.configExists) {
-            filteredTasks = taskInstances.filter(v => v.taskInstance.skipProjectSetup);
+            filteredTasks = taskInstances.filter(v => v.taskInstance.isGlobalScope);
             tasks = filteredTasks.map(v => _getTaskOption(v)).sort();
             tasksCommands = filteredTasks.map(v => v.taskInstance.task.split(' ')[0]).sort();
+            addendum = ' (Not a ReNative project. options will be limited)';
         } else {
             tasks = taskInstances.map(v => _getTaskOption(v)).sort();
             tasksCommands = taskInstances.map(v => v.taskInstance.task.split(' ')[0]).sort();
-            defaultCmd = 'run';
+            defaultCmd = tasks.find(v => v.startsWith('run'));
         }
 
         const { command } = await inquirerPrompt({
             type: 'list',
             default: defaultCmd,
             name: 'command',
-            message: 'Pick a command',
+            message: `Pick a command${addendum}`,
             choices: tasks,
             pageSize: 15,
-            logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
+            logMessage: 'Welcome to the brave new world...'
         });
         c.command = tasksCommands[tasks.indexOf(command)];
     }
     let task = c.command;
     if (c.subCommand) task += ` ${c.subCommand}`;
 
-    const suitableEngines = REGISTERED_ENGINES.filter(engine => engine.hasTask(task));
+    let suitableEngines = REGISTERED_ENGINES.filter(engine => engine.hasTask(task, c.paths.project.configExists));
+    const autocompleteEngines = REGISTERED_ENGINES.filter(engine => engine.getSubTasks(task, true).length);
+
+    const isAutoComplete = !suitableEngines.length && !!c.command && !autocompleteEngines.length;
+    const message = isAutoComplete ? `Autocomplete action for "${c.command}"` : `Pick a subCommand for ${c.command}`;
 
     if (!suitableEngines.length) {
-        const supportedSubtasks = {};
+        // Get all supported tasks
+        const supportedSubtasksArr = [];
         REGISTERED_ENGINES.forEach((engine) => {
             engine.getSubTasks(task).forEach((taskInstance) => {
-                const taskKey = taskInstance.task.replace(task, '').trim();
-                const desc = taskInstance.description ? `(${taskInstance.description})` : '';
-                const key = `${taskKey} ${chalk().grey(desc)}`;
-                supportedSubtasks[key] = {
-                    taskKey
-                };
+                const isNotViable = !c.paths.project.configExists && !taskInstance.isGlobalScope;
+                if (!isNotViable) {
+                    const taskKey = isAutoComplete ? taskInstance.task : taskInstance.task.split(' ')[1];
+
+                    supportedSubtasksArr.push({
+                        desc: taskInstance.description?.toLowerCase?.(),
+                        taskKey
+                    });
+                }
             });
         });
+        const supportedSubtasks = {};
+        // Normalize task options
+        const supportedSubtasksFilter = {};
+        supportedSubtasksArr.forEach((tsk) => {
+            const mergedTask = supportedSubtasksFilter[tsk.taskKey];
+            if (!mergedTask) {
+                supportedSubtasksFilter[tsk.taskKey] = tsk;
+            } else if (!mergedTask.desc.includes(tsk.desc)) {
+                mergedTask.desc += `, ${tsk.desc}`;
+            }
+        });
+        // Generate final list object
+        Object.values(supportedSubtasksFilter).forEach((v) => {
+            const desc = v.desc ? `(${v.desc})` : '';
+            const key = `${v.taskKey} ${chalk().grey(desc)}`;
+            supportedSubtasks[key] = {
+                taskKey: v.taskKey
+            };
+        });
+
         const subTasks = Object.keys(supportedSubtasks);
         if (subTasks.length) {
             const { subCommand } = await inquirerPrompt({
                 type: 'list',
                 name: 'subCommand',
-                message: `Pick a subCommand for ${c.command}`,
+                message,
                 choices: subTasks,
             });
+            if (isAutoComplete) {
+                task = supportedSubtasks[subCommand].taskKey;
+                c.command = task.split(' ')[0];
+                c.subCommand = task.split(' ')[1];
+                if (c.subCommand) {
+                    task = `${c.command} ${c.subCommand}`;
+                } else {
+                    task = `${c.command}`;
+                }
+            } else {
+                c.subCommand = supportedSubtasks[subCommand].taskKey;
+                task = `${c.command} ${c.subCommand}`;
+            }
 
-            c.subCommand = supportedSubtasks[subCommand].taskKey;
-            task = `${c.command} ${c.subCommand}`;
+
+            suitableEngines = REGISTERED_ENGINES.filter(engine => engine.hasTask(task, c.paths.project.configExists));
         }
+    }
+
+    if (!suitableEngines.length) {
+        logError(`could not find suitable task for ${chalk().white(c.command)}`);
+        c.command = null;
+        c.subCommand = null;
+        return findSuitableTask(c);
     }
 
     if (!c.platform) {

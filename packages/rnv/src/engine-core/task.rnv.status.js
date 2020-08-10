@@ -6,4 +6,5 @@ export default {
     task: 'status',
     params: [],
     platforms: [],
+    isGlobalScope: true
 };

@@ -1,11 +1,11 @@
 import path from 'path';
 import { chalk, logTask, logWarning, logInfo } from '../core/systemManager/logger';
 import { copyFolderContentsRecursiveSync, fsExistsSync } from '../core/systemManager/fileutils';
-import { copySharedPlatforms } from '../core/projectManager/projectParser';
 import { getTimestampPathsConfig, getAppFolder } from '../core/common';
 import { isBuildSchemeSupported } from '../core/configManager/schemeParser';
 import { isPlatformSupportedSync, isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../core/platformManager';
 import { injectPlatformDependencies } from '../core/configManager/packageParser';
+import { configureRuntimeDefaults } from '../core/configManager/configParser';
 import { resolvePluginDependants } from '../core/pluginManager';
 import { executeTask } from '../core/engineManager';
 import { TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../core/constants';
@@ -72,6 +72,7 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
     await checkSdk(c);
+    await configureRuntimeDefaults(c);
 
     if (c.program.only && !!parentTask) return true;
 
@@ -84,7 +85,7 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
 
     if (c.program.reset || c.program.resetHard) {
         logInfo(
-            `You passed ${chalk().white(c.program.reset ? '-r' : '-R')} argument. "${chalk().white(getAppFolder(c, c.platform))}" will be cleaned up first!`
+            `You passed ${chalk().white(c.program.reset ? '-r' : '-R')} argument. "${chalk().white(getAppFolder(c, c.platform))}" CLEANING...DONE`
         );
         await cleanPlatformBuild(c, c.platform);
     }
@@ -93,7 +94,6 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     await injectPlatformDependencies(c);
     await cleanPlatformBuild(c, c.platform);
     await _runCopyPlatforms(c);
-    await copySharedPlatforms(c);
 };
 
 export default {

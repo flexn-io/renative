@@ -18,4 +18,5 @@ export default {
     params: [],
     platforms: [],
     skipPlatforms: true,
+    isGlobalScope: true
 };

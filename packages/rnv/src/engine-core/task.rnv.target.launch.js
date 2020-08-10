@@ -59,4 +59,5 @@ export default {
     task: 'target launch',
     params: [],
     platforms: [],
+    isGlobalScope: true
 };

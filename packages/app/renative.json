@@ -12,6 +12,15 @@
         "platformBuildsDir": "./platformBuilds",
         "projectConfigDir": "./appConfigs/base"
     },
+    "plugins": {
+        "@noriginmedia/react-spatial-navigation": "source:rnv",
+        "next": "source:rnv"
+    },
+    "tasks": {
+         "install": {
+             "script": "yarn bootstrap"
+         }
+    },
     "defaults": {
         "ports": {
             "ios": 8182,

@@ -2,10 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, Image, View, ScrollView, PixelRatio } from 'react-native';
 import { Api, Button, getScaledValue, useNavigate, useOpenURL, StyleSheet } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
-import Theme, { themeStyles, hasWebFocusableUI } from './theme';
-import config from '../platformAssets/renative.runtime.json';
+import Theme, { themeStyles, hasWebFocusableUI, ICON_LOGO, CONFIG } from './theme';
 import packageJson from '../package.json';
-import icon from '../platformAssets/runtime/logo.png';
 
 const styles = StyleSheet.create({
     appContainerScroll: {
@@ -49,9 +47,9 @@ const ScreenHome = (props) => {
                 ref={scrollRef}
                 contentContainerStyle={themeStyles.container}
             >
-                <Image style={styles.image} source={icon} />
+                <Image style={styles.image} source={ICON_LOGO} />
                 <Text style={themeStyles.textH2}>
-                    {config.welcomeMessage}
+                    {CONFIG.welcomeMessage}
                 </Text>
                 <Text style={themeStyles.textH2}>
 v

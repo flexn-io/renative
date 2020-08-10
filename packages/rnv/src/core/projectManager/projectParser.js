@@ -23,7 +23,20 @@ import { isPlatformActive } from '../platformManager';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/logger';
 import { copyTemplatePluginsSync } from '../pluginManager';
 import { loadFile } from '../configManager/configParser';
+import { installPackageDependencies } from '../systemManager/exec';
 import { inquirerPrompt } from '../../cli/prompt';
+
+export const checkIfProjectAndNodeModulesExists = async (c) => {
+    logTask('checkIfProjectAndNodeModulesExists');
+
+    if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
+        c._requiresNpmInstall = false;
+        logWarning(
+            'Looks like your node_modules folder is missing. INSTALLING...'
+        );
+        await installPackageDependencies();
+    }
+};
 
 export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
     logTask('checkAndCreateProjectPackage');
@@ -227,29 +240,6 @@ export const parseFonts = (c, callback) => {
         }
     }
 };
-
-export const copySharedPlatforms = c => new Promise((resolve) => {
-    logTask('copySharedPlatforms');
-
-    if (c.platform) {
-        mkdirSync(
-            path.resolve(
-                c.paths.project.platformTemplatesDirs[c.platform],
-                '_shared'
-            )
-        );
-
-        copyFolderContentsRecursiveSync(
-            path.resolve(
-                c.paths.project.platformTemplatesDirs[c.platform],
-                '_shared'
-            ),
-            path.resolve(c.paths.project.builds.dir, '_shared')
-        );
-    }
-
-    resolve();
-});
 
 const ASSET_PATH_ALIASES = {
     android: 'app/src/main',

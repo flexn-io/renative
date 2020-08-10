@@ -1,9 +1,9 @@
-/* eslint-disable import/no-cycle */
 import shell from 'shelljs';
 import inquirer from 'inquirer';
 
 import { commandExistsSync } from '../systemManager/exec';
-import { taskRnvWorkspaceConfigure } from '../configManager/configParser';
+import { TASK_WORKSPACE_CONFIGURE } from '../constants';
+import { executeTask } from '../engineManager';
 import { replaceHomeFolder, updateConfigFile } from '../systemManager/fileutils';
 import setupConfig from './config';
 import Config from '../configManager/config';
@@ -44,7 +44,7 @@ class BasePlatformSetup {
                 { androidSdk: location },
                 this.globalConfigPath
             );
-            await taskRnvWorkspaceConfigure(this.c); // trigger the configure to update the paths for clis
+            await executeTask(this.c, TASK_WORKSPACE_CONFIGURE); // trigger the configure to update the paths for clis
         }
 
         if (sdk === 'tizen') {
@@ -52,7 +52,7 @@ class BasePlatformSetup {
                 { tizenSdk: this.tizenSdkPath },
                 this.globalConfigPath
             );
-            await taskRnvWorkspaceConfigure(this.c); // trigger the configure to update the paths for clis
+            await executeTask(this.c, TASK_WORKSPACE_CONFIGURE); // trigger the configure to update the paths for clis
         }
 
         if (sdk === 'webos') {
@@ -60,7 +60,7 @@ class BasePlatformSetup {
                 { webosSdk: this.webosSdkPath },
                 this.globalConfigPath
             );
-            await taskRnvWorkspaceConfigure(this.c); // trigger the configure to update the paths for clis
+            await executeTask(this.c, TASK_WORKSPACE_CONFIGURE); // trigger the configure to update the paths for clis
         }
     }
 

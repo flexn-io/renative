@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { writeFileSync, readObjectSync } from './fileutils';
 import { PACKAGE_JSON_FILEDS } from '../constants';
 import { chalk, logWarning } from './logger';

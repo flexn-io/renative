@@ -1,5 +1,5 @@
 import merge from 'deepmerge';
-import { logError, logTask, logWarning, chalk } from '../systemManager/logger';
+import { logError, logTask, logWarning, chalk, logInfo } from '../systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
 
 export const isBuildSchemeSupported = async (c) => {
@@ -50,7 +50,10 @@ export const isBuildSchemeSupported = async (c) => {
         });
 
         c.program.scheme = schemeVals[selectedScheme];
-        return selectedScheme;
+        c.runtime.scheme = c.program.scheme;
     }
-    return scheme;
+    logInfo(`Current Build Scheme: ${chalk().bold.white(
+        c.runtime.scheme
+    )}`);
+    return true;
 };

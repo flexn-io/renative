@@ -2,6 +2,7 @@ import { logTask } from '../core/systemManager/logger';
 import { configureRuntimeDefaults, parseRenativeConfigs } from '../core/configManager/configParser';
 import { initializeTask, findSuitableTask, registerEngine } from '../core/engineManager';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
+import { checkIfProjectAndNodeModulesExists } from '../core/projectManager/projectParser';
 
 import EngineRn from '../engine-rn';
 import EngineRnWeb from '../engine-rn-web';
@@ -21,9 +22,11 @@ const registerEngines = () => {
 
 const run = async (c) => {
     registerEngines();
-    configureRuntimeDefaults(c);
+    await configureRuntimeDefaults(c);
     await checkAndMigrateProject(c);
     await parseRenativeConfigs(c);
+    // This has to happen in order for hooks to be able to run
+    await checkIfProjectAndNodeModulesExists(c);
 
     const taskInstance = await findSuitableTask(c);
 

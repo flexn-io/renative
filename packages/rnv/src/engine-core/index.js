@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 
-import taskRnvLink from './task.rnv.link';
-import taskRnvSwitch from './task.rnv.switch';
+// import taskRnvLink from './task.rnv.link';
+// import taskRnvSwitch from './task.rnv.switch';
 import taskRnvCryptoDecrypt from './task.rnv.crypto.decrypt';
 import taskRnvCryptoEncrypt from './task.rnv.crypto.encrypt';
 import taskRnvCryptoInstallCerts from './task.rnv.crypto.installCerts';
@@ -40,6 +40,7 @@ import taskRnvInstall from './task.rnv.install';
 import taskRnvProjectConfigure from './task.rnv.project.configure';
 import taskRnvAppConfigure from './task.rnv.app.configure';
 import taskRnvWorkspaceConfigure from './task.rnv.workspace.configure';
+import taskRnvLog from './task.rnv.log';
 
 const TASKS = {};
 
@@ -50,8 +51,8 @@ const addTask = (taskInstance) => {
     TASKS[taskInstance.task] = taskInstance;
 };
 
-addTask(taskRnvLink);
-addTask(taskRnvSwitch);
+// addTask(taskRnvLink);
+// addTask(taskRnvSwitch);
 addTask(taskRnvCryptoDecrypt);
 addTask(taskRnvCryptoEncrypt);
 addTask(taskRnvCryptoInstallCerts);
@@ -90,14 +91,15 @@ addTask(taskRnvInstall);
 addTask(taskRnvProjectConfigure);
 addTask(taskRnvAppConfigure);
 addTask(taskRnvWorkspaceConfigure);
+addTask(taskRnvLog);
 
 const executeTask = async (c, task, parentTask, originTask) => TASKS[task].fn(c, parentTask, originTask);
 
-const hasTask = task => !!TASKS[task];
+const hasTask = (task, isProjectScope) => (isProjectScope ? !!TASKS[task] : TASKS[task]?.isGlobalScope);
 
 const getTask = task => TASKS[task];
 
-const getSubTasks = task => Object.values(TASKS).filter(v => v.task.startsWith(task));
+const getSubTasks = (task, exactMatch) => Object.values(TASKS).filter(v => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
 
 const getTasks = () => Object.values(TASKS);
 

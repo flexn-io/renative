@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import PlatformSetup from '../setupManager';
 import { commandExistsSync } from '../systemManager/exec';
 import { checkRequiredPackage } from '../configManager/packageParser';
