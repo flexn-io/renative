@@ -62,6 +62,10 @@ export const configureRuntimeDefaults = async (c) => {
 
     logTask('configureRuntimeDefaults', `appId:${c.runtime.appId}`);
 
+    // TODO:
+    // version
+    // title
+
     c.runtime.port = c.program.port
   || c.buildConfig?.defaults?.ports?.[c.platform]
   || PLATFORMS[c.platform]?.defaultPort;

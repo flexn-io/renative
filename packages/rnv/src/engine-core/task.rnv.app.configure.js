@@ -130,6 +130,7 @@ const _loadAppConfigIDfromDir = (dir, appConfigsDir) => {
 // };
 
 const _askUserAboutConfigs = async (c, dir, id, basePath) => {
+    logTask('_askUserAboutConfigs');
     logWarning(
         `AppConfig error - It seems you have a mismatch between appConfig folder name (${
             dir
@@ -165,17 +166,23 @@ const _askUserAboutConfigs = async (c, dir, id, basePath) => {
         throw new Error('Please do the changes and rerun the command');
     }
 
+    const conf = { id, dir };
+
     if (choice === 'keepID') {
-        fsRenameSync(path.join(basePath, dir), path.join(basePath, id));
+        conf.dir = path.join(basePath, id);
+        fsRenameSync(path.join(basePath, dir), conf.dir);
     }
 
     if (choice === 'keepFolder') {
         const filePath = path.join(basePath, dir, 'renative.json');
         const fileContents = JSON.parse(fsReadFileSync(filePath));
         fileContents.id = dir;
+        conf.id = dir;
 
         writeFileSync(filePath, fileContents);
     }
+
+    return conf;
 };
 
 /* eslint-disable no-await-in-loop */
@@ -202,28 +209,31 @@ const matchAppConfigID = async (c, appConfigID) => {
             // find duplicates
             const ids = [];
             const dirs = [];
+            let confId;
             await Promise.all(
-                appConfigs.map(async (conf) => {
-                    const id = conf.id.toLowerCase();
-                    const dir = conf.dir.toLowerCase();
+                appConfigs.map(async (_conf) => {
+                    let conf = _conf;
+                    confId = conf.id;
+                    const { dir } = conf;
                     // find mismatches
-                    if (id !== dir) {
-                        await _askUserAboutConfigs(
+                    if (confId !== dir) {
+                        conf = await _askUserAboutConfigs(
                             c,
                             conf.dir,
                             conf.id,
                             appConfigsDir
                         );
                     }
-                    if (ids.includes(id)) {
+                    confId = conf.id;
+                    if (ids.includes(confId)) {
                         throw new Error(
                             `AppConfig error - You have 2 duplicate app configs with ID ${
-                                id
+                                confId
                             }. Keep in mind that ID is case insensitive.
 Please edit one of them in /appConfigs/<folder>/renative.json`
                         );
                     }
-                    ids.push(id);
+                    ids.push(confId);
                     if (dirs.includes(dir)) {
                         throw new Error(
                             `AppConfig error - You have 2 duplicate app config folders named ${
@@ -237,12 +247,9 @@ Please rename one /appConfigs/<folder>`
             );
 
             const foundConfig = appConfigs.filter(
-                cfg => cfg.id === appConfigID
-                  || cfg.id.toLowerCase() === appConfigID
-                  || cfg.dir === appConfigID
-                  || cfg.dir.toLowerCase() === appConfigID
+                cfg => cfg.id === appConfigID || cfg.dir === appConfigID
             );
-            if (foundConfig.length) return foundConfig[0].id.toLowerCase();
+            if (foundConfig.length) return foundConfig[0].id;
         }
     }
     return false;
@@ -298,9 +305,14 @@ export const taskRnvAppConfigure = async (c) => {
             return Promise.reject('No app configs found for this project');
         }
     } else if (c.program.appConfigID) {
-        const aid = await matchAppConfigID(c, c.program.appConfigID?.toLowerCase?.());
+        const aid = await matchAppConfigID(c, c.program.appConfigID);
         if (!aid) {
-            logWarning('Cannot find app config ');
+            logWarning(`Cannot find app config ${chalk().white(c.program.appConfigID)}`);
+            const hasAppConfig = await _findAndSwitchAppConfigDir(c);
+            if (!hasAppConfig) {
+                // await executeTask(c, TASK_APP_CREATE, TASK_APP_CONFIGURE);
+                return Promise.reject('No app configs found for this project');
+            }
         }
         _setAppId(c, aid);
     }
