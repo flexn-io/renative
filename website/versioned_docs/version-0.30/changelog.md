@@ -20,8 +20,12 @@ original_id: changelog
 
 ### Breaking Changes
 
-- none
+- `.next.js` extension is DEPRECATED. use `.web.js` and `.server.web.js` in combination with engine `engine-rn-next` instead
+REASON: next.js was temporary `web-next` platform extension. this has been replaced with `engine-rn-next` which supports standard `-p web`
 
+- `rnv configure` now requires platform `-p` specified. if you don't, rnv will ask you to pick one. if you use `--ci` option command will fail.
+REASON: `rnv configure` used to run configure command on all supported platforms of the project at once but that is hardly ever needed as all platform commands chain back to configure anyway. this created unnecessary log builds
+NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / export / package` afterwards as these commands will run configure task as dependency anyway
 
 ## v0.31.0-alpha.22 (2020-7-30)
 
@@ -1410,6 +1414,38 @@ rnv run -p android
 ### Breaking Changes
 
 - none
+
+## v0.31.0-feat-tasks.1 (2020-8-26)
+
+### Fixed
+
+- added scripts to publish with feat tag
+- fix case sensitivity issues in appConfig folders
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-feat.tasks-1 (2020-8-26)
+
+### Fixed
+
+- added scripts to publish with feat tag
+- fix case sensitivity issues in appConfig folders
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
 
 ## v0.30.0-rc1 (2020-6-21)
 
