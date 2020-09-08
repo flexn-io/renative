@@ -1415,10 +1415,13 @@ rnv run -p android
 
 - none
 
-## v0.31.0-feat-tasks.1 (2020-8-26)
+## v0.31.0-feat-tasks.2 (2020-9-8)
 
 ### Fixed
 
+- [feat] support merge folders of extend + base appConfigs globally
+- 0.31.0-feat-tasks.1.md
+- added feat to version counter in changelog buildhook
 - added scripts to publish with feat tag
 - fix case sensitivity issues in appConfig folders
 
@@ -1431,7 +1434,7 @@ rnv run -p android
 - none
 
 
-## v0.31.0-feat.tasks-1 (2020-8-26)
+## v0.31.0-feat-tasks.1 (2020-8-26)
 
 ### Fixed
 
