@@ -7,10 +7,8 @@
     "isWrapper": true,
     "paths": {
         "appConfigsDir": "./appConfigs",
-        "entryDir": "./",
         "platformAssetsDir": "./platformAssets",
-        "platformBuildsDir": "./platformBuilds",
-        "projectConfigDir": "./appConfigs/base"
+        "platformBuildsDir": "./platformBuilds"
     },
     "plugins": {
         "@noriginmedia/react-spatial-navigation": "source:rnv",

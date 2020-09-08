@@ -234,6 +234,31 @@ export const loadFile = (fileObj, pathObj, key) => {
     }
 };
 
+// export const loadFiles = (fileArr, pathArr) => {
+//     const pKey = `${key}Exists`;
+//     pathArr.forEach((item, i) => {
+//       if (!fsExistsSync(pathObj[key])) {
+//           pathObj[pKey] = false;
+//           logDebug(`WARNING: loadFile: Path ${pathObj[key]} does not exists!`);
+//           logDebug(`FILE_EXISTS: ${key}:false path:${pathObj[key]}`);
+//           return false;
+//       }
+//     });
+//
+//
+//     pathObj[pKey] = true;
+//     try {
+//         const fileString = fsReadFileSync(pathObj[key]).toString();
+//         fileObj[key] = JSON.parse(fileString);
+//         pathObj[pKey] = true;
+//         logDebug(`FILE_EXISTS: ${key}:true size:${_formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
+//         return true;
+//     } catch (e) {
+//         logError(`loadFile: ${pathObj[key]} :: ${e}`, true); // crash if there's an error in the config file
+//         return false;
+//     }
+// };
+
 const _arrayMergeOverride = (destinationArray, sourceArray) => sourceArray;
 
 
@@ -312,17 +337,15 @@ export const generateBuildConfig = (c) => {
         c.paths.workspace.project.config,
         c.paths.workspace.project.configPrivate,
         c.paths.workspace.project.configLocal,
-        c.paths.workspace.appConfig.configBase,
-        c.paths.workspace.appConfig.config,
-        c.paths.workspace.appConfig.configPrivate,
-        c.paths.workspace.appConfig.configLocal,
+        ...c.paths.workspace.appConfig.configs,
+        ...c.paths.workspace.appConfig.configsPrivate,
+        ...c.paths.workspace.appConfig.configsLocal,
         c.paths.project.config,
         c.paths.project.configPrivate,
         c.paths.project.configLocal,
-        c.paths.appConfig.configBase,
-        c.paths.appConfig.config,
-        c.paths.appConfig.configPrivate,
-        c.paths.appConfig.configLocal
+        ...c.paths.appConfig.configs,
+        ...c.paths.appConfig.configsPrivate,
+        ...c.paths.appConfig.configsLocal
     ];
     const cleanPaths = mergeOrder.filter(v => v);
     const existsPaths = cleanPaths.filter((v) => {
@@ -358,17 +381,15 @@ export const generateBuildConfig = (c) => {
         c.files.workspace.project.config,
         c.files.workspace.project.configPrivate,
         c.files.workspace.project.configLocal,
-        c.files.workspace.appConfig.configBase,
-        c.files.workspace.appConfig.config,
-        c.files.workspace.appConfig.configPrivate,
-        c.files.workspace.appConfig.configLocal,
+        ...c.files.workspace.appConfig.configs,
+        ...c.files.workspace.appConfig.configsPrivate,
+        ...c.files.workspace.appConfig.configsLocal,
         c.files.project.config,
         c.files.project.configPrivate,
         c.files.project.configLocal,
-        c.files.appConfig.configBase,
-        c.files.appConfig.config,
-        c.files.appConfig.configPrivate,
-        c.files.appConfig.configLocal
+        ...c.files.appConfig.configs,
+        ...c.files.appConfig.configsPrivate,
+        ...c.files.appConfig.configsLocal
     ];
 
     // mergeFiles.forEach((mergeFile, i) => {
@@ -422,7 +443,7 @@ export const generateBuildConfig = (c) => {
                 const size = _formatBytes(Buffer.byteLength(result || '', 'utf8'));
                 logTask(chalk().grey('generateBuildConfig'), `size:${size}`);
             } else {
-                logDebug(`generateBuildConfig NOT SAVED: ${c.paths.project.builds.config}`);
+                logWarning(`generateBuildConfig NOT SAVED: ${c.paths.project.builds.config}`);
             }
         } else {
             logWarning('Cannot save buildConfig as c.paths.project.builds.dir is not defined');
@@ -442,7 +463,7 @@ export const generateBuildConfig = (c) => {
     // }
 };
 
-const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
+const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
     let result = false;
     let extendAppId;
     if (loadFile(fileObj, pathObj, 'config')) {
@@ -459,21 +480,80 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
         extendAppId = fileObj.configPrivate.extend || extendAppId;
         result = true;
     }
-    if (extendAppId && extendDir) {
-        pathObj.configBase = path.join(extendDir, extendAppId, 'renative.json');
-        pathObj.dirs = [path.join(extendDir, extendAppId), pathObj.dir];
-        pathObj.fontDirs = [
-            path.join(pathObj.dirs[0], 'fonts'),
-            path.join(pathObj.dirs[1], 'fonts')
-        ];
-        pathObj.pluginDirs = [
-            path.join(pathObj.dirs[0], 'plugins'),
-            path.join(pathObj.dirs[1], 'plugins')
-        ];
-        loadFile(fileObj, pathObj, 'configBase');
-    } else {
-        pathObj.fontDirs = c.paths.project.projectConfig.fontsDirs;
+
+
+    if (parseAppConfigs) {
+        pathObj.dirs = [];
+        pathObj.fontsDirs = [];
+        pathObj.pluginDirs = [];
+        pathObj.configs = [];
+        pathObj.configsLocal = [];
+        pathObj.configsPrivate = [];
+
+        fileObj.configs = [];
+        fileObj.configsLocal = [];
+        fileObj.configsPrivate = [];
+        const fileObj1 = {};
+        // PATH1: appConfigs/base
+        const path1 = c.paths.project.appConfigBase.dir;
+        const pathObj1 = {
+            config: path.join(path1, RENATIVE_CONFIG_NAME),
+            configLocal: path.join(path1, RENATIVE_CONFIG_LOCAL_NAME),
+            configPrivate: path.join(path1, RENATIVE_CONFIG_PRIVATE_NAME),
+        };
+        pathObj.dirs.push(path1);
+        pathObj.fontsDirs.push(path.join(path1, 'fonts'));
+        pathObj.pluginDirs.push(path.join(path1, 'plugins'));
+        pathObj.configs.push(pathObj1.config);
+        pathObj.configsPrivate.push(pathObj1.configPrivate);
+        pathObj.configsLocal.push(pathObj1.configLocal);
+        // FILE1: appConfigs/<extendConfig>
+        loadFile(fileObj1, pathObj1, 'config');
+        loadFile(fileObj1, pathObj1, 'configPrivate');
+        loadFile(fileObj1, pathObj1, 'configLocal');
+        if (fileObj1.config) fileObj.configs.push(fileObj1.config);
+        if (fileObj1.configPrivate) fileObj.configsPrivate.push(fileObj1.configPrivate);
+        if (fileObj1.configLocal) fileObj.configsLocal.push(fileObj1.configLocal);
+
+        if (parseAppConfigs && extendAppId && c.paths.project.appConfigsDirNames.includes(extendAppId)) {
+            const path2 = path.join(c.paths.project.appConfigsDir, extendAppId);
+            const pathObj2 = {
+                config: path.join(path2, RENATIVE_CONFIG_NAME),
+                configLocal: path.join(path2, RENATIVE_CONFIG_LOCAL_NAME),
+                configPrivate: path.join(path2, RENATIVE_CONFIG_PRIVATE_NAME),
+            };
+            const fileObj2 = {};
+            // PATH2: appConfigs/<extendConfig>
+            pathObj.dirs.push(path2);
+            pathObj.fontsDirs.push(path.join(path2, 'fonts'));
+            pathObj.pluginDirs.push(path.join(path2, 'plugins'));
+            pathObj.configs.push(pathObj2.config);
+            pathObj.configsLocal.push(pathObj2.configLocal);
+            pathObj.configsPrivate.push(pathObj2.configPrivate);
+            // FILE2: appConfigs/<extendConfig>
+            loadFile(fileObj2, pathObj2, 'config');
+            loadFile(fileObj2, pathObj2, 'configPrivate');
+            loadFile(fileObj2, pathObj2, 'configLocal');
+
+            if (fileObj2.config) fileObj.configs.push(fileObj2.config);
+            if (fileObj2.configLocal) fileObj.configsLocal.push(fileObj2.configLocal);
+            if (fileObj2.configPrivate) fileObj.configsPrivate.push(fileObj2.configPrivate);
+        }
+
+        // PATH2: appConfigs/<appId>
+        const path3 = pathObj.dir;
+        pathObj.dirs.push(path3);
+        pathObj.fontsDirs.push(path.join(path3, 'fonts'));
+        pathObj.pluginDirs.push(path.join(path3, 'plugins'));
+        pathObj.configs.push(path.join(path3, RENATIVE_CONFIG_NAME));
+        pathObj.configsLocal.push(path.join(path3, RENATIVE_CONFIG_LOCAL_NAME));
+        pathObj.configsPrivate.push(path.join(path3, RENATIVE_CONFIG_PRIVATE_NAME));
+        // FILE3: appConfigs/<appId>
+        if (fileObj.config) fileObj.configs.push(fileObj.config);
+        if (fileObj.configPrivate) fileObj.configsPrivate.push(fileObj.configPrivate);
+        if (fileObj.configLocal) fileObj.configsLocal.push(fileObj.configLocal);
     }
+
 
     generateBuildConfig(c);
     return result;
@@ -528,9 +608,16 @@ const _generatePlatformTemplatePaths = (c) => {
         logWarning(`You're missing paths object in your ${chalk().white(c.paths.project.config)}`);
         c.buildConfig.paths = {};
     }
-    if (c.buildConfig.platformTemplatesDirs || c.buildConfig.platformTemplatesDir
-      || c.buildConfig.paths.platformTemplatesDir) {
+    if (c.files.config?.platformTemplatesDirs) {
         logWarning(`DEPRECATED: platformTemplatesDirs in ${
+            chalk().white(c.paths.project.config)} has been moved to engine config`);
+    }
+    if (c.files.config?.paths?.platformTemplatesDir) {
+        logWarning(`DEPRECATED: paths.platformTemplatesDir in ${
+            chalk().white(c.paths.project.config)} has been moved to engine config`);
+    }
+    if (c.files.config?.platformTemplatesDir) {
+        logWarning(`DEPRECATED: platformTemplatesDir in ${
             chalk().white(c.paths.project.config)} has been moved to engine config`);
     }
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
@@ -581,13 +668,16 @@ const _generatePlatformTemplatePaths = (c) => {
     return result;
 };
 
-const _listAppConfigsFoldersSync = (
-    dirPath,
-    configDirs,
-    ignoreHiddenConfigs
-) => {
-    logDebug(`_listAppConfigsFoldersSync:${dirPath}`);
-    if (!fsExistsSync(dirPath)) return;
+
+export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
+    logTask('listAppConfigsFoldersSync', `ignoreHiddenConfigs:${!!ignoreHiddenConfigs}`);
+
+    if (!c.paths?.project) return [];
+
+    const dirPath = c.paths.project.appConfigsDir;
+
+    if (!fsExistsSync(dirPath)) return [];
+    const appConfigsDirs = [];
     fsReaddirSync(dirPath).forEach((dir) => {
         const appConfigDir = path.join(dirPath, dir);
         if (
@@ -600,36 +690,18 @@ const _listAppConfigsFoldersSync = (
                     try {
                         const config = readObjectSync(appConfig);
                         if (config?.hidden !== true) {
-                            configDirs.push(dir);
+                            appConfigsDirs.push(dir);
                         }
                     } catch (e) {
                         logWarning(`_listAppConfigsFoldersSync: ${e}`);
                     }
                 }
             } else {
-                configDirs.push(dir);
+                appConfigsDirs.push(dir);
             }
         }
     });
-};
-
-export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
-    logTask('listAppConfigsFoldersSync', `ignoreHiddenConfigs:${!!ignoreHiddenConfigs}`);
-    const configDirs = [];
-    const appConfigsDirs = c.buildConfig?.paths?.appConfigsDirs;
-    if (appConfigsDirs && appConfigsDirs.forEach) {
-        appConfigsDirs.forEach((v) => {
-            _listAppConfigsFoldersSync(v, configDirs, ignoreHiddenConfigs);
-        });
-    } else {
-        _listAppConfigsFoldersSync(
-            c.paths.project.appConfigsDir,
-            configDirs,
-            ignoreHiddenConfigs
-        );
-    }
-
-    return configDirs;
+    return appConfigsDirs;
 };
 
 export const loadProjectTemplates = (c) => {
@@ -758,13 +830,13 @@ export const parseRenativeConfigs = async (c) => {
     );
     _loadConfigFiles(c, c.files.workspace.project, c.paths.workspace.project);
 
-    c.paths.workspace.project.projectConfig.dir = path.join(
+    c.paths.workspace.project.appConfigBase.dir = path.join(
         c.paths.workspace.project.dir,
         'appConfigs',
         'base'
     );
 
-    c.paths.workspace.project.projectConfig.dir_LEGACY = path.join(
+    c.paths.workspace.project.appConfigBase.dir_LEGACY = path.join(
         c.paths.workspace.project.dir,
         'projectConfig'
     );
@@ -772,29 +844,8 @@ export const parseRenativeConfigs = async (c) => {
     c.runtime.isWrapper = c.buildConfig.isWrapper;
     c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
 
+
     if (c.runtime.appId) {
-        const appConfigsDirs = c.buildConfig?.paths?.appConfigsDirs;
-        // If user configured multiple appConfigsDirs, traverse and find right one
-        if (appConfigsDirs?.length) {
-            for (let i = 0; i < appConfigsDirs.length; i++) {
-                const appConfigsDir = appConfigsDirs[i];
-                _generateConfigPaths(
-                    c.paths.appConfig,
-                    path.join(appConfigsDir, c.runtime.appId)
-                );
-                c.paths.appConfig.fontsDir = path.join(c.paths.appConfig.dir, 'fonts');
-                _loadConfigFiles(
-                    c,
-                    c.files.appConfig,
-                    c.paths.appConfig,
-                    appConfigsDir
-                );
-                if (c.files.appConfig.config) {
-                    break;
-                }
-            }
-        }
-        // Fallback if nothing found
         if (!c.files.appConfig.config) {
             _generateConfigPaths(
                 c.paths.appConfig,
@@ -804,7 +855,7 @@ export const parseRenativeConfigs = async (c) => {
                 c,
                 c.files.appConfig,
                 c.paths.appConfig,
-                c.paths.project.appConfigsDir
+                true
             );
         }
 
@@ -824,7 +875,7 @@ export const parseRenativeConfigs = async (c) => {
             c,
             c.files.workspace.appConfig,
             c.paths.workspace.appConfig,
-            c.paths.workspace.project.appConfigsDir
+            true
         );
 
         // LOAD WORKSPACE /RENATIVE.*.JSON
@@ -844,10 +895,74 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
         cli: {},
         runtime: {},
         paths: {
+            rnv: {
+                pluginTemplates: {
+                    configs: {}
+                },
+                platformTemplates: {},
+                projectTemplates: {},
+                platformTemplate: {},
+                plugins: {},
+                engines: {},
+                projectTemplate: {}
+            },
+            workspace: {
+                project: {
+                    appConfigBase: {},
+                    builds: {},
+                    assets: {},
+                    platformTemplates: {},
+                    appConfigsDirs: [],
+                    appConfigsDirNames: []
+                },
+                appConfig: {
+                    configs: [],
+                    configsPrivate: [],
+                    configsLocal: []
+                }
+            },
+            defaultWorkspace: {
+                project: {
+                    appConfigBase: {},
+                    builds: {},
+                    assets: {},
+                    platformTemplates: {},
+                    appConfigsDirs: [],
+                    appConfigsDirNames: []
+                },
+                appConfig: {
+                    configs: [],
+                    configsPrivate: [],
+                    configsLocal: []
+                }
+            },
+            project: {
+                appConfigBase: {},
+                builds: {},
+                assets: {},
+                platformTemplates: {},
+                appConfigsDirs: [],
+                appConfigsDirNames: []
+            },
+            appConfig: {
+                configs: [],
+                configsPrivate: [],
+                configsLocal: []
+            },
+            // EXTRA
+            GLOBAL_RNV_DIR: '',
             buildHooks: {
                 dist: {}
             },
             home: {},
+            template: {
+                appConfigBase: {},
+                builds: {},
+                assets: {},
+                platformTemplates: {}
+            },
+        },
+        files: {
             rnv: {
                 pluginTemplates: {},
                 platformTemplates: {},
@@ -857,67 +972,42 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
                 engines: {},
                 projectTemplate: {}
             },
-            global: {},
+            workspace: {
+                project: {
+                    appConfigBase: {},
+                    builds: {},
+                    assets: {},
+                    platformTemplates: {}
+                },
+                appConfig: {
+                    configs: [],
+                    configsPrivate: [],
+                    configsLocal: []
+                }
+            },
+            defaultWorkspace: {
+                project: {
+                    appConfigBase: {},
+                    builds: {},
+                    assets: {},
+                    platformTemplates: {}
+                },
+                appConfig: {
+                    configs: [],
+                    configsPrivate: [],
+                    configsLocal: []
+                }
+            },
             project: {
-                projectConfig: {},
+                appConfigBase: {},
                 builds: {},
                 assets: {},
                 platformTemplates: {}
             },
-            template: {},
-            appConfig: {},
-            workspace: {
-                project: {
-                    projectConfig: {},
-                    builds: {},
-                    assets: {},
-                    platformTemplates: {}
-                },
-                appConfig: {}
-            },
-            defaultWorkspace: {
-                project: {
-                    projectConfig: {},
-                    builds: {},
-                    assets: {},
-                    platformTemplates: {}
-                },
-                appConfig: {}
-            }
-        },
-        files: {
-            rnv: {
-                pluginTemplates: {},
-                platformTemplates: {},
-                projectTemplates: {},
-                plugins: {},
-                engines: {},
-                projectTemplate: {}
-            },
-            project: {
-                projectConfig: {},
-                builds: {},
-                assets: {},
-                platformTemplates: {}
-            },
-            appConfig: {},
-            workspace: {
-                project: {
-                    projectConfig: {},
-                    builds: {},
-                    assets: {},
-                    platformTemplates: {}
-                },
-                appConfig: {}
-            },
-            defaultWorkspace: {
-                project: {
-                    projectConfig: {},
-                    builds: {},
-                    assets: {},
-                    platformTemplates: {}
-                },
-                appConfig: {}
+            appConfig: {
+                configs: [],
+                configsPrivate: [],
+                configsLocal: []
             }
         }
     };
@@ -1022,21 +1112,21 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
         c.paths.project.dir,
         'npm_link_polyfill.json'
     );
-    c.paths.project.projectConfig.dir = path.join(
+    c.paths.project.appConfigBase.dir = path.join(
         c.paths.project.dir,
         'appConfigs',
         'base'
     );
-    c.paths.project.projectConfig.pluginsDir = path.join(
-        c.paths.project.projectConfig.dir,
+    c.paths.project.appConfigBase.pluginsDir = path.join(
+        c.paths.project.appConfigBase.dir,
         'plugins'
     );
-    c.paths.project.projectConfig.fontsDir = path.join(
-        c.paths.project.projectConfig.dir,
+    c.paths.project.appConfigBase.fontsDir = path.join(
+        c.paths.project.appConfigBase.dir,
         'fonts'
     );
-    c.paths.project.projectConfig.fontsDirs = [
-        c.paths.project.projectConfig.fontsDir
+    c.paths.project.appConfigBase.fontsDirs = [
+        c.paths.project.appConfigBase.fontsDir
     ];
     c.paths.project.assets.dir = path.join(
         c.paths.project.dir,

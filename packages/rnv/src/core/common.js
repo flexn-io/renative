@@ -281,7 +281,7 @@ export const getBuildFilePath = (c, platform, filePath) => {
     let sp = path.join(getAppTemplateFolder(c, platform), filePath);
     // P2 => appConfigs/base + @buildSchemes
     const sp2 = path.join(
-        getBuildsFolder(c, platform, c.paths.project.projectConfig.dir),
+        getBuildsFolder(c, platform, c.paths.project.appConfigBase.dir),
         filePath
     );
     if (fsExistsSync(sp2)) sp = sp2;

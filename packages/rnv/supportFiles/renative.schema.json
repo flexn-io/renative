@@ -524,7 +524,7 @@
                     "platformBuildsDir": "./platformBuilds",
                     "entryDir": "./",
                     "platformAssetsDir": "./platformAssets",
-                    "projectConfigDir": "./projectConfig"
+                    "projectConfigDir": "./appConfigs/base"
                 }
             ],
             "additionalProperties": true,

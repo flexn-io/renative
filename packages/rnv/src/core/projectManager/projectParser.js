@@ -217,10 +217,10 @@ export const parseFonts = (c, callback) => {
 
     if (c.buildConfig) {
         // FONTS - PROJECT CONFIG
-        if (fsExistsSync(c.paths.project.projectConfig.fontsDir)) {
-            fsReaddirSync(c.paths.project.projectConfig.fontsDir).forEach(
+        if (fsExistsSync(c.paths.project.appConfigBase.fontsDir)) {
+            fsReaddirSync(c.paths.project.appConfigBase.fontsDir).forEach(
                 (font) => {
-                    if (callback) { callback(font, c.paths.project.projectConfig.fontsDir); }
+                    if (callback) { callback(font, c.paths.project.appConfigBase.fontsDir); }
                 }
             );
         }
@@ -345,7 +345,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
     const sourcePath1 = getBuildsFolder(
         c,
         platform,
-        c.paths.project.projectConfig.dir
+        c.paths.project.appConfigBase.dir
     );
     copyFolderContentsRecursiveSync(sourcePath1, destPath, true, false, false, allInjects, tsPathsConfig);
 
@@ -353,7 +353,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
     const sourcePath1secLegacy = getBuildsFolder(
         c,
         platform,
-        c.paths.workspace.project.projectConfig.dir_LEGACY
+        c.paths.workspace.project.appConfigBase.dir_LEGACY
     );
     copyFolderContentsRecursiveSync(sourcePath1secLegacy, destPath, true,
         false, false, allInjects, tsPathsConfig);
@@ -362,7 +362,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
     const sourcePath1sec = getBuildsFolder(
         c,
         platform,
-        c.paths.workspace.project.projectConfig.dir
+        c.paths.workspace.project.appConfigBase.dir
     );
     copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, false, false, allInjects, tsPathsConfig);
 
@@ -374,7 +374,7 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
     if (WEB_HOSTED_PLATFORMS.includes(platform)) {
         // FOLDER MERGERS _SHARED
         const sourcePathShared = path.join(
-            c.paths.project.projectConfig.dir,
+            c.paths.project.appConfigBase.dir,
             'builds/_shared'
         );
         copyFolderContentsRecursiveSync(

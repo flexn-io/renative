@@ -232,7 +232,7 @@ and we will try to help!
     } else {
         logWarning(
             `You don't have {{ crypto.encrypt.dest }} specificed in ${chalk().white(
-                c.paths.projectConfig
+                c.paths.appConfigBase
             )}`
         );
         return true;

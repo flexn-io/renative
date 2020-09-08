@@ -91,7 +91,6 @@ const _generateProject = async (c, data) => {
             entryDir: './',
             platformAssetsDir: './platformAssets',
             platformBuildsDir: './platformBuilds',
-            projectConfigDir: './projectConfig'
         },
         defaults: {
             title: data.appTitle,

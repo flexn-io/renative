@@ -573,7 +573,7 @@ export const overrideTemplatePlugins = async (c) => {
 
     const rnvPluginsDirs = c.paths.rnv.pluginTemplates.dirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
-    const appBasePluginDir = c.paths.project.projectConfig.pluginsDir;
+    const appBasePluginDir = c.paths.project.appConfigBase.pluginsDir;
 
     parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
         if (plugin?._scopes?.length) {
@@ -626,7 +626,7 @@ export const copyTemplatePluginsSync = (c) => {
         const sourcePath3 = getBuildsFolder(
             c,
             platform,
-            path.join(c.paths.project.projectConfig.dir, `plugins/${key}`)
+            path.join(c.paths.project.appConfigBase.dir, `plugins/${key}`)
         );
         copyFolderContentsRecursiveSync(sourcePath3, destPath, true, false, false, objectInject);
 
@@ -635,7 +635,7 @@ export const copyTemplatePluginsSync = (c) => {
             c,
             platform,
             path.join(
-                c.paths.workspace.project.projectConfig.dir_LEGACY,
+                c.paths.workspace.project.appConfigBase.dir_LEGACY,
                 `plugins/${key}`
             )
         );
@@ -646,7 +646,7 @@ export const copyTemplatePluginsSync = (c) => {
             c,
             platform,
             path.join(
-                c.paths.workspace.project.projectConfig.dir,
+                c.paths.workspace.project.appConfigBase.dir,
                 `plugins/${key}`
             )
         );

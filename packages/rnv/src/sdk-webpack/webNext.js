@@ -28,7 +28,7 @@ export const configureNextIfRequired = async (c) => {
     c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
     const { platformTemplatesDirs, dir } = c.paths.project;
     const publicDir = path.join(dir, 'public');
-    const baseFontsDir = c.paths.appConfig.fontDirs?.[0];
+    const baseFontsDir = c.paths.appConfig.fontsDirs?.[0];
     const stylesDir = path.join(dir, 'styles');
     const pagesDir = path.resolve(getConfigProp(c, c.platform, 'pagesDir') || 'src/app');
     const _appFile = path.join(pagesDir, '_app.js');

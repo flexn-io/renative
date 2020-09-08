@@ -57,7 +57,6 @@
         "entryDir": "./",
         "platformAssetsDir": "./platformAssets",
         "platformBuildsDir": "./platformBuilds",
-        "projectConfigDir": "./projectConfig"
     },
     "crypto": {
         "encrypt": {

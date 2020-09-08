@@ -71,9 +71,9 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
         mkdirSync(path.join(sourceFolder, 'certs'));
         writeFileSync(path.join(sourceFolder, 'renative.private.json'), {});
 
-        const configDirs = await readdirAsync(c.paths.project.appConfigsDir);
+        const appConfigsDirs = await readdirAsync(c.paths.project.appConfigsDir);
 
-        configDirs.forEach((item) => {
+        appConfigsDirs.forEach((item) => {
             const appConfigDir = path.join(sourceFolder, item);
             mkdirSync(appConfigDir);
             mkdirSync(path.join(appConfigDir, 'certs'));
@@ -184,7 +184,7 @@ export const taskRnvCryptoEncrypt = async (c, parentTask, originTask) => {
     } else {
         logWarning(
             `You don't have {{ crypto.encrypt.dest }} specificed in ${chalk().white(
-                c.paths.projectConfig
+                c.paths.appConfigBase
             )}`
         );
     }

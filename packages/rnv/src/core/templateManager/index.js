@@ -71,7 +71,7 @@ export const checkIfTemplateInstalled = c => new Promise((resolve) => {
 const _cleanProjectTemplateSync = (c) => {
     logTask('_cleanProjectTemplateSync');
     const dirsToRemove = [
-        path.join(c.paths.project.projectConfig.dir),
+        path.join(c.paths.project.appConfigBase.dir),
         path.join(c.paths.project.srcDir),
         path.join(c.paths.project.appConfigsDir)
     ];
@@ -130,7 +130,7 @@ const _applyTemplate = async (c) => {
         c.paths.template.dir,
         'appConfigs'
     );
-    c.paths.template.projectConfigDir = path.join(
+    c.paths.template.appConfigBase.dir = path.join(
         c.paths.template.dir,
         'base'
     );
@@ -218,15 +218,15 @@ const _configureAppConfigs = async (c) => {
 const _configureProjectConfig = c => new Promise((resolve) => {
     // Check projectConfigs
     logDebug('configureProject:check projectConfigs');
-    if (!fsExistsSync(c.paths.project.projectConfig.dir)) {
+    if (!fsExistsSync(c.paths.project.appConfigBase.dir)) {
         logInfo(
             `Looks like your projectConfig folder ${chalk().white(
-                c.paths.project.projectConfig.dir
+                c.paths.project.appConfigBase.dir
             )} is missing! Let's create one for you.`
         );
         copyFolderContentsRecursiveSync(
-            c.paths.template.projectConfigDir,
-            c.paths.project.projectConfig.dir
+            c.paths.template.appConfigBase.dir,
+            c.paths.project.appConfigBase.dir
         );
     }
     resolve();

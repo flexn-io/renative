@@ -213,12 +213,12 @@ const executeAsync = async (_c, _cmd, _opts) => {
     }
     opts = opts || {};
     if (cmd.includes('npm') && process.platform === 'win32') { cmd.replace('npm', 'npm.cmd'); }
-    let cmdArr;
-    if (typeof cmd === 'string') {
-        cmdArr = cmd.split('&&');
-    } else {
-        cmdArr = cmd;
-    }
+    // let cmdArr;
+    // if (typeof cmd === 'string') {
+    //     cmdArr = cmd.split('&&');
+    // } else {
+    //     cmdArr = cmd;
+    // }
 
     // let result;
     // if (cmdArr.length) {
@@ -233,7 +233,7 @@ const executeAsync = async (_c, _cmd, _opts) => {
     //         result = await _execute(c, cmdArr[i], opts);
     //     }
     // }
-    const result = await _execute(c, cmdArr, opts);
+    const result = await _execute(c, cmd, opts);
 
     return result;
 };

@@ -39,96 +39,6 @@ const _loadAppConfigIDfromDir = (dir, appConfigsDir) => {
     return { dir, id: null };
 };
 
-// const _findAndSwitchAppConfigDir = (c, appId) => {
-//     logTask('_findAndSwitchAppConfigDir', `appId:${appId}`);
-//
-//     c.paths.project.appConfigsDir = getRealPath(
-//         c,
-//         c.buildConfig.paths?.appConfigsDir,
-//         'appConfigsDir',
-//         c.paths.project.appConfigsDir
-//     );
-//     const appConfigsDirs = c.buildConfig.paths?.appConfigsDirs;
-//     if (appConfigsDirs && appConfigsDirs.forEach && appId) {
-//         appConfigsDirs.forEach((v) => {
-//             const altPath = path.join(v, appId);
-//             if (fsExistsSync(altPath)) {
-//                 logInfo(
-//                     `Found config in following location: ${altPath}. Will use it`
-//                 );
-//                 c.paths.project.appConfigsDir = v;
-//             }
-//         });
-//     }
-// };
-
-// export const updateConfig = async (c, appConfigId) => {
-//     logTask('updateConfig', `appId:${appConfigId}`);
-//
-//     await setAppConfig(c, appConfigId);
-//
-//     const isPureRnv = !c.command && !c.subCommand;
-//
-//     if (!fsExistsSync(c.paths.appConfig.dir) || isPureRnv) {
-//         const configDirs = listAppConfigsFoldersSync(c, true);
-//
-//         if (!appConfigId) {
-//             logWarning("It seems you don't have any appConfig active");
-//         } else if (appConfigId !== true && appConfigId !== true && !isPureRnv) {
-//             logWarning(
-//                 `It seems you don't have appConfig named ${chalk().white(
-//                     appConfigId
-//                 )} present in your config folder: ${chalk().white(
-//                     c.paths.project.appConfigsDir
-//                 )} !
-// checked path: ${c.paths.appConfig.dir}`
-//             );
-//         }
-//
-//         if (configDirs.length) {
-//             if (configDirs.length === 1) {
-//                 // we have only one, skip the question
-//                 logInfo(
-//                     `Found only one app config available. Will use ${chalk().white(
-//                         configDirs[0]
-//                     )}`
-//                 );
-//                 await setAppConfig(c, configDirs[0]);
-//                 return true;
-//             }
-//
-//             const { conf } = await inquirerPrompt({
-//                 name: 'conf',
-//                 type: 'list',
-//                 message: 'Which one would you like to pick?',
-//                 choices: configDirs,
-//                 pageSize: 50,
-//                 logMessage: 'ReNative found multiple existing appConfigs'
-//             });
-//
-//             if (conf) {
-//                 await setAppConfig(c, conf);
-//                 return true;
-//             }
-//         }
-//
-//         const { conf } = await inquirerPrompt({
-//             name: 'conf',
-//             type: 'confirm',
-//             message: 'Do you want ReNative to create new sample appConfig for you?',
-//             warningMessage: `No app configs found for this project \nMaybe you forgot to run ${chalk().white('rnv template apply')} ?`
-//         });
-//
-//         if (conf) {
-//             // taskRnvTemplateApply(c);
-//             await executeTask(c, TASK_TEMPLATE_APPLY);
-//
-//             await setAppConfig(c);
-//         }
-//     }
-//     return true;
-// };
-
 const _askUserAboutConfigs = async (c, dir, id, basePath) => {
     logTask('_askUserAboutConfigs');
     logWarning(
@@ -257,16 +167,16 @@ Please rename one /appConfigs/<folder>`
 
 const _findAndSwitchAppConfigDir = async (c) => {
     logTask('_findAndSwitchAppConfigDir');
-    const configDirs = listAppConfigsFoldersSync(c, true);
-    if (configDirs.length) {
-        if (configDirs.length === 1) {
+    const { appConfigsDirNames } = c.paths.project;
+    if (appConfigsDirNames.length) {
+        if (appConfigsDirNames.length === 1) {
             // we have only one, skip the question
             logInfo(
                 `Found only one app config available. Will use ${chalk().white(
-                    configDirs[0]
+                    appConfigsDirNames[0]
                 )}`
             );
-            _setAppId(c, configDirs[0]);
+            _setAppId(c, appConfigsDirNames[0]);
             return true;
         }
 
@@ -274,7 +184,7 @@ const _findAndSwitchAppConfigDir = async (c) => {
             name: 'conf',
             type: 'list',
             message: 'Which one would you like to pick?',
-            choices: configDirs,
+            choices: appConfigsDirNames,
             pageSize: 50,
             logMessage: 'ReNative found multiple existing appConfigs'
         });
@@ -297,6 +207,12 @@ const _setAppId = (c, appId) => {
 
 export const taskRnvAppConfigure = async (c) => {
     logTask('taskRnvAppConfigure');
+
+    c.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(c, true);
+    c.paths.project.appConfigsDirNames.forEach((dirName) => {
+        c.paths.project.appConfigsDirs.push(path.join(c.paths.project.appConfigsDir, dirName));
+    });
+
 
     if (c.program.appConfigID === true || (!c.program.appConfigID && !c.runtime.appId)) {
         const hasAppConfig = await _findAndSwitchAppConfigDir(c);
