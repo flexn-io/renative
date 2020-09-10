@@ -92,7 +92,6 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
 
     await createPlatformBuild(c, c.platform);
     await injectPlatformDependencies(c);
-    await cleanPlatformBuild(c, c.platform);
     await _runCopyPlatforms(c);
 };
 

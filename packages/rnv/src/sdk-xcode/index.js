@@ -70,7 +70,7 @@ const checkIfPodsIsRequired = async (c) => {
     logInfo(
         'Pods do not seem like they need to be updated. If you want to update them manually run the same command with "-u" parameter'
     );
-    return true;
+    return false;
 };
 
 const updatePodsChecksum = (c) => {
