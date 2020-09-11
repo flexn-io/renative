@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.31.0-feat-tasks.3",
+            "version": "0.31.0-feat-tasks.4",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"

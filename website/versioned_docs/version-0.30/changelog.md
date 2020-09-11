@@ -1415,6 +1415,30 @@ rnv run -p android
 
 - none
 
+## v0.31.0-feat-tasks.4 (2020-9-11)
+
+### Fixed
+
+- [fix] merge files from workspace
+- [fix] rnv deploy --only
+- 0.31.0-feat-tasks.3
+- [fix] avoid platform clean, pod update if not required
+- 0.31.0-feat-tasks.2
+- [feat] support merge folders of extend + base appConfigs globally
+- 0.31.0-feat-tasks.1.md
+- added feat to version counter in changelog buildhook
+- added scripts to publish with feat tag
+- fix case sensitivity issues in appConfig folders
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-feat-tasks.3 (2020-9-10)
 
 ### Fixed
