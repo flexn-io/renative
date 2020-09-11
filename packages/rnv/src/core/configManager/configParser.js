@@ -161,6 +161,7 @@ const _generateConfigPaths = (pathObj, dir) => {
     pathObj.config = path.join(dir, RENATIVE_CONFIG_NAME);
     pathObj.configLocal = path.join(dir, RENATIVE_CONFIG_LOCAL_NAME);
     pathObj.configPrivate = path.join(dir, RENATIVE_CONFIG_PRIVATE_NAME);
+    pathObj.appConfigsDir = path.join(dir, '..');
 };
 
 export const versionCheck = async (c) => {
@@ -352,7 +353,6 @@ export const generateBuildConfig = (c) => {
         const exists = fsExistsSync(v);
         if (exists) {
             logDebug(`Merged: ${v}`);
-            // console.log(chalk().green(v));
         } else {
             // console.log(chalk().red(v));
         }
@@ -495,7 +495,7 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         fileObj.configsPrivate = [];
         const fileObj1 = {};
         // PATH1: appConfigs/base
-        const path1 = c.paths.project.appConfigBase.dir;
+        const path1 = path.join(pathObj.appConfigsDir, 'base');
         const pathObj1 = {
             config: path.join(path1, RENATIVE_CONFIG_NAME),
             configLocal: path.join(path1, RENATIVE_CONFIG_LOCAL_NAME),
@@ -515,8 +515,9 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         if (fileObj1.configPrivate) fileObj.configsPrivate.push(fileObj1.configPrivate);
         if (fileObj1.configLocal) fileObj.configsLocal.push(fileObj1.configLocal);
 
-        if (parseAppConfigs && extendAppId && c.paths.project.appConfigsDirNames.includes(extendAppId)) {
-            const path2 = path.join(c.paths.project.appConfigsDir, extendAppId);
+        const appConfigsDirNames = fsReaddirSync(pathObj.appConfigsDir);
+        if (parseAppConfigs && extendAppId && appConfigsDirNames.includes(extendAppId)) {
+            const path2 = path.join(pathObj.appConfigsDir, extendAppId);
             const pathObj2 = {
                 config: path.join(path2, RENATIVE_CONFIG_NAME),
                 configLocal: path.join(path2, RENATIVE_CONFIG_LOCAL_NAME),
