@@ -61,7 +61,12 @@ export const initializeTask = async (c, task) => {
         platform: c.platform
     });
 
-    return executeTask(c, task, null, task);
+    const inOnlyMode = c.program.only;
+
+    if (inOnlyMode) await _executePipe(c, task, 'before');
+    await executeTask(c, task, null, task);
+    if (inOnlyMode) await _executePipe(c, task, 'after');
+    return true;
 };
 
 const _executePipe = async (c, task, phase) => {

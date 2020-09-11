@@ -11,6 +11,10 @@ import { executeTask } from '../core/engineManager';
 export const taskRnvDeploy = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);
 
+    if (c.program.only) {
+        return true;
+    }
+
     await executeTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
 
     // Deploy simply trggets hook

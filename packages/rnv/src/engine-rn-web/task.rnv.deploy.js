@@ -21,6 +21,10 @@ export const taskRnvDeploy = async (c, parentTask, originTask) => {
 
     const { platform } = c;
 
+    if (c.program.only) {
+        return true;
+    }
+
     await executeTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
 
     switch (platform) {
