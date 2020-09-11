@@ -443,7 +443,7 @@ export const generateBuildConfig = (c) => {
                 const size = _formatBytes(Buffer.byteLength(result || '', 'utf8'));
                 logTask(chalk().grey('generateBuildConfig'), `size:${size}`);
             } else {
-                logWarning(`generateBuildConfig NOT SAVED: ${c.paths.project.builds.config}`);
+                logDebug(`generateBuildConfig NOT SAVED: ${c.paths.project.builds.config}`);
             }
         } else {
             logWarning('Cannot save buildConfig as c.paths.project.builds.dir is not defined');
@@ -515,31 +515,35 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         if (fileObj1.configPrivate) fileObj.configsPrivate.push(fileObj1.configPrivate);
         if (fileObj1.configLocal) fileObj.configsLocal.push(fileObj1.configLocal);
 
-        const appConfigsDirNames = fsReaddirSync(pathObj.appConfigsDir);
-        if (parseAppConfigs && extendAppId && appConfigsDirNames.includes(extendAppId)) {
-            const path2 = path.join(pathObj.appConfigsDir, extendAppId);
-            const pathObj2 = {
-                config: path.join(path2, RENATIVE_CONFIG_NAME),
-                configLocal: path.join(path2, RENATIVE_CONFIG_LOCAL_NAME),
-                configPrivate: path.join(path2, RENATIVE_CONFIG_PRIVATE_NAME),
-            };
-            const fileObj2 = {};
-            // PATH2: appConfigs/<extendConfig>
-            pathObj.dirs.push(path2);
-            pathObj.fontsDirs.push(path.join(path2, 'fonts'));
-            pathObj.pluginDirs.push(path.join(path2, 'plugins'));
-            pathObj.configs.push(pathObj2.config);
-            pathObj.configsLocal.push(pathObj2.configLocal);
-            pathObj.configsPrivate.push(pathObj2.configPrivate);
-            // FILE2: appConfigs/<extendConfig>
-            loadFile(fileObj2, pathObj2, 'config');
-            loadFile(fileObj2, pathObj2, 'configPrivate');
-            loadFile(fileObj2, pathObj2, 'configLocal');
+        // Check if appConfigs folder exists ie in workspace mirror
+        if (fsExistsSync(pathObj.appConfigsDir)) {
+            const appConfigsDirNames = fsReaddirSync(pathObj.appConfigsDir);
+            if (parseAppConfigs && extendAppId && appConfigsDirNames.includes(extendAppId)) {
+                const path2 = path.join(pathObj.appConfigsDir, extendAppId);
+                const pathObj2 = {
+                    config: path.join(path2, RENATIVE_CONFIG_NAME),
+                    configLocal: path.join(path2, RENATIVE_CONFIG_LOCAL_NAME),
+                    configPrivate: path.join(path2, RENATIVE_CONFIG_PRIVATE_NAME),
+                };
+                const fileObj2 = {};
+                // PATH2: appConfigs/<extendConfig>
+                pathObj.dirs.push(path2);
+                pathObj.fontsDirs.push(path.join(path2, 'fonts'));
+                pathObj.pluginDirs.push(path.join(path2, 'plugins'));
+                pathObj.configs.push(pathObj2.config);
+                pathObj.configsLocal.push(pathObj2.configLocal);
+                pathObj.configsPrivate.push(pathObj2.configPrivate);
+                // FILE2: appConfigs/<extendConfig>
+                loadFile(fileObj2, pathObj2, 'config');
+                loadFile(fileObj2, pathObj2, 'configPrivate');
+                loadFile(fileObj2, pathObj2, 'configLocal');
 
-            if (fileObj2.config) fileObj.configs.push(fileObj2.config);
-            if (fileObj2.configLocal) fileObj.configsLocal.push(fileObj2.configLocal);
-            if (fileObj2.configPrivate) fileObj.configsPrivate.push(fileObj2.configPrivate);
+                if (fileObj2.config) fileObj.configs.push(fileObj2.config);
+                if (fileObj2.configLocal) fileObj.configsLocal.push(fileObj2.configLocal);
+                if (fileObj2.configPrivate) fileObj.configsPrivate.push(fileObj2.configPrivate);
+            }
         }
+
 
         // PATH2: appConfigs/<appId>
         const path3 = pathObj.dir;
