@@ -6,16 +6,12 @@ import {
     TASK_DEPLOY,
 } from '../core/constants';
 
-import { executeTask } from '../core/engineManager';
+import { executeOrSkipTask } from '../core/engineManager';
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);
 
-    if (c.program.only) {
-        return true;
-    }
-
-    await executeTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
+    await executeOrSkipTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
 
     // Deploy simply trggets hook
     return true;

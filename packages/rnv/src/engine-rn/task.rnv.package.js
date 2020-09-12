@@ -11,13 +11,13 @@ import {
 } from '../core/constants';
 import { packageBundleForXcode } from '../sdk-xcode';
 import { packageAndroid } from '../sdk-android';
-import { executeTask } from '../core/engineManager';
+import { executeOrSkipTask } from '../core/engineManager';
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
     const { platform } = c;
 
-    await executeTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
+    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
 
     switch (platform) {
         case IOS:

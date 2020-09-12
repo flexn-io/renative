@@ -6,13 +6,13 @@ import {
     TASK_BUILD, TASK_PACKAGE,
 } from '../core/constants';
 import { buildWebNext } from '../sdk-webpack/webNext';
-import { executeTask } from '../core/engineManager';
+import { executeOrSkipTask } from '../core/engineManager';
 
 export const taskRnvBuild = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild', `parent:${parentTask}`);
     const { platform } = c;
 
-    await executeTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
+    await executeOrSkipTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
 
     switch (platform) {
         case WEB:

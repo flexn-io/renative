@@ -8,18 +8,14 @@ import {
 } from '../core/constants';
 import { deployWeb } from '../sdk-webpack';
 import { deployWebNext } from '../sdk-webpack/webNext';
-import { executeTask } from '../core/engineManager';
+import { executeOrSkipTask } from '../core/engineManager';
 
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);
     const { platform } = c;
 
-    if (c.program.only) {
-        return true;
-    }
-
-    await executeTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
+    await executeOrSkipTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
 
     switch (platform) {
         case WEB:

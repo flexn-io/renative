@@ -14,7 +14,7 @@ import {
     FIREFOX_TV,
     CHROMECAST,
     TASK_RUN, TASK_START,
-    TASK_CONFIGURE
+    TASK_CONFIGURE,
 } from '../core/constants';
 import { runWeb } from '../sdk-webpack';
 import { runTizen } from '../sdk-tizen';
@@ -22,7 +22,7 @@ import { runWebOS } from '../sdk-webos';
 import { runFirefoxProject } from '../sdk-firefox';
 import { runChromecast } from '../sdk-webpack/chromecast';
 import { copyFolderContentsRecursiveSync, writeCleanFile } from '../core/systemManager/fileutils';
-import { executeTask } from '../core/engineManager';
+import { executeTask, executeOrSkipTask } from '../core/engineManager';
 
 const _configureHostedIfRequired = async (c) => {
     logTask('_configureHostedIfRequired');
@@ -73,7 +73,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
         return executeTask(c, TASK_START, TASK_RUN, originTask);
     }
 
-    await executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
         case WEB:

@@ -8,11 +8,11 @@ import {
     ANDROID_TV,
     ANDROID_WEAR,
     TASK_RUN,
-    TASK_CONFIGURE,
+    TASK_CONFIGURE
 } from '../core/constants';
 import { runXcodeProject } from '../sdk-xcode';
 import { packageAndroid, runAndroid } from '../sdk-android';
-import { executeTask } from '../core/engineManager';
+import { executeOrSkipTask } from '../core/engineManager';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from './commonEngine';
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
@@ -22,7 +22,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 

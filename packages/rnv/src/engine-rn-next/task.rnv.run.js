@@ -3,16 +3,16 @@ import { logTask } from '../core/systemManager/logger';
 import {
     WEB,
     CHROMECAST,
-    TASK_RUN, TASK_CONFIGURE
+    TASK_RUN, TASK_CONFIGURE,
 } from '../core/constants';
 import { runWebNext } from '../sdk-webpack/webNext';
-import { executeTask } from '../core/engineManager';
+import { executeOrSkipTask } from '../core/engineManager';
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;
     logTask('taskRnvRun', `parent:${parentTask}`);
 
-    await executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
         case WEB:

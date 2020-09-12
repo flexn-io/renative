@@ -805,6 +805,7 @@ export const TASK_PKG = 'pkg';
 export const TASK_APP_CONFIGURE = 'app configure';
 export const TASK_APP_CREATE = 'app create';
 export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
+export const TASK_CONFIGURE_SOFT = 'configureSoft';
 
 
 export const configSchema = {

@@ -16,14 +16,14 @@ import { buildWeb } from '../sdk-webpack';
 import { buildTizenProject } from '../sdk-tizen';
 import { buildWebOSProject } from '../sdk-webos';
 import { buildFirefoxProject } from '../sdk-firefox';
-import { executeTask } from '../core/engineManager';
+import { executeOrSkipTask } from '../core/engineManager';
 
 export const taskRnvBuild = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild', `parent:${parentTask}`);
 
     const { platform } = c;
 
-    await executeTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
+    await executeOrSkipTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
 
     switch (platform) {
         case WEB:

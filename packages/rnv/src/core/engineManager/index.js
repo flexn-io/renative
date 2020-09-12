@@ -3,6 +3,7 @@ import { getConfigProp } from '../common';
 import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt } from '../../cli/prompt';
+import { TASK_CONFIGURE_SOFT } from '../constants';
 
 const REGISTERED_ENGINES = [];
 const ENGINES = {};
@@ -109,6 +110,14 @@ To avoid that test your task code against parentTask and avoid executing same ta
     c._currentTask = parentTask;
     const prt = parentTask ? `<= [${chalk().rgb(170, 106, 170)(parentTask)}] ` : '';
     logExitTask(`${prt}<= ${task}`);
+};
+
+export const executeOrSkipTask = async (c, task, parentTask, originTask) => {
+    if (!c.program.only) {
+        return executeTask(c, task, parentTask, originTask);
+    }
+
+    return executeTask(c, TASK_CONFIGURE_SOFT, parentTask, originTask);
 };
 
 const _getTaskOption = ({ taskInstance, hasMultipleSubTasks }) => {

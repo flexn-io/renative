@@ -4,10 +4,10 @@ import {
     MACOS,
     WINDOWS,
     TASK_RUN,
-    TASK_CONFIGURE
+    TASK_CONFIGURE,
 } from '../core/constants';
 import { runElectron } from '../sdk-electron';
-import { executeTask } from '../core/engineManager';
+import { executeOrSkipTask } from '../core/engineManager';
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -16,7 +16,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
-    await executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
         case MACOS:

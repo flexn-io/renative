@@ -236,7 +236,6 @@ export const taskRnvAppConfigure = async (c) => {
     await parseRenativeConfigs(c);
     logAppInfo(c);
 
-
     return true;
 };
 
