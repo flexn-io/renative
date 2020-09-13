@@ -25,6 +25,26 @@
         "title": "rnv deploy",
         "sidebar_label": "deploy"
       },
+      "api-cli-engine-core": {
+        "title": "Engine Core CLI Reference",
+        "sidebar_label": "Engine Core"
+      },
+      "api-cli-engine-rn-electron": {
+        "title": "Engine RN Electron CLI Reference",
+        "sidebar_label": "Engine RN Electron"
+      },
+      "api-cli-engine-rn-next": {
+        "title": "Engine RN Next CLI Reference",
+        "sidebar_label": "Engine RN Next"
+      },
+      "api-cli-engine-rn-web": {
+        "title": "Engine RN Web CLI Reference",
+        "sidebar_label": "Engine RN Web"
+      },
+      "api-cli-engine-rn": {
+        "title": "Engine RN CLI Reference",
+        "sidebar_label": "Engine RN"
+      },
       "api-cli-export": {
         "title": "rnv export",
         "sidebar_label": "export"
@@ -282,6 +302,15 @@
       "changelog/0.31.0-alpha.21": {
         "title": "changelog/0.31.0-alpha.21"
       },
+      "changelog/0.31.0-alpha.22": {
+        "title": "changelog/0.31.0-alpha.22"
+      },
+      "changelog/0.31.0-alpha.23": {
+        "title": "changelog/0.31.0-alpha.23"
+      },
+      "changelog/0.31.0-alpha.24": {
+        "title": "changelog/0.31.0-alpha.24"
+      },
       "changelog/0.31.0-alpha.3": {
         "title": "changelog/0.31.0-alpha.3"
       },
@@ -302,6 +331,18 @@
       },
       "changelog/0.31.0-alpha.9": {
         "title": "changelog/0.31.0-alpha.9"
+      },
+      "changelog/0.31.0-feat-tasks.1": {
+        "title": "changelog/0.31.0-feat-tasks.1"
+      },
+      "changelog/0.31.0-feat-tasks.2": {
+        "title": "changelog/0.31.0-feat-tasks.2"
+      },
+      "changelog/0.31.0-feat-tasks.3": {
+        "title": "changelog/0.31.0-feat-tasks.3"
+      },
+      "changelog/0.31.0-feat-tasks.4": {
+        "title": "changelog/0.31.0-feat-tasks.4"
       },
       "config-app": {
         "title": "App Configs",

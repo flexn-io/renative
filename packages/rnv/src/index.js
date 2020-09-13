@@ -12,6 +12,7 @@ import SetupTools from './core/setupManager';
 import Config from './core/configManager/config';
 import { doResolve, doResolvePath } from './core/resolve';
 import Analytics from './core/systemManager/analytics';
+import EngineManager from './core/engineManager';
 
 import 'source-map-support/register';
 
@@ -44,6 +45,7 @@ export {
     PluginTools,
     SetupTools,
     Logger,
+    EngineManager,
     run,
     CLI,
     doResolve,

@@ -36,6 +36,8 @@ const getTasks = () => Object.values(TASKS);
 
 const getId = () => 'engine-rn';
 
+const title = 'Engine RN';
+
 export default {
     executeTask,
     addTask,
@@ -43,5 +45,6 @@ export default {
     getTask,
     getSubTasks,
     getTasks,
-    getId
+    getId,
+    title
 };

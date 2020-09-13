@@ -106,6 +106,8 @@ const getTasks = () => Object.values(TASKS);
 
 const getId = () => 'engine-core';
 
+const title = 'Engine Core';
+
 export default {
     executeTask,
     addTask,
@@ -113,5 +115,6 @@ export default {
     getTask,
     getSubTasks,
     getTasks,
-    getId
+    getId,
+    title
 };

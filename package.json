@@ -127,7 +127,8 @@
         "eslint-plugin-mocha": "6.3.0",
         "eslint-plugin-react": "7.10.0",
         "eslint-plugin-react-hooks": "2.5.0",
-        "husky": "4.2.5"
+        "husky": "4.2.5",
+        "jsdoc-to-markdown": "6.0.1"
     },
     "engines": {
         "cocoapods": ">=1.5.3",

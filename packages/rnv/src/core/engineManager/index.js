@@ -286,3 +286,7 @@ export const findSuitableTask = async (c) => {
     )}`);
     return c.runtime.engine.getTask(task);
 };
+
+export default {
+    getRegisteredEngines: () => REGISTERED_ENGINES
+};

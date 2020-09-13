@@ -3,6 +3,7 @@ import { updateVersions } from './updateVersions';
 import { updateMdFilesPlatforms } from './updateMdFilesPlatforms';
 import { updateMdFilesEngines } from './updateMdFilesEngines';
 import { generateChangelog, generateCombinedChangelog } from './changelog';
+import { generateEngineTaks } from './generateEngineDocs';
 
 const hooks = {
     generateDocs: async (c) => {
@@ -23,6 +24,7 @@ const hooks = {
     },
     changelog: generateChangelog,
     changelogCombined: generateCombinedChangelog,
+    engine: generateEngineTaks
     // changelogAll: generateAllChangelogs
 };
 
