@@ -1,5 +1,4 @@
-/* eslint-disable import/no-cycle */
-
+import { getEngineTask, hasEngineTask, getEngineSubTasks } from '../core/engineManager';
 // import taskRnvLink from './task.rnv.link';
 // import taskRnvSwitch from './task.rnv.switch';
 import taskRnvCryptoDecrypt from './task.rnv.crypto.decrypt';
@@ -95,13 +94,13 @@ addTask(taskRnvWorkspaceConfigure);
 addTask(taskRnvLog);
 addTask(taskRnvConfigureSoft);
 
-const executeTask = async (c, task, parentTask, originTask) => TASKS[task].fn(c, parentTask, originTask);
+const executeTask = async (c, task, parentTask, originTask) => getEngineTask(task, TASKS).fn(c, parentTask, originTask);
 
-const hasTask = (task, isProjectScope) => (isProjectScope ? !!TASKS[task] : TASKS[task]?.isGlobalScope);
+const hasTask = (task, isProjectScope) => hasEngineTask(task, TASKS, isProjectScope);
 
-const getTask = task => TASKS[task];
+const getTask = task => getEngineTask(task, TASKS);
 
-const getSubTasks = (task, exactMatch) => Object.values(TASKS).filter(v => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
+const getSubTasks = (task, exactMatch) => getEngineSubTasks(task, TASKS, exactMatch);
 
 const getTasks = () => Object.values(TASKS);
 

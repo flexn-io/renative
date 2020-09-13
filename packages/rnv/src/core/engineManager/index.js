@@ -28,6 +28,21 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
     return null;
 };
 
+export const getEngineTask = (task, tasks) => {
+    let tsk;
+    const taskCleaned = task.split(' ')[0];
+    tsk = tasks[task];
+    if (!tsk) {
+        tsk = tasks[taskCleaned];
+    }
+    return tsk;
+};
+
+export const hasEngineTask = (task, tasks, isProjectScope) => (
+    isProjectScope ? !!getEngineTask(task, tasks) : getEngineTask(task, tasks)?.isGlobalScope);
+
+export const getEngineSubTasks = (task, tasks, exactMatch) => Object.values(tasks).filter(v => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
+
 
 export const getEngineRunner = (c, task) => {
     const selectedEngine = getEngineByPlatform(c, c.platform);
@@ -70,13 +85,7 @@ export const initializeTask = async (c, task) => {
     return true;
 };
 
-const _executePipe = async (c, task, phase) => {
-    let subCmd = '';
-    if (c.subCommand) {
-        subCmd = `:${c.subCommand}`;
-    }
-    return executePipe(c, `${task}${subCmd}:${phase}`);
-};
+const _executePipe = async (c, task, phase) => executePipe(c, `${task.split(' ').join(':')}:${phase}`);
 
 const TASK_LIMIT = 20;
 
