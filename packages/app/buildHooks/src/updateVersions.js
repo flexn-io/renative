@@ -1,4 +1,4 @@
-import { FileUtils, Constants, Doctor } from 'rnv';
+import { FileUtils, Doctor } from 'rnv';
 import path from 'path';
 
 export const updateVersions = async (c) => {

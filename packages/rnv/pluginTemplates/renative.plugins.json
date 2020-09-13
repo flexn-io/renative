@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.31.0-alpha.2",
+            "version": "0.31.0-feat-tasks.4",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -245,6 +245,9 @@
             },
             "androidtv": {
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"
+            },
+            "webpack": {
+                "modulePaths": true
             }
         },
         "react-native-camera": {
@@ -715,9 +718,9 @@
                     "react-native-svg": "svgs"
                 }
             },
-            "dependsOn": [
-                "svgs"
-            ]
+            "pluginDependencies": {
+                "svgs": "source:rnv"
+            }
         },
         "react-native-snap-scrollview": {
             "version": "github:reactseals/react-native-snap-scrollview#master",
@@ -937,9 +940,9 @@
         },
         "react-native-photo-editor": {
             "version": "1.0.5",
-            "dependsOn": [
-                "iOSPhotoEditor"
-            ],
+            "pluginDependencies": {
+                "iOSPhotoEditor": "source:rnv"
+            },
             "ios": {
                 "podName": "RNPhotoEditor",
                 "path": "node_modules/react-native-photo-editor/ios"
@@ -1567,9 +1570,9 @@
         },
         "@react-native-firebase/analytics": {
             "version": "6.4.1",
-            "dependsOn": [
-                "@react-native-firebase/app"
-            ],
+            "pluginDependencies": {
+                "@react-native-firebase/app": "source:rnv"
+            },
             "ios": {
                 "isStatic": true,
                 "podName": "RNFBAnalytics",
@@ -1600,9 +1603,9 @@
         },
         "@react-native-firebase/crashlytics": {
             "version": "6.4.1",
-            "dependsOn": [
-                "@react-native-firebase/analytics"
-            ],
+            "pluginDependencies": {
+                "@react-native-firebase/analytics": "source:rnv"
+            },
             "ios": {
                 "isStatic": true,
                 "podName": "RNFBCrashlytics",
@@ -2036,9 +2039,9 @@
         },
         "native-base": {
             "version": "2.12.1",
-            "dependsOn": [
-                "react-native-vector-icons"
-            ]
+            "pluginDependencies": {
+                "react-native-vector-icons": "source:rnv"
+            }
         },
         "@react-native-community/async-storage": {
             "version": "1.4.1",
@@ -2061,7 +2064,10 @@
             }
         },
         "react-native-web": {
-            "version": "0.11.7"
+            "version": "0.11.7",
+            "pluginDependencies": {
+                "react": "source:rnv"
+            }
         },
         "react-native-web-image-loader": {
             "version": "0.0.5"
@@ -2076,11 +2082,11 @@
                     "node_modules/react-navigation"
                 ]
             },
-            "dependsOn": [
-                "react-navigation-stack",
-                "react-navigation-tabs",
-                "react-native-reanimated"
-            ],
+            "pluginDependencies": {
+                "react-navigation-stack": "source:rnv",
+                "react-navigation-tabs": "source:rnv",
+                "react-native-reanimated": "source:rnv"
+            },
             "npm": {
                 "@react-navigation/core": "3.4.2",
                 "@react-navigation/native": "3.5.0",
@@ -2122,11 +2128,11 @@
                 "@react-native-community/masked-view": "0.1.6",
                 "react-native-safe-area-context": "0.7.2"
             },
-            "dependsOn": [
-                "react-native-screens",
-                "react-native-safe-area-context",
-                "react-native-safe-area-view"
-            ]
+            "pluginDependencies": {
+                "react-native-screens": "source:rnv",
+                "react-native-safe-area-context": "source:rnv",
+                "react-native-safe-area-view": "source:rnv"
+            }
         },
         "react-native-safe-area-context": {
             "version": "0.7.2",
@@ -2283,7 +2289,7 @@
             }
         },
         "@react-native-community/masked-view": {
-            "version": "0.1.1",
+            "version": "0.1.6",
             "ios": {
                 "path": "node_modules/@react-native-community/masked-view",
                 "podName": "RNCMaskedView"
@@ -2463,9 +2469,9 @@
             "props": {
                 "DOMAIN": ""
             },
-            "dependsOn": [
-                "RCTLinkingIOS"
-            ],
+            "pluginDependencies": {
+                "RCTLinkingIOS": "source:rnv"
+            },
             "ios": {
                 "podName": "A0Auth0",
                 "path": "node_modules/react-native-auth0/ios",
@@ -2531,7 +2537,7 @@
             }
         },
         "@noriginmedia/react-spatial-navigation": {
-            "version": "2.12.1"
+            "version": "2.12.3"
         },
         "react-native-view-shot": {
             "version": "3.1.2",
@@ -2567,6 +2573,17 @@
                         "SplashScreen.show(this)"
                     ]
                 }
+            },
+            "androidtv": {
+                "package": "org.devio.rn.splashscreen.SplashScreenReactPackage",
+                "mainActivity": {
+                    "imports": [
+                        "org.devio.rn.splashscreen.SplashScreen"
+                    ],
+                    "createMethods": [
+                        "SplashScreen.show(this)"
+                    ]
+                }
             }
         },
         "tipsi-stripe": {
@@ -2584,8 +2601,17 @@
                 ]
             }
         },
+        "react-native-iap": {
+            "version": "4.5.0",
+            "ios": {
+                "podName": "RNIap"
+            },
+            "android": {
+                "package": "com.dooboolab.RNIap.RNIapPackage"
+            }
+        },
         "next": {
-            "version": "9.3.1"
+            "version": "9.4.3"
         },
         "@react-native-community/cli-platform-ios": {
             "no-npm": true

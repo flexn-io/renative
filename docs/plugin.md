@@ -44,7 +44,7 @@ rnv plugin add @monterosa/react-native-parallax-scroll
 ## @noriginmedia/react-spatial-navigation
 
 
-Version: `2.12.1`
+Version: `2.12.3`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -188,7 +188,7 @@ rnv plugin add @react-native-community/geolocation
 ## @react-native-community/masked-view
 
 
-Version: `0.1.1`
+Version: `0.1.6`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`
 
@@ -656,7 +656,7 @@ rnv plugin add native-base-shoutem-theme
 ## next
 
 
-Version: `9.3.1`
+Version: `9.4.3`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -1406,6 +1406,24 @@ Installation:
 
 ```
 rnv plugin add react-native-google-cast
+```
+
+
+## react-native-iap
+
+
+Version: `4.5.0`
+
+Platforms: `ios`,`android`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-iap
+
+Installation:
+
+```
+rnv plugin add react-native-iap
 ```
 
 
@@ -2206,7 +2224,7 @@ rnv plugin add react-native-sound
 
 Version: `3.2.0`
 
-Platforms: `ios`,`android`
+Platforms: `ios`,`android`,`androidtv`
 
 
 
@@ -2672,7 +2690,7 @@ rnv plugin add react-web-vector-icons
 ## renative
 
 
-Version: `0.31.0-alpha.2`
+Version: `0.31.0-feat-tasks.4`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

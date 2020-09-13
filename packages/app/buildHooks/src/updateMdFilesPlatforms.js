@@ -1,7 +1,8 @@
-import { FileUtils } from 'rnv';
+import { FileUtils, Constants } from 'rnv';
 import path from 'path';
 import fs from 'fs';
-import { PLATFORMS } from '../../../rnv/dist/constants';
+
+const { PLATFORMS } = Constants;
 
 export const updateMdFilesPlatforms = async (c) => {
     const docsPath = path.join(c.paths.project.dir, '../../docs');

@@ -1,0 +1,45 @@
+import taskRnvRun from './task.rnv.run';
+import taskRnvPackage from './task.rnv.package';
+import taskRnvBuild from './task.rnv.build';
+import taskRnvConfigure from './task.rnv.configure';
+import taskRnvStart from './task.rnv.start';
+import taskRnvExport from './task.rnv.export';
+import taskRnvDeploy from './task.rnv.deploy';
+import taskRnvDebug from './task.rnv.debug';
+
+const TASKS = {};
+
+const addTask = (taskInstance) => {
+    TASKS[taskInstance.task] = taskInstance;
+};
+
+addTask(taskRnvRun);
+addTask(taskRnvPackage);
+addTask(taskRnvBuild);
+addTask(taskRnvConfigure);
+addTask(taskRnvStart);
+addTask(taskRnvExport);
+addTask(taskRnvDeploy);
+addTask(taskRnvDebug);
+
+const executeTask = async (c, task, parentTask, originTask) => TASKS[task].fn(c, parentTask, originTask);
+
+const hasTask = (task, isProjectScope) => (isProjectScope ? !!TASKS[task] : TASKS[task]?.isGlobalScope);
+
+const getTask = task => TASKS[task];
+
+const getSubTasks = (task, exactMatch) => Object.values(TASKS).filter(v => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
+
+const getTasks = () => Object.values(TASKS);
+
+const getId = () => 'engine-rn-next';
+
+export default {
+    executeTask,
+    addTask,
+    hasTask,
+    getTask,
+    getSubTasks,
+    getTasks,
+    getId
+};

@@ -1,7 +1,6 @@
 import { FileUtils } from 'rnv';
 import path from 'path';
 import fs from 'fs';
-import { PLATFORMS } from '../../../rnv/dist/constants';
 
 const cleanUrl = v => v.replace('@', '').replace('/', '');
 

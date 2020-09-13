@@ -20,10 +20,10 @@ GLOBAL_PATH="$GLOBAL_ROOT/$PROJECT_NAME"
 
 mkdir -p $GLOBAL_PATH
 
-yarn bootstrap
+yarn bootstrap-clean
 cd packages/app
 
 # RUN
 
-npx rnv template apply --template renative-template-hello-world --ci --mono
+npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
 yarn e2e-web

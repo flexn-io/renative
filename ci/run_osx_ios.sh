@@ -30,10 +30,10 @@ security set-keychain-settings -t 3600 -l ~/Library/Keychains/ios-build.keychain
 brew tap wix/brew > /dev/null 2>&1
 brew install applesimutils > /dev/null 2>&1
 
-yarn bootstrap
+yarn bootstrap-clean
 cd packages/app
 
 # RUN
 
-npx rnv template apply --template renative-template-hello-world --ci --mono
+npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
 yarn e2e-ios

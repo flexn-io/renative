@@ -1,0 +1,54 @@
+{
+    "extend": "base",
+    "id": "helloworld",
+    "common": {
+        "id": "renative.helloworld",
+        "title": "ReNative",
+        "description": "Cross-platform application project based on ReNative",
+        "buildSchemes": {
+            "debug": {
+                "id": "renative.helloworld.debug",
+                "title": "ReNative Debug"
+            }
+        }
+    },
+    "platforms": {
+        "android": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "androidtv": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "androidwear": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "ios": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "tvos": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "tizen": {
+            "package": "NkVRhWHJST",
+            "id": "NkVRhWHJST.RNVanillaTV"
+        },
+        "tizenwatch": {
+            "package": "cHIP2fIRQZ",
+            "id": "cHIP2fIRQZ.RNVanillaWatch"
+        },
+        "tizenmobile": {
+            "package": "PauodvCU2r",
+            "id": "PauodvCU2r.RNVanillaMobile"
+        }
+    }
+}

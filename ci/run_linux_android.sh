@@ -22,13 +22,13 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 
 mkdir -p $GLOBAL_PATH
 
-yarn bootstrap
+yarn bootstrap-clean
 cd packages/app
 
 # RUN
 
-npx rnv template apply --template renative-template-hello-world --ci --mono
-npx rnv build -p android -s test -r --ci --mono
+npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
+npx rnv build -p $1 -s test -c helloworld -r --ci --mono -i "FILE_EXISTS,BUILD_CONFIG"
 
 # TODO: Travis sucks at android emulation. will tackle it separately
 # yarn e2e-android
