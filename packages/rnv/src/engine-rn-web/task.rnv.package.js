@@ -1,6 +1,5 @@
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -10,8 +9,8 @@ import {
     FIREFOX_TV,
     CHROMECAST,
     TASK_PACKAGE,
-    TASK_CONFIGURE
-} from '../core/constants';
+    TASK_CONFIGURE,
+    PARAMS } from '../core/constants';
 
 import { executeOrSkipTask } from '../core/engineManager';
 
@@ -27,7 +26,7 @@ export default {
     description: 'Package source files into bundle',
     fn: taskRnvPackage,
     task: 'package',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,
         TIZEN,

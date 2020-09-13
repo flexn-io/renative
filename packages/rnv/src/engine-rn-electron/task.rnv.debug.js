@@ -1,6 +1,6 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import { MACOS, WINDOWS } from '../core/constants';
+import { MACOS, WINDOWS, PARAMS } from '../core/constants';
 
 export const taskRnvDebug = async (c) => {
     logTask('taskRnvDebug');
@@ -16,7 +16,7 @@ export default {
     description: 'Debug your app on target device or emulator',
     fn: taskRnvDebug,
     task: 'debug',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [
         MACOS,
         WINDOWS,

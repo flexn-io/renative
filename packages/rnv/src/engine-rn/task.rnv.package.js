@@ -1,14 +1,13 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    IOS,
+import { IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
     TASK_PACKAGE,
-    TASK_CONFIGURE
-} from '../core/constants';
+    TASK_CONFIGURE,
+    PARAMS } from '../core/constants';
 import { packageBundleForXcode } from '../sdk-xcode';
 import { packageAndroid } from '../sdk-android';
 import { executeOrSkipTask } from '../core/engineManager';
@@ -37,7 +36,7 @@ export default {
     description: 'Package source files into bundle',
     fn: taskRnvPackage,
     task: 'package',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         IOS,
         TVOS,

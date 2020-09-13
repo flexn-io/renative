@@ -8,7 +8,8 @@ import { injectPlatformDependencies } from '../core/configManager/packageParser'
 import { configureRuntimeDefaults } from '../core/configManager/configParser';
 import { resolvePluginDependants } from '../core/pluginManager';
 import { executeTask } from '../core/engineManager';
-import { TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../core/constants';
+import { PARAMS, TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../core/constants';
+
 import { checkSdk } from '../core/sdkManager';
 
 
@@ -97,6 +98,6 @@ export default {
     description: '',
     fn: taskRnvPlatformConfigure,
     task: 'platform configure',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

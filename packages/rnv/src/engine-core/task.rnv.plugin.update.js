@@ -8,7 +8,8 @@ import {
 } from '../core/systemManager/logger';
 import { getPluginList } from '../core/pluginManager';
 import { executeTask } from '../core/engineManager';
-import { TASK_PLUGIN_UPDATE, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_PLUGIN_UPDATE, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
+
 
 export const taskRnvPluginUpdate = async (c, parentTask, originTask) => {
     logTask('taskRnvPluginUpdate');
@@ -42,6 +43,6 @@ export default {
     description: 'Update specific plugin to latest supported version (rnv)',
     fn: taskRnvPluginUpdate,
     task: 'plugin update',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

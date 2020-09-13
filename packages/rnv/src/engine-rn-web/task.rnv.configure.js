@@ -1,7 +1,6 @@
 import { logErrorPlatform, copySharedPlatforms } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -10,8 +9,8 @@ import {
     FIREFOX_OS,
     FIREFOX_TV,
     CHROMECAST,
-    TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE
-} from '../core/constants';
+    TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE,
+    PARAMS } from '../core/constants';
 import { configureWebProject } from '../sdk-webpack';
 import { configureTizenProject } from '../sdk-tizen';
 import { configureWebOSProject } from '../sdk-webos';
@@ -54,7 +53,7 @@ export default {
     description: 'Configure current project',
     fn: taskRnvConfigure,
     task: 'configure',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,
         TIZEN,

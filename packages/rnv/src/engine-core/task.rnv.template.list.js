@@ -1,7 +1,7 @@
 import { logToSummary, logTask } from '../core/systemManager/logger';
 import { getTemplateOptions } from '../core/templateManager';
 import { executeTask } from '../core/engineManager';
-import { TASK_TEMPLATE_LIST, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_TEMPLATE_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
 
 export const taskRnvTemplateList = async (c, parentTask, originTask) => {
     logTask('taskRnvTemplateList');
@@ -17,7 +17,7 @@ export default {
     description: 'Show list of available templates',
     fn: taskRnvTemplateList,
     task: 'template list',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
 };

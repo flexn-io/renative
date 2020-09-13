@@ -2,8 +2,7 @@ import open from 'better-opn';
 import { getConfigProp } from '../core/common';
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask, logError } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -13,8 +12,8 @@ import {
     FIREFOX_TV,
     CHROMECAST,
     TASK_START,
-    TASK_CONFIGURE
-} from '../core/constants';
+    TASK_CONFIGURE,
+    PARAMS } from '../core/constants';
 import { runWeb, waitForWebpack } from '../sdk-webpack';
 import { executeTask } from '../core/engineManager';
 
@@ -60,7 +59,7 @@ export default {
     description: 'Starts bundler / server',
     fn: taskRnvStart,
     task: 'start',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,
         TIZEN,

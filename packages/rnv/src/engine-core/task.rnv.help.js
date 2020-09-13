@@ -1,4 +1,5 @@
 import { chalk, logToSummary, logTask } from '../core/systemManager/logger';
+import { PARAMS } from '../core/constants';
 
 export const taskRnvHelp = () => {
     logTask('taskRnvHelp');
@@ -41,7 +42,7 @@ export default {
     description: 'Display generic help',
     fn: taskRnvHelp,
     task: 'help',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true
 };

@@ -2,7 +2,8 @@ import { logTask } from '../core/systemManager/logger';
 import { copyRuntimeAssets } from '../core/projectManager/projectParser';
 import { generateRuntimeConfig } from '../core/configManager/configParser';
 import { executeTask } from '../core/engineManager';
-import { TASK_SWITCH, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_SWITCH, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
+
 
 export const taskRnvSwitch = async (c, parentTask, originTask) => {
     logTask('taskRnvSwitch');
@@ -19,6 +20,6 @@ export default {
     description: '',
     fn: taskRnvSwitch,
     task: TASK_SWITCH,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

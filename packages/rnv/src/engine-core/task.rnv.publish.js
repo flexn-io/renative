@@ -4,7 +4,8 @@ import { executeAsync } from '../core/systemManager/exec';
 import { logWarning, logTask } from '../core/systemManager/logger';
 import { writeFileSync } from '../core/systemManager/fileutils';
 import { executeTask } from '../core/engineManager';
-import { TASK_PUBLISH, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_PUBLISH, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
+
 
 const includesPre = (version) => {
     if (version.includes('alpha')) return 'alpha';
@@ -147,6 +148,6 @@ export default {
     description: '',
     fn: taskRnvPublish,
     task: 'publish',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

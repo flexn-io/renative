@@ -1,7 +1,8 @@
 import { chalk, logToSummary, logTask } from '../core/systemManager/logger';
 import { generateOptions } from '../cli/prompt';
 import { executeTask } from '../core/engineManager';
-import { TASK_PLATFORM_LIST, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_PLATFORM_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
+
 
 const _genPlatOptions = (c) => {
     const opts = generateOptions(
@@ -35,7 +36,7 @@ export default {
     description: 'List all available platforms',
     fn: taskRnvPlatformList,
     task: 'platform list',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
 };

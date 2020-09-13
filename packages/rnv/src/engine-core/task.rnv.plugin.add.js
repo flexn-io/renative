@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import ora from 'ora';
 import { writeRenativeConfigFile } from '../core/configManager/configParser';
-import { TASK_INSTALL, TASK_PLUGIN_ADD, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_INSTALL, TASK_PLUGIN_ADD, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
 import {
     chalk,
     logSuccess,
@@ -100,6 +100,6 @@ export default {
     description: 'Add selected plugin to the project',
     fn: taskRnvPluginAdd,
     task: 'plugin add',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

@@ -1,14 +1,13 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    IOS,
+import { IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
     TASK_PLATFORM_CONFIGURE,
-    TASK_CONFIGURE
-} from '../core/constants';
+    TASK_CONFIGURE,
+    PARAMS } from '../core/constants';
 import { configureXcodeProject } from '../sdk-xcode';
 import { configureGradleProject } from '../sdk-android';
 import { configureMetroConfigs } from './commonEngine';
@@ -41,7 +40,7 @@ export default {
     description: 'Configure current project',
     fn: taskRnvConfigure,
     task: 'configure',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         IOS,
         TVOS,

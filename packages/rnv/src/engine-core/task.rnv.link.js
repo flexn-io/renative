@@ -1,6 +1,7 @@
 import path from 'path';
 import { doResolve } from '../core/resolve';
 import { logWarning, logTask } from '../core/systemManager/logger';
+import { PARAMS } from '../core/constants';
 import {
     copyFolderContentsRecursiveSync, fsExistsSync, fsReadFileSync
 } from '../core/systemManager/fileutils';
@@ -34,7 +35,7 @@ export default {
     description: '',
     fn: taskRnvLink,
     task: 'link',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
 };

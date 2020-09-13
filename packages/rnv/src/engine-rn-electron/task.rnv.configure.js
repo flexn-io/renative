@@ -1,6 +1,6 @@
 import { logErrorPlatform, copySharedPlatforms } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import { MACOS, WINDOWS, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE } from '../core/constants';
+import { MACOS, WINDOWS, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS } from '../core/constants';
 import { configureElectronProject } from '../sdk-electron';
 import { executeTask } from '../core/engineManager';
 
@@ -28,7 +28,7 @@ export default {
     description: 'Configure current project',
     fn: taskRnvConfigure,
     task: 'configure',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         MACOS,
         WINDOWS,

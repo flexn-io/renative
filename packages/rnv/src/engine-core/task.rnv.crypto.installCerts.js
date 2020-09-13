@@ -8,7 +8,8 @@ import {
 } from '../core/systemManager/fileutils';
 import { executeAsync } from '../core/systemManager/exec';
 import { executeTask } from '../core/engineManager';
-import { TASK_CRYPTO_INSTALL_CERTS, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_CRYPTO_INSTALL_CERTS, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
+
 
 export const taskRnvCryptoInstallCerts = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoInstallCerts');
@@ -38,7 +39,7 @@ export default {
     description: '',
     fn: taskRnvCryptoInstallCerts,
     task: TASK_CRYPTO_INSTALL_CERTS,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
 };

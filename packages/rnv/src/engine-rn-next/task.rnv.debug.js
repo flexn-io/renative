@@ -1,9 +1,8 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     CHROMECAST,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 
 export const taskRnvDebug = async (c, parentTask) => {
     logTask('taskRnvDebug', `parent:${parentTask}`);
@@ -19,7 +18,7 @@ export default {
     description: 'Debug your app on target device or emulator',
     fn: taskRnvDebug,
     task: 'debug',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [
         WEB,
         CHROMECAST,

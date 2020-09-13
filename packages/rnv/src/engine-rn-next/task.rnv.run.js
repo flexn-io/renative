@@ -1,10 +1,9 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     CHROMECAST,
     TASK_RUN, TASK_CONFIGURE,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 import { runWebNext } from '../sdk-webpack/webNext';
 import { executeOrSkipTask } from '../core/engineManager';
 
@@ -28,7 +27,7 @@ export default {
     description: 'Run your app in browser',
     fn: taskRnvRun,
     task: 'run',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [
         WEB,
         CHROMECAST,

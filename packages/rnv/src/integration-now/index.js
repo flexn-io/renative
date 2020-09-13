@@ -5,7 +5,7 @@ import { fsExistsSync, fsWriteFileSync, fsReadFileSync } from '../core/systemMan
 import { executeAsync } from '../core/systemManager/exec';
 import { getAppFolder, getConfigProp } from '../core/common';
 import { chalk, logInfo, logTask } from '../core/systemManager/logger';
-
+import { PARAMS } from '../core/constants';
 
 const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) => {
     dotenv.config();
@@ -112,6 +112,6 @@ export default {
     description: '',
     fn: taskRnvDeployNow,
     task: 'deploy now',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

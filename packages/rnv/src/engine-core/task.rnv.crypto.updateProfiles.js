@@ -1,6 +1,6 @@
 import { chalk, logTask } from '../core/systemManager/logger';
 import { listAppConfigsFoldersSync } from '../core/configManager/configParser';
-import { IOS, TVOS, TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { IOS, TVOS, TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
 import { updateProfile } from '../sdk-xcode/fastlane';
 import { executeTask } from '../core/engineManager';
 
@@ -44,7 +44,7 @@ export default {
     description: '',
     fn: taskRnvCryptoUpdateProfiles,
     task: TASK_CRYPTO_UPDATE_PROFILES,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
 };

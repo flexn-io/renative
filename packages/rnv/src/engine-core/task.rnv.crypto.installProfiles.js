@@ -12,7 +12,8 @@ import {
     fsExistsSync
 } from '../core/systemManager/fileutils';
 import { executeTask } from '../core/engineManager';
-import { TASK_CRYPTO_INSTALL_PROFILES, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_CRYPTO_INSTALL_PROFILES, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
+
 
 export const taskRnvCryptoInstallProfiles = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoInstallProfiles');
@@ -55,7 +56,7 @@ export default {
     description: '',
     fn: taskRnvCryptoInstallProfiles,
     task: TASK_CRYPTO_INSTALL_PROFILES,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
 };

@@ -21,7 +21,8 @@ import {
 import { inquirerPrompt } from '../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../core/systemManager/crypto';
 import { executeTask } from '../core/engineManager';
-import { TASK_CRYPTO_ENCRYPT, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_CRYPTO_ENCRYPT, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
+
 
 const iocane = require('iocane');
 
@@ -194,7 +195,7 @@ export default {
     description: 'Encrypts secure files from ~/<wokspace>/<project>/.. to project',
     fn: taskRnvCryptoEncrypt,
     task: TASK_CRYPTO_ENCRYPT,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
 };

@@ -1,7 +1,8 @@
 import { chalk, logTask } from '../core/systemManager/logger';
 import { buildHooks } from '../core/projectManager/buildHooks';
 import { executeTask } from '../core/engineManager';
-import { TASK_HOOKS_RUN, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_HOOKS_RUN, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
+
 
 export const taskRnvHooksRun = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksRun');
@@ -29,7 +30,7 @@ export default {
     description: 'Run specific build hook',
     fn: taskRnvHooksRun,
     task: TASK_HOOKS_RUN,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     skipAppConfig: true,
     skipPlatforms: true,

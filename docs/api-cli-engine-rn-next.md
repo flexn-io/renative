@@ -24,29 +24,44 @@ rnv run
 
 Options:
 
-`--ci` - Don't ask for confirmations
+`-i`, `--info` - Show full debug Info
 
-`-c`, `--appConfigID` - Switch to different appConfig beforehand
+`--ci` - CI/CD flag so it wont ask questions
 
-`-p`, `--platform` - Specify platform
+`--mono` - Monochrome console output without chalk
 
-`-s`, `--scheme` - Specify build scheme
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
 
-`-r`, `--reset` - Clean project beforehand
+`-o`, `--only` - run Only top command (Skip dependencies)
 
-`-t`, `--target` - Specify target simulator / device
+`-r`, `--reset` - also perform Reset of platform
 
-`-d`, `--device` - Run on device
+`-R`, `--resetHard` - also perform Reset of platform and all assets
 
-`-i`, `--info` - Show full stack trace
+`-e`, `--engine` - engine to be used (next)
 
-`-o`, `--only` - Execute only run task
+`-c`, `--appConfigID` - select specific app Config id
 
-`--analyzer` - Show app size analysis report
+`-s`, `--scheme` - select build Scheme
 
-`--hosted` - Run platform as hosted web app in browser
+`-p`, `--platform` - select specific Platform
 
-`--mono` - Monochromatic output to terminal (no colors)
+`-t`, `--target` - select specific Target device/simulator
+
+`-d`, `--device` - select connected Device
+
+`--hosted` - Run in a hosted environment (skip budleAssets)
+
+`-P`, `--port` - custom Port
+
+`-D`, `--debug` - enable remote debugger
+
+`--debugIp` - (optional) overwrite the ip to which the remote debugger will connect
+
+`--skipTargetCheck` - Skip Android target check, just display the raw adb devices to choose from
+
+`-H`, `--host` - custom Host ip
+
 
 
 
@@ -68,29 +83,28 @@ rnv package
 
 Options:
 
-`--ci` - Don't ask for confirmations
+`-i`, `--info` - Show full debug Info
 
-`-c`, `--appConfigID` - Switch to different appConfig beforehand
+`--ci` - CI/CD flag so it wont ask questions
 
-`-p`, `--platform` - Specify platform
+`--mono` - Monochrome console output without chalk
 
-`-s`, `--scheme` - Specify build scheme
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
 
-`-r`, `--reset` - Clean project beforehand
+`-o`, `--only` - run Only top command (Skip dependencies)
 
-`-t`, `--target` - Specify target simulator / device
+`-r`, `--reset` - also perform Reset of platform
 
-`-d`, `--device` - Run on device
+`-R`, `--resetHard` - also perform Reset of platform and all assets
 
-`-i`, `--info` - Show full stack trace
+`-e`, `--engine` - engine to be used (next)
 
-`-o`, `--only` - Execute only run task
+`-c`, `--appConfigID` - select specific app Config id
 
-`--analyzer` - Show app size analysis report
+`-s`, `--scheme` - select build Scheme
 
-`--hosted` - Run platform as hosted web app in browser
+`-p`, `--platform` - select specific Platform
 
-`--mono` - Monochromatic output to terminal (no colors)
 
 
 
@@ -112,29 +126,28 @@ rnv build
 
 Options:
 
-`--ci` - Don't ask for confirmations
+`-i`, `--info` - Show full debug Info
 
-`-c`, `--appConfigID` - Switch to different appConfig beforehand
+`--ci` - CI/CD flag so it wont ask questions
 
-`-p`, `--platform` - Specify platform
+`--mono` - Monochrome console output without chalk
 
-`-s`, `--scheme` - Specify build scheme
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
 
-`-r`, `--reset` - Clean project beforehand
+`-o`, `--only` - run Only top command (Skip dependencies)
 
-`-t`, `--target` - Specify target simulator / device
+`-r`, `--reset` - also perform Reset of platform
 
-`-d`, `--device` - Run on device
+`-R`, `--resetHard` - also perform Reset of platform and all assets
 
-`-i`, `--info` - Show full stack trace
+`-e`, `--engine` - engine to be used (next)
 
-`-o`, `--only` - Execute only run task
+`-c`, `--appConfigID` - select specific app Config id
 
-`--analyzer` - Show app size analysis report
+`-s`, `--scheme` - select build Scheme
 
-`--hosted` - Run platform as hosted web app in browser
+`-p`, `--platform` - select specific Platform
 
-`--mono` - Monochromatic output to terminal (no colors)
 
 
 
@@ -156,29 +169,28 @@ rnv configure
 
 Options:
 
-`--ci` - Don't ask for confirmations
+`-i`, `--info` - Show full debug Info
 
-`-c`, `--appConfigID` - Switch to different appConfig beforehand
+`--ci` - CI/CD flag so it wont ask questions
 
-`-p`, `--platform` - Specify platform
+`--mono` - Monochrome console output without chalk
 
-`-s`, `--scheme` - Specify build scheme
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
 
-`-r`, `--reset` - Clean project beforehand
+`-o`, `--only` - run Only top command (Skip dependencies)
 
-`-t`, `--target` - Specify target simulator / device
+`-r`, `--reset` - also perform Reset of platform
 
-`-d`, `--device` - Run on device
+`-R`, `--resetHard` - also perform Reset of platform and all assets
 
-`-i`, `--info` - Show full stack trace
+`-e`, `--engine` - engine to be used (next)
 
-`-o`, `--only` - Execute only run task
+`-c`, `--appConfigID` - select specific app Config id
 
-`--analyzer` - Show app size analysis report
+`-s`, `--scheme` - select build Scheme
 
-`--hosted` - Run platform as hosted web app in browser
+`-p`, `--platform` - select specific Platform
 
-`--mono` - Monochromatic output to terminal (no colors)
 
 
 
@@ -200,29 +212,28 @@ rnv start
 
 Options:
 
-`--ci` - Don't ask for confirmations
+`-i`, `--info` - Show full debug Info
 
-`-c`, `--appConfigID` - Switch to different appConfig beforehand
+`--ci` - CI/CD flag so it wont ask questions
 
-`-p`, `--platform` - Specify platform
+`--mono` - Monochrome console output without chalk
 
-`-s`, `--scheme` - Specify build scheme
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
 
-`-r`, `--reset` - Clean project beforehand
+`-o`, `--only` - run Only top command (Skip dependencies)
 
-`-t`, `--target` - Specify target simulator / device
+`-r`, `--reset` - also perform Reset of platform
 
-`-d`, `--device` - Run on device
+`-R`, `--resetHard` - also perform Reset of platform and all assets
 
-`-i`, `--info` - Show full stack trace
+`-e`, `--engine` - engine to be used (next)
 
-`-o`, `--only` - Execute only run task
+`-c`, `--appConfigID` - select specific app Config id
 
-`--analyzer` - Show app size analysis report
+`-s`, `--scheme` - select build Scheme
 
-`--hosted` - Run platform as hosted web app in browser
+`-p`, `--platform` - select specific Platform
 
-`--mono` - Monochromatic output to terminal (no colors)
 
 
 
@@ -244,29 +255,28 @@ rnv export
 
 Options:
 
-`--ci` - Don't ask for confirmations
+`-i`, `--info` - Show full debug Info
 
-`-c`, `--appConfigID` - Switch to different appConfig beforehand
+`--ci` - CI/CD flag so it wont ask questions
 
-`-p`, `--platform` - Specify platform
+`--mono` - Monochrome console output without chalk
 
-`-s`, `--scheme` - Specify build scheme
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
 
-`-r`, `--reset` - Clean project beforehand
+`-o`, `--only` - run Only top command (Skip dependencies)
 
-`-t`, `--target` - Specify target simulator / device
+`-r`, `--reset` - also perform Reset of platform
 
-`-d`, `--device` - Run on device
+`-R`, `--resetHard` - also perform Reset of platform and all assets
 
-`-i`, `--info` - Show full stack trace
+`-e`, `--engine` - engine to be used (next)
 
-`-o`, `--only` - Execute only run task
+`-c`, `--appConfigID` - select specific app Config id
 
-`--analyzer` - Show app size analysis report
+`-s`, `--scheme` - select build Scheme
 
-`--hosted` - Run platform as hosted web app in browser
+`-p`, `--platform` - select specific Platform
 
-`--mono` - Monochromatic output to terminal (no colors)
 
 
 
@@ -288,29 +298,28 @@ rnv deploy
 
 Options:
 
-`--ci` - Don't ask for confirmations
+`-i`, `--info` - Show full debug Info
 
-`-c`, `--appConfigID` - Switch to different appConfig beforehand
+`--ci` - CI/CD flag so it wont ask questions
 
-`-p`, `--platform` - Specify platform
+`--mono` - Monochrome console output without chalk
 
-`-s`, `--scheme` - Specify build scheme
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
 
-`-r`, `--reset` - Clean project beforehand
+`-o`, `--only` - run Only top command (Skip dependencies)
 
-`-t`, `--target` - Specify target simulator / device
+`-r`, `--reset` - also perform Reset of platform
 
-`-d`, `--device` - Run on device
+`-R`, `--resetHard` - also perform Reset of platform and all assets
 
-`-i`, `--info` - Show full stack trace
+`-e`, `--engine` - engine to be used (next)
 
-`-o`, `--only` - Execute only run task
+`-c`, `--appConfigID` - select specific app Config id
 
-`--analyzer` - Show app size analysis report
+`-s`, `--scheme` - select build Scheme
 
-`--hosted` - Run platform as hosted web app in browser
+`-p`, `--platform` - select specific Platform
 
-`--mono` - Monochromatic output to terminal (no colors)
 
 
 
@@ -332,28 +341,15 @@ rnv debug
 
 Options:
 
-`--ci` - Don't ask for confirmations
+`-i`, `--info` - Show full debug Info
 
-`-c`, `--appConfigID` - Switch to different appConfig beforehand
+`--ci` - CI/CD flag so it wont ask questions
 
-`-p`, `--platform` - Specify platform
+`--mono` - Monochrome console output without chalk
 
-`-s`, `--scheme` - Specify build scheme
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
 
-`-r`, `--reset` - Clean project beforehand
+`-o`, `--only` - run Only top command (Skip dependencies)
 
-`-t`, `--target` - Specify target simulator / device
-
-`-d`, `--device` - Run on device
-
-`-i`, `--info` - Show full stack trace
-
-`-o`, `--only` - Execute only run task
-
-`--analyzer` - Show app size analysis report
-
-`--hosted` - Run platform as hosted web app in browser
-
-`--mono` - Monochromatic output to terminal (no colors)
 
 test

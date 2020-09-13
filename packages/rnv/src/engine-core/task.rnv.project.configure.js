@@ -6,7 +6,7 @@ import { applyTemplate, checkIfTemplateInstalled, configureEntryPoints } from '.
 import { fsExistsSync, fsMkdirSync } from '../core/systemManager/fileutils';
 import { checkCrypto } from '../core/systemManager/crypto';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
-import { TASK_INSTALL, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, TASK_APP_CONFIGURE, TASK_WORKSPACE_CONFIGURE } from '../core/constants';
+import { TASK_INSTALL, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, TASK_APP_CONFIGURE, TASK_WORKSPACE_CONFIGURE, PARAMS } from '../core/constants';
 import { checkAndCreateProjectPackage, copyRuntimeAssets, cleanPlaformAssets } from '../core/projectManager/projectParser';
 import { executeTask } from '../core/engineManager';
 
@@ -64,6 +64,6 @@ export default {
     description: 'Configure current project',
     fn: taskRnvProjectConfigure,
     task: TASK_PROJECT_CONFIGURE,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

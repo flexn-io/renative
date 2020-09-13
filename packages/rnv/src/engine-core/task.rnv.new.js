@@ -2,7 +2,8 @@ import path from 'path';
 import inquirer from 'inquirer';
 import semver from 'semver';
 import { generateOptions } from '../cli/prompt';
-import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS, CURRENT_DIR } from '../core/constants';
+import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS, CURRENT_DIR, PARAMS } from '../core/constants';
+
 import { getTemplateOptions } from '../core/templateManager';
 import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync } from '../core/systemManager/fileutils';
 import { executeAsync, commandExistsSync } from '../core/systemManager/exec';
@@ -345,7 +346,7 @@ export default {
     description: 'Create new ReNative project',
     fn: taskRnvNew,
     task: 'new',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true
 };

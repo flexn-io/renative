@@ -1,8 +1,9 @@
 import { printTable } from 'console-table-printer';
 
 import { logWarning, logTask } from '../core/systemManager/logger';
-import { configSchema } from '../core/constants';
+import { configSchema, PARAMS } from '../core/constants';
 import Config from '../core/configManager/config';
+
 
 export const taskRnvConfig = () => {
     logTask('taskRnvConfig');
@@ -39,6 +40,6 @@ export default {
     description: 'Edit or display RNV configs',
     fn: taskRnvConfig,
     task: 'config',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

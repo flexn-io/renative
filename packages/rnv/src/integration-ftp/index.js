@@ -9,6 +9,7 @@ import {
 } from '../core/systemManager/fileutils';
 import { logInfo, logTask } from '../core/systemManager/logger';
 import { DEPLOY_TARGET_FTP } from '../core/deployManager/webTools';
+import { PARAMS } from '../core/constants';
 
 const FtpDeploy = require('ftp-deploy');
 const dotEnv = require('dotenv');
@@ -221,6 +222,6 @@ export default {
     description: '',
     fn: deployToFtp,
     task: 'deploy ftp',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

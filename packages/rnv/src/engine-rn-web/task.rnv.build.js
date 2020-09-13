@@ -1,7 +1,6 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -11,7 +10,7 @@ import {
     FIREFOX_TV,
     CHROMECAST,
     TASK_BUILD, TASK_PACKAGE,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 import { buildWeb } from '../sdk-webpack';
 import { buildTizenProject } from '../sdk-tizen';
 import { buildWebOSProject } from '../sdk-webos';
@@ -52,7 +51,7 @@ export default {
     description: 'Build project binary',
     fn: taskRnvBuild,
     task: 'build',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,
         TIZEN,

@@ -5,7 +5,7 @@ import {
     logToSummary,
 } from '../core/systemManager/logger';
 import { executeTask } from '../core/engineManager';
-import { TASK_WORKSPACE_LIST, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_WORKSPACE_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
 
 export const taskRnvWorkspaceList = async (c, parentTask, originTask) => {
     logTask('taskRnvWorkspaceList');
@@ -31,7 +31,7 @@ export default {
     description: 'Show list of all available workspaces',
     fn: taskRnvWorkspaceList,
     task: TASK_WORKSPACE_LIST,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true
 };

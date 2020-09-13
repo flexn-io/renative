@@ -2,15 +2,14 @@ import { getEntryFile } from '../core/common';
 import { doResolve } from '../core/resolve';
 import { logErrorPlatform } from '../core/platformManager';
 import { chalk, logTask, logError, logRaw } from '../core/systemManager/logger';
-import {
-    IOS,
+import { IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
     TASK_START,
-    TASK_CONFIGURE
-} from '../core/constants';
+    TASK_CONFIGURE,
+    PARAMS } from '../core/constants';
 import { executeAsync } from '../core/systemManager/exec';
 import { executeTask } from '../core/engineManager';
 
@@ -80,7 +79,7 @@ export default {
     description: 'Starts bundler / server',
     fn: taskRnvStart,
     task: 'start',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         IOS,
         TVOS,

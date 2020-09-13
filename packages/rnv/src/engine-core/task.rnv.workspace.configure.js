@@ -1,5 +1,5 @@
 import path from 'path';
-import { RENATIVE_CONFIG_NAME } from '../core/constants';
+import { RENATIVE_CONFIG_NAME, PARAMS } from '../core/constants';
 import {
     copyFileSync,
     mkdirSync,
@@ -116,7 +116,7 @@ export default {
     description: '',
     fn: taskRnvWorkspaceConfigure,
     task: 'workspace configure',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
     isGlobalScope: true

@@ -4,6 +4,7 @@ import inquirer from 'inquirer';
 import { removeDirs, fsExistsSync, fsReaddirSync } from '../core/systemManager/fileutils';
 import { chalk, logTask, logToSummary, logDebug } from '../core/systemManager/logger';
 import { executeAsync } from '../core/systemManager/exec';
+import { PARAMS } from '../core/constants';
 
 export const taskRnvClean = async (c, skipQuestionParam = false) => {
     logTask('taskRnvClean');
@@ -129,7 +130,7 @@ export default {
     description: 'Automatically removes all node_modules and lock in your project and its dependencies',
     fn: taskRnvClean,
     task: 'clean',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true
 };

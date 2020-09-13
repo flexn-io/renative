@@ -1,7 +1,6 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -11,8 +10,8 @@ import {
     FIREFOX_TV,
     CHROMECAST,
     TASK_BUILD,
-    TASK_EXPORT
-} from '../core/constants';
+    TASK_EXPORT,
+    PARAMS } from '../core/constants';
 import { exportWeb } from '../sdk-webpack';
 import { executeOrSkipTask } from '../core/engineManager';
 
@@ -35,7 +34,7 @@ export default {
     description: 'Export the app into deployable binary',
     fn: taskRnvExport,
     task: 'export',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,
         TIZEN,

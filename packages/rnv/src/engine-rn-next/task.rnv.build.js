@@ -1,10 +1,9 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     CHROMECAST,
     TASK_BUILD, TASK_PACKAGE,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 import { buildWebNext } from '../sdk-webpack/webNext';
 import { executeOrSkipTask } from '../core/engineManager';
 
@@ -28,7 +27,7 @@ export default {
     description: 'Build project binary',
     fn: taskRnvBuild,
     task: 'build',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,
         CHROMECAST,

@@ -1,9 +1,8 @@
 import { logTask } from '../core/systemManager/logger';
-import {
-    MACOS,
+import { MACOS,
     WINDOWS,
     TASK_BUILD, TASK_PACKAGE,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 import { logErrorPlatform } from '../core/platformManager';
 import { buildElectron } from '../sdk-electron';
 import { executeOrSkipTask } from '../core/engineManager';
@@ -27,7 +26,7 @@ export default {
     description: 'Build project binary',
     fn: taskRnvBuild,
     task: 'build',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         MACOS,
         WINDOWS,

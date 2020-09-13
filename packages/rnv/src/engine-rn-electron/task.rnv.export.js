@@ -1,10 +1,9 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    MACOS,
+import { MACOS,
     WINDOWS,
     TASK_BUILD, TASK_EXPORT,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 import {
     exportElectron
 } from '../sdk-electron';
@@ -30,7 +29,7 @@ export default {
     description: 'Export the app into deployable binary',
     fn: taskRnvExport,
     task: 'export',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         MACOS,
         WINDOWS,

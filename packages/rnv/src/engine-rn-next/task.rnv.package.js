@@ -1,10 +1,9 @@
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     CHROMECAST,
     TASK_PACKAGE,
-    TASK_CONFIGURE
-} from '../core/constants';
+    TASK_CONFIGURE,
+    PARAMS } from '../core/constants';
 import { executeOrSkipTask } from '../core/engineManager';
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
@@ -19,7 +18,7 @@ export default {
     description: 'Package source files into bundle',
     fn: taskRnvPackage,
     task: 'package',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,
         CHROMECAST,

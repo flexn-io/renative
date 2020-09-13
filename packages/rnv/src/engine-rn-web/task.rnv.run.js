@@ -3,8 +3,7 @@ import path from 'path';
 
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask, logDebug } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -15,7 +14,7 @@ import {
     CHROMECAST,
     TASK_RUN, TASK_START,
     TASK_CONFIGURE,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 import { runWeb } from '../sdk-webpack';
 import { runTizen } from '../sdk-tizen';
 import { runWebOS } from '../sdk-webos';
@@ -106,7 +105,7 @@ export default {
     description: 'Run your app in browser',
     fn: taskRnvRun,
     task: 'run',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [
         WEB,
         TIZEN,

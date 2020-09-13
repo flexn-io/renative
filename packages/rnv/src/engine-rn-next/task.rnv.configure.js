@@ -1,10 +1,9 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     CHROMECAST,
-    TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE
-} from '../core/constants';
+    TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE,
+    PARAMS } from '../core/constants';
 import { configureNextIfRequired } from '../sdk-webpack/webNext';
 import { executeTask } from '../core/engineManager';
 
@@ -30,7 +29,7 @@ export default {
     description: 'Configure current project',
     fn: taskRnvConfigure,
     task: 'configure',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,
         CHROMECAST,

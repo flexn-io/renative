@@ -4,7 +4,7 @@ import { logTask } from '../core/systemManager/logger';
 import { createWorkspace } from '../core/projectManager/workspace';
 import { fsExistsSync } from '../core/systemManager/fileutils';
 import { executeTask } from '../core/engineManager';
-import { TASK_WORKSPACE_ADD, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_WORKSPACE_ADD, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
 
 export const taskRnvWorkspaceAdd = async (c, parentTask, originTask) => {
     logTask('taskRnvWorkspaceAdd');
@@ -48,7 +48,7 @@ export default {
     description: 'Add new workspace',
     fn: taskRnvWorkspaceAdd,
     task: TASK_WORKSPACE_ADD,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true
 };

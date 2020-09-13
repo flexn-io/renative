@@ -1,13 +1,12 @@
 import { logTask } from '../core/systemManager/logger';
-import {
-    TASK_EXPORT,
+import { TASK_EXPORT,
     TASK_DEPLOY,
     IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 import { executeOrSkipTask } from '../core/engineManager';
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {
@@ -23,7 +22,7 @@ export default {
     description: 'Deploy the binary via selected deployment intgeration or buld hook',
     fn: taskRnvDeploy,
     task: 'deploy',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         IOS,
         TVOS,

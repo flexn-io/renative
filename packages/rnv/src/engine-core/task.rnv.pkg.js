@@ -12,9 +12,10 @@ import {
     fsReaddirSync,
     fsLstatSync
 } from '../core/systemManager/fileutils';
+import { PARAMS, TASK_PKG, TASK_PROJECT_CONFIGURE } from '../core/constants';
 import { logError, logTask } from '../core/systemManager/logger';
 import { executeTask } from '../core/engineManager';
-import { TASK_PKG, TASK_PROJECT_CONFIGURE } from '../core/constants';
+
 
 const bumpVersions = (version) => {
     const {
@@ -108,6 +109,6 @@ export default {
     description: '',
     fn: taskRnvPkg,
     task: TASK_PKG,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

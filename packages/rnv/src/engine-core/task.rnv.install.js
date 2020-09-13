@@ -1,5 +1,5 @@
 import { areNodeModulesInstalled } from '../core/common';
-
+import { PARAMS } from '../core/constants';
 import { installPackageDependencies } from '../core/systemManager/exec';
 import { logTask, logWarning } from '../core/systemManager/logger';
 
@@ -29,7 +29,7 @@ export default {
     description: 'Install package node_modules via yarn or npm',
     fn: taskRnvInstall,
     task: 'install',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
 };

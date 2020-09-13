@@ -1,10 +1,9 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     CHROMECAST,
-    TASK_BUILD, TASK_EXPORT
-} from '../core/constants';
+    TASK_BUILD, TASK_EXPORT,
+    PARAMS } from '../core/constants';
 import { exportWebNext } from '../sdk-webpack/webNext';
 import { executeOrSkipTask } from '../core/engineManager';
 
@@ -27,7 +26,7 @@ export default {
     description: 'Export the app into deployable binary',
     fn: taskRnvExport,
     task: 'export',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,
         CHROMECAST,

@@ -1,12 +1,11 @@
 import { executeAsync, commandExistsSync } from '../core/systemManager/exec';
 import { getAppFolder } from '../core/common';
-import {
-    IOS,
+import { IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 import Config from '../core/configManager/config';
 import PlatformSetup from '../core/setupManager';
 
@@ -36,7 +35,7 @@ export default {
     description: 'Run fstalane commands directly',
     fn: taskRnvFastlane,
     task: 'fastlane',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [
         IOS,
         TVOS,

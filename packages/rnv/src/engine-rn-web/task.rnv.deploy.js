@@ -1,7 +1,6 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    WEB,
+import { WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -12,7 +11,7 @@ import {
     CHROMECAST,
     TASK_EXPORT,
     TASK_DEPLOY,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 import { deployWeb } from '../sdk-webpack';
 import { executeOrSkipTask } from '../core/engineManager';
 
@@ -37,7 +36,7 @@ export default {
     description: 'Deploy the binary via selected deployment intgeration or buld hook',
     fn: taskRnvDeploy,
     task: 'deploy',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,
         TIZEN,

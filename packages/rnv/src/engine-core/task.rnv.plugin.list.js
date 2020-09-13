@@ -1,7 +1,8 @@
 import { logTask, logToSummary } from '../core/systemManager/logger';
 import { getPluginList } from '../core/pluginManager';
 import { executeTask } from '../core/engineManager';
-import { TASK_PLUGIN_LIST, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_PLUGIN_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
+
 
 export const taskRnvPluginList = async (c, parentTask, originTask) => {
     logTask('taskRnvPluginList');
@@ -20,6 +21,6 @@ export default {
     description: 'Show list of all available plugins',
     fn: taskRnvPluginList,
     task: 'plugin list',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

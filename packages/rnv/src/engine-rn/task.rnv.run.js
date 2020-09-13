@@ -1,15 +1,14 @@
 import { getConfigProp } from '../core/common';
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask, logSummary } from '../core/systemManager/logger';
-import {
-    IOS,
+import { IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
     TASK_RUN,
-    TASK_CONFIGURE
-} from '../core/constants';
+    TASK_CONFIGURE,
+    PARAMS } from '../core/constants';
 import { runXcodeProject } from '../sdk-xcode';
 import { packageAndroid, runAndroid } from '../sdk-android';
 import { executeOrSkipTask } from '../core/engineManager';
@@ -65,7 +64,7 @@ export default {
     dependencies: {
         before: TASK_CONFIGURE
     },
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [
         IOS,
         TVOS,

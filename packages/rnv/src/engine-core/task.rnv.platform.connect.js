@@ -8,7 +8,8 @@ import {
 } from '../core/systemManager/fileutils';
 import { generatePlatformChoices } from '../core/platformManager';
 import { executeTask } from '../core/engineManager';
-import { TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT } from '../core/constants';
+import { TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, PARAMS } from '../core/constants';
+
 
 export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformConnect');
@@ -79,6 +80,6 @@ export default {
     description: 'Connect platform template back to rnv',
     fn: taskRnvPlatformConnect,
     task: TASK_PLATFORM_CONNECT,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

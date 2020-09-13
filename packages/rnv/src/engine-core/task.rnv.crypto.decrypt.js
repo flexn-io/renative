@@ -18,7 +18,8 @@ import {
 import { inquirerPrompt } from '../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../core/systemManager/crypto';
 import { executeTask } from '../core/engineManager';
-import { TASK_CRYPTO_DECRYPT, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_CRYPTO_DECRYPT, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
+
 
 const iocane = require('iocane');
 
@@ -243,7 +244,7 @@ export default {
     description: 'Decrypt encrypted project files into local ~/<wokspace>/<project>/..',
     fn: taskRnvCryptoDecrypt,
     task: TASK_CRYPTO_DECRYPT,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
 };

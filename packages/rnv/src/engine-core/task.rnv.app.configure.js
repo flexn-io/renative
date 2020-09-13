@@ -2,7 +2,7 @@ import path from 'path';
 import { promisify } from 'util';
 import inquirer from 'inquirer';
 import { parseRenativeConfigs, listAppConfigsFoldersSync } from '../core/configManager/configParser';
-import { TASK_APP_CONFIGURE } from '../core/constants';
+import { TASK_APP_CONFIGURE, PARAMS } from '../core/constants';
 import {
     writeFileSync,
     fsExistsSync,
@@ -243,6 +243,6 @@ export default {
     description: 'Configure project with specific appConfig',
     fn: taskRnvAppConfigure,
     task: TASK_APP_CONFIGURE,
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [],
 };

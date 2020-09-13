@@ -1,11 +1,10 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    MACOS,
+import { MACOS,
     WINDOWS,
     TASK_RUN,
     TASK_CONFIGURE,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 import { runElectron } from '../sdk-electron';
 import { executeOrSkipTask } from '../core/engineManager';
 
@@ -31,7 +30,7 @@ export default {
     description: 'Run your app on target device or emulator',
     fn: taskRnvRun,
     task: 'run',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [
         MACOS,
         WINDOWS,

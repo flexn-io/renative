@@ -2,7 +2,7 @@ import inquirer from 'inquirer';
 import { logTask } from '../core/systemManager/logger';
 import { applyTemplate, getInstalledTemplateOptions } from '../core/templateManager';
 import { executeTask } from '../core/engineManager';
-import { TASK_TEMPLATE_APPLY, TASK_PROJECT_CONFIGURE, TASK_APP_CONFIGURE } from '../core/constants';
+import { TASK_TEMPLATE_APPLY, TASK_PROJECT_CONFIGURE, TASK_APP_CONFIGURE, PARAMS } from '../core/constants';
 
 export const taskRnvTemplateApply = async (c, parentTask, originTask) => {
     logTask('taskRnvTemplateApply', `template: ${c.program.template}`);
@@ -37,6 +37,6 @@ export default {
     description: 'Reset project to specific template',
     fn: taskRnvTemplateApply,
     task: 'template apply',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

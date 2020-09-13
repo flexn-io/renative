@@ -4,20 +4,20 @@ import {
     listAndroidTargets,
 } from '../sdk-android/deviceManager';
 import { checkSdk } from '../core/sdkManager';
-import {
-    IOS,
+import { IOS,
     ANDROID,
     TVOS,
     TIZEN,
     WEBOS,
     ANDROID_TV,
     ANDROID_WEAR,
-    TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH
-} from '../core/constants';
+    TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH,
+    PARAMS } from '../core/constants';
 import { listTizenTargets } from '../sdk-tizen';
 import { listWebOSTargets } from '../sdk-webos';
 import { listAppleDevices } from '../sdk-xcode/deviceManager';
 import { executeTask } from '../core/engineManager';
+
 
 export const taskRnvTargetList = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetList');
@@ -54,7 +54,7 @@ export default {
     description: 'List all available devices / emulators for specific platform',
     fn: taskRnvTargetList,
     task: 'target list',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true
 };

@@ -1,4 +1,4 @@
-import { TASK_APP_CREATE } from '../core/constants';
+import { TASK_APP_CREATE, PARAMS } from '../core/constants';
 import {
     chalk,
     logTask,
@@ -24,6 +24,6 @@ export default {
     description: 'Create new app config',
     fn: taskRnvAppCreate,
     task: TASK_APP_CREATE,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

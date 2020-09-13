@@ -1,13 +1,12 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    IOS,
+import { IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
     TASK_BUILD, TASK_PACKAGE, TASK_EXPORT,
-} from '../core/constants';
+    PARAMS } from '../core/constants';
 import { buildXcodeProject } from '../sdk-xcode';
 import {
     buildAndroid,
@@ -41,7 +40,7 @@ export default {
     description: 'Build project binary',
     fn: taskRnvBuild,
     task: 'build',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         IOS,
         TVOS,

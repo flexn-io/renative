@@ -1,13 +1,12 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { logTask } from '../core/systemManager/logger';
-import {
-    IOS,
+import { IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
-    TASK_BUILD, TASK_EXPORT
-} from '../core/constants';
+    TASK_BUILD, TASK_EXPORT,
+    PARAMS } from '../core/constants';
 import { exportXcodeProject } from '../sdk-xcode';
 import { executeOrSkipTask } from '../core/engineManager';
 
@@ -36,7 +35,7 @@ export default {
     description: 'Export the app into deployable binary',
     fn: taskRnvExport,
     task: 'export',
-    params: [],
+    params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         IOS,
         TVOS,

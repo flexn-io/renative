@@ -2,7 +2,7 @@ import { inquirerPrompt } from '../cli/prompt';
 import { logTask, logRaw } from '../core/systemManager/logger';
 import { getWorkspaceConnectionString } from '../core/projectManager/workspace';
 import { executeTask } from '../core/engineManager';
-import { TASK_WORKSPACE_CONNECT, TASK_PROJECT_CONFIGURE } from '../core/constants';
+import { TASK_WORKSPACE_CONNECT, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
 
 export const taskRnvWorkspaceConnect = async (c, parentTask, originTask) => {
     logTask('taskRnvWorkspaceConnect');
@@ -29,7 +29,7 @@ export default {
     description: 'Connect project with selected workspace',
     fn: taskRnvWorkspaceConnect,
     task: TASK_WORKSPACE_CONNECT,
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true
 };

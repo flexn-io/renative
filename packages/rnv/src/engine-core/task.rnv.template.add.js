@@ -3,7 +3,7 @@ import { writeFileSync } from '../core/systemManager/fileutils';
 import { logTask } from '../core/systemManager/logger';
 import { generateBuildConfig } from '../core/configManager/configParser';
 import { executeTask } from '../core/engineManager';
-import { TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD } from '../core/constants';
+import { TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD, PARAMS } from '../core/constants';
 
 import { getTemplateOptions } from '../core/templateManager';
 
@@ -47,6 +47,6 @@ export default {
     description: 'Install additional template to the project',
     fn: taskRnvTemplateAdd,
     task: 'template add',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
 };

@@ -1,14 +1,14 @@
 import { logErrorPlatform } from '../core/platformManager';
 import { checkAndConfigureSdks } from '../core/sdkManager';
 import { logTask } from '../core/systemManager/logger';
-import {
+import { PARAMS,
     IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
-    TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE
-} from '../core/constants';
+    TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE } from '../core/constants';
+
 import { runAppleLog } from '../sdk-xcode';
 import { runAndroidLog } from '../sdk-android';
 import { executeTask } from '../core/engineManager';
@@ -38,7 +38,7 @@ export default {
     description: 'Attach logger to device or emulator and print out logs',
     fn: taskRnvLog,
     task: 'log',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [
         IOS,
         TVOS,

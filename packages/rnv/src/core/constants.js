@@ -807,6 +807,186 @@ export const TASK_APP_CREATE = 'app create';
 export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
 export const TASK_CONFIGURE_SOFT = 'configureSoft';
 
+const _PARAMS = {
+    info: {
+        shortcut: 'i',
+        value: 'value',
+        description: 'Show full debug Info'
+    },
+    updatePods: {
+        shortcut: 'u',
+        description: 'Force update dependencies (iOS only)'
+    },
+    platform: {
+        shortcut: 'p',
+        value: 'value',
+        description: 'select specific Platform'
+    },
+    appConfigID: {
+        shortcut: 'c',
+        value: 'value',
+        description: 'select specific app Config id'
+    },
+    target: {
+        shortcut: 't',
+        value: 'value',
+        description: 'select specific Target device/simulator'
+    },
+    template: {
+        shortcut: 'T',
+        value: 'value',
+        isRequired: true,
+        description: 'select specific template'
+    },
+    device: {
+        shortcut: 'd',
+        value: 'value',
+        description: 'select connected Device'
+    },
+    scheme: {
+        shortcut: 's',
+        value: 'value',
+        description: 'select build Scheme'
+    },
+    filter: {
+        shortcut: 'f',
+        value: 'value',
+        isRequired: true,
+        description: 'Filter value'
+    },
+    list: {
+        shortcut: 'l',
+        description: 'return List of items related to command'
+    },
+    only: {
+        shortcut: 'o',
+        description: 'run Only top command (Skip dependencies)'
+    },
+    reset: {
+        shortcut: 'r',
+        description: 'also perform Reset of platform'
+    },
+    resetHard: {
+        shortcut: 'R',
+        description: 'also perform Reset of platform and all assets'
+    },
+    key: {
+        shortcut: 'k',
+        value: 'value',
+        isRequired: true,
+        description: 'Pass the key/password'
+    },
+    blueprint: {
+        shortcut: 'b',
+        value: 'value',
+        description: 'Blueprint for targets'
+    },
+    host: {
+        shortcut: 'H',
+        value: 'value',
+        isRequired: true,
+        description: 'custom Host ip'
+    },
+    exeMethod: {
+        shortcut: 'x',
+        value: 'value',
+        isRequired: true,
+        description: 'eXecutable method in buildHooks'
+    },
+    port: {
+        shortcut: 'P',
+        value: 'value',
+        isRequired: true,
+        description: 'custom Port'
+    },
+    debug: {
+        shortcut: 'D',
+        description: 'enable remote debugger'
+    },
+    global: {
+        shortcut: 'G',
+        description: 'Flag for setting a config value for all RNV projects'
+    },
+    engine: {
+        shortcut: 'e',
+        value: 'value',
+        isRequired: true,
+        description: 'engine to be used (next)'
+    },
+    debugIp: {
+        value: 'value',
+        isRequired: true,
+        description: '(optional) overwrite the ip to which the remote debugger will connect'
+    },
+    ci: {
+        description: 'CI/CD flag so it wont ask questions'
+    },
+    mono: {
+        description: 'Monochrome console output without chalk'
+    },
+    skipNotifications: {
+        description: 'Skip sending any integrated notifications'
+    },
+    keychain: {
+        value: 'value',
+        isRequired: true,
+        description: 'Name of the keychain'
+    },
+    provisioningStyle: {
+        value: 'value',
+        isRequired: true,
+        description: 'Set provisioningStyle <Automatic | Manual>'
+    },
+    codeSignIdentity: {
+        value: 'value',
+        isRequired: true,
+        description: 'Set codeSignIdentity ie <iPhone Distribution>'
+    },
+    provisionProfileSpecifier: {
+        value: 'value',
+        isRequired: true,
+        description: 'Name of provisionProfile'
+    },
+    hosted: {
+        description: 'Run in a hosted environment (skip budleAssets)'
+    },
+    maxErrorLength: {
+        value: 'number',
+        isRequired: true,
+        description: 'Specify how many characters each error should display. Default 200'
+    },
+    skipTargetCheck: {
+        description: 'Skip Android target check, just display the raw adb devices to choose from'
+    },
+    analyzer: {
+        description: 'Enable real-time bundle analyzer'
+    },
+    xcodebuildArchiveArgs: {
+        value: 'value',
+        isRequired: true,
+        description: 'pass down custom xcodebuild arguments'
+    },
+    xcodebuildExportArgs: {
+        value: 'value',
+        isRequired: true,
+        description: 'pass down custom xcodebuild arguments'
+    }
+};
+
+Object.keys(_PARAMS).forEach((k) => {
+    _PARAMS[k].key = k;
+});
+
+
+export const PARAMS = {
+    withBase: arr => [_PARAMS.info, _PARAMS.ci, _PARAMS.mono, _PARAMS.maxErrorLength, _PARAMS.only].concat(arr || []),
+    withConfigure: arr => [_PARAMS.reset, _PARAMS.resetHard, _PARAMS.engine,
+        _PARAMS.appConfigID, _PARAMS.scheme, _PARAMS.platform].concat(arr || []),
+    withRun: arr => [_PARAMS.target, _PARAMS.device, _PARAMS.hosted,
+        _PARAMS.port, _PARAMS.debug, _PARAMS.debugIp, _PARAMS.skipTargetCheck, _PARAMS.host].concat(arr || []),
+    all: Object.keys(_PARAMS)
+};
+
 
 export const configSchema = {
     analytics: {

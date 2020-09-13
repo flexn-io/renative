@@ -1,7 +1,6 @@
 import { isPlatformSupported } from '../core/platformManager';
 import { chalk, logTask } from '../core/systemManager/logger';
-import {
-    IOS,
+import { IOS,
     ANDROID,
     TVOS,
     TIZEN,
@@ -10,8 +9,9 @@ import {
     ANDROID_WEAR,
     KAIOS,
     TASK_WORKSPACE_CONFIGURE,
-    TASK_TARGET_LAUNCH
-} from '../core/constants';
+    TASK_TARGET_LAUNCH,
+    PARAMS } from '../core/constants';
+
 import { launchTizenSimulator } from '../sdk-tizen';
 import { launchWebOSimulator } from '../sdk-webos';
 import {
@@ -57,7 +57,7 @@ export default {
     description: 'Launch specific emulator',
     fn: taskRnvTargetLaunch,
     task: 'target launch',
-    params: [],
+    params: PARAMS.withBase(),
     platforms: [],
     isGlobalScope: true
 };
