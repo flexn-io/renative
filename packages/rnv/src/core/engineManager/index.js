@@ -287,6 +287,8 @@ export const findSuitableTask = async (c) => {
     return c.runtime.engine.getTask(task);
 };
 
+export const getRegisteredEngines = () => REGISTERED_ENGINES;
+
 export default {
-    getRegisteredEngines: () => REGISTERED_ENGINES
+    getRegisteredEngines
 };

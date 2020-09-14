@@ -984,6 +984,7 @@ export const PARAMS = {
         _PARAMS.appConfigID, _PARAMS.scheme, _PARAMS.platform].concat(arr || []),
     withRun: arr => [_PARAMS.target, _PARAMS.device, _PARAMS.hosted,
         _PARAMS.port, _PARAMS.debug, _PARAMS.debugIp, _PARAMS.skipTargetCheck, _PARAMS.host].concat(arr || []),
+    withAll: arr => Object.values(_PARAMS).concat(arr || []),
     all: Object.keys(_PARAMS)
 };
 
