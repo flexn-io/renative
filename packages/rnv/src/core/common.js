@@ -146,17 +146,22 @@ const _getValueOrMergedObject = (
     return resultCommon;
 };
 
-// We need to slowly move this to Config and refactor everything to use it from there
 export const getConfigProp = (c, platform, key, defaultVal) => {
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
         return null;
     }
+    return _getConfigProp(c, platform, key, defaultVal, c.buildConfig);
+};
+
+export const _getConfigProp = (c, platform, key, defaultVal, sourceObj) => {
+    if (!sourceObj) return null;
+
     if (!key || !key.split) {
         logError('getConfigProp: invalid key!');
         return null;
     }
-    const p = c.buildConfig.platforms?.[platform];
+    const p = sourceObj.platforms?.[platform];
     const ps = c.runtime.scheme;
     const keyArr = key.split('.');
     const baseKey = keyArr.shift();
@@ -168,7 +173,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
         scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
         resultPlatforms = getFlavouredProp(
             c,
-            c.buildConfig.platforms[platform],
+            sourceObj.platforms[platform],
             baseKey
         );
     }
@@ -176,7 +181,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     scheme = scheme || {};
     const resultCli = CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
     const resultScheme = scheme[baseKey];
-    const resultCommon = getFlavouredProp(c, c.buildConfig.common, baseKey);
+    const resultCommon = getFlavouredProp(c, sourceObj.common, baseKey);
 
     let result = _getValueOrMergedObject(
         resultCli,
@@ -186,12 +191,48 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     );
 
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-    logDebug(`getConfigProp:${key}:${result}`);
     if (typeof result === 'object' && subKey.length) {
         return lGet(result, subKey);
     }
     return result;
 };
+
+
+export const getConfigPropArray = (c, platform, key) => {
+    const result = [];
+    const configArr = [
+        c.files.defaultWorkspace.config,
+        c.files.rnv.projectTemplates.config,
+        // { plugins: extraPlugins },
+        // { pluginTemplates },
+        c.files.rnv.engines.config,
+        c.files.workspace.config,
+        c.files.workspace.configPrivate,
+        c.files.workspace.configLocal,
+        c.files.workspace.project.config,
+        c.files.workspace.project.configPrivate,
+        c.files.workspace.project.configLocal,
+        ...c.files.workspace.appConfig.configs,
+        ...c.files.workspace.appConfig.configsPrivate,
+        ...c.files.workspace.appConfig.configsLocal,
+        c.files.project.config,
+        c.files.project.configPrivate,
+        c.files.project.configLocal,
+        ...c.files.appConfig.configs,
+        ...c.files.appConfig.configsPrivate,
+        ...c.files.appConfig.configsLocal
+    ];
+    configArr.forEach((config) => {
+        const val = _getConfigProp(c, platform, key, null, config);
+        if (val) {
+            result.push(val);
+        }
+    });
+
+
+    return result;
+};
+
 
 export const getAppId = (c, platform) => {
     const id = getConfigProp(c, platform, 'id');

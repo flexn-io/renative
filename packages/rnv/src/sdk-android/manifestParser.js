@@ -5,7 +5,8 @@ import {
     getBuildFilePath,
     getConfigProp,
     getFlavouredProp,
-    addSystemInjects
+    addSystemInjects,
+    getConfigPropArray
 } from '../core/common';
 import { logTask, logError, logWarning, logDebug } from '../core/systemManager/logger';
 import { readObjectSync, writeCleanFile } from '../core/systemManager/fileutils';
@@ -125,6 +126,22 @@ const _mergeNodeChildren = (node, nodeChildrenExt = []) => {
     });
 };
 
+const _mergeFeatures = (c, baseManifestFile, configKey, value) => {
+    const features = getConfigProp(c, c.platform, configKey);
+
+    if (features) {
+        const featuresObj = [];
+        features.forEach((key) => {
+            featuresObj.push({
+                tag: 'uses-feature',
+                'android:name': key,
+                'android:required': value
+            });
+        });
+        _mergeNodeChildren(baseManifestFile, featuresObj);
+    }
+};
+
 export const parseAndroidManifestSync = (c) => {
     logTask('parseAndroidManifestSync');
     const { platform } = c;
@@ -135,72 +152,34 @@ export const parseAndroidManifestSync = (c) => {
             `src/sdk-android/supportFiles/AndroidManifest_${platform}.json`
         );
         const baseManifestFile = readObjectSync(baseManifestFilePath);
-        const appFolder = getAppFolder(c);
-        const application = _findChildNode(
-            'application',
-            '.MainApplication',
-            baseManifestFile
-        );
-
         baseManifestFile.package = getAppId(c, platform);
 
-        // appConfigs/base/plugins.json PLUGIN CONFIG ROOT OVERRIDES
-        const pluginConfigAndroid = getFlavouredProp(
-            c,
-            c.buildConfig?.platforms?.[platform],
-            'AndroidManifest'
-        );
-        const pluginConfigAndroidSchemed = getFlavouredProp(
-            c,
-            c.buildConfig?.platforms?.[platform]?.buildSchemes?.[
-                c.runtime.scheme
-            ],
-            'AndroidManifest'
-        );
+        const objArr = getConfigPropArray(c, c.platform, 'AndroidManifest');
 
-        if (pluginConfigAndroid) {
-            const applicationExt = _findChildNode(
-                'application',
-                '.MainApplication',
-                pluginConfigAndroid
-            );
-            _mergeNodeParameters(application, applicationExt);
-            if (applicationExt.children) {
-                _mergeNodeChildren(application, applicationExt.children);
+        // PARSE all standard renative.*.json files in correct mergeOrder
+        objArr.forEach((manifestObj) => {
+            _mergeNodeParameters(baseManifestFile, manifestObj);
+            if (manifestObj.children) {
+                _mergeNodeChildren(baseManifestFile, manifestObj.children);
             }
-        }
-        if (pluginConfigAndroidSchemed) {
-            const applicationExt2 = _findChildNode(
-                'application',
-                '.MainApplication',
-                pluginConfigAndroidSchemed
-            );
-            _mergeNodeParameters(application, applicationExt2);
-            if (applicationExt2.children) {
-                _mergeNodeChildren(application, applicationExt2.children);
-            }
-        }
+        });
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins(c, platform, (plugin, pluginPlat) => {
-            const androidManifest = getFlavouredProp(
+            const androidManifestPlugin = getFlavouredProp(
                 c,
                 pluginPlat,
                 'AndroidManifest'
             );
-            if (androidManifest) {
-                _mergeNodeChildren(baseManifestFile, androidManifest.children);
-                // const pluginApplication = _findChildNode('application', '.MainApplication', pluginPlat.AndroidManifest);
-                // if (pluginApplication) {
-                //     _mergeNodeParameters(application, pluginApplication);
-                //
-                //     _mergeNodeChildren(application, pluginApplication.children);
-                // }
+            if (androidManifestPlugin) {
+                _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
+                if (androidManifestPlugin.children) {
+                    _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
+                }
             }
         });
 
         // appConfig PERMISSIONS OVERRIDES
-        let prms = '';
         const configPermissions = c.buildConfig?.permissions;
 
         const includedPermissions = getConfigProp(c, platform, 'includedPermissions')
@@ -221,7 +200,6 @@ export const parseAndroidManifestSync = (c) => {
                           && excludedPermissions.includes(k)
                         )
                     ) {
-                        prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
                         const key = pc[k].key || k;
                         baseManifestFile.children.push({
                             tag: 'uses-permission',
@@ -232,7 +210,6 @@ export const parseAndroidManifestSync = (c) => {
             } else {
                 includedPermissions.forEach((v) => {
                     if (pc[v]) {
-                        prms += `\n   <uses-permission android:name="${pc[v].key}" />`;
                         const key = pc[v].key || v;
                         baseManifestFile.children.push({
                             tag: 'uses-permission',
@@ -244,42 +221,21 @@ export const parseAndroidManifestSync = (c) => {
         }
 
         // appConfig FEATURES OVERRIDES
-        const includedFeatures = getConfigProp(c, platform, 'includedFeatures');
-        if (includedFeatures) {
-            includedFeatures.forEach((key) => {
-                baseManifestFile.children.push({
-                    tag: 'uses-feature',
-                    'android:name': key,
-                    'android:required': true
-                });
-            });
-        }
+        _mergeFeatures(c, baseManifestFile, 'includedFeatures', true);
+        _mergeFeatures(c, baseManifestFile, 'excludedFeatures', false);
 
-        const excludedFeatures = getConfigProp(c, platform, 'excludedFeatures');
-        if (excludedFeatures) {
-            excludedFeatures.forEach((key) => {
-                baseManifestFile.children.push({
-                    tag: 'uses-feature',
-                    'android:name': key,
-                    'android:required': false
-                });
-            });
-        }
 
         const manifestXml = _convertToXML(baseManifestFile);
         // get correct source of manifest
         const manifestFile = 'app/src/main/AndroidManifest.xml';
 
         const injects = [
-            { pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml },
-            { pattern: '{{PERMISIONS}}', override: prms },
-            {
-                pattern: '{{APPLICATION_ID}}',
-                override: baseManifestFile.package
-            }
+            { pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml }
         ];
 
         addSystemInjects(c, injects);
+
+        const appFolder = getAppFolder(c);
 
         writeCleanFile(
             getBuildFilePath(c, platform, manifestFile),
