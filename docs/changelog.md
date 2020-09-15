@@ -5,6 +5,24 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.25 (2020-9-15)
+
+### Fixed
+
+- dynamic CLI options generator
+- [fix] Android Manifest overrides #570
+- param config injections
+- [docs] autogenerate task cli API
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.24 (2020-9-13)
 
 ### Fixed
