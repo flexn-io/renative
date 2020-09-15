@@ -15,9 +15,9 @@
         "next": "source:rnv"
     },
     "tasks": {
-         "install": {
-             "script": "yarn bootstrap"
-         }
+        "install": {
+            "script": "yarn bootstrap"
+        }
     },
     "defaults": {
         "ports": {
@@ -87,5 +87,14 @@
             "engine": "engine-rn-next"
         }
     },
-    "currentTemplate": "renative-template-hello-world"
+    "currentTemplate": "renative-template-hello-world",
+    "crypto": {
+        "optional": true,
+        "encrypt": {
+            "dest": "PROJECT_HOME/ci/privateConfigs.enc"
+        },
+        "decrypt": {
+            "source": "PROJECT_HOME/ci/privateConfigs.enc"
+        }
+    }
 }

@@ -82,12 +82,12 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
         });
 
         // writeFileSync(path.join(sourceFolder), c.files.project.config);
-        const { confirm } = await inquirerPrompt({
+        await inquirerPrompt({
             type: 'confirm',
             message: 'Once ready, Continue?'
         });
 
-        if (confirm) return true;
+        // if (confirm) return true;
     }
 
     const envVar = getEnvVar(c);

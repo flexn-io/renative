@@ -39,7 +39,7 @@ export const getEnvVar = (c) => {
 export const checkCrypto = async (c, parentTask, originTask) => {
     logTask('checkCrypto');
 
-    if (c.program.ci) return;
+    if (c.program.ci || c.files.project.config?.crypto?.optional) return;
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
