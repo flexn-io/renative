@@ -390,7 +390,7 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
     } else {
         logAndSave(currentChalk.red(`[ error ]${_getCurrentTask()} ${e}`), isEnd);
     }
-
+    _c.runtime.keepSessionActive = false;
     if (isEnd) logEnd(1);
 };
 

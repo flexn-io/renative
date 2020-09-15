@@ -41,6 +41,7 @@ import taskRnvAppConfigure from './task.rnv.app.configure';
 import taskRnvWorkspaceConfigure from './task.rnv.workspace.configure';
 import taskRnvLog from './task.rnv.log';
 import taskRnvConfigureSoft from './task.rnv.configureSoft';
+import taskRvnKill from './task.rnv.kill';
 
 const TASKS = {};
 
@@ -93,6 +94,7 @@ addTask(taskRnvAppConfigure);
 addTask(taskRnvWorkspaceConfigure);
 addTask(taskRnvLog);
 addTask(taskRnvConfigureSoft);
+addTask(taskRvnKill);
 
 const executeTask = async (c, task, parentTask, originTask) => getEngineTask(task, TASKS).fn(c, parentTask, originTask);
 

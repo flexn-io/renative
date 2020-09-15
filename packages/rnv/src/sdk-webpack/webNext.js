@@ -105,7 +105,7 @@ export const runWebNext = async (c) => {
         if (!bundleAssets) {
             logSummary('BUNDLER STARTED');
         }
-        await runWebDevServer(c, platform, port);
+        await runWebDevServer(c);
     } else {
         await confirmActiveBundler(c);
         await _runWebBrowser(c, platform, devServerHost, port, true);
@@ -145,11 +145,11 @@ export const buildWebNext = async (c) => {
     return true;
 };
 
-export const runWebDevServer = (c, platform, port) => {
+export const runWebDevServer = (c) => {
     logTask('runWebDevServer');
-    const env = getConfigProp(c, platform, 'environment');
-    const pagesDir = getConfigProp(c, platform, 'pagesDir');
-    if (!pagesDir) logWarning(`You're missing ${platform}.pagesDir config. Defaulting to 'src/app'`);
+    const env = getConfigProp(c, c.platform, 'environment');
+    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
+    if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
 
     const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
@@ -159,7 +159,7 @@ Dev server running at: ${url}
 
 `);
 
-    return executeAsync(c, `npx next dev --pagesDir ${pagesDir || 'src/app'} --port ${port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
+    return executeAsync(c, `npx next dev --pagesDir ${pagesDir || 'src/app'} --port ${c.runtime.port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
 };
 
 export const deployWebNext = (c) => {

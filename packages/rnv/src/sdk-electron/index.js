@@ -38,7 +38,7 @@ import {
     copyAssetsFolder
 } from '../core/projectManager/projectParser';
 import { MACOS } from '../core/constants';
-import { buildWeb, runWeb, configureCoreWebProject, waitForWebpack } from '../sdk-webpack';
+import { buildWeb, runWebpackServer, configureCoreWebProject, waitForWebpack } from '../sdk-webpack';
 
 
 export const configureElectronProject = async (c) => {
@@ -237,7 +237,7 @@ export const runElectron = async (c) => {
 
     if (bundleAssets) {
         await buildElectron(c);
-        await _runElectronSimulator(c, platform);
+        await _runElectronSimulator(c);
     } else {
         const isPortActive = await checkPortInUse(c, platform, port);
         if (!isPortActive) {
@@ -249,13 +249,13 @@ export const runElectron = async (c) => {
                 )} is not running. Starting it up for you...`
             );
             waitForWebpack(c)
-                .then(() => _runElectronSimulator(c, platform))
+                .then(() => _runElectronSimulator(c))
                 .catch(logError);
-            // await _runElectronSimulator(c, platform);
-            await runElectronDevServer(c);
+            // await _runElectronSimulator(c);
+            await runWebpackServer(c);
         } else {
             await confirmActiveBundler(c);
-            await _runElectronSimulator(c, platform);
+            await _runElectronSimulator(c);
         }
     }
 };
@@ -274,12 +274,6 @@ const _runElectronSimulator = async (c) => {
         .on('error', spawnError => logError(spawnError));
 
     child.unref();
-};
-
-const runElectronDevServer = async (c) => {
-    logTask('runElectronDevServer');
-
-    return runWeb(c);
 };
 
 const _generateICNS = c => new Promise((resolve, reject) => {
@@ -330,6 +324,5 @@ const _generateICNS = c => new Promise((resolve, reject) => {
 
 export {
     buildElectron,
-    exportElectron,
-    runElectronDevServer
+    exportElectron
 };

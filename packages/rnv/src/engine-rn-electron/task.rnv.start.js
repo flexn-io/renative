@@ -6,10 +6,7 @@ import { MACOS,
     TASK_START,
     TASK_CONFIGURE,
     PARAMS } from '../core/constants';
-import {
-    runElectronDevServer,
-} from '../sdk-electron';
-import { waitForWebpack } from '../sdk-webpack';
+import { waitForWebpack, runWebpackServer } from '../sdk-webpack';
 import { executeTask } from '../core/engineManager';
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
@@ -25,12 +22,14 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
             .catch(logError);
     }
 
-    await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
+    if (!parentTask) {
+        await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
+    }
 
     switch (platform) {
         case MACOS:
         case WINDOWS:
-            return runElectronDevServer(c, platform, port);
+            return runWebpackServer(c);
         default:
             return logErrorPlatform(c);
     }

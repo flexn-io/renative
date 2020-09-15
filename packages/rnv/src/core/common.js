@@ -317,12 +317,17 @@ export const getBuildsFolder = (c, platform, customPath) => {
 export const getIP = () => ip.address();
 
 export const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
+    if (port === undefined || port === null) {
+        resolve(false);
+        return;
+    }
     detectPort(port, (err, availablePort) => {
         if (err) {
             reject(err);
             return;
         }
-        resolve(parseInt(port, 10) !== parseInt(availablePort, 10));
+        const result = parseInt(port, 10) !== parseInt(availablePort, 10);
+        resolve(result);
     });
 });
 

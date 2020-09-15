@@ -170,7 +170,8 @@
         "react-dev-utils": "9.0.3",
         "rimraf": "2.6.2",
         "schedule": "0.4.0",
-        "semver": "5.5.0"
+        "semver": "5.5.0",
+        "kill-port": "1.6.1"
     },
     "peerDependencies": {
         "now": "15.3.0"

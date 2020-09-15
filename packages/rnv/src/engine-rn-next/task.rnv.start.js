@@ -24,7 +24,9 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
             .catch(logError);
     }
 
-    await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
+    if (!parentTask) {
+        await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
+    }
 
     if (hosted) {
         return logError(

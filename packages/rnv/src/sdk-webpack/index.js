@@ -281,7 +281,7 @@ const _parseCssSync = (c, platform) => {
 };
 
 
-const runWeb = async (c, enableRemoteDebugger) => {
+export const runWebpackServer = async (c, enableRemoteDebugger) => {
     const { port } = c.runtime;
     const { platform } = c;
     logTask('runWeb', `port:${port} debugger:${!!enableRemoteDebugger}`);
@@ -311,7 +311,7 @@ const runWeb = async (c, enableRemoteDebugger) => {
         if (!bundleAssets) {
             logSummary('BUNDLER STARTED');
         }
-        await runWebDevServer(c, platform, port, enableRemoteDebugger);
+        await runWebDevServer(c, enableRemoteDebugger);
     } else {
         await confirmActiveBundler(c);
         await _runWebBrowser(c, platform, devServerHost, port, true);
@@ -337,7 +337,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
-const runWebDevServer = async (c, platform, port, enableRemoteDebugger) => {
+const runWebDevServer = async (c, enableRemoteDebugger) => {
     logTask('runWebDevServer');
     const { debug, debugIp } = c.program;
 
@@ -356,7 +356,7 @@ const runWebDevServer = async (c, platform, port, enableRemoteDebugger) => {
         );
         debugVariables += `DEBUG=true DEBUG_IP=${resolvedDebugIp}`;
         lineBreaks = '\n';
-        const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${platform}`);
+        const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${c.platform}`);
 
 
         const command = `weinre --boundHost -all- --httpPort ${WEINRE_PORT}`;
@@ -366,7 +366,7 @@ const runWebDevServer = async (c, platform, port, enableRemoteDebugger) => {
             logRaw(`
 
 Debugger running at: ${debugUrl}`);
-            open(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${platform}`);
+            open(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${c.platform}`);
         } catch (e) {
             logError(e);
         }
@@ -379,13 +379,13 @@ Debugger running at: ${debugUrl}`);
 
 `);
 
-    const command = `npx cross-env PLATFORM=${platform} ${
+    const command = `npx cross-env PLATFORM=${c.platform} ${
         debugVariables
     } ${WEBPACK_DEV_SERVER} -d --devtool source-map --config ${
         wpConfig
     }  --inline --hot --colors --content-base ${
         wpPublic
-    } --history-api-fallback --port ${port} --mode=development`;
+    } --history-api-fallback --port ${c.runtime.port} --mode=development`;
     try {
         await executeAsync(c, command, { stdio: 'inherit', silent: true });
 
@@ -410,4 +410,4 @@ const exportWeb = (c) => {
     return selectWebToolAndExport(c, platform);
 };
 
-export { buildWeb, runWeb, configureWebProject, deployWeb, exportWeb };
+export { buildWeb, configureWebProject, deployWeb, exportWeb };

@@ -806,6 +806,7 @@ export const TASK_APP_CONFIGURE = 'app configure';
 export const TASK_APP_CREATE = 'app create';
 export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
 export const TASK_CONFIGURE_SOFT = 'configureSoft';
+export const TASK_KILL = 'kill';
 
 const _PARAMS = {
     info: {
@@ -1004,3 +1005,5 @@ export const INJECTABLE_RUNTIME_PROPS = ['appId', 'scheme', 'timestamp', 'localh
 
 export const REDASH_URL = 'https://rnv.nxg.staging.24imedia.com/events';
 export const REDASH_KEY = 'zCYINQqMxvat1V41Hb9d69JMVBDNLyeQ4wICtdtD';
+
+export const WEINRE_ENABLED_PLATFORMS = [TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH];

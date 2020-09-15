@@ -13,12 +13,10 @@ import { WEB,
     CHROMECAST,
     TASK_START,
     TASK_CONFIGURE,
+    WEINRE_ENABLED_PLATFORMS,
     PARAMS } from '../core/constants';
-import { runWeb, waitForWebpack } from '../sdk-webpack';
+import { runWebpackServer, waitForWebpack } from '../sdk-webpack';
 import { executeTask } from '../core/engineManager';
-
-const WEINRE_ENABLED_PLATFORMS = [TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH];
-
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -27,7 +25,9 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 
     logTask('taskRnvStart', `parent:${parentTask} port:${port} hosted:${!!hosted}`);
 
-    await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
+    if (!parentTask) {
+        await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
+    }
 
     if (hosted) {
         waitForWebpack(c)
@@ -43,7 +43,8 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
         case WEBOS:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            return runWeb(c, isWeinreEnabled);
+            // c.runtime.keepSessionActive = true;
+            return runWebpackServer(c, isWeinreEnabled);
         default:
             if (hosted) {
                 return logError(

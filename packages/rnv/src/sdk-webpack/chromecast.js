@@ -1,4 +1,4 @@
-import { runWeb, configureCoreWebProject } from './index';
+import { runWebpackServer, configureCoreWebProject } from './index';
 import { logTask } from '../core/systemManager/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../core/projectManager/projectParser';
 import { getAppFolder } from '../core/common';
@@ -20,5 +20,5 @@ export const configureProject = async (c) => {
 
 export const runChromecast = async (c) => {
     logTask(`runChromecast:${c.platform}`);
-    await runWeb(c);
+    await runWebpackServer(c);
 };

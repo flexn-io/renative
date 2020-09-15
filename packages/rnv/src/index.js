@@ -32,7 +32,7 @@ const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)
         .then(c => Config.initializeConfig(c))
         .then(c => CLI(c))
-        .then(() => logComplete(true))
+        .then(() => logComplete(!Config.getConfig().runtime.keepSessionActive))
         .catch(e => logError(e, true));
 };
 

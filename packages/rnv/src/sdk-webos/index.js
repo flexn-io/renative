@@ -14,7 +14,8 @@ import {
     confirmActiveBundler,
     addSystemInjects
 } from '../core/common';
-import { buildWeb, configureCoreWebProject } from '../sdk-webpack';
+import { buildWeb, runWebpackServer, configureCoreWebProject, waitForWebpack } from '../sdk-webpack';
+
 import { waitForEmulator } from '../core/targetManager';
 import { isPlatformActive } from '../core/platformManager';
 import {
@@ -22,7 +23,8 @@ import {
     logToSummary,
     logTask,
     logInfo,
-    logSuccess
+    logSuccess,
+    logError
 } from '../core/systemManager/logger';
 import {
     copyBuildsFolder,
@@ -34,7 +36,8 @@ import {
     CLI_WEBOS_ARES_DEVICE_INFO,
     CLI_WEBOS_ARES_LAUNCH,
     CLI_WEBOS_ARES_NOVACOM,
-    CLI_WEBOS_ARES_SETUP_DEVICE
+    CLI_WEBOS_ARES_SETUP_DEVICE,
+    WEINRE_ENABLED_PLATFORMS
 } from '../core/constants';
 import { isSystemWin, isUrlLocalhost } from '../core/utils';
 
@@ -158,15 +161,8 @@ const waitForEmulatorToBeReady = async (c) => {
     );
 };
 
-const runWebOS = async (c) => {
-    const { device, hosted } = c.program;
-    const { target } = c.runtime;
-    const { platform } = c;
-
-
-    const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
-
-    logTask('runWebOS', `target:${target} hosted:${!!isHosted}`);
+const _runWebosSimOrDevice = async (c) => {
+    const { device } = c.program;
 
     const tDir = path.join(getAppFolder(c), 'public');
     const tOut = path.join(getAppFolder(c), 'output');
@@ -176,22 +172,14 @@ const runWebOS = async (c) => {
         'public/appinfo.json'
     );
 
-    logTask(`runWebOS:${target}:${isHosted}`, chalk().grey);
-
+    // logTask(`runWebOS:${target}:${isHosted}`, chalk().grey);
     const cnfg = JSON.parse(fsReadFileSync(configFilePath, 'utf-8'));
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
-    if (isHosted) {
-        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
-        if (isPortActive) {
-            await confirmActiveBundler(c);
-            c.runtime.skipActiveServerCheck = true;
-        }
-    }
 
     // Start the fun
-    !isHosted && (await buildWeb(c));
+    // await buildWeb(c);
     await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
     // List all devices
@@ -210,7 +198,7 @@ const runWebOS = async (c) => {
                     type: 'confirm',
                     name: 'setupDevice',
                     message:
-                        'Looks like you want to deploy on a device but have none configured. Do you want to configure one?',
+                      'Looks like you want to deploy on a device but have none configured. Do you want to configure one?',
                     default: false
                 }
             ]);
@@ -286,6 +274,53 @@ const runWebOS = async (c) => {
     } else {
         // Target specified, using that
         return installAndLaunchApp(c, c.program.target, appPath, tId);
+    }
+};
+
+const runWebOS = async (c) => {
+    const { hosted } = c.program;
+    const { target } = c.runtime;
+    const { platform } = c;
+
+
+    const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
+
+    if (isHosted) {
+        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        if (isPortActive) {
+            await confirmActiveBundler(c);
+            c.runtime.skipActiveServerCheck = true;
+        }
+    }
+
+    logTask('runWebOS', `target:${target} hosted:${!!isHosted}`);
+    if (isHosted) return;
+
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+
+    if (bundleAssets) {
+        await buildWeb(c);
+        await _runWebosSimOrDevice(c);
+    } else {
+        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        const isWeinreEnabled = WEINRE_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
+
+        if (!isPortActive) {
+            logInfo(
+                `Looks like your ${chalk().white(
+                    platform
+                )} devServer at port ${chalk().white(
+                    c.runtime.port
+                )} is not running. Starting it up for you...`
+            );
+            waitForWebpack(c)
+                .then(() => _runWebosSimOrDevice(c))
+                .catch(logError);
+            await runWebpackServer(c, isWeinreEnabled);
+        } else {
+            await confirmActiveBundler(c);
+            await _runWebosSimOrDevice(c);
+        }
     }
 };
 

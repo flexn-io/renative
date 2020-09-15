@@ -15,7 +15,7 @@ import { WEB,
     TASK_RUN, TASK_START,
     TASK_CONFIGURE,
     PARAMS } from '../core/constants';
-import { runWeb } from '../sdk-webpack';
+import { runWebpackServer } from '../sdk-webpack';
 import { runTizen } from '../sdk-tizen';
 import { runWebOS } from '../sdk-webos';
 import { runFirefoxProject } from '../sdk-firefox';
@@ -77,18 +77,18 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     switch (platform) {
         case WEB:
             c.runtime.shouldOpenBrowser = true;
-            return runWeb(c);
+            return runWebpackServer(c);
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            if (!c.program.only) {
-                await executeTask(c, TASK_START, TASK_RUN, originTask);
-            }
+            // if (!c.program.only) {
+            //     await executeTask(c, TASK_START, TASK_RUN, originTask);
+            // }
             return runTizen(c, platform, target);
         case WEBOS:
-            if (!c.program.only) {
-                await executeTask(c, TASK_START, TASK_RUN, originTask);
-            }
+            // if (!c.program.only) {
+            //     await executeTask(c, TASK_START, TASK_RUN, originTask);
+            // }
             return runWebOS(c);
         case KAIOS:
         case FIREFOX_OS:
