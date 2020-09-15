@@ -34,7 +34,7 @@ export const checkIfProjectAndNodeModulesExists = async (c) => {
         logWarning(
             'Looks like your node_modules folder is missing. INSTALLING...'
         );
-        await installPackageDependencies();
+        await installPackageDependencies(c);
     }
 };
 

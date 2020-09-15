@@ -1,16 +1,15 @@
 import { executeAsync, commandExistsSync } from '../core/systemManager/exec';
-import { getAppFolder } from '../core/common';
+import { getAppFolder, getCliArguments } from '../core/common';
 import { IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
     PARAMS } from '../core/constants';
-import Config from '../core/configManager/config';
 import PlatformSetup from '../core/setupManager';
 
-export const taskRnvFastlane = async () => {
-    const args = Config.rnvArguments;
+export const taskRnvFastlane = async (c) => {
+    const args = getCliArguments(c);
     args.shift(); // we know the first one is fastlane, trash it
 
     if (!commandExistsSync('fastlane')) {
@@ -18,7 +17,6 @@ export const taskRnvFastlane = async () => {
         await setupInstance.askToInstallSDK('fastlane');
     }
 
-    const c = Config.getConfig();
     const appFolder = getAppFolder(c, c.platform);
 
     let fastlaneArgs = [...c.program.rawArgs];

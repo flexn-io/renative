@@ -20,7 +20,7 @@ const injectProjectDependency = async (c,
     if (!currentPackage[type]) currentPackage[type] = {};
     currentPackage[type][dependency] = version;
     writeRenativeConfigFile(c, existingPath, currentPackage);
-    if (!skipInstall) await installPackageDependencies();
+    if (!skipInstall) await installPackageDependencies(c);
     return true;
 };
 
@@ -135,7 +135,7 @@ export const injectPlatformDependencies = async (c) => {
             logWarning(`Found extra npm depenedecies required by ${
                 selectedEngine.id
             } engine. will install them now`);
-            await installPackageDependencies();
+            await installPackageDependencies(c);
         }
     }
 

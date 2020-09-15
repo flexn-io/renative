@@ -48,6 +48,22 @@ export const getSourceExts = (c, p, isServer, prefix = '') => {
     return [];
 };
 
+export const getCliArguments = (c) => {
+    const { args, rawArgs } = c.program;
+    const argsCopy = [...args];
+    let missingArg = rawArgs[rawArgs.indexOf(argsCopy[1]) + 1];
+    if (missingArg?.[0] === '-') {
+        if (rawArgs[rawArgs.indexOf(argsCopy[1]) + 2]) {
+            missingArg = rawArgs[rawArgs.indexOf(argsCopy[1]) + 2];
+        } else {
+            missingArg = undefined;
+        }
+    }
+    if (rawArgs.length === 3) missingArg = undefined;
+    argsCopy[2] = missingArg;
+    return argsCopy.filter(arg => !!arg);
+};
+
 export const getSourceExtsAsString = (c, p) => {
     const sourceExts = getSourceExts(c, p);
     return sourceExts.length ? `['${sourceExts.join("','")}']` : '[]';

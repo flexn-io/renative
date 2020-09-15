@@ -40,8 +40,8 @@ export const taskRnvPublish = async (c, parentTask, originTask) => {
         '12.4.3',
         'devDependencies');
     // make sure required object is present in package.json
-    const pkgJson = Config.getProjectConfig().package;
-    const existingPath = Config.getConfig().paths.project.package;
+    const pkgJson = c.files.project.package;
+    const existingPath = c.paths.project.package;
 
     if (!pkgJson['release-it']) {
         pkgJson['release-it'] = {

@@ -17,52 +17,6 @@ class Config {
         return this.config;
     }
 
-    get command() {
-        return this.config.command;
-    }
-
-    get subCommand() {
-        return this.config.subCommand;
-    }
-
-    get rnvArguments() {
-        // commander is stupid https://github.com/tj/commander.js/issues/53
-        const { args, rawArgs } = this.config.program;
-        const argsCopy = [...args];
-        let missingArg = rawArgs[rawArgs.indexOf(argsCopy[1]) + 1];
-        if (missingArg?.[0] === '-') {
-            if (rawArgs[rawArgs.indexOf(argsCopy[1]) + 2]) {
-                missingArg = rawArgs[rawArgs.indexOf(argsCopy[1]) + 2];
-            } else {
-                missingArg = undefined;
-            }
-        }
-        if (rawArgs.length === 3) missingArg = undefined;
-        argsCopy[2] = missingArg;
-        return argsCopy.filter(arg => !!arg);
-    }
-
-
-    getProjectConfig() {
-        return this.config.files.project;
-    }
-
-    get platform() {
-        return this.config.platform;
-    }
-
-    get isRenativeProject() {
-        return this.config?.paths?.project?.configExists || false;
-    }
-
-    get program() {
-        return this.config.program;
-    }
-
-    get paths() {
-        return this.config.paths;
-    }
-
     // RNV CONFIG
     getConfigValueSeparate(key, global = false) {
         const { paths } = this.config;
@@ -148,10 +102,6 @@ class Config {
 
     get isAnalyticsEnabled() {
         return this.getMergedConfigValue('analytics');
-    }
-
-    get projectPath() {
-        return this.config.paths.project.dir;
     }
 }
 

@@ -525,9 +525,8 @@ export const cleanNodeModules = () => new Promise((resolve, reject) => {
     // ]).then(() => resolve()).catch(e => reject(e));
 });
 
-export const installPackageDependencies = async (failOnError = false) => {
+export const installPackageDependencies = async (c, failOnError = false) => {
     logTask('installPackageDependencies');
-    const c = Config.getConfig();
 
     const customScript = c.buildConfig?.tasks?.install?.script;
 
@@ -537,8 +536,8 @@ export const installPackageDependencies = async (failOnError = false) => {
     }
 
     const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
-    const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');
-    const npmLockPath = path.join(Config.projectPath, 'package-lock.json');
+    const yarnLockPath = path.join(c.paths.project.dir, 'yarn.lock');
+    const npmLockPath = path.join(c.paths.project.dir, 'package-lock.json');
     let command = 'npm install';
     if (fsExistsSync(yarnLockPath)) {
         command = 'yarn';
@@ -567,8 +566,8 @@ export const installPackageDependencies = async (failOnError = false) => {
             `${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`
         );
         try {
-            await cleanNodeModules(Config.getConfig());
-            await installPackageDependencies(true);
+            await cleanNodeModules(c);
+            await installPackageDependencies(c, true);
         } catch (npmErr) {
             return logError(npmErr);
         }
@@ -576,12 +575,12 @@ export const installPackageDependencies = async (failOnError = false) => {
     try {
         const plats = c.files.project.config?.defaults?.supportedPlatforms;
         if (
-            Array.isArray(plats)
-            && (plats.includes(ANDROID)
-                || plats.includes(ANDROID_TV)
-                || plats.includes(ANDROID_WEAR))
+            Array.isArray(plats) && (plats.includes(ANDROID)
+            || plats.includes(ANDROID_TV) || plats.includes(ANDROID_WEAR))
         ) {
-            await executeAsync('npx jetify');
+            if (doResolve('jetifier')) {
+                await executeAsync('npx jetify');
+            }
         }
         return true;
     } catch (jetErr) {

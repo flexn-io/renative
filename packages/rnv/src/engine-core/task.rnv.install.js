@@ -20,7 +20,7 @@ export const taskRnvInstall = async (c, parentTask) => {
             );
         }
         c._requiresNpmInstall = false;
-        await installPackageDependencies();
+        await installPackageDependencies(c);
     }
     return true;
 };
