@@ -5,7 +5,8 @@ import {
     checkPortInUse,
     getConfigProp,
     confirmActiveBundler,
-    getAppFolder
+    getPlatformBuildDir,
+    // getAppFolder
 } from '../core/common';
 import { waitForWebpack } from './index';
 import {
@@ -25,7 +26,7 @@ import { getValidLocalhost } from '../core/utils';
 
 export const configureNextIfRequired = async (c) => {
     logTask('configureNextIfRequired');
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
+    c.runtime.platformBuildsProjectPath = `${getPlatformBuildDir(c)}`;
     const { platformTemplatesDirs, dir } = c.paths.project;
     const publicDir = path.join(dir, 'public');
     const baseFontsDir = c.paths.appConfig.fontsDirs?.[0];
@@ -74,7 +75,13 @@ export const configureNextIfRequired = async (c) => {
         if (!fsExistsSync(pagesDir)) {
             fsMkdirSync(pagesDir);
         }
-        writeCleanFile(path.join(supportFilesDir, '_app.js'), _appFile, [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }], null, c);
+        writeCleanFile(
+            path.join(supportFilesDir, '_app.js'),
+            _appFile,
+            [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }],
+            null,
+            c
+        );
     }
 
     // add config
@@ -134,7 +141,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
 export const buildWebNext = async (c) => {
     logTask('buildWebNext');
     const env = getConfigProp(c, c.platform, 'environment');
-    const appFolder = getAppFolder(c);
+    const appFolder = getPlatformBuildDir(c);
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
 
@@ -174,7 +181,7 @@ export const exportWebNext = async (c) => {
     const { platform } = c;
 
     logTask('_exportNext');
-    const appFolder = getAppFolder(c);
+    const appFolder = getPlatformBuildDir(c);
     const env = getConfigProp(c, c.platform, 'environment');
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);

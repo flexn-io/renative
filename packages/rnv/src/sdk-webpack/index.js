@@ -6,7 +6,14 @@ import ip from 'ip';
 import { fsExistsSync, readObjectSync, writeCleanFile, fsWriteFileSync, mkdirSync } from '../core/systemManager/fileutils';
 import { executeAsync } from '../core/systemManager/exec';
 import {
-    getAppFolder,
+    // getAppFolder,
+    // getAppSubFolder,
+    getPlatformProjectDir,
+    getPlatformBuildDir,
+    // getTemplateProjectDir,
+    // getTemplateDir,
+    getAppVersion,
+    // getAppTemplateFolder,
     checkPortInUse,
     getConfigProp,
     getBuildFilePath,
@@ -14,7 +21,6 @@ import {
     getSourceExts,
     sanitizeColor,
     confirmActiveBundler,
-    getAppVersion,
     getTimestampPathsConfig,
     waitForUrl,
     addSystemInjects
@@ -97,7 +103,7 @@ export const waitForWebpack = async (c, engine) => {
 const _generateWebpackConfigs = (c, subFolderName) => {
     logTask('_generateWebpackConfigs');
     const { platform } = c;
-    const appFolder = getAppFolder(c);
+    const appFolder = getPlatformBuildDir(c);
     const appFolderServer = path.join(appFolder, subFolderName);
     // const templateFolder = getAppTemplateFolder(c, platform);
 
@@ -218,8 +224,6 @@ const buildWeb = async (c) => {
     const { platform } = c;
     logTask('buildWeb');
 
-    const appFolder = getAppFolder(c);
-
     let debugVariables = '';
 
     if (debug) {
@@ -235,7 +239,7 @@ const buildWeb = async (c) => {
     } node ${WEBPACK} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.prod.js`);
     logSuccess(
         `Your Build is located in ${chalk().cyan(
-            path.join(appFolder, 'public')
+            path.join(getPlatformProjectDir(c))
         )} .`
     );
     return true;
@@ -246,13 +250,15 @@ const configureWebProject = async (c) => {
 
     const { platform } = c;
 
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}/public`;
+    c.runtime.platformBuildsProjectPath = getPlatformProjectDir(c);
 
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);
 
-    await configureCoreWebProject(c);
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+
+    await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
 
     return copyBuildsFolder(c, platform);
 };
@@ -264,7 +270,7 @@ export const configureCoreWebProject = async (c, subFolderName = '') => {
 };
 
 const _parseCssSync = (c, subFolderName) => {
-    const appFolder = getAppFolder(c);
+    const appFolder = getPlatformBuildDir(c);
     const timestampPathsConfig = getTimestampPathsConfig(c, c.platform);
     const backgroundColor = getConfigProp(c, c.platform, 'backgroundColor');
 
@@ -349,7 +355,7 @@ const runWebDevServer = async (c, enableRemoteDebugger) => {
     logTask('runWebDevServer');
     const { debug, debugIp } = c.program;
 
-    const appFolder = getAppFolder(c);
+    const appFolder = getPlatformBuildDir(c);
     const wpPublic = path.join(appFolder, 'server');
     const wpConfig = path.join(appFolder, 'webpack.config.dev.js');
 
