@@ -32,15 +32,6 @@ const _configureHostedIfRequired = async (c) => {
     if (!bundleAssets) {
         logDebug('Running hosted build');
         const { rnv } = c.paths;
-        // copyFolderContentsRecursiveSync(
-        //     path.join(rnv.dir, 'supportFiles', 'appShell'),
-        //     path.join(
-        //         project.dir,
-        //         'platformBuilds',
-        //         `${c.runtime.appId}_${c.platform}`,
-        //         'public'
-        //     )
-        // );
         writeCleanFile(
             path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'),
             path.join(getPlatformProjectDir(c), 'index.html'),
@@ -61,13 +52,13 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     const { hosted } = c.program;
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
+    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+
     if (hosted) {
         c.runtime.shouldOpenBrowser = true;
         // return _taskStart(c);
         return executeTask(c, TASK_START, TASK_RUN, originTask);
     }
-
-    await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
         case WEB:
