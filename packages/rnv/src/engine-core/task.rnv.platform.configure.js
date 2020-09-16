@@ -1,9 +1,8 @@
-import path from 'path';
-import { chalk, logTask, logWarning, logInfo } from '../core/systemManager/logger';
-import { copyFolderContentsRecursiveSync, fsExistsSync } from '../core/systemManager/fileutils';
-import { getTimestampPathsConfig, getAppFolder } from '../core/common';
+import { chalk, logTask, logInfo } from '../core/systemManager/logger';
+import { fsExistsSync } from '../core/systemManager/fileutils';
+import { getAppFolder } from '../core/common';
 import { isBuildSchemeSupported } from '../core/configManager/schemeParser';
-import { isPlatformSupportedSync, isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../core/platformManager';
+import { isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../core/platformManager';
 import { injectPlatformDependencies } from '../core/configManager/packageParser';
 import { configureRuntimeDefaults } from '../core/configManager/configParser';
 import { resolvePluginDependants } from '../core/pluginManager';
@@ -11,57 +10,6 @@ import { executeTask } from '../core/engineManager';
 import { PARAMS, TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../core/constants';
 
 import { checkSdk } from '../core/sdkManager';
-
-
-const _runCopyPlatforms = c => new Promise((resolve) => {
-    logTask('_runCopyPlatforms');
-    const { platform } = c;
-    const copyPlatformTasks = [];
-
-    if (platform === 'all') {
-        Object.keys(c.buildConfig.platforms).forEach((k) => {
-            if (isPlatformSupportedSync(k)) {
-                const ptPath = path.join(
-                    c.paths.project.platformTemplatesDirs[k],
-                    `${k}`
-                );
-                const pPath = path.join(
-                    c.paths.project.builds.dir,
-                    `${c.runtime.appId}_${k}`
-                );
-                copyPlatformTasks.push(
-                    copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, {},
-                        getTimestampPathsConfig(c, platform), c)
-                );
-            }
-        });
-    } else if (isPlatformSupportedSync(platform)) {
-        const ptPath = path.join(
-            c.paths.project.platformTemplatesDirs[platform],
-            `${platform}`
-        );
-        const pPath = path.join(
-            c.paths.project.builds.dir,
-            `${c.runtime.appId}_${platform}`
-        );
-        copyPlatformTasks.push(
-            copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, {},
-                getTimestampPathsConfig(c, platform), c)
-        );
-    } else {
-        logWarning(
-            `Your platform ${chalk().white(
-                platform
-            )} config is not present. Check ${chalk().white(
-                c.paths.appConfig.config
-            )}`
-        );
-    }
-
-    Promise.all(copyPlatformTasks).then(() => {
-        resolve();
-    });
-});
 
 export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformConfigure', '');
@@ -91,7 +39,7 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
 
     await createPlatformBuild(c, c.platform);
     await injectPlatformDependencies(c);
-    await _runCopyPlatforms(c);
+    // await _runCopyPlatforms(c);
 };
 
 export default {

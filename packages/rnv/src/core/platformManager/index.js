@@ -6,12 +6,12 @@ import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import {
     cleanFolder,
     copyFolderContentsRecursiveSync,
-    writeFileSync, mkdirSync
+    writeFileSync
 } from '../systemManager/fileutils';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import { checkAndConfigureSdks } from '../sdkManager';
 // import { configureEntryPoints } from '../templateManager';
-import { getTimestampPathsConfig } from '../common';
+import { getTimestampPathsConfig, getAppFolder } from '../common';
 
 
 export const logErrorPlatform = (c) => {
@@ -196,19 +196,20 @@ export const copySharedPlatforms = c => new Promise((resolve) => {
     logTask('copySharedPlatforms');
 
     if (c.platform) {
-        mkdirSync(
-            path.resolve(
-                c.paths.project.platformTemplatesDirs[c.platform],
-                '_shared'
-            )
-        );
+        // mkdirSync(
+        //     path.resolve(
+        //         c.paths.project.platformTemplatesDirs[c.platform],
+        //         '_shared'
+        //     )
+        // );
+
 
         copyFolderContentsRecursiveSync(
             path.resolve(
                 c.paths.project.platformTemplatesDirs[c.platform],
                 '_shared'
             ),
-            path.resolve(c.paths.project.builds.dir, '_shared')
+            getAppFolder(c)
         );
     }
 

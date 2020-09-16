@@ -61,7 +61,7 @@ const configureKaiOSProject = async (c) => {
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);
-    await configureCoreWebProject(c, platform);
+    await configureCoreWebProject(c);
     await configureProject(c);
     return copyBuildsFolder(c, platform);
 };

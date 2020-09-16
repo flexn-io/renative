@@ -93,6 +93,8 @@ export const configureRuntimeDefaults = async (c) => {
         const { hosted } = c.program;
         c.runtime.hosted = (hosted || !c.runtime.scheme.bundleAssets) && WEB_HOSTED_PLATFORMS.includes(c.platform);
 
+        // c.runtime.devServer = `http://${ip.address()}:${c.runtime.port}`;
+
         c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms.map((platform) => {
             const engine = getEngineByPlatform(c, platform);
             const dir = engine?.paths?.platformTemplatesDir;

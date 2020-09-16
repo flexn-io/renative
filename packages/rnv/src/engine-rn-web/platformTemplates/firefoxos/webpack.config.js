@@ -4,10 +4,7 @@ const Extend = require('./webpack.extend.js');
 const config = {
     currentDir: __dirname,
     metaTags: { viewport: 'content="width=device-width, initial-scale=1, shrink-to-fit=no"' },
-    environment: 'development',
-    customScripts: [],
-    devServerHost: '0.0.0.0',
-    baseUrl: '',
+    environment: 'production',
     ...Extend
 };
 

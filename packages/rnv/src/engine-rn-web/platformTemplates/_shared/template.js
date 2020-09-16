@@ -42,6 +42,7 @@ const htmlTemp = (options) => {
         remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target/target-script-min.js#${platform}"></script>`;
     }
 
+
     let webosScripts = '';
 
     if (platform === 'webos') {

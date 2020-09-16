@@ -3,7 +3,8 @@ import path from 'path';
 import { WEB_HOSTED_PLATFORMS, INJECTABLE_CONFIG_PROPS } from '../constants';
 import {
     getAppFolder,
-    getAppSubFolder,
+    // getAppSubFolder,
+    getPlatformProjectDir,
     getBuildsFolder,
     getConfigProp,
     getTimestampPathsConfig
@@ -245,19 +246,19 @@ const ASSET_PATH_ALIASES = {
     android: 'app/src/main',
     androidtv: 'app/src/main',
     androidwear: 'app/src/main',
-    ios: '',
-    tvos: '',
+    ios: 'RNVApp',
+    tvos: 'RNVAppTVOS',
     tizen: '',
     tizenmobile: '',
     tizenwatch: '',
-    webos: 'public',
+    webos: '',
     kaios: '',
     firefoxtv: '',
     firefoxos: '',
     windows: '',
     macos: '',
-    web: 'public',
-    chromecast: 'public'
+    web: '',
+    chromecast: ''
 };
 
 export const copyAssetsFolder = async (c, platform, customFn) => {
@@ -270,7 +271,7 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
     }
 
     const destPath = path.join(
-        getAppSubFolder(c, platform),
+        getPlatformProjectDir(c, platform),
         ASSET_PATH_ALIASES[platform]
     );
 

@@ -18,7 +18,19 @@ import {
 import {
     IOS,
     TVOS,
-    PLATFORMS
+    PLATFORMS,
+    TIZEN,
+    TIZEN_WATCH,
+    TIZEN_MOBILE,
+    WEBOS,
+    MACOS,
+    WINDOWS,
+    KAIOS,
+    WEB,
+    FIREFOX_OS,
+    FIREFOX_TV,
+    CHROMECAST,
+    RNV_PROJECT_DIR_NAME
 } from './constants';
 import { inquirerPrompt } from '../cli/prompt';
 
@@ -114,14 +126,75 @@ export const confirmActiveBundler = async (c) => {
     return Promise.reject('Cancelled by user');
 };
 
-export const getAppFolder = c => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
-
-export const getAppSubFolder = (c, platform) => {
+const _getProjectSubDir = (c, platform) => {
     let subFolder = '';
     if (platform === IOS) subFolder = 'RNVApp';
     else if (platform === TVOS) subFolder = 'RNVAppTVOS';
-    return path.join(getAppFolder(c), subFolder);
+    else if (platform === TIZEN) subFolder = 'RNVApp';
+    else if (platform === WEBOS) subFolder = 'RNVApp';
+    return subFolder;
 };
+
+// TODO: Move to dedicated engine
+export const getPlatformBuildDir = c => getAppFolder(c);
+
+export const getPlatformProjectDir = (c) => {
+    const appFolder = getAppFolder(c);
+    let output;
+    switch (c.platform) {
+        case TIZEN:
+        case TIZEN_WATCH:
+        case TIZEN_MOBILE:
+        case MACOS:
+        case WEBOS:
+        case WINDOWS:
+        case KAIOS:
+        case WEB:
+        case FIREFOX_OS:
+        case FIREFOX_TV:
+        case CHROMECAST:
+            output = path.join(appFolder, RNV_PROJECT_DIR_NAME);
+            break;
+        default:
+            output = appFolder;
+    }
+    return output;
+};
+
+export const getTemplateDir = c => path.join(
+    c.paths.project.platformTemplatesDirs[c.platform], `${c.platform}`
+);
+
+export const getTemplateProjectDir = (c) => {
+    const appFolder = getTemplateDir(c);
+    let output;
+    switch (c.platform) {
+        case TIZEN:
+        case TIZEN_WATCH:
+        case TIZEN_MOBILE:
+        case MACOS:
+        case WEBOS:
+        case WINDOWS:
+        case KAIOS:
+        case WEB:
+        case FIREFOX_OS:
+        case FIREFOX_TV:
+        case CHROMECAST:
+            output = path.join(appFolder, RNV_PROJECT_DIR_NAME);
+            break;
+        default:
+            output = appFolder;
+    }
+    return output;
+};
+
+export const getAppFolder = c => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
+
+export const getAppSubFolder = (c, platform) => path.join(getAppFolder(c), _getProjectSubDir(c, platform));
+
+export const getAppTemplateSubFolder = (c, platform) => path.join(
+    getAppTemplateFolder(c, platform), _getProjectSubDir(c, platform)
+);
 
 export const getAppTemplateFolder = (c, platform) => path.join(
     c.paths.project.platformTemplatesDirs[platform], `${platform}`

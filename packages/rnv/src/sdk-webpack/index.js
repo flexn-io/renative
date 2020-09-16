@@ -3,11 +3,10 @@ import path from 'path';
 import open from 'better-opn';
 import axios from 'axios';
 import ip from 'ip';
-import { fsExistsSync, copyFileSync, readObjectSync, writeCleanFile, fsWriteFileSync } from '../core/systemManager/fileutils';
+import { fsExistsSync, readObjectSync, writeCleanFile, fsWriteFileSync, mkdirSync } from '../core/systemManager/fileutils';
 import { executeAsync } from '../core/systemManager/exec';
 import {
     getAppFolder,
-    getAppTemplateFolder,
     checkPortInUse,
     getConfigProp,
     getBuildFilePath,
@@ -44,7 +43,7 @@ import {
 } from '../core/deployManager/webTools';
 import { getValidLocalhost } from '../core/utils';
 import { doResolvePath } from '../core/resolve';
-import { WEINRE_PORT, RNV_NODE_MODULES_DIR } from '../core/constants';
+import { WEINRE_PORT, RNV_NODE_MODULES_DIR, RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR_NAME } from '../core/constants';
 
 const WEBPACK = path.join(RNV_NODE_MODULES_DIR, 'webpack/bin/webpack.js');
 const WEBPACK_DEV_SERVER = path.join(RNV_NODE_MODULES_DIR, 'webpack-dev-server/bin/webpack-dev-server.js');
@@ -95,16 +94,18 @@ export const waitForWebpack = async (c, engine) => {
     });
 };
 
-const _generateWebpackConfigs = (c, platform) => {
+const _generateWebpackConfigs = (c, subFolderName) => {
     logTask('_generateWebpackConfigs');
+    const { platform } = c;
     const appFolder = getAppFolder(c);
-    const templateFolder = getAppTemplateFolder(c, platform);
+    const appFolderServer = path.join(appFolder, subFolderName);
+    // const templateFolder = getAppTemplateFolder(c, platform);
 
     let modulePaths = [];
     const doNotResolveModulePaths = [];
     let moduleAliases = {};
 
-    const modulePath = path.join(c.paths.project.builds.dir, '_shared', 'modules.json');
+    const modulePath = path.join(appFolder, 'modules.json');
     let externalModulePaths = [];
     let localModulePaths = [];
     if (fsExistsSync(modulePath)) {
@@ -161,20 +162,24 @@ const _generateWebpackConfigs = (c, platform) => {
         .concat([c.paths.project.assets.dir])
         .filter(Boolean);
 
-    const env = getConfigProp(c, platform, 'environment');
+    // const env = getConfigProp(c, platform, 'environment');
     const extendConfig = getConfigProp(c, platform, 'webpackConfig', {});
     const entryFile = getConfigProp(c, platform, 'entryFile', 'index.web');
     const title = getAppTitle(c, platform);
     const analyzer = getConfigProp(c, platform, 'analyzer') || c.program.analyzer;
 
-    copyFileSync(
-        path.join(
-            templateFolder,
-            '_privateConfig',
-            env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'
-        ),
-        path.join(appFolder, 'webpack.config.js')
-    );
+    if (!fsExistsSync(appFolderServer)) {
+        mkdirSync(appFolderServer);
+    }
+
+    // copyFileSync(
+    //     path.join(
+    //         templateFolder,
+    //         '_privateConfig',
+    //         env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'
+    //     ),
+    //     path.join(appFolderServer, 'webpack.config.js')
+    // );
 
     // const externalModulesResolved = externalModules.map(v => doResolve(v))
     let assetVersion = '';
@@ -187,6 +192,8 @@ const _generateWebpackConfigs = (c, platform) => {
         assetVersion = `-${c.runtime.timestamp}`;
     }
 
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+
     const obj = {
         modulePaths,
         moduleAliases,
@@ -194,6 +201,8 @@ const _generateWebpackConfigs = (c, platform) => {
         entryFile,
         title,
         assetVersion,
+        // devServer: c.runtime.devServer,
+        buildFolder: bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME,
         extensions: getSourceExts(c, platform, false),
         ...extendConfig
     };
@@ -223,7 +232,7 @@ const buildWeb = async (c) => {
 
     await executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=production ${
         debugVariables
-    } node ${WEBPACK} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`);
+    } node ${WEBPACK} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.prod.js`);
     logSuccess(
         `Your Build is located in ${chalk().cyan(
             path.join(appFolder, 'public')
@@ -243,22 +252,21 @@ const configureWebProject = async (c) => {
 
     await copyAssetsFolder(c, platform);
 
-    await configureCoreWebProject(c, platform);
+    await configureCoreWebProject(c);
 
     return copyBuildsFolder(c, platform);
 };
 
-export const configureCoreWebProject = async (c) => {
+export const configureCoreWebProject = async (c, subFolderName = '') => {
     logTask('configureCoreWebProject');
-    _generateWebpackConfigs(c, c.platform);
-    _parseCssSync(c, c.platform);
+    _generateWebpackConfigs(c, subFolderName);
+    _parseCssSync(c, subFolderName);
 };
 
-const _parseCssSync = (c, platform) => {
+const _parseCssSync = (c, subFolderName) => {
     const appFolder = getAppFolder(c);
-    const stringsPath = 'public/app.css';
-    const timestampPathsConfig = getTimestampPathsConfig(c, platform);
-    const backgroundColor = getConfigProp(c, platform, 'backgroundColor');
+    const timestampPathsConfig = getTimestampPathsConfig(c, c.platform);
+    const backgroundColor = getConfigProp(c, c.platform, 'backgroundColor');
 
     const injects = [
         {
@@ -273,8 +281,8 @@ const _parseCssSync = (c, platform) => {
     addSystemInjects(c, injects);
 
     writeCleanFile(
-        getBuildFilePath(c, platform, stringsPath),
-        path.join(appFolder, stringsPath),
+        getBuildFilePath(c, c.platform, 'project/app.css'),
+        path.join(appFolder, subFolderName, 'app.css'),
         injects,
         timestampPathsConfig, c
     );
@@ -342,8 +350,8 @@ const runWebDevServer = async (c, enableRemoteDebugger) => {
     const { debug, debugIp } = c.program;
 
     const appFolder = getAppFolder(c);
-    const wpPublic = path.join(appFolder, 'public');
-    const wpConfig = path.join(appFolder, 'webpack.config.js');
+    const wpPublic = path.join(appFolder, 'server');
+    const wpConfig = path.join(appFolder, 'webpack.config.dev.js');
 
     let debugVariables = '';
     let lineBreaks = '\n\n\n';

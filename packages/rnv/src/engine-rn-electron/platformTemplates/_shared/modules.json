@@ -55,7 +55,7 @@
         "@react-navigation/native",
         "rnv-platform-info"
     ],
-    "localPaths": ["index.webos.js", "index.tizen.js", "src", "packages"],
+    "localPaths": ["src", "packages"],
     "aliases": {
         "react-native": "react-native-web",
         "react-native/Libraries/Renderer/shims/ReactNativePropRegistry": "react-native-web/dist/modules/ReactNativePropRegistry"

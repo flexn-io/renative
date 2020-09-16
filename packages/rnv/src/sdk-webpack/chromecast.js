@@ -9,7 +9,7 @@ export const configureChromecastProject = async (c) => {
     c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}/public`;
 
     await copyAssetsFolder(c, c.platform);
-    await configureCoreWebProject(c, c.platform);
+    await configureCoreWebProject(c);
     await configureProject(c);
     return copyBuildsFolder(c, c.platform);
 };

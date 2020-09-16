@@ -11,18 +11,25 @@ import {
     writeCleanFile
 } from '../core/systemManager/fileutils';
 import {
-    getAppFolder,
+    // getAppFolder,
+    // getAppSubFolder,
+    getPlatformProjectDir,
+    // getPlatformBuildDir,
+    getTemplateProjectDir,
+    getPlatformBuildDir,
+    // getTemplateDir,
+    // getAppFolder,
     getAppVersion,
     getAppTitle,
     getAppId,
-    getAppTemplateFolder,
+    // getAppTemplateFolder,
     getAppDescription,
     getAppAuthor,
     getAppLicense,
     getConfigProp,
     checkPortInUse,
     confirmActiveBundler,
-    addSystemInjects
+    addSystemInjects,
 } from '../core/common';
 import { doResolve } from '../core/resolve';
 import {
@@ -37,7 +44,9 @@ import {
     copyBuildsFolder,
     copyAssetsFolder
 } from '../core/projectManager/projectParser';
-import { MACOS } from '../core/constants';
+import { MACOS,
+    RNV_PROJECT_DIR_NAME,
+    RNV_SERVER_DIR_NAME } from '../core/constants';
 import { buildWeb, runWebpackServer, configureCoreWebProject, waitForWebpack } from '../sdk-webpack';
 
 
@@ -46,14 +55,18 @@ export const configureElectronProject = async (c) => {
 
     const { platform } = c;
 
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
+    c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+
 
     await copyAssetsFolder(
         c,
         platform,
         platform === MACOS ? _generateICNS : null
     );
-    await configureCoreWebProject(c, platform);
+
+    await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
+
     await configureProject(c);
     return copyBuildsFolder(c, platform);
 };
@@ -65,11 +78,12 @@ const configureProject = c => new Promise((resolve, reject) => {
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const appFolder = getAppFolder(c);
-    const templateFolder = getAppTemplateFolder(c, platform);
+    const platformProjectDir = getPlatformProjectDir(c);
+    const platformBuildDir = getPlatformBuildDir(c);
+    const templateFolder = getTemplateProjectDir(c);
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-    const electronConfigPath = path.join(appFolder, 'electronConfig.json');
-    const packagePath = path.join(appFolder, 'package.json');
+    const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
+    const packagePath = path.join(platformProjectDir, 'package.json');
     const appId = getAppId(c, platform);
 
     if (!fsExistsSync(packagePath)) {
@@ -121,8 +135,8 @@ const configureProject = c => new Promise((resolve, reject) => {
         addSystemInjects(c, injects);
 
         writeCleanFile(
-            path.join(templateFolder, '_privateConfig', 'main.js'),
-            path.join(appFolder, 'main.js'),
+            path.join(platformBuildDir, 'main.js'),
+            path.join(platformProjectDir, 'main.js'),
             injects, null, c
         );
     } else {
@@ -140,8 +154,8 @@ const configureProject = c => new Promise((resolve, reject) => {
         addSystemInjects(c, injects);
 
         writeCleanFile(
-            path.join(templateFolder, '_privateConfig', 'main.dev.js'),
-            path.join(appFolder, 'main.js'),
+            path.join(platformBuildDir, 'main.dev.js'),
+            path.join(platformProjectDir, 'main.js'),
             injects, null, c
         );
     }
@@ -149,21 +163,21 @@ const configureProject = c => new Promise((resolve, reject) => {
     const macConfig = {};
     if (platform === MACOS) {
         macConfig.mac = {
-            entitlements: path.join(appFolder, 'entitlements.mac.plist'),
+            entitlements: path.join(platformProjectDir, 'entitlements.mac.plist'),
             entitlementsInherit: path.join(
-                appFolder,
+                platformProjectDir,
                 'entitlements.mac.plist'
             ),
             hardenedRuntime: true
         };
         macConfig.mas = {
-            entitlements: path.join(appFolder, 'entitlements.mas.plist'),
+            entitlements: path.join(platformProjectDir, 'entitlements.mas.plist'),
             entitlementsInherit: path.join(
-                appFolder,
+                platformProjectDir,
                 'entitlements.mas.inherit.plist'
             ),
             provisioningProfile: path.join(
-                appFolder,
+                platformProjectDir,
                 'embedded.provisionprofile'
             ),
             hardenedRuntime: false
@@ -174,9 +188,9 @@ const configureProject = c => new Promise((resolve, reject) => {
         {
             appId,
             directories: {
-                app: appFolder,
-                buildResources: path.join(appFolder, 'resources'),
-                output: path.join(appFolder, 'build/release')
+                app: platformProjectDir,
+                buildResources: path.join(platformProjectDir, 'resources'),
+                output: path.join(platformBuildDir, 'build/release')
             },
             files: ['!build/release']
         },
@@ -203,8 +217,8 @@ const buildElectron = async (c) => {
 const exportElectron = async (c) => {
     logTask('exportElectron');
 
-    const appFolder = getAppFolder(c);
-    const buildPath = path.join(appFolder, 'build');
+    const platformBuildDir = platformBuildDir(c);
+    const buildPath = path.join(platformBuildDir, 'build');
 
     if (fsExistsSync(buildPath)) {
         logInfo(`exportElectron: removing old build ${buildPath}`);
@@ -214,14 +228,14 @@ const exportElectron = async (c) => {
     await executeAsync(
         c,
         `npx electron-builder --config ${path.join(
-            appFolder,
+            platformBuildDir,
             'electronConfig.json'
         )}`
     );
 
     logSuccess(
         `Your Exported App is located in ${chalk().cyan(
-            path.join(appFolder, 'build/release')
+            path.join(platformBuildDir, 'build/release')
         )} .`
     );
 };
@@ -262,10 +276,10 @@ export const runElectron = async (c) => {
 
 const _runElectronSimulator = async (c) => {
     logTask(`_runElectronSimulator:${c.platform}`);
-    const appFolder = getAppFolder(c, c.platform);
+    // const appFolder = getAppFolder(c, c.platform);
     const elc = `${doResolve('electron')}/cli.js`;
 
-    const child = spawn('node', [elc, path.join(appFolder, '/main.js')], {
+    const child = spawn('node', [elc, path.join(getPlatformProjectDir(c), '/main.js')], {
         detached: true,
         env: process.env,
         stdio: 'inherit'
@@ -297,7 +311,7 @@ const _generateICNS = c => new Promise((resolve, reject) => {
     }
 
     const dest = path.join(
-        getAppFolder(c),
+        getPlatformProjectDir(c),
         'resources/icon.icns'
     );
 
@@ -311,7 +325,7 @@ const _generateICNS = c => new Promise((resolve, reject) => {
         return;
     }
 
-    mkdirSync(path.join(getAppFolder(c), 'resources'));
+    mkdirSync(path.join(getPlatformProjectDir(c), 'resources'));
 
     const p = ['--convert', 'icns', source, '--output', dest];
     try {

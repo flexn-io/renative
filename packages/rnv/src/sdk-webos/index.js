@@ -4,11 +4,18 @@ import inquirer from 'inquirer';
 import { fsExistsSync, getRealPath, writeCleanFile, fsReadFileSync } from '../core/systemManager/fileutils';
 import { executeAsync, execCLI, openCommand } from '../core/systemManager/exec';
 import {
-    getAppFolder,
+    // getAppFolder,
+    // getAppSubFolder,
+    getPlatformProjectDir,
+    // getPlatformBuildDir,
+    getTemplateProjectDir,
+    getPlatformBuildDir,
+    // getTemplateDir,
     getAppVersion,
+    // getAppTemplateFolder,
     getAppTitle,
     getAppId,
-    getAppTemplateFolder,
+    // getAppTemplateFolder,
     getConfigProp,
     checkPortInUse,
     confirmActiveBundler,
@@ -37,7 +44,9 @@ import {
     CLI_WEBOS_ARES_LAUNCH,
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE,
-    WEINRE_ENABLED_PLATFORMS
+    WEINRE_ENABLED_PLATFORMS,
+    RNV_PROJECT_DIR_NAME,
+    RNV_SERVER_DIR_NAME
 } from '../core/constants';
 import { isSystemWin, isUrlLocalhost } from '../core/utils';
 
@@ -164,13 +173,10 @@ const waitForEmulatorToBeReady = async (c) => {
 const _runWebosSimOrDevice = async (c) => {
     const { device } = c.program;
 
-    const tDir = path.join(getAppFolder(c), 'public');
-    const tOut = path.join(getAppFolder(c), 'output');
+    const tDir = getPlatformProjectDir(c);
+    const tOut = path.join(getPlatformBuildDir(c), 'output');
     const tSim = c.program.target || 'emulator';
-    const configFilePath = path.join(
-        getAppFolder(c),
-        'public/appinfo.json'
-    );
+    const configFilePath = path.join(tDir, 'appinfo.json');
 
     // logTask(`runWebOS:${target}:${isHosted}`, chalk().grey);
     const cnfg = JSON.parse(fsReadFileSync(configFilePath, 'utf-8'));
@@ -330,8 +336,8 @@ const buildWebOSProject = async (c) => {
     await buildWeb(c);
 
     if (!c.program.hosted) {
-        const tDir = path.join(getAppFolder(c), 'public');
-        const tOut = path.join(getAppFolder(c), 'output');
+        const tDir = getPlatformProjectDir(c);
+        const tOut = path.join(getPlatformBuildDir(c), 'output');
         await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
         logSuccess(
@@ -345,23 +351,23 @@ const configureWebOSProject = async (c) => {
 
     const { platform } = c;
 
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c)}`;
+    c.runtime.platformBuildsProjectPath = getPlatformProjectDir(c);
 
     if (!isPlatformActive(c, platform)) return;
 
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+
     await copyAssetsFolder(c, platform);
-    await configureCoreWebProject(c, platform);
+    await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
     await configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 
-const configureProject = c => new Promise((resolve) => {
+const configureProject = async (c) => {
     logTask('configureProject');
     const { platform } = c;
 
-    const appFolder = getAppFolder(c);
-
-    const configFile = 'public/appinfo.json';
+    const configFile = 'appinfo.json';
 
     const injects = [
         {
@@ -381,13 +387,13 @@ const configureProject = c => new Promise((resolve) => {
     addSystemInjects(c, injects);
 
     writeCleanFile(
-        path.join(getAppTemplateFolder(c, platform), configFile),
-        path.join(appFolder, configFile),
+        path.join(getTemplateProjectDir(c), configFile),
+        path.join(getPlatformProjectDir(c), configFile),
         injects, null, c
     );
 
-    resolve();
-});
+    return true;
+};
 
 export {
     launchWebOSimulator,

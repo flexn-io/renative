@@ -16,38 +16,34 @@ import { WEB,
     TASK_CONFIGURE,
     PARAMS } from '../core/constants';
 import { runWebpackServer } from '../sdk-webpack';
+import { getConfigProp, getPlatformProjectDir } from '../core/common';
 import { runTizen } from '../sdk-tizen';
 import { runWebOS } from '../sdk-webos';
 import { runFirefoxProject } from '../sdk-firefox';
 import { runChromecast } from '../sdk-webpack/chromecast';
-import { copyFolderContentsRecursiveSync, writeCleanFile } from '../core/systemManager/fileutils';
+import { writeCleanFile } from '../core/systemManager/fileutils';
 import { executeTask, executeOrSkipTask } from '../core/engineManager';
 
 const _configureHostedIfRequired = async (c) => {
     logTask('_configureHostedIfRequired');
-    const { hosted } = c.program;
 
-    if (hosted) {
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+
+    if (!bundleAssets) {
         logDebug('Running hosted build');
-        const { project, rnv } = c.paths;
-        copyFolderContentsRecursiveSync(
-            path.join(rnv.dir, 'supportFiles', 'appShell'),
-            path.join(
-                project.dir,
-                'platformBuilds',
-                `${c.runtime.appId}_${c.platform}`,
-                'public'
-            )
-        );
+        const { rnv } = c.paths;
+        // copyFolderContentsRecursiveSync(
+        //     path.join(rnv.dir, 'supportFiles', 'appShell'),
+        //     path.join(
+        //         project.dir,
+        //         'platformBuilds',
+        //         `${c.runtime.appId}_${c.platform}`,
+        //         'public'
+        //     )
+        // );
         writeCleanFile(
             path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'),
-            path.join(
-                project.dir,
-                'platformBuilds',
-                `${c.runtime.appId}_${c.platform}`,
-                'public',
-                'index.html'
-            ),
+            path.join(getPlatformProjectDir(c), 'index.html'),
             [
                 {
                     pattern: '{{DEV_SERVER}}',
@@ -68,7 +64,6 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     if (hosted) {
         c.runtime.shouldOpenBrowser = true;
         // return _taskStart(c);
-        await _configureHostedIfRequired(c);
         return executeTask(c, TASK_START, TASK_RUN, originTask);
     }
 
@@ -81,20 +76,23 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            // if (!c.program.only) {
-            //     await executeTask(c, TASK_START, TASK_RUN, originTask);
-            // }
-            return runTizen(c, platform, target);
+            if (!c.program.only) {
+                await _configureHostedIfRequired(c);
+            }
+            return runTizen(c, target);
         case WEBOS:
-            // if (!c.program.only) {
-            //     await executeTask(c, TASK_START, TASK_RUN, originTask);
-            // }
+            if (!c.program.only) {
+                await _configureHostedIfRequired(c);
+            }
             return runWebOS(c);
         case KAIOS:
         case FIREFOX_OS:
         case FIREFOX_TV:
             return runFirefoxProject(c);
         case CHROMECAST:
+            if (!c.program.only) {
+                await _configureHostedIfRequired(c);
+            }
             return runChromecast(c, platform, target);
         default:
             return logErrorPlatform(c);

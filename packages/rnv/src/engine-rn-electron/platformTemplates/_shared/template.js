@@ -26,13 +26,6 @@ const htmlTemp = (options) => {
         docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment, linkTags, debugPort
     } = config;
 
-    // Moved to dynamic config
-    // const linkTags = [
-    //     '<link rel="manifest" href="manifest.json" />',
-    //     '<link rel="shortcut icon" href="favicon.ico" />',
-    //     '<link rel="stylesheet" href="app.css" />',
-    // ];
-
     const titleTag = `<title>${title}</title>`;
 
     const noScript = '<noscript>You need to enable JavaScript to run this app.</noscript>';
@@ -43,13 +36,6 @@ const htmlTemp = (options) => {
     }
 
     let webosScripts = '';
-
-    if (platform === 'webos') {
-        webosScripts = '<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV.js"></script>';
-        if (environment !== 'production') {
-            webosScripts += '\n<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV-dev.js"></script>';
-        }
-    }
 
     const errScript = `
         <script>window.onerror = function(err) {

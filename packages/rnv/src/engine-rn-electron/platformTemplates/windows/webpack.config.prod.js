@@ -4,10 +4,7 @@ const Extend = require('./webpack.extend.js');
 const config = {
     currentDir: __dirname,
     metaTags: { viewport: 'content="width=device-width, initial-scale=1, shrink-to-fit=no"' },
-    environment: 'development',
-    customScripts: [],
-    devServerHost: '0.0.0.0',
-    baseUrl: '',
+    environment: 'production',
     ...Extend
 };
 
@@ -17,8 +14,7 @@ if (config.analyzer) plugins.push(C.Plugins.analyzer);
 
 module.exports = {
     entry: C.entry,
-    devServer: C.devServer,
-    output: C.output,
+    output: { ...C.output, libraryTarget: 'commonjs2' },
     module: {
         rules: [C.Rules.babel, C.Rules.css, C.Rules.image, C.Rules.fonts, C.Rules.sourcemap],
     },
@@ -28,4 +24,9 @@ module.exports = {
         extensions: C.extensions,
         alias: C.aliases,
     },
+    externals: {
+        fs: 'commonjs fs',
+        path: 'commonjs path',
+    },
+    target: 'electron-renderer'
 };

@@ -8,12 +8,20 @@ import {
     RENATIVE_CONFIG_NAME,
     CLI_TIZEN_EMULATOR,
     CLI_TIZEN,
-    CLI_SDB_TIZEN
+    CLI_SDB_TIZEN,
+    WEINRE_ENABLED_PLATFORMS,
+    RNV_PROJECT_DIR_NAME,
+    RNV_SERVER_DIR_NAME
 } from '../core/constants';
 import {
-    getAppFolder,
+    // getAppFolder,
+    // getAppSubFolder,
+    getPlatformProjectDir,
+    // getPlatformBuildDir,
+    getTemplateProjectDir,
+    // getTemplateDir,
     getAppVersion,
-    getAppTemplateFolder,
+    // getAppTemplateFolder,
     getConfigProp,
     checkPortInUse,
     confirmActiveBundler,
@@ -26,16 +34,19 @@ import {
     logWarning,
     logDebug,
     logSuccess,
-    logToSummary
+    logToSummary,
+    logInfo
 } from '../core/systemManager/logger';
 import { waitForEmulator } from '../core/targetManager';
 import { isPlatformActive } from '../core/platformManager';
 import { fsExistsSync, writeCleanFile } from '../core/systemManager/fileutils';
+import { buildWeb, runWebpackServer, configureCoreWebProject, waitForWebpack } from '../sdk-webpack';
+
 import {
     copyAssetsFolder,
     copyBuildsFolder
 } from '../core/projectManager/projectParser';
-import { buildWeb, configureCoreWebProject } from '../sdk-webpack';
+
 
 const xml2js = require('xml2js');
 
@@ -259,11 +270,12 @@ const _composeDevicesString = devices => devices.map(device => ({
 //     }
 // };
 
-export const runTizen = async (c, platform, target) => {
-    logTask('runTizen', `target:${target}`);
+const _runTizenSimOrDevice = async (c) => {
+    const { hosted } = c.program;
+    const { target } = c.runtime;
+    const { platform } = c;
 
     const platformConfig = c.buildConfig.platforms[platform];
-    const { hosted } = c.program;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const isHosted = hosted ?? !bundleAssets;
 
@@ -288,7 +300,7 @@ export const runTizen = async (c, platform, target) => {
         );
     }
 
-    const tDir = getAppFolder(c);
+    const tDir = getPlatformProjectDir(c);
     const tBuild = path.join(tDir, 'build');
     const tOut = path.join(tDir, 'output');
     const tId = platformConfig.id;
@@ -296,14 +308,6 @@ export const runTizen = async (c, platform, target) => {
     const certProfile = platformConfig.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
     let deviceID;
-
-    if (isHosted) {
-        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
-        if (isPortActive) {
-            await confirmActiveBundler(c);
-            c.runtime.skipActiveServerCheck = true;
-        }
-    }
 
     const askForEmulator = async () => {
         const { startEmulator } = await inquirer.prompt([
@@ -402,13 +406,13 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
         if (
             platform !== 'tizenwatch'
-            && platform !== 'tizenmobile'
-            && hasDevice
+          && platform !== 'tizenmobile'
+          && hasDevice
         ) {
             await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`);
         } else if (
             (platform === 'tizenwatch' || platform === 'tizenmobile')
-            && hasDevice
+          && hasDevice
         ) {
             const packageID = tId.split('.');
             await execCLI(
@@ -473,13 +477,60 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
     }
 };
 
+export const runTizen = async (c, target) => {
+    logTask('runTizen', `target:${target}`);
+    const { platform } = c;
+    const { hosted } = c.program;
+
+
+    const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
+
+    if (isHosted) {
+        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        if (isPortActive) {
+            await confirmActiveBundler(c);
+            c.runtime.skipActiveServerCheck = true;
+        }
+    }
+
+    logTask('runWebOS', `target:${target} hosted:${!!isHosted}`);
+    if (isHosted) return;
+
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+
+    if (bundleAssets) {
+        await buildWeb(c);
+        await _runTizenSimOrDevice(c);
+    } else {
+        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        const isWeinreEnabled = WEINRE_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
+
+        if (!isPortActive) {
+            logInfo(
+                `Looks like your ${chalk().white(
+                    platform
+                )} devServer at port ${chalk().white(
+                    c.runtime.port
+                )} is not running. Starting it up for you...`
+            );
+            waitForWebpack(c)
+                .then(() => _runTizenSimOrDevice(c))
+                .catch(logError);
+            await runWebpackServer(c, isWeinreEnabled);
+        } else {
+            await confirmActiveBundler(c);
+            await _runTizenSimOrDevice(c);
+        }
+    }
+};
+
 export const buildTizenProject = async (c) => {
     logTask('buildTizenProject');
 
     const { platform } = c;
 
     const platformConfig = c.buildConfig.platforms[platform];
-    const tDir = getAppFolder(c);
+    const tDir = getPlatformProjectDir(c);
 
     await buildWeb(c);
     if (!c.program.hosted) {
@@ -509,7 +560,7 @@ export const configureTizenProject = async (c) => {
 
     const { platform } = c;
 
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c)}`;
+    c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
 
     if (!isPlatformActive(c, platform)) {
         return;
@@ -520,8 +571,10 @@ export const configureTizenProject = async (c) => {
         await configureTizenGlobal(c);
     }
 
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+
     await copyAssetsFolder(c, platform);
-    await configureCoreWebProject(c, platform);
+    await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
     await configureProject(c);
     return copyBuildsFolder(c, platform);
 };
@@ -529,8 +582,6 @@ export const configureTizenProject = async (c) => {
 export const configureProject = c => new Promise((resolve) => {
     logTask('configureProject');
     const { platform } = c;
-
-    const appFolder = getAppFolder(c);
 
     const configFile = 'config.xml';
     const p = c.buildConfig.platforms[platform];
@@ -545,8 +596,8 @@ export const configureProject = c => new Promise((resolve) => {
     addSystemInjects(c, injects);
 
     writeCleanFile(
-        path.join(getAppTemplateFolder(c, platform), configFile),
-        path.join(appFolder, configFile),
+        path.join(getTemplateProjectDir(c), configFile),
+        path.join(getPlatformProjectDir(c), configFile),
         injects, null, c
     );
 
