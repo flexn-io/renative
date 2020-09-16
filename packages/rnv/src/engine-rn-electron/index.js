@@ -1,4 +1,4 @@
-import { getEngineTask, hasEngineTask, getEngineSubTasks } from '../core/engineManager';
+import { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } from '../core/engineManager';
 
 import taskRnvRun from './task.rnv.run';
 import taskRnvPackage from './task.rnv.package';
@@ -24,7 +24,7 @@ addTask(taskRnvExport);
 addTask(taskRnvDeploy);
 addTask(taskRnvDebug);
 
-const executeTask = async (c, task, parentTask, originTask) => getEngineTask(task, TASKS).fn(c, parentTask, originTask);
+const executeTask = (c, task, parentTask, originTask) => executeEngineTask(c, task, parentTask, originTask, TASKS);
 
 const hasTask = (task, isProjectScope) => hasEngineTask(task, TASKS, isProjectScope);
 

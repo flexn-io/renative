@@ -22,6 +22,15 @@ export const inquirerPrompt = async (params) => {
     return inquirer.prompt(params);
 };
 
+export const pressAnyKeyToContinue = () => {
+    const params = {
+        type: 'input',
+        name: 'confirm',
+        message: 'Press any key to continue'
+    };
+    return inquirer.prompt(params);
+};
+
 export const generateOptions = (
     inputData,
     isMultiChoice = false,

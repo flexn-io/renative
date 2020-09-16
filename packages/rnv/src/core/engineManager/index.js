@@ -1,8 +1,8 @@
-import { logDebug, logTask, logInitTask, logExitTask, chalk, logInfo, logError } from '../systemManager/logger';
+import { logDebug, logTask, logInitTask, logExitTask, chalk, logInfo, logError, logRaw } from '../systemManager/logger';
 import { getConfigProp } from '../common';
 import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
-import { inquirerPrompt } from '../../cli/prompt';
+import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
 import { TASK_CONFIGURE_SOFT } from '../constants';
 
 const REGISTERED_ENGINES = [];
@@ -26,6 +26,38 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
         return selectedEngine;
     }
     return null;
+};
+
+export const executeEngineTask = async (c, task, parentTask, originTask, tasks) => {
+    const needsHelp = Object.prototype.hasOwnProperty.call(c.program, 'help');
+
+    const t = getEngineTask(task, tasks);
+
+    if (needsHelp && !parentTask) {
+        logRaw(`
+=======================================================
+INTERACTIVE HELP FOR TASK: ${chalk().green(t.task)}
+
+Description: ${t.description}
+
+Options:
+
+${t.params.map((v) => {
+        const option = v.shortcut ? `\`-${v.shortcut}\`, ` : '';
+        return `${option}\`--${v.key}\` - ${v.description}`;
+    }).join('\n')}
+
+  `);
+        if (t.fnHelp) {
+            await t.fnHelp(c, parentTask, originTask);
+        }
+
+        await pressAnyKeyToContinue();
+        logRaw(`
+=======================================================`);
+    }
+
+    return t.fn(c, parentTask, originTask);
 };
 
 export const getEngineTask = (task, tasks) => {

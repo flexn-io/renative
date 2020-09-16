@@ -1,6 +1,6 @@
 import { getConfigProp } from '../core/common';
 import { logErrorPlatform } from '../core/platformManager';
-import { logTask, logSummary } from '../core/systemManager/logger';
+import { logTask, logSummary, logRaw } from '../core/systemManager/logger';
 import { IOS,
     TVOS,
     ANDROID,
@@ -57,9 +57,16 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     }
 };
 
-export default {
+export const taskRnvRunHelp = async () => {
+    logRaw(`
+More info at: https://renative.org/docs/api-cli
+`);
+};
+
+const Task = {
     description: 'Run your app on target device or emulator',
     fn: taskRnvRun,
+    fnHelp: taskRnvRunHelp,
     task: 'run',
     dependencies: {
         before: TASK_CONFIGURE
@@ -73,3 +80,5 @@ export default {
         ANDROID_WEAR,
     ],
 };
+
+export default Task;

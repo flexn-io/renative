@@ -884,6 +884,10 @@ const _PARAMS = {
         value: 'value',
         description: 'Blueprint for targets'
     },
+    help: {
+        shortcut: 'h',
+        description: 'Displays help info for particular command'
+    },
     host: {
         shortcut: 'H',
         value: 'value',

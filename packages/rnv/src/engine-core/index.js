@@ -1,4 +1,4 @@
-import { getEngineTask, hasEngineTask, getEngineSubTasks } from '../core/engineManager';
+import { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } from '../core/engineManager';
 // import taskRnvLink from './task.rnv.link';
 // import taskRnvSwitch from './task.rnv.switch';
 import taskRnvCryptoDecrypt from './task.rnv.crypto.decrypt';
@@ -96,7 +96,7 @@ addTask(taskRnvLog);
 addTask(taskRnvConfigureSoft);
 addTask(taskRvnKill);
 
-const executeTask = async (c, task, parentTask, originTask) => getEngineTask(task, TASKS).fn(c, parentTask, originTask);
+const executeTask = (c, task, parentTask, originTask) => executeEngineTask(c, task, parentTask, originTask, TASKS);
 
 const hasTask = (task, isProjectScope) => hasEngineTask(task, TASKS, isProjectScope);
 
