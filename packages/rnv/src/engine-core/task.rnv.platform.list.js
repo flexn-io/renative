@@ -11,6 +11,7 @@ export const taskRnvPlatformList = async (c, parentTask, originTask) => {
 
     const opts = generatePlatformChoices(c).map((v, i) => ` [${chalk().white(i + 1)}]> ${v.name}`);
     logToSummary(`Platforms:\n\n${opts.join('\n')}`);
+    return true;
 };
 
 export default {

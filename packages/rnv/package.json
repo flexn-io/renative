@@ -68,6 +68,7 @@
         "prepare": "yarn build",
         "prepublishOnly": "yarn build",
         "test": "jest -c jest.config.unit.js",
+        "test:tasks": "jest -c jest.config.tasks.js",
         "test:integration": "jest -c jest.config.integrations.js",
         "test:ios": "jest -c jest.config.ios.js",
         "test:local": "./scripts/test.sh",
