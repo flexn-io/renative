@@ -135,7 +135,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         addSystemInjects(c, injects);
 
         writeCleanFile(
-            path.join(platformBuildDir, 'main.js'),
+            path.join(platformBuildDir, 'main.prod.js'),
             path.join(platformProjectDir, 'main.js'),
             injects, null, c
         );
@@ -314,6 +314,16 @@ const _generateICNS = c => new Promise((resolve, reject) => {
         getPlatformProjectDir(c),
         'resources/icon.icns'
     );
+
+    if (!source) {
+        logWarning(
+            `You are missing AppIcon.iconset in ${chalk().white(
+                c.paths.appConfig.dir
+            )}. icon.icns will not be generated!`
+        );
+        resolve();
+        return;
+    }
 
     if (!fsExistsSync(source)) {
         logWarning(

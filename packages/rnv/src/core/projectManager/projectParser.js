@@ -266,6 +266,27 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
 
     if (!isPlatformActive(c, platform)) return;
 
+    // FOLDER MERGERS FROM APP CONFIG + EXTEND
+    if (c.paths.appConfig.dirs) {
+        const hasAssetFolder = c.paths.appConfig.dirs
+            .filter(v => fsExistsSync(path.join(v, `assets/${platform}`))).length;
+        if (!hasAssetFolder) {
+            await generateDefaultAssets(
+                c,
+                platform,
+                path.join(c.paths.appConfig.dirs[0], `assets/${platform}`)
+            );
+        }
+    } else {
+        const sourcePath = path.join(
+            c.paths.appConfig.dir,
+            `assets/${platform}`
+        );
+        if (!fsExistsSync(sourcePath)) {
+            await generateDefaultAssets(c, platform, sourcePath);
+        }
+    }
+
     if (customFn) {
         return customFn(c, platform);
     }
@@ -279,15 +300,6 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
-        const hasAssetFolder = c.paths.appConfig.dirs
-            .filter(v => fsExistsSync(path.join(v, `assets/${platform}`))).length;
-        if (!hasAssetFolder) {
-            await generateDefaultAssets(
-                c,
-                platform,
-                path.join(c.paths.appConfig.dirs[0], `assets/${platform}`)
-            );
-        }
         c.paths.appConfig.dirs.forEach((v) => {
             const sourcePath = path.join(v, `assets/${platform}`);
             copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, null, tsPathsConfig);
@@ -297,9 +309,6 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
             c.paths.appConfig.dir,
             `assets/${platform}`
         );
-        if (!fsExistsSync(sourcePath)) {
-            await generateDefaultAssets(c, platform, sourcePath);
-        }
         copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, null, tsPathsConfig);
     }
 };
@@ -307,7 +316,7 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
 const generateDefaultAssets = async (c, platform, sourcePath) => {
     logTask('generateDefaultAssets');
     let confirmAssets = true;
-    if (c.program.ci === false) {
+    if (c.program.ci !== true) {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
             message: `It seems you don't have assets configured in ${chalk().white(
