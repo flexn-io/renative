@@ -42,7 +42,7 @@ export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
             if (copyShared) {
                 copyFolderContentsRecursiveSync(
                     path.join(rptf, '_shared'),
-                    path.join(prf, ptfn, '_shared')
+                    path.join(prf, ptfn, platform)
                 );
             }
 

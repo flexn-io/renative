@@ -1,35 +1,16 @@
 import { chalk, logToSummary, logTask } from '../core/systemManager/logger';
-import { generateOptions } from '../cli/prompt';
+// import { generateOptions } from '../cli/prompt';
+import { generatePlatformChoices } from '../core/platformManager';
 import { executeTask } from '../core/engineManager';
 import { TASK_PLATFORM_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
-
-
-const _genPlatOptions = (c) => {
-    const opts = generateOptions(
-        c.buildConfig.defaults.supportedPlatforms,
-        true,
-        null,
-        (i, obj, mapping, defaultVal) => {
-            const isEjected = c.paths.project.platformTemplatesDirs[
-                obj
-            ].includes(c.paths.rnv.platformTemplates.dir)
-                ? chalk().green('(connected)')
-                : chalk().yellow('(ejected)');
-            return ` [${chalk().white(i + 1)}]> ${chalk().bold(
-                defaultVal
-            )} - ${isEjected} \n`;
-        }
-    );
-    return opts;
-};
 
 export const taskRnvPlatformList = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformList');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_LIST, originTask);
 
-    const opts = _genPlatOptions(c);
-    logToSummary(`Platforms:\n\n${opts.asString}`);
+    const opts = generatePlatformChoices(c).map((v, i) => ` [${chalk().white(i + 1)}]> ${v.name}`);
+    logToSummary(`Platforms:\n\n${opts.join('\n')}`);
 };
 
 export default {
