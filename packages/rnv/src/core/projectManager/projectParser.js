@@ -4,6 +4,7 @@ import { WEB_HOSTED_PLATFORMS, INJECTABLE_CONFIG_PROPS } from '../constants';
 import {
     getAppFolder,
     // getAppSubFolder,
+    getPlatformBuildDir,
     getPlatformProjectDir,
     getBuildsFolder,
     getConfigProp,
@@ -381,15 +382,18 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
 Move your files to: ${chalk().white(sourcePath1sec)} instead`);
     }
 
+    // DEPRECATED SHARED
     if (WEB_HOSTED_PLATFORMS.includes(platform)) {
-        // FOLDER MERGERS _SHARED
         const sourcePathShared = path.join(
             c.paths.project.appConfigBase.dir,
             'builds/_shared'
         );
+        if (fsExistsSync(sourcePathShared)) {
+            logWarning('Folder builds/_shared is DEPRECATED. use builds/<PLATFORM> instead ');
+        }
         copyFolderContentsRecursiveSync(
             sourcePathShared,
-            path.join(c.paths.project.builds.dir, '_shared'),
+            getPlatformBuildDir(c),
             true, false, false, allInjects
         );
     }

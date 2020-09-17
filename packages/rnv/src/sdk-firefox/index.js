@@ -1,8 +1,8 @@
 import path from 'path';
 import {
-    getAppFolder,
+    getPlatformProjectDir,
+    getTemplateProjectDir,
     getAppTitle,
-    getAppTemplateFolder,
     getAppDescription,
     getAppAuthor,
 } from '../core/common';
@@ -56,7 +56,7 @@ const configureKaiOSProject = async (c) => {
 
     const { platform } = c;
 
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
+    c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
 
     if (!isPlatformActive(c, platform)) return;
 
@@ -72,8 +72,8 @@ const configureProject = c => new Promise((resolve) => {
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const appFolder = getAppFolder(c);
-    const templateFolder = getAppTemplateFolder(c, platform);
+    const appFolder = getPlatformProjectDir(c);
+    const templateFolder = getTemplateProjectDir(c, platform);
 
     const manifestFilePath = path.join(templateFolder, 'manifest.webapp');
     const manifestFilePath2 = path.join(appFolder, 'manifest.webapp');

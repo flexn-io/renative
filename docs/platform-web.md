@@ -105,7 +105,7 @@ rnv run -p web --port 9999
 
 ## Modifying index.html
 
-In order for you to do that you'll need to run the project first, so it generates the files you need first. Then you can copy `platformBuilds/_shared/template.js` to `appConfigs/base/builds/_shared/template.js` and modify it. 
+In order for you to do that you'll need to run the project first, so it generates the files you need first. Then you can copy `platformBuilds/<APP_ID>_web/template.js` to `appConfigs/base/builds/template.js` and modify it. 
 
 ## App Config
 

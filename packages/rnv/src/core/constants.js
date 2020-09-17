@@ -1012,4 +1012,4 @@ export const INJECTABLE_RUNTIME_PROPS = ['appId', 'scheme', 'timestamp', 'localh
 export const REDASH_URL = 'https://rnv.nxg.staging.24imedia.com/events';
 export const REDASH_KEY = 'zCYINQqMxvat1V41Hb9d69JMVBDNLyeQ4wICtdtD';
 
-export const WEINRE_ENABLED_PLATFORMS = [TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH];
+export const WEINRE_ENABLED_PLATFORMS = [TIZEN, TIZEN_MOBILE, TIZEN_WATCH];
