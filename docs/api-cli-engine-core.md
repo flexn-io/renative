@@ -6,6 +6,13 @@ sidebar_label: Engine Core
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
 ---
 
 ## crypto decrypt
@@ -36,6 +43,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -70,6 +83,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## crypto installCerts
 
 > 
@@ -98,6 +117,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -132,6 +157,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## crypto updateProfiles
 
 > 
@@ -160,6 +191,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -194,6 +231,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## target list
 
 > List all available devices / emulators for specific platform
@@ -222,6 +265,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -256,6 +305,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## platform eject
 
 > Copy all platform files directly to project
@@ -284,6 +339,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -318,6 +379,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## platform list
 
 > List all available platforms
@@ -346,6 +413,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -380,6 +453,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## platform setup
 
 > 
@@ -408,6 +487,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -442,6 +527,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## template apply
 
 > Reset project to specific template
@@ -470,6 +561,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -504,6 +601,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## plugin add
 
 > Add selected plugin to the project
@@ -532,6 +635,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -566,6 +675,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## plugin update
 
 > Update specific plugin to latest supported version (rnv)
@@ -594,6 +709,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -628,6 +749,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## workspace add
 
 > Add new workspace
@@ -656,6 +783,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -690,6 +823,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## workspace update
 
 > 
@@ -718,6 +857,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -752,6 +897,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## hooks run
 
 > Run specific build hook
@@ -780,6 +931,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -814,6 +971,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## clean
 
 > Automatically removes all node_modules and lock in your project and its dependencies
@@ -842,6 +1005,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -876,6 +1045,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## publish
 
 > 
@@ -904,6 +1079,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -938,6 +1119,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## status
 
 > Show current info about the project
@@ -966,6 +1153,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -1000,6 +1193,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## help
 
 > Display generic help
@@ -1028,6 +1227,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -1062,6 +1267,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## install
 
 > Install package node_modules via yarn or npm
@@ -1093,6 +1304,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## project configure
 
 > Configure current project
@@ -1121,6 +1338,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -1167,6 +1390,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## workspace configure
 
 > 
@@ -1195,6 +1424,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
 
 ---
 
@@ -1229,6 +1464,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## configureSoft
 
 > Configure system and project wothout recreating files (used for --only)
@@ -1241,6 +1482,43 @@ Example:
 
 ```bash
 rnv configureSoft
+```
+
+Options:
+
+`-i`, `--info` - Show full debug Info
+
+`--ci` - CI/CD flag so it wont ask questions
+
+`--mono` - Monochrome console output without chalk
+
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
+
+`-o`, `--only` - run Only top command (Skip dependencies)
+
+
+
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
+## kill
+
+> Kills all the processes related to this project
+
+Supported Platforms:
+
+`ios`, `android`, `androidtv`, `androidwear`, `web`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+
+Example:
+
+```bash
+rnv kill
 ```
 
 Options:

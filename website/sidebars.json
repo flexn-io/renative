@@ -57,6 +57,7 @@
         ],
         "Plugins": ["plugins"],
         "Engines": [
+            "engine-core",
             "engine-rn",
             "engine-rn-web",
             "engine-rn-electron",

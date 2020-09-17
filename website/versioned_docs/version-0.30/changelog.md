@@ -6,6 +6,32 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.26 (2020-9-17)
+
+### Fixed
+
+- [fix] rnv crypto standalone task
+- [fix] focus issues on tizen and webos
+- update firefox, chromecast sdks
+- uts
+- fix eject list
+- electron icns auto generator
+- interactive CLI help
+- webpack-sdk update to new paths
+- fix hosted option
+- [feat] refactor engine templates
+- kill task, webos fixes
+- [chores] clean up config, npx resolve checks
+- optional crypto
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- appConfigs/\*\*/builds/_shared is DEPRECATED. use appConfigs/\*\*/builds/<PLATFORM> instead
+
 ## v0.31.0-alpha.25 (2020-9-15)
 
 ### Fixed

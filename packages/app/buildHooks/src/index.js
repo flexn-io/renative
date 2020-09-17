@@ -11,6 +11,7 @@ const hooks = {
         await updateMdFilesPlatforms(c);
         await updateMdFilesEngines(c);
         await generateChangelog(c);
+        await generateEngineTaks(c);
         await generateCombinedChangelog(c);
     },
     prePublish: async (c) => {
@@ -19,6 +20,7 @@ const hooks = {
         await updateMdFilesPlatforms(c);
         await updateMdFilesEngines(c);
         await generateChangelog(c);
+        await generateEngineTaks(c);
         await generateCombinedChangelog(c);
         return true;
     },

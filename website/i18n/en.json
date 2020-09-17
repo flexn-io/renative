@@ -314,6 +314,9 @@
       "changelog/0.31.0-alpha.25": {
         "title": "changelog/0.31.0-alpha.25"
       },
+      "changelog/0.31.0-alpha.26": {
+        "title": "changelog/0.31.0-alpha.26"
+      },
       "changelog/0.31.0-alpha.3": {
         "title": "changelog/0.31.0-alpha.3"
       },
@@ -390,6 +393,10 @@
       "config-workspaces": {
         "title": "Workspace Configs",
         "sidebar_label": "Workspace Configs"
+      },
+      "engine-core": {
+        "title": "Core Engine",
+        "sidebar_label": "Core"
       },
       "engine-rn-electron-next": {
         "title": "React Native Electron Next Engine",

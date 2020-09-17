@@ -6,6 +6,13 @@ sidebar_label: Engine RN Next
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-rn-next`.
+
+More info at [Engine RN Next Guide](engine-rn-next.md)
+
 ---
 
 ## run
@@ -67,6 +74,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-rn-next`.
+
+More info at [Engine RN Next Guide](engine-rn-next.md)
+
+---
+
 ## package
 
 > Package source files into bundle
@@ -107,6 +120,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-rn-next`.
+
+More info at [Engine RN Next Guide](engine-rn-next.md)
 
 ---
 
@@ -153,6 +172,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-rn-next`.
+
+More info at [Engine RN Next Guide](engine-rn-next.md)
+
+---
+
 ## configure
 
 > Configure current project
@@ -193,6 +218,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-rn-next`.
+
+More info at [Engine RN Next Guide](engine-rn-next.md)
 
 ---
 
@@ -239,6 +270,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-rn-next`.
+
+More info at [Engine RN Next Guide](engine-rn-next.md)
+
+---
+
 ## export
 
 > Export the app into deployable binary
@@ -282,6 +319,12 @@ Options:
 
 ---
 
+This command reference applies if your platform uses engine `engine-rn-next`.
+
+More info at [Engine RN Next Guide](engine-rn-next.md)
+
+---
+
 ## deploy
 
 > Deploy the binary via selected deployment intgeration or buld hook
@@ -322,6 +365,12 @@ Options:
 
 
 
+
+---
+
+This command reference applies if your platform uses engine `engine-rn-next`.
+
+More info at [Engine RN Next Guide](engine-rn-next.md)
 
 ---
 

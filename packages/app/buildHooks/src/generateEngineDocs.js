@@ -25,12 +25,19 @@ title: ${title} CLI Reference
 sidebar_label: ${title}
 ---
 
+
 `;
 
     const tasks = engine.getTasks();
 
     tasks.forEach((t) => {
         output += `
+
+---
+
+This command reference applies if your platform uses engine \`${id}\`.
+
+More info at [${title} Guide](${id}.md)
 
 ---
 

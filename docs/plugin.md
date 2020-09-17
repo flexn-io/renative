@@ -44,7 +44,7 @@ rnv plugin add @monterosa/react-native-parallax-scroll
 ## @noriginmedia/react-spatial-navigation
 
 
-Version: `2.12.3`
+Version: `2.12.1`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -2690,7 +2690,7 @@ rnv plugin add react-web-vector-icons
 ## renative
 
 
-Version: `0.31.0-alpha.25`
+Version: `0.31.0-alpha.26`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
