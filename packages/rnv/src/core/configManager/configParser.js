@@ -105,7 +105,7 @@ export const configureRuntimeDefaults = async (c) => {
                 isValid = true;
                 isConnected = pDir?.includes?.(getRealPath(c, dir));
             }
-            const port = c.buildConfig.defaults?.[platform] || PLATFORMS[platform].defaultPort;
+            const port = c.buildConfig.defaults?.[platform] || PLATFORMS[platform]?.defaultPort;
             return {
                 engine,
                 platform,
