@@ -138,25 +138,45 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
+const _checkPagesDir = async (c) => {
+    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
+    if (pagesDir) {
+        if (fsExistsSync(path.join(c.paths.project.dir, pagesDir))) {
+            logWarning('pagesDir in your renative.json is DEPRECATED. next will look at src/pages by default');
+        }
+    }
+    if (!fsExistsSync(path.join(c.paths.project.dir, 'src/pages'))) {
+        if (fsExistsSync(path.join(c.paths.project.dir, pagesDir))) {
+            logWarning(`pagesDir is DEPRECATED. project buit with ${
+                chalk().white('engine-rn-next')
+            } must have their entry pages located in ${chalk().white('src/pages')} instead you have them in ${chalk().red(pagesDir)}`);
+        } else {
+            logWarning(`Folder ${
+                chalk().white('src/pages')
+            } is missing. make sure your entry code is located there in order for next to work correctly!`);
+        }
+    }
+};
+
 export const buildWebNext = async (c) => {
     logTask('buildWebNext');
     const env = getConfigProp(c, c.platform, 'environment');
     const appFolder = getPlatformBuildDir(c);
-    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
-    if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
 
-    await executeAsync(c, `npx next build ${appFolder} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' } });
+    await _checkPagesDir(c);
+
+    await executeAsync(c, `npx next build ${appFolder}`, { ...process.env, env: { NODE_ENV: env || 'development' } });
     logSuccess(
         `Your build is located in ${chalk().cyan(path.join(appFolder, 'platformBuilds'))} .`
     );
     return true;
 };
 
-export const runWebDevServer = (c) => {
+export const runWebDevServer = async (c) => {
     logTask('runWebDevServer');
     const env = getConfigProp(c, c.platform, 'environment');
-    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
-    if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
+    await _checkPagesDir(c);
+
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
 
     const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
@@ -166,7 +186,7 @@ Dev server running at: ${url}
 
 `);
 
-    return executeAsync(c, `npx next dev --pagesDir ${pagesDir || 'src/app'} --port ${c.runtime.port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
+    return executeAsync(c, `npx next dev --port ${c.runtime.port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
 };
 
 export const deployWebNext = (c) => {
@@ -183,9 +203,9 @@ export const exportWebNext = async (c) => {
     logTask('_exportNext');
     const appFolder = getPlatformBuildDir(c);
     const env = getConfigProp(c, c.platform, 'environment');
-    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
-    if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
-    await executeAsync(c, `npx next export ${appFolder} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' } });
+    await _checkPagesDir(c);
+
+    await executeAsync(c, `npx next export ${appFolder}`, { ...process.env, env: { NODE_ENV: env || 'development' } });
     logSuccess(
         `Your export is located in ${chalk().cyan(path.join(appFolder, 'out'))} .`
     );
