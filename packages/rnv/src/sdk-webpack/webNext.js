@@ -141,21 +141,25 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
 const _checkPagesDir = async (c) => {
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     if (pagesDir) {
-        if (fsExistsSync(path.join(c.paths.project.dir, pagesDir))) {
-            logWarning('pagesDir in your renative.json is DEPRECATED. next will look at src/pages by default');
+        const pagesDirPath = path.join(c.paths.project.dir, pagesDir);
+        if (!fsExistsSync(pagesDirPath)) {
+            logWarning(`You configured custom ${c.platform}pagesDir: ${
+                chalk().white(pagesDir)
+            } in your renative.json but it is missing at ${chalk().red(pagesDirPath)}`);
         }
+        return { NEXT_PAGES_DIR: pagesDir };
     }
-    if (!fsExistsSync(path.join(c.paths.project.dir, 'src/pages'))) {
-        if (fsExistsSync(path.join(c.paths.project.dir, pagesDir))) {
-            logWarning(`pagesDir is DEPRECATED. project buit with ${
-                chalk().white('engine-rn-next')
-            } must have their entry pages located in ${chalk().white('src/pages')} instead you have them in ${chalk().red(pagesDir)}`);
-        } else {
-            logWarning(`Folder ${
-                chalk().white('src/pages')
-            } is missing. make sure your entry code is located there in order for next to work correctly!`);
-        }
+    const fallbackPagesDir = 'src/app';
+    logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to '${fallbackPagesDir}'`);
+
+    const fallbackPagesDirPath = path.join(c.paths.project.dir, fallbackPagesDir);
+    if (!fsExistsSync(fallbackPagesDirPath)) {
+        logWarning(`Folder ${
+            chalk().white(fallbackPagesDir)
+        } is missing. make sure your entry code is located there in order for next to work correctly!
+Alternatively you can configure custom entry folder via ${c.platform}.pagesDir in renative.json`);
     }
+    return { NEXT_PAGES_DIR: 'src/app' };
 };
 
 export const buildWebNext = async (c) => {
@@ -163,9 +167,9 @@ export const buildWebNext = async (c) => {
     const env = getConfigProp(c, c.platform, 'environment');
     const appFolder = getPlatformBuildDir(c);
 
-    await _checkPagesDir(c);
+    const envExt = await _checkPagesDir(c);
 
-    await executeAsync(c, `npx next build ${appFolder}`, { ...process.env, env: { NODE_ENV: env || 'development' } });
+    await executeAsync(c, `npx next build ${appFolder}`, { ...process.env, env: { NODE_ENV: env || 'development', ...envExt } });
     logSuccess(
         `Your build is located in ${chalk().cyan(path.join(appFolder, 'platformBuilds'))} .`
     );
@@ -175,7 +179,7 @@ export const buildWebNext = async (c) => {
 export const runWebDevServer = async (c) => {
     logTask('runWebDevServer');
     const env = getConfigProp(c, c.platform, 'environment');
-    await _checkPagesDir(c);
+    const envExt = await _checkPagesDir(c);
 
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
 
@@ -186,7 +190,7 @@ Dev server running at: ${url}
 
 `);
 
-    return executeAsync(c, `npx next dev --port ${c.runtime.port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
+    return executeAsync(c, `npx next dev --port ${c.runtime.port}`, { env: { NODE_ENV: env || 'development', ...envExt }, interactive: true });
 };
 
 export const deployWebNext = (c) => {
@@ -203,9 +207,9 @@ export const exportWebNext = async (c) => {
     logTask('_exportNext');
     const appFolder = getPlatformBuildDir(c);
     const env = getConfigProp(c, c.platform, 'environment');
-    await _checkPagesDir(c);
+    const envExt = await _checkPagesDir(c);
 
-    await executeAsync(c, `npx next export ${appFolder}`, { ...process.env, env: { NODE_ENV: env || 'development' } });
+    await executeAsync(c, `npx next export ${appFolder}`, { ...process.env, env: { NODE_ENV: env || 'development', ...envExt } });
     logSuccess(
         `Your export is located in ${chalk().cyan(path.join(appFolder, 'out'))} .`
     );
