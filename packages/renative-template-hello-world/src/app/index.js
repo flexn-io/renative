@@ -5,10 +5,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { CastButton } from 'react-native-google-cast';
 import { getScaledValue } from 'renative';
-import ScreenHome from '../screenHome';
-import ScreenMyPage from '../screenMyPage';
-import ScreenModal from '../screenModal';
-import Menu, { DrawerButton } from '../menu';
+import ScreenHome from '../components/screenHome';
+import ScreenMyPage from '../components/screenMyPage';
+import ScreenModal from '../components/screenModal';
+import Menu, { DrawerButton } from '../components/menu';
 import Theme from '../theme';
 
 const Stack = createStackNavigator();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
-import { themeStyles, hasWebFocusableUI } from './theme';
+import { themeStyles, hasWebFocusableUI } from '../theme';
 
 const ScreenMyPage = () => (
     <View style={themeStyles.screen}>

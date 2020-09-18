@@ -122,6 +122,16 @@ export const themeStyles = StyleSheet.create({
         left: hasHorizontalMenu || hasFullScreenMenu || isEngineNative ? 0 : -theme.menuWidth,
         right: 0,
         bottom: 0
+    },
+    headerTitle: {
+        color: theme.color3,
+        fontFamily: theme.primaryFontFamily,
+        fontSize: getScaledValue(18)
+    },
+    header: {
+        backgroundColor: theme.color1,
+        borderBottomWidth: 1,
+        height: getScaledValue(70)
     }
 });
 

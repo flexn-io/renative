@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { Icon, Button, getScaledValue, useNavigate, useOpenDrawer, StyleSheet } from 'renative';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
-import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI } from './theme';
+import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI } from '../theme';
 
 if (hasWebFocusableUI) {
     initNavigation({
@@ -82,7 +82,7 @@ Menu
                 style={styles.button}
                 textStyle={styles.buttonText}
                 onPress={() => {
-                    navigate('home');
+                    navigate('/');
                 }}
                 onEnterPress={() => {
                     navigate('/');

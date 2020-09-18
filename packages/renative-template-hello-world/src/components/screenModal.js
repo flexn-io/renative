@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { Button, getScaledValue, usePop, StyleSheet } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
-import Theme, { themeStyles, hasWebFocusableUI } from './theme';
+import Theme, { themeStyles, hasWebFocusableUI } from '../theme';
 
 const styles = StyleSheet.create({
     header: {

@@ -3,7 +3,7 @@ import minimist from 'minimist';
 
 import { taskRnvDeployNow } from '../../integration-now';
 import { deployToFtp } from '../../integration-ftp';
-import { importPackageFromProject } from '../common';
+import { importPackageFromProject, getConfigProp } from '../common';
 import { chalk, logInfo } from '../systemManager/logger';
 import {
     configureDeploymentIfRequired,
@@ -80,14 +80,12 @@ const selectToolAndExecute = async ({
 }) => {
     const argv = minimist(c.process.argv.slice(2));
     const type = argv.t;
-    const targetConfig = c.buildConfig.platforms[platform];
+    const deployConfig = getConfigProp(c, c.platform, 'deploy');
 
-    if (
-        type
-        || (targetConfig && targetConfig.deploy && targetConfig.deploy.type)
+    if (type || (deployConfig?.type)
     ) {
-        await configFunction(type || targetConfig.deploy.type);
-        return executeFunction(c, platform, type || targetConfig.deploy.type);
+        await configFunction(type || deployConfig.type);
+        return executeFunction(c, platform, type || deployConfig.type);
     }
     const { selectedTarget } = await inquirerPrompt({
         name: 'selectedTarget',

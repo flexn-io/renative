@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, Image, View, ScrollView, PixelRatio } from 'react-native';
 import { Api, Button, getScaledValue, useNavigate, useOpenURL, StyleSheet } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
-import Theme, { themeStyles, hasWebFocusableUI, ICON_LOGO, CONFIG } from './theme';
-import packageJson from '../package.json';
+import Theme, { themeStyles, hasWebFocusableUI, ICON_LOGO, CONFIG } from '../theme';
+import packageJson from '../../package.json';
 
 const styles = StyleSheet.create({
     appContainerScroll: {

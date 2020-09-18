@@ -12,13 +12,14 @@ import { waitForWebpack } from './index';
 import {
     fsExistsSync,
     writeCleanFile,
-    fsWriteFileSync,
-    fsMkdirSync,
-    fsUnlinkSync,
-    fsReaddirSync,
-    fsSymlinkSync
+    // fsWriteFileSync,
+    // fsMkdirSync,
+    // fsUnlinkSync,
+    // fsReaddirSync,
+    // fsSymlinkSync
 } from '../core/systemManager/fileutils';
-import { chalk, logTask, logInfo, logWarning, logDebug, logRaw, logSummary, logSuccess } from '../core/systemManager/logger';
+import { chalk, logTask, logInfo, logWarning,
+    logRaw, logSummary, logSuccess } from '../core/systemManager/logger';
 import { NEXT_CONFIG_NAME } from '../core/constants';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../core/deployManager/webTools';
 
@@ -28,61 +29,58 @@ export const configureNextIfRequired = async (c) => {
     logTask('configureNextIfRequired');
     c.runtime.platformBuildsProjectPath = `${getPlatformBuildDir(c)}`;
     const { platformTemplatesDirs, dir } = c.paths.project;
-    const publicDir = path.join(dir, 'public');
-    const baseFontsDir = c.paths.appConfig.fontsDirs?.[0];
-    const stylesDir = path.join(dir, 'styles');
-    const pagesDir = path.resolve(getConfigProp(c, c.platform, 'pagesDir') || 'src/app');
-    const _appFile = path.join(pagesDir, '_app.js');
+    // const pagesDir = path.resolve(getConfigProp(c, c.platform, 'pagesDir') || 'src/app');
+    // const _appFile = path.join(pagesDir, '_app.js');
     const supportFilesDir = path.join(platformTemplatesDirs[c.platform], '../supportFiles');
     const configFile = path.join(dir, NEXT_CONFIG_NAME);
 
     // handle fonts
-    !fsExistsSync(publicDir) && fsMkdirSync(publicDir);
-    const fontsSymLinkPath = path.join(publicDir, 'fonts');
-
-    if (fsExistsSync(baseFontsDir)) {
-        if (!fsExistsSync(fontsSymLinkPath)) {
-            try {
-                fsUnlinkSync(fontsSymLinkPath);
-            } catch (e) {
-                logDebug(e);
-            }
-            fsSymlinkSync(baseFontsDir, fontsSymLinkPath);
-        }
-
-        // create styles dir and global fonts.css file
-        if (!fsExistsSync(stylesDir)) {
-            fsMkdirSync(stylesDir);
-            let cssOutput = '';
-
-            const fontFiles = fsReaddirSync(baseFontsDir);
-            fontFiles.forEach((file) => {
-                cssOutput += `
-                  @font-face {
-                      font-family: '${file.split('.')[0]}';
-                      src: url('/fonts/${file}');
-                  }
-
-              `;
-            });
-
-            fsWriteFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
-        }
-    }
+    // !fsExistsSync(publicDir) && fsMkdirSync(publicDir);
+    // const fontsSymLinkPath = path.join(publicDir, 'fonts');
+    //
+    // if (fsExistsSync(baseFontsDir)) {
+    //     if (!fsExistsSync(fontsSymLinkPath)) {
+    //         try {
+    //             fsUnlinkSync(fontsSymLinkPath);
+    //         } catch (e) {
+    //             logDebug(e);
+    //         }
+    //         fsSymlinkSync(baseFontsDir, fontsSymLinkPath);
+    //     }
+    //
+    //     // create styles dir and global fonts.css file
+    //     if (!fsExistsSync(stylesDir)) {
+    //         fsMkdirSync(stylesDir);
+    //         let cssOutput = '';
+    //
+    //         const fontFiles = fsReaddirSync(baseFontsDir);
+    //         fontFiles.forEach((file) => {
+    //             cssOutput += `
+    //               @font-face {
+    //                   font-family: '${file.split('.')[0]}';
+    //                   src: url('/fonts/${file}');
+    //               }
+    //
+    //           `;
+    //         });
+    //
+    //         fsWriteFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
+    //     }
+    // }
 
     // add wrapper _app
-    if (!fsExistsSync(_appFile)) {
-        if (!fsExistsSync(pagesDir)) {
-            fsMkdirSync(pagesDir);
-        }
-        writeCleanFile(
-            path.join(supportFilesDir, '_app.js'),
-            _appFile,
-            [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }],
-            null,
-            c
-        );
-    }
+    // if (!fsExistsSync(_appFile)) {
+    //     if (!fsExistsSync(pagesDir)) {
+    //         fsMkdirSync(pagesDir);
+    //     }
+    //     writeCleanFile(
+    //         path.join(supportFilesDir, '_app.js'),
+    //         _appFile,
+    //         [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }],
+    //         null,
+    //         c
+    //     );
+    // }
 
     // add config
     if (!fsExistsSync(configFile)) {
@@ -140,6 +138,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
 
 const _checkPagesDir = async (c) => {
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
+    const distDir = `platformBuilds/${c.runtime.appId}_${c.platform}/.next`;
     if (pagesDir) {
         const pagesDirPath = path.join(c.paths.project.dir, pagesDir);
         if (!fsExistsSync(pagesDirPath)) {
@@ -147,7 +146,7 @@ const _checkPagesDir = async (c) => {
                 chalk().white(pagesDir)
             } in your renative.json but it is missing at ${chalk().red(pagesDirPath)}`);
         }
-        return { NEXT_PAGES_DIR: pagesDir };
+        return { NEXT_PAGES_DIR: pagesDir, NEXT_DIST_DIR: distDir };
     }
     const fallbackPagesDir = 'src/app';
     logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to '${fallbackPagesDir}'`);
@@ -159,19 +158,19 @@ const _checkPagesDir = async (c) => {
         } is missing. make sure your entry code is located there in order for next to work correctly!
 Alternatively you can configure custom entry folder via ${c.platform}.pagesDir in renative.json`);
     }
-    return { NEXT_PAGES_DIR: 'src/app' };
+    return { NEXT_PAGES_DIR: 'src/app', NEXT_DIST_DIR: distDir };
 };
 
 export const buildWebNext = async (c) => {
     logTask('buildWebNext');
     const env = getConfigProp(c, c.platform, 'environment');
-    const appFolder = getPlatformBuildDir(c);
+    const platformBuildDir = getPlatformBuildDir(c);
 
     const envExt = await _checkPagesDir(c);
 
-    await executeAsync(c, `npx next build ${appFolder}`, { ...process.env, env: { NODE_ENV: env || 'development', ...envExt } });
+    await executeAsync(c, 'npx next build', { ...process.env, env: { NODE_ENV: env || 'development', ...envExt } });
     logSuccess(
-        `Your build is located in ${chalk().cyan(path.join(appFolder, 'platformBuilds'))} .`
+        `Your build is located in ${chalk().cyan(path.join(platformBuildDir, '.next'))} .`
     );
     return true;
 };
@@ -205,13 +204,13 @@ export const exportWebNext = async (c) => {
     const { platform } = c;
 
     logTask('_exportNext');
-    const appFolder = getPlatformBuildDir(c);
+    const exportDir = path.join(getPlatformBuildDir(c), 'output');
     const env = getConfigProp(c, c.platform, 'environment');
     const envExt = await _checkPagesDir(c);
 
-    await executeAsync(c, `npx next export ${appFolder}`, { ...process.env, env: { NODE_ENV: env || 'development', ...envExt } });
+    await executeAsync(c, `npx next export --outdir ${exportDir}`, { ...process.env, env: { NODE_ENV: env || 'development', ...envExt } });
     logSuccess(
-        `Your export is located in ${chalk().cyan(path.join(appFolder, 'out'))} .`
+        `Your export is located in ${chalk().cyan(exportDir)} .`
     );
 
     await selectWebToolAndExport(c, platform);
