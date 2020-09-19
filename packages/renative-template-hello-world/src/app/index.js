@@ -9,7 +9,7 @@ import ScreenHome from '../components/screenHome';
 import ScreenMyPage from '../components/screenMyPage';
 import ScreenModal from '../components/screenModal';
 import Menu, { DrawerButton } from '../components/menu';
-import Theme from '../theme';
+import Theme from '../config';
 
 const Stack = createStackNavigator();
 const ModalStack = createStackNavigator();

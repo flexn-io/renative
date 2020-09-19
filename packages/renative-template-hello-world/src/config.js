@@ -132,7 +132,24 @@ export const themeStyles = StyleSheet.create({
         backgroundColor: theme.color1,
         borderBottomWidth: 1,
         height: getScaledValue(70)
+    },
+    modalHeader: {
+        width: '100%',
+        height: getScaledValue(80),
+        alignItems: 'flex-end',
+        paddingTop: getScaledValue(20)
+    },
+    image: {
+        marginBottom: getScaledValue(30),
+        width: getScaledValue(83),
+        height: getScaledValue(97),
     }
 });
+
+export const ROUTES = {
+    HOME: '/',
+    MY_PAGE: 'my-page',
+    MODAL: 'modal'
+};
 
 export default theme;

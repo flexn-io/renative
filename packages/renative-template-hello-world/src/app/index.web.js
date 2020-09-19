@@ -6,7 +6,7 @@ import ScreenHome from '../components/screenHome';
 import ScreenMyPage from '../components/screenMyPage';
 import ScreenModal from '../components/screenModal';
 import Menu from '../components/menu';
-import { themeStyles } from '../theme';
+import { themeStyles } from '../config';
 
 const App = () => {
     useEffect(() => {

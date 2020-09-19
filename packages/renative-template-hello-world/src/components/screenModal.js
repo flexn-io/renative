@@ -1,17 +1,8 @@
 import React, { useEffect } from 'react';
 import { Text, View, ScrollView } from 'react-native';
-import { Button, getScaledValue, usePop, StyleSheet } from 'renative';
+import { Button, usePop } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
-import Theme, { themeStyles, hasWebFocusableUI } from '../theme';
-
-const styles = StyleSheet.create({
-    header: {
-        width: '100%',
-        height: getScaledValue(80),
-        alignItems: 'flex-end',
-        paddingTop: getScaledValue(20)
-    }
-});
+import Theme, { themeStyles, hasWebFocusableUI } from '../config';
 
 const ScreenModal = (props) => {
     const pop = usePop(props);
@@ -27,7 +18,7 @@ const ScreenModal = (props) => {
     }
     return (
         <View style={themeStyles.screenModal}>
-            <View style={styles.header}>
+            <View style={themeStyles.modalHeader}>
                 <Button
                     focusKey="close"
                     iconFont="ionicons"
