@@ -1,6 +1,33 @@
 import { createRnvConfig, generateBuildConfig } from '../../src/core/configManager/configParser';
 import { getAppVersionCode } from '../../src/core/common';
 
+jest.mock('../../src/core/systemManager/logger.js', () => {
+    const _chalkCols = {
+        white: v => v,
+        green: v => v,
+        red: v => v,
+        yellow: v => v,
+        default: v => v,
+        gray: v => v,
+        grey: v => v,
+        blue: v => v,
+        cyan: v => v,
+        magenta: v => v
+    };
+    _chalkCols.rgb = () => v => v;
+    _chalkCols.bold = _chalkCols;
+    const _chalkMono = {
+        ..._chalkCols
+    };
+    return {
+        logToSummary: jest.fn(),
+        logTask: jest.fn(),
+        logDebug: jest.fn(),
+        logInfo: jest.fn(),
+        chalk: () => _chalkMono
+    };
+});
+
 let c;
 
 describe('Bootstrapping the CLI', () => {
