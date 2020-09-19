@@ -32,5 +32,6 @@ const defaultConfig = {
     ],
     projectRoot: path.resolve(__dirname)
 };
+defaultConfig.resolver.sourceExts = process.env.RNV_EXTENSIONS.split(',');
 
 module.exports = defaultConfig;

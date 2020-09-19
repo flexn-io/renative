@@ -18,7 +18,7 @@ import {
     getConfigProp,
     getBuildFilePath,
     getAppTitle,
-    getSourceExts,
+    // getSourceExts,
     sanitizeColor,
     confirmActiveBundler,
     getTimestampPathsConfig,
@@ -41,7 +41,7 @@ import {
     copyBuildsFolder,
     copyAssetsFolder
 } from '../core/projectManager/projectParser';
-
+import { getPlatformExtensions } from '../core/engineManager';
 import { parsePlugins } from '../core/pluginManager';
 import {
     selectWebToolAndDeploy,
@@ -209,7 +209,8 @@ const _generateWebpackConfigs = (c, subFolderName) => {
         assetVersion,
         // devServer: c.runtime.devServer,
         buildFolder: bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME,
-        extensions: getSourceExts(c, platform, false),
+        extensions: getPlatformExtensions(c),
+        // extensions: getSourceExts(c, platform, false),
         ...extendConfig
     };
 
@@ -236,7 +237,11 @@ const buildWeb = async (c) => {
 
     await executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=production ${
         debugVariables
-    } node ${WEBPACK} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.prod.js`);
+    } node ${WEBPACK} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.prod.js`, {
+        // env: {
+        //     RNV_EXTENSIONS: getPlatformExtensions(c)
+        // }
+    });
     logSuccess(
         `Your Build is located in ${chalk().cyan(
             path.join(getPlatformProjectDir(c))
@@ -401,7 +406,13 @@ Debugger running at: ${debugUrl}`);
         wpPublic
     } --history-api-fallback --port ${c.runtime.port} --mode=development`;
     try {
-        await executeAsync(c, command, { stdio: 'inherit', silent: true });
+        await executeAsync(c, command, {
+            stdio: 'inherit',
+            silent: true,
+            // env: {
+            //     RNV_EXTENSIONS: getPlatformExtensions(c)
+            // }
+        });
 
         logDebug('runWebDevServer: running');
     } catch (e) {

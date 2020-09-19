@@ -89,7 +89,6 @@ Menu
                 }}
             />
             <Button
-                to={ROUTES.MY_PAGE}
                 title="My Page"
                 iconFont="ionicons"
                 iconName="md-book"

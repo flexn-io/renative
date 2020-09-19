@@ -21,6 +21,7 @@ import {
 import { chalk, logTask, logInfo, logWarning,
     logRaw, logSummary, logSuccess } from '../core/systemManager/logger';
 import { NEXT_CONFIG_NAME } from '../core/constants';
+import { getPlatformExtensions } from '../core/engineManager';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../core/deployManager/webTools';
 
 import { getValidLocalhost } from '../core/utils';
@@ -168,7 +169,7 @@ export const buildWebNext = async (c) => {
 
     const envExt = await _checkPagesDir(c);
 
-    await executeAsync(c, 'npx next build', { ...process.env, env: { NODE_ENV: env || 'development', ...envExt } });
+    await executeAsync(c, 'npx next build', { ...process.env, env: { NODE_ENV: env || 'development', ...envExt, RNV_EXTENSIONS: getPlatformExtensions(c) } });
     logSuccess(
         `Your build is located in ${chalk().cyan(path.join(platformBuildDir, '.next'))} .`
     );
@@ -189,7 +190,7 @@ Dev server running at: ${url}
 
 `);
 
-    return executeAsync(c, `npx next dev --port ${c.runtime.port}`, { env: { NODE_ENV: env || 'development', ...envExt }, interactive: true });
+    return executeAsync(c, `npx next dev --port ${c.runtime.port}`, { env: { NODE_ENV: env || 'development', ...envExt, RNV_EXTENSIONS: getPlatformExtensions(c) }, interactive: true });
 };
 
 export const deployWebNext = (c) => {
@@ -208,7 +209,7 @@ export const exportWebNext = async (c) => {
     const env = getConfigProp(c, c.platform, 'environment');
     const envExt = await _checkPagesDir(c);
 
-    await executeAsync(c, `npx next export --outdir ${exportDir}`, { ...process.env, env: { NODE_ENV: env || 'development', ...envExt } });
+    await executeAsync(c, `npx next export --outdir ${exportDir}`, { ...process.env, env: { NODE_ENV: env || 'development', ...envExt, RNV_EXTENSIONS: getPlatformExtensions(c) } });
     logSuccess(
         `Your export is located in ${chalk().cyan(exportDir)} .`
     );
