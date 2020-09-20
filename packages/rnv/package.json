@@ -147,6 +147,7 @@
         "webpack-cli": "3.1.2",
         "webpack-dev-server": "3.2.1",
         "webpack-merge": "4.1.4",
+        "kill-port": "1.6.1",
         "write-json-webpack-plugin": "1.1.0",
         "xml2js": "0.4.23"
     },
@@ -163,7 +164,6 @@
         "eslint-plugin-prettier": "3.0.1",
         "eslint-plugin-react": "7.10.0",
         "jest": "26.4.2",
-        "kill-port": "1.6.1",
         "lint-staged": "8.1.0",
         "nodemon": "1.18.10",
         "ora": "3.4.0",

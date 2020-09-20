@@ -126,7 +126,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
         '_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`
     );
     if (!c.runtime.shouldOpenBrowser) return resolve();
-    const wait = waitForWebpack(c, 'next')
+    const wait = waitForWebpack(c, '')
         .then(() => {
             open(`http://${devServerHost}:${port}/`);
         })

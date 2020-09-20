@@ -54,8 +54,8 @@ import { WEINRE_PORT, RNV_NODE_MODULES_DIR, RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR
 const WEBPACK = path.join(RNV_NODE_MODULES_DIR, 'webpack/bin/webpack.js');
 const WEBPACK_DEV_SERVER = path.join(RNV_NODE_MODULES_DIR, 'webpack-dev-server/bin/webpack-dev-server.js');
 
-export const waitForWebpack = async (c, engine) => {
-    logTask('waitForWebpack', `port:${c.runtime.port} engine:${engine}`);
+export const waitForWebpack = async (c, suffix = 'assets/bundle.js') => {
+    logTask('waitForWebpack', `port:${c.runtime.port}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
@@ -63,9 +63,7 @@ export const waitForWebpack = async (c, engine) => {
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     const devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
-    let url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
-
-    if (engine === 'next') url = `http://${devServerHost}:${c.runtime.port}`;
+    const url = `http://${devServerHost}:${c.runtime.port}/${suffix}`;
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {

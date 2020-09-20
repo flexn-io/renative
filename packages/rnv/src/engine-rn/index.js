@@ -1,4 +1,5 @@
 import { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } from '../core/engineManager';
+import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir, getTemplateProjectDir } from './commonEngine';
 
 import taskRnvRun from './task.rnv.run';
 import taskRnvPackage from './task.rnv.package';
@@ -24,6 +25,7 @@ addTask(taskRnvExport);
 addTask(taskRnvDeploy);
 addTask(taskRnvDebug);
 
+
 const executeTask = (c, task, parentTask, originTask) => executeEngineTask(c, task, parentTask, originTask, TASKS);
 
 const hasTask = (task, isProjectScope) => hasEngineTask(task, TASKS, isProjectScope);
@@ -39,6 +41,10 @@ const getId = () => 'engine-rn';
 const title = 'Engine RN';
 
 export default {
+    getPlatformBuildDir,
+    getPlatformProjectDir,
+    getPlatformOutputDir,
+    getTemplateProjectDir,
     executeTask,
     addTask,
     hasTask,

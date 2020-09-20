@@ -1,7 +1,7 @@
 import path from 'path';
 import axios from 'axios';
 import ora from 'ora';
-import { getConfigProp, confirmActiveBundler } from '../core/common';
+import { getConfigProp, confirmActiveBundler, getAppFolder, getTemplateDir } from '../core/common';
 import { chalk, logTask, logInfo, logWarning } from '../core/systemManager/logger';
 import { fsExistsSync, copyFileSync } from '../core/systemManager/fileutils';
 import {
@@ -12,6 +12,38 @@ import { executeTask } from '../core/engineManager';
 
 
 let keepRNVRunning = false;
+
+export const getPlatformBuildDir = c => getAppFolder(c);
+
+export const getPlatformOutputDir = (c) => {
+    const dir = getPlatformBuildDir(c);
+    let output;
+    switch (c.platform) {
+        default:
+            output = dir;
+    }
+    return output;
+};
+
+export const getTemplateProjectDir = (c) => {
+    const dir = getTemplateDir(c);
+    let output;
+    switch (c.platform) {
+        default:
+            output = dir;
+    }
+    return output;
+};
+
+export const getPlatformProjectDir = (c) => {
+    const dir = getPlatformBuildDir(c);
+    let output;
+    switch (c.platform) {
+        default:
+            output = dir;
+    }
+    return output;
+};
 
 export const startBundlerIfRequired = async (c, parentTask, originTask) => {
     logTask('startBundlerIfRequired');

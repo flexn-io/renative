@@ -1,4 +1,5 @@
 import { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } from '../core/engineManager';
+import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir, getTemplateProjectDir } from './commonEngine';
 
 import taskRnvRun from './task.rnv.run';
 import taskRnvPackage from './task.rnv.package';
@@ -39,6 +40,10 @@ const getId = () => 'engine-rn-electron';
 const title = 'Engine RN Electron';
 
 export default {
+    getPlatformBuildDir,
+    getPlatformProjectDir,
+    getPlatformOutputDir,
+    getTemplateProjectDir,
     executeTask,
     addTask,
     hasTask,

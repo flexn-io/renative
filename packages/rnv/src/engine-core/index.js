@@ -1,4 +1,6 @@
 import { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } from '../core/engineManager';
+import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir, getTemplateProjectDir } from './commonEngine';
+
 // import taskRnvLink from './task.rnv.link';
 // import taskRnvSwitch from './task.rnv.switch';
 import taskRnvCryptoDecrypt from './task.rnv.crypto.decrypt';
@@ -111,6 +113,10 @@ const getId = () => 'engine-core';
 const title = 'Engine Core';
 
 export default {
+    getPlatformBuildDir,
+    getPlatformProjectDir,
+    getPlatformOutputDir,
+    getTemplateProjectDir,
     executeTask,
     addTask,
     hasTask,

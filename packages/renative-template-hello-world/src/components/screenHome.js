@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, Image, View, ScrollView, PixelRatio } from 'react-native';
 import { Api, Button, useNavigate, useOpenURL } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
-import Theme, { themeStyles, hasWebFocusableUI, ICON_LOGO, CONFIG } from '../config';
+import Theme, { themeStyles, hasWebFocusableUI, ICON_LOGO, CONFIG, ROUTES } from '../config';
 import packageJson from '../../package.json';
 
 const FocusableView = withFocusable()(View);

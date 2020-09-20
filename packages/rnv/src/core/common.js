@@ -15,23 +15,7 @@ import {
     logDebug,
     logSuccess
 } from './systemManager/logger';
-import {
-    IOS,
-    TVOS,
-    PLATFORMS,
-    TIZEN,
-    TIZEN_WATCH,
-    TIZEN_MOBILE,
-    WEBOS,
-    MACOS,
-    WINDOWS,
-    KAIOS,
-    WEB,
-    FIREFOX_OS,
-    FIREFOX_TV,
-    CHROMECAST,
-    RNV_PROJECT_DIR_NAME
-} from './constants';
+import { PLATFORMS } from './constants';
 import { inquirerPrompt } from '../cli/prompt';
 
 
@@ -126,39 +110,28 @@ export const confirmActiveBundler = async (c) => {
     return Promise.reject('Cancelled by user');
 };
 
-const _getProjectSubDir = (c, platform) => {
-    let subFolder = '';
-    if (platform === IOS) subFolder = 'RNVApp';
-    else if (platform === TVOS) subFolder = 'RNVAppTVOS';
-    else if (platform === TIZEN) subFolder = 'RNVApp';
-    else if (platform === WEBOS) subFolder = 'RNVApp';
-    return subFolder;
+export const getPlatformBuildDir = (c) => {
+    if (!c.runtime.engine) {
+        logError('getPlatformBuildDir not available without specific engine');
+        return null;
+    }
+    return c.runtime.engine.getPlatformBuildDir(c);
 };
 
-// TODO: Move to dedicated engine
-export const getPlatformBuildDir = c => getAppFolder(c);
+export const getPlatformOutputDir = (c) => {
+    if (!c.runtime.engine) {
+        logError('getPlatformOutputDir not available without specific engine');
+        return null;
+    }
+    return c.runtime.engine.getPlatformOutputDir(c);
+};
 
 export const getPlatformProjectDir = (c) => {
-    const appFolder = getAppFolder(c);
-    let output;
-    switch (c.platform) {
-        case TIZEN:
-        case TIZEN_WATCH:
-        case TIZEN_MOBILE:
-        case MACOS:
-        case WEBOS:
-        case WINDOWS:
-        case KAIOS:
-        case WEB:
-        case FIREFOX_OS:
-        case FIREFOX_TV:
-        case CHROMECAST:
-            output = path.join(appFolder, RNV_PROJECT_DIR_NAME);
-            break;
-        default:
-            output = appFolder;
+    if (!c.runtime.engine) {
+        logError('getPlatformProjectDir not available without specific engine');
+        return null;
     }
-    return output;
+    return c.runtime.engine.getPlatformProjectDir(c);
 };
 
 export const getTemplateDir = c => path.join(
@@ -166,36 +139,17 @@ export const getTemplateDir = c => path.join(
 );
 
 export const getTemplateProjectDir = (c) => {
-    const appFolder = getTemplateDir(c);
-    let output;
-    switch (c.platform) {
-        case TIZEN:
-        case TIZEN_WATCH:
-        case TIZEN_MOBILE:
-        case MACOS:
-        case WEBOS:
-        case WINDOWS:
-        case KAIOS:
-        case WEB:
-        case FIREFOX_OS:
-        case FIREFOX_TV:
-        case CHROMECAST:
-            output = path.join(appFolder, RNV_PROJECT_DIR_NAME);
-            break;
-        default:
-            output = appFolder;
+    if (!c.runtime.engine) {
+        logError('getTemplateProjectDir not available without specific engine');
+        return null;
     }
-    return output;
+    return c.runtime.engine.getTemplateProjectDir(c);
 };
 
+// DEPRECATED
 export const getAppFolder = c => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
 
-export const getAppSubFolder = (c, platform) => path.join(getAppFolder(c), _getProjectSubDir(c, platform));
-
-export const getAppTemplateSubFolder = (c, platform) => path.join(
-    getAppTemplateFolder(c, platform), _getProjectSubDir(c, platform)
-);
-
+// DEPRECATED
 export const getAppTemplateFolder = (c, platform) => path.join(
     c.paths.project.platformTemplatesDirs[platform], `${platform}`
 );
