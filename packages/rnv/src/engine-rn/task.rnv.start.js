@@ -1,6 +1,7 @@
 import { getEntryFile } from '../core/common';
 import { doResolve } from '../core/resolve';
 import { logErrorPlatform } from '../core/platformManager';
+import { getPlatformExtensions, executeTask } from '../core/engineManager';
 import { chalk, logTask, logError, logRaw } from '../core/systemManager/logger';
 import { IOS,
     TVOS,
@@ -11,7 +12,7 @@ import { IOS,
     TASK_CONFIGURE,
     PARAMS } from '../core/constants';
 import { executeAsync } from '../core/systemManager/exec';
-import { executeTask } from '../core/engineManager';
+
 
 const BUNDLER_PLATFORMS = {};
 
@@ -48,7 +49,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
                 'react-native'
             )}/local-cli/cli.js start --port ${
                 c.runtime.port
-            } --config=configs/metro.config.${c.platform}.js`;
+            } --config=metro.config.js`;
 
             if (c.program.resetHard) {
                 startCmd += ' --reset-cache';
@@ -64,9 +65,9 @@ Dev server running at: ${url}
 
 `);
             if (!parentTask) {
-                return executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
+                return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { RNV_EXTENSIONS: getPlatformExtensions(c) } });
             }
-            executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
+            executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { RNV_EXTENSIONS: getPlatformExtensions(c) } });
             return true;
         }
         default:

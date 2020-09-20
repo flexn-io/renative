@@ -11,7 +11,7 @@ import {
 
 export { factor, engine, platform };
 
-export const getScaledValue = v => {
+export const getScaledValue = (v) => {
     if (isPlatformTizenmobile) return v * 3;
     if (isPlatformTizenwatch) return v * 2;
     if (isPlatformTvos) return v * 2;

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { Icon, Button, getScaledValue, useNavigate, useOpenDrawer, StyleSheet } from 'renative';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
-import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI } from './theme';
+import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI, ROUTES } from '../config';
 
 if (hasWebFocusableUI) {
     initNavigation({
@@ -72,7 +72,7 @@ const Menu = (props) => {
 Menu
             </Text>
             <Button
-                to="/"
+                to={ROUTES.HOME}
                 title="Home"
                 iconFont="ionicons"
                 className="focusable"
@@ -82,14 +82,13 @@ Menu
                 style={styles.button}
                 textStyle={styles.buttonText}
                 onPress={() => {
-                    navigate('home');
+                    navigate(ROUTES.HOME);
                 }}
                 onEnterPress={() => {
-                    navigate('/');
+                    navigate(ROUTES.HOME);
                 }}
             />
             <Button
-                to="my-page"
                 title="My Page"
                 iconFont="ionicons"
                 iconName="md-book"
@@ -99,14 +98,14 @@ Menu
                 style={styles.button}
                 textStyle={styles.buttonText}
                 onPress={() => {
-                    navigate('my-page');
+                    navigate(ROUTES.MY_PAGE);
                 }}
                 onEnterPress={() => {
-                    navigate('my-page');
+                    navigate(ROUTES.MY_PAGE);
                 }}
             />
             <Button
-                to="modal"
+                to={ROUTES.MODAL}
                 title="My Modal"
                 iconFont="ionicons"
                 className="focusable"
@@ -116,10 +115,10 @@ Menu
                 style={styles.button}
                 textStyle={styles.buttonText}
                 onPress={() => {
-                    navigate('modal');
+                    navigate(ROUTES.MODAL);
                 }}
                 onEnterPress={() => {
-                    navigate('modal');
+                    navigate(ROUTES.MODAL);
                 }}
             />
         </View>

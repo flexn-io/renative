@@ -19,6 +19,7 @@ import {
     getAppId
 } from '../core/common';
 import { isPlatformActive, createPlatformBuild } from '../core/platformManager';
+import { getPlatformExtensions } from '../core/engineManager';
 import { isSystemWin } from '../core/utils';
 import { inquirerPrompt } from '../cli/prompt';
 import {
@@ -118,7 +119,7 @@ export const packageAndroid = async (c) => {
         c.buildConfig.platforms[c.platform]?.entryFile
         }.js --bundle-output ${appFolder}/app/src/main/assets/${
             outputFile
-        }.bundle --config=configs/metro.config.${c.platform}.js`);
+        }.bundle --config=metro.config.js`, { env: { RNV_EXTENSIONS: getPlatformExtensions(c) } });
 
         logInfo('ANDROID PACKAGE FINISHED');
         return true;

@@ -2,8 +2,8 @@ import path from 'path';
 import axios from 'axios';
 import ora from 'ora';
 import { getConfigProp, confirmActiveBundler } from '../core/common';
-import { chalk, logTask, logInfo } from '../core/systemManager/logger';
-import { fsExistsSync, mkdirSync, writeFileSync, copyFileSync } from '../core/systemManager/fileutils';
+import { chalk, logTask, logInfo, logWarning } from '../core/systemManager/logger';
+import { fsExistsSync, copyFileSync } from '../core/systemManager/fileutils';
 import {
     TASK_START,
     RN_CLI_CONFIG_NAME
@@ -40,21 +40,10 @@ export const waitForBundlerIfRequired = async (c) => {
 
 export const configureMetroConfigs = async (c, platform) => {
     logTask('configureMetroConfigs');
-    const configDir = path.join(c.paths.project.dir, 'configs');
-    if (!fsExistsSync(configDir)) {
-        mkdirSync(configDir);
-    }
-    const dest = path.join(configDir, `metro.config.${platform}.js`);
-    if (!fsExistsSync(dest)) {
-        writeFileSync(
-            dest,
-            `const { Constants: { EXTENSIONS } } = require('rnv');
-const config = require('../metro.config');
 
-config.resolver.sourceExts = EXTENSIONS.${platform};
-module.exports = config;
-`
-        );
+    const cfPath = path.join(c.paths.project.dir, 'configs', `metro.config.${platform}.js`);
+    if (fsExistsSync(cfPath)) {
+        logWarning(`${chalk().white(cfPath)} is DEPRECATED. use withRnvMetro(config) directly in /.metro.config.js`);
     }
 
 

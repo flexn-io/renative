@@ -122,7 +122,34 @@ export const themeStyles = StyleSheet.create({
         left: hasHorizontalMenu || hasFullScreenMenu || isEngineNative ? 0 : -theme.menuWidth,
         right: 0,
         bottom: 0
+    },
+    headerTitle: {
+        color: theme.color3,
+        fontFamily: theme.primaryFontFamily,
+        fontSize: getScaledValue(18)
+    },
+    header: {
+        backgroundColor: theme.color1,
+        borderBottomWidth: 1,
+        height: getScaledValue(70)
+    },
+    modalHeader: {
+        width: '100%',
+        height: getScaledValue(80),
+        alignItems: 'flex-end',
+        paddingTop: getScaledValue(20)
+    },
+    image: {
+        marginBottom: getScaledValue(30),
+        width: getScaledValue(83),
+        height: getScaledValue(97),
     }
 });
+
+export const ROUTES = {
+    HOME: '/',
+    MY_PAGE: 'my-page',
+    MODAL: 'modal'
+};
 
 export default theme;

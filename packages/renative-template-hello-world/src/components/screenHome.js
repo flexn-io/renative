@@ -1,21 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, Image, View, ScrollView, PixelRatio } from 'react-native';
-import { Api, Button, getScaledValue, useNavigate, useOpenURL, StyleSheet } from 'renative';
+import { Api, Button, useNavigate, useOpenURL } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
-import Theme, { themeStyles, hasWebFocusableUI, ICON_LOGO, CONFIG } from './theme';
-import packageJson from '../package.json';
-
-const styles = StyleSheet.create({
-    appContainerScroll: {
-        paddingTop: getScaledValue(50),
-        flex: 1
-    },
-    image: {
-        marginBottom: getScaledValue(30),
-        width: getScaledValue(83),
-        height: getScaledValue(97),
-    }
-});
+import Theme, { themeStyles, hasWebFocusableUI, ICON_LOGO, CONFIG } from '../config';
+import packageJson from '../../package.json';
 
 const FocusableView = withFocusable()(View);
 
@@ -47,7 +35,7 @@ const ScreenHome = (props) => {
                 ref={scrollRef}
                 contentContainerStyle={themeStyles.container}
             >
-                <Image style={styles.image} source={ICON_LOGO} />
+                <Image style={themeStyles.image} source={ICON_LOGO} />
                 <Text style={themeStyles.textH2}>
                     {CONFIG.welcomeMessage}
                 </Text>
@@ -85,10 +73,10 @@ v
                     title="Now Try Me!"
                     className="focusable"
                     onPress={() => {
-                        navigate('my-page', { replace: false });
+                        navigate(ROUTES.MY_PAGE, { replace: false });
                     }}
                     onEnterPress={() => {
-                        navigate('my-page', { replace: false });
+                        navigate(ROUTES.MY_PAGE, { replace: false });
                     }}
                     onBecameFocused={handleFocus}
                 />

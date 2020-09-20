@@ -3,7 +3,7 @@ import { getConfigProp } from '../common';
 import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
-import { TASK_CONFIGURE_SOFT } from '../constants';
+import { TASK_CONFIGURE_SOFT, EXTENSIONS } from '../constants';
 
 const REGISTERED_ENGINES = [];
 const ENGINES = {};
@@ -26,6 +26,12 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
         return selectedEngine;
     }
     return null;
+};
+
+export const getPlatformExtensions = (c, excludeServer) => {
+    const id = c.runtime.engine.getId();
+    const output = [`${id}.jsx`, `${id}.js`, `${id}.tsx`, `${id}.ts`].concat(EXTENSIONS[c.platform]).filter(ext => !excludeServer || !ext.includes('server.'));
+    return output;
 };
 
 export const executeEngineTask = async (c, task, parentTask, originTask, tasks) => {

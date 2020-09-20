@@ -20,6 +20,7 @@ import {
     getConfigProp,
     getIP,
 } from '../core/common';
+import { getPlatformExtensions } from '../core/engineManager';
 import { doResolve } from '../core/resolve';
 import { isPlatformActive } from '../core/platformManager';
 import {
@@ -733,7 +734,7 @@ export const packageBundleForXcode = (c, isDev = false) => {
 
     return executeAsync(c, `node ${doResolve(
         'react-native'
-    )}/local-cli/cli.js ${args.join(' ')} --config=configs/metro.config.${c.platform}.js`);
+    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.js`, { env: { RNV_EXTENSIONS: getPlatformExtensions(c) } });
 };
 
 export const getAppFolderName = (c, platform) => {

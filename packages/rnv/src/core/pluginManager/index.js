@@ -503,6 +503,20 @@ const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'roo
     }
 };
 
+const getCleanRegExString = str => str
+    .replace(/\(/g, '\\(')
+    .replace(/\)/g, '\\)')
+    .replace(/\^/g, '\\^')
+    .replace(/\?/g, '\\?')
+    .replace(/\|/g, '\\|')
+    .replace(/\*/g, '\\*')
+    .replace(/\|/g, '\\|')
+    .replace(/\[/g, '\\[')
+    .replace(/\]/g, '\\]')
+    .replace(/\{/g, '\\{')
+    .replace(/\}/g, '\\}')
+    .replace(/\+/g, '\\+');
+
 const _overridePlugin = (c, pluginsPath, dir) => {
     const source = path.resolve(pluginsPath, dir, 'overrides');
     const dest = doResolve(dir, false);
@@ -533,14 +547,16 @@ const _overridePlugin = (c, pluginsPath, dir) => {
         );
     }
 
-    const overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
-    const overrideConfig = readObjectSync(
-        path.resolve(pluginsPath, dir, 'overrides.json')
-    );
+    let overridePath = path.resolve(pluginsPath, dir, `overrides@${plugin.version}.json`);
+    if (!fsExistsSync(overridePath)) {
+        overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
+    }
+    const overrideConfig = readObjectSync(overridePath);
     if (overrideConfig?.overrides) {
         Object.keys(overrideConfig.overrides).forEach((k) => {
             const override = overrideConfig.overrides[k];
             const ovDir = path.join(dest, k);
+
             if (fsExistsSync(ovDir)) {
                 if (fsLstatSync(ovDir).isDirectory()) {
                     logWarning(
@@ -549,13 +565,19 @@ const _overridePlugin = (c, pluginsPath, dir) => {
                 } else {
                     let fileToFix = fsReadFileSync(ovDir).toString();
                     Object.keys(override).forEach((fk) => {
-                        const regEx = new RegExp(fk, 'g');
+                        const regEx = new RegExp(getCleanRegExString(fk), 'g');
                         const count = (fileToFix.match(regEx) || []).length;
+
+                        const overrided = override[fk];
+                        const regEx2 = new RegExp(getCleanRegExString(overrided), 'g');
+                        const count2 = (fileToFix.match(regEx2) || []).length;
                         if (!count) {
-                            logWarning(`No Match found in ${chalk().red(
-                                ovDir
-                            )} for expression: ${chalk().red(fk)}.
-Consider update or removal of ${chalk().white(overridePath)}`);
+                            if (!count2) {
+                                logWarning(`No Match found in ${chalk().red(
+                                    ovDir
+                                )} for expression: ${chalk().red(fk)}.
+  Consider update or removal of ${chalk().white(overridePath)}`);
+                            }
                         } else {
                             fileToFix = fileToFix.replace(regEx, override[fk]);
                         }
