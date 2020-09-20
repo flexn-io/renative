@@ -98,29 +98,14 @@ export const waitForWebpack = async (c, suffix = 'assets/bundle.js') => {
     });
 };
 
-const _generateWebpackConfigs = (c, subFolderName) => {
-    logTask('_generateWebpackConfigs');
-    const { platform } = c;
-    const appFolder = getPlatformBuildDir(c);
-    const appFolderServer = path.join(appFolder, subFolderName);
-    // const templateFolder = getAppTemplateFolder(c, platform);
-
+export const getModuleConfigs = (c) => {
     let modulePaths = [];
-    const doNotResolveModulePaths = [];
-    let moduleAliases = {};
+    const moduleAliases = {};
 
-    const modulePath = path.join(appFolder, 'modules.json');
-    let externalModulePaths = [];
-    let localModulePaths = [];
-    if (fsExistsSync(modulePath)) {
-        const modules = readObjectSync(modulePath);
-        externalModulePaths = modules.externalPaths;
-        localModulePaths = modules.localPaths;
-        moduleAliases = modules.aliases;
-    }
+    const doNotResolveModulePaths = [];
 
     // PLUGINS
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
         const webpackConfig = plugin.webpack || plugin.webpackConfig;
 
         if (webpackConfig) {
@@ -158,12 +143,44 @@ const _generateWebpackConfigs = (c, subFolderName) => {
         }
     }, true);
 
+    const moduleAliasesArray = [];
+    Object.keys(moduleAliases).forEach((key) => {
+        moduleAliasesArray.push(`${key}:${moduleAliases[key]}`);
+    });
+
+
     modulePaths = modulePaths
         .map(v => doResolvePath(v, true, {}, c.paths.project.dir))
+        .concat(doNotResolveModulePaths.map(v => path.join(c.paths.project.dir, v)))
+        .concat([c.paths.project.assets.dir])
+        .filter(Boolean);
+
+
+    return { modulePaths, moduleAliases, moduleAliasesArray };
+};
+
+const _generateWebpackConfigs = (c, subFolderName) => {
+    logTask('_generateWebpackConfigs');
+    const { platform } = c;
+    const appFolder = getPlatformBuildDir(c);
+    const appFolderServer = path.join(appFolder, subFolderName);
+    // const templateFolder = getAppTemplateFolder(c, platform);
+
+    let { modulePaths, moduleAliases } = getModuleConfigs(c);
+
+    const modulePath = path.join(appFolder, 'modules.json');
+    let externalModulePaths = [];
+    let localModulePaths = [];
+    if (fsExistsSync(modulePath)) {
+        const modules = readObjectSync(modulePath);
+        externalModulePaths = modules.externalPaths;
+        localModulePaths = modules.localPaths;
+        moduleAliases = modules.aliases;
+    }
+
+    modulePaths = modulePaths
         .concat(externalModulePaths.map(v => doResolvePath(v, true, {}, c.paths.project.nodeModulesDir)))
         .concat(localModulePaths.map(v => path.join(c.paths.project.dir, v)))
-        .concat(doNotResolveModulePaths)
-        .concat([c.paths.project.assets.dir])
         .filter(Boolean);
 
     // const env = getConfigProp(c, platform, 'environment');

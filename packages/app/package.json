@@ -55,7 +55,7 @@
         "@react-navigation/stack": "5.1.1",
         "@react-navigation/web": "1.0.0-alpha.9",
         "@zeit/next-css": "1.0.1",
-        "babel-preset-expo": "^8.0.0",
+        "babel-preset-expo": "8.0.0",
         "hash-source": "1.0.4",
         "html-webpack-harddisk-plugin": "0.2.0",
         "html-webpack-plugin": "3.2.0",
@@ -96,6 +96,7 @@
         "renative-template-hello-world": "^0.31.0-alpha.11",
         "renative-template-kitchen-sink": "^0.31.0-alpha.11",
         "rnv": "^0.31.0-alpha.11",
+        "@rnv/engine-rn-next": "^0.31.0-alpha.1",
         "wait-on": "5.0.1",
         "xcode": "2.1.0"
     },

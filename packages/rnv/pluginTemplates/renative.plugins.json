@@ -589,7 +589,11 @@
             "version": "1.3.3"
         },
         "react-native-autocomplete-input": {
-            "version": "4.1.0"
+            "version": "4.1.0",
+            "webpack": {
+                "modulePaths": true,
+                "moduleAliases": true
+            }
         },
         "react-native-datepicker": {
             "version": "1.7.2"

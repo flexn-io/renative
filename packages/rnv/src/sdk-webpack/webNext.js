@@ -8,7 +8,9 @@ import {
     getPlatformBuildDir,
     // getAppFolder
 } from '../core/common';
-import { waitForWebpack } from './index';
+import { waitForWebpack, getModuleConfigs } from './index';
+import { parsePlugins } from '../core/pluginManager';
+
 import {
     fsExistsSync,
     writeCleanFile,
@@ -137,6 +139,20 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
+const getTranspileModules = (c) => {
+    let transModules = [];
+    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
+        const webpackConfig = plugin.webpack || plugin.webpackConfig;
+        if (webpackConfig) {
+            transModules.push(key);
+            if (webpackConfig.nextTranspileModules?.length) {
+                transModules = transModules.concat(webpackConfig.nextTranspileModules);
+            }
+        }
+    }, true);
+    return transModules;
+};
+
 const _checkPagesDir = async (c) => {
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     const distDir = `platformBuilds/${c.runtime.appId}_${c.platform}/.next`;
@@ -169,11 +185,29 @@ export const buildWebNext = async (c) => {
 
     const envExt = await _checkPagesDir(c);
 
-    await executeAsync(c, 'npx next build', { ...process.env, env: { NODE_ENV: env || 'development', ...envExt, RNV_EXTENSIONS: getPlatformExtensions(c) } });
+    await executeAsync(c, 'npx next build', {
+        ...process.env,
+        env: {
+            NODE_ENV: env || 'development',
+            ...envExt,
+            ..._generateEnvVars(c)
+        }
+    });
     logSuccess(
         `Your build is located in ${chalk().cyan(path.join(platformBuildDir, '.next'))} .`
     );
     return true;
+};
+
+const _generateEnvVars = (c) => {
+    const { modulePaths, moduleAliasesArray } = getModuleConfigs(c);
+    return {
+        RNV_EXTENSIONS: getPlatformExtensions(c),
+        RNV_MODULE_PATHS: modulePaths,
+        RNV_MODULE_ALIASES: moduleAliasesArray,
+        RNV_NEXT_TRANSPILE_MODULES: getTranspileModules(c),
+        RNV_PROJECT_ROOT: c.runtime.isWrapper ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir
+    };
 };
 
 export const runWebDevServer = async (c) => {
@@ -190,7 +224,16 @@ Dev server running at: ${url}
 
 `);
 
-    return executeAsync(c, `npx next dev --port ${c.runtime.port}`, { env: { NODE_ENV: env || 'development', ...envExt, RNV_EXTENSIONS: getPlatformExtensions(c) }, interactive: true });
+
+    return executeAsync(c, `npx next dev --port ${c.runtime.port}`,
+        {
+            env: {
+                NODE_ENV: env || 'development',
+                ...envExt,
+                ..._generateEnvVars(c)
+            },
+            interactive: true
+        });
 };
 
 export const deployWebNext = (c) => {
@@ -209,7 +252,14 @@ export const exportWebNext = async (c) => {
     const env = getConfigProp(c, c.platform, 'environment');
     const envExt = await _checkPagesDir(c);
 
-    await executeAsync(c, `npx next export --outdir ${exportDir}`, { ...process.env, env: { NODE_ENV: env || 'development', ...envExt, RNV_EXTENSIONS: getPlatformExtensions(c) } });
+    await executeAsync(c, `npx next export --outdir ${exportDir}`, {
+        ...process.env,
+        env: {
+            NODE_ENV: env || 'development',
+            ...envExt,
+            ..._generateEnvVars(c)
+        }
+    });
     logSuccess(
         `Your export is located in ${chalk().cyan(exportDir)} .`
     );
