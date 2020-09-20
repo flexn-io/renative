@@ -1,4 +1,4 @@
-// import path from 'path';
+import path from 'path';
 // import fs from 'fs';
 import { Logger } from 'rnv';
 
@@ -6,9 +6,10 @@ import simpleGit from 'simple-git';
 
 export const gitCommitAndTagVersion = async (c) => {
     const version = c.files.project?.package?.version;
+    const baseDir = path.join(c.paths.project.dir, '../..');
     Logger.logHook(`gitCommitAndTagVersion v${version}`);
-    const git = simpleGit({ baseDir: c.paths.project.dir });
-    await git.add(`${c.paths.project.dir}/*`);
+    const git = simpleGit({ baseDir });
+    await git.add(`${baseDir}/*`);
     await git.commit(version);
     await git.addTag(version);
     return true;

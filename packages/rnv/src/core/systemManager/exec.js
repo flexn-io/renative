@@ -10,7 +10,7 @@ import NClient from 'netcat/client';
 import Config from '../configManager/config';
 import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
 
-import { chalk, logDebug, logTask, logError, logWarning, logRaw } from './logger';
+import { chalk, logDebug, logTask, logError, logWarning, logRaw, logInfo } from './logger';
 import { removeDirs, invalidatePodsChecksum, fsExistsSync } from './fileutils';
 import { inquirerPrompt } from '../../cli/prompt';
 import { replaceOverridesInString } from '../utils';
@@ -531,6 +531,7 @@ export const installPackageDependencies = async (c, failOnError = false) => {
     const customScript = c.buildConfig?.tasks?.install?.script;
 
     if (customScript) {
+        logInfo(`Found custom task for install: ${customScript}.`);
         await executeAsync(customScript);
         return true;
     }

@@ -656,7 +656,7 @@ rnv plugin add native-base-shoutem-theme
 ## next
 
 
-Version: `9.4.3`
+Version: `9.5.3`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -674,7 +674,7 @@ rnv plugin add next
 ## react
 
 
-Version: `16.9.0`
+Version: `16.13.1`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -692,7 +692,7 @@ rnv plugin add react
 ## react-art
 
 
-Version: `16.9.0`
+Version: `16.13.1`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -710,7 +710,7 @@ rnv plugin add react-art
 ## react-dom
 
 
-Version: `16.9.0`
+Version: `16.13.1`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -2474,7 +2474,7 @@ rnv plugin add react-native-viewpager
 ## react-native-web
 
 
-Version: `0.11.7`
+Version: `0.12.3`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -2690,7 +2690,7 @@ rnv plugin add react-web-vector-icons
 ## renative
 
 
-Version: `0.31.0-alpha.26`
+Version: `0.31.0-alpha.27`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
