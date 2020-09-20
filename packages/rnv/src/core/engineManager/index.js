@@ -28,9 +28,9 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
     return null;
 };
 
-export const getPlatformExtensions = (c, includeServer) => {
+export const getPlatformExtensions = (c, excludeServer) => {
     const id = c.runtime.engine.getId();
-    const output = [`${id}.jsx`, `${id}.js`, `${id}.tsx`, `${id}.ts`].concat(EXTENSIONS[c.platform]).filter(ext => includeServer || !ext.includes('server.'));
+    const output = [`${id}.jsx`, `${id}.js`, `${id}.tsx`, `${id}.ts`].concat(EXTENSIONS[c.platform]).filter(ext => !excludeServer || !ext.includes('server.'));
     return output;
 };
 
