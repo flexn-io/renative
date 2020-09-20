@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper",
-    "version": "0.31.0-alpha.27",
+    "version": "0.31.0-alpha.28",
     "currentRelease": "0.30",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV` and `Chromecast` platforms",
     "keywords": [
@@ -68,9 +68,9 @@
         "postinstall": "lerna link --force-local && npx jetify",
         "lint": "npx eslint ./packages/rnv",
         "pre-publish": "cd packages/app && yarn pre-publish",
-        "publish": "npm run pre-publish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank && npm run publish:sink && npm run publish:website && npm run publish:github",
-        "publish:alpha": "npm run pre-publish && npm run publish:rnv:alpha && npm run publish:renative:alpha && npm run publish:hello:alpha && npm run publish:blank:alpha && npm run publish:sink:alpha && npm run publish:website && npm run publish:github",
-        "publish:feat": "npm run pre-publish && npm run publish:rnv:feat && npm run publish:renative:feat && npm run publish:hello:feat && npm run publish:blank:feat && npm run publish:sink:feat",
+        "publish": "npm run test:rnv:unit && npm run pre-publish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank && npm run publish:sink && npm run publish:website && npm run publish:github",
+        "publish:alpha": "npm run test:rnv:unit && npm run pre-publish && npm run publish:rnv:alpha && npm run publish:renative:alpha && npm run publish:hello:alpha && npm run publish:blank:alpha && npm run publish:sink:alpha && npm run publish:website && npm run publish:github",
+        "publish:feat": "npm run test:rnv:unit && npm run pre-publish && npm run publish:rnv:feat && npm run publish:renative:feat && npm run publish:hello:feat && npm run publish:blank:feat && npm run publish:sink:feat",
         "publish:github": "cd packages/app && rnv hooks run -x publishGithub",
         "publish:blank": "cd packages/renative-template-blank && npm publish",
         "publish:blank:alpha": "cd packages/renative-template-blank && npm publish --tag alpha",

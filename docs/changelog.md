@@ -5,6 +5,21 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.28 (2020-9-20)
+
+### Fixed
+
+- migrate build path definitions to engines
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.27 (2020-9-20)
 
 ### Fixed
