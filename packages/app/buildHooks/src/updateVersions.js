@@ -38,6 +38,14 @@ export const updateVersions = async (c) => {
         c,
         path.join(
             pkgFolder,
+            'rnv-engine-rn/package.json'
+        ),
+        v
+    );
+    _updateJson(
+        c,
+        path.join(
+            pkgFolder,
             'rnv-engine-rn-next/package.json'
         ),
         v

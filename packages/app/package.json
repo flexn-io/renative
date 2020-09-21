@@ -87,6 +87,7 @@
         "@rnv/engine-rn-next": "^0.31.0-alpha.1",
         "@rnv/engine-rn-web": "^0.31.0-alpha.1",
         "@rnv/engine-rn-electron": "^0.31.0-alpha.1",
+        "@rnv/engine-rn": "^0.31.0-alpha.1",
         "wait-on": "5.0.1",
         "xcode": "2.1.0"
     },

@@ -17,6 +17,11 @@
                 "@react-native-community/cli-platform-ios": "source:rnv",
                 "@react-native-community/cli": "source:rnv"
             },
+            "npm": {
+                "devDependencies": {
+                    "@rnv/engine-rn": "0.31.0-alpha.1"
+                }
+            },
             "platforms": {
                 "ios": {
                     "engine": "engine-rn",
@@ -124,7 +129,7 @@
                 "windows": {
                     "npm": {
                         "devDependencies": {
-                            
+
                         }
                     }
                 }
