@@ -1,4 +1,5 @@
 import semver from 'semver';
+import merge from 'deepmerge';
 
 import { installPackageDependencies, executeAsync } from '../systemManager/exec';
 import { logWarning, logDebug, logTask } from '../systemManager/logger';
@@ -109,7 +110,12 @@ export const injectPlatformDependencies = async (c) => {
     logTask('injectPlatformDependencies');
     const { platform } = c;
     const selectedEngine = getEngineByPlatform(c, platform);
-    const npmDeps = selectedEngine?.platforms[platform]?.npm;
+    const npmDepsBase = selectedEngine?.npm || {};
+    const npmDepsExt = selectedEngine?.platforms[platform]?.npm || {};
+
+    const npmDeps = merge(npmDepsBase, npmDepsExt);
+
+    console.log('BCCBCB', npmDeps);
 
     if (npmDeps) {
         const promises = Object.keys(npmDeps).reduce((acc, type) => {

@@ -85,8 +85,9 @@
         "renative-template-blank": "^0.31.0-alpha.11",
         "renative-template-hello-world": "^0.31.0-alpha.11",
         "renative-template-kitchen-sink": "^0.31.0-alpha.11",
-        "rnv": "^0.31.0-alpha.11",
+        "rnv": "^0.31.0-alpha.1",
         "@rnv/engine-rn-next": "^0.31.0-alpha.1",
+        "@rnv/engine-rn-web": "^0.31.0-alpha.1",
         "wait-on": "5.0.1",
         "xcode": "2.1.0"
     },

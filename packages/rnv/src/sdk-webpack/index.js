@@ -148,10 +148,9 @@ export const getModuleConfigs = (c) => {
         moduleAliasesArray.push(`${key}:${moduleAliases[key]}`);
     });
 
-
     modulePaths = modulePaths
         .map(v => doResolvePath(v, true, {}, c.paths.project.dir))
-        .concat(doNotResolveModulePaths.map(v => path.join(c.paths.project.dir, v)))
+        .concat(doNotResolveModulePaths)
         .concat([c.paths.project.assets.dir])
         .filter(Boolean);
 
@@ -175,7 +174,9 @@ const _generateWebpackConfigs = (c, subFolderName) => {
         const modules = readObjectSync(modulePath);
         externalModulePaths = modules.externalPaths;
         localModulePaths = modules.localPaths;
-        moduleAliases = modules.aliases;
+        if (modules.aliases) {
+            moduleAliases = { ...modules.aliases, ...moduleAliases };
+        }
     }
 
     modulePaths = modulePaths

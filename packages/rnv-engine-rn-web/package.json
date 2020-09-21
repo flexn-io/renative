@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "0.31.0-alpha.1",
+    "version": "0.31.0-alpha.2",
     "description": "",
     "keywords": [
 
@@ -23,13 +23,30 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-
+      "build": "babel src -d dist --source-maps",
+      "build:dev": "yarn build --retain-lines",
+      "build:clean": "rm -rf dist || true",
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "prepublishOnly": "yarn build",
+      "watch": "nodemon --watch src --exec yarn build:dev"
+    },
+    "peerDependencies": {
+        "rnv": "^0.31"
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "dependencies": {
-
+        "html-webpack-harddisk-plugin": "0.2.0",
+        "html-webpack-plugin": "3.2.0"
     },
     "devDependencies": {
-
+        "@babel/cli": "7.8.3",
+        "@babel/core": "7.8.3",
+        "@babel/node": "7.8.3",
+        "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
+        "@babel/plugin-proposal-optional-chaining": "7.8.3",
+        "@babel/preset-env": "7.8.7"
     },
     "private": false
 }
