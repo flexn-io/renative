@@ -1,6 +1,8 @@
 import { FileUtils, Doctor } from 'rnv';
 import path from 'path';
 
+const merge = require('deepmerge');
+
 export const updateVersions = async (c) => {
     const rootPackage = FileUtils.readObjectSync(
         path.join(c.paths.project.dir, '/../../', 'package.json')
@@ -32,7 +34,14 @@ export const updateVersions = async (c) => {
         ),
         v
     );
-    _updateJson(c, path.join(pkgFolder, 'renative/package.json'), v);
+    _updateJson(
+        c,
+        path.join(
+            pkgFolder,
+            'rnv-engine-rn-next/package.json'
+        ),
+        v
+    );
     _updateJson(c, path.join(pkgFolder, 'renative/package.json'), v);
     _updateJson(
         c,
@@ -69,7 +78,6 @@ const _updateJson = (c, pPath, updateObj) => {
         );
     }
 
-    const merge = require('deepmerge');
     let obj;
     if (pObj) {
         obj = merge(pObj, updateObj);
