@@ -586,7 +586,12 @@
             "version": "2.3.0"
         },
         "react-native-animatable": {
-            "version": "1.3.3"
+            "version": "1.3.3",
+            "webpack": {
+              "nextTranspileModules": [
+                "react-native-animatable"
+              ]
+            }
         },
         "react-native-autocomplete-input": {
             "version": "4.1.0",
@@ -620,7 +625,13 @@
             "version": "3.5.0"
         },
         "react-native-root-toast": {
-            "version": "3.2.0"
+            "version": "3.2.1",
+            "webpack": {
+                "nextTranspileModules": [
+                  "react-native-root-siblings",
+                  "static-container"
+                ]
+            }
         },
         "react-native-viewpager": {
             "version": "0.2.13"
@@ -873,7 +884,7 @@
             }
         },
         "react-native-device-info": {
-            "version": "5.4.3",
+            "version": "5.6.1",
             "ios": {
                 "podName": "RNDeviceInfo"
             },
@@ -959,13 +970,13 @@
             }
         },
         "react-native-sqlite-storage": {
-            "version": "3.3.11",
+            "version": "5.0.0",
             "android": {
-                "path": "/node_modules/react-native-sqlite-storage/src/android",
+                "path": "/node_modules/react-native-sqlite-storage/platforms/android",
                 "package": "org.pgsqlite.SQLitePluginPackage"
             },
             "androidtv": {
-                "path": "/node_modules/react-native-sqlite-storage/src/android",
+                "path": "/node_modules/react-native-sqlite-storage/platforms/android",
                 "package": "org.pgsqlite.SQLitePluginPackage"
             },
             "ios": {
@@ -975,6 +986,15 @@
             "tvos": {
                 "podName": "react-native-sqlite-storage",
                 "path": "node_modules/react-native-sqlite-storage"
+            }
+        },
+        "react-native-dynamic-fonts": {
+            "version": "0.3.2",
+            "ios": {
+                "podName": "DynamicFonts"
+            },
+            "android": {
+                "package": "org.th317erd.react.DynamicFontsPackage"
             }
         },
         "react-native-signature-capture": {
@@ -2048,7 +2068,7 @@
             }
         },
         "@react-native-community/async-storage": {
-            "version": "1.4.1",
+            "version": "1.12.0",
             "ios": {
                 "podName": "RNCAsyncStorage"
             },
@@ -2068,7 +2088,7 @@
             }
         },
         "react-native-web": {
-            "version": "0.12.3",
+            "version": "0.13.12",
             "pluginDependencies": {
                 "react": "source:rnv"
             }
@@ -2248,7 +2268,7 @@
             "version": "6.3.3"
         },
         "@react-native-community/netinfo": {
-            "version": "4.3.3",
+            "version": "5.9.7",
             "ios": {
                 "podName": "react-native-netinfo"
             },
@@ -2622,6 +2642,22 @@
         },
         "@react-native-community/cli": {
             "no-npm": true
+        },
+        "recyclerlistview": {
+          "version": "3.0.0",
+          "webpack": {
+            "nextTranspileModules": [
+              "recyclerlistview"
+            ]
+          }
+        },
+        "rnv-platform-info": {
+            "version": "1.0.8",
+            "webpack": {
+              "nextTranspileModules": [
+                "rnv-platform-info"
+              ]
+            }
         }
     }
 }

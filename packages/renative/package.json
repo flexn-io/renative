@@ -56,7 +56,9 @@
         "type": "git",
         "url": "git://github.com/pavjacko/renative.git"
     },
-    "scripts": {},
+    "scripts": {
+      "kooo": "echo bitch"
+    },
     "dependencies": {
         "@noriginmedia/react-spatial-navigation": "2.12.1",
         "@reach/router": "1.2.1",

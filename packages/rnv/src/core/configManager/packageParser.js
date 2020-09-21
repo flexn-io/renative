@@ -115,8 +115,6 @@ export const injectPlatformDependencies = async (c) => {
 
     const npmDeps = merge(npmDepsBase, npmDepsExt);
 
-    console.log('BCCBCB', npmDeps);
-
     if (npmDeps) {
         const promises = Object.keys(npmDeps).reduce((acc, type) => {
             // iterate over dependencies, devDepencencies or optionalDependencies
