@@ -61,7 +61,7 @@
     },
     "dependencies": {
         "@noriginmedia/react-spatial-navigation": "2.12.1",
-        "@reach/router": "1.2.1",
+        "@reach/router": "1.3.4",
         "history": "^4.9.0",
         "react": "16.13.1",
         "react-dom": "16.13.1",
@@ -101,5 +101,6 @@
         "hooks": {
             "pre-commit": "pretty-quick --staged"
         }
-    }
+    },
+    "gitHead": "4b18470d51199eea673fb6045bad57b9fe9e018f"
 }

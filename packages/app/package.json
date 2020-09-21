@@ -41,7 +41,7 @@
     },
     "dependencies": {
         "@noriginmedia/react-spatial-navigation": "2.12.1",
-        "@reach/router": "1.2.1",
+        "@reach/router": "1.3.4",
         "@react-native-community/masked-view": "0.1.6",
         "@react-native-community/viewpager": "2.0.2",
         "@react-navigation/bottom-tabs": "5.1.1",
@@ -68,7 +68,7 @@
         "react-native-screens": "2.2.0",
         "react-native-tab-view": "2.13.0",
         "react-native-vector-icons": "6.6.0",
-        "react-native-web": "0.13.12",
+        "react-native-web": "0.12.3",
         "react-native-web-image-loader": "0.0.5",
         "renative": "^0.31.0-alpha.11"
     },
