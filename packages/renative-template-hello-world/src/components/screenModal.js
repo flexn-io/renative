@@ -27,7 +27,7 @@ const ScreenModal = (props) => {
                     iconColor={Theme.color3}
                     iconSize={Theme.iconSize}
                     style={themeStyles.icon}
-                    to="/"
+                    // to="/"
                     onEnterPress={() => {
                         pop();
                     }}

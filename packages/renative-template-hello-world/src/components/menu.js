@@ -72,7 +72,7 @@ const Menu = (props) => {
 Menu
             </Text>
             <Button
-                to={ROUTES.HOME}
+                // to={ROUTES.HOME}
                 title="Home"
                 iconFont="ionicons"
                 className="focusable"
@@ -82,10 +82,10 @@ Menu
                 style={styles.button}
                 textStyle={styles.buttonText}
                 onPress={() => {
-                    navigate(ROUTES.HOME);
+                    navigate(ROUTES.HOME, '/');
                 }}
                 onEnterPress={() => {
-                    navigate(ROUTES.HOME);
+                    navigate(ROUTES.HOME, '/');
                 }}
             />
             <Button
@@ -98,14 +98,14 @@ Menu
                 style={styles.button}
                 textStyle={styles.buttonText}
                 onPress={() => {
-                    navigate(ROUTES.MY_PAGE);
+                    navigate(ROUTES.MY_PAGE, '/[slug]');
                 }}
                 onEnterPress={() => {
-                    navigate(ROUTES.MY_PAGE);
+                    navigate(ROUTES.MY_PAGE, '/[slug]');
                 }}
             />
             <Button
-                to={ROUTES.MODAL}
+                // to={ROUTES.MODAL}
                 title="My Modal"
                 iconFont="ionicons"
                 className="focusable"
@@ -115,10 +115,10 @@ Menu
                 style={styles.button}
                 textStyle={styles.buttonText}
                 onPress={() => {
-                    navigate(ROUTES.MODAL);
+                    navigate(ROUTES.MODAL, '/[slug]');
                 }}
                 onEnterPress={() => {
-                    navigate(ROUTES.MODAL);
+                    navigate(ROUTES.MODAL, '/[slug]');
                 }}
             />
         </View>
