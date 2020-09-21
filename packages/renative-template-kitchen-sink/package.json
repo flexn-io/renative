@@ -51,12 +51,11 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {},
-    "dependencies": {},
-    "devDependencies": {},
     "private": false,
     "publishConfig": {
         "access": "public"
     },
     "title": "Kitchen Sink ReNative Template",
-    "codename": "Hairy Goblin"
+    "codename": "Hairy Goblin",
+    "gitHead": "0eeb17d37db930aba9b47d04d47e81b62cac5f83"
 }

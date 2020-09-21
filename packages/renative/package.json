@@ -102,5 +102,5 @@
             "pre-commit": "pretty-quick --staged"
         }
     },
-    "gitHead": "4b18470d51199eea673fb6045bad57b9fe9e018f"
+    "gitHead": "0eeb17d37db930aba9b47d04d47e81b62cac5f83"
 }

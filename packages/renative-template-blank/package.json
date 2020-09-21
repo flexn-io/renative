@@ -51,10 +51,9 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {},
-    "dependencies": {},
-    "devDependencies": {},
     "private": false,
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "gitHead": "0eeb17d37db930aba9b47d04d47e81b62cac5f83"
 }

@@ -194,5 +194,6 @@
         "collectCoverage": true
     },
     "title": "ReNative CLI",
-    "codename": "Iron Ladybird"
+    "codename": "Iron Ladybird",
+    "gitHead": "0eeb17d37db930aba9b47d04d47e81b62cac5f83"
 }
