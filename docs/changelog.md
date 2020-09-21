@@ -5,6 +5,21 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.30 (2020-9-21)
+
+### Fixed
+
+- [fix] dowgrading RNW to 0.12.3 due to nav refresh flicker in 0.13.12
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.29 (2020-9-21)
 
 ### Fixed

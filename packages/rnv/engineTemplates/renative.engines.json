@@ -1,12 +1,11 @@
 {
-    "TODO": "This file will be migrated to separate engines in the future",
     "engines": {
         "engine-rn": {
             "id": "engine-rn",
             "overview": "Default react-native based engine. Runs standard react native apps with native support",
             "requiresMetroConfig": true,
             "paths": {
-              "platformTemplatesDir": "$RNV_HOME/src/engine-rn/platformTemplates"
+                "platformTemplatesDir": "$RNV_HOME/src/engine-rn/platformTemplates"
             },
             "plugins": {
                 "react": "source:rnv",
@@ -19,7 +18,7 @@
             },
             "npm": {
                 "devDependencies": {
-                    "@rnv/engine-rn": "0.31.0-alpha.1"
+                    "@rnv/engine-rn": "0.31.0-alpha.30"
                 }
             },
             "platforms": {
@@ -68,41 +67,11 @@
                 }
             }
         },
-        "engine-rn-web": {
-            "id": "engine-rn-web",
-            "overview": "React native based engine with web transpiler provided by react-native-web",
-            "paths": {
-              "platformTemplatesDir": "$RNV_HOME/src/engine-rn-web/platformTemplates"
-            },
-            "plugins": {
-                "react": "source:rnv",
-                "react-art": "source:rnv",
-                "react-dom": "source:rnv",
-                "react-native": "source:rnv",
-                "react-native-web": "source:rnv",
-                "@react-native-community/cli-platform-ios": "source:rnv",
-                "@react-native-community/cli": "source:rnv"
-            },
-            "npm": {
-                "devDependencies": {
-                    "@rnv/engine-rn-web": "0.31.0-alpha.1"
-                }
-            },
-            "platforms": {
-                "tizen": {
-                    "npm": {
-                        "dependencies": {
-                            "raf": "3.4.1"
-                        }
-                    }
-                }
-            }
-        },
         "engine-rn-electron": {
             "id": "engine-rn-electron",
             "overview": "React native based engine with web transpiler provided by react-native-web and native desktop wrapper provided by electron",
             "paths": {
-              "platformTemplatesDir": "$RNV_HOME/src/engine-rn-electron/platformTemplates"
+                "platformTemplatesDir": "$RNV_HOME/src/engine-rn-electron/platformTemplates"
             },
             "plugins": {
                 "react": "source:rnv",
@@ -115,22 +84,18 @@
             },
             "npm": {
                 "devDependencies": {
-                   "@rnv/engine-rn-electron": "0.31.0-alpha.1"
+                    "@rnv/engine-rn-electron": "0.31.0-alpha.30"
                 }
             },
             "platforms": {
                 "macos": {
                     "npm": {
-                        "devDependencies": {
-
-                        }
+                        "devDependencies": {}
                     }
                 },
                 "windows": {
                     "npm": {
-                        "devDependencies": {
-
-                        }
+                        "devDependencies": {}
                     }
                 }
             }
@@ -139,7 +104,7 @@
             "id": "engine-rn-next",
             "overview": "React native based engine with web transpiler provided by react-native-web and render by nextjs",
             "paths": {
-              "platformTemplatesDir": "$RNV_HOME/src/engine-rn-next/platformTemplates"
+                "platformTemplatesDir": "$RNV_HOME/src/engine-rn-next/platformTemplates"
             },
             "plugins": {
                 "react": "source:rnv",
@@ -151,14 +116,43 @@
             },
             "npm": {
                 "devDependencies": {
-                   "@rnv/engine-rn-next": "0.31.0-alpha.3"
+                    "@rnv/engine-rn-next": "0.31.0-alpha.30"
                 }
             },
             "platforms": {
-                "web": {
-
+                "web": {}
+            }
+        },
+        "engine-rn-web": {
+            "id": "engine-rn-web",
+            "overview": "React native based engine with web transpiler provided by react-native-web",
+            "paths": {
+                "platformTemplatesDir": "$RNV_HOME/src/engine-rn-web/platformTemplates"
+            },
+            "plugins": {
+                "react": "source:rnv",
+                "react-art": "source:rnv",
+                "react-dom": "source:rnv",
+                "react-native": "source:rnv",
+                "react-native-web": "source:rnv",
+                "@react-native-community/cli-platform-ios": "source:rnv",
+                "@react-native-community/cli": "source:rnv"
+            },
+            "npm": {
+                "devDependencies": {
+                    "@rnv/engine-rn-web": "0.31.0-alpha.30"
+                }
+            },
+            "platforms": {
+                "tizen": {
+                    "npm": {
+                        "dependencies": {
+                            "raf": "3.4.1"
+                        }
+                    }
                 }
             }
         }
-    }
+    },
+    "TODO": "This file will be migrated to separate engines in the future"
 }
