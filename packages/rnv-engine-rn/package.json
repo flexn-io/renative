@@ -1,9 +1,9 @@
 {
     "name": "@rnv/engine-rn",
-    "version": "0.31.0-alpha.2",
+    "version": "0.31.0-alpha.29",
     "description": "ReNative Engine to build react-native based platforms.",
     "keywords": [
-      "react-native"
+        "react-native"
     ],
     "homepage": "https://github.com/pavjacko/renative#readme",
     "bugs": {
@@ -15,32 +15,21 @@
         "name": "Pavel Jacko",
         "url": "https://github.com/pavjacko"
     },
-    "contributors": [
-    ],
+    "contributors": [],
     "main": "dist/index.js",
     "repository": {
         "type": "git",
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-      "build": "babel src -d dist --source-maps",
-      "build:dev": "yarn build --retain-lines",
-      "build:clean": "rm -rf dist || true",
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "prepublishOnly": "yarn build",
-      "watch": "nodemon --watch src --exec yarn build:dev"
+        "build": "babel src -d dist --source-maps",
+        "build:clean": "rm -rf dist || true",
+        "build:dev": "yarn build --retain-lines",
+        "prepublishOnly": "yarn build",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "watch": "nodemon --watch src --exec yarn build:dev"
     },
-    "peerDependencies": {
-        "rnv": "^0.31"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "optionalDependencies": {
-    },
-    "dependencies": {
-
-    },
+    "dependencies": {},
     "devDependencies": {
         "@babel/cli": "7.8.3",
         "@babel/core": "7.8.3",
@@ -49,5 +38,12 @@
         "@babel/plugin-proposal-optional-chaining": "7.8.3",
         "@babel/preset-env": "7.8.7"
     },
-    "private": false
+    "peerDependencies": {
+        "rnv": "^0.31"
+    },
+    "optionalDependencies": {},
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    }
 }

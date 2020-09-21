@@ -31,5 +31,5 @@
     "devDependencies": {
 
     },
-    "private": false
+    "private": true
 }

@@ -15,7 +15,7 @@ React native based engine with web transpiler provided by react-native-web
 
 ## Supported Platforms
 
-[tizen](platform-tizen.md), [web](platform-web.md)
+[tizen](platform-tizen.md)
 
 ## Required Plugins
 
@@ -24,11 +24,7 @@ React native based engine with web transpiler provided by react-native-web
 ## Required NPM Packages
 
 tizen (dependencies)
-  - [raf](https://www.npmjs.com/package/raf), [html-webpack-harddisk-plugin](https://www.npmjs.com/package/html-webpack-harddisk-plugin), [html-webpack-plugin](https://www.npmjs.com/package/html-webpack-plugin)
-
-
-web (dependencies)
-  - [html-webpack-harddisk-plugin](https://www.npmjs.com/package/html-webpack-harddisk-plugin), [html-webpack-plugin](https://www.npmjs.com/package/html-webpack-plugin)
+  - [raf](https://www.npmjs.com/package/raf)
 
 
 

@@ -5,6 +5,26 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.29 (2020-9-21)
+
+### Fixed
+
+- publish preps
+- [feat] @rnv/engine-rn
+- [feat] @rnv/engine-rn-electron
+- [feat] @rnv/engine-rn-web
+- refactor packages engine structure
+- [feat] decoupled next engine
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.28 (2020-9-20)
 
 ### Fixed

@@ -1,10 +1,10 @@
 {
     "name": "@rnv/engine-rn-electron",
-    "version": "0.31.0-alpha.3",
+    "version": "0.31.0-alpha.29",
     "description": "ReNative Engine to build electron based platforms with react native support.",
     "keywords": [
-        "react-native",
-        "electron"
+        "electron",
+        "react-native"
     ],
     "homepage": "https://github.com/pavjacko/renative#readme",
     "bugs": {
@@ -16,26 +16,19 @@
         "name": "Pavel Jacko",
         "url": "https://github.com/pavjacko"
     },
-    "contributors": [
-    ],
+    "contributors": [],
     "main": "dist/index.js",
     "repository": {
         "type": "git",
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-      "build": "babel src -d dist --source-maps",
-      "build:dev": "yarn build --retain-lines",
-      "build:clean": "rm -rf dist || true",
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "prepublishOnly": "yarn build",
-      "watch": "nodemon --watch src --exec yarn build:dev"
-    },
-    "peerDependencies": {
-        "rnv": "^0.31"
-    },
-    "publishConfig": {
-        "access": "public"
+        "build": "babel src -d dist --source-maps",
+        "build:clean": "rm -rf dist || true",
+        "build:dev": "yarn build --retain-lines",
+        "prepublishOnly": "yarn build",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
         "electron": "7.0.1",
@@ -50,5 +43,11 @@
         "@babel/plugin-proposal-optional-chaining": "7.8.3",
         "@babel/preset-env": "7.8.7"
     },
-    "private": false
+    "peerDependencies": {
+        "rnv": "^0.31"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    }
 }

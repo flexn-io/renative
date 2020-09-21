@@ -23,8 +23,6 @@ React native based engine with web transpiler provided by react-native-web and r
 
 ## Required NPM Packages
 
-web (dependencies)
-  - [html-webpack-harddisk-plugin](https://www.npmjs.com/package/html-webpack-harddisk-plugin), [html-webpack-plugin](https://www.npmjs.com/package/html-webpack-plugin), [@zeit/next-css](https://www.npmjs.com/package/@zeit/next-css), [next-routes](https://www.npmjs.com/package/next-routes), [@expo/next-adapter](https://www.npmjs.com/package/@expo/next-adapter), [next-compose-plugins](https://www.npmjs.com/package/next-compose-plugins), [next-fonts](https://www.npmjs.com/package/next-fonts), [next-images](https://www.npmjs.com/package/next-images), [babel-preset-expo](https://www.npmjs.com/package/babel-preset-expo), [next-transpile-modules](https://www.npmjs.com/package/next-transpile-modules)
 
 
 

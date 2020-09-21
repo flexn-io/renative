@@ -62,7 +62,7 @@ rnv plugin add @noriginmedia/react-spatial-navigation
 ## @react-native-community/async-storage
 
 
-Version: `1.4.1`
+Version: `1.12.0`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`
 
@@ -206,7 +206,7 @@ rnv plugin add @react-native-community/masked-view
 ## @react-native-community/netinfo
 
 
-Version: `4.3.3`
+Version: `5.9.7`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`,`androidwear`
 
@@ -1052,7 +1052,7 @@ rnv plugin add react-native-datepicker
 ## react-native-device-info
 
 
-Version: `5.4.3`
+Version: `5.6.1`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`,`androidwear`
 
@@ -1154,6 +1154,24 @@ Installation:
 
 ```
 rnv plugin add react-native-drawer
+```
+
+
+## react-native-dynamic-fonts
+
+
+Version: `0.3.2`
+
+Platforms: `ios`,`android`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-dynamic-fonts
+
+Installation:
+
+```
+rnv plugin add react-native-dynamic-fonts
 ```
 
 
@@ -2006,7 +2024,7 @@ rnv plugin add react-native-render-html
 ## react-native-root-toast
 
 
-Version: `3.2.0`
+Version: `3.2.1`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -2258,7 +2276,7 @@ rnv plugin add react-native-sqlite-2
 ## react-native-sqlite-storage
 
 
-Version: `3.3.11`
+Version: `5.0.0`
 
 Platforms: `android`,`androidtv`,`ios`,`tvos`
 
@@ -2474,7 +2492,7 @@ rnv plugin add react-native-viewpager
 ## react-native-web
 
 
-Version: `0.12.3`
+Version: `0.13.12`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -2687,10 +2705,28 @@ rnv plugin add react-web-vector-icons
 ```
 
 
+## recyclerlistview
+
+
+Version: `3.0.0`
+
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/recyclerlistview
+
+Installation:
+
+```
+rnv plugin add recyclerlistview
+```
+
+
 ## renative
 
 
-Version: `0.31.0-alpha.28`
+Version: `0.31.0-alpha.29`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -2720,6 +2756,24 @@ Installation:
 
 ```
 rnv plugin add rn-fetch-blob
+```
+
+
+## rnv-platform-info
+
+
+Version: `1.0.8`
+
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/rnv-platform-info
+
+Installation:
+
+```
+rnv plugin add rnv-platform-info
 ```
 
 
