@@ -1,9 +1,10 @@
 {
     "name": "@rnv/engine-rn-electron",
-    "version": "0.31.0-alpha.1",
-    "description": "",
+    "version": "0.31.0-alpha.2",
+    "description": "ReNative Engine to build electron based platforms with react native support.",
     "keywords": [
-
+        "react-native",
+        "electron"
     ],
     "homepage": "https://github.com/pavjacko/renative#readme",
     "bugs": {
@@ -23,13 +24,30 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-
+      "build": "babel src -d dist --source-maps",
+      "build:dev": "yarn build --retain-lines",
+      "build:clean": "rm -rf dist || true",
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "prepublishOnly": "yarn build",
+      "watch": "nodemon --watch src --exec yarn build:dev"
+    },
+    "peerDependencies": {
+        "rnv": "^0.31"
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "dependencies": {
-
+        "electron": "7.0.0",
+        "electron-builder": "21.1.1"
     },
     "devDependencies": {
-
+        "@babel/cli": "7.8.3",
+        "@babel/core": "7.8.3",
+        "@babel/node": "7.8.3",
+        "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
+        "@babel/plugin-proposal-optional-chaining": "7.8.3",
+        "@babel/preset-env": "7.8.7"
     },
     "private": false
 }

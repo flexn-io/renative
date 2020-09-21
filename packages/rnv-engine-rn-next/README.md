@@ -1,3 +1,5 @@
 ## engine-rn-next
 
-Placeholder for future rnv engine
+ReNative Engine to build next based platforms with react native support.
+
+More info at https://renative.org/docs/engine-rn-next

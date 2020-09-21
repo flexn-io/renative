@@ -50,6 +50,14 @@ export const updateVersions = async (c) => {
         ),
         v
     );
+    _updateJson(
+        c,
+        path.join(
+            pkgFolder,
+            'rnv-engine-rn-electron/package.json'
+        ),
+        v
+    );
     _updateJson(c, path.join(pkgFolder, 'renative/package.json'), v);
     _updateJson(
         c,

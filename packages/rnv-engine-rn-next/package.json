@@ -1,9 +1,10 @@
 {
     "name": "@rnv/engine-rn-next",
     "version": "0.31.0-alpha.5",
-    "description": "",
+    "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
-
+        "react-native",
+        "nextjs"
     ],
     "homepage": "https://github.com/pavjacko/renative#readme",
     "bugs": {

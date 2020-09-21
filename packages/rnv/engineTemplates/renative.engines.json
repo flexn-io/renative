@@ -108,20 +108,23 @@
                 "@react-native-community/cli-platform-ios": "source:rnv",
                 "@react-native-community/cli": "source:rnv"
             },
+            "npm": {
+                "devDependencies": {
+                   "@rnv/engine-rn-electron": "0.31.0-alpha.1"
+                }
+            },
             "platforms": {
                 "macos": {
                     "npm": {
                         "devDependencies": {
-                            "electron": "7.0.0",
-                            "electron-builder": "21.1.1"
+
                         }
                     }
                 },
                 "windows": {
                     "npm": {
                         "devDependencies": {
-                            "electron": "7.0.0",
-                            "electron-builder": "21.1.1"
+                            
                         }
                     }
                 }

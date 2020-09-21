@@ -1,9 +1,9 @@
 {
     "name": "@rnv/engine-rn-web",
     "version": "0.31.0-alpha.2",
-    "description": "",
+    "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
-
+        "react-native"
     ],
     "homepage": "https://github.com/pavjacko/renative#readme",
     "bugs": {

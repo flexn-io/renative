@@ -1,3 +1,5 @@
 ## engine-rn-web
 
-Placeholder for future rnv engine
+ReNative Engine to build web based platforms with react native support.
+
+More info at https://renative.org/docs/engine-rn-web
