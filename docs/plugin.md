@@ -2492,7 +2492,7 @@ rnv plugin add react-native-viewpager
 ## react-native-web
 
 
-Version: `0.12.3`
+Version: `0.13.12`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -2726,7 +2726,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.31.0-alpha.30`
+Version: `0.31.0-alpha.31`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

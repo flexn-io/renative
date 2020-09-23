@@ -6,6 +6,25 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.31 (2020-9-23)
+
+### Fixed
+
+- [feat] withRNV metro decorator
+- Merge branch 'feat/engines-pt2' into develop
+- [fix] rnv start -r
+- [fix]: navigation fixes
+- 0.31.0-alpha.30
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.30 (2020-9-21)
 
 ### Fixed
