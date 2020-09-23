@@ -30,7 +30,7 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     const hasBuild = fsExistsSync(c.paths.project.builds.dir);
     logTask('', `taskRnvPlatformConfigure hasBuildFolderPresent:${hasBuild}`);
 
-    if (c.program.reset || c.program.resetHard) {
+    if ((c.program.reset || c.program.resetHard) && !c.runtime.disableReset) {
         logInfo(
             `You passed ${chalk().white(c.program.reset ? '-r' : '-R')} argument. "${chalk().white(getAppFolder(c, c.platform))}" CLEANING...DONE`
         );

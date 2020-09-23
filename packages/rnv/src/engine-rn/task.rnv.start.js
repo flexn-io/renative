@@ -2,14 +2,14 @@ import { getEntryFile } from '../core/common';
 import { doResolve } from '../core/resolve';
 import { logErrorPlatform } from '../core/platformManager';
 import { getPlatformExtensions, executeTask } from '../core/engineManager';
-import { chalk, logTask, logError, logRaw } from '../core/systemManager/logger';
+import { chalk, logTask, logError, logRaw, logInfo } from '../core/systemManager/logger';
 import { IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
     TASK_START,
-    TASK_CONFIGURE,
+    TASK_CONFIGURE_SOFT,
     PARAMS } from '../core/constants';
 import { executeAsync } from '../core/systemManager/exec';
 
@@ -34,8 +34,10 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
             true
         );
     }
+    // Disable reset for other commands (ie. cleaning platforms)
+    c.runtime.disableReset = true;
     if (!parentTask) {
-        await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
+        await executeTask(c, TASK_CONFIGURE_SOFT, TASK_START, originTask);
     }
 
 
@@ -53,8 +55,13 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 
             if (c.program.resetHard) {
                 startCmd += ' --reset-cache';
-            } else if (c.program.reset && c.command === 'start') {
+            } else if (c.program.reset) {
                 startCmd += ' --reset-cache';
+            }
+            if (c.program.resetHard || c.program.reset) {
+                logInfo(
+                    `You passed ${chalk().white('-r')} argument. --reset-cache will be applied to react-native`
+                );
             }
             // logSummary('BUNDLER STARTED');
             const url = chalk().cyan(`http://${c.runtime.localhost}:${c.runtime.port}/${
