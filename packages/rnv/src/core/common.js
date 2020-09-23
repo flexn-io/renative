@@ -18,7 +18,6 @@ import {
 import { PLATFORMS } from './constants';
 import { inquirerPrompt } from '../cli/prompt';
 
-
 export const getTimestampPathsConfig = (c, platform) => {
     let timestampBuildFiles;
     const pPath = path.join(

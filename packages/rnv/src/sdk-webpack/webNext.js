@@ -9,7 +9,6 @@ import {
     // getAppFolder
 } from '../core/common';
 import { waitForWebpack, getModuleConfigs } from './index';
-import { parsePlugins } from '../core/pluginManager';
 
 import {
     fsExistsSync,
@@ -23,9 +22,9 @@ import {
 import { chalk, logTask, logInfo, logWarning,
     logRaw, logSummary, logSuccess } from '../core/systemManager/logger';
 import { NEXT_CONFIG_NAME } from '../core/constants';
-import { getPlatformExtensions } from '../core/engineManager';
+import { generateEnvVars } from '../core/engineManager';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../core/deployManager/webTools';
-
+import { parsePlugins } from '../core/pluginManager';
 import { getValidLocalhost } from '../core/utils';
 
 export const configureNextIfRequired = async (c) => {
@@ -139,20 +138,6 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
-const getTranspileModules = (c) => {
-    let transModules = [];
-    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
-        const webpackConfig = plugin.webpack || plugin.webpackConfig;
-        if (webpackConfig) {
-            transModules.push(key);
-            if (webpackConfig.nextTranspileModules?.length) {
-                transModules = transModules.concat(webpackConfig.nextTranspileModules);
-            }
-        }
-    }, true);
-    return transModules;
-};
-
 const _checkPagesDir = async (c) => {
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     const distDir = `platformBuilds/${c.runtime.appId}_${c.platform}/.next`;
@@ -178,6 +163,20 @@ Alternatively you can configure custom entry folder via ${c.platform}.pagesDir i
     return { NEXT_PAGES_DIR: 'src/app', NEXT_DIST_DIR: distDir };
 };
 
+export const getTranspileModules = (c) => {
+    let transModules = [];
+    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
+        const webpackConfig = plugin.webpack || plugin.webpackConfig;
+        if (webpackConfig) {
+            transModules.push(key);
+            if (webpackConfig.nextTranspileModules?.length) {
+                transModules = transModules.concat(webpackConfig.nextTranspileModules);
+            }
+        }
+    }, true);
+    return transModules;
+};
+
 export const buildWebNext = async (c) => {
     logTask('buildWebNext');
     const env = getConfigProp(c, c.platform, 'environment');
@@ -190,24 +189,13 @@ export const buildWebNext = async (c) => {
         env: {
             NODE_ENV: env || 'development',
             ...envExt,
-            ..._generateEnvVars(c)
+            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c))
         }
     });
     logSuccess(
         `Your build is located in ${chalk().cyan(path.join(platformBuildDir, '.next'))} .`
     );
     return true;
-};
-
-const _generateEnvVars = (c) => {
-    const { modulePaths, moduleAliasesArray } = getModuleConfigs(c);
-    return {
-        RNV_EXTENSIONS: getPlatformExtensions(c),
-        RNV_MODULE_PATHS: modulePaths,
-        RNV_MODULE_ALIASES: moduleAliasesArray,
-        RNV_NEXT_TRANSPILE_MODULES: getTranspileModules(c),
-        RNV_PROJECT_ROOT: c.runtime.isWrapper ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir
-    };
 };
 
 export const runWebDevServer = async (c) => {
@@ -230,7 +218,7 @@ Dev server running at: ${url}
             env: {
                 NODE_ENV: env || 'development',
                 ...envExt,
-                ..._generateEnvVars(c)
+                ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c))
             },
             interactive: true
         });
@@ -257,7 +245,7 @@ export const exportWebNext = async (c) => {
         env: {
             NODE_ENV: env || 'development',
             ...envExt,
-            ..._generateEnvVars(c)
+            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c))
         }
     });
     logSuccess(

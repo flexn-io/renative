@@ -1,7 +1,7 @@
 import { getEntryFile } from '../core/common';
 import { doResolve } from '../core/resolve';
 import { logErrorPlatform } from '../core/platformManager';
-import { getPlatformExtensions, executeTask } from '../core/engineManager';
+import { generateEnvVars, executeTask } from '../core/engineManager';
 import { chalk, logTask, logError, logRaw, logInfo } from '../core/systemManager/logger';
 import { IOS,
     TVOS,
@@ -72,9 +72,9 @@ Dev server running at: ${url}
 
 `);
             if (!parentTask) {
-                return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { RNV_EXTENSIONS: getPlatformExtensions(c) } });
+                return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
             }
-            executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { RNV_EXTENSIONS: getPlatformExtensions(c) } });
+            executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
             return true;
         }
         default:

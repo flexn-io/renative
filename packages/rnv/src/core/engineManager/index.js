@@ -1,9 +1,11 @@
+import path from 'path';
 import { logDebug, logTask, logInitTask, logExitTask, chalk, logInfo, logError, logRaw } from '../systemManager/logger';
 import { getConfigProp } from '../common';
 import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
 import { TASK_CONFIGURE_SOFT, EXTENSIONS } from '../constants';
+
 
 const REGISTERED_ENGINES = [];
 const ENGINES = {};
@@ -14,6 +16,14 @@ export const registerEngine = (engine) => {
     REGISTERED_ENGINES.push(engine);
 };
 
+export const generateEnvVars = (c, moduleConfig, nextConfig) => ({
+    RNV_EXTENSIONS: getPlatformExtensions(c),
+    RNV_MODULE_PATHS: moduleConfig?.modulePaths || [],
+    RNV_MODULE_ALIASES: moduleConfig?.moduleAliasesArray || [],
+    RNV_NEXT_TRANSPILE_MODULES: nextConfig,
+    RNV_PROJECT_ROOT: c.paths.project.dir,
+    RNV_MONO_ROOT: c.runtime.isWrapper ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir
+});
 export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
     let selectedEngineKey;
     if (c.buildConfig && !!platform) {

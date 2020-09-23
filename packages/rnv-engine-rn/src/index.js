@@ -1,2 +1,3 @@
+import { withRNV } from './adapter';
 
-export { };
+export { withRNV };
