@@ -73,10 +73,10 @@ v
                     title="Now Try Me!"
                     className="focusable"
                     onPress={() => {
-                        navigate(ROUTES.MY_PAGE, { replace: false });
+                        navigate(ROUTES.MY_PAGE, '/[slug]', { replace: false });
                     }}
                     onEnterPress={() => {
-                        navigate(ROUTES.MY_PAGE, { replace: false });
+                        navigate(ROUTES.MY_PAGE, '/[slug]', { replace: false });
                     }}
                     onBecameFocused={handleFocus}
                 />

@@ -68,7 +68,7 @@
         "react-native-screens": "2.2.0",
         "react-native-tab-view": "2.13.0",
         "react-native-vector-icons": "6.6.0",
-        "react-native-web": "0.12.3",
+        "react-native-web": "0.13.12",
         "react-native-web-image-loader": "0.0.5",
         "renative": "^0.31.0-alpha.11"
     },
