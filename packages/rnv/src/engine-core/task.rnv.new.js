@@ -21,6 +21,7 @@ import {
 } from '../core/systemManager/logger';
 import { getWorkspaceOptions } from '../core/projectManager/workspace';
 import { parseRenativeConfigs } from '../core/configManager/configParser';
+import { listAndSelectNpmVersion } from '../core/systemManager/npmUtils';
 import Analytics from '../core/systemManager/analytics';
 
 const highlight = chalk().green;
@@ -260,34 +261,8 @@ export const taskRnvNew = async (c) => {
     });
     data.optionTemplates.selectedOption = inputTemplate;
 
-    const templateVersionsStr = await executeAsync(
-        c,
-        `npm view ${data.optionTemplates.selectedOption} versions`
-    );
-    const versionArr = templateVersionsStr
-        .replace(/\r?\n|\r|\s|'|\[|\]/g, '')
-        .split(',')
-        .reverse();
-    const { rnvVersion } = c;
+    const inputTemplateVersion = await listAndSelectNpmVersion(c, data.optionTemplates.selectedOption);
 
-    // filter greater versions than rnv
-    const validVersions = versionArr
-        .filter(version => semver.lte(version, rnvVersion))
-        .map(v => ({ name: v, value: v }));
-    if (validVersions[0].name === rnvVersion) {
-        // mark the same versions as recommended
-        validVersions[0].name = `${validVersions[0].name} (recommended)`;
-    }
-
-    data.optionTemplates.selectedVersion = versionArr[0];
-
-    const { inputTemplateVersion } = await inquirer.prompt({
-        name: 'inputTemplateVersion',
-        type: 'list',
-        message: 'What version of template to use?',
-        default: data.optionTemplates.selectedVersion,
-        choices: validVersions
-    });
     data.optionTemplates.selectedVersion = inputTemplateVersion;
 
     const { inputSupportedPlatforms } = await inquirer.prompt({

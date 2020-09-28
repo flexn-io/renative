@@ -790,6 +790,7 @@ export const TASK_PLATFORM_EJECT = 'platform eject';
 export const TASK_PLATFORM_LIST = 'platform list';
 export const TASK_PLATFORM_SETUP = 'platform setup';
 export const TASK_PROJECT_CONFIGURE = 'project configure';
+export const TASK_PROJECT_UPGRADE = 'project upgrade';
 export const TASK_PLUGIN_ADD = 'plugin add';
 export const TASK_PLUGIN_LIST = 'plugin list';
 export const TASK_PLUGIN_UPDATE = 'plugin update';
