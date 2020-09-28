@@ -49,7 +49,7 @@ import {
 } from '../systemManager/logger';
 import {
     checkAndCreateGitignore,
-    upgradeProjectDependencies
+    // upgradeProjectDependencies
 } from '../projectManager/projectParser';
 import { inquirerPrompt } from '../../cli/prompt';
 import { loadPluginTemplates } from '../pluginManager';
@@ -94,26 +94,27 @@ export const configureRuntimeDefaults = async (c) => {
         c.runtime.hosted = (hosted || !c.runtime.scheme.bundleAssets) && WEB_HOSTED_PLATFORMS.includes(c.platform);
 
         // c.runtime.devServer = `http://${ip.address()}:${c.runtime.port}`;
-
-        c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms.map((platform) => {
-            const engine = getEngineByPlatform(c, platform);
-            const dir = engine?.paths?.platformTemplatesDir;
-            let isConnected = false;
-            let isValid = false;
-            const pDir = c.paths.project.platformTemplatesDirs?.[platform];
-            if (pDir) {
-                isValid = true;
-                isConnected = pDir?.includes?.(getRealPath(c, dir));
-            }
-            const port = c.buildConfig.defaults?.[platform] || PLATFORMS[platform]?.defaultPort;
-            return {
-                engine,
-                platform,
-                isConnected,
-                port,
-                isValid
-            };
-        });
+        if (c.buildConfig.defaults?.supportedPlatforms) {
+            c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms.map((platform) => {
+                const engine = getEngineByPlatform(c, platform);
+                const dir = engine?.paths?.platformTemplatesDir;
+                let isConnected = false;
+                let isValid = false;
+                const pDir = c.paths.project.platformTemplatesDirs?.[platform];
+                if (pDir) {
+                    isValid = true;
+                    isConnected = pDir?.includes?.(getRealPath(c, dir));
+                }
+                const port = c.buildConfig.defaults?.[platform] || PLATFORMS[platform]?.defaultPort;
+                return {
+                    engine,
+                    platform,
+                    isConnected,
+                    port,
+                    isValid
+                };
+            });
+        }
     }
     return true;
 };

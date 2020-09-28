@@ -2,25 +2,41 @@ import killPort from 'kill-port';
 import { inquirerPrompt } from '../cli/prompt';
 import { checkPortInUse } from '../core/common';
 import { executeTask } from '../core/engineManager';
-import { chalk, logTask, logSuccess } from '../core/systemManager/logger';
+import { chalk, logTask, logSuccess, logWarning } from '../core/systemManager/logger';
 import { configureRuntimeDefaults } from '../core/configManager/configParser';
 
-import { PARAMS, TASK_KILL, TASK_APP_CONFIGURE } from '../core/constants';
+import { PARAMS, TASK_KILL, TASK_APP_CONFIGURE, PLATFORMS, SUPPORTED_PLATFORMS } from '../core/constants';
 
 export const taskRnvKill = async (c, parentTask, originTask) => {
     logTask('taskRnvKill');
 
-    await configureRuntimeDefaults(c);
-    await executeTask(c, TASK_APP_CONFIGURE, parentTask, originTask);
+    const usedPorts = [];
+    let platArray;
+    const results = [];
+    let ports;
+
     await configureRuntimeDefaults(c);
 
+    if (c.paths.project.configExists) {
+        await executeTask(c, TASK_APP_CONFIGURE, parentTask, originTask);
+        await configureRuntimeDefaults(c);
+        platArray = Object.values(c.runtime.supportedPlatforms);
+        ports = c.buildConfig?.defaults?.ports || {};
+    } else {
+        logWarning('This folder is not a ReNative project!. only DEFAULT ports will be checked.');
+        platArray = SUPPORTED_PLATFORMS;
+        ports = {};
+        Object.keys(PLATFORMS).forEach((k) => {
+            ports[k] = PLATFORMS[k].defaultPort;
+        });
+    }
+
+
     // console.log('BCBCCB', c.buildConfig?.defaults?.ports?.['web']);
-    const usedPorts = [];
-    const platArray = Object.values(c.runtime.supportedPlatforms);
-    const results = [];
+
     for (let i = 0; i < platArray.length; i++) {
         const plat = platArray[i];
-        const port = c.buildConfig?.defaults?.ports?.[plat.platform];
+        const port = ports?.[plat.platform];
         plat.port = port;
         results.push(checkPortInUse(c, plat.platform, port));
     }
@@ -37,7 +53,8 @@ export const taskRnvKill = async (c, parentTask, originTask) => {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
             message: 'Processes attached to the ports will be killed. Continue?',
-            warningMessage: `Found active ports: ${usedPorts.map(v => chalk().white(`${v.port} (${v.platform})`)).join(', ')}`
+            warningMessage: `Found active ports:
+${usedPorts.map(v => chalk().white(`> ${v.port} (${v.platform})`)).join('\n')}`
         });
         if (confirm) {
             const killPromise = [];
