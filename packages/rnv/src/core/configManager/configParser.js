@@ -49,7 +49,7 @@ import {
 } from '../systemManager/logger';
 import {
     checkAndCreateGitignore,
-    // upgradeProjectDependencies
+    upgradeProjectDependencies
 } from '../projectManager/projectParser';
 import { inquirerPrompt } from '../../cli/prompt';
 import { loadPluginTemplates } from '../pluginManager';
@@ -170,7 +170,7 @@ const _generateConfigPaths = (pathObj, dir) => {
 export const versionCheck = async (c) => {
     logTask('versionCheck');
 
-    if (c.runtime.isWrapper || c.runtime.versionCheckCompleted) {
+    if (c.runtime.isWrapper || c.runtime.versionCheckCompleted || c.files.project?.config?.skipAutoUpdate) {
         return true;
     }
     c.runtime.rnvVersionRunner = c.files.rnv?.package?.version;

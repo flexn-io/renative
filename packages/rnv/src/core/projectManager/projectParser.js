@@ -429,29 +429,49 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
     resolve();
 });
 
+const SYNCED_DEV_DEPS = [
+    'rnv',
+    '@rnv/engine-rn',
+    '@rnv/engine-rn-next',
+    '@rnv/engine-rn-web',
+    '@rnv/engine-rn-electron'
+];
+
+const SYNCED_TEMPLATES = [
+    'renative-template-hello-world',
+    'renative-template-blank'
+];
+
 export const upgradeProjectDependencies = (c, version) => {
     logTask('upgradeProjectDependencies');
 
-    const thw = 'renative-template-hello-world';
-    const tb = 'renative-template-blank';
+    // const templates = c.files.project.config?.templates;
+    // TODO: Make this dynamically injected
+    // SYNC DEPS
+
     const devDependencies = c.files.project.package?.devDependencies;
-    if (devDependencies?.rnv) {
-        devDependencies.rnv = version;
-    }
-    if (devDependencies[thw]) {
-        devDependencies[thw] = version;
-    }
-    if (devDependencies[tb]) {
-        devDependencies[tb] = version;
-    }
-    if (devDependencies?.renative) {
-        devDependencies.renative = version;
+
+    SYNCED_DEV_DEPS.forEach((dep) => {
+        if (devDependencies?.[dep]) {
+            devDependencies[dep] = version;
+        }
+    });
+    SYNCED_TEMPLATES.forEach((templ) => {
+        if (devDependencies?.[templ]) {
+            devDependencies[templ] = version;
+        }
+        if (c.files.project.config?.templates?.[templ]?.version) {
+            c.files.project.config.templates[templ].version = version;
+        }
+    });
+
+
+    const dependencies = c.files.project.package?.dependencies;
+    if (dependencies?.renative) {
+        dependencies.renative = version;
     }
 
     writeFileSync(c.paths.project.package, c.files.project.package);
-
-    if (c.files.project.config?.templates?.[thw]?.version) { c.files.project.config.templates[thw].version = version; }
-    if (c.files.project.config?.templates?.[tb]?.version) { c.files.project.config.templates[tb].version = version; }
 
     c._requiresNpmInstall = true;
 
