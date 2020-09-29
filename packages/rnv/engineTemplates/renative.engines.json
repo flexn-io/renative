@@ -18,7 +18,7 @@
             },
             "npm": {
                 "devDependencies": {
-                    "@rnv/engine-rn": "0.31.0-alpha.31"
+                    "@rnv/engine-rn": "0.31.0-alpha.32"
                 }
             },
             "platforms": {
@@ -84,7 +84,7 @@
             },
             "npm": {
                 "devDependencies": {
-                    "@rnv/engine-rn-electron": "0.31.0-alpha.31"
+                    "@rnv/engine-rn-electron": "0.31.0-alpha.32"
                 }
             },
             "platforms": {
@@ -116,7 +116,7 @@
             },
             "npm": {
                 "devDependencies": {
-                    "@rnv/engine-rn-next": "0.31.0-alpha.31"
+                    "@rnv/engine-rn-next": "0.31.0-alpha.32"
                 }
             },
             "platforms": {
@@ -140,7 +140,7 @@
             },
             "npm": {
                 "devDependencies": {
-                    "@rnv/engine-rn-web": "0.31.0-alpha.31"
+                    "@rnv/engine-rn-web": "0.31.0-alpha.32"
                 }
             },
             "platforms": {
@@ -150,7 +150,15 @@
                             "raf": "3.4.1"
                         }
                     }
-                }
+                },
+                "web": {},
+                "webos": {},
+                "tizenwatch": {},
+                "tizenmobile": {},
+                "chromecast": {},
+                "kaios": {},
+                "firefoxos": {},
+                "firefoxtv": {}
             }
         }
     },

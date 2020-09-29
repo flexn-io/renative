@@ -1347,6 +1347,43 @@ More info at [Engine Core Guide](engine-core.md)
 
 ---
 
+## project upgrade
+
+> Upgrade or downgrade RNV dependencies in your ReNative project
+
+Supported Platforms:
+
+`ios`, `android`, `androidtv`, `androidwear`, `web`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+
+Example:
+
+```bash
+rnv project upgrade
+```
+
+Options:
+
+`-i`, `--info` - Show full debug Info
+
+`--ci` - CI/CD flag so it wont ask questions
+
+`--mono` - Monochrome console output without chalk
+
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
+
+`-o`, `--only` - run Only top command (Skip dependencies)
+
+
+
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## app configure
 
 > Configure project with specific appConfig

@@ -136,7 +136,7 @@ export const injectPlatformDependencies = async (c) => {
 
         if (installed.some(i => i === true)) {
             // do npm i only if something new is added
-            logWarning(`Found extra npm depenedecies required by ${
+            logWarning(`Found extra npm dependencies required by ${
                 selectedEngine.id
             } engine. will install them now`);
             await installPackageDependencies(c);

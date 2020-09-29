@@ -6,6 +6,24 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.32 (2020-9-29)
+
+### Fixed
+
+- [feat] rnv project upgrade
+- [feat] sync up engines during rnv upgrade
+- [fix] rnv kill oustide of rnv project
+- [docs] update release notes with migration guide
+- 0.31.0-alpha.31
+
+### Added Features
+
+- `rnv project upgrade` allows upgrade/downgrade of renative project to specific rnv dependencies
+
+### Breaking Changes
+
+- none
+
 ## v0.31.0-alpha.31 (2020-9-23)
 
 ### Fixed
@@ -18,12 +36,43 @@ original_id: changelog
 
 ### Added Features
 
-- none
+- withRNV abstracts most of the complexity of configuring aliases and module paths. it uses renative.*.json plugins to do so behind the scenes
+
 
 ### Breaking Changes
 
-- none
 
+NextJS config should migrate to use withRNV from `@rnv/engine-rn-next`:
+
+`next.config.js`
+
+
+```
+const { withRNV } = require('@rnv/engine-rn-next');
+const path = require('path');
+
+const config = {
+
+};
+
+module.exports = withRNV(config);
+```
+
+
+Metro config should migrate to use withRNV from `@rnv/engine-rn`:
+
+`metro.config.js`
+
+```
+const path = require('path');
+const { withRNV } = require('@rnv/engine-rn');
+
+const config = {
+
+};
+
+module.exports = withRNV(config);
+```
 
 ## v0.31.0-alpha.30 (2020-9-21)
 
