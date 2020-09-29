@@ -25,20 +25,8 @@ import { isPlatformActive } from '../platformManager';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/logger';
 import { copyTemplatePluginsSync } from '../pluginManager';
 import { loadFile } from '../configManager/configParser';
-import { installPackageDependencies } from '../systemManager/exec';
 import { inquirerPrompt } from '../../cli/prompt';
 
-export const checkIfProjectAndNodeModulesExists = async (c) => {
-    logTask('checkIfProjectAndNodeModulesExists');
-
-    if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
-        c._requiresNpmInstall = false;
-        logWarning(
-            'Looks like your node_modules folder is missing. INSTALLING...'
-        );
-        await installPackageDependencies(c);
-    }
-};
 
 export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
     logTask('checkAndCreateProjectPackage');

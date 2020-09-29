@@ -1,6 +1,8 @@
 import semver from 'semver';
 import inquirer from 'inquirer';
-import { executeAsync } from './exec';
+import { executeAsync, installPackageDependencies } from './exec';
+import { fsExistsSync } from './fileutils';
+import { logTask, logWarning } from './logger';
 
 export const listAndSelectNpmVersion = async (c, npmPackage) => {
     const templateVersionsStr = await executeAsync(
@@ -31,4 +33,16 @@ export const listAndSelectNpmVersion = async (c, npmPackage) => {
     });
 
     return inputTemplateVersion;
+};
+
+export const checkIfProjectAndNodeModulesExists = async (c) => {
+    logTask('checkIfProjectAndNodeModulesExists');
+
+    if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
+        c._requiresNpmInstall = false;
+        logWarning(
+            'Looks like your node_modules folder is missing. INSTALLING...'
+        );
+        await installPackageDependencies(c);
+    }
 };

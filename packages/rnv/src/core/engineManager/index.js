@@ -4,6 +4,7 @@ import { getConfigProp } from '../common';
 import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
+import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import { TASK_CONFIGURE_SOFT, EXTENSIONS } from '../constants';
 
 
@@ -44,7 +45,7 @@ export const getPlatformExtensions = (c, excludeServer) => {
     return output;
 };
 
-export const executeEngineTask = async (c, task, parentTask, originTask, tasks) => {
+export const executeEngineTask = async (c, task, parentTask, originTask, tasks, isFirstTask) => {
     const needsHelp = Object.prototype.hasOwnProperty.call(c.program, 'help');
 
     const t = getEngineTask(task, tasks);
@@ -71,6 +72,11 @@ ${t.params.map((v) => {
         await pressAnyKeyToContinue();
         logRaw(`
 =======================================================`);
+    }
+
+    if (!t.isGlobalScope && isFirstTask) {
+        // This has to happen in order for hooks to be able to run
+        await checkIfProjectAndNodeModulesExists(c);
     }
 
     return t.fn(c, parentTask, originTask);
@@ -128,7 +134,7 @@ export const initializeTask = async (c, task) => {
     const inOnlyMode = c.program.only;
 
     if (inOnlyMode) await _executePipe(c, task, 'before');
-    await executeTask(c, task, null, task);
+    await executeTask(c, task, null, task, null, true);
     if (inOnlyMode) await _executePipe(c, task, 'after');
     return true;
 };
