@@ -5,7 +5,6 @@ import { isBuildSchemeSupported } from '../core/configManager/schemeParser';
 import { isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../core/platformManager';
 import { injectPlatformDependencies } from '../core/configManager/packageParser';
 import { configureRuntimeDefaults } from '../core/configManager/configParser';
-import { resolvePluginDependants } from '../core/pluginManager';
 import { executeTask } from '../core/engineManager';
 import { PARAMS, TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../core/constants';
 
@@ -22,8 +21,6 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     await configureRuntimeDefaults(c);
 
     if (c.program.only && !!parentTask) return true;
-
-    await resolvePluginDependants(c);
 
     await executeTask(c, TASK_INSTALL, TASK_PLATFORM_CONFIGURE, originTask);
 

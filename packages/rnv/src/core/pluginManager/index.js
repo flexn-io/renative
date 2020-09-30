@@ -273,7 +273,15 @@ package.json will be overriden`
         if (plugin && plugin.npm) {
             Object.keys(plugin.npm).forEach((npmKey) => {
                 const npmDep = plugin.npm[npmKey];
-                if (!dependencies[npmKey]) {
+                // IMPORTANT: Do not override top level override with plugin.npm ones
+                const topLevelPlugin = getMergedPlugin(c, npmKey);
+                if (topLevelPlugin && topLevelPlugin?.version !== npmDep) {
+                    logWarning(`
+RNV Detected plugin dependency conflict. ${chalk().cyan('RESOLVING...')}
+- ${npmKey}@${chalk().green(topLevelPlugin?.version)} ${chalk().cyan('<=')}
+- ${k} .npm sub dependencies:
+   |- ${npmKey}@${chalk().red(npmDep)}`);
+                } else if (!dependencies[npmKey]) {
                     logWarning(
                         `Plugin ${chalk().white(
                             k
@@ -300,7 +308,7 @@ package.json will be overriden`
         }
     });
 
-    logTask('configurePlugins', `shouldUpdate:${!!hasPackageChanged}:${!c.runtime.skipPackageUpdate}`);
+    // logTask('configurePlugins', `shouldUpdate:${!!hasPackageChanged}:${!c.runtime.skipPackageUpdate}`);
     await versionCheck(c);
 
     if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
@@ -323,10 +331,6 @@ export const resolvePluginDependants = async (c) => {
             const key = pluginKeys[i];
             await _resolvePluginDependencies(c, key, plugins[key], null);
         }
-    }
-
-    if (c._requiresNpmInstall) {
-        await configurePlugins(c);
     }
 
     return true;

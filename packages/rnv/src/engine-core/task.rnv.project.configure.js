@@ -1,4 +1,4 @@
-import { configurePlugins, overrideTemplatePlugins } from '../core/pluginManager';
+import { configurePlugins, overrideTemplatePlugins, resolvePluginDependants } from '../core/pluginManager';
 import { chalk, logTask, logInfo } from '../core/systemManager/logger';
 import { parseRenativeConfigs, fixRenativeConfigsSync,
     checkIsRenativeProject, configureRuntimeDefaults, generateRuntimeConfig } from '../core/configManager/configParser';
@@ -43,6 +43,7 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);
         await executeTask(c, TASK_APP_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
         // IMPORTANT: configurePlugins must run after appConfig present to ensure merge of all configs/plugins
+        await resolvePluginDependants(c);
         await configurePlugins(c);
         await configureRuntimeDefaults(c);
         if (c.program.resetHard && !c.runtime.disableReset) {
