@@ -252,6 +252,10 @@ export const taskRnvNew = async (c) => {
     await parseRenativeConfigs(c);
     data.optionTemplates = getTemplateOptions(c);
 
+    const customTemplate = 'Custom Template ...';
+
+    data.optionTemplates.keysAsArray.push(customTemplate);
+
     const { inputTemplate } = await inquirer.prompt({
         name: 'inputTemplate',
         type: 'list',
@@ -259,7 +263,20 @@ export const taskRnvNew = async (c) => {
         default: data.defaultTemplate,
         choices: data.optionTemplates.keysAsArray
     });
-    data.optionTemplates.selectedOption = inputTemplate;
+
+    let selectedInputTemplate;
+    if (inputTemplate === customTemplate) {
+        const { inputTemplateCustom } = await inquirer.prompt({
+            name: 'inputTemplateCustom',
+            type: 'input',
+            message: 'Type exact name of your template NPM package.',
+        });
+        selectedInputTemplate = inputTemplateCustom;
+    } else {
+        selectedInputTemplate = inputTemplate;
+    }
+
+    data.optionTemplates.selectedOption = selectedInputTemplate;
 
     const inputTemplateVersion = await listAndSelectNpmVersion(c, data.optionTemplates.selectedOption);
 
