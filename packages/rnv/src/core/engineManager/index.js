@@ -78,8 +78,11 @@ ${t.params.map((v) => {
         // This has to happen in order for hooks to be able to run
         await checkIfProjectAndNodeModulesExists(c);
     }
-
-    return t.fn(c, parentTask, originTask);
+    const inOnlyMode = c.program.only;
+    const doPipe = !t.isGlobalScope && (!inOnlyMode || (inOnlyMode && isFirstTask));
+    if (doPipe) await _executePipe(c, task, 'before');
+    await t.fn(c, parentTask, originTask);
+    if (doPipe) await _executePipe(c, task, 'after');
 };
 
 export const getEngineTask = (task, tasks) => {
@@ -131,11 +134,7 @@ export const initializeTask = async (c, task) => {
         platform: c.platform
     });
 
-    const inOnlyMode = c.program.only;
-
-    if (inOnlyMode) await _executePipe(c, task, 'before');
-    await executeTask(c, task, null, task, null, true);
-    if (inOnlyMode) await _executePipe(c, task, 'after');
+    await executeTask(c, task, null, task, true);
     return true;
 };
 
@@ -143,19 +142,11 @@ const _executePipe = async (c, task, phase) => executePipe(c, `${task.split(' ')
 
 const TASK_LIMIT = 20;
 
-export const executeTask = async (c, task, parentTask, originTask) => {
+export const executeTask = async (c, task, parentTask, originTask, isFirstTask) => {
     const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
     logInitTask(`${pt}=> [${chalk().bold.rgb(170, 106, 170)(task)}]`);
-    const inOnlyMode = c.program.only; // && !!parentTask;
-    // if (c.program.only && !!parentTask && task !== TASK_WORKSPACE_CONFIGURE) {
-    //     logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} SKIPPING...`);
-    //     await executeTask(c, TASK_WORKSPACE_CONFIGURE, task, originTask);
-    //     await parseRenativeConfigs(c);
-    //     await configureRuntimeDefaults(c);
-    //     await isPlatformSupported(c);
-    // } else {
-    // logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask} EXECUTING...`);
+
     if (!executedTasks[task]) executedTasks[task] = 0;
     if (executedTasks[task] > TASK_LIMIT) {
         return Promise.reject(`You reached maximum amount of executions per one task (${TASK_LIMIT}) task: ${task}.
@@ -165,11 +156,9 @@ but issue migh not be necessarily with this task
 
 To avoid that test your task code against parentTask and avoid executing same task X from within task X`);
     }
-    if (!inOnlyMode) await _executePipe(c, task, 'before');
-    await getEngineRunner(c, task).executeTask(c, task, parentTask, originTask);
-    if (!inOnlyMode) await _executePipe(c, task, 'after');
+    await getEngineRunner(c, task).executeTask(c, task, parentTask, originTask, isFirstTask);
     executedTasks[task]++;
-    // }
+
     c._currentTask = parentTask;
     const prt = parentTask ? `<= [${chalk().rgb(170, 106, 170)(parentTask)}] ` : '';
     logExitTask(`${prt}<= ${task}`);

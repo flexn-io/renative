@@ -26,7 +26,7 @@ addTask(taskRnvDeploy);
 addTask(taskRnvDebug);
 
 
-const executeTask = (c, task, parentTask, originTask) => executeEngineTask(c, task, parentTask, originTask, TASKS);
+const executeTask = (c, task, parentTask, originTask, isFirstTask) => executeEngineTask(c, task, parentTask, originTask, TASKS, isFirstTask);
 
 const hasTask = (task, isProjectScope) => hasEngineTask(task, TASKS, isProjectScope);
 
