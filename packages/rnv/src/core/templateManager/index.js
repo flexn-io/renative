@@ -31,6 +31,7 @@ import {
     parseRenativeConfigs
 } from '../configManager/configParser';
 import { doResolve } from '../resolve';
+import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 
 export const checkIfTemplateInstalled = c => new Promise((resolve) => {
     logTask('checkIfTemplateInstalled');
@@ -429,6 +430,12 @@ export const applyTemplate = async (c, selectedTemplate) => {
         c.buildConfig.currentTemplate = template;
         c.files.project.config.currentTemplate = template;
         _writeObjectSync(c, c.paths.project.config, c.files.project.config);
+    }
+
+    const templateIsInstalled = doResolve(c.buildConfig.currentTemplate);
+    if (!templateIsInstalled) {
+        // We Need template to be installed before other dependency resolutions (due to scoping)
+        await checkIfProjectAndNodeModulesExists(c);
     }
 
     await _applyTemplate(c);

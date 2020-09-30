@@ -40,9 +40,10 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
     if (originTask !== TASK_TEMPLATE_APPLY) {
         await applyTemplate(c);
         await configureRuntimeDefaults(c);
-        await configurePlugins(c);
         await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);
         await executeTask(c, TASK_APP_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
+        // IMPORTANT: configurePlugins must run after appConfig present to ensure merge of all configs/plugins
+        await configurePlugins(c);
         await configureRuntimeDefaults(c);
         if (c.program.resetHard && !c.runtime.disableReset) {
             logInfo(
