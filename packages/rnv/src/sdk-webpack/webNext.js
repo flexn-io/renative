@@ -213,7 +213,8 @@ Dev server running at: ${url}
 `);
 
 
-    return executeAsync(c, `npx next dev --port ${c.runtime.port}`,
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    return executeAsync(c, `npx next ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`,
         {
             env: {
                 NODE_ENV: env || 'development',
