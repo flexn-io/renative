@@ -75,8 +75,10 @@ ${t.params.map((v) => {
     }
 
     if (!t.isGlobalScope && isFirstTask) {
-        // This has to happen in order for hooks to be able to run
-        await checkIfProjectAndNodeModulesExists(c);
+        if (c.files.project.package) {
+            // This has to happen in order for hooks to be able to run
+            await checkIfProjectAndNodeModulesExists(c);
+        }
     }
     const inOnlyMode = c.program.only;
     const doPipe = !t.isGlobalScope && (!inOnlyMode || (inOnlyMode && isFirstTask));

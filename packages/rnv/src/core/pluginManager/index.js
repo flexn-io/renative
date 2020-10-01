@@ -12,6 +12,7 @@ import {
     fsLstatSync,
     fsReadFileSync
 } from '../systemManager/fileutils';
+import { installPackageDependencies } from '../systemManager/npmUtils';
 import { getConfigProp, getBuildsFolder, getAppFolder } from '../common';
 import { versionCheck, writeRenativeConfigFile } from '../configManager/configParser';
 
@@ -312,13 +313,16 @@ RNV Detected plugin dependency conflict. ${chalk().cyan('RESOLVING...')}
     await versionCheck(c);
 
     if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
-        let newPackage = merge(c.files.project.package, { dependencies: newDeps });
-        newPackage = merge(newPackage, { devDependencies: newDevDeps });
-        writeRenativeConfigFile(c, c.paths.project.package, newPackage);
-        c.files.project.package = newPackage;
-        c._requiresNpmInstall = true;
+        _updatePackage(c, { dependencies: newDeps, devDependencies: newDevDeps });
     }
     return true;
+};
+
+const _updatePackage = (c, override) => {
+    const newPackage = merge(c.files.project.package, override);
+    writeRenativeConfigFile(c, c.paths.project.package, newPackage);
+    c.files.project.package = newPackage;
+    c._requiresNpmInstall = true;
 };
 
 export const resolvePluginDependants = async (c) => {
@@ -450,7 +454,7 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
     }
 };
 
-export const loadPluginTemplates = (c) => {
+export const loadPluginTemplates = async (c) => {
     logTask('loadPluginTemplates');
     c.files.rnv.pluginTemplates.config = readObjectSync(
         c.paths.rnv.pluginTemplates.config
@@ -463,11 +467,33 @@ export const loadPluginTemplates = (c) => {
     c.paths.rnv.pluginTemplates.dirs = { rnv: c.paths.rnv.pluginTemplates.dir };
 
     const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
-    _parsePluginTemplateDependencies(c, customPluginTemplates);
+    const missingDeps = _parsePluginTemplateDependencies(c, customPluginTemplates);
+    if (missingDeps.length) {
+        const { dependencies } = c.files.project.package;
+        let hasPackageChanged = false;
+        missingDeps.forEach((dep) => {
+            const plugin = getMergedPlugin(c, dep);
+            if (plugin) {
+                hasPackageChanged = true;
+                dependencies[dep] = plugin.version;
+            } else {
+                // Unresolved Plugin
+            }
+        });
+        // CHECK IF paths.pluginTemplates SCOPES are INSTALLED
+        // This must be installed to avoid scoped plugins errors
+        if (hasPackageChanged) {
+            _updatePackage(c, { dependencies });
+            await installPackageDependencies(c, false, true);
+            await loadPluginTemplates(c);
+        }
+    }
+    return true;
 };
 
 const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'root') => {
     logTask('_parsePluginTemplateDependencies', `scope:${scope}`);
+    const missingDeps = [];
     if (customPluginTemplates) {
         Object.keys(customPluginTemplates).forEach((k) => {
             const val = customPluginTemplates[k];
@@ -500,11 +526,17 @@ const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'roo
                         _parsePluginTemplateDependencies(c,
                             c.files.rnv.pluginTemplates.configs[k].pluginTemplateDependencies,
                             k);
+                    } else {
+                        logWarning(`Plugin scope ${val.npm} is not installed yet.`);
                     }
+                } else {
+                    logWarning(`Plugin scope ${val.npm} does not exists in package.json.`);
+                    missingDeps.push(val.npm);
                 }
             }
         });
     }
+    return missingDeps;
 };
 
 const getCleanRegExString = str => str
@@ -591,6 +623,13 @@ const _overridePlugin = (c, pluginsPath, dir) => {
             }
         });
     }
+};
+
+export const installPackageDependenciesAndPlugins = async (c) => {
+    logTask('installPackageDependenciesAndPlugins');
+
+    await installPackageDependencies(c);
+    await overrideTemplatePlugins(c);
 };
 
 

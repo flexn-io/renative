@@ -1,6 +1,6 @@
 import { areNodeModulesInstalled } from '../core/common';
 import { PARAMS } from '../core/constants';
-import { installPackageDependencies } from '../core/systemManager/exec';
+import { installPackageDependenciesAndPlugins } from '../core/pluginManager';
 import { logTask, logWarning } from '../core/systemManager/logger';
 
 export const taskRnvInstall = async (c, parentTask) => {
@@ -20,7 +20,7 @@ export const taskRnvInstall = async (c, parentTask) => {
             );
         }
         c._requiresNpmInstall = false;
-        await installPackageDependencies(c);
+        await installPackageDependenciesAndPlugins(c);
     }
     return true;
 };

@@ -3,7 +3,8 @@ import { logTask } from '../core/systemManager/logger';
 import { upgradeProjectDependencies } from '../core/projectManager/projectParser';
 import { executeTask } from '../core/engineManager';
 import { listAndSelectNpmVersion } from '../core/systemManager/npmUtils';
-import { installPackageDependencies } from '../core/systemManager/exec';
+import { installPackageDependenciesAndPlugins } from '../core/pluginManager';
+
 
 export const taskRnvProjectUpgrade = async (c, parentTask, originTask) => {
     logTask('taskRnvProjectUpgrade');
@@ -14,7 +15,7 @@ export const taskRnvProjectUpgrade = async (c, parentTask, originTask) => {
 
     upgradeProjectDependencies(c, selectedVersion);
 
-    await installPackageDependencies(c);
+    await installPackageDependenciesAndPlugins(c);
 
     return true;
 };

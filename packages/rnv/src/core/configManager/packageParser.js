@@ -1,7 +1,8 @@
 import semver from 'semver';
 import merge from 'deepmerge';
 
-import { installPackageDependencies, executeAsync } from '../systemManager/exec';
+import { executeAsync } from '../systemManager/exec';
+import { installPackageDependencies } from '../systemManager/npmUtils';
 import { logWarning, logDebug, logTask } from '../systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEngineByPlatform } from '../engineManager';

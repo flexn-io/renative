@@ -8,13 +8,10 @@ import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
 import Config from '../configManager/config';
-import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
 
-import { chalk, logDebug, logTask, logError, logWarning, logRaw, logInfo } from './logger';
-import { removeDirs, invalidatePodsChecksum, fsExistsSync } from './fileutils';
-import { inquirerPrompt } from '../../cli/prompt';
+import { chalk, logDebug, logRaw, logError } from './logger';
+import { fsExistsSync } from './fileutils';
 import { replaceOverridesInString } from '../utils';
-import { doResolve } from '../resolve';
 
 const { exec, execSync } = require('child_process');
 
@@ -494,100 +491,6 @@ const commandExistsSync = (commandName) => {
     return commandExistsUnixSync(commandName, cleanedCommandName);
 };
 
-export const cleanNodeModules = () => new Promise((resolve, reject) => {
-    logTask('cleanNodeModules');
-    const dirs = [
-        'react-native-safe-area-view/.git',
-        '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
-        'react-navigation/node_modules/react-native-safe-area-view/.git',
-        'react-native-safe-area-view/.git',
-        '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
-        'react-navigation/node_modules/react-native-safe-area-view/.git'
-    ].reduce((acc, dir) => {
-        const [_all, aPackage, aPath] = dir.match(/([^/]+)\/(.*)/);
-        logDebug(`Cleaning: ${_all}`);
-        const resolved = doResolve(aPackage, false);
-        if (resolved) {
-            acc.push(`${resolved}/${aPath}`);
-        }
-        return acc;
-    }, []);
-    removeDirs(dirs)
-        .then(() => resolve())
-        .catch(e => reject(e));
-    // removeDirs([
-    //     path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
-    //     path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-    //     path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
-    //     path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
-    //     path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-    //     path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
-    // ]).then(() => resolve()).catch(e => reject(e));
-});
-
-export const installPackageDependencies = async (c, failOnError = false) => {
-    logTask('installPackageDependencies');
-
-    const customScript = c.buildConfig?.tasks?.install?.script;
-
-    if (customScript) {
-        logInfo(`Found custom task for install: ${customScript}.`);
-        await executeAsync(customScript);
-        return true;
-    }
-
-    const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
-    const yarnLockPath = path.join(c.paths.project.dir, 'yarn.lock');
-    const npmLockPath = path.join(c.paths.project.dir, 'package-lock.json');
-    let command = 'npm install';
-    if (fsExistsSync(yarnLockPath)) {
-        command = 'yarn';
-    } else if (fsExistsSync(npmLockPath)) {
-        command = 'npm install';
-    } else if (isYarnInstalled) {
-        const { packageManager } = await inquirerPrompt({
-            type: 'list',
-            name: 'packageManager',
-            message: 'What package manager would you like to use?',
-            choices: ['yarn', 'npm'],
-            default: 'npm'
-        });
-        if (packageManager === 'yarn') command = 'yarn';
-    }
-    logTask('installPackageDependencies', `packageManager:(${command})`);
-
-    try {
-        await executeAsync(command);
-        await invalidatePodsChecksum(c);
-    } catch (e) {
-        if (failOnError) {
-            return logError(e);
-        }
-        logWarning(
-            `${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`
-        );
-        try {
-            await cleanNodeModules(c);
-            await installPackageDependencies(c, true);
-        } catch (npmErr) {
-            return logError(npmErr);
-        }
-    }
-    try {
-        const plats = c.files.project.config?.defaults?.supportedPlatforms;
-        if (
-            Array.isArray(plats) && (plats.includes(ANDROID)
-            || plats.includes(ANDROID_TV) || plats.includes(ANDROID_WEAR))
-        ) {
-            if (doResolve('jetifier')) {
-                await executeAsync('npx jetify');
-            }
-        }
-        return true;
-    } catch (jetErr) {
-        return logError(jetErr);
-    }
-};
 
 // eslint-disable-next-line no-nested-ternary
 const openCommand = process.platform === 'darwin'

@@ -818,7 +818,7 @@ export const parseRenativeConfigs = async (c) => {
     loadProjectTemplates(c);
 
     // LOAD PLUGIN TEMPLATES
-    loadPluginTemplates(c);
+    await loadPluginTemplates(c);
 
     // LOAD PLATFORM TEMPLATES
     // loadPlatformTemplates(c);
