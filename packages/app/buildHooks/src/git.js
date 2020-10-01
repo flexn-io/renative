@@ -11,7 +11,7 @@ export const gitCommitAndTagVersion = async (c) => {
     const git = simpleGit({ baseDir });
     await git.add(`${baseDir}/*`);
     await git.commit(version);
-    await git.addTag(version);
+    // await git.addTag(version);
     return true;
 };
 

@@ -6,6 +6,28 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.33 (2020-10-1)
+
+### Fixed
+
+- [feat] dependency resolution of nested pluginTemplates
+- [feat] custom templates
+- [fix] skip buildHooks pipes for global commands
+- [fix] improve dependency resolutions of complex plugins
+- [fix]  premature dependenaculation
+- [fix] react-native focus fix
+- [fix] rnv clean, skip depUpdates
+- 0.31.0-alpha.32
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.32 (2020-9-29)
 
 ### Fixed
