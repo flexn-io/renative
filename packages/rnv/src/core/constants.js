@@ -134,6 +134,10 @@ const EXT_FALLBACK = ['jsx', 'js', 'json', 'wasm', 'tsx', 'ts'];
 
 export const WEINRE_PORT = 8079;
 
+const EXT_LEGACY_NEXT = ['next.jsx', 'next.js', 'next.tsx', 'next.ts'];
+const EXT_LEGACY_SERVER_NEXT = ['server.next.jsx', 'server.next.js', 'server.next.tsx', 'server.next.ts'];
+
+
 export const PLATFORMS = {
     // ACTIVE
     web: {
@@ -144,7 +148,7 @@ export const PLATFORMS = {
         requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_BROWSER],
-            platforms: [...EXT_SERVER_WEB, ...EXT_WEB],
+            platforms: [...EXT_LEGACY_SERVER_NEXT, ...EXT_SERVER_WEB, ...EXT_LEGACY_NEXT, ...EXT_WEB],
             fallbacks: [...EXT_FALLBACK_WEB]
         }
     },
