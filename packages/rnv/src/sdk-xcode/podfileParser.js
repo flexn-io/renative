@@ -8,7 +8,7 @@ import {
     addSystemInjects
 } from '../core/common';
 import { logTask, logWarning } from '../core/systemManager/logger';
-import { parsePlugins } from '../core/pluginManager';
+import { parsePlugins, overrideFileContents } from '../core/pluginManager';
 import { doResolve, doResolvePath } from '../core/resolve';
 import { executeAsync } from '../core/systemManager/exec';
 import { writeCleanFile } from '../core/systemManager/fileutils';
@@ -75,6 +75,7 @@ export const parsePodFile = async (c, platform) => {
         });
     }
 
+
     // DEPLOYMENT TARGET
     const deploymentTarget = getConfigProp(
         c,
@@ -139,12 +140,20 @@ export const parsePodFile = async (c, platform) => {
     return true;
 };
 
+const REACT_CORE_OVERRIDES = {
+    "s.dependency 'React'": "s.dependency 'React-Core'",
+    's.dependency "React"': 's.dependency "React-Core"'
+};
+
 const _injectPod = (podName, pluginPlat, plugin, key) => {
     let pluginInject = '';
     const isNpm = plugin['no-npm'] !== true;
     if (isNpm) {
         const podPath = doResolvePath(pluginPlat.path ?? key);
         pluginInject += `  pod '${podName}', :path => '${podPath}'\n`;
+        const podspecPath = `${podPath}/${podName}.podspec`;
+        // Xcode 12 Migration
+        overrideFileContents(podspecPath, REACT_CORE_OVERRIDES);
     } else if (pluginPlat.git) {
         const commit = pluginPlat.commit
             ? `, :commit => '${pluginPlat.commit}'`
@@ -157,5 +166,6 @@ const _injectPod = (podName, pluginPlat, plugin, key) => {
     } else {
         pluginInject += `  pod '${podName}'\n`;
     }
+
     return pluginInject;
 };

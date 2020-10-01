@@ -551,7 +551,8 @@ const getCleanRegExString = str => str
     .replace(/\]/g, '\\]')
     .replace(/\{/g, '\\{')
     .replace(/\}/g, '\\}')
-    .replace(/\+/g, '\\+');
+    .replace(/\+/g, '\\+')
+    .replace(/ /g, ' {1,}');
 
 const _overridePlugin = (c, pluginsPath, dir) => {
     const source = path.resolve(pluginsPath, dir, 'overrides');
@@ -588,41 +589,56 @@ const _overridePlugin = (c, pluginsPath, dir) => {
         overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
     }
     const overrideConfig = readObjectSync(overridePath);
-    if (overrideConfig?.overrides) {
-        Object.keys(overrideConfig.overrides).forEach((k) => {
-            const override = overrideConfig.overrides[k];
+    const overrides = overrideConfig?.overrides;
+    if (overrides) {
+        Object.keys(overrides).forEach((k) => {
             const ovDir = path.join(dest, k);
-
+            const override = overrides[k];
             if (fsExistsSync(ovDir)) {
                 if (fsLstatSync(ovDir).isDirectory()) {
                     logWarning(
                         'overrides.json: Directories not supported yet. specify path to actual file'
                     );
                 } else {
-                    let fileToFix = fsReadFileSync(ovDir).toString();
-                    Object.keys(override).forEach((fk) => {
-                        const regEx = new RegExp(getCleanRegExString(fk), 'g');
-                        const count = (fileToFix.match(regEx) || []).length;
-
-                        const overrided = override[fk];
-                        const regEx2 = new RegExp(getCleanRegExString(overrided), 'g');
-                        const count2 = (fileToFix.match(regEx2) || []).length;
-                        if (!count) {
-                            if (!count2) {
-                                logWarning(`No Match found in ${chalk().red(
-                                    ovDir
-                                )} for expression: ${chalk().red(fk)}.
-  Consider update or removal of ${chalk().white(overridePath)}`);
-                            }
-                        } else {
-                            fileToFix = fileToFix.replace(regEx, override[fk]);
-                        }
-                    });
-                    fsWriteFileSync(ovDir, fileToFix);
+                    overrideFileContents(ovDir, override, overridePath);
                 }
             }
         });
     }
+};
+
+export const overrideFileContents = (dest, override, overridePath = '') => {
+    let fileToFix = fsReadFileSync(dest).toString();
+    let foundRegEx = false;
+    const failTerms = [];
+    Object.keys(override).forEach((fk) => {
+        const regEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
+        const count = (fileToFix.match(regEx) || []).length;
+
+        const overrided = override[fk];
+        const regEx2 = new RegExp(getCleanRegExString(overrided), 'g');
+        const count2 = (fileToFix.match(regEx2) || []).length;
+        if (!count) {
+            if (!count2) {
+                failTerms.push(fk);
+            } else {
+                foundRegEx = true;
+            }
+        } else {
+            foundRegEx = true;
+            fileToFix = fileToFix.replace(regEx, override[fk]);
+        }
+    });
+    if (!foundRegEx) {
+        failTerms.forEach((term) => {
+            logWarning(`No Match found in ${chalk().red(
+                dest
+            )} for expression: ${chalk().red(term)}.
+Consider update or removal of ${chalk().white(overridePath)}`);
+        });
+    }
+
+    fsWriteFileSync(dest, fileToFix);
 };
 
 export const installPackageDependenciesAndPlugins = async (c) => {
