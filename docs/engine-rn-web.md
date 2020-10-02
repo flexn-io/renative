@@ -15,7 +15,7 @@ React native based engine with web transpiler provided by react-native-web
 
 ## Supported Platforms
 
-[tizen](platform-tizen.md), [web](platform-web.md)
+[tizen](platform-tizen.md), [web](platform-web.md), [webos](platform-webos.md), [tizenwatch](platform-tizenwatch.md), [tizenmobile](platform-tizenmobile.md), [chromecast](platform-chromecast.md), [kaios](platform-kaios.md), [firefoxos](platform-firefoxos.md), [firefoxtv](platform-firefoxtv.md)
 
 ## Required Plugins
 
@@ -24,11 +24,23 @@ React native based engine with web transpiler provided by react-native-web
 ## Required NPM Packages
 
 tizen (dependencies)
-  - [raf](https://www.npmjs.com/package/raf), [html-webpack-harddisk-plugin](https://www.npmjs.com/package/html-webpack-harddisk-plugin), [html-webpack-plugin](https://www.npmjs.com/package/html-webpack-plugin)
+  - [raf](https://www.npmjs.com/package/raf)
 
 
-web (dependencies)
-  - [html-webpack-harddisk-plugin](https://www.npmjs.com/package/html-webpack-harddisk-plugin), [html-webpack-plugin](https://www.npmjs.com/package/html-webpack-plugin)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

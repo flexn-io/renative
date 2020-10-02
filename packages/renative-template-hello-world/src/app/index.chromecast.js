@@ -1,5 +1,5 @@
 import React from 'react';
-import ScreenCast from '../screenCast';
+import ScreenCast from '../components/screenCast';
 
 
 const App = () => (

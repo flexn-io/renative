@@ -1,0 +1,7 @@
+{
+  "overrides": {
+    "dist/lib/find-pages-dir.js": {
+      "let curDir=_path.default.join(dir,'pages')": "let customDir=_path.default.join(dir, process.env.NEXT_PAGES_DIR);if(existsSync(customDir)){console.log('Found custom dir:'+customDir);return customDir};let curDir=_path.default.join(dir,/*done*/'pages')"
+    }
+  }
+}

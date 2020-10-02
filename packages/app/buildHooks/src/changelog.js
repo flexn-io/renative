@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 
@@ -76,14 +75,18 @@ ${logs}
 const getVersionNumber = (vrs) => {
     const verArr = vrs.split('-');
     const verMainArr = verArr[0].split('.');
-    const verAlpha1 = verArr[1] ? verArr[1].split('.')[1] : '00';
     const verMajor = verMainArr[0].length < 2 ? `0${verMainArr[0]}` : verMainArr[0];
     const verMinor = verMainArr[1].length < 2 ? `0${verMainArr[1]}` : verMainArr[1];
     const verPath = verMainArr[2].length < 2 ? `0${verMainArr[2]}` : verMainArr[2];
+
+    const verAlpha1 = (verArr[2] || !verArr[1]) ? '00' : verArr[1].split('.')[1];
     const verAlpha = verAlpha1.length < 2 ? `0${verAlpha1}` : verAlpha1;
 
-    const output = `${verMajor}${verMinor}${verPath}${verAlpha}`;
-    return parseInt(output);
+    const verFeat = verArr[2] ? verArr[2].split('.')[1] : '00';
+
+    const output = `${verMajor}${verMinor}${verPath}${verAlpha}${verFeat}`;
+
+    return parseInt(output, 10);
 };
 
 export const generateCombinedChangelog = async (c) => {

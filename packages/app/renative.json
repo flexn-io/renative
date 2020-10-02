@@ -7,11 +7,17 @@
     "isWrapper": true,
     "paths": {
         "appConfigsDir": "./appConfigs",
-        "platformTemplatesDir": "RNV_HOME/platformTemplates",
-        "entryDir": "./",
         "platformAssetsDir": "./platformAssets",
-        "platformBuildsDir": "./platformBuilds",
-        "projectConfigDir": "./appConfigs/base"
+        "platformBuildsDir": "./platformBuilds"
+    },
+    "plugins": {
+        "@noriginmedia/react-spatial-navigation": "source:rnv",
+        "next": "source:rnv"
+    },
+    "tasks": {
+        "install": {
+            "script": "yarn bootstrap"
+        }
     },
     "defaults": {
         "ports": {
@@ -58,23 +64,37 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "^0.29.1-alpha.9",
+            "version": "^0.31.0-alpha.11",
             "webpack": {
                 "moduleAliases": true
             }
         },
         "renative-template-blank": {
-            "version": "^0.29.1-alpha.9",
+            "version": "^0.31.0-alpha.11",
             "webpack": {
                 "moduleAliases": true
             }
         },
         "renative-template-kitchen-sink": {
-            "version": "^0.29.1-alpha.9",
+            "version": "^0.31.0-alpha.11",
             "webpack": {
                 "moduleAliases": true
             }
         }
     },
-    "currentTemplate": "renative-template-hello-world"
+    "platforms": {
+        "web": {
+            "engine": "engine-rn-next"
+        }
+    },
+    "currentTemplate": "renative-template-hello-world",
+    "crypto": {
+        "optional": true,
+        "encrypt": {
+            "dest": "PROJECT_HOME/ci/privateConfigs.enc"
+        },
+        "decrypt": {
+            "source": "PROJECT_HOME/ci/privateConfigs.enc"
+        }
+    }
 }

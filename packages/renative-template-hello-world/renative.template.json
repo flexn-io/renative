@@ -4,7 +4,7 @@
         "react-native-gesture-handler": "source:rnv",
         "react-native-reanimated": "source:rnv",
         "react-native-vector-icons": "source:rnv",
-        "@reach/router": "1.2.1",
+        "@reach/router": "1.3.4",
         "hash-source": "1.0.4",
         "@react-navigation": "source:rnv",
         "@react-navigation/core": "5.2.1",
@@ -60,6 +60,11 @@
                         "tools:targetApi": 28
                     }
                 ]
+            }
+        },
+        "platforms": {
+            "web": {
+                "engine": "engine-rn-next"
             }
         }
     },

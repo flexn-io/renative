@@ -1,5 +1,7 @@
-import { FileUtils, Constants, Doctor } from 'rnv';
+import { FileUtils, Doctor } from 'rnv';
 import path from 'path';
+
+const merge = require('deepmerge');
 
 export const updateVersions = async (c) => {
     const rootPackage = FileUtils.readObjectSync(
@@ -32,7 +34,38 @@ export const updateVersions = async (c) => {
         ),
         v
     );
-    _updateJson(c, path.join(pkgFolder, 'renative/package.json'), v);
+    _updateJson(
+        c,
+        path.join(
+            pkgFolder,
+            'rnv-engine-rn/package.json'
+        ),
+        v
+    );
+    _updateJson(
+        c,
+        path.join(
+            pkgFolder,
+            'rnv-engine-rn-next/package.json'
+        ),
+        v
+    );
+    _updateJson(
+        c,
+        path.join(
+            pkgFolder,
+            'rnv-engine-rn-web/package.json'
+        ),
+        v
+    );
+    _updateJson(
+        c,
+        path.join(
+            pkgFolder,
+            'rnv-engine-rn-electron/package.json'
+        ),
+        v
+    );
     _updateJson(c, path.join(pkgFolder, 'renative/package.json'), v);
     _updateJson(
         c,
@@ -51,10 +84,21 @@ export const updateVersions = async (c) => {
         path.join(c.paths.project.dir, '/../../README.md'),
         path.join(pkgFolder, 'renative/README.md')
     );
-    // FileUtils.copyFileSync(
-    //     path.join(c.paths.project.dir, 'README.md'),
-    //     path.join(pkgFolder, 'renative/README.md')
-    // );
+
+    const engineConfigPath = path.join(c.paths.rnv.dir, 'engineTemplates', 'renative.engines.json');
+    const enginesConfig = FileUtils.readObjectSync(engineConfigPath);
+    const engines = enginesConfig?.engines;
+    if (engines) {
+        Object.values(engines).forEach((engine) => {
+            const { id } = engine;
+            const npm = engine?.npm?.devDependencies?.[`@rnv/${id}`];
+            if (npm) {
+                engine.npm.devDependencies[`@rnv/${id}`] = rootPackage.version;
+            }
+        });
+        const output = Doctor.fixPackageObject(enginesConfig);
+        FileUtils.writeFileSync(engineConfigPath, output, 4, true);
+    }
 
     return true;
 };
@@ -69,7 +113,6 @@ const _updateJson = (c, pPath, updateObj) => {
         );
     }
 
-    const merge = require('deepmerge');
     let obj;
     if (pObj) {
         obj = merge(pObj, updateObj);

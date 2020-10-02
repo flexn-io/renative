@@ -66,8 +66,6 @@ Following is the order of merges of various folders (if present) contributing to
 ⬇️
 `./appConfigs/base/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
-`./appConfigs/base/builds/_shared/*/**` => `./platformBuilds/_shared/*/*`</br>
-⬇️
 `[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/base/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
 `./appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>

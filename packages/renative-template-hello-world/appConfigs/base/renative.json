@@ -15,6 +15,17 @@
             "build": "release",
             "export": "release"
         },
+        "buildSchemes": {
+            "debug": {
+                "description": "Use for local development"
+            },
+            "test": {
+                "description": "Use to run automation"
+            },
+            "release": {
+                "description": "Use for production deployments"
+            }
+        },
         "backgroundColor": "#111111",
         "runtime": {
             "welcomeMessage": "Hello ReNative!"
@@ -133,6 +144,10 @@
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
+                "test": {
+                    "signingConfig": "Debug",
+                    "bundleAssets": true
+                },
                 "release": {
                     "signingConfig": "Release",
                     "multipleAPKs": true,
@@ -152,6 +167,10 @@
                 "debug": {
                     "signingConfig": "Debug",
                     "bundleAssets": false
+                },
+                "test": {
+                    "signingConfig": "Debug",
+                    "bundleAssets": true
                 },
                 "release": {
                     "signingConfig": "Release",
@@ -218,7 +237,7 @@
         },
         "web": {
             "entryFile": "index.web",
-            "pagesDir": "src/app",
+            "pagesDir": "src/pages",
             "webpackConfig": {
                 "devServerHost": "0.0.0.0",
                 "baseUrl": ""
@@ -233,6 +252,9 @@
                     "bundleIsDev": false,
                     "environment": "production"
                 }
+            },
+            "deploy": {
+               "type": "none"
             }
         },
         "webos": {

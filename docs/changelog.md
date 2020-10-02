@@ -5,6 +5,693 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.33 (2020-10-1)
+
+### Fixed
+
+- [feat] dependency resolution of nested pluginTemplates
+- [feat] custom templates
+- [fix] skip buildHooks pipes for global commands
+- [fix] improve dependency resolutions of complex plugins
+- [fix]  premature dependenaculation
+- [fix] react-native focus fix
+- [fix] rnv clean, skip depUpdates
+- 0.31.0-alpha.32
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.32 (2020-9-29)
+
+### Fixed
+
+- [feat] rnv project upgrade
+- [feat] sync up engines during rnv upgrade
+- [fix] rnv kill oustide of rnv project
+- [docs] update release notes with migration guide
+- 0.31.0-alpha.31
+
+### Added Features
+
+- `rnv project upgrade` allows upgrade/downgrade of renative project to specific rnv dependencies
+
+### Breaking Changes
+
+- none
+
+## v0.31.0-alpha.31 (2020-9-23)
+
+### Fixed
+
+- [feat] withRNV metro decorator
+- Merge branch 'feat/engines-pt2' into develop
+- [fix] rnv start -r
+- [fix]: navigation fixes
+- 0.31.0-alpha.30
+
+### Added Features
+
+- withRNV abstracts most of the complexity of configuring aliases and module paths. it uses renative.*.json plugins to do so behind the scenes
+
+
+### Breaking Changes
+
+
+NextJS config should migrate to use withRNV from `@rnv/engine-rn-next`:
+
+`next.config.js`
+
+
+```
+const { withRNV } = require('@rnv/engine-rn-next');
+const path = require('path');
+
+const config = {
+
+};
+
+module.exports = withRNV(config);
+```
+
+
+Metro config should migrate to use withRNV from `@rnv/engine-rn`:
+
+`metro.config.js`
+
+```
+const path = require('path');
+const { withRNV } = require('@rnv/engine-rn');
+
+const config = {
+
+};
+
+module.exports = withRNV(config);
+```
+
+## v0.31.0-alpha.30 (2020-9-21)
+
+### Fixed
+
+- [fix] dowgrading RNW to 0.12.3 due to nav refresh flicker in 0.13.12
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.29 (2020-9-21)
+
+### Fixed
+
+- publish preps
+- [feat] @rnv/engine-rn
+- [feat] @rnv/engine-rn-electron
+- [feat] @rnv/engine-rn-web
+- refactor packages engine structure
+- [feat] decoupled next engine
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.28 (2020-9-20)
+
+### Fixed
+
+- migrate build path definitions to engines
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.27 (2020-9-20)
+
+### Fixed
+
+- Merge pull request #577 from pavjacko/feat/next-upgrades
+- test updates
+- [chores] optimise travis build order
+- [feat] git commit&tag hooks
+- [fix] next server extensions
+- Merge branch 'feat/next-upgrades' of github.com:pavjacko/renative into feat/next-upgrades
+- [feat] dynamic engine extensions
+- test coverage
+- update helloworld template
+- [feat] next upgrades
+- screw the BFF... I'll make you my bitch anyway
+- [feat] improved override.json support
+- damn you nextjs if I can't make you my bitch I'll make you my BFF
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.26 (2020-9-17)
+
+### Fixed
+
+- [fix] rnv crypto standalone task
+- [fix] focus issues on tizen and webos
+- update firefox, chromecast sdks
+- uts
+- fix eject list
+- electron icns auto generator
+- interactive CLI help
+- webpack-sdk update to new paths
+- fix hosted option
+- [feat] refactor engine templates
+- kill task, webos fixes
+- [chores] clean up config, npx resolve checks
+- optional crypto
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- appConfigs/\*\*/builds/_shared is DEPRECATED. use appConfigs/\*\*/builds/<PLATFORM> instead
+
+## v0.31.0-alpha.25 (2020-9-15)
+
+### Fixed
+
+- dynamic CLI options generator
+- [fix] Android Manifest overrides #570
+- param config injections
+- [docs] autogenerate task cli API
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.24 (2020-9-13)
+
+### Fixed
+
+- handle unknown subtasks
+- Merge pull request #552 from pavjacko/feat/tasks
+- global task --only / -o support
+- [fix] capture missing appConfigs folders
+- 0.31.0-feat-tasks.4
+- [fix] merge files from workspace
+- [fix] rnv deploy --only
+- 0.31.0-feat-tasks.3
+- [fix] avoid platform clean, pod update if not required
+- 0.31.0-feat-tasks.2
+- [feat] support merge folders of extend + base appConfigs globally
+- 0.31.0-feat-tasks.1.md
+- added feat to version counter in changelog buildhook
+- added scripts to publish with feat tag
+- fix case sensitivity issues in appConfig folders
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.23 (2020-7-31)
+
+### Fixed
+
+- ensure executeAsync returns value
+- support for custom script executions in tasks.rnv.install
+- fix support for global tasks
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- `.next.js` extension is DEPRECATED. use `.web.js` and `.server.web.js` in combination with engine `engine-rn-next` instead
+REASON: next.js was temporary `web-next` platform extension. this has been replaced with `engine-rn-next` which supports standard `-p web`
+
+- `rnv configure` now requires platform `-p` specified. if you don't, rnv will ask you to pick one. if you use `--ci` option command will fail.
+REASON: `rnv configure` used to run configure command on all supported platforms of the project at once but that is hardly ever needed as all platform commands chain back to configure anyway. this created unnecessary log builds
+NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / export / package` afterwards as these commands will run configure task as dependency anyway
+
+## v0.31.0-alpha.22 (2020-7-30)
+
+### Fixed
+
+- rn engine platform support task fixes, fix rnv log
+- update legacy docs. fixes #554
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.21 (2020-7-29)
+
+### Fixed
+
+- fix macos fonts, layout, helloworld improvements
+- decouple analytics from loggers, fileutils DI, clean import/no-cycle
+- build scheme management improvements / fixes
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.20 (2020-7-28)
+
+### Fixed
+
+- check against unsupported platforms
+- support for multiple next versions
+- add exec cmd message for interactive commands
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.19 (2020-7-28)
+
+### Fixed
+
+- move legacy next to proper versioning folder
+- Merge branch 'feat/update_next' into feat/tasks
+- better next logs
+- next improvements / fixes
+- also added patch file
+- next update
+- Merge pull request #541 from pavjacko/feat/engines
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.18 (2020-7-28)
+
+### Fixed
+
+- feat: autocomplete
+- ejected check fixes
+- migrate workspace task
+- 0.31.0-alpha.17
+- platform support fixes
+- fix support for custom appConfig folders
+- fix chalk --mono, web next e2e
+- support for custom build scheme descriptions in prompt
+- bundler start log helpers for web
+- clean logs
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.17 (2020-7-27)
+
+### Fixed
+
+- platform support fixes
+- fix support for custom appConfig folders
+- fix chalk --mono, web next e2e
+- support for custom build scheme descriptions in prompt
+- bundler start log helpers for web
+- clean logs
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.16 (2020-7-26)
+
+### Fixed
+
+- support for --only , better android error logs
+- enable executor override via -e <engine>
+- migrate platform templates to engines
+- 0.31.0-alpha.15
+- android sdk bundleAssets fix, remove cycle references
+- clean log
+- clean getAppFolder API
+- fix clean platformAssets when --resetHard (-R)
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.15 (2020-7-26)
+
+### Fixed
+
+- android sdk bundleAssets fix, remove cycle references
+- clean log
+- clean getAppFolder API
+- fix clean platformAssets when --resetHard (-R)
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.14 (2020-7-26)
+
+### Fixed
+
+- fix plugin props
+- integrate task.rnv.workspace.configure
+- fix run task. loop task warning
+- build file system prop injectors
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.13 (2020-7-25)
+
+### Fixed
+
+- dynamic android build file injectors
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.12 (2020-7-25)
+
+### Fixed
+
+- rename hack
+- filterable logger -i "<value>,<value>.."
+- auto generate platformBuilds, better logging
+- migration fixes
+- fix crypto, better logging
+- task descriptors
+- app config edge cases, task descriptions
+- log fixes
+- fix template selection
+- refactor app config  logic
+- fix missing appConfig crash
+- fix cycled deps, platform support for tasks
+- abstract engine injections
+- decouple project configure task
+- fix platform configure
+- task options helper
+- abstracted task execution
+- update tasks info
+- task runner abstraction
+- update task executors
+- fix android support files paths
+- improved task handlers
+- engine-core
+- task export configs
+- refactor task names
+- filesystem abstraction
+- decouple engine-rn-web tasks
+- decouple engine-rn-next tasks
+- decouple engine-rn-electron tasks
+- decouple engine-rn tasks
+- decouple rnv run tasks
+- decouple project and support tasks
+- decouple publish tasks
+- decouple utility tasks
+- decouple hook tasks
+- decouple workspace tasks
+- decouple plugin tasks
+- decouple template tasks
+- decouple platform tasks
+- decouple crypto tasks
+- refactor common dependencies
+- engine-rn-next fixes + E2E
+- migration fixes
+- migration fixes
+- big structure refactoring (preparation for decoupled packages)
+- migrate engines
+- electron engine task refactor
+- engine-rn-web improvements
+- ci build for AppleTV
+- rnv build ios/tvos upgrades
+- travis updates
+- Merge branch 'feat/plugin-dep-resolvers' into feat/tasks
+- rnv builder
+- normalize platform tools APIs
+- imporved debugger
+- changelog
+- refactor task engine
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.31.0-alpha.11 (2020-7-16)
+
+### Fixed
+
+- Merge branch 'release/0.30' into feat/plugin-dep-resolvers
+- fix: #548 initial focus on tizen
+- fix: #550 splash screen  androidtv support
+- 0.30.4
+- fix crypto security import
+- add rn-iap plugin
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.10 (2020-7-12)
+
+### Fixed
+
+- add support for "source:self"
+- scoped plugin inheritance
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.9 (2020-7-12)
+
+### Fixed
+
+- update tasks, logs
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.8 (2020-7-11)
+
+### Fixed
+
+- chalk --mono support
+- 0.31.0-alpha.7
+- build hooks
+- task dependencies
+- fix configureWeb task
+- fix webos emulator detection
+- refactor engine runners
+- fix   cleanPlatformIfRequired
+- improved logs
+- update task logs
+- migrate packageParser, log updates, fix package override
+- update logTasks
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.7 (2020-7-11)
+
+### Fixed
+
+- build hooks
+- task dependencies
+- fix configureWeb task
+- fix webos emulator detection
+- refactor engine runners
+- fix   cleanPlatformIfRequired
+- improved logs
+- update task logs
+- migrate packageParser, log updates, fix package override
+- update logTasks
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.6 (2020-7-9)
+
+### Fixed
+
+- revert incorrect plugin config
+- fix chalk
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.5 (2020-7-9)
+
+### Fixed
+
+- auto install node_modules after plugin updates
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.4 (2020-7-8)
+
+### Fixed
+
+- feat: add project links helper
+- feat: add support for application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler
+- rename npminstall
+- npm dep invalidation fix
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-alpha.3 (2020-7-8)
+
+### Fixed
+
+- update engine runners
+- scoped dependency resolutions plugin auto install cleaner error log
+- feat: plugin dependency resolver
+- docs update
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.2 (2020-7-7)
 
 ### Fixed
@@ -34,8 +721,21 @@ sidebar_label: Changelog
 
 ### Breaking Changes
 
-- none
+- `-p web-next`, `-e next` are no longer be available.
 
+Use:
+
+```json
+{
+    "platforms": {
+        "web": {
+            "engine": "engine-rn-next"
+        }
+    }
+}
+```
+
+instead
 
 ## v0.31.0-alpha.1 (2020-6-30)
 
@@ -69,6 +769,77 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 
 ![ios launch image guide](/img/launch-image-guide.png)
 
+## v0.30.4 (2020-7-14)
+
+### Fixed
+
+- fix crypto security import
+- 0.31.0-alpha.10
+- add support for "source:self"
+- scoped plugin inheritance
+- 0.31.0-alpha.9
+- update tasks, logs
+- 0.31.0-alpha.8
+- chalk --mono support
+- 0.31.0-alpha.7
+- build hooks
+- task dependencies
+- fix configureWeb task
+- fix webos emulator detection
+- refactor engine runners
+- fix   cleanPlatformIfRequired
+- improved logs
+- update task logs
+- migrate packageParser, log updates, fix package override
+- update logTasks
+- 0.31.0-alpha.6
+- revert incorrect plugin config
+- fix chalk
+- 0.31.0-alpha.5
+- auto install node_modules after plugin updates
+- 0.31.0-alpha.4
+- feat: add project links helper
+- feat: add support for application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler
+- rename npminstall
+- npm dep invalidation fix
+- 0.31.0-alpha.3
+- update engine runners
+- scoped dependency resolutions plugin auto install cleaner error log
+- feat: plugin dependency resolver
+- docs update
+- 0.31.0-alpha.2
+- add core placeholder, electron next
+- update package placeholders
+- placeholders for decoupled packages
+- electron fix
+- fix next runner cleaner logs
+- refactor, cleanup
+- deprecate -p web-next, -e next
+- engines refactor
+- migrate engine specific runners
+- transformations configs
+- feat: convert tvos template to use lauchscreen storyboard
+- xcodebuild args
+- Merge branch 'develop' into feat/launch-screen
+- fix: quote escapes for --xcodebuildArchiveArgs "...." ios   option
+- auto update live changelog every release
+- fix: don't override already generated version changelogs
+- update docs
+- fix: add correct dev server url to web based logs
+- 0.31.0-alpha.1
+- add launch images and configs
+- feat: add ios launchscreen
+- fix: correct base folder for private configs + legacy support warning
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.30.3 (2020-6-26)
 
 ### Fixed
@@ -76,13 +847,7 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 - hotfix: correct tizen extensions. thx @TheDuc
 - 0.30.2
 - Merge pull request #529 from pavjacko/fix/#528-sdk-filed-merges
-- ci chores
-- ci chores
-- ci chores
-- ci chores
-- ci chores
 - revert typo
-- ci chores
 - fix: improved handling of autofixes
 - fix: prevent crash if provisioning folder does not exist
 - fix: regenerate buildConfig after sdk update fix: change default tvos config from manual to auto signing
@@ -94,7 +859,6 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 ### Breaking Changes
 
 - none
-
 
 ## v0.30.2-alpha.2 (2020-6-24)
 
@@ -224,7 +988,6 @@ NOTE: Following plugins have been updated to newer versions:
 - fix sdk discovery for rnv build tasks
 - remove unnecessary plugins from templates (moved to core engine definitions)
 - engine plugin overrides , improved summary logging
-- ci chores 32
 
 ### Added Features
 
@@ -234,12 +997,10 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.23 (2020-6-19)
 
 ### Fixed
 
-- ci chores
 - update extension support
 - cleanup logging
 
@@ -251,13 +1012,11 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.22 (2020-6-18)
 
 ### Fixed
 
 - add only missing plugins
-- ci chores 31
 - engine base compatibility
 - Merge branch 'develop' into feat/e2e-ci
 - fix #522
@@ -269,7 +1028,6 @@ NOTE: Following plugins have been updated to newer versions:
 - fix export for ios
 - add engine configs
 - Merge branch 'develop' into feat/e2e-ci
-- ci chores 22
 - dynamic  injectors via json functions
 - downgrade detox workaround for https://github.com/wix/detox/issues/152
 - init detox
@@ -895,6 +1653,86 @@ rnv run -p android
 ### Breaking Changes
 
 - none
+
+## v0.31.0-feat-tasks.4 (2020-9-11)
+
+### Fixed
+
+- [fix] merge files from workspace
+- [fix] rnv deploy --only
+- 0.31.0-feat-tasks.3
+- [fix] avoid platform clean, pod update if not required
+- 0.31.0-feat-tasks.2
+- [feat] support merge folders of extend + base appConfigs globally
+- 0.31.0-feat-tasks.1.md
+- added feat to version counter in changelog buildhook
+- added scripts to publish with feat tag
+- fix case sensitivity issues in appConfig folders
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-feat-tasks.3 (2020-9-10)
+
+### Fixed
+
+- [fix] avoid platform clean, pod update if not required
+- 0.31.0-feat-tasks.2
+- [feat] support merge folders of extend + base appConfigs globally
+- 0.31.0-feat-tasks.1.md
+- added feat to version counter in changelog buildhook
+- added scripts to publish with feat tag
+- fix case sensitivity issues in appConfig folders
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-feat-tasks.2 (2020-9-8)
+
+### Fixed
+
+- [feat] support merge folders of extend + base appConfigs globally
+- 0.31.0-feat-tasks.1.md
+- added feat to version counter in changelog buildhook
+- added scripts to publish with feat tag
+- fix case sensitivity issues in appConfig folders
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.31.0-feat-tasks.1 (2020-8-26)
+
+### Fixed
+
+- added scripts to publish with feat tag
+- fix case sensitivity issues in appConfig folders
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
 
 ## v0.30.0-rc1 (2020-6-21)
 

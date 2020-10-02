@@ -5,11 +5,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { CastButton } from 'react-native-google-cast';
 import { getScaledValue } from 'renative';
-import ScreenHome from '../screenHome';
-import ScreenMyPage from '../screenMyPage';
-import ScreenModal from '../screenModal';
-import Menu, { DrawerButton } from '../menu';
-import Theme from '../theme';
+import ScreenHome from '../components/screenHome';
+import ScreenMyPage from '../components/screenMyPage';
+import ScreenModal from '../components/screenModal';
+import Menu, { DrawerButton } from '../components/menu';
+import Theme from '../config';
 
 const Stack = createStackNavigator();
 const ModalStack = createStackNavigator();
@@ -41,7 +41,9 @@ const StackNavigator = ({ navigation }) => (
             component={ScreenHome}
             options={{
                 headerLeft: () => <DrawerButton navigation={navigation} />,
-                headerRight: () => <CastButton style={{ width: Theme.iconSize, height: Theme.iconSize, tintColor: Theme.color3 }} />
+                headerRight: () => (
+                    <CastButton style={{ width: Theme.iconSize, height: Theme.iconSize, tintColor: Theme.color3 }} />
+                )
             }}
         />
         <Stack.Screen name="my-page" component={ScreenMyPage} />

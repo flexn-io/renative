@@ -5,85 +5,25 @@
     "previous": "Previous",
     "tagline": "Build universal cross-platform apps with react native",
     "docs": {
-      "api-cli-build": {
-        "title": "rnv build",
-        "sidebar_label": "build"
+      "api-cli-engine-core": {
+        "title": "Engine Core CLI Reference",
+        "sidebar_label": "Engine Core"
       },
-      "api-cli-clean": {
-        "title": "rnv clean",
-        "sidebar_label": "clean"
+      "api-cli-engine-rn-electron": {
+        "title": "Engine RN Electron CLI Reference",
+        "sidebar_label": "Engine RN Electron"
       },
-      "api-cli-configure": {
-        "title": "rnv configure",
-        "sidebar_label": "configure"
+      "api-cli-engine-rn-next": {
+        "title": "Engine RN Next CLI Reference",
+        "sidebar_label": "Engine RN Next"
       },
-      "api-cli-crypto": {
-        "title": "rnv crypto",
-        "sidebar_label": "crypto"
+      "api-cli-engine-rn-web": {
+        "title": "Engine RN Web CLI Reference",
+        "sidebar_label": "Engine RN Web"
       },
-      "api-cli-deploy": {
-        "title": "rnv deploy",
-        "sidebar_label": "deploy"
-      },
-      "api-cli-export": {
-        "title": "rnv export",
-        "sidebar_label": "export"
-      },
-      "api-cli-fastlane": {
-        "title": "rnv fastlane",
-        "sidebar_label": "fastlane"
-      },
-      "api-cli-log": {
-        "title": "rnv log",
-        "sidebar_label": "log"
-      },
-      "api-cli-new": {
-        "title": "rnv new",
-        "sidebar_label": "new"
-      },
-      "api-cli-package": {
-        "title": "rnv package",
-        "sidebar_label": "package"
-      },
-      "api-cli-platform": {
-        "title": "rnv platform",
-        "sidebar_label": "platform"
-      },
-      "api-cli-plugin": {
-        "title": "rnv plugin",
-        "sidebar_label": "plugin"
-      },
-      "api-cli-publish": {
-        "title": "rnv publish",
-        "sidebar_label": "publish"
-      },
-      "api-cli-run": {
-        "title": "rnv run",
-        "sidebar_label": "run"
-      },
-      "api-cli-start": {
-        "title": "rnv start",
-        "sidebar_label": "start"
-      },
-      "api-cli-status": {
-        "title": "rnv status",
-        "sidebar_label": "status"
-      },
-      "api-cli-target": {
-        "title": "rnv target",
-        "sidebar_label": "target"
-      },
-      "api-cli-template": {
-        "title": "rnv template",
-        "sidebar_label": "template"
-      },
-      "api-cli-workspace": {
-        "title": "rnv workspace",
-        "sidebar_label": "workspace"
-      },
-      "api-cli": {
-        "title": "rnv",
-        "sidebar_label": "rnv"
+      "api-cli-engine-rn": {
+        "title": "Engine RN CLI Reference",
+        "sidebar_label": "Engine RN"
       },
       "api-config": {
         "title": "renative.json API Reference",
@@ -99,6 +39,86 @@
       },
       "api-rnv": {
         "title": "rnv API Reference",
+        "sidebar_label": "rnv"
+      },
+      "archive/api-cli-build": {
+        "title": "rnv build",
+        "sidebar_label": "build"
+      },
+      "archive/api-cli-clean": {
+        "title": "rnv clean",
+        "sidebar_label": "clean"
+      },
+      "archive/api-cli-configure": {
+        "title": "rnv configure",
+        "sidebar_label": "configure"
+      },
+      "archive/api-cli-crypto": {
+        "title": "rnv crypto",
+        "sidebar_label": "crypto"
+      },
+      "archive/api-cli-deploy": {
+        "title": "rnv deploy",
+        "sidebar_label": "deploy"
+      },
+      "archive/api-cli-export": {
+        "title": "rnv export",
+        "sidebar_label": "export"
+      },
+      "archive/api-cli-fastlane": {
+        "title": "rnv fastlane",
+        "sidebar_label": "fastlane"
+      },
+      "archive/api-cli-log": {
+        "title": "rnv log",
+        "sidebar_label": "log"
+      },
+      "archive/api-cli-new": {
+        "title": "rnv new",
+        "sidebar_label": "new"
+      },
+      "archive/api-cli-package": {
+        "title": "rnv package",
+        "sidebar_label": "package"
+      },
+      "archive/api-cli-platform": {
+        "title": "rnv platform",
+        "sidebar_label": "platform"
+      },
+      "archive/api-cli-plugin": {
+        "title": "rnv plugin",
+        "sidebar_label": "plugin"
+      },
+      "archive/api-cli-publish": {
+        "title": "rnv publish",
+        "sidebar_label": "publish"
+      },
+      "archive/api-cli-run": {
+        "title": "rnv run",
+        "sidebar_label": "run"
+      },
+      "archive/api-cli-start": {
+        "title": "rnv start",
+        "sidebar_label": "start"
+      },
+      "archive/api-cli-status": {
+        "title": "rnv status",
+        "sidebar_label": "status"
+      },
+      "archive/api-cli-target": {
+        "title": "rnv target",
+        "sidebar_label": "target"
+      },
+      "archive/api-cli-template": {
+        "title": "rnv template",
+        "sidebar_label": "template"
+      },
+      "archive/api-cli-workspace": {
+        "title": "rnv workspace",
+        "sidebar_label": "workspace"
+      },
+      "archive/api-cli": {
+        "title": "rnv",
         "sidebar_label": "rnv"
       },
       "changelog": {
@@ -237,8 +257,119 @@
       "changelog/0.30.3": {
         "title": "changelog/0.30.3"
       },
+      "changelog/0.30.4": {
+        "title": "changelog/0.30.4"
+      },
       "changelog/0.31.0-alpha.1": {
         "title": "changelog/0.31.0-alpha.1"
+      },
+      "changelog/0.31.0-alpha.10": {
+        "title": "changelog/0.31.0-alpha.10"
+      },
+      "changelog/0.31.0-alpha.11": {
+        "title": "changelog/0.31.0-alpha.11"
+      },
+      "changelog/0.31.0-alpha.12": {
+        "title": "changelog/0.31.0-alpha.12"
+      },
+      "changelog/0.31.0-alpha.13": {
+        "title": "changelog/0.31.0-alpha.13"
+      },
+      "changelog/0.31.0-alpha.14": {
+        "title": "changelog/0.31.0-alpha.14"
+      },
+      "changelog/0.31.0-alpha.15": {
+        "title": "changelog/0.31.0-alpha.15"
+      },
+      "changelog/0.31.0-alpha.16": {
+        "title": "changelog/0.31.0-alpha.16"
+      },
+      "changelog/0.31.0-alpha.17": {
+        "title": "changelog/0.31.0-alpha.17"
+      },
+      "changelog/0.31.0-alpha.18": {
+        "title": "changelog/0.31.0-alpha.18"
+      },
+      "changelog/0.31.0-alpha.19": {
+        "title": "changelog/0.31.0-alpha.19"
+      },
+      "changelog/0.31.0-alpha.2": {
+        "title": "changelog/0.31.0-alpha.2"
+      },
+      "changelog/0.31.0-alpha.20": {
+        "title": "changelog/0.31.0-alpha.20"
+      },
+      "changelog/0.31.0-alpha.21": {
+        "title": "changelog/0.31.0-alpha.21"
+      },
+      "changelog/0.31.0-alpha.22": {
+        "title": "changelog/0.31.0-alpha.22"
+      },
+      "changelog/0.31.0-alpha.23": {
+        "title": "changelog/0.31.0-alpha.23"
+      },
+      "changelog/0.31.0-alpha.24": {
+        "title": "changelog/0.31.0-alpha.24"
+      },
+      "changelog/0.31.0-alpha.25": {
+        "title": "changelog/0.31.0-alpha.25"
+      },
+      "changelog/0.31.0-alpha.26": {
+        "title": "changelog/0.31.0-alpha.26"
+      },
+      "changelog/0.31.0-alpha.27": {
+        "title": "changelog/0.31.0-alpha.27"
+      },
+      "changelog/0.31.0-alpha.28": {
+        "title": "changelog/0.31.0-alpha.28"
+      },
+      "changelog/0.31.0-alpha.29": {
+        "title": "changelog/0.31.0-alpha.29"
+      },
+      "changelog/0.31.0-alpha.3": {
+        "title": "changelog/0.31.0-alpha.3"
+      },
+      "changelog/0.31.0-alpha.30": {
+        "title": "changelog/0.31.0-alpha.30"
+      },
+      "changelog/0.31.0-alpha.31": {
+        "title": "changelog/0.31.0-alpha.31"
+      },
+      "changelog/0.31.0-alpha.32": {
+        "title": "changelog/0.31.0-alpha.32"
+      },
+      "changelog/0.31.0-alpha.33": {
+        "title": "changelog/0.31.0-alpha.33"
+      },
+      "changelog/0.31.0-alpha.4": {
+        "title": "changelog/0.31.0-alpha.4"
+      },
+      "changelog/0.31.0-alpha.5": {
+        "title": "changelog/0.31.0-alpha.5"
+      },
+      "changelog/0.31.0-alpha.6": {
+        "title": "changelog/0.31.0-alpha.6"
+      },
+      "changelog/0.31.0-alpha.7": {
+        "title": "changelog/0.31.0-alpha.7"
+      },
+      "changelog/0.31.0-alpha.8": {
+        "title": "changelog/0.31.0-alpha.8"
+      },
+      "changelog/0.31.0-alpha.9": {
+        "title": "changelog/0.31.0-alpha.9"
+      },
+      "changelog/0.31.0-feat-tasks.1": {
+        "title": "changelog/0.31.0-feat-tasks.1"
+      },
+      "changelog/0.31.0-feat-tasks.2": {
+        "title": "changelog/0.31.0-feat-tasks.2"
+      },
+      "changelog/0.31.0-feat-tasks.3": {
+        "title": "changelog/0.31.0-feat-tasks.3"
+      },
+      "changelog/0.31.0-feat-tasks.4": {
+        "title": "changelog/0.31.0-feat-tasks.4"
       },
       "config-app": {
         "title": "App Configs",
@@ -283,6 +414,14 @@
       "config-workspaces": {
         "title": "Workspace Configs",
         "sidebar_label": "Workspace Configs"
+      },
+      "engine-core": {
+        "title": "Core Engine",
+        "sidebar_label": "Core"
+      },
+      "engine-rn-electron-next": {
+        "title": "React Native Electron Next Engine",
+        "sidebar_label": "React Native Electron Next"
       },
       "engine-rn-electron": {
         "title": "React Native Electron Engine",
