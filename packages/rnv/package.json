@@ -133,7 +133,7 @@
         "natives": "1.1.6",
         "ncp": "2.0.0",
         "netcat": "1.4.0",
-        "node-fetch": "2.6.0",
+        "node-fetch": "2.6.1",
         "node-machine-id": "^1.1.12",
         "resolve": "^1.0.0",
         "shelljs": "0.8.2",
