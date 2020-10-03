@@ -278,7 +278,7 @@ rnv plugin add @react-native-community/viewpager
 ## @react-native-firebase/analytics
 
 
-Version: `6.4.1`
+Version: `7.3.1`
 
 Platforms: `ios`,`android`,`androidtv`
 
@@ -296,7 +296,7 @@ rnv plugin add @react-native-firebase/analytics
 ## @react-native-firebase/app
 
 
-Version: `6.4.1`
+Version: `8.2.0`
 
 Platforms: `ios`,`android`,`androidtv`
 
@@ -314,7 +314,7 @@ rnv plugin add @react-native-firebase/app
 ## @react-native-firebase/crashlytics
 
 
-Version: `6.4.1`
+Version: `8.1.2`
 
 Platforms: `ios`,`android`,`androidtv`
 
@@ -326,6 +326,24 @@ Installation:
 
 ```
 rnv plugin add @react-native-firebase/crashlytics
+```
+
+
+## @react-native-firebase/messaging
+
+
+Version: `7.5.0`
+
+Platforms: `ios`,`android`,`androidtv`
+
+
+
+Npm: https://www.npmjs.com/package/@react-native-firebase/messaging
+
+Installation:
+
+```
+rnv plugin add @react-native-firebase/messaging
 ```
 
 
@@ -494,7 +512,7 @@ rnv plugin add crashlytics
 ## detox
 
 
-Version: `15.1.3`
+Version: `17.8.0`
 
 Platforms: `android`
 
@@ -2726,7 +2744,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.31.0-alpha.33`
+Version: `0.31.0-alpha.34`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
