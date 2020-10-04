@@ -1,0 +1,104 @@
+---
+id: upgrade-0.31
+title: Upgrade to 0.31.x Guide
+sidebar_label: 0.31.x
+---
+
+<img src="https://renative.org/img/ic_upgrade.png" width=50 height=50 />
+
+
+
+---
+
+- `.next.js` extension is DEPRECATED. use `.web.js` and `.server.web.js` in combination with engine `engine-rn-next` instead
+
+REASON: next.js was temporary `web-next` platform extension. this has been replaced with `engine-rn-next` which supports standard `-p web`
+
+- `rnv configure` now requires platform `-p` specified. if you don't, rnv will ask you to pick one. if you use `--ci` option command will fail.
+
+REASON: `rnv configure` used to run configure command on all supported platforms of the project at once but that is hardly ever needed as all platform commands chain back to configure anyway. this created unnecessary log builds
+
+NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / export / package` afterwards as these commands will run configure task as dependency anyway
+
+---
+
+NextJS config should migrate to use withRNV from `@rnv/engine-rn-next`:
+
+`next.config.js`
+
+
+```
+const { withRNV } = require('@rnv/engine-rn-next');
+const path = require('path');
+
+const config = {
+
+};
+
+module.exports = withRNV(config);
+```
+
+
+Metro config should migrate to use withRNV from `@rnv/engine-rn`:
+
+`metro.config.js`
+
+```
+const path = require('path');
+const { withRNV } = require('@rnv/engine-rn');
+
+const config = {
+
+};
+
+module.exports = withRNV(config);
+```
+
+---
+
+- appConfigs/\*\*/builds/_shared is DEPRECATED. use appConfigs/\*\*/builds/\<PLATFORM\> instead
+
+
+---
+
+iOS Template has been updated to follow new requirements for storyboard based launch screen. More info:  https://developer.apple.com/news/?id=01132020b
+
+new launch images should be placed to your assets configs typically:
+
+
+```
+.
+└── [appConfigs/<appConfig>/assets/ios/Assets.xcassets/launch-image.imageset]
+    ├── launch-image.png
+    ├── launch-image@2x.png
+    └── launch-image@3x.png
+
+```
+
+Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen densities
+
+![ios launch image guide](/img/launch-image-guide.png)
+
+
+---
+
+
+
+- `-p web-next`, `-e next` are no longer be available.
+
+Use:
+
+```json
+{
+    "platforms": {
+        "web": {
+            "engine": "engine-rn-next"
+        }
+    }
+}
+```
+
+instead
+
+
+---

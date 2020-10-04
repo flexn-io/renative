@@ -58,6 +58,16 @@ const HomeSplash = ({ siteConfig, language = '' }) => {
         </div>
     );
 
+    const Logo = props => (
+        <div className="projectLogo">
+            <img
+                src={props.img_src}
+                alt="Renative Logo"
+                style={{ height: '180px', width: '180px' }}
+            />
+        </div>
+    );
+
     const ProjectTitle = () => (
         <div className="projectTitle">
             <h1 className="headerTitle">
@@ -89,11 +99,10 @@ ReNative
 
     return (
         <SplashContainer>
-            as
             <div className="inner">
                 <ProjectTitle
                     siteConfig={siteConfig}
-                    img_src={`${baseUrl}img/logo_large.png`}
+                    img_src={`${baseUrl}img/renative_logo.png`}
                 />
 
                 <PromoSection>
@@ -101,7 +110,10 @@ ReNative
                         Try It Out
                     </Button>
                 </PromoSection>
+
             </div>
+            <Logo img_src={`${baseUrl}img/renative_logo.png`} />
+
         </SplashContainer>
     );
 };

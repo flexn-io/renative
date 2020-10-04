@@ -78,6 +78,7 @@
             "integration_testflight"
         ],
         "Upgrades": [
+            "upgrade-0.31",
             "upgrade-0.30",
             "upgrade-0.29",
             "upgrade-0.28",
@@ -85,6 +86,7 @@
         ],
         "Release Notes": [
             "changelog",
+            "release-0.31.x",
             "release-0.30.x",
             "release-0.29.x",
             "release-0.28.x",

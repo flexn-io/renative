@@ -33,6 +33,11 @@
 .headerTitle {
     font-size: 72px;
     margin-top: 1em;
+    color: #fb8e62;
+}
+
+.homeWrapper {
+  flex-direction: row;
 }
 
 .platformsWrapper {
@@ -56,6 +61,7 @@
 
 .projectTitle {
     color: #ffffff;
+    text-align: left;
 }
 
 .logoImage {
