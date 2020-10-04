@@ -174,7 +174,6 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0900;
 				LastUpgradeCheck = 0900;
-				ORGANIZATIONNAME = Deconstruct;
 				TargetAttributes = {
 					200132EF1F6BF9CF00450340 = {
 						CreatedOnToolsVersion = 9.0;

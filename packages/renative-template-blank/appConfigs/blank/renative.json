@@ -1,22 +1,13 @@
 {
-    "id": "helloworld",
+    "id": "blank",
     "common": {
         "id": "renative.blank",
         "title": "ReNative Blank",
         "description": "Cross-platform application project based on ReNative",
-        "author": {
-            "name": "Pavel Jacko",
-            "email": "Pavel Jacko <i@pavjacko.com>",
-            "url": "https://github.com/pavjacko"
-        },
         "license": "MIT",
         "includedPlugins": ["*"],
         "includedFonts": ["*"],
-        "defaultSchemes": {
-            "run": "debug",
-            "build": "release",
-            "export": "release"
-        }
+        "backgroundColor": "#FFFFFF"
     },
     "platforms": {
         "ios": {
@@ -189,6 +180,15 @@
                     "bundleAssets": true,
                     "bundleIsDev": false
                 }
+            }
+        },
+        "chromecast": {
+            "entryFile": "index.chromecast",
+            "webpackConfig": {
+                "customScripts": [
+                    "www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js",
+                    "www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"
+                ]
             }
         }
     }

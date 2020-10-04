@@ -1,5 +1,5 @@
 {
-    "id": "kitchenSink",
+    "id": "kitchensink",
     "common": {
         "id": "renative.kitchensink",
         "title": "ReNative Kitchen Sink",
@@ -184,6 +184,15 @@
                     "bundleAssets": true,
                     "bundleIsDev": false
                 }
+            }
+        },
+        "chromecast": {
+            "entryFile": "index.chromecast",
+            "webpackConfig": {
+                "customScripts": [
+                    "www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js",
+                    "www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"
+                ]
             }
         }
     }

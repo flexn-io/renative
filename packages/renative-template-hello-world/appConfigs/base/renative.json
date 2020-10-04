@@ -9,12 +9,7 @@
         },
         "license": "MIT",
         "includedPlugins": ["*"],
-        "includedFonts": ["*"],
-        "defaultSchemes": {
-            "run": "debug",
-            "build": "release",
-            "export": "release"
-        },
+        "includedFonts": ["*"]
         "buildSchemes": {
             "debug": {
                 "description": "Use for local development"

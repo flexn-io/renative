@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, Text, ScrollView, TextInput, Image, Button, ActivityIndicator,
-    ImageBackground, ProgressViewIOS, Switch, DatePickerIOS, ViewPagerAndroid } from 'react-native';
-import { Api, registerFocusManger, registerServiceWorker } from 'renative';
+    ImageBackground, ProgressViewIOS, Switch, DatePickerIOS } from 'react-native';
+import { registerFocusManger, registerServiceWorker } from 'renative';
 
 registerFocusManger({ focused: 'border: 5px solid #62DBFB; border-radius:5px;' });
 registerServiceWorker();
-let AppContainer;
 
 const Tile = ({ children, title }) => (
     <View style={{ margin: 5, maxWidth: 200, minWidth: 150, borderWidth: 1, borderColor: '#CCCCCC' }}>
