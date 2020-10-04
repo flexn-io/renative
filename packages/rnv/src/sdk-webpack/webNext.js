@@ -114,10 +114,16 @@ export const runWebNext = async (c) => {
         }
         await runWebDevServer(c);
     } else {
-        await confirmActiveBundler(c);
-        await _runWebBrowser(c, platform, devServerHost, port, true);
-        if (!bundleAssets) {
-            logSummary('BUNDLER STARTED');
+        const resetCompleted = await confirmActiveBundler(c);
+
+        if (resetCompleted) {
+            await _runWebBrowser(c, platform, devServerHost, port, false);
+            if (!bundleAssets) {
+                logSummary('BUNDLER STARTED');
+            }
+            await runWebDevServer(c);
+        } else {
+            await _runWebBrowser(c, platform, devServerHost, port, true);
         }
     }
 };

@@ -488,8 +488,8 @@ export const runTizen = async (c, target) => {
     if (isHosted) {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
         if (isPortActive) {
-            await confirmActiveBundler(c);
-            c.runtime.skipActiveServerCheck = true;
+            const resetCompleted = await confirmActiveBundler(c);
+            c.runtime.skipActiveServerCheck = !resetCompleted;
         }
     }
 
@@ -518,8 +518,16 @@ export const runTizen = async (c, target) => {
                 .catch(logError);
             await runWebpackServer(c, isWeinreEnabled);
         } else {
-            await confirmActiveBundler(c);
-            await _runTizenSimOrDevice(c);
+            const resetCompleted = await confirmActiveBundler(c);
+
+            if (resetCompleted) {
+                waitForWebpack(c)
+                    .then(() => _runTizenSimOrDevice(c))
+                    .catch(logError);
+                await runWebpackServer(c, isWeinreEnabled);
+            } else {
+                await _runTizenSimOrDevice(c);
+            }
         }
     }
 };

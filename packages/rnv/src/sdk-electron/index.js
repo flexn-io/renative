@@ -268,8 +268,16 @@ export const runElectron = async (c) => {
             // await _runElectronSimulator(c);
             await runWebpackServer(c);
         } else {
-            await confirmActiveBundler(c);
-            await _runElectronSimulator(c);
+            const resetCompleted = await confirmActiveBundler(c);
+            if (resetCompleted) {
+                waitForWebpack(c)
+                    .then(() => _runElectronSimulator(c))
+                    .catch(logError);
+                // await _runElectronSimulator(c);
+                await runWebpackServer(c);
+            } else {
+                await _runElectronSimulator(c);
+            }
         }
     }
 };

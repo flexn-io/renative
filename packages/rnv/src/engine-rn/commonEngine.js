@@ -71,7 +71,13 @@ export const startBundlerIfRequired = async (c, parentTask, originTask) => {
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
-        await confirmActiveBundler(c);
+        const resetCompleted = await confirmActiveBundler(c);
+        if (resetCompleted) {
+            await executeTask(c, TASK_START, parentTask, originTask);
+
+            keepRNVRunning = true;
+            await waitForBundler(c);
+        }
     }
 };
 

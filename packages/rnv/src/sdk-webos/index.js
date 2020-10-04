@@ -294,8 +294,8 @@ const runWebOS = async (c) => {
     if (isHosted) {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
         if (isPortActive) {
-            await confirmActiveBundler(c);
-            c.runtime.skipActiveServerCheck = true;
+            const resetCompleted = await confirmActiveBundler(c);
+            c.runtime.skipActiveServerCheck = !resetCompleted;
         }
     }
 
@@ -324,8 +324,15 @@ const runWebOS = async (c) => {
                 .catch(logError);
             await runWebpackServer(c, isWeinreEnabled);
         } else {
-            await confirmActiveBundler(c);
-            await _runWebosSimOrDevice(c);
+            const resetCompleted = await confirmActiveBundler(c);
+            if (resetCompleted) {
+                waitForWebpack(c)
+                    .then(() => _runWebosSimOrDevice(c))
+                    .catch(logError);
+                await runWebpackServer(c, isWeinreEnabled);
+            } else {
+                await _runWebosSimOrDevice(c);
+            }
         }
     }
 };

@@ -348,10 +348,16 @@ export const runWebpackServer = async (c, enableRemoteDebugger) => {
         }
         await runWebDevServer(c, enableRemoteDebugger);
     } else {
-        await confirmActiveBundler(c);
-        await _runWebBrowser(c, platform, devServerHost, port, true);
-        if (!bundleAssets) {
-            logSummary('BUNDLER STARTED');
+        const resetCompleted = await confirmActiveBundler(c);
+
+        if (resetCompleted) {
+            await _runWebBrowser(c, platform, devServerHost, port, false);
+            if (!bundleAssets) {
+                logSummary('BUNDLER STARTED');
+            }
+            await runWebDevServer(c, enableRemoteDebugger);
+        } else {
+            await _runWebBrowser(c, platform, devServerHost, port, true);
         }
     }
 };

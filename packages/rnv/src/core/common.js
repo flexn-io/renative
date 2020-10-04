@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+import killPort from 'kill-port';
 import path from 'path';
 import detectPort from 'detect-port';
 import ip from 'ip';
@@ -97,16 +98,24 @@ export const sanitizeColor = (val, key) => {
 
 export const confirmActiveBundler = async (c) => {
     if (c.runtime.skipActiveServerCheck) return true;
-    const { confirm } = await inquirerPrompt({
-        type: 'confirm',
-        message: 'It will be used for this session. Continue?',
+
+    const choices = ['Restart the server (recommended)', 'Use existing session'];
+
+    const { selectedOption } = await inquirerPrompt({
+        name: 'selectedOption',
+        type: 'list',
+        choices,
         warningMessage: `Another ${c.platform} server at port ${
-            c.runtime.port
+            chalk().white(c.runtime.port)
         } already running`
     });
 
-    if (confirm) return true;
-    return Promise.reject('Cancelled by user');
+    if (choices[0] === selectedOption) {
+        await killPort(c.runtime.port);
+    } else {
+        return false;
+    }
+    return true;
 };
 
 export const getPlatformBuildDir = (c) => {

@@ -31,9 +31,6 @@ export const taskRnvKill = async (c, parentTask, originTask) => {
         });
     }
 
-
-    // console.log('BCBCCB', c.buildConfig?.defaults?.ports?.['web']);
-
     for (let i = 0; i < platArray.length; i++) {
         const plat = platArray[i];
         const port = ports?.[plat.platform];
