@@ -1,64 +1,53 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import { chalk, logTask, logSuccess, logError } from '../core/systemManager/logger';
-import { copyFolderContentsRecursiveSync, writeFileSync } from '../core/systemManager/fileutils';
-import { PLATFORMS, TASK_PLATFORM_EJECT, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
+import { writeFileSync } from '../core/systemManager/fileutils';
+import { TASK_PLATFORM_EJECT, TASK_PROJECT_CONFIGURE, PARAMS } from '../core/constants';
 import { generatePlatformChoices } from '../core/platformManager';
-import { executeTask } from '../core/engineManager';
-
+import { executeTask, getEngineRunnerByPlatform } from '../core/engineManager';
 
 export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformEject');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_EJECT, originTask);
+    let selectedPlatforms;
+    if (c.platform) {
+        selectedPlatforms = [c.platform];
+    } else {
+        const { ejectedPlatforms } = await inquirer.prompt({
+            name: 'ejectedPlatforms',
+            message:
+              'This will copy platformTemplates folders from ReNative managed directly to your project Select platforms you would like to connect (use SPACE key)',
+            type: 'checkbox',
+            choices: generatePlatformChoices(c).map(choice => ({
+                ...choice,
+                disabled: !choice.isConnected
+            }))
+        });
+        selectedPlatforms = ejectedPlatforms;
+    }
 
-    const { ejectedPlatforms } = await inquirer.prompt({
-        name: 'ejectedPlatforms',
-        message:
-            'This will copy platformTemplates folders from ReNative managed directly to your project Select platforms you would like to connect (use SPACE key)',
-        type: 'checkbox',
-        choices: generatePlatformChoices(c).map(choice => ({
-            ...choice,
-            disabled: !choice.isConnected
-        }))
-    });
 
-    if (ejectedPlatforms.length) {
-        const ptfn = 'platformTemplates';
-        const rptf = c.paths.rnv.platformTemplates.dir;
-        const prf = c.paths.project.dir;
+    if (selectedPlatforms.length) {
+        selectedPlatforms.forEach((platform) => {
+            const engine = getEngineRunnerByPlatform(c, platform);
+            const destDir = path.join(c.paths.project.dir, 'platformTemplates', platform);
 
-        let copyShared = false;
-
-        ejectedPlatforms.forEach((platform) => {
-            if (PLATFORMS[platform].requiresSharedConfig) {
-                copyShared = true;
-            }
-            copyFolderContentsRecursiveSync(
-                path.join(rptf, platform),
-                path.join(prf, ptfn, platform)
-            );
-
-            if (copyShared) {
-                copyFolderContentsRecursiveSync(
-                    path.join(rptf, '_shared'),
-                    path.join(prf, ptfn, platform)
-                );
-            }
+            engine.ejectPlatform(c, platform, destDir);
 
             c.files.project.config.paths
                 .platformTemplatesDirs = c.files.project.config.paths.platformTemplatesDirs || {};
             c.files.project.config.paths.platformTemplatesDirs[
                 platform
-            ] = `./${ptfn}`;
+            ] = `./${'platformTemplates'}`;
             writeFileSync(c.paths.project.config, c.files.project.config);
         });
 
         logSuccess(
             `${chalk().white(
-                ejectedPlatforms.join(',')
+                selectedPlatforms.join(',')
             )} platform templates are located in ${chalk().white(
-                c.files.project.config.paths.platformTemplatesDirs[ejectedPlatforms[0]]
+                c.files.project.config.paths.platformTemplatesDirs[selectedPlatforms[0]]
             )} now. You can edit them directly!`
         );
     } else {

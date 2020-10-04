@@ -8,6 +8,16 @@ export const getPlatformOutputDir = () => {
     return null;
 };
 
+export const getTemplateRootDir = () => {
+    logError('core engine does not support getTemplateRootDir');
+    return null;
+};
+
+export const ejectPlatform = () => {
+    logError('core engine does not support ejectPlatform');
+    // Do nothing
+};
+
 export const getTemplateProjectDir = (c) => {
     const dir = getTemplateDir(c);
     let output;

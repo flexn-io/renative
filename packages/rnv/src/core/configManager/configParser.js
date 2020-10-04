@@ -148,7 +148,7 @@ export const fixRenativeConfigsSync = async (c) => {
         logInfo(
             `Looks like your babel config file ${chalk().white(
                 c.paths.project.babelConfig
-            )} is missing! Let's create one for you.`
+            )} is missing! CREATING...`
         );
         copyFileSync(
             path.join(c.paths.rnv.projectTemplate.dir, RN_BABEL_CONFIG_NAME),
@@ -655,24 +655,6 @@ const _generatePlatformTemplatePaths = (c) => {
         }
     });
 
-
-    // c.paths.rnv.platformTemplates.dir = getRealPath(
-    //     c,
-    //     originalPath,
-    //     'platformTemplatesDir',
-    //     originalPath
-    // );
-    // // const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || engineTemplDir;
-    //
-    // if (engine?.platforms) {
-    //     const supportedPlatforms = Object.keys(engine.platforms);
-    //
-    //     supportedPlatforms.forEach((v) => {
-    //
-    //     });
-    //     return result;
-    // }
-
     return result;
 };
 
@@ -1027,11 +1009,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     c.platformDefaults = PLATFORMS;
 
     c.paths.rnv.dir = RNV_HOME_DIR;
-    // c.paths.rnv.nodeModulesDir = path.join(c.paths.rnv.dir, 'node_modules');
-    // c.paths.rnv.platformTemplates.dir = path.join(
-    //     c.paths.rnv.dir,
-    //     'platformTemplates'
-    // );
+
     c.paths.rnv.engines.dir = path.join(
         c.paths.rnv.dir,
         'engineTemplates'
@@ -1040,10 +1018,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
         c.paths.rnv.dir,
         'pluginTemplates'
     );
-    // c.paths.rnv.platformTemplates.config = path.join(
-    //     c.paths.rnv.platformTemplates.dir,
-    //     RENATIVE_CONFIG_PLATFORMS_NAME
-    // );
+
     c.paths.rnv.engines.config = path.join(
         c.paths.rnv.engines.dir,
         RENATIVE_CONFIG_ENGINES_NAME

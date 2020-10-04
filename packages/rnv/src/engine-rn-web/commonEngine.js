@@ -13,6 +13,7 @@ import {
     CHROMECAST,
     RNV_PROJECT_DIR_NAME
 } from '../core/constants';
+import { copyFolderContentsRecursiveSync } from '../core/systemManager/fileutils';
 
 export const getPlatformBuildDir = c => getAppFolder(c);
 
@@ -40,6 +41,23 @@ export const getTemplateProjectDir = (c) => {
             output = dir;
     }
     return output;
+};
+
+export const getTemplateRootDir = (c, platform) => {
+    const dir = c.paths.project.platformTemplatesDirs[platform];
+    return dir;
+};
+
+export const ejectPlatform = (c, platform, destFolder) => {
+    const sourcePlatformDir = getTemplateRootDir(c, platform);
+    copyFolderContentsRecursiveSync(
+        path.join(sourcePlatformDir, platform),
+        destFolder
+    );
+    copyFolderContentsRecursiveSync(
+        path.join(sourcePlatformDir, '_shared'),
+        destFolder
+    );
 };
 
 export const getPlatformProjectDir = (c) => {

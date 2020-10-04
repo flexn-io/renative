@@ -3,7 +3,7 @@ import merge from 'deepmerge';
 
 import { executeAsync } from '../systemManager/exec';
 import { installPackageDependencies } from '../systemManager/npmUtils';
-import { logWarning, logDebug, logTask } from '../systemManager/logger';
+import { chalk, logInfo, logDebug, logTask } from '../systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEngineByPlatform } from '../engineManager';
 import { writeRenativeConfigFile } from './configParser';
@@ -137,9 +137,9 @@ export const injectPlatformDependencies = async (c) => {
 
         if (installed.some(i => i === true)) {
             // do npm i only if something new is added
-            logWarning(`Found extra npm dependencies required by ${
-                selectedEngine.id
-            } engine. will install them now`);
+            logInfo(`Found extra npm dependencies required by ${
+                chalk().white(selectedEngine.id)
+            } engine. INSTALLING...`);
             await installPackageDependencies(c);
         }
     }

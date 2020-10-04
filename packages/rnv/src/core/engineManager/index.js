@@ -102,6 +102,10 @@ export const hasEngineTask = (task, tasks, isProjectScope) => (
 
 export const getEngineSubTasks = (task, tasks, exactMatch) => Object.values(tasks).filter(v => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
 
+export const getEngineRunnerByPlatform = (c, platform) => {
+    const selectedEngine = getEngineByPlatform(c, platform);
+    return ENGINES[selectedEngine?.id];
+};
 
 export const getEngineRunner = (c, task) => {
     const selectedEngine = getEngineByPlatform(c, c.platform);

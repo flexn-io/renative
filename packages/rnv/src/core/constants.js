@@ -145,7 +145,6 @@ export const PLATFORMS = {
         icon: ICONS.BROWSER,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_BROWSER],
             platforms: [...EXT_LEGACY_SERVER_NEXT, ...EXT_SERVER_WEB, ...EXT_LEGACY_NEXT, ...EXT_WEB],
@@ -157,7 +156,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.MAC_ONLY,
         isActive: true,
-        requiresSharedConfig: false,
         sourceExts: {
             factors: [...EXT_IOS_MOBILE, ...EXT_MOBILE],
             platforms: [...EXT_IOS],
@@ -169,7 +167,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: false,
         sourceExts: {
             factors: [...EXT_ANDROID_MOBILE, ...EXT_MOBILE],
             platforms: [...EXT_ANDROID],
@@ -181,7 +178,6 @@ export const PLATFORMS = {
         icon: ICONS.TV,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: false,
         sourceExts: {
             factors: [...EXT_ANDROIDTV_TV, ...EXT_TV],
             platforms: [...EXT_ANDROIDTV, ...EXT_ANDROID],
@@ -193,7 +189,6 @@ export const PLATFORMS = {
         icon: ICONS.TV,
         supportedOS: OS.MAC_ONLY,
         isActive: true,
-        requiresSharedConfig: false,
         sourceExts: {
             factors: [...EXT_TVOS_TV, ...EXT_TV],
             platforms: [...EXT_TVOS, ...EXT_IOS],
@@ -205,7 +200,6 @@ export const PLATFORMS = {
         icon: ICONS.DESKTOP,
         supportedOS: OS.MAC_ONLY,
         isActive: true,
-        requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_MACOS_DESKTOP, ...EXT_DESKTOP],
             platforms: [...EXT_MACOS],
@@ -217,7 +211,6 @@ export const PLATFORMS = {
         icon: ICONS.TV,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_TIZEN_TV, ...EXT_WEB_TV, ...EXT_TV],
             platforms: [...EXT_TIZEN],
@@ -229,7 +222,6 @@ export const PLATFORMS = {
         icon: ICONS.TV,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_WEBOS_TV, ...EXT_WEB_TV, ...EXT_TV],
             platforms: [...EXT_WEBOS],
@@ -241,7 +233,6 @@ export const PLATFORMS = {
         icon: ICONS.WATCH,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: false,
         sourceExts: {
             factors: [...EXT_ANDROIDWEAR_WATCH, ...EXT_WATCH],
             platforms: [...EXT_ANDROIDWEAR, ...EXT_ANDROID],
@@ -253,7 +244,6 @@ export const PLATFORMS = {
         icon: ICONS.WATCH,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_TIZENWATCH_WATCH, ...EXT_WATCH],
             platforms: [...EXT_TIZENWATCH],
@@ -265,7 +255,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_TIZENMOBILE_MOBILE, ...EXT_MOBILE],
             platforms: [...EXT_TIZENMOBILE],
@@ -277,7 +266,6 @@ export const PLATFORMS = {
         icon: ICONS.DESKTOP,
         supportedOS: OS.WINDOWS_ONLY,
         isActive: true,
-        requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_WIN_DESKTOP, ...EXT_DESKTOP],
             platforms: [...EXT_WIN],
@@ -289,7 +277,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_KAIOS_MOBILE, ...EXT_MOBILE],
             platforms: [...EXT_KAIOS],
@@ -301,7 +288,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_FFOS_MOBILE, ...EXT_MOBILE],
             platforms: [...EXT_FFOS],
@@ -313,7 +299,6 @@ export const PLATFORMS = {
         icon: ICONS.TV,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_FFTV_TV, ...EXT_WEB_TV, ...EXT_TV],
             platforms: [...EXT_FFTV],
@@ -325,7 +310,6 @@ export const PLATFORMS = {
         icon: ICONS.TV,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_CAST_TV, ...EXT_WEB_TV, ...EXT_TV],
             platforms: [...EXT_CAST],
@@ -338,7 +322,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     androidauto: {
@@ -346,7 +329,6 @@ export const PLATFORMS = {
         icon: ICONS.AUTO,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     alexa: {
@@ -354,7 +336,6 @@ export const PLATFORMS = {
         icon: ICONS.VOICE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     appleauto: {
@@ -362,7 +343,6 @@ export const PLATFORMS = {
         icon: ICONS.AUTO,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     astian: {
@@ -370,7 +350,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     blackberry: {
@@ -378,7 +357,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     chromeos: {
@@ -386,7 +364,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     fireos: {
@@ -394,7 +371,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     firetv: {
@@ -402,7 +378,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     hbbtv: {
@@ -410,7 +385,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     meego: {
@@ -418,7 +392,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     netcast: {
@@ -426,7 +399,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     occulus: {
@@ -434,7 +406,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     orsay: {
@@ -442,7 +413,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     ps4: {
@@ -450,7 +420,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     roku: {
@@ -458,7 +427,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     sailfish: {
@@ -466,7 +434,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     tivo: {
@@ -474,7 +441,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     ubuntu: {
@@ -482,7 +448,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     ubuntutouch: {
@@ -490,7 +455,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     unity: {
@@ -498,7 +462,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     vewd: {
@@ -506,7 +469,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     vieraconnect: {
@@ -514,7 +476,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     vizio: {
@@ -522,7 +483,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     webian: {
@@ -530,7 +490,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     wii: {
@@ -538,7 +497,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     wp10: {
@@ -546,7 +504,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     wp8: {
@@ -554,7 +511,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     xbox: {
@@ -562,7 +518,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     },
     xbox360: {
@@ -570,7 +525,6 @@ export const PLATFORMS = {
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: false,
-        requiresSharedConfig: true,
         sourceExts: []
     }
 };

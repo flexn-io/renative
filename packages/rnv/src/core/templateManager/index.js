@@ -153,7 +153,7 @@ const _configureSrc = c => new Promise((resolve) => {
         logInfo(
             `Looks like your src folder ${chalk().white(
                 c.paths.project.srcDir
-            )} is missing! Let's create one for you.`
+            )} is missing! CREATING...`
         );
         copyFolderContentsRecursiveSync(
             path.join(c.paths.template.dir, 'src'),
@@ -223,7 +223,7 @@ const _configureProjectConfig = c => new Promise((resolve) => {
         logInfo(
             `Looks like your projectConfig folder ${chalk().white(
                 c.paths.project.appConfigBase.dir
-            )} is missing! Let's create one for you.`
+            )} is missing! CREATING...`
         );
         copyFolderContentsRecursiveSync(
             c.paths.template.appConfigBase.dir,
@@ -318,16 +318,12 @@ const _parseSupportedPlatforms = async (c, callback) => {
 
 export const configureEntryPoints = async (c) => {
     logTask('configureEntryPoints');
-    // Check entry
-    // TODO: RN bundle command fails if entry files are not at root
-    // logDebug('configureProject:check entry');
-    // if (!fsExistsSync(c.paths.entryDir)) {
-    //     logWarning(`Looks like your entry folder ${chalk().white(c.paths.entryDir)} is missing! Let's create one for you.`);
+
     copyFolderContentsRecursiveSync(
         path.join(c.paths.rnv.dir, 'entry'),
         c.paths.entryDir
     );
-    // }
+
 
     try {
         if (!fsExistsSync(c.paths.appConfig.config)) {

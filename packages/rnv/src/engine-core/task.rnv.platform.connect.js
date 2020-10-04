@@ -1,7 +1,7 @@
 import path from 'path';
 import inquirer from 'inquirer';
 
-import { chalk, logTask, logSuccess } from '../core/systemManager/logger';
+import { chalk, logTask, logSuccess, logToSummary } from '../core/systemManager/logger';
 import {
     writeFileSync,
     removeDirs
@@ -16,27 +16,36 @@ export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, originTask);
 
-    const { connectedPlatforms } = await inquirer.prompt({
-        name: 'connectedPlatforms',
-        message:
-            'This will point platformTemplates folders from your local project to ReNative managed one. Select platforms you would like to connect',
-        type: 'checkbox',
-        choices: generatePlatformChoices(c).map(choice => ({
-            ...choice,
-            disabled: choice.isConnected
-        }))
-    });
+    if (!c.files.project.config.paths.platformTemplatesDirs) {
+        logToSummary('All supported platforms are connected. nothing to do.');
+        return;
+    }
 
-    if (connectedPlatforms.length) {
-        connectedPlatforms.forEach((platform) => {
+    let selectedPlatforms;
+    if (c.platform) {
+        selectedPlatforms = [c.platform];
+    } else {
+        const { connectedPlatforms } = await inquirer.prompt({
+            name: 'connectedPlatforms',
+            message:
+              'This will point platformTemplates folders from your local project to ReNative managed one. Select platforms you would like to connect',
+            type: 'checkbox',
+            choices: generatePlatformChoices(c).map(choice => ({
+                ...choice,
+                disabled: choice.isConnected
+            }))
+        });
+        selectedPlatforms = connectedPlatforms;
+    }
+
+
+    if (selectedPlatforms.length) {
+        selectedPlatforms.forEach((platform) => {
             if (c.files.project.config.paths.platformTemplatesDirs?.[platform]) {
                 delete c.files.project.config.paths.platformTemplatesDirs[platform];
             }
 
-            if (
-                !Object.keys(c.files.project.config.paths.platformTemplatesDirs)
-                    .length
-            ) {
+            if (!Object.keys(c.files.project.config.paths.platformTemplatesDirs).length) {
                 delete c.files.project.config.paths.platformTemplatesDirs; // also cleanup the empty object
             }
 
@@ -53,7 +62,7 @@ export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
 
     if (deletePlatformFolder) {
         const pathsToRemove = [];
-        connectedPlatforms.forEach((platform) => {
+        selectedPlatforms.forEach((platform) => {
             pathsToRemove.push(
                 path.join(
                     c.paths.project.platformTemplatesDirs[platform],
@@ -69,10 +78,8 @@ export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
 
     logSuccess(
         `${chalk().white(
-            connectedPlatforms.join(',')
-        )} now using ReNative platformTemplates located in ${chalk().white(
-            c.paths.rnv.platformTemplates.dir
-        )} now!`
+            selectedPlatforms.join(',')
+        )} now using ReNative platformTemplates located associated platform engines.`
     );
 };
 

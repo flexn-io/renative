@@ -3,13 +3,9 @@ import axios from 'axios';
 import ora from 'ora';
 import { getConfigProp, confirmActiveBundler, getAppFolder, getTemplateDir } from '../core/common';
 import { chalk, logTask, logInfo, logWarning } from '../core/systemManager/logger';
-import { fsExistsSync, copyFileSync } from '../core/systemManager/fileutils';
-import {
-    TASK_START,
-    RN_CLI_CONFIG_NAME
-} from '../core/constants';
+import { fsExistsSync, copyFileSync, copyFolderContentsRecursiveSync } from '../core/systemManager/fileutils';
+import { TASK_START, RN_CLI_CONFIG_NAME } from '../core/constants';
 import { executeTask } from '../core/engineManager';
-
 
 let keepRNVRunning = false;
 
@@ -33,6 +29,23 @@ export const getTemplateProjectDir = (c) => {
             output = dir;
     }
     return output;
+};
+
+export const getTemplateRootDir = (c, platform) => {
+    const dir = c.paths.project.platformTemplatesDirs[platform];
+    return dir;
+};
+
+export const ejectPlatform = (c, platform, destFolder) => {
+    const sourcePlatformDir = getTemplateRootDir(c, platform);
+    copyFolderContentsRecursiveSync(
+        path.join(sourcePlatformDir, platform),
+        destFolder
+    );
+    copyFolderContentsRecursiveSync(
+        path.join(sourcePlatformDir, '_shared'),
+        destFolder
+    );
 };
 
 export const getPlatformProjectDir = (c) => {
@@ -84,7 +97,7 @@ export const configureMetroConfigs = async (c, platform) => {
         logInfo(
             `Looks like your rn-cli config file ${chalk().white(
                 c.paths.project.rnCliConfig
-            )} is missing! Let's create one for you.`
+            )} is missing! INSTALLING...`
         );
         copyFileSync(
             path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME),

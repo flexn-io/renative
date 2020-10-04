@@ -1,7 +1,5 @@
 import path from 'path';
-
 import { getAppFolder, getTemplateDir } from '../core/common';
-// import { logError } from '../core/systemManager/logger';
 import { MACOS, WINDOWS, RNV_PROJECT_DIR_NAME } from '../core/constants';
 
 export const getPlatformBuildDir = c => getAppFolder(c);
@@ -23,6 +21,15 @@ export const getTemplateProjectDir = (c) => {
             output = dir;
     }
     return output;
+};
+
+export const getTemplateRootDir = (c, platform) => {
+    const dir = c.paths.project.platformTemplatesDirs[platform];
+    return dir;
+};
+
+export const ejectPlatform = () => {
+    // Nothing to copy for next project
 };
 
 export const getPlatformProjectDir = (c) => {
