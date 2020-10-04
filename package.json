@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper",
-    "version": "0.31.0-alpha.34",
+    "version": "0.31.0-RC.1",
     "currentRelease": "0.30",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV` and `Chromecast` platforms",
     "keywords": [
@@ -67,10 +67,10 @@
         "link:rnv-builder": "cd packages/rnv-builder && (yarn unlink || true) && yarn link",
         "postinstall": "lerna link --force-local && npx jetify",
         "lint": "npx eslint ./packages/rnv",
-        "pre-publish": "cd packages/app && yarn pre-publish",
-        "publish": "npm run test:rnv:unit && npm run pre-publish && npm run publish:website && npm run publish:github && npx lerna publish from-package --yes",
-        "publish:alpha": "npm run test:rnv:unit && npm run pre-publish && npm run publish:website && npm run publish:github && npx lerna publish from-package --no-git-reset --dist-tag alpha --yes",
-        "publish:feat": "npm run test:rnv:unit && npm run pre-publish npx lerna publish from-package --dist-tag feat --yes",
+        "publish:prepare": "cd packages/app && yarn publish:prepare",
+        "publish": "npm run test:rnv:unit && npm run publish:prepare && npm run publish:website && npm run publish:github && npx lerna publish from-package --yes",
+        "publish:alpha": "npm run test:rnv:unit && npm run publish:prepare && npm run publish:website && npx lerna publish from-package --no-git-reset --dist-tag alpha --yes",
+        "publish:feat": "npm run test:rnv:unit && npm run publish:prepare npx lerna publish from-package --dist-tag feat --yes",
         "publish:github": "cd packages/app && rnv hooks run -x publishGithub",
         "publish:website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true yarn publish-gh-pages",
         "start": "yarn build && lerna run start --stream --scope app",

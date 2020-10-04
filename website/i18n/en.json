@@ -374,6 +374,9 @@
       "changelog/0.31.0-feat-tasks.4": {
         "title": "changelog/0.31.0-feat-tasks.4"
       },
+      "changelog/0.31.0-RC.1": {
+        "title": "changelog/0.31.0-RC.1"
+      },
       "config-app": {
         "title": "App Configs",
         "sidebar_label": "App Configs"
