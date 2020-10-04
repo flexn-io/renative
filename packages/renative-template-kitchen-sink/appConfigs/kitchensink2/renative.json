@@ -11,12 +11,7 @@
         },
         "license": "MIT",
         "includedPlugins": ["*"],
-        "includedFonts": ["*"],
-        "defaultSchemes": {
-            "run": "debug",
-            "build": "release",
-            "export": "release"
-        }
+        "includedFonts": ["*"]
     },
     "platforms": {
         "ios": {
