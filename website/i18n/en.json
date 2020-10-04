@@ -1099,6 +1099,10 @@
         "title": "Config Files",
         "sidebar_label": "Config Files"
       },
+      "version-0.30/version-0.30-guide-develop": {
+        "title": "Develop ReNative",
+        "sidebar_label": "Develop ReNative"
+      },
       "version-0.30/version-0.30-guide-engines": {
         "title": "Engines",
         "sidebar_label": "Engines"

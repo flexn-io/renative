@@ -16,7 +16,7 @@ React native based engine with web transpiler provided by react-native-web and r
 
 ## Supported Platforms
 
-[web](platform-web.md), [web-next](platform-web-next.md)
+[web](platform-web.md), [web-next](platform-web.md)
 
 ## Required Plugins
 

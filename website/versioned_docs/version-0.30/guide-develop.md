@@ -1,7 +1,8 @@
 ---
-id: guide-develop
+id: version-0.30-guide-develop
 title: Develop ReNative
 sidebar_label: Develop ReNative
+original_id: guide-develop
 ---
 
 <img src="https://renative.org/img/ic_construction.png" width=50 height=50 />
@@ -30,45 +31,8 @@ rnv template apply
 
 Requirements: Python 2.7, Visual Studio installed or install `windows-build-tools`(https://www.npmjs.com/package/windows-build-tools). **Please make sure you follow the package's instructions, especially running it in PowerShell as Administrator**
 
-## Deployments
-
-### Feature
-
-Features (from `feat/xxx` branches):
-
-npm tag `feat`
-
-```
-npm run deploy:feat
-```
-
-### Alpha
-
-Alpha Releases (from `develop` branches):
-
-tag format: `0.31.0-alpha.1`
-
-npm tag `alpha`
-
-```
-npm run deploy:alpha
-```
-
-### Production
-
-Production (from `release/xx` branches):
-
-tag format: `0.31.0`
-
-npm tag: `latest`
-
-```
-npm run deploy:prod
-```
-
 ## Documentation
 
-[Documentation for CLI](api-cli-engine-core.md)
 
 [Documentation for RNV](api-rnv.md)
 
