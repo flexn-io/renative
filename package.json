@@ -67,13 +67,18 @@
         "link:rnv-builder": "cd packages/rnv-builder && (yarn unlink || true) && yarn link",
         "postinstall": "lerna link --force-local && npx jetify",
         "lint": "npx eslint ./packages/rnv",
-        "start": "yarn build && lerna run start --stream --scope app",
         "test:rnv": "lerna run test:local --stream --scope rnv",
         "test:rnv:unit": "lerna run test --stream --scope rnv",
         "ut": "lerna run test --stream --scope rnv",
         "watch": "lerna run --parallel --concurrency 2 watch",
         "version": "cd website && yarn run version",
-        "website": "cd website && yarn start"
+        "docs": "cd website && yarn start",
+        "deploy-prepare": "cd packages/app && yarn deploy-prepare",
+        "deploy-github": "cd packages/app && rnv hooks run -x publishGithub",
+        "deploy-website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true yarn publish-gh-pages",
+        "deploy-all": "npm run test:rnv:unit && npm run deploy-prepare && npm run deploy-website && npm run deploy-github",
+        "deploy:alpha": "npm run deploy-all && npx lerna publish from-package --dist-tag alpha --yes"
+
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
