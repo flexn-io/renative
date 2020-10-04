@@ -1,0 +1,7 @@
+{
+  "overrides": {
+    "Libraries/Image/RCTUIImageViewAnimated.m": {
+      "_currentFrame.CGImage;": "_currentFrame.CGImage ;} else { [super displayLayer:layer];"
+    }
+  }
+}
