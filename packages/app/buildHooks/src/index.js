@@ -4,7 +4,7 @@ import { updateMdFilesPlatforms } from './updateMdFilesPlatforms';
 import { updateMdFilesEngines } from './updateMdFilesEngines';
 import { generateChangelog, generateCombinedChangelog } from './changelog';
 import { generateEngineTaks } from './generateEngineDocs';
-import { gitCommitAndTagVersion, gitPush } from './git';
+import { gitCommit, gitTag } from './git';
 
 const hooks = {
     generateDocs: async (c) => {
@@ -28,12 +28,13 @@ const hooks = {
     changelog: generateChangelog,
     changelogCombined: generateCombinedChangelog,
     engine: generateEngineTaks,
-    publishGithub: async (c) => {
-        await gitCommitAndTagVersion(c);
-        await gitPush(c);
+    gitCommit,
+    gitTag,
+    gitCommitAndTag: async (c) => {
+        await gitCommit(c);
+        await gitTag(c);
         return true;
     }
-    // changelogAll: generateAllChangelogs
 };
 
 const pipes = {};

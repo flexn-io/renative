@@ -74,11 +74,14 @@
         "version": "cd website && yarn run version",
         "docs": "cd website && yarn start",
         "deploy-prepare": "cd packages/app && yarn deploy-prepare",
-        "deploy-github": "cd packages/app && rnv hooks run -x publishGithub",
+        "git-commit": "cd packages/app && rnv hooks run -x gitCommit",
+        "git-tag": "cd packages/app && rnv hooks run -x gitTag",
+        "git-commit-tag": "cd packages/app && rnv hooks run -x gitCommitAndTag",
         "deploy-website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true yarn publish-gh-pages",
-        "deploy-all": "npm run test:rnv:unit && npm run deploy-prepare && npm run deploy-website && npm run deploy-github",
-        "deploy:alpha": "npm run deploy-all && npx lerna publish from-package --dist-tag alpha --yes"
-
+        "deploy-all": "npm run test:rnv:unit && npm run deploy-prepare && npm run deploy-website && npm run git-commit-tag",
+        "deploy:feat": "npm run test:rnv:unit && npm run deploy-prepare && npm run git-commit && npx lerna publish from-package --dist-tag feat --yes",
+        "deploy:alpha": "npm run deploy-all && npx lerna publish from-package --dist-tag alpha --yes && git push origin HEAD",
+        "deploy:prod": "npm run deploy-all && npx lerna publish from-package --yes && git push origin HEAD"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
