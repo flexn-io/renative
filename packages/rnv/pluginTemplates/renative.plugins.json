@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.31.0-alpha.33",
+            "version": "0.31.0-alpha.34",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -1554,7 +1554,7 @@
             }
         },
         "@react-native-firebase/app": {
-            "version": "6.4.1",
+            "version": "8.2.0",
             "ios": {
                 "isStatic": true,
                 "podName": "RNFBApp"
@@ -1593,7 +1593,7 @@
             }
         },
         "@react-native-firebase/analytics": {
-            "version": "6.4.1",
+            "version": "7.3.1",
             "pluginDependencies": {
                 "@react-native-firebase/app": "source:rnv"
             },
@@ -1625,8 +1625,26 @@
                 "projectName": "@react-native-firebase_analytics"
             }
         },
+        "@react-native-firebase/messaging": {
+            "version": "7.5.0",
+            "pluginDependencies": {
+                "@react-native-firebase/app": "source:rnv"
+            },
+            "ios": {
+                "isStatic": true,
+                "podName": "RNFBMessaging"
+            },
+            "android": {
+                "package": "io.invertase.firebase.messaging.ReactNativeFirebaseMessagingPackage",
+                "projectName": "@react-native-firebase_messaging"
+            },
+            "androidtv": {
+                "package": "io.invertase.firebase.messaging.ReactNativeFirebaseMessagingPackage",
+                "projectName": "@react-native-firebase_messaging"
+            }
+        },
         "@react-native-firebase/crashlytics": {
-            "version": "6.4.1",
+            "version": "8.1.2",
             "pluginDependencies": {
                 "@react-native-firebase/analytics": "source:rnv"
             },
@@ -2413,7 +2431,7 @@
             }
         },
         "detox": {
-            "version": "15.1.3",
+            "version": "17.8.0",
             "android": {
                 "implementation": "androidTestImplementation('com.wix:detox:+') { transitive = true }\nandroidTestImplementation 'junit:junit:4.12'",
                 "app/build.gradle": {

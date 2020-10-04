@@ -1,6 +1,6 @@
 {
     "name": "rnv",
-    "version": "0.31.0-alpha.33",
+    "version": "0.31.0-alpha.34",
     "description": "💻 CLI for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`",
     "keywords": [
         "android tv",
@@ -133,7 +133,7 @@
         "natives": "1.1.6",
         "ncp": "2.0.0",
         "netcat": "1.4.0",
-        "node-fetch": "2.6.0",
+        "node-fetch": "2.6.1",
         "node-machine-id": "^1.1.12",
         "resolve": "^1.0.0",
         "shelljs": "0.8.2",
@@ -195,5 +195,5 @@
     },
     "title": "ReNative CLI",
     "codename": "Iron Ladybird",
-    "gitHead": "9233dd0ce8650fa3c143a67412100ccdf6b36169"
+    "gitHead": "e5d20d3c25ec248a156dc00a5c8a706c35b28d3d"
 }
