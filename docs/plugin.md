@@ -2744,7 +2744,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.31.0-RC.3`
+Version: `0.31.0-RC.4`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

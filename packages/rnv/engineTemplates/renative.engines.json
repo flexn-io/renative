@@ -18,7 +18,7 @@
             },
             "npm": {
                 "devDependencies": {
-                    "@rnv/engine-rn": "0.31.0-RC.3"
+                    "@rnv/engine-rn": "0.31.0-RC.4"
                 }
             },
             "platforms": {
@@ -84,7 +84,7 @@
             },
             "npm": {
                 "devDependencies": {
-                    "@rnv/engine-rn-electron": "0.31.0-RC.3"
+                    "@rnv/engine-rn-electron": "0.31.0-RC.4"
                 }
             },
             "platforms": {
@@ -116,7 +116,7 @@
             },
             "npm": {
                 "devDependencies": {
-                    "@rnv/engine-rn-next": "0.31.0-RC.3"
+                    "@rnv/engine-rn-next": "0.31.0-RC.4"
                 }
             },
             "platforms": {
@@ -140,7 +140,7 @@
             },
             "npm": {
                 "devDependencies": {
-                    "@rnv/engine-rn-web": "0.31.0-RC.3"
+                    "@rnv/engine-rn-web": "0.31.0-RC.4"
                 }
             },
             "platforms": {
