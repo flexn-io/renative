@@ -2,14 +2,14 @@ import { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } fr
 import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
     getTemplateProjectDir, ejectPlatform, getTemplateRootDir } from './commonEngine';
 
-import taskRnvRun from './task.rnv.run';
-import taskRnvPackage from './task.rnv.package';
-import taskRnvBuild from './task.rnv.build';
-import taskRnvConfigure from './task.rnv.configure';
-import taskRnvStart from './task.rnv.start';
-import taskRnvExport from './task.rnv.export';
-import taskRnvDeploy from './task.rnv.deploy';
-import taskRnvDebug from './task.rnv.debug';
+import taskRnvRun from './tasks/task.rnv.run';
+import taskRnvPackage from './tasks/task.rnv.package';
+import taskRnvBuild from './tasks/task.rnv.build';
+import taskRnvConfigure from './tasks/task.rnv.configure';
+import taskRnvStart from './tasks/task.rnv.start';
+import taskRnvExport from './tasks/task.rnv.export';
+import taskRnvDeploy from './tasks/task.rnv.deploy';
+import taskRnvDebug from './tasks/task.rnv.debug';
 
 const TASKS = {};
 

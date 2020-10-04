@@ -1,7 +1,7 @@
-import taskRnvPlatformList from '../../src/engine-core/task.rnv.platform.list';
-import taskRnvPlatformConfigure from '../../src/engine-core/task.rnv.platform.configure';
-import taskRnvPlatformEject from '../../src/engine-core/task.rnv.platform.eject';
-import taskRnvPlatformSetup from '../../src/engine-core/task.rnv.platform.setup';
+import taskRnvPlatformList from '../../src/engine-core/tasks/task.rnv.platform.list';
+import taskRnvPlatformConfigure from '../../src/engine-core/tasks/task.rnv.platform.configure';
+import taskRnvPlatformEject from '../../src/engine-core/tasks/task.rnv.platform.eject';
+import taskRnvPlatformSetup from '../../src/engine-core/tasks/task.rnv.platform.setup';
 
 jest.mock('fs');
 
