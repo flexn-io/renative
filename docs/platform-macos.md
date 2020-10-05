@@ -66,13 +66,6 @@ sidebar_label: macOS
 
 -   n/a
 
-#### Project Configuration
-
-| Feature          |  Version  |
-| ---------------- | :-------: |
-| electron         |  `2.0.0`  |
-| react-native-web |  `0.9.9`  |
-| electron-builder | `20.28.2` |
 
 #### Run
 
