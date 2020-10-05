@@ -82,10 +82,8 @@
         "prettier": "^1.17.1"
     },
     "engines": {
-        "cocoapods": ">=1.5.3",
         "node": ">=6.0.0",
-        "npm": ">=4.0.0",
-        "xcode": ">=8.0.0"
+        "npm": ">=4.0.0"
     },
     "private": false,
     "publishConfig": {
