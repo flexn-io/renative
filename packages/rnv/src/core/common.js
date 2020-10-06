@@ -308,17 +308,26 @@ export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'de
 export const getAppVersionCode = (c, platform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
     if (versionCode) return versionCode;
-
     const version = getAppVersion(c, platform);
-
-    let vc = '';
-    version
-        .split('-')[0]
-        .split('.')
-        .forEach((v) => {
-            vc += v.length > 1 ? v : `0${v}`;
-        });
-    return Number(vc).toString();
+    const versionNumberMaxCount = getConfigProp(c, platform, 'versionCodeMaxCount', 3);
+    const verArr = [];
+    version.split('.').map(v => v.split('-').map(v2 => v2.split('+').forEach((v3) => {
+        const asNumber = Number(v3);
+        if (!Number.isNaN(asNumber)) {
+            const val = v3.length > 1 ? v3 : `0${v3}`;
+            verArr.push(val);
+        }
+    })));
+    let verCountDiff = versionNumberMaxCount - verArr.length;
+    if (verCountDiff) {
+        while (verCountDiff > 0) {
+            verArr.push('00');
+            verCountDiff--;
+        }
+    }
+    const output = Number(verArr.join('')).toString();
+    // console.log(`IN: ${version}\nOUT: ${output}`);
+    return output;
 };
 
 export const isMonorepo = () => {
