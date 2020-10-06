@@ -354,10 +354,36 @@ Common properties inherited for every platform
         "backgroundColor": "",
         "port": 1111,
         "versionCodeOffset": 0,
+        "versionCodeFormat": "00.00.00",
         "runtime": {}
     }
 }
 ```
+
+### versionCodeFormat
+
+allows you to fine-tune auto generated version codes
+
+default value: `00.00.00`
+
+
+IN: 1.2.3-rc.4+build.56
+OUT: 102030456
+
+IN: 1.2.3
+OUT: 10203
+
+-------------
+
+"versionCodeFormat" : "00.00.00.00.00"
+
+IN: 1.2.3-rc.4+build.56
+OUT: 102030456
+
+IN: 1.2.3
+OUT: 102030000
+
+--------------
 
 ## platforms
 

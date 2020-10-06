@@ -308,17 +308,45 @@ export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'de
 export const getAppVersionCode = (c, platform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
     if (versionCode) return versionCode;
-
     const version = getAppVersion(c, platform);
+    const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat', '00.00.00');
+    const vFormatArr = versionCodeFormat.split('.').map(v => v.length);
+    const versionCodeMaxCount = vFormatArr.length;
 
-    let vc = '';
-    version
-        .split('-')[0]
-        .split('.')
-        .forEach((v) => {
-            vc += v.length > 1 ? v : `0${v}`;
-        });
-    return Number(vc).toString();
+    const verArr = [];
+    version.split('.').map(v => v.split('-').map(v2 => v2.split('+').forEach((v3) => {
+        const asNumber = Number(v3);
+        if (!Number.isNaN(asNumber)) {
+            let val = v3;
+            const maxDigits = vFormatArr[verArr.length - 1] || 2;
+            if (v3.length > maxDigits) {
+                val = v3.substr(0, maxDigits);
+            } else if (v3.length < maxDigits) {
+                let toAdd = maxDigits - v3.length;
+                while (toAdd > 0) {
+                    val = `0${v3}`;
+                    toAdd--;
+                }
+            }
+            verArr.push(val);
+        }
+    })));
+    let verCountDiff = verArr.length - versionCodeMaxCount;
+    if (verCountDiff < 0) {
+        while (verCountDiff < 0) {
+            let extraVersionLen = vFormatArr[versionCodeMaxCount + verCountDiff];
+            let num = '';
+            while (extraVersionLen) {
+                num += '0';
+                extraVersionLen--;
+            }
+            verArr.push(num);
+            verCountDiff++;
+        }
+    }
+    const output = Number(verArr.join('')).toString();
+    // console.log(`IN: ${version}\nOUT: ${output}`);
+    return output;
 };
 
 export const isMonorepo = () => {
