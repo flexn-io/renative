@@ -309,16 +309,29 @@ export const getAppVersionCode = (c, platform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
     if (versionCode) return versionCode;
     const version = getAppVersion(c, platform);
-    const versionNumberMaxCount = getConfigProp(c, platform, 'versionCodeMaxCount', 3);
+    const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat', '00.00.00');
+    const vFormatArr = versionCodeFormat.split('.').map(v => v.length);
+    const versionCodeMaxCount = vFormatArr.length;
+
     const verArr = [];
     version.split('.').map(v => v.split('-').map(v2 => v2.split('+').forEach((v3) => {
         const asNumber = Number(v3);
         if (!Number.isNaN(asNumber)) {
-            const val = v3.length > 1 ? v3 : `0${v3}`;
+            let val = v3;
+            const maxDigits = vFormatArr[verArr.length - 1] || 2;
+            if (v3.length > maxDigits) {
+                val = v3.substr(0, maxDigits);
+            } else if (v3.length < maxDigits) {
+                let toAdd = maxDigits - v3.length;
+                while (toAdd > 0) {
+                    val = `0${v3}`;
+                    toAdd--;
+                }
+            }
             verArr.push(val);
         }
     })));
-    let verCountDiff = versionNumberMaxCount - verArr.length;
+    let verCountDiff = versionCodeMaxCount - verArr.length;
     if (verCountDiff) {
         while (verCountDiff > 0) {
             verArr.push('00');
