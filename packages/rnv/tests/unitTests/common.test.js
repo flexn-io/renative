@@ -129,4 +129,33 @@ describe('Testing getAppVersionCode functions', () => {
         expect(result).toEqual('100000101');
     });
 
+    it('should evaluate 1.0.1-beta+exp.sha.5114f85', async () => {
+        const result = getAppVersionCode({ ...BUILD_CONF, files: { project: { package: { version: '1.0.1-beta+exp.sha.5114f85' }}}});
+        expect(result).toEqual('10001');
+    });
+
+    it('should evaluate 1.0.1-beta+exp.sha.5114f85 with 00.00.00.00.00.00', async () => {
+        const result = getAppVersionCode({
+          ...BUILD_CONF,
+          buildConfig: { common: { versionCodeFormat: '00.00.00.00.00.00' }},
+          files: { project: { package: { version: '1.0.1-beta+exp.sha.5114f85' }}}});
+        expect(result).toEqual('10001000000');
+    });
+
+    it('should evaluate 1.0.1-beta+exp.sha.5114f85 with 00.00.00.000000', async () => {
+        const result = getAppVersionCode({
+          ...BUILD_CONF,
+          buildConfig: { common: { versionCodeFormat: '00.00.00.000000' }},
+          files: { project: { package: { version: '1.0.1-beta+exp.sha.5114f85' }}}});
+        expect(result).toEqual('10001000000');
+    });
+
+    it('should evaluate 1', async () => {
+        const result = getAppVersionCode({
+          ...BUILD_CONF,
+          files: { project: { package: { version: '1' }}}});
+        expect(result).toEqual('10000');
+    });
+
+
 });

@@ -331,11 +331,17 @@ export const getAppVersionCode = (c, platform) => {
             verArr.push(val);
         }
     })));
-    let verCountDiff = versionCodeMaxCount - verArr.length;
-    if (verCountDiff) {
-        while (verCountDiff > 0) {
-            verArr.push('00');
-            verCountDiff--;
+    let verCountDiff = verArr.length - versionCodeMaxCount;
+    if (verCountDiff < 0) {
+        while (verCountDiff < 0) {
+            let extraVersionLen = vFormatArr[versionCodeMaxCount + verCountDiff];
+            let num = '';
+            while (extraVersionLen) {
+                num += '0';
+                extraVersionLen--;
+            }
+            verArr.push(num);
+            verCountDiff++;
         }
     }
     const output = Number(verArr.join('')).toString();
