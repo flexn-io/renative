@@ -48,7 +48,8 @@ const SDK_LOACTIONS = {
     ],
     tizen: [
         path.join('usr/local/tizen-studio'),
-        path.join(USER_HOME_DIR, 'tizen-studio')
+        path.join(USER_HOME_DIR, 'tizen-studio'),
+        path.join('C:\\tizen-studio')
     ],
     webos: [path.join('/opt/webOS_TV_SDK')]
 };
