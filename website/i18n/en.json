@@ -392,6 +392,9 @@
       "changelog/0.31.0-RC.6": {
         "title": "changelog/0.31.0-RC.6"
       },
+      "changelog/0.31.0-RC.7": {
+        "title": "changelog/0.31.0-RC.7"
+      },
       "config-app": {
         "title": "App Configs",
         "sidebar_label": "App Configs"
