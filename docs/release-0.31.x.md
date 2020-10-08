@@ -8,6 +8,7 @@ sidebar_label: 0.31.x (Baby Yoda)
 
 ## Features
 
+- support for Xcode 12
 - decoupling of tasks
 - dedicated platform engines
 - rnv clean
