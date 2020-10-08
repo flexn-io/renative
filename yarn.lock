@@ -5093,14 +5093,14 @@
     query-string "^6.2.0"
 
 "@rnv/engine-rn-electron@file:packages/rnv-engine-rn-electron":
-  version "0.31.0-RC.4"
+  version "0.31.0-RC.6"
   dependencies:
     electron "10.1.3"
     electron-builder "22.8.1"
     electron-notarize "1.0.0"
 
 "@rnv/engine-rn-next@file:packages/rnv-engine-rn-next":
-  version "0.31.0-RC.4"
+  version "0.31.0-RC.6"
   dependencies:
     "@expo/next-adapter" "2.1.29"
     "@next/bundle-analyzer" "9.4.4"
@@ -5117,13 +5117,13 @@
     next-transpile-modules "4.1.0"
 
 "@rnv/engine-rn-web@file:packages/rnv-engine-rn-web":
-  version "0.31.0-RC.4"
+  version "0.31.0-RC.6"
   dependencies:
     html-webpack-harddisk-plugin "0.2.0"
     html-webpack-plugin "3.2.0"
 
 "@rnv/engine-rn@file:packages/rnv-engine-rn":
-  version "0.31.0-RC.4"
+  version "0.31.0-RC.6"
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
@@ -8215,7 +8215,7 @@ combined-stream@^1.0.6, combined-stream@^1.0.8, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-command-exists@^1.2.8:
+command-exists@1.2.9, command-exists@^1.2.8:
   version "1.2.9"
   resolved "https://registry.yarnpkg.com/command-exists/-/command-exists-1.2.9.tgz#c50725af3808c8ab0260fd60b01fbfa25b954f69"
   integrity sha512-LTQ/SGc+s0Xc0Fu5WaKnR0YiygZkm9eKFvyS+fRsU7/ZWFF8ykFM6Pc9aCVf1+xasOOZpO3BAVgVrKvsqKHV7w==
@@ -18937,19 +18937,25 @@ remove-trailing-separator@^1.0.1:
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
 
-"renative-template-blank@file:packages/renative-template-blank":
-  version "0.31.0-RC.4"
+renative-template-blank@^0.31.0-alpha.11:
+  version "0.31.0-feat-tasks.4"
+  resolved "https://registry.yarnpkg.com/renative-template-blank/-/renative-template-blank-0.31.0-feat-tasks.4.tgz#d3a61babcef6fa74da4e5448a65142d3ae07dd04"
+  integrity sha512-Mi9S/LtFdQJQ+UQsTVBdvfnbwYQDONmMMlU3gxoOgyzPxIqcNWnptV1POJFEJrcShEOegnTW6y9hpn9LCjcdsg==
 
-"renative-template-hello-world@file:packages/renative-template-hello-world":
-  version "0.31.0-RC.4"
+renative-template-hello-world@^0.31.0-alpha.11:
+  version "0.31.0-feat-tasks.4"
+  resolved "https://registry.yarnpkg.com/renative-template-hello-world/-/renative-template-hello-world-0.31.0-feat-tasks.4.tgz#f4448d828ebdb05f518e475eef56cc23c09503b0"
+  integrity sha512-R/piZ1ro9i2mMKjSIobAIFbz+iekZ0K+JJspa0zcecSpqaADbM1j8QEXdvOiJSPYUxY5/1kRRpc6SHzq1TO9Vg==
   dependencies:
     "@noriginmedia/react-spatial-navigation" "2.12.1"
 
-"renative-template-kitchen-sink@file:packages/renative-template-kitchen-sink":
-  version "0.31.0-RC.4"
+renative-template-kitchen-sink@^0.31.0-alpha.11:
+  version "0.31.0-feat-tasks.4"
+  resolved "https://registry.yarnpkg.com/renative-template-kitchen-sink/-/renative-template-kitchen-sink-0.31.0-feat-tasks.4.tgz#53aa7145244d4c4e177883bafc97dc7dff2ac8a8"
+  integrity sha512-l9BaUK7gUr3zJlGKvCkh/vTejkhSMpdvX3uW8O7PXPn7laAaEzzZom93FsrvjjxlSg8wvXbj2Jwn7k0nAzrmvQ==
 
 "renative@file:packages/renative":
-  version "0.31.0-RC.4"
+  version "0.31.0-RC.6"
   dependencies:
     "@noriginmedia/react-spatial-navigation" "2.12.1"
     "@reach/router" "1.3.4"
@@ -19265,7 +19271,7 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     inherits "^2.0.1"
 
 "rnv@file:packages/rnv":
-  version "0.31.0-RC.4"
+  version "0.31.0-RC.6"
   dependencies:
     "@babel/cli" "7.8.3"
     "@babel/core" "7.8.3"
@@ -19291,6 +19297,7 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     babel-polyfill "6.26.0"
     better-opn "1.0.0"
     color-string "1.5.3"
+    command-exists "1.2.9"
     commander "^3.0.1"
     compare-versions "3.6.0"
     console-table-printer "1.1.10"
