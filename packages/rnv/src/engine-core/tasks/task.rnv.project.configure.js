@@ -32,7 +32,6 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
     }
 
     await checkIfTemplateInstalled(c);
-    await fixRenativeConfigsSync(c);
     await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);
     await checkCrypto(c, parentTask, originTask);
     await configureRuntimeDefaults(c);
@@ -54,8 +53,9 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
             await cleanPlaformAssets(c);
         }
         await copyRuntimeAssets(c);
-        await configureEntryPoints(c);
         await configureTemplateFiles(c);
+        await fixRenativeConfigsSync(c);
+        await configureEntryPoints(c);
         await generateRuntimeConfig(c);
         await overrideTemplatePlugins(c);
     }
