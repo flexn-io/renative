@@ -26,6 +26,7 @@ import {
     waitForUrl,
     addSystemInjects
 } from '../core/common';
+import { doResolve, doResolvePath } from '../core/resolve';
 import { isPlatformActive } from '../core/platformManager';
 import {
     chalk,
@@ -49,7 +50,7 @@ import {
     selectWebToolAndExport
 } from '../core/deployManager/webTools';
 import { getValidLocalhost } from '../core/utils';
-import { doResolvePath } from '../core/resolve';
+
 import { WEINRE_PORT, RNV_NODE_MODULES_DIR, RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR_NAME } from '../core/constants';
 
 const WEBPACK = path.join(RNV_NODE_MODULES_DIR, 'webpack/bin/webpack.js');
@@ -427,9 +428,25 @@ const runWebDevServer = async (c, enableRemoteDebugger) => {
 
 `);
 
+
+    const WPS_ALTERNATIVE = `${doResolve('webpack-dev-server')}/bin/webpack-dev-server.js`;
+
+    let wps = 'webpack-dev-server';
+    if (fsExistsSync(WEBPACK_DEV_SERVER)) {
+        wps = WEBPACK_DEV_SERVER;
+    } else if (fsExistsSync(WPS_ALTERNATIVE)) {
+        wps = WPS_ALTERNATIVE;
+    } else {
+        logWarning(`cannot find installed webpack-dev-server. looked in following locations:
+${chalk().white(WEBPACK_DEV_SERVER)},
+${chalk().white(WPS_ALTERNATIVE)}
+will try to use globally installed one`);
+    }
+
+
     const command = `npx cross-env PLATFORM=${c.platform} ${
         debugVariables
-    } ${WEBPACK_DEV_SERVER} -d --devtool source-map --config ${
+    } ${wps} -d --devtool source-map --config ${
         wpConfig
     }  --inline --hot --colors --content-base ${
         wpPublic
