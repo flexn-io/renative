@@ -1,4 +1,4 @@
-import semver from 'semver';
+// import semver from 'semver';
 import path from 'path';
 import inquirer from 'inquirer';
 import { executeAsync, commandExistsSync } from './exec';
@@ -21,9 +21,8 @@ export const listAndSelectNpmVersion = async (c, npmPackage) => {
         .reverse();
     const { rnvVersion } = c;
 
-    // filter greater versions than rnv
     const validVersions = versionArr
-        .filter(version => semver.lte(version, rnvVersion))
+        // .filter(version => semver.lte(version, rnvVersion))
         .map(v => ({ name: v, value: v }));
     if (validVersions[0].name === rnvVersion) {
         // mark the same versions as recommended
