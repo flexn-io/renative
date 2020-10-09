@@ -13,7 +13,8 @@ import {
     removeFilesSync,
     mergeObjects,
     readObjectSync,
-    fsExistsSync
+    fsExistsSync,
+    fsLstatSync
 } from '../systemManager/fileutils';
 import {
     chalk,
@@ -314,6 +315,45 @@ const _parseSupportedPlatforms = async (c, callback) => {
         }
     }
     return true;
+};
+
+export const configureTemplateFiles = async (c) => {
+    logTask('configureTemplateFiles');
+
+    const templateConfig = readObjectSync(c.paths.template.configTemplate);
+
+
+    const includedPaths = templateConfig?.templateConfig?.includedPaths;
+    if (includedPaths) {
+        includedPaths.forEach((name) => {
+            const sourcePath = path.join(c.paths.template.dir, name);
+            const destPath = path.join(c.paths.project.dir, name);
+            if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
+                try {
+                    if (fsLstatSync(sourcePath).isDirectory()) {
+                        logInfo(
+                            `Found missing directory ${chalk().white(
+                                `${destPath}.js`
+                            )}. COPYING from TEMPATE...DONE`
+                        );
+                        copyFolderContentsRecursiveSync(
+                            sourcePath,
+                            destPath
+                        );
+                    } else {
+                        logInfo(
+                            `Found missing entry file ${chalk().white(
+                                `${destPath}.js`
+                            )}. COPYING from TEMPATE...DONE`
+                        );
+                        copyFileSync(sourcePath, destPath);
+                    }
+                } catch (e) {
+                    // Get some beer and order hookers
+                }
+            }
+        });
+    }
 };
 
 export const configureEntryPoints = async (c) => {
