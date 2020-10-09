@@ -7,6 +7,7 @@ import { chalk, logInfo, logDebug, logTask } from '../systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEngineByPlatform } from '../engineManager';
 import { writeRenativeConfigFile } from './configParser';
+import { overrideTemplatePlugins } from '../pluginManager';
 
 
 const injectProjectDependency = async (c,
@@ -22,7 +23,10 @@ const injectProjectDependency = async (c,
     if (!currentPackage[type]) currentPackage[type] = {};
     currentPackage[type][dependency] = version;
     writeRenativeConfigFile(c, existingPath, currentPackage);
-    if (!skipInstall) await installPackageDependencies(c);
+    if (!skipInstall) {
+        await installPackageDependencies(c);
+        await overrideTemplatePlugins(c);
+    }
     return true;
 };
 
@@ -141,6 +145,7 @@ export const injectPlatformDependencies = async (c) => {
                 chalk().white(selectedEngine.id)
             } engine. INSTALLING...`);
             await installPackageDependencies(c);
+            await overrideTemplatePlugins(c);
         }
     }
 
