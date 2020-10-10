@@ -278,13 +278,12 @@ package.json will be overriden`
                 // IMPORTANT: Do not override top level override with plugin.npm ones
                 const topLevelPlugin = getMergedPlugin(c, npmKey);
                 if (topLevelPlugin && topLevelPlugin?.version !== npmDep) {
-                    logWarning(`
-RNV Detected plugin dependency conflict. ${chalk().cyan('RESOLVING...')}
+                    logInfo(`RNV Detected plugin dependency conflict. ${chalk().cyan('RESOLVING...')}
 - ${npmKey}@${chalk().green(topLevelPlugin?.version)} ${chalk().cyan('<=')}
 - ${k} .npm sub dependencies:
    |- ${npmKey}@${chalk().red(npmDep)}`);
                 } else if (!dependencies[npmKey]) {
-                    logWarning(
+                    logInfo(
                         `Plugin ${chalk().white(
                             k
                         )} requires npm dependency ${chalk().white(
@@ -485,8 +484,13 @@ export const loadPluginTemplates = async (c) => {
         // This must be installed to avoid scoped plugins errors
         if (hasPackageChanged) {
             _updatePackage(c, { dependencies });
+            logInfo('Found missing dependency scopes. INSTALLING...');
             await installPackageDependencies(c);
             await loadPluginTemplates(c);
+        } else {
+            missingDeps.forEach((npmDep) => {
+                logWarning(`Plugin scope ${npmDep} does not exists in package.json.`);
+            });
         }
     }
     return true;
@@ -531,7 +535,7 @@ const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'roo
                         logWarning(`Plugin scope ${val.npm} is not installed yet.`);
                     }
                 } else {
-                    logWarning(`Plugin scope ${val.npm} does not exists in package.json.`);
+                    // logWarning(`Plugin scope ${val.npm} does not exists in package.json.`);
                     missingDeps.push(val.npm);
                 }
             }

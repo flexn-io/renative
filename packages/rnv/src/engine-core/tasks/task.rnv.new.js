@@ -176,6 +176,18 @@ export const taskRnvNew = async (c) => {
     logTask('taskRnvNew');
     const { args } = c.program;
 
+    if (fsExistsSync(c.paths.project.config)) {
+        logWarning(`Looks like you are in ReNative project. Found: ${c.paths.project.config}`);
+        const { confirmInRnvProject } = await inquirer.prompt({
+            name: 'confirmInRnvProject',
+            type: 'confirm',
+            message: 'Are you sure you want to continue?'
+        });
+        if (!confirmInRnvProject) {
+            return Promise.reject('Cancelled');
+        }
+    }
+
     let data = {
         defaultVersion: '0.1.0',
         defaultTemplate: 'renative-template-hello-world',
