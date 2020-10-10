@@ -424,18 +424,21 @@ const _writeObjectSync = (c, p, s) => {
     generateBuildConfig(c);
 };
 
-export const getTemplateOptions = c => generateOptions(
-    c.buildConfig.projectTemplates,
-    false,
-    null,
-    (i, obj, mapping, defaultVal) => {
-        const exists = c.buildConfig.templates?.[defaultVal];
-        const installed = exists ? chalk().yellow(' (installed)') : '';
-        return ` [${chalk().grey(i + 1)}]> ${chalk().bold(
-            defaultVal
-        )}${installed} \n`;
-    }
-);
+export const getTemplateOptions = (c) => {
+    const defaultProjectTemplates = c.buildConfig.projectTemplates || {};
+    return generateOptions(
+        defaultProjectTemplates,
+        false,
+        null,
+        (i, obj, mapping, defaultVal) => {
+            const exists = c.buildConfig.templates?.[defaultVal];
+            const installed = exists ? chalk().yellow(' (installed)') : '';
+            return ` [${chalk().grey(i + 1)}]> ${chalk().bold(
+                defaultVal
+            )}${installed} \n`;
+        }
+    );
+};
 
 export const getInstalledTemplateOptions = (c) => {
     if (c.buildConfig.templates) {

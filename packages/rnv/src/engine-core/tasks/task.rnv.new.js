@@ -3,9 +3,8 @@ import inquirer from 'inquirer';
 import semver from 'semver';
 import { generateOptions } from '../../cli/prompt';
 import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS, CURRENT_DIR, PARAMS } from '../../core/constants';
-
 import { getTemplateOptions } from '../../core/templateManager';
-import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync } from '../../core/systemManager/fileutils';
+import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync, writeObjectSync } from '../../core/systemManager/fileutils';
 import { executeAsync, commandExistsSync } from '../../core/systemManager/exec';
 import {
     chalk,
@@ -188,7 +187,6 @@ export const taskRnvNew = async (c) => {
     data.optionTemplates = {};
     data.optionWorkspaces = getWorkspaceOptions(c);
 
-    // logWelcome();
     let inputProjectName;
 
     if (args[1] && args[1] !== '') {
@@ -278,9 +276,31 @@ export const taskRnvNew = async (c) => {
 
     data.optionTemplates.selectedOption = selectedInputTemplate;
 
+
     const inputTemplateVersion = await listAndSelectNpmVersion(c, data.optionTemplates.selectedOption);
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
+
+
+    if (!data.optionTemplates.keysAsArray.includes(selectedInputTemplate)) {
+        const { confirmAddTemplate } = await inquirer.prompt({
+            name: 'confirmAddTemplate',
+            type: 'confirm',
+            message: `Would you like to add ${
+                chalk().white(selectedInputTemplate)} to your ${c.runtime.selectedWorkspace} workspace template list?`
+        });
+
+        if (confirmAddTemplate) {
+            if (!c.files.workspace.config?.projectTemplates) {
+                c.files.workspace.config.projectTemplates = {};
+            }
+            c.files.workspace.config.projectTemplates[selectedInputTemplate] = {};
+            writeObjectSync(c.paths.workspace.config, c.files.workspace.config);
+            await parseRenativeConfigs(c);
+
+            logInfo(`Updating ${c.paths.workspace.config}...DONE`);
+        }
+    }
 
     const { inputSupportedPlatforms } = await inquirer.prompt({
         name: 'inputSupportedPlatforms',
