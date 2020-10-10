@@ -33,7 +33,7 @@ export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
 
     if (!fsExistsSync(c.paths.project.package)) {
         logInfo(
-            `Looks like your ${c.paths.project.package} is missing. CREATING...`
+            `Looks like your ${c.paths.project.package} is missing. CREATING...DONE`
         );
 
         const packageName = c.files.project.config.projectName
@@ -67,7 +67,7 @@ export const checkAndCreateGitignore = (c) => {
     const ignrPath = path.join(c.paths.project.dir, '.gitignore');
     if (!fsExistsSync(ignrPath)) {
         logInfo(
-            'Looks like your .gitignore is missing. CREATING...'
+            'Looks like your .gitignore is missing. CREATING...DONE'
         );
 
         copyFileSync(

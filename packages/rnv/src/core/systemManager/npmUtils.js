@@ -46,7 +46,7 @@ export const checkIfProjectAndNodeModulesExists = async (c) => {
     if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
         c._requiresNpmInstall = false;
         logWarning(
-            'Looks like your node_modules folder is missing. INSTALLING...'
+            'Looks like your node_modules folder is missing. INSTALLING...DONE'
         );
         await installPackageDependencies(c);
     }

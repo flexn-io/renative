@@ -181,7 +181,11 @@ export const logSummary = (header = 'SUMMARY') => {
             str += printIntoBox(`Platform (-p): ${_highlightColor(_c.platform)}`, 1);
         }
         if (_c?.runtime?.engine) {
-            str += printIntoBox(`Engine ($.platforms.${_c?.platform}.engine): ${
+            let addon = '';
+            if (_c?.platform) {
+                addon = ` ($.platforms.${_c?.platform}.engine)`;
+            }
+            str += printIntoBox(`Engine${addon}: ${
                 _highlightColor(_c.runtime.engine?.getId?.())
             }`, 1);
         }

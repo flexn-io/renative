@@ -30,7 +30,7 @@ const configureGit = async (c) => {
     logTask(`configureGit:${projectPath}`);
 
     if (!fsExistsSync(path.join(projectPath, '.git'))) {
-        logInfo('Your project does not have a git repo. Creating one...');
+        logInfo('Your project does not have a git repo. Creating one...DONE');
         if (commandExistsSync('git')) {
             await executeAsync('git init', { cwd: projectPath });
             await executeAsync('git add -A', { cwd: projectPath });

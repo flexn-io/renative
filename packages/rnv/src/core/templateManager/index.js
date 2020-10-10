@@ -34,8 +34,8 @@ import {
 import { doResolve } from '../resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 
-export const checkIfTemplateInstalled = async (c) => {
-    logTask('checkIfTemplateInstalled');
+export const checkIfTemplateConfigured = async (c) => {
+    logTask('checkIfTemplateConfigured');
     if (!c.buildConfig.templates) {
         logWarning(
             `Your ${chalk().white(
@@ -55,7 +55,7 @@ export const checkIfTemplateInstalled = async (c) => {
             logInfo(
                 `Your ${chalk().white(
                     `${k}@${obj.version}`
-                )} template is not installed. ReNative will install it for you`
+                )} template is missing in renative.json. CONFIGURING...DONE`
             );
             c._requiresNpmInstall = true;
             c.runtime.requiresBootstrap = true;
@@ -154,7 +154,7 @@ const _configureSrc = c => new Promise((resolve) => {
         logInfo(
             `Looks like your src folder ${chalk().white(
                 c.paths.project.srcDir
-            )} is missing! CREATING...`
+            )} is missing! CREATING...DONE`
         );
         copyFolderContentsRecursiveSync(
             path.join(c.paths.template.dir, 'src'),
@@ -224,7 +224,7 @@ const _configureProjectConfig = c => new Promise((resolve) => {
         logInfo(
             `Looks like your projectConfig folder ${chalk().white(
                 c.paths.project.appConfigBase.dir
-            )} is missing! CREATING...`
+            )} is missing! CREATING...DONE`
         );
         copyFolderContentsRecursiveSync(
             c.paths.template.appConfigBase.dir,

@@ -148,7 +148,7 @@ export const fixRenativeConfigsSync = async (c) => {
         logInfo(
             `Looks like your babel config file ${chalk().white(
                 c.paths.project.babelConfig
-            )} is missing! CREATING...`
+            )} is missing! CREATING...DONE`
         );
         copyFileSync(
             path.join(c.paths.rnv.projectTemplate.dir, RN_BABEL_CONFIG_NAME),

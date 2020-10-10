@@ -103,7 +103,7 @@ export const configureMetroConfigs = async (c, platform) => {
         logInfo(
             `Looks like your rn-cli config file ${chalk().white(
                 c.paths.project.rnCliConfig
-            )} is missing! INSTALLING...`
+            )} is missing! INSTALLING...DONE`
         );
         copyFileSync(
             path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME),

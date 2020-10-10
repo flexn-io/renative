@@ -12,11 +12,11 @@ export const taskRnvInstall = async (c, parentTask) => {
     if (!areNodeModulesInstalled() || (c._requiresNpmInstall && !c.runtime.skipPackageUpdate)) {
         if (!areNodeModulesInstalled()) {
             logWarning(
-                'Looks like your node_modules folder is missing. INSTALLING...'
+                'Looks like your node_modules folder is missing. INSTALLING...DONE'
             );
         } else {
             logWarning(
-                'Looks like your node_modules out of date. INSTALLING...'
+                'Looks like your node_modules out of date. INSTALLING...DONE'
             );
         }
         c._requiresNpmInstall = false;
