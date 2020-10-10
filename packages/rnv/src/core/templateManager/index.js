@@ -34,7 +34,7 @@ import {
 import { doResolve } from '../resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 
-export const checkIfTemplateInstalled = c => new Promise((resolve) => {
+export const checkIfTemplateInstalled = async (c) => {
     logTask('checkIfTemplateInstalled');
     if (!c.buildConfig.templates) {
         logWarning(
@@ -44,8 +44,7 @@ export const checkIfTemplateInstalled = c => new Promise((resolve) => {
                 'templates'
             )} object. ReNative will skip template generation`
         );
-        resolve();
-        return;
+        return false;
     }
     Object.keys(c.buildConfig.templates).forEach((k) => {
         const obj = c.buildConfig.templates[k];
@@ -59,6 +58,7 @@ export const checkIfTemplateInstalled = c => new Promise((resolve) => {
                 )} template is not installed. ReNative will install it for you`
             );
             c._requiresNpmInstall = true;
+            c.runtime.requiresBootstrap = true;
         }
         if (c.files.project.package.devDependencies) {
             c.files.project.package.devDependencies[k] = obj.version;
@@ -67,8 +67,8 @@ export const checkIfTemplateInstalled = c => new Promise((resolve) => {
 
     _writeObjectSync(c, c.paths.project.package, c.files.project.package);
 
-    resolve();
-});
+    return true;
+};
 
 const _cleanProjectTemplateSync = (c) => {
     logTask('_cleanProjectTemplateSync');
@@ -444,6 +444,8 @@ export const getInstalledTemplateOptions = (c) => {
     logError("You don't have any local templates installed", false, true);
     return [];
 };
+
+export const isTemplateInstalled = c => doResolve(c.buildConfig.currentTemplate);
 
 
 export const applyTemplate = async (c, selectedTemplate) => {
