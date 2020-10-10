@@ -204,7 +204,7 @@ const _runWebosSimOrDevice = async (c) => {
                     type: 'confirm',
                     name: 'setupDevice',
                     message:
-                      'Looks like you want to deploy on a device but have none configured. Do you want to configure one?',
+                      'You want to deploy on a device but have none configured. Do you want to configure one?',
                     default: false
                 }
             ]);
@@ -313,7 +313,7 @@ const runWebOS = async (c) => {
 
         if (!isPortActive) {
             logInfo(
-                `Looks like your ${chalk().white(
+                `Your ${chalk().white(
                     platform
                 )} devServer at port ${chalk().white(
                     c.runtime.port

@@ -101,7 +101,7 @@ export const configureMetroConfigs = async (c, platform) => {
     // Check rn-cli-config
     if (!fsExistsSync(c.paths.project.rnCliConfig)) {
         logInfo(
-            `Looks like your rn-cli config file ${chalk().white(
+            `Your rn-cli config file ${chalk().white(
                 c.paths.project.rnCliConfig
             )} is missing! INSTALLING...DONE`
         );

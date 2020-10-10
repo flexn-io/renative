@@ -336,7 +336,7 @@ export const runWebpackServer = async (c, enableRemoteDebugger) => {
 
     if (!isPortActive) {
         logInfo(
-            `Looks like your ${chalk().white(
+            `Your ${chalk().white(
                 platform
             )} devServerHost ${chalk().white(
                 devServerHost

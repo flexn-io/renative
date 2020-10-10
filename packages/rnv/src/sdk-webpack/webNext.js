@@ -102,7 +102,7 @@ export const runWebNext = async (c) => {
 
     if (!isPortActive) {
         logInfo(
-            `Looks like your ${chalk().white(platform)} devServerHost ${
+            `Your ${chalk().white(platform)} devServerHost ${
                 chalk().white(devServerHost)} at port ${chalk().white(
                 port
             )} is not running. Starting it up for you...`

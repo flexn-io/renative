@@ -88,7 +88,7 @@ const configureProject = c => new Promise((resolve, reject) => {
 
     if (!fsExistsSync(packagePath)) {
         logWarning(
-            `Looks like your ${chalk().white(
+            `Your ${chalk().white(
                 platform
             )} platformBuild is misconfigured!. let's repair it.`
         );
@@ -256,7 +256,7 @@ export const runElectron = async (c) => {
         const isPortActive = await checkPortInUse(c, platform, port);
         if (!isPortActive) {
             logInfo(
-                `Looks like your ${chalk().white(
+                `Your ${chalk().white(
                     platform
                 )} devServer at port ${chalk().white(
                     port

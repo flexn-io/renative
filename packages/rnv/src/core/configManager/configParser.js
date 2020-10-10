@@ -122,7 +122,7 @@ export const configureRuntimeDefaults = async (c) => {
 export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
     if (!c.paths.project.configExists) {
         return reject(
-            `Looks like this directory is not ReNative project. Project config ${chalk().white(
+            `This directory is not ReNative project. Project config ${chalk().white(
                 c.paths.project.config
             )} is missing!. You can create new project with ${chalk().white(
                 'rnv new'
@@ -146,7 +146,7 @@ export const fixRenativeConfigsSync = async (c) => {
     logDebug('configureProject:check babel config');
     if (!fsExistsSync(c.paths.project.babelConfig)) {
         logInfo(
-            `Looks like your babel config file ${chalk().white(
+            `Your babel config file ${chalk().white(
                 c.paths.project.babelConfig
             )} is missing! CREATING...DONE`
         );

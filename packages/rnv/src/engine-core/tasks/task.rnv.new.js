@@ -100,7 +100,7 @@ export const taskRnvNew = async (c) => {
     const { args } = c.program;
 
     if (fsExistsSync(c.paths.project.config)) {
-        logWarning(`Looks like you are in ReNative project. Found: ${c.paths.project.config}`);
+        logWarning(`You are in ReNative project. Found: ${c.paths.project.config}`);
         const { confirmInRnvProject } = await inquirer.prompt({
             name: 'confirmInRnvProject',
             type: 'confirm',

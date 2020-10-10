@@ -68,7 +68,7 @@ export const taskRnvWorkspaceConfigure = async (c) => {
         if (c.files.workspace.config?.appConfigsPath) {
             if (!fsExistsSync(c.files.workspace.config.appConfigsPath)) {
                 logWarning(
-                    `Looks like your custom global appConfig is pointing to ${chalk().white(
+                    `Your custom global appConfig is pointing to ${chalk().white(
                         c.files.workspace.config.appConfigsPath
                     )} which doesn't exist! Make sure you create one in that location`
                 );
@@ -85,7 +85,7 @@ export const taskRnvWorkspaceConfigure = async (c) => {
         // Check config sanity
         if (c.files.workspace.config.defaultTargets === undefined) {
             logWarning(
-                `Looks like you're missing defaultTargets in your config ${chalk().white(
+                `You're missing defaultTargets in your config ${chalk().white(
                     c.paths.workspace.config
                 )}. Let's add them!`
             );

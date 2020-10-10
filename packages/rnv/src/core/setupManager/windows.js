@@ -67,7 +67,7 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         }
         if (!this.availableDownloader) {
             logInfo(
-                "Looks like you don't have wget or curl installed. We'll install wget for you"
+                "You don't have wget or curl installed. We'll install wget for you"
             );
             await this.installSoftware('wget');
             this.availableDownloader = 'wget';
@@ -75,14 +75,14 @@ class LinuxPlatformSetup extends BasePlatformSetup {
 
         if (!commandExistsSync('unzip')) {
             logInfo(
-                "Looks like you don't have unzip installed. We'll install it for you"
+                "You don't have unzip installed. We'll install it for you"
             );
             await this.installSoftware('unzip');
         }
 
         if (!commandExistsSync('javac')) {
             logInfo(
-                "Looks like you don't have java installed. We'll install it for you"
+                "You don't have java installed. We'll install it for you"
             );
             await this.installSoftware('shellcheck');
             await this.addScoopBucket('java');

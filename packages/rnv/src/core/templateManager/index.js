@@ -152,7 +152,7 @@ const _configureSrc = c => new Promise((resolve) => {
     logDebug('configureProject:check src');
     if (!fsExistsSync(c.paths.project.srcDir)) {
         logInfo(
-            `Looks like your src folder ${chalk().white(
+            `Your src folder ${chalk().white(
                 c.paths.project.srcDir
             )} is missing! CREATING...DONE`
         );
@@ -170,7 +170,7 @@ const _configureAppConfigs = async (c) => {
     //
     if (!fsExistsSync(c.paths.project.appConfigsDir)) {
         logInfo(
-            `Looks like your appConfig folder ${chalk().white(
+            `Your appConfig folder ${chalk().white(
                 c.paths.project.appConfigsDir
             )} is missing! ReNative will create one from template.`
         );
@@ -222,7 +222,7 @@ const _configureProjectConfig = c => new Promise((resolve) => {
     logDebug('configureProject:check projectConfigs');
     if (!fsExistsSync(c.paths.project.appConfigBase.dir)) {
         logInfo(
-            `Looks like your projectConfig folder ${chalk().white(
+            `Your projectConfig folder ${chalk().white(
                 c.paths.project.appConfigBase.dir
             )} is missing! CREATING...DONE`
         );
@@ -332,7 +332,7 @@ export const configureTemplateFiles = async (c) => {
                 try {
                     if (fsLstatSync(sourcePath).isDirectory()) {
                         logInfo(
-                            `Found missing directory ${chalk().white(
+                            `Missing directory ${chalk().white(
                                 `${destPath}.js`
                             )}. COPYING from TEMPATE...DONE`
                         );
@@ -342,7 +342,7 @@ export const configureTemplateFiles = async (c) => {
                         );
                     } else {
                         logInfo(
-                            `Found missing entry file ${chalk().white(
+                            `Missing file ${chalk().white(
                                 `${destPath}.js`
                             )}. COPYING from TEMPATE...DONE`
                         );
@@ -388,7 +388,7 @@ export const configureEntryPoints = async (c) => {
             if (!fsExistsSync(dest)) {
                 if (!plat.entryFile) {
                     logWarning(
-                        `You missing entryFile key for ${chalk().white(
+                        `Missing entryFile key for ${chalk().white(
                             platform
                         )} platform in your ${chalk().white(
                             c.paths.appConfig.config
@@ -396,14 +396,14 @@ export const configureEntryPoints = async (c) => {
                     );
                 } else if (!fsExistsSync(source)) {
                     logInfo(
-                        `You missing entry file ${chalk().white(
+                        `Missing entry file ${chalk().white(
                             `${plat.entryFile}.js`
                         )}. COPYING from RNV...DONE`
                     );
                     copyFileSync(backupSource, dest);
                 } else {
                     logInfo(
-                        `You missing entry file ${chalk().white(
+                        `Missing entry file ${chalk().white(
                             `${plat.entryFile}.js`
                         )}. COPYING from TEMPATE...DONE`
                     );

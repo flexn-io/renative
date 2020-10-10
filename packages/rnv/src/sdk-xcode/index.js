@@ -123,7 +123,7 @@ const runCocoaPods = async (c) => {
                 || s.includes('find gem cocoapods');
             if (isGenericError) { return new Error(`pod install failed with:\n ${s}`); }
             logWarning(
-                `Looks like pod install is not enough! Let's try pod update! Error:\n ${s}`
+                `pod install is not enough! Let's try pod update! Error:\n ${s}`
             );
             return executeAsync(c, 'pod update', {
                 cwd: appFolder,
@@ -165,7 +165,7 @@ export const runXcodeProject = async (c) => {
 
     if (!scheme) {
         return Promise.reject(
-            `You missing scheme in platforms.${chalk().yellow(
+            `Missing scheme in platforms.${chalk().yellow(
                 c.platform
             )} in your ${chalk().white(
                 c.paths.appConfig.config
@@ -875,7 +875,7 @@ const configureXcodeProject = async (c) => {
     const tId = getConfigProp(c, platform, 'teamID');
     if (device && (!tId || tId === '')) {
         logError(
-            `Looks like you're missing teamID in your ${chalk().white(
+            `You're missing teamID in your ${chalk().white(
                 c.paths.appConfig.config
             )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`
         );

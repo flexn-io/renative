@@ -147,7 +147,7 @@ ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
         } catch (e) {
             if (e?.message?.includes) {
                 if (e.message.includes('Signature mismatch')) {
-                    const err = `Looks like you're trying to decode crypto file encoded with previous version of crypto.
+                    const err = `You're trying to decode crypto file encoded with previous version of crypto.
 this change was introduced in "rnv@0.29.0"
 
 ${e}

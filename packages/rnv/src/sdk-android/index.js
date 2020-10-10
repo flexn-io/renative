@@ -553,7 +553,7 @@ export const configureProject = async (c) => {
 
     if (!fsExistsSync(gradlew)) {
         logWarning(
-            `Looks like your ${chalk().white(
+            `Your ${chalk().white(
                 platform
             )} platformBuild is misconfigured!. let's repair it.`
         );

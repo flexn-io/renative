@@ -388,7 +388,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         } catch (err) {
             logError(err);
             logWarning(
-                `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk().white.bold(
+                `There is no emulator or device connected! Let's try to launch it. "${chalk().white.bold(
                     `rnv target launch -p ${platform} -t ${target}`
                 )}"`
             );
@@ -507,7 +507,7 @@ export const runTizen = async (c, target) => {
 
         if (!isPortActive) {
             logInfo(
-                `Looks like your ${chalk().white(
+                `Your ${chalk().white(
                     platform
                 )} devServer at port ${chalk().white(
                     c.runtime.port

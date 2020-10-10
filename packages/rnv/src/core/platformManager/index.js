@@ -124,7 +124,7 @@ export const isPlatformSupported = async (c) => {
     ) {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
-            message: `Looks like platform ${
+            message: `Platform ${
                 c.platform
             } is not supported by your project. Would you like to enable it?`
         });
@@ -176,7 +176,7 @@ export const isPlatformSupportedSync = (platform, resolve, reject) => {
 export const isPlatformActive = (c, platform, resolve) => {
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(
-            `Looks like your appConfigFile is not configured properly! check ${chalk().white(
+            `Your appConfigFile is not configured properly! check ${chalk().white(
                 c.paths.appConfig.config
             )} location.`
         );
