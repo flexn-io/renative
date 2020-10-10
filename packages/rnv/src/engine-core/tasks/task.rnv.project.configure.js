@@ -15,7 +15,7 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvProjectConfigure');
 
     if (c.paths.project.builds.dir && !fsExistsSync(c.paths.project.builds.dir)) {
-        logInfo(`Creating folder ${c.paths.project.builds.dir}`);
+        logInfo(`Creating folder ${c.paths.project.builds.dir} ...DONE`);
         fsMkdirSync(c.paths.project.builds.dir);
     }
     await checkAndMigrateProject(c);
@@ -40,7 +40,7 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         if (c.runtime.requiresBootstrap || !isTemplateInstalled(c)) {
             await applyTemplate(c);
             // We'll have to install the template first and reset current engine
-            logInfo('Your template has just been bootstraped. ReNative will re-start your last command.');
+            logInfo('Your template has been bootstraped. Command reset is required. RESTRATING...DONE');
 
             const taskInstance = await findSuitableTask(c);
             c.runtime.requiresBootstrap = false;

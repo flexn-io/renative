@@ -143,7 +143,7 @@ export const injectPlatformDependencies = async (c) => {
             // do npm i only if something new is added
             logInfo(`Found extra npm dependencies required by ${
                 chalk().white(selectedEngine.id)
-            } engine. INSTALLING...DONE`);
+            } engine. ADDING...DONE`);
             await installPackageDependencies(c);
             await overrideTemplatePlugins(c);
         }

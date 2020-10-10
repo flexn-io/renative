@@ -2,7 +2,7 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import { executeAsync, commandExistsSync } from './exec';
-import { fsExistsSync, invalidatePodsChecksum, removeDirs } from './fileutils';
+import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync } from './fileutils';
 import { logTask, logWarning, logError, logInfo, logDebug } from './logger';
 import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
 import { doResolve } from '../resolve';
@@ -45,14 +45,14 @@ export const checkIfProjectAndNodeModulesExists = async (c) => {
 
     if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
         c._requiresNpmInstall = false;
-        logWarning(
-            'Looks like your node_modules folder is missing. INSTALLING...DONE'
+        logInfo(
+            'Looks like your node_modules folder is missing. INSTALLING...'
         );
         await installPackageDependencies(c);
     }
 };
 
-export const installPackageDependencies = async (c, failOnError = false, skipJetifier = false) => {
+export const installPackageDependencies = async (c, failOnError = false) => {
     const customScript = c.buildConfig?.tasks?.install?.script;
 
     if (customScript) {
@@ -107,15 +107,30 @@ export const installPackageDependencies = async (c, failOnError = false, skipJet
             Array.isArray(plats) && (plats.includes(ANDROID)
             || plats.includes(ANDROID_TV) || plats.includes(ANDROID_WEAR))
         ) {
-            if (!skipJetifier && doResolve('jetifier')) {
-                await executeAsync('npx jetify');
+            if (!c.files.project.configLocal) {
+                c.files.project.configLocal = {};
             }
+            if (!c.files.project.configLocal?._meta) {
+                c.files.project.configLocal._meta = {};
+            }
+            c.files.project.configLocal._meta.requiresJetify = true;
+            writeFileSync(c.paths.project.configLocal, c.files.project.configLocal);
         }
         return true;
     } catch (jetErr) {
         logError(jetErr);
         return false;
     }
+};
+
+export const jetifyIfRequired = async (c) => {
+    logTask('jetifyIfRequired');
+    if (c.files.project.configLocal?._meta?.requiresJetify) {
+        if (doResolve('jetifier')) {
+            await executeAsync('npx jetify');
+        }
+    }
+    return true;
 };
 
 export const cleanNodeModules = () => new Promise((resolve, reject) => {

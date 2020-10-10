@@ -23,7 +23,8 @@ import {
     logTask,
     logWarning,
     logError,
-    logDebug
+    logDebug,
+    logInfo
 } from '../systemManager/logger';
 import { doResolve } from '../resolve';
 import { inquirerPrompt } from '../../cli/prompt';
@@ -260,10 +261,10 @@ package.json will be overriden`
         ) {
             // Dependency does not exists
             if (plugin.version) {
-                logWarning(
+                logInfo(
                     `Missing dependency ${chalk().white(k)} v(${chalk().red(
                         plugin.version
-                    )}) in package.json. package.json will be overriden`
+                    )}) in package.json. INSTALLING...DONE`
                 );
 
                 hasPackageChanged = true;
@@ -288,7 +289,7 @@ RNV Detected plugin dependency conflict. ${chalk().cyan('RESOLVING...')}
                             k
                         )} requires npm dependency ${chalk().white(
                             npmKey
-                        )} .Adding missing npm dependency to you package.json`
+                        )}. INSTALLING...DONE`
                     );
                     newDeps[npmKey] = npmDep;
                     hasPackageChanged = true;
@@ -484,7 +485,7 @@ export const loadPluginTemplates = async (c) => {
         // This must be installed to avoid scoped plugins errors
         if (hasPackageChanged) {
             _updatePackage(c, { dependencies });
-            await installPackageDependencies(c, false, true);
+            await installPackageDependencies(c);
             await loadPluginTemplates(c);
         }
     }

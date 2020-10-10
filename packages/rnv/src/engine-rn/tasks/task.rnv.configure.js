@@ -1,5 +1,6 @@
 import { logErrorPlatform } from '../../core/platformManager';
 import { logTask } from '../../core/systemManager/logger';
+import { jetifyIfRequired } from '../../core/systemManager/npmUtils';
 import { IOS,
     TVOS,
     ANDROID,
@@ -26,14 +27,18 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
     switch (c.platform) {
         case IOS:
         case TVOS:
-            return configureXcodeProject(c);
+            await configureXcodeProject(c);
+            break;
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            return configureGradleProject(c);
+            await configureGradleProject(c);
+            break;
         default:
-            return logErrorPlatform(c);
+            await logErrorPlatform(c);
     }
+    await jetifyIfRequired(c);
+    return true;
 };
 
 export default {

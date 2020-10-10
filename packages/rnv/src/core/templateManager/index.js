@@ -245,10 +245,10 @@ const _configureRenativeConfig = async (c) => {
             || c.runtime.requiresForcedTemplateApply
             || c.files.project.config.isNew
         ) {
-            logWarning(
-                `Looks like your ${
+            logInfo(
+                `Your ${
                     c.paths.project.config
-                } need to be updated with ${c.paths.template.configTemplate}`
+                } need to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
             );
             const mergedObj = mergeObjects(
                 c,
