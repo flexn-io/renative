@@ -4,7 +4,7 @@ import semver from 'semver';
 import { generateOptions } from '../../cli/prompt';
 import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS, CURRENT_DIR, PARAMS } from '../../core/constants';
 import { getTemplateOptions } from '../../core/templateManager';
-import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync, writeObjectSync } from '../../core/systemManager/fileutils';
+import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync, writeObjectSync, readObjectSync } from '../../core/systemManager/fileutils';
 import { executeAsync, commandExistsSync } from '../../core/systemManager/exec';
 import {
     chalk,
@@ -43,84 +43,7 @@ const configureGit = async (c) => {
     }
 };
 
-const _generateProject = async (c, data) => {
-    logTask('_generateProject');
-
-    c.paths.project.dir = path.join(
-        CURRENT_DIR,
-        data.projectName.replace(/(\s+)/g, '_')
-    );
-    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
-    c.paths.project.config = path.join(
-        c.paths.project.dir,
-        RENATIVE_CONFIG_NAME
-    );
-
-    data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
-
-    if (fsExistsSync(c.paths.project.dir)) {
-        const { confirm } = await inquirer.prompt({
-            type: 'confirm',
-            name: 'confirm',
-            message: `Folder ${c.paths.project.dir} already exists. RNV will override it. Continue?`
-        });
-
-        if (!confirm) {
-            return Promise.reject('Cancelled by user');
-        }
-        await cleanFolder(c.paths.project.dir);
-    }
-
-    mkdirSync(c.paths.project.dir);
-
-    const templates = {};
-
-    logTask(
-        `_generateProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
-        chalk().grey
-    );
-
-    templates[data.optionTemplates.selectedOption] = {
-        version: data.optionTemplates.selectedVersion
-    };
-
-    const config = {
-        projectName: data.projectName,
-        workspaceID: data.optionWorkspaces.selectedOption,
-        paths: {
-            appConfigsDir: './appConfigs',
-            entryDir: './',
-            platformAssetsDir: './platformAssets',
-            platformBuildsDir: './platformBuilds',
-        },
-        defaults: {
-            title: data.appTitle,
-            id: data.appID,
-            supportedPlatforms: data.optionPlatforms.selectedOptions
-        },
-        templates,
-        currentTemplate: data.optionTemplates.selectedOption,
-        isNew: true,
-        isMonorepo: false
-    };
-
-    writeFileSync(c.paths.project.config, config);
-
-    if (data.gitEnabled) {
-        await configureGit(c);
-    }
-
-    logSuccess(
-        `Your project is ready! navigate to project ${chalk().white(
-            `cd ${data.projectName}`
-        )} and run ${chalk().white(
-            'rnv run'
-        )} to see magic happen!`
-    );
-};
-
 const _prepareProjectOverview = (c, data) => {
-    data.projectName = data.inputProjectName;
     data.appTitle = data.inputAppTitle || data.defaultAppTitle;
     data.teamID = '';
     data.appID = data.inputAppID
@@ -188,6 +111,7 @@ export const taskRnvNew = async (c) => {
         }
     }
 
+
     let data = {
         defaultVersion: '0.1.0',
         defaultTemplate: 'renative-template-hello-world',
@@ -213,6 +137,26 @@ export const taskRnvNew = async (c) => {
         });
         inputProjectName = inputProjectNameObj?.inputProjectName;
     }
+
+    data.projectName = inputProjectName;
+    c.paths.project.dir = path.join(
+        CURRENT_DIR,
+        data.projectName.replace(/(\s+)/g, '_')
+    );
+    if (fsExistsSync(c.paths.project.dir)) {
+        const { confirm } = await inquirer.prompt({
+            type: 'confirm',
+            name: 'confirm',
+            message: `Folder ${c.paths.project.dir} already exists. RNV will override it. Continue?`
+        });
+
+        if (!confirm) {
+            return Promise.reject('Cancelled by user');
+        }
+        await cleanFolder(c.paths.project.dir);
+    }
+
+    mkdirSync(c.paths.project.dir);
 
     const {
         inputAppTitle,
@@ -293,6 +237,9 @@ export const taskRnvNew = async (c) => {
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
 
+    await executeAsync(`npm i ${selectedInputTemplate}@${inputTemplateVersion} --no-save`, {
+        cwd: c.paths.project.dir
+    });
 
     if (!data.optionTemplates.keysAsArray.includes(selectedInputTemplate)) {
         const { confirmAddTemplate } = await inquirer.prompt({
@@ -314,14 +261,18 @@ export const taskRnvNew = async (c) => {
         }
     }
 
+    const renativeTemplateConfig = readObjectSync(path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, 'renative.template.json'));
+
+    const supportedPlatforms = renativeTemplateConfig?.defaults?.supportedPlatforms || data.optionPlatforms.keysAsArray;
+
     const { inputSupportedPlatforms } = await inquirer.prompt({
         name: 'inputSupportedPlatforms',
         type: 'checkbox',
         pageSize: 20,
         message: 'What platforms would you like to use?',
         validate: val => !!val.length || 'Please select at least a platform',
-        default: data.optionPlatforms.keysAsArray,
-        choices: data.optionPlatforms.keysAsArray
+        default: supportedPlatforms,
+        choices: supportedPlatforms
     });
 
     const { gitEnabled } = await inquirer.prompt({
@@ -351,19 +302,73 @@ export const taskRnvNew = async (c) => {
         message: `\n${data.confirmString}\nIs all this correct?`
     });
 
-    if (confirm) {
-        try {
-            await Analytics.captureEvent({
-                type: 'newProject',
-                template: inputTemplate,
-                platforms: inputSupportedPlatforms
-            });
-        } catch (e) {
-            logDebug(e);
-        }
-
-        await _generateProject(c, data);
+    if (!confirm) {
+        return;
     }
+
+    try {
+        await Analytics.captureEvent({
+            type: 'newProject',
+            template: inputTemplate,
+            platforms: inputSupportedPlatforms
+        });
+    } catch (e) {
+        logDebug(e);
+    }
+
+    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
+    c.paths.project.config = path.join(
+        c.paths.project.dir,
+        RENATIVE_CONFIG_NAME
+    );
+
+    data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
+
+    const templates = {};
+
+    logTask(
+        `_generateProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
+        chalk().grey
+    );
+
+    templates[data.optionTemplates.selectedOption] = {
+        version: data.optionTemplates.selectedVersion
+    };
+
+    const config = {
+        ...renativeTemplateConfig,
+        projectName: data.projectName,
+        workspaceID: data.optionWorkspaces.selectedOption,
+        paths: {
+            appConfigsDir: './appConfigs',
+            entryDir: './',
+            platformAssetsDir: './platformAssets',
+            platformBuildsDir: './platformBuilds',
+        },
+        defaults: {
+            title: data.appTitle,
+            id: data.appID,
+            supportedPlatforms: data.optionPlatforms.selectedOptions
+        },
+        templates,
+        currentTemplate: data.optionTemplates.selectedOption,
+        isNew: true,
+        isMonorepo: false
+    };
+
+    writeFileSync(c.paths.project.config, config);
+
+    if (data.gitEnabled) {
+        await configureGit(c);
+    }
+
+    logSuccess(
+        `Your project is ready! navigate to project ${chalk().white(
+            `cd ${data.projectName}`
+        )} and run ${chalk().white(
+            'rnv run'
+        )} to see magic happen!`
+    );
 };
 
 export default {
