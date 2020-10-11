@@ -10,30 +10,68 @@ import { doResolve } from '../resolve';
 
 import { inquirerPrompt } from '../../cli/prompt';
 
-export const listAndSelectNpmVersion = async (c, npmPackage) => {
+export const listAndSelectNpmVersion = async (c, npmPackage, rnvTemplates) => {
     const templateVersionsStr = await executeAsync(
         c,
         `npm view ${npmPackage} versions`
     );
     const versionArr = templateVersionsStr
         .replace(/\r?\n|\r|\s|'|\[|\]/g, '')
-        .split(',')
-        .reverse();
-    const { rnvVersion } = c;
+        .split(',');
 
-    const validVersions = versionArr
-        // .filter(version => semver.lte(version, rnvVersion))
-        .map(v => ({ name: v, value: v }));
-    if (validVersions[0].name === rnvVersion) {
-        // mark the same versions as recommended
-        validVersions[0].name = `${validVersions[0].name} (recommended)`;
-    }
+    const templateTagsStr = await executeAsync(
+        c,
+        `npm dist-tag ls ${npmPackage}`
+    );
+    const tagArr = [];
+    templateTagsStr.split('\n').forEach((tString) => {
+        const tArr = tString.split(': ');
+        tagArr.push({
+            name: tArr[0],
+            version: tArr[1]
+        });
+    });
+
+    const { rnvVersion } = c;
+    const validVersions = versionArr.map(v => ({ name: v, value: v }));
+
+    let recommendedVersion;
+    validVersions.forEach((item) => {
+        let matchStr = '';
+        const matchArr = [];
+        tagArr.forEach((tag) => {
+            if (tag.version === item.value) {
+                matchArr.push(tag.name);
+            }
+        });
+        if (matchArr.length) {
+            matchStr = ` (HEAD: ${matchArr.join(', ')})`;
+            item.name = `${item.value}${matchStr}`;
+        }
+        if (rnvTemplates?.includes && rnvTemplates.includes(npmPackage)) {
+            if (item.value === rnvVersion) {
+                item.name = `${item.name} <= RECOMMENDED`;
+                recommendedVersion = item;
+            }
+        }
+    });
+    if (!recommendedVersion) recommendedVersion = validVersions[0];
+
+
+    validVersions.sort((a, b) => {
+        if (a.name > b.name) return 1;
+
+        return (b.name > a.name) ? -1 : 0;
+    }).reverse();
+
+    validVersions.unshift(validVersions.splice(validVersions.indexOf(recommendedVersion), 1)[0]);
+
 
     const { inputTemplateVersion } = await inquirer.prompt({
         name: 'inputTemplateVersion',
         type: 'list',
         message: `What ${npmPackage} version to use?`,
-        default: versionArr[0],
+        default: recommendedVersion.name,
         choices: validVersions
     });
 

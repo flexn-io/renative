@@ -1,11 +1,12 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import semver from 'semver';
+import lSet from 'lodash.set';
 import { generateOptions } from '../../cli/prompt';
 import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS, CURRENT_DIR, PARAMS } from '../../core/constants';
 import { getTemplateOptions } from '../../core/templateManager';
 import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync, writeObjectSync, readObjectSync } from '../../core/systemManager/fileutils';
-import { executeAsync, commandExistsSync } from '../../core/systemManager/exec';
+import { executeAsync } from '../../core/systemManager/exec';
 import {
     chalk,
     printIntoBox,
@@ -21,27 +22,10 @@ import {
 import { getWorkspaceOptions } from '../../core/projectManager/workspace';
 import { parseRenativeConfigs } from '../../core/configManager/configParser';
 import { listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
+import { configureGit } from '../../core/systemManager/gitUtils';
 import Analytics from '../../core/systemManager/analytics';
 
 const highlight = chalk().green;
-
-const configureGit = async (c) => {
-    const projectPath = c.paths.project.dir;
-    logTask(`configureGit:${projectPath}`);
-
-    if (!fsExistsSync(path.join(projectPath, '.git'))) {
-        logInfo('Your project does not have a git repo. Creating one...DONE');
-        if (commandExistsSync('git')) {
-            await executeAsync('git init', { cwd: projectPath });
-            await executeAsync('git add -A', { cwd: projectPath });
-            await executeAsync('git commit -m "Initial"', { cwd: projectPath });
-        } else {
-            logWarning(
-                "We tried to create a git repo inside your project but you don't seem to have git installed"
-            );
-        }
-    }
-};
 
 const _prepareProjectOverview = (c, data) => {
     data.appTitle = data.inputAppTitle || data.defaultAppTitle;
@@ -123,6 +107,10 @@ export const taskRnvNew = async (c) => {
     data.optionTemplates = {};
     data.optionWorkspaces = getWorkspaceOptions(c);
 
+    // ==================================================
+    // INPUT: Project Name
+    // ==================================================
+
     let inputProjectName;
 
     if (args[1] && args[1] !== '') {
@@ -158,11 +146,13 @@ export const taskRnvNew = async (c) => {
 
     mkdirSync(c.paths.project.dir);
 
+    // ==================================================
+    // INPUT: Project Title, ID, Version
+    // ==================================================
     const {
         inputAppTitle,
         inputAppID,
-        inputVersion,
-        inputWorkspace
+        inputVersion
     } = await inquirer.prompt([
         {
             name: 'inputAppTitle',
@@ -191,7 +181,15 @@ export const taskRnvNew = async (c) => {
             validate: v => !!semver.valid(semver.coerce(v))
                 || 'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
             message: "What's your Version?"
-        },
+        }
+    ]);
+
+    // ==================================================
+    // INPUT: Workspace
+    // ==================================================
+    const {
+        inputWorkspace
+    } = await inquirer.prompt([
         {
             name: 'inputWorkspace',
             type: 'list',
@@ -206,6 +204,9 @@ export const taskRnvNew = async (c) => {
     await parseRenativeConfigs(c);
     data.optionTemplates = getTemplateOptions(c);
 
+    // ==================================================
+    // INPUT: Template
+    // ==================================================
     const customTemplate = 'Custom Template ...';
 
     data.optionTemplates.keysAsArray.push(customTemplate);
@@ -233,7 +234,8 @@ export const taskRnvNew = async (c) => {
     data.optionTemplates.selectedOption = selectedInputTemplate;
 
 
-    const inputTemplateVersion = await listAndSelectNpmVersion(c, data.optionTemplates.selectedOption);
+    const inputTemplateVersion = await listAndSelectNpmVersion(c,
+        data.optionTemplates.selectedOption, Object.keys(c.files.rnv.projectTemplates.config.projectTemplates));
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
 
@@ -263,6 +265,10 @@ export const taskRnvNew = async (c) => {
 
     const renativeTemplateConfig = readObjectSync(path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, 'renative.template.json'));
 
+    // ==================================================
+    // INPUT: Supported Platforms
+    // ==================================================
+
     const supportedPlatforms = renativeTemplateConfig?.defaults?.supportedPlatforms || data.optionPlatforms.keysAsArray;
 
     const { inputSupportedPlatforms } = await inquirer.prompt({
@@ -275,11 +281,61 @@ export const taskRnvNew = async (c) => {
         choices: supportedPlatforms
     });
 
+    // ==================================================
+    // INPUT: Custom Questions
+    // ==================================================
+    const renativeTemplateConfigExt = {};
+    const bootstrapQuestions = renativeTemplateConfig?.templateConfig?.bootstrapQuestions;
+
+    if (bootstrapQuestions?.length) {
+        const inquirerQuestions = [];
+        const inquirerObj = {};
+
+        bootstrapQuestions.forEach((q, i) => {
+            const choicesObj = {};
+            if (q.options) {
+                q.options.forEach((opt) => {
+                    choicesObj[opt.title] = opt;
+                });
+            }
+            inquirerObj[`q${i}`] = { ...q, choicesObj };
+            inquirerQuestions.push({
+                name: `q${i}`,
+                type: q.type,
+                message: q.title,
+                choices: Object.keys(choicesObj)
+            });
+        });
+
+
+        const results = await inquirer.prompt(inquirerQuestions);
+
+        Object.keys(results).forEach((k) => {
+            const objConfig = inquirerObj[k];
+            const objResult = results[k];
+            const objValue = objConfig.choicesObj[objResult];
+
+            const targetKey = objConfig?.configProp?.key;
+
+            if (targetKey) {
+                lSet(renativeTemplateConfigExt, targetKey, objValue);
+            }
+        });
+    }
+
+    // ==================================================
+    // INPUT: Git Enabled
+    // ==================================================
+
     const { gitEnabled } = await inquirer.prompt({
         name: 'gitEnabled',
         type: 'confirm',
         message: 'Do you want to set-up git in your new project?'
     });
+
+    // ==================================================
+    // INPUT: Confirm Overview
+    // ==================================================
 
     data = {
         ...data,
@@ -305,6 +361,9 @@ export const taskRnvNew = async (c) => {
     if (!confirm) {
         return;
     }
+
+    // ==================================================
+    // Setup Project
 
     try {
         await Analytics.captureEvent({
@@ -337,6 +396,7 @@ export const taskRnvNew = async (c) => {
 
     const config = {
         ...renativeTemplateConfig,
+        ...renativeTemplateConfigExt,
         projectName: data.projectName,
         workspaceID: data.optionWorkspaces.selectedOption,
         paths: {

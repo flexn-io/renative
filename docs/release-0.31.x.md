@@ -21,3 +21,4 @@ sidebar_label: 0.31.x (Baby Yoda)
 - custom templates
 - better logging + suggestions for crypto issues
 - confirm folder replace during rnv new
+- support for custom template injections
