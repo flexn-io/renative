@@ -35,5 +35,5 @@ cd packages/app
 
 # RUN
 
-rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
+npx rnv template apply --template renative-template-hello-world -c helloworld --ci --mono
 yarn e2e-ios
