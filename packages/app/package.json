@@ -78,6 +78,7 @@
         "@rnv/engine-rn-next": "~0.31.0-RC",
         "@rnv/engine-rn-web": "~0.31.0-RC",
         "babel-jest": "24.9.0",
+        "babel-loader": "8.0.5",
         "cypress": "4.8.0",
         "detox": "17.8.0",
         "jest": "26.4.2",
