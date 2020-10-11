@@ -70,13 +70,13 @@
         "react-native-vector-icons": "6.6.0",
         "react-native-web": "0.13.12",
         "react-native-web-image-loader": "0.0.5",
-        "renative": "file:../renative"
+        "renative": "~0.31.0-RC"
     },
     "devDependencies": {
-        "@rnv/engine-rn": "file:../rnv-engine-rn",
-        "@rnv/engine-rn-electron": "file:../rnv-engine-rn-electron",
-        "@rnv/engine-rn-next": "file:../rnv-engine-rn-next",
-        "@rnv/engine-rn-web": "file:../rnv-engine-rn-web",
+        "@rnv/engine-rn": "~0.31.0-RC",
+        "@rnv/engine-rn-electron": "~0.31.0-RC",
+        "@rnv/engine-rn-next": "~0.31.0-RC",
+        "@rnv/engine-rn-web": "~0.31.0-RC",
         "babel-jest": "24.9.0",
         "cypress": "4.8.0",
         "detox": "17.8.0",
@@ -87,7 +87,7 @@
         "renative-template-blank": "^0.31.0-alpha.11",
         "renative-template-hello-world": "^0.31.0-alpha.11",
         "renative-template-kitchen-sink": "^0.31.0-alpha.11",
-        "rnv": "file:../rnv",
+        "rnv": "~0.31.0-RC",
         "wait-on": "5.0.1",
         "xcode": "2.1.0"
     },
