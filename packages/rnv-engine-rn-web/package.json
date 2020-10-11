@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "0.31.0-RC.8",
+    "version": "0.31.0-RC.9",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"
