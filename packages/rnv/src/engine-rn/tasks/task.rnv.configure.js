@@ -28,17 +28,17 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
         case IOS:
         case TVOS:
             await configureXcodeProject(c);
-            break;
+            return true;
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
             await configureGradleProject(c);
-            break;
+            await jetifyIfRequired(c);
+            return true;
         default:
             await logErrorPlatform(c);
+            return true;
     }
-    await jetifyIfRequired(c);
-    return true;
 };
 
 export default {

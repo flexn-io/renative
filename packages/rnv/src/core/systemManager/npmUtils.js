@@ -166,6 +166,8 @@ export const jetifyIfRequired = async (c) => {
     if (c.files.project.configLocal?._meta?.requiresJetify) {
         if (doResolve('jetifier')) {
             await executeAsync('npx jetify');
+            c.files.project.configLocal._meta.requiresJetify = false;
+            writeFileSync(c.paths.project.configLocal, c.files.project.configLocal);
         }
     }
     return true;

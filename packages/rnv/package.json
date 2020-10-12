@@ -125,6 +125,7 @@
         "ip": "1.1.5",
         "kill-port": "1.6.1",
         "lodash.get": "4.4.2",
+        "lodash.set": "4.3.2",
         "metro-react-native-babel-preset": "0.51.1",
         "metro-resolver": "0.48.3",
         "mini-css-extract-plugin": "0.8.0",
