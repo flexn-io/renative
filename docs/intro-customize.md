@@ -18,13 +18,13 @@ you can override any file via `./appConfigs/base/builds/[PLATFORM]/[FILE_PATH]`
 
 ## Example 1
 
-Webpack config file of your web app:
+Webpack config file of your web app (use `.dev.` or `.prod.` to override the config for development or production builds):
 
-`./platformBuilds/helloworld_web/webpack.config.js`
+`./platformBuilds/helloworld_web/webpack.config.dev.js`
 
 Will be overridden with:
 
-`./appConfigs/base/builds/web/webpack.config.js`
+`./appConfigs/base/builds/web/webpack.config.dev.js`
 
 ## Example 2
 
