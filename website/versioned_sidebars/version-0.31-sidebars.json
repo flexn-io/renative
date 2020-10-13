@@ -1,0 +1,117 @@
+{
+  "version-0.31-docs-sidebar": {
+    "Getting Started": [
+      "version-0.31-intro-quickstart",
+      "version-0.31-intro-installation",
+      "version-0.31-intro-migrating_react_native",
+      "version-0.31-intro-features",
+      "version-0.31-intro-customize",
+      "version-0.31-intro-architecture"
+    ],
+    "Guides": [
+      "version-0.31-guide-cli",
+      "version-0.31-guide-plugins",
+      "version-0.31-guide-templates",
+      "version-0.31-guide-workspaces",
+      "version-0.31-guide-config",
+      "version-0.31-guide-file_extensions",
+      "version-0.31-guide-config_folders",
+      "version-0.31-guide-build_hooks",
+      "version-0.31-guide-runtime",
+      "version-0.31-guide-common_issues",
+      "version-0.31-guide-develop",
+      "version-0.31-guide-engines",
+      "version-0.31-guide-analytics"
+    ],
+    "Configs": [
+      "version-0.31-config-overview",
+      "version-0.31-config-workspaces",
+      "version-0.31-config-global",
+      "version-0.31-config-project",
+      "version-0.31-config-app",
+      "version-0.31-config-template",
+      "version-0.31-config-build",
+      "version-0.31-config-runtime",
+      "version-0.31-config-private",
+      "version-0.31-config-local",
+      "version-0.31-config-plugin"
+    ],
+    "Platforms": [
+      "version-0.31-platforms",
+      "version-0.31-platform-android",
+      "version-0.31-platform-androidtv",
+      "version-0.31-platform-androidwear",
+      "version-0.31-platform-chromecast",
+      "version-0.31-platform-firefoxos",
+      "version-0.31-platform-firefoxtv",
+      "version-0.31-platform-ios",
+      "version-0.31-platform-kaios",
+      "version-0.31-platform-macos",
+      "version-0.31-platform-tizen",
+      "version-0.31-platform-tizenmobile",
+      "version-0.31-platform-tizenwatch",
+      "version-0.31-platform-tvos",
+      "version-0.31-platform-web",
+      "version-0.31-platform-webos",
+      "version-0.31-platform-windows"
+    ],
+    "Plugins": [
+      "version-0.31-plugins"
+    ],
+    "Engines": [
+      "version-0.31-engine-core",
+      "version-0.31-engine-rn",
+      "version-0.31-engine-rn-web",
+      "version-0.31-engine-rn-electron",
+      "version-0.31-engine-rn-next"
+    ],
+    "Templates": [
+      "version-0.31-template-hello-world",
+      "version-0.31-template-blank",
+      "version-0.31-template-kitchen-sink"
+    ],
+    "Integrations": [
+      "version-0.31-integration_aws",
+      "version-0.31-integration_azure",
+      "version-0.31-integration_docker",
+      "version-0.31-integration_fastlane",
+      "version-0.31-integration_ftp",
+      "version-0.31-integration_now",
+      "version-0.31-integration_testflight"
+    ],
+    "Upgrades": [
+      "version-0.31-upgrade-0.31",
+      "version-0.31-upgrade-0.30",
+      "version-0.31-upgrade-0.29",
+      "version-0.31-upgrade-0.28",
+      "version-0.31-upgrade-0.27"
+    ],
+    "Release Notes": [
+      "version-0.31-changelog",
+      "version-0.31-release-0.31.x",
+      "version-0.31-release-0.30.x",
+      "version-0.31-release-0.29.x",
+      "version-0.31-release-0.28.x",
+      "version-0.31-release-0.27.x"
+    ]
+  },
+  "version-0.31-api-sidebar": {
+    "CLI": [
+      "version-0.31-api-cli-engine-core",
+      "version-0.31-api-cli-engine-rn",
+      "version-0.31-api-cli-engine-rn-web",
+      "version-0.31-api-cli-engine-rn-next",
+      "version-0.31-api-cli-engine-rn-electron"
+    ],
+    "Config": [
+      "version-0.31-api-config"
+    ],
+    "Runtime": [
+      "version-0.31-api-renative"
+    ],
+    "RNV": [
+      "version-0.31-api-rnv",
+      "version-0.31-api-rnv-config"
+    ]
+  }
+}
