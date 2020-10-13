@@ -404,6 +404,9 @@
       "changelog/0.31.0-RC.9": {
         "title": "changelog/0.31.0-RC.9"
       },
+      "changelog/0.31.0": {
+        "title": "changelog/0.31.0"
+      },
       "config-app": {
         "title": "App Configs",
         "sidebar_label": "App Configs"
@@ -1355,6 +1358,10 @@
       "version-0.31/archive/version-0.31-api-cli": {
         "title": "rnv",
         "sidebar_label": "rnv"
+      },
+      "version-0.31/version-0.31-changelog": {
+        "title": "Changelog",
+        "sidebar_label": "Changelog"
       },
       "version-0.31/version-0.31-engine-core": {
         "title": "Core Engine",
