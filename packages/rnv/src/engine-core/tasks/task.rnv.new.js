@@ -415,6 +415,7 @@ export const taskRnvNew = async (c) => {
         isNew: true,
         isMonorepo: false
     };
+    delete config.templateConfig;
 
     writeFileSync(c.paths.project.config, config);
 
