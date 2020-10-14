@@ -12,6 +12,7 @@ const DEFAULT_CONFIG = {
     },
 };
 
+const commandExists = require('command-exists');
 const merge = require('deepmerge');
 
 const indent = level => '    '.repeat(level);
@@ -39,7 +40,11 @@ const htmlTemp = (options) => {
     let remoteDebugScript;
 
     if (debug === 'true' && debugIp) {
-        remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target/target-script-min.js#${platform}"></script>`;
+        if(commandExists.sync('chii')) {
+            remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target.js#${platform}"></script>`;
+        } else {
+            remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target/target-script-min.js#${platform}"></script>`;
+        }
     }
 
 
