@@ -39,7 +39,7 @@ import {
 } from '../core/systemManager/logger';
 import { waitForEmulator } from '../core/targetManager';
 import { isPlatformActive } from '../core/platformManager';
-import { fsExistsSync, writeCleanFile } from '../core/systemManager/fileutils';
+import { fsExistsSync, writeCleanFile, fsRenameSync } from '../core/systemManager/fileutils';
 import { buildWeb, runWebpackServer, configureCoreWebProject, waitForWebpack } from '../sdk-webpack';
 
 import {
@@ -305,6 +305,8 @@ const _runTizenSimOrDevice = async (c) => {
     const tOut = path.join(tDir, 'output');
     const tId = platformConfig.id;
     const wgt = `${platformConfig.appName}.wgt`;
+    // the tizen CLI cannot handle .wgt files with spaces correctly.
+    const wgtClean = `${platformConfig.appName.replace(/[^a-z0-9]/gi, '_')}.wgt`;
     const certProfile = platformConfig.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
     let deviceID;
@@ -379,10 +381,18 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             }
         }
         try {
+            if(wgtClean !== wgt) {
+                logInfo(`Your app name contains characters like spaces, changing output from "${wgt}" to "${wgtClean}"`)
+                fsRenameSync(path.join(tOut, wgt), path.join(tOut, wgtClean))
+            }
+        } catch (err) {
+            logError(err)
+        }
+        try {
             await execCLI(
                 c,
                 CLI_TIZEN,
-                `install -- ${tOut} -n ${wgt} -t ${deviceID}`
+                `install -- ${tOut} -n ${wgtClean} -t ${deviceID}`
             );
             hasDevice = true;
         } catch (err) {
@@ -493,7 +503,7 @@ export const runTizen = async (c, target) => {
         }
     }
 
-    logTask('runWebOS', `target:${target} hosted:${!!isHosted}`);
+    logTask('runTizen', `target:${target} hosted:${!!isHosted}`);
     if (isHosted) return;
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
