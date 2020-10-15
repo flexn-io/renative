@@ -115,7 +115,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 
     const duplicateFontCheck = [];
     parseFonts(c, (font, dir) => {
-        if (font.includes('.ttf') || font.includes('.otf')) {
+        if (font.includes('.ttf') || font.includes('.otf') || font.includes('.woff')) {
             const key = font.split('.')[0];
             const includedFonts = getConfigProp(
                 c,
