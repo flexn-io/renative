@@ -28,6 +28,7 @@ const _configureHostedIfRequired = async (c) => {
     logTask('_configureHostedIfRequired');
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    const hostedShellHeaders = getConfigProp(c, c.platform, 'hostedShellHeaders', '');
 
     if (!bundleAssets) {
         logDebug('Running hosted build');
@@ -39,7 +40,11 @@ const _configureHostedIfRequired = async (c) => {
                 {
                     pattern: '{{DEV_SERVER}}',
                     override: `http://${ip.address()}:${c.runtime.port}`
-                }
+                },
+                {
+                    pattern: '{{APPSHELL_HTML_HEADER}}',
+                    override: String(hostedShellHeaders || '')
+                },
             ], null, c
         );
     }
