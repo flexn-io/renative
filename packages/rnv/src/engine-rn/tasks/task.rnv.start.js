@@ -1,8 +1,9 @@
-import { getEntryFile } from '../../core/common';
+import { getEntryFile, confirmActiveBundler } from '../../core/common';
 import { doResolve } from '../../core/resolve';
 import { logErrorPlatform } from '../../core/platformManager';
 import { generateEnvVars, executeTask } from '../../core/engineManager';
 import { chalk, logTask, logError, logRaw, logInfo } from '../../core/systemManager/logger';
+import { isBundlerActive } from '../commonEngine';
 import { IOS,
     TVOS,
     ANDROID,
@@ -72,7 +73,12 @@ Dev server running at: ${url}
 
 `);
             if (!parentTask) {
-                return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
+                const isRunning = await isBundlerActive(c);
+                const resetCompleted = await confirmActiveBundler(c);
+                if (!isRunning || (isRunning && resetCompleted)) {
+                    return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
+                }
+                return true;
             }
             executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
             return true;
