@@ -141,10 +141,8 @@ const _execute = (c, command, opts = {}) => {
                 spinner.succeed(`Executing: ${logMessage}`);
                 return true;
             }
-            let errMessage = parseErrorMessage(err.all, maxErrorLength)
-                || err.stack
-                || err.stderr
-                || err.message;
+            let errMessage = parseErrorMessage(err.all, maxErrorLength);
+            errMessage = errMessage || err.stack || err.stderr || err.message;
             errMessage = replaceOverridesInString(
                 errMessage,
                 privateParams,
@@ -289,15 +287,14 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     if (!text) return '';
     // Gradle specific
     const gradleFailIndex = text.indexOf('FAILURE: Build failed with an exception.');
-    if (gradleFailIndex) {
+    if (gradleFailIndex !== -1) {
         return text.substring(gradleFailIndex);
     }
     // NextJS Specific
     const nextFailIndex = text.indexOf('> Build error occurred');
-    if (nextFailIndex) {
+    if (nextFailIndex !== -1) {
         return text.substring(nextFailIndex);
     }
-
     const toSearch = /(exception|error|fatal|\[!])/i;
     let arr = text.split('\n');
 
@@ -313,6 +310,7 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
             || v.includes('warning: ')
             || v.includes('Could not find the following native modules')
             || v.includes('⚠️')
+            || v.includes('/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain')
         ) {
             return false;
         }
@@ -329,6 +327,10 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
         ) {
             return false;
         }
+        // Special Helper for iOS
+        // if (v.endsWith('^')) {
+        //     arr[i - 1] = chalk().red(arr[i - 1]);
+        // }
         if (v.search(toSearch) !== -1) {
             errFound = 5;
             return true;
@@ -337,6 +339,7 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
             errFound -= 1;
             return true;
         }
+
         return false;
     });
 
