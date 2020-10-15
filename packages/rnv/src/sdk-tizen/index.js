@@ -381,12 +381,13 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             }
         }
         try {
-            if(wgtClean !== wgt) {
-                logInfo(`Your app name contains characters like spaces, changing output from "${wgt}" to "${wgtClean}"`)
-                fsRenameSync(path.join(tOut, wgt), path.join(tOut, wgtClean))
+            if (wgtClean !== wgt) {
+                logInfo(`Your app name contains characters like spaces, changing output from "${
+                    wgt}" to "${wgtClean}"`);
+                fsRenameSync(path.join(tOut, wgt), path.join(tOut, wgtClean));
             }
         } catch (err) {
-            logError(err)
+            logError(err);
         }
         try {
             await execCLI(
