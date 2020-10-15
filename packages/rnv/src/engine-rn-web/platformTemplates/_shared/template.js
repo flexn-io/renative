@@ -41,7 +41,7 @@ const htmlTemp = (options) => {
 
     if (debug === 'true' && debugIp) {
         if(commandExists.sync('chii')) {
-            remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target.js#${platform}"></script>`;
+            remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target.js"></script>`;
         } else {
             remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target/target-script-min.js#${platform}"></script>`;
         }
