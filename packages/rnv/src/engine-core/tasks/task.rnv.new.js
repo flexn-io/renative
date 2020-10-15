@@ -5,7 +5,7 @@ import lSet from 'lodash.set';
 import { generateOptions } from '../../cli/prompt';
 import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS, CURRENT_DIR, PARAMS } from '../../core/constants';
 import { getTemplateOptions } from '../../core/templateManager';
-import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync, writeObjectSync, readObjectSync } from '../../core/systemManager/fileutils';
+import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync, writeObjectSync, readObjectSync, removeDirs } from '../../core/systemManager/fileutils';
 import { executeAsync } from '../../core/systemManager/exec';
 import {
     chalk,
@@ -92,6 +92,19 @@ export const taskRnvNew = async (c) => {
         });
         if (!confirmInRnvProject) {
             return Promise.reject('Cancelled');
+        }
+    }
+
+    if (fsExistsSync(c.paths.project.nodeModulesDir)) {
+        logWarning(`Found node_modules directory at your location. If you continue it will be deleted: ${
+            c.paths.project.nodeModulesDir}`);
+        const { confirmDeleteNodeModules } = await inquirer.prompt({
+            name: 'confirmDeleteNodeModules',
+            type: 'confirm',
+            message: 'Are you sure you want to continue?'
+        });
+        if (confirmDeleteNodeModules) {
+            await removeDirs([c.paths.project.nodeModulesDir]);
         }
     }
 
