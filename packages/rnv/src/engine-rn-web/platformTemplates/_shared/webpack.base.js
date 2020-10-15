@@ -10,13 +10,13 @@ function generateConfig(config) {
     const appBuildDir = path.resolve(__dirname);
     const appBuildPublicDir = path.resolve(appBuildDir, config.buildFolder || '');
 
+    const baseUrl = config.baseUrl || '';
     config.linkTags = [
-        '<link rel="manifest" href="manifest.json" />',
-        '<link rel="shortcut icon" href="favicon.ico" />',
-        `<link rel="stylesheet" href="app${config.assetVersion}.css" />`
+        `<link rel="manifest" href="${baseUrl}manifest.json" />`,
+        `<link rel="shortcut icon" href="${baseUrl}favicon.ico" />`,
+        `<link rel="stylesheet" href="${baseUrl}app${config.assetVersion}.css" />`
     ];
 
-    const baseUrl = config.baseUrl || '';
     const devServerHost = config.devServerHost || '0.0.0.0';
 
     const rules = {};
