@@ -587,7 +587,8 @@ Example:
             "environment": "",
             "webpackConfig": {
                 "devServerHost": "",
-                "customScripts": []
+                "customScripts": [],
+                "hostedShellHeaders": ""
             }
         }
     }
@@ -632,7 +633,8 @@ This is useful if you want to enforce invalidate cache agains standard CDN cache
         "tizen": {
             "appName": "",
             "package": "",
-            "certificateProfile": ""
+            "certificateProfile": "",
+            "hostedShellHeaders": ""
         }
     }
 }
