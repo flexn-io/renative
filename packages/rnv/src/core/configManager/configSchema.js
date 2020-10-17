@@ -1,5 +1,62 @@
 
 
+// ==================================================
+// ENGINE PROPS
+// ==================================================
+
+const engineRnConfig = {
+
+};
+
+const engineRnWebConfig = {
+    electronConfig: {
+        docs: {
+            description: 'Electron based config',
+            example: ''
+        },
+        additionalProperties: true,
+        type: 'object'
+    },
+    webpackConfig: {
+        additionalProperties: true,
+        type: 'object'
+    },
+    devServerHost: {
+        type: 'string'
+    }
+};
+
+const engineRnElectronConfig = {
+    webpackConfig: {
+        additionalProperties: true,
+        type: 'object'
+    },
+    electronConfig: {
+        additionalProperties: true,
+        type: 'object'
+    },
+    BrowserWindow: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+            width: {
+                type: 'integer',
+            },
+            height: {
+                type: 'integer',
+            },
+            webPreferences: {
+                additionalProperties: true,
+                type: 'object',
+            }
+        }
+    }
+};
+
+// ==================================================
+// COMMON PROPS
+// ==================================================
+
 const commonProps = {
     excludedPlugins: {
         type: 'array',
@@ -12,6 +69,17 @@ const commonProps = {
     includedPermissions: {
         type: 'array',
         items: { type: 'string' }
+    },
+    permissions: {
+        docs: {
+            description: 'DEPRECATED in favor of includedPermissions'
+        },
+        type: 'array',
+        items: { type: 'string' }
+    },
+    runtime: {
+        additionalProperties: true,
+        type: 'object'
     },
     id: {
         type: 'string'
@@ -41,6 +109,19 @@ const commonProps = {
     },
     ignoreLogs: {
         type: 'boolean'
+    },
+    license: {
+        type: 'string'
+    },
+    timestampAssets: {
+        type: 'boolean'
+    },
+    versionedAssets: {
+        type: 'boolean'
+    },
+    ext: {
+        additionalProperties: true,
+        type: 'object'
     }
 };
 
@@ -57,10 +138,24 @@ const commonPlatformProps = {
     },
     bundleIsDev: {
         type: 'boolean'
+    },
+    deploy: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            type: {
+                type: 'string',
+            }
+        }
     }
 };
 
+// ==================================================
+// PLATFORM PROPS
+// ==================================================
+
 const androidPlatformProps = {
+    ...engineRnConfig,
     enableAndroidX: {
         type: 'boolean'
     },
@@ -76,6 +171,12 @@ const androidPlatformProps = {
     multipleAPKs: {
         type: 'boolean'
     },
+    universalApk: {
+        type: 'boolean'
+    },
+    aab: {
+        type: 'boolean'
+    },
     targetSdkVersion: {
         type: 'integer'
     },
@@ -86,12 +187,32 @@ const androidPlatformProps = {
         additionalProperties: true,
         type: 'object'
     },
+    'build.gradle': {
+        additionalProperties: true,
+        type: 'object'
+    },
+    'app/build.gradle': {
+        additionalProperties: true,
+        type: 'object'
+    },
     AndroidManifest: {
         additionalProperties: true,
         type: 'object'
     },
     applyPlugin: {
         type: 'array'
+    },
+    storeFile: {
+        type: 'string'
+    },
+    storePassword: {
+        type: 'string'
+    },
+    keyAlias: {
+        type: 'string'
+    },
+    keyPassword: {
+        type: 'string'
     },
     excludedFeatures: {
         type: 'array'
@@ -102,6 +223,7 @@ const androidPlatformProps = {
 };
 
 const iosPlatformProps = {
+    ...engineRnConfig,
     deploymentTarget: {
         type: 'string'
     },
@@ -115,6 +237,10 @@ const iosPlatformProps = {
         type: 'string'
     },
     Podfile: {
+        additionalProperties: true,
+        type: 'object'
+    },
+    xcodeproj: {
         additionalProperties: true,
         type: 'object'
     },
@@ -136,8 +262,47 @@ const iosPlatformProps = {
             }
         }
     },
+    appDelegateApplicationMethods: {
+        type: 'object',
+        properties: {
+            didFinishLaunchingWithOptions: {
+                type: 'array',
+            },
+            open: {
+                type: 'array',
+            },
+            supportedInterfaceOrientationsFor: {
+                type: 'array',
+            },
+            didReceiveRemoteNotification: {
+                type: 'array',
+            },
+            didFailToRegisterForRemoteNotificationsWithError: {
+                type: 'array',
+            },
+            didReceive: {
+                type: 'array',
+            },
+            didRegister: {
+                type: 'array',
+            },
+            didRegisterForRemoteNotificationsWithDeviceToken: {
+                type: 'array',
+            }
+        }
+    },
     provisioningStyle: {
         type: 'string'
+    },
+    codeSignIdentity: {
+        type: 'string'
+    },
+    provisionProfileSpecifier: {
+        type: 'string'
+    },
+    provisioningProfiles: {
+        additionalProperties: true,
+        type: 'object',
     },
     systemCapabilities: {
         additionalProperties: true,
@@ -150,7 +315,20 @@ const iosPlatformProps = {
     runScheme: {
         type: 'string'
     },
+    sdk: {
+        type: 'string'
+    },
     testFlightId: {
+        type: 'string'
+    },
+    appDelegateMethods: {
+        additionalProperties: true,
+        type: 'object'
+    },
+    appDelegateImports: {
+        type: 'array'
+    },
+    firebaseId: {
         type: 'string'
     },
     exportOptions: {
@@ -177,42 +355,64 @@ const iosPlatformProps = {
             },
             signingCertificate: {
                 type: 'string',
+            },
+            provisioningProfiles: {
+                additionalProperties: true,
+                type: 'object',
             }
         }
     }
 };
 
 const webPlatformProps = {
+    ...engineRnWebConfig,
     pagesDir: {
         type: 'string'
     },
-    webpackConfig: {
-        additionalProperties: true,
-        type: 'object'
+    environment: {
+        type: 'string'
     }
 };
 
 const tizenPlatformProps = {
-
+    ...engineRnWebConfig,
+    package: {
+        type: 'string'
+    },
+    certificateProfile: {
+        type: 'string'
+    },
+    appName: {
+        type: 'string'
+    }
 };
 
 const webosPlatformProps = {
-
+    ...engineRnWebConfig
 };
 
 const firefoxPlatformProps = {
-
+    ...engineRnWebConfig
 };
 
 const macosPlatformProps = {
+    ...engineRnElectronConfig,
     appleId: {
         type: 'string'
     }
 };
 
 const winPlatformProps = {
-
+    ...engineRnElectronConfig
 };
+
+const castPlatformProps = {
+    ...engineRnWebConfig
+};
+
+// ==================================================
+// BUILD SCHEME PROPS
+// ==================================================
 
 const buildSchemeProps = {
     buildSchemes: {
@@ -223,20 +423,27 @@ const buildSchemeProps = {
                 ...commonPlatformProps,
                 ...androidPlatformProps,
                 ...iosPlatformProps,
+                ...webPlatformProps,
                 ...webosPlatformProps,
                 ...tizenPlatformProps,
-                ...firefoxPlatformProps
+                ...firefoxPlatformProps,
+                ...macosPlatformProps,
+                ...castPlatformProps
             }
         },
         type: 'object'
     },
 };
 
+// ==================================================
+// SCHEMA
+// ==================================================
+
 export const schemaPlatforms = {
     $id: 'http://renative.org/schemas/platforms.json',
-    required: [
-        'id'
-    ],
+    // required: [
+    //     'id'
+    // ],
     definitions: {
         android: {
             additionalProperties: false,
@@ -256,11 +463,21 @@ export const schemaPlatforms = {
                 ...iosPlatformProps
             }
         },
+        tvos: {
+            additionalProperties: false,
+            type: 'object',
+            properties: {
+                ...commonPlatformProps,
+                ...buildSchemeProps,
+                ...iosPlatformProps
+            }
+        },
         tizen: {
             additionalProperties: false,
             type: 'object',
             properties: {
                 ...commonPlatformProps,
+                ...buildSchemeProps,
                 ...tizenPlatformProps
             }
         },
@@ -269,6 +486,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...commonPlatformProps,
+                ...buildSchemeProps,
                 ...webosPlatformProps
             }
         },
@@ -277,7 +495,17 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...commonPlatformProps,
+                ...buildSchemeProps,
                 ...webPlatformProps
+            }
+        },
+        chromecast: {
+            additionalProperties: false,
+            type: 'object',
+            properties: {
+                ...commonPlatformProps,
+                ...buildSchemeProps,
+                ...castPlatformProps
             }
         },
         firefox: {
@@ -285,6 +513,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...commonPlatformProps,
+                ...buildSchemeProps,
                 ...firefoxPlatformProps,
             }
         },
@@ -293,6 +522,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...commonPlatformProps,
+                ...buildSchemeProps,
                 ...macosPlatformProps
             }
         },
@@ -301,6 +531,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...commonPlatformProps,
+                ...buildSchemeProps,
                 ...winPlatformProps
             }
         }
@@ -314,8 +545,10 @@ export const schemaRoot = {
     additionalProperties: false,
     properties: {
         common: {
+            // docs: {
+            //     description: 'Common config props used as default',
+            // },
             additionalProperties: false,
-            description: 'Common config props used as default',
             type: 'object',
             properties: {
                 ...commonProps,
@@ -334,6 +567,9 @@ export const schemaRoot = {
                 },
                 web: {
                     $ref: 'platforms.json#/definitions/web'
+                },
+                chromecast: {
+                    $ref: 'platforms.json#/definitions/chromecast'
                 },
                 tvos: {
                     $ref: 'platforms.json#/definitions/ios'
@@ -412,6 +648,29 @@ export const schemaRoot = {
         version: {
             type: 'string'
         },
+        versionCode: {
+            type: 'string'
+        },
+        versionCodeFormat: {
+            docs: {
+                description: 'allows you to fine-tune auto generated version codes',
+                example: `
+default value: 00.00.00
+
+IN: 1.2.3-rc.4+build.56 OUT: 102030456
+
+IN: 1.2.3 OUT: 10203
+
+---
+
+"versionCodeFormat" : "00.00.00.00.00"
+
+IN: 1.2.3-rc.4+build.56 OUT: 102030456
+
+IN: 1.2.3 OUT: 102030000`
+            },
+            type: 'string'
+        },
         description: {
             type: 'string'
         },
@@ -457,8 +716,25 @@ export const schemaRoot = {
             type: 'array'
         },
         defaults: {
-            additionalProperties: true,
-            type: 'object'
+            additionalProperties: false,
+            type: 'object',
+            properties: {
+                supportedPlatforms: {
+                    type: 'array'
+                },
+                template: {
+                    type: 'string'
+                },
+                schemes: {
+                    type: 'object'
+                },
+                targets: {
+                    type: 'object'
+                },
+                ports: {
+                    type: 'object'
+                }
+            }
         },
         pluginTemplates: {
             additionalProperties: true,

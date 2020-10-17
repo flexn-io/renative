@@ -1,15 +1,11 @@
 import lGet from 'lodash.get';
-import Ajv from 'ajv';
 import { chalk, logTask, logToSummary } from '../../core/systemManager/logger';
 import { PARAMS, TASK_DOCTOR, TASK_APP_CONFIGURE } from '../../core/constants';
 import { executeTask } from '../../core/engineManager';
 import { configureRuntimeDefaults } from '../../core/configManager/configParser';
 import { readObjectSync, fsExistsSync } from '../../core/systemManager/fileutils';
 
-import { SCHEMAS, schemaRoot } from '../../core/configManager/configSchema';
-
-const ajv = new Ajv({ schemas: SCHEMAS, allErrors: true });
-
+import { validateSchema } from '../../core/configManager/schemaParser';
 
 const configTargets = [
     'workspace.config',
@@ -42,20 +38,30 @@ export const taskRnvDoctor = async (c, parentTask, originTask) => {
     });
 
     let errMsg = 'RENATIVE JSON SCHEMA VALIDITY CHECK:\n\n';
+    let hasErrors = false;
     configPaths.forEach((cPath) => {
         if (fsExistsSync(cPath)) {
             const cObj = readObjectSync(cPath);
 
-            const valid = ajv.validate(schemaRoot, cObj);
+            const [valid, ajv] = validateSchema(cObj);
             if (!valid) {
-                errMsg += chalk().yellow(`Invalid schema in ${
-                    cPath}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}\n`);
-            // ajv.errors.forEach((err, i) => {
-            //   errMsg += `{err.}`
-            // });
+                hasErrors = true;
+                // console.log('ERROR', ajv.errors);
+                errMsg += chalk().yellow(`\nInvalid schema in ${
+                    // cPath}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}\n`);
+                    cPath}. ISSUES:\n\n`);
+                ajv.errors.forEach((err) => {
+                    errMsg += chalk().yellow(`${
+                        chalk().grey(err.dataPath === '' ? '/' : err.dataPath)}: ${err.message} ${
+                        Object.keys(err.params).map(k => `=> ${chalk().red(err.params[k])}`).join('\n')}\n`);
+                });
             }
         }
     });
+
+    if (!hasErrors) {
+        errMsg += chalk().green(`PASSED ${configPaths.length} files`);
+    }
 
     logToSummary(errMsg);
 };
