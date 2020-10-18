@@ -51,7 +51,7 @@ import {
 } from '../core/deployManager/webTools';
 import { getValidLocalhost } from '../core/utils';
 
-import { WEINRE_PORT, RNV_NODE_MODULES_DIR, RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR_NAME } from '../core/constants';
+import { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR, RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR_NAME } from '../core/constants';
 
 const WEBPACK = path.join(RNV_NODE_MODULES_DIR, 'webpack/bin/webpack.js');
 const WEBPACK_DEV_SERVER = path.join(RNV_NODE_MODULES_DIR, 'webpack-dev-server/bin/webpack-dev-server.js');
@@ -380,85 +380,100 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
+
+const _runRemoteDebuggerChii = async (c, obj) => {
+    const { debugIp } = c.program;
+    try {
+        await commandExists('chii');
+
+        const resolvedDebugIp = debugIp || ip.address();
+        logInfo(
+            `Starting a remote debugger build with ip ${
+                resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
+        );
+
+        const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}`);
+
+        const command = `chii start --port ${REMOTE_DEBUG_PORT}`;
+        executeAsync(c, command, { stdio: 'inherit', silent: true });
+
+        try {
+            await waitForUrl(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}`);
+            logRaw(`
+
+Debugger running at: ${debugUrl}`);
+            open(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/`);
+        } catch (e) {
+            logError(e);
+        }
+        obj.remoteDebuggerActive = true;
+        obj.debugVariables += `DEBUG=true DEBUG_IP=${
+            resolvedDebugIp} DEBUG_CLIENT=chii DEBUG_SCRIPT="http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/target.js"`;
+        obj.lineBreaks = '\n';
+    } catch (e) {
+        logWarning(`You are missing chii. You can install via ${chalk().white('npm i -g chii')}) Trying to use weinre next`);
+    }
+
+    return true;
+};
+
+const _runRemoteDebuggerWeinre = async (c, obj) => {
+    const { debugIp } = c.program;
+    try {
+        await commandExists('weinre');
+
+        const resolvedDebugIp = debugIp || ip.address();
+        logInfo(
+            `Starting a remote debugger build with ip ${
+                resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
+        );
+
+        const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/client/#${c.platform}`);
+
+        const command = `weinre --boundHost -all- --httpPort ${REMOTE_DEBUG_PORT}`;
+        executeAsync(c, command, { stdio: 'inherit', silent: true });
+
+        try {
+            await waitForUrl(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}`);
+            logRaw(`
+
+Debugger running at: ${debugUrl}`);
+            open(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/client/#${c.platform}`);
+        } catch (e) {
+            logError(e);
+        }
+        obj.remoteDebuggerActive = true;
+        obj.debugVariables += `DEBUG=true DEBUG_IP=${
+            resolvedDebugIp} DEBUG_CLIENT=weinre DEBUG_SCRIPT="http://${resolvedDebugIp}:${
+            REMOTE_DEBUG_PORT}/target/target-script-min.js#${c.platform}}`;
+        obj.lineBreaks = '\n';
+    } catch (e) {
+        logWarning(`You are missing weinre. Skipping debug. install via ${chalk().white('npm i -g weinre')}`);
+    }
+    return true;
+};
+
 const runWebDevServer = async (c, enableRemoteDebugger) => {
     logTask('runWebDevServer');
-    const { debug, debugIp } = c.program;
-
+    const { debug } = c.program;
 
     const appFolder = getPlatformBuildDir(c);
     const wpPublic = path.join(appFolder, 'server');
     const wpConfig = path.join(appFolder, 'webpack.config.dev.js');
-
-    let debugVariables = '';
-    let lineBreaks = '\n\n\n';
-    if (debug || enableRemoteDebugger) {
-        let alreadyRunnning = false;
-        try {
-            await commandExists('chii');
-
-            const resolvedDebugIp = debugIp || ip.address();
-            logInfo(
-                `Starting a remote debugger build with ip ${
-                    resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
-            );
-            debugVariables += `DEBUG=true DEBUG_IP=${resolvedDebugIp}`;
-            lineBreaks = '\n';
-            const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${c.platform}`);
-
-            const command = `chii start --port ${WEINRE_PORT}`;
-            executeAsync(c, command, { stdio: 'inherit', silent: true });
-
-            try {
-                await waitForUrl(`http://${resolvedDebugIp}:${WEINRE_PORT}`);
-                logRaw(`
-
-        Debugger running at: ${debugUrl}`);
-                open(`http://${resolvedDebugIp}:${WEINRE_PORT}/`);
-            } catch (e) {
-                logError(e);
-            }
-            alreadyRunnning = true;
-        } catch (e) {
-            logWarning(`You are missing chii. You can install via ${chalk().white('npm i -g chii')}) Trying to use weinre next`);
-        }
-
-        if (!alreadyRunnning) {
-            try {
-                await commandExists('weinre');
-    
-                const resolvedDebugIp = debugIp || ip.address();
-                logInfo(
-                    `Starting a remote debugger build with ip ${
-                        resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
-                );
-                debugVariables += `DEBUG=true DEBUG_IP=${resolvedDebugIp}`;
-                lineBreaks = '\n';
-                const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${c.platform}`);
-    
-                const command = `weinre --boundHost -all- --httpPort ${WEINRE_PORT}`;
-                executeAsync(c, command, { stdio: 'inherit', silent: true });
-    
-                try {
-                    await waitForUrl(`http://${resolvedDebugIp}:${WEINRE_PORT}`);
-                    logRaw(`
-    
-            Debugger running at: ${debugUrl}`);
-                    open(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${c.platform}`);
-                } catch (e) {
-                    logError(e);
-                }
-            } catch (e) {
-                logWarning(`You are missing weinre. Skipping debug. install via ${chalk().white('npm i -g weinre')}`);
-            }
+    const debugObj = { lineBreaks: '\n\n\n', debugVariables: '', remoteDebuggerActive: false };
+    let debugOrder = [_runRemoteDebuggerChii, _runRemoteDebuggerWeinre];
+    if (debug === 'weinre') debugOrder = [_runRemoteDebuggerWeinre, _runRemoteDebuggerChii];
+    if ((debug || enableRemoteDebugger) && debug !== 'false') {
+        await debugOrder[0](c, debugObj);
+        if (!debugObj.remoteDebuggerActive) {
+            await debugOrder[1](c, debugObj);
         }
     }
 
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'webpackConfig', {}).devServerHost, c.runtime.localhost);
 
     const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
-    logRaw(`${lineBreaks}Dev server running at: ${url}
-
-`);
+    logRaw(`${debugObj.lineBreaks}Dev server running at: ${url}\n\n`);
 
 
     const WPS_ALTERNATIVE = `${doResolve('webpack-dev-server')}/bin/webpack-dev-server.js`;
@@ -475,9 +490,8 @@ ${chalk().white(WPS_ALTERNATIVE)}
 will try to use globally installed one`);
     }
 
-
     const command = `npx cross-env PLATFORM=${c.platform} ${
-        debugVariables
+        debugObj.debugVariables
     } ${wps} -d --devtool source-map --config ${
         wpConfig
     }  --inline --hot --colors --content-base ${

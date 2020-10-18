@@ -11,45 +11,23 @@ const DEFAULT_CONFIG = {
         'theme-color': 'content="#000000"',
     },
 };
-
-const commandExists = require('command-exists');
 const merge = require('deepmerge');
-
 const indent = level => '    '.repeat(level);
-
 const removeBlankLines = string => string.replace(/^\s*\n/gm, '');
-
 const constructMetaTags = tags => Object.keys(tags).map(tag => `<meta name="${tag}" ${tags[tag]} />`);
 
 const htmlTemp = (options) => {
     const config = merge(DEFAULT_CONFIG, options);
     const {
-        docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment, linkTags, debugPort
+        docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment, linkTags, debugPort, remoteDebugScript
     } = config;
-
-    // Moved to dynamic config
-    // const linkTags = [
-    //     '<link rel="manifest" href="manifest.json" />',
-    //     '<link rel="shortcut icon" href="favicon.ico" />',
-    //     '<link rel="stylesheet" href="app.css" />',
-    // ];
 
     const titleTag = `<title>${title}</title>`;
 
     const noScript = '<noscript>You need to enable JavaScript to run this app.</noscript>';
-    let remoteDebugScript;
-
-    if (debug === 'true' && debugIp) {
-        if(commandExists.sync('chii')) {
-            remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target.js"></script>`;
-        } else {
-            remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target/target-script-min.js#${platform}"></script>`;
-        }
-    }
-
+    let remoteDebugScriptInject = remoteDebugScript ? `<script src="${remoteDebugScript}"></script>` : '';
 
     let webosScripts = '';
-
     if (platform === 'webos') {
         webosScripts = '<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV.js"></script>';
         if (environment !== 'production') {
@@ -77,7 +55,7 @@ ${htmlTag}
         ${constructMetaTags(metaTags).join(`\n${indent(2)}`)}
         ${linkTags.join(`\n${indent(2)}`)}
         ${titleTag}
-        ${remoteDebugScript || ''}
+        ${remoteDebugScriptInject}
         ${isDebug ? errScript : ''}
         ${webosScripts}
     </head>

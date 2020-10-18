@@ -44,7 +44,7 @@ import {
     CLI_WEBOS_ARES_LAUNCH,
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE,
-    WEINRE_ENABLED_PLATFORMS,
+    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     RNV_PROJECT_DIR_NAME,
     RNV_SERVER_DIR_NAME
 } from '../core/constants';
@@ -309,7 +309,7 @@ const runWebOS = async (c) => {
         await _runWebosSimOrDevice(c);
     } else {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
-        const isWeinreEnabled = WEINRE_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
+        const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
 
         if (!isPortActive) {
             logInfo(

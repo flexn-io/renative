@@ -13,7 +13,7 @@ import { WEB,
     CHROMECAST,
     TASK_START,
     TASK_CONFIGURE,
-    WEINRE_ENABLED_PLATFORMS,
+    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     PARAMS } from '../../core/constants';
 import { runWebpackServer, waitForWebpack } from '../../sdk-webpack';
 import { executeTask } from '../../core/engineManager';
@@ -35,7 +35,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
             .catch(logError);
     }
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
-    const isWeinreEnabled = WEINRE_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
+    const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
 
     switch (platform) {
         case WEB:

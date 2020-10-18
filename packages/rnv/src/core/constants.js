@@ -132,7 +132,7 @@ const EXT_FALLBACK_WEB = ['mjs', 'jsx', 'js', 'json', 'wasm', 'tsx', 'ts'];
 const EXT_FALLBACK = ['jsx', 'js', 'json', 'wasm', 'tsx', 'ts'];
 
 
-export const WEINRE_PORT = 8079;
+export const REMOTE_DEBUG_PORT = 8079;
 
 const EXT_LEGACY_NEXT = ['next.jsx', 'next.js', 'next.tsx', 'next.ts'];
 const EXT_LEGACY_SERVER_NEXT = ['server.next.jsx', 'server.next.js', 'server.next.tsx', 'server.next.ts'];
@@ -868,7 +868,14 @@ const _PARAMS = {
     },
     debug: {
         shortcut: 'D',
-        description: 'enable remote debugger'
+        value: 'value',
+        description: 'enable or disable remote debugger.',
+        examples: [
+            '--debug weinre //run remote debug with weinre as preference',
+            '--debug chii //run remote debug with chii as preference',
+            '--debug false //force disable remote debug',
+            '--debug //run remote debug with default preference (chii)'
+        ]
     },
     global: {
         shortcut: 'G',
@@ -972,4 +979,4 @@ export const INJECTABLE_RUNTIME_PROPS = ['appId', 'scheme', 'timestamp', 'localh
 export const REDASH_URL = 'https://rnv.nxg.staging.24imedia.com/events';
 export const REDASH_KEY = 'zCYINQqMxvat1V41Hb9d69JMVBDNLyeQ4wICtdtD';
 
-export const WEINRE_ENABLED_PLATFORMS = [TIZEN, TIZEN_MOBILE, TIZEN_WATCH];
+export const REMOTE_DEBUGGER_ENABLED_PLATFORMS = [TIZEN, TIZEN_MOBILE, TIZEN_WATCH];
