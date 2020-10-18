@@ -20,7 +20,6 @@ sidebar_label: ${title}
 `;
 
     const result = await jsdoc2md.render({ files: `${c.paths.project.dir}/packages/rnv/*.js` });
-    // const result = await jsdoc2md.render({ source: `${c.paths.project.dir}/packages/ultrasonic/api/actionSheet` });
 
     output += `${result}\n`;
 

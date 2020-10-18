@@ -12,7 +12,14 @@ ajv.addKeyword('docs', {
 });
 
 
+const getRootSchema = () => schemaRoot;
+
 export const validateSchema = (cObj) => {
     const valid = ajv.validate(schemaRoot, cObj);
     return [valid, ajv];
+};
+
+export default {
+    validateSchema,
+    getRootSchema
 };

@@ -13,6 +13,7 @@ import Config from './core/configManager/config';
 import { doResolve, doResolvePath } from './core/resolve';
 import Analytics from './core/systemManager/analytics';
 import EngineManager from './core/engineManager';
+import SchemaParser from './core/configManager/schemaParser';
 
 import 'source-map-support/register';
 
@@ -46,6 +47,7 @@ export {
     SetupTools,
     Logger,
     EngineManager,
+    SchemaParser,
     run,
     CLI,
     doResolve,

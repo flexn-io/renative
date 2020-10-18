@@ -9,14 +9,6 @@ const engineRnConfig = {
 };
 
 const engineRnWebConfig = {
-    electronConfig: {
-        docs: {
-            description: 'Electron based config',
-            example: ''
-        },
-        additionalProperties: true,
-        type: 'object'
-    },
     webpackConfig: {
         additionalProperties: true,
         type: 'object'
@@ -33,7 +25,27 @@ const engineRnElectronConfig = {
     },
     electronConfig: {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
+        description: 'Allows you to configure electron app as per https://www.electron.build/',
+        examples: [
+            {
+                mac: {
+                    target: [
+                        'dmg',
+                        'mas',
+                        'mas-dev'
+                    ],
+                    hardenedRuntime: true
+                },
+                dmg: {
+                    sign: false
+                },
+                mas: {
+                    type: 'distribution',
+                    hardenedRuntime: false
+                }
+            }
+        ]
     },
     BrowserWindow: {
         type: 'object',
@@ -60,20 +72,49 @@ const engineRnElectronConfig = {
 const commonProps = {
     excludedPlugins: {
         type: 'array',
-        items: { type: 'string' }
+        items: { type: 'string' },
+        description: 'Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins',
+        examples: [
+            ['*'],
+            ['react-native-google-cast', 'react-navigation-tabs']
+        ]
     },
     includedPlugins: {
         type: 'array',
-        items: { type: 'string' }
+        items: { type: 'string' },
+        description: 'Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins',
+        examples: [
+            ['*'],
+            ['react-native-google-cast', 'react-navigation-tabs']
+        ]
     },
     includedPermissions: {
         type: 'array',
-        items: { type: 'string' }
+        items: { type: 'string' },
+        description: 'Allows you to include specific permissions by their KEY defined in `permissions` object',
+        examples: [
+            ['*'],
+            [
+                'INTERNET',
+                'CAMERA',
+                'SYSTEM_ALERT_WINDOW',
+                'RECORD_AUDIO',
+                'RECORD_VIDEO',
+                'READ_EXTERNAL_STORAGE',
+                'WRITE_EXTERNAL_STORAGE',
+                'ACCESS_FINE_LOCATION',
+                'ACCESS_COARSE_LOCATION',
+                'VIBRATE',
+                'ACCESS_NETWORK_STATE',
+                'ACCESS_WIFI_STATE',
+                'RECEIVE_BOOT_COMPLETED',
+                'WRITE_CONTACTS',
+                'READ_CONTACTS'
+            ]
+        ]
     },
     permissions: {
-        docs: {
-            description: 'DEPRECATED in favor of includedPermissions'
-        },
+        description: '> DEPRECATED in favor of includedPermissions',
         type: 'array',
         items: { type: 'string' }
     },
@@ -99,7 +140,12 @@ const commonProps = {
         items: { type: 'string' }
     },
     backgroundColor: {
-        type: 'string'
+        type: 'string',
+        description: 'Defines root view backgroundColor for all platforms in HEX format',
+        examples: [
+            '#FFFFFF',
+            '#222222'
+        ]
     },
     splashScreen: {
         type: 'boolean'
@@ -125,7 +171,7 @@ const commonProps = {
     }
 };
 
-const commonPlatformProps = {
+const platformCommonProps = {
     ...commonProps,
     engine: {
         type: 'string'
@@ -150,92 +196,7 @@ const commonPlatformProps = {
     }
 };
 
-// ==================================================
-// PLATFORM PROPS
-// ==================================================
-
-const androidPlatformProps = {
-    ...engineRnConfig,
-    enableAndroidX: {
-        type: 'boolean'
-    },
-    enableHermes: {
-        type: 'boolean'
-    },
-    signingConfig: {
-        type: 'string'
-    },
-    minSdkVersion: {
-        type: 'integer'
-    },
-    multipleAPKs: {
-        type: 'boolean'
-    },
-    universalApk: {
-        type: 'boolean'
-    },
-    aab: {
-        type: 'boolean'
-    },
-    targetSdkVersion: {
-        type: 'integer'
-    },
-    compileSdkVersion: {
-        type: 'integer'
-    },
-    'gradle.properties': {
-        additionalProperties: true,
-        type: 'object'
-    },
-    'build.gradle': {
-        additionalProperties: true,
-        type: 'object'
-    },
-    'app/build.gradle': {
-        additionalProperties: true,
-        type: 'object'
-    },
-    AndroidManifest: {
-        additionalProperties: true,
-        type: 'object'
-    },
-    applyPlugin: {
-        type: 'array'
-    },
-    storeFile: {
-        type: 'string'
-    },
-    storePassword: {
-        type: 'string'
-    },
-    keyAlias: {
-        type: 'string'
-    },
-    keyPassword: {
-        type: 'string'
-    },
-    excludedFeatures: {
-        type: 'array'
-    },
-    includedFeatures: {
-        type: 'array'
-    }
-};
-
-const iosPlatformProps = {
-    ...engineRnConfig,
-    deploymentTarget: {
-        type: 'string'
-    },
-    teamID: {
-        type: 'string'
-    },
-    teamIdentifier: {
-        type: 'string'
-    },
-    scheme: {
-        type: 'string'
-    },
+const commonIosProps = {
     Podfile: {
         additionalProperties: true,
         type: 'object'
@@ -247,36 +208,6 @@ const iosPlatformProps = {
     plist: {
         additionalProperties: true,
         type: 'object'
-    },
-    appleId: {
-        type: 'string'
-    },
-    orientationSupport: {
-        type: 'object',
-        properties: {
-            phone: {
-                type: 'array',
-            },
-            tab: {
-                type: 'array',
-            }
-        },
-        examples: [
-            {
-                phone: [
-                    'UIInterfaceOrientationPortrait',
-                    'UIInterfaceOrientationPortraitUpsideDown',
-                    'UIInterfaceOrientationLandscapeLeft',
-                    'UIInterfaceOrientationLandscapeRight'
-                ],
-                tab: [
-                    'UIInterfaceOrientationPortrait',
-                    'UIInterfaceOrientationPortraitUpsideDown',
-                    'UIInterfaceOrientationLandscapeLeft',
-                    'UIInterfaceOrientationLandscapeRight'
-                ]
-            }
-        ],
     },
     appDelegateApplicationMethods: {
         type: 'object',
@@ -307,11 +238,166 @@ const iosPlatformProps = {
             }
         }
     },
+    appDelegateMethods: {
+        additionalProperties: true,
+        type: 'object'
+    },
+    appDelegateImports: {
+        type: 'array'
+    },
+};
+
+const commonAndroidProps = {
+    'gradle.properties': {
+        additionalProperties: true,
+        type: 'object'
+    },
+    'build.gradle': {
+        additionalProperties: true,
+        type: 'object'
+    },
+    'app/build.gradle': {
+        additionalProperties: true,
+        type: 'object'
+    },
+    AndroidManifest: {
+        additionalProperties: true,
+        type: 'object',
+        description: 'Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism',
+        examples: [
+            {
+                children: [
+                    {
+                        tag: 'application',
+                        'android:name': '.MainApplication',
+                        children: [
+                            {
+                                tag: 'activity',
+                                'android:name': 'com.ahmedadeltito.photoeditor.PhotoEditorActivity'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    applyPlugin: {
+        type: 'array'
+    },
+};
+
+
+// ==================================================
+// PLATFORM PROPS
+// ==================================================
+
+const platformAndroidProps = {
+    ...engineRnConfig,
+    ...commonAndroidProps,
+    enableAndroidX: {
+        type: 'boolean'
+    },
+    enableHermes: {
+        type: 'boolean'
+    },
+    signingConfig: {
+        type: 'string'
+    },
+    minSdkVersion: {
+        type: 'integer'
+    },
+    multipleAPKs: {
+        type: 'boolean'
+    },
+    universalApk: {
+        type: 'boolean'
+    },
+    aab: {
+        type: 'boolean'
+    },
+    targetSdkVersion: {
+        type: 'integer'
+    },
+    compileSdkVersion: {
+        type: 'integer'
+    },
+    storeFile: {
+        type: 'string'
+    },
+    storePassword: {
+        type: 'string'
+    },
+    keyAlias: {
+        type: 'string'
+    },
+    keyPassword: {
+        type: 'string'
+    },
+    excludedFeatures: {
+        type: 'array'
+    },
+    includedFeatures: {
+        type: 'array'
+    }
+};
+
+const platformIosProps = {
+    ...engineRnConfig,
+    ...commonIosProps,
+    deploymentTarget: {
+        type: 'string'
+    },
+    teamID: {
+        type: 'string'
+    },
+    teamIdentifier: {
+        type: 'string'
+    },
+    scheme: {
+        type: 'string'
+    },
+
+    appleId: {
+        type: 'string'
+    },
+    orientationSupport: {
+        type: 'object',
+        properties: {
+            phone: {
+                type: 'array',
+            },
+            tab: {
+                type: 'array',
+            }
+        },
+        examples: [
+            {
+                phone: [
+                    'UIInterfaceOrientationPortrait',
+                    'UIInterfaceOrientationPortraitUpsideDown',
+                    'UIInterfaceOrientationLandscapeLeft',
+                    'UIInterfaceOrientationLandscapeRight'
+                ],
+                tab: [
+                    'UIInterfaceOrientationPortrait',
+                    'UIInterfaceOrientationPortraitUpsideDown',
+                    'UIInterfaceOrientationLandscapeLeft',
+                    'UIInterfaceOrientationLandscapeRight'
+                ]
+            }
+        ],
+    },
+
     provisioningStyle: {
         type: 'string'
     },
     codeSignIdentity: {
-        type: 'string'
+        type: 'string',
+        description: 'Special property which tells Xcode how to build your project',
+        examples: [
+            'iPhone Developer',
+            'iPhone Distribution'
+        ]
     },
     provisionProfileSpecifier: {
         type: 'string'
@@ -366,13 +452,6 @@ const iosPlatformProps = {
     testFlightId: {
         type: 'string'
     },
-    appDelegateMethods: {
-        additionalProperties: true,
-        type: 'object'
-    },
-    appDelegateImports: {
-        type: 'array'
-    },
     firebaseId: {
         type: 'string'
     },
@@ -409,7 +488,7 @@ const iosPlatformProps = {
     }
 };
 
-const webPlatformProps = {
+const platformWebProps = {
     ...engineRnWebConfig,
     pagesDir: {
         type: 'string'
@@ -419,7 +498,7 @@ const webPlatformProps = {
     }
 };
 
-const tizenPlatformProps = {
+const platformTizenProps = {
     ...engineRnWebConfig,
     package: {
         type: 'string'
@@ -432,26 +511,26 @@ const tizenPlatformProps = {
     }
 };
 
-const webosPlatformProps = {
+const platformWebosProps = {
     ...engineRnWebConfig
 };
 
-const firefoxPlatformProps = {
+const platformFirefoxProps = {
     ...engineRnWebConfig
 };
 
-const macosPlatformProps = {
+const platformMacosProps = {
     ...engineRnElectronConfig,
     appleId: {
         type: 'string'
     }
 };
 
-const winPlatformProps = {
+const platformWindowsProps = {
     ...engineRnElectronConfig
 };
 
-const castPlatformProps = {
+const platformChromecastProps = {
     ...engineRnWebConfig
 };
 
@@ -468,15 +547,15 @@ const buildSchemeProps = {
                 enabled: {
                     type: 'boolean'
                 },
-                ...commonPlatformProps,
-                ...androidPlatformProps,
-                ...iosPlatformProps,
-                ...webPlatformProps,
-                ...webosPlatformProps,
-                ...tizenPlatformProps,
-                ...firefoxPlatformProps,
-                ...macosPlatformProps,
-                ...castPlatformProps
+                ...platformCommonProps,
+                ...platformAndroidProps,
+                ...platformIosProps,
+                ...platformWebProps,
+                ...platformWebosProps,
+                ...platformTizenProps,
+                ...platformFirefoxProps,
+                ...platformMacosProps,
+                ...platformChromecastProps
             }
         },
         type: 'object'
@@ -517,6 +596,13 @@ const pluginIosProps = {
     }
 };
 
+const commonPluginPlatformProps = {
+    webpackConfig: {
+        additionalProperties: true,
+        type: 'object'
+    },
+};
+
 
 const pluginProps = {
     enabled: {
@@ -546,90 +632,115 @@ const pluginProps = {
     webpack: {
         additionalProperties: true,
         type: 'object',
+        description: '> DEPRECATED in favour of `webpackConfig`'
     },
     webpackConfig: {
-        additionalProperties: true,
+        additionalProperties: false,
         type: 'object',
+        description: 'Allows you to configure webpack bahaviour per each individual plugin',
+        properties: {
+            modulePaths: {
+                type: ['boolean', 'object'],
+                additionalProperties: true,
+            },
+            moduleAliases: {
+                type: ['boolean', 'object'],
+                additionalProperties: true,
+            }
+        }
     },
     android: {
         additionalProperties: false,
         type: 'object',
         properties: {
-            ...pluginAndroidProps,
-            ...androidPlatformProps
+            ...commonPluginPlatformProps,
+            ...commonAndroidProps,
+            ...pluginAndroidProps
         }
     },
     androidtv: {
         additionalProperties: false,
         type: 'object',
         properties: {
-            ...pluginAndroidProps,
-            ...androidPlatformProps
+            ...commonPluginPlatformProps,
+            ...commonAndroidProps,
+            ...pluginAndroidProps
+        }
+    },
+    androidwear: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...commonPluginPlatformProps,
+            ...commonAndroidProps,
+            ...pluginAndroidProps
         }
     },
     ios: {
         additionalProperties: false,
         type: 'object',
         properties: {
+            ...commonPluginPlatformProps,
+            ...commonIosProps,
             ...pluginIosProps,
-            ...iosPlatformProps
         }
     },
     tvos: {
         additionalProperties: false,
         type: 'object',
         properties: {
+            ...commonPluginPlatformProps,
+            ...commonIosProps,
             ...pluginIosProps,
-            ...iosPlatformProps
         }
     },
     tizen: {
         additionalProperties: false,
         type: 'object',
         properties: {
-            ...tizenPlatformProps
+            ...commonPluginPlatformProps,
         }
     },
     webos: {
         additionalProperties: false,
         type: 'object',
         properties: {
-            ...webosPlatformProps
+            ...commonPluginPlatformProps,
         }
     },
     web: {
         additionalProperties: false,
         type: 'object',
         properties: {
-            ...webPlatformProps
+            ...commonPluginPlatformProps,
         }
     },
     chromecast: {
         additionalProperties: false,
         type: 'object',
         properties: {
-            ...castPlatformProps
+            ...commonPluginPlatformProps,
         }
     },
     firefox: {
         additionalProperties: false,
         type: 'object',
         properties: {
-            ...firefoxPlatformProps,
+            ...commonPluginPlatformProps,
         }
     },
     macos: {
         additionalProperties: false,
         type: 'object',
         properties: {
-            ...macosPlatformProps
+            ...commonPluginPlatformProps,
         }
     },
     windows: {
         additionalProperties: false,
         type: 'object',
         properties: {
-            ...winPlatformProps
+            ...commonPluginPlatformProps,
         }
     }
 };
@@ -648,90 +759,90 @@ export const schemaPlatforms = {
             additionalProperties: false,
             type: 'object',
             properties: {
-                ...commonPlatformProps,
+                ...platformCommonProps,
                 ...buildSchemeProps,
-                ...androidPlatformProps
+                ...platformAndroidProps
             }
         },
         ios: {
             additionalProperties: false,
             type: 'object',
             properties: {
-                ...commonPlatformProps,
+                ...platformCommonProps,
                 ...buildSchemeProps,
-                ...iosPlatformProps
+                ...platformIosProps
             }
         },
         tvos: {
             additionalProperties: false,
             type: 'object',
             properties: {
-                ...commonPlatformProps,
+                ...platformCommonProps,
                 ...buildSchemeProps,
-                ...iosPlatformProps
+                ...platformIosProps
             }
         },
         tizen: {
             additionalProperties: false,
             type: 'object',
             properties: {
-                ...commonPlatformProps,
+                ...platformCommonProps,
                 ...buildSchemeProps,
-                ...tizenPlatformProps
+                ...platformTizenProps
             }
         },
         webos: {
             additionalProperties: false,
             type: 'object',
             properties: {
-                ...commonPlatformProps,
+                ...platformCommonProps,
                 ...buildSchemeProps,
-                ...webosPlatformProps
+                ...platformWebosProps
             }
         },
         web: {
             additionalProperties: false,
             type: 'object',
             properties: {
-                ...commonPlatformProps,
+                ...platformCommonProps,
                 ...buildSchemeProps,
-                ...webPlatformProps
+                ...platformWebProps
             }
         },
         chromecast: {
             additionalProperties: false,
             type: 'object',
             properties: {
-                ...commonPlatformProps,
+                ...platformCommonProps,
                 ...buildSchemeProps,
-                ...castPlatformProps
+                ...platformChromecastProps
             }
         },
         firefox: {
             additionalProperties: false,
             type: 'object',
             properties: {
-                ...commonPlatformProps,
+                ...platformCommonProps,
                 ...buildSchemeProps,
-                ...firefoxPlatformProps,
+                ...platformFirefoxProps,
             }
         },
         macos: {
             additionalProperties: false,
             type: 'object',
             properties: {
-                ...commonPlatformProps,
+                ...platformCommonProps,
                 ...buildSchemeProps,
-                ...macosPlatformProps
+                ...platformMacosProps
             }
         },
         windows: {
             additionalProperties: false,
             type: 'object',
             properties: {
-                ...commonPlatformProps,
+                ...platformCommonProps,
                 ...buildSchemeProps,
-                ...winPlatformProps
+                ...platformWindowsProps
             }
         }
     }
@@ -744,11 +855,36 @@ export const schemaRoot = {
     additionalProperties: false,
     properties: {
         common: {
-            // docs: {
-            //     description: 'Common config props used as default',
-            // },
             additionalProperties: false,
             type: 'object',
+            description: 'Common config props used as default props for all available buildSchemes',
+            examples: [
+                {
+                    author: {
+                        name: 'Pavel Jacko',
+                        email: 'Pavel Jacko <i@pavjacko.com>',
+                        url: 'https://github.com/pavjacko'
+                    },
+                    license: 'MIT',
+                    includedPlugins: ['*'],
+                    includedFonts: ['*'],
+                    buildSchemes: {
+                        debug: {
+                            description: 'Use for local development'
+                        },
+                        test: {
+                            description: 'Use to run automation'
+                        },
+                        release: {
+                            description: 'Use for production deployments'
+                        }
+                    },
+                    backgroundColor: '#111111',
+                    runtime: {
+                        welcomeMessage: 'Hello ReNative!'
+                    }
+                }
+            ],
             properties: {
                 ...commonProps,
                 ...buildSchemeProps
@@ -822,6 +958,18 @@ export const schemaRoot = {
         },
         plugins: {
             type: 'object',
+            description: 'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config',
+            examples: [
+                {
+                    renative: 'source:rnv',
+                    react: 'source:rnv',
+                    'react-native-cached-image': 'source:rnv',
+                    'react-native-web-image-loader': 'source:rnv',
+                    'react-native-gesture-handler': {
+                        version: '1.0.0'
+                    },
+                }
+            ],
             additionalProperties: {
                 type: ['object', 'string'],
                 additionalProperties: false,
@@ -853,34 +1001,147 @@ export const schemaRoot = {
             }
         },
         projectName: {
-            type: 'string'
+            type: 'string',
+            description: 'Name of the project which will be used in workspace as folder name. this will also be used as part of the KEY in crypto env var generator',
+            examples: [
+                'my-project',
+                'myProject'
+            ]
         },
-        name: {
-            type: 'string'
-        },
+        // name: {
+        //     type: 'string'
+        // },
         extend: {
             type: 'string'
         },
         projectTemplates: {
             additionalProperties: true,
-            type: 'object'
+            type: 'object',
+            description: 'Custom list of renative templates (NPM package names) which will be displayed during `rnv new` project bootstrap. This prop usually resides in workspace config.',
+            examples: [
+                {
+                    'my-custom-template': {}
+                }
+            ]
         },
         permissions: {
-            additionalProperties: true,
-            type: 'object'
+            additionalProperties: false,
+            type: 'object',
+            description: 'Permission definititions which can be used by app configs via `includedPermissions` and `excludedPermissions` to customize permissions for each app',
+            examples: [
+                {
+                    ios: {},
+                    android: {}
+                }
+            ],
+            properties: {
+                android: {
+                    additionalProperties: true,
+                    type: 'object',
+                    description: 'Android SDK specific permissions',
+                    examples: [
+                        {
+                            INTERNET: {
+                                key: 'android.permission.INTERNET',
+                                security: 'normal'
+                            },
+                            SYSTEM_ALERT_WINDOW: {
+                                key: 'android.permission.SYSTEM_ALERT_WINDOW',
+                                security: 'signature'
+                            }
+                        }
+                    ]
+                },
+                ios: {
+                    additionalProperties: true,
+                    type: 'object',
+                    description: 'iOS SDK specific permissions',
+                    examples: [
+                        {
+                            NSAppleMusicUsageDescription: {
+                                desc: 'Get favorite music'
+                            },
+                            NSBluetoothPeripheralUsageDescription: {
+                                desc: 'Allow you to use your bluetooth to play music'
+                            },
+                            NSCalendarsUsageDescription: {
+                                desc: 'Calendar for add events'
+                            },
+                            NSCameraUsageDescription: {
+                                desc: 'Need camera to scan QR Codes'
+                            },
+                            NSLocationWhenInUseUsageDescription: {
+                                desc: 'Geolocation tags for photos'
+                            },
+                            NSMicrophoneUsageDescription: {
+                                desc: 'Need microphone for videos'
+                            },
+                            NSMotionUsageDescription: {
+                                desc: 'To know when device is moving'
+                            },
+                            NSPhotoLibraryAddUsageDescription: {
+                                desc: 'Need library to save images'
+                            },
+                            NSPhotoLibraryUsageDescription: {
+                                desc: 'Allows to upload images from photo library'
+                            },
+                            NSSpeechRecognitionUsageDescription: {
+                                desc: 'Speech Recognition to run in app commands'
+                            },
+                            NSContactsUsageDescription: {
+                                desc: 'Get contacts list'
+                            },
+                            NSFaceIDUsageDescription: {
+                                desc: 'Requires FaceID access to allows you quick and secure access.'
+                            },
+                            NSLocationAlwaysUsageDescription: {
+                                desc: 'Geolocation tags for photos'
+                            },
+                            NSBluetoothAlwaysUsageDescription: {
+                                desc: 'Allow you to use your bluetooth to play music'
+                            },
+                            NSLocationAlwaysAndWhenInUseUsageDescription: {
+                                desc: 'Geolocation tags for photos'
+                            }
+                        }
+                    ]
+                }
+            }
         },
         workspaceID: {
-            type: 'string'
+            type: 'string',
+            description: 'Workspace ID your project belongs to. This will mach same folder name in the root of your user directory. ie `~/` on macOS',
+            examples: [
+                'rnv',
+                'myCustomWorkspace',
+            ],
         },
         version: {
-            type: 'string'
+            type: 'string',
+            description: 'Semver style version of your app.',
+            examples: [
+                '0.1.0',
+                '1.0.0',
+                '1.0.0-alpha.1',
+                '1.0.0-RC.7',
+                '1.0.0-feature-x.0',
+            ],
         },
         versionCode: {
-            type: 'string'
+            description: 'Manual verride of generated version code',
+            type: 'string',
+            examples: [
+                '1000',
+                '10023'
+            ],
         },
         versionCodeFormat: {
+            description: 'allows you to fine-tune auto generated version codes',
+            examples: [
+                '00.00.00',
+                '00.00.00.00.00'
+            ],
             docs: {
-                description: 'allows you to fine-tune auto generated version codes',
                 example: `
 default value: 00.00.00
 
@@ -969,7 +1230,15 @@ IN: 1.2.3 OUT: 102030000`
         },
         templates: {
             additionalProperties: true,
-            type: 'object'
+            type: 'object',
+            description: 'Stores installed templates info in your project.\n\nNOTE: This prop will be updated by rnv if you run `rnv template install`',
+            examples: [
+                {
+                    'renative-template-hello-world': {
+                        version: '0.31.0'
+                    }
+                }
+            ]
         },
         currentTemplate: {
             type: 'string'
@@ -989,6 +1258,16 @@ IN: 1.2.3 OUT: 102030000`
         runtime: {
             additionalProperties: true,
             type: 'object'
+        },
+        private: {
+            additionalProperties: true,
+            type: 'object',
+            description: 'Special object which contains private info. this object should be used only in `renative.private.json` files and never commited to your repository. Private files usually reside in your workspace and are subject to crypto encryption if enabled. RNV will warn you if it finds private key in your regular `renative.json` file',
+            examples: [
+                {
+                    myPrivateKy: '6568347563858739'
+                }
+            ]
         },
         hidden: {
             type: 'boolean'
