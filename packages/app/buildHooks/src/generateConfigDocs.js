@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 
-const _printContent = (header, key, keyPath, prop, level) => {
+const _printContent = (header, key, keyPath, prop, level, { hidePath }) => {
     const examples = prop.examples || [];
     let exStr = '';
     let examplesStr = '';
@@ -37,8 +37,8 @@ ${exStr}
     }
     return `${level < 2 ? '---\n' : ''}${header} ${level < 1 ? key : keyPath}
 
-**path**
-\`renative.json/#/${keyPath}\`
+${hidePath ? '' : `**path**
+\`renative.json/#/${keyPath}\``}
 
 **type** \`${prop.type}\`
 
@@ -51,7 +51,7 @@ ${examplesStr}
 
 const maxLevelHeader = 2;
 
-const _parseSubProps = (c, obj, level, parentKey) => {
+const _parseSubProps = (c, obj, level, parentKey, conf) => {
     let pk = parentKey;
     let out = '';
     let header = '##';
@@ -73,9 +73,9 @@ const _parseSubProps = (c, obj, level, parentKey) => {
         Object.keys(properties).sort().forEach((k) => {
             const prop = properties[k];
             const key = `${pk}.${k}`;
-            out += `${_printContent(header, k, key, prop, level)}
+            out += `${_printContent(header, k, key, prop, level, conf)}
 
-${_parseSubProps(c, properties[k], level + 1, key)}
+${_parseSubProps(c, properties[k], level + 1, key, conf)}
 `;
         });
     }
@@ -122,4 +122,32 @@ ${_parseSubProps(c, prop, 1, k1)}
 
 
     fs.writeFileSync(path.join(c.paths.project.dir, '../../docs/api-config.md'), output);
+};
+
+
+export const generateRuntimeObjectDocs = async (c) => {
+    let output = `---
+id: api-rnv-config
+title: rnv Build Config Object Reference
+sidebar_label: build config object
+---
+
+List of available config props injected into [Build Hooks](guide-build-hooks.md) via method parameter
+
+`;
+
+    const rootSchema = SchemaParser.getRuntimeObjectSchema();
+
+    Object.keys(rootSchema.properties).sort().forEach((k1) => {
+        const prop = rootSchema.properties[k1];
+        output += `${_printContent('##', k1, k1, prop, 1, { hidePath: true })}
+
+${_parseSubProps(c, prop, 1, k1, { hidePath: true })}
+
+
+`;
+    });
+
+
+    fs.writeFileSync(path.join(c.paths.project.dir, '../../docs/api-rnv-config.md'), output);
 };

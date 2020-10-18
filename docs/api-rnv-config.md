@@ -1,112 +1,890 @@
 ---
 id: api-rnv-config
-title: rnv Config Object Reference
-sidebar_label: rnv Config
+title: rnv Build Config Object Reference
+sidebar_label: build config object
 ---
 
 List of available config props injected into [Build Hooks](guide-build-hooks.md) via method parameter
 
-```
-// buildHooks/src/index.js
-const hooks = {
-    hello: async c => {
-        // c Object contains all the info about the current rnv session
-    }
-```
+---
+## _currentTask
 
-## root
 
-```
-{
-  program: {},
-  process: {},
-  command: {},
-  subCommand: {},
-  paths: {},
-  files: {}
-}
 
-```
+**type** `undefined`
 
-## c.paths
 
-```
-{
-  rnv: {
-      dir: '',
-      platformTemplates: {
-          dir: ''
-      },
-      pluginTemplates: {
-          dir: '',
-          config: ''
-      },
-      package: '',
-      plugins: {
-          dir: ''
-      }
-      projectTemplate: {
-          dir: ''
-      }
-  },
-  project: {
-      projectConfig: {
-          dir: '',
-          buildsDir: '',
-          fontsDir: '',
-          pluginsDir: ''
-      },
-      builds: {
-          dir: '',
-          config: ''
-      },
-      assets: {
-          dir: '',
-          config: ''
-      },
-      platformTemplates: {
-          dir: ''
-      }
-  },
-  appConfig: {
-      dir: '',
-      config: ''
-  },
-  private: {
-      project: {
-          projectConfig: {},
-          builds: {},
-          assets: {},
-          platformTemplates: {}
-      },
-      appConfig: {
-          dir: '',
-          config: ''
-      }
-  }
-}
-```
 
-## c.files
 
-```
-{
-  rnv: {},
-  project: {
-      projectConfig: {},
-      builds: {},
-      assets: {},
-      platformTemplates: {}
-  },
-  appConfig: {},
-  private: {
-      project: {
-          projectConfig: {},
-          builds: {},
-          assets: {},
-          platformTemplates: {}
-      },
-      appConfig: {}
-  }
-}
-```
+
+
+
+
+
+
+---
+## appConfig
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## buildConfig
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## buildHooks
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## buildPipes
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## cli
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## command
+
+
+
+**type** `string`
+
+
+
+
+
+
+
+
+
+
+---
+## configPropsInjects
+
+
+
+**type** `array`
+
+
+
+
+
+
+
+
+
+
+---
+## defaultWorkspace
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## files
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+---
+### files.appConfig
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### files.buildHooks
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### files.defaultWorkspace
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### files.home
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### files.project
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### files.rnv
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### files.template
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### files.workspace
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+
+---
+## home
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## isBuildHookReady
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## isBuildHooksReady
+
+
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+
+
+---
+## paths
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+---
+### paths.GLOBAL_RNV_CONFIG
+
+
+
+**type** `string`
+
+
+
+
+
+
+
+
+---
+### paths.GLOBAL_RNV_DIR
+
+
+
+**type** `string`
+
+
+
+
+
+
+
+
+---
+### paths.appConfig
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### paths.buildHooks
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### paths.defaultWorkspace
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### paths.home
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### paths.project
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### paths.rnv
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### paths.template
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### paths.workspace
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+
+---
+## platform
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## platformDefaults
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## process
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## program
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## project
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## rnv
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## rnvVersion
+
+
+
+**type** `string`
+
+
+
+
+
+
+
+
+
+
+---
+## runtime
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+---
+### runtime.appId
+
+
+
+**type** `string`
+
+
+
+
+
+
+
+
+---
+### runtime.bundleAssets
+
+
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+---
+### runtime.engine
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### runtime.hosted
+
+
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+---
+### runtime.isWrapper
+
+
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+---
+### runtime.localhost
+
+
+
+**type** `string`
+
+
+
+
+
+
+
+
+---
+### runtime.missingEnginePlugins
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
+### runtime.port
+
+
+
+**type** `integer`
+
+
+
+
+
+
+
+
+---
+### runtime.scheme
+
+
+
+**type** `string`
+
+
+
+
+
+
+
+
+---
+### runtime.supportedPlatforms
+
+
+
+**type** `array`
+
+
+
+
+
+
+
+
+---
+### runtime.target
+
+
+
+**type** `string`
+
+
+
+
+
+
+
+
+---
+### runtime.task
+
+
+
+**type** `string`
+
+
+
+
+
+
+
+
+---
+### runtime.timestamp
+
+
+
+**type** `integer`
+
+
+
+
+
+
+
+
+
+
+
+---
+## runtimePropsInjects
+
+
+
+**type** `array`
+
+
+
+
+
+
+
+
+
+
+---
+## subCommand
+
+
+
+**type** `string`
+
+
+
+
+
+
+
+
+
+
+---
+## systemPropsInjects
+
+
+
+**type** `array`
+
+
+
+
+
+
+
+
+
+
+---
+## template
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## timeStart
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## workspace
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+

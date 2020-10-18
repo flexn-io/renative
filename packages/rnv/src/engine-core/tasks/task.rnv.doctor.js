@@ -4,8 +4,10 @@ import { PARAMS, TASK_DOCTOR, TASK_APP_CONFIGURE } from '../../core/constants';
 import { executeTask } from '../../core/engineManager';
 import { configureRuntimeDefaults } from '../../core/configManager/configParser';
 import { readObjectSync, fsExistsSync } from '../../core/systemManager/fileutils';
-
-import { validateSchema } from '../../core/configManager/schemaParser';
+import {
+    validateSchema,
+    // validateRuntimeObjectSchema
+} from '../../core/schemaManager/schemaParser';
 
 const configTargets = [
     'workspace.config',
@@ -62,6 +64,11 @@ export const taskRnvDoctor = async (c, parentTask, originTask) => {
     if (!hasErrors) {
         errMsg += chalk().green(`PASSED ${configPaths.length} files`);
     }
+
+    // const [valid, ajv] = validateRuntimeObjectSchema(c);
+    // if (!valid) {
+    //     console.log('ERROR', ajv.errors);
+    // }
 
     logToSummary(errMsg);
 };

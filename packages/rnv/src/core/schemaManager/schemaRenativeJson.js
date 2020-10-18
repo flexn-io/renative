@@ -1581,4 +1581,4 @@ To skip file overrides coming from source plugin you need to detach it from the 
     }
 };
 
-export const SCHEMAS = [schemaRoot, schemaPlatforms];
+export const SCHEMAS_RENATIVE_JSON = [schemaRoot, schemaPlatforms];

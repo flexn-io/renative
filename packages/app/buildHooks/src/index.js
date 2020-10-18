@@ -5,7 +5,7 @@ import { updateMdFilesEngines } from './updateMdFilesEngines';
 import { generateChangelog, generateCombinedChangelog } from './changelog';
 import { generateEngineTaks } from './generateEngineDocs';
 import { gitCommit, gitTag } from './git';
-import { generateApiConfigDocs } from './generateConfigDocs';
+import { generateApiConfigDocs, generateRuntimeObjectDocs } from './generateConfigDocs';
 
 const hooks = {
     generateDocs: async (c) => {
@@ -15,6 +15,7 @@ const hooks = {
         await generateChangelog(c);
         await generateEngineTaks(c);
         await generateApiConfigDocs(c);
+        await generateRuntimeObjectDocs(c);
         await generateCombinedChangelog(c);
     },
     prePublish: async (c) => {
@@ -25,6 +26,7 @@ const hooks = {
         await generateChangelog(c);
         await generateEngineTaks(c);
         await generateApiConfigDocs(c);
+        await generateRuntimeObjectDocs(c);
         await generateCombinedChangelog(c);
         return true;
     },
@@ -34,6 +36,7 @@ const hooks = {
     gitCommit,
     gitTag,
     generateApiConfigDocs,
+    generateRuntimeObjectDocs,
     gitCommitAndTag: async (c) => {
         await gitCommit(c);
         await gitTag(c);

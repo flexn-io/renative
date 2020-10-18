@@ -34,8 +34,8 @@
         "sidebar_label": "renative"
       },
       "api-rnv-config": {
-        "title": "rnv Config Object Reference",
-        "sidebar_label": "rnv Config"
+        "title": "rnv Build Config Object Reference",
+        "sidebar_label": "build config object"
       },
       "api-rnv": {
         "title": "rnv API Reference",
