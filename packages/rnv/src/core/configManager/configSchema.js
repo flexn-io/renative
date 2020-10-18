@@ -69,7 +69,21 @@ const engineRnElectronConfig = {
 // COMMON PROPS
 // ==================================================
 
+const commonRuntimeProps = {
+    runtime: {
+        additionalProperties: true,
+        type: 'object',
+        description: 'This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code',
+        examples: [
+            {
+                someRuntimeProperty: 'foo'
+            }
+        ]
+    },
+};
+
 const commonProps = {
+    ...commonRuntimeProps,
     excludedPlugins: {
         type: 'array',
         items: { type: 'string' },
@@ -118,18 +132,22 @@ const commonProps = {
         type: 'array',
         items: { type: 'string' }
     },
-    runtime: {
-        additionalProperties: true,
-        type: 'object'
-    },
     id: {
         type: 'string'
     },
     title: {
-        type: 'string'
+        type: 'string',
+        description: 'Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website',
+        examples: [
+            'Awesome App'
+        ]
     },
     description: {
-        type: 'string'
+        type: 'string',
+        description: 'General description of your app. This prop will be injected to actual projects where description field is applicable',
+        examples: [
+            'This app does awesome things'
+        ]
     },
     author: {
         additionalProperties: true,
@@ -137,7 +155,15 @@ const commonProps = {
     },
     includedFonts: {
         type: 'array',
-        items: { type: 'string' }
+        items: { type: 'string' },
+        description: 'Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all',
+        examples: [
+            ['*'],
+            [
+                'TimeBurner',
+                'Entypo'
+            ]
+        ]
     },
     backgroundColor: {
         type: 'string',
@@ -547,6 +573,13 @@ const buildSchemeProps = {
                 enabled: {
                     type: 'boolean'
                 },
+                description: {
+                    type: 'string',
+                    description: 'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`',
+                    examples: [
+                        'This is some build scheme'
+                    ]
+                },
                 ...platformCommonProps,
                 ...platformAndroidProps,
                 ...platformIosProps,
@@ -567,9 +600,6 @@ const buildSchemeProps = {
 // ==================================================
 
 const pluginAndroidProps = {
-    enabled: {
-        type: 'boolean'
-    },
     package: {
         type: 'string'
     },
@@ -585,9 +615,6 @@ const pluginAndroidProps = {
 };
 
 const pluginIosProps = {
-    enabled: {
-        type: 'boolean'
-    },
     podName: {
         type: 'string'
     },
@@ -600,6 +627,9 @@ const commonPluginPlatformProps = {
     webpackConfig: {
         additionalProperties: true,
         type: 'object'
+    },
+    enabled: {
+        type: 'boolean'
     },
 };
 
@@ -868,17 +898,6 @@ export const schemaRoot = {
                     license: 'MIT',
                     includedPlugins: ['*'],
                     includedFonts: ['*'],
-                    buildSchemes: {
-                        debug: {
-                            description: 'Use for local development'
-                        },
-                        test: {
-                            description: 'Use to run automation'
-                        },
-                        release: {
-                            description: 'Use for production deployments'
-                        }
-                    },
                     backgroundColor: '#111111',
                     runtime: {
                         welcomeMessage: 'Hello ReNative!'
@@ -890,6 +909,7 @@ export const schemaRoot = {
                 ...buildSchemeProps
             }
         },
+        ...commonRuntimeProps,
         platforms: {
             additionalProperties: false,
             type: 'object',
@@ -946,15 +966,39 @@ export const schemaRoot = {
         },
         sdks: {
             additionalProperties: true,
-            type: 'object'
+            type: 'object',
+            description: 'List of SDK locations used by RNV. This property is usually located in your `WORKSPACE/renative.json`',
+            examples: [
+                {
+                    ANDROID_SDK: '/Users/paveljacko/Library/Android/sdk',
+                    ANDROID_NDK: '/Users/paveljacko/Library/Android/sdk/ndk-bundle',
+                    TIZEN_SDK: '/Users/paveljacko/tizen-studio',
+                    WEBOS_SDK: '/opt/webOS_TV_SDK',
+                    KAIOS_SDK: '/Applications/Kaiosrt.app'
+                }
+            ]
         },
-        env: {
-            additionalProperties: true,
-            type: 'object'
-        },
+        // env: {
+        //     additionalProperties: true,
+        //     type: 'object'
+        // },
         defaultTargets: {
             additionalProperties: true,
-            type: 'object'
+            type: 'object',
+            description: 'List of default target simulators and emulators',
+            examples: [
+                {
+                    android: 'Nexus_5X_API_26',
+                    androidtv: 'Android_TV_1080p_API_22',
+                    androidwear: 'Android_Wear_Round_API_28',
+                    ios: 'iPhone 8',
+                    tvos: 'Apple TV 4K',
+                    tizen: 'T-samsung-5.5-x86',
+                    tizenwatch: 'W-5.5-circle-x86',
+                    tizenmobile: 'M-5.5-x86',
+                    webos: 'emulator'
+                }
+            ]
         },
         plugins: {
             type: 'object',
@@ -1244,18 +1288,43 @@ IN: 1.2.3 OUT: 102030000`
             type: 'string'
         },
         crypto: {
-            additionalProperties: true,
-            type: 'object'
+            additionalProperties: false,
+            type: 'object',
+            description: 'This prop enables automatic encryp and decrypt of sensitive information in your project',
+            properties: {
+                encrypt: {
+                    additionalProperties: false,
+                    type: 'object',
+                    properties: {
+                        dest: {
+                            type: 'string',
+                            description: 'Location of encrypted file in your project used as destination of encryption from your workspace',
+                            examples: [
+                                'PROJECT_HOME/ci/privateConfigs.enc'
+                            ]
+                        }
+                    }
+                },
+                decrypt: {
+                    additionalProperties: false,
+                    type: 'object',
+                    properties: {
+                        source: {
+                            type: 'string',
+                            description: 'Location of encrypted file in your project used as source of decryption into your workspace',
+                            examples: [
+                                'PROJECT_HOME/ci/privateConfigs.enc'
+                            ]
+                        }
+                    }
+                },
+            }
         },
         integrations: {
             additionalProperties: true,
             type: 'object'
         },
         publish: {
-            additionalProperties: true,
-            type: 'object'
-        },
-        runtime: {
             additionalProperties: true,
             type: 'object'
         },

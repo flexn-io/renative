@@ -6,6 +6,7 @@ import fs from 'fs';
 const _printContent = (header, key, keyPath, prop, level) => {
     const examples = prop.examples || [];
     let exStr = '';
+    let examplesStr = '';
     if (prop.type === 'string' || prop.type === 'integer' || prop.type === 'boolean') {
         exStr = examples.map(v => `"${key}": "${v}"`).join('\n\n');
     } else if (prop.type === 'object' || prop.type === 'array') {
@@ -14,7 +15,15 @@ const _printContent = (header, key, keyPath, prop, level) => {
     // else if (prop.type === 'array') {
     //     exStr = examples.map(v => `"${key}": ${JSON.stringify(v, null, 2)}`).join('\n\n');
     // }
-    return `${header} ${level < 2 ? key : keyPath}
+    if (exStr.length) {
+        examplesStr = `examples:
+
+\`\`\`json
+${exStr}
+\`\`\`
+`;
+    }
+    return `${level < 2 ? '---\n' : ''}${header} ${level < 1 ? key : keyPath}
 
 type: \`${prop.type}\`
 
@@ -23,11 +32,7 @@ ${prop.description || 'TODO description'}
 path:
 \`renative.json/#/${keyPath}\`
 
-examples:
-
-\`\`\`json
-${exStr}
-\`\`\`
+${examplesStr}
 
 `;
 };
@@ -85,7 +90,7 @@ Following Config reference applies to all \`renative.json\` files, including:
 
 \`\\<WORKSPACE\\>/\\<PROJECT_ID\\>/appConfigs/\\<APP_ID\\>/renative.json\`
 
----
+
 `;
 
     const rootSchema = SchemaParser.getRootSchema();
@@ -96,7 +101,6 @@ Following Config reference applies to all \`renative.json\` files, including:
 
 ${_parseSubProps(c, prop, 1, k1)}
 
----
 
 `;
     });

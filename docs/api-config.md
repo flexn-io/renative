@@ -20,6 +20,7 @@ Following Config reference applies to all `renative.json` files, including:
 
 `\<WORKSPACE\>/\<PROJECT_ID\>/appConfigs/\<APP_ID\>/renative.json`
 
+
 ---
 ## common
 
@@ -46,17 +47,6 @@ examples:
   "includedFonts": [
     "*"
   ],
-  "buildSchemes": {
-    "debug": {
-      "description": "Use for local development"
-    },
-    "test": {
-      "description": "Use to run automation"
-    },
-    "release": {
-      "description": "Use for production deployments"
-    }
-  },
   "backgroundColor": "#111111",
   "runtime": {
     "welcomeMessage": "Hello ReNative!"
@@ -66,7 +56,9 @@ examples:
 
 
 
-### author
+
+---
+### common.author
 
 type: `object`
 
@@ -75,16 +67,13 @@ TODO description
 path:
 `renative.json/#/common.author`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### backgroundColor
+
+---
+### common.backgroundColor
 
 type: `string`
 
@@ -104,7 +93,9 @@ examples:
 
 
 
-### buildSchemes
+
+---
+### common.buildSchemes
 
 type: `object`
 
@@ -113,11 +104,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -152,6 +139,7 @@ examples:
 
 
 
+
 #### common.buildSchemes.[object].BrowserWindow
 
 type: `object`
@@ -161,11 +149,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].BrowserWindow`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -178,11 +162,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].BrowserWindow.height`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -196,11 +176,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].BrowserWindow.webPreferences`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -214,11 +190,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].BrowserWindow.width`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -233,11 +205,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].Podfile`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -251,11 +219,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].aab`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -269,11 +233,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].app/build.gradle`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -287,11 +247,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -304,11 +260,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -322,11 +274,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -340,11 +288,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -358,11 +302,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -376,11 +316,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -394,11 +330,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -412,11 +344,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.open`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -430,11 +358,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -449,11 +373,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appDelegateImports`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -467,11 +387,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appDelegateMethods`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -485,11 +401,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appName`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -503,11 +415,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].appleId`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -521,11 +429,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].applyPlugin`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -539,11 +443,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].author`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -568,6 +468,7 @@ examples:
 
 
 
+
 #### common.buildSchemes.[object].build.gradle
 
 type: `object`
@@ -577,11 +478,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].build.gradle`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -595,11 +492,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].bundleAssets`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -613,11 +506,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].bundleIsDev`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -631,11 +520,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].certificateProfile`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -660,6 +545,7 @@ examples:
 
 
 
+
 #### common.buildSchemes.[object].compileSdkVersion
 
 type: `integer`
@@ -669,11 +555,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].compileSdkVersion`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -687,11 +569,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].deploy`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -704,11 +582,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].deploy.type`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -723,11 +597,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].deploymentTarget`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -736,7 +606,7 @@ examples:
 
 type: `string`
 
-TODO description
+General description of your app. This prop will be injected to actual projects where description field is applicable
 
 path:
 `renative.json/#/common.buildSchemes.[object].description`
@@ -744,8 +614,9 @@ path:
 examples:
 
 ```json
-
+"description": "This app does awesome things"
 ```
+
 
 
 
@@ -759,11 +630,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].devServerHost`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -802,6 +669,7 @@ examples:
 
 
 
+
 #### common.buildSchemes.[object].enableAndroidX
 
 type: `boolean`
@@ -811,11 +679,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].enableAndroidX`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -829,11 +693,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].enableHermes`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -847,11 +707,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].enabled`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -865,11 +721,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].engine`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -883,11 +735,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].entitlements`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -901,11 +749,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].entryFile`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -919,11 +763,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].environment`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -937,11 +777,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].excludedFeatures`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -973,6 +809,7 @@ examples:
 
 
 
+
 #### common.buildSchemes.[object].exportOptions
 
 type: `object`
@@ -982,11 +819,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].exportOptions`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -999,11 +832,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].exportOptions.compileBitcode`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1017,11 +846,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].exportOptions.method`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1035,11 +860,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].exportOptions.provisioningProfiles`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1053,11 +874,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].exportOptions.signingCertificate`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1071,11 +888,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].exportOptions.signingStyle`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1089,11 +902,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].exportOptions.teamID`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1107,11 +916,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].exportOptions.uploadBitcode`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1125,11 +930,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].exportOptions.uploadSymbols`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1144,11 +945,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].ext`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1162,11 +959,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].firebaseId`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1180,11 +973,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].gradle.properties`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1198,11 +987,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].id`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1216,11 +1001,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].ignoreLogs`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1234,11 +1015,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].ignoreWarnings`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1252,11 +1029,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].includedFeatures`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1265,7 +1038,7 @@ examples:
 
 type: `array`
 
-TODO description
+Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
 path:
 `renative.json/#/common.buildSchemes.[object].includedFonts`
@@ -1273,8 +1046,16 @@ path:
 examples:
 
 ```json
+"includedFonts": [
+  "*"
+]
 
+"includedFonts": [
+  "TimeBurner",
+  "Entypo"
+]
 ```
+
 
 
 
@@ -1317,6 +1098,7 @@ examples:
 
 
 
+
 #### common.buildSchemes.[object].includedPlugins
 
 type: `array`
@@ -1344,6 +1126,7 @@ examples:
 
 
 
+
 #### common.buildSchemes.[object].keyAlias
 
 type: `string`
@@ -1353,11 +1136,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].keyAlias`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1371,11 +1150,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].keyPassword`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1389,11 +1164,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].license`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1407,11 +1178,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].minSdkVersion`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1425,11 +1192,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].multipleAPKs`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1464,6 +1227,7 @@ examples:
 
 
 
+
 ##### common.buildSchemes.[object].orientationSupport.phone
 
 type: `array`
@@ -1473,11 +1237,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].orientationSupport.phone`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1491,11 +1251,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].orientationSupport.tab`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1510,11 +1266,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].package`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1528,11 +1280,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].pagesDir`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1546,11 +1294,7 @@ type: `array`
 path:
 `renative.json/#/common.buildSchemes.[object].permissions`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1564,11 +1308,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].plist`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1582,11 +1322,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].provisionProfileSpecifier`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1600,11 +1336,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].provisioningProfiles`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1618,11 +1350,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].provisioningStyle`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1636,11 +1364,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].runScheme`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1649,7 +1373,7 @@ examples:
 
 type: `object`
 
-TODO description
+This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
 path:
 `renative.json/#/common.buildSchemes.[object].runtime`
@@ -1657,8 +1381,11 @@ path:
 examples:
 
 ```json
-
+"runtime": {
+  "someRuntimeProperty": "foo"
+}
 ```
+
 
 
 
@@ -1672,11 +1399,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].scheme`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1690,11 +1413,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].sdk`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1708,11 +1427,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].signingConfig`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1726,11 +1441,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].splashScreen`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1744,11 +1455,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].storeFile`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1762,11 +1469,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].storePassword`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1815,6 +1518,7 @@ examples:
 
 
 
+
 #### common.buildSchemes.[object].targetSdkVersion
 
 type: `integer`
@@ -1824,11 +1528,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].targetSdkVersion`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1842,11 +1542,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].teamID`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1860,11 +1556,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].teamIdentifier`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1878,11 +1570,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].testFlightId`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1896,11 +1584,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].timestampAssets`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1909,7 +1593,7 @@ examples:
 
 type: `string`
 
-TODO description
+Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
 path:
 `renative.json/#/common.buildSchemes.[object].title`
@@ -1917,8 +1601,9 @@ path:
 examples:
 
 ```json
-
+"title": "Awesome App"
 ```
+
 
 
 
@@ -1932,11 +1617,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].universalApk`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1950,11 +1631,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].versionedAssets`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1968,11 +1645,7 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].webpackConfig`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -1986,21 +1659,18 @@ TODO description
 path:
 `renative.json/#/common.buildSchemes.[object].xcodeproj`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### description
+
+---
+### common.description
 
 type: `string`
 
-TODO description
+General description of your app. This prop will be injected to actual projects where description field is applicable
 
 path:
 `renative.json/#/common.description`
@@ -2008,13 +1678,15 @@ path:
 examples:
 
 ```json
-
+"description": "This app does awesome things"
 ```
 
 
 
 
-### excludedPlugins
+
+---
+### common.excludedPlugins
 
 type: `array`
 
@@ -2041,7 +1713,9 @@ examples:
 
 
 
-### ext
+
+---
+### common.ext
 
 type: `object`
 
@@ -2050,16 +1724,13 @@ TODO description
 path:
 `renative.json/#/common.ext`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### id
+
+---
+### common.id
 
 type: `string`
 
@@ -2068,16 +1739,13 @@ TODO description
 path:
 `renative.json/#/common.id`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### ignoreLogs
+
+---
+### common.ignoreLogs
 
 type: `boolean`
 
@@ -2086,16 +1754,13 @@ TODO description
 path:
 `renative.json/#/common.ignoreLogs`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### ignoreWarnings
+
+---
+### common.ignoreWarnings
 
 type: `boolean`
 
@@ -2104,20 +1769,17 @@ TODO description
 path:
 `renative.json/#/common.ignoreWarnings`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### includedFonts
+
+---
+### common.includedFonts
 
 type: `array`
 
-TODO description
+Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
 path:
 `renative.json/#/common.includedFonts`
@@ -2125,13 +1787,22 @@ path:
 examples:
 
 ```json
+"includedFonts": [
+  "*"
+]
 
+"includedFonts": [
+  "TimeBurner",
+  "Entypo"
+]
 ```
 
 
 
 
-### includedPermissions
+
+---
+### common.includedPermissions
 
 type: `array`
 
@@ -2169,7 +1840,9 @@ examples:
 
 
 
-### includedPlugins
+
+---
+### common.includedPlugins
 
 type: `array`
 
@@ -2196,7 +1869,9 @@ examples:
 
 
 
-### license
+
+---
+### common.license
 
 type: `string`
 
@@ -2205,16 +1880,13 @@ TODO description
 path:
 `renative.json/#/common.license`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### permissions
+
+---
+### common.permissions
 
 type: `array`
 
@@ -2223,20 +1895,17 @@ type: `array`
 path:
 `renative.json/#/common.permissions`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### runtime
+
+---
+### common.runtime
 
 type: `object`
 
-TODO description
+This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
 path:
 `renative.json/#/common.runtime`
@@ -2244,13 +1913,17 @@ path:
 examples:
 
 ```json
-
+"runtime": {
+  "someRuntimeProperty": "foo"
+}
 ```
 
 
 
 
-### splashScreen
+
+---
+### common.splashScreen
 
 type: `boolean`
 
@@ -2259,16 +1932,13 @@ TODO description
 path:
 `renative.json/#/common.splashScreen`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### timestampAssets
+
+---
+### common.timestampAssets
 
 type: `boolean`
 
@@ -2277,20 +1947,17 @@ TODO description
 path:
 `renative.json/#/common.timestampAssets`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### title
+
+---
+### common.title
 
 type: `string`
 
-TODO description
+Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
 path:
 `renative.json/#/common.title`
@@ -2298,13 +1965,15 @@ path:
 examples:
 
 ```json
-
+"title": "Awesome App"
 ```
 
 
 
 
-### versionedAssets
+
+---
+### common.versionedAssets
 
 type: `boolean`
 
@@ -2313,11 +1982,8 @@ TODO description
 path:
 `renative.json/#/common.versionedAssets`
 
-examples:
 
-```json
 
-```
 
 
 
@@ -2325,28 +1991,91 @@ examples:
 
 
 ---
-
 ## crypto
+
+type: `object`
+
+This prop enables automatic encryp and decrypt of sensitive information in your project
+
+path:
+`renative.json/#/crypto`
+
+
+
+
+
+---
+### crypto.decrypt
 
 type: `object`
 
 TODO description
 
 path:
-`renative.json/#/crypto`
+`renative.json/#/crypto.decrypt`
+
+
+
+
+
+#### crypto.decrypt.source
+
+type: `string`
+
+Location of encrypted file in your project used as source of decryption into your workspace
+
+path:
+`renative.json/#/crypto.decrypt.source`
 
 examples:
 
 ```json
-
+"source": "PROJECT_HOME/ci/privateConfigs.enc"
 ```
 
 
 
 
 
----
 
+---
+### crypto.encrypt
+
+type: `object`
+
+TODO description
+
+path:
+`renative.json/#/crypto.encrypt`
+
+
+
+
+
+#### crypto.encrypt.dest
+
+type: `string`
+
+Location of encrypted file in your project used as destination of encryption from your workspace
+
+path:
+`renative.json/#/crypto.encrypt.dest`
+
+examples:
+
+```json
+"dest": "PROJECT_HOME/ci/privateConfigs.enc"
+```
+
+
+
+
+
+
+
+
+
+---
 ## currentTemplate
 
 type: `string`
@@ -2356,23 +2085,19 @@ TODO description
 path:
 `renative.json/#/currentTemplate`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## defaultTargets
 
 type: `object`
 
-TODO description
+List of default target simulators and emulators
 
 path:
 `renative.json/#/defaultTargets`
@@ -2380,15 +2105,26 @@ path:
 examples:
 
 ```json
-
+"defaultTargets": {
+  "android": "Nexus_5X_API_26",
+  "androidtv": "Android_TV_1080p_API_22",
+  "androidwear": "Android_Wear_Round_API_28",
+  "ios": "iPhone 8",
+  "tvos": "Apple TV 4K",
+  "tizen": "T-samsung-5.5-x86",
+  "tizenwatch": "W-5.5-circle-x86",
+  "tizenmobile": "M-5.5-x86",
+  "webos": "emulator"
+}
 ```
 
 
 
 
 
----
 
+
+---
 ## defaults
 
 type: `object`
@@ -2398,15 +2134,12 @@ TODO description
 path:
 `renative.json/#/defaults`
 
-examples:
-
-```json
-
-```
 
 
 
-### ports
+
+---
+### defaults.ports
 
 type: `object`
 
@@ -2415,16 +2148,13 @@ TODO description
 path:
 `renative.json/#/defaults.ports`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### schemes
+
+---
+### defaults.schemes
 
 type: `object`
 
@@ -2433,16 +2163,13 @@ TODO description
 path:
 `renative.json/#/defaults.schemes`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### supportedPlatforms
+
+---
+### defaults.supportedPlatforms
 
 type: `array`
 
@@ -2451,16 +2178,13 @@ TODO description
 path:
 `renative.json/#/defaults.supportedPlatforms`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### targets
+
+---
+### defaults.targets
 
 type: `object`
 
@@ -2469,16 +2193,13 @@ TODO description
 path:
 `renative.json/#/defaults.targets`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### template
+
+---
+### defaults.template
 
 type: `string`
 
@@ -2487,11 +2208,8 @@ TODO description
 path:
 `renative.json/#/defaults.template`
 
-examples:
 
-```json
 
-```
 
 
 
@@ -2499,7 +2217,6 @@ examples:
 
 
 ---
-
 ## description
 
 type: `string`
@@ -2509,18 +2226,14 @@ TODO description
 path:
 `renative.json/#/description`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## enableAnalytics
 
 type: `boolean`
@@ -2530,39 +2243,14 @@ TODO description
 path:
 `renative.json/#/enableAnalytics`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
-## env
-
-type: `object`
-
-TODO description
-
-path:
-`renative.json/#/env`
-
-examples:
-
-```json
-
-```
-
-
-
-
-
----
-
 ## ext
 
 type: `object`
@@ -2572,18 +2260,14 @@ TODO description
 path:
 `renative.json/#/ext`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## extend
 
 type: `string`
@@ -2593,18 +2277,14 @@ TODO description
 path:
 `renative.json/#/extend`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## hidden
 
 type: `boolean`
@@ -2614,18 +2294,14 @@ TODO description
 path:
 `renative.json/#/hidden`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## id
 
 type: `string`
@@ -2635,18 +2311,14 @@ TODO description
 path:
 `renative.json/#/id`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## integrations
 
 type: `object`
@@ -2656,18 +2328,14 @@ TODO description
 path:
 `renative.json/#/integrations`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## isWrapper
 
 type: `boolean`
@@ -2677,18 +2345,14 @@ TODO description
 path:
 `renative.json/#/isWrapper`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## paths
 
 type: `object`
@@ -2698,15 +2362,12 @@ TODO description
 path:
 `renative.json/#/paths`
 
-examples:
-
-```json
-
-```
 
 
 
-### appConfigsDir
+
+---
+### paths.appConfigsDir
 
 type: `string`
 
@@ -2715,16 +2376,13 @@ TODO description
 path:
 `renative.json/#/paths.appConfigsDir`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### entryDir
+
+---
+### paths.entryDir
 
 type: `string`
 
@@ -2733,16 +2391,13 @@ TODO description
 path:
 `renative.json/#/paths.entryDir`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### platformAssetsDir
+
+---
+### paths.platformAssetsDir
 
 type: `string`
 
@@ -2751,16 +2406,13 @@ TODO description
 path:
 `renative.json/#/paths.platformAssetsDir`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### platformBuildsDir
+
+---
+### paths.platformBuildsDir
 
 type: `string`
 
@@ -2769,16 +2421,13 @@ TODO description
 path:
 `renative.json/#/paths.platformBuildsDir`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### pluginTemplates
+
+---
+### paths.pluginTemplates
 
 type: `object`
 
@@ -2787,16 +2436,13 @@ TODO description
 path:
 `renative.json/#/paths.pluginTemplates`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### projectConfigDir
+
+---
+### paths.projectConfigDir
 
 type: `string`
 
@@ -2805,11 +2451,8 @@ TODO description
 path:
 `renative.json/#/paths.projectConfigDir`
 
-examples:
 
-```json
 
-```
 
 
 
@@ -2817,7 +2460,6 @@ examples:
 
 
 ---
-
 ## permissions
 
 type: `object`
@@ -2838,7 +2480,9 @@ examples:
 
 
 
-### android
+
+---
+### permissions.android
 
 type: `object`
 
@@ -2865,7 +2509,9 @@ examples:
 
 
 
-### ios
+
+---
+### permissions.ios
 
 type: `object`
 
@@ -2931,8 +2577,9 @@ examples:
 
 
 
----
 
+
+---
 ## pipes
 
 type: `array`
@@ -2942,18 +2589,14 @@ TODO description
 path:
 `renative.json/#/pipes`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## platforms
 
 type: `object`
@@ -2963,15 +2606,12 @@ TODO description
 path:
 `renative.json/#/platforms`
 
-examples:
-
-```json
-
-```
 
 
 
-### android
+
+---
+### platforms.android
 
 type: `undefined`
 
@@ -2980,16 +2620,13 @@ TODO description
 path:
 `renative.json/#/platforms.android`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### androidtv
+
+---
+### platforms.androidtv
 
 type: `undefined`
 
@@ -2998,16 +2635,13 @@ TODO description
 path:
 `renative.json/#/platforms.androidtv`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### androidwear
+
+---
+### platforms.androidwear
 
 type: `undefined`
 
@@ -3016,16 +2650,13 @@ TODO description
 path:
 `renative.json/#/platforms.androidwear`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### chromecast
+
+---
+### platforms.chromecast
 
 type: `undefined`
 
@@ -3034,16 +2665,13 @@ TODO description
 path:
 `renative.json/#/platforms.chromecast`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### firefoxos
+
+---
+### platforms.firefoxos
 
 type: `undefined`
 
@@ -3052,16 +2680,13 @@ TODO description
 path:
 `renative.json/#/platforms.firefoxos`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### firefoxtv
+
+---
+### platforms.firefoxtv
 
 type: `undefined`
 
@@ -3070,16 +2695,13 @@ TODO description
 path:
 `renative.json/#/platforms.firefoxtv`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### ios
+
+---
+### platforms.ios
 
 type: `undefined`
 
@@ -3088,16 +2710,13 @@ TODO description
 path:
 `renative.json/#/platforms.ios`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### kaios
+
+---
+### platforms.kaios
 
 type: `undefined`
 
@@ -3106,16 +2725,13 @@ TODO description
 path:
 `renative.json/#/platforms.kaios`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### macos
+
+---
+### platforms.macos
 
 type: `undefined`
 
@@ -3124,16 +2740,13 @@ TODO description
 path:
 `renative.json/#/platforms.macos`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### tizen
+
+---
+### platforms.tizen
 
 type: `undefined`
 
@@ -3142,16 +2755,13 @@ TODO description
 path:
 `renative.json/#/platforms.tizen`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### tizenmobile
+
+---
+### platforms.tizenmobile
 
 type: `undefined`
 
@@ -3160,16 +2770,13 @@ TODO description
 path:
 `renative.json/#/platforms.tizenmobile`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### tizenwatch
+
+---
+### platforms.tizenwatch
 
 type: `undefined`
 
@@ -3178,16 +2785,13 @@ TODO description
 path:
 `renative.json/#/platforms.tizenwatch`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### tvos
+
+---
+### platforms.tvos
 
 type: `undefined`
 
@@ -3196,16 +2800,13 @@ TODO description
 path:
 `renative.json/#/platforms.tvos`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### web
+
+---
+### platforms.web
 
 type: `undefined`
 
@@ -3214,16 +2815,13 @@ TODO description
 path:
 `renative.json/#/platforms.web`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### webos
+
+---
+### platforms.webos
 
 type: `undefined`
 
@@ -3232,16 +2830,13 @@ TODO description
 path:
 `renative.json/#/platforms.webos`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### windows
+
+---
+### platforms.windows
 
 type: `undefined`
 
@@ -3250,11 +2845,8 @@ TODO description
 path:
 `renative.json/#/platforms.windows`
 
-examples:
 
-```json
 
-```
 
 
 
@@ -3262,7 +2854,6 @@ examples:
 
 
 ---
-
 ## pluginTemplates
 
 type: `object`
@@ -3272,18 +2863,14 @@ TODO description
 path:
 `renative.json/#/pluginTemplates`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## plugins
 
 type: `object`
@@ -3309,7 +2896,9 @@ examples:
 
 
 
-### android
+
+---
+### plugins.[object].android
 
 type: `object`
 
@@ -3318,11 +2907,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].android`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3357,6 +2942,7 @@ examples:
 
 
 
+
 #### plugins.[object].android.afterEvaluate
 
 type: `array`
@@ -3366,11 +2952,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].android.afterEvaluate`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3384,11 +2966,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].android.app/build.gradle`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3402,11 +2980,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].android.applyPlugin`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3420,11 +2994,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].android.build.gradle`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3438,11 +3008,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].android.enabled`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3456,11 +3022,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].android.gradle.properties`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3474,11 +3036,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].android.package`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3492,11 +3050,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].android.projectName`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3510,11 +3064,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].android.skipImplementation`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3528,17 +3078,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].android.webpackConfig`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### androidtv
+
+---
+### plugins.[object].androidtv
 
 type: `object`
 
@@ -3547,11 +3094,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidtv`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3586,6 +3129,7 @@ examples:
 
 
 
+
 #### plugins.[object].androidtv.afterEvaluate
 
 type: `array`
@@ -3595,11 +3139,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidtv.afterEvaluate`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3613,11 +3153,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidtv.app/build.gradle`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3631,11 +3167,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidtv.applyPlugin`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3649,11 +3181,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidtv.build.gradle`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3667,11 +3195,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidtv.enabled`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3685,11 +3209,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidtv.gradle.properties`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3703,11 +3223,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidtv.package`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3721,11 +3237,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidtv.projectName`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3739,11 +3251,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidtv.skipImplementation`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3757,17 +3265,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidtv.webpackConfig`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### androidwear
+
+---
+### plugins.[object].androidwear
 
 type: `object`
 
@@ -3776,11 +3281,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidwear`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3815,6 +3316,7 @@ examples:
 
 
 
+
 #### plugins.[object].androidwear.afterEvaluate
 
 type: `array`
@@ -3824,11 +3326,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidwear.afterEvaluate`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3842,11 +3340,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidwear.app/build.gradle`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3860,11 +3354,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidwear.applyPlugin`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3878,11 +3368,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidwear.build.gradle`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3896,11 +3382,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidwear.enabled`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3914,11 +3396,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidwear.gradle.properties`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3932,11 +3410,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidwear.package`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3950,11 +3424,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidwear.projectName`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3968,11 +3438,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidwear.skipImplementation`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -3986,17 +3452,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].androidwear.webpackConfig`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### chromecast
+
+---
+### plugins.[object].chromecast
 
 type: `object`
 
@@ -4005,11 +3468,21 @@ TODO description
 path:
 `renative.json/#/plugins.[object].chromecast`
 
-examples:
 
-```json
 
-```
+
+
+#### plugins.[object].chromecast.enabled
+
+type: `boolean`
+
+TODO description
+
+path:
+`renative.json/#/plugins.[object].chromecast.enabled`
+
+
+
 
 
 
@@ -4022,17 +3495,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].chromecast.webpackConfig`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### enabled
+
+---
+### plugins.[object].enabled
 
 type: `boolean`
 
@@ -4041,16 +3511,13 @@ TODO description
 path:
 `renative.json/#/plugins.[object].enabled`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### firefox
+
+---
+### plugins.[object].firefox
 
 type: `object`
 
@@ -4059,11 +3526,21 @@ TODO description
 path:
 `renative.json/#/plugins.[object].firefox`
 
-examples:
 
-```json
 
-```
+
+
+#### plugins.[object].firefox.enabled
+
+type: `boolean`
+
+TODO description
+
+path:
+`renative.json/#/plugins.[object].firefox.enabled`
+
+
+
 
 
 
@@ -4076,17 +3553,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].firefox.webpackConfig`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### ios
+
+---
+### plugins.[object].ios
 
 type: `object`
 
@@ -4095,11 +3569,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4112,11 +3582,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.Podfile`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4130,11 +3596,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.appDelegateApplicationMethods`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4147,11 +3609,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4165,11 +3623,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didFinishLaunchingWithOptions`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4183,11 +3637,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didReceive`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4201,11 +3651,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didReceiveRemoteNotification`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4219,11 +3665,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didRegister`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4237,11 +3679,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4255,11 +3693,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.open`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4273,11 +3707,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4292,11 +3722,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.appDelegateImports`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4310,11 +3736,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.appDelegateMethods`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4328,11 +3750,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.enabled`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4346,11 +3764,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.plist`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4364,11 +3778,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.podName`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4382,11 +3792,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.podNames`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4400,11 +3806,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.webpackConfig`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4418,17 +3820,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].ios.xcodeproj`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### macos
+
+---
+### plugins.[object].macos
 
 type: `object`
 
@@ -4437,11 +3836,21 @@ TODO description
 path:
 `renative.json/#/plugins.[object].macos`
 
-examples:
 
-```json
 
-```
+
+
+#### plugins.[object].macos.enabled
+
+type: `boolean`
+
+TODO description
+
+path:
+`renative.json/#/plugins.[object].macos.enabled`
+
+
+
 
 
 
@@ -4454,17 +3863,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].macos.webpackConfig`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### no-npm
+
+---
+### plugins.[object].no-npm
 
 type: `boolean`
 
@@ -4473,16 +3879,13 @@ TODO description
 path:
 `renative.json/#/plugins.[object].no-npm`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### npm
+
+---
+### plugins.[object].npm
 
 type: `object`
 
@@ -4491,16 +3894,13 @@ TODO description
 path:
 `renative.json/#/plugins.[object].npm`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### pluginDependencies
+
+---
+### plugins.[object].pluginDependencies
 
 type: `array,null`
 
@@ -4509,16 +3909,13 @@ TODO description
 path:
 `renative.json/#/plugins.[object].pluginDependencies`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### props
+
+---
+### plugins.[object].props
 
 type: `object`
 
@@ -4527,16 +3924,13 @@ TODO description
 path:
 `renative.json/#/plugins.[object].props`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### source
+
+---
+### plugins.[object].source
 
 type: `string`
 
@@ -4545,16 +3939,13 @@ TODO description
 path:
 `renative.json/#/plugins.[object].source`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### tizen
+
+---
+### plugins.[object].tizen
 
 type: `object`
 
@@ -4563,11 +3954,21 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tizen`
 
-examples:
 
-```json
 
-```
+
+
+#### plugins.[object].tizen.enabled
+
+type: `boolean`
+
+TODO description
+
+path:
+`renative.json/#/plugins.[object].tizen.enabled`
+
+
+
 
 
 
@@ -4580,17 +3981,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tizen.webpackConfig`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### tvos
+
+---
+### plugins.[object].tvos
 
 type: `object`
 
@@ -4599,11 +3997,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4616,11 +4010,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.Podfile`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4634,11 +4024,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4651,11 +4037,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4669,11 +4051,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didFinishLaunchingWithOptions`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4687,11 +4065,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didReceive`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4705,11 +4079,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didReceiveRemoteNotification`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4723,11 +4093,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didRegister`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4741,11 +4107,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4759,11 +4121,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.open`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4777,11 +4135,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4796,11 +4150,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.appDelegateImports`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4814,11 +4164,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.appDelegateMethods`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4832,11 +4178,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.enabled`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4850,11 +4192,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.plist`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4868,11 +4206,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.podName`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4886,11 +4220,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.podNames`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4904,11 +4234,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.webpackConfig`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -4922,17 +4248,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].tvos.xcodeproj`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### version
+
+---
+### plugins.[object].version
 
 type: `string`
 
@@ -4941,16 +4264,13 @@ TODO description
 path:
 `renative.json/#/plugins.[object].version`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### web
+
+---
+### plugins.[object].web
 
 type: `object`
 
@@ -4959,11 +4279,21 @@ TODO description
 path:
 `renative.json/#/plugins.[object].web`
 
-examples:
 
-```json
 
-```
+
+
+#### plugins.[object].web.enabled
+
+type: `boolean`
+
+TODO description
+
+path:
+`renative.json/#/plugins.[object].web.enabled`
+
+
+
 
 
 
@@ -4976,17 +4306,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].web.webpackConfig`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### webos
+
+---
+### plugins.[object].webos
 
 type: `object`
 
@@ -4995,11 +4322,21 @@ TODO description
 path:
 `renative.json/#/plugins.[object].webos`
 
-examples:
 
-```json
 
-```
+
+
+#### plugins.[object].webos.enabled
+
+type: `boolean`
+
+TODO description
+
+path:
+`renative.json/#/plugins.[object].webos.enabled`
+
+
+
 
 
 
@@ -5012,17 +4349,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].webos.webpackConfig`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### webpack
+
+---
+### plugins.[object].webpack
 
 type: `object`
 
@@ -5031,16 +4365,13 @@ type: `object`
 path:
 `renative.json/#/plugins.[object].webpack`
 
-examples:
-
-```json
-
-```
 
 
 
 
-### webpackConfig
+
+---
+### plugins.[object].webpackConfig
 
 type: `object`
 
@@ -5049,11 +4380,7 @@ Allows you to configure webpack bahaviour per each individual plugin
 path:
 `renative.json/#/plugins.[object].webpackConfig`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -5066,11 +4393,7 @@ TODO description
 path:
 `renative.json/#/plugins.[object].webpackConfig.moduleAliases`
 
-examples:
 
-```json
-
-```
 
 
 
@@ -5084,17 +4407,14 @@ TODO description
 path:
 `renative.json/#/plugins.[object].webpackConfig.modulePaths`
 
-examples:
-
-```json
-
-```
 
 
 
 
 
-### windows
+
+---
+### plugins.[object].windows
 
 type: `object`
 
@@ -5103,11 +4423,21 @@ TODO description
 path:
 `renative.json/#/plugins.[object].windows`
 
-examples:
 
-```json
 
-```
+
+
+#### plugins.[object].windows.enabled
+
+type: `boolean`
+
+TODO description
+
+path:
+`renative.json/#/plugins.[object].windows.enabled`
+
+
+
 
 
 
@@ -5120,11 +4450,8 @@ TODO description
 path:
 `renative.json/#/plugins.[object].windows.webpackConfig`
 
-examples:
 
-```json
 
-```
 
 
 
@@ -5133,7 +4460,6 @@ examples:
 
 
 ---
-
 ## private
 
 type: `object`
@@ -5155,8 +4481,9 @@ examples:
 
 
 
----
 
+
+---
 ## projectName
 
 type: `string`
@@ -5178,8 +4505,9 @@ examples:
 
 
 
----
 
+
+---
 ## projectTemplates
 
 type: `object`
@@ -5201,8 +4529,9 @@ examples:
 
 
 
----
 
+
+---
 ## publish
 
 type: `object`
@@ -5212,23 +4541,19 @@ TODO description
 path:
 `renative.json/#/publish`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## runtime
 
 type: `object`
 
-TODO description
+This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
 path:
 `renative.json/#/runtime`
@@ -5236,20 +4561,23 @@ path:
 examples:
 
 ```json
-
+"runtime": {
+  "someRuntimeProperty": "foo"
+}
 ```
 
 
 
 
 
----
 
+
+---
 ## sdks
 
 type: `object`
 
-TODO description
+List of SDK locations used by RNV. This property is usually located in your `WORKSPACE/renative.json`
 
 path:
 `renative.json/#/sdks`
@@ -5257,15 +4585,22 @@ path:
 examples:
 
 ```json
-
+"sdks": {
+  "ANDROID_SDK": "/Users/paveljacko/Library/Android/sdk",
+  "ANDROID_NDK": "/Users/paveljacko/Library/Android/sdk/ndk-bundle",
+  "TIZEN_SDK": "/Users/paveljacko/tizen-studio",
+  "WEBOS_SDK": "/opt/webOS_TV_SDK",
+  "KAIOS_SDK": "/Applications/Kaiosrt.app"
+}
 ```
 
 
 
 
 
----
 
+
+---
 ## tasks
 
 type: `object`
@@ -5275,18 +4610,14 @@ TODO description
 path:
 `renative.json/#/tasks`
 
-examples:
 
-```json
 
-```
 
 
 
 
 
 ---
-
 ## templates
 
 type: `object`
@@ -5312,8 +4643,9 @@ examples:
 
 
 
----
 
+
+---
 ## version
 
 type: `string`
@@ -5341,8 +4673,9 @@ examples:
 
 
 
----
 
+
+---
 ## versionCode
 
 type: `string`
@@ -5364,8 +4697,9 @@ examples:
 
 
 
----
 
+
+---
 ## versionCodeFormat
 
 type: `string`
@@ -5387,8 +4721,9 @@ examples:
 
 
 
----
 
+
+---
 ## workspaceID
 
 type: `string`
@@ -5410,5 +4745,5 @@ examples:
 
 
 
----
+
 
