@@ -140,7 +140,7 @@ const commonPlatformProps = {
         type: 'boolean'
     },
     deploy: {
-        additionalProperties: false,
+        additionalProperties: true,
         type: 'object',
         properties: {
             type: {
@@ -260,7 +260,23 @@ const iosPlatformProps = {
             tab: {
                 type: 'array',
             }
-        }
+        },
+        examples: [
+            {
+                phone: [
+                    'UIInterfaceOrientationPortrait',
+                    'UIInterfaceOrientationPortraitUpsideDown',
+                    'UIInterfaceOrientationLandscapeLeft',
+                    'UIInterfaceOrientationLandscapeRight'
+                ],
+                tab: [
+                    'UIInterfaceOrientationPortrait',
+                    'UIInterfaceOrientationPortraitUpsideDown',
+                    'UIInterfaceOrientationLandscapeLeft',
+                    'UIInterfaceOrientationLandscapeRight'
+                ]
+            }
+        ],
     },
     appDelegateApplicationMethods: {
         type: 'object',
@@ -306,7 +322,36 @@ const iosPlatformProps = {
     },
     systemCapabilities: {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
+        examples: [
+            {
+                'com.apple.SafariKeychain': false,
+                'com.apple.Wallet': false,
+                'com.apple.HealthKit': false,
+                'com.apple.ApplicationGroups.iOS': false,
+                'com.apple.iCloud': true,
+                'com.apple.DataProtection': false,
+                'com.apple.HomeKit': false,
+                'com.apple.ClassKit': false,
+                'com.apple.VPNLite': false,
+                'com.apple.AutoFillCredentialProvider': false,
+                'com.apple.AccessWiFi': false,
+                'com.apple.InAppPurchase': false,
+                'com.apple.HotspotConfiguration': false,
+                'com.apple.Multipath': false,
+                'com.apple.GameCenter.iOS': false,
+                'com.apple.BackgroundModes': false,
+                'com.apple.InterAppAudio': false,
+                'com.apple.WAC': false,
+                'com.apple.Push': true,
+                'com.apple.NearFieldCommunicationTagReading': false,
+                'com.apple.ApplePay': false,
+                'com.apple.Keychain': false,
+                'com.apple.Maps.iOS': false,
+                'com.apple.Siri': false,
+                'com.apple.NetworkExtensions.iOS': false
+            }
+        ]
     },
     entitlements: {
         additionalProperties: true,
@@ -420,6 +465,9 @@ const buildSchemeProps = {
             type: 'object',
             additionalProperties: false,
             properties: {
+                enabled: {
+                    type: 'boolean'
+                },
                 ...commonPlatformProps,
                 ...androidPlatformProps,
                 ...iosPlatformProps,
@@ -433,6 +481,157 @@ const buildSchemeProps = {
         },
         type: 'object'
     },
+};
+
+// ==================================================
+// PLUGIN PROPS
+// ==================================================
+
+const pluginAndroidProps = {
+    enabled: {
+        type: 'boolean'
+    },
+    package: {
+        type: 'string'
+    },
+    projectName: {
+        type: 'string'
+    },
+    skipImplementation: {
+        type: 'boolean'
+    },
+    afterEvaluate: {
+        type: 'array'
+    }
+};
+
+const pluginIosProps = {
+    enabled: {
+        type: 'boolean'
+    },
+    podName: {
+        type: 'string'
+    },
+    podNames: {
+        type: 'array'
+    }
+};
+
+
+const pluginProps = {
+    enabled: {
+        type: 'boolean'
+    },
+    props: {
+        additionalProperties: true,
+        type: 'object'
+    },
+    version: {
+        type: 'string'
+    },
+    source: {
+        type: 'string'
+    },
+    'no-npm': {
+        type: 'boolean'
+    },
+    npm: {
+        additionalProperties: true,
+        type: 'object',
+    },
+    pluginDependencies: {
+        type: ['array', 'null'],
+    },
+    // DEPRECATED
+    webpack: {
+        additionalProperties: true,
+        type: 'object',
+    },
+    webpackConfig: {
+        additionalProperties: true,
+        type: 'object',
+    },
+    android: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...pluginAndroidProps,
+            ...androidPlatformProps
+        }
+    },
+    androidtv: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...pluginAndroidProps,
+            ...androidPlatformProps
+        }
+    },
+    ios: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...pluginIosProps,
+            ...iosPlatformProps
+        }
+    },
+    tvos: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...pluginIosProps,
+            ...iosPlatformProps
+        }
+    },
+    tizen: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...tizenPlatformProps
+        }
+    },
+    webos: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...webosPlatformProps
+        }
+    },
+    web: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...webPlatformProps
+        }
+    },
+    chromecast: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...castPlatformProps
+        }
+    },
+    firefox: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...firefoxPlatformProps,
+        }
+    },
+    macos: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...macosPlatformProps
+        }
+    },
+    windows: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...winPlatformProps
+        }
+    }
 };
 
 // ==================================================
@@ -622,8 +821,36 @@ export const schemaRoot = {
             type: 'object'
         },
         plugins: {
-            additionalProperties: true,
-            type: 'object'
+            type: 'object',
+            additionalProperties: {
+                type: ['object', 'string'],
+                additionalProperties: false,
+                properties: {
+                    ...pluginProps
+                }
+                // if: {
+                //     type: 'object'
+                // },
+                // then: {
+                //     additionalProperties: false,
+                //     properties: {
+                //         ...pluginProps
+                //     }
+                // },
+                // else: {
+                //     additionalProperties: false,
+                // }
+                // anyOf: [
+                //     {
+                //         type: 'object',
+                //         additionalProperties: false,
+                //         properties: {
+                //             ...pluginProps
+                //         }
+                //     },
+                //     { type: 'string' }
+                // ]
+            }
         },
         projectName: {
             type: 'string'
@@ -765,6 +992,10 @@ IN: 1.2.3 OUT: 102030000`
         },
         hidden: {
             type: 'boolean'
+        },
+        ext: {
+            additionalProperties: true,
+            type: 'object',
         }
     }
 };
