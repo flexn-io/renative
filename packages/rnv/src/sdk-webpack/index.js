@@ -392,8 +392,9 @@ const runWebDevServer = async (c, enableRemoteDebugger) => {
     let debugVariables = '';
     let lineBreaks = '\n\n\n';
     if (debug || enableRemoteDebugger) {
+        let alreadyRunnning = false;
         try {
-            await commandExists('weinre');
+            await commandExists('chii');
 
             const resolvedDebugIp = debugIp || ip.address();
             logInfo(
@@ -404,20 +405,51 @@ const runWebDevServer = async (c, enableRemoteDebugger) => {
             lineBreaks = '\n';
             const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${c.platform}`);
 
-            const command = `weinre --boundHost -all- --httpPort ${WEINRE_PORT}`;
+            const command = `chii start --port ${WEINRE_PORT}`;
             executeAsync(c, command, { stdio: 'inherit', silent: true });
 
             try {
                 await waitForUrl(`http://${resolvedDebugIp}:${WEINRE_PORT}`);
                 logRaw(`
 
-          Debugger running at: ${debugUrl}`);
-                open(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${c.platform}`);
+        Debugger running at: ${debugUrl}`);
+                open(`http://${resolvedDebugIp}:${WEINRE_PORT}/`);
             } catch (e) {
                 logError(e);
             }
+            alreadyRunnning = true;
         } catch (e) {
-            logWarning(`You are missing weinre. Skipping debug. install via ${chalk().white('npm i -g weinre')}`);
+            logWarning(`You are missing chii. You can install via ${chalk().white('npm i -g chii')}) Trying to use weinre next`);
+        }
+
+        if (!alreadyRunnning) {
+            try {
+                await commandExists('weinre');
+    
+                const resolvedDebugIp = debugIp || ip.address();
+                logInfo(
+                    `Starting a remote debugger build with ip ${
+                        resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
+                );
+                debugVariables += `DEBUG=true DEBUG_IP=${resolvedDebugIp}`;
+                lineBreaks = '\n';
+                const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${c.platform}`);
+    
+                const command = `weinre --boundHost -all- --httpPort ${WEINRE_PORT}`;
+                executeAsync(c, command, { stdio: 'inherit', silent: true });
+    
+                try {
+                    await waitForUrl(`http://${resolvedDebugIp}:${WEINRE_PORT}`);
+                    logRaw(`
+    
+            Debugger running at: ${debugUrl}`);
+                    open(`http://${resolvedDebugIp}:${WEINRE_PORT}/client/#${c.platform}`);
+                } catch (e) {
+                    logError(e);
+                }
+            } catch (e) {
+                logWarning(`You are missing weinre. Skipping debug. install via ${chalk().white('npm i -g weinre')}`);
+            }
         }
     }
 
