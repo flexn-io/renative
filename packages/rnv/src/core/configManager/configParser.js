@@ -1,6 +1,9 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import merge from 'deepmerge';
+// import Ajv from 'ajv';
+// import { SCHEMAS, schemaRoot } from './schema';
+
 import {
     RENATIVE_CONFIG_NAME,
     RENATIVE_CONFIG_PRIVATE_NAME,
@@ -53,6 +56,8 @@ import {
 } from '../projectManager/projectParser';
 import { inquirerPrompt } from '../../cli/prompt';
 import { loadPluginTemplates } from '../pluginManager';
+
+// const ajv = new Ajv({ schemas: SCHEMAS });
 
 const IGNORE_FOLDERS = ['.git'];
 
@@ -231,7 +236,13 @@ export const loadFile = (fileObj, pathObj, key) => {
         fileObj[key] = JSON.parse(fileString);
         pathObj[pKey] = true;
         logDebug(`FILE_EXISTS: ${key}:true size:${_formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
-        return true;
+        // if (validateSchema && fileObj[key]) {
+        //     const valid = ajv.validate(schemaRoot, fileObj[key]);
+        //     if (!valid) {
+        //         logWarning(`Invalid schema in ${pathObj[key]}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}`);
+        //     }
+        // }
+        return fileObj[key];
     } catch (e) {
         logError(`loadFile: ${pathObj[key]} :: ${e}`, true); // crash if there's an error in the config file
         return false;
@@ -469,7 +480,7 @@ export const generateBuildConfig = (c) => {
 const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
     let result = false;
     let extendAppId;
-    if (loadFile(fileObj, pathObj, 'config')) {
+    if (loadFile(fileObj, pathObj, 'config', true)) {
         extendAppId = fileObj.config.extend || extendAppId;
         result = true;
     }

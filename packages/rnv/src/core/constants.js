@@ -719,6 +719,7 @@ SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
 
 export const TASK_RUN = 'run';
 export const TASK_CONFIGURE = 'configure';
+export const TASK_DOCTOR = 'doctor';
 export const TASK_BUILD = 'build';
 export const TASK_INFO = 'info';
 export const TASK_START = 'start';
