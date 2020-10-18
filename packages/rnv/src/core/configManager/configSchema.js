@@ -11,7 +11,19 @@ const engineRnConfig = {
 const engineRnWebConfig = {
     webpackConfig: {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
+        properties: {
+            devServerHost: {
+                type: 'string'
+            },
+            metaTags: {
+                additionalProperties: true,
+                type: 'object',
+            },
+            customScripts: {
+                type: 'array'
+            }
+        }
     },
     devServerHost: {
         type: 'string'
@@ -50,16 +62,34 @@ const engineRnElectronConfig = {
     BrowserWindow: {
         type: 'object',
         additionalProperties: false,
+        description: 'Allows you to configure electron wrapper app window',
+        examples: [
+            {
+                width: 1310,
+                height: 800,
+                webPreferences: {
+                    devTools: true
+                }
+            }
+        ],
         properties: {
             width: {
                 type: 'integer',
+                description: 'Default width of electron app',
             },
             height: {
                 type: 'integer',
+                description: 'Default height of electron app',
             },
             webPreferences: {
                 additionalProperties: true,
                 type: 'object',
+                description: 'Extra web preferences of electron app',
+                examples: [
+                    {
+                        devTools: true
+                    }
+                ]
             }
         }
     }
@@ -186,10 +216,20 @@ const commonProps = {
         type: 'string'
     },
     timestampAssets: {
-        type: 'boolean'
+        type: 'boolean',
+        description: 'If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy',
+        examples: [
+            true,
+            false
+        ]
     },
     versionedAssets: {
-        type: 'boolean'
+        type: 'boolean',
+        description: 'If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy',
+        examples: [
+            true,
+            false
+        ]
     },
     ext: {
         additionalProperties: true,
@@ -276,20 +316,56 @@ const commonIosProps = {
 const commonAndroidProps = {
     'gradle.properties': {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
+        description: 'Overrides values in `gradle.properties` file of generated android based project',
+        examples: [
+            {
+                'gradle.properties': {
+                    'android.debug.obsoleteApi': true,
+                    'debug.keystore': 'debug.keystore',
+                    'org.gradle.daemon': true,
+                    'org.gradle.parallel': true,
+                    'org.gradle.configureondemand': true
+                }
+            }
+        ]
     },
     'build.gradle': {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
+        description: 'Overrides values in `build.gradle` file of generated android based project',
+        examples: [
+            {
+                allprojects: {
+                    repositories: {
+                        'maven { url "https://dl.bintray.com/onfido/maven" }': true
+                    }
+                }
+            }
+        ]
     },
     'app/build.gradle': {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
+        description: 'Overrides values in `app/build.gradle` file of generated android based project',
+        examples: [
+            {
+                apply: [
+                    "plugin: 'io.fabric'"
+                ]
+            }
+        ]
     },
     AndroidManifest: {
         additionalProperties: true,
         type: 'object',
-        description: 'Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism',
+        description: `Allows you to directly manipulate \`AndroidManifest.xml\` via json override mechanism
+
+Injects / Overrides values in AndroidManifest.xml file of generated android based project
+
+> IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
+
+`,
         examples: [
             {
                 children: [
@@ -302,6 +378,18 @@ const commonAndroidProps = {
                                 'android:name': 'com.ahmedadeltito.photoeditor.PhotoEditorActivity'
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                children: [
+                    {
+                        tag: 'application',
+                        'android:name': '.MainApplication',
+                        'android:allowBackup': true,
+                        'android:largeHeap': true,
+                        'android:usesCleartextTraffic': true,
+                        'tools:targetApi': 28
                     }
                 ]
             }
@@ -620,7 +708,10 @@ const pluginIosProps = {
     },
     podNames: {
         type: 'array'
-    }
+    },
+    isStatic: {
+        type: 'boolean'
+    },
 };
 
 const commonPluginPlatformProps = {
@@ -646,10 +737,23 @@ const pluginProps = {
         type: 'string'
     },
     source: {
-        type: 'string'
+        type: 'string',
+        description: 'Will define custom scope for your plugin config to extend from.\n\nNOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}',
+        examples: [
+            'rnv',
+            'myCustomScope'
+        ]
     },
     'no-npm': {
         type: 'boolean'
+    },
+    skipMerge: {
+        type: 'boolean',
+        description: 'Will not attempt to merge with existing plugin configuration (ie. coming form renative pluginTemplates)\n\nNOTE: if set to `true` you need to configure your plugin object fully',
+        examples: [
+            true,
+            false
+        ]
     },
     npm: {
         additionalProperties: true,
@@ -915,52 +1019,68 @@ export const schemaRoot = {
             type: 'object',
             properties: {
                 ios: {
-                    $ref: 'platforms.json#/definitions/ios'
+                    // $ref: 'platforms.json#/definitions/ios'
+                    ...schemaPlatforms.definitions.ios
                 },
                 android: {
-                    $ref: 'platforms.json#/definitions/android'
+                    // $ref: 'platforms.json#/definitions/android'
+                    ...schemaPlatforms.definitions.android
                 },
                 web: {
-                    $ref: 'platforms.json#/definitions/web'
+                    // $ref: 'platforms.json#/definitions/web'
+                    ...schemaPlatforms.definitions.web
                 },
                 chromecast: {
-                    $ref: 'platforms.json#/definitions/chromecast'
+                    // $ref: 'platforms.json#/definitions/chromecast'
+                    ...schemaPlatforms.definitions.chromecast
                 },
                 tvos: {
-                    $ref: 'platforms.json#/definitions/ios'
+                    // $ref: 'platforms.json#/definitions/ios'
+                    ...schemaPlatforms.definitions.ios
                 },
                 androidtv: {
-                    $ref: 'platforms.json#/definitions/android'
+                    // $ref: 'platforms.json#/definitions/android'
+                    ...schemaPlatforms.definitions.android
                 },
                 webos: {
-                    $ref: 'platforms.json#/definitions/webos'
+                    // $ref: 'platforms.json#/definitions/webos'
+                    ...schemaPlatforms.definitions.webos
                 },
                 macos: {
-                    $ref: 'platforms.json#/definitions/macos'
+                    // $ref: 'platforms.json#/definitions/macos'
+                    ...schemaPlatforms.definitions.macos
                 },
                 tizen: {
-                    $ref: 'platforms.json#/definitions/tizen'
+                    // $ref: 'platforms.json#/definitions/tizen'
+                    ...schemaPlatforms.definitions.tizen
                 },
                 windows: {
-                    $ref: 'platforms.json#/definitions/macos'
+                    // $ref: 'platforms.json#/definitions/macos'
+                    ...schemaPlatforms.definitions.macos
                 },
                 firefoxtv: {
-                    $ref: 'platforms.json#/definitions/firefox'
+                    // $ref: 'platforms.json#/definitions/firefox'
+                    ...schemaPlatforms.definitions.firefox
                 },
                 firefoxos: {
-                    $ref: 'platforms.json#/definitions/firefox'
+                    // $ref: 'platforms.json#/definitions/firefox'
+                    ...schemaPlatforms.definitions.firefox
                 },
                 tizenmobile: {
-                    $ref: 'platforms.json#/definitions/tizen'
+                    // $ref: 'platforms.json#/definitions/tizen'
+                    ...schemaPlatforms.definitions.tizen
                 },
                 tizenwatch: {
-                    $ref: 'platforms.json#/definitions/tizen'
+                    // $ref: 'platforms.json#/definitions/tizen'
+                    ...schemaPlatforms.definitions.tizen
                 },
                 androidwear: {
-                    $ref: 'platforms.json#/definitions/android'
+                    // $ref: 'platforms.json#/definitions/android'
+                    ...schemaPlatforms.definitions.android
                 },
                 kaios: {
-                    $ref: 'platforms.json#/definitions/firefox'
+                    // $ref: 'platforms.json#/definitions/firefox'
+                    ...schemaPlatforms.definitions.firefox
                 }
             }
         },
@@ -1180,27 +1300,27 @@ export const schemaRoot = {
             ],
         },
         versionCodeFormat: {
-            description: 'allows you to fine-tune auto generated version codes',
-            examples: [
-                '00.00.00',
-                '00.00.00.00.00'
-            ],
-            docs: {
-                example: `
+            description: `allows you to fine-tune auto generated version codes
+
 default value: 00.00.00
 
 IN: 1.2.3-rc.4+build.56 OUT: 102030456
 
 IN: 1.2.3 OUT: 10203
 
----
+
 
 "versionCodeFormat" : "00.00.00.00.00"
 
 IN: 1.2.3-rc.4+build.56 OUT: 102030456
 
-IN: 1.2.3 OUT: 102030000`
-            },
+IN: 1.2.3 OUT: 102030000
+
+`,
+            examples: [
+                '00.00.00',
+                '00.00.00.00.00'
+            ],
             type: 'string'
         },
         description: {
@@ -1213,58 +1333,164 @@ IN: 1.2.3 OUT: 102030000`
             type: 'boolean'
         },
         enableAnalytics: {
-            type: 'boolean'
+            type: 'boolean',
+            description: 'Enable or disable sending analytics to improve ReNative',
+            examples: [
+                true,
+                false
+            ]
         },
         paths: {
             additionalProperties: false,
             type: 'object',
+            description: 'Define custom paths for RNV to look into',
             properties: {
                 appConfigsDir: {
-                    type: 'string'
-                },
-                entryDir: {
-                    type: 'string'
+                    type: 'string',
+                    description: 'Custom path to appConfigs. defaults to `./appConfigs`',
+                    examples: [
+                        './appConfigs'
+                    ]
                 },
                 platformAssetsDir: {
-                    type: 'string'
+                    type: 'string',
+                    description: 'Custom path to platformAssets folder. defaults to `./platformAssets`',
+                    examples: [
+                        './platformAssets'
+                    ]
                 },
                 platformBuildsDir: {
-                    type: 'string'
-                },
-                projectConfigDir: {
-                    type: 'string'
+                    type: 'string',
+                    description: 'Custom path to platformBuilds folder. defaults to `./platformBuilds`',
+                    examples: [
+                        './platformBuilds'
+                    ]
                 },
                 pluginTemplates: {
                     additionalProperties: true,
-                    type: 'object'
-                }
+                    type: 'object',
+                    description: `
+Allows you to define custom plugin template scopes. default scope for all plugins is \`rnv\`.
+this custom scope can then be used by plugin via \`"source:myCustomScope"\` value
+
+those will allow you to use direct pointer to preconfigured plugin:
+
+\`\`\`
+"plugin-name": "source:myCustomScope"
+\`\`\`
+
+NOTE: by default every plugin you define with scope will also merge any
+files defined in overrides automatically to your project.
+To skip file overrides coming from source plugin you need to detach it from the scope:
+
+\`\`\`
+{
+    "plugins": {
+        "plugin-name": {
+            "source": ""
+        }
+    }
+}
+\`\`\`
+`,
+                    examples: [
+                        {
+                            myCustomScope: {
+                                npm: 'some-renative-template-package',
+                                path: './pluginTemplates'
+                            }
+                        }
+                    ]
+                },
             }
         },
         tasks: {
             additionalProperties: true,
-            type: 'object'
+            type: 'object',
+            description: 'Allows to override specific task within renative toolchain. (currently only `install` supported). this is useful if you want to change specific behaviour of built-in task. ie install task triggers yarn/npm install by default. but that might not be desirable installation trigger',
+            examples: [
+                {
+                    install: {
+                        script: 'yarn bootstrap'
+                    }
+                }
+            ]
         },
         pipes: {
-            type: 'array'
+            type: 'array',
+            description: 'To avoid rnv building `buildHooks/src` every time you can specify which specific pipes should trigger recompile of buildHooks',
+            examples: [
+                [
+                    'configure:after',
+                    'start:before',
+                    'deploy:after',
+                    'export:before',
+                    'export:after'
+                ]
+            ]
         },
         defaults: {
             additionalProperties: false,
             type: 'object',
+            description: 'Default system config for this project',
             properties: {
                 supportedPlatforms: {
-                    type: 'array'
-                },
-                template: {
-                    type: 'string'
+                    type: 'array',
+                    description: 'Array list of all supported platforms in current project',
+                    examples: [
+                        [
+                            'ios',
+                            'android',
+                            'androidtv',
+                            'web',
+                            'macos',
+                            'tvos',
+                            'androidwear'
+                        ]
+                    ]
                 },
                 schemes: {
-                    type: 'object'
+                    type: 'object',
+                    description: 'List of default schemes for each platform. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`',
+                    examples: [
+                        {
+                            ios: 'myCustomScheme',
+                            android: 'otherCustomScheme'
+                        }
+                    ]
                 },
                 targets: {
-                    type: 'object'
+                    type: 'object',
+                    description: 'Override of default targets specific to this project',
+                    examples: [
+                        {
+                            ios: 'iPhone 8',
+                            tvos: 'Apple TV 4K'
+                        }
+                    ]
                 },
                 ports: {
-                    type: 'object'
+                    type: 'object',
+                    description: 'Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts',
+                    examples: [
+                        {
+                            ios: 8182,
+                            android: 8183,
+                            androidtv: 8184,
+                            tvos: 8185,
+                            macos: 8186,
+                            web: 8180,
+                            tizen: 8187,
+                            webos: 8188,
+                            androidwear: 8189,
+                            tizenwatch: 8190,
+                            tizenmobile: 8191,
+                            windows: 8192,
+                            kaios: 8193,
+                            firefoxos: 8194,
+                            firefoxtv: 8114
+                        }
+                    ]
                 }
             }
         },
@@ -1285,7 +1511,11 @@ IN: 1.2.3 OUT: 102030000`
             ]
         },
         currentTemplate: {
-            type: 'string'
+            type: 'string',
+            description: 'Currently active template used in this project. this allows you to re-bootstrap whole project by running `rnv template apply`',
+            examples: [
+                'renative-template-hello-world'
+            ]
         },
         crypto: {
             additionalProperties: false,
@@ -1317,6 +1547,9 @@ IN: 1.2.3 OUT: 102030000`
                             ]
                         }
                     }
+                },
+                optional: {
+                    type: 'boolean'
                 },
             }
         },

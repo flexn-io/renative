@@ -8,41 +8,56 @@ const _printContent = (header, key, keyPath, prop, level) => {
     let exStr = '';
     let examplesStr = '';
     if (prop.type === 'string' || prop.type === 'integer' || prop.type === 'boolean') {
-        exStr = examples.map(v => `"${key}": "${v}"`).join('\n\n');
+        exStr += examples.map(v => `
+\`\`\`json
+${JSON.stringify(JSON.parse(`{"${key}": "${v}"}`), null, 2)}
+\`\`\`
+`).join('\n\n');
     } else if (prop.type === 'object' || prop.type === 'array') {
-        exStr = examples.map(v => `"${key}": ${JSON.stringify(v, null, 2)}`).join('\n\n');
+        exStr += examples.map(v => `
+\`\`\`json
+${JSON.stringify(JSON.parse(`{"${key}": ${JSON.stringify(v, null, 2)}}`), null, 2)}
+\`\`\`
+`).join('\n\n');
     }
+    // try {
+    //     exStr = JSON.stringify(JSON.parse(exStr), null, 2);
+    // } catch (e) {
+    //     // BAH
+    // }
     // else if (prop.type === 'array') {
     //     exStr = examples.map(v => `"${key}": ${JSON.stringify(v, null, 2)}`).join('\n\n');
     // }
     if (exStr.length) {
-        examplesStr = `examples:
+        examplesStr = `**examples**
 
-\`\`\`json
 ${exStr}
-\`\`\`
+
 `;
     }
     return `${level < 2 ? '---\n' : ''}${header} ${level < 1 ? key : keyPath}
 
-type: \`${prop.type}\`
-
-${prop.description || 'TODO description'}
-
-path:
+**path**
 \`renative.json/#/${keyPath}\`
+
+**type** \`${prop.type}\`
+
+${prop.description || ''}
 
 ${examplesStr}
 
 `;
 };
 
+const maxLevelHeader = 2;
+
 const _parseSubProps = (c, obj, level, parentKey) => {
     let pk = parentKey;
     let out = '';
     let header = '##';
 
-    for (let i = 0; i < level; i++) {
+    const l = level <= maxLevelHeader ? level : maxLevelHeader;
+    for (let i = 0; i < l; i++) {
         header += '#';
     }
     let properties = obj?.properties;
