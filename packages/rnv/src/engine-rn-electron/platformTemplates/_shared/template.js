@@ -12,35 +12,21 @@ const DEFAULT_CONFIG = {
     },
 };
 
-const commandExists = require('command-exists');
 const merge = require('deepmerge');
-
 const indent = level => '    '.repeat(level);
-
 const removeBlankLines = string => string.replace(/^\s*\n/gm, '');
-
 const constructMetaTags = tags => Object.keys(tags).map(tag => `<meta name="${tag}" ${tags[tag]} />`);
 
 const htmlTemp = (options) => {
     const config = merge(DEFAULT_CONFIG, options);
     const {
-        docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment, linkTags, debugPort
+        docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment, linkTags, debugPort, remoteDebugScript
     } = config;
 
     const titleTag = `<title>${title}</title>`;
 
     const noScript = '<noscript>You need to enable JavaScript to run this app.</noscript>';
-    let remoteDebugScript;
-
-    if (debug === 'true' && debugIp) {
-        if(commandExists.sync('chii')) {
-            remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target.js"></script>`;
-        } else {
-            remoteDebugScript = `<script src="http://${debugIp}:${debugPort}/target/target-script-min.js#${platform}"></script>`;
-        }
-    }
-
-    let webosScripts = '';
+    let remoteDebugScriptInject = remoteDebugScript ? `<script src="${remoteDebugScript}"></script>` : '';
 
     const errScript = `
         <script>window.onerror = function(err) {
@@ -62,9 +48,8 @@ ${htmlTag}
         ${constructMetaTags(metaTags).join(`\n${indent(2)}`)}
         ${linkTags.join(`\n${indent(2)}`)}
         ${titleTag}
-        ${remoteDebugScript || ''}
+        ${remoteDebugScriptInject}
         ${isDebug ? errScript : ''}
-        ${webosScripts}
     </head>
     <body>
         ${noScript}
