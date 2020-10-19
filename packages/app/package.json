@@ -1,6 +1,6 @@
 {
     "name": "renative-app",
-    "version": "0.31.1",
+    "version": "0.31.2",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "homepage": "https://github.com/pavjacko/renative#readme",
     "bugs": {
@@ -31,8 +31,8 @@
         "e2e-ios": "yarn e2e-ios:build && yarn e2e-ios:run",
         "e2e-ios:build": "detox build -c ios.sim.debug",
         "e2e-ios:run": "detox test -c ios.sim.debug",
-        "e2e-web-next": "rnv start -p web --ci --mono & wait-on http://0.0.0.0:8180 && cypress run",
         "e2e-web": "rnv start -p web -e engine-rn-web --ci --mono & wait-on http://0.0.0.0:8180 && cypress run",
+        "e2e-web-next": "rnv start -p web --ci --mono & wait-on http://0.0.0.0:8180 && cypress run",
         "e2e-web:open": "cypress open",
         "run:apps": "ttab rnv run -p web -e next --ci && ttab rnv run -p web --ci && ttab rnv run -p ios -t 'iPhone 8' --ci && ttab rnv run -p android -t Pixel_2_API_28 --ci && ttab rnv run -p androidtv -t Android_TV_1080p_API_28 --ci && ttab rnv run -p tvos --ci && ttab rnv run -p macos --ci && ttab rnv run -p tizen -t T-samsung-5.5-x86 --ci && ttab rnv run -p webos --ci && ttab rnv run -p androidwear -t Android_Wear_Round_API_28 --ci && ttab rnv run -p tizenwatch -t W-5.5-circle-x86 --ci && ttab rnv run -p tizenmobile -t M-5.5-x86 --ci",
         "sanity": "rnv template apply --template renative-template-hello-world -c helloworld --ci && yarn run:apps",

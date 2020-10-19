@@ -61,7 +61,7 @@ Options:
 
 `-P`, `--port` - custom Port
 
-`-D`, `--debug` - enable remote debugger
+`-D`, `--debug` - enable or disable remote debugger.
 
 `--debugIp` - (optional) overwrite the ip to which the remote debugger will connect
 

@@ -112,9 +112,9 @@ Following Config reference applies to all \`renative.json\` files, including:
 
     Object.keys(rootSchema.properties).sort().forEach((k1) => {
         const prop = rootSchema.properties[k1];
-        output += `${_printContent('##', k1, k1, prop, 1)}
+        output += `${_printContent('##', k1, k1, prop, 1, {})}
 
-${_parseSubProps(c, prop, 1, k1)}
+${_parseSubProps(c, prop, 1, k1, {})}
 
 
 `;
