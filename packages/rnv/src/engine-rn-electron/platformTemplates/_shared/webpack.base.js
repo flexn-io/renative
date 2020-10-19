@@ -21,7 +21,7 @@ function generateConfig(config) {
 
     const rules = {};
     rules.babel = {
-        test: /\.js$/,
+        test: /\.(tsx|ts|js|mjs|jsx)$/,
         include: config.modulePaths,
         use: {
             loader: 'babel-loader',
