@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { getScaledValue } from '../Api';
@@ -16,9 +18,6 @@ const styles = StyleSheet.create({
 });
 
 const Button = ({
-    focused,
-    stealFocus,
-    to,
     title,
     iconFont,
     iconName,
@@ -26,7 +25,6 @@ const Button = ({
     iconSize,
     style,
     textStyle,
-    selectedStyle,
     testID,
     onPress,
     activeOpacity

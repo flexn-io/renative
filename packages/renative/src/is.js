@@ -60,19 +60,17 @@ export const isPlatformFirefoxtv = platform === FIREFOX_TV;
 export const isPlatformKaios = platform === KAIOS;
 
 // ENGINE
-export const isEngineWeb =
-    platform === WEB ||
-    platform === TIZEN ||
-    platform === WEBOS ||
-    platform === MACOS ||
-    platform === TIZEN_MOBILE ||
-    platform === TIZEN_WATCH;
-export const isEngineNative =
-    platform === ANDROID ||
-    platform === ANDROID_TV ||
-    platform === ANDROID_WEAR ||
-    platform === IOS ||
-    platform === TVOS;
+export const isEngineWeb = platform === WEB
+    || platform === TIZEN
+    || platform === WEBOS
+    || platform === MACOS
+    || platform === TIZEN_MOBILE
+    || platform === TIZEN_WATCH;
+export const isEngineNative = platform === ANDROID
+    || platform === ANDROID_TV
+    || platform === ANDROID_WEAR
+    || platform === IOS
+    || platform === TVOS;
 
 // FACTOR
 export const isFactorBrowser = factor === 'browser';

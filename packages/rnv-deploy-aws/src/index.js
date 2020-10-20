@@ -1,35 +1,22 @@
 /* eslint-disable global-require, import/no-dynamic-require */
-import _path from 'path';
+import path from 'path';
 
-const { CHROMECAST, WEB } = require(_path.default.join(this.rnvPath, 'dist/core/constants')).default;
 const { DOCKERHUB_USER, DOCKERHUB_PASS } = process.env;
-
 
 class Aws {
     setRNVPath(pth) {
-        this.rnvPath = pth;
+        this.RNV = require(path.join(pth, 'dist'));
     }
 
     async doDeploy() {
-        // rnv paths
-        const config = require(_path.default.join(this.rnvPath, 'dist/core/config')).default;
+        const { Config, Constants, Prompt, Logger, Exec } = this.RNV;
+        const { CHROMECAST, WEB } = Constants;
+        const { inquirerPrompt } = Prompt;
+        const { executeAsync } = Exec;
+        const { logTask } = Logger;
+        const c = Config.getConfig();
+        const { runtime, files, platform } = c;
 
-        const { inquirerPrompt } = require(_path.default.join(
-            this.rnvPath,
-            'dist/core/systemManager/prompt'
-        ));
-
-        const { logTask } = require(_path.default.join(
-            this.rnvPath,
-            'dist/core/systemManager/logger'
-        ));
-
-        const { executeAsync } = require(_path.default.join(
-            this.rnvPath,
-            'dist/core/systemManager/exec'
-        ));
-
-        const { runtime, files } = config.getConfig();
 
         await inquirerPrompt({
             name: 'client',
@@ -41,8 +28,6 @@ class Aws {
             type: 'list',
             choices: [{ name: 'staging' }, { name: 'production' }]
         });
-
-        const { platform } = config.getConfig();
 
         switch (platform) {
             case CHROMECAST:

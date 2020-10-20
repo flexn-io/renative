@@ -1,4 +1,4 @@
-import { FileUtils, Constants } from 'rnv';
+import { FileUtils } from 'rnv';
 import path from 'path';
 import fs from 'fs';
 

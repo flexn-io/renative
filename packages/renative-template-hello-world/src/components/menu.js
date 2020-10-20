@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { Icon, Button, getScaledValue, useNavigate, useOpenDrawer, StyleSheet } from 'renative';

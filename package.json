@@ -66,7 +66,7 @@
         "link:rnv": "cd packages/rnv && (yarn unlink || true) && yarn link",
         "link:rnv-builder": "cd packages/rnv-builder && (yarn unlink || true) && yarn link",
         "postinstall": "lerna link --force-local && npx jetify",
-        "lint": "npx eslint ./packages/rnv ./packages/rnv-deploy-docker",
+        "lint": "npx eslint ./packages",
         "test:rnv": "lerna run test:local --stream --scope rnv",
         "test:rnv:unit": "lerna run test --stream --scope rnv",
         "ut": "lerna run test --stream --scope rnv",
