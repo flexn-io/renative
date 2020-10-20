@@ -141,8 +141,27 @@ const _execute = (c, command, opts = {}) => {
                 spinner.succeed(`Executing: ${logMessage}`);
                 return true;
             }
+
             let errMessage = parseErrorMessage(err.all, maxErrorLength);
-            errMessage = errMessage || err.stack || err.stderr || err.message;
+
+            if (!errMessage) {
+                errMessage = '';
+            } else {
+                errMessage += '\n\n';
+            }
+
+            if (err.message) {
+                errMessage += `${err.message}\n\n`;
+            }
+
+            if (err.stderr) {
+                errMessage += `${err.stderr}\n\n`;
+            }
+
+            if (err.stack) {
+                errMessage += `${err.stack}\n\n`;
+            }
+
             errMessage = replaceOverridesInString(
                 errMessage,
                 privateParams,
