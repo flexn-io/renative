@@ -1,11 +1,13 @@
 {
     "name": "@rnv/deploy-docker",
-    "version": "0.2.4",
+    "version": "0.3.0",
     "description": "Gives RNV the possibility to deploy web apps as a Docker image published to dockerhub",
     "main": "dist/index.js",
     "scripts": {
-        "build": "babel index.js --out-dir dist",
+        "build": "babel src/index.js --out-dir dist",
         "build:clean": "rm -rf dist || true",
+        "build:dev": "yarn build --retain-lines",
+        "watch": "nodemon --watch src --exec yarn build:dev",
         "test": "echo \"Error: no test specified\" && exit 1",
         "prepublishOnly": "yarn build"
     },
@@ -28,7 +30,7 @@
     },
     "homepage": "https://github.com/pavjacko/renative#readme",
     "peerDependencies": {
-        "rnv": "latest"
+        "rnv": "~0.31.2"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",

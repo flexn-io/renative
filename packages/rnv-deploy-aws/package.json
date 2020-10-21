@@ -1,10 +1,12 @@
 {
     "name": "@rnv/deploy-aws",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Gives RNV the possibility to deploy artifacts to an AWS hosting stack",
     "main": "dist/index.js",
     "scripts": {
-        "build": "babel index.js --out-dir dist",
+        "build": "babel src/index.js --out-dir dist",
+        "build:dev": "yarn build --retain-lines",
+        "watch": "nodemon --watch src --exec yarn build:dev",
         "test": "echo \"Error: no test specified\" && exit 1",
         "prepublishOnly": "npm run build"
     },

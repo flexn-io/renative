@@ -1,9 +1,9 @@
 import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop,
     isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker, StyleSheet } from 'renative';
-import '../platformAssets/runtime/fontManager';
+import '../platformAssets/runtime/fontManager'; // eslint-disable-line import/extensions, import/no-unresolved
 
-export CONFIG from '../platformAssets/renative.runtime.json';
-export ICON_LOGO from '../platformAssets/runtime/logo.png';
+export CONFIG from '../platformAssets/renative.runtime.json'; // eslint-disable-line import/no-unresolved
+export ICON_LOGO from '../platformAssets/runtime/logo.png'; // eslint-disable-line import/no-unresolved
 
 if (isFactorBrowser) registerServiceWorker();
 
@@ -14,7 +14,7 @@ export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isEngineWeb && isFactorTv;
 
 // Disable yellow warnings UI
-console.disableYellowBox = true;
+console.disableYellowBox = true; // eslint-disable-line no-console
 
 const theme = {
     color1: '#222222',

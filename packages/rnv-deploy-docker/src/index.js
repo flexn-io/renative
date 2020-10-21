@@ -4,21 +4,20 @@ import chalk from 'chalk';
 
 class Docker {
     setRNVPath(pth) {
-        this.rnvPath = pth;
+        this.RNV = require(path.join(pth, 'dist'));
     }
 
     async buildImage() {
-        const { getConfigProp } = require(path.join(this.rnvPath, 'dist/core/common'));
-        const { logTask, logInfo } = require(path.join(this.rnvPath, 'dist/core/systemManager/logger'));
-        const config = require(path.join(this.rnvPath, 'dist/core/config')).default;
-        const { executeAsync } = require(path.join(this.rnvPath, 'dist/core/systemManager/exec'));
-        const { copyFolderRecursiveSync, cleanFolder, writeCleanFile } = require(path.join(this.rnvPath, 'dist/core/systemManager/fileutils'));
-
-        const { paths, runtime, platform, files, program } = config.getConfig();
-        const projectBuilds = paths.project.builds.dir;
-        const projectBuildWeb = path.join(projectBuilds, `${runtime.appId}_${platform}`);
-        const dockerDestination = path.join(projectBuildWeb, 'export', 'docker');
-        const buildDir = program.engine === 'next' ? 'out' : 'public';
+        const { Common, Logger, Exec, Config, FileUtils } = this.RNV;
+        const { getConfigProp, getPlatformBuildDir } = Common;
+        const { logTask, logInfo } = Logger;
+        const { executeAsync } = Exec;
+        const { copyFolderRecursiveSync, cleanFolder, writeCleanFile } = FileUtils;
+        const c = Config.getConfig();
+        const { runtime, platform, files } = c;
+        const outputDir = 'output';
+        const projectBuildWeb = path.join(getPlatformBuildDir(c), outputDir);
+        const dockerDestination = path.join(getPlatformBuildDir(c), 'export', 'docker');
 
         const dockerFile = path.join(__dirname, '../Dockerfile');
         const nginxConfFile = path.join(__dirname, '../nginx/default.conf');
@@ -26,7 +25,7 @@ class Docker {
         const dockerComposeFile = path.join(__dirname, '../docker-compose.yml');
 
         await cleanFolder(path.join(dockerDestination));
-        copyFolderRecursiveSync(path.join(projectBuildWeb, buildDir), dockerDestination);
+        copyFolderRecursiveSync(projectBuildWeb, dockerDestination);
 
         const copiedDockerFile = path.join(dockerDestination, 'Dockerfile');
         const copiedNginxConfFile = path.join(dockerDestination, 'nginx.default.conf');
@@ -38,7 +37,7 @@ class Docker {
 
         // save the docker files
         logTask('docker:Dockerfile:create');
-        const deployOptions = getConfigProp(config.getConfig(), platform, 'deploy');
+        const deployOptions = getConfigProp(c, platform, 'deploy');
         const healthCheck = deployOptions?.docker?.healthcheckProbe;
 
         let additionalCommands = '';
@@ -48,7 +47,7 @@ class Docker {
         }
 
         writeCleanFile(dockerFile, copiedDockerFile, [
-            { pattern: '{{BUILD_FOLDER}}', override: buildDir },
+            { pattern: '{{BUILD_FOLDER}}', override: outputDir },
             { pattern: '{{DOCKER_ADDITIONAL_COMMANDS}}', override: additionalCommands }
         ]);
 
@@ -65,32 +64,35 @@ class Docker {
     }
 
     async saveImage() {
-        const { getConfigProp } = require(path.join(this.rnvPath, 'dist/core/common'));
-        const config = require(path.join(this.rnvPath, 'dist/core/config')).default;
-        const { runtime, files, paths, platform, program: { scheme = 'debug' } } = config.getConfig();
-        const { logTask, logInfo, logSuccess } = require(path.join(this.rnvPath, 'dist/core/systemManager/logger'));
-        const { executeAsync, commandExistsSync } = require(path.join(this.rnvPath, 'dist/core/systemManager/exec'));
+        const { Common, Logger, Exec, Config } = this.RNV;
+        const { getConfigProp, getPlatformBuildDir } = Common;
+        const { logTask, logSuccess } = Logger;
+        const { executeAsync, commandExistsSync } = Exec;
+        const c = Config.getConfig();
+        const { runtime, files, platform, program: { scheme = 'debug' } } = c;
+
         const imageName = runtime.appId.toLowerCase();
         const appVersion = files.project.package.version;
 
-        const projectBuilds = paths.project.builds.dir;
-        const projectBuildWeb = path.join(projectBuilds, `${runtime.appId}_${platform}`);
-        const dockerDestination = path.join(projectBuildWeb, 'export', 'docker');
+        const dockerDestination = path.join(getPlatformBuildDir(c), 'export', 'docker');
         const dockerSaveFile = path.join(dockerDestination, `${imageName}_${appVersion}.tar`);
 
         logTask('docker:Dockerfile:build');
         await executeAsync(`docker save -o ${dockerSaveFile} ${imageName}:${appVersion}`);
-        logSuccess(`${imageName}_${appVersion}.tar file has been saved in ${chalk.white(dockerDestination)}. You can import it on another machine by running ${chalk.white(`'docker load -i ${imageName}_${appVersion}.tar'`)}`);
+        logSuccess(`${imageName}_${appVersion}.tar file has been saved in ${
+            chalk.white(dockerDestination)}. You can import it on another machine by running ${
+            chalk.white(`'docker load -i ${imageName}_${appVersion}.tar'`)}`);
         logSuccess(`You can also test it locally by running the following command: ${chalk.white(`'docker run -d --rm -p 8081:80 -p 8443:443 ${imageName}:${appVersion}'`)} and then opening ${chalk.white('http://localhost:8081')}`);
 
-        const deployOptions = getConfigProp(config.getConfig(), platform, 'deploy');
+        const deployOptions = getConfigProp(c, platform, 'deploy');
         const zipImage = deployOptions?.docker?.zipImage;
 
         if (zipImage) {
             logTask('docker:zipImage');
             if (commandExistsSync('zip')) {
                 const pth = `${dockerDestination}${path.sep}`;
-                await executeAsync(`zip -j ${pth}web_${imageName}_${scheme}_${appVersion}.zip ${pth}${imageName}_${appVersion}.tar ${pth}docker-compose.yml`);
+                await executeAsync(`zip -j ${pth}web_${imageName}_${scheme}_${
+                    appVersion}.zip ${pth}${imageName}_${appVersion}.tar ${pth}docker-compose.yml`);
             }
         }
     }
@@ -101,13 +103,12 @@ class Docker {
     }
 
     async doDeploy() {
-    // rnv paths
-        const config = require(path.join(this.rnvPath, 'dist/core/config')).default;
-        const { inquirerPrompt } = require(path.join(this.rnvPath, 'dist/core/systemManager/prompt'));
-        const { logInfo, logTask } = require(path.join(this.rnvPath, 'dist/core/systemManager/logger'));
-        const { executeAsync } = require(path.join(this.rnvPath, 'dist/core/systemManager/exec'));
-
-        const { runtime, files } = config.getConfig();
+        const { Logger, Exec, Config, Prompt } = this.RNV;
+        const { logTask, logInfo } = Logger;
+        const { executeAsync } = Exec;
+        const { inquirerPrompt } = Prompt;
+        const c = Config.getConfig();
+        const { runtime, files } = c;
 
         await this.buildImage();
 
@@ -145,7 +146,8 @@ class Docker {
         const appVersion = files.project.package.version;
 
         logTask('docker:Dockerfile:login');
-        await executeAsync(`echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USER}" --password-stdin`, { interactive: true });
+        await executeAsync(`echo "${DOCKERHUB_PASS}" | docker login -u "${
+            DOCKERHUB_USER}" --password-stdin`, { interactive: true });
         logTask('docker:Dockerfile:push');
         // tagging for versioning
         await executeAsync(`docker tag ${imageName}:${appVersion} ${imageTag}:${appVersion}`);

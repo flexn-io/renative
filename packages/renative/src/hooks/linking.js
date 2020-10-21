@@ -9,14 +9,13 @@ import {
 export function useOpenURL() {
     function openURL(url) {
         if (
-            isPlatformIos ||
-            isPlatformAndroid ||
-            isPlatformMacos ||
-            isPlatformWeb
+            isPlatformIos
+            || isPlatformAndroid
+            || isPlatformMacos
+            || isPlatformWeb
         ) {
-            Linking.openURL(url).catch(err =>
-                console.error('An error occurred', err)
-            );
+            // eslint-disable-next-line no-console
+            Linking.openURL(url).catch(err => console.error('An error occurred', err));
         } else {
             // Not supported
         }

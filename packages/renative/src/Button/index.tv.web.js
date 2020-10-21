@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-// import { Icon, getScaledValue } from 'renative';
 import { Link } from '@reach/router';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 
@@ -21,7 +22,6 @@ const styles = StyleSheet.create({
 
 const Button = ({
     focused,
-    stealFocus,
     to,
     title,
     iconFont,
@@ -30,7 +30,6 @@ const Button = ({
     iconSize,
     style,
     textStyle,
-    selectedStyle,
     testID,
     activeOpacity
 }) => {

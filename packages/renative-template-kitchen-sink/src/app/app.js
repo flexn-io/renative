@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react';
 import { View, Text, ScrollView, TextInput, Image, Button, ActivityIndicator,
     ImageBackground, ProgressViewIOS, Switch, DatePickerIOS } from 'react-native';

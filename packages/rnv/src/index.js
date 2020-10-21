@@ -1,30 +1,31 @@
-import Common, { getConfigProp } from './core/common';
-import { isSystemWin } from './core/utils';
-import Logger, { logComplete, logError, configureLogger, logInitialize } from './core/systemManager/logger';
-import { createRnvConfig } from './core/configManager/configParser';
-import CLI from './cli';
+import * as Common from './core/common';
+import * as CoreUtils from './core/utils';
+import * as Logger from './core/systemManager/logger';
+import * as Prompt from './cli/prompt';
+import * as ConfigParser from './core/configManager/configParser';
 import * as Constants from './core/constants';
-import Exec from './core/systemManager/exec';
-import FileUtils, { configureFilesystem } from './core/systemManager/fileutils';
-import Doctor from './core/systemManager/doctor';
-import PluginTools from './core/pluginManager';
-import SetupTools from './core/setupManager';
-import Config from './core/configManager/config';
-import { doResolve, doResolvePath } from './core/resolve';
+import * as Exec from './core/systemManager/exec';
+import * as FileUtils from './core/systemManager/fileutils';
+import * as Doctor from './core/systemManager/doctor';
+import * as PluginTools from './core/pluginManager';
+import * as SetupTools from './core/setupManager';
+import * as Resolver from './core/resolve';
+import * as EngineManager from './core/engineManager';
+import * as SchemaParser from './core/schemaManager/schemaParser';
 import Analytics from './core/systemManager/analytics';
-import EngineManager from './core/engineManager';
-import SchemaParser from './core/schemaManager/schemaParser';
+import Config from './core/configManager/config';
+import CLI from './cli';
 
 import 'source-map-support/register';
 
 Analytics.initialize();
 
 export const initializeBuilder = async (cmd, subCmd, process, program) => {
-    configureFilesystem(getConfigProp, doResolve, isSystemWin);
-    const c = createRnvConfig(program, process, cmd, subCmd);
+    FileUtils.configureFilesystem(Resolver.getConfigProp, Resolver.doResolve, CoreUtils.isSystemWin);
+    const c = ConfigParser.createRnvConfig(program, process, cmd, subCmd);
 
-    configureLogger(c, Analytics);
-    logInitialize();
+    Logger.configureLogger(c, Analytics);
+    Logger.logInitialize();
 
     return c;
 };
@@ -33,9 +34,10 @@ const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)
         .then(c => Config.initializeConfig(c))
         .then(c => CLI(c))
-        .then(() => logComplete(!Config.getConfig().runtime.keepSessionActive))
-        .catch(e => logError(e, true));
+        .then(() => Logger.logComplete(!Config.getConfig().runtime.keepSessionActive))
+        .catch(e => Logger.logError(e, true));
 };
+
 
 export {
     Constants,
@@ -43,15 +45,19 @@ export {
     Exec,
     FileUtils,
     Doctor,
+    Config,
     PluginTools,
     SetupTools,
+    Prompt,
     Logger,
+    Resolver,
     EngineManager,
     SchemaParser,
     run,
-    CLI,
-    doResolve,
-    doResolvePath
+    CLI
 };
+
+export const { doResolve } = Resolver;
+export const { doResolvePath } = Resolver;
 
 export default { run, Config };

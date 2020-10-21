@@ -4,26 +4,8 @@ import fs from 'fs';
 const git = require('simple-git')();
 const { version, currentRelease } = require('../../../../package.json');
 
-// export const generateAllChangelogs = c => new Promise((resolve, reject) => {
-//       git.tags([], (e, s) => {
-//           s.all.forEach((tag, i) => {
-//             if(s.all[i + 1]) {
-//               git.log(tag, s.all[i + 1], (e, log) => {
-//                   log.all.forEach(v => {
-//                       const ss = v.message;
-//                       logs += `- ${ss}\n`;
-//                   });
-//               })
-//             }
-//
-//           });
-//
-//
-//       })
-// })
 
-export const generateChangelog = c => new Promise((resolve, reject) => {
-    console.log('CHANGELOG');
+export const generateChangelog = async (c) => {
     const d = new Date();
     let logs = '';
 
@@ -33,7 +15,7 @@ export const generateChangelog = c => new Promise((resolve, reject) => {
         //     s.all.pop();
         //     latestTag = s.all.pop();
         // }
-        git.log(latestTag, 'HEAD', (e, log) => {
+        git.log(latestTag, 'HEAD', (_e, log) => {
             // log.all.pop();
             // log.all.pop();
             log.all.forEach((v) => {
@@ -56,7 +38,7 @@ ${logs}
 - none
 
 `;
-            console.log(changelog.replace(/\*\*/g, '*'));
+            // console.log(changelog.replace(/\*\*/g, '*'));
             const changelogPath = path.join(c.paths.project.dir, '../../docs/changelog', `${version}.md`);
             if (!fs.existsSync(changelogPath)) {
                 fs.writeFileSync(
@@ -64,13 +46,13 @@ ${logs}
                     changelog
                 );
             } else {
-                console.log(`Path ${changelogPath} exists. SKIPPING`);
+                // console.log(`Path ${changelogPath} exists. SKIPPING`);
             }
 
-            resolve();
+            return true;
         });
     });
-});
+};
 
 const getVersionNumber = (vrs) => {
     const verArr = vrs.split('-');
@@ -131,7 +113,8 @@ sidebar_label: Changelog
 };
 
 export const updateCurrentLiveChangelog = async (c, chlogVal) => {
-    const chlogLivePath = path.join(c.paths.project.dir, `../../website/versioned_docs/version-${currentRelease}/changelog.md`);
+    const chlogLivePath = path.join(c.paths.project.dir,
+        `../../website/versioned_docs/version-${currentRelease}/changelog.md`);
 
     let output = `---
 id: version-${currentRelease}-changelog
