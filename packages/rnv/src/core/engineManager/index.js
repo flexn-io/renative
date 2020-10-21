@@ -310,7 +310,7 @@ export const findSuitableTask = async (c) => {
         return findSuitableTask(c);
     }
 
-    if (!c.platform) {
+    if (!c.platform || c.platform === true) {
         const supportedPlatforms = {};
         suitableEngines.forEach((engine) => {
             engine.getTask(task).platforms.forEach((plat) => {
