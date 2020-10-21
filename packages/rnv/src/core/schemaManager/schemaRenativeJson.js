@@ -1561,7 +1561,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
         crypto: {
             additionalProperties: false,
             type: 'object',
-            description: 'This prop enables automatic encryp and decrypt of sensitive information in your project',
+            description: 'This prop enables automatic encrypt and decrypt of sensitive information in your project',
             properties: {
                 encrypt: {
                     additionalProperties: false,

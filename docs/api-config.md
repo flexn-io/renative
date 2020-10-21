@@ -1122,7 +1122,7 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-This prop enables automatic encryp and decrypt of sensitive information in your project
+This prop enables automatic encrypt and decrypt of sensitive information in your project
 
 
 
