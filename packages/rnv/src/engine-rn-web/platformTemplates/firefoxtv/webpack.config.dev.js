@@ -25,4 +25,5 @@ module.exports = {
         extensions: C.extensions,
         alias: C.aliases,
     },
+    ...config.extend || {}
 };

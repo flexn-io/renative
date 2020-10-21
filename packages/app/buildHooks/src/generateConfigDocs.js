@@ -108,7 +108,7 @@ Following Config reference applies to all \`renative.json\` files, including:
 
 `;
 
-    const rootSchema = SchemaParser.getRootSchema();
+    const rootSchema = SchemaParser.getRenativeJsonSchema();
 
     Object.keys(rootSchema.properties).sort().forEach((k1) => {
         const prop = rootSchema.properties[k1];

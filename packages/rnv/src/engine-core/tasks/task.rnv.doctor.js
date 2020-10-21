@@ -5,7 +5,7 @@ import { executeTask } from '../../core/engineManager';
 import { configureRuntimeDefaults } from '../../core/configManager/configParser';
 import { readObjectSync, fsExistsSync } from '../../core/systemManager/fileutils';
 import {
-    validateSchema,
+    validateRenativeJsonSchema,
     // validateRuntimeObjectSchema
 } from '../../core/schemaManager/schemaParser';
 
@@ -45,7 +45,7 @@ export const taskRnvDoctor = async (c, parentTask, originTask) => {
         if (fsExistsSync(cPath)) {
             const cObj = readObjectSync(cPath);
 
-            const [valid, ajv] = validateSchema(cObj);
+            const [valid, ajv] = validateRenativeJsonSchema(cObj);
             if (!valid) {
                 hasErrors = true;
                 // console.log('ERROR', ajv.errors);

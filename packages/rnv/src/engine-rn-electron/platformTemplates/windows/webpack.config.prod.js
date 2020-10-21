@@ -28,5 +28,6 @@ module.exports = {
         fs: 'commonjs fs',
         path: 'commonjs path',
     },
-    target: 'electron-renderer'
+    target: 'electron-renderer',
+    ...config.extend || {}
 };

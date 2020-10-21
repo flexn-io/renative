@@ -236,7 +236,7 @@ export const loadFile = (fileObj, pathObj, key) => {
         fileObj[key] = JSON.parse(fileString);
         pathObj[pKey] = true;
         logDebug(`FILE_EXISTS: ${key}:true size:${_formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
-        // if (validateSchema && fileObj[key]) {
+        // if (validateRuntimeObjectSchema && fileObj[key]) {
         //     const valid = ajv.validate(schemaRoot, fileObj[key]);
         //     if (!valid) {
         //         logWarning(`Invalid schema in ${pathObj[key]}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}`);

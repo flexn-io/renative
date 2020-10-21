@@ -1,14 +1,23 @@
 
 
 // ==================================================
-// ENGINE PROPS
+//  PROPS
 // ==================================================
 
-const engineRnConfig = {
-
+const propExt = {
+    ext: {
+        additionalProperties: true,
+        type: 'object',
+        description: 'Object ysed to extend your renative with custom props. This allows renative json schema to be validated',
+        examples: [
+            {
+                myCustomRenativeProp: 'foo'
+            }
+        ]
+    }
 };
 
-const engineRnWebConfig = {
+const propWebpackConfig = {
     webpackConfig: {
         additionalProperties: true,
         type: 'object',
@@ -22,19 +31,51 @@ const engineRnWebConfig = {
             },
             customScripts: {
                 type: 'array'
+            },
+            extend: {
+                additionalProperties: true,
+                type: 'object',
+                description: 'Allows you to directly extend/override webpack config of your current platform',
+                examples: [
+                    {
+                        devtool: 'source-map'
+                    },
+                    {
+                        module: {
+                            rules: [
+                                {
+                                    test: /\.js$/,
+                                    use: ['source-map-loader'],
+                                    enforce: 'pre'
+                                }
+                            ]
+                        }
+                    }
+                ]
             }
         }
     },
+};
+
+
+// ==================================================
+// ENGINE PROPS
+// ==================================================
+
+const engineRnConfig = {
+
+};
+
+
+const engineRnWebConfig = {
+    ...propWebpackConfig,
     devServerHost: {
         type: 'string'
     }
 };
 
 const engineRnElectronConfig = {
-    webpackConfig: {
-        additionalProperties: true,
-        type: 'object'
-    },
+    ...propWebpackConfig,
     electronConfig: {
         additionalProperties: true,
         type: 'object',
@@ -231,10 +272,7 @@ const commonProps = {
             false
         ]
     },
-    ext: {
-        additionalProperties: true,
-        type: 'object'
-    }
+    ...propExt
 };
 
 const platformCommonProps = {
@@ -652,7 +690,8 @@ const platformChromecastProps = {
 // BUILD SCHEME PROPS
 // ==================================================
 
-const buildSchemeProps = {
+
+const generateBuildSchemeProps = obj => ({
     buildSchemes: {
         additionalProperties: {
             type: 'object',
@@ -669,19 +708,13 @@ const buildSchemeProps = {
                     ]
                 },
                 ...platformCommonProps,
-                ...platformAndroidProps,
-                ...platformIosProps,
-                ...platformWebProps,
-                ...platformWebosProps,
-                ...platformTizenProps,
-                ...platformFirefoxProps,
-                ...platformMacosProps,
-                ...platformChromecastProps
+                ...obj,
             }
         },
         type: 'object'
     },
-};
+});
+
 
 // ==================================================
 // PLUGIN PROPS
@@ -894,7 +927,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...buildSchemeProps,
+                ...generateBuildSchemeProps(platformAndroidProps),
                 ...platformAndroidProps
             }
         },
@@ -903,7 +936,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...buildSchemeProps,
+                ...generateBuildSchemeProps(platformIosProps),
                 ...platformIosProps
             }
         },
@@ -912,7 +945,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...buildSchemeProps,
+                ...generateBuildSchemeProps(platformIosProps),
                 ...platformIosProps
             }
         },
@@ -921,7 +954,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...buildSchemeProps,
+                ...generateBuildSchemeProps(platformTizenProps),
                 ...platformTizenProps
             }
         },
@@ -930,7 +963,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...buildSchemeProps,
+                ...generateBuildSchemeProps(platformWebosProps),
                 ...platformWebosProps
             }
         },
@@ -939,7 +972,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...buildSchemeProps,
+                ...generateBuildSchemeProps(platformWebProps),
                 ...platformWebProps
             }
         },
@@ -948,7 +981,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...buildSchemeProps,
+                ...generateBuildSchemeProps(platformChromecastProps),
                 ...platformChromecastProps
             }
         },
@@ -957,7 +990,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...buildSchemeProps,
+                ...generateBuildSchemeProps(platformFirefoxProps),
                 ...platformFirefoxProps,
             }
         },
@@ -966,7 +999,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...buildSchemeProps,
+                ...generateBuildSchemeProps(platformMacosProps),
                 ...platformMacosProps
             }
         },
@@ -975,7 +1008,7 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...buildSchemeProps,
+                ...generateBuildSchemeProps(platformWindowsProps),
                 ...platformWindowsProps
             }
         }
@@ -1010,7 +1043,7 @@ export const schemaRoot = {
             ],
             properties: {
                 ...commonProps,
-                ...buildSchemeProps
+                ...generateBuildSchemeProps({}),
             }
         },
         ...commonRuntimeProps,
@@ -1327,9 +1360,17 @@ IN: 1.2.3 OUT: 102030000
             type: 'string'
         },
         id: {
-            type: 'string'
+            type: 'string',
+            description: 'ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name of the folder',
+            examples: [
+                'helloworld',
+                'someapp'
+            ]
         },
         isWrapper: {
+            type: 'boolean'
+        },
+        isMonorepo: {
             type: 'boolean'
         },
         enableAnalytics: {
@@ -1572,12 +1613,14 @@ To skip file overrides coming from source plugin you need to detach it from the 
             ]
         },
         hidden: {
-            type: 'boolean'
+            type: 'boolean',
+            description: 'If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`',
+            examples: [
+                true,
+                false
+            ]
         },
-        ext: {
-            additionalProperties: true,
-            type: 'object',
-        }
+        ...propExt
     }
 };
 

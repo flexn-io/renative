@@ -39,7 +39,6 @@ Define custom paths for RNV to look into
 ```json
 {
     "paths": {
-        "entryDir": "./",
         "platformAssetsDir": "./platformAssets",
         "platformBuildsDir": "./platformBuilds"
     }

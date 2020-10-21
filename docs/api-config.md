@@ -124,404 +124,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### common.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/common.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/common.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### common.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/common.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### common.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/common.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/common.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/common.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/common.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/common.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/common.buildSchemes.[object].appleId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/common.buildSchemes.[object].applyPlugin`
-
-**type** `array`
-
-
-
-
-
-
-
-
 #### common.buildSchemes.[object].author
 
 **path**
@@ -568,36 +170,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### common.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/common.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### common.buildSchemes.[object].bundleAssets
 
 **path**
@@ -618,66 +190,6 @@ Overrides values in `build.gradle` file of generated android based project
 `renative.json/#/common.buildSchemes.[object].bundleIsDev`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/common.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/common.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/common.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
 
 
 
@@ -714,20 +226,6 @@ Special property which tells Xcode how to build your project
 
 
 
-#### common.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/common.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### common.buildSchemes.[object].description
 
 **path**
@@ -745,88 +243,6 @@ General description of your app. This prop will be injected to actual projects w
   "description": "This app does awesome things"
 }
 ```
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].devServerHost
-
-**path**
-`renative.json/#/common.buildSchemes.[object].devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/common.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/common.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/common.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
 
 
 
@@ -862,54 +278,12 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### common.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/common.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### common.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/common.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/common.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/common.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -957,132 +331,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### common.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/common.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/common.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/common.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/common.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/common.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/common.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/common.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/common.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/common.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### common.buildSchemes.[object].ext
 
 **path**
@@ -1090,49 +338,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/common.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/common.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -1177,20 +391,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/common.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/common.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -1325,159 +525,10 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### common.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/common.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/common.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### common.buildSchemes.[object].license
 
 **path**
 `renative.json/#/common.buildSchemes.[object].license`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/common.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/common.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/common.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### common.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/common.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/common.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].package
-
-**path**
-`renative.json/#/common.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/common.buildSchemes.[object].pagesDir`
 
 **type** `string`
 
@@ -1496,76 +547,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### common.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/common.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/common.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/common.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/common.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/common.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -1598,188 +579,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### common.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/common.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/common.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/common.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### common.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/common.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/common.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/common.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/common.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/common.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/common.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/common.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/common.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -1844,20 +649,6 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
-#### common.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/common.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### common.buildSchemes.[object].versionedAssets
 
 **path**
@@ -1883,76 +674,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
   "versionedAssets": "false"
 }
 ```
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].webpackConfig
-
-**path**
-`renative.json/#/common.buildSchemes.[object].webpackConfig`
-
-**type** `object`
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].webpackConfig.customScripts
-
-**path**
-`renative.json/#/common.buildSchemes.[object].webpackConfig.customScripts`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].webpackConfig.devServerHost
-
-**path**
-`renative.json/#/common.buildSchemes.[object].webpackConfig.devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].webpackConfig.metaTags
-
-**path**
-`renative.json/#/common.buildSchemes.[object].webpackConfig.metaTags`
-
-**type** `object`
-
-
-
-
-
-
-
-
-
-#### common.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/common.buildSchemes.[object].xcodeproj`
-
-**type** `object`
-
 
 
 
@@ -2034,6 +755,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -2762,6 +1495,18 @@ Enable or disable sending analytics to improve ReNative
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -2796,6 +1541,24 @@ Enable or disable sending analytics to improve ReNative
 
 **type** `boolean`
 
+If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`
+
+**examples**
+
+
+```json
+{
+  "hidden": "true"
+}
+```
+
+
+
+```json
+{
+  "hidden": "false"
+}
+```
 
 
 
@@ -2813,6 +1576,24 @@ Enable or disable sending analytics to improve ReNative
 
 **type** `string`
 
+ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name of the folder
+
+**examples**
+
+
+```json
+{
+  "id": "helloworld"
+}
+```
+
+
+
+```json
+{
+  "id": "someapp"
+}
+```
 
 
 
@@ -2829,6 +1610,23 @@ Enable or disable sending analytics to improve ReNative
 `renative.json/#/integrations`
 
 **type** `object`
+
+
+
+
+
+
+
+
+
+
+---
+## isMonorepo
+
+**path**
+`renative.json/#/isMonorepo`
+
+**type** `boolean`
 
 
 
@@ -3466,104 +2264,6 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
-#### platforms.android.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.android.buildSchemes.[object].aab
 
 **path**
@@ -3599,188 +2299,6 @@ Overrides values in `app/build.gradle` file of generated android based project
   }
 }
 ```
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].appleId`
-
-**type** `string`
-
 
 
 
@@ -3906,52 +2424,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.android.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
 #### platforms.android.buildSchemes.[object].compileSdkVersion
 
 **path**
@@ -3994,20 +2466,6 @@ Special property which tells Xcode how to build your project
 
 
 
-#### platforms.android.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.android.buildSchemes.[object].description
 
 **path**
@@ -4023,60 +2481,6 @@ General description of your app. This prop will be injected to actual projects w
 ```json
 {
   "description": "This app does awesome things"
-}
-```
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].devServerHost
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
 }
 ```
 
@@ -4142,38 +2546,10 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.android.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.android.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.android.buildSchemes.[object].entryFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].environment`
 
 **type** `string`
 
@@ -4237,132 +2613,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.android.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.android.buildSchemes.[object].ext
 
 **path**
@@ -4370,20 +2620,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
 
 
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -4675,99 +2923,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.android.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].pagesDir`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.android.buildSchemes.[object].permissions
 
 **path**
@@ -4776,76 +2931,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -4871,34 +2956,6 @@ This object will be automatically injected into `./platfromAssets/renative.runti
   }
 }
 ```
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].sdk`
-
-**type** `string`
-
 
 
 
@@ -4962,104 +3019,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.android.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.android.buildSchemes.[object].targetSdkVersion
 
 **path**
 `renative.json/#/platforms.android.buildSchemes.[object].targetSdkVersion`
 
 **type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -5163,76 +3128,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
   "versionedAssets": "false"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].webpackConfig
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].webpackConfig`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].webpackConfig.customScripts
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].webpackConfig.customScripts`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].webpackConfig.devServerHost
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].webpackConfig.devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].webpackConfig.metaTags
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].webpackConfig.metaTags`
-
-**type** `object`
-
-
-
-
-
-
-
-
-
-#### platforms.android.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].xcodeproj`
-
-**type** `object`
-
 
 
 
@@ -5451,6 +3346,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -6238,104 +4145,6 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
-#### platforms.androidtv.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.androidtv.buildSchemes.[object].aab
 
 **path**
@@ -6371,188 +4180,6 @@ Overrides values in `app/build.gradle` file of generated android based project
   }
 }
 ```
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].appleId`
-
-**type** `string`
-
 
 
 
@@ -6678,52 +4305,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.androidtv.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
 #### platforms.androidtv.buildSchemes.[object].compileSdkVersion
 
 **path**
@@ -6766,20 +4347,6 @@ Special property which tells Xcode how to build your project
 
 
 
-#### platforms.androidtv.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.androidtv.buildSchemes.[object].description
 
 **path**
@@ -6795,60 +4362,6 @@ General description of your app. This prop will be injected to actual projects w
 ```json
 {
   "description": "This app does awesome things"
-}
-```
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].devServerHost
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
 }
 ```
 
@@ -6914,38 +4427,10 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.androidtv.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.androidtv.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.androidtv.buildSchemes.[object].entryFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].environment`
 
 **type** `string`
 
@@ -7009,132 +4494,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.androidtv.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.androidtv.buildSchemes.[object].ext
 
 **path**
@@ -7142,20 +4501,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
 
 
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -7447,99 +4804,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.androidtv.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].pagesDir`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.androidtv.buildSchemes.[object].permissions
 
 **path**
@@ -7548,76 +4812,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -7643,34 +4837,6 @@ This object will be automatically injected into `./platfromAssets/renative.runti
   }
 }
 ```
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].sdk`
-
-**type** `string`
-
 
 
 
@@ -7734,104 +4900,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.androidtv.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.androidtv.buildSchemes.[object].targetSdkVersion
 
 **path**
 `renative.json/#/platforms.androidtv.buildSchemes.[object].targetSdkVersion`
 
 **type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -7935,76 +5009,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
   "versionedAssets": "false"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].webpackConfig
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].webpackConfig`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].webpackConfig.customScripts
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].webpackConfig.customScripts`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].webpackConfig.devServerHost
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].webpackConfig.devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].webpackConfig.metaTags
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].webpackConfig.metaTags`
-
-**type** `object`
-
-
-
-
-
-
-
-
-
-#### platforms.androidtv.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].xcodeproj`
-
-**type** `object`
-
 
 
 
@@ -8223,6 +5227,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -9010,104 +6026,6 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
-#### platforms.androidwear.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.androidwear.buildSchemes.[object].aab
 
 **path**
@@ -9143,188 +6061,6 @@ Overrides values in `app/build.gradle` file of generated android based project
   }
 }
 ```
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].appleId`
-
-**type** `string`
-
 
 
 
@@ -9450,52 +6186,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.androidwear.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
 #### platforms.androidwear.buildSchemes.[object].compileSdkVersion
 
 **path**
@@ -9538,20 +6228,6 @@ Special property which tells Xcode how to build your project
 
 
 
-#### platforms.androidwear.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.androidwear.buildSchemes.[object].description
 
 **path**
@@ -9567,60 +6243,6 @@ General description of your app. This prop will be injected to actual projects w
 ```json
 {
   "description": "This app does awesome things"
-}
-```
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].devServerHost
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
 }
 ```
 
@@ -9686,38 +6308,10 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.androidwear.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.androidwear.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.androidwear.buildSchemes.[object].entryFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].environment`
 
 **type** `string`
 
@@ -9781,132 +6375,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.androidwear.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.androidwear.buildSchemes.[object].ext
 
 **path**
@@ -9914,20 +6382,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
 
 
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -10219,99 +6685,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.androidwear.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].pagesDir`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.androidwear.buildSchemes.[object].permissions
 
 **path**
@@ -10320,76 +6693,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -10415,34 +6718,6 @@ This object will be automatically injected into `./platfromAssets/renative.runti
   }
 }
 ```
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].sdk`
-
-**type** `string`
-
 
 
 
@@ -10506,104 +6781,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.androidwear.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.androidwear.buildSchemes.[object].targetSdkVersion
 
 **path**
 `renative.json/#/platforms.androidwear.buildSchemes.[object].targetSdkVersion`
 
 **type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -10707,76 +6890,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
   "versionedAssets": "false"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].webpackConfig
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].webpackConfig`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].webpackConfig.customScripts
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].webpackConfig.customScripts`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].webpackConfig.devServerHost
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].webpackConfig.devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].webpackConfig.metaTags
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].webpackConfig.metaTags`
-
-**type** `object`
-
-
-
-
-
-
-
-
-
-#### platforms.androidwear.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].xcodeproj`
-
-**type** `object`
-
 
 
 
@@ -10995,6 +7108,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -11572,404 +7697,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.chromecast.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].appleId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].applyPlugin`
-
-**type** `array`
-
-
-
-
-
-
-
-
 #### platforms.chromecast.buildSchemes.[object].author
 
 **path**
@@ -12016,36 +7743,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.chromecast.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.chromecast.buildSchemes.[object].bundleAssets
 
 **path**
@@ -12074,66 +7771,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.chromecast.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
 #### platforms.chromecast.buildSchemes.[object].deploy
 
 **path**
@@ -12154,20 +7791,6 @@ Special property which tells Xcode how to build your project
 
 **type** `string`
 
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
 
 
 
@@ -12214,74 +7837,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.chromecast.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.chromecast.buildSchemes.[object].enabled
 
 **path**
@@ -12310,54 +7865,12 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.chromecast.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.chromecast.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.chromecast.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -12405,132 +7918,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.chromecast.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.chromecast.buildSchemes.[object].ext
 
 **path**
@@ -12538,49 +7925,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -12625,20 +7978,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.chromecast.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -12773,159 +8112,10 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.chromecast.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.chromecast.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.chromecast.buildSchemes.[object].license`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].pagesDir`
 
 **type** `string`
 
@@ -12944,76 +8134,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -13046,188 +8166,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.chromecast.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.chromecast.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.chromecast.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -13285,20 +8229,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
 
 
 
@@ -13379,6 +8309,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.chromecast.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.chromecast.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.chromecast.buildSchemes.[object].webpackConfig.metaTags
 
 **path**
@@ -13386,20 +8362,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-
-
-
-
-
-
-
-
-#### platforms.chromecast.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].xcodeproj`
-
-**type** `object`
 
 
 
@@ -13577,6 +8539,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -13949,6 +8923,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.chromecast.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.chromecast.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.chromecast.webpackConfig.metaTags
 
 **path**
@@ -14038,404 +9058,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.firefoxos.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].appleId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].applyPlugin`
-
-**type** `array`
-
-
-
-
-
-
-
-
 #### platforms.firefoxos.buildSchemes.[object].author
 
 **path**
@@ -14482,36 +9104,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.firefoxos.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.firefoxos.buildSchemes.[object].bundleAssets
 
 **path**
@@ -14540,66 +9132,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.firefoxos.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
 #### platforms.firefoxos.buildSchemes.[object].deploy
 
 **path**
@@ -14620,20 +9152,6 @@ Special property which tells Xcode how to build your project
 
 **type** `string`
 
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
 
 
 
@@ -14680,74 +9198,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.firefoxos.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.firefoxos.buildSchemes.[object].enabled
 
 **path**
@@ -14776,54 +9226,12 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.firefoxos.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.firefoxos.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.firefoxos.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -14871,132 +9279,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.firefoxos.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.firefoxos.buildSchemes.[object].ext
 
 **path**
@@ -15004,49 +9286,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -15091,20 +9339,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.firefoxos.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -15239,159 +9473,10 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.firefoxos.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.firefoxos.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.firefoxos.buildSchemes.[object].license`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].pagesDir`
 
 **type** `string`
 
@@ -15410,76 +9495,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -15512,188 +9527,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.firefoxos.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.firefoxos.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.firefoxos.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -15751,20 +9590,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
 
 
 
@@ -15845,6 +9670,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.firefoxos.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.firefoxos.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.firefoxos.buildSchemes.[object].webpackConfig.metaTags
 
 **path**
@@ -15852,20 +9723,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-
-
-
-
-
-
-
-
-#### platforms.firefoxos.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].xcodeproj`
-
-**type** `object`
 
 
 
@@ -16043,6 +9900,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -16415,6 +10284,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.firefoxos.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.firefoxos.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.firefoxos.webpackConfig.metaTags
 
 **path**
@@ -16504,404 +10419,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.firefoxtv.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].appleId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].applyPlugin`
-
-**type** `array`
-
-
-
-
-
-
-
-
 #### platforms.firefoxtv.buildSchemes.[object].author
 
 **path**
@@ -16948,36 +10465,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.firefoxtv.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.firefoxtv.buildSchemes.[object].bundleAssets
 
 **path**
@@ -17006,66 +10493,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.firefoxtv.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
 #### platforms.firefoxtv.buildSchemes.[object].deploy
 
 **path**
@@ -17086,20 +10513,6 @@ Special property which tells Xcode how to build your project
 
 **type** `string`
 
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
 
 
 
@@ -17146,74 +10559,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.firefoxtv.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.firefoxtv.buildSchemes.[object].enabled
 
 **path**
@@ -17242,54 +10587,12 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.firefoxtv.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.firefoxtv.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.firefoxtv.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -17337,132 +10640,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.firefoxtv.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.firefoxtv.buildSchemes.[object].ext
 
 **path**
@@ -17470,49 +10647,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -17557,20 +10700,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.firefoxtv.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -17705,159 +10834,10 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.firefoxtv.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.firefoxtv.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.firefoxtv.buildSchemes.[object].license`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].pagesDir`
 
 **type** `string`
 
@@ -17876,76 +10856,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -17978,188 +10888,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.firefoxtv.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.firefoxtv.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.firefoxtv.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -18217,20 +10951,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
 
 
 
@@ -18311,6 +11031,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.firefoxtv.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.firefoxtv.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.firefoxtv.buildSchemes.[object].webpackConfig.metaTags
 
 **path**
@@ -18318,20 +11084,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-
-
-
-
-
-
-
-
-#### platforms.firefoxtv.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].xcodeproj`
-
-**type** `object`
 
 
 
@@ -18509,6 +11261,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -18881,6 +11645,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.firefoxtv.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.firefoxtv.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.firefoxtv.webpackConfig.metaTags
 
 **path**
@@ -19152,152 +11962,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.ios.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
 #### platforms.ios.buildSchemes.[object].Podfile
 
 **path**
@@ -19305,48 +11969,6 @@ Default width of electron app
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
 
 
 
@@ -19508,40 +12130,12 @@ Overrides values in `app/build.gradle` file of generated android based project
 
 
 
-#### platforms.ios.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.ios.buildSchemes.[object].appleId
 
 **path**
 `renative.json/#/platforms.ios.buildSchemes.[object].appleId`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].applyPlugin`
-
-**type** `array`
 
 
 
@@ -19596,36 +12190,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.ios.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.ios.buildSchemes.[object].bundleAssets
 
 **path**
@@ -19646,20 +12210,6 @@ Overrides values in `build.gradle` file of generated android based project
 `renative.json/#/platforms.ios.buildSchemes.[object].bundleIsDev`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].certificateProfile`
-
-**type** `string`
 
 
 
@@ -19693,20 +12243,6 @@ Special property which tells Xcode how to build your project
   "codeSignIdentity": "iPhone Distribution"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
-
 
 
 
@@ -19780,88 +12316,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.ios.buildSchemes.[object].devServerHost
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.ios.buildSchemes.[object].enabled
 
 **path**
@@ -19910,34 +12364,6 @@ Allows you to configure electron app as per https://www.electron.build/
 `renative.json/#/platforms.ios.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -20118,6 +12544,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -20132,38 +12570,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `string`
 
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
-  }
-}
-```
 
 
 
@@ -20205,20 +12611,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.ios.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -20353,68 +12745,12 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.ios.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.ios.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.ios.buildSchemes.[object].license`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
 
 
 
@@ -20480,34 +12816,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 **type** `array`
 
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].pagesDir`
-
-**type** `string`
 
 
 
@@ -20654,54 +12962,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.ios.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.ios.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.ios.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].storePassword`
-
-**type** `string`
 
 
 
@@ -20753,20 +13019,6 @@ This object will be automatically injected into `./platfromAssets/renative.runti
   }
 }
 ```
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
 
 
 
@@ -20872,20 +13124,6 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
-#### platforms.ios.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.ios.buildSchemes.[object].versionedAssets
 
 **path**
@@ -20911,62 +13149,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
   "versionedAssets": "false"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].webpackConfig
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].webpackConfig`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].webpackConfig.customScripts
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].webpackConfig.customScripts`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].webpackConfig.devServerHost
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].webpackConfig.devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.ios.buildSchemes.[object].webpackConfig.metaTags
-
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].webpackConfig.metaTags`
-
-**type** `object`
-
-
 
 
 
@@ -21329,6 +13511,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -22017,404 +14211,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.kaios.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].appleId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].applyPlugin`
-
-**type** `array`
-
-
-
-
-
-
-
-
 #### platforms.kaios.buildSchemes.[object].author
 
 **path**
@@ -22461,36 +14257,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.kaios.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.kaios.buildSchemes.[object].bundleAssets
 
 **path**
@@ -22519,66 +14285,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.kaios.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
 #### platforms.kaios.buildSchemes.[object].deploy
 
 **path**
@@ -22599,20 +14305,6 @@ Special property which tells Xcode how to build your project
 
 **type** `string`
 
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
 
 
 
@@ -22659,74 +14351,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.kaios.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.kaios.buildSchemes.[object].enabled
 
 **path**
@@ -22755,54 +14379,12 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.kaios.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.kaios.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.kaios.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -22850,132 +14432,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.kaios.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.kaios.buildSchemes.[object].ext
 
 **path**
@@ -22983,49 +14439,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -23070,20 +14492,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.kaios.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -23218,159 +14626,10 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.kaios.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.kaios.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.kaios.buildSchemes.[object].license`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].pagesDir`
 
 **type** `string`
 
@@ -23389,76 +14648,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -23491,188 +14680,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.kaios.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.kaios.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.kaios.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -23730,20 +14743,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
 
 
 
@@ -23824,6 +14823,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.kaios.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.kaios.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.kaios.buildSchemes.[object].webpackConfig.metaTags
 
 **path**
@@ -23831,20 +14876,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-
-
-
-
-
-
-
-
-#### platforms.kaios.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].xcodeproj`
-
-**type** `object`
 
 
 
@@ -24022,6 +15053,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -24394,6 +15437,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.kaios.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.kaios.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.kaios.webpackConfig.metaTags
 
 **path**
@@ -24581,68 +15670,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.macos.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.macos.buildSchemes.[object].BrowserWindow
 
 **path**
@@ -24727,250 +15754,12 @@ Default width of electron app
 
 
 
-#### platforms.macos.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.macos.buildSchemes.[object].appleId
 
 **path**
 `renative.json/#/platforms.macos.buildSchemes.[object].appleId`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].applyPlugin`
-
-**type** `array`
 
 
 
@@ -25025,36 +15814,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.macos.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.macos.buildSchemes.[object].bundleAssets
 
 **path**
@@ -25075,66 +15834,6 @@ Overrides values in `build.gradle` file of generated android based project
 `renative.json/#/platforms.macos.buildSchemes.[object].bundleIsDev`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
 
 
 
@@ -25171,20 +15870,6 @@ Special property which tells Xcode how to build your project
 
 
 
-#### platforms.macos.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.macos.buildSchemes.[object].description
 
 **path**
@@ -25202,20 +15887,6 @@ General description of your app. This prop will be injected to actual projects w
   "description": "This app does awesome things"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].devServerHost
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].devServerHost`
-
-**type** `string`
-
 
 
 
@@ -25263,34 +15934,6 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.macos.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.macos.buildSchemes.[object].enabled
 
 **path**
@@ -25319,54 +15962,12 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.macos.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.macos.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.macos.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -25414,132 +16015,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.macos.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.macos.buildSchemes.[object].ext
 
 **path**
@@ -25547,49 +16022,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -25634,20 +16075,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.macos.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -25782,159 +16209,10 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.macos.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.macos.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.macos.buildSchemes.[object].license`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].pagesDir`
 
 **type** `string`
 
@@ -25953,76 +16231,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -26055,188 +16263,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.macos.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.macos.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.macos.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -26294,20 +16326,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
 
 
 
@@ -26388,6 +16406,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.macos.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.macos.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.macos.buildSchemes.[object].webpackConfig.metaTags
 
 **path**
@@ -26395,20 +16459,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-
-
-
-
-
-
-
-
-#### platforms.macos.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].xcodeproj`
-
-**type** `object`
 
 
 
@@ -26612,6 +16662,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -26956,6 +17018,94 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.macos.webpackConfig.customScripts
+
+**path**
+`renative.json/#/platforms.macos.webpackConfig.customScripts`
+
+**type** `array`
+
+
+
+
+
+
+
+
+#### platforms.macos.webpackConfig.devServerHost
+
+**path**
+`renative.json/#/platforms.macos.webpackConfig.devServerHost`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.macos.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.macos.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
+#### platforms.macos.webpackConfig.metaTags
+
+**path**
+`renative.json/#/platforms.macos.webpackConfig.metaTags`
+
+**type** `object`
+
+
+
+
+
+
+
+
 
 
 ---
@@ -27045,396 +17195,12 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.tizen.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.tizen.buildSchemes.[object].appName
 
 **path**
 `renative.json/#/platforms.tizen.buildSchemes.[object].appName`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appleId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].applyPlugin`
-
-**type** `array`
 
 
 
@@ -27489,36 +17255,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.tizen.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.tizen.buildSchemes.[object].bundleAssets
 
 **path**
@@ -27561,52 +17297,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.tizen.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
 #### platforms.tizen.buildSchemes.[object].deploy
 
 **path**
@@ -27627,20 +17317,6 @@ Special property which tells Xcode how to build your project
 
 **type** `string`
 
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
 
 
 
@@ -27687,74 +17363,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.tizen.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.tizen.buildSchemes.[object].enabled
 
 **path**
@@ -27783,54 +17391,12 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.tizen.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.tizen.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.tizen.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -27878,132 +17444,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.tizen.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.tizen.buildSchemes.[object].ext
 
 **path**
@@ -28011,49 +17451,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -28098,20 +17504,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.tizen.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -28246,133 +17638,12 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.tizen.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tizen.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.tizen.buildSchemes.[object].license`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
 
 
 
@@ -28395,20 +17666,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.tizen.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].pagesDir`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tizen.buildSchemes.[object].permissions
 
 **path**
@@ -28417,76 +17674,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -28519,188 +17706,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.tizen.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tizen.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.tizen.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -28758,20 +17769,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
 
 
 
@@ -28852,6 +17849,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.tizen.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.tizen.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.tizen.buildSchemes.[object].webpackConfig.metaTags
 
 **path**
@@ -28859,20 +17902,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-
-
-
-
-
-
-
-
-#### platforms.tizen.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].xcodeproj`
-
-**type** `object`
 
 
 
@@ -29064,6 +18093,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -29450,6 +18491,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.tizen.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.tizen.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.tizen.webpackConfig.metaTags
 
 **path**
@@ -29553,396 +18640,12 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.tizenmobile.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.tizenmobile.buildSchemes.[object].appName
 
 **path**
 `renative.json/#/platforms.tizenmobile.buildSchemes.[object].appName`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appleId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].applyPlugin`
-
-**type** `array`
 
 
 
@@ -29997,36 +18700,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.tizenmobile.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.tizenmobile.buildSchemes.[object].bundleAssets
 
 **path**
@@ -30069,52 +18742,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.tizenmobile.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
 #### platforms.tizenmobile.buildSchemes.[object].deploy
 
 **path**
@@ -30135,20 +18762,6 @@ Special property which tells Xcode how to build your project
 
 **type** `string`
 
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
 
 
 
@@ -30195,74 +18808,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.tizenmobile.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.tizenmobile.buildSchemes.[object].enabled
 
 **path**
@@ -30291,54 +18836,12 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.tizenmobile.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.tizenmobile.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.tizenmobile.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -30386,132 +18889,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.tizenmobile.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.tizenmobile.buildSchemes.[object].ext
 
 **path**
@@ -30519,49 +18896,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -30606,20 +18949,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.tizenmobile.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -30754,133 +19083,12 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.tizenmobile.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tizenmobile.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.tizenmobile.buildSchemes.[object].license`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
 
 
 
@@ -30903,20 +19111,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.tizenmobile.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].pagesDir`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tizenmobile.buildSchemes.[object].permissions
 
 **path**
@@ -30925,76 +19119,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -31027,188 +19151,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.tizenmobile.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tizenmobile.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.tizenmobile.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -31266,20 +19214,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
 
 
 
@@ -31360,6 +19294,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.tizenmobile.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.tizenmobile.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.tizenmobile.buildSchemes.[object].webpackConfig.metaTags
 
 **path**
@@ -31367,20 +19347,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-
-
-
-
-
-
-
-
-#### platforms.tizenmobile.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].xcodeproj`
-
-**type** `object`
 
 
 
@@ -31572,6 +19538,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -31958,6 +19936,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.tizenmobile.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.tizenmobile.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.tizenmobile.webpackConfig.metaTags
 
 **path**
@@ -32061,396 +20085,12 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.tizenwatch.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.tizenwatch.buildSchemes.[object].appName
 
 **path**
 `renative.json/#/platforms.tizenwatch.buildSchemes.[object].appName`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appleId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].applyPlugin`
-
-**type** `array`
 
 
 
@@ -32505,36 +20145,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.tizenwatch.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.tizenwatch.buildSchemes.[object].bundleAssets
 
 **path**
@@ -32577,52 +20187,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.tizenwatch.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
 #### platforms.tizenwatch.buildSchemes.[object].deploy
 
 **path**
@@ -32643,20 +20207,6 @@ Special property which tells Xcode how to build your project
 
 **type** `string`
 
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
 
 
 
@@ -32703,74 +20253,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.tizenwatch.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.tizenwatch.buildSchemes.[object].enabled
 
 **path**
@@ -32799,54 +20281,12 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.tizenwatch.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.tizenwatch.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.tizenwatch.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -32894,132 +20334,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.tizenwatch.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.tizenwatch.buildSchemes.[object].ext
 
 **path**
@@ -33027,49 +20341,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -33114,20 +20394,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.tizenwatch.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -33262,133 +20528,12 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.tizenwatch.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tizenwatch.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.tizenwatch.buildSchemes.[object].license`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
 
 
 
@@ -33411,20 +20556,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.tizenwatch.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].pagesDir`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tizenwatch.buildSchemes.[object].permissions
 
 **path**
@@ -33433,76 +20564,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -33535,188 +20596,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.tizenwatch.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tizenwatch.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.tizenwatch.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -33774,20 +20659,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
 
 
 
@@ -33868,6 +20739,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.tizenwatch.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.tizenwatch.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.tizenwatch.buildSchemes.[object].webpackConfig.metaTags
 
 **path**
@@ -33875,20 +20792,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-
-
-
-
-
-
-
-
-#### platforms.tizenwatch.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].xcodeproj`
-
-**type** `object`
 
 
 
@@ -34080,6 +20983,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -34466,6 +21381,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.tizenwatch.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.tizenwatch.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.tizenwatch.webpackConfig.metaTags
 
 **path**
@@ -34737,152 +21698,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.tvos.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
 #### platforms.tvos.buildSchemes.[object].Podfile
 
 **path**
@@ -34890,48 +21705,6 @@ Default width of electron app
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
 
 
 
@@ -35093,40 +21866,12 @@ Overrides values in `app/build.gradle` file of generated android based project
 
 
 
-#### platforms.tvos.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tvos.buildSchemes.[object].appleId
 
 **path**
 `renative.json/#/platforms.tvos.buildSchemes.[object].appleId`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].applyPlugin`
-
-**type** `array`
 
 
 
@@ -35181,36 +21926,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.tvos.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.tvos.buildSchemes.[object].bundleAssets
 
 **path**
@@ -35231,20 +21946,6 @@ Overrides values in `build.gradle` file of generated android based project
 `renative.json/#/platforms.tvos.buildSchemes.[object].bundleIsDev`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].certificateProfile`
-
-**type** `string`
 
 
 
@@ -35278,20 +21979,6 @@ Special property which tells Xcode how to build your project
   "codeSignIdentity": "iPhone Distribution"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
-
 
 
 
@@ -35365,88 +22052,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.tvos.buildSchemes.[object].devServerHost
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.tvos.buildSchemes.[object].enabled
 
 **path**
@@ -35495,34 +22100,6 @@ Allows you to configure electron app as per https://www.electron.build/
 `renative.json/#/platforms.tvos.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -35703,6 +22280,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -35717,38 +22306,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `string`
 
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
-  }
-}
-```
 
 
 
@@ -35790,20 +22347,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.tvos.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -35938,68 +22481,12 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.tvos.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tvos.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.tvos.buildSchemes.[object].license`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
 
 
 
@@ -36065,34 +22552,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 **type** `array`
 
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].pagesDir`
-
-**type** `string`
 
 
 
@@ -36239,54 +22698,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.tvos.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.tvos.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.tvos.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].storePassword`
-
-**type** `string`
 
 
 
@@ -36338,20 +22755,6 @@ This object will be automatically injected into `./platfromAssets/renative.runti
   }
 }
 ```
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
 
 
 
@@ -36457,20 +22860,6 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
-#### platforms.tvos.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.tvos.buildSchemes.[object].versionedAssets
 
 **path**
@@ -36496,62 +22885,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
   "versionedAssets": "false"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].webpackConfig
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].webpackConfig`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].webpackConfig.customScripts
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].webpackConfig.customScripts`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].webpackConfig.devServerHost
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].webpackConfig.devServerHost`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.tvos.buildSchemes.[object].webpackConfig.metaTags
-
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].webpackConfig.metaTags`
-
-**type** `object`
-
-
 
 
 
@@ -36914,6 +23247,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -37602,404 +23947,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.web.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].appleId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].applyPlugin`
-
-**type** `array`
-
-
-
-
-
-
-
-
 #### platforms.web.buildSchemes.[object].author
 
 **path**
@@ -38046,36 +23993,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.web.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.web.buildSchemes.[object].bundleAssets
 
 **path**
@@ -38104,66 +24021,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.web.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
 #### platforms.web.buildSchemes.[object].deploy
 
 **path**
@@ -38184,20 +24041,6 @@ Special property which tells Xcode how to build your project
 
 **type** `string`
 
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
 
 
 
@@ -38244,74 +24087,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.web.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.web.buildSchemes.[object].enabled
 
 **path**
@@ -38340,20 +24115,6 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.web.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.web.buildSchemes.[object].entryFile
 
 **path**
@@ -38374,20 +24135,6 @@ Allows you to configure electron app as per https://www.electron.build/
 `renative.json/#/platforms.web.buildSchemes.[object].environment`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -38435,132 +24182,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.web.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.web.buildSchemes.[object].ext
 
 **path**
@@ -38568,49 +24189,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -38655,20 +24242,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.web.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -38803,145 +24376,10 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.web.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.web.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.web.buildSchemes.[object].license`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].package`
 
 **type** `string`
 
@@ -38980,76 +24418,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.web.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.web.buildSchemes.[object].runtime
 
 **path**
@@ -39076,188 +24444,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.web.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.web.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.web.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -39315,20 +24507,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
 
 
 
@@ -39409,6 +24587,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.web.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.web.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.web.buildSchemes.[object].webpackConfig.metaTags
 
 **path**
@@ -39416,20 +24640,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-
-
-
-
-
-
-
-
-#### platforms.web.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].xcodeproj`
-
-**type** `object`
 
 
 
@@ -39621,6 +24831,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -40007,6 +25229,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.web.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.web.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.web.webpackConfig.metaTags
 
 **path**
@@ -40096,404 +25364,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.webos.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].BrowserWindow
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].BrowserWindow`
-
-**type** `object`
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].BrowserWindow.height
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].BrowserWindow.height`
-
-**type** `integer`
-
-Default height of electron app
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].BrowserWindow.webPreferences
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].BrowserWindow.webPreferences`
-
-**type** `object`
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].BrowserWindow.width
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].BrowserWindow.width`
-
-**type** `integer`
-
-Default width of electron app
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].appleId
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].appleId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].applyPlugin`
-
-**type** `array`
-
-
-
-
-
-
-
-
 #### platforms.webos.buildSchemes.[object].author
 
 **path**
@@ -40540,36 +25410,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.webos.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.webos.buildSchemes.[object].bundleAssets
 
 **path**
@@ -40598,66 +25438,6 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
-#### platforms.webos.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
 #### platforms.webos.buildSchemes.[object].deploy
 
 **path**
@@ -40678,20 +25458,6 @@ Special property which tells Xcode how to build your project
 
 **type** `string`
 
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
 
 
 
@@ -40738,74 +25504,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.webos.buildSchemes.[object].electronConfig
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].electronConfig`
-
-**type** `object`
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.webos.buildSchemes.[object].enabled
 
 **path**
@@ -40834,54 +25532,12 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.webos.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.webos.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.webos.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -40929,132 +25585,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.webos.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.webos.buildSchemes.[object].ext
 
 **path**
@@ -41062,49 +25592,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -41149,20 +25645,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.webos.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -41297,159 +25779,10 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.webos.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.webos.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.webos.buildSchemes.[object].license`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].pagesDir`
 
 **type** `string`
 
@@ -41468,76 +25801,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -41570,188 +25833,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.webos.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.webos.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.webos.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -41809,20 +25896,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
 
 
 
@@ -41903,6 +25976,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.webos.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.webos.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.webos.buildSchemes.[object].webpackConfig.metaTags
 
 **path**
@@ -41910,20 +26029,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-
-
-
-
-
-
-
-
-#### platforms.webos.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].xcodeproj`
-
-**type** `object`
 
 
 
@@ -42101,6 +26206,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -42473,6 +26590,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.webos.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.webos.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.webos.webpackConfig.metaTags
 
 **path**
@@ -42660,68 +26823,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.windows.buildSchemes.[object].AndroidManifest
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].AndroidManifest`
-
-**type** `object`
-
-Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
-
-Injects / Overrides values in AndroidManifest.xml file of generated android based project
-
-> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
-
-
-
-**examples**
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "children": [
-          {
-            "tag": "activity",
-            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
-
-```json
-{
-  "AndroidManifest": {
-    "children": [
-      {
-        "tag": "application",
-        "android:name": ".MainApplication",
-        "android:allowBackup": true,
-        "android:largeHeap": true,
-        "android:usesCleartextTraffic": true,
-        "tools:targetApi": 28
-      }
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.windows.buildSchemes.[object].BrowserWindow
 
 **path**
@@ -42806,250 +26907,12 @@ Default width of electron app
 
 
 
-#### platforms.windows.buildSchemes.[object].Podfile
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].Podfile`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].aab
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].aab`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].app/build.gradle
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].app/build.gradle`
-
-**type** `object`
-
-Overrides values in `app/build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "app/build.gradle": {
-    "apply": [
-      "plugin: 'io.fabric'"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appDelegateApplicationMethods
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appDelegateApplicationMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didReceive
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didRegister
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.open
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.open`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appDelegateImports
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appDelegateImports`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appDelegateMethods
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appDelegateMethods`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appName
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appName`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.windows.buildSchemes.[object].appleId
 
 **path**
 `renative.json/#/platforms.windows.buildSchemes.[object].appleId`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].applyPlugin
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].applyPlugin`
-
-**type** `array`
 
 
 
@@ -43104,36 +26967,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
-#### platforms.windows.buildSchemes.[object].build.gradle
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].build.gradle`
-
-**type** `object`
-
-Overrides values in `build.gradle` file of generated android based project
-
-**examples**
-
-
-```json
-{
-  "build.gradle": {
-    "allprojects": {
-      "repositories": {
-        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-      }
-    }
-  }
-}
-```
-
-
-
-
-
-
-
 #### platforms.windows.buildSchemes.[object].bundleAssets
 
 **path**
@@ -43154,66 +26987,6 @@ Overrides values in `build.gradle` file of generated android based project
 `renative.json/#/platforms.windows.buildSchemes.[object].bundleIsDev`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].certificateProfile
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].certificateProfile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].codeSignIdentity
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].codeSignIdentity`
-
-**type** `string`
-
-Special property which tells Xcode how to build your project
-
-**examples**
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Developer"
-}
-```
-
-
-
-```json
-{
-  "codeSignIdentity": "iPhone Distribution"
-}
-```
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].compileSdkVersion
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].compileSdkVersion`
-
-**type** `integer`
 
 
 
@@ -43250,20 +27023,6 @@ Special property which tells Xcode how to build your project
 
 
 
-#### platforms.windows.buildSchemes.[object].deploymentTarget
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].deploymentTarget`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.windows.buildSchemes.[object].description
 
 **path**
@@ -43281,20 +27040,6 @@ General description of your app. This prop will be injected to actual projects w
   "description": "This app does awesome things"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].devServerHost
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].devServerHost`
-
-**type** `string`
-
 
 
 
@@ -43342,34 +27087,6 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.windows.buildSchemes.[object].enableAndroidX
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].enableAndroidX`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].enableHermes
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].enableHermes`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
 #### platforms.windows.buildSchemes.[object].enabled
 
 **path**
@@ -43398,54 +27115,12 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
-#### platforms.windows.buildSchemes.[object].entitlements
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].entitlements`
-
-**type** `object`
-
-
-
-
-
-
-
-
 #### platforms.windows.buildSchemes.[object].entryFile
 
 **path**
 `renative.json/#/platforms.windows.buildSchemes.[object].entryFile`
 
 **type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].environment
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].environment`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].excludedFeatures
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].excludedFeatures`
-
-**type** `array`
 
 
 
@@ -43493,132 +27168,6 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-#### platforms.windows.buildSchemes.[object].exportOptions
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].exportOptions`
-
-**type** `object`
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].exportOptions.compileBitcode
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].exportOptions.compileBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].exportOptions.method
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].exportOptions.method`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].exportOptions.provisioningProfiles
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].exportOptions.provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].exportOptions.signingCertificate
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].exportOptions.signingCertificate`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].exportOptions.signingStyle
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].exportOptions.signingStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].exportOptions.teamID
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].exportOptions.teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].exportOptions.uploadBitcode
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].exportOptions.uploadBitcode`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].exportOptions.uploadSymbols
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].exportOptions.uploadSymbols`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-
 #### platforms.windows.buildSchemes.[object].ext
 
 **path**
@@ -43626,49 +27175,15 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].firebaseId
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].firebaseId`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].gradle.properties
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].gradle.properties`
-
-**type** `object`
-
-Overrides values in `gradle.properties` file of generated android based project
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
 **examples**
 
 
 ```json
 {
-  "gradle.properties": {
-    "gradle.properties": {
-      "android.debug.obsoleteApi": true,
-      "debug.keystore": "debug.keystore",
-      "org.gradle.daemon": true,
-      "org.gradle.parallel": true,
-      "org.gradle.configureondemand": true
-    }
+  "ext": {
+    "myCustomRenativeProp": "foo"
   }
 }
 ```
@@ -43713,20 +27228,6 @@ Overrides values in `gradle.properties` file of generated android based project
 `renative.json/#/platforms.windows.buildSchemes.[object].ignoreWarnings`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].includedFeatures
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].includedFeatures`
-
-**type** `array`
 
 
 
@@ -43861,159 +27362,10 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-#### platforms.windows.buildSchemes.[object].keyAlias
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].keyAlias`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].keyPassword
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].keyPassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.windows.buildSchemes.[object].license
 
 **path**
 `renative.json/#/platforms.windows.buildSchemes.[object].license`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].minSdkVersion
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].minSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].multipleAPKs
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].multipleAPKs`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].orientationSupport
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].orientationSupport`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  }
-}
-```
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].orientationSupport.phone
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].orientationSupport.phone`
-
-**type** `array`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].orientationSupport.tab
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].orientationSupport.tab`
-
-**type** `array`
-
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].package
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].package`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].pagesDir
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].pagesDir`
 
 **type** `string`
 
@@ -44032,76 +27384,6 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 **type** `array`
 
 > DEPRECATED in favor of includedPermissions
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].plist
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].plist`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].provisionProfileSpecifier
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].provisionProfileSpecifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].provisioningProfiles
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].provisioningProfiles`
-
-**type** `object`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].provisioningStyle
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].provisioningStyle`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].runScheme
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].runScheme`
-
-**type** `string`
-
-
 
 
 
@@ -44134,188 +27416,12 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-#### platforms.windows.buildSchemes.[object].scheme
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].scheme`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].sdk
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].sdk`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].signingConfig
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].signingConfig`
-
-**type** `string`
-
-
-
-
-
-
-
-
 #### platforms.windows.buildSchemes.[object].splashScreen
 
 **path**
 `renative.json/#/platforms.windows.buildSchemes.[object].splashScreen`
 
 **type** `boolean`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].storeFile
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].storeFile`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].storePassword
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].storePassword`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].systemCapabilities
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].systemCapabilities`
-
-**type** `object`
-
-
-
-**examples**
-
-
-```json
-{
-  "systemCapabilities": {
-    "com.apple.SafariKeychain": false,
-    "com.apple.Wallet": false,
-    "com.apple.HealthKit": false,
-    "com.apple.ApplicationGroups.iOS": false,
-    "com.apple.iCloud": true,
-    "com.apple.DataProtection": false,
-    "com.apple.HomeKit": false,
-    "com.apple.ClassKit": false,
-    "com.apple.VPNLite": false,
-    "com.apple.AutoFillCredentialProvider": false,
-    "com.apple.AccessWiFi": false,
-    "com.apple.InAppPurchase": false,
-    "com.apple.HotspotConfiguration": false,
-    "com.apple.Multipath": false,
-    "com.apple.GameCenter.iOS": false,
-    "com.apple.BackgroundModes": false,
-    "com.apple.InterAppAudio": false,
-    "com.apple.WAC": false,
-    "com.apple.Push": true,
-    "com.apple.NearFieldCommunicationTagReading": false,
-    "com.apple.ApplePay": false,
-    "com.apple.Keychain": false,
-    "com.apple.Maps.iOS": false,
-    "com.apple.Siri": false,
-    "com.apple.NetworkExtensions.iOS": false
-  }
-}
-```
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].targetSdkVersion
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].targetSdkVersion`
-
-**type** `integer`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].teamID
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].teamID`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].teamIdentifier
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].teamIdentifier`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].testFlightId
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].testFlightId`
-
-**type** `string`
 
 
 
@@ -44373,20 +27479,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].universalApk
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].universalApk`
-
-**type** `boolean`
-
 
 
 
@@ -44467,6 +27559,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.windows.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.windows.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
 #### platforms.windows.buildSchemes.[object].webpackConfig.metaTags
 
 **path**
@@ -44474,20 +27612,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 **type** `object`
 
-
-
-
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].xcodeproj
-
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].xcodeproj`
-
-**type** `object`
 
 
 
@@ -44691,6 +27815,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 **type** `object`
 
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
 
 
 
@@ -45028,6 +28164,94 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 `renative.json/#/platforms.windows.webpackConfig`
 
 **type** `object`
+
+
+
+
+
+
+
+#### platforms.windows.webpackConfig.customScripts
+
+**path**
+`renative.json/#/platforms.windows.webpackConfig.customScripts`
+
+**type** `array`
+
+
+
+
+
+
+
+
+#### platforms.windows.webpackConfig.devServerHost
+
+**path**
+`renative.json/#/platforms.windows.webpackConfig.devServerHost`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.windows.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.windows.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
+#### platforms.windows.webpackConfig.metaTags
+
+**path**
+`renative.json/#/platforms.windows.webpackConfig.metaTags`
+
+**type** `object`
+
 
 
 
