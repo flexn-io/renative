@@ -6,6 +6,8 @@ import { chalk, logTask, logInfo, logWarning } from '../core/systemManager/logge
 import { fsExistsSync, copyFileSync, copyFolderContentsRecursiveSync } from '../core/systemManager/fileutils';
 import { TASK_START, RN_CLI_CONFIG_NAME } from '../core/constants';
 import { executeTask } from '../core/engineManager';
+import { doResolve } from '../core/resolve';
+
 
 let keepRNVRunning = false;
 
@@ -20,6 +22,8 @@ export const getPlatformOutputDir = (c) => {
     }
     return output;
 };
+
+export const getOriginalPlatformTemplatesDir = () => path.join(doResolve('@rnv/engine-rn'), 'platformTemplates');
 
 export const getTemplateProjectDir = (c) => {
     const dir = getTemplateDir(c);

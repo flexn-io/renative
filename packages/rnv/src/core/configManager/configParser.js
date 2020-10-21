@@ -22,7 +22,7 @@ import {
     INJECTABLE_RUNTIME_PROPS,
     WEB_HOSTED_PLATFORMS
 } from '../constants';
-import { getEngineByPlatform } from '../engineManager';
+import { getEngineConfigByPlatform, getEngineRunnerByPlatform } from '../engineManager';
 import { isSystemWin } from '../utils';
 import {
     copyFileSync,
@@ -81,7 +81,7 @@ export const configureRuntimeDefaults = async (c) => {
     c.runtime.scheme = c.program.scheme || 'debug';
     c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
     c.runtime.timestamp = c.runtime.timestamp || Date.now();
-    // c.runtime.engine = getEngineByPlatform(c, c.platform);
+    // c.runtime.engine = getEngineConfigByPlatform(c, c.platform);
 
     c.configPropsInjects = c.configPropsInjects || [];
     c.systemPropsInjects = c.systemPropsInjects || [];
@@ -101,8 +101,9 @@ export const configureRuntimeDefaults = async (c) => {
         // c.runtime.devServer = `http://${ip.address()}:${c.runtime.port}`;
         if (c.buildConfig.defaults?.supportedPlatforms) {
             c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms.map((platform) => {
-                const engine = getEngineByPlatform(c, platform);
-                const dir = engine?.paths?.platformTemplatesDir;
+                const engine = getEngineConfigByPlatform(c, platform);
+                const dir = getEngineRunnerByPlatform(c, platform).getOriginalPlatformTemplatesDir(c);
+
                 let isConnected = false;
                 let isValid = false;
                 const pDir = c.paths.project.platformTemplatesDirs?.[platform];
@@ -288,7 +289,7 @@ const getEnginesPluginDelta = (c) => {
     // const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
     // if (supPlats) {
     //     supPlats.forEach((pk) => {
-    //         const selectedEngine = getEngineByPlatform(c, pk, true);
+    //         const selectedEngine = getEngineConfigByPlatform(c, pk, true);
     //         if (selectedEngine?.plugins) {
     //             const ePlugins = Object.keys(selectedEngine.plugins);
     //
@@ -303,7 +304,7 @@ const getEnginesPluginDelta = (c) => {
     //         }
     //     });
     // }
-    const selectedEngine = getEngineByPlatform(c, c.platform, true);
+    const selectedEngine = getEngineConfigByPlatform(c, c.platform, true);
     if (selectedEngine?.plugins) {
         const ePlugins = Object.keys(selectedEngine.plugins);
 
@@ -643,8 +644,10 @@ const _generatePlatformTemplatePaths = (c) => {
     const result = {};
 
     c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
-        const engine = getEngineByPlatform(c, platform);
-        const originalPath = engine?.paths?.platformTemplatesDir;
+        const engineRunner = getEngineRunnerByPlatform(c, platform);
+
+        const originalPath = engineRunner.getOriginalPlatformTemplatesDir(c);
+
         if (originalPath) {
             if (!pt[platform]) {
                 result[platform] = getRealPath(

@@ -5,7 +5,7 @@ import { executeAsync } from '../systemManager/exec';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { chalk, logInfo, logDebug, logTask } from '../systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
-import { getEngineByPlatform } from '../engineManager';
+import { getEngineConfigByPlatform } from '../engineManager';
 import { writeRenativeConfigFile } from './configParser';
 import { overrideTemplatePlugins } from '../pluginManager';
 
@@ -114,7 +114,7 @@ export const checkRequiredPackage = async (c, pkg, version = false, type, skipAs
 export const injectPlatformDependencies = async (c) => {
     logTask('injectPlatformDependencies');
     const { platform } = c;
-    const selectedEngine = getEngineByPlatform(c, platform);
+    const selectedEngine = getEngineConfigByPlatform(c, platform);
     const npmDepsBase = selectedEngine?.npm || {};
     const npmDepsExt = selectedEngine?.platforms[platform]?.npm || {};
 

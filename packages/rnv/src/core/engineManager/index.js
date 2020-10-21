@@ -25,7 +25,7 @@ export const generateEnvVars = (c, moduleConfig, nextConfig) => ({
     RNV_PROJECT_ROOT: c.paths.project.dir,
     RNV_MONO_ROOT: c.runtime.isWrapper ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir
 });
-export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
+export const getEngineConfigByPlatform = (c, platform, ignoreMissingError) => {
     let selectedEngineKey;
     if (c.buildConfig && !!platform) {
         selectedEngineKey = c.program.engine || getConfigProp(c, platform, 'engine');
@@ -37,6 +37,11 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
         return selectedEngine;
     }
     return null;
+};
+
+export const getEngineRunnerByPlatform = (c, platform) => {
+    const selectedEngine = getEngineConfigByPlatform(c, platform);
+    return ENGINES[selectedEngine?.id];
 };
 
 export const getPlatformExtensions = (c, excludeServer) => {
@@ -102,13 +107,8 @@ export const hasEngineTask = (task, tasks, isProjectScope) => (
 
 export const getEngineSubTasks = (task, tasks, exactMatch) => Object.values(tasks).filter(v => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
 
-export const getEngineRunnerByPlatform = (c, platform) => {
-    const selectedEngine = getEngineByPlatform(c, platform);
-    return ENGINES[selectedEngine?.id];
-};
-
 export const getEngineRunner = (c, task) => {
-    const selectedEngine = getEngineByPlatform(c, c.platform);
+    const selectedEngine = getEngineConfigByPlatform(c, c.platform);
     const { configExists } = c.paths.project;
     if (!selectedEngine) {
         if (ENGINES[ENGINE_CORE].hasTask(task, configExists)) return ENGINES[ENGINE_CORE];

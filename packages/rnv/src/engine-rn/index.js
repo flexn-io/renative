@@ -1,6 +1,6 @@
 import { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } from '../core/engineManager';
 import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
-    getTemplateProjectDir, ejectPlatform, getTemplateRootDir } from './commonEngine';
+    getTemplateProjectDir, ejectPlatform, getTemplateRootDir, getOriginalPlatformTemplatesDir } from './commonEngine';
 
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvPackage from './tasks/task.rnv.package';
@@ -50,6 +50,7 @@ export default {
     ejectPlatform,
     getTemplateProjectDir,
     getTemplateRootDir,
+    getOriginalPlatformTemplatesDir,
     executeTask,
     addTask,
     hasTask,

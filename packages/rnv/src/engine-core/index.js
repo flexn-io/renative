@@ -119,6 +119,8 @@ const getId = () => 'engine-core';
 
 const title = 'Engine Core';
 
+const getOriginalPlatformTemplatesDir = () => null;
+
 export default {
     getPlatformBuildDir,
     getPlatformProjectDir,
@@ -126,6 +128,7 @@ export default {
     ejectPlatform,
     getTemplateProjectDir,
     getTemplateRootDir,
+    getOriginalPlatformTemplatesDir,
     executeTask,
     addTask,
     hasTask,

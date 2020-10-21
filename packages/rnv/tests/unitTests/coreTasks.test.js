@@ -7,12 +7,15 @@ jest.mock('fs');
 
 jest.mock('../../src/core/engineManager/index.js', () => ({
     executeTask: jest.fn(),
-    getEngineByPlatform: () => ({
+    getEngineConfigByPlatform: () => ({
         platforms: {
           ios: {
             npm: {}
           }
         }
+    }),
+    getEngineRunnerByPlatform: () => ({
+      getOriginalPlatformTemplatesDir: () => 'sometemptdir'
     })
 }));
 

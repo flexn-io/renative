@@ -14,6 +14,8 @@ import {
     RNV_PROJECT_DIR_NAME
 } from '../core/constants';
 import { copyFolderContentsRecursiveSync } from '../core/systemManager/fileutils';
+import { doResolve } from '../core/resolve';
+
 
 export const getPlatformBuildDir = c => getAppFolder(c);
 
@@ -47,6 +49,8 @@ export const getTemplateRootDir = (c, platform) => {
     const dir = c.paths.project.platformTemplatesDirs[platform];
     return dir;
 };
+
+export const getOriginalPlatformTemplatesDir = () => path.join(doResolve('@rnv/engine-rn-web'), 'platformTemplates');
 
 export const ejectPlatform = (c, platform, destFolder) => {
     const sourcePlatformDir = getTemplateRootDir(c, platform);

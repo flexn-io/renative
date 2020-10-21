@@ -1,6 +1,7 @@
 import path from 'path';
 import { getAppFolder, getTemplateDir } from '../core/common';
 import { MACOS, WINDOWS, RNV_PROJECT_DIR_NAME } from '../core/constants';
+import { doResolve } from '../core/resolve';
 
 export const getPlatformBuildDir = c => getAppFolder(c);
 
@@ -22,6 +23,8 @@ export const getTemplateProjectDir = (c) => {
     }
     return output;
 };
+
+export const getOriginalPlatformTemplatesDir = () => path.join(doResolve('@rnv/engine-rn-electron'), 'platformTemplates');
 
 export const getTemplateRootDir = (c, platform) => {
     const dir = c.paths.project.platformTemplatesDirs[platform];
