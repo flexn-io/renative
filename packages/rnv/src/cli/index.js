@@ -4,19 +4,15 @@ import { configureRuntimeDefaults, parseRenativeConfigs } from '../core/configMa
 import { initializeTask, findSuitableTask, registerEngine } from '../core/engineManager';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
 
-import EngineRn from '../engine-rn';
-// import EngineRnWeb from '../engine-rn-web';
-import EngineRnElectron from '../engine-rn-electron';
-import EngineRnNext from '../engine-rn-next';
 import EngineCore from '../engine-core';
 
 const registerEngines = () => {
     logTask('registerEngines');
     registerEngine(EngineCore);
     registerEngine(require('@rnv/engine-rn-web')?.default);
-    registerEngine(EngineRnElectron);
-    registerEngine(EngineRnNext);
-    registerEngine(EngineRn);
+    registerEngine(require('@rnv/engine-rn-electron')?.default);
+    registerEngine(require('@rnv/engine-rn-next')?.default);
+    registerEngine(require('@rnv/engine-rn')?.default);
 };
 
 
