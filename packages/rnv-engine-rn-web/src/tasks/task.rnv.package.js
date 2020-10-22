@@ -1,5 +1,8 @@
-import { logTask } from '../../core/systemManager/logger';
-import { WEB,
+import { EngineManager, Constants, Logger } from 'rnv';
+
+const { logTask } = Logger;
+const {
+    WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -10,9 +13,10 @@ import { WEB,
     CHROMECAST,
     TASK_PACKAGE,
     TASK_CONFIGURE,
-    PARAMS } from '../../core/constants';
+    PARAMS
+} = Constants;
 
-import { executeOrSkipTask } from '../../core/engineManager';
+const { executeOrSkipTask } = EngineManager;
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);

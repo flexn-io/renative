@@ -1,10 +1,11 @@
+/* eslint-disable global-require */
 import { logTask } from '../core/systemManager/logger';
 import { configureRuntimeDefaults, parseRenativeConfigs } from '../core/configManager/configParser';
 import { initializeTask, findSuitableTask, registerEngine } from '../core/engineManager';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
 
 import EngineRn from '../engine-rn';
-import EngineRnWeb from '../engine-rn-web';
+// import EngineRnWeb from '../engine-rn-web';
 import EngineRnElectron from '../engine-rn-electron';
 import EngineRnNext from '../engine-rn-next';
 import EngineCore from '../engine-core';
@@ -12,7 +13,7 @@ import EngineCore from '../engine-core';
 const registerEngines = () => {
     logTask('registerEngines');
     registerEngine(EngineCore);
-    registerEngine(EngineRnWeb);
+    registerEngine(require('@rnv/engine-rn-web')?.default);
     registerEngine(EngineRnElectron);
     registerEngine(EngineRnNext);
     registerEngine(EngineRn);

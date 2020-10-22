@@ -1,6 +1,9 @@
-import { logErrorPlatform } from '../../core/platformManager';
-import { logTask } from '../../core/systemManager/logger';
-import { WEB,
+import { EngineManager, Constants, Logger, PlatformManager, SDKWebpack } from 'rnv';
+
+const { logErrorPlatform } = PlatformManager;
+const { logTask } = Logger;
+const {
+    WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -11,9 +14,10 @@ import { WEB,
     CHROMECAST,
     TASK_BUILD,
     TASK_EXPORT,
-    PARAMS } from '../../core/constants';
-import { exportWeb } from '../../sdk-webpack';
-import { executeOrSkipTask } from '../../core/engineManager';
+    PARAMS
+} = Constants;
+const { exportWeb } = SDKWebpack;
+const { executeOrSkipTask } = EngineManager;
 
 export const taskRnvExport = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);

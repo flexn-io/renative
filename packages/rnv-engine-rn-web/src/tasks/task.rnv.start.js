@@ -1,8 +1,11 @@
 import open from 'better-opn';
-import { getConfigProp } from '../../core/common';
-import { logErrorPlatform } from '../../core/platformManager';
-import { logTask, logError } from '../../core/systemManager/logger';
-import { WEB,
+import { EngineManager, Constants, Logger, PlatformManager, SDKWebpack, Common } from 'rnv';
+
+const { getConfigProp } = Common;
+const { logErrorPlatform } = PlatformManager;
+const { logTask, logError } = Logger;
+const {
+    WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -14,9 +17,10 @@ import { WEB,
     TASK_START,
     TASK_CONFIGURE,
     REMOTE_DEBUGGER_ENABLED_PLATFORMS,
-    PARAMS } from '../../core/constants';
-import { runWebpackServer, waitForWebpack } from '../../sdk-webpack';
-import { executeTask } from '../../core/engineManager';
+    PARAMS
+} = Constants;
+const { runWebpackServer, waitForWebpack } = SDKWebpack;
+const { executeTask } = EngineManager;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
     const { platform } = c;

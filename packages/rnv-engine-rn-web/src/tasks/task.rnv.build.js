@@ -1,6 +1,9 @@
-import { logErrorPlatform } from '../../core/platformManager';
-import { logTask } from '../../core/systemManager/logger';
-import { WEB,
+import { EngineManager, Constants, Logger, PlatformManager, SDKTizen, SDKWebos, SDKFirefox, SDKWebpack } from 'rnv';
+
+const { logErrorPlatform } = PlatformManager;
+const { logTask } = Logger;
+const {
+    WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -10,12 +13,13 @@ import { WEB,
     FIREFOX_TV,
     CHROMECAST,
     TASK_BUILD, TASK_PACKAGE,
-    PARAMS } from '../../core/constants';
-import { buildWeb } from '../../sdk-webpack';
-import { buildTizenProject } from '../../sdk-tizen';
-import { buildWebOSProject } from '../../sdk-webos';
-import { buildFirefoxProject } from '../../sdk-firefox';
-import { executeOrSkipTask } from '../../core/engineManager';
+    PARAMS
+} = Constants;
+const { buildWeb } = SDKWebpack;
+const { buildTizenProject } = SDKTizen;
+const { buildWebOSProject } = SDKWebos;
+const { buildFirefoxProject } = SDKFirefox;
+const { executeOrSkipTask } = EngineManager;
 
 export const taskRnvBuild = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild', `parent:${parentTask}`);

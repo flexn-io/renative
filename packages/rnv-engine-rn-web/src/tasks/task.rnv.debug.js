@@ -1,7 +1,9 @@
-import { logErrorPlatform } from '../../core/platformManager';
-import { logTask } from '../../core/systemManager/logger';
-import { WEB, TIZEN, PARAMS } from '../../core/constants';
-import { executeAsync } from '../../core/systemManager/exec';
+import { Constants, Logger, PlatformManager, Exec } from 'rnv';
+
+const { logErrorPlatform } = PlatformManager;
+const { logTask } = Logger;
+const { WEB, TIZEN, PARAMS } = Constants;
+const { executeAsync } = Exec;
 
 export const taskRnvDebug = async (c, parentTask) => {
     logTask('taskRnvDebug', `parent:${parentTask}`);

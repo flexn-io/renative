@@ -1,9 +1,12 @@
+import { EngineManager, Constants, Logger, PlatformManager, SDKTizen, SDKWebos, SDKFirefox, SDKWebpack, FileUtils, Common } from 'rnv';
+
 import ip from 'ip';
 import path from 'path';
 
-import { logErrorPlatform } from '../../core/platformManager';
-import { logTask, logDebug } from '../../core/systemManager/logger';
-import { WEB,
+const { logErrorPlatform } = PlatformManager;
+const { logTask, logDebug } = Logger;
+const {
+    WEB,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -14,15 +17,15 @@ import { WEB,
     CHROMECAST,
     TASK_RUN, TASK_START,
     TASK_CONFIGURE,
-    PARAMS } from '../../core/constants';
-import { runWebpackServer } from '../../sdk-webpack';
-import { getConfigProp, getPlatformProjectDir } from '../../core/common';
-import { runTizen } from '../../sdk-tizen';
-import { runWebOS } from '../../sdk-webos';
-import { runFirefoxProject } from '../../sdk-firefox';
-import { runChromecast } from '../../sdk-webpack/chromecast';
-import { writeCleanFile } from '../../core/systemManager/fileutils';
-import { executeTask, executeOrSkipTask } from '../../core/engineManager';
+    PARAMS
+} = Constants;
+const { runWebpackServer, runChromecast } = SDKWebpack;
+const { getConfigProp, getPlatformProjectDir } = Common;
+const { runTizen } = SDKTizen;
+const { runWebOS } = SDKWebos;
+const { runFirefoxProject } = SDKFirefox;
+const { writeCleanFile } = FileUtils;
+const { executeTask, executeOrSkipTask } = EngineManager;
 
 const _configureHostedIfRequired = async (c) => {
     logTask('_configureHostedIfRequired');

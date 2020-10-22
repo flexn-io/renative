@@ -1,7 +1,9 @@
 import path from 'path';
-import { getAppFolder, getTemplateDir } from '../core/common';
-import { logError } from '../core/systemManager/logger';
-import {
+import { Constants, Logger, Common, FileUtils } from 'rnv';
+
+const { getAppFolder, getTemplateDir } = Common;
+const { logError } = Logger;
+const {
     TIZEN,
     TIZEN_WATCH,
     TIZEN_MOBILE,
@@ -12,9 +14,9 @@ import {
     FIREFOX_TV,
     CHROMECAST,
     RNV_PROJECT_DIR_NAME
-} from '../core/constants';
-import { copyFolderContentsRecursiveSync } from '../core/systemManager/fileutils';
-import { doResolve } from '../core/resolve';
+} = Constants;
+const { copyFolderContentsRecursiveSync } = FileUtils;
+// const { doResolve } = Resolver;
 
 
 export const getPlatformBuildDir = c => getAppFolder(c);
@@ -50,7 +52,7 @@ export const getTemplateRootDir = (c, platform) => {
     return dir;
 };
 
-export const getOriginalPlatformTemplatesDir = () => path.join(doResolve('@rnv/engine-rn-web'), 'platformTemplates');
+export const getOriginalPlatformTemplatesDir = () => path.join(__dirname, '../platformTemplates');
 
 export const ejectPlatform = (c, platform, destFolder) => {
     const sourcePlatformDir = getTemplateRootDir(c, platform);
