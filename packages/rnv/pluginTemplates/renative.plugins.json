@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.31.3",
+            "version": "0.32.0-feat-decoupled-engines.0",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
