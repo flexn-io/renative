@@ -7,7 +7,8 @@ import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import { doResolve } from '../resolve';
-import { fsExistsSync, readObjectSync } from '../systemManager/fileutils';
+// import { writeRenativeConfigFile } from '../configManager/configParser';
+import { fsExistsSync, readObjectSync, writeFileSync } from '../systemManager/fileutils';
 import { TASK_CONFIGURE_SOFT, EXTENSIONS } from '../constants';
 
 
@@ -15,9 +16,11 @@ const REGISTERED_ENGINES = [];
 const ENGINES = {};
 const ENGINE_CORE = 'engine-core';
 
-export const registerEngine = async (engine) => {
+export const registerEngine = async (c, engine) => {
     ENGINES[engine.getId()] = engine;
     REGISTERED_ENGINES.push(engine);
+    // c.runtime.engineRunners = c.runtime.engineRunners || {};
+    // c.runtime.engineRunners[engine.getId()] = engine;
 };
 
 export const loadEngineConfigs = async (c) => {
@@ -31,14 +34,25 @@ export const loadEngineConfigs = async (c) => {
                 c.runtime.engineConfigs[engineConfig.id] = engineConfig;
             }
         });
+    } else {
+        logInfo('Engine configs missing in your renative.json. FIXING...DONE');
+        c.files.project.config.engines = {
+            '@rnv/engine-rn': 'source:rnv',
+            '@rnv/engine-rn-web': 'source:rnv',
+            '@rnv/engine-rn-next': 'source:rnv',
+            '@rnv/engine-rn-electron': 'source:rnv'
+        };
+        writeFileSync(c.paths.project.config, c.files.project.config);
+        return false;
     }
+    return true;
 };
 
 export const registerPlatformEngine = (c) => {
     // Only register active platform engine to be faster
     const selectedEngine = getEngineConfigByPlatform(c, c.platform);
     if (selectedEngine) {
-        registerEngine(require(selectedEngine.packageName)?.default);
+        registerEngine(c, require(selectedEngine.packageName)?.default);
     }
 };
 

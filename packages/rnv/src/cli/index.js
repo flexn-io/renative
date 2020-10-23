@@ -16,11 +16,14 @@ import EngineCore from '../engine-core';
 
 
 const run = async (c) => {
-    await registerEngine(EngineCore);
+    await registerEngine(c, EngineCore);
     await configureRuntimeDefaults(c);
     await checkAndMigrateProject(c);
     await parseRenativeConfigs(c);
-    await loadEngineConfigs(c);
+    const result = await loadEngineConfigs(c);
+    if (!result) {
+        await parseRenativeConfigs(c);
+    }
     await registerPlatformEngine(c);
     const taskInstance = await findSuitableTask(c);
 
