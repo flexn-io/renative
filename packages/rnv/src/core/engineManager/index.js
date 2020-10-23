@@ -6,6 +6,7 @@ import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
+import { executeAsync } from '../systemManager/exec';
 import { doResolve } from '../resolve';
 // import { writeRenativeConfigFile } from '../configManager/configParser';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../systemManager/fileutils';
@@ -24,17 +25,34 @@ export const registerEngine = async (c, engine) => {
 };
 
 export const loadEngineConfigs = async (c) => {
+    logTask('loadEngineConfigs');
     const engines = c.buildConfig?.engines;
     c.runtime.engineConfigs = {};
+    const enginesToInstall = [];
     if (engines) {
         Object.keys(engines).forEach((k) => {
-            const configPath = path.join(doResolve(k), 'renative.engine.json');
-            if (fsExistsSync(configPath)) {
+            const engineRootPath = doResolve(k);
+            const configPath = engineRootPath ? path.join(engineRootPath, 'renative.engine.json') : null;
+            if (configPath && fsExistsSync(configPath)) {
                 const engineConfig = readObjectSync(configPath);
                 c.runtime.engineConfigs[engineConfig.id] = engineConfig;
+            } else {
+                const engVer = c.buildConfig.engineTemplates?.[k]?.version;
+                if (engVer) {
+                    enginesToInstall.push(
+                        executeAsync(`npm i ${k}@${engVer} --no-save`, {
+                            cwd: c.paths.project.dir
+                        })
+                    );
+                }
             }
         });
-    } else {
+        if (enginesToInstall.length) {
+            logInfo('Some engines not installed in your project. INSTALLING...');
+            await Promise.all(enginesToInstall);
+            return loadEngineConfigs(c);
+        }
+    } else if (c.files.project.config) {
         logInfo('Engine configs missing in your renative.json. FIXING...DONE');
         c.files.project.config.engines = {
             '@rnv/engine-rn': 'source:rnv',
