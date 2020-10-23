@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import { configureRuntimeDefaults, parseRenativeConfigs } from '../core/configManager/configParser';
-import { initializeTask, findSuitableTask, registerEngine, registerPlatformEngine } from '../core/engineManager';
+import { initializeTask, findSuitableTask, registerEngine, registerPlatformEngine, loadEngineConfigs } from '../core/engineManager';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
 
 import EngineCore from '../engine-core';
@@ -16,10 +16,11 @@ import EngineCore from '../engine-core';
 
 
 const run = async (c) => {
-    registerEngine(EngineCore);
+    await registerEngine(EngineCore);
     await configureRuntimeDefaults(c);
     await checkAndMigrateProject(c);
     await parseRenativeConfigs(c);
+    await loadEngineConfigs(c);
     await registerPlatformEngine(c);
     const taskInstance = await findSuitableTask(c);
 

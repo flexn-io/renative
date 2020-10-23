@@ -6,6 +6,8 @@ import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
+import { doResolve } from '../resolve';
+import { fsExistsSync, readObjectSync } from '../systemManager/fileutils';
 import { TASK_CONFIGURE_SOFT, EXTENSIONS } from '../constants';
 
 
@@ -13,12 +15,27 @@ const REGISTERED_ENGINES = [];
 const ENGINES = {};
 const ENGINE_CORE = 'engine-core';
 
-export const registerEngine = (engine) => {
+export const registerEngine = async (engine) => {
     ENGINES[engine.getId()] = engine;
     REGISTERED_ENGINES.push(engine);
 };
 
+export const loadEngineConfigs = async (c) => {
+    const engines = c.buildConfig?.engines;
+    c.runtime.engineConfigs = {};
+    if (engines) {
+        Object.keys(engines).forEach((k) => {
+            const configPath = path.join(doResolve(k), 'renative.engine.json');
+            if (fsExistsSync(configPath)) {
+                const engineConfig = readObjectSync(configPath);
+                c.runtime.engineConfigs[engineConfig.id] = engineConfig;
+            }
+        });
+    }
+};
+
 export const registerPlatformEngine = (c) => {
+    // Only register active platform engine to be faster
     const selectedEngine = getEngineConfigByPlatform(c, c.platform);
     if (selectedEngine) {
         registerEngine(require(selectedEngine.packageName)?.default);
@@ -35,9 +52,9 @@ export const generateEnvVars = (c, moduleConfig, nextConfig) => ({
 });
 export const getEngineConfigByPlatform = (c, platform, ignoreMissingError) => {
     let selectedEngineKey;
-    if (c.buildConfig && !!platform) {
+    if (c.buildConfig && !!platform && c.runtime.engineConfigs) {
         selectedEngineKey = c.program.engine || getConfigProp(c, platform, 'engine');
-        const selectedEngine = c.files.rnv.engines.config?.engines?.[selectedEngineKey];
+        const selectedEngine = c.runtime.engineConfigs[selectedEngineKey];
         if (!selectedEngine && !ignoreMissingError) {
             logDebug(`ERROR: Engine: ${selectedEngineKey} does not exists or is not registered ${new Error()}`);
             // logRaw(new Error());

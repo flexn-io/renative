@@ -12,7 +12,6 @@ import {
     RENATIVE_CONFIG_WORKSPACES_NAME,
     RENATIVE_CONFIG_PLUGINS_NAME,
     RENATIVE_CONFIG_TEMPLATES_NAME,
-    RENATIVE_CONFIG_ENGINES_NAME,
     RN_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
     PLATFORMS,
@@ -393,7 +392,6 @@ export const generateBuildConfig = (c) => {
         c.files.rnv.projectTemplates.config,
         { plugins: extraPlugins },
         // { pluginTemplates },
-        c.files.rnv.engines.config,
         c.files.workspace.config,
         c.files.workspace.configPrivate,
         c.files.workspace.configLocal,
@@ -720,19 +718,6 @@ export const loadProjectTemplates = (c) => {
     );
 };
 
-// export const loadPlatformTemplates = (c) => {
-//     c.files.rnv.platformTemplates.config = readObjectSync(
-//         c.paths.rnv.platformTemplates.config
-//     );
-// };
-
-export const loadEngines = (c) => {
-    logTask('loadEngines');
-    c.files.rnv.engines.config = readObjectSync(
-        c.paths.rnv.engines.config
-    );
-};
-
 const _loadWorkspacesSync = (c) => {
     // CHECK WORKSPACES
     if (fsExistsSync(c.paths.rnv.configWorkspaces)) {
@@ -826,7 +811,7 @@ export const parseRenativeConfigs = async (c) => {
     // loadPlatformTemplates(c);
 
     // LOAD ENGINES
-    loadEngines(c);
+    // loadEngines(c);
 
     if (!c.files.project.config) {
         logDebug(`BUILD_CONFIG: c.files.project.config does not exists. path: ${c.paths.project.config}`);
@@ -1039,10 +1024,6 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
         'pluginTemplates'
     );
 
-    c.paths.rnv.engines.config = path.join(
-        c.paths.rnv.engines.dir,
-        RENATIVE_CONFIG_ENGINES_NAME
-    );
     c.paths.rnv.pluginTemplates.config = path.join(
         c.paths.rnv.pluginTemplates.dir,
         RENATIVE_CONFIG_PLUGINS_NAME

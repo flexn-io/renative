@@ -84,8 +84,6 @@ Following is the order of merges of various renative configs (if present) produc
 ⬇️
 `[RNV_PATH]/pluginTemplates/renative.plugins.json`</br>
 ⬇️
-`[RNV_PATH]/engines/renative.engines.json`</br>
-⬇️
 `[WORKSPACE_PATH]/renative.json`</br>
 ⬇️
 `[WORKSPACE_PATH]/renative.private.json`</br>

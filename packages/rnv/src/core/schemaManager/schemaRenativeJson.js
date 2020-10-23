@@ -1047,6 +1047,25 @@ export const schemaRoot = {
             }
         },
         ...commonRuntimeProps,
+        engines: {
+            additionalProperties: false,
+            type: 'object',
+            description: 'List of engines available in this project',
+            examples: [
+                {
+                    '@rnv/engine-rn': 'source:rnv',
+                    '@rnv/engine-rn-web': 'source:rnv',
+                    '@rnv/engine-rn-next': 'source:rnv',
+                    '@rnv/engine-rn-electron': 'source:rnv'
+                },
+                {
+                    '@rnv/engine-rn': 'source:rnv',
+                    'custom-engine': {
+                        version: '1.0.0'
+                    }
+                }
+            ]
+        },
         platforms: {
             additionalProperties: false,
             type: 'object',

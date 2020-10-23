@@ -5,7 +5,7 @@ import fs from 'fs';
 const cleanUrl = v => v.replace('@', '').replace('/', '');
 
 export const updateMdFilesEngines = async (c) => {
-    const engines = c.files.rnv.engines.config?.engines;
+    const engines = c.runtime.engineConfigs;
 
     Object.values(engines).forEach((engine) => {
         _generateEngineDoc(c, engine);

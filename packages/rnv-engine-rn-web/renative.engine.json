@@ -1,0 +1,36 @@
+{
+    "id": "engine-rn-web",
+    "packageName": "@rnv/engine-rn-web",
+    "overview": "React native based engine with web transpiler provided by react-native-web",
+    "plugins": {
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "react-native-web": "source:rnv",
+        "@react-native-community/cli-platform-ios": "source:rnv",
+        "@react-native-community/cli": "source:rnv"
+    },
+    "npm": {
+        "devDependencies": {
+            "@rnv/engine-rn-web": "0.32.0-feat-decoupled-engines.0"
+        }
+    },
+    "platforms": {
+        "tizen": {
+            "npm": {
+                "dependencies": {
+                    "raf": "3.4.1"
+                }
+            }
+        },
+        "web": {},
+        "webos": {},
+        "tizenwatch": {},
+        "tizenmobile": {},
+        "chromecast": {},
+        "kaios": {},
+        "firefoxos": {},
+        "firefoxtv": {}
+    }
+}
