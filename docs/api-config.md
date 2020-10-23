@@ -1488,6 +1488,51 @@ Enable or disable sending analytics to improve ReNative
 
 
 ---
+## engines
+
+**path**
+`renative.json/#/engines`
+
+**type** `object`
+
+List of engines available in this project
+
+**examples**
+
+
+```json
+{
+  "engines": {
+    "@rnv/engine-rn": "source:rnv",
+    "@rnv/engine-rn-web": "source:rnv",
+    "@rnv/engine-rn-next": "source:rnv",
+    "@rnv/engine-rn-electron": "source:rnv"
+  }
+}
+```
+
+
+
+```json
+{
+  "engines": {
+    "@rnv/engine-rn": "source:rnv",
+    "custom-engine": {
+      "version": "1.0.0"
+    }
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+---
 ## ext
 
 **path**

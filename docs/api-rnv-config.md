@@ -650,6 +650,20 @@ List of available config props injected into [Build Hooks](guide-build-hooks.md)
 
 
 ---
+### runtime.engineConfigs
+
+
+
+**type** `object`
+
+
+
+
+
+
+
+
+---
 ### runtime.hosted
 
 
