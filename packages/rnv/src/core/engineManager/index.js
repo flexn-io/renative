@@ -1,3 +1,4 @@
+/* eslint-disable import/no-dynamic-require, global-require */
 import path from 'path';
 import { logDebug, logTask, logInitTask, logExitTask, chalk, logInfo, logError, logRaw } from '../systemManager/logger';
 import { getConfigProp } from '../common';
@@ -15,6 +16,13 @@ const ENGINE_CORE = 'engine-core';
 export const registerEngine = (engine) => {
     ENGINES[engine.getId()] = engine;
     REGISTERED_ENGINES.push(engine);
+};
+
+export const registerPlatformEngine = (c) => {
+    const selectedEngine = getEngineConfigByPlatform(c, c.platform);
+    if (selectedEngine) {
+        registerEngine(require(selectedEngine.packageName)?.default);
+    }
 };
 
 export const generateEnvVars = (c, moduleConfig, nextConfig) => ({
@@ -337,7 +345,3 @@ export const findSuitableTask = async (c) => {
 };
 
 export const getRegisteredEngines = () => REGISTERED_ENGINES;
-
-export default {
-    getRegisteredEngines
-};

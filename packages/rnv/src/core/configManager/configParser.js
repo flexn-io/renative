@@ -102,24 +102,28 @@ export const configureRuntimeDefaults = async (c) => {
         if (c.buildConfig.defaults?.supportedPlatforms) {
             c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms.map((platform) => {
                 const engine = getEngineConfigByPlatform(c, platform);
-                const dir = getEngineRunnerByPlatform(c, platform).getOriginalPlatformTemplatesDir(c);
+                const engineRunner = getEngineRunnerByPlatform(c, platform);
+                if (engineRunner) {
+                    const dir = getEngineRunnerByPlatform(c, platform).getOriginalPlatformTemplatesDir(c);
 
-                let isConnected = false;
-                let isValid = false;
-                const pDir = c.paths.project.platformTemplatesDirs?.[platform];
-                if (pDir) {
-                    isValid = true;
-                    isConnected = pDir?.includes?.(getRealPath(c, dir));
+                    let isConnected = false;
+                    let isValid = false;
+                    const pDir = c.paths.project.platformTemplatesDirs?.[platform];
+                    if (pDir) {
+                        isValid = true;
+                        isConnected = pDir?.includes?.(getRealPath(c, dir));
+                    }
+                    const port = c.buildConfig.defaults?.[platform] || PLATFORMS[platform]?.defaultPort;
+                    return {
+                        engine,
+                        platform,
+                        isConnected,
+                        port,
+                        isValid
+                    };
                 }
-                const port = c.buildConfig.defaults?.[platform] || PLATFORMS[platform]?.defaultPort;
-                return {
-                    engine,
-                    platform,
-                    isConnected,
-                    port,
-                    isValid
-                };
-            });
+                return null;
+            }).filter(v => v);
         }
     }
     return true;
@@ -645,26 +649,29 @@ const _generatePlatformTemplatePaths = (c) => {
 
     c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
         const engineRunner = getEngineRunnerByPlatform(c, platform);
-        const originalPath = engineRunner.getOriginalPlatformTemplatesDir(c);
 
-        if (originalPath) {
-            if (!pt[platform]) {
-                result[platform] = getRealPath(
-                    c,
-                    originalPath,
-                    'platformTemplatesDir',
-                    originalPath
-                );
+        if (engineRunner) {
+            const originalPath = engineRunner.getOriginalPlatformTemplatesDir(c);
+
+            if (originalPath) {
+                if (!pt[platform]) {
+                    result[platform] = getRealPath(
+                        c,
+                        originalPath,
+                        'platformTemplatesDir',
+                        originalPath
+                    );
+                } else {
+                    result[platform] = getRealPath(
+                        c,
+                        pt[platform],
+                        'platformTemplatesDir',
+                        originalPath
+                    );
+                }
             } else {
-                result[platform] = getRealPath(
-                    c,
-                    pt[platform],
-                    'platformTemplatesDir',
-                    originalPath
-                );
+                logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
             }
-        } else {
-            logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
         }
     });
 
