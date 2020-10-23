@@ -1,7 +1,6 @@
 const { withExpo } = require('@expo/next-adapter');
 const withImages = require('next-images');
 const withFonts = require('next-fonts');
-const withCSS = require('@zeit/next-css');
 const path = require('path');
 const nextTranspile = require('next-transpile-modules');
 
@@ -46,7 +45,7 @@ export const withRNV = (config) => {
     }
 
     const withTM = nextTranspile(transModules);
-    const cnf1 = withExpo(withCSS(withFonts(withImages(withTM(cnf)))));
+    const cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
     cnf1.pageExtensions = process.env.RNV_EXTENSIONS.split(',');
     return cnf1;
 };
