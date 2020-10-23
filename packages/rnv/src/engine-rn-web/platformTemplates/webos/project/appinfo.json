@@ -1,10 +1,14 @@
 {
-    "vendor": "Pavel Jacko",
-    "largeIcon": "largeIcon.png",
+    "appDescription": "{{APP_DESCRIPTION}}",
+    "bgColor": "{{APP_BG_COLOR}}",
     "icon": "icon.png",
-    "main": "index.html",
+    "iconColor": "{{APP_ICON_COLOR}}",
     "id": "{{APPLICATION_ID}}",
+    "largeIcon": "largeIcon.png",
+    "main": "index.html",
+    "splashBackground": "splashBackground.png",
     "title": "{{APP_TITLE}}",
     "type": "web",
+    "vendor": "{{APP_VENDOR}}",
     "version": "{{APP_VERSION}}"
 }
