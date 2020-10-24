@@ -18,7 +18,6 @@ import {
     CURRENT_DIR
 } from '../constants';
 import {
-    copyFileSync,
     mkdirSync,
     writeFileSync,
     readObjectSync,
@@ -40,11 +39,9 @@ import {
     logTask,
     logWarning,
     logDebug,
-    logInfo,
     getCurrentCommand
 } from '../systemManager/logger';
 import {
-    checkAndCreateGitignore,
     upgradeProjectDependencies
 } from '../projectManager/projectParser';
 import { inquirerPrompt } from '../../cli/prompt';
@@ -65,32 +62,6 @@ export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
 
     return resolve();
 });
-
-export const fixRenativeConfigsSync = async (c) => {
-    logTask('fixRenativeConfigsSync');
-
-    // Parse Project Config
-    // checkAndCreateProjectPackage(c, 'renative-app', 'ReNative App');
-
-    // Check gitignore
-    await checkAndCreateGitignore(c);
-
-    // Check babel-config
-    logDebug('configureProject:check babel config');
-    if (!fsExistsSync(c.paths.project.babelConfig)) {
-        logInfo(
-            `Your babel config file ${chalk().white(
-                c.paths.project.babelConfig
-            )} is missing! CREATING...DONE`
-        );
-        copyFileSync(
-            path.join(c.paths.rnv.projectTemplate.dir, RN_BABEL_CONFIG_NAME),
-            c.paths.project.babelConfig
-        );
-    }
-
-    return true;
-};
 
 const _generateConfigPaths = (pathObj, dir) => {
     pathObj.dir = dir;
