@@ -142,6 +142,15 @@ export const schemaRoot = {
                 supportedPlatforms: {
                     type: 'array',
                 },
+                engineConfigs: {
+                    additionalProperties: true,
+                    type: 'object'
+                },
+                enginePlatforms: {
+                    // TODO: specify object structure
+                    additionalProperties: true,
+                    type: 'object'
+                }
             }
         },
         isBuildHooksReady: {

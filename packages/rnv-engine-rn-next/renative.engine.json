@@ -1,0 +1,21 @@
+{
+    "id": "engine-rn-next",
+    "packageName": "@rnv/engine-rn-next",
+    "overview": "React native based engine with web transpiler provided by react-native-web and render by nextjs",
+    "plugins": {
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "react-native-web": "source:rnv",
+        "next": "source:rnv"
+    },
+    "npm": {
+        "devDependencies": {
+            "@rnv/engine-rn-next": "0.32.0-feat-decoupled-engines.0"
+        }
+    },
+    "platforms": {
+        "web": {}
+    }
+}

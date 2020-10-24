@@ -3,7 +3,8 @@ import inquirer from 'inquirer';
 
 import {
     RENATIVE_CONFIG_NAME,
-    RENATIVE_CONFIG_TEMPLATE_NAME
+    RENATIVE_CONFIG_TEMPLATE_NAME,
+    RN_BABEL_CONFIG_NAME
 } from '../constants';
 import {
     copyFolderContentsRecursiveSync,
@@ -413,6 +414,26 @@ export const configureEntryPoints = async (c) => {
         });
     } catch (e) {
         return Promise.reject(e);
+    }
+
+    return true;
+};
+
+export const checkAndCreateBabelConfig = async (c) => {
+    logTask('checkAndCreateBabelConfig');
+
+    // Check babel-config
+    logDebug('configureProject:check babel config');
+    if (!fsExistsSync(c.paths.project.babelConfig)) {
+        logInfo(
+            `Your babel config file ${chalk().white(
+                c.paths.project.babelConfig
+            )} is missing! CREATING...DONE`
+        );
+        copyFileSync(
+            path.join(c.paths.rnv.projectTemplate.dir, RN_BABEL_CONFIG_NAME),
+            c.paths.project.babelConfig
+        );
     }
 
     return true;

@@ -255,7 +255,6 @@ export const getConfigPropArray = (c, platform, key) => {
         c.files.rnv.projectTemplates.config,
         // { plugins: extraPlugins },
         // { pluginTemplates },
-        c.files.rnv.engines.config,
         c.files.workspace.config,
         c.files.workspace.configPrivate,
         c.files.workspace.configLocal,

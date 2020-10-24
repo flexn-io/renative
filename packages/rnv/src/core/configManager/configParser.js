@@ -1,8 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import merge from 'deepmerge';
-// import Ajv from 'ajv';
-// import { SCHEMAS, schemaRoot } from './schema';
 
 import {
     RENATIVE_CONFIG_NAME,
@@ -12,20 +10,14 @@ import {
     RENATIVE_CONFIG_WORKSPACES_NAME,
     RENATIVE_CONFIG_PLUGINS_NAME,
     RENATIVE_CONFIG_TEMPLATES_NAME,
-    RENATIVE_CONFIG_ENGINES_NAME,
     RN_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
     PLATFORMS,
     USER_HOME_DIR,
     RNV_HOME_DIR,
-    CURRENT_DIR,
-    INJECTABLE_RUNTIME_PROPS,
-    WEB_HOSTED_PLATFORMS
+    CURRENT_DIR
 } from '../constants';
-import { getEngineByPlatform } from '../engineManager';
-import { isSystemWin } from '../utils';
 import {
-    copyFileSync,
     mkdirSync,
     writeFileSync,
     readObjectSync,
@@ -47,82 +39,15 @@ import {
     logTask,
     logWarning,
     logDebug,
-    logInfo,
     getCurrentCommand
 } from '../systemManager/logger';
 import {
-    checkAndCreateGitignore,
     upgradeProjectDependencies
 } from '../projectManager/projectParser';
 import { inquirerPrompt } from '../../cli/prompt';
 import { loadPluginTemplates } from '../pluginManager';
 
-// const ajv = new Ajv({ schemas: SCHEMAS });
-
 const IGNORE_FOLDERS = ['.git'];
-
-
-export const configureRuntimeDefaults = async (c) => {
-    c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId || null;
-
-    logTask('configureRuntimeDefaults', `appId:${c.runtime.appId}`);
-
-    // TODO:
-    // version
-    // title
-
-    c.runtime.port = c.program.port
-  || c.buildConfig?.defaults?.ports?.[c.platform]
-  || PLATFORMS[c.platform]?.defaultPort;
-    if (c.program.target !== true) {
-        c.runtime.target = c.program.target
-      || c.files.workspace.config?.defaultTargets?.[c.platform];
-    } else c.runtime.target = c.program.target;
-    c.runtime.scheme = c.program.scheme || 'debug';
-    c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
-    c.runtime.timestamp = c.runtime.timestamp || Date.now();
-    // c.runtime.engine = getEngineByPlatform(c, c.platform);
-
-    c.configPropsInjects = c.configPropsInjects || [];
-    c.systemPropsInjects = c.systemPropsInjects || [];
-    c.runtimePropsInjects = [];
-
-    INJECTABLE_RUNTIME_PROPS.forEach((key) => {
-        c.runtimePropsInjects.push({
-            pattern: `{{runtimeProps.${key}}}`,
-            override: c.runtime[key]
-        });
-    });
-    if (c.buildConfig) {
-        c.runtime.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
-        const { hosted } = c.program;
-        c.runtime.hosted = (hosted || !c.runtime.scheme.bundleAssets) && WEB_HOSTED_PLATFORMS.includes(c.platform);
-
-        // c.runtime.devServer = `http://${ip.address()}:${c.runtime.port}`;
-        if (c.buildConfig.defaults?.supportedPlatforms) {
-            c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms.map((platform) => {
-                const engine = getEngineByPlatform(c, platform);
-                const dir = engine?.paths?.platformTemplatesDir;
-                let isConnected = false;
-                let isValid = false;
-                const pDir = c.paths.project.platformTemplatesDirs?.[platform];
-                if (pDir) {
-                    isValid = true;
-                    isConnected = pDir?.includes?.(getRealPath(c, dir));
-                }
-                const port = c.buildConfig.defaults?.[platform] || PLATFORMS[platform]?.defaultPort;
-                return {
-                    engine,
-                    platform,
-                    isConnected,
-                    port,
-                    isValid
-                };
-            });
-        }
-    }
-    return true;
-};
 
 export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
     if (!c.paths.project.configExists) {
@@ -137,32 +62,6 @@ export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
 
     return resolve();
 });
-
-export const fixRenativeConfigsSync = async (c) => {
-    logTask('fixRenativeConfigsSync');
-
-    // Parse Project Config
-    // checkAndCreateProjectPackage(c, 'renative-app', 'ReNative App');
-
-    // Check gitignore
-    checkAndCreateGitignore(c);
-
-    // Check babel-config
-    logDebug('configureProject:check babel config');
-    if (!fsExistsSync(c.paths.project.babelConfig)) {
-        logInfo(
-            `Your babel config file ${chalk().white(
-                c.paths.project.babelConfig
-            )} is missing! CREATING...DONE`
-        );
-        copyFileSync(
-            path.join(c.paths.rnv.projectTemplate.dir, RN_BABEL_CONFIG_NAME),
-            c.paths.project.babelConfig
-        );
-    }
-
-    return true;
-};
 
 const _generateConfigPaths = (pathObj, dir) => {
     pathObj.dir = dir;
@@ -249,33 +148,7 @@ export const loadFile = (fileObj, pathObj, key) => {
     }
 };
 
-// export const loadFiles = (fileArr, pathArr) => {
-//     const pKey = `${key}Exists`;
-//     pathArr.forEach((item, i) => {
-//       if (!fsExistsSync(pathObj[key])) {
-//           pathObj[pKey] = false;
-//           logDebug(`WARNING: loadFile: Path ${pathObj[key]} does not exists!`);
-//           logDebug(`FILE_EXISTS: ${key}:false path:${pathObj[key]}`);
-//           return false;
-//       }
-//     });
-//
-//
-//     pathObj[pKey] = true;
-//     try {
-//         const fileString = fsReadFileSync(pathObj[key]).toString();
-//         fileObj[key] = JSON.parse(fileString);
-//         pathObj[pKey] = true;
-//         logDebug(`FILE_EXISTS: ${key}:true size:${_formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
-//         return true;
-//     } catch (e) {
-//         logError(`loadFile: ${pathObj[key]} :: ${e}`, true); // crash if there's an error in the config file
-//         return false;
-//     }
-// };
-
 const _arrayMergeOverride = (destinationArray, sourceArray) => sourceArray;
-
 
 const getEnginesPluginDelta = (c) => {
     logDebug('getEnginesPluginDelta');
@@ -285,34 +158,17 @@ const getEnginesPluginDelta = (c) => {
 
     const enginePlugins = {};
     const missingEnginePlugins = {};
-    // const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
-    // if (supPlats) {
-    //     supPlats.forEach((pk) => {
-    //         const selectedEngine = getEngineByPlatform(c, pk, true);
-    //         if (selectedEngine?.plugins) {
-    //             const ePlugins = Object.keys(selectedEngine.plugins);
-    //
-    //             if (ePlugins?.length) {
-    //                 ePlugins.forEach((pluginKey) => {
-    //                     if (!c.files?.project?.config?.[pluginKey]) {
-    //                         missingEnginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
-    //                     }
-    //                     enginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
-    //                 });
-    //             }
-    //         }
-    //     });
-    // }
-    const selectedEngine = getEngineByPlatform(c, c.platform, true);
-    if (selectedEngine?.plugins) {
-        const ePlugins = Object.keys(selectedEngine.plugins);
+
+    const engineConfig = c.runtime.enginePlatforms[c.platform]?.config;
+    if (engineConfig?.plugins) {
+        const ePlugins = Object.keys(engineConfig.plugins);
 
         if (ePlugins?.length) {
             ePlugins.forEach((pluginKey) => {
                 if (!c.files?.project?.config?.[pluginKey]) {
-                    missingEnginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
+                    missingEnginePlugins[pluginKey] = engineConfig.plugins[pluginKey];
                 }
-                enginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
+                enginePlugins[pluginKey] = engineConfig.plugins[pluginKey];
             });
         }
     }
@@ -388,7 +244,6 @@ export const generateBuildConfig = (c) => {
         c.files.rnv.projectTemplates.config,
         { plugins: extraPlugins },
         // { pluginTemplates },
-        c.files.rnv.engines.config,
         c.files.workspace.config,
         c.files.workspace.configPrivate,
         c.files.workspace.configLocal,
@@ -463,18 +318,6 @@ export const generateBuildConfig = (c) => {
             logWarning('Cannot save buildConfig as c.paths.project.builds.dir is not defined');
         }
     }
-
-
-    // DEPRECATED
-    // if (Config.isRenativeProject) {
-    //     const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
-    //
-    //     if (c.platform) {
-    //         fsWriteFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
-    //     } else if (!fsExistsSync(localMetroPath)) {
-    //         fsWriteFileSync(localMetroPath, 'module.exports = []');
-    //     }
-    // }
 };
 
 const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
@@ -643,26 +486,29 @@ const _generatePlatformTemplatePaths = (c) => {
     const result = {};
 
     c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
-        const engine = getEngineByPlatform(c, platform);
-        const originalPath = engine?.paths?.platformTemplatesDir;
-        if (originalPath) {
-            if (!pt[platform]) {
-                result[platform] = getRealPath(
-                    c,
-                    originalPath,
-                    'platformTemplatesDir',
-                    originalPath
-                );
+        const engineRunner = c.runtime.enginePlatforms[platform];
+        if (engineRunner) {
+            const originalPath = engineRunner.getOriginalPlatformTemplatesDir(c);
+
+            if (originalPath) {
+                if (!pt[platform]) {
+                    result[platform] = getRealPath(
+                        c,
+                        originalPath,
+                        'platformTemplatesDir',
+                        originalPath
+                    );
+                } else {
+                    result[platform] = getRealPath(
+                        c,
+                        pt[platform],
+                        'platformTemplatesDir',
+                        originalPath
+                    );
+                }
             } else {
-                result[platform] = getRealPath(
-                    c,
-                    pt[platform],
-                    'platformTemplatesDir',
-                    originalPath
-                );
+                logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
             }
-        } else {
-            logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
         }
     });
 
@@ -708,19 +554,6 @@ export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
 export const loadProjectTemplates = (c) => {
     c.files.rnv.projectTemplates.config = readObjectSync(
         c.paths.rnv.projectTemplates.config
-    );
-};
-
-// export const loadPlatformTemplates = (c) => {
-//     c.files.rnv.platformTemplates.config = readObjectSync(
-//         c.paths.rnv.platformTemplates.config
-//     );
-// };
-
-export const loadEngines = (c) => {
-    logTask('loadEngines');
-    c.files.rnv.engines.config = readObjectSync(
-        c.paths.rnv.engines.config
     );
 };
 
@@ -817,7 +650,7 @@ export const parseRenativeConfigs = async (c) => {
     // loadPlatformTemplates(c);
 
     // LOAD ENGINES
-    loadEngines(c);
+    // loadEngines(c);
 
     if (!c.files.project.config) {
         logDebug(`BUILD_CONFIG: c.files.project.config does not exists. path: ${c.paths.project.config}`);
@@ -894,7 +727,9 @@ export const parseRenativeConfigs = async (c) => {
 export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } = {}) => {
     const c = {
         cli: {},
-        runtime: {},
+        runtime: {
+            enginePlatforms: {}
+        },
         paths: {
             rnv: {
                 pluginTemplates: {
@@ -1030,10 +865,6 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
         'pluginTemplates'
     );
 
-    c.paths.rnv.engines.config = path.join(
-        c.paths.rnv.engines.dir,
-        RENATIVE_CONFIG_ENGINES_NAME
-    );
     c.paths.rnv.pluginTemplates.config = path.join(
         c.paths.rnv.pluginTemplates.dir,
         RENATIVE_CONFIG_PLUGINS_NAME

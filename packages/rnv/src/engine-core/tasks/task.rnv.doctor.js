@@ -2,7 +2,7 @@ import lGet from 'lodash.get';
 import { chalk, logTask, logToSummary } from '../../core/systemManager/logger';
 import { PARAMS, TASK_DOCTOR, TASK_APP_CONFIGURE } from '../../core/constants';
 import { executeTask } from '../../core/engineManager';
-import { configureRuntimeDefaults } from '../../core/configManager/configParser';
+import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
 import { readObjectSync, fsExistsSync } from '../../core/systemManager/fileutils';
 import {
     validateRenativeJsonSchema,

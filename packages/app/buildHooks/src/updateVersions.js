@@ -80,6 +80,22 @@ export const updateVersions = async (c) => {
         }
     );
 
+    _updateJson(
+        c,
+        path.join(
+            pkgFolder,
+            'rnv/projectTemplates/renative.templates.json'
+        ),
+        {
+            engineTemplates: {
+                '@rnv/engine-rn': v,
+                '@rnv/engine-rn-web': v,
+                '@rnv/engine-rn-next': v,
+                '@rnv/engine-rn-electron': v
+            },
+        }
+    );
+
     FileUtils.copyFileSync(
         path.join(c.paths.project.dir, '/../../README.md'),
         path.join(pkgFolder, 'renative/README.md')

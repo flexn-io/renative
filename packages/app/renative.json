@@ -14,6 +14,12 @@
         "@noriginmedia/react-spatial-navigation": "source:rnv",
         "next": "source:rnv"
     },
+    "engines": {
+        "@rnv/engine-rn": "source:rnv",
+        "@rnv/engine-rn-web": "source:rnv",
+        "@rnv/engine-rn-next": "source:rnv",
+        "@rnv/engine-rn-electron": "source:rnv"
+    },
     "tasks": {
         "install": {
             "script": "yarn bootstrap"
