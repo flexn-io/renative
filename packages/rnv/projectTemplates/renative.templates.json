@@ -5,16 +5,16 @@
     },
     "engineTemplates": {
         "@rnv/engine-rn": {
-            "version": "0.32.0-feat-decoupled-engines.3"
+            "version": "0.32.0-alpha.0"
         },
         "@rnv/engine-rn-web": {
-            "version": "0.32.0-feat-decoupled-engines.3"
+            "version": "0.32.0-alpha.0"
         },
         "@rnv/engine-rn-next": {
-            "version": "0.32.0-feat-decoupled-engines.3"
+            "version": "0.32.0-alpha.0"
         },
         "@rnv/engine-rn-electron": {
-            "version": "0.32.0-feat-decoupled-engines.3"
+            "version": "0.32.0-alpha.0"
         }
     },
     "platforms": {

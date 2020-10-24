@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-electron",
-    "version": "0.32.0-feat-decoupled-engines.3",
+    "version": "0.32.0-alpha.0",
     "description": "ReNative Engine to build electron based platforms with react native support.",
     "keywords": [
         "electron",

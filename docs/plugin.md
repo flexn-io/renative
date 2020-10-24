@@ -242,9 +242,9 @@ rnv plugin add @react-native-community/push-notification-ios
 ## @react-native-community/slider
 
 
-Version: `2.0.2`
+Version: `3.0.3`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+Platforms: `ios`,`android`
 
 
 
@@ -2744,7 +2744,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-feat-decoupled-engines.3`
+Version: `0.32.0-alpha.0`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
