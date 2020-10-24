@@ -15,6 +15,7 @@ import {
     // getAppTemplateFolder,
     getAppTitle,
     getAppId,
+    getAppDescription,
     // getAppTemplateFolder,
     getConfigProp,
     checkPortInUse,
@@ -388,6 +389,22 @@ const configureProject = async (c) => {
         {
             pattern: '{{APP_VERSION}}',
             override: semver.coerce(getAppVersion(c, platform))
+        },
+        {
+            pattern: '{{APP_DESCRIPTION}}',
+            override: getAppDescription(c, platform)
+        },
+        {
+            pattern: '{{APP_BG_COLOR}}',
+            override: getConfigProp(c, platform, 'bgColor', '#fff')
+        },
+        {
+            pattern: '{{APP_ICON_COLOR}}',
+            override: getConfigProp(c, platform, 'iconColor', '#000')
+        },
+        {
+            pattern: '{{APP_VENDOR}}',
+            override: getConfigProp(c, platform, 'vendor', 'Pavel Jacko')
         }
     ];
 
