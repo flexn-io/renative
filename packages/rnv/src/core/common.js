@@ -240,6 +240,10 @@ export const _getConfigProp = (c, platform, key, defaultVal, sourceObj) => {
         resultPlatforms,
         resultCommon
     );
+    if (result === undefined || result === null) {
+        result = getFlavouredProp(c, sourceObj, baseKey);
+    }
+
     if (result === undefined || result === null) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
     if (typeof result === 'object' && subKey.length) {
         return lGet(result, subKey);

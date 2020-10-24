@@ -1,6 +1,9 @@
+import inquirer from 'inquirer';
+import path from 'path';
 import { logDebug, logHook } from '../systemManager/logger';
 import { executeAsync } from '../systemManager/exec';
-import { fsExistsSync } from '../systemManager/fileutils';
+import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/fileutils';
+import { getConfigProp } from '../common';
 
 export const executePipe = async (c, key) => {
     logHook('executePipe', `('${key}')`);
@@ -15,7 +18,6 @@ export const executePipe = async (c, key) => {
     if (Array.isArray(pipe)) {
         await pipe.reduce(
             (accumulatorPromise, next) => {
-                // console.log('DDJHDGD', next?.name);
                 logHook(`buildHook.${next?.name}`, '(EXECUTING)');
                 return accumulatorPromise.then(() => next(c));
             },
@@ -31,32 +33,43 @@ export const executePipe = async (c, key) => {
 export const buildHooks = async (c) => {
     logDebug('buildHooks');
 
-    if (fsExistsSync(c.paths.buildHooks.index)) {
-        if (c.isBuildHooksReady) {
-            return true;
+    const enableHookRebuild = getConfigProp(c, c.platform, 'enableHookRebuild');
+
+    const shouldBuildHook = c.program.reset || c.program.resetHard
+    || !fsExistsSync(c.paths.buildHooks.dist.dir) || enableHookRebuild === true;
+
+
+    if (!fsExistsSync(c.paths.buildHooks.index)) {
+        const { confirm } = await inquirer.prompt({
+            type: 'confirm',
+            name: 'confirm',
+            message: 'Build hooks not configured in this project. Configure?'
+        });
+        if (confirm) {
+            copyFolderContentsRecursiveSync(
+                path.join(c.paths.rnv.dir, 'projectTemplate/buildHooks/src'),
+                c.paths.buildHooks.dir
+            );
         }
+    }
 
-        const cmd = 'babel';
-
+    if (shouldBuildHook && !c.isBuildHooksReady) {
         try {
             logHook('buildHooks', 'Build hooks not complied. BUILDING...');
             await executeAsync(
                 c,
-                `${cmd} ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir}`,
+                `babel ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir}`,
                 { cwd: c.paths.project.dir, silent: true }
             );
-
-            const h = require(c.paths.buildHooks.dist.index);
-            c.buildHooks = h.hooks;
-            c.buildPipes = h.pipes;
-            c.isBuildHooksReady = true;
-            return true;
         } catch (e) {
-            // logWarning(`BUILD_HOOK Failed with error: ${e}`);
-            // resolve();
             // Fail Builds instead of warn when hook fails
             return Promise.reject(`BUILD_HOOK Failed with error: ${e}`);
         }
     }
+
+    const h = require(c.paths.buildHooks.dist.index);
+    c.buildHooks = h.hooks;
+    c.buildPipes = h.pipes;
+    c.isBuildHooksReady = true;
     return true;
 };

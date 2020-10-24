@@ -1488,6 +1488,41 @@ Enable or disable sending analytics to improve ReNative
 
 
 ---
+## enableHookRebuild
+
+**path**
+`renative.json/#/enableHookRebuild`
+
+**type** `boolean`
+
+If set to true in `./renative.json` build hooks will be compiled at each rnv command run. If set to `false` (default) rebuild will be triggered only if `dist` folder is missing, `-r` has been passed or you run `rnv hooks run` directly making your rnv commands faster
+
+**examples**
+
+
+```json
+{
+  "enableHookRebuild": "true"
+}
+```
+
+
+
+```json
+{
+  "enableHookRebuild": "false"
+}
+```
+
+
+
+
+
+
+
+
+
+---
 ## engines
 
 **path**
