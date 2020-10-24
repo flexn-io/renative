@@ -770,7 +770,7 @@ export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
 export const TASK_CONFIGURE_SOFT = 'configureSoft';
 export const TASK_KILL = 'kill';
 
-const _PARAMS = {
+export const PARAM_KEYS = {
     info: {
         shortcut: 'i',
         value: 'value',
@@ -857,7 +857,6 @@ const _PARAMS = {
     exeMethod: {
         shortcut: 'x',
         value: 'value',
-        isRequired: true,
         description: 'eXecutable method in buildHooks'
     },
     port: {
@@ -947,19 +946,21 @@ const _PARAMS = {
     }
 };
 
-Object.keys(_PARAMS).forEach((k) => {
-    _PARAMS[k].key = k;
+Object.keys(PARAM_KEYS).forEach((k) => {
+    PARAM_KEYS[k].key = k;
 });
 
 
 export const PARAMS = {
-    withBase: arr => [_PARAMS.info, _PARAMS.ci, _PARAMS.mono, _PARAMS.maxErrorLength, _PARAMS.only].concat(arr || []),
-    withConfigure: arr => [_PARAMS.reset, _PARAMS.resetHard, _PARAMS.engine,
-        _PARAMS.appConfigID, _PARAMS.scheme, _PARAMS.platform].concat(arr || []),
-    withRun: arr => [_PARAMS.target, _PARAMS.device, _PARAMS.hosted,
-        _PARAMS.port, _PARAMS.debug, _PARAMS.debugIp, _PARAMS.skipTargetCheck, _PARAMS.host].concat(arr || []),
-    withAll: arr => Object.values(_PARAMS).concat(arr || []),
-    all: Object.keys(_PARAMS)
+    withBase: arr => [PARAM_KEYS.info, PARAM_KEYS.ci, PARAM_KEYS.mono,
+        PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
+    withConfigure: arr => [PARAM_KEYS.reset, PARAM_KEYS.resetHard, PARAM_KEYS.engine,
+        PARAM_KEYS.appConfigID, PARAM_KEYS.scheme, PARAM_KEYS.platform].concat(arr || []),
+    withRun: arr => [PARAM_KEYS.target, PARAM_KEYS.device, PARAM_KEYS.hosted,
+        PARAM_KEYS.port, PARAM_KEYS.debug, PARAM_KEYS.debugIp, PARAM_KEYS.skipTargetCheck,
+        PARAM_KEYS.host].concat(arr || []),
+    withAll: arr => Object.values(PARAM_KEYS).concat(arr || []),
+    all: Object.keys(PARAM_KEYS)
 };
 
 

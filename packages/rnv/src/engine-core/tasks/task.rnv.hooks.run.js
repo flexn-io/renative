@@ -1,7 +1,8 @@
-import { chalk, logTask } from '../../core/systemManager/logger';
+import inquirer from 'inquirer';
+import { logTask } from '../../core/systemManager/logger';
 import { buildHooks } from '../../core/projectManager/buildHooks';
 import { executeTask } from '../../core/engineManager';
-import { TASK_HOOKS_RUN, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { TASK_HOOKS_RUN, TASK_PROJECT_CONFIGURE, PARAMS, PARAM_KEYS } from '../../core/constants';
 
 
 export const taskRnvHooksRun = async (c, parentTask, originTask) => {
@@ -14,15 +15,30 @@ export const taskRnvHooksRun = async (c, parentTask, originTask) => {
     if (!c.buildHooks) {
         return Promise.reject('Build hooks have not been compiled properly!');
     }
-    if (c.buildHooks[c.program?.exeMethod]) {
-        await c.buildHooks[c.program?.exeMethod](c);
-    } else {
-        return Promise.reject(
-            `Method name ${chalk().white(
-                c.program.exeMethod
-            )} does not exists in your buildHooks!`
-        );
+
+    let hookName = c.program?.exeMethod;
+    let showHookList = false;
+    if (!hookName || hookName === true) {
+        showHookList = true;
+    } else if (!c.buildHooks[hookName]) {
+        showHookList = true;
     }
+
+    if (showHookList) {
+        const hooksList = Object.keys(c.buildHooks);
+
+        const { selectedHook } = await inquirer.prompt({
+            name: 'selectedHook',
+            type: 'list',
+            message: 'Pick an available hook:',
+            choices: hooksList
+        });
+        hookName = selectedHook;
+    }
+
+    await c.buildHooks[hookName](c);
+
+
     return true;
 };
 
@@ -30,7 +46,7 @@ export default {
     description: 'Run specific build hook',
     fn: taskRnvHooksRun,
     task: TASK_HOOKS_RUN,
-    params: PARAMS.withBase(),
+    params: PARAMS.withBase([PARAM_KEYS.exeMethod]),
     platforms: [],
     skipAppConfig: true,
     skipPlatforms: true,

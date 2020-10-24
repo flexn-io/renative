@@ -30,9 +30,9 @@ const hooks = {
         await generateCombinedChangelog(c);
         return true;
     },
-    changelog: generateChangelog,
-    changelogCombined: generateCombinedChangelog,
-    engine: generateEngineTaks,
+    generateChangelog,
+    generateCombinedChangelog,
+    generateEngineTaks,
     gitCommit,
     gitTag,
     generateApiConfigDocs,
