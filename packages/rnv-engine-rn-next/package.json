@@ -33,7 +33,6 @@
     "dependencies": {
         "@expo/next-adapter": "2.1.29",
         "@next/bundle-analyzer": "9.4.4",
-        "@zeit/next-css": "1.0.1",
         "babel-loader": "8.0.5",
         "babel-preset-expo": "8.0.0",
         "html-webpack-harddisk-plugin": "0.2.0",
