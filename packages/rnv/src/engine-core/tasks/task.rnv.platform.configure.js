@@ -4,7 +4,7 @@ import { getAppFolder } from '../../core/common';
 import { isBuildSchemeSupported } from '../../core/configManager/schemeParser';
 import { isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../../core/platformManager';
 import { injectPlatformDependencies } from '../../core/configManager/packageParser';
-import { configureRuntimeDefaults } from '../../core/configManager/configParser';
+import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
 import { executeTask } from '../../core/engineManager';
 import { PARAMS, TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../../core/constants';
 

@@ -1,7 +1,8 @@
 import { configurePlugins, overrideTemplatePlugins, resolvePluginDependants } from '../../core/pluginManager';
 import { chalk, logTask, logInfo } from '../../core/systemManager/logger';
 import { parseRenativeConfigs, fixRenativeConfigsSync,
-    checkIsRenativeProject, configureRuntimeDefaults, generateRuntimeConfig } from '../../core/configManager/configParser';
+    checkIsRenativeProject, generateRuntimeConfig } from '../../core/configManager/configParser';
+import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
 import { applyTemplate, checkIfTemplateConfigured, configureEntryPoints, configureTemplateFiles, isTemplateInstalled } from '../../core/templateManager';
 import { fsExistsSync, fsMkdirSync } from '../../core/systemManager/fileutils';
 import { checkCrypto } from '../../core/systemManager/crypto';
