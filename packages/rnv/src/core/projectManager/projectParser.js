@@ -62,7 +62,7 @@ export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
     resolve();
 });
 
-export const checkAndCreateGitignore = (c) => {
+export const checkAndCreateGitignore = async (c) => {
     logTask('checkAndCreateGitignore');
     const ignrPath = path.join(c.paths.project.dir, '.gitignore');
     if (!fsExistsSync(ignrPath)) {
@@ -75,6 +75,7 @@ export const checkAndCreateGitignore = (c) => {
             ignrPath
         );
     }
+    return true;
 };
 
 export const copyRuntimeAssets = c => new Promise((resolve, reject) => {

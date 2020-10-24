@@ -149,7 +149,7 @@ export const fixRenativeConfigsSync = async (c) => {
     // checkAndCreateProjectPackage(c, 'renative-app', 'ReNative App');
 
     // Check gitignore
-    checkAndCreateGitignore(c);
+    await checkAndCreateGitignore(c);
 
     // Check babel-config
     logDebug('configureProject:check babel config');

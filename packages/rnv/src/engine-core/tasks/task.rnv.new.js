@@ -6,6 +6,7 @@ import { generateOptions } from '../../cli/prompt';
 import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS, CURRENT_DIR, PARAMS } from '../../core/constants';
 import { getTemplateOptions } from '../../core/templateManager';
 import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync, writeObjectSync, readObjectSync, removeDirs } from '../../core/systemManager/fileutils';
+import { checkAndCreateGitignore } from '../../core/projectManager/projectParser';
 import { executeAsync } from '../../core/systemManager/exec';
 import {
     chalk,
@@ -433,6 +434,7 @@ export const taskRnvNew = async (c) => {
     writeFileSync(c.paths.project.config, config);
 
     if (data.gitEnabled) {
+        await checkAndCreateGitignore(c);
         await configureGit(c);
     }
 
