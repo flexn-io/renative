@@ -11,6 +11,7 @@ import taskRnvStart from './tasks/task.rnv.start';
 import taskRnvExport from './tasks/task.rnv.export';
 import taskRnvDeploy from './tasks/task.rnv.deploy';
 import taskRnvDebug from './tasks/task.rnv.debug';
+import config from '../renative.engine.json';
 
 const { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } = EngineManager;
 
@@ -60,7 +61,8 @@ export default {
     getSubTasks,
     getTasks,
     getId,
-    title
+    title,
+    config
 };
 
 export { withRNV };

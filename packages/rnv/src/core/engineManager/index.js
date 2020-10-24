@@ -17,11 +17,34 @@ const REGISTERED_ENGINES = [];
 const ENGINES = {};
 const ENGINE_CORE = 'engine-core';
 
-export const registerEngine = async (c, engine) => {
+export const registerEngine = async (c, engine, platform) => {
     ENGINES[engine.getId()] = engine;
     REGISTERED_ENGINES.push(engine);
-    // c.runtime.engineRunners = c.runtime.engineRunners || {};
-    // c.runtime.engineRunners[engine.getId()] = engine;
+    _registerEnginePlatform(c, platform, engine);
+};
+
+const _registerEnginePlatform = (c, platform, engine) => {
+    if (platform) {
+        c.runtime.enginePlatforms[platform] = engine;
+    }
+};
+
+export const registerMissingPlatformEngines = async (c, taskInstance) => {
+    logTask('registerMissingPlatformEngines');
+    if (taskInstance?.platforms?.length === 0) {
+        const registerEngineList = [];
+        c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
+            registerEngineList.push(
+                registerPlatformEngine(c, platform)
+            );
+        });
+
+        if (registerEngineList.length) {
+            await Promise.all(registerEngineList);
+        }
+    }
+
+    return true;
 };
 
 export const loadEngineConfigs = async (c) => {
@@ -45,7 +68,7 @@ export const loadEngineConfigs = async (c) => {
         });
         if (enginesToInstall.length) {
             logInfo(`Some engines not installed in your project:
-${enginesToInstall.map(v => `> ${v}`).join('\n')} 
+${enginesToInstall.map(v => `> ${v}`).join('\n')}
  INSTALLING...`);
             await Promise.all(enginesToInstall.map(v => executeAsync(`npm i ${v} --no-save`, {
                 cwd: c.paths.project.dir
@@ -66,11 +89,16 @@ ${enginesToInstall.map(v => `> ${v}`).join('\n')}
     return true;
 };
 
-export const registerPlatformEngine = (c) => {
+export const registerPlatformEngine = (c, platform) => {
     // Only register active platform engine to be faster
-    const selectedEngine = getEngineConfigByPlatform(c, c.platform);
-    if (selectedEngine) {
-        registerEngine(c, require(selectedEngine.packageName)?.default);
+    const selectedEngineConfig = getEngineConfigByPlatform(c, platform);
+    if (selectedEngineConfig) {
+        const existingEngine = ENGINES[selectedEngineConfig.id];
+        if (!existingEngine) {
+            registerEngine(c, require(selectedEngineConfig.packageName)?.default, platform);
+        } else {
+            _registerEnginePlatform(c, platform, existingEngine);
+        }
     }
 };
 

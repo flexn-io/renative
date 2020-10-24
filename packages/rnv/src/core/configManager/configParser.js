@@ -1,8 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import merge from 'deepmerge';
-// import Ajv from 'ajv';
-// import { SCHEMAS, schemaRoot } from './schema';
 
 import {
     RENATIVE_CONFIG_NAME,
@@ -19,7 +17,6 @@ import {
     RNV_HOME_DIR,
     CURRENT_DIR
 } from '../constants';
-import { getEngineConfigByPlatform, getEngineRunnerByPlatform } from '../engineManager';
 import {
     copyFileSync,
     mkdirSync,
@@ -52,8 +49,6 @@ import {
 } from '../projectManager/projectParser';
 import { inquirerPrompt } from '../../cli/prompt';
 import { loadPluginTemplates } from '../pluginManager';
-
-// const ajv = new Ajv({ schemas: SCHEMAS });
 
 const IGNORE_FOLDERS = ['.git'];
 
@@ -182,33 +177,7 @@ export const loadFile = (fileObj, pathObj, key) => {
     }
 };
 
-// export const loadFiles = (fileArr, pathArr) => {
-//     const pKey = `${key}Exists`;
-//     pathArr.forEach((item, i) => {
-//       if (!fsExistsSync(pathObj[key])) {
-//           pathObj[pKey] = false;
-//           logDebug(`WARNING: loadFile: Path ${pathObj[key]} does not exists!`);
-//           logDebug(`FILE_EXISTS: ${key}:false path:${pathObj[key]}`);
-//           return false;
-//       }
-//     });
-//
-//
-//     pathObj[pKey] = true;
-//     try {
-//         const fileString = fsReadFileSync(pathObj[key]).toString();
-//         fileObj[key] = JSON.parse(fileString);
-//         pathObj[pKey] = true;
-//         logDebug(`FILE_EXISTS: ${key}:true size:${_formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
-//         return true;
-//     } catch (e) {
-//         logError(`loadFile: ${pathObj[key]} :: ${e}`, true); // crash if there's an error in the config file
-//         return false;
-//     }
-// };
-
 const _arrayMergeOverride = (destinationArray, sourceArray) => sourceArray;
-
 
 const getEnginesPluginDelta = (c) => {
     logDebug('getEnginesPluginDelta');
@@ -218,34 +187,17 @@ const getEnginesPluginDelta = (c) => {
 
     const enginePlugins = {};
     const missingEnginePlugins = {};
-    // const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
-    // if (supPlats) {
-    //     supPlats.forEach((pk) => {
-    //         const selectedEngine = getEngineConfigByPlatform(c, pk, true);
-    //         if (selectedEngine?.plugins) {
-    //             const ePlugins = Object.keys(selectedEngine.plugins);
-    //
-    //             if (ePlugins?.length) {
-    //                 ePlugins.forEach((pluginKey) => {
-    //                     if (!c.files?.project?.config?.[pluginKey]) {
-    //                         missingEnginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
-    //                     }
-    //                     enginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
-    //                 });
-    //             }
-    //         }
-    //     });
-    // }
-    const selectedEngine = getEngineConfigByPlatform(c, c.platform, true);
-    if (selectedEngine?.plugins) {
-        const ePlugins = Object.keys(selectedEngine.plugins);
+
+    const engineConfig = c.runtime.enginePlatforms[c.platform]?.config;
+    if (engineConfig?.plugins) {
+        const ePlugins = Object.keys(engineConfig.plugins);
 
         if (ePlugins?.length) {
             ePlugins.forEach((pluginKey) => {
                 if (!c.files?.project?.config?.[pluginKey]) {
-                    missingEnginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
+                    missingEnginePlugins[pluginKey] = engineConfig.plugins[pluginKey];
                 }
-                enginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
+                enginePlugins[pluginKey] = engineConfig.plugins[pluginKey];
             });
         }
     }
@@ -395,18 +347,6 @@ export const generateBuildConfig = (c) => {
             logWarning('Cannot save buildConfig as c.paths.project.builds.dir is not defined');
         }
     }
-
-
-    // DEPRECATED
-    // if (Config.isRenativeProject) {
-    //     const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
-    //
-    //     if (c.platform) {
-    //         fsWriteFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
-    //     } else if (!fsExistsSync(localMetroPath)) {
-    //         fsWriteFileSync(localMetroPath, 'module.exports = []');
-    //     }
-    // }
 };
 
 const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
@@ -575,8 +515,7 @@ const _generatePlatformTemplatePaths = (c) => {
     const result = {};
 
     c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
-        const engineRunner = getEngineRunnerByPlatform(c, platform);
-
+        const engineRunner = c.runtime.enginePlatforms[platform];
         if (engineRunner) {
             const originalPath = engineRunner.getOriginalPlatformTemplatesDir(c);
 
@@ -817,7 +756,9 @@ export const parseRenativeConfigs = async (c) => {
 export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } = {}) => {
     const c = {
         cli: {},
-        runtime: {},
+        runtime: {
+            enginePlatforms: {}
+        },
         paths: {
             rnv: {
                 pluginTemplates: {

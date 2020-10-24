@@ -13,6 +13,7 @@ import {
     getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
     getTemplateProjectDir, ejectPlatform, getTemplateRootDir, getOriginalPlatformTemplatesDir
 } from './commonEngine';
+import config from '../renative.engine.json';
 
 const { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } = EngineManager;
 
@@ -63,7 +64,8 @@ export default {
     getSubTasks,
     getTasks,
     getId,
-    title
+    title,
+    config
 };
 
 
