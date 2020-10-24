@@ -37,7 +37,7 @@ export const updateProjectPlatforms = (c, platforms) => {
 
 export const generatePlatformChoices = (c) => {
     const options = c.runtime.supportedPlatforms.map(v => ({
-        name: `${v.platform} - ${v.isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')}`,
+        name: `${v.platform} - ${v.isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')} [${chalk().cyan(v.engine?.id)}]`,
         value: v.platform,
         isConnected: v.isConnected
     }));
