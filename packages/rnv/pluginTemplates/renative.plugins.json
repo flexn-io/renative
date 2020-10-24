@@ -2412,7 +2412,14 @@
             }
         },
         "@react-native-community/slider": {
-            "version": "2.0.2"
+            "version": "3.0.3",
+            "ios": {
+                "podName": "react-native-slider"
+            },
+            "android": {
+                "path": "node_modules/@react-native-community/slider/android",
+                "package": "com.reactnativecommunity.slider.ReactSliderPackage"
+            }
         },
         "react-native-render-html": {
             "version": "4.1.1",
