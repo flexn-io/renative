@@ -29,9 +29,38 @@ const _registerEnginePlatform = (c, platform, engine) => {
     }
 };
 
+export const configureEngines = async (c) => {
+    logTask('configureEngines');
+    const { engines } = c.files.project.config;
+    const { devDependencies } = c.files.project.package;
+    let needsPackageUpdate = false;
+    if (engines) {
+        Object.keys(engines).forEach((k) => {
+            const engVer = c.buildConfig.engineTemplates?.[k]?.version;
+            if (engVer) {
+                if (devDependencies[k]) {
+                    if (devDependencies[k] !== engVer) {
+                        needsPackageUpdate = true;
+                        logInfo(`Updating missing engine ${k} ${
+                            chalk().red(devDependencies[k])}=>${engVer} to package.json`);
+                        devDependencies[k] = engVer;
+                    }
+                } else {
+                    needsPackageUpdate = true;
+                    logInfo(`Adding missing engine ${k}@${engVer} to package.json`);
+                    devDependencies[k] = engVer;
+                }
+            }
+        });
+        if (needsPackageUpdate) {
+            writeFileSync(c.paths.project.package, c.files.project.package);
+        }
+    }
+};
+
 export const registerMissingPlatformEngines = async (c, taskInstance) => {
     logTask('registerMissingPlatformEngines');
-    if (taskInstance?.platforms?.length === 0) {
+    if (!taskInstance.isGlobalScope && taskInstance?.platforms?.length === 0) {
         const registerEngineList = [];
         c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
             registerEngineList.push(
