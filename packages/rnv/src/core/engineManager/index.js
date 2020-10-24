@@ -31,6 +31,7 @@ const _registerEnginePlatform = (c, platform, engine) => {
 
 export const configureEngines = async (c) => {
     logTask('configureEngines');
+    if (c.runtime.isWrapper) return true;
     const { engines } = c.files.project.config;
     const { devDependencies } = c.files.project.package;
     let needsPackageUpdate = false;
@@ -56,6 +57,7 @@ export const configureEngines = async (c) => {
             writeFileSync(c.paths.project.package, c.files.project.package);
         }
     }
+    return true;
 };
 
 export const registerMissingPlatformEngines = async (c, taskInstance) => {
