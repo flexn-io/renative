@@ -39,17 +39,17 @@ export const loadEngineConfigs = async (c) => {
             } else {
                 const engVer = c.buildConfig.engineTemplates?.[k]?.version;
                 if (engVer) {
-                    enginesToInstall.push(
-                        executeAsync(`npm i ${k}@${engVer} --no-save`, {
-                            cwd: c.paths.project.dir
-                        })
-                    );
+                    enginesToInstall.push(`${k}@${engVer}`);
                 }
             }
         });
         if (enginesToInstall.length) {
-            logInfo('Some engines not installed in your project. INSTALLING...');
-            await Promise.all(enginesToInstall);
+            logInfo(`Some engines not installed in your project:
+${enginesToInstall.map(v => `> ${v}`).join('\n')} 
+ INSTALLING...`);
+            await Promise.all(enginesToInstall.map(v => executeAsync(`npm i ${v} --no-save`, {
+                cwd: c.paths.project.dir
+            })));
             return loadEngineConfigs(c);
         }
     } else if (c.files.project.config) {
