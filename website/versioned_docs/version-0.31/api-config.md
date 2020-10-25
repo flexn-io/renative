@@ -40,7 +40,7 @@ Common config props used as default props for all available buildSchemes
   "common": {
     "author": {
       "name": "Pavel Jacko",
-      "email": "Pavel Jacko <i@pavjacko.com>",
+      "email": "Pavel Jacko <pavel.jacko@gmail.com>",
       "url": "https://github.com/pavjacko"
     },
     "license": "MIT",

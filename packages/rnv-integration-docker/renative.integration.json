@@ -1,0 +1,4 @@
+{
+  "id": "docker",
+  "npmPackage": "@rnv/integration-docker"
+}

@@ -1029,7 +1029,7 @@ export const schemaRoot = {
                 {
                     author: {
                         name: 'Pavel Jacko',
-                        email: 'Pavel Jacko <i@pavjacko.com>',
+                        email: 'Pavel Jacko <pavel.jacko@gmail.com>',
                         url: 'https://github.com/pavjacko'
                     },
                     license: 'MIT',
