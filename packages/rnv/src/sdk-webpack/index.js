@@ -45,10 +45,6 @@ import {
 } from '../core/projectManager';
 import { getPlatformExtensions } from '../core/engineManager';
 import { parsePlugins } from '../core/pluginManager';
-import {
-    selectWebToolAndDeploy,
-    selectWebToolAndExport
-} from '../core/deployManager';
 import { getValidLocalhost } from '../core/systemManager/utils';
 
 import { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR, RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR_NAME } from '../core/constants';
@@ -513,18 +509,23 @@ will try to use globally installed one`);
     }
 };
 
-export const deployWeb = (c) => {
+export const deployWeb = () => {
     logTask('deployWeb');
-    const { platform } = c;
+    // const { platform } = c;
 
-    return selectWebToolAndDeploy(c, platform);
+    // DEPRECATED: custom deployers moved to external packages
+    // return selectWebToolAndDeploy(c, platform);
+
+    return true;
 };
 
-export const exportWeb = (c) => {
+export const exportWeb = () => {
     logTask('exportWeb');
-    const { platform } = c;
+    // const { platform } = c;
 
-    return selectWebToolAndExport(c, platform);
+    // DEPRECATED: custom deployers moved to external packages
+    // return selectWebToolAndExport(c, platform);
+    return true;
 };
 
 // CHROMECAST

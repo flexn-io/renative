@@ -78,6 +78,7 @@
         "@rnv/engine-rn-next": "~0.31.0-RC",
         "@rnv/engine-rn-web": "~0.31.0-RC",
         "@rnv/integration-vercel": "0.2.0-alpha.0",
+        "@rnv/integration-docker": "0.1.0-alpha.0",
         "babel-jest": "24.9.0",
         "babel-loader": "8.0.5",
         "cypress": "4.8.0",

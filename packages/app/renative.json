@@ -22,7 +22,8 @@
         "@rnv/engine-rn-electron": "source:rnv"
     },
     "integrations": {
-        "@rnv/integration-vercel": "source:rnv"
+        "@rnv/integration-vercel": "source:rnv",
+        "@rnv/integration-docker": "source:rnv"
     },
     "tasks": {
         "install": {

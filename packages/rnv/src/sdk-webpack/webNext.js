@@ -23,7 +23,6 @@ import { chalk, logTask, logInfo, logWarning,
     logRaw, logSummary, logSuccess } from '../core/systemManager/logger';
 import { NEXT_CONFIG_NAME } from '../core/constants';
 import { generateEnvVars } from '../core/engineManager';
-import { selectWebToolAndDeploy, selectWebToolAndExport } from '../core/deployManager';
 import { parsePlugins } from '../core/pluginManager';
 import { getValidLocalhost } from '../core/systemManager/utils';
 
@@ -231,16 +230,19 @@ Dev server running at: ${url}
         });
 };
 
-export const deployWebNext = (c) => {
+export const deployWebNext = () => {
     logTask('deployWebNext');
-    const { platform } = c;
+    // const { platform } = c;
 
-    return selectWebToolAndDeploy(c, platform);
+    // DEPRECATED: custom deployers moved to external packages
+    // return selectWebToolAndDeploy(c, platform);
+
+    return true;
 };
 
 export const exportWebNext = async (c) => {
     logTask('exportWebNext');
-    const { platform } = c;
+    // const { platform } = c;
 
     logTask('_exportNext');
     const exportDir = path.join(getPlatformBuildDir(c), 'output');
@@ -259,6 +261,7 @@ export const exportWebNext = async (c) => {
         `Your export is located in ${chalk().cyan(exportDir)} .`
     );
 
-    await selectWebToolAndExport(c, platform);
+    // DEPRECATED: custom deployers moved to external packages
+    // await selectWebToolAndExport(c, platform);
     return true;
 };

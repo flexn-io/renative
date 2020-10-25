@@ -17,7 +17,6 @@ import * as SchemaManager from './core/schemaManager';
 import * as SDKManager from './core/sdkManager';
 import * as TargetManager from './core/targetManager';
 import * as TemplateManager from './core/templateManager';
-import * as DeployManager from './core/deployManager';
 import * as TaskManager from './core/taskManager';
 
 // SUB-MODULES
@@ -79,7 +78,6 @@ export {
     SDKManager,
     TargetManager,
     TemplateManager,
-    DeployManager,
     TaskManager,
     // SDK
     SDKWebpack,

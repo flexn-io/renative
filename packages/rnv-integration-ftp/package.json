@@ -1,7 +1,7 @@
 {
-    "name": "@rnv/integration-vercel",
+    "name": "@rnv/integration-ftp",
     "version": "0.2.0-alpha.0",
-    "description": "Gives RNV the possibility to deploy artifacts to Vercel",
+    "description": "Gives RNV the possibility to deploy artifacts to FTP",
     "main": "dist/index.js",
     "scripts": {
         "build": "babel src --out-dir dist",
@@ -22,7 +22,7 @@
     ],
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [
-        "Mihai Blaga <https://github.com/mihaiblaga89>"
+        "Aurimas Mickys <https://github.com/aurimas535>"
     ],
     "license": "ISC",
     "bugs": {

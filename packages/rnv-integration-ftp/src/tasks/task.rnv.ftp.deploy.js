@@ -1,15 +1,17 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import inquirer from 'inquirer';
-import {
+
+import { Logger, Constants, FileUtils } from 'rnv';
+
+const { PARAMS, WEB } = Constants;
+const { logTask, logInfo } = Logger;
+const {
     fsExistsSync,
     writeFileSync,
     fsWriteFileSync,
     fsReadFile
-} from '../core/systemManager/fileutils';
-import { logInfo, logTask } from '../core/systemManager/logger';
-import { DEPLOY_TARGET_FTP } from '../core/deployManager';
-import { PARAMS } from '../core/constants';
+} = FileUtils;
+const DEPLOY_TARGET_FTP = 'ftp';
 
 const FtpDeploy = require('ftp-deploy');
 const dotEnv = require('dotenv');
@@ -206,22 +208,20 @@ const _createDeployConfig = async (c, platform) => {
     writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
 };
 
-const deployToFtp = (c, platform) => {
-    logTask('checkDeployConfigTarget');
-    const targetConfig = c.buildConfig.platforms[platform];
+const taskRnvFtpDeploy = (c) => {
+    logTask('taskRnvFtpDeploy');
+    const targetConfig = c.buildConfig.platforms[c.platform];
     if (targetConfig?.deploy?.[DEPLOY_TARGET_FTP]?.type) {
-        return _deployToFtp(c, platform);
+        return _deployToFtp(c, c.platform);
     }
-    return _createDeployConfig(c, platform).then(() => _deployToFtp(c, platform));
+    return _createDeployConfig(c, c.platform).then(() => _deployToFtp(c, c.platform));
 };
-
-export { deployToFtp };
 
 
 export default {
     description: '',
-    fn: deployToFtp,
-    task: 'deploy ftp',
+    fn: taskRnvFtpDeploy,
+    task: 'ftp deploy',
     params: PARAMS.withBase(),
-    platforms: [],
+    platforms: [WEB],
 };
