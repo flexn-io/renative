@@ -23,9 +23,9 @@ import { chalk, logTask, logInfo, logWarning,
     logRaw, logSummary, logSuccess } from '../core/systemManager/logger';
 import { NEXT_CONFIG_NAME } from '../core/constants';
 import { generateEnvVars } from '../core/engineManager';
-import { selectWebToolAndDeploy, selectWebToolAndExport } from '../core/deployManager/webTools';
+import { selectWebToolAndDeploy, selectWebToolAndExport } from '../core/deployManager';
 import { parsePlugins } from '../core/pluginManager';
-import { getValidLocalhost } from '../core/utils';
+import { getValidLocalhost } from '../core/systemManager/utils';
 
 export const configureNextIfRequired = async (c) => {
     logTask('configureNextIfRequired');

@@ -1,7 +1,7 @@
 import path from 'path';
 import { promisify } from 'util';
 import inquirer from 'inquirer';
-import { parseRenativeConfigs, listAppConfigsFoldersSync } from '../../core/configManager/configParser';
+import { parseRenativeConfigs, listAppConfigsFoldersSync } from '../../core/configManager';
 import { TASK_APP_CONFIGURE, PARAMS } from '../../core/constants';
 import {
     writeFileSync,

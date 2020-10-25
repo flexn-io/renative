@@ -26,7 +26,7 @@ import {
     waitForUrl,
     addSystemInjects
 } from '../core/common';
-import { doResolve, doResolvePath } from '../core/resolve';
+import { doResolve, doResolvePath } from '../core/systemManager/resolve';
 import { isPlatformActive } from '../core/platformManager';
 import {
     chalk,
@@ -42,14 +42,14 @@ import {
 import {
     copyBuildsFolder,
     copyAssetsFolder
-} from '../core/projectManager/projectParser';
+} from '../core/projectManager';
 import { getPlatformExtensions } from '../core/engineManager';
 import { parsePlugins } from '../core/pluginManager';
 import {
     selectWebToolAndDeploy,
     selectWebToolAndExport
-} from '../core/deployManager/webTools';
-import { getValidLocalhost } from '../core/utils';
+} from '../core/deployManager';
+import { getValidLocalhost } from '../core/systemManager/utils';
 
 import { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR, RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR_NAME } from '../core/constants';
 

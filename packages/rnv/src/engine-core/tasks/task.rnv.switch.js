@@ -1,6 +1,6 @@
 import { logTask } from '../../core/systemManager/logger';
-import { copyRuntimeAssets } from '../../core/projectManager/projectParser';
-import { generateRuntimeConfig } from '../../core/configManager/configParser';
+import { copyRuntimeAssets } from '../../core/projectManager';
+import { generateRuntimeConfig } from '../../core/configManager';
 import { executeTask } from '../../core/engineManager';
 import { TASK_SWITCH, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 

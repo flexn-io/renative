@@ -14,7 +14,7 @@ import {
 } from '../systemManager/fileutils';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { getConfigProp, getBuildsFolder, getAppFolder } from '../common';
-import { versionCheck, writeRenativeConfigFile } from '../configManager/configParser';
+import { versionCheck, writeRenativeConfigFile } from '../configManager';
 
 import { SUPPORTED_PLATFORMS, INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import {
@@ -26,7 +26,7 @@ import {
     logDebug,
     logInfo
 } from '../systemManager/logger';
-import { doResolve } from '../resolve';
+import { doResolve } from '../systemManager/resolve';
 import { inquirerPrompt } from '../../cli/prompt';
 
 export const getPluginList = (c, isUpdate = false) => {
@@ -772,5 +772,3 @@ export const getLocalRenativePlugin = () => ({
         }
     }
 });
-
-export default { getMergedPlugin, parsePlugins, getLocalRenativePlugin };

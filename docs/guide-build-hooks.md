@@ -47,16 +47,12 @@ You can utilize RNV CLI functionality inside of build hooks by simply importing 
 ```js
 import {
     Constants,
-    Runner,
-    App,
-    Platform,
-    Target,
     Common,
     Exec,
-    PlatformTools,
+    PlatformManager,
     Doctor,
-    PluginTools,
-    SetupTools,
+    PluginManager,
+    SetupManager,
     FileUtils
 } from 'rnv';
 ```

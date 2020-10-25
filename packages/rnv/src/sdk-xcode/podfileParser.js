@@ -9,7 +9,7 @@ import {
 } from '../core/common';
 import { logTask, logWarning } from '../core/systemManager/logger';
 import { parsePlugins, overrideFileContents } from '../core/pluginManager';
-import { doResolve, doResolvePath } from '../core/resolve';
+import { doResolve, doResolvePath } from '../core/systemManager/resolve';
 import { executeAsync } from '../core/systemManager/exec';
 import { writeCleanFile } from '../core/systemManager/fileutils';
 

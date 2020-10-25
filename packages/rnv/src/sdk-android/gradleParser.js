@@ -9,7 +9,7 @@ import {
     addSystemInjects
 } from '../core/common';
 import { fsExistsSync, writeCleanFile, fsWriteFileSync } from '../core/systemManager/fileutils';
-import { doResolve, doResolvePath } from '../core/resolve';
+import { doResolve, doResolvePath } from '../core/systemManager/resolve';
 import { chalk, logTask, logWarning, logDebug } from '../core/systemManager/logger';
 
 

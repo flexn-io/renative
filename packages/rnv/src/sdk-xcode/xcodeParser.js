@@ -7,7 +7,7 @@ import {
     getFlavouredProp
 } from '../core/common';
 import { fsExistsSync, writeFileSync, fsWriteFileSync } from '../core/systemManager/fileutils';
-import { doResolve } from '../core/resolve';
+import { doResolve } from '../core/systemManager/resolve';
 import { chalk, logTask, logWarning } from '../core/systemManager/logger';
 import { inquirerPrompt } from '../cli/prompt';
 import { IOS, TVOS } from '../core/constants';

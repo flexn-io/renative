@@ -43,7 +43,7 @@ import {
 } from '../systemManager/logger';
 import {
     upgradeProjectDependencies
-} from '../projectManager/projectParser';
+} from '../projectManager';
 import { inquirerPrompt } from '../../cli/prompt';
 import { loadPluginTemplates } from '../pluginManager';
 

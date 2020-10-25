@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import ora from 'ora';
-import { writeRenativeConfigFile } from '../../core/configManager/configParser';
+import { writeRenativeConfigFile } from '../../core/configManager';
 import { TASK_INSTALL, TASK_PLUGIN_ADD, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 import {
     chalk,

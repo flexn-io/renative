@@ -6,7 +6,7 @@ import { generateOptions } from '../../cli/prompt';
 import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS, CURRENT_DIR, PARAMS } from '../../core/constants';
 import { getTemplateOptions } from '../../core/templateManager';
 import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync, writeObjectSync, readObjectSync, removeDirs } from '../../core/systemManager/fileutils';
-import { checkAndCreateGitignore } from '../../core/projectManager/projectParser';
+import { checkAndCreateGitignore } from '../../core/projectManager';
 import { executeAsync } from '../../core/systemManager/exec';
 import {
     chalk,
@@ -21,7 +21,7 @@ import {
     logWarning
 } from '../../core/systemManager/logger';
 import { getWorkspaceOptions } from '../../core/projectManager/workspace';
-import { parseRenativeConfigs } from '../../core/configManager/configParser';
+import { parseRenativeConfigs } from '../../core/configManager';
 import { listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
 import { configureGit } from '../../core/systemManager/gitUtils';
 import Analytics from '../../core/systemManager/analytics';

@@ -7,8 +7,8 @@ import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import { executeAsync } from '../systemManager/exec';
-import { doResolve } from '../resolve';
-// import { writeRenativeConfigFile } from '../configManager/configParser';
+import { doResolve } from '../systemManager/resolve';
+// import { writeRenativeConfigFile } from '../configManager';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../systemManager/fileutils';
 import { TASK_CONFIGURE_SOFT, EXTENSIONS } from '../constants';
 

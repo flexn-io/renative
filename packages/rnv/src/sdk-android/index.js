@@ -20,7 +20,7 @@ import {
 } from '../core/common';
 import { isPlatformActive, createPlatformBuild } from '../core/platformManager';
 import { generateEnvVars } from '../core/engineManager';
-import { isSystemWin } from '../core/utils';
+import { isSystemWin } from '../core/systemManager/utils';
 import { inquirerPrompt } from '../cli/prompt';
 import {
     chalk,
@@ -36,7 +36,7 @@ import {
     copyAssetsFolder,
     copyBuildsFolder,
     parseFonts
-} from '../core/projectManager/projectParser';
+} from '../core/projectManager';
 import {
     ANDROID_WEAR,
     ANDROID,

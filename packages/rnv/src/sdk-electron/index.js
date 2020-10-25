@@ -31,7 +31,7 @@ import {
     confirmActiveBundler,
     addSystemInjects,
 } from '../core/common';
-import { doResolve } from '../core/resolve';
+import { doResolve } from '../core/systemManager/resolve';
 import {
     chalk,
     logTask,
@@ -43,7 +43,7 @@ import {
 import {
     copyBuildsFolder,
     copyAssetsFolder
-} from '../core/projectManager/projectParser';
+} from '../core/projectManager';
 import { MACOS,
     RNV_PROJECT_DIR_NAME,
     RNV_SERVER_DIR_NAME } from '../core/constants';

@@ -11,7 +11,7 @@ import Config from '../configManager/config';
 
 import { chalk, logDebug, logRaw, logError } from './logger';
 import { fsExistsSync } from './fileutils';
-import { replaceOverridesInString } from '../utils';
+import { replaceOverridesInString } from './utils';
 
 const { exec, execSync } = require('child_process');
 

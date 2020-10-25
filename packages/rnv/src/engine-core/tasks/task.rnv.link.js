@@ -1,5 +1,5 @@
 import path from 'path';
-import { doResolve } from '../../core/resolve';
+import { doResolve } from '../../core/systemManager/resolve';
 import { logWarning, logTask } from '../../core/systemManager/logger';
 import { PARAMS } from '../../core/constants';
 import {

@@ -1,13 +1,13 @@
 import { configurePlugins, overrideTemplatePlugins, resolvePluginDependants } from '../../core/pluginManager';
 import { chalk, logTask, logInfo } from '../../core/systemManager/logger';
-import { parseRenativeConfigs, checkIsRenativeProject, generateRuntimeConfig } from '../../core/configManager/configParser';
+import { parseRenativeConfigs, checkIsRenativeProject, generateRuntimeConfig } from '../../core/configManager';
 import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
 import { applyTemplate, checkIfTemplateConfigured, configureEntryPoints, configureTemplateFiles, isTemplateInstalled, checkAndCreateBabelConfig } from '../../core/templateManager';
 import { fsExistsSync, fsMkdirSync } from '../../core/systemManager/fileutils';
 import { checkCrypto } from '../../core/systemManager/crypto';
 import { checkAndMigrateProject } from '../../core/projectManager/migrator';
 import { TASK_INSTALL, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, TASK_APP_CONFIGURE, TASK_WORKSPACE_CONFIGURE, PARAMS } from '../../core/constants';
-import { checkAndCreateProjectPackage, copyRuntimeAssets, cleanPlaformAssets, checkAndCreateGitignore } from '../../core/projectManager/projectParser';
+import { checkAndCreateProjectPackage, copyRuntimeAssets, cleanPlaformAssets, checkAndCreateGitignore } from '../../core/projectManager';
 import { executeTask, initializeTask, findSuitableTask, configureEngines } from '../../core/engineManager';
 
 

@@ -4,7 +4,7 @@ import {
     WEB_HOSTED_PLATFORMS
 } from '../constants';
 import { getEngineConfigByPlatform, getEngineRunnerByPlatform } from '../engineManager';
-import { isSystemWin } from '../utils';
+import { isSystemWin } from '../systemManager/utils';
 import {
     getRealPath,
 } from '../systemManager/fileutils';

@@ -6,7 +6,7 @@ import ip from 'ip';
 import axios from 'axios';
 import lGet from 'lodash.get';
 import colorString from 'color-string';
-import { doResolve } from './resolve';
+import { doResolve } from './systemManager/resolve';
 import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
 import {
     chalk,

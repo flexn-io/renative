@@ -8,7 +8,7 @@ import {
     fsReadFile
 } from '../core/systemManager/fileutils';
 import { logInfo, logTask } from '../core/systemManager/logger';
-import { DEPLOY_TARGET_FTP } from '../core/deployManager/webTools';
+import { DEPLOY_TARGET_FTP } from '../core/deployManager';
 import { PARAMS } from '../core/constants';
 
 const FtpDeploy = require('ftp-deploy');

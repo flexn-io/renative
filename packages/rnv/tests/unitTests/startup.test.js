@@ -1,4 +1,4 @@
-import { createRnvConfig, generateBuildConfig } from '../../src/core/configManager/configParser';
+import { createRnvConfig, generateBuildConfig } from '../../src/core/configManager';
 import { getAppVersionCode } from '../../src/core/common';
 
 jest.mock('../../src/core/systemManager/logger.js', () => {

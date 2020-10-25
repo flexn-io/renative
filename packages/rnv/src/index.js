@@ -1,8 +1,7 @@
 import * as Common from './core/common';
-import * as CoreUtils from './core/utils';
+import * as Utils from './core/systemManager/utils';
 import * as Prompt from './cli/prompt';
 import * as Constants from './core/constants';
-import * as Resolver from './core/resolve';
 import CLI from './cli';
 
 import 'source-map-support/register';
@@ -12,15 +11,21 @@ import * as EngineManager from './core/engineManager';
 import * as SetupManager from './core/setupManager';
 import * as PlatformManager from './core/platformManager';
 import * as PluginManager from './core/pluginManager';
+import * as ProjectManager from './core/projectManager';
+import * as ConfigManager from './core/configManager';
+import * as SchemaManager from './core/schemaManager';
+import * as SDKManager from './core/sdkManager';
+import * as TargetManager from './core/targetManager';
+import * as TemplateManager from './core/templateManager';
+import * as DeployManager from './core/deployManager';
 
 // SUB-MODULES
-import * as SchemaParser from './core/schemaManager/schemaParser';
 import * as NPMUtils from './core/systemManager/npmUtils';
 import * as Exec from './core/systemManager/exec';
 import * as FileUtils from './core/systemManager/fileutils';
 import * as Doctor from './core/systemManager/doctor';
-import * as ConfigParser from './core/configManager/configParser';
 import * as Logger from './core/systemManager/logger';
+import * as Resolver from './core/systemManager/resolve';
 import Analytics from './core/systemManager/analytics';
 import Config from './core/configManager/config';
 
@@ -37,8 +42,8 @@ import * as SDKFirefox from './sdk-firefox';
 Analytics.initialize();
 
 export const initializeBuilder = async (cmd, subCmd, process, program) => {
-    FileUtils.configureFilesystem(Resolver.getConfigProp, Resolver.doResolve, CoreUtils.isSystemWin);
-    const c = ConfigParser.createRnvConfig(program, process, cmd, subCmd);
+    FileUtils.configureFilesystem(Resolver.getConfigProp, Resolver.doResolve, Utils.isSystemWin);
+    const c = ConfigManager.createRnvConfig(program, process, cmd, subCmd);
 
     Logger.configureLogger(c, Analytics);
     Logger.logInitialize();
@@ -54,10 +59,6 @@ const run = (cmd, subCmd, program, process) => {
         .catch(e => Logger.logError(e, true));
 };
 
-// LEGACY
-const SetupTools = SetupManager;
-const PluginTools = PluginManager;
-
 export const { doResolve } = Resolver;
 export const { doResolvePath } = Resolver;
 // LEGACY
@@ -65,20 +66,19 @@ export const { doResolvePath } = Resolver;
 export {
     Constants,
     Common,
-    Exec,
-    FileUtils,
-    Doctor,
-    Config,
     Prompt,
-    Logger,
-    Resolver,
-    SchemaParser,
-    NPMUtils,
     // MANAGERS
     EngineManager,
     PlatformManager,
     SetupManager,
     PluginManager,
+    ProjectManager,
+    ConfigManager,
+    SchemaManager,
+    SDKManager,
+    TargetManager,
+    TemplateManager,
+    DeployManager,
     // SDK
     SDKWebpack,
     SDKWebos,
@@ -88,9 +88,15 @@ export {
     SDKFirefox,
     SDKTizen,
     SDKNext,
-    // LEGACY
-    PluginTools,
-    SetupTools,
+    // SUBMODULES
+    Exec,
+    FileUtils,
+    Doctor,
+    Config,
+    Logger,
+    NPMUtils,
+    Resolver,
+    Utils,
     run,
     CLI
 };

@@ -26,7 +26,7 @@ import {
     SDK_PLATFORMS,
     USER_HOME_DIR
 } from '../constants';
-import { isSystemWin } from '../utils';
+import { isSystemWin } from '../systemManager/utils';
 import { getRealPath, writeFileSync, fsExistsSync } from '../systemManager/fileutils';
 import {
     chalk,
@@ -36,7 +36,7 @@ import {
     logError
 } from '../systemManager/logger';
 import PlatformSetup from '../setupManager';
-import { generateBuildConfig } from '../configManager/configParser';
+import { generateBuildConfig } from '../configManager';
 
 const SDK_LOACTIONS = {
     android: [

@@ -31,8 +31,8 @@ import {
     generateBuildConfig,
     generateLocalConfig,
     parseRenativeConfigs
-} from '../configManager/configParser';
-import { doResolve } from '../resolve';
+} from '../configManager';
+import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 
 export const checkIfTemplateConfigured = async (c) => {

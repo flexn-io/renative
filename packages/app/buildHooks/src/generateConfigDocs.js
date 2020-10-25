@@ -1,4 +1,4 @@
-import { SchemaParser } from 'rnv';
+import { SchemaManager } from 'rnv';
 import path from 'path';
 import fs from 'fs';
 
@@ -108,7 +108,7 @@ Following Config reference applies to all \`renative.json\` files, including:
 
 `;
 
-    const rootSchema = SchemaParser.getRenativeJsonSchema();
+    const rootSchema = SchemaManager.getRenativeJsonSchema();
 
     Object.keys(rootSchema.properties).sort().forEach((k1) => {
         const prop = rootSchema.properties[k1];
@@ -136,7 +136,7 @@ List of available config props injected into [Build Hooks](guide-build-hooks.md)
 
 `;
 
-    const rootSchema = SchemaParser.getRuntimeObjectSchema();
+    const rootSchema = SchemaManager.getRuntimeObjectSchema();
 
     Object.keys(rootSchema.properties).sort().forEach((k1) => {
         const prop = rootSchema.properties[k1];

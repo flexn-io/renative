@@ -4,7 +4,7 @@ import inquirer from 'inquirer';
 import { fsExistsSync, fsReaddirSync, fsLstatSync, fsReadFileSync } from '../core/systemManager/fileutils';
 import { execCLI, executeTelnet } from '../core/systemManager/exec';
 import { waitForEmulator } from '../core/targetManager';
-import { isSystemWin } from '../core/utils';
+import { isSystemWin } from '../core/systemManager/utils';
 import {
     chalk,
     logToSummary,

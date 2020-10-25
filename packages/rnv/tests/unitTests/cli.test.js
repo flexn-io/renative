@@ -1,4 +1,4 @@
-import { createRnvConfig, generateBuildConfig } from '../../src/core/configManager/configParser';
+import { createRnvConfig, generateBuildConfig } from '../../src/core/configManager';
 import cli from '../../src/cli';
 
 jest.mock('../../src/core/systemManager/logger.js', () => {

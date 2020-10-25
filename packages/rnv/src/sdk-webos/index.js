@@ -37,7 +37,7 @@ import {
 import {
     copyBuildsFolder,
     copyAssetsFolder
-} from '../core/projectManager/projectParser';
+} from '../core/projectManager';
 import {
     CLI_WEBOS_ARES_PACKAGE,
     CLI_WEBOS_ARES_INSTALL,
@@ -49,7 +49,7 @@ import {
     RNV_PROJECT_DIR_NAME,
     RNV_SERVER_DIR_NAME
 } from '../core/constants';
-import { isSystemWin, isUrlLocalhost } from '../core/utils';
+import { isSystemWin, isUrlLocalhost } from '../core/systemManager/utils';
 
 const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');

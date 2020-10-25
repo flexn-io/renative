@@ -1,4 +1,4 @@
-import { isSystemWin } from '../../utils';
+import { isSystemWin } from '../systemManager/utils';
 
 let androidPlatform = 'linux';
 let tizenPlatform = 'ubuntu';

@@ -21,13 +21,13 @@ import {
     getIP,
 } from '../core/common';
 import { generateEnvVars } from '../core/engineManager';
-import { doResolve } from '../core/resolve';
+import { doResolve } from '../core/systemManager/resolve';
 import { isPlatformActive } from '../core/platformManager';
 import {
     copyAssetsFolder,
     copyBuildsFolder,
     parseFonts
-} from '../core/projectManager/projectParser';
+} from '../core/projectManager';
 
 import { IOS, TVOS, MACOS } from '../core/constants';
 import {

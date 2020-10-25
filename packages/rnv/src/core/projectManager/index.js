@@ -24,7 +24,7 @@ import {
 import { isPlatformActive } from '../platformManager';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/logger';
 import { copyTemplatePluginsSync } from '../pluginManager';
-import { loadFile } from '../configManager/configParser';
+import { loadFile } from '../configManager';
 import { inquirerPrompt } from '../../cli/prompt';
 
 

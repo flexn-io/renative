@@ -7,7 +7,7 @@ import { readObjectSync, fsExistsSync } from '../../core/systemManager/fileutils
 import {
     validateRenativeJsonSchema,
     // validateRuntimeObjectSchema
-} from '../../core/schemaManager/schemaParser';
+} from '../../core/schemaManager';
 
 const configTargets = [
     'workspace.config',

@@ -5,7 +5,7 @@ import {
     logTask,
     logDebug,
 } from './logger';
-import { isSystemWin } from '../utils';
+import { isSystemWin } from './utils';
 import {
     getRealPath,
     fsExistsSync,

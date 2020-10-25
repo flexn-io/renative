@@ -5,7 +5,7 @@ import { executeAsync, commandExistsSync } from './exec';
 import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync } from './fileutils';
 import { logTask, logWarning, logError, logInfo, logDebug } from './logger';
 import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
-import { doResolve } from '../resolve';
+import { doResolve } from './resolve';
 
 
 import { inquirerPrompt } from '../../cli/prompt';

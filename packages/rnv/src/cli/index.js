@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-import { parseRenativeConfigs } from '../core/configManager/configParser';
+import { parseRenativeConfigs } from '../core/configManager';
 import { configureRuntimeDefaults } from '../core/configManager/runtimeParser';
 import { initializeTask, findSuitableTask, registerEngine, registerPlatformEngine,
     loadEngineConfigs, registerMissingPlatformEngines } from '../core/engineManager';

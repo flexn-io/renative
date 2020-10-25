@@ -45,7 +45,7 @@ import { buildWeb, runWebpackServer, configureCoreWebProject, waitForWebpack } f
 import {
     copyAssetsFolder,
     copyBuildsFolder
-} from '../core/projectManager/projectParser';
+} from '../core/projectManager';
 
 
 const xml2js = require('xml2js');

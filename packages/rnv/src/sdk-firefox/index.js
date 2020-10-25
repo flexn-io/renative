@@ -12,7 +12,7 @@ import { isPlatformActive } from '../core/platformManager';
 import {
     copyBuildsFolder,
     copyAssetsFolder
-} from '../core/projectManager/projectParser';
+} from '../core/projectManager';
 import { KAIOS_SDK } from '../core/constants';
 
 import { buildWeb, configureCoreWebProject } from '../sdk-webpack';

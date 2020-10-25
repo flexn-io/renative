@@ -1,6 +1,6 @@
 import { runWebpackServer, configureCoreWebProject } from './index';
 import { logTask } from '../core/systemManager/logger';
-import { copyBuildsFolder, copyAssetsFolder } from '../core/projectManager/projectParser';
+import { copyBuildsFolder, copyAssetsFolder } from '../core/projectManager';
 import { getPlatformProjectDir, getConfigProp } from '../core/common';
 import { RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR_NAME } from '../core/constants';
 

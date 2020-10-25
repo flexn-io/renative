@@ -6,7 +6,7 @@ import { installPackageDependencies } from '../systemManager/npmUtils';
 import { chalk, logInfo, logDebug, logTask } from '../systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEngineConfigByPlatform } from '../engineManager';
-import { writeRenativeConfigFile } from './configParser';
+import { writeRenativeConfigFile } from '.';
 import { overrideTemplatePlugins } from '../pluginManager';
 
 
