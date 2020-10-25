@@ -2,7 +2,7 @@ import inquirer from 'inquirer';
 import { writeFileSync } from '../../core/systemManager/fileutils';
 import { logTask } from '../../core/systemManager/logger';
 import { generateBuildConfig } from '../../core/configManager';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD, PARAMS } from '../../core/constants';
 
 import { getTemplateOptions } from '../../core/templateManager';

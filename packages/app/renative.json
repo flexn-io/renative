@@ -21,6 +21,9 @@
         "@rnv/engine-rn-next": "source:rnv",
         "@rnv/engine-rn-electron": "source:rnv"
     },
+    "integrations": {
+        "@rnv/integration-vercel": "source:rnv"
+    },
     "tasks": {
         "install": {
             "script": "yarn bootstrap"

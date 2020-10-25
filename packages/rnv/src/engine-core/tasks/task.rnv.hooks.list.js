@@ -1,7 +1,7 @@
 import { logToSummary, logTask } from '../../core/systemManager/logger';
 import { generateOptions } from '../../cli/prompt';
 import { buildHooks } from '../../core/projectManager/buildHooks';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_HOOKS_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
 

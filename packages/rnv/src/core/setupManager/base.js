@@ -3,7 +3,7 @@ import inquirer from 'inquirer';
 
 import { commandExistsSync } from '../systemManager/exec';
 import { TASK_WORKSPACE_CONFIGURE } from '../constants';
-import { executeTask } from '../engineManager';
+import { executeTask } from '../taskManager';
 import { replaceHomeFolder, updateConfigFile } from '../systemManager/fileutils';
 import setupConfig from './config';
 import Config from '../configManager/config';

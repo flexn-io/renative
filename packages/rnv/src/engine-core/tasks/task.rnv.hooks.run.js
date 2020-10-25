@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import { logTask } from '../../core/systemManager/logger';
 import { buildHooks } from '../../core/projectManager/buildHooks';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_HOOKS_RUN, TASK_PROJECT_CONFIGURE, PARAMS, PARAM_KEYS } from '../../core/constants';
 
 

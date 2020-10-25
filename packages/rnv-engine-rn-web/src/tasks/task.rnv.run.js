@@ -1,4 +1,4 @@
-import { EngineManager, Constants, Logger, PlatformManager, SDKTizen, SDKWebos, SDKFirefox, SDKWebpack, FileUtils, Common } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, SDKTizen, SDKWebos, SDKFirefox, SDKWebpack, FileUtils, Common } from 'rnv';
 
 import ip from 'ip';
 import path from 'path';
@@ -25,7 +25,7 @@ const { runTizen } = SDKTizen;
 const { runWebOS } = SDKWebos;
 const { runFirefoxProject } = SDKFirefox;
 const { writeCleanFile } = FileUtils;
-const { executeTask, executeOrSkipTask } = EngineManager;
+const { executeTask, executeOrSkipTask } = TaskManager;
 
 const _configureHostedIfRequired = async (c) => {
     logTask('_configureHostedIfRequired');

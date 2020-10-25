@@ -14,7 +14,7 @@ import {
 } from '../../core/systemManager/fileutils';
 import { PARAMS, TASK_PKG, TASK_PROJECT_CONFIGURE } from '../../core/constants';
 import { logError, logTask } from '../../core/systemManager/logger';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 
 
 const bumpVersions = (version) => {

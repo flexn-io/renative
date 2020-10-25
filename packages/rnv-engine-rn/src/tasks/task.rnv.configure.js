@@ -1,4 +1,4 @@
-import { EngineManager, Constants, Logger, PlatformManager, SDKAndroid, SDKXcode, NPMUtils } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, SDKAndroid, SDKXcode, NPMUtils } from 'rnv';
 import { configureMetroConfigs } from '../commonEngine';
 
 const { logErrorPlatform } = PlatformManager;
@@ -16,7 +16,7 @@ const {
 } = Constants;
 const { configureXcodeProject } = SDKXcode;
 const { configureGradleProject } = SDKAndroid;
-const { executeTask } = EngineManager;
+const { executeTask } = TaskManager;
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');

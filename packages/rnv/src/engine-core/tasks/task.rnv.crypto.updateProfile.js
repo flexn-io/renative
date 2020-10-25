@@ -1,6 +1,6 @@
 import { updateProfile } from '../../sdk-xcode/fastlane';
 import { logTask } from '../../core/systemManager/logger';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_CRYPTO_UPDATE_PROFILE, TASK_PROJECT_CONFIGURE, IOS, TVOS, PARAMS } from '../../core/constants';
 
 

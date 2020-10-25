@@ -1,4 +1,4 @@
-import { EngineManager, Constants, Logger, PlatformManager, SDKNext, SDKWebpack } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, SDKNext, SDKWebpack } from 'rnv';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
@@ -11,7 +11,7 @@ const {
 } = Constants;
 const { deployWeb } = SDKWebpack;
 const { deployWebNext } = SDKNext;
-const { executeOrSkipTask } = EngineManager;
+const { executeOrSkipTask } = TaskManager;
 
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {

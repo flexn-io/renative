@@ -1,4 +1,4 @@
-import { EngineManager } from 'rnv';
+import { TaskManager, EngineManager } from 'rnv';
 import { withRNV } from './adapter';
 import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
     getTemplateProjectDir, ejectPlatform, getTemplateRootDir, getOriginalPlatformTemplatesDir } from './commonEngine';
@@ -13,7 +13,8 @@ import taskRnvDeploy from './tasks/task.rnv.deploy';
 import taskRnvDebug from './tasks/task.rnv.debug';
 import config from '../renative.engine.json';
 
-const { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } = EngineManager;
+const { getEngineTask, hasEngineTask, getEngineSubTasks } = EngineManager;
+const { executeEngineTask } = TaskManager;
 
 const TASKS = {};
 

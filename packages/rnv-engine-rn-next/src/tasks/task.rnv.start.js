@@ -1,5 +1,5 @@
 import open from 'better-opn';
-import { EngineManager, Constants, Logger, PlatformManager, SDKNext, SDKWebpack } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, SDKNext, SDKWebpack } from 'rnv';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask, logError } = Logger;
@@ -12,7 +12,7 @@ const {
 } = Constants;
 const { waitForWebpack } = SDKWebpack;
 const { runWebNext } = SDKNext;
-const { executeTask } = EngineManager;
+const { executeTask } = TaskManager;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
     const { platform } = c;

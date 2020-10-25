@@ -16,7 +16,7 @@ import { IOS,
 import { listTizenTargets } from '../../sdk-tizen';
 import { listWebOSTargets } from '../../sdk-webos';
 import { listAppleDevices } from '../../sdk-xcode/deviceManager';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 
 
 export const taskRnvTargetList = async (c, parentTask, originTask) => {

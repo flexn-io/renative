@@ -2,7 +2,7 @@ import { chalk, logTask } from '../../core/systemManager/logger';
 import { listAppConfigsFoldersSync } from '../../core/configManager';
 import { IOS, TVOS, TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 import { updateProfile } from '../../sdk-xcode/fastlane';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 
 
 const _updateProfile = (c, v) => new Promise((resolve, reject) => {

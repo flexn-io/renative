@@ -7,7 +7,7 @@ import {
     removeDirs
 } from '../../core/systemManager/fileutils';
 import { generatePlatformChoices } from '../../core/platformManager';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, PARAMS } from '../../core/constants';
 
 

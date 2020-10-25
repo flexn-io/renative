@@ -1,10 +1,11 @@
-import { EngineManager, Constants, Logger, PlatformManager, Exec, Common, Resolver } from 'rnv';
+import { TaskManager, EngineManager, Constants, Logger, PlatformManager, Exec, Common, Resolver } from 'rnv';
 import { isBundlerActive } from '../commonEngine';
 
 const { getEntryFile, confirmActiveBundler } = Common;
 const { doResolve } = Resolver;
 const { logErrorPlatform } = PlatformManager;
-const { generateEnvVars, executeTask } = EngineManager;
+const { generateEnvVars } = EngineManager;
+const { executeTask } = TaskManager;
 const { chalk, logTask, logError, logRaw, logInfo } = Logger;
 const {
     IOS,

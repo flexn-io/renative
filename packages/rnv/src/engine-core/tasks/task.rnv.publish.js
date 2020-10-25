@@ -3,7 +3,7 @@ import Config from '../../core/configManager/config';
 import { executeAsync } from '../../core/systemManager/exec';
 import { logWarning, logTask } from '../../core/systemManager/logger';
 import { writeFileSync } from '../../core/systemManager/fileutils';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_PUBLISH, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
 

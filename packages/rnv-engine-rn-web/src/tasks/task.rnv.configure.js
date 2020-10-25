@@ -1,4 +1,4 @@
-import { EngineManager, Constants, Logger, PlatformManager, SDKTizen, SDKWebos, SDKFirefox, SDKWebpack } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, SDKTizen, SDKWebos, SDKFirefox, SDKWebpack } from 'rnv';
 
 const { logErrorPlatform, copySharedPlatforms } = PlatformManager;
 const { logTask } = Logger;
@@ -19,7 +19,7 @@ const { configureWebProject, configureChromecastProject } = SDKWebpack;
 const { configureTizenProject } = SDKTizen;
 const { configureWebOSProject } = SDKWebos;
 const { configureKaiOSProject } = SDKFirefox;
-const { executeTask } = EngineManager;
+const { executeTask } = TaskManager;
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');

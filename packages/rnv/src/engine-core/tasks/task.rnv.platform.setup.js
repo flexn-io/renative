@@ -2,7 +2,7 @@ import inquirer from 'inquirer';
 import { SUPPORTED_PLATFORMS, TASK_PLATFORM_SETUP, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 import { updateProjectPlatforms } from '../../core/platformManager';
 import { logTask } from '../../core/systemManager/logger';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 
 
 export const taskRnvPlatformSetup = async (c, parentTask, originTask) => {

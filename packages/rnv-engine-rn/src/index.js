@@ -1,4 +1,4 @@
-import { EngineManager } from 'rnv';
+import { TaskManager, EngineManager } from 'rnv';
 import { withRNV } from './adapter';
 
 import taskRnvRun from './tasks/task.rnv.run';
@@ -15,7 +15,8 @@ import {
 } from './commonEngine';
 import config from '../renative.engine.json';
 
-const { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } = EngineManager;
+const { getEngineTask, hasEngineTask, getEngineSubTasks } = EngineManager;
+const { executeEngineTask } = TaskManager;
 
 const TASKS = {};
 

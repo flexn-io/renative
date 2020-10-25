@@ -1,4 +1,5 @@
-import { getEngineTask, hasEngineTask, getEngineSubTasks, executeEngineTask } from '../core/engineManager';
+import { getEngineTask, hasEngineTask, getEngineSubTasks } from '../core/engineManager';
+import { executeEngineTask } from '../core/taskManager';
 import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
     getTemplateProjectDir, ejectPlatform, getTemplateRootDir } from './commonEngine';
 
@@ -31,7 +32,7 @@ import taskRnvHooksList from './tasks/task.rnv.hooks.list';
 import taskRnvHooksRun from './tasks/task.rnv.hooks.run';
 import taskRnvHooksPipes from './tasks/task.rnv.hooks.pipes';
 import taskRnvClean from './tasks/task.rnv.clean';
-import rnvFastlane from '../integration-fastlane/task.rnv.fastlane';
+import rnvFastlane from './tasks/task.rnv.fastlane';
 import taskRnvPublish from './tasks/task.rnv.publish';
 import taskRnvPkg from './tasks/task.rnv.pkg';
 import taskRnvStatus from './tasks/task.rnv.status';

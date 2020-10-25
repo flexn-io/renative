@@ -17,6 +17,11 @@
             "version": "0.32.0-alpha.0"
         }
     },
+    "integrationTemplates": {
+        "@rnv/integration-vercel": {
+            "version": "0.2.0-alpha.0"
+        }
+    },
     "platforms": {
         "ios": {
             "engine": "engine-rn"

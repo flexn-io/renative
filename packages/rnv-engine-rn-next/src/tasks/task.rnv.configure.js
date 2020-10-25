@@ -1,4 +1,4 @@
-import { EngineManager, Constants, Logger, PlatformManager, SDKNext } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, SDKNext } from 'rnv';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
@@ -9,7 +9,7 @@ const {
     PARAMS
 } = Constants;
 const { configureNextIfRequired } = SDKNext;
-const { executeTask } = EngineManager;
+const { executeTask } = TaskManager;
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');

@@ -18,6 +18,7 @@ import * as SDKManager from './core/sdkManager';
 import * as TargetManager from './core/targetManager';
 import * as TemplateManager from './core/templateManager';
 import * as DeployManager from './core/deployManager';
+import * as TaskManager from './core/taskManager';
 
 // SUB-MODULES
 import * as NPMUtils from './core/systemManager/npmUtils';
@@ -79,6 +80,7 @@ export {
     TargetManager,
     TemplateManager,
     DeployManager,
+    TaskManager,
     // SDK
     SDKWebpack,
     SDKWebos,

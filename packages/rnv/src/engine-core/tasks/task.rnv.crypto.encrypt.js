@@ -20,7 +20,7 @@ import {
 } from '../../core/systemManager/fileutils';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../../core/systemManager/crypto';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_CRYPTO_ENCRYPT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
 

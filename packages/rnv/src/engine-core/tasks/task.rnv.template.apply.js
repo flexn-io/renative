@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import { logTask } from '../../core/systemManager/logger';
 import { applyTemplate, getInstalledTemplateOptions } from '../../core/templateManager';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_TEMPLATE_APPLY, TASK_PROJECT_CONFIGURE, TASK_APP_CONFIGURE, PARAMS } from '../../core/constants';
 
 export const taskRnvTemplateApply = async (c, parentTask, originTask) => {

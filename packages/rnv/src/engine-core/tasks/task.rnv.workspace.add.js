@@ -3,7 +3,7 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { logTask } from '../../core/systemManager/logger';
 import { createWorkspace } from '../../core/projectManager/workspace';
 import { fsExistsSync } from '../../core/systemManager/fileutils';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_WORKSPACE_ADD, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
 export const taskRnvWorkspaceAdd = async (c, parentTask, originTask) => {

@@ -1,4 +1,4 @@
-import { EngineManager, Constants, Logger, PlatformManager, Common, SDKAndroid, SDKXcode } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, Common, SDKAndroid, SDKXcode } from 'rnv';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
 
 const { getConfigProp } = Common;
@@ -16,7 +16,7 @@ const {
 } = Constants;
 const { runXcodeProject } = SDKXcode;
 const { packageAndroid, runAndroid } = SDKAndroid;
-const { executeOrSkipTask } = EngineManager;
+const { executeOrSkipTask } = TaskManager;
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;

@@ -1,8 +1,8 @@
-import { EngineManager, Constants, Logger } from 'rnv';
+import { TaskManager, Constants, Logger } from 'rnv';
 
 const { logTask } = Logger;
 const { MACOS, WINDOWS, TASK_PACKAGE, TASK_CONFIGURE, PARAMS } = Constants;
-const { executeOrSkipTask } = EngineManager;
+const { executeOrSkipTask } = TaskManager;
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);

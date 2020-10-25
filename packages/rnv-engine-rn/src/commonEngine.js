@@ -1,13 +1,13 @@
 import path from 'path';
 import axios from 'axios';
 import ora from 'ora';
-import { EngineManager, Constants, Logger, Common, FileUtils } from 'rnv';
+import { TaskManager, Constants, Logger, Common, FileUtils } from 'rnv';
 
 const { getConfigProp, confirmActiveBundler, getAppFolder, getTemplateDir } = Common;
 const { chalk, logTask, logInfo, logWarning } = Logger;
 const { fsExistsSync, copyFileSync, copyFolderContentsRecursiveSync } = FileUtils;
 const { TASK_START, RN_CLI_CONFIG_NAME } = Constants;
-const { executeTask } = EngineManager;
+const { executeTask } = TaskManager;
 
 
 let keepRNVRunning = false;

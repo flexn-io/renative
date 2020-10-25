@@ -7,7 +7,7 @@ import {
     getFileListSync,
 } from '../../core/systemManager/fileutils';
 import { executeAsync } from '../../core/systemManager/exec';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_CRYPTO_INSTALL_CERTS, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
 

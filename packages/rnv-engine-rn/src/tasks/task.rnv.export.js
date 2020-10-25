@@ -1,4 +1,4 @@
-import { EngineManager, Constants, Logger, PlatformManager, SDKXcode } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, SDKXcode } from 'rnv';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
@@ -12,7 +12,7 @@ const {
     PARAMS
 } = Constants;
 const { exportXcodeProject } = SDKXcode;
-const { executeOrSkipTask } = EngineManager;
+const { executeOrSkipTask } = TaskManager;
 
 
 export const taskRnvExport = async (c, parentTask, originTask) => {

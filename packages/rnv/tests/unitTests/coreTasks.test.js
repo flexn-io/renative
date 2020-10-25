@@ -6,7 +6,6 @@ import taskRnvPlatformSetup from '../../src/engine-core/tasks/task.rnv.platform.
 jest.mock('fs');
 
 jest.mock('../../src/core/engineManager/index.js', () => ({
-    executeTask: jest.fn(),
     getEngineConfigByPlatform: () => ({
         platforms: {
           ios: {
@@ -17,6 +16,10 @@ jest.mock('../../src/core/engineManager/index.js', () => ({
     getEngineRunnerByPlatform: () => ({
       getOriginalPlatformTemplatesDir: () => 'sometemptdir'
     })
+}));
+
+jest.mock('../../src/core/taskManager/index.js', () => ({
+    executeTask: jest.fn()
 }));
 
 jest.mock('../../src/core/configManager/config.js', () => ({
@@ -216,15 +219,15 @@ afterEach(() => {
 });
 
 test('Execute task.rnv.platform.list', async () => {
-    const engineManager = require('../../src/core/engineManager/index.js');
+    const taskManager = require('../../src/core/taskManager/index.js');
     await expect(taskRnvPlatformList.fn(c, null, originTask)).resolves.toEqual(true);
-    expect(engineManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform list', originTask);
+    expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform list', originTask);
 });
 
 test('Execute task.rnv.platform.configure', async () => {
-    const engineManager = require('../../src/core/engineManager/index.js');
+    const taskManager = require('../../src/core/taskManager/index.js');
     await expect(taskRnvPlatformConfigure.fn(c, null, originTask)).resolves.toEqual(true);
-    expect(engineManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform configure', originTask);
+    expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform configure', originTask);
 });
 
 

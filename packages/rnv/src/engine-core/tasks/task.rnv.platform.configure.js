@@ -5,7 +5,7 @@ import { isBuildSchemeSupported } from '../../core/configManager/schemeParser';
 import { isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../../core/platformManager';
 import { injectPlatformDependencies } from '../../core/configManager/packageParser';
 import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { PARAMS, TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../../core/constants';
 
 import { checkSdk } from '../../core/sdkManager';

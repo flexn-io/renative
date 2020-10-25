@@ -1,4 +1,4 @@
-import { EngineManager, Constants, Logger } from 'rnv';
+import { TaskManager, Constants, Logger } from 'rnv';
 
 const { logTask } = Logger;
 const {
@@ -9,7 +9,7 @@ const {
     PARAMS
 } = Constants;
 
-const { executeOrSkipTask } = EngineManager;
+const { executeOrSkipTask } = TaskManager;
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);

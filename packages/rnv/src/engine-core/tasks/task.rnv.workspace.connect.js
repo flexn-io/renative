@@ -1,7 +1,7 @@
 import { inquirerPrompt } from '../../cli/prompt';
 import { logTask, logRaw } from '../../core/systemManager/logger';
 import { getWorkspaceConnectionString } from '../../core/projectManager/workspace';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_WORKSPACE_CONNECT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
 export const taskRnvWorkspaceConnect = async (c, parentTask, originTask) => {

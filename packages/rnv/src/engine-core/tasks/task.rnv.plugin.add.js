@@ -8,7 +8,7 @@ import {
     logTask
 } from '../../core/systemManager/logger';
 import { getPluginList, resolvePluginDependants } from '../../core/pluginManager';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 
 
 /* eslint-disable no-await-in-loop */

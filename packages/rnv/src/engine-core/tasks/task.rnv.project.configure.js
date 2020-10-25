@@ -8,7 +8,8 @@ import { checkCrypto } from '../../core/systemManager/crypto';
 import { checkAndMigrateProject } from '../../core/projectManager/migrator';
 import { TASK_INSTALL, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, TASK_APP_CONFIGURE, TASK_WORKSPACE_CONFIGURE, PARAMS } from '../../core/constants';
 import { checkAndCreateProjectPackage, copyRuntimeAssets, cleanPlaformAssets, checkAndCreateGitignore } from '../../core/projectManager';
-import { executeTask, initializeTask, findSuitableTask, configureEngines } from '../../core/engineManager';
+import { findSuitableTask, configureEngines } from '../../core/engineManager';
+import { executeTask, initializeTask } from '../../core/taskManager';
 
 
 export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {

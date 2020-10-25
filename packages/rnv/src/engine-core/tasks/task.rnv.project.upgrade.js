@@ -1,7 +1,7 @@
 import { TASK_PROJECT_UPGRADE, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 import { logTask } from '../../core/systemManager/logger';
 import { upgradeProjectDependencies } from '../../core/projectManager';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
 import { installPackageDependenciesAndPlugins } from '../../core/pluginManager';
 

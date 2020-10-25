@@ -1,7 +1,7 @@
 import { chalk, logToSummary, logTask } from '../../core/systemManager/logger';
 // import { generateOptions } from '../../cli/prompt';
 import { generatePlatformChoices } from '../../core/platformManager';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 import { TASK_PLATFORM_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
 export const taskRnvPlatformList = async (c, parentTask, originTask) => {

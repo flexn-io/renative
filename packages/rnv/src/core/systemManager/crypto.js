@@ -12,7 +12,7 @@ import {
     fsReadFileSync
 } from './fileutils';
 import { TASK_CRYPTO_DECRYPT } from '../constants';
-import { executeTask } from '../engineManager';
+import { executeTask } from '../taskManager';
 
 export const getEnvExportCmd = (envVar, key) => {
     if (isSystemWin) {

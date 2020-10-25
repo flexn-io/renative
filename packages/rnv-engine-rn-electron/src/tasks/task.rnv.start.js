@@ -1,4 +1,4 @@
-import { EngineManager, Constants, Logger, PlatformManager, SDKWebpack } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, SDKWebpack } from 'rnv';
 
 import open from 'better-opn';
 
@@ -12,7 +12,7 @@ const {
     PARAMS
 } = Constants;
 const { waitForWebpack, runWebpackServer } = SDKWebpack;
-const { executeTask } = EngineManager;
+const { executeTask } = TaskManager;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
     const { platform } = c;

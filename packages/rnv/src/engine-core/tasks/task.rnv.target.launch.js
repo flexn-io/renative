@@ -19,7 +19,7 @@ import {
 } from '../../sdk-android/deviceManager';
 import { launchAppleSimulator } from '../../sdk-xcode/deviceManager';
 import { launchKaiOSSimulator } from '../../sdk-firefox';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 
 export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetLaunch');

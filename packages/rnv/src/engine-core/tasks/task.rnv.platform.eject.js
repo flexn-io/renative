@@ -4,7 +4,8 @@ import { chalk, logTask, logSuccess, logError } from '../../core/systemManager/l
 import { writeFileSync } from '../../core/systemManager/fileutils';
 import { TASK_PLATFORM_EJECT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 import { generatePlatformChoices } from '../../core/platformManager';
-import { executeTask, getEngineRunnerByPlatform } from '../../core/engineManager';
+import { getEngineRunnerByPlatform } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 
 export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformEject');

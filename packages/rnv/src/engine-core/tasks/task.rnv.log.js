@@ -11,7 +11,7 @@ import { PARAMS,
 
 import { runAppleLog } from '../../sdk-xcode';
 import { runAndroidLog } from '../../sdk-android';
-import { executeTask } from '../../core/engineManager';
+import { executeTask } from '../../core/taskManager';
 
 export const taskRnvLog = async (c, parentTask, originTask) => {
     logTask('taskRnvLog', `parent:${parentTask}`);

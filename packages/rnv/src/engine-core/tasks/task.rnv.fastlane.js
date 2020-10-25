@@ -1,12 +1,12 @@
-import { executeAsync, commandExistsSync } from '../core/systemManager/exec';
-import { getAppFolder, getCliArguments } from '../core/common';
+import { executeAsync, commandExistsSync } from '../../core/systemManager/exec';
+import { getAppFolder, getCliArguments } from '../../core/common';
 import { IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
     ANDROID_WEAR,
-    PARAMS } from '../core/constants';
-import PlatformSetup from '../core/setupManager';
+    PARAMS } from '../../core/constants';
+import PlatformSetup from '../../core/setupManager';
 
 export const taskRnvFastlane = async (c) => {
     const args = getCliArguments(c);

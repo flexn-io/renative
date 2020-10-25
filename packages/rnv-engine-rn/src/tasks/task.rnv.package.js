@@ -1,4 +1,4 @@
-import { EngineManager, Constants, Logger, PlatformManager, SDKAndroid, SDKXcode } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, SDKAndroid, SDKXcode } from 'rnv';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
@@ -14,7 +14,7 @@ const {
 } = Constants;
 const { packageBundleForXcode } = SDKXcode;
 const { packageAndroid } = SDKAndroid;
-const { executeOrSkipTask } = EngineManager;
+const { executeOrSkipTask } = TaskManager;
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);

@@ -35,3 +35,20 @@ export const isUrlLocalhost = (value) => {
     }
     return false;
 };
+
+
+export const getScopedVersion = (c, key, val, sourceObjKey) => {
+    if (typeof val === 'string') {
+        if (val.startsWith('source:')) {
+            const sourceObj = c.buildConfig?.[sourceObjKey];
+            if (sourceObj) {
+                return sourceObj[key]?.version;
+            }
+        } else {
+            return val;
+        }
+    } else {
+        return val?.version;
+    }
+    return null;
+};
