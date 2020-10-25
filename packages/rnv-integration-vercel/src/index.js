@@ -1,10 +1,13 @@
-// import path from 'path';
+import taskRnvVercelDeploy from './tasks/task.rnv.vercel.deploy';
+import config from '../renative.integration.json';
 
+const TASKS = [
+    taskRnvVercelDeploy
+];
 
-// tasks
-// configs
-// api
+const getTasks = () => TASKS;
 
-export const registerTasks = () => {
-
+export default {
+    getTasks,
+    config
 };

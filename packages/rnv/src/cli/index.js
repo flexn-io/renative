@@ -1,10 +1,10 @@
 /* eslint-disable global-require */
 import { parseRenativeConfigs } from '../core/configManager';
 import { configureRuntimeDefaults } from '../core/configManager/runtimeParser';
-import { findSuitableTask, registerEngine, registerPlatformEngine, loadEngineConfigs, registerMissingPlatformEngines } from '../core/engineManager';
+import { registerEngine, registerPlatformEngine, loadEngineConfigs, registerMissingPlatformEngines } from '../core/engineManager';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
 import { loadIntegrations } from '../core/integrationManager';
-import { initializeTask } from '../core/taskManager';
+import { initializeTask, findSuitableTask } from '../core/taskManager';
 
 import EngineCore from '../engine-core';
 
