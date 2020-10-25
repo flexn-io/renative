@@ -1,6 +1,6 @@
 {
     "name": "renative-app",
-    "version": "0.32.0-alpha.0",
+    "version": "0.32.0-alpha.1",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "homepage": "https://github.com/pavjacko/renative#readme",
     "bugs": {
@@ -20,7 +20,7 @@
     },
     "scripts": {
         "bootstrap": "cd ../.. && yarn bootstrap",
-        "deploy-prepare": "rnv hooks run -x prePublish",
+        "deploy-prepare": "rnv hooks run -x prePublish -r",
         "e2e-android": "yarn e2e-android:build && yarn e2e-android:run",
         "e2e-android:build": "detox build -c android.emu.debug",
         "e2e-android:run": "detox test -c android.emu.debug --headless --gpu swiftshader --cleanup",
@@ -73,8 +73,8 @@
         "@rnv/engine-rn-electron": "~0.31.0-RC",
         "@rnv/engine-rn-next": "~0.31.0-RC",
         "@rnv/engine-rn-web": "~0.31.0-RC",
-        "@rnv/integration-vercel": "0.2.0-alpha.0",
         "@rnv/integration-docker": "0.1.0-alpha.0",
+        "@rnv/integration-vercel": "0.2.0-alpha.0",
         "babel-jest": "24.9.0",
         "babel-loader": "8.0.5",
         "cypress": "4.8.0",

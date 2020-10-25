@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper",
-    "version": "0.32.0-alpha.0",
+    "version": "0.32.0-alpha.1",
     "currentRelease": "0.31",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV` and `Chromecast` platforms",
     "keywords": [
@@ -69,9 +69,9 @@
         "version": "cd website && yarn run version",
         "docs": "cd website && yarn start",
         "deploy-prepare": "cd packages/app && yarn deploy-prepare",
-        "git-commit": "cd packages/app && rnv hooks run -x gitCommit",
-        "git-tag": "cd packages/app && rnv hooks run -x gitTag",
-        "git-commit-tag": "cd packages/app && rnv hooks run -x gitCommitAndTag",
+        "git-commit": "cd packages/app && rnv hooks run -x gitCommit -r",
+        "git-tag": "cd packages/app && rnv hooks run -x gitTag -r",
+        "git-commit-tag": "cd packages/app && rnv hooks run -x gitCommitAndTag -r",
         "deploy-website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true yarn publish-gh-pages",
         "deploy-all": "npm run test:rnv:unit && npm run deploy-prepare && npm run deploy-website && npm run git-commit-tag",
         "deploy:feat": "npm run test:rnv:unit && npm run deploy-prepare && npm run git-commit && npx lerna publish from-package --dist-tag feat --yes",

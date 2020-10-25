@@ -37,7 +37,11 @@ Common config props used as default props for all available buildSchemes
 ```json
 {
   "common": {
-    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "author": {
+      "name": "Pavel Jacko",
+      "email": "Pavel Jacko <pavel.jacko@gmail.com>",
+      "url": "https://github.com/pavjacko"
+    },
     "license": "MIT",
     "includedPlugins": [
       "*"
@@ -30675,3 +30679,12 @@ Workspace ID your project belongs to. This will mach same folder name in the roo
   "workspaceID": "myCustomWorkspace"
 }
 ```
+
+
+
+
+
+
+
+
+
