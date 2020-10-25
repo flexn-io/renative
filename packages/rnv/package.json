@@ -67,12 +67,12 @@
         "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git",
         "prepare": "yarn build",
         "prepublishOnly": "yarn build",
-        "test": "jest -c jest.config.unit.js",
-        "test:integration": "jest -c jest.config.integrations.js",
-        "test:ios": "jest -c jest.config.ios.js",
+        "test": "jest -c __tests__/jest.config.unit.js",
+        "test:integration": "jest -c __tests__/jest.config.integrations.js",
+        "test:ios": "jest -c __tests__/jest.config.ios.js",
         "test:local": "./scripts/test.sh",
-        "test:setup": "jest -c jest.config.setup.js",
-        "test:tasks": "jest -c jest.config.tasks.js",
+        "test:setup": "jest -c __tests__/jest.config.setup.js",
+        "test:tasks": "jest -c __tests__/jest.config.tasks.js",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {

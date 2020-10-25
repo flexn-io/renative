@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import shell from 'shelljs';
 
 describe('It deals with Android emulators correctly', () => {
@@ -7,26 +8,25 @@ describe('It deals with Android emulators correctly', () => {
         console.log('NOT DOCKER ENV. will create avd ');
 
         beforeAll(async (done) => {
-            //RUN rnv command to trigget SDK installations
-            const output = await shell.exec('rnv target list -p android --ci --mono');
+            // RUN rnv command to trigget SDK installations
+            await shell.exec('rnv target list -p android --ci --mono');
             try {
-              console.log('TRY: avdmanager create');
-              await shell.exec(
-                  'echo no | /home/travis/Android/tools/bin/avdmanager create avd -n android_test -k "system-images;android-28;google_apis_playstore;x86"'
-              );
-
+                console.log('TRY: avdmanager create');
+                await shell.exec(
+                    'echo no | /home/travis/Android/tools/bin/avdmanager create avd -n android_test -k "system-images;android-28;google_apis_playstore;x86"'
+                );
             } catch (e) {
-              console.log('ERROR: avdmanager not supported. trying android');
-              await shell.exec(
-                  'echo no | /home/travis/Android/tools/android create avd -n android_test -t android-28 --abi x86'
-              );
+                console.log('ERROR: avdmanager not supported. trying android');
+                await shell.exec(
+                    'echo no | /home/travis/Android/tools/android create avd -n android_test -t android-28 --abi x86'
+                );
             }
 
 
             done();
         });
     } else {
-      console.log('DOCKER ENV. skipping create avd ');
+        console.log('DOCKER ENV. skipping create avd ');
     }
 
     it('Should return one phone emulator', async () => {

@@ -1,20 +1,22 @@
+/* eslint-disable global-require */
+
 import taskRnvPlatformList from '../../src/engine-core/tasks/task.rnv.platform.list';
 import taskRnvPlatformConfigure from '../../src/engine-core/tasks/task.rnv.platform.configure';
-import taskRnvPlatformEject from '../../src/engine-core/tasks/task.rnv.platform.eject';
-import taskRnvPlatformSetup from '../../src/engine-core/tasks/task.rnv.platform.setup';
+// import taskRnvPlatformEject from '../../src/engine-core/tasks/task.rnv.platform.eject';
+// import taskRnvPlatformSetup from '../../src/engine-core/tasks/task.rnv.platform.setup';
 
 jest.mock('fs');
 
 jest.mock('../../src/core/engineManager/index.js', () => ({
     getEngineConfigByPlatform: () => ({
         platforms: {
-          ios: {
-            npm: {}
-          }
+            ios: {
+                npm: {}
+            }
         }
     }),
     getEngineRunnerByPlatform: () => ({
-      getOriginalPlatformTemplatesDir: () => 'sometemptdir'
+        getOriginalPlatformTemplatesDir: () => 'sometemptdir'
     })
 }));
 
@@ -23,9 +25,7 @@ jest.mock('../../src/core/taskManager/index.js', () => ({
 }));
 
 jest.mock('../../src/core/configManager/config.js', () => ({
-    getConfig: () => {
-        return null;
-    }
+    getConfig: () => null
 }));
 
 jest.mock('../../src/core/systemManager/logger.js', () => {
@@ -82,7 +82,7 @@ const c = {
             }
         },
         defaults: {
-          supportedPlatforms: ['ios']
+            supportedPlatforms: ['ios']
         }
     },
     paths: {
@@ -130,10 +130,10 @@ const c = {
         project: {
             appConfigBase: {},
             builds: {
-              dir: ''
+                dir: ''
             },
             platformTemplatesDirs: {
-              ios: ''
+                ios: ''
             },
             assets: {},
             platformTemplates: {},
@@ -208,7 +208,7 @@ const c = {
     }
 };
 
-const parentTask = null;
+// const parentTask = null;
 const originTask = {};
 
 beforeEach(() => {
@@ -229,7 +229,6 @@ test('Execute task.rnv.platform.configure', async () => {
     await expect(taskRnvPlatformConfigure.fn(c, null, originTask)).resolves.toEqual(true);
     expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform configure', originTask);
 });
-
 
 
 // describe('Test task.rnv.platform.list', () => {

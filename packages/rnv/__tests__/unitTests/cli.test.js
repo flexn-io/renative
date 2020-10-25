@@ -35,9 +35,9 @@ const itShouldResolve = (cmd) => {
     it(`${cmd} should resolve`, () => shouldResolve(cmd));
 };
 
-const itShouldReject = (cmd, reject) => {
-    it(`${cmd} should reject`, () => shouldReject(cmd, reject));
-};
+// const itShouldReject = (cmd, reject) => {
+//     it(`${cmd} should reject`, () => shouldReject(cmd, reject));
+// };
 
 describe('Testing rnv target', () => {
     itShouldResolve('target help');
@@ -161,9 +161,9 @@ describe('Testing rnv configure', () => {
 // HELPERS
 // ###############################################
 
-const shouldReject = async (cmd, reject) => {
-    await expect(cli(getConfig(cmd), null, true)).rejects.toThrow(reject);
-};
+// const shouldReject = async (cmd, reject) => {
+//     await expect(cli(getConfig(cmd), null, true)).rejects.toThrow(reject);
+// };
 
 
 const shouldResolve = async (cmd) => {
@@ -205,6 +205,8 @@ const getConfig = (s) => {
             case '-t':
                 c.target = argArray[i + 1];
                 break;
+            default:
+                // DO nothing
         }
     });
 
