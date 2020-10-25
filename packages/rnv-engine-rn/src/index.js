@@ -9,6 +9,14 @@ import taskRnvStart from './tasks/task.rnv.start';
 import taskRnvExport from './tasks/task.rnv.export';
 import taskRnvDeploy from './tasks/task.rnv.deploy';
 import taskRnvDebug from './tasks/task.rnv.debug';
+import taskRnvCryptoInstallCerts from './tasks/task.rnv.crypto.installCerts';
+import taskRnvCryptoUpdateProfile from './tasks/task.rnv.crypto.updateProfile';
+import taskRnvCryptoUpdateProfiles from './tasks/task.rnv.crypto.updateProfiles';
+import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfiles';
+import taskRnvLog from './tasks/task.rnv.log';
+import taskRnvTargetList from './tasks/task.rnv.target.list';
+import taskRnvTargetLaunch from './tasks/task.rnv.target.launch';
+
 import {
     getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
     getTemplateProjectDir, ejectPlatform, getTemplateRootDir, getOriginalPlatformTemplatesDir
@@ -32,7 +40,13 @@ addTask(taskRnvStart);
 addTask(taskRnvExport);
 addTask(taskRnvDeploy);
 addTask(taskRnvDebug);
-
+addTask(taskRnvCryptoInstallCerts);
+addTask(taskRnvCryptoUpdateProfile);
+addTask(taskRnvCryptoUpdateProfiles);
+addTask(taskRnvCryptoInstallProfiles);
+addTask(taskRnvLog);
+addTask(taskRnvTargetList);
+addTask(taskRnvTargetLaunch);
 
 const executeTask = (c, task, parentTask, originTask, isFirstTask) => executeEngineTask(
     c, task, parentTask, originTask, TASKS, isFirstTask

@@ -1,5 +1,6 @@
-import { TaskManager, Constants, Logger, PlatformManager, SDKAndroid, SDKXcode, NPMUtils } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, NPMUtils } from 'rnv';
 import { configureMetroConfigs } from '../commonEngine';
+import { SDKAndroid, SDKXcode } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;

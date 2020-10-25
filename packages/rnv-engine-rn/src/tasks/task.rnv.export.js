@@ -1,4 +1,5 @@
-import { TaskManager, Constants, Logger, PlatformManager, SDKXcode } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { SDKXcode } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;

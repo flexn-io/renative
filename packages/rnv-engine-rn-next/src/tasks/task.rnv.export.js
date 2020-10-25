@@ -1,4 +1,5 @@
-import { TaskManager, Constants, Logger, PlatformManager, SDKNext } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { SDKNext } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;

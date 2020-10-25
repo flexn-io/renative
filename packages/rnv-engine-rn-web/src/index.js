@@ -11,6 +11,8 @@ import taskRnvExport from './tasks/task.rnv.export';
 import taskRnvDeploy from './tasks/task.rnv.deploy';
 import taskRnvDebug from './tasks/task.rnv.debug';
 import config from '../renative.engine.json';
+import taskRnvTargetList from './tasks/task.rnv.target.list';
+import taskRnvTargetLaunch from './tasks/task.rnv.target.launch';
 
 const { getEngineTask, hasEngineTask, getEngineSubTasks } = EngineManager;
 const { executeEngineTask } = TaskManager;
@@ -29,6 +31,8 @@ addTask(taskRnvStart);
 addTask(taskRnvExport);
 addTask(taskRnvDeploy);
 addTask(taskRnvDebug);
+addTask(taskRnvTargetList);
+addTask(taskRnvTargetLaunch);
 
 const executeTask = (c, task, parentTask, originTask, isFirstTask) => executeEngineTask(
     c, task, parentTask, originTask, TASKS, isFirstTask

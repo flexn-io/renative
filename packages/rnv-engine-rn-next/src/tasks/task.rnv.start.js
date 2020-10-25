@@ -1,5 +1,6 @@
 import open from 'better-opn';
-import { TaskManager, Constants, Logger, PlatformManager, SDKNext, SDKWebpack } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, SDKWebpack } from 'rnv';
+import { SDKNext } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask, logError } = Logger;

@@ -7,19 +7,13 @@ import commandExists from 'command-exists';
 import { fsExistsSync, readObjectSync, writeCleanFile, fsWriteFileSync, mkdirSync } from '../core/systemManager/fileutils';
 import { executeAsync } from '../core/systemManager/exec';
 import {
-    // getAppFolder,
-    // getAppSubFolder,
     getPlatformProjectDir,
     getPlatformBuildDir,
-    // getTemplateProjectDir,
-    // getTemplateDir,
     getAppVersion,
-    // getAppTemplateFolder,
     checkPortInUse,
     getConfigProp,
     getBuildFilePath,
     getAppTitle,
-    // getSourceExts,
     sanitizeColor,
     confirmActiveBundler,
     getTimestampPathsConfig,

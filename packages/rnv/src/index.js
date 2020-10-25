@@ -22,6 +22,7 @@ import * as TaskManager from './core/taskManager';
 
 // SUB-MODULES
 import * as NPMUtils from './core/systemManager/npmUtils';
+import * as ObjectUtils from './core/systemManager/objectUtils';
 import * as Exec from './core/systemManager/exec';
 import * as FileUtils from './core/systemManager/fileutils';
 import * as Doctor from './core/systemManager/doctor';
@@ -32,13 +33,6 @@ import Config from './core/configManager/config';
 
 // SDKS
 import * as SDKWebpack from './sdk-webpack';
-import * as SDKNext from './sdk-webpack/webNext';
-import * as SDKWebos from './sdk-webos';
-import * as SDKTizen from './sdk-tizen';
-import * as SDKElectron from './sdk-electron';
-import * as SDKXcode from './sdk-xcode';
-import * as SDKFirefox from './sdk-firefox';
-import * as SDKAndroid from './sdk-android';
 
 Analytics.initialize();
 
@@ -82,16 +76,10 @@ export {
     TaskManager,
     // SDK
     SDKWebpack,
-    SDKWebos,
-    SDKAndroid,
-    SDKXcode,
-    SDKElectron,
-    SDKFirefox,
-    SDKTizen,
-    SDKNext,
     // SUBMODULES
     Exec,
     FileUtils,
+    ObjectUtils,
     Doctor,
     Config,
     Logger,

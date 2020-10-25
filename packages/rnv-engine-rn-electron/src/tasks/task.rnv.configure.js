@@ -1,4 +1,5 @@
-import { TaskManager, Constants, Logger, PlatformManager, SDKElectron } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { SDKElectron } from '../sdks';
 
 const { logErrorPlatform, copySharedPlatforms } = PlatformManager;
 const { logTask } = Logger;

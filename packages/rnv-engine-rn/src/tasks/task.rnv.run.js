@@ -1,5 +1,6 @@
-import { TaskManager, Constants, Logger, PlatformManager, Common, SDKAndroid, SDKXcode } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, Common } from 'rnv';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
+import { SDKAndroid, SDKXcode } from '../sdks';
 
 const { getConfigProp } = Common;
 const { logErrorPlatform } = PlatformManager;
