@@ -42,11 +42,7 @@
         "url": "https://github.com/pavjacko/renative/issues"
     },
     "license": "MIT",
-    "author": {
-        "email": "pavel.jacko@gmail.com",
-        "name": "Pavel Jacko",
-        "url": "https://github.com/pavjacko"
-    },
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [
         "Aurimas Mickys <https://github.com/aurimas535>",
         "Daniel Marino Ruiz <https://github.com/CHaNGeTe>",
@@ -59,12 +55,11 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "bootstrap": "yarn run link:rnv && yarn run link:rnv-builder && npx lerna bootstrap && yarn build",
+        "bootstrap": "yarn run link:rnv && npx lerna bootstrap && yarn build",
         "bootstrap-clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run --parallel --concurrency 1 build",
         "build:clean": "lerna run --parallel --concurrency 1 build:clean",
         "link:rnv": "cd packages/rnv && (yarn unlink || true) && yarn link",
-        "link:rnv-builder": "cd packages/rnv-builder && (yarn unlink || true) && yarn link",
         "postinstall": "lerna link --force-local && npx jetify",
         "lint": "npx eslint ./packages",
         "test:rnv": "lerna run test:local --stream --scope rnv",

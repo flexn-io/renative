@@ -3,47 +3,9 @@ import net from 'net';
 import shell from 'shelljs';
 import inquirer from 'inquirer';
 import execa from 'execa';
-import {
-    fsExistsSync,
-    copyFileSync,
-    mkdirSync,
-    getRealPath,
-    updateObjectSync,
-    fsWriteFileSync,
-    fsChmodSync
-} from '../core/systemManager/fileutils';
-import { executeAsync, execCLI } from '../core/systemManager/exec';
-import {
-    getAppFolder,
-    getConfigProp,
-    getAppId
-} from '../core/common';
-import { isPlatformActive, createPlatformBuild } from '../core/platformManager';
-import { generateEnvVars } from '../core/engineManager';
-import { isSystemWin } from '../core/systemManager/utils';
-import { inquirerPrompt } from '../cli/prompt';
-import {
-    chalk,
-    logTask,
-    logWarning,
-    logDebug,
-    logInfo,
-    logSuccess,
-    logRaw
-} from '../core/systemManager/logger';
-
-import {
-    copyAssetsFolder,
-    copyBuildsFolder,
-    parseFonts
-} from '../core/projectManager';
-import {
-    ANDROID_WEAR,
-    ANDROID,
-    ANDROID_TV,
-    CLI_ANDROID_ADB
-} from '../core/constants';
-import { parsePlugins } from '../core/pluginManager';
+import { FileUtils, Exec, Utils, Logger, Constants, EngineManager,
+    PluginManager, ProjectManager, Common,
+    PlatformManager, Prompt } from 'rnv';
 import {
     parseAndroidManifestSync,
     injectPluginManifestSync
@@ -66,7 +28,6 @@ import {
     injectPluginXmlValuesSync,
     parseValuesColorsSync
 } from './xmlValuesParser';
-
 import * as DeviceManager from './deviceManager';
 
 const {
@@ -78,10 +39,47 @@ const {
     askForNewEmulator,
     connectToWifiDevice
 } = DeviceManager;
+const {
+    copyAssetsFolder,
+    copyBuildsFolder,
+    parseFonts
+} = ProjectManager;
+const { parsePlugins } = PluginManager;
 
-export {
-    DeviceManager
-};
+const {
+    fsExistsSync,
+    copyFileSync,
+    mkdirSync,
+    getRealPath,
+    updateObjectSync,
+    fsWriteFileSync,
+    fsChmodSync
+} = FileUtils;
+const { executeAsync, execCLI } = Exec;
+const {
+    getAppFolder,
+    getConfigProp,
+    getAppId
+} = Common;
+const { isPlatformActive, createPlatformBuild } = PlatformManager;
+const { generateEnvVars } = EngineManager;
+const { isSystemWin } = Utils;
+const { inquirerPrompt } = Prompt;
+const {
+    chalk,
+    logTask,
+    logWarning,
+    logDebug,
+    logInfo,
+    logSuccess,
+    logRaw
+} = Logger;
+const {
+    ANDROID_WEAR,
+    ANDROID,
+    ANDROID_TV,
+    CLI_ANDROID_ADB
+} = Constants;
 
 const _getEntryOutputName = (c) => {
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
@@ -688,4 +686,8 @@ export const runAndroidLog = async (c) => {
     return child
         .then(res => res.stdout)
         .catch(err => Promise.reject(`Error: ${err}`));
+};
+
+export {
+    DeviceManager
 };

@@ -1,3 +1,4 @@
+
 import * as Common from './core/common';
 import * as Utils from './core/systemManager/utils';
 import * as Prompt from './cli/prompt';
@@ -35,9 +36,9 @@ import * as SDKNext from './sdk-webpack/webNext';
 import * as SDKWebos from './sdk-webos';
 import * as SDKTizen from './sdk-tizen';
 import * as SDKElectron from './sdk-electron';
-import * as SDKAndroid from './sdk-android';
 import * as SDKXcode from './sdk-xcode';
 import * as SDKFirefox from './sdk-firefox';
+import * as SDKAndroid from './sdk-android';
 
 Analytics.initialize();
 

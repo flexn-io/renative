@@ -2,11 +2,7 @@
     "id": "base",
     "hidden": true,
     "common": {
-        "author": {
-            "name": "Pavel Jacko",
-            "email": "Pavel Jacko <pavel.jacko@gmail.com>",
-            "url": "https://github.com/pavjacko"
-        },
+        "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
         "license": "MIT",
         "includedPlugins": ["*"],
         "includedFonts": ["*"],

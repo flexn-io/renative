@@ -1,35 +1,45 @@
 {
     "name": "@rnv/sdk-android",
-    "version": "0.31.0-alpha.1",
-    "description": "",
+    "version": "0.2.0-alpha.0",
+    "description": "Android SDK for RNV",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "babel src --out-dir dist",
+        "build:clean": "rm -rf dist || true",
+        "build:dev": "yarn build --retain-lines",
+        "watch": "nodemon --watch src --exec yarn build:dev",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "prepublishOnly": "npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/pavjacko/renative.git"
+    },
     "keywords": [
-
+        "rnv",
+        "renative",
+        "android",
+        "sdk"
     ],
-    "homepage": "https://github.com/pavjacko/renative#readme",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "contributors": [
+        "Mihai Blaga <https://github.com/mihaiblaga89>"
+    ],
+    "license": "ISC",
     "bugs": {
         "url": "https://github.com/pavjacko/renative/issues"
     },
-    "license": "MIT",
-    "author": {
-        "email": "pavel.jacko@gmail.com",
-        "name": "Pavel Jacko",
-        "url": "https://github.com/pavjacko"
-    },
-    "contributors": [
-    ],
-    "main": "dist/index.js",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/pavjacko/renative.git"
-    },
-    "scripts": {
-
-    },
-    "dependencies": {
-
+    "homepage": "https://github.com/pavjacko/renative#readme",
+    "publishConfig": {
+        "access": "public"
     },
     "devDependencies": {
-
+        "@babel/cli": "7.6.0",
+        "@babel/core": "7.6.0",
+        "@babel/node": "7.6.1",
+        "@babel/plugin-proposal-nullish-coalescing-operator": "7.7.4",
+        "@babel/plugin-proposal-optional-chaining": "7.6.0",
+        "@babel/preset-env": "7.6.0"
     },
-    "private": true
+    "dependencies": {}
 }

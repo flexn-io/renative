@@ -1,8 +1,6 @@
+import { DeviceManager } from '../../sdk-android';
 import { isPlatformSupported } from '../../core/platformManager';
 import { chalk, logTask } from '../../core/systemManager/logger';
-import {
-    listAndroidTargets,
-} from '../../sdk-android/deviceManager';
 import { checkSdk } from '../../core/sdkManager';
 import { IOS,
     ANDROID,
@@ -17,6 +15,10 @@ import { listTizenTargets } from '../../sdk-tizen';
 import { listWebOSTargets } from '../../sdk-webos';
 import { listAppleDevices } from '../../sdk-xcode/deviceManager';
 import { executeTask } from '../../core/taskManager';
+
+const {
+    listAndroidTargets
+} = DeviceManager;
 
 
 export const taskRnvTargetList = async (c, parentTask, originTask) => {

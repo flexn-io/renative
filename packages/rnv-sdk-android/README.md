@@ -1,3 +1,8 @@
-## sdk-android
+## @rnv/sdk-android
 
-Placeholder for future rnv sdk
+Android SDK for RNV
+
+
+More info:
+
+https://renative.org

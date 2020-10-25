@@ -1,3 +1,4 @@
+import { runAndroidLog } from '../../sdk-android';
 import { logErrorPlatform } from '../../core/platformManager';
 import { checkAndConfigureSdks } from '../../core/sdkManager';
 import { logTask } from '../../core/systemManager/logger';
@@ -10,7 +11,6 @@ import { PARAMS,
     TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE } from '../../core/constants';
 
 import { runAppleLog } from '../../sdk-xcode';
-import { runAndroidLog } from '../../sdk-android';
 import { executeTask } from '../../core/taskManager';
 
 export const taskRnvLog = async (c, parentTask, originTask) => {

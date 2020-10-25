@@ -11,11 +11,7 @@
         "url": "https://github.com/pavjacko/renative/issues"
     },
     "license": "MIT",
-    "author": {
-        "email": "pavel.jacko@gmail.com",
-        "name": "Pavel Jacko",
-        "url": "https://github.com/pavjacko"
-    },
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "main": "dist/index.js",
     "repository": {

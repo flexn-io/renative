@@ -4,11 +4,7 @@
         "id": "renative.kitchensink",
         "title": "ReNative Kitchen Sink",
         "description": "Cross-platform application project based on ReNative",
-        "author": {
-            "name": "Pavel Jacko",
-            "email": "Pavel Jacko <pavel.jacko@gmail.com>",
-            "url": "https://github.com/pavjacko"
-        },
+        "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
         "license": "MIT",
         "includedPlugins": ["*"],
         "includedFonts": ["*"]

@@ -1,3 +1,4 @@
+import { DeviceManager } from '../../sdk-android';
 import { isPlatformSupported } from '../../core/platformManager';
 import { chalk, logTask } from '../../core/systemManager/logger';
 import { IOS,
@@ -14,12 +15,13 @@ import { IOS,
 
 import { launchTizenSimulator } from '../../sdk-tizen';
 import { launchWebOSimulator } from '../../sdk-webos';
-import {
-    launchAndroidSimulator
-} from '../../sdk-android/deviceManager';
 import { launchAppleSimulator } from '../../sdk-xcode/deviceManager';
 import { launchKaiOSSimulator } from '../../sdk-firefox';
 import { executeTask } from '../../core/taskManager';
+
+const {
+    launchAndroidSimulator
+} = DeviceManager;
 
 export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetLaunch');
