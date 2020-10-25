@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import { Logger, Common, ObjectUtils, PluginManager, FileUtils } from 'rnv';
 import { getAppFolderName } from './common';
@@ -71,8 +70,8 @@ export const parseEntitlementsPlist = (c, platform) => new Promise((resolve) => 
     if (!pluginsEntitlementsObj) {
         pluginsEntitlementsObj = readObjectSync(
             path.join(
-                c.paths.rnv.dir,
-                'src/sdk-xcode/supportFiles/entitlements.json'
+                __dirname,
+                '../../../src/sdks/sdk-xcode/supportFiles/entitlements.json'
             )
         );
     }
@@ -93,8 +92,8 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
     // PLIST
     let plistObj = readObjectSync(
         path.join(
-            c.paths.rnv.dir,
-            `src/sdk-xcode/supportFiles/info.plist.${platform}.json`
+            __dirname,
+            `../../../src/sdks/sdk-xcode/supportFiles/info.plist.${platform}.json`
         )
     );
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);

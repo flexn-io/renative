@@ -150,8 +150,8 @@ export const parseAndroidManifestSync = (c) => {
 
     try {
         const baseManifestFilePath = path.join(
-            c.paths.rnv.dir,
-            `src/sdk-android/supportFiles/AndroidManifest_${platform}.json`
+            __dirname,
+            `../../../src/sdks/sdk-android/supportFiles/AndroidManifest_${platform}.json`
         );
         const baseManifestFile = readObjectSync(baseManifestFilePath);
         baseManifestFile.package = getAppId(c, platform);

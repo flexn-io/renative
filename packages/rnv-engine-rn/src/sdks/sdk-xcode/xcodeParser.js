@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import { Resolver, Logger, Constants, Common, PluginManager, Prompt, FileUtils } from 'rnv';
 import { getAppFolderName } from './common';

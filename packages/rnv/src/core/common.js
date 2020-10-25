@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import killPort from 'kill-port';
 import path from 'path';
 import detectPort from 'detect-port';

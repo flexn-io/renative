@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-// @todo fix cycle dep
 import path from 'path';
 import { chalk, logTask, logError, logWarning } from '../systemManager/logger';
 import { generateOptions, inquirerPrompt } from '../../cli/prompt';
@@ -10,7 +9,6 @@ import {
 } from '../systemManager/fileutils';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import { checkAndConfigureSdks } from '../sdkManager';
-// import { configureEntryPoints } from '../templateManager';
 import { getTimestampPathsConfig, getPlatformBuildDir } from '../common';
 
 

@@ -31,7 +31,6 @@ import {
     fsLstatSync
 } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
-
 import { getWorkspaceDirPath } from '../projectManager/workspace';
 import {
     chalk,
@@ -41,9 +40,7 @@ import {
     logDebug,
     getCurrentCommand
 } from '../systemManager/logger';
-import {
-    upgradeProjectDependencies
-} from '../projectManager';
+import { upgradeProjectDependencies } from '../projectManager';
 import { inquirerPrompt } from '../../cli/prompt';
 import { loadPluginTemplates } from '../pluginManager';
 
