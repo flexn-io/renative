@@ -26,6 +26,7 @@ import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/
 import { copyTemplatePluginsSync } from '../pluginManager';
 import { loadFile } from '../configManager';
 import { inquirerPrompt } from '../../cli/prompt';
+import { getEngineRunnerByPlatform } from '../engineManager';
 
 
 export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
@@ -317,8 +318,9 @@ const generateDefaultAssets = async (c, platform, sourcePath) => {
     }
 
     if (confirmAssets) {
+        const engine = getEngineRunnerByPlatform(c, c.platform);
         copyFolderContentsRecursiveSync(
-            path.join(c.paths.rnv.dir, `projectTemplate/assets/${platform}`),
+            path.join(engine.getOriginalAssetsDir(), platform),
             sourcePath
         );
     }
