@@ -4,6 +4,7 @@ import { logDebug, logHook } from '../systemManager/logger';
 import { executeAsync } from '../systemManager/exec';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
+import { doResolve } from '../systemManager/resolve';
 
 export const executePipe = async (c, key) => {
     logHook('executePipe', `('${key}')`);
@@ -53,23 +54,27 @@ export const buildHooks = async (c) => {
         }
     }
 
-    if (shouldBuildHook && !c.isBuildHooksReady) {
-        try {
-            logHook('buildHooks', 'Build hooks not complied. BUILDING...');
-            await executeAsync(
-                c,
-                `babel ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir}`,
-                { cwd: c.paths.project.dir, silent: true }
-            );
-        } catch (e) {
-            // Fail Builds instead of warn when hook fails
-            return Promise.reject(`BUILD_HOOK Failed with error: ${e}`);
+    // New projects are not ready to compile babel
+    if (!c.files.project.config.isNew && doResolve('@babel/cli')) {
+        if (shouldBuildHook && !c.isBuildHooksReady) {
+            try {
+                logHook('buildHooks', 'Build hooks not complied. BUILDING...');
+                await executeAsync(
+                    c,
+                    `babel ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir}`,
+                    { cwd: c.paths.project.dir, silent: true }
+                );
+            } catch (e) {
+                // Fail Builds instead of warn when hook fails
+                return Promise.reject(`BUILD_HOOK Failed with error: ${e}`);
+            }
         }
+
+        const h = require(c.paths.buildHooks.dist.index);
+        c.buildHooks = h.hooks;
+        c.buildPipes = h.pipes;
+        c.isBuildHooksReady = true;
     }
 
-    const h = require(c.paths.buildHooks.dist.index);
-    c.buildHooks = h.hooks;
-    c.buildPipes = h.pipes;
-    c.isBuildHooksReady = true;
     return true;
 };

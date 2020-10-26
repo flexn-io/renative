@@ -6,6 +6,7 @@ import { executeAsync } from '../systemManager/exec';
 import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../systemManager/fileutils';
+import { installPackageDependencies } from '../systemManager/npmUtils';
 import { EXTENSIONS } from '../constants';
 
 
@@ -89,7 +90,10 @@ export const loadEngineConfigs = async (c) => {
             } else {
                 const engVer = getScopedVersion(c, k, engines[k], 'engineTemplates');
                 if (engVer) {
-                    enginesToInstall.push(`${k}@${engVer}`);
+                    enginesToInstall.push({
+                        key: k,
+                        version: engVer
+                    });
                 }
             }
         });
@@ -97,9 +101,21 @@ export const loadEngineConfigs = async (c) => {
             logInfo(`Some engines not installed in your project:
 ${enginesToInstall.map(v => `> ${v}`).join('\n')}
  INSTALLING...`);
-            await Promise.all(enginesToInstall.map(v => executeAsync(`npm i ${v} --no-save`, {
-                cwd: c.paths.project.dir
-            })));
+
+            // If package.json exists use conventional install.
+            if (fsExistsSync(c.paths.project.package)) {
+                enginesToInstall.forEach((v) => {
+                    c.files.project.package.devDependencies[v.key] = v.version;
+                    writeFileSync(c.paths.project.package, c.files.project.package);
+                });
+                await installPackageDependencies(c);
+            } else {
+                await Promise.all(enginesToInstall.map(v => executeAsync(`npm i ${v.key}@${v.version}`, {
+                    cwd: c.paths.project.dir
+                })));
+            }
+
+
             return loadEngineConfigs(c);
         }
     } else if (c.files.project.config) {
