@@ -13,7 +13,7 @@ jobs:
           - node_modules
       node_js: 13.13.0
       os: osx
-      osx_image: xcode11.3
+      osx_image: xcode12
       install: skip
       script: ci/run_osx_ios.sh
     - name: "HelloWorld Apple TV: Build"
@@ -23,7 +23,7 @@ jobs:
           - node_modules
       node_js: 13.13.0
       os: osx
-      osx_image: xcode11.3
+      osx_image: xcode12
       install: skip
       script: ci/run_osx_tvos.sh
     - name: "RNV Node: Unit Tests"
@@ -138,7 +138,7 @@ jobs:
     #       - node_modules
     #   node_js: 13.13.0
     #   os: osx
-    #   osx_image: xcode11.3
+    #   osx_image: xcode12
     #   install: skip
     #   script:
     #     - yarn bootstrap-clean
@@ -152,7 +152,7 @@ jobs:
           - node_modules
       node_js: 13.13.0
       os: osx
-      osx_image: xcode11.3
+      osx_image: xcode12
       install: skip
       script:
         - yarn bootstrap-clean
@@ -166,7 +166,7 @@ jobs:
           - node_modules
       node_js: 13.13.0
       os: osx
-      osx_image: xcode11.3
+      osx_image: xcode12
       install:
         - yarn bootstrap-clean
         - cd packages/rnv
