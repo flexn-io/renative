@@ -2683,6 +2683,44 @@
                     "rnv-platform-info"
                 ]
             }
+        },
+        "Sentry": {
+            "no-npm": true,
+            "ios": {
+                "podName": "Sentry",
+                "version": "5.2.0"
+            }
+        },
+        "@sentry/react-native": {
+            "version": "1.7.1",
+            "ios": {
+                "podName": "RNSentry"
+            },
+            "tvos": {
+                "podName": "RNSentry"
+            },
+            "android": {
+                "app/build.gradle": {
+                    "apply": [
+                        "from: \"../../../node_modules/@sentry/react-native/sentry.gradle\""
+                    ]
+                },
+                "projectName": "@sentry_react-native",
+                "path": "node_modules/@sentry/react-native/android",
+                "package": "io.sentry.RNSentryPackage",
+                "implementation": "implementation project(':@sentry_react-native')"
+            },
+            "androidtv": {
+                "app/build.gradle": {
+                    "apply": [
+                        "from: \"../../../node_modules/@sentry/react-native/sentry.gradle\""
+                    ]
+                },
+                "projectName": "@sentry_react-native",
+                "path": "node_modules/@sentry/react-native/android",
+                "package": "io.sentry.RNSentryPackage",
+                "implementation": "implementation project(':@sentry_react-native')"
+            }
         }
     }
 }
