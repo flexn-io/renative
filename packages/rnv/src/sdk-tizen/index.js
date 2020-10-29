@@ -614,7 +614,7 @@ export const configureProject = c => new Promise((resolve) => {
 
     addSystemInjects(c, injects);
 
-    // the file should already be copied via copyAssets, same input and output fil
+    // the file should already be copied via copyAssets, same input and output file
     const file = path.join(getPlatformProjectDir(c), configFile);
     writeCleanFile(
         file,
