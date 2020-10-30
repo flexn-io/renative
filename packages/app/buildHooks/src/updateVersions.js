@@ -84,7 +84,7 @@ export const updateVersions = async (c) => {
         c,
         path.join(
             pkgFolder,
-            'rnv/projectTemplates/renative.templates.json'
+            'rnv/coreTemplateFiles/renative.templates.json'
         ),
         {
             engineTemplates: {

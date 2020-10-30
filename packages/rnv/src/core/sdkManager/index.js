@@ -1,9 +1,9 @@
-import { waitForEmulator } from './deviceManager/common';
-import * as Android from './deviceManager/android';
-import * as Apple from './deviceManager/apple';
-import * as Tizen from './deviceManager/tizen';
-import * as Webos from './deviceManager/webos';
-import * as Kaios from './deviceManager/kaios';
+import { waitForEmulator } from './deviceUtils/common';
+import * as Android from './deviceUtils/android';
+import * as Apple from './deviceUtils/apple';
+import * as Tizen from './deviceUtils/tizen';
+import * as Webos from './deviceUtils/webos';
+import * as Kaios from './deviceUtils/kaios';
 import * as Installer from './installer';
 
 export {

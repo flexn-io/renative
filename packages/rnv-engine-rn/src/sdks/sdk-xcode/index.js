@@ -15,7 +15,7 @@ import { parsePodFile } from './podfileParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
 
-const { getAppleDevices } = SDKManager.Xcode;
+const { getAppleDevices } = SDKManager.Apple;
 
 const {
     fsExistsSync,

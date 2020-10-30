@@ -29,54 +29,6 @@ export const configureNextIfRequired = async (c) => {
     const supportFilesDir = path.join(platformTemplatesDirs[c.platform], '../supportFiles');
     const configFile = path.join(dir, NEXT_CONFIG_NAME);
 
-    // handle fonts
-    // !fsExistsSync(publicDir) && fsMkdirSync(publicDir);
-    // const fontsSymLinkPath = path.join(publicDir, 'fonts');
-    //
-    // if (fsExistsSync(baseFontsDir)) {
-    //     if (!fsExistsSync(fontsSymLinkPath)) {
-    //         try {
-    //             fsUnlinkSync(fontsSymLinkPath);
-    //         } catch (e) {
-    //             logDebug(e);
-    //         }
-    //         fsSymlinkSync(baseFontsDir, fontsSymLinkPath);
-    //     }
-    //
-    //     // create styles dir and global fonts.css file
-    //     if (!fsExistsSync(stylesDir)) {
-    //         fsMkdirSync(stylesDir);
-    //         let cssOutput = '';
-    //
-    //         const fontFiles = fsReaddirSync(baseFontsDir);
-    //         fontFiles.forEach((file) => {
-    //             cssOutput += `
-    //               @font-face {
-    //                   font-family: '${file.split('.')[0]}';
-    //                   src: url('/fonts/${file}');
-    //               }
-    //
-    //           `;
-    //         });
-    //
-    //         fsWriteFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
-    //     }
-    // }
-
-    // add wrapper _app
-    // if (!fsExistsSync(_appFile)) {
-    //     if (!fsExistsSync(pagesDir)) {
-    //         fsMkdirSync(pagesDir);
-    //     }
-    //     writeCleanFile(
-    //         path.join(supportFilesDir, '_app.js'),
-    //         _appFile,
-    //         [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }],
-    //         null,
-    //         c
-    //     );
-    // }
-
     // add config
     if (!fsExistsSync(configFile)) {
         writeCleanFile(path.join(supportFilesDir, NEXT_CONFIG_NAME), configFile, null, null, c);

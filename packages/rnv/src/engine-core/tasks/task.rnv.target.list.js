@@ -12,10 +12,10 @@ import { IOS,
     TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH,
     PARAMS } from '../../core/constants';
 
-import { listTizenTargets } from '../../core/sdkManager/deviceManager/tizen';
-import { listWebOSTargets } from '../../core/sdkManager/deviceManager/webos';
-import { listAndroidTargets } from '../../core/sdkManager/deviceManager/android';
-import { listAppleDevices } from '../../core/sdkManager/deviceManager/apple';
+import { listTizenTargets } from '../../core/sdkManager/deviceUtils/tizen';
+import { listWebOSTargets } from '../../core/sdkManager/deviceUtils/webos';
+import { listAndroidTargets } from '../../core/sdkManager/deviceUtils/android';
+import { listAppleDevices } from '../../core/sdkManager/deviceUtils/apple';
 
 
 import { executeTask } from '../../core/taskManager';

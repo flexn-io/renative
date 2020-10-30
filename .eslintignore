@@ -15,6 +15,7 @@ test/examples/*.js
 **/projectTemplates
 **/pluginTemplates
 **/supportFiles
+**/coreTemplateFiles
 packages/rnv/tests
 packages/app/e2e-cypress
 packages/app/src

@@ -868,7 +868,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     );
     c.paths.rnv.projectTemplates.dir = path.join(
         c.paths.rnv.dir,
-        'projectTemplates'
+        'coreTemplateFiles'
     );
     c.paths.rnv.projectTemplates.config = path.join(
         c.paths.rnv.projectTemplates.dir,

@@ -39,7 +39,7 @@ const _configureHostedIfRequired = async (c) => {
         logDebug('Running hosted build');
         const { rnv } = c.paths;
         writeCleanFile(
-            path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'),
+            path.join(rnv.dir, 'coreTemplateFiles', 'appShell', 'index.html'),
             path.join(getPlatformProjectDir(c), 'index.html'),
             [
                 {

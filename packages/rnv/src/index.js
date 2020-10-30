@@ -53,7 +53,7 @@ const run = (cmd, subCmd, program, process) => {
 
 export const { doResolve } = Resolver;
 export const { doResolvePath } = Resolver;
-// LEGACY
+// END LEGACY
 
 export {
     Constants,

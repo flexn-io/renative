@@ -71,7 +71,7 @@ export const checkAndCreateGitignore = async (c) => {
         );
 
         copyFileSync(
-            path.join(c.paths.rnv.dir, 'supportFiles/gitignore-template'),
+            path.join(c.paths.rnv.dir, 'coreTemplateFiles/gitignore-template'),
             ignrPath
         );
     }
@@ -174,9 +174,9 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         fsWriteFileSync(fontJsPath, fontsObj);
     }
 
-    const supportFiles = path.resolve(c.paths.rnv.dir, 'supportFiles');
+    const coreTemplateFiles = path.resolve(c.paths.rnv.dir, 'coreTemplateFiles');
     copyFileSync(
-        path.resolve(supportFiles, 'fontManager.js'),
+        path.resolve(coreTemplateFiles, 'fontManager.js'),
         path.resolve(
             c.paths.project.assets.dir,
             'runtime',
@@ -184,7 +184,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         )
     );
     copyFileSync(
-        path.resolve(supportFiles, 'fontManager.js'),
+        path.resolve(coreTemplateFiles, 'fontManager.js'),
         path.resolve(
             c.paths.project.assets.dir,
             'runtime',
@@ -192,7 +192,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         )
     );
     copyFileSync(
-        path.resolve(supportFiles, 'fontManager.web.js'),
+        path.resolve(coreTemplateFiles, 'fontManager.web.js'),
         path.resolve(
             c.paths.project.assets.dir,
             'runtime',
