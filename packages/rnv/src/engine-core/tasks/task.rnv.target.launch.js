@@ -1,20 +1,23 @@
-import { PlatformManager, Logger, Constants, TaskManager } from 'rnv';
-import { launchKaiOSSimulator } from '../sdks/sdk-firefox';
-import { launchTizenSimulator } from '../sdks/sdk-tizen';
-import { launchWebOSimulator } from '../sdks/sdk-webos';
-
-const { executeTask } = TaskManager;
-const { isPlatformSupported } = PlatformManager;
-const { chalk, logTask } = Logger;
-const {
+import { isPlatformSupported } from '../../core/platformManager';
+import { chalk, logTask } from '../../core/systemManager/logger';
+import { IOS,
+    ANDROID,
+    TVOS,
     TIZEN,
     WEBOS,
+    ANDROID_TV,
+    ANDROID_WEAR,
     KAIOS,
     TASK_WORKSPACE_CONFIGURE,
     TASK_TARGET_LAUNCH,
-    PARAMS
-} = Constants;
+    PARAMS } from '../../core/constants';
 
+import { launchTizenSimulator } from '../../core/targetManager/deviceManager/tizen';
+import { launchWebOSimulator } from '../../core/targetManager/deviceManager/webos';
+import { launchAndroidSimulator } from '../../core/targetManager/deviceManager/android';
+import { launchAppleSimulator } from '../../core/targetManager/deviceManager/apple';
+import { launchKaiOSSimulator } from '../../core/targetManager/deviceManager/kaios';
+import { executeTask } from '../../core/taskManager';
 
 export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetLaunch');
@@ -26,6 +29,13 @@ export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
     const target = program.target || c.files.workspace.config.defaultTargets[platform];
 
     switch (platform) {
+        case ANDROID:
+        case ANDROID_TV:
+        case ANDROID_WEAR:
+            return launchAndroidSimulator(c, target);
+        case IOS:
+        case TVOS:
+            return launchAppleSimulator(c, target);
         case TIZEN:
             return launchTizenSimulator(c, target);
         case WEBOS:

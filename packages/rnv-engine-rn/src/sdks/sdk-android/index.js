@@ -5,7 +5,7 @@ import inquirer from 'inquirer';
 import execa from 'execa';
 import { FileUtils, Exec, Utils, Logger, Constants, EngineManager,
     PluginManager, ProjectManager, Common,
-    PlatformManager, Prompt } from 'rnv';
+    PlatformManager, Prompt, TargetManager } from 'rnv';
 import {
     parseAndroidManifestSync,
     injectPluginManifestSync
@@ -28,7 +28,6 @@ import {
     injectPluginXmlValuesSync,
     parseValuesColorsSync
 } from './xmlValuesParser';
-import * as DeviceManager from './deviceManager';
 
 const {
     resetAdb,
@@ -38,7 +37,7 @@ const {
     checkForActiveEmulator,
     askForNewEmulator,
     connectToWifiDevice
-} = DeviceManager;
+} = TargetManager.Android;
 const {
     copyAssetsFolder,
     copyBuildsFolder,
@@ -686,8 +685,4 @@ export const runAndroidLog = async (c) => {
     return child
         .then(res => res.stdout)
         .catch(err => Promise.reject(`Error: ${err}`));
-};
-
-export {
-    DeviceManager
 };

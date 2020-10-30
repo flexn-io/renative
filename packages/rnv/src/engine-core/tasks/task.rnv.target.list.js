@@ -1,18 +1,24 @@
-import { PlatformManager, Logger, SDKManager, Constants, TaskManager } from 'rnv';
+import { isPlatformSupported } from '../../core/platformManager';
+import { chalk, logTask } from '../../core/systemManager/logger';
 
-import { listTizenTargets } from '../sdks/sdk-tizen';
-import { listWebOSTargets } from '../sdks/sdk-webos';
-
-const { isPlatformSupported } = PlatformManager;
-const { chalk, logTask } = Logger;
-const { checkSdk } = SDKManager;
-const {
+import { checkSdk } from '../../core/sdkManager';
+import { IOS,
+    ANDROID,
+    TVOS,
     TIZEN,
     WEBOS,
+    ANDROID_TV,
+    ANDROID_WEAR,
     TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH,
-    PARAMS
-} = Constants;
-const { executeTask } = TaskManager;
+    PARAMS } from '../../core/constants';
+
+import { listTizenTargets } from '../../core/targetManager/deviceManager/tizen';
+import { listWebOSTargets } from '../../core/targetManager/deviceManager/webos';
+import { listAndroidTargets } from '../../core/targetManager/deviceManager/android';
+import { listAppleDevices } from '../../core/targetManager/deviceManager/apple';
+
+
+import { executeTask } from '../../core/taskManager';
 
 
 export const taskRnvTargetList = async (c, parentTask, originTask) => {
@@ -26,6 +32,13 @@ export const taskRnvTargetList = async (c, parentTask, originTask) => {
     await checkSdk(c);
 
     switch (platform) {
+        case ANDROID:
+        case ANDROID_TV:
+        case ANDROID_WEAR:
+            return listAndroidTargets(c, platform);
+        case IOS:
+        case TVOS:
+            return listAppleDevices(c);
         case TIZEN:
             return listTizenTargets(c, platform);
         case WEBOS:

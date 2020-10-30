@@ -1,10 +1,8 @@
 import inquirer from 'inquirer';
 import child_process from 'child_process';
-import { Exec, Logger, Constants } from 'rnv';
-
-const { chalk, logToSummary, logTask, logWarning, logDebug } = Logger;
-const { IOS, TVOS } = Constants;
-const { executeAsync } = Exec;
+import { chalk, logToSummary, logTask, logWarning, logDebug } from '../../systemManager/logger';
+import { IOS, TVOS } from '../../constants';
+import { executeAsync } from '../../systemManager/exec';
 
 export const getAppleDevices = async (
     c,

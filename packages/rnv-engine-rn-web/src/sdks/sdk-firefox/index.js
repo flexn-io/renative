@@ -1,5 +1,5 @@
 import path from 'path';
-import { PlatformManager, SDKWebpack, FileUtils, Common, Logger, Constants, ProjectManager } from 'rnv';
+import { PlatformManager, SDKWebpack, FileUtils, Common, Logger, ProjectManager, TargetManager } from 'rnv';
 
 const {
     getPlatformProjectDir,
@@ -8,52 +8,14 @@ const {
     getAppDescription,
     getAppAuthor,
 } = Common;
-const { fsExistsSync, getRealPath, fsWriteFileSync, fsReadFileSync } = FileUtils;
-const { chalk, logTask } = Logger;
+const { fsWriteFileSync, fsReadFileSync } = FileUtils;
+const { logTask } = Logger;
 const { isPlatformActive } = PlatformManager;
-const {
-    copyBuildsFolder,
-    copyAssetsFolder
-} = ProjectManager;
-const { KAIOS_SDK } = Constants;
-
+const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
 const { buildWeb, configureCoreWebProject } = SDKWebpack;
+const { launchKaiOSSimulator } = TargetManager.Kaios;
 
-const childProcess = require('child_process');
-
-const launchKaiOSSimulator = c => new Promise((resolve, reject) => {
-    logTask('launchKaiOSSimulator');
-
-    if (!c.buildConfig?.sdks?.KAIOS_SDK) {
-        reject(
-            `${KAIOS_SDK} is not configured in your ${
-                c.paths.workspace.config
-            } file. Make sure you add location to your Kaiosrt App path similar to: ${chalk().white.bold(
-                '"KAIOS_SDK": "/Applications/Kaiosrt.app"'
-            )}`
-        );
-        return;
-    }
-
-    const ePath = getRealPath(
-        path.join(c.buildConfig?.sdks?.KAIOS_SDK)
-    );
-
-    if (!fsExistsSync(ePath)) {
-        reject(`Can't find emulator at path: ${ePath}`);
-        return;
-    }
-
-    childProcess.exec(`open ${ePath}`, (err) => {
-        if (err) {
-            reject(err);
-            return;
-        }
-        resolve();
-    });
-});
-
-const configureKaiOSProject = async (c) => {
+export const configureKaiOSProject = async (c) => {
     logTask('configureKaiOSProject');
 
     const { platform } = c;
@@ -68,7 +30,7 @@ const configureKaiOSProject = async (c) => {
     return copyBuildsFolder(c, platform);
 };
 
-const configureProject = c => new Promise((resolve) => {
+export const configureProject = c => new Promise((resolve) => {
     logTask('configureProject');
     const { platform } = c;
 
@@ -93,7 +55,7 @@ const configureProject = c => new Promise((resolve) => {
     resolve();
 });
 
-const runFirefoxProject = async (c) => {
+export const runFirefoxProject = async (c) => {
     logTask('runFirefoxProject');
     const { platform } = c;
 
@@ -102,16 +64,9 @@ const runFirefoxProject = async (c) => {
     return true;
 };
 
-const buildFirefoxProject = async (c) => {
+export const buildFirefoxProject = async (c) => {
     logTask('buildFirefoxProject');
 
     await buildWeb(c);
     return true;
-};
-
-export {
-    launchKaiOSSimulator,
-    configureKaiOSProject,
-    runFirefoxProject,
-    buildFirefoxProject
 };

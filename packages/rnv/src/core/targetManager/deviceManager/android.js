@@ -1,13 +1,11 @@
 import path from 'path';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
-import { FileUtils, Exec, TargetManager, Utils, Logger, Constants } from 'rnv';
-
-const { fsExistsSync, fsReaddirSync, fsLstatSync, fsReadFileSync } = FileUtils;
-const { execCLI, executeTelnet } = Exec;
-const { waitForEmulator } = TargetManager;
-const { isSystemWin } = Utils;
-const {
+import { fsExistsSync, fsReaddirSync, fsLstatSync, fsReadFileSync } from '../../systemManager/fileutils';
+import { execCLI, executeTelnet } from '../../systemManager/exec';
+import { waitForEmulator } from './common';
+import { isSystemWin } from '../../systemManager/utils';
+import {
     chalk,
     logToSummary,
     logTask,
@@ -16,8 +14,8 @@ const {
     logDebug,
     logSuccess,
     logRaw
-} = Logger;
-const {
+} from '../../systemManager/logger';
+import {
     IS_TABLET_ABOVE_INCH,
     ANDROID_WEAR,
     ANDROID,
@@ -27,7 +25,7 @@ const {
     CLI_ANDROID_AVDMANAGER,
     CLI_ANDROID_SDKMANAGER,
     USER_HOME_DIR
-} = Constants;
+} from '../../constants';
 
 const CHECK_INTEVAL = 5000;
 
