@@ -1,5 +1,5 @@
 import path from 'path';
-import { PlatformManager, SDKWebpack, FileUtils, Common, Logger, ProjectManager, TargetManager } from 'rnv';
+import { PlatformManager, WebpackUtils, FileUtils, Common, Logger, ProjectManager, SDKManager } from 'rnv';
 
 const {
     getPlatformProjectDir,
@@ -12,8 +12,8 @@ const { fsWriteFileSync, fsReadFileSync } = FileUtils;
 const { logTask } = Logger;
 const { isPlatformActive } = PlatformManager;
 const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
-const { buildWeb, configureCoreWebProject } = SDKWebpack;
-const { launchKaiOSSimulator } = TargetManager.Kaios;
+const { buildWeb, configureCoreWebProject } = WebpackUtils;
+const { launchKaiOSSimulator } = SDKManager.Kaios;
 
 export const configureKaiOSProject = async (c) => {
     logTask('configureKaiOSProject');

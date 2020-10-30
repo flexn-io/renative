@@ -2,7 +2,7 @@ import path from 'path';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 import crypto from 'crypto';
-import { Exec, Logger, Constants, Common, FileUtils, EngineManager, Resolver, PlatformManager, ProjectManager, TargetManager } from 'rnv';
+import { Exec, Logger, Constants, Common, FileUtils, EngineManager, Resolver, PlatformManager, ProjectManager, SDKManager } from 'rnv';
 import { registerDevice } from './fastlane';
 import { getAppFolderName } from './common';
 import {
@@ -15,7 +15,7 @@ import { parsePodFile } from './podfileParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
 
-const { getAppleDevices } = TargetManager.Xcode;
+const { getAppleDevices } = SDKManager.Xcode;
 
 const {
     fsExistsSync,

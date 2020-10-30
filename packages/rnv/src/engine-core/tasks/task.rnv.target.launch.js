@@ -12,11 +12,11 @@ import { IOS,
     TASK_TARGET_LAUNCH,
     PARAMS } from '../../core/constants';
 
-import { launchTizenSimulator } from '../../core/targetManager/deviceManager/tizen';
-import { launchWebOSimulator } from '../../core/targetManager/deviceManager/webos';
-import { launchAndroidSimulator } from '../../core/targetManager/deviceManager/android';
-import { launchAppleSimulator } from '../../core/targetManager/deviceManager/apple';
-import { launchKaiOSSimulator } from '../../core/targetManager/deviceManager/kaios';
+import { launchTizenSimulator } from '../../core/sdkManager/deviceManager/tizen';
+import { launchWebOSimulator } from '../../core/sdkManager/deviceManager/webos';
+import { launchAndroidSimulator } from '../../core/sdkManager/deviceManager/android';
+import { launchAppleSimulator } from '../../core/sdkManager/deviceManager/apple';
+import { launchKaiOSSimulator } from '../../core/sdkManager/deviceManager/kaios';
 import { executeTask } from '../../core/taskManager';
 
 export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {

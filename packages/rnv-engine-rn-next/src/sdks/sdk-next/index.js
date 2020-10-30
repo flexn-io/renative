@@ -1,6 +1,6 @@
 import path from 'path';
 import open from 'better-opn';
-import { Exec, SDKWebpack, FileUtils, Common, Logger, Constants, EngineManager, PluginManager, Utils } from 'rnv';
+import { Exec, WebpackUtils, FileUtils, Common, Logger, Constants, EngineManager, PluginManager, Utils } from 'rnv';
 
 const { executeAsync } = Exec;
 const {
@@ -9,7 +9,7 @@ const {
     confirmActiveBundler,
     getPlatformBuildDir,
 } = Common;
-const { waitForWebpack, getModuleConfigs } = SDKWebpack;
+const { waitForWebpack, getModuleConfigs } = WebpackUtils;
 const { fsExistsSync, writeCleanFile } = FileUtils;
 const {
     chalk, logTask, logInfo, logWarning,

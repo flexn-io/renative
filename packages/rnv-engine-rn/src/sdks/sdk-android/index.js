@@ -5,7 +5,7 @@ import inquirer from 'inquirer';
 import execa from 'execa';
 import { FileUtils, Exec, Utils, Logger, Constants, EngineManager,
     PluginManager, ProjectManager, Common,
-    PlatformManager, Prompt, TargetManager } from 'rnv';
+    PlatformManager, Prompt, SDKManager } from 'rnv';
 import {
     parseAndroidManifestSync,
     injectPluginManifestSync
@@ -37,7 +37,7 @@ const {
     checkForActiveEmulator,
     askForNewEmulator,
     connectToWifiDevice
-} = TargetManager.Android;
+} = SDKManager.Android;
 const {
     copyAssetsFolder,
     copyBuildsFolder,

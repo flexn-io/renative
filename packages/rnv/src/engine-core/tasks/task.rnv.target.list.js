@@ -1,7 +1,7 @@
 import { isPlatformSupported } from '../../core/platformManager';
 import { chalk, logTask } from '../../core/systemManager/logger';
 
-import { checkSdk } from '../../core/sdkManager';
+import { checkSdk } from '../../core/sdkManager/installer';
 import { IOS,
     ANDROID,
     TVOS,
@@ -12,10 +12,10 @@ import { IOS,
     TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH,
     PARAMS } from '../../core/constants';
 
-import { listTizenTargets } from '../../core/targetManager/deviceManager/tizen';
-import { listWebOSTargets } from '../../core/targetManager/deviceManager/webos';
-import { listAndroidTargets } from '../../core/targetManager/deviceManager/android';
-import { listAppleDevices } from '../../core/targetManager/deviceManager/apple';
+import { listTizenTargets } from '../../core/sdkManager/deviceManager/tizen';
+import { listWebOSTargets } from '../../core/sdkManager/deviceManager/webos';
+import { listAndroidTargets } from '../../core/sdkManager/deviceManager/android';
+import { listAppleDevices } from '../../core/sdkManager/deviceManager/apple';
 
 
 import { executeTask } from '../../core/taskManager';

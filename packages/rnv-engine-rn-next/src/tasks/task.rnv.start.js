@@ -1,5 +1,5 @@
 import open from 'better-opn';
-import { TaskManager, Constants, Logger, PlatformManager, SDKWebpack } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, WebpackUtils } from 'rnv';
 import { SDKNext } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
@@ -11,7 +11,7 @@ const {
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
-const { waitForWebpack } = SDKWebpack;
+const { waitForWebpack } = WebpackUtils;
 const { runWebNext } = SDKNext;
 const { executeTask } = TaskManager;
 

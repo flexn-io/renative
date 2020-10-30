@@ -8,7 +8,7 @@ import {
     writeFileSync
 } from '../systemManager/fileutils';
 import { SUPPORTED_PLATFORMS } from '../constants';
-import { checkAndConfigureSdks } from '../sdkManager';
+import { checkAndConfigureSdks } from '../sdkManager/installer';
 import { getTimestampPathsConfig, getPlatformBuildDir } from '../common';
 
 

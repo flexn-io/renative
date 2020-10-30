@@ -1,4 +1,5 @@
-import { TaskManager, Constants, Logger, PlatformManager, SDKWebpack } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { SDKWebpack } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;

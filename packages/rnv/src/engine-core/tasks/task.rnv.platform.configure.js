@@ -8,7 +8,7 @@ import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser
 import { executeTask } from '../../core/taskManager';
 import { PARAMS, TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../../core/constants';
 
-import { checkSdk } from '../../core/sdkManager';
+import { checkSdk } from '../../core/sdkManager/installer';
 
 export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformConfigure', '');

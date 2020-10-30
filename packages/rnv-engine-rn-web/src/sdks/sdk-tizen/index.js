@@ -1,6 +1,6 @@
 import path from 'path';
 import semver from 'semver';
-import { Exec, SDKWebpack, FileUtils, Common, Logger, Constants, TargetManager, PlatformManager, ProjectManager } from 'rnv';
+import { Exec, WebpackUtils, FileUtils, Common, Logger, Constants, SDKManager, PlatformManager, ProjectManager } from 'rnv';
 
 const { execCLI } = Exec;
 const {
@@ -29,10 +29,10 @@ const {
 } = Logger;
 const { isPlatformActive } = PlatformManager;
 const { writeCleanFile, fsExistsSync } = FileUtils;
-const { buildWeb, runWebpackServer, configureCoreWebProject, waitForWebpack } = SDKWebpack;
+const { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject, waitForWebpack } = WebpackUtils;
 const { copyAssetsFolder, copyBuildsFolder, DEFAULT_CERTIFICATE_NAME } = ProjectManager;
 
-const { runTizenSimOrDevice, createDevelopTizenCertificate } = TargetManager.Tizen;
+const { runTizenSimOrDevice, createDevelopTizenCertificate } = SDKManager.Tizen;
 
 const DEFAULT_SECURITY_PROFILE_NAME = 'RNVanillaCert';
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
@@ -78,7 +78,7 @@ export const runTizen = async (c, target) => {
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
     if (bundleAssets) {
-        await buildWeb(c);
+        await buildCoreWebpackProject(c);
         await runTizenSimOrDevice(c);
     } else {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
@@ -119,7 +119,7 @@ export const buildTizenProject = async (c) => {
     const platformConfig = c.buildConfig.platforms[platform];
     const tDir = getPlatformProjectDir(c);
 
-    await buildWeb(c);
+    await buildCoreWebpackProject(c);
     if (!c.program.hosted) {
         const tOut = path.join(tDir, 'output');
         const tBuild = path.join(tDir, 'build');

@@ -1,5 +1,5 @@
 import open from 'better-opn';
-import { TaskManager, Constants, Logger, PlatformManager, SDKWebpack, Common } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, Common, WebpackUtils } from 'rnv';
 
 const { getConfigProp } = Common;
 const { logErrorPlatform } = PlatformManager;
@@ -19,7 +19,7 @@ const {
     REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     PARAMS
 } = Constants;
-const { runWebpackServer, waitForWebpack } = SDKWebpack;
+const { runWebpackServer, waitForWebpack } = WebpackUtils;
 const { executeTask } = TaskManager;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {

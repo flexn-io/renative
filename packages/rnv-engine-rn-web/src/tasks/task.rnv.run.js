@@ -1,7 +1,8 @@
-import { TaskManager, Constants, Logger, PlatformManager, SDKWebpack, FileUtils, Common } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, FileUtils, Common, WebpackUtils } from 'rnv';
 import ip from 'ip';
 import path from 'path';
-import { SDKTizen, SDKWebos, SDKFirefox } from '../sdks';
+import { SDKTizen, SDKWebos, SDKFirefox, SDKWebpack } from '../sdks';
+
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask, logDebug } = Logger;
@@ -19,7 +20,8 @@ const {
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
-const { runWebpackServer, runChromecast } = SDKWebpack;
+const { runChromecast } = SDKWebpack;
+const { runWebpackServer } = WebpackUtils;
 const { getConfigProp, getPlatformProjectDir } = Common;
 const { runTizen } = SDKTizen;
 const { runWebOS } = SDKWebos;

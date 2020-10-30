@@ -4,10 +4,9 @@ import open from 'better-opn';
 import axios from 'axios';
 import ip from 'ip';
 import commandExists from 'command-exists';
-import { fsExistsSync, readObjectSync, writeCleanFile, fsWriteFileSync, mkdirSync } from '../core/systemManager/fileutils';
-import { executeAsync } from '../core/systemManager/exec';
+import { fsExistsSync, readObjectSync, writeCleanFile, fsWriteFileSync, mkdirSync } from '../systemManager/fileutils';
+import { executeAsync } from '../systemManager/exec';
 import {
-    getPlatformProjectDir,
     getPlatformBuildDir,
     getAppVersion,
     checkPortInUse,
@@ -18,137 +17,29 @@ import {
     confirmActiveBundler,
     getTimestampPathsConfig,
     waitForUrl,
-    addSystemInjects
-} from '../core/common';
-import { doResolve, doResolvePath } from '../core/systemManager/resolve';
-import { isPlatformActive } from '../core/platformManager';
+    addSystemInjects,
+    getPlatformProjectDir
+} from '../common';
+import { doResolve, doResolvePath } from '../systemManager/resolve';
 import {
     chalk,
     logTask,
     logInfo,
     logDebug,
-    logSuccess,
     logWarning,
+    logSuccess,
     logRaw,
     logError,
     logSummary
-} from '../core/systemManager/logger';
-import {
-    copyBuildsFolder,
-    copyAssetsFolder
-} from '../core/projectManager';
-import { getPlatformExtensions } from '../core/engineManager';
-import { parsePlugins } from '../core/pluginManager';
-import { getValidLocalhost } from '../core/systemManager/utils';
+} from '../systemManager/logger';
+import { getPlatformExtensions } from '../engineManager';
+import { parsePlugins } from '../pluginManager';
+import { getValidLocalhost } from '../systemManager/utils';
 
-import { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR, RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR_NAME } from '../core/constants';
+import { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR, RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR_NAME } from '../constants';
 
 const WEBPACK = path.join(RNV_NODE_MODULES_DIR, 'webpack/bin/webpack.js');
 const WEBPACK_DEV_SERVER = path.join(RNV_NODE_MODULES_DIR, 'webpack-dev-server/bin/webpack-dev-server.js');
-
-export const waitForWebpack = async (c, suffix = 'assets/bundle.js') => {
-    logTask('waitForWebpack', `port:${c.runtime.port}`);
-    let attempts = 0;
-    const maxAttempts = 10;
-    const CHECK_INTEVAL = 2000;
-    // const spinner = ora('Waiting for webpack to finish...').start();
-
-    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    const devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
-    const url = `http://${devServerHost}:${c.runtime.port}/${suffix}`;
-
-    return new Promise((resolve, reject) => {
-        const interval = setInterval(() => {
-            axios
-                .get(url)
-                .then((res) => {
-                    if (res.status === 200) {
-                        clearInterval(interval);
-                        // spinner.succeed();
-                        return resolve(true);
-                    }
-                    attempts++;
-                    if (attempts === maxAttempts) {
-                        clearInterval(interval);
-                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                        return reject(
-                            "Can't connect to webpack. Try restarting it."
-                        );
-                    }
-                })
-                .catch(() => {
-                    attempts++;
-                    if (attempts > maxAttempts) {
-                        clearInterval(interval);
-                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                        return reject(
-                            "Can't connect to webpack. Try restarting it."
-                        );
-                    }
-                });
-        }, CHECK_INTEVAL);
-    });
-};
-
-export const getModuleConfigs = (c) => {
-    let modulePaths = [];
-    const moduleAliases = {};
-
-    const doNotResolveModulePaths = [];
-
-    // PLUGINS
-    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
-        const webpackConfig = plugin.webpack || plugin.webpackConfig;
-
-        if (webpackConfig) {
-            if (webpackConfig.modulePaths) {
-                if (webpackConfig.modulePaths === false) {
-                    // ignore
-                } else if (webpackConfig.modulePaths === true) {
-                    modulePaths.push(`node_modules/${key}`);
-                } else {
-                    webpackConfig.modulePaths.forEach((v) => {
-                        if (typeof v === 'string') {
-                            modulePaths.push(v);
-                        } else if (v?.projectPath) {
-                            doNotResolveModulePaths.push(path.join(c.paths.project.dir, v.projectPath));
-                        }
-                    });
-                }
-            }
-            if (webpackConfig.moduleAliases) {
-                if (webpackConfig.moduleAliases === true) {
-                    moduleAliases[key] = doResolvePath(key, true, {}, c.paths.project.nodeModulesDir);
-                } else {
-                    Object.keys(webpackConfig.moduleAliases).forEach((aKey) => {
-                        const mAlias = webpackConfig.moduleAliases[aKey];
-                        if (typeof mAlias === 'string') {
-                            moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
-                        } else if (mAlias.path) {
-                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
-                        } else if (mAlias.projectPath) {
-                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.projectPath);
-                        }
-                    });
-                }
-            }
-        }
-    }, true);
-
-    const moduleAliasesArray = [];
-    Object.keys(moduleAliases).forEach((key) => {
-        moduleAliasesArray.push(`${key}:${moduleAliases[key]}`);
-    });
-
-    modulePaths = modulePaths
-        .map(v => doResolvePath(v, true, {}, c.paths.project.dir))
-        .concat(doNotResolveModulePaths)
-        .concat([c.paths.project.assets.dir])
-        .filter(Boolean);
-
-
-    return { modulePaths, moduleAliases, moduleAliasesArray };
-};
 
 const _generateWebpackConfigs = (c, subFolderName) => {
     logTask('_generateWebpackConfigs');
@@ -228,60 +119,6 @@ const _generateWebpackConfigs = (c, subFolderName) => {
     fsWriteFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
 };
 
-export const buildWeb = async (c) => {
-    const { debug, debugIp } = c.program;
-    const { platform } = c;
-    logTask('buildWeb');
-
-    let debugVariables = '';
-
-    if (debug) {
-        logInfo(
-            `Starting a remote debugger build with ip ${debugIp
-                    || ip.address()}. If this IP is not correct, you can always override it with --debugIp`
-        );
-        debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
-    }
-
-    await executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=production ${
-        debugVariables
-    } node ${WEBPACK} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.prod.js`, {
-        // env: {
-        //     RNV_EXTENSIONS: getPlatformExtensions(c)
-        // }
-    });
-    logSuccess(
-        `Your Build is located in ${chalk().cyan(
-            path.join(getPlatformProjectDir(c))
-        )} .`
-    );
-    return true;
-};
-
-export const configureWebProject = async (c) => {
-    logTask('configureWebProject');
-
-    const { platform } = c;
-
-    c.runtime.platformBuildsProjectPath = getPlatformProjectDir(c);
-
-    if (!isPlatformActive(c, platform)) return;
-
-    await copyAssetsFolder(c, platform);
-
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-
-    await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
-
-    return copyBuildsFolder(c, platform);
-};
-
-export const configureCoreWebProject = async (c, subFolderName = '') => {
-    logTask('configureCoreWebProject');
-    _generateWebpackConfigs(c, subFolderName);
-    _parseCssSync(c, subFolderName);
-};
-
 const _parseCssSync = (c, subFolderName) => {
     const appFolder = getPlatformBuildDir(c);
     const timestampPathsConfig = getTimestampPathsConfig(c, c.platform);
@@ -307,53 +144,6 @@ const _parseCssSync = (c, subFolderName) => {
     );
 };
 
-
-export const runWebpackServer = async (c, enableRemoteDebugger) => {
-    const { port } = c.runtime;
-    const { platform } = c;
-    logTask('runWeb', `port:${port} debugger:${!!enableRemoteDebugger}`);
-
-    let devServerHost = c.runtime.localhost;
-
-    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    devServerHost = getValidLocalhost(
-        extendConfig.devServerHost,
-        c.runtime.localhost
-    );
-
-    const isPortActive = await checkPortInUse(c, platform, port);
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
-
-    if (!isPortActive) {
-        logInfo(
-            `Your ${chalk().white(
-                platform
-            )} devServerHost ${chalk().white(
-                devServerHost
-            )} at port ${chalk().white(
-                port
-            )} is not running. Starting it up for you...`
-        );
-        await _runWebBrowser(c, platform, devServerHost, port, false);
-        if (!bundleAssets) {
-            logSummary('BUNDLER STARTED');
-        }
-        await runWebDevServer(c, enableRemoteDebugger);
-    } else {
-        const resetCompleted = await confirmActiveBundler(c);
-
-        if (resetCompleted) {
-            await _runWebBrowser(c, platform, devServerHost, port, false);
-            if (!bundleAssets) {
-                logSummary('BUNDLER STARTED');
-            }
-            await runWebDevServer(c, enableRemoteDebugger);
-        } else {
-            await _runWebBrowser(c, platform, devServerHost, port, true);
-        }
-    }
-};
-
 const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
     logTask(
         '_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`
@@ -369,7 +159,6 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     if (alreadyStarted) return wait; // if it's already started, return the promise so it rnv will wait, otherwise it will exit before opening the browser
     return resolve();
 });
-
 
 const _runRemoteDebuggerChii = async (c, obj) => {
     const { debugIp } = c.program;
@@ -443,8 +232,8 @@ Debugger running at: ${debugUrl}`);
     return true;
 };
 
-const runWebDevServer = async (c, enableRemoteDebugger) => {
-    logTask('runWebDevServer');
+const _runWebDevServer = async (c, enableRemoteDebugger) => {
+    logTask('_runWebDevServer');
     const { debug } = c.program;
 
     const appFolder = getPlatformBuildDir(c);
@@ -496,52 +285,196 @@ will try to use globally installed one`);
             // }
         });
 
-        logDebug('runWebDevServer: running');
+        logDebug('_runWebDevServer: running');
     } catch (e) {
         logDebug(e);
         return true;
     }
 };
 
-export const deployWeb = () => {
-    logTask('deployWeb');
-    // const { platform } = c;
 
-    // DEPRECATED: custom deployers moved to external packages
-    // return selectWebToolAndDeploy(c, platform);
+export const configureCoreWebProject = async (c, subFolderName = '') => {
+    logTask('configureCoreWebProject');
+    _generateWebpackConfigs(c, subFolderName);
+    _parseCssSync(c, subFolderName);
+};
 
+export const runWebpackServer = async (c, enableRemoteDebugger) => {
+    const { port } = c.runtime;
+    const { platform } = c;
+    logTask('runWeb', `port:${port} debugger:${!!enableRemoteDebugger}`);
+
+    let devServerHost = c.runtime.localhost;
+
+    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
+    devServerHost = getValidLocalhost(
+        extendConfig.devServerHost,
+        c.runtime.localhost
+    );
+
+    const isPortActive = await checkPortInUse(c, platform, port);
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+
+    if (!isPortActive) {
+        logInfo(
+            `Your ${chalk().white(
+                platform
+            )} devServerHost ${chalk().white(
+                devServerHost
+            )} at port ${chalk().white(
+                port
+            )} is not running. Starting it up for you...`
+        );
+        await _runWebBrowser(c, platform, devServerHost, port, false);
+        if (!bundleAssets) {
+            logSummary('BUNDLER STARTED');
+        }
+        await _runWebDevServer(c, enableRemoteDebugger);
+    } else {
+        const resetCompleted = await confirmActiveBundler(c);
+
+        if (resetCompleted) {
+            await _runWebBrowser(c, platform, devServerHost, port, false);
+            if (!bundleAssets) {
+                logSummary('BUNDLER STARTED');
+            }
+            await _runWebDevServer(c, enableRemoteDebugger);
+        } else {
+            await _runWebBrowser(c, platform, devServerHost, port, true);
+        }
+    }
+};
+
+export const waitForWebpack = async (c, suffix = 'assets/bundle.js') => {
+    logTask('waitForWebpack', `port:${c.runtime.port}`);
+    let attempts = 0;
+    const maxAttempts = 10;
+    const CHECK_INTEVAL = 2000;
+    // const spinner = ora('Waiting for webpack to finish...').start();
+
+    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
+    const devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
+    const url = `http://${devServerHost}:${c.runtime.port}/${suffix}`;
+
+    return new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+            axios
+                .get(url)
+                .then((res) => {
+                    if (res.status === 200) {
+                        clearInterval(interval);
+                        // spinner.succeed();
+                        return resolve(true);
+                    }
+                    attempts++;
+                    if (attempts === maxAttempts) {
+                        clearInterval(interval);
+                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                        return reject(
+                            "Can't connect to webpack. Try restarting it."
+                        );
+                    }
+                })
+                .catch(() => {
+                    attempts++;
+                    if (attempts > maxAttempts) {
+                        clearInterval(interval);
+                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                        return reject(
+                            "Can't connect to webpack. Try restarting it."
+                        );
+                    }
+                });
+        }, CHECK_INTEVAL);
+    });
+};
+
+export const buildCoreWebpackProject = async (c) => {
+    const { debug, debugIp } = c.program;
+    const { platform } = c;
+    logTask('buildWeb');
+
+    let debugVariables = '';
+
+    if (debug) {
+        logInfo(
+            `Starting a remote debugger build with ip ${debugIp
+                    || ip.address()}. If this IP is not correct, you can always override it with --debugIp`
+        );
+        debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
+    }
+
+    await executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=production ${
+        debugVariables
+    } node ${WEBPACK} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.prod.js`, {
+        // env: {
+        //     RNV_EXTENSIONS: getPlatformExtensions(c)
+        // }
+    });
+    logSuccess(
+        `Your Build is located in ${chalk().cyan(
+            path.join(getPlatformProjectDir(c))
+        )} .`
+    );
     return true;
 };
 
-export const exportWeb = () => {
-    logTask('exportWeb');
-    // const { platform } = c;
+export const getModuleConfigs = (c) => {
+    let modulePaths = [];
+    const moduleAliases = {};
 
-    // DEPRECATED: custom deployers moved to external packages
-    // return selectWebToolAndExport(c, platform);
-    return true;
-};
+    const doNotResolveModulePaths = [];
 
-// CHROMECAST
+    // PLUGINS
+    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
+        const webpackConfig = plugin.webpack || plugin.webpackConfig;
 
-export const configureChromecastProject = async (c) => {
-    logTask(`configureChromecastProject:${c.platform}`);
+        if (webpackConfig) {
+            if (webpackConfig.modulePaths) {
+                if (webpackConfig.modulePaths === false) {
+                    // ignore
+                } else if (webpackConfig.modulePaths === true) {
+                    modulePaths.push(`node_modules/${key}`);
+                } else {
+                    webpackConfig.modulePaths.forEach((v) => {
+                        if (typeof v === 'string') {
+                            modulePaths.push(v);
+                        } else if (v?.projectPath) {
+                            doNotResolveModulePaths.push(path.join(c.paths.project.dir, v.projectPath));
+                        }
+                    });
+                }
+            }
+            if (webpackConfig.moduleAliases) {
+                if (webpackConfig.moduleAliases === true) {
+                    moduleAliases[key] = doResolvePath(key, true, {}, c.paths.project.nodeModulesDir);
+                } else {
+                    Object.keys(webpackConfig.moduleAliases).forEach((aKey) => {
+                        const mAlias = webpackConfig.moduleAliases[aKey];
+                        if (typeof mAlias === 'string') {
+                            moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
+                        } else if (mAlias.path) {
+                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
+                        } else if (mAlias.projectPath) {
+                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.projectPath);
+                        }
+                    });
+                }
+            }
+        }
+    }, true);
 
-    c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
+    const moduleAliasesArray = [];
+    Object.keys(moduleAliases).forEach((key) => {
+        moduleAliasesArray.push(`${key}:${moduleAliases[key]}`);
+    });
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    modulePaths = modulePaths
+        .map(v => doResolvePath(v, true, {}, c.paths.project.dir))
+        .concat(doNotResolveModulePaths)
+        .concat([c.paths.project.assets.dir])
+        .filter(Boolean);
 
-    await copyAssetsFolder(c, c.platform);
-    await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
-    await configureProject(c);
-    return copyBuildsFolder(c, c.platform);
-};
 
-export const configureProject = async (c) => {
-    logTask(`configureProject:${c.platform}`);
-};
-
-export const runChromecast = async (c) => {
-    logTask(`runChromecast:${c.platform}`);
-    await runWebpackServer(c);
+    return { modulePaths, moduleAliases, moduleAliasesArray };
 };

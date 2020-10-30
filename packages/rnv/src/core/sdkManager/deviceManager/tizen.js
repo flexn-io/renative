@@ -21,7 +21,7 @@ import {
 } from '../../systemManager/logger';
 import { waitForEmulator } from './common';
 import { fsRenameSync } from '../../systemManager/fileutils';
-import { buildWeb } from '../../../sdk-webpack';
+import { buildCoreWebpackProject } from '../webpackUtils';
 
 
 const xml2js = require('xml2js');
@@ -313,7 +313,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
     const continueLaunching = async () => {
         let hasDevice = false;
 
-        !isHosted && (await buildWeb(c));
+        !isHosted && (await buildCoreWebpackProject(c));
         await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
         await execCLI(
             c,

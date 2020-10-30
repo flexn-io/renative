@@ -1,6 +1,6 @@
 import path from 'path';
 import semver from 'semver';
-import { Exec, SDKWebpack, FileUtils, Common, Logger, Constants, PlatformManager, ProjectManager, TargetManager } from 'rnv';
+import { Exec, WebpackUtils, FileUtils, Common, Logger, Constants, PlatformManager, ProjectManager, SDKManager } from 'rnv';
 
 const { writeCleanFile } = FileUtils;
 const { execCLI } = Exec;
@@ -17,7 +17,7 @@ const {
     confirmActiveBundler,
     addSystemInjects
 } = Common;
-const { buildWeb, runWebpackServer, configureCoreWebProject, waitForWebpack } = SDKWebpack;
+const { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject, waitForWebpack } = WebpackUtils;
 
 const { isPlatformActive } = PlatformManager;
 const {
@@ -37,7 +37,7 @@ const {
     RNV_PROJECT_DIR_NAME,
     RNV_SERVER_DIR_NAME
 } = Constants;
-const { runWebosSimOrDevice } = TargetManager.Webos;
+const { runWebosSimOrDevice } = SDKManager.Webos;
 
 
 export const runWebOS = async (c) => {
@@ -62,7 +62,7 @@ export const runWebOS = async (c) => {
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
     if (bundleAssets) {
-        await buildWeb(c);
+        await buildCoreWebpackProject(c);
         await runWebosSimOrDevice(c);
     } else {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
@@ -97,7 +97,7 @@ export const runWebOS = async (c) => {
 export const buildWebOSProject = async (c) => {
     logTask('buildWebOSProject');
 
-    await buildWeb(c);
+    await buildCoreWebpackProject(c);
 
     if (!c.program.hosted) {
         const tDir = getPlatformProjectDir(c);
