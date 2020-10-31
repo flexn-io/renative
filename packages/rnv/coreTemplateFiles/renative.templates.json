@@ -5,16 +5,19 @@
     },
     "engineTemplates": {
         "@rnv/engine-rn": {
-            "version": "0.32.0-alpha.1"
+            "version": "0.32.0-alpha.2"
         },
         "@rnv/engine-rn-web": {
-            "version": "0.32.0-alpha.1"
+            "version": "0.32.0-alpha.2"
         },
         "@rnv/engine-rn-next": {
-            "version": "0.32.0-alpha.1"
+            "version": "0.32.0-alpha.2"
         },
         "@rnv/engine-rn-electron": {
-            "version": "0.32.0-alpha.1"
+            "version": "0.32.0-alpha.2"
+        },
+        "@rnv/engine-lightning": {
+            "version": "0.32.0-alpha.2"
         }
     },
     "integrationTemplates": {

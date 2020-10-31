@@ -27,34 +27,6 @@ sidebar_label: iOS
 
 <!--EXTENSION_SUPPORT_START-->
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `ios.mobile.jsx` | `form factor` | 1 |
-| `ios.mobile.js` | `form factor` | 2 |
-| `ios.mobile.tsx` | `form factor` | 3 |
-| `ios.mobile.ts` | `form factor` | 4 |
-| `mobile.jsx` | `form factor` | 5 |
-| `mobile.js` | `form factor` | 6 |
-| `mobile.tsx` | `form factor` | 7 |
-| `mobile.ts` | `form factor` | 8 |
-| `ios.jsx` | `platform` | 9 |
-| `ios.js` | `platform` | 10 |
-| `ios.tsx` | `platform` | 11 |
-| `ios.ts` | `platform` | 12 |
-| `mobile.native.jsx` | `fallback` | 13 |
-| `mobile.native.js` | `fallback` | 14 |
-| `mobile.native.tsx` | `fallback` | 15 |
-| `mobile.native.ts` | `fallback` | 16 |
-| `native.jsx` | `fallback` | 17 |
-| `native.js` | `fallback` | 18 |
-| `native.tsx` | `fallback` | 19 |
-| `native.ts` | `fallback` | 20 |
-| `jsx` | `fallback` | 21 |
-| `js` | `fallback` | 22 |
-| `json` | `fallback` | 23 |
-| `wasm` | `fallback` | 24 |
-| `tsx` | `fallback` | 25 |
-| `ts` | `fallback` | 26 |
 
 <!--EXTENSION_SUPPORT_END-->
 

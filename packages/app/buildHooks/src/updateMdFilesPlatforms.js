@@ -1,18 +1,15 @@
-import { FileUtils, Constants } from 'rnv';
+import { FileUtils } from 'rnv';
 import path from 'path';
 import fs from 'fs';
 
-const { PLATFORMS } = Constants;
-
 export const updateMdFilesPlatforms = async (c) => {
     const docsPath = path.join(c.paths.project.dir, '../../docs');
-
 
     fs.readdirSync(docsPath).forEach((dir) => {
         const docFilePath = path.join(docsPath, dir);
         if (dir.startsWith('platform-')) {
             const platform = dir.replace('platform-', '').replace('.md', '');
-            const extContent = _getExtensionContent(platform);
+            const extContent = _getExtensionContent(c, platform);
 
             const fileContent = fs.readFileSync(docFilePath).toString();
 
@@ -32,9 +29,9 @@ ${extContent}
     return true;
 };
 
-const _getExtensionContent = (platform) => {
+const _getExtensionContent = (c, platform) => {
     let out = '';
-    const p = PLATFORMS[platform];
+    const p = c.runtime.enginePlatforms[platform]?.PLATFORMS[platform];
     if (p.sourceExts) {
         let i = 1;
         // out += `\n\n-------${platform}---------\n\n`;

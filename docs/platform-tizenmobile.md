@@ -26,35 +26,6 @@ sidebar_label: Tizen Mobile
 
 <!--EXTENSION_SUPPORT_START-->
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `tizenmobile.mobile.jsx` | `form factor` | 1 |
-| `tizenmobile.mobile.js` | `form factor` | 2 |
-| `tizenmobile.mobile.tsx` | `form factor` | 3 |
-| `tizenmobile.mobile.ts` | `form factor` | 4 |
-| `mobile.jsx` | `form factor` | 5 |
-| `mobile.js` | `form factor` | 6 |
-| `mobile.tsx` | `form factor` | 7 |
-| `mobile.ts` | `form factor` | 8 |
-| `tizenmobile.jsx` | `platform` | 9 |
-| `tizenmobile.js` | `platform` | 10 |
-| `tizenmobile.tsx` | `platform` | 11 |
-| `tizenmobile.ts` | `platform` | 12 |
-| `mobile.web.jsx` | `fallback` | 13 |
-| `mobile.web.js` | `fallback` | 14 |
-| `mobile.web.tsx` | `fallback` | 15 |
-| `mobile.web.ts` | `fallback` | 16 |
-| `web.jsx` | `fallback` | 17 |
-| `web.js` | `fallback` | 18 |
-| `web.tsx` | `fallback` | 19 |
-| `web.ts` | `fallback` | 20 |
-| `mjs` | `fallback` | 21 |
-| `jsx` | `fallback` | 22 |
-| `js` | `fallback` | 23 |
-| `json` | `fallback` | 24 |
-| `wasm` | `fallback` | 25 |
-| `tsx` | `fallback` | 26 |
-| `ts` | `fallback` | 27 |
 
 <!--EXTENSION_SUPPORT_END-->
 

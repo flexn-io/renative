@@ -13,7 +13,7 @@
     },
     "npm": {
         "devDependencies": {
-            "@rnv/engine-rn-next": "0.32.0-feat-decoupled-engines.0"
+            "@rnv/engine-rn-next": "0.32.0-alpha.2"
         }
     },
     "platforms": {

@@ -8,7 +8,7 @@
     },
     "npm": {
         "devDependencies": {
-            "@rnv/engine-lightning": "0.32.0-feat-decoupled-engines.0"
+            "@rnv/engine-lightning": "0.32.0-alpha.2"
         }
     },
     "platforms": {
