@@ -878,7 +878,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
 
     c.paths.rnv.projectTemplate.dir = path.join(
         c.paths.rnv.dir,
-        'projectTemplate'
+        'coreTemplateFiles'
     );
     c.files.rnv.package = JSON.parse(
         fsReadFileSync(c.paths.rnv.package).toString()

@@ -30,11 +30,13 @@ const {
 const { isPlatformActive } = PlatformManager;
 const { writeCleanFile, fsExistsSync } = FileUtils;
 const { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject, waitForWebpack } = WebpackUtils;
-const { copyAssetsFolder, copyBuildsFolder, DEFAULT_CERTIFICATE_NAME } = ProjectManager;
+const { copyAssetsFolder, copyBuildsFolder } = ProjectManager;
 
-const { runTizenSimOrDevice, createDevelopTizenCertificate } = SDKManager.Tizen;
+const {
+    runTizenSimOrDevice, createDevelopTizenCertificate,
+    DEFAULT_CERTIFICATE_NAME, DEFAULT_SECURITY_PROFILE_NAME
+} = SDKManager.Tizen;
 
-const DEFAULT_SECURITY_PROFILE_NAME = 'RNVanillaCert';
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
 
 export const configureTizenGlobal = c => new Promise((resolve, reject) => {

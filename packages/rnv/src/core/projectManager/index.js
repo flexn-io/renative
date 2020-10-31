@@ -318,7 +318,7 @@ const generateDefaultAssets = async (c, platform, sourcePath) => {
 
     if (confirmAssets) {
         copyFolderContentsRecursiveSync(
-            path.join(c.paths.rnv.dir, `projectTemplate/assets/${platform}`),
+            path.join(c.paths.rnv.dir, `coreTemplateFiles/assets/${platform}`),
             sourcePath
         );
     }

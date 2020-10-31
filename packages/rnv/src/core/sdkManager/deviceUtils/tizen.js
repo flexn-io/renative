@@ -28,7 +28,7 @@ const xml2js = require('xml2js');
 
 const parser = new xml2js.Parser();
 
-const DEFAULT_CERTIFICATE_NAME = 'tizen_author';
+export const DEFAULT_CERTIFICATE_NAME = 'tizen_author';
 
 
 const formatXMLObject = (obj) => {
@@ -46,7 +46,7 @@ const formatXMLObject = (obj) => {
     return {};
 };
 
-const DEFAULT_SECURITY_PROFILE_NAME = 'RNVanillaCert';
+export const DEFAULT_SECURITY_PROFILE_NAME = 'RNVanillaCert';
 
 
 export const launchTizenSimulator = (c, name) => {
@@ -83,7 +83,7 @@ export const createDevelopTizenCertificate = c => new Promise((resolve) => {
         c,
         CLI_TIZEN,
         `certificate -- ${certDirPath} -a rnv -f ${certFilename} -p ${certPassword}`,
-        { privateParams: [certPassword] },
+        // { privateParams: [certPassword] },
     )
         .then(() => addDevelopTizenCertificate(c, {
             profileName: DEFAULT_SECURITY_PROFILE_NAME,
