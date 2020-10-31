@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import { WEB_HOSTED_PLATFORMS, INJECTABLE_CONFIG_PROPS } from '../constants';
+import { INJECTABLE_CONFIG_PROPS } from '../constants';
 import {
     getAppFolder,
     // getAppSubFolder,
@@ -372,7 +372,7 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
     }
 
     // DEPRECATED SHARED
-    if (WEB_HOSTED_PLATFORMS.includes(platform)) {
+    if (c.runtime.currentPlatform?.isWebHosted) {
         const sourcePathShared = path.join(
             c.paths.project.appConfigBase.dir,
             'builds/_shared'

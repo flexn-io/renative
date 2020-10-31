@@ -70,36 +70,7 @@ export const ICONS = {
     SERVICE: '☁️'
 };
 
-export const OS_WINDOWS = 'windows';
-export const OS_MAC = 'mac';
-export const OS_LINUX = 'linux';
-
-export const OS = {
-    ALL: [OS_MAC, OS_WINDOWS, OS_LINUX],
-    MAC_ONLY: [OS_MAC],
-    WINDOWS_ONLY: [OS_WINDOWS],
-    LINUX_ONLY: [OS_LINUX]
-};
-
 export const REMOTE_DEBUG_PORT = 8079;
-
-export const WEB_HOSTED_PLATFORMS = [
-    WEB,
-    TIZEN,
-    WEBOS,
-    MACOS,
-    WINDOWS,
-    TIZEN_MOBILE,
-    TIZEN_WATCH
-];
-// PLATFORM GROUP
-export const PLATFORM_GROUP_SMARTTV = 'smarttv';
-export const PLATFORM_GROUP_ELECTRON = 'electron';
-// FORM FACTOR
-export const FORM_FACTOR_MOBILE = 'mobile';
-export const FORM_FACTOR_DESKTOP = 'desktop';
-export const FORM_FACTOR_WATCH = 'watch';
-export const FORM_FACTOR_TV = 'tv';
 // CLI
 export const CLI_ANDROID_EMULATOR = 'androidEmulator';
 export const CLI_ANDROID_ADB = 'androidAdb';
@@ -191,39 +162,8 @@ export const SUPPORTED_PLATFORMS = [
     FIREFOX_TV,
     CHROMECAST
 ];
-export const SUPPORTED_PLATFORMS_MAC = [
-    IOS,
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    TIZEN_MOBILE,
-    TIZEN,
-    TVOS,
-    WEBOS,
-    MACOS,
-    WINDOWS,
-    TIZEN_WATCH,
-    KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV
-];
-export const SUPPORTED_PLATFORMS_WIN = [
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    TIZEN,
-    TVOS,
-    TIZEN_MOBILE,
-    WEBOS,
-    WINDOWS,
-    TIZEN_WATCH,
-    KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV
-];
-export const SUPPORTED_PLATFORMS_LINUX = [ANDROID, ANDROID_TV, ANDROID_WEAR];
+
+
 export const SDK_PLATFORMS = {};
 SDK_PLATFORMS[ANDROID] = ANDROID_SDK;
 SDK_PLATFORMS[ANDROID_TV] = ANDROID_SDK;

@@ -10,12 +10,14 @@ const EXT_FALLBACK = ['mjs', 'jsx', 'js', 'json', 'wasm', 'tsx', 'ts'];
 export const PLATFORMS = {
     web: {
         defaultPort: 8080,
+        isWebHosted: true,
         extenstions: [
             ...ex(config.id), ...ex('web.browser'), ...ex('browser'), ...ex('server.next'), ...ex('server.web'), ...ex('next'), ...ex('browser.web'), ...ex('web'), ...EXT_FALLBACK
         ]
     },
     chromecast: {
         defaultPort: 8095,
+        isWebHosted: true,
         extenstions: [
             ...ex(config.id), ...ex('chromecast.tv'), ...ex('web.tv'), ...ex('tv'), ...ex('chromecast'), ...ex('tv.web'), ...ex('web'), ...EXT_FALLBACK
         ]

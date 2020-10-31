@@ -1,8 +1,4 @@
-import {
-    // PLATFORMS,
-    INJECTABLE_RUNTIME_PROPS,
-    WEB_HOSTED_PLATFORMS
-} from '../constants';
+import { INJECTABLE_RUNTIME_PROPS } from '../constants';
 import { getEngineConfigByPlatform, getEngineRunnerByPlatform } from '../engineManager';
 import { isSystemWin } from '../systemManager/utils';
 import {
@@ -50,7 +46,7 @@ export const configureRuntimeDefaults = async (c) => {
     if (c.buildConfig) {
         c.runtime.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
         const { hosted } = c.program;
-        c.runtime.hosted = (hosted || !c.runtime.scheme.bundleAssets) && WEB_HOSTED_PLATFORMS.includes(c.platform);
+        c.runtime.hosted = (hosted || !c.runtime.scheme.bundleAssets) && c.runtime.currentPlatform?.isWebHosted;
 
         // c.runtime.devServer = `http://${ip.address()}:${c.runtime.port}`;
         if (c.buildConfig.defaults?.supportedPlatforms) {
