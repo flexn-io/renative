@@ -10,6 +10,8 @@ import { doResolve } from './resolve';
 
 import { inquirerPrompt } from '../../cli/prompt';
 
+export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
+
 export const listAndSelectNpmVersion = async (c, npmPackage, rnvTemplates) => {
     const templateVersionsStr = await executeAsync(
         c,

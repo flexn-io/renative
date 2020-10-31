@@ -2,10 +2,8 @@ import killPort from 'kill-port';
 import path from 'path';
 import detectPort from 'detect-port';
 import ip from 'ip';
-import axios from 'axios';
 import lGet from 'lodash.get';
 import colorString from 'color-string';
-import { doResolve } from './systemManager/resolve';
 import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
 import {
     chalk,
@@ -15,8 +13,8 @@ import {
     logDebug,
     logSuccess
 } from './systemManager/logger';
-// import { PLATFORMS } from './constants';
 import { inquirerPrompt } from '../cli/prompt';
+import { CLI_PROPS } from './constants';
 
 export const getTimestampPathsConfig = (c, platform) => {
     let timestampBuildFiles;
@@ -33,16 +31,6 @@ export const getTimestampPathsConfig = (c, platform) => {
     return null;
 };
 
-// export const getSourceExts = (c, p, isServer, prefix = '') => {
-//     // IMPORTANT: do not replace "p" with c.platform as this has to
-//     // be injected from above to generate multiple configs
-//     const sExt = PLATFORMS[p]?.sourceExts;
-//     if (sExt) {
-//         return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks].map(v => `${prefix}${v}`).filter(ext => isServer || !ext.includes('server.'));
-//     }
-//     return [];
-// };
-
 export const getCliArguments = (c) => {
     const { args, rawArgs } = c.program;
     const argsCopy = [...args];
@@ -58,11 +46,6 @@ export const getCliArguments = (c) => {
     argsCopy[2] = missingArg;
     return argsCopy.filter(arg => !!arg);
 };
-
-// export const getSourceExtsAsString = (c, p) => {
-//     const sourceExts = getSourceExts(c, p);
-//     return sourceExts.length ? `['${sourceExts.join("','")}']` : '[]';
-// };
 
 export const addSystemInjects = (c, injects) => {
     if (!c.systemPropsInjects) c.systemPropsInjects = [];
@@ -160,12 +143,6 @@ export const getAppFolder = c => path.join(c.paths.project.builds.dir, `${c.runt
 export const getAppTemplateFolder = (c, platform) => path.join(
     c.paths.project.platformTemplatesDirs[platform], `${platform}`
 );
-
-export const CLI_PROPS = [
-    'provisioningStyle',
-    'codeSignIdentity',
-    'provisionProfileSpecifier'
-];
 
 const _getValueOrMergedObject = (
     resultCli,
@@ -366,8 +343,6 @@ export const getMonorepoRoot = () => {
     }
 };
 
-export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
-
 export const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfig.dir;
     // if (!fsExistsSync(pp)) {
@@ -415,36 +390,6 @@ export const getBuildFilePath = (c, platform, filePath) => {
     const sp3 = path.join(getBuildsFolder(c, platform), filePath);
     if (fsExistsSync(sp3)) sp = sp3;
     return sp;
-};
-
-export const waitForUrl = url => new Promise((resolve, reject) => {
-    let attempts = 0;
-    const maxAttempts = 10;
-    const CHECK_INTEVAL = 2000;
-    const interval = setInterval(() => {
-        axios.get(url)
-            .then(() => {
-                resolve(true);
-            })
-            .catch(() => {
-                attempts++;
-                if (attempts > maxAttempts) {
-                    clearInterval(interval);
-                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                    return reject(
-                        "Can't connect to webpack. Try restarting it."
-                    );
-                }
-            });
-    }, CHECK_INTEVAL);
-});
-
-export const importPackageFromProject = (name) => {
-    // const c = Config.getConfig();
-    // eslint-disable-next-line import/no-dynamic-require, global-require
-    const pkg = require(doResolve(name));
-    if (pkg.default) return pkg.default;
-    return pkg;
 };
 
 export default {

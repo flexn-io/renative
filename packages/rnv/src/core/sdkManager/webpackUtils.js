@@ -16,7 +16,6 @@ import {
     sanitizeColor,
     confirmActiveBundler,
     getTimestampPathsConfig,
-    waitForUrl,
     addSystemInjects,
     getPlatformProjectDir
 } from '../common';
@@ -141,6 +140,28 @@ const _parseCssSync = (c, subFolderName) => {
         timestampPathsConfig, c
     );
 };
+
+export const waitForUrl = url => new Promise((resolve, reject) => {
+    let attempts = 0;
+    const maxAttempts = 10;
+    const CHECK_INTEVAL = 2000;
+    const interval = setInterval(() => {
+        axios.get(url)
+            .then(() => {
+                resolve(true);
+            })
+            .catch(() => {
+                attempts++;
+                if (attempts > maxAttempts) {
+                    clearInterval(interval);
+                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                    return reject(
+                        "Can't connect to webpack. Try restarting it."
+                    );
+                }
+            });
+    }, CHECK_INTEVAL);
+});
 
 const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
     logTask(
