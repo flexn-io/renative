@@ -1,6 +1,7 @@
 {
     "id": "engine-rn-web",
     "packageName": "@rnv/engine-rn-web",
+    "engineExtension": "rnw",
     "overview": "React native based engine with web transpiler provided by react-native-web",
     "plugins": {
         "react": "source:rnv",

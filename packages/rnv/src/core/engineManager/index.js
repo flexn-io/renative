@@ -6,7 +6,7 @@ import { executeAsync } from '../systemManager/exec';
 import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../systemManager/fileutils';
-import { EXTENSIONS } from '../constants';
+// import { EXTENSIONS } from '../constants';
 
 
 const REGISTERED_ENGINES = [];
@@ -151,16 +151,30 @@ export const getEngineConfigByPlatform = (c, platform, ignoreMissingError) => {
     return null;
 };
 
+export const getPlatformExtensions = (c, excludeServer = false, addDotPrefix = false) => {
+    const { engine } = c.runtime;
+    let output;
+    const platforms = engine.PLATFORMS;
+    if (addDotPrefix) {
+        output = platforms[c.platform].extenstions.map(v => `.${v}`).filter(ext => !excludeServer || !ext.includes('server.'));
+    } else {
+        output = platforms[c.platform].extenstions.filter(ext => !excludeServer || !ext.includes('server.'));
+    }
+    return output;
+};
+
 export const getEngineRunnerByPlatform = (c, platform) => {
     const selectedEngine = getEngineConfigByPlatform(c, platform);
     return ENGINES[selectedEngine?.id];
 };
 
-export const getPlatformExtensions = (c, excludeServer) => {
-    const id = c.runtime.engine.getId();
-    const output = [`${id}.jsx`, `${id}.js`, `${id}.tsx`, `${id}.ts`].concat(EXTENSIONS[c.platform]).filter(ext => !excludeServer || !ext.includes('server.'));
-    return output;
-};
+// export const getPlatformExtensions = (c, excludeServer) => {
+//     const { engine } = c.runtime;
+//     return engine.getPlatformExtensions(c, excludeServer);
+//     // const id = c.runtime.engine.getId();
+//     // const output = [`${id}.jsx`, `${id}.js`, `${id}.tsx`, `${id}.ts`].concat(EXTENSIONS[c.platform]).filter(ext => !excludeServer || !ext.includes('server.'));
+//     // return output;
+// };
 
 export const getEngineTask = (task, tasks, customTasks) => {
     const customTask = customTasks?.[task];

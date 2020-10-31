@@ -190,7 +190,5 @@
         "preset": "react-native",
         "collectCoverage": true
     },
-    "title": "ReNative CLI",
-    "codename": "Iron Ladybird",
-    "gitHead": "1d98598e540a4fd19acf3a158f36b13b99777783"
+    "title": "ReNative CLI"
 }

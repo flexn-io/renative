@@ -1,5 +1,6 @@
 import { TaskManager, EngineManager } from 'rnv';
 import { withRNV } from './adapter';
+import { PLATFORMS } from './constants';
 
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvPackage from './tasks/task.rnv.package';
@@ -80,7 +81,8 @@ export default {
     getTasks,
     getId,
     title,
-    config
+    config,
+    PLATFORMS
 };
 
 

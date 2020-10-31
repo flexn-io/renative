@@ -106,10 +106,8 @@ const _generateWebpackConfigs = (c, subFolderName) => {
         entryFile,
         title,
         assetVersion,
-        // devServer: c.runtime.devServer,
         buildFolder: bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME,
         extensions: getPlatformExtensions(c, true),
-        // extensions: getSourceExts(c, platform, false),
         ...extendConfig
     };
 

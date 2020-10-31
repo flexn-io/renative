@@ -1,0 +1,17 @@
+{
+    "id": "engine-roku",
+    "packageName": "@rnv/engine-roku",
+    "engineExtension": "rk",
+    "overview": "ReNative Roku Engine",
+    "plugins": {
+
+    },
+    "npm": {
+        "devDependencies": {
+            "@rnv/engine-roku": "0.32.0-feat-decoupled-engines.0"
+        }
+    },
+    "platforms": {
+        "roku": {}
+    }
+}

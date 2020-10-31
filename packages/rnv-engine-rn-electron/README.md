@@ -1,4 +1,4 @@
-## engine-rn-electron
+# @rnv/engine-rn-electron
 
 ReNative Engine to build electron based platforms with react native support.
 

@@ -2,10 +2,10 @@ import killPort from 'kill-port';
 import { inquirerPrompt } from '../../cli/prompt';
 import { checkPortInUse } from '../../core/common';
 import { executeTask } from '../../core/taskManager';
-import { chalk, logTask, logSuccess, logWarning } from '../../core/systemManager/logger';
+import { chalk, logTask, logSuccess } from '../../core/systemManager/logger';
 import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
 
-import { PARAMS, TASK_KILL, TASK_APP_CONFIGURE, PLATFORMS, SUPPORTED_PLATFORMS } from '../../core/constants';
+import { PARAMS, TASK_KILL, TASK_APP_CONFIGURE } from '../../core/constants';
 
 export const taskRnvKill = async (c, parentTask, originTask) => {
     logTask('taskRnvKill');
@@ -22,14 +22,15 @@ export const taskRnvKill = async (c, parentTask, originTask) => {
         await configureRuntimeDefaults(c);
         platArray = Object.values(c.runtime.supportedPlatforms);
         ports = c.buildConfig?.defaults?.ports || {};
-    } else {
-        logWarning('This folder is not a ReNative project!. only DEFAULT ports will be checked.');
-        platArray = SUPPORTED_PLATFORMS;
-        ports = {};
-        Object.keys(PLATFORMS).forEach((k) => {
-            ports[k] = PLATFORMS[k].defaultPort;
-        });
     }
+    // else {
+    //     logWarning('This folder is not a ReNative project!. only DEFAULT ports will be checked.');
+    //     platArray = SUPPORTED_PLATFORMS;
+    //     ports = {};
+    //     Object.keys(PLATFORMS).forEach((k) => {
+    //         ports[k] = PLATFORMS[k].defaultPort;
+    //     });
+    // }
 
     for (let i = 0; i < platArray.length; i++) {
         const plat = platArray[i];

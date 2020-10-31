@@ -15,7 +15,7 @@ import {
     logDebug,
     logSuccess
 } from './systemManager/logger';
-import { PLATFORMS } from './constants';
+// import { PLATFORMS } from './constants';
 import { inquirerPrompt } from '../cli/prompt';
 
 export const getTimestampPathsConfig = (c, platform) => {
@@ -33,15 +33,15 @@ export const getTimestampPathsConfig = (c, platform) => {
     return null;
 };
 
-export const getSourceExts = (c, p, isServer, prefix = '') => {
-    // IMPORTANT: do not replace "p" with c.platform as this has to
-    // be injected from above to generate multiple configs
-    const sExt = PLATFORMS[p]?.sourceExts;
-    if (sExt) {
-        return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks].map(v => `${prefix}${v}`).filter(ext => isServer || !ext.includes('server.'));
-    }
-    return [];
-};
+// export const getSourceExts = (c, p, isServer, prefix = '') => {
+//     // IMPORTANT: do not replace "p" with c.platform as this has to
+//     // be injected from above to generate multiple configs
+//     const sExt = PLATFORMS[p]?.sourceExts;
+//     if (sExt) {
+//         return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks].map(v => `${prefix}${v}`).filter(ext => isServer || !ext.includes('server.'));
+//     }
+//     return [];
+// };
 
 export const getCliArguments = (c) => {
     const { args, rawArgs } = c.program;
@@ -59,10 +59,10 @@ export const getCliArguments = (c) => {
     return argsCopy.filter(arg => !!arg);
 };
 
-export const getSourceExtsAsString = (c, p) => {
-    const sourceExts = getSourceExts(c, p);
-    return sourceExts.length ? `['${sourceExts.join("','")}']` : '[]';
-};
+// export const getSourceExtsAsString = (c, p) => {
+//     const sourceExts = getSourceExts(c, p);
+//     return sourceExts.length ? `['${sourceExts.join("','")}']` : '[]';
+// };
 
 export const addSystemInjects = (c, injects) => {
     if (!c.systemPropsInjects) c.systemPropsInjects = [];

@@ -12,7 +12,7 @@ import {
     RENATIVE_CONFIG_TEMPLATES_NAME,
     RN_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
-    PLATFORMS,
+    // PLATFORMS,
     USER_HOME_DIR,
     RNV_HOME_DIR,
     CURRENT_DIR
@@ -849,7 +849,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     c.process = process;
     c.command = cmd;
     c.subCommand = subCmd;
-    c.platformDefaults = PLATFORMS;
+    // c.platformDefaults = PLATFORMS;
 
     c.paths.rnv.dir = RNV_HOME_DIR;
 

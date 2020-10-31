@@ -1,5 +1,5 @@
 import {
-    PLATFORMS,
+    // PLATFORMS,
     INJECTABLE_RUNTIME_PROPS,
     WEB_HOSTED_PLATFORMS
 } from '../constants';
@@ -22,10 +22,12 @@ export const configureRuntimeDefaults = async (c) => {
     // TODO:
     // version
     // title
+    c.runtime.currentEngine = c.runtime.enginePlatforms?.[c.platform];
+    c.runtime.currentPlatform = c.runtime.currentEngine?.platforms?.[c.platform];
 
     c.runtime.port = c.program.port
   || c.buildConfig?.defaults?.ports?.[c.platform]
-  || PLATFORMS[c.platform]?.defaultPort;
+  || c.runtime.currentPlatform?.defaultPort; //  PLATFORMS[c.platform]?.defaultPort;
     if (c.program.target !== true) {
         c.runtime.target = c.program.target
       || c.files.workspace.config?.defaultTargets?.[c.platform];
@@ -65,7 +67,7 @@ export const configureRuntimeDefaults = async (c) => {
                         isValid = true;
                         isConnected = pDir?.includes?.(getRealPath(c, dir));
                     }
-                    const port = c.buildConfig.defaults?.[platform] || PLATFORMS[platform]?.defaultPort;
+                    const port = c.buildConfig.defaults?.[platform] || c.runtime.currentPlatform?.defaultPort;
                     return {
                         engine,
                         platform,

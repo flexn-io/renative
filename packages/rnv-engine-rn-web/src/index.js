@@ -1,4 +1,5 @@
 import { TaskManager, EngineManager } from 'rnv';
+import { PLATFORMS } from './constants';
 import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
     getTemplateProjectDir, ejectPlatform, getTemplateRootDir, getOriginalPlatformTemplatesDir } from './commonEngine';
 
@@ -66,5 +67,6 @@ export default {
     getTasks,
     getId,
     title,
-    config
+    config,
+    PLATFORMS
 };

@@ -1,0 +1,19 @@
+{
+    "id": "engine-lightning",
+    "packageName": "@rnv/engine-lightning",
+    "engineExtension": "lgt",
+    "overview": "ReNative Engine to build lightning based apps.",
+    "plugins": {
+        "@lightningjs/sdk": "source:rnv"
+    },
+    "npm": {
+        "devDependencies": {
+            "@rnv/engine-lightning": "0.32.0-feat-decoupled-engines.0"
+        }
+    },
+    "platforms": {
+        "tizen": {},
+        "webos": {},
+        "firefoxtv": {}
+    }
+}
