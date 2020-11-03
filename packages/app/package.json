@@ -146,5 +146,10 @@
         "hooks": {
             "before:git": "rnv pkg version ${version}"
         }
+    },
+    "workspaces": {
+        "nohoist": [
+            "@lightningjs/sdk"
+        ]
     }
 }

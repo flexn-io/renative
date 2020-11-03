@@ -114,9 +114,6 @@
     "workspaces": {
         "packages": [
             "packages/*"
-        ],
-        "nohoist": [
-            "renative-app/@lightningjs"
         ]
     }
 }
