@@ -164,12 +164,12 @@ export const configureTizenProject = async (c) => {
 
     await copyAssetsFolder(c, platform);
     await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
-    await configureProject(c);
+    await _configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 
-export const configureProject = c => new Promise((resolve) => {
-    logTask('configureProject');
+const _configureProject = c => new Promise((resolve) => {
+    logTask('_configureProject');
     const { platform } = c;
 
     const configFile = 'config.xml';

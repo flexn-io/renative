@@ -77,3 +77,14 @@ metro.config.local.js
 /styles
 
 /cypress/videos
+
+dist
+releases
+.tmp
+build
+
+/Users/paveljacko/DEV/BIZ-RENATIVE/Code/renative/packages/app/platformBuilds/helloworld_tizen
+/Users/paveljacko/DEV/BIZ-RENATIVE/Code/renative/packages/app/platformBuilds/helloworld_tizen
+
+platformBuilds/helloworld_tizen
+platformBuilds/helloworld_tizen

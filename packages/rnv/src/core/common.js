@@ -137,7 +137,12 @@ export const getTemplateProjectDir = (c) => {
 };
 
 // DEPRECATED
-export const getAppFolder = c => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
+export const getAppFolder = (c, isRelativePath) => {
+    if (isRelativePath) {
+        return `platformBuilds/${c.runtime.appId}_${c.platform}`;
+    }
+    return path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
+};
 
 // DEPRECATED
 export const getAppTemplateFolder = (c, platform) => path.join(

@@ -123,12 +123,12 @@ export const configureWebOSProject = async (c) => {
 
     await copyAssetsFolder(c, platform);
     await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
-    await configureProject(c);
+    await _configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 
-export const configureProject = async (c) => {
-    logTask('configureProject');
+const _configureProject = async (c) => {
+    logTask('_configureProject');
     const { platform } = c;
 
     const configFile = 'appinfo.json';

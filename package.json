@@ -115,6 +115,8 @@
         "packages": [
             "packages/*"
         ],
-        "nohoist": []
+        "nohoist": [
+            "renative-app/@lightningjs"
+        ]
     }
 }

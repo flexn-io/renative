@@ -12,7 +12,7 @@ const { executeTask } = TaskManager;
 
 let keepRNVRunning = false;
 
-export const getPlatformBuildDir = c => getAppFolder(c);
+export const getPlatformBuildDir = (c, isRelativePath) => getAppFolder(c, isRelativePath);
 
 export const getPlatformOutputDir = (c) => {
     const dir = getPlatformBuildDir(c);

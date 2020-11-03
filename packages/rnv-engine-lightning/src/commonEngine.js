@@ -1,10 +1,8 @@
 import path from 'path';
-import { FileUtils, Common } from 'rnv';
-
+import { Common, FileUtils } from 'rnv';
 
 const { getAppFolder, getTemplateDir } = Common;
 const { copyFolderContentsRecursiveSync } = FileUtils;
-// const { doResolve } = Resolver;
 
 export const getPlatformBuildDir = (c, isRelativePath) => getAppFolder(c, isRelativePath);
 
@@ -18,6 +16,8 @@ export const getPlatformOutputDir = (c) => {
     return output;
 };
 
+export const getOriginalPlatformTemplatesDir = () => path.join(__dirname, '../platformTemplates');
+
 export const getTemplateProjectDir = (c) => {
     const dir = getTemplateDir(c);
     let output;
@@ -27,8 +27,6 @@ export const getTemplateProjectDir = (c) => {
     }
     return output;
 };
-
-export const getOriginalPlatformTemplatesDir = () => path.join(__dirname, '../platformTemplates');
 
 export const getTemplateRootDir = (c, platform) => {
     const dir = c.paths.project.platformTemplatesDirs[platform];

@@ -40,12 +40,12 @@ export const configureChromecastProject = async (c) => {
 
     await copyAssetsFolder(c, c.platform);
     await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
-    await configureProject(c);
+    await _configureProject(c);
     return copyBuildsFolder(c, c.platform);
 };
 
-export const configureProject = async (c) => {
-    logTask(`configureProject:${c.platform}`);
+const _configureProject = async (c) => {
+    logTask(`_configureProject:${c.platform}`);
 };
 
 export const runChromecast = async (c) => {

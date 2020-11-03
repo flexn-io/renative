@@ -21,3 +21,4 @@ packages/app/e2e-cypress
 packages/app/src
 packages/app/e2e
 jest.config.*.js
+docs/

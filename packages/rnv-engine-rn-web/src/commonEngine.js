@@ -19,7 +19,7 @@ const { copyFolderContentsRecursiveSync } = FileUtils;
 // const { doResolve } = Resolver;
 
 
-export const getPlatformBuildDir = c => getAppFolder(c);
+export const getPlatformBuildDir = (c, isRelativePath) => getAppFolder(c, isRelativePath);
 
 export const getPlatformOutputDir = () => {
     logError('core engine does not support getPlatformOutputDir');

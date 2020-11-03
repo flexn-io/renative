@@ -26,11 +26,11 @@ export const configureKaiOSProject = async (c) => {
 
     await copyAssetsFolder(c, platform);
     await configureCoreWebProject(c);
-    await configureProject(c);
+    await _configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 
-export const configureProject = c => new Promise((resolve) => {
+const _configureProject = c => new Promise((resolve) => {
     logTask('configureProject');
     const { platform } = c;
 

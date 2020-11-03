@@ -2683,6 +2683,9 @@
                     "rnv-platform-info"
                 ]
             }
+        },
+        "@lightningjs/sdk": {
+            "version": "3.0.0"
         }
     }
 }

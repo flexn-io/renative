@@ -1,7 +1,7 @@
 import { getAppFolder, getTemplateDir } from '../core/common';
 import { logError } from '../core/systemManager/logger';
 
-export const getPlatformBuildDir = c => getAppFolder(c);
+export const getPlatformBuildDir = (c, isRelativePath) => getAppFolder(c, isRelativePath);
 
 export const getPlatformOutputDir = () => {
     logError('core engine does not support getPlatformOutputDir');

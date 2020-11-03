@@ -5,7 +5,7 @@ import path from 'path';
 const { getAppFolder, getTemplateDir } = Common;
 const { MACOS, WINDOWS, RNV_PROJECT_DIR_NAME } = Constants;
 
-export const getPlatformBuildDir = c => getAppFolder(c);
+export const getPlatformBuildDir = (c, isRelativePath) => getAppFolder(c, isRelativePath);
 
 export const getPlatformOutputDir = (c) => {
     const dir = getPlatformBuildDir(c);

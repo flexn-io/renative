@@ -1,7 +1,7 @@
 {
     "id": "engine-lightning",
     "packageName": "@rnv/engine-lightning",
-    "engineExtension": "lgt",
+    "engineExtension": "lng",
     "overview": "ReNative Engine to build lightning based apps.",
     "plugins": {
         "@lightningjs/sdk": "source:rnv"
