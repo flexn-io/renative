@@ -1,108 +1,96 @@
 {
     "docs-sidebar": {
         "Getting Started": [
-            "intro-quickstart",
-            "intro-installation",
-            "intro-migrating_react_native",
-            "intro-features",
-            "intro-customize",
-            "intro-architecture"
+            "overview/intro-quickstart",
+            "overview/basics-overview",
+            "overview/intro-installation",
+            "overview/intro-migrating_react_native",
+            "overview/intro-features",
+            "overview/intro-customize",
+            "overview/intro-architecture"
         ],
         "Guides": [
-            "guide-cli",
-            "guide-plugins",
-            "guide-templates",
-            "guide-workspaces",
-            "guide-config",
-            "guide-file_extensions",
-            "guide-config_folders",
-            "guide-build_hooks",
-            "guide-runtime",
-            "guide-common_issues",
-            "guide-develop",
-            "guide-engines",
-            "guide-analytics"
-        ],
-        "Configs": [
-            "config-overview",
-            "config-workspaces",
-            "config-global",
-            "config-project",
-            "config-app",
-            "config-template",
-            "config-build",
-            "config-runtime",
-            "config-private",
-            "config-local",
-            "config-plugin"
+            "guide/guide-cli",
+            "guide/guide-plugins",
+            "guide/guide-templates",
+            "guide/guide-workspaces",
+            "guide/guide-config",
+            "guide/guide-file_extensions",
+            "guide/guide-config_folders",
+            "guide/guide-build_hooks",
+            "guide/guide-runtime",
+            "guide/guide-common_issues",
+            "guide/guide-develop",
+            "guide/guide-engines",
+            "guide/guide-analytics"
         ],
         "Platforms": [
-            "platforms",
-            "platform-android",
-            "platform-androidtv",
-            "platform-androidwear",
-            "platform-chromecast",
-            "platform-firefoxos",
-            "platform-firefoxtv",
-            "platform-ios",
-            "platform-kaios",
-            "platform-macos",
-            "platform-tizen",
-            "platform-tizenmobile",
-            "platform-tizenwatch",
-            "platform-tvos",
-            "platform-web",
-            "platform-webos",
-            "platform-windows"
+            "platforms/platforms",
+            "platforms/platform-android",
+            "platforms/platform-androidtv",
+            "platforms/platform-androidwear",
+            "platforms/platform-chromecast",
+            "platforms/platform-firefoxos",
+            "platforms/platform-firefoxtv",
+            "platforms/platform-ios",
+            "platforms/platform-kaios",
+            "platforms/platform-macos",
+            "platforms/platform-tizen",
+            "platforms/platform-tizenmobile",
+            "platforms/platform-tizenwatch",
+            "platforms/platform-tvos",
+            "platforms/platform-web",
+            "platforms/platform-webos",
+            "platforms/platform-windows"
         ],
         "Plugins": ["plugins"],
         "Engines": [
-            "engine-core",
-            "engine-rn",
-            "engine-rn-web",
-            "engine-rn-electron",
-            "engine-rn-next"
+            "engines/engine-core",
+            "engines/engine-rn",
+            "engines/engine-rn-web",
+            "engines/engine-rn-electron",
+            "engines/engine-rn-next"
         ],
         "Templates": [
-            "template-hello-world",
-            "template-blank",
-            "template-kitchen-sink"
+            "templates/template-hello-world",
+            "templates/template-blank",
+            "templates/template-kitchen-sink"
         ],
         "Integrations": [
-            "integration_aws",
-            "integration_azure",
-            "integration_docker",
-            "integration_fastlane",
-            "integration_ftp",
-            "integration_now",
-            "integration_testflight"
+            "integrations/integration_aws",
+            "integrations/integration_azure",
+            "integrations/integration_docker",
+            "integrations/integration_fastlane",
+            "integrations/integration_ftp",
+            "integrations/integration_now",
+            "integrations/integration_testflight"
         ],
         "Upgrades": [
-            "upgrade-0.31",
-            "upgrade-0.30",
-            "upgrade-0.29",
-            "upgrade-0.28",
-            "upgrade-0.27"
+            "upgrades/upgrade-0.31",
+            "upgrades/upgrade-0.30",
+            "upgrades/upgrade-0.29",
+            "upgrades/upgrade-0.28",
+            "upgrades/upgrade-0.27"
         ],
         "Release Notes": [
             "changelog",
-            "release-0.31.x",
-            "release-0.30.x",
-            "release-0.29.x",
-            "release-0.28.x",
-            "release-0.27.x"
+            "releases/release-0.31.x",
+            "releases/release-0.30.x",
+            "releases/release-0.29.x",
+            "releases/release-0.28.x",
+            "releases/release-0.27.x"
         ]
     },
     "api-sidebar": {
         "CLI": [
-            "api-cli-engine-core",
-            "api-cli-engine-rn",
-            "api-cli-engine-rn-web",
-            "api-cli-engine-rn-next",
-            "api-cli-engine-rn-electron"
+            "api/api-cli-engine-core",
+            "api/api-cli-engine-rn",
+            "api/api-cli-engine-rn-web",
+            "api/api-cli-engine-rn-next",
+            "api/api-cli-engine-rn-electron"
         ],
-        "Config": ["api-config"],
-        "Runtime": ["api-renative"],
-        "RNV": ["api-rnv", "api-rnv-config"]
+        "Config": ["api/api-config"],
+        "Runtime": ["api/api-renative"],
+        "RNV": ["api/api-rnv", "api/api-rnv-config"]
     }
 }
