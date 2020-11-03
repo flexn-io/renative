@@ -1,3 +1,4 @@
+import path from 'path';
 import { TaskManager, EngineManager } from 'rnv';
 import { PLATFORMS } from './constants';
 import { withRNV } from './adapter';
@@ -48,6 +49,8 @@ const getId = () => 'engine-rn-next';
 
 const title = 'Engine RN Next';
 
+const getOriginalAssetsDir = () => path.join(__dirname, '../projectTemplate/assets');
+
 export default {
     getPlatformBuildDir,
     getPlatformProjectDir,
@@ -56,6 +59,7 @@ export default {
     getTemplateProjectDir,
     getTemplateRootDir,
     getOriginalPlatformTemplatesDir,
+    getOriginalAssetsDir,
     executeTask,
     addTask,
     hasTask,

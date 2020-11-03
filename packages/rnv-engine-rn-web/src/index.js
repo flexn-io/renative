@@ -1,3 +1,4 @@
+import path from 'path';
 import { TaskManager, EngineManager } from 'rnv';
 import { PLATFORMS } from './constants';
 import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
@@ -51,6 +52,8 @@ const getId = () => 'engine-rn-web';
 
 const title = 'Engine RN Web';
 
+const getOriginalAssetsDir = () => path.join(__dirname, '../projectTemplate/assets');
+
 export default {
     getPlatformBuildDir,
     getPlatformProjectDir,
@@ -59,6 +62,7 @@ export default {
     getTemplateProjectDir,
     getTemplateRootDir,
     getOriginalPlatformTemplatesDir,
+    getOriginalAssetsDir,
     executeTask,
     addTask,
     hasTask,
