@@ -485,7 +485,7 @@ const _generatePlatformTemplatePaths = (c) => {
     c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
         const engine = c.runtime.enginesByPlatform[platform];
         if (engine) {
-            const originalPath = engine.originalPlatformTemplatesDir;
+            const originalPath = engine.originalTemplatePlatformsDir;
 
             if (originalPath) {
                 if (!pt[platform]) {

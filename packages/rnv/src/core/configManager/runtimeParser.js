@@ -51,7 +51,7 @@ export const configureRuntimeDefaults = async (c) => {
             c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms.map((platform) => {
                 const engine = getEngineRunnerByPlatform(c, platform);
                 if (engine) {
-                    const dir = engine.originalPlatformTemplatesDir;
+                    const dir = engine.originalTemplatePlatformsDir;
 
                     let isConnected = false;
                     let isValid = false;

@@ -133,7 +133,7 @@ export const getTemplateProjectDir = (c) => {
         logError('getTemplateProjectDir not available without specific engine');
         return null;
     }
-    return c.runtime.engine.getTemplateProjectDir(c);
+    return path.join(getTemplateDir(c), c.runtime.engine.projectDirName);
 };
 
 // DEPRECATED

@@ -1,10 +1,5 @@
 import { generateEngineTasks } from '../core/engineManager';
-// import { executeEngineTask } from '../core/taskManager';
-// import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
-//     getTemplateProjectDir, ejectPlatform, getTemplateRootDir } from './commonEngine';
 
-// import taskRnvLink from './tasks/task.rnv.link';
-// import taskRnvSwitch from './tasks/task.rnv.switch';
 import taskRnvCryptoDecrypt from './tasks/task.rnv.crypto.decrypt';
 import taskRnvCryptoEncrypt from './tasks/task.rnv.crypto.encrypt';
 import taskRnvPlatformEject from './tasks/task.rnv.platform.eject';
@@ -43,54 +38,6 @@ import taskRvnKill from './tasks/task.rnv.kill';
 import taskRvnDoctor from './tasks/task.rnv.doctor';
 import taskRnvTargetList from './tasks/task.rnv.target.list';
 import taskRnvTargetLaunch from './tasks/task.rnv.target.launch';
-
-// const TASKS = {};
-//
-// const addTask = (taskInstance) => {
-//     if (!taskInstance?.task) {
-//         throw new Error('taskInstance has missing task name!');
-//     }
-//     TASKS[taskInstance.task] = taskInstance;
-// };
-//
-
-
-// const executeTask = (c, task, parentTask, originTask, isFirstTask) => executeEngineTask(
-//     c, task, parentTask, originTask, TASKS, isFirstTask
-// );
-//
-// const hasTask = (task, isProjectScope) => hasEngineTask(task, TASKS, isProjectScope);
-//
-// const getTask = task => getEngineTask(task, TASKS);
-//
-// const getSubTasks = (task, exactMatch) => getEngineSubTasks(task, TASKS, exactMatch);
-//
-// const getTasks = () => Object.values(TASKS);
-//
-// const getId = () => 'engine-core';
-//
-// const title = 'Engine Core';
-//
-// const getOriginalPlatformTemplatesDir = () => null;
-//
-// export default {
-//     getPlatformBuildDir,
-//     getPlatformProjectDir,
-//     getPlatformOutputDir,
-//     ejectPlatform,
-//     getTemplateProjectDir,
-//     getTemplateRootDir,
-//     getOriginalPlatformTemplatesDir,
-//     executeTask,
-//     addTask,
-//     hasTask,
-//     getTask,
-//     getSubTasks,
-//     getTasks,
-//     getId,
-//     title
-// };
-
 
 export default {
     tasks: generateEngineTasks([
@@ -141,7 +88,6 @@ export default {
 
     },
     projectDirName: '',
-    originalPlatformTemplatesDir: null,
     ejectPlatform: null,
     platforms: null
 

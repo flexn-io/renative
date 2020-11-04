@@ -1,4 +1,3 @@
-import path from 'path';
 import { EngineManager } from 'rnv';
 import { withRNV } from './adapter';
 import CNF from '../renative.engine.json';
@@ -36,7 +35,6 @@ export default {
     ]),
     config: CNF,
     projectDirName: '',
-    originalPlatformTemplatesDir: path.join(__dirname, '../platformTemplates'),
     ejectPlatform: null,
     platforms: {
         ios: {

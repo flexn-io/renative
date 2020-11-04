@@ -320,7 +320,7 @@ const generateDefaultAssets = async (c, platform, sourcePath) => {
     if (confirmAssets) {
         const engine = getEngineRunnerByPlatform(c, c.platform);
         copyFolderContentsRecursiveSync(
-            path.join(engine.getOriginalAssetsDir(), platform),
+            path.join(engine.originalTemplateAssetsDir, platform),
             sourcePath
         );
     }

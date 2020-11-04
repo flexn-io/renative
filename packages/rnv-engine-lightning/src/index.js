@@ -1,35 +1,48 @@
-import path from 'path';
 import { EngineManager } from 'rnv';
 import CNF from '../renative.engine.json';
 import taskRnvRun from './tasks/task.rnv.run';
+// import taskRnvPackage from './tasks/task.rnv.package';
+// import taskRnvBuild from './tasks/task.rnv.build';
 import taskRnvConfigure from './tasks/task.rnv.configure';
+// import taskRnvStart from './tasks/task.rnv.start';
+// import taskRnvExport from './tasks/task.rnv.export';
+// import taskRnvDeploy from './tasks/task.rnv.deploy';
+// import taskRnvDebug from './tasks/task.rnv.debug';
+
 
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
-const ex = EngineManager.registerEngineExtension;
-const ext = CNF.engineExtension;
-
 
 export default {
-    tasks: generateEngineTasks([taskRnvRun, taskRnvConfigure]),
+    tasks: generateEngineTasks([
+        taskRnvRun,
+        // taskRnvPackage,
+        // taskRnvBuild,
+        taskRnvConfigure,
+        // taskRnvStart,
+        // taskRnvExport,
+        // taskRnvDeploy,
+        // taskRnvDebug,
+    ]),
     config: CNF,
-    templateProjectDir: 'project',
-    originalPlatformTemplatesDir: path.join(__dirname, '../platformTemplates'),
+    projectDirName: 'project',
     ejectPlatform: null,
     platforms: {
         tizen: {
-            defaultPort: 8086,
+            defaultPort: 8087,
             isWebHosted: true,
             extenstions: generateEngineExtensions([
-                'macos.desktop', 'desktop', 'macos', 'desktop.web', 'electron', 'web'
-            ])
+                'tizen.tv', 'web.tv', 'tv', 'tizen', 'tv.web', 'web'
+            ], CNF)
+
         },
         webos: {
-            defaultPort: 8092,
+            defaultPort: 8088,
             isWebHosted: true,
-            extenstions: [
-                ...ex(CNF.id), ...ex('windows.desktop', ext), ...ex('desktop', ext), ...ex('windows', ext),
-                ...ex('desktop.web', ext), ...ex('electron', ext), ...ex('web', ext), ...ex()
-            ]
+            extenstions: generateEngineExtensions([
+                'webos.tv', 'web.tv', 'tv', 'webos', 'tv.web', 'web'
+            ], CNF)
+
         }
     }
+
 };

@@ -14,9 +14,18 @@ const ENGINES_BY_ID = {};
 const ENGINES_BY_PLATFORM = {};
 const ENGINE_CORE = 'engine-core';
 
-export const registerEngine = async (c, engine, platform) => {
+export const registerEngine = async (c, engine, platform, engConfig) => {
     ENGINES_BY_ID[engine.config.id] = engine;
     ENGINES_BY_INDEX.push(engine);
+    if (engConfig?.packageName) {
+        engine.rootPath = path.dirname(require.resolve(`${engConfig.packageName}/package.json`));
+        engine.originalTemplatePlatformsDir = path.join(engine.rootPath, 'templates/platforms');
+        engine.originalTemplateAssetsDir = path.join(engine.rootPath, 'templates/assets');
+        engine.originalTemplatePlatformProjectDir = path.join(
+            engine.originalTemplatePlatformsDir,
+            engine.projectDirName
+        );
+    }
     _registerEnginePlatform(c, platform, engine);
 };
 
@@ -176,12 +185,11 @@ const _getMergedEngineConfigs = (c) => {
     });
 
     const engineTemplatesKeys = Object.keys(engineTemplates);
-
     if (engines) {
         Object.keys(engines).forEach((enginePackageName) => {
             const engineVal = engines[enginePackageName];
             if (engineVal === 'source:rnv') {
-                if (engineTemplatesKeys.includes(enginePackageName)) {
+                if (!engineTemplatesKeys.includes(enginePackageName)) {
                     logWarning(`Engine ${enginePackageName} not found in default engineTemplates`);
                 }
             } else {
@@ -212,7 +220,7 @@ const _registerPlatformEngine = (c, platform) => {
     if (selectedEngineConfig) {
         const existingEngine = ENGINES_BY_ID[selectedEngineConfig.id];
         if (!existingEngine) {
-            registerEngine(c, require(selectedEngineConfig.packageName)?.default, platform);
+            registerEngine(c, require(selectedEngineConfig.packageName)?.default, platform, selectedEngineConfig);
         } else {
             _registerEnginePlatform(c, platform, existingEngine);
         }
