@@ -1,5 +1,5 @@
 import { INJECTABLE_RUNTIME_PROPS } from '../constants';
-import { getEngineConfigByPlatform, getEngineRunnerByPlatform } from '../engineManager';
+import { getEngineRunnerByPlatform } from '../engineManager';
 import { isSystemWin } from '../systemManager/utils';
 import {
     getRealPath,
@@ -18,7 +18,7 @@ export const configureRuntimeDefaults = async (c) => {
     // TODO:
     // version
     // title
-    c.runtime.currentEngine = c.runtime.enginePlatforms?.[c.platform];
+    c.runtime.currentEngine = c.runtime.enginesByPlatform?.[c.platform];
     c.runtime.currentPlatform = c.runtime.currentEngine?.platforms?.[c.platform];
 
     c.runtime.port = c.program.port
@@ -31,8 +31,6 @@ export const configureRuntimeDefaults = async (c) => {
     c.runtime.scheme = c.program.scheme || 'debug';
     c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
     c.runtime.timestamp = c.runtime.timestamp || Date.now();
-    // c.runtime.engine = getEngineConfigByPlatform(c, c.platform);
-
     c.configPropsInjects = c.configPropsInjects || [];
     c.systemPropsInjects = c.systemPropsInjects || [];
     c.runtimePropsInjects = [];
@@ -51,10 +49,9 @@ export const configureRuntimeDefaults = async (c) => {
         // c.runtime.devServer = `http://${ip.address()}:${c.runtime.port}`;
         if (c.buildConfig.defaults?.supportedPlatforms) {
             c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms.map((platform) => {
-                const engine = getEngineConfigByPlatform(c, platform);
-                const engineRunner = getEngineRunnerByPlatform(c, platform);
-                if (engineRunner) {
-                    const dir = getEngineRunnerByPlatform(c, platform).getOriginalPlatformTemplatesDir(c);
+                const engine = getEngineRunnerByPlatform(c, platform);
+                if (engine) {
+                    const dir = engine.originalPlatformTemplatesDir;
 
                     let isConnected = false;
                     let isValid = false;

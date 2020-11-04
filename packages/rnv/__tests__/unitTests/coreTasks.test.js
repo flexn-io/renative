@@ -8,13 +8,13 @@ import taskRnvPlatformConfigure from '../../src/engine-core/tasks/task.rnv.platf
 jest.mock('fs');
 
 jest.mock('../../src/core/engineManager/index.js', () => ({
-    getEngineConfigByPlatform: () => ({
-        platforms: {
-            ios: {
-                npm: {}
-            }
-        }
-    }),
+    // getEngineConfigByPlatform: () => ({
+    //     platforms: {
+    //         ios: {
+    //             npm: {}
+    //         }
+    //     }
+    // }),
     getEngineRunnerByPlatform: () => ({
         getOriginalPlatformTemplatesDir: () => 'sometemptdir'
     })

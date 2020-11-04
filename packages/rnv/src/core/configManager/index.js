@@ -156,7 +156,7 @@ const getEnginesPluginDelta = (c) => {
     const enginePlugins = {};
     const missingEnginePlugins = {};
 
-    const engineConfig = c.runtime.enginePlatforms[c.platform]?.config;
+    const engineConfig = c.runtime.enginesByPlatform[c.platform]?.config;
     if (engineConfig?.plugins) {
         const ePlugins = Object.keys(engineConfig.plugins);
 
@@ -483,9 +483,9 @@ const _generatePlatformTemplatePaths = (c) => {
     const result = {};
 
     c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
-        const engineRunner = c.runtime.enginePlatforms[platform];
-        if (engineRunner) {
-            const originalPath = engineRunner.getOriginalPlatformTemplatesDir(c);
+        const engine = c.runtime.enginesByPlatform[platform];
+        if (engine) {
+            const originalPath = engine.originalPlatformTemplatesDir;
 
             if (originalPath) {
                 if (!pt[platform]) {
@@ -725,7 +725,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     const c = {
         cli: {},
         runtime: {
-            enginePlatforms: {}
+            enginesByPlatform: {}
         },
         paths: {
             rnv: {

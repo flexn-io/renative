@@ -105,7 +105,7 @@ export const getPlatformBuildDir = (c) => {
         logError('getPlatformBuildDir not available without specific engine');
         return null;
     }
-    return c.runtime.engine.getPlatformBuildDir(c);
+    return getAppFolder(c);
 };
 
 export const getPlatformOutputDir = (c) => {
@@ -121,7 +121,7 @@ export const getPlatformProjectDir = (c) => {
         logError('getPlatformProjectDir not available without specific engine');
         return null;
     }
-    return c.runtime.engine.getPlatformProjectDir(c);
+    return path.join(getAppFolder(c), c.runtime.engine.projectDirName || '');
 };
 
 export const getTemplateDir = c => path.join(

@@ -1,7 +1,7 @@
-import { getEngineTask, hasEngineTask, getEngineSubTasks } from '../core/engineManager';
-import { executeEngineTask } from '../core/taskManager';
-import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
-    getTemplateProjectDir, ejectPlatform, getTemplateRootDir } from './commonEngine';
+import { generateEngineTasks } from '../core/engineManager';
+// import { executeEngineTask } from '../core/taskManager';
+// import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
+//     getTemplateProjectDir, ejectPlatform, getTemplateRootDir } from './commonEngine';
 
 // import taskRnvLink from './tasks/task.rnv.link';
 // import taskRnvSwitch from './tasks/task.rnv.switch';
@@ -44,88 +44,105 @@ import taskRvnDoctor from './tasks/task.rnv.doctor';
 import taskRnvTargetList from './tasks/task.rnv.target.list';
 import taskRnvTargetLaunch from './tasks/task.rnv.target.launch';
 
-const TASKS = {};
+// const TASKS = {};
+//
+// const addTask = (taskInstance) => {
+//     if (!taskInstance?.task) {
+//         throw new Error('taskInstance has missing task name!');
+//     }
+//     TASKS[taskInstance.task] = taskInstance;
+// };
+//
 
-const addTask = (taskInstance) => {
-    if (!taskInstance?.task) {
-        throw new Error('taskInstance has missing task name!');
-    }
-    TASKS[taskInstance.task] = taskInstance;
-};
 
-// addTask(taskRnvLink);
-// addTask(taskRnvSwitch);
-addTask(taskRnvCryptoDecrypt);
-addTask(taskRnvCryptoEncrypt);
-addTask(taskRnvPlatformEject);
-addTask(taskRnvPlatformConnect);
-addTask(taskRnvPlatformList);
-addTask(taskRnvPlatformConfigure);
-addTask(taskRnvPlatformSetup);
-addTask(taskRnvTemplateAdd);
-addTask(taskRnvTemplateApply);
-addTask(taskRnvTemplateList);
-addTask(taskRnvPluginAdd);
-addTask(taskRnvPluginList);
-addTask(taskRnvPluginUpdate);
-addTask(taskRnvWorkspaceList);
-addTask(taskRnvWorkspaceAdd);
-addTask(taskRnvWorkspaceConnect);
-addTask(taskRnvWorkspaceUpdate);
-addTask(taskRnvHooksList);
-addTask(taskRnvHooksRun);
-addTask(taskRnvHooksPipes);
-addTask(taskRnvClean);
-addTask(rnvFastlane);
-addTask(taskRnvPublish);
-addTask(taskRnvPkg);
-addTask(taskRnvStatus);
-addTask(taskRnvConfig);
-addTask(taskRnvHelp);
-addTask(taskRnvNew);
-addTask(taskRnvInstall);
-addTask(taskRnvProjectConfigure);
-addTask(taskRnvProjectUpgrade);
-addTask(taskRnvAppConfigure);
-addTask(taskRnvWorkspaceConfigure);
-addTask(taskRnvConfigureSoft);
-addTask(taskRvnKill);
-addTask(taskRvnDoctor);
-addTask(taskRnvTargetList);
-addTask(taskRnvTargetLaunch);
+// const executeTask = (c, task, parentTask, originTask, isFirstTask) => executeEngineTask(
+//     c, task, parentTask, originTask, TASKS, isFirstTask
+// );
+//
+// const hasTask = (task, isProjectScope) => hasEngineTask(task, TASKS, isProjectScope);
+//
+// const getTask = task => getEngineTask(task, TASKS);
+//
+// const getSubTasks = (task, exactMatch) => getEngineSubTasks(task, TASKS, exactMatch);
+//
+// const getTasks = () => Object.values(TASKS);
+//
+// const getId = () => 'engine-core';
+//
+// const title = 'Engine Core';
+//
+// const getOriginalPlatformTemplatesDir = () => null;
+//
+// export default {
+//     getPlatformBuildDir,
+//     getPlatformProjectDir,
+//     getPlatformOutputDir,
+//     ejectPlatform,
+//     getTemplateProjectDir,
+//     getTemplateRootDir,
+//     getOriginalPlatformTemplatesDir,
+//     executeTask,
+//     addTask,
+//     hasTask,
+//     getTask,
+//     getSubTasks,
+//     getTasks,
+//     getId,
+//     title
+// };
 
-const executeTask = (c, task, parentTask, originTask, isFirstTask) => executeEngineTask(
-    c, task, parentTask, originTask, TASKS, isFirstTask
-);
-
-const hasTask = (task, isProjectScope) => hasEngineTask(task, TASKS, isProjectScope);
-
-const getTask = task => getEngineTask(task, TASKS);
-
-const getSubTasks = (task, exactMatch) => getEngineSubTasks(task, TASKS, exactMatch);
-
-const getTasks = () => Object.values(TASKS);
-
-const getId = () => 'engine-core';
-
-const title = 'Engine Core';
-
-const getOriginalPlatformTemplatesDir = () => null;
 
 export default {
-    getPlatformBuildDir,
-    getPlatformProjectDir,
-    getPlatformOutputDir,
-    ejectPlatform,
-    getTemplateProjectDir,
-    getTemplateRootDir,
-    getOriginalPlatformTemplatesDir,
-    executeTask,
-    addTask,
-    hasTask,
-    getTask,
-    getSubTasks,
-    getTasks,
-    getId,
-    title
+    tasks: generateEngineTasks([
+        taskRnvCryptoDecrypt,
+        taskRnvCryptoEncrypt,
+        taskRnvPlatformEject,
+        taskRnvPlatformConnect,
+        taskRnvPlatformList,
+        taskRnvPlatformConfigure,
+        taskRnvPlatformSetup,
+        taskRnvTemplateAdd,
+        taskRnvTemplateApply,
+        taskRnvTemplateList,
+        taskRnvPluginAdd,
+        taskRnvPluginList,
+        taskRnvPluginUpdate,
+        taskRnvWorkspaceList,
+        taskRnvWorkspaceAdd,
+        taskRnvWorkspaceConnect,
+        taskRnvWorkspaceUpdate,
+        taskRnvHooksList,
+        taskRnvHooksRun,
+        taskRnvHooksPipes,
+        taskRnvClean,
+        rnvFastlane,
+        taskRnvPublish,
+        taskRnvPkg,
+        taskRnvStatus,
+        taskRnvConfig,
+        taskRnvHelp,
+        taskRnvNew,
+        taskRnvInstall,
+        taskRnvProjectConfigure,
+        taskRnvProjectUpgrade,
+        taskRnvAppConfigure,
+        taskRnvWorkspaceConfigure,
+        taskRnvConfigureSoft,
+        taskRvnKill,
+        taskRvnDoctor,
+        taskRnvTargetList,
+        taskRnvTargetLaunch,
+    ]),
+    config: {
+        title: 'Engine Core',
+        id: 'engine-core'
+    },
+    package: {
+
+    },
+    projectDirName: '',
+    originalPlatformTemplatesDir: null,
+    ejectPlatform: null,
+    platforms: null
+
 };

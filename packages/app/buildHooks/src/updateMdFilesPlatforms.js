@@ -31,7 +31,7 @@ ${extContent}
 
 const _getExtensionContent = (c, platform) => {
     let out = '';
-    const p = c.runtime.enginePlatforms[platform]?.PLATFORMS[platform];
+    const p = c.runtime.enginesByPlatform[platform]?.PLATFORMS[platform];
     if (p.sourceExts) {
         let i = 1;
         // out += `\n\n-------${platform}---------\n\n`;

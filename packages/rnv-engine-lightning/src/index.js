@@ -1,55 +1,35 @@
-import { TaskManager, EngineManager } from 'rnv';
-import { PLATFORMS, CONFIG } from './constants';
-import { getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
-    getTemplateProjectDir, ejectPlatform, getTemplateRootDir, getOriginalPlatformTemplatesDir } from './commonEngine';
-
+import path from 'path';
+import { EngineManager } from 'rnv';
+import CNF from '../renative.engine.json';
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvConfigure from './tasks/task.rnv.configure';
 
-const { getEngineTask, hasEngineTask, getEngineSubTasks } = EngineManager;
-const { executeEngineTask } = TaskManager;
+const { generateEngineTasks, generateEngineExtensions } = EngineManager;
+const ex = EngineManager.registerEngineExtension;
+const ext = CNF.engineExtension;
 
-const TASKS = {};
-
-const addTask = (taskInstance) => {
-    TASKS[taskInstance.task] = taskInstance;
-};
-
-addTask(taskRnvRun);
-addTask(taskRnvConfigure);
-
-const executeTask = (c, task, parentTask, originTask, isFirstTask) => executeEngineTask(
-    c, task, parentTask, originTask, TASKS, isFirstTask
-);
-
-const hasTask = (task, isProjectScope) => hasEngineTask(task, TASKS, isProjectScope);
-
-const getTask = task => getEngineTask(task, TASKS);
-
-const getSubTasks = (task, exactMatch) => getEngineSubTasks(task, TASKS, exactMatch);
-
-const getTasks = () => Object.values(TASKS);
-
-const getId = () => CONFIG.id;
-
-const { title } = CONFIG;
 
 export default {
-    getPlatformBuildDir,
-    getPlatformProjectDir,
-    getPlatformOutputDir,
-    ejectPlatform,
-    getTemplateProjectDir,
-    getTemplateRootDir,
-    getOriginalPlatformTemplatesDir,
-    executeTask,
-    addTask,
-    hasTask,
-    getTask,
-    getSubTasks,
-    getTasks,
-    getId,
-    title,
-    config: CONFIG,
-    PLATFORMS
+    tasks: generateEngineTasks([taskRnvRun, taskRnvConfigure]),
+    config: CNF,
+    templateProjectDir: 'project',
+    originalPlatformTemplatesDir: path.join(__dirname, '../platformTemplates'),
+    ejectPlatform: null,
+    platforms: {
+        tizen: {
+            defaultPort: 8086,
+            isWebHosted: true,
+            extenstions: generateEngineExtensions([
+                'macos.desktop', 'desktop', 'macos', 'desktop.web', 'electron', 'web'
+            ])
+        },
+        webos: {
+            defaultPort: 8092,
+            isWebHosted: true,
+            extenstions: [
+                ...ex(CNF.id), ...ex('windows.desktop', ext), ...ex('desktop', ext), ...ex('windows', ext),
+                ...ex('desktop.web', ext), ...ex('electron', ext), ...ex('web', ext), ...ex()
+            ]
+        }
+    }
 };

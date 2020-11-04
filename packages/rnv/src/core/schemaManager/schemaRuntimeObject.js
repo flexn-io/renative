@@ -146,7 +146,7 @@ export const schemaRoot = {
                     additionalProperties: true,
                     type: 'object'
                 },
-                enginePlatforms: {
+                enginesByPlatform: {
                     // TODO: specify object structure
                     additionalProperties: true,
                     type: 'object'
