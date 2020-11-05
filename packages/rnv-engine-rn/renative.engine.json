@@ -14,7 +14,7 @@
     },
     "npm": {
         "devDependencies": {
-            "@rnv/engine-rn": "0.32.0-alpha.2"
+            
         }
     },
     "platforms": {

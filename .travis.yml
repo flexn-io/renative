@@ -37,7 +37,7 @@ jobs:
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
         - yarn bootstrap-clean
         - cd packages/rnv
-      script: npm run test:setup
+      script: npm run test:unit
     - name: "RNV Node: Lint"
       dist: trusty
       language: node_js
@@ -60,7 +60,7 @@ jobs:
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
         - yarn bootstrap-clean
         - cd packages/rnv
-      script: yarn test:integration
+      script: yarn test:integration:linux
     - name: "HelloWorld Android: Build"
       language: android
       dist: trusty
@@ -170,4 +170,4 @@ jobs:
       install:
         - yarn bootstrap-clean
         - cd packages/rnv
-      script: yarn test:ios
+      script: yarn test:integration:osx

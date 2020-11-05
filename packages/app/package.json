@@ -107,7 +107,7 @@
     "codename": "Iron Ladybird",
     "husky": {
         "hooks": {
-            "pre-commit": "pretty-quick --staged && yarn test:rnv:unit"
+            "pre-commit": "pretty-quick --staged && yarn test"
         }
     },
     "detox": {

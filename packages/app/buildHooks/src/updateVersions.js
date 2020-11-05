@@ -110,27 +110,26 @@ export const updateVersions = async (c) => {
         path.join(pkgFolder, 'renative/README.md')
     );
 
-    const packagesDir = path.join(c.paths.project.dir, '..');
-
-    const engines = [
-        'rnv-engine-rn',
-        'rnv-engine-rn-web',
-        'rnv-engine-rn-next',
-        'rnv-engine-rn-electron',
-        'rnv-engine-lightning'
-    ];
-
-    engines.forEach((engineDir) => {
-        const ePath = path.join(packagesDir, engineDir, 'renative.engine.json');
-        const engine = FileUtils.readObjectSync(ePath);
-        const { id } = engine;
-        const npm = engine?.npm?.devDependencies?.[`@rnv/${id}`];
-        if (npm) {
-            engine.npm.devDependencies[`@rnv/${id}`] = rootPackage.version;
-        }
-        const output = Doctor.fixPackageObject(engine);
-        FileUtils.writeFileSync(ePath, output, 4, true);
-    });
+    // const packagesDir = path.join(c.paths.project.dir, '..');
+    //
+    // const engines = [
+    //     'rnv-engine-rn',
+    //     'rnv-engine-rn-web',
+    //     'rnv-engine-rn-next',
+    //     'rnv-engine-rn-electron',
+    //     'rnv-engine-lightning'
+    // ];
+    // engines.forEach((engineDir) => {
+    //     const ePath = path.join(packagesDir, engineDir, 'renative.engine.json');
+    //     const engine = FileUtils.readObjectSync(ePath);
+    //     const { id } = engine;
+    //     const npm = engine?.npm?.devDependencies?.[`@rnv/${id}`];
+    //     if (npm) {
+    //         engine.npm.devDependencies[`@rnv/${id}`] = rootPackage.version;
+    //     }
+    //     const output = Doctor.fixPackageObject(engine);
+    //     FileUtils.writeFileSync(ePath, output, 4, true);
+    // });
 
     return true;
 };
