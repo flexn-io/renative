@@ -8,7 +8,6 @@
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
         "watch": "nodemon --watch src --exec yarn build:dev",
-        "test": "echo \"Error: no test specified\" && exit 1",
         "prepublishOnly": "npm run build"
     },
     "repository": {

@@ -23,7 +23,6 @@
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
         "prepublishOnly": "yarn build",
-        "test": "echo \"Error: no test specified\" && exit 1",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {

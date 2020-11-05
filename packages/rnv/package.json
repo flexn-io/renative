@@ -66,7 +66,7 @@
         "test:docker": "./__tests__/scripts/test.sh",
         "test:integration:linux": "jest -c __tests__/jest.config.int.linux.js",
         "test:integration:osx": "jest -c __tests__/jest.config.int.osx.js",
-        "test:unit": "jest -c __tests__/jest.config.unit.js",
+        "test": "jest -c __tests__/jest.config.unit.js",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {

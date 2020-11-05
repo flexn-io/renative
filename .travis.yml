@@ -37,7 +37,7 @@ jobs:
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
         - yarn bootstrap-clean
         - cd packages/rnv
-      script: npm run test:unit
+      script: npm run test
     - name: "RNV Node: Lint"
       dist: trusty
       language: node_js
