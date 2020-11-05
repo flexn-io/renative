@@ -1,5 +1,5 @@
 const config = require('./jest.config');
 
-config.testRegex = '\\.int.osx\\.js$';
-console.log('RUNNING IOS UNIT/INTEGRATION TESTS');
+config.testRegex = '\\.intosx\\.js$';
+console.log('RUNNING RNV OSX INTEGRATION TESTS');
 module.exports = config;
