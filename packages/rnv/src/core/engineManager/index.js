@@ -1,5 +1,6 @@
 /* eslint-disable import/no-dynamic-require, global-require */
 import path from 'path';
+import { IS_LINKED, RNV_HOME_DIR } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
 import { getConfigProp } from '../common';
 import { executeAsync } from '../systemManager/exec';
@@ -138,7 +139,7 @@ export const loadEngines = async (c) => {
         });
         if (enginesToInstall.length) {
             logInfo(`Some engines not installed in your project:
-${enginesToInstall.map(v => `> ${v}`).join('\n')}
+${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
  INSTALLING...`);
 
             // If package.json exists use conventional install.
@@ -220,7 +221,15 @@ const _registerPlatformEngine = (c, platform) => {
     if (selectedEngineConfig) {
         const existingEngine = ENGINES_BY_ID[selectedEngineConfig.id];
         if (!existingEngine) {
-            registerEngine(c, require(selectedEngineConfig.packageName)?.default, platform, selectedEngineConfig);
+            if (IS_LINKED) {
+                // In the instances of running linked rnv instead of installed one load local packages
+                const pth = require.resolve(selectedEngineConfig.packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
+                registerEngine(c, require(
+                    pth
+                )?.default, platform, selectedEngineConfig);
+            } else {
+                registerEngine(c, require(selectedEngineConfig.packageName)?.default, platform, selectedEngineConfig);
+            }
         } else {
             _registerEnginePlatform(c, platform, existingEngine);
         }

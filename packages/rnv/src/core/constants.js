@@ -4,6 +4,8 @@ import path from 'path';
 
 export const USER_HOME_DIR = homedir();
 export const RNV_HOME_DIR = path.join(__dirname, '../..');
+// Self check: if in packages => linked, if node_modules => installed
+export const IS_LINKED = path.dirname(RNV_HOME_DIR).split(path.sep).pop() === 'packages';
 export const CURRENT_DIR = path.resolve('.');
 export const RNV_NODE_MODULES_DIR = path.join(RNV_HOME_DIR, 'node_modules');
 export const RNV_PROJECT_DIR_NAME = 'project';
