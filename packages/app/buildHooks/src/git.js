@@ -9,8 +9,11 @@ export const gitCommit = async (c) => {
     const baseDir = path.join(c.paths.project.dir, '../..');
     Logger.logHook(`gitCommitAndTagVersion v${version}`);
     const git = simpleGit({ baseDir });
+    Logger.logHook('adding files');
     await git.add(`${baseDir}/*`);
+    Logger.logHook('COMMITING...');
     await git.commit(version);
+    Logger.logHook('DONE');
 };
 
 export const gitTag = async (c) => {
