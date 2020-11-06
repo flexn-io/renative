@@ -1,5 +1,5 @@
 ---
-id: platform-tizen
+id: tizen
 title: Tizen TV Platform
 sidebar_label: Tizen TV
 ---

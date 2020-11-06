@@ -1,7 +1,7 @@
 ---
-id: platform-androidwear
-title: Android Wear Platform
-sidebar_label: Android Wear
+id: androidtv
+title: Android TV Platform
+sidebar_label: Android TV
 ---
 
 <table>
@@ -15,7 +15,7 @@ sidebar_label: Android Wear
   </tr>
 </table>
 
-<img src="https://renative.org/img/rnv_androidwear.gif" height="250"/>
+<img src="https://renative.org/img/rnv_android-tv.gif" height="250"/>
 
 ## Overview
 
@@ -29,26 +29,26 @@ sidebar_label: Android Wear
 
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
-| `androidwear.watch.jsx` | `form factor` | 1 |
-| `androidwear.watch.js` | `form factor` | 2 |
-| `androidwear.watch.tsx` | `form factor` | 3 |
-| `androidwear.watch.ts` | `form factor` | 4 |
-| `watch.jsx` | `form factor` | 5 |
-| `watch.js` | `form factor` | 6 |
-| `watch.tsx` | `form factor` | 7 |
-| `watch.ts` | `form factor` | 8 |
-| `androidwear.jsx` | `platform` | 9 |
-| `androidwear.js` | `platform` | 10 |
-| `androidwear.tsx` | `platform` | 11 |
-| `androidwear.ts` | `platform` | 12 |
+| `androidtv.tv.jsx` | `form factor` | 1 |
+| `androidtv.tv.js` | `form factor` | 2 |
+| `androidtv.tv.tsx` | `form factor` | 3 |
+| `androidtv.tv.ts` | `form factor` | 4 |
+| `tv.jsx` | `form factor` | 5 |
+| `tv.js` | `form factor` | 6 |
+| `tv.tsx` | `form factor` | 7 |
+| `tv.ts` | `form factor` | 8 |
+| `androidtv.jsx` | `platform` | 9 |
+| `androidtv.js` | `platform` | 10 |
+| `androidtv.tsx` | `platform` | 11 |
+| `androidtv.ts` | `platform` | 12 |
 | `android.jsx` | `platform` | 13 |
 | `android.js` | `platform` | 14 |
 | `android.tsx` | `platform` | 15 |
 | `android.ts` | `platform` | 16 |
-| `watch.native.jsx` | `fallback` | 17 |
-| `watch.native.js` | `fallback` | 18 |
-| `watch.native.tsx` | `fallback` | 19 |
-| `watch.native.ts` | `fallback` | 20 |
+| `tv.native.jsx` | `fallback` | 17 |
+| `tv.native.js` | `fallback` | 18 |
+| `tv.native.tsx` | `fallback` | 19 |
+| `tv.native.ts` | `fallback` | 20 |
 | `native.jsx` | `fallback` | 21 |
 | `native.js` | `fallback` | 22 |
 | `native.tsx` | `fallback` | 23 |
@@ -79,13 +79,13 @@ sidebar_label: Android Wear
 ## Run on Simulator
 
 ```
-rnv run -p androidwear
+rnv run -p androidtv
 ```
 
 ## Run on Device
 
 ```
-rnv run -p androidwear -d
+rnv run -p androidtv -d
 ```
 
 ## Deploy on Device
@@ -94,7 +94,7 @@ This will run production version on your device (not connected to metro bundler)
 You can configure each `buildScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
 
 ```
-rnv run -p androidwear -s release -d
+rnv run -p androidtv -s release -d
 ```
 
 ## Android X support
@@ -111,23 +111,21 @@ make sure you have this piece of script in package.json
 
 ## Hermes support
 
-Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidwear.enableHermes`
-or `renative.json:platforms.androidwear.buildSchemes.[SCHEME].enableHermes`
-
-NOTE: There is a bug in RN. for now you must NOT have running bundler (`$ rnv start`) in order for wear sim to work
+Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidtv.enableHermes`
+or `renative.json:platforms.androidtv.buildSchemes.[SCHEME].enableHermes`
 
 ## Advanced
 
 Clean and Re-build platform project
 
 ```
-rnv run -p androidwear -r
+rnv run -p androidtv -r
 ```
 
 Launch specific emulator:
 
 ```
-rnv target launch -p androidwear -t Android_Wear_Round_API_28
+rnv target launch -p androidtv -t Android_TV_720p_API_22
 ```
 
 ## Android X support
@@ -144,8 +142,8 @@ make sure you have this piece of script in package.json
 
 ## Hermes support
 
-Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidwear.enableHermes`
-or `renative.json:platforms.androidwear.buildSchemes.[SCHEME].enableHermes`
+Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidtv.enableHermes`
+or `renative.json:platforms.androidtv.buildSchemes.[SCHEME].enableHermes`
 
 ## App Config
 

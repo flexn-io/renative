@@ -1,5 +1,5 @@
 ---
-id: platform-tizenmobile
+id: tizenmobile
 title: Tizen Mobile Platform
 sidebar_label: Tizen Mobile
 ---

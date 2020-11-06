@@ -1,5 +1,5 @@
 ---
-id: platform-android
+id: android
 title: Android Platform
 sidebar_label: Android
 ---

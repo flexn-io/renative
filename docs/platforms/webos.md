@@ -1,7 +1,7 @@
 ---
-id: platform-firefoxtv
-title: Firefox TV Platform
-sidebar_label: Firefox TV
+id: webos
+title: LG WebOS Platform
+sidebar_label: LG WebOS
 ---
 
 <table>
@@ -15,7 +15,11 @@ sidebar_label: Firefox TV
   </tr>
 </table>
 
-<img src="https://renative.org/img/rnv_firefoxtv.gif" height="250"/>
+<img src="https://renative.org/img/rnv_webos.gif" height="250"/>
+
+## Overview
+
+-   Latest LG webOS Project
 
 ## File Extension Support
 
@@ -23,10 +27,10 @@ sidebar_label: Firefox TV
 
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
-| `firefoxtv.tv.jsx` | `form factor` | 1 |
-| `firefoxtv.tv.js` | `form factor` | 2 |
-| `firefoxtv.tv.tsx` | `form factor` | 3 |
-| `firefoxtv.tv.ts` | `form factor` | 4 |
+| `webos.tv.jsx` | `form factor` | 1 |
+| `webos.tv.js` | `form factor` | 2 |
+| `webos.tv.tsx` | `form factor` | 3 |
+| `webos.tv.ts` | `form factor` | 4 |
 | `web.tv.jsx` | `form factor` | 5 |
 | `web.tv.js` | `form factor` | 6 |
 | `web.tv.tsx` | `form factor` | 7 |
@@ -35,10 +39,10 @@ sidebar_label: Firefox TV
 | `tv.js` | `form factor` | 10 |
 | `tv.tsx` | `form factor` | 11 |
 | `tv.ts` | `form factor` | 12 |
-| `firefoxtv.jsx` | `platform` | 13 |
-| `firefoxtv.js` | `platform` | 14 |
-| `firefoxtv.tsx` | `platform` | 15 |
-| `firefoxtv.ts` | `platform` | 16 |
+| `webos.jsx` | `platform` | 13 |
+| `webos.js` | `platform` | 14 |
+| `webos.tsx` | `platform` | 15 |
+| `webos.ts` | `platform` | 16 |
 | `tv.web.jsx` | `fallback` | 17 |
 | `tv.web.js` | `fallback` | 18 |
 | `tv.web.tsx` | `fallback` | 19 |
@@ -57,40 +61,51 @@ sidebar_label: Firefox TV
 
 <!--EXTENSION_SUPPORT_END-->
 
-#### Requirements
+## Requirements
 
--   [FirefoxDeveloperEdition](https://www.mozilla.org/en-US/firefox/developer/) for IDE + Emulator
+-   [LG Emulator](http://webostv.developer.lge.com/sdk/tools/emulator/introduction-emulator/) v3.0.0
 
-After installation you can launch it via Applications:
+## Project Configuration
 
-`Tools -> Web Developer -> WebIDE`
+| Feature          | Version |
+| ---------------- | :-----: |
+| react-native-web | `0.9.9` |
+| Babel Core       | `7.1.2` |
 
-<table>
-  <tr>
-    <th>
-    <img src="https://renative.org/img/firefoxos.png" />
-    </th>
-  </tr>
-</table>
+## Emulator
 
-#### Run
+-   launch webOS emulator via CLI
+
+```bash
+rnv target launch -p webos -t emulator
+```
+
+-   launch webOS emulator Manually
+
+usually located in something like:
+
+```
+<USER_PATH>/Library/webOS_TV_SDK/Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app
+```
+
+## Run
 
 Run on Simulator
 
 ```
-rnv run -p firefoxtv
+rnv run -p webos
 ```
 
 Run on Device
 
 ```
-rnv run -p firefoxtv -d
+rnv run -p webos -d
 ```
 
 Run in Browser
 
 ```
-rnv run -p firefoxtv --hosted
+rnv run -p webos --hosted
 ```
 
 ## App Config

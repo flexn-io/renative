@@ -785,73 +785,73 @@
         "title": "Overview",
         "sidebar_label": "Overview"
       },
-      "platforms/platform-android": {
+      "platforms/android": {
         "title": "Android Platform",
         "sidebar_label": "Android"
       },
-      "platforms/platform-androidtv": {
+      "platforms/androidtv": {
         "title": "Android TV Platform",
         "sidebar_label": "Android TV"
       },
-      "platforms/platform-androidwear": {
+      "platforms/androidwear": {
         "title": "Android Wear Platform",
         "sidebar_label": "Android Wear"
       },
-      "platforms/platform-chromecast": {
+      "platforms/chromecast": {
         "title": "Chromecast Platform",
         "sidebar_label": "Chromecast"
       },
-      "platforms/platform-firefoxos": {
+      "platforms/firefoxos": {
         "title": "Firefox OS Platform",
         "sidebar_label": "Firefox OS"
       },
-      "platforms/platform-firefoxtv": {
+      "platforms/firefoxtv": {
         "title": "Firefox TV Platform",
         "sidebar_label": "Firefox TV"
       },
-      "platforms/platform-ios": {
+      "platforms/ios": {
         "title": "iOS Platform",
         "sidebar_label": "iOS"
       },
-      "platforms/platform-kaios": {
+      "platforms/kaios": {
         "title": "KaiOS Platform",
         "sidebar_label": "KaiOS"
       },
-      "platforms/platform-macos": {
+      "platforms/macos": {
         "title": "macOS Platform",
         "sidebar_label": "macOS"
       },
-      "platforms/platform-tizen": {
+      "platforms/overview": {
+        "title": "Overview",
+        "sidebar_label": "Overview"
+      },
+      "platforms/tizen": {
         "title": "Tizen TV Platform",
         "sidebar_label": "Tizen TV"
       },
-      "platforms/platform-tizenmobile": {
+      "platforms/tizenmobile": {
         "title": "Tizen Mobile Platform",
         "sidebar_label": "Tizen Mobile"
       },
-      "platforms/platform-tizenwatch": {
+      "platforms/tizenwatch": {
         "title": "Tizen Watch Platform",
         "sidebar_label": "Tizen Watch"
       },
-      "platforms/platform-tvos": {
+      "platforms/tvos": {
         "title": "tvOS Platform",
         "sidebar_label": "tvOS"
       },
-      "platforms/platform-web": {
+      "platforms/web": {
         "title": "Web Platform",
         "sidebar_label": "Web"
       },
-      "platforms/platform-webos": {
+      "platforms/webos": {
         "title": "LG WebOS Platform",
         "sidebar_label": "LG WebOS"
       },
-      "platforms/platform-windows": {
+      "platforms/windows": {
         "title": "Windows Platform",
         "sidebar_label": "Windows"
-      },
-      "platforms/platforms": {
-        "title": "Overview",
-        "sidebar_label": "Overview"
       },
       "plugins": {
         "title": "Plugins Overview",
@@ -1622,9 +1622,6 @@
     },
     "categories": {
       "Getting Started": "Getting Started",
-      "Basics": "Basics",
-      "Medium": "Medium",
-      "Advanced": "Advanced",
       "Guides": "Guides",
       "Platforms": "Platforms",
       "Plugins": "Plugins",

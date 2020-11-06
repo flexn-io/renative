@@ -1,5 +1,5 @@
 ---
-id: platform-web
+id: web
 title: Web Platform
 sidebar_label: Web
 ---

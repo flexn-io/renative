@@ -1,5 +1,5 @@
 ---
-id: platform-tizenwatch
+id: tizenwatch
 title: Tizen Watch Platform
 sidebar_label: Tizen Watch
 ---

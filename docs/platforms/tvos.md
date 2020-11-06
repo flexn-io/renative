@@ -1,5 +1,5 @@
 ---
-id: platform-tvos
+id: tvos
 title: tvOS Platform
 sidebar_label: tvOS
 ---

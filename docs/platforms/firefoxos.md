@@ -1,7 +1,7 @@
 ---
-id: platform-kaios
-title: KaiOS Platform
-sidebar_label: KaiOS
+id: firefoxos
+title: Firefox OS Platform
+sidebar_label: Firefox OS
 ---
 
 <table>
@@ -15,7 +15,7 @@ sidebar_label: KaiOS
   </tr>
 </table>
 
-<img src="https://renative.org/img/rnv_kaios.gif" height="250"/>
+<img src="https://renative.org/img/rnv_firefoxos.gif" height="250"/>
 
 ## File Extension Support
 
@@ -23,18 +23,18 @@ sidebar_label: KaiOS
 
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
-| `kaios.mobile.jsx` | `form factor` | 1 |
-| `kaios.mobile.js` | `form factor` | 2 |
-| `kaios.mobile.tsx` | `form factor` | 3 |
-| `kaios.mobile.ts` | `form factor` | 4 |
+| `firefoxos.mobile.jsx` | `form factor` | 1 |
+| `firefoxos.mobile.js` | `form factor` | 2 |
+| `firefoxos.mobile.tsx` | `form factor` | 3 |
+| `firefoxos.mobile.ts` | `form factor` | 4 |
 | `mobile.jsx` | `form factor` | 5 |
 | `mobile.js` | `form factor` | 6 |
 | `mobile.tsx` | `form factor` | 7 |
 | `mobile.ts` | `form factor` | 8 |
-| `kaios.jsx` | `platform` | 9 |
-| `kaios.js` | `platform` | 10 |
-| `kaios.tsx` | `platform` | 11 |
-| `kaios.ts` | `platform` | 12 |
+| `firefoxos.jsx` | `platform` | 9 |
+| `firefoxos.js` | `platform` | 10 |
+| `firefoxos.tsx` | `platform` | 11 |
+| `firefoxos.ts` | `platform` | 12 |
 | `mobile.web.jsx` | `fallback` | 13 |
 | `mobile.web.js` | `fallback` | 14 |
 | `mobile.web.tsx` | `fallback` | 15 |
@@ -55,14 +55,16 @@ sidebar_label: KaiOS
 
 ## Requirements
 
--   [KaiOSrt](https://developer.kaiostech.com/simulator) for emulator
+-   [FirefoxDeveloperEdition](https://www.mozilla.org/en-US/firefox/developer/) for IDE + Emulator
 
 After installation you can launch it via Applications:
+
+`Tools -> Web Developer -> WebIDE`
 
 <table>
   <tr>
     <th>
-    <img src="https://renative.org/img/kaios1.png" />
+    <img src="https://renative.org/img/firefoxos.png" />
     </th>
   </tr>
 </table>
@@ -72,19 +74,19 @@ After installation you can launch it via Applications:
 Run on Simulator
 
 ```
-rnv run -p kaios
+rnv run -p firefoxos
 ```
 
 Run on Device
 
 ```
-rnv run -p kaios -d
+rnv run -p firefoxos -d
 ```
 
 Run in Browser
 
 ```
-rnv run -p kaios --hosted
+rnv run -p firefoxos --hosted
 ```
 
 ## App Config

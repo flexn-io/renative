@@ -1,5 +1,5 @@
 ---
-id: platform-chromecast
+id: chromecast
 title: Chromecast Platform
 sidebar_label: Chromecast
 ---

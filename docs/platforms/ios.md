@@ -1,5 +1,5 @@
 ---
-id: platform-ios
+id: ios
 title: iOS Platform
 sidebar_label: iOS
 ---
