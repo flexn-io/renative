@@ -11,7 +11,7 @@ sidebar_label: React Native Web
 
 ## Overview
 
-React native based engine with web transpiler provided by react-native-web
+undefined
 
 ## Supported Platforms
 
@@ -19,7 +19,7 @@ React native based engine with web transpiler provided by react-native-web
 
 ## Required Plugins
 
-[react](plugins#react), [react-art](plugins#react-art), [react-dom](plugins#react-dom), [react-native](plugins#react-native), [react-native-web](plugins#react-native-web), [@react-native-community/cli-platform-ios](plugins#react-native-communitycli-platform-ios), [@react-native-community/cli](plugins#react-native-communitycli)
+[tizen](plugins#tizen), [web](plugins#web), [webos](plugins#webos), [tizenwatch](plugins#tizenwatch), [tizenmobile](plugins#tizenmobile), [chromecast](plugins#chromecast), [kaios](plugins#kaios), [firefoxos](plugins#firefoxos), [firefoxtv](plugins#firefoxtv)
 
 ## Required NPM Packages
 

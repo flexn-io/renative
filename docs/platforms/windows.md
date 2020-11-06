@@ -26,40 +26,7 @@ sidebar_label: Windows
 
 <!--EXTENSION_SUPPORT_START-->
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `windows.desktop.jsx` | `form factor` | 1 |
-| `windows.desktop.js` | `form factor` | 2 |
-| `windows.desktop.tsx` | `form factor` | 3 |
-| `windows.desktop.ts` | `form factor` | 4 |
-| `desktop.jsx` | `form factor` | 5 |
-| `desktop.js` | `form factor` | 6 |
-| `desktop.tsx` | `form factor` | 7 |
-| `desktop.ts` | `form factor` | 8 |
-| `windows.jsx` | `platform` | 9 |
-| `windows.js` | `platform` | 10 |
-| `windows.tsx` | `platform` | 11 |
-| `windows.ts` | `platform` | 12 |
-| `desktop.web.jsx` | `fallback` | 13 |
-| `desktop.web.js` | `fallback` | 14 |
-| `desktop.web.tsx` | `fallback` | 15 |
-| `desktop.web.ts` | `fallback` | 16 |
-| `electron.jsx` | `fallback` | 17 |
-| `electron.js` | `fallback` | 18 |
-| `electron.tsx` | `fallback` | 19 |
-| `electron.ts` | `fallback` | 20 |
-| `web.jsx` | `fallback` | 21 |
-| `web.js` | `fallback` | 22 |
-| `web.tsx` | `fallback` | 23 |
-| `web.ts` | `fallback` | 24 |
-| `mjs` | `fallback` | 25 |
-| `jsx` | `fallback` | 26 |
-| `js` | `fallback` | 27 |
-| `json` | `fallback` | 28 |
-| `wasm` | `fallback` | 29 |
-| `tsx` | `fallback` | 30 |
-| `ts` | `fallback` | 31 |
-
+Extenstions are defined via engines
 <!--EXTENSION_SUPPORT_END-->
 
 ## Requirements

@@ -1,7 +1,7 @@
 ---
-id: api-cli-engine-rn
-title: Engine RN CLI Reference
-sidebar_label: Engine RN
+id: cli-engine-rn
+title: undefined CLI Reference
+sidebar_label: undefined
 ---
 
 
@@ -11,7 +11,7 @@ sidebar_label: Engine RN
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -76,7 +76,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -125,7 +125,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -174,7 +174,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -223,7 +223,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -272,7 +272,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -321,7 +321,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -370,7 +370,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -407,7 +407,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -444,7 +444,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -481,7 +481,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -518,7 +518,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -555,7 +555,7 @@ Options:
 
 This command reference applies if your platform uses engine `engine-rn`.
 
-More info at [Engine RN Guide](engine-rn.md)
+More info at [undefined Guide](engine-rn.md)
 
 ---
 
@@ -571,80 +571,6 @@ Example:
 
 ```bash
 rnv log
-```
-
-Options:
-
-`-i`, `--info` - Show full debug Info
-
-`--ci` - CI/CD flag so it wont ask questions
-
-`--mono` - Monochrome console output without chalk
-
-`--maxErrorLength` - Specify how many characters each error should display. Default 200
-
-`-o`, `--only` - run Only top command (Skip dependencies)
-
-
-
-
----
-
-This command reference applies if your platform uses engine `engine-rn`.
-
-More info at [Engine RN Guide](engine-rn.md)
-
----
-
-## target list
-
-> List all available devices / emulators for specific platform
-
-Supported Platforms:
-
-`ios`, `android`, `androidtv`, `androidwear`, `web`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
-
-Example:
-
-```bash
-rnv target list
-```
-
-Options:
-
-`-i`, `--info` - Show full debug Info
-
-`--ci` - CI/CD flag so it wont ask questions
-
-`--mono` - Monochrome console output without chalk
-
-`--maxErrorLength` - Specify how many characters each error should display. Default 200
-
-`-o`, `--only` - run Only top command (Skip dependencies)
-
-
-
-
----
-
-This command reference applies if your platform uses engine `engine-rn`.
-
-More info at [Engine RN Guide](engine-rn.md)
-
----
-
-## target launch
-
-> Launch specific emulator
-
-Supported Platforms:
-
-`ios`, `android`, `androidtv`, `androidwear`, `web`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
-
-Example:
-
-```bash
-rnv target launch
 ```
 
 Options:

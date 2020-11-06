@@ -26,40 +26,7 @@ sidebar_label: Tizen TV
 
 <!--EXTENSION_SUPPORT_START-->
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `tizen.tv.jsx` | `form factor` | 1 |
-| `tizen.tv.js` | `form factor` | 2 |
-| `tizen.tv.tsx` | `form factor` | 3 |
-| `tizen.tv.ts` | `form factor` | 4 |
-| `web.tv.jsx` | `form factor` | 5 |
-| `web.tv.js` | `form factor` | 6 |
-| `web.tv.tsx` | `form factor` | 7 |
-| `web.tv.ts` | `form factor` | 8 |
-| `tv.jsx` | `form factor` | 9 |
-| `tv.js` | `form factor` | 10 |
-| `tv.tsx` | `form factor` | 11 |
-| `tv.ts` | `form factor` | 12 |
-| `tizen.jsx` | `platform` | 13 |
-| `tizen.js` | `platform` | 14 |
-| `tizen.tsx` | `platform` | 15 |
-| `tizen.ts` | `platform` | 16 |
-| `tv.web.jsx` | `fallback` | 17 |
-| `tv.web.js` | `fallback` | 18 |
-| `tv.web.tsx` | `fallback` | 19 |
-| `tv.web.ts` | `fallback` | 20 |
-| `web.jsx` | `fallback` | 21 |
-| `web.js` | `fallback` | 22 |
-| `web.tsx` | `fallback` | 23 |
-| `web.ts` | `fallback` | 24 |
-| `mjs` | `fallback` | 25 |
-| `jsx` | `fallback` | 26 |
-| `js` | `fallback` | 27 |
-| `json` | `fallback` | 28 |
-| `wasm` | `fallback` | 29 |
-| `tsx` | `fallback` | 30 |
-| `ts` | `fallback` | 31 |
-
+Extenstions are defined via engines
 <!--EXTENSION_SUPPORT_END-->
 
 ## Requirements

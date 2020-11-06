@@ -11,7 +11,7 @@ sidebar_label: React Native Electron
 
 ## Overview
 
-React native based engine with web transpiler provided by react-native-web and native desktop wrapper provided by electron
+undefined
 
 ## Supported Platforms
 
@@ -19,7 +19,7 @@ React native based engine with web transpiler provided by react-native-web and n
 
 ## Required Plugins
 
-[react](plugins#react), [react-art](plugins#react-art), [react-dom](plugins#react-dom), [react-native](plugins#react-native), [react-native-web](plugins#react-native-web), [@react-native-community/cli-platform-ios](plugins#react-native-communitycli-platform-ios), [@react-native-community/cli](plugins#react-native-communitycli)
+[macos](plugins#macos), [windows](plugins#windows)
 
 ## Required NPM Packages
 

@@ -11,7 +11,7 @@ sidebar_label: React Native Next
 
 ## Overview
 
-React native based engine with web transpiler provided by react-native-web and render by nextjs
+undefined
 
 ## Supported Platforms
 
@@ -19,7 +19,7 @@ React native based engine with web transpiler provided by react-native-web and r
 
 ## Required Plugins
 
-[react](plugins#react), [react-art](plugins#react-art), [react-dom](plugins#react-dom), [react-native](plugins#react-native), [react-native-web](plugins#react-native-web), [next](plugins#next)
+[web](plugins#web)
 
 ## Required NPM Packages
 

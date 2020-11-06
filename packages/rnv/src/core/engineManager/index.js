@@ -17,6 +17,8 @@ const ENGINE_CORE = 'engine-core';
 
 export const registerEngine = async (c, engine, platform, engConfig) => {
     ENGINES_BY_ID[engine.config.id] = engine;
+
+    c.runtime.enginesById[engine.config.id] = engine;
     ENGINES_BY_INDEX.push(engine);
     if (engConfig?.packageName) {
         engine.rootPath = path.dirname(require.resolve(`${engConfig.packageName}/package.json`));

@@ -1,5 +1,5 @@
 ---
-id: api-rnv-config
+id: rnv-config
 title: rnv Build Config Object Reference
 sidebar_label: build config object
 ---

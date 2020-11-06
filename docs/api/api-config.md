@@ -1,5 +1,5 @@
 ---
-id: api-config
+id: config
 title: renative.json API Reference
 sidebar_label: renative.json
 ---
@@ -30679,12 +30679,3 @@ Workspace ID your project belongs to. This will mach same folder name in the roo
   "workspaceID": "myCustomWorkspace"
 }
 ```
-
-
-
-
-
-
-
-
-

@@ -5,6 +5,34 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.3 (2020-11-6)
+
+### Fixed
+
+- docs
+- [fix] platform eject, linked rnv
+- test infra for engine-rn
+- test chores
+- UT, Integrations tests
+- refactor platformTemplates
+- refactor engineManager
+- sdk hoisting fix
+- Merge branch 'feat/docs-pt3' into feat/decouple-pt3
+- docs pt3
+- engine api migrations
+- migrate assets
+- fix writeRenativeConfigFile
+- manage engine deps, build hooks fixes
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.2 (2020-10-19)
 
 ### Fixed

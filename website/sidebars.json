@@ -83,14 +83,14 @@
     },
     "api-sidebar": {
         "CLI": [
-            "api/api-cli-engine-core",
-            "api/api-cli-engine-rn",
-            "api/api-cli-engine-rn-web",
-            "api/api-cli-engine-rn-next",
-            "api/api-cli-engine-rn-electron"
+            "api/cli-engine-core",
+            "api/cli-engine-rn",
+            "api/cli-engine-rn-web",
+            "api/cli-engine-rn-next",
+            "api/cli-engine-rn-electron"
         ],
-        "Config": ["api/api-config"],
-        "Runtime": ["api/api-renative"],
-        "RNV": ["api/api-rnv", "api/api-rnv-config"]
+        "Config": ["api/config"],
+        "Runtime": ["api/renative"],
+        "RNV": ["api/rnv", "api/rnv-config"]
     }
 }

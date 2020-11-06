@@ -11,7 +11,7 @@ sidebar_label: React Native
 
 ## Overview
 
-Default react-native based engine. Runs standard react native apps with native support
+undefined
 
 ## Supported Platforms
 
@@ -19,7 +19,7 @@ Default react-native based engine. Runs standard react native apps with native s
 
 ## Required Plugins
 
-[react](plugins#react), [react-art](plugins#react-art), [react-dom](plugins#react-dom), [react-native](plugins#react-native), [react-native-web](plugins#react-native-web), [@react-native-community/cli-platform-ios](plugins#react-native-communitycli-platform-ios), [@react-native-community/cli](plugins#react-native-communitycli)
+[ios](plugins#ios), [android](plugins#android), [androidwear](plugins#androidwear), [androidtv](plugins#androidtv), [tvos](plugins#tvos)
 
 ## Required NPM Packages
 

@@ -82,7 +82,9 @@ export default {
     ]),
     config: {
         title: 'Engine Core',
-        id: 'engine-core'
+        id: 'engine-core',
+        platforms: {},
+        npm: {}
     },
     package: {
 

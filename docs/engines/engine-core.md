@@ -11,7 +11,7 @@ sidebar_label: Core
 
 ## Overview
 
-Core RNV engine. used to run common tasks other engines can utilise
+undefined
 
 ## Supported Platforms
 

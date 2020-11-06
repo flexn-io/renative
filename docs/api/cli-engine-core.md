@@ -1,5 +1,5 @@
 ---
-id: api-cli-engine-core
+id: cli-engine-core
 title: Engine Core CLI Reference
 sidebar_label: Engine Core
 ---
@@ -1336,6 +1336,80 @@ Example:
 
 ```bash
 rnv doctor
+```
+
+Options:
+
+`-i`, `--info` - Show full debug Info
+
+`--ci` - CI/CD flag so it wont ask questions
+
+`--mono` - Monochrome console output without chalk
+
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
+
+`-o`, `--only` - run Only top command (Skip dependencies)
+
+
+
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
+## target list
+
+> List all available devices / emulators for specific platform
+
+Supported Platforms:
+
+`ios`, `android`, `androidtv`, `androidwear`, `web`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+
+Example:
+
+```bash
+rnv target list
+```
+
+Options:
+
+`-i`, `--info` - Show full debug Info
+
+`--ci` - CI/CD flag so it wont ask questions
+
+`--mono` - Monochrome console output without chalk
+
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
+
+`-o`, `--only` - run Only top command (Skip dependencies)
+
+
+
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
+## target launch
+
+> Launch specific emulator
+
+Supported Platforms:
+
+`ios`, `android`, `androidtv`, `androidwear`, `web`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+
+Example:
+
+```bash
+rnv target launch
 ```
 
 Options:

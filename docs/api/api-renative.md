@@ -1,5 +1,5 @@
 ---
-id: api-renative
+id: renative
 title: renative API Reference
 sidebar_label: renative
 ---

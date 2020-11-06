@@ -1,7 +1,7 @@
 ---
-id: api-cli-engine-rn-web
-title: Engine RN Web CLI Reference
-sidebar_label: Engine RN Web
+id: cli-engine-rn-next
+title: undefined CLI Reference
+sidebar_label: undefined
 ---
 
 
@@ -9,9 +9,9 @@ sidebar_label: Engine RN Web
 
 ---
 
-This command reference applies if your platform uses engine `engine-rn-web`.
+This command reference applies if your platform uses engine `engine-rn-next`.
 
-More info at [Engine RN Web Guide](engine-rn-web.md)
+More info at [undefined Guide](engine-rn-next.md)
 
 ---
 
@@ -21,7 +21,7 @@ More info at [Engine RN Web Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `chromecast`
 
 Example:
 
@@ -74,9 +74,9 @@ Options:
 
 ---
 
-This command reference applies if your platform uses engine `engine-rn-web`.
+This command reference applies if your platform uses engine `engine-rn-next`.
 
-More info at [Engine RN Web Guide](engine-rn-web.md)
+More info at [undefined Guide](engine-rn-next.md)
 
 ---
 
@@ -86,7 +86,7 @@ More info at [Engine RN Web Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `chromecast`
 
 Example:
 
@@ -123,9 +123,9 @@ Options:
 
 ---
 
-This command reference applies if your platform uses engine `engine-rn-web`.
+This command reference applies if your platform uses engine `engine-rn-next`.
 
-More info at [Engine RN Web Guide](engine-rn-web.md)
+More info at [undefined Guide](engine-rn-next.md)
 
 ---
 
@@ -135,7 +135,7 @@ More info at [Engine RN Web Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `chromecast`
 
 Example:
 
@@ -172,9 +172,9 @@ Options:
 
 ---
 
-This command reference applies if your platform uses engine `engine-rn-web`.
+This command reference applies if your platform uses engine `engine-rn-next`.
 
-More info at [Engine RN Web Guide](engine-rn-web.md)
+More info at [undefined Guide](engine-rn-next.md)
 
 ---
 
@@ -184,7 +184,7 @@ More info at [Engine RN Web Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `chromecast`
 
 Example:
 
@@ -221,9 +221,9 @@ Options:
 
 ---
 
-This command reference applies if your platform uses engine `engine-rn-web`.
+This command reference applies if your platform uses engine `engine-rn-next`.
 
-More info at [Engine RN Web Guide](engine-rn-web.md)
+More info at [undefined Guide](engine-rn-next.md)
 
 ---
 
@@ -233,7 +233,7 @@ More info at [Engine RN Web Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `chromecast`
 
 Example:
 
@@ -270,9 +270,9 @@ Options:
 
 ---
 
-This command reference applies if your platform uses engine `engine-rn-web`.
+This command reference applies if your platform uses engine `engine-rn-next`.
 
-More info at [Engine RN Web Guide](engine-rn-web.md)
+More info at [undefined Guide](engine-rn-next.md)
 
 ---
 
@@ -282,7 +282,7 @@ More info at [Engine RN Web Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `chromecast`
 
 Example:
 
@@ -319,9 +319,9 @@ Options:
 
 ---
 
-This command reference applies if your platform uses engine `engine-rn-web`.
+This command reference applies if your platform uses engine `engine-rn-next`.
 
-More info at [Engine RN Web Guide](engine-rn-web.md)
+More info at [undefined Guide](engine-rn-next.md)
 
 ---
 
@@ -331,7 +331,7 @@ More info at [Engine RN Web Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `chromecast`
 
 Example:
 
@@ -368,9 +368,9 @@ Options:
 
 ---
 
-This command reference applies if your platform uses engine `engine-rn-web`.
+This command reference applies if your platform uses engine `engine-rn-next`.
 
-More info at [Engine RN Web Guide](engine-rn-web.md)
+More info at [undefined Guide](engine-rn-next.md)
 
 ---
 
@@ -380,86 +380,12 @@ More info at [Engine RN Web Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`
+`web`, `chromecast`
 
 Example:
 
 ```bash
 rnv debug
-```
-
-Options:
-
-`-i`, `--info` - Show full debug Info
-
-`--ci` - CI/CD flag so it wont ask questions
-
-`--mono` - Monochrome console output without chalk
-
-`--maxErrorLength` - Specify how many characters each error should display. Default 200
-
-`-o`, `--only` - run Only top command (Skip dependencies)
-
-
-
-
----
-
-This command reference applies if your platform uses engine `engine-rn-web`.
-
-More info at [Engine RN Web Guide](engine-rn-web.md)
-
----
-
-## target list
-
-> List all available devices / emulators for specific platform
-
-Supported Platforms:
-
-`ios`, `android`, `androidtv`, `androidwear`, `web`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
-
-Example:
-
-```bash
-rnv target list
-```
-
-Options:
-
-`-i`, `--info` - Show full debug Info
-
-`--ci` - CI/CD flag so it wont ask questions
-
-`--mono` - Monochrome console output without chalk
-
-`--maxErrorLength` - Specify how many characters each error should display. Default 200
-
-`-o`, `--only` - run Only top command (Skip dependencies)
-
-
-
-
----
-
-This command reference applies if your platform uses engine `engine-rn-web`.
-
-More info at [Engine RN Web Guide](engine-rn-web.md)
-
----
-
-## target launch
-
-> Launch specific emulator
-
-Supported Platforms:
-
-`ios`, `android`, `androidtv`, `androidwear`, `web`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
-
-Example:
-
-```bash
-rnv target launch
 ```
 
 Options:

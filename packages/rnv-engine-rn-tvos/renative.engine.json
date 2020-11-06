@@ -2,7 +2,6 @@
     "id": "engine-rn-tvos",
     "engineExtension": "rnt",
     "overview": "Default react-native based engine. Runs standard react native apps with native support",
-    "requiresMetroConfig": true,
     "plugins": {
         "react": "source:rnv",
         "react-art": "source:rnv",
@@ -14,7 +13,7 @@
     },
     "npm": {
         "devDependencies": {
-            
+
         }
     },
     "platforms": {
