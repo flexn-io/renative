@@ -1,6 +1,6 @@
 {
     "id": "engine-rn-electron",
-    "packageName": "@rnv/engine-rn-electron",
+    "engineExtension": "rne",
     "overview": "React native based engine with web transpiler provided by react-native-web and native desktop wrapper provided by electron",
     "plugins": {
         "react": "source:rnv",
@@ -13,7 +13,7 @@
     },
     "npm": {
         "devDependencies": {
-            "@rnv/engine-rn-electron": "0.32.0-feat-decoupled-engines.0"
+            
         }
     },
     "platforms": {

@@ -1,7 +1,6 @@
-import path from 'path';
-import { TaskManager, EngineManager } from 'rnv';
+import { EngineManager } from 'rnv';
 import { withRNV } from './adapter';
-
+import CNF from '../renative.engine.json';
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvPackage from './tasks/task.rnv.package';
 import taskRnvBuild from './tasks/task.rnv.build';
@@ -15,77 +14,61 @@ import taskRnvCryptoUpdateProfile from './tasks/task.rnv.crypto.updateProfile';
 import taskRnvCryptoUpdateProfiles from './tasks/task.rnv.crypto.updateProfiles';
 import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfiles';
 import taskRnvLog from './tasks/task.rnv.log';
-import taskRnvTargetList from './tasks/task.rnv.target.list';
-import taskRnvTargetLaunch from './tasks/task.rnv.target.launch';
 
-import {
-    getPlatformBuildDir, getPlatformProjectDir, getPlatformOutputDir,
-    getTemplateProjectDir, ejectPlatform, getTemplateRootDir, getOriginalPlatformTemplatesDir
-} from './commonEngine';
-import config from '../renative.engine.json';
-
-const { getEngineTask, hasEngineTask, getEngineSubTasks } = EngineManager;
-const { executeEngineTask } = TaskManager;
-
-const TASKS = {};
-
-const addTask = (taskInstance) => {
-    TASKS[taskInstance.task] = taskInstance;
-};
-
-addTask(taskRnvRun);
-addTask(taskRnvPackage);
-addTask(taskRnvBuild);
-addTask(taskRnvConfigure);
-addTask(taskRnvStart);
-addTask(taskRnvExport);
-addTask(taskRnvDeploy);
-addTask(taskRnvDebug);
-addTask(taskRnvCryptoInstallCerts);
-addTask(taskRnvCryptoUpdateProfile);
-addTask(taskRnvCryptoUpdateProfiles);
-addTask(taskRnvCryptoInstallProfiles);
-addTask(taskRnvLog);
-addTask(taskRnvTargetList);
-addTask(taskRnvTargetLaunch);
-
-const executeTask = (c, task, parentTask, originTask, isFirstTask) => executeEngineTask(
-    c, task, parentTask, originTask, TASKS, isFirstTask
-);
-
-const hasTask = (task, isProjectScope) => hasEngineTask(task, TASKS, isProjectScope);
-
-const getTask = task => getEngineTask(task, TASKS);
-
-const getSubTasks = (task, exactMatch) => getEngineSubTasks(task, TASKS, exactMatch);
-
-const getTasks = () => Object.values(TASKS);
-
-const getId = () => 'engine-rn';
-
-const title = 'Engine RN';
-
-const getOriginalAssetsDir = () => path.join(__dirname, '../projectTemplate/assets');
+const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
 export default {
-    getPlatformBuildDir,
-    getPlatformProjectDir,
-    getPlatformOutputDir,
-    ejectPlatform,
-    getTemplateProjectDir,
-    getTemplateRootDir,
-    getOriginalPlatformTemplatesDir,
-    getOriginalAssetsDir,
-    executeTask,
-    addTask,
-    hasTask,
-    getTask,
-    getSubTasks,
-    getTasks,
-    getId,
-    title,
-    config
-};
+    tasks: generateEngineTasks([
+        taskRnvRun,
+        taskRnvPackage,
+        taskRnvBuild,
+        taskRnvConfigure,
+        taskRnvStart,
+        taskRnvExport,
+        taskRnvDeploy,
+        taskRnvDebug,
+        taskRnvCryptoInstallCerts,
+        taskRnvCryptoUpdateProfile,
+        taskRnvCryptoUpdateProfiles,
+        taskRnvCryptoInstallProfiles,
+        taskRnvLog
+    ]),
+    config: CNF,
+    projectDirName: '',
+    ejectPlatform: null,
+    platforms: {
+        ios: {
+            defaultPort: 8082,
+            extenstions: generateEngineExtensions([
+                'ios.mobile', 'mobile', 'ios', 'mobile.native', 'native'
+            ], CNF)
+        },
+        android: {
+            defaultPort: 8083,
+            extenstions: generateEngineExtensions([
+                'android.mobile', 'mobile', 'android', 'mobile.native', 'native'
+            ], CNF)
+        },
+        androidtv: {
+            defaultPort: 8084,
+            extenstions: generateEngineExtensions([
+                'androidtv.tv', 'tv', 'androidtv', 'android', 'tv.native', 'native'
+            ], CNF)
+        },
+        androidwear: {
+            defaultPort: 8084,
+            extenstions: generateEngineExtensions([
+                'androidwear.watch', 'watch', 'androidwear', 'android', 'watch.native', 'native'
+            ], CNF)
+        },
+        tvos: {
+            defaultPort: 8089,
+            extenstions: generateEngineExtensions([
+                'tvos.tv', 'tv', 'tvos', 'ios', 'tv.native', 'native'
+            ], CNF)
+        }
+    }
 
+};
 
 export { withRNV };

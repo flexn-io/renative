@@ -16,7 +16,6 @@ import * as ProjectManager from './core/projectManager';
 import * as ConfigManager from './core/configManager';
 import * as SchemaManager from './core/schemaManager';
 import * as SDKManager from './core/sdkManager';
-import * as TargetManager from './core/targetManager';
 import * as TemplateManager from './core/templateManager';
 import * as TaskManager from './core/taskManager';
 
@@ -30,9 +29,7 @@ import * as Logger from './core/systemManager/logger';
 import * as Resolver from './core/systemManager/resolve';
 import Analytics from './core/systemManager/analytics';
 import Config from './core/configManager/config';
-
-// SDKS
-import * as SDKWebpack from './sdk-webpack';
+import * as WebpackUtils from './core/sdkManager/webpackUtils';
 
 Analytics.initialize();
 
@@ -56,7 +53,7 @@ const run = (cmd, subCmd, program, process) => {
 
 export const { doResolve } = Resolver;
 export const { doResolvePath } = Resolver;
-// LEGACY
+// END LEGACY
 
 export {
     Constants,
@@ -71,12 +68,10 @@ export {
     ConfigManager,
     SchemaManager,
     SDKManager,
-    TargetManager,
     TemplateManager,
     TaskManager,
-    // SDK
-    SDKWebpack,
     // SUBMODULES
+    WebpackUtils,
     Exec,
     FileUtils,
     ObjectUtils,

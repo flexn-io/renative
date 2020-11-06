@@ -1,0 +1,86 @@
+{
+    "projectTemplates": {
+        "renative-template-hello-world": {},
+        "renative-template-blank": {}
+    },
+    "engineTemplates": {
+        "@rnv/engine-rn": {
+            "version": "0.32.0-alpha.3",
+            "id": "engine-rn"
+        },
+        "@rnv/engine-rn-web": {
+            "version": "0.32.0-alpha.3",
+            "id": "engine-rn-web"
+        },
+        "@rnv/engine-rn-next": {
+            "version": "0.32.0-alpha.3",
+            "id": "engine-rn-next"
+        },
+        "@rnv/engine-rn-electron": {
+            "version": "0.32.0-alpha.3",
+            "id": "engine-rn-electron"
+        },
+        "@rnv/engine-lightning": {
+            "version": "0.32.0-alpha.3",
+            "id": "engine-lightning"
+        }
+    },
+    "integrationTemplates": {
+        "@rnv/integration-vercel": {
+            "version": "0.2.0-alpha.0"
+        },
+        "@rnv/integration-docker": {
+            "version": "0.1.0-alpha.0"
+        }
+    },
+    "platforms": {
+        "ios": {
+            "engine": "engine-rn"
+        },
+        "android": {
+            "engine": "engine-rn"
+        },
+        "androidwear": {
+            "engine": "engine-rn"
+        },
+        "androidtv": {
+            "engine": "engine-rn"
+        },
+        "tvos": {
+            "engine": "engine-rn"
+        },
+        "macos": {
+            "engine": "engine-rn-electron"
+        },
+        "windows": {
+            "engine": "engine-rn-electron"
+        },
+        "tizen": {
+            "engine": "engine-rn-web"
+        },
+        "tizenmobile": {
+            "engine": "engine-rn-web"
+        },
+        "tizenwatch": {
+            "engine": "engine-rn-web"
+        },
+        "webos": {
+            "engine": "engine-rn-web"
+        },
+        "chromecast": {
+            "engine": "engine-rn-web"
+        },
+        "firefoxos": {
+            "engine": "engine-rn-web"
+        },
+        "firefoxtv": {
+            "engine": "engine-rn-web"
+        },
+        "kaios": {
+            "engine": "engine-rn-web"
+        },
+        "web": {
+            "engine": "engine-rn-web"
+        }
+    }
+}

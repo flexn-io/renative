@@ -1,6 +1,5 @@
 {
     "id": "engine-rn-web",
-    "packageName": "@rnv/engine-rn-web",
     "overview": "React native based engine with web transpiler provided by react-native-web",
     "plugins": {
         "react": "source:rnv",
@@ -13,7 +12,7 @@
     },
     "npm": {
         "devDependencies": {
-            "@rnv/engine-rn-web": "0.32.0-feat-decoupled-engines.0"
+            
         }
     },
     "platforms": {

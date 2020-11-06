@@ -1,5 +1,5 @@
-import { TaskManager, Constants, Logger, PlatformManager, SDKWebpack } from 'rnv';
-import { SDKTizen, SDKWebos, SDKFirefox } from '../sdks';
+import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { SDKTizen, SDKWebos, SDKFirefox, SDKWebpack } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;

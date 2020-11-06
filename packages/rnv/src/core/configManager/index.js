@@ -12,7 +12,7 @@ import {
     RENATIVE_CONFIG_TEMPLATES_NAME,
     RN_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
-    PLATFORMS,
+    // PLATFORMS,
     USER_HOME_DIR,
     RNV_HOME_DIR,
     CURRENT_DIR
@@ -156,7 +156,7 @@ const getEnginesPluginDelta = (c) => {
     const enginePlugins = {};
     const missingEnginePlugins = {};
 
-    const engineConfig = c.runtime.enginePlatforms[c.platform]?.config;
+    const engineConfig = c.runtime.enginesByPlatform[c.platform]?.config;
     if (engineConfig?.plugins) {
         const ePlugins = Object.keys(engineConfig.plugins);
 
@@ -483,9 +483,9 @@ const _generatePlatformTemplatePaths = (c) => {
     const result = {};
 
     c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
-        const engineRunner = c.runtime.enginePlatforms[platform];
-        if (engineRunner) {
-            const originalPath = engineRunner.getOriginalPlatformTemplatesDir(c);
+        const engine = c.runtime.enginesByPlatform[platform];
+        if (engine) {
+            const originalPath = engine.originalTemplatePlatformsDir;
 
             if (originalPath) {
                 if (!pt[platform]) {
@@ -725,7 +725,8 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     const c = {
         cli: {},
         runtime: {
-            enginePlatforms: {}
+            enginesByPlatform: {},
+            enginesById: {}
         },
         paths: {
             rnv: {
@@ -849,7 +850,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     c.process = process;
     c.command = cmd;
     c.subCommand = subCmd;
-    c.platformDefaults = PLATFORMS;
+    // c.platformDefaults = PLATFORMS;
 
     c.paths.rnv.dir = RNV_HOME_DIR;
 
@@ -868,7 +869,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     );
     c.paths.rnv.projectTemplates.dir = path.join(
         c.paths.rnv.dir,
-        'projectTemplates'
+        'coreTemplateFiles'
     );
     c.paths.rnv.projectTemplates.config = path.join(
         c.paths.rnv.projectTemplates.dir,
@@ -878,7 +879,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
 
     c.paths.rnv.projectTemplate.dir = path.join(
         c.paths.rnv.dir,
-        'projectTemplate'
+        'coreTemplateFiles'
     );
     c.files.rnv.package = JSON.parse(
         fsReadFileSync(c.paths.rnv.package).toString()

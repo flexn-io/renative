@@ -25,35 +25,6 @@ sidebar_label: Web
 
 <!--EXTENSION_SUPPORT_START-->
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `browser.jsx` | `form factor` | 1 |
-| `browser.js` | `form factor` | 2 |
-| `browser.tsx` | `form factor` | 3 |
-| `browser.ts` | `form factor` | 4 |
-| `server.next.jsx` | `platform` | 5 |
-| `server.next.js` | `platform` | 6 |
-| `server.next.tsx` | `platform` | 7 |
-| `server.next.ts` | `platform` | 8 |
-| `server.web.jsx` | `platform` | 9 |
-| `server.web.js` | `platform` | 10 |
-| `server.web.tsx` | `platform` | 11 |
-| `server.web.ts` | `platform` | 12 |
-| `next.jsx` | `platform` | 13 |
-| `next.js` | `platform` | 14 |
-| `next.tsx` | `platform` | 15 |
-| `next.ts` | `platform` | 16 |
-| `web.jsx` | `platform` | 17 |
-| `web.js` | `platform` | 18 |
-| `web.tsx` | `platform` | 19 |
-| `web.ts` | `platform` | 20 |
-| `mjs` | `fallback` | 21 |
-| `jsx` | `fallback` | 22 |
-| `js` | `fallback` | 23 |
-| `json` | `fallback` | 24 |
-| `wasm` | `fallback` | 25 |
-| `tsx` | `fallback` | 26 |
-| `ts` | `fallback` | 27 |
 
 <!--EXTENSION_SUPPORT_END-->
 

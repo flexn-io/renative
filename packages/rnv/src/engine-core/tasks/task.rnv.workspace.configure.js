@@ -52,7 +52,7 @@ export const taskRnvWorkspaceConfigure = async (c) => {
             copyFileSync(
                 path.join(
                     c.paths.rnv.dir,
-                    'supportFiles',
+                    'coreTemplateFiles',
                     'global-config-template.json'
                 ),
                 c.paths.workspace.config
@@ -93,7 +93,7 @@ export const taskRnvWorkspaceConfigure = async (c) => {
                 fsReadFileSync(
                     path.join(
                         c.paths.rnv.dir,
-                        'supportFiles',
+                        'coreTemplateFiles',
                         'global-config-template.json'
                     )
                 ).toString()

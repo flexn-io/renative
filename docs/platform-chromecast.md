@@ -25,39 +25,6 @@ sidebar_label: Chromecast
 
 <!--EXTENSION_SUPPORT_START-->
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `chromecast.tv.jsx` | `form factor` | 1 |
-| `chromecast.tv.js` | `form factor` | 2 |
-| `chromecast.tv.tsx` | `form factor` | 3 |
-| `chromecast.tv.ts` | `form factor` | 4 |
-| `web.tv.jsx` | `form factor` | 5 |
-| `web.tv.js` | `form factor` | 6 |
-| `web.tv.tsx` | `form factor` | 7 |
-| `web.tv.ts` | `form factor` | 8 |
-| `tv.jsx` | `form factor` | 9 |
-| `tv.js` | `form factor` | 10 |
-| `tv.tsx` | `form factor` | 11 |
-| `tv.ts` | `form factor` | 12 |
-| `chromecast.jsx` | `platform` | 13 |
-| `chromecast.js` | `platform` | 14 |
-| `chromecast.tsx` | `platform` | 15 |
-| `chromecast.ts` | `platform` | 16 |
-| `tv.web.jsx` | `fallback` | 17 |
-| `tv.web.js` | `fallback` | 18 |
-| `tv.web.tsx` | `fallback` | 19 |
-| `tv.web.ts` | `fallback` | 20 |
-| `web.jsx` | `fallback` | 21 |
-| `web.js` | `fallback` | 22 |
-| `web.tsx` | `fallback` | 23 |
-| `web.ts` | `fallback` | 24 |
-| `mjs` | `fallback` | 25 |
-| `jsx` | `fallback` | 26 |
-| `js` | `fallback` | 27 |
-| `json` | `fallback` | 28 |
-| `wasm` | `fallback` | 29 |
-| `tsx` | `fallback` | 30 |
-| `ts` | `fallback` | 31 |
 
 <!--EXTENSION_SUPPORT_END-->
 

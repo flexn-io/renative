@@ -19,7 +19,7 @@ jobs:
       - name: npm install and test
         run: |
           npm run bootstrap
-          npm run test:rnv:unit
+          npm run test
         env:
           CI: true
       - uses: codecov/codecov-action@v1.0.2

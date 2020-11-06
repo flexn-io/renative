@@ -4,7 +4,7 @@ import { isPlatformSupported } from '../../core/platformManager';
 import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
 import { executeTask } from '../../core/taskManager';
 import { TASK_APP_CONFIGURE, TASK_CONFIGURE_SOFT, PARAMS } from '../../core/constants';
-import { checkSdk } from '../../core/sdkManager';
+import { checkSdk } from '../../core/sdkManager/installer';
 
 
 export const taskRnvConfigureSoft = async (c, parentTask, originTask) => {

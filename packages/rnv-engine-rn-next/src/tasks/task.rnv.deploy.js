@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager, SDKWebpack } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
 import { SDKNext } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
@@ -10,7 +10,6 @@ const {
     TASK_DEPLOY,
     PARAMS
 } = Constants;
-const { deployWeb } = SDKWebpack;
 const { deployWebNext } = SDKNext;
 const { executeOrSkipTask } = TaskManager;
 
@@ -25,7 +24,7 @@ export const taskRnvDeploy = async (c, parentTask, originTask) => {
         case WEB:
             return deployWebNext(c);
         case CHROMECAST:
-            return deployWeb(c);
+            return deployWebNext(c);
         default:
             logErrorPlatform(c);
     }

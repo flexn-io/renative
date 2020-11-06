@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-electron",
-    "version": "0.32.0-alpha.1",
+    "version": "0.32.0-alpha.3",
     "description": "ReNative Engine to build electron based platforms with react native support.",
     "keywords": [
         "electron",
@@ -23,7 +23,6 @@
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
         "prepublishOnly": "yarn build",
-        "test": "echo \"Error: no test specified\" && exit 1",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
@@ -46,6 +45,5 @@
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "gitHead": "1d98598e540a4fd19acf3a158f36b13b99777783"
+    }
 }

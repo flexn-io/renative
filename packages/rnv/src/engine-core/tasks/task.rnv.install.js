@@ -1,4 +1,4 @@
-import { areNodeModulesInstalled } from '../../core/common';
+import { areNodeModulesInstalled } from '../../core/systemManager/npmUtils';
 import { PARAMS } from '../../core/constants';
 import { installPackageDependenciesAndPlugins } from '../../core/pluginManager';
 import { logTask, logInfo } from '../../core/systemManager/logger';

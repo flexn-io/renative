@@ -1,6 +1,6 @@
 import path from 'path';
 import { spawn } from 'child_process';
-import { Exec, SDKWebpack, FileUtils, Common, Logger, Constants, Resolver, PlatformManager, ProjectManager } from 'rnv';
+import { Exec, WebpackUtils, FileUtils, Common, Logger, Constants, Resolver, PlatformManager, ProjectManager } from 'rnv';
 
 const { createPlatformBuild, isPlatformActive } = PlatformManager;
 const { executeAsync } = Exec;
@@ -45,7 +45,7 @@ const {
     RNV_PROJECT_DIR_NAME,
     RNV_SERVER_DIR_NAME
 } = Constants;
-const { buildWeb, runWebpackServer, configureCoreWebProject, waitForWebpack } = SDKWebpack;
+const { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject, waitForWebpack } = WebpackUtils;
 
 
 export const configureElectronProject = async (c) => {
@@ -208,7 +208,7 @@ const configureProject = c => new Promise((resolve, reject) => {
 const buildElectron = async (c) => {
     logTask('buildElectron');
 
-    await buildWeb(c);
+    await buildCoreWebpackProject(c);
     return true;
 };
 

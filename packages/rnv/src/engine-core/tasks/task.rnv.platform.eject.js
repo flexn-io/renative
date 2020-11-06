@@ -1,10 +1,8 @@
-import path from 'path';
 import inquirer from 'inquirer';
-import { chalk, logTask, logSuccess, logError } from '../../core/systemManager/logger';
+import { chalk, logTask, logSuccess, logError, logInfo } from '../../core/systemManager/logger';
 import { writeFileSync } from '../../core/systemManager/fileutils';
 import { TASK_PLATFORM_EJECT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
-import { generatePlatformChoices } from '../../core/platformManager';
-import { getEngineRunnerByPlatform } from '../../core/engineManager';
+import { generatePlatformChoices, ejectPlatform } from '../../core/platformManager';
 import { executeTask } from '../../core/taskManager';
 
 export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
@@ -15,10 +13,11 @@ export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
     if (c.platform) {
         selectedPlatforms = [c.platform];
     } else {
+        logInfo(`Preparing to eject engine platforms to local ${chalk().white('./platformTemplates')}`);
         const { ejectedPlatforms } = await inquirer.prompt({
             name: 'ejectedPlatforms',
             message:
-              'This will copy platformTemplates folders from ReNative managed directly to your project Select platforms you would like to connect (use SPACE key)',
+              'Select platforms you would like to eject (use SPACE key)',
             type: 'checkbox',
             choices: generatePlatformChoices(c).map(choice => ({
                 ...choice,
@@ -31,10 +30,11 @@ export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
 
     if (selectedPlatforms.length) {
         selectedPlatforms.forEach((platform) => {
-            const engine = getEngineRunnerByPlatform(c, platform);
-            const destDir = path.join(c.paths.project.dir, 'platformTemplates', platform);
+            // const engine = getEngineRunnerByPlatform(c, platform);
+            // const destDir = path.join(c.paths.project.dir, 'platformTemplates', platform);
 
-            engine.ejectPlatform(c, platform, destDir);
+            // engine.ejectPlatform(c, platform, destDir);
+            ejectPlatform(c, platform);
 
             c.files.project.config.paths
                 .platformTemplatesDirs = c.files.project.config.paths.platformTemplatesDirs || {};

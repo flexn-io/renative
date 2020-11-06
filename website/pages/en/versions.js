@@ -91,7 +91,7 @@ develop
                                             props.language
                                                 ? `${props.language}/`
                                                 : ''
-                                        }next/intro-quickstart`}
+                                        }next/overview/quickstart`}
                                     >
                                         Documentation
                                     </a>

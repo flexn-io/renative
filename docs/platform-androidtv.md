@@ -27,38 +27,6 @@ sidebar_label: Android TV
 
 <!--EXTENSION_SUPPORT_START-->
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `androidtv.tv.jsx` | `form factor` | 1 |
-| `androidtv.tv.js` | `form factor` | 2 |
-| `androidtv.tv.tsx` | `form factor` | 3 |
-| `androidtv.tv.ts` | `form factor` | 4 |
-| `tv.jsx` | `form factor` | 5 |
-| `tv.js` | `form factor` | 6 |
-| `tv.tsx` | `form factor` | 7 |
-| `tv.ts` | `form factor` | 8 |
-| `androidtv.jsx` | `platform` | 9 |
-| `androidtv.js` | `platform` | 10 |
-| `androidtv.tsx` | `platform` | 11 |
-| `androidtv.ts` | `platform` | 12 |
-| `android.jsx` | `platform` | 13 |
-| `android.js` | `platform` | 14 |
-| `android.tsx` | `platform` | 15 |
-| `android.ts` | `platform` | 16 |
-| `tv.native.jsx` | `fallback` | 17 |
-| `tv.native.js` | `fallback` | 18 |
-| `tv.native.tsx` | `fallback` | 19 |
-| `tv.native.ts` | `fallback` | 20 |
-| `native.jsx` | `fallback` | 21 |
-| `native.js` | `fallback` | 22 |
-| `native.tsx` | `fallback` | 23 |
-| `native.ts` | `fallback` | 24 |
-| `jsx` | `fallback` | 25 |
-| `js` | `fallback` | 26 |
-| `json` | `fallback` | 27 |
-| `wasm` | `fallback` | 28 |
-| `tsx` | `fallback` | 29 |
-| `ts` | `fallback` | 30 |
 
 <!--EXTENSION_SUPPORT_END-->
 

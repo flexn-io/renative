@@ -48,7 +48,7 @@ export const buildHooks = async (c) => {
         });
         if (confirm) {
             copyFolderContentsRecursiveSync(
-                path.join(c.paths.rnv.dir, 'projectTemplate/buildHooks/src'),
+                path.join(c.paths.rnv.dir, 'coreTemplateFiles/buildHooks/src'),
                 c.paths.buildHooks.dir
             );
         }

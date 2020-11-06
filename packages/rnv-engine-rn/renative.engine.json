@@ -1,8 +1,7 @@
 {
     "id": "engine-rn",
-    "packageName": "@rnv/engine-rn",
+    "engineExtension": "rn",
     "overview": "Default react-native based engine. Runs standard react native apps with native support",
-    "requiresMetroConfig": true,
     "plugins": {
         "react": "source:rnv",
         "react-art": "source:rnv",
@@ -14,7 +13,7 @@
     },
     "npm": {
         "devDependencies": {
-            "@rnv/engine-rn": "0.32.0-feat-decoupled-engines.0"
+
         }
     },
     "platforms": {
