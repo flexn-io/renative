@@ -5,6 +5,24 @@ sidebar_label: Plugins Overview
 ---
 
 
+## @lightningjs/sdk
+
+
+Version: `3.0.0`
+
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/@lightningjs/sdk
+
+Installation:
+
+```
+rnv plugin add @lightningjs/sdk
+```
+
+
 ## @mapbox/react-native-mapbox-gl
 
 
@@ -2744,7 +2762,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-alpha.1`
+Version: `0.32.0-alpha.3`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

@@ -1,5 +1,5 @@
 ---
-id: rnv-config
+id: api-rnv-config
 title: rnv Build Config Object Reference
 sidebar_label: build config object
 ---
@@ -650,7 +650,7 @@ List of available config props injected into [Build Hooks](guide-build-hooks.md)
 
 
 ---
-### runtime.engineConfigs
+### runtime.enginesById
 
 
 
