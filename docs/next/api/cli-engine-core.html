@@ -1,0 +1,800 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Engine Core CLI Reference · ReNative</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="---"/><meta name="docsearch:version" content="next"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Engine Core CLI Reference · ReNative"/><meta property="og:type" content="website"/><meta property="og:url" content="https://renative.org/"/><meta property="og:description" content="---"/><meta property="og:image" content="https://renative.org/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://renative.org/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dark.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.png" alt="ReNative"/><h2 class="headerTitleWithLogo">ReNative</h2></a><a href="/versions"><h3>next</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/next/intro-quickstart" target="_self">Docs</a></li><li class=""><a href="/docs/next/api-config" target="_self">API</a></li><li class=""><a href="https://twitter.com/renative" target="_self">Twitter</a></li><li class=""><a href="https://github.com/pavjacko/renative" target="_self">Github</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>CLI</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">CLI<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem navListItemActive"><a class="navItem" href="/docs/next/api/cli-engine-core">Engine Core</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/cli-engine-rn">undefined</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/cli-engine-rn-web">undefined</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/cli-engine-rn-next">undefined</a></li><li class="navListItem"><a class="navItem" href="/docs/next/api/cli-engine-rn-electron">undefined</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Config<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/next/api/config">renative.json</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Runtime<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/next/api/renative">renative</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">RNV<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/next/api/rnv">rnv</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Engine Core CLI Reference</h1></header><article><div><span><hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="crypto-decrypt"></a><a href="#crypto-decrypt" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>crypto decrypt</h2>
+<blockquote>
+<p>Decrypt encrypted project files into local ~/<wokspace>/<project>/..</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv crypto decrypt
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="crypto-encrypt"></a><a href="#crypto-encrypt" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>crypto encrypt</h2>
+<blockquote>
+<p>Encrypts secure files from ~/<wokspace>/<project>/.. to project</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv crypto encrypt
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="platform-eject"></a><a href="#platform-eject" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platform eject</h2>
+<blockquote>
+<p>Copy all platform files directly to project</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv platform eject
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="platform-connect"></a><a href="#platform-connect" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platform connect</h2>
+<blockquote>
+<p>Connect platform template back to rnv</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv platform connect
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="platform-list"></a><a href="#platform-list" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platform list</h2>
+<blockquote>
+<p>List all available platforms</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv platform list
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="platform-configure"></a><a href="#platform-configure" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platform configure</h2>
+<blockquote>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv platform configure
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="platform-setup"></a><a href="#platform-setup" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platform setup</h2>
+<blockquote>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv platform setup
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="template-add"></a><a href="#template-add" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>template add</h2>
+<blockquote>
+<p>Install additional template to the project</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv template add
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="template-apply"></a><a href="#template-apply" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>template apply</h2>
+<blockquote>
+<p>Reset project to specific template</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv template apply
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="template-list"></a><a href="#template-list" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>template list</h2>
+<blockquote>
+<p>Show list of available templates</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv template list
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="plugin-add"></a><a href="#plugin-add" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>plugin add</h2>
+<blockquote>
+<p>Add selected plugin to the project</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv plugin add
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="plugin-list"></a><a href="#plugin-list" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>plugin list</h2>
+<blockquote>
+<p>Show list of all available plugins</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv plugin list
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="plugin-update"></a><a href="#plugin-update" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>plugin update</h2>
+<blockquote>
+<p>Update specific plugin to latest supported version (rnv)</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv plugin update
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="workspace-list"></a><a href="#workspace-list" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>workspace list</h2>
+<blockquote>
+<p>Show list of all available workspaces</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv workspace list
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="workspace-add"></a><a href="#workspace-add" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>workspace add</h2>
+<blockquote>
+<p>Add new workspace</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv workspace add
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="workspace-connect"></a><a href="#workspace-connect" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>workspace connect</h2>
+<blockquote>
+<p>Connect project with selected workspace</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv workspace connect
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="workspace-update"></a><a href="#workspace-update" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>workspace update</h2>
+<blockquote>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv workspace update
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="hooks-list"></a><a href="#hooks-list" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hooks list</h2>
+<blockquote>
+<p>Get list of all available hooks</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv hooks list
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="hooks-run"></a><a href="#hooks-run" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hooks run</h2>
+<blockquote>
+<p>Run specific build hook</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv hooks run
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<p><code>-x</code>, <code>--exeMethod</code> - eXecutable method in buildHooks</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="hooks-pipes"></a><a href="#hooks-pipes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hooks pipes</h2>
+<blockquote>
+<p>Get the list of all available pipes</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv hooks pipes
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="clean"></a><a href="#clean" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>clean</h2>
+<blockquote>
+<p>Automatically removes all node_modules and lock in your project and its dependencies</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv clean
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="fastlane"></a><a href="#fastlane" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>fastlane</h2>
+<blockquote>
+<p>Run fstalane commands directly</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>tvos</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv fastlane
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="publish"></a><a href="#publish" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>publish</h2>
+<blockquote>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv publish
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="pkg"></a><a href="#pkg" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>pkg</h2>
+<blockquote>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv pkg
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="status"></a><a href="#status" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>status</h2>
+<blockquote>
+<p>Show current info about the project</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv status
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="config"></a><a href="#config" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>config</h2>
+<blockquote>
+<p>Edit or display RNV configs</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv config
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="help"></a><a href="#help" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>help</h2>
+<blockquote>
+<p>Display generic help</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv <span class="hljs-built_in">help</span>
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="new"></a><a href="#new" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new</h2>
+<blockquote>
+<p>Create new ReNative project</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv new
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="install"></a><a href="#install" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>install</h2>
+<blockquote>
+<p>Install package node_modules via yarn or npm</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv install
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="project-configure"></a><a href="#project-configure" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>project configure</h2>
+<blockquote>
+<p>Configure current project</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv project configure
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="project-upgrade"></a><a href="#project-upgrade" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>project upgrade</h2>
+<blockquote>
+<p>Upgrade or downgrade RNV dependencies in your ReNative project</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv project upgrade
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="app-configure"></a><a href="#app-configure" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>app configure</h2>
+<blockquote>
+<p>Configure project with specific appConfig</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv app configure
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<p><code>-r</code>, <code>--reset</code> - also perform Reset of platform</p>
+<p><code>-R</code>, <code>--resetHard</code> - also perform Reset of platform and all assets</p>
+<p><code>-e</code>, <code>--engine</code> - engine to be used (next)</p>
+<p><code>-c</code>, <code>--appConfigID</code> - select specific app Config id</p>
+<p><code>-s</code>, <code>--scheme</code> - select build Scheme</p>
+<p><code>-p</code>, <code>--platform</code> - select specific Platform</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="workspace-configure"></a><a href="#workspace-configure" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>workspace configure</h2>
+<blockquote>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv workspace configure
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="configuresoft"></a><a href="#configuresoft" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>configureSoft</h2>
+<blockquote>
+<p>Configure system and project wothout recreating files (used for --only)</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv configureSoft
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="kill"></a><a href="#kill" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>kill</h2>
+<blockquote>
+<p>Kills all the processes related to this project</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv <span class="hljs-built_in">kill</span>
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="doctor"></a><a href="#doctor" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>doctor</h2>
+<blockquote>
+<p>Checks validity and config health of your project</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv doctor
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="target-list"></a><a href="#target-list" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>target list</h2>
+<blockquote>
+<p>List all available devices / emulators for specific platform</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv target list
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<hr>
+<p>This command reference applies if your platform uses engine <code>engine-core</code>.</p>
+<p>More info at <a href="/docs/next/engine-core">Engine Core Guide</a></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="target-launch"></a><a href="#target-launch" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>target launch</h2>
+<blockquote>
+<p>Launch specific emulator</p>
+</blockquote>
+<p>Supported Platforms:</p>
+<p><code>ios</code>, <code>android</code>, <code>androidtv</code>, <code>androidwear</code>, <code>web</code>, <code>tizen</code>, <code>tizenmobile</code>, <code>tvos</code>, <code>webos</code>, <code>macos</code>, <code>windows</code>, <code>tizenwatch</code>, <code>kaios</code>, <code>firefoxos</code>, <code>firefoxtv</code>, <code>chromecast</code></p>
+<p>Example:</p>
+<pre><code class="hljs css language-bash">rnv target launch
+</code></pre>
+<p>Options:</p>
+<p><code>-i</code>, <code>--info</code> - Show full debug Info</p>
+<p><code>--ci</code> - CI/CD flag so it wont ask questions</p>
+<p><code>--mono</code> - Monochrome console output without chalk</p>
+<p><code>--maxErrorLength</code> - Specify how many characters each error should display. Default 200</p>
+<p><code>-o</code>, <code>--only</code> - run Only top command (Skip dependencies)</p>
+<p>test</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-next button" href="/docs/next/api/cli-engine-rn"><span>undefined</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#crypto-decrypt">crypto decrypt</a></li><li><a href="#crypto-encrypt">crypto encrypt</a></li><li><a href="#platform-eject">platform eject</a></li><li><a href="#platform-connect">platform connect</a></li><li><a href="#platform-list">platform list</a></li><li><a href="#platform-configure">platform configure</a></li><li><a href="#platform-setup">platform setup</a></li><li><a href="#template-add">template add</a></li><li><a href="#template-apply">template apply</a></li><li><a href="#template-list">template list</a></li><li><a href="#plugin-add">plugin add</a></li><li><a href="#plugin-list">plugin list</a></li><li><a href="#plugin-update">plugin update</a></li><li><a href="#workspace-list">workspace list</a></li><li><a href="#workspace-add">workspace add</a></li><li><a href="#workspace-connect">workspace connect</a></li><li><a href="#workspace-update">workspace update</a></li><li><a href="#hooks-list">hooks list</a></li><li><a href="#hooks-run">hooks run</a></li><li><a href="#hooks-pipes">hooks pipes</a></li><li><a href="#clean">clean</a></li><li><a href="#fastlane">fastlane</a></li><li><a href="#publish">publish</a></li><li><a href="#pkg">pkg</a></li><li><a href="#status">status</a></li><li><a href="#config">config</a></li><li><a href="#help">help</a></li><li><a href="#new">new</a></li><li><a href="#install">install</a></li><li><a href="#project-configure">project configure</a></li><li><a href="#project-upgrade">project upgrade</a></li><li><a href="#app-configure">app configure</a></li><li><a href="#workspace-configure">workspace configure</a></li><li><a href="#configuresoft">configureSoft</a></li><li><a href="#kill">kill</a></li><li><a href="#doctor">doctor</a></li><li><a href="#target-list">target list</a></li><li><a href="#target-launch">target launch</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.png" alt="ReNative" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/intro-installation">Getting Started</a><a href="/docs/platform">Platforms</a><a href="/docs/guide-cli">Guides</a></div><div><h5>Community</h5><a href="https://spectrum.chat/renative">Project Chat</a><a href="https://twitter.com/renative" target="_blank" rel="noreferrer noopener">Twitter</a><a href="/help">Contributors</a></div><div><h5>More</h5><a href="https://github.com/pavjacko/renative">GitHub</a><a class="github-button" href="https://github.com/pavjacko/renative" data-icon="octicon-star" data-count-href="/pavjacko/renative/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><div class="social"><a href="https://twitter.com/renative" class="twitter-follow-button">Follow @renative</a></div></div></section><section class="copyright"></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: 'ce70fa21a21dad8ee49ed142a8a63b67',
+                indexName: 'renative',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

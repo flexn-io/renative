@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Overview · ReNative</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Configuration Merges"/><meta name="docsearch:version" content="next"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Overview · ReNative"/><meta property="og:type" content="website"/><meta property="og:url" content="https://renative.org/"/><meta property="og:description" content="## Configuration Merges"/><meta property="og:image" content="https://renative.org/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://renative.org/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dark.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.png" alt="ReNative"/><h2 class="headerTitleWithLogo">ReNative</h2></a><a href="/versions"><h3>next</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/next/intro-quickstart" target="_self">Docs</a></li><li class=""><a href="/docs/next/api-config" target="_self">API</a></li><li class=""><a href="https://twitter.com/renative" target="_self">Twitter</a></li><li class=""><a href="https://github.com/pavjacko/renative" target="_self">Github</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Overview</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="configuration-merges"></a><a href="#configuration-merges" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Merges</h2>
+<p>ReNative always merges all relevant renative configs into one single build config.</p>
+<p>Following is the order of merges of various renative configs (if present) producing final <code>platformAssets/renative.json</code> config file.</p>
+<p>⬇️
+<code>[RNV_PATH]/projectTemplates/renative.templates.json</code></br>
+⬇️
+<code>[RNV_PATH]/pluginTemplates/renative.plugins.json</code></br>
+⬇️
+<code>[WORKSPACE_PATH]/renative.json</code></br>
+⬇️
+<code>[WORKSPACE_PATH]/renative.private.json</code></br>
+⬇️
+<code>[WORKSPACE_PATH]/renative.local.json</code></br>
+⬇️
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/renative.json</code></br>
+⬇️
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/renative.private.json</code></br>
+⬇️
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/renative.local.json</code></br>
+⬇️
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.json</code></br>
+⬇️
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.private.json</code></br>
+⬇️
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.local.json</code></br>
+⬇️
+<code>[PROJECT_PATH]/renative.json</code></br>
+⬇️
+<code>[PROJECT_PATH]/renative.private.json</code></br>
+⬇️
+<code>[PROJECT_PATH]/renative.local.json</code></br>
+⬇️
+<code>[PROJECT_PATH]/appConfigs/[APP_ID]/renative.json</code></br>
+⬇️
+<code>[PROJECT_PATH]/appConfigs/[APP_ID]/renative.private.json</code></br>
+⬇️
+<code>[PROJECT_PATH]/appConfigs/[APP_ID]/renative.local.json</code></br></p>
+<hr>
+<h2><a class="anchor" aria-hidden="true" id="dynamic-injectors"></a><a href="#dynamic-injectors" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dynamic Injectors</h2>
+<p>You can inject varietry of different dynamic props via <code>renative.*.json</code> configs</p>
+<pre><code class="hljs">{{INJECTOR}}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="configprops"></a><a href="#configprops" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>configProps</h3>
+<p>Any property in <code>renative.*.json</code> can be injected into build file.</p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"common"</span>: {
+     <span class="hljs-attr">"id"</span>: <span class="hljs-string">"com.example.app"</span>
+  }
+}
+</code></pre>
+<p>Inject example of <code>myInject.txt</code>:</p>
+<pre><code class="hljs"><span class="xml">Inject app ID here: </span><span class="hljs-template-tag">{{{{<span class="hljs-name">configProps</span>.id}}}}</span><span class="xml">
+</span></code></pre>
+<h3><a class="anchor" aria-hidden="true" id="runtimeprops"></a><a href="#runtimeprops" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>runtimeProps</h3>
+<p>runtimeProps are special properties generated during each rnv run.</p>
+<p>Example:</p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"common"</span>: {
+     <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"{{runtimeProps.timestamp}}"</span>
+  }
+}
+</code></pre>
+<p>Currently supported runtime properties:</p>
+<ul>
+<li>scheme</li>
+<li>appConfing</li>
+<li>engine</li>
+<li>localhost</li>
+<li>timestamp</li>
+<li>appDir</li>
+<li>appId</li>
+<li>isWrapper</li>
+<li>missingEnginePlugins</li>
+<li>targetUDID</li>
+<li>target</li>
+<li>shouldOpenBrowser</li>
+<li>port</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="props"></a><a href="#props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>props</h3>
+<p>you can abstract complex <code>renative.*.json</code> plugin configuration via props inject mechanism</p>
+<p>Example plugin definition:</p>
+<pre><code class="hljs css language-json">"react-native-fbsdk": {
+    "props": {
+        "APP_ID": "",
+        "APP_NAME": ""
+    },
+    "ios": {
+        "podName": "react-native-fbsdk",
+        "appDelegateImports": [
+            "FBSDKCoreKit"
+        ],
+        "appDelegateMethods": {
+            "application": {
+                "didFinishLaunchingWithOptions": [
+                    "ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)"
+                ],
+                "open": [
+                    "ApplicationDelegate.shared.application(app, open: url, options: options)"
+                ]
+            }
+        },
+        "plist": {
+            "FacebookAppID": "{{props.APP_ID}}",
+            "FacebookDisplayName": "{{props.APP_NAME}}",
+            "CFBundleURLTypes": [
+                {
+                    "CFBundleTypeRole": "Editor",
+                    "CFBundleURLSchemes": [
+                        "fb{{props.APP_ID}}"
+                    ]
+                }
+            ],
+            "LSApplicationQueriesSchemes": [
+                "fbapi",
+                "fb-messenger-share-api",
+                "fbauth2",
+                "fbshareextension"
+            ]
+        }
+    }
+}
+</code></pre>
+<p>Example usage:</p>
+<p>Instead of overriding complex plugin definition you can simply override props</p>
+<pre><code class="hljs css language-json">{
+   <span class="hljs-attr">"plugins"</span>: {
+     <span class="hljs-attr">"react-native-fbsdk"</span>: {
+         <span class="hljs-attr">"props"</span>: {
+             <span class="hljs-attr">"APP_ID"</span>: <span class="hljs-string">"xxxxxxxxx"</span>,
+             <span class="hljs-attr">"APP_NAME"</span>: <span class="hljs-string">"xxxxxxxxxxxx"</span>
+         }
+      }
+   }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="resolvepackage"></a><a href="#resolvepackage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>resolvePackage</h3>
+<p>resolvePackage allows you to dynamically resolve package location within `renative.*.json`` file</p>
+<pre><code class="hljs">{
+  <span class="hljs-attr">"common"</span>: {
+     <span class="hljs-attr">"reactLocation"</span>: <span class="hljs-string">"{{resolvePackage('react')}}"</span>
+  }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="config-values-overrides"></a><a href="#config-values-overrides" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Config Values Overrides</h2>
+<p>There are 3 levels of override entry objects for your props to fine-tune your app config:</p>
+<ol>
+<li><code>.common</code> //Applies for all platforms + all schemes</li>
+<li><code>.platforms.YOUR_PLATFORM</code> //Applies specific platforms + all schemes</li>
+<li><code>.platforms.YOUR_PLATFORM.buildSchemes.YOUR_SCHEME</code> //Applies for specific platform + specific scheme</li>
+</ol>
+<p>Example:</p>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"common"</span>: {
+        <span class="hljs-attr">"MY_PROP"</span>: <span class="hljs-string">"Value1"</span>
+    },
+    <span class="hljs-attr">"platforms"</span>: {
+        <span class="hljs-attr">"ios"</span>: {
+            <span class="hljs-attr">"MY_PROP"</span>: <span class="hljs-string">"Value2 overrides Value1"</span>,
+            <span class="hljs-attr">"buildSchemes"</span>: {
+                <span class="hljs-attr">"debug"</span>: {
+                    <span class="hljs-attr">"MY_PROP"</span>: <span class="hljs-string">"Value3 overrides Value 2"</span>
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<p>Override Rules for json props:</p>
+<ul>
+<li><code>Strings</code> =&gt; Replaced</li>
+<li><code>Numbers</code> =&gt; Replaced</li>
+<li><code>Arrays</code> =&gt; Replaced</li>
+<li><code>Objects</code> =&gt; Merged by top level (not deep merge)</li>
+</ul>
+<p>Example:
+<a href="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/appConfigs/helloworld/renative.json#L4">https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/appConfigs/helloworld/renative.json#L4</a></p>
+<p>Will be overridden by:
+<a href="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/appConfigs/helloworld/renative.json#L59">https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/appConfigs/helloworld/renative.json#L59</a></p>
+<p>Output config will be decorated with few extra props to help with debugging:</p>
+<pre><code class="hljs">{
+  <span class="hljs-attr">"_timestamp"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"_mergeSources"</span>: []
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="build-flavours"></a><a href="#build-flavours" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Build Flavours</h2>
+<p>You can configure different app ID, Title etc. with buildScheme field in you appConfig file.</p>
+<p>Example:</p>
+<pre><code class="hljs css language-json">"buildSchemes": {
+  "debug": {
+    "id": "renative.helloworld.debug",
+    "runScheme": "Debug",
+    "bundleAssets": false,
+    "bundleIsDev": true
+  },
+  "release": {
+    "id": "renative.helloworld.release",
+    "runScheme": "Release",
+    "bundleAssets": true,
+    "bundleIsDev": false
+  }
+}
+</code></pre>
+<p>this will allow you to build 2 separate iOS apps with slightly different configurations:</p>
+<p><code>$ rnv run -p ios -s debug</code> (<code>-s debug</code> is DEFAULT option so you don't have to add it every time)</p>
+<p>and</p>
+<p><code>$ rnv run -p ios -s release</code></p>
+<h2><a class="anchor" aria-hidden="true" id="runtime-props"></a><a href="#runtime-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Runtime Props</h2>
+<p>When you define object with key <code>runtime</code>, its properties will be merged into final <code>./platformAssets/renative.runtime.json</code> file</p>
+<p>you can import above file into your code and get different values depending on your build</p>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#configuration-merges">Configuration Merges</a></li><li><a href="#dynamic-injectors">Dynamic Injectors</a><ul class="toc-headings"><li><a href="#configprops">configProps</a></li><li><a href="#runtimeprops">runtimeProps</a></li><li><a href="#props">props</a></li><li><a href="#resolvepackage">resolvePackage</a></li></ul></li><li><a href="#config-values-overrides">Config Values Overrides</a></li><li><a href="#build-flavours">Build Flavours</a></li><li><a href="#runtime-props">Runtime Props</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.png" alt="ReNative" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/intro-installation">Getting Started</a><a href="/docs/platform">Platforms</a><a href="/docs/guide-cli">Guides</a></div><div><h5>Community</h5><a href="https://spectrum.chat/renative">Project Chat</a><a href="https://twitter.com/renative" target="_blank" rel="noreferrer noopener">Twitter</a><a href="/help">Contributors</a></div><div><h5>More</h5><a href="https://github.com/pavjacko/renative">GitHub</a><a class="github-button" href="https://github.com/pavjacko/renative" data-icon="octicon-star" data-count-href="/pavjacko/renative/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><div class="social"><a href="https://twitter.com/renative" class="twitter-follow-button">Follow @renative</a></div></div></section><section class="copyright"></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: 'ce70fa21a21dad8ee49ed142a8a63b67',
+                indexName: 'renative',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>
