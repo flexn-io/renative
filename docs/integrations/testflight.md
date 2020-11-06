@@ -1,5 +1,5 @@
 ---
-id: integration_testflight
+id: testflight
 title: TestFlight
 sidebar_label: TestFlight
 ---

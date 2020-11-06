@@ -1,7 +1,7 @@
 ---
-id: integration_now
-title: Now
-sidebar_label: Now
+id: vercel
+title: Vercel
+sidebar_label: Vercel
 ---
 
 <img src="https://renative.org/img/ic_integrations.png" width=50 height=50 />

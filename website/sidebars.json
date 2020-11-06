@@ -1,13 +1,13 @@
 {
     "docs-sidebar": {
         "Getting Started": [
-            "overview/intro-quickstart",
-            "overview/basics-overview",
-            "overview/intro-installation",
-            "overview/intro-migrating_react_native",
-            "overview/intro-features",
-            "overview/intro-customize",
-            "overview/intro-architecture"
+            "overview/quickstart",
+            "overview/introduction",
+            "overview/installation",
+            "overview/migrating_react_native",
+            "overview/features",
+            "overview/customize",
+            "overview/architecture"
         ],
         "Guides": [
             "guide/guide-cli",
@@ -57,28 +57,28 @@
             "templates/template-kitchen-sink"
         ],
         "Integrations": [
-            "integrations/integration_aws",
-            "integrations/integration_azure",
-            "integrations/integration_docker",
-            "integrations/integration_fastlane",
-            "integrations/integration_ftp",
-            "integrations/integration_now",
-            "integrations/integration_testflight"
+            "integrations/aws",
+            "integrations/azure",
+            "integrations/docker",
+            "integrations/fastlane",
+            "integrations/ftp",
+            "integrations/now",
+            "integrations/testflight"
         ],
         "Upgrades": [
-            "upgrades/upgrade-0.31",
-            "upgrades/upgrade-0.30",
-            "upgrades/upgrade-0.29",
-            "upgrades/upgrade-0.28",
-            "upgrades/upgrade-0.27"
+            "upgrades/0.31",
+            "upgrades/0.30",
+            "upgrades/0.29",
+            "upgrades/0.28",
+            "upgrades/0.27"
         ],
         "Release Notes": [
             "changelog",
-            "releases/release-0.31.x",
-            "releases/release-0.30.x",
-            "releases/release-0.29.x",
-            "releases/release-0.28.x",
-            "releases/release-0.27.x"
+            "releases/0.31.x",
+            "releases/0.30.x",
+            "releases/0.29.x",
+            "releases/0.28.x",
+            "releases/0.27.x"
         ]
     },
     "api-sidebar": {

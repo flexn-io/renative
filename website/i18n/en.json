@@ -89,31 +89,31 @@
         "title": "rnv API Reference",
         "sidebar_label": "rnv"
       },
-      "api/api-cli-engine-core": {
+      "api/cli-engine-core": {
         "title": "Engine Core CLI Reference",
         "sidebar_label": "Engine Core"
       },
-      "api/api-cli-engine-rn-electron": {
-        "title": "Engine RN Electron CLI Reference",
-        "sidebar_label": "Engine RN Electron"
+      "api/cli-engine-rn-electron": {
+        "title": "undefined CLI Reference",
+        "sidebar_label": "undefined"
       },
-      "api/api-cli-engine-rn-next": {
-        "title": "Engine RN Next CLI Reference",
-        "sidebar_label": "Engine RN Next"
+      "api/cli-engine-rn-next": {
+        "title": "undefined CLI Reference",
+        "sidebar_label": "undefined"
       },
-      "api/api-cli-engine-rn-web": {
-        "title": "Engine RN Web CLI Reference",
-        "sidebar_label": "Engine RN Web"
+      "api/cli-engine-rn-web": {
+        "title": "undefined CLI Reference",
+        "sidebar_label": "undefined"
       },
-      "api/api-cli-engine-rn": {
-        "title": "Engine RN CLI Reference",
-        "sidebar_label": "Engine RN"
+      "api/cli-engine-rn": {
+        "title": "undefined CLI Reference",
+        "sidebar_label": "undefined"
       },
-      "api/api-config": {
+      "api/config": {
         "title": "renative.json API Reference",
         "sidebar_label": "renative.json"
       },
-      "api/api-renative": {
+      "api/renative": {
         "title": "renative API Reference",
         "sidebar_label": "renative"
       },
@@ -121,7 +121,7 @@
         "title": "rnv Build Config Object Reference",
         "sidebar_label": "build config object"
       },
-      "api/api-rnv": {
+      "api/rnv": {
         "title": "rnv API Reference",
         "sidebar_label": "rnv"
       },
@@ -417,6 +417,9 @@
       "changelog/0.31.2": {
         "title": "changelog/0.31.2"
       },
+      "changelog/0.32.0-alpha.3": {
+        "title": "changelog/0.32.0-alpha.3"
+      },
       "config-app": {
         "title": "App Configs",
         "sidebar_label": "App Configs"
@@ -633,33 +636,33 @@
         "title": "TestFlight",
         "sidebar_label": "TestFlight"
       },
-      "integrations/integration_aws": {
+      "integrations/aws": {
         "title": "AWS",
         "sidebar_label": "AWS"
       },
-      "integrations/integration_azure": {
+      "integrations/azure": {
         "title": "Azure",
         "sidebar_label": "Azure"
       },
-      "integrations/integration_docker": {
+      "integrations/docker": {
         "title": "Docker",
         "sidebar_label": "Docker"
       },
-      "integrations/integration_fastlane": {
+      "integrations/fastlane": {
         "title": "Fastlane",
         "sidebar_label": "Fastlane"
       },
-      "integrations/integration_ftp": {
+      "integrations/ftp": {
         "title": "FTP",
         "sidebar_label": "FTP"
       },
-      "integrations/integration_now": {
-        "title": "Now",
-        "sidebar_label": "Now"
-      },
-      "integrations/integration_testflight": {
+      "integrations/testflight": {
         "title": "TestFlight",
         "sidebar_label": "TestFlight"
+      },
+      "integrations/vercel": {
+        "title": "Vercel",
+        "sidebar_label": "Vercel"
       },
       "intro-architecture": {
         "title": "Architecture",
@@ -689,33 +692,33 @@
         "title": "Overview",
         "sidebar_label": "Overview"
       },
-      "overview/basics-overview": {
-        "title": "Overview",
-        "sidebar_label": "Overview"
-      },
-      "overview/intro-architecture": {
+      "overview/architecture": {
         "title": "Architecture",
         "sidebar_label": "Architecture"
       },
-      "overview/intro-customize": {
+      "overview/customize": {
         "title": "Customize ReNative Project",
         "sidebar_label": "Customize ReNative"
       },
-      "overview/intro-features": {
+      "overview/features": {
         "title": "Features",
         "sidebar_label": "Features"
       },
-      "overview/intro-installation": {
+      "overview/installation": {
         "title": "Installation",
         "sidebar_label": "Installation"
       },
-      "overview/intro-migrating_react_native": {
+      "overview/introduction": {
+        "title": "Introduction",
+        "sidebar_label": "Introduction"
+      },
+      "overview/migrating_react_native": {
         "title": "Migrating react-native project to ReNative",
         "sidebar_label": "Migrating react-native"
       },
-      "overview/intro-quickstart": {
-        "title": "Quick Start2",
-        "sidebar_label": "Quick Start2"
+      "overview/quickstart": {
+        "title": "Quick Start",
+        "sidebar_label": "Quick Start"
       },
       "platform-android": {
         "title": "Android Platform",
@@ -857,7 +860,7 @@
         "title": "Plugins Overview",
         "sidebar_label": "Plugins Overview"
       },
-      "plugins/plugins": {
+      "plugins/overview": {
         "title": "Plugins Overview",
         "sidebar_label": "Plugins Overview"
       },
@@ -881,23 +884,23 @@
         "title": "0.31.x",
         "sidebar_label": "0.31.x (Baby Yoda)"
       },
-      "releases/release-0.27.x": {
+      "releases/0.27.x": {
         "title": "0.27.x",
         "sidebar_label": "0.27.x (Space Inverter)"
       },
-      "releases/release-0.28.x": {
+      "releases/0.28.x": {
         "title": "0.28.x",
         "sidebar_label": "0.28.x (Nutmeg)"
       },
-      "releases/release-0.29.x": {
+      "releases/0.29.x": {
         "title": "0.29.x",
         "sidebar_label": "0.29.x (Iron Ladybird)"
       },
-      "releases/release-0.30.x": {
+      "releases/0.30.x": {
         "title": "0.30.x",
         "sidebar_label": "0.30.x (Mandalorian)"
       },
-      "releases/release-0.31.x": {
+      "releases/0.31.x": {
         "title": "0.31.x",
         "sidebar_label": "0.31.x (Baby Yoda)"
       },
@@ -945,23 +948,23 @@
         "title": "Upgrade to 0.31.x Guide",
         "sidebar_label": "0.31.x"
       },
-      "upgrades/upgrade-0.27": {
+      "upgrades/'0.27'": {
         "title": "Upgrade to 0.27.x Guide",
         "sidebar_label": "0.27.x"
       },
-      "upgrades/upgrade-0.28": {
+      "upgrades/'0.28'": {
         "title": "Upgrade to 0.28.x Guide",
         "sidebar_label": "0.28.x"
       },
-      "upgrades/upgrade-0.29": {
+      "upgrades/'0.29'": {
         "title": "Upgrade to 0.29.x Guide",
         "sidebar_label": "0.29.x"
       },
-      "upgrades/upgrade-0.30": {
+      "upgrades/'0.30'": {
         "title": "Upgrade to 0.30.x Guide",
         "sidebar_label": "0.30.x"
       },
-      "upgrades/upgrade-0.31": {
+      "upgrades/'0.31'": {
         "title": "Upgrade to 0.31.x Guide",
         "sidebar_label": "0.31.x"
       },

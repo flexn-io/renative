@@ -1,5 +1,5 @@
 ---
-id: integration_ftp
+id: ftp
 title: FTP
 sidebar_label: FTP
 ---

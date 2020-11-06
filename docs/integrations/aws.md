@@ -1,5 +1,5 @@
 ---
-id: integration_aws
+id: aws
 title: AWS
 sidebar_label: AWS
 ---

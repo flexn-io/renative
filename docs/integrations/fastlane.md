@@ -1,5 +1,5 @@
 ---
-id: integration_fastlane
+id: fastlane
 title: Fastlane
 sidebar_label: Fastlane
 ---

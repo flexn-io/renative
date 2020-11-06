@@ -1,5 +1,5 @@
 ---
-id: integration_azure
+id: azure
 title: Azure
 sidebar_label: Azure
 ---

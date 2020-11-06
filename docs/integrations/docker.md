@@ -1,5 +1,5 @@
 ---
-id: integration_docker
+id: docker
 title: Docker
 sidebar_label: Docker
 ---

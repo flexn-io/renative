@@ -1,7 +1,7 @@
 ---
-id: basics-overview
-title: Overview
-sidebar_label: Overview
+id: introduction
+title: Introduction
+sidebar_label: Introduction
 ---
 
 ## Intro

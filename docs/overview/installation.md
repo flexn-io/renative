@@ -1,5 +1,5 @@
 ---
-id: intro-installation
+id: installation
 title: Installation
 sidebar_label: Installation
 ---

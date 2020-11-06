@@ -1,5 +1,5 @@
 ---
-id: intro-customize
+id: customize
 title: Customize ReNative Project
 sidebar_label: Customize ReNative
 ---

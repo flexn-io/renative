@@ -1,5 +1,5 @@
 ---
-id: intro-migrating_react_native
+id: migrating_react_native
 title: Migrating react-native project to ReNative
 sidebar_label: Migrating react-native
 ---
