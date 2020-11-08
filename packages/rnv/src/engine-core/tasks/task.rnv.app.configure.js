@@ -214,11 +214,22 @@ export const taskRnvAppConfigure = async (c) => {
         c.paths.project.appConfigsDirs.push(path.join(c.paths.project.appConfigsDir, dirName));
     });
 
+    const appConfigsDirsExt = c.buildConfig?.paths?.appConfigsDirs;
+    if (appConfigsDirsExt) {
+        appConfigsDirsExt.forEach((apePath) => {
+            const appConfigsExt = listAppConfigsFoldersSync(c, true, apePath);
+            appConfigsExt.forEach((appExtName) => {
+                c.paths.project.appConfigsDirNames.push(appExtName);
+                c.paths.project.appConfigsDirs.push(path.join(apePath, appExtName));
+            });
+        });
+    }
+
+
     // Reset appId if appConfig no longer exists but renative.local.json still has reference to it
     if (!c.paths.project.appConfigsDirNames.includes(c.runtime.appId)) {
         c.runtime.appId = null;
     }
-
 
     if (c.program.appConfigID === true || (!c.program.appConfigID && !c.runtime.appId)) {
         const hasAppConfig = await _findAndSwitchAppConfigDir(c);
@@ -238,6 +249,10 @@ export const taskRnvAppConfigure = async (c) => {
         }
         _setAppId(c, aid);
     }
+
+    // Generate true path to appConfig (ensure external appConfigsDirs are included)
+    c.runtime.appConfigDir = c.paths.project.appConfigsDirs[
+        c.paths.project.appConfigsDirNames.indexOf(c.runtime.appId)];
 
     await parseRenativeConfigs(c);
     logAppInfo(c);

@@ -12,6 +12,7 @@ import {
 
 export const configureRuntimeDefaults = async (c) => {
     c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId || null;
+    // c.runtime.appConfigDir = c.files.project?.configLocal?._meta?.currentAppConfigDir || null;
 
     logTask('configureRuntimeDefaults', `appId:${c.runtime.appId}`);
 

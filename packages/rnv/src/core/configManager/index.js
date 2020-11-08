@@ -513,12 +513,12 @@ const _generatePlatformTemplatePaths = (c) => {
 };
 
 
-export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
+export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs, appConfigsDirPath) => {
     logTask('listAppConfigsFoldersSync', `ignoreHiddenConfigs:${!!ignoreHiddenConfigs}`);
 
     if (!c.paths?.project) return [];
 
-    const dirPath = c.paths.project.appConfigsDir;
+    const dirPath = appConfigsDirPath || c.paths.project.appConfigsDir;
 
     if (!fsExistsSync(dirPath)) return [];
     const appConfigsDirs = [];
@@ -678,9 +678,13 @@ export const parseRenativeConfigs = async (c) => {
 
     if (c.runtime.appId) {
         if (!c.files.appConfig.config) {
+            // _generateConfigPaths(
+            //     c.paths.appConfig,
+            //     path.join(c.paths.project.appConfigsDir, c.runtime.appId)
+            // );
             _generateConfigPaths(
                 c.paths.appConfig,
-                path.join(c.paths.project.appConfigsDir, c.runtime.appId)
+                c.runtime.appConfigDir
             );
             _loadConfigFiles(
                 c,
