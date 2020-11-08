@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://pavjacko/ReactNativeVanilla2" version="0.8.5" viewmodes="maximized">
     <tizen:application id="{{ID}}" package="{{PACKAGE}}" required_version="2.3"/>
-    <content src="public/index.html"/>
+    <content src="index.html"/>
     <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
     <feature name="http://tizen.org/feature/network.internet"/>
     <access origin="*" subdomains="true"></access>

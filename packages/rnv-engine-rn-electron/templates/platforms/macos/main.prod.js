@@ -13,7 +13,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({{PLUGIN_INJECT_BROWSER_WINDOW}});
 
     // and load the index.html of the app.
-    mainWindow.loadFile('./public/index.html');
+    mainWindow.loadFile('./index.html');
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()

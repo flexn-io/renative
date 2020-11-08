@@ -1,15 +1,12 @@
 import path from 'path';
-import { promisify } from 'util';
 import inquirer from 'inquirer';
 import { parseRenativeConfigs, listAppConfigsFoldersSync } from '../../core/configManager';
 import { TASK_APP_CONFIGURE, PARAMS } from '../../core/constants';
 import {
     writeFileSync,
     fsExistsSync,
-    fsReaddir,
     fsReadFileSync,
     fsRenameSync,
-    fsStatSync,
 } from '../../core/systemManager/fileutils';
 import {
     chalk,
@@ -22,21 +19,18 @@ import {
 } from '../../core/systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
 
-const readdirAsync = promisify(fsReaddir);
-
-
-const _loadAppConfigIDfromDir = (dir, appConfigsDir) => {
-    logDebug(`_loadAppConfigIDfromDir:${dir}:${appConfigsDir}`, chalk().grey);
-    const filePath = path.join(appConfigsDir, dir, 'renative.json');
+const _loadAppConfigIDfromDir = (dirName, appConfigsDir) => {
+    logDebug(`_loadAppConfigIDfromDir:${dirName}:${appConfigsDir}`, chalk().grey);
+    const filePath = path.join(appConfigsDir, 'renative.json');
     if (fsExistsSync(filePath)) {
         try {
             const renativeConf = JSON.parse(fsReadFileSync(filePath));
-            return { dir, id: renativeConf.id };
+            return { dir: dirName, id: renativeConf.id };
         } catch (e) {
             logError(`File ${filePath} is MALFORMED:\n${e}`);
         }
     }
-    return { dir, id: null };
+    return { dir: dirName, id: null };
 };
 
 const _askUserAboutConfigs = async (c, dir, id, basePath) => {
@@ -56,10 +50,10 @@ const _askUserAboutConfigs = async (c, dir, id, basePath) => {
         name: 'choice',
         message: 'You must choose what you want to keep',
         choices: [
-            {
-                name: `Keep ID from renative.json (${id}) and rename the folder (${dir} -> ${id})`,
-                value: 'keepID'
-            },
+            // {
+            //     name: `Keep ID from renative.json (${id}) and rename the folder (${dir} -> ${id})`,
+            //     value: 'keepID'
+            // },
             {
                 name: `Keep folder name (${dir}) and rename the ID from renative.json (${id} -> ${dir})`,
                 value: 'keepFolder'
@@ -101,66 +95,23 @@ const matchAppConfigID = async (c, appConfigID) => {
 
     if (!appConfigID) return false;
 
-    const appConfigsDirs = c.buildConfig?.paths?.appConfigsDirs || [
-        c.paths.project?.appConfigsDir
-    ];
+    const { appConfigsDirs, appConfigsDirNames } = c.paths.project;
 
-
-    for (let i = 0; i < appConfigsDirs.length; i++) {
-        const appConfigsDir = appConfigsDirs[i];
-        if (fsExistsSync(appConfigsDir)) {
-            const appConfigDirContents = await (await readdirAsync(
-                appConfigsDir
-            )).filter(folder => fsStatSync(path.join(appConfigsDir, folder)).isDirectory());
-
-            const appConfigs = appConfigDirContents
-                .map(dir => _loadAppConfigIDfromDir(dir, appConfigsDir))
-                .filter(conf => conf.id !== null);
-            // find duplicates
-            const ids = [];
-            const dirs = [];
-            let confId;
-            await Promise.all(
-                appConfigs.map(async (_conf) => {
-                    let conf = _conf;
-                    confId = conf.id;
-                    const { dir } = conf;
-                    // find mismatches
-                    if (confId !== dir) {
-                        conf = await _askUserAboutConfigs(
-                            c,
-                            conf.dir,
-                            conf.id,
-                            appConfigsDir
-                        );
-                    }
-                    confId = conf.id;
-                    if (ids.includes(confId)) {
-                        throw new Error(
-                            `AppConfig error - You have 2 duplicate app configs with ID ${
-                                confId
-                            }. Keep in mind that ID is case insensitive.
-Please edit one of them in /appConfigs/<folder>/renative.json`
-                        );
-                    }
-                    ids.push(confId);
-                    if (dirs.includes(dir)) {
-                        throw new Error(
-                            `AppConfig error - You have 2 duplicate app config folders named ${
-                                dir
-                            }. Keep in mind that folder names are case insensitive.
-Please rename one /appConfigs/<folder>`
-                        );
-                    }
-                    dirs.push(dir);
-                })
+    const acIndex = appConfigsDirNames.indexOf(appConfigID);
+    if (acIndex !== -1) {
+        let conf = _loadAppConfigIDfromDir(appConfigID, appConfigsDirs[acIndex]);
+        const { dir, id } = conf;
+        if (id !== dir) {
+            conf = await _askUserAboutConfigs(
+                c,
+                conf.dir,
+                conf.id,
+                path.join(appConfigsDirs[acIndex], '..')
             );
-
-            const foundConfig = appConfigs.filter(
-                cfg => cfg.id === appConfigID || cfg.dir === appConfigID
-            );
-            if (foundConfig.length) return foundConfig[0].id;
         }
+
+
+        return conf.id;
     }
     return false;
 };
