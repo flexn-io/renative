@@ -113,7 +113,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     let browserWindow = {
         width: 1200,
         height: 800,
-        webPreferences: { nodeIntegration: true }
+        webPreferences: { nodeIntegration: true, enableRemoteModule: true }
     };
     const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
     if (browserWindowExt) {
