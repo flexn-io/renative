@@ -82,7 +82,7 @@ export const configureEngines = async (c) => {
                     if (devDependencies[k] !== engVer) {
                         needsPackageUpdate = true;
                         logInfo(`Updating missing engine ${k} ${
-                            chalk().red(devDependencies[k])}=>${engVer} to package.json`);
+                            chalk().red(devDependencies[k])}=>${chalk().green(engVer)} to package.json`);
                         devDependencies[k] = engVer;
                     }
                 } else {
@@ -170,8 +170,11 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
             '@rnv/engine-rn-next': 'source:rnv',
             '@rnv/engine-rn-electron': 'source:rnv'
         };
+        // TODO: use parseRenativeConfigs instead
+        c.buildConfig.engines = c.files.project.config.engines;
+
         writeFileSync(c.paths.project.config, c.files.project.config);
-        return false;
+        return loadEngines(c);
     }
     return true;
 };
