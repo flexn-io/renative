@@ -1,30 +1,32 @@
 import path from 'path';
 import fs from 'fs';
+import simpleGit from 'simple-git';
 
-const git = require('simple-git')();
 const { version, currentRelease } = require('../../../../package.json');
 
+const git = simpleGit();
 
-export const generateChangelog = async (c) => {
+export const generateChangelog = c => new Promise((resolve, reject) => {
     const d = new Date();
     let logs = '';
+    try {
+        git.tags([], (e, s) => {
+            const latestTag = s.latest;
+            // if (s.latest === version) {
+            //     s.all.pop();
+            //     latestTag = s.all.pop();
+            // }
 
-    git.tags([], (e, s) => {
-        const latestTag = s.latest;
-        // if (s.latest === version) {
-        //     s.all.pop();
-        //     latestTag = s.all.pop();
-        // }
-        git.log(latestTag, 'HEAD', (_e, log) => {
-            // log.all.pop();
-            // log.all.pop();
-            log.all.forEach((v) => {
-                const ss = v.message;
-                logs += `- ${ss}\n`;
-            });
+            git.log(latestTag, 'HEAD', (_e, log) => {
+                // log.all.pop();
+                // log.all.pop();
+                log.all.forEach((v) => {
+                    const ss = v.message;
+                    logs += `- ${ss}\n`;
+                });
 
-            const changelog = `## v${version} (${d.getFullYear()}-${d.getMonth()
-                    + 1}-${d.getDate()})
+                const changelog = `## v${version} (${d.getFullYear()}-${d.getMonth()
+                      + 1}-${d.getDate()})
 
 ### Fixed
 
@@ -37,22 +39,25 @@ ${logs}
 
 - none
 
-`;
-            // console.log(changelog.replace(/\*\*/g, '*'));
-            const changelogPath = path.join(c.paths.project.dir, '../../docs/changelog', `${version}.md`);
-            if (!fs.existsSync(changelogPath)) {
-                fs.writeFileSync(
-                    changelogPath,
-                    changelog
-                );
-            } else {
-                // console.log(`Path ${changelogPath} exists. SKIPPING`);
-            }
+  `;
+                // console.log(changelog.replace(/\*\*/g, '*'));
+                const changelogPath = path.join(c.paths.project.dir, '../../docs/changelog', `${version}.md`);
+                if (!fs.existsSync(changelogPath)) {
+                    fs.writeFileSync(
+                        changelogPath,
+                        changelog
+                    );
+                } else {
+                    // console.log(`Path ${changelogPath} exists. SKIPPING`);
+                }
 
-            return true;
+                resolve(true);
+            });
         });
-    });
-};
+    } catch (e) {
+        reject(e);
+    }
+});
 
 const getVersionNumber = (vrs) => {
     const verArr = vrs.split('-');

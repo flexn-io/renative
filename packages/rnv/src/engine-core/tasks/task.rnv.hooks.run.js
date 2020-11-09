@@ -9,7 +9,7 @@ export const taskRnvHooksRun = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksRun');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_RUN, originTask);
-
+    c.runtime.forceBuildHookRebuild = true;
     await buildHooks(c);
 
     if (!c.buildHooks) {

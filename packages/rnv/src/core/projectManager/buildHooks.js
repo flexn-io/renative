@@ -37,7 +37,8 @@ export const buildHooks = async (c) => {
     const enableHookRebuild = getConfigProp(c, c.platform, 'enableHookRebuild');
 
     const shouldBuildHook = c.program.reset || c.program.resetHard
-    || !fsExistsSync(c.paths.buildHooks.dist.dir) || enableHookRebuild === true;
+    || !fsExistsSync(c.paths.buildHooks.dist.dir) || enableHookRebuild === true
+    || c.runtime.forceBuildHookRebuild;
 
 
     if (!fsExistsSync(c.paths.buildHooks.index)) {
@@ -68,12 +69,12 @@ export const buildHooks = async (c) => {
                 // Fail Builds instead of warn when hook fails
                 return Promise.reject(`BUILD_HOOK Failed with error: ${e}`);
             }
+            c.isBuildHooksReady = true;
         }
 
         const h = require(c.paths.buildHooks.dist.index);
         c.buildHooks = h.hooks;
         c.buildPipes = h.pipes;
-        c.isBuildHooksReady = true;
     }
 
     return true;
