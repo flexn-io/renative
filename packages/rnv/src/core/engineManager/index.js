@@ -1,28 +1,71 @@
 /* eslint-disable import/no-dynamic-require, global-require */
 import path from 'path';
-import { logDebug, logTask, chalk, logInfo } from '../systemManager/logger';
+import { IS_LINKED, RNV_HOME_DIR } from '../constants';
+import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
 import { getConfigProp } from '../common';
 import { executeAsync } from '../systemManager/exec';
 import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
-import { fsExistsSync, readObjectSync, writeFileSync } from '../systemManager/fileutils';
-import { EXTENSIONS } from '../constants';
+import { fsExistsSync, writeFileSync } from '../systemManager/fileutils';
+import { installPackageDependencies } from '../systemManager/npmUtils';
 
 
-const REGISTERED_ENGINES = [];
-const ENGINES = {};
+const ENGINES_BY_INDEX = [];
+const ENGINES_BY_ID = {};
+const ENGINES_BY_PLATFORM = {};
 const ENGINE_CORE = 'engine-core';
 
-export const registerEngine = async (c, engine, platform) => {
-    ENGINES[engine.getId()] = engine;
-    REGISTERED_ENGINES.push(engine);
+export const registerEngine = async (c, engine, platform, engConfig) => {
+    ENGINES_BY_ID[engine.config.id] = engine;
+
+    c.runtime.enginesById[engine.config.id] = engine;
+    ENGINES_BY_INDEX.push(engine);
+    if (engConfig?.packageName) {
+        engine.rootPath = path.dirname(require.resolve(`${engConfig.packageName}/package.json`));
+        engine.originalTemplatePlatformsDir = path.join(engine.rootPath, 'templates/platforms');
+        engine.originalTemplateAssetsDir = path.join(engine.rootPath, 'templates/assets');
+        engine.originalTemplatePlatformProjectDir = path.join(
+            engine.originalTemplatePlatformsDir,
+            engine.projectDirName
+        );
+    }
     _registerEnginePlatform(c, platform, engine);
 };
 
 const _registerEnginePlatform = (c, platform, engine) => {
     if (platform) {
-        c.runtime.enginePlatforms[platform] = engine;
+        ENGINES_BY_PLATFORM[platform] = engine;
+        c.runtime.enginesByPlatform[platform] = engine;
     }
+};
+
+export const registerEngineExtension = (ext, eExt, extras = []) => {
+    const e1 = ext ? `${ext}.` : '';
+    const e2 = eExt ? `${eExt}.` : '';
+    const extArr = [
+        `${e1}${e2}jsx`, `${e1}jsx`, `${e1}${e2}js`, `${e1}js`,
+        `${e1}${e2}tsx`, `${e1}tsx`, `${e1}${e2}ts`, `${e1}ts`,
+        ...extras
+    ];
+    return extArr;
+};
+
+export const generateEngineExtensions = (exts, config) => {
+    const { id, engineExtension } = config;
+    let extArr = [...registerEngineExtension(id)];
+    exts.forEach((ext) => {
+        extArr = extArr.concat(registerEngineExtension(ext, engineExtension));
+    });
+    extArr = extArr.concat(registerEngineExtension(null, null, ['mjs', 'json', 'wasm']));
+    return extArr;
+};
+
+export const generateEngineTasks = (taskArr) => {
+    const tasks = {};
+    taskArr.forEach((taskInstance) => {
+        tasks[taskInstance.task] = taskInstance;
+    });
+    return tasks;
 };
 
 export const configureEngines = async (c) => {
@@ -39,7 +82,7 @@ export const configureEngines = async (c) => {
                     if (devDependencies[k] !== engVer) {
                         needsPackageUpdate = true;
                         logInfo(`Updating missing engine ${k} ${
-                            chalk().red(devDependencies[k])}=>${engVer} to package.json`);
+                            chalk().red(devDependencies[k])}=>${chalk().green(engVer)} to package.json`);
                         devDependencies[k] = engVer;
                     }
                 } else {
@@ -62,7 +105,7 @@ export const registerMissingPlatformEngines = async (c, taskInstance) => {
         const registerEngineList = [];
         c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
             registerEngineList.push(
-                registerPlatformEngine(c, platform)
+                _registerPlatformEngine(c, platform)
             );
         });
 
@@ -74,34 +117,51 @@ export const registerMissingPlatformEngines = async (c, taskInstance) => {
     return true;
 };
 
-export const loadEngineConfigs = async (c) => {
+export const loadEngines = async (c) => {
     logTask('loadEngineConfigs');
     const engines = c.buildConfig?.engines;
-    c.runtime.engineConfigs = {};
+    // c.runtime.engineConfigs = {};
     const enginesToInstall = [];
+    const readyEngines = [];
     if (engines) {
         Object.keys(engines).forEach((k) => {
             const engineRootPath = doResolve(k);
             const configPath = engineRootPath ? path.join(engineRootPath, 'renative.engine.json') : null;
-            if (configPath && fsExistsSync(configPath)) {
-                const engineConfig = readObjectSync(configPath);
-                c.runtime.engineConfigs[engineConfig.id] = engineConfig;
-            } else {
+            if (!configPath || !fsExistsSync(configPath)) {
                 const engVer = getScopedVersion(c, k, engines[k], 'engineTemplates');
                 if (engVer) {
-                    enginesToInstall.push(`${k}@${engVer}`);
+                    enginesToInstall.push({
+                        key: k,
+                        version: engVer
+                    });
                 }
+            } else {
+                readyEngines.push(k);
             }
         });
         if (enginesToInstall.length) {
             logInfo(`Some engines not installed in your project:
-${enginesToInstall.map(v => `> ${v}`).join('\n')}
+${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
  INSTALLING...`);
-            await Promise.all(enginesToInstall.map(v => executeAsync(`npm i ${v} --no-save`, {
-                cwd: c.paths.project.dir
-            })));
-            return loadEngineConfigs(c);
+
+            // If package.json exists use conventional install.
+            if (fsExistsSync(c.paths.project.package)) {
+                enginesToInstall.forEach((v) => {
+                    c.files.project.package.devDependencies[v.key] = v.version;
+                    writeFileSync(c.paths.project.package, c.files.project.package);
+                });
+                await installPackageDependencies(c);
+            } else {
+                await Promise.all(enginesToInstall.map(v => executeAsync(`npm i ${v.key}@${v.version}`, {
+                    cwd: c.paths.project.dir
+                })));
+            }
+
+
+            return loadEngines(c);
         }
+        // All engines ready to be registered
+        _registerPlatformEngine(c, c.platform);
     } else if (c.files.project.config) {
         logInfo('Engine configs missing in your renative.json. FIXING...DONE');
         c.files.project.config.engines = {
@@ -110,19 +170,71 @@ ${enginesToInstall.map(v => `> ${v}`).join('\n')}
             '@rnv/engine-rn-next': 'source:rnv',
             '@rnv/engine-rn-electron': 'source:rnv'
         };
+        // TODO: use parseRenativeConfigs instead
+        c.buildConfig.engines = c.files.project.config.engines;
+
         writeFileSync(c.paths.project.config, c.files.project.config);
-        return false;
+        return loadEngines(c);
     }
     return true;
 };
 
-export const registerPlatformEngine = (c, platform) => {
+const _getMergedEngineConfigs = (c) => {
+    const engines = c.buildConfig?.engines;
+    const engineTemplates = c.buildConfig?.engineTemplates;
+    const mergedEngineConfigs = {};
+    Object.keys(engineTemplates).forEach((packageName) => {
+        mergedEngineConfigs[packageName] = {
+            packageName,
+            ...engineTemplates[packageName]
+        };
+    });
+
+    const engineTemplatesKeys = Object.keys(engineTemplates);
+    if (engines) {
+        Object.keys(engines).forEach((enginePackageName) => {
+            const engineVal = engines[enginePackageName];
+            if (engineVal === 'source:rnv') {
+                if (!engineTemplatesKeys.includes(enginePackageName)) {
+                    logWarning(`Engine ${enginePackageName} not found in default engineTemplates`);
+                }
+            } else {
+                mergedEngineConfigs[enginePackageName] = engineVal;
+            }
+        });
+    }
+    return mergedEngineConfigs;
+};
+
+const _getEngineConfigByPlatform = (c, platform) => {
+    const mergedEngineConfigs = _getMergedEngineConfigs(c);
+    const engineId = c.program.engine || getConfigProp(c, platform, 'engine');
+    let selectedEngineConfig;
+    Object.values(mergedEngineConfigs).forEach((engineConfig) => {
+        if (engineConfig.id === engineId) {
+            selectedEngineConfig = engineConfig;
+        }
+    });
+
+    return selectedEngineConfig;
+};
+
+
+const _registerPlatformEngine = (c, platform) => {
     // Only register active platform engine to be faster
-    const selectedEngineConfig = getEngineConfigByPlatform(c, platform);
+    const selectedEngineConfig = _getEngineConfigByPlatform(c, platform);
     if (selectedEngineConfig) {
-        const existingEngine = ENGINES[selectedEngineConfig.id];
+        const existingEngine = ENGINES_BY_ID[selectedEngineConfig.id];
         if (!existingEngine) {
-            registerEngine(c, require(selectedEngineConfig.packageName)?.default, platform);
+            if (IS_LINKED) {
+                // In the instances of running linked rnv instead of installed one load local packages
+                const pth = require.resolve(selectedEngineConfig.packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
+                registerEngine(c, require(
+                    pth
+                )?.default, platform, selectedEngineConfig);
+            } else {
+                registerEngine(c, require(selectedEngineConfig.packageName)?.default, platform, selectedEngineConfig);
+            }
         } else {
             _registerEnginePlatform(c, platform, existingEngine);
         }
@@ -137,29 +249,26 @@ export const generateEnvVars = (c, moduleConfig, nextConfig) => ({
     RNV_PROJECT_ROOT: c.paths.project.dir,
     RNV_MONO_ROOT: c.runtime.isWrapper ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir
 });
-export const getEngineConfigByPlatform = (c, platform, ignoreMissingError) => {
-    let selectedEngineKey;
-    if (c.buildConfig && !!platform && c.runtime.engineConfigs) {
-        selectedEngineKey = c.program.engine || getConfigProp(c, platform, 'engine');
-        const selectedEngine = c.runtime.engineConfigs[selectedEngineKey];
-        if (!selectedEngine && !ignoreMissingError) {
-            logDebug(`ERROR: Engine: ${selectedEngineKey} does not exists or is not registered ${new Error()}`);
-            // logRaw(new Error());
-        }
-        return selectedEngine;
+
+export const getPlatformExtensions = (c, excludeServer = false, addDotPrefix = false) => {
+    const { engine } = c.runtime;
+    let output;
+    const { platforms } = engine;
+    if (addDotPrefix) {
+        output = platforms[c.platform].extenstions.map(v => `.${v}`).filter(ext => !excludeServer || !ext.includes('server.'));
+    } else {
+        output = platforms[c.platform].extenstions.filter(ext => !excludeServer || !ext.includes('server.'));
     }
-    return null;
-};
-
-export const getEngineRunnerByPlatform = (c, platform) => {
-    const selectedEngine = getEngineConfigByPlatform(c, platform);
-    return ENGINES[selectedEngine?.id];
-};
-
-export const getPlatformExtensions = (c, excludeServer) => {
-    const id = c.runtime.engine.getId();
-    const output = [`${id}.jsx`, `${id}.js`, `${id}.tsx`, `${id}.ts`].concat(EXTENSIONS[c.platform]).filter(ext => !excludeServer || !ext.includes('server.'));
     return output;
+};
+
+export const getEngineRunnerByPlatform = (c, platform, ignoreMissingError) => {
+    const selectedEngine = ENGINES_BY_PLATFORM[platform];
+    if (!selectedEngine && !ignoreMissingError) {
+        logDebug(`ERROR: Engine for platform: ${platform} does not exists or is not registered ${new Error()}`);
+        // logRaw(new Error());
+    }
+    return selectedEngine;
 };
 
 export const getEngineTask = (task, tasks, customTasks) => {
@@ -181,27 +290,21 @@ export const getEngineSubTasks = (task, tasks, exactMatch) => Object.values(task
 
 export const getEngineRunner = (c, task, customTasks) => {
     if (customTasks?.[task]) {
-        return ENGINES[ENGINE_CORE];
+        return ENGINES_BY_ID[ENGINE_CORE];
     }
 
-    const selectedEngine = getEngineConfigByPlatform(c, c.platform);
     const { configExists } = c.paths.project;
-    if (!selectedEngine) {
-        if (ENGINES[ENGINE_CORE].hasTask(task, configExists)) return ENGINES[ENGINE_CORE];
-        // return EngineNoOp;
-        throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
-    }
-    c.runtime.engineConfig = selectedEngine;
-    const engine = ENGINES[selectedEngine?.id];
+
+    const engine = ENGINES_BY_PLATFORM[c.platform];
     if (!engine) {
-        if (ENGINES[ENGINE_CORE].hasTask(task, configExists)) return ENGINES[ENGINE_CORE];
-        throw new Error(`Cound not find active engine with id ${selectedEngine?.id}. Available engines:
-        ${Object.keys(ENGINES).join(', ')}`);
+        if (hasEngineTask(task, ENGINES_BY_ID[ENGINE_CORE].tasks, configExists)) return ENGINES_BY_ID[ENGINE_CORE];
+        throw new Error(`Cound not find active engine for platform ${c.platform}. Available engines:
+        ${ENGINES_BY_INDEX.join(', ')}`);
     }
-    if (engine.hasTask(task, configExists)) return engine;
-    if (ENGINES[ENGINE_CORE].hasTask(task, configExists)) return ENGINES[ENGINE_CORE];
+    if (hasEngineTask(task, engine.tasks, configExists)) return engine;
+    if (hasEngineTask(task, ENGINES_BY_ID[ENGINE_CORE].tasks, configExists)) return ENGINES_BY_ID[ENGINE_CORE];
 
     throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
 };
 
-export const getRegisteredEngines = () => REGISTERED_ENGINES;
+export const getRegisteredEngines = () => ENGINES_BY_INDEX;

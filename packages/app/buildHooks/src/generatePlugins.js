@@ -3,7 +3,7 @@ import path from 'path';
 
 export const generatePlugins = async (c) => {
     let out = `---
-id: plugins
+id: overview
 title: Plugins Overview
 sidebar_label: Plugins Overview
 ---
@@ -53,7 +53,7 @@ rnv plugin add ${key}
     });
 
     FileUtils.writeFileSync(
-        path.join(c.paths.project.dir, '../../docs/plugin.md'),
+        path.join(c.paths.project.dir, '../../docs/plugins/overview.md'),
         out
     );
 };

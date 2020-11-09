@@ -1,7 +1,8 @@
-import { TaskManager, Constants, Logger, PlatformManager, SDKWebpack, FileUtils, Common } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, FileUtils, Common, WebpackUtils } from 'rnv';
 import ip from 'ip';
 import path from 'path';
-import { SDKTizen, SDKWebos, SDKFirefox } from '../sdks';
+import { SDKTizen, SDKWebos, SDKFirefox, SDKWebpack } from '../sdks';
+
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask, logDebug } = Logger;
@@ -19,7 +20,8 @@ const {
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
-const { runWebpackServer, runChromecast } = SDKWebpack;
+const { runChromecast } = SDKWebpack;
+const { runWebpackServer } = WebpackUtils;
 const { getConfigProp, getPlatformProjectDir } = Common;
 const { runTizen } = SDKTizen;
 const { runWebOS } = SDKWebos;
@@ -37,7 +39,7 @@ const _configureHostedIfRequired = async (c) => {
         logDebug('Running hosted build');
         const { rnv } = c.paths;
         writeCleanFile(
-            path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'),
+            path.join(rnv.dir, 'coreTemplateFiles', 'appShell', 'index.html'),
             path.join(getPlatformProjectDir(c), 'index.html'),
             [
                 {

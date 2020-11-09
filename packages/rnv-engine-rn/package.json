@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn",
-    "version": "0.32.0-alpha.1",
+    "version": "0.32.0-alpha.4",
     "description": "ReNative Engine to build react-native based platforms.",
     "keywords": [
         "react-native"
@@ -22,7 +22,7 @@
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
         "prepublishOnly": "yarn build",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest -c __tests__/jest.config.unit.js",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "devDependencies": {
@@ -39,6 +39,5 @@
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "gitHead": "1d98598e540a4fd19acf3a158f36b13b99777783"
+    }
 }

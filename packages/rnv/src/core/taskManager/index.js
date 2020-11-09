@@ -3,7 +3,7 @@ import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
-import { getEngineRunner, getEngineTask, getRegisteredEngines } from '../engineManager';
+import { getEngineRunner, getEngineTask, getRegisteredEngines, hasEngineTask, getEngineSubTasks } from '../engineManager';
 import { TASK_CONFIGURE_SOFT } from '../constants';
 
 
@@ -57,7 +57,7 @@ export const findSuitableTask = async (c) => {
     if (!c.command) {
         const suitableTaskInstances = {};
         REGISTERED_ENGINES.forEach((engine) => {
-            engine.getTasks().forEach((taskInstance) => {
+            Object.values(engine.tasks).forEach((taskInstance) => {
                 const taskObj = _getTaskObj(taskInstance);
                 suitableTaskInstances[taskObj.key] = taskObj;
             });
@@ -98,8 +98,10 @@ export const findSuitableTask = async (c) => {
     let task = c.command;
     if (c.subCommand) task += ` ${c.subCommand}`;
 
-    let suitableEngines = REGISTERED_ENGINES.filter(engine => engine.hasTask(task, c.paths.project.configExists));
-    const autocompleteEngines = REGISTERED_ENGINES.filter(engine => engine.getSubTasks(task, true).length);
+    let suitableEngines = REGISTERED_ENGINES
+        .filter(engine => hasEngineTask(task, engine.tasks, c.paths.project.configExists));
+
+    const autocompleteEngines = REGISTERED_ENGINES.filter(engine => getEngineSubTasks(task, engine.tasks, true).length);
 
     const isAutoComplete = !suitableEngines.length && !!c.command && !autocompleteEngines.length;
     const message = isAutoComplete ? `Autocomplete action for "${c.command}"` : `Pick a subCommand for ${c.command}`;
@@ -108,7 +110,7 @@ export const findSuitableTask = async (c) => {
         // Get all supported tasks
         const supportedSubtasksArr = [];
         REGISTERED_ENGINES.forEach((engine) => {
-            engine.getSubTasks(task).forEach((taskInstance) => {
+            getEngineSubTasks(task, engine.tasks).forEach((taskInstance) => {
                 const isNotViable = !c.paths.project.configExists && !taskInstance.isGlobalScope;
                 if (!isNotViable) {
                     const taskKey = isAutoComplete ? taskInstance.task : taskInstance.task.split(' ')[1];
@@ -175,7 +177,8 @@ export const findSuitableTask = async (c) => {
             }
 
 
-            suitableEngines = REGISTERED_ENGINES.filter(engine => engine.hasTask(task, c.paths.project.configExists));
+            suitableEngines = REGISTERED_ENGINES
+                .filter(engine => hasEngineTask(task, engine.tasks, c.paths.project.configExists));
         }
     }
 
@@ -193,7 +196,7 @@ export const findSuitableTask = async (c) => {
     if (!c.platform || c.platform === true) {
         const supportedPlatforms = {};
         suitableEngines.forEach((engine) => {
-            engine.getTask(task).platforms.forEach((plat) => {
+            getEngineTask(task, engine.tasks).platforms.forEach((plat) => {
                 supportedPlatforms[plat] = true;
             });
         });
@@ -211,11 +214,11 @@ export const findSuitableTask = async (c) => {
     }
     c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS);
     logInfo(`Current Engine: ${chalk().bold.white(
-        c.runtime.engine.getId()
+        c.runtime.engine.config.id
     )}`);
     const customTask = CUSTOM_TASKS[task];
     if (customTask) return customTask;
-    return c.runtime.engine.getTask(task);
+    return getEngineTask(task, c.runtime.engine.tasks);
 };
 
 
@@ -237,7 +240,12 @@ but issue migh not be necessarily with this task
 
 To avoid that test your task code against parentTask and avoid executing same task X from within task X`);
     }
-    await getEngineRunner(c, task, CUSTOM_TASKS).executeTask(c, task, parentTask, originTask, isFirstTask);
+    await executeEngineTask(
+        c, task, parentTask, originTask,
+        getEngineRunner(c, task, CUSTOM_TASKS).tasks,
+        isFirstTask
+    );
+    // await getEngineRunner(c, task, CUSTOM_TASKS).executeTask(c, task, parentTask, originTask, isFirstTask);
     executedTasks[task]++;
 
     c._currentTask = parentTask;

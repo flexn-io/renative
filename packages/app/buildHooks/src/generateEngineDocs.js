@@ -16,21 +16,19 @@ const getSupportedPlatforms = (c, t) => (t.platforms.length
     ? t.platforms.map(v => `\`${v}\``).join(', ')
     : Constants.SUPPORTED_PLATFORMS.map(v => `\`${v}\``).join(', '));
 
-const _generateEngineTaks = async (c, engine) => {
-    const id = engine.getId();
-    const { title } = engine;
+const _generateEngineTaks = (c, engine) => {
+    const { id, title } = engine.config;
     let output = `---
-id: api-cli-${id}
+id: cli-${id}
 title: ${title} CLI Reference
 sidebar_label: ${title}
 ---
 
 
 `;
+    const { tasks } = engine;
 
-    const tasks = engine.getTasks();
-
-    tasks.forEach((t) => {
+    Object.values(tasks).forEach((t) => {
         output += `
 
 ---
@@ -69,5 +67,5 @@ ${t.params.map((v) => {
 
     output += 'test';
 
-    fs.writeFileSync(path.join(c.paths.project.dir, `../../docs/api-cli-${id}.md`), output);
+    fs.writeFileSync(path.join(c.paths.project.dir, `../../docs/api/cli-${id}.md`), output);
 };

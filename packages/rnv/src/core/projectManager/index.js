@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import { WEB_HOSTED_PLATFORMS, INJECTABLE_CONFIG_PROPS } from '../constants';
+import { INJECTABLE_CONFIG_PROPS } from '../constants';
 import {
     getAppFolder,
     // getAppSubFolder,
@@ -26,6 +26,7 @@ import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/
 import { copyTemplatePluginsSync } from '../pluginManager';
 import { loadFile } from '../configManager';
 import { inquirerPrompt } from '../../cli/prompt';
+import { getEngineRunnerByPlatform } from '../engineManager';
 
 
 export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
@@ -71,7 +72,7 @@ export const checkAndCreateGitignore = async (c) => {
         );
 
         copyFileSync(
-            path.join(c.paths.rnv.dir, 'supportFiles/gitignore-template'),
+            path.join(c.paths.rnv.dir, 'coreTemplateFiles/gitignore-template'),
             ignrPath
         );
     }
@@ -174,9 +175,9 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         fsWriteFileSync(fontJsPath, fontsObj);
     }
 
-    const supportFiles = path.resolve(c.paths.rnv.dir, 'supportFiles');
+    const coreTemplateFiles = path.resolve(c.paths.rnv.dir, 'coreTemplateFiles');
     copyFileSync(
-        path.resolve(supportFiles, 'fontManager.js'),
+        path.resolve(coreTemplateFiles, 'fontManager.js'),
         path.resolve(
             c.paths.project.assets.dir,
             'runtime',
@@ -184,7 +185,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         )
     );
     copyFileSync(
-        path.resolve(supportFiles, 'fontManager.js'),
+        path.resolve(coreTemplateFiles, 'fontManager.js'),
         path.resolve(
             c.paths.project.assets.dir,
             'runtime',
@@ -192,7 +193,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         )
     );
     copyFileSync(
-        path.resolve(supportFiles, 'fontManager.web.js'),
+        path.resolve(coreTemplateFiles, 'fontManager.web.js'),
         path.resolve(
             c.paths.project.assets.dir,
             'runtime',
@@ -317,8 +318,9 @@ const generateDefaultAssets = async (c, platform, sourcePath) => {
     }
 
     if (confirmAssets) {
+        const engine = getEngineRunnerByPlatform(c, c.platform);
         copyFolderContentsRecursiveSync(
-            path.join(c.paths.rnv.dir, `projectTemplate/assets/${platform}`),
+            path.join(engine.originalTemplateAssetsDir, platform),
             sourcePath
         );
     }
@@ -372,7 +374,7 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
     }
 
     // DEPRECATED SHARED
-    if (WEB_HOSTED_PLATFORMS.includes(platform)) {
+    if (c.runtime.currentPlatform?.isWebHosted) {
         const sourcePathShared = path.join(
             c.paths.project.appConfigBase.dir,
             'builds/_shared'

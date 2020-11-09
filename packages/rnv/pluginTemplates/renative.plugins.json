@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.32.0-alpha.1",
+            "version": "0.32.0-alpha.4",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -2721,6 +2721,9 @@
                 "package": "io.sentry.RNSentryPackage",
                 "implementation": "implementation project(':@sentry_react-native')"
             }
+        },
+        "@lightningjs/sdk": {
+            "version": "3.0.0"
         }
     }
 }

@@ -1,5 +1,6 @@
 module.exports = {
     collectCoverage: true,
     preset: 'react-native',
-    verbose: true
+    verbose: true,
+    rootDir: '../'
 };

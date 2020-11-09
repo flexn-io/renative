@@ -8,7 +8,7 @@ import {
     writeFileSync
 } from '../systemManager/fileutils';
 import { SUPPORTED_PLATFORMS } from '../constants';
-import { checkAndConfigureSdks } from '../sdkManager';
+import { checkAndConfigureSdks } from '../sdkManager/installer';
 import { getTimestampPathsConfig, getPlatformBuildDir } from '../common';
 
 
@@ -35,7 +35,7 @@ export const updateProjectPlatforms = (c, platforms) => {
 
 export const generatePlatformChoices = (c) => {
     const options = c.runtime.supportedPlatforms.map(v => ({
-        name: `${v.platform} - ${v.isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')} [${chalk().cyan(v.engine?.id)}]`,
+        name: `${v.platform} - ${v.isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')} [${chalk().cyan(v.engine?.config?.id)}]`,
         value: v.platform,
         isConnected: v.isConnected
     }));
@@ -205,3 +205,18 @@ export const copySharedPlatforms = c => new Promise((resolve) => {
 
     resolve();
 });
+
+export const ejectPlatform = (c, platform) => {
+    const engine = c.runtime.enginesByPlatform[platform];
+    const destDir = path.join(c.paths.project.dir, 'platformTemplates', platform);
+    const sourcePlatformDir = engine.originalTemplatePlatformsDir;
+    copyFolderContentsRecursiveSync(
+        path.join(sourcePlatformDir, platform),
+        destDir
+    );
+    // DEPRECATED: only for legacy support
+    copyFolderContentsRecursiveSync(
+        path.join(sourcePlatformDir, '_shared'),
+        destDir
+    );
+};

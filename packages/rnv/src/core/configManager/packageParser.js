@@ -5,8 +5,8 @@ import { executeAsync } from '../systemManager/exec';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { chalk, logInfo, logDebug, logTask } from '../systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
-import { getEngineConfigByPlatform } from '../engineManager';
-import { writeRenativeConfigFile } from '.';
+import { getEngineRunnerByPlatform } from '../engineManager';
+import { writeRenativeConfigFile } from './index';
 import { overrideTemplatePlugins } from '../pluginManager';
 
 
@@ -114,9 +114,9 @@ export const checkRequiredPackage = async (c, pkg, version = false, type, skipAs
 export const injectPlatformDependencies = async (c) => {
     logTask('injectPlatformDependencies');
     const { platform } = c;
-    const selectedEngine = getEngineConfigByPlatform(c, platform);
-    const npmDepsBase = selectedEngine?.npm || {};
-    const npmDepsExt = selectedEngine?.platforms[platform]?.npm || {};
+    const engine = getEngineRunnerByPlatform(c, platform);
+    const npmDepsBase = engine?.config?.npm || {};
+    const npmDepsExt = engine?.config?.platforms[platform]?.npm || {};
 
     const npmDeps = merge(npmDepsBase, npmDepsExt);
 
@@ -142,7 +142,7 @@ export const injectPlatformDependencies = async (c) => {
         if (installed.some(i => i === true)) {
             // do npm i only if something new is added
             logInfo(`Found extra npm dependencies required by ${
-                chalk().white(selectedEngine.id)
+                chalk().white(engine.config.id)
             } engine. ADDING...DONE`);
             await installPackageDependencies(c);
             await overrideTemplatePlugins(c);
