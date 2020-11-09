@@ -383,6 +383,24 @@ rnv plugin add @react-navigation
 ```
 
 
+## @sentry/react-native
+
+
+Version: `1.7.1`
+
+Platforms: `ios`,`tvos`,`android`,`androidtv`
+
+
+
+Npm: https://www.npmjs.com/package/@sentry/react-native
+
+Installation:
+
+```
+rnv plugin add @sentry/react-native
+```
+
+
 ## Crashlytics
 
 
@@ -506,6 +524,24 @@ Installation:
 
 ```
 rnv plugin add RCTPushNotification
+```
+
+
+## Sentry
+
+
+
+
+Platforms: `ios`
+
+
+
+
+
+Installation:
+
+```
+rnv plugin add Sentry
 ```
 
 
@@ -2762,7 +2798,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-alpha.4`
+Version: `0.32.0-alpha.5`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
