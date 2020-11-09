@@ -46,7 +46,7 @@ Contributing
 -->
 
 <p align="center">
-  <a href="#-quick-start">Quick Start</a> &bull;
+  <a href="#quick-start">Quick Start</a> &bull;
   <a href="#features">Features</a> &bull;
   <!-- <a href="#platforms">Platforms</a> &bull; -->
   <a href="#templates--starters">Templates</a> &bull;
