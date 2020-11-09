@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import _chalk from 'chalk';
+import stripAnsi from 'strip-ansi';
 
 const _chalkCols = {
     white: v => v,
@@ -56,7 +57,7 @@ export const logWelcome = () => {
     str += printIntoBox(`      $ ${currentChalk.cyan(getCurrentCommand(true))}`, 1);
     if (_c?.timeStart) {
         str += printIntoBox(
-            `      Start Time: ${_c.timeStart.toLocaleString()}`
+            `      Start Time: ${currentChalk.grey(_c.timeStart.toLocaleString())}`
         );
     }
     str += printIntoBox('');
@@ -417,25 +418,23 @@ export const logAppInfo = (c) => {
     )}`);
 };
 
-export const printIntoBox = (str2, intent = 0) => {
+export const printIntoBox = (str) => {
     let output = _defaultColor('│  ');
-    let chalkIntend = intent;
-    let endLine = '';
-    let intend;
-    if (_isMono) {
-        intend = 0;
-        chalkIntend = 0;
+
+    const strLenDiff = str.length - stripAnsi(str).length;
+    output += _defaultColor(str);
+    const maxLen = 76;
+    const len = maxLen - (str.length - strLenDiff);
+    if (len > 0) {
+        for (let i = 0; i < len; i++) {
+            output += ' ';
+        }
+        output += _defaultColor('│\n');
     } else {
-        intend = str2 === '' ? 1 : 2;
+        output += _defaultColor('\n');
     }
-    for (let i = 0; i < chalkIntend + intend; i++) {
-        endLine += '          ';
-    }
-    endLine
-        += '                                                                               │\n';
-    output += _defaultColor(str2);
-    const l = output.length - endLine.length;
-    output += _defaultColor(endLine.slice(l));
+
+
     return output;
 };
 
