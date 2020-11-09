@@ -11,7 +11,7 @@ const {
 } = Constants;
 const {
     getPlatformProjectDir,
-    getTemplateProjectDir,
+    // getTemplateProjectDir,
     getAppVersion,
     getConfigProp,
     checkPortInUse,
@@ -184,9 +184,10 @@ const _configureProject = c => new Promise((resolve) => {
 
     addSystemInjects(c, injects);
 
+    const file = path.join(getPlatformProjectDir(c), configFile);
     writeCleanFile(
-        path.join(getTemplateProjectDir(c), configFile),
-        path.join(getPlatformProjectDir(c), configFile),
+        file,
+        file,
         injects, null, c
     );
 
