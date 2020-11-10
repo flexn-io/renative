@@ -50,6 +50,7 @@ export const VIERACONNECT = 'vieraconnect';
 export const VIZIO = 'vizio';
 export const WATCHOS = 'watchos';
 export const WEB = 'web';
+export const WEBTV = 'webtv';
 export const WEBOS = 'webos';
 export const WEBIAN = 'webian';
 export const WII = 'wii';
@@ -58,7 +59,7 @@ export const WP10 = 'wp10';
 export const WP8 = 'wp8';
 export const XBOX = 'xbox';
 export const XBOX360 = 'xbox360';
-// Kodi, Boxee, HorizonTV, Mediaroom(Ericsson), YahooSmartTV, Slingbox, Hololens, Occulus, GearVR, WebVR
+// Kodi, Boxee, HorizonTV, Mediaroom(Ericsson), YahooSmartTV, Slingbox, Hololens, Occulus, GearVR, WebVR, Saphi
 
 export const ICONS = {
     PHONE: '📱',
@@ -152,6 +153,7 @@ export const SUPPORTED_PLATFORMS = [
     ANDROID_TV,
     ANDROID_WEAR,
     WEB,
+    WEBTV,
     TIZEN,
     TIZEN_MOBILE,
     TVOS,

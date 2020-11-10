@@ -81,6 +81,9 @@
         },
         "web": {
             "engine": "engine-rn-web"
+        },
+        "webtv": {
+            "engine": "engine-rn-web"
         }
     }
 }

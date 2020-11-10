@@ -38,6 +38,7 @@ export const VIERACONNECT = 'vieraconnect';
 export const VIZIO = 'vizio';
 export const WATCHOS = 'watchos';
 export const WEB = 'web';
+export const WEBTV = 'webtv';
 export const WEBOS = 'webos';
 export const WEBIAN = 'webian';
 export const WII = 'wii';

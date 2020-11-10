@@ -1,4 +1,25 @@
 {
+    "defaults": {
+        "supportedPlatforms": [
+            "android",
+            "androidtv",
+            "androidwear",
+            "ios",
+            "web",
+            "macos",
+            "tvos",
+            "tizen",
+            "tizenmobile",
+            "webos",
+            "windows",
+            "tizenwatch",
+            "kaios",
+            "firefoxos",
+            "firefoxtv",
+            "chromecast",
+            "webtv"
+        ]
+    },
     "engines": {
         "@rnv/engine-rn": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv",

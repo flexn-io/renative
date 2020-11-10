@@ -62,7 +62,7 @@ jest.mock('rnv', () => {
                 withRun: () => [],
                 withConfigure: () => []
             },
-            IOS: 'ios'
+            WEB: 'web'
         },
         TaskManager: {
             executeTask: () => null,
@@ -102,7 +102,22 @@ jest.mock('rnv', () => {
             },
             Android: {
 
+            },
+            Webos: {
+
+            },
+            Tizen: {
+
+            },
+            Kaios: {
+
             }
+        },
+        WebpackUtils: {
+            buildCoreWebpackProject: () => null,
+            runWebpackServer: () => 'runWebpackServer called',
+            configureCoreWebProject: () => null,
+            waitForWebpack: () => null,
         }
     };
 });
@@ -116,11 +131,11 @@ afterEach(() => {
 });
 
 const originTask = {};
-const c = generateConfig({});
+const c = generateConfig({ platform: 'web' });
 
 test('Execute task.rnv.run', async () => {
     // const taskManager = require('../../src/core/taskManager/index.js');
     // await taskRnvRun.fn(c, null, originTask);
-    await expect(taskRnvRun.fn(c, null, originTask)).resolves.toEqual(true);
+    await expect(taskRnvRun.fn(c, null, originTask)).resolves.toEqual('runWebpackServer called');
     // expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform list', originTask);
 });

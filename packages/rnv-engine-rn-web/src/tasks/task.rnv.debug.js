@@ -2,7 +2,7 @@ import { Constants, Logger, PlatformManager, Exec } from 'rnv';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const { WEB, TIZEN, PARAMS } = Constants;
+const { WEB, WEBTV, TIZEN, PARAMS } = Constants;
 const { executeAsync } = Exec;
 
 export const taskRnvDebug = async (c, parentTask) => {
@@ -12,6 +12,7 @@ export const taskRnvDebug = async (c, parentTask) => {
 
     switch (platform) {
         case WEB:
+        case WEBTV:
         case TIZEN:
             return executeAsync(c, 'npx weinre --boundHost -all-');
         default:
@@ -26,6 +27,7 @@ export default {
     params: PARAMS.withBase(),
     platforms: [
         WEB,
+        WEBTV,
         TIZEN
     ],
 };

@@ -6,6 +6,7 @@ const { logErrorPlatform } = PlatformManager;
 const { logTask, logError } = Logger;
 const {
     WEB,
+    WEBTV,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -43,6 +44,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case WEB:
+        case WEBTV:
         case TIZEN:
         case WEBOS:
         case TIZEN_MOBILE:
@@ -67,6 +69,7 @@ export default {
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,
+        WEBTV,
         TIZEN,
         WEBOS,
         TIZEN_MOBILE,

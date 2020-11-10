@@ -118,7 +118,7 @@ export const registerMissingPlatformEngines = async (c, taskInstance) => {
 };
 
 export const loadEngines = async (c) => {
-    logTask('loadEngineConfigs');
+    logTask('loadEngines');
     const engines = c.buildConfig?.engines;
     // c.runtime.engineConfigs = {};
     const enginesToInstall = [];
@@ -238,6 +238,9 @@ const _registerPlatformEngine = (c, platform) => {
         } else {
             _registerEnginePlatform(c, platform, existingEngine);
         }
+    } else {
+        logWarning(`Could not find suitable engine for platform ${platform}
+Maybe you forgot to define platforms.${platform}.engine in your renative.json?`);
     }
 };
 

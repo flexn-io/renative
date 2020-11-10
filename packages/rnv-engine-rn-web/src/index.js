@@ -51,6 +51,14 @@ export default {
             ], CNF)
 
         },
+        webtv: {
+            defaultPort: 8096,
+            isWebHosted: true,
+            extenstions: generateEngineExtensions([
+                'webtv.tv', 'web.tv', 'tv', 'webtv', 'tv.web', 'web'
+            ], CNF)
+
+        },
         tizenmobile: {
             defaultPort: 8091,
             isWebHosted: true,

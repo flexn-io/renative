@@ -9,6 +9,8 @@ import {
     isPlatformWebos
 } from '../is';
 
+export isWebBased from './isWebBased';
+
 export { factor, engine, platform };
 
 export const getScaledValue = (v) => {

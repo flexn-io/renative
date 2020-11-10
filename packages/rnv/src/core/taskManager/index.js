@@ -53,6 +53,7 @@ const _getTaskObj = (taskInstance) => {
 };
 
 export const findSuitableTask = async (c) => {
+    logTask('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines();
     if (!c.command) {
         const suitableTaskInstances = {};

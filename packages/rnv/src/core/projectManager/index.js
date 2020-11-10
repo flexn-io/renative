@@ -238,18 +238,7 @@ const ASSET_PATH_ALIASES = {
     androidtv: 'app/src/main',
     androidwear: 'app/src/main',
     ios: 'RNVApp',
-    tvos: 'RNVAppTVOS',
-    tizen: '',
-    tizenmobile: '',
-    tizenwatch: '',
-    webos: '',
-    kaios: '',
-    firefoxtv: '',
-    firefoxos: '',
-    windows: '',
-    macos: '',
-    web: '',
-    chromecast: ''
+    tvos: 'RNVAppTVOS'
 };
 
 export const copyAssetsFolder = async (c, platform, customFn) => {
@@ -284,7 +273,7 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
 
     const destPath = path.join(
         getPlatformProjectDir(c, platform),
-        ASSET_PATH_ALIASES[platform]
+        ASSET_PATH_ALIASES[platform] || ''
     );
 
     const tsPathsConfig = getTimestampPathsConfig(c, platform);

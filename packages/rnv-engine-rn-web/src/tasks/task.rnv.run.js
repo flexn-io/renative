@@ -8,6 +8,7 @@ const { logErrorPlatform } = PlatformManager;
 const { logTask, logDebug } = Logger;
 const {
     WEB,
+    WEBTV,
     TIZEN,
     WEBOS,
     TIZEN_MOBILE,
@@ -72,6 +73,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case WEB:
+        case WEBTV:
             c.runtime.shouldOpenBrowser = true;
             return runWebpackServer(c);
         case TIZEN:
@@ -107,6 +109,7 @@ export default {
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [
         WEB,
+        WEBTV,
         TIZEN,
         WEBOS,
         TIZEN_MOBILE,

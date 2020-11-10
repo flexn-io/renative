@@ -1,4 +1,5 @@
-// TODO: conver to proper jest preset
+// TODO: convert to proper jest preset
+const merge = require('deepmerge');
 
 const DEFAULT_C = {
     runtime: {
@@ -152,5 +153,5 @@ const DEFAULT_C = {
 };
 
 module.exports = {
-    generateConfig: () => ({ ...DEFAULT_C }),
+    generateConfig: (cOverride = {}) => merge(DEFAULT_C, cOverride),
 };

@@ -22,6 +22,7 @@
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
         "prepublishOnly": "yarn build",
+        "test": "jest -c __tests__/jest.config.js",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
