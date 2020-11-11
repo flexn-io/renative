@@ -57,16 +57,81 @@
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">React Native Electron Engine</h1></header><article><div><span><p><img src="https://renative.org/img/ic_engine.png" width=50 height=50 /></p>
 <!--AUTO_GENERATED_START-->
 <h2><a class="anchor" aria-hidden="true" id="overview"></a><a href="#overview" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
-<p>undefined</p>
+<p>React native based engine with web transpiler provided by react-native-web and native desktop wrapper provided by electron</p>
 <h2><a class="anchor" aria-hidden="true" id="supported-platforms"></a><a href="#supported-platforms" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supported Platforms</h2>
-<p><a href="/docs/next/platform-macos">macos</a>, <a href="/docs/next/platform-windows">windows</a></p>
+<p><a href="/docs/next/platforms/macos">macos</a>, <a href="/docs/next/platforms/windows">windows</a></p>
 <h2><a class="anchor" aria-hidden="true" id="required-plugins"></a><a href="#required-plugins" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Required Plugins</h2>
-<p><a href="plugins#macos">macos</a>, <a href="plugins#windows">windows</a></p>
+<p><a href="../plugins#react">react</a>, <a href="../plugins#react-art">react-art</a>, <a href="../plugins#react-dom">react-dom</a>, <a href="../plugins#react-native">react-native</a>, <a href="../plugins#react-native-web">react-native-web</a>, <a href="../plugins#react-native-communitycli-platform-ios">@react-native-community/cli-platform-ios</a>, <a href="../plugins#react-native-communitycli">@react-native-community/cli</a></p>
 <h2><a class="anchor" aria-hidden="true" id="required-npm-packages"></a><a href="#required-npm-packages" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Required NPM Packages</h2>
-<h2><a class="anchor" aria-hidden="true" id="macos-devdependencies"></a><a href="#macos-devdependencies" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>macos (devDependencies)</h2>
-<h2><a class="anchor" aria-hidden="true" id="windows-devdependencies"></a><a href="#windows-devdependencies" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>windows (devDependencies)</h2>
+<h2><a class="anchor" aria-hidden="true" id="extensions"></a><a href="#extensions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extensions</h2>
+<table>
+<thead>
+<tr><th>Extension</th><th style="text-align:center">Priority</th></tr>
+</thead>
+<tbody>
+<tr><td><code>engine-rn-electron.jsx</code></td><td style="text-align:center">1</td></tr>
+<tr><td><code>engine-rn-electron.js</code></td><td style="text-align:center">2</td></tr>
+<tr><td><code>engine-rn-electron.tsx</code></td><td style="text-align:center">3</td></tr>
+<tr><td><code>engine-rn-electron.ts</code></td><td style="text-align:center">4</td></tr>
+<tr><td><code>windows.desktop.rne.jsx</code></td><td style="text-align:center">5</td></tr>
+<tr><td><code>windows.desktop.jsx</code></td><td style="text-align:center">6</td></tr>
+<tr><td><code>windows.desktop.rne.js</code></td><td style="text-align:center">7</td></tr>
+<tr><td><code>windows.desktop.js</code></td><td style="text-align:center">8</td></tr>
+<tr><td><code>windows.desktop.rne.tsx</code></td><td style="text-align:center">9</td></tr>
+<tr><td><code>windows.desktop.tsx</code></td><td style="text-align:center">10</td></tr>
+<tr><td><code>windows.desktop.rne.ts</code></td><td style="text-align:center">11</td></tr>
+<tr><td><code>windows.desktop.ts</code></td><td style="text-align:center">12</td></tr>
+<tr><td><code>desktop.rne.jsx</code></td><td style="text-align:center">13</td></tr>
+<tr><td><code>desktop.jsx</code></td><td style="text-align:center">14</td></tr>
+<tr><td><code>desktop.rne.js</code></td><td style="text-align:center">15</td></tr>
+<tr><td><code>desktop.js</code></td><td style="text-align:center">16</td></tr>
+<tr><td><code>desktop.rne.tsx</code></td><td style="text-align:center">17</td></tr>
+<tr><td><code>desktop.tsx</code></td><td style="text-align:center">18</td></tr>
+<tr><td><code>desktop.rne.ts</code></td><td style="text-align:center">19</td></tr>
+<tr><td><code>desktop.ts</code></td><td style="text-align:center">20</td></tr>
+<tr><td><code>windows.rne.jsx</code></td><td style="text-align:center">21</td></tr>
+<tr><td><code>windows.jsx</code></td><td style="text-align:center">22</td></tr>
+<tr><td><code>windows.rne.js</code></td><td style="text-align:center">23</td></tr>
+<tr><td><code>windows.js</code></td><td style="text-align:center">24</td></tr>
+<tr><td><code>windows.rne.tsx</code></td><td style="text-align:center">25</td></tr>
+<tr><td><code>windows.tsx</code></td><td style="text-align:center">26</td></tr>
+<tr><td><code>windows.rne.ts</code></td><td style="text-align:center">27</td></tr>
+<tr><td><code>windows.ts</code></td><td style="text-align:center">28</td></tr>
+<tr><td><code>desktop.web.rne.jsx</code></td><td style="text-align:center">29</td></tr>
+<tr><td><code>desktop.web.jsx</code></td><td style="text-align:center">30</td></tr>
+<tr><td><code>desktop.web.rne.js</code></td><td style="text-align:center">31</td></tr>
+<tr><td><code>desktop.web.js</code></td><td style="text-align:center">32</td></tr>
+<tr><td><code>desktop.web.rne.tsx</code></td><td style="text-align:center">33</td></tr>
+<tr><td><code>desktop.web.tsx</code></td><td style="text-align:center">34</td></tr>
+<tr><td><code>desktop.web.rne.ts</code></td><td style="text-align:center">35</td></tr>
+<tr><td><code>desktop.web.ts</code></td><td style="text-align:center">36</td></tr>
+<tr><td><code>electron.rne.jsx</code></td><td style="text-align:center">37</td></tr>
+<tr><td><code>electron.jsx</code></td><td style="text-align:center">38</td></tr>
+<tr><td><code>electron.rne.js</code></td><td style="text-align:center">39</td></tr>
+<tr><td><code>electron.js</code></td><td style="text-align:center">40</td></tr>
+<tr><td><code>electron.rne.tsx</code></td><td style="text-align:center">41</td></tr>
+<tr><td><code>electron.tsx</code></td><td style="text-align:center">42</td></tr>
+<tr><td><code>electron.rne.ts</code></td><td style="text-align:center">43</td></tr>
+<tr><td><code>electron.ts</code></td><td style="text-align:center">44</td></tr>
+<tr><td><code>web.rne.jsx</code></td><td style="text-align:center">45</td></tr>
+<tr><td><code>web.jsx</code></td><td style="text-align:center">46</td></tr>
+<tr><td><code>web.rne.js</code></td><td style="text-align:center">47</td></tr>
+<tr><td><code>web.js</code></td><td style="text-align:center">48</td></tr>
+<tr><td><code>web.rne.tsx</code></td><td style="text-align:center">49</td></tr>
+<tr><td><code>web.tsx</code></td><td style="text-align:center">50</td></tr>
+<tr><td><code>web.rne.ts</code></td><td style="text-align:center">51</td></tr>
+<tr><td><code>web.ts</code></td><td style="text-align:center">52</td></tr>
+<tr><td><code>jsx</code></td><td style="text-align:center">53</td></tr>
+<tr><td><code>js</code></td><td style="text-align:center">54</td></tr>
+<tr><td><code>tsx</code></td><td style="text-align:center">55</td></tr>
+<tr><td><code>ts</code></td><td style="text-align:center">56</td></tr>
+<tr><td><code>mjs</code></td><td style="text-align:center">57</td></tr>
+<tr><td><code>json</code></td><td style="text-align:center">58</td></tr>
+<tr><td><code>wasm</code></td><td style="text-align:center">59</td></tr>
+</tbody>
+</table>
 <!--AUTO_GENERATED_END-->
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/engines/engine-rn-web"><span class="arrow-prev">← </span><span>React Native Web</span></a><a class="docs-next button" href="/docs/next/engines/engine-rn-next"><span>React Native Next</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#overview">Overview</a></li><li><a href="#supported-platforms">Supported Platforms</a></li><li><a href="#required-plugins">Required Plugins</a></li><li><a href="#required-npm-packages">Required NPM Packages</a></li><li><a href="#macos-devdependencies">macos (devDependencies)</a></li><li><a href="#windows-devdependencies">windows (devDependencies)</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.png" alt="ReNative" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/intro-installation">Getting Started</a><a href="/docs/platform">Platforms</a><a href="/docs/guide-cli">Guides</a></div><div><h5>Community</h5><a href="https://spectrum.chat/renative">Project Chat</a><a href="https://twitter.com/renative" target="_blank" rel="noreferrer noopener">Twitter</a><a href="/help">Contributors</a></div><div><h5>More</h5><a href="https://github.com/pavjacko/renative">GitHub</a><a class="github-button" href="https://github.com/pavjacko/renative" data-icon="octicon-star" data-count-href="/pavjacko/renative/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><div class="social"><a href="https://twitter.com/renative" class="twitter-follow-button">Follow @renative</a></div></div></section><section class="copyright"></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script><script>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/next/engines/engine-rn-web"><span class="arrow-prev">← </span><span>React Native Web</span></a><a class="docs-next button" href="/docs/next/engines/engine-rn-next"><span>React Native Next</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#overview">Overview</a></li><li><a href="#supported-platforms">Supported Platforms</a></li><li><a href="#required-plugins">Required Plugins</a></li><li><a href="#required-npm-packages">Required NPM Packages</a></li><li><a href="#extensions">Extensions</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.png" alt="ReNative" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/intro-installation">Getting Started</a><a href="/docs/platform">Platforms</a><a href="/docs/guide-cli">Guides</a></div><div><h5>Community</h5><a href="https://spectrum.chat/renative">Project Chat</a><a href="https://twitter.com/renative" target="_blank" rel="noreferrer noopener">Twitter</a><a href="/help">Contributors</a></div><div><h5>More</h5><a href="https://github.com/pavjacko/renative">GitHub</a><a class="github-button" href="https://github.com/pavjacko/renative" data-icon="octicon-star" data-count-href="/pavjacko/renative/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><div class="social"><a href="https://twitter.com/renative" class="twitter-follow-button">Follow @renative</a></div></div></section><section class="copyright"></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
