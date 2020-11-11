@@ -34,7 +34,7 @@ const _generateEngineDoc = (c, engine) => {
         }
         npmPackages += `${output}\n\n`;
 
-        extensions = _getExtensionContent(c, v, engine);
+        extensions += _getExtensionContent(c, v, engine);
     });
 
 
@@ -77,6 +77,7 @@ ${extContent}
 const _getExtensionContent = (c, platform, engine) => {
     let out = '';
     const p = engine?.platforms?.[platform];
+    out += `### ${platform}\n\n`;
     const extenstions = p?.extenstions;
     if (extenstions) {
         out += `| Extension | Priority  |
