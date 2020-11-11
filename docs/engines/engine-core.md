@@ -11,7 +11,7 @@ sidebar_label: Core
 
 ## Overview
 
-undefined
+N/A
 
 ## Supported Platforms
 
@@ -22,6 +22,10 @@ undefined
 
 
 ## Required NPM Packages
+
+
+
+## Extensions
 
 
 

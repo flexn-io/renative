@@ -9,10 +9,7 @@ import { doResolve } from '../systemManager/resolve';
 export const executePipe = async (c, key) => {
     logHook('executePipe', `('${key}')`);
 
-    const pipesConfig = c.buildConfig?.pipes;
-    if (!pipesConfig || (pipesConfig && pipesConfig.includes(key))) {
-        await buildHooks(c);
-    }
+    await buildHooks(c);
 
     const pipe = c.buildPipes ? c.buildPipes[key] : null;
 
@@ -60,6 +57,7 @@ export const buildHooks = async (c) => {
         if (shouldBuildHook && !c.isBuildHooksReady) {
             try {
                 logHook('buildHooks', 'Build hooks not complied. BUILDING...');
+                // removeDirsSync([c.paths.buildHooks.dist.dir]);
                 await executeAsync(
                     c,
                     `babel ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir}`,
@@ -72,9 +70,11 @@ export const buildHooks = async (c) => {
             c.isBuildHooksReady = true;
         }
 
-        const h = require(c.paths.buildHooks.dist.index);
+        let h = require(c.paths.buildHooks.dist.index);
+
         c.buildHooks = h.hooks;
         c.buildPipes = h.pipes;
+        h = require(c.paths.buildHooks.dist.index);
     }
 
     return true;

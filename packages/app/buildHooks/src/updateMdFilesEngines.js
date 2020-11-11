@@ -20,8 +20,9 @@ const _generateEngineDoc = (c, engine) => {
     const fileContent = fs.readFileSync(docFilePath).toString();
 
     let npmPackages = '';
+    let extensions = '';
 
-    const enginePlatforms = engine.config?.platforms || [];
+    const enginePlatforms = engine?.platforms || {};
 
     Object.keys(enginePlatforms).forEach((v) => {
         const { npm } = enginePlatforms[v];
@@ -32,25 +33,31 @@ const _generateEngineDoc = (c, engine) => {
             });
         }
         npmPackages += `${output}\n\n`;
+
+        extensions = _getExtensionContent(c, v, engine);
     });
 
 
     const extContent = `
 ## Overview
 
-${engine.overview}
+${engine.config?.overview || 'N/A'}
 
 ## Supported Platforms
 
-${Object.keys(enginePlatforms).map(v => `[${v}](platform-${v}.md)`).join(', ')}
+${Object.keys(enginePlatforms).map(v => `[${v}](platforms/${v}.md)`).join(', ')}
 
 ## Required Plugins
 
-${Object.keys(enginePlatforms).map(v => `[${v}](plugins#${cleanUrl(v)})`).join(', ')}
+${Object.keys(engine.config?.plugins || {}).map(v => `[${v}](../plugins#${cleanUrl(v)})`).join(', ')}
 
 ## Required NPM Packages
 
 ${npmPackages}
+
+## Extensions
+
+${extensions}
 
 `;
 
@@ -67,32 +74,19 @@ ${extContent}
 };
 
 
-// const _getExtensionContent = (c, platform) => {
-//     let out = '';
-//     console.log('SKHSJS', c.runtime.enginesByPlatform[platform]);
-//     const p = c.runtime.enginesByPlatform[platform]?.PLATFORMS[platform];
-//     if (p.sourceExts) {
-//         let i = 1;
-//         // out += `\n\n-------${platform}---------\n\n`;
-//         out += `| Extension | Type    | Priority  |
-// | --------- | --------- | :-------: |\n`;
-//         const factors = p.sourceExts.factors || [];
-//         const platforms = p.sourceExts.platforms || [];
-//         const fallbacks = p.sourceExts.fallbacks || [];
-//         // const merged = [...factors, ...platforms, ...fallbacks];
-//         factors.forEach((v) => {
-//             out += `| \`${v}\` | \`form factor\` | ${i} |\n`;
-//             i++;
-//         });
-//         platforms.forEach((v) => {
-//             out += `| \`${v}\` | \`platform\` | ${i} |\n`;
-//             i++;
-//         });
-//         fallbacks.forEach((v) => {
-//             out += `| \`${v}\` | \`fallback\` | ${i} |\n`;
-//             i++;
-//         });
-//     }
-//
-//     return out;
-// };
+const _getExtensionContent = (c, platform, engine) => {
+    let out = '';
+    const p = engine?.platforms?.[platform];
+    const extenstions = p?.extenstions;
+    if (extenstions) {
+        out += `| Extension | Priority  |
+      | --------- | :-------: |\n`;
+        let i = 1;
+        extenstions.forEach((v) => {
+            out += `| \`${v}\` | ${i} |\n`;
+            i++;
+        });
+    }
+
+    return out;
+};

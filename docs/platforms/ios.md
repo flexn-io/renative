@@ -27,7 +27,9 @@ sidebar_label: iOS
 
 <!--EXTENSION_SUPPORT_START-->
 
-Extenstions are defined via engines
+Extenstions are defined via engines. Engines with ios support: 
+- [engine-rn](../engines/engine-rn#extensions)
+
 <!--EXTENSION_SUPPORT_END-->
 
 ## Requirements

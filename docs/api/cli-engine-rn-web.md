@@ -21,7 +21,7 @@ More info at [undefined Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `webtv`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
 
 Example:
 
@@ -135,7 +135,7 @@ More info at [undefined Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `webtv`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
 
 Example:
 
@@ -184,7 +184,7 @@ More info at [undefined Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `webtv`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
 
 Example:
 
@@ -233,7 +233,7 @@ More info at [undefined Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `webtv`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
 
 Example:
 
@@ -331,7 +331,7 @@ More info at [undefined Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`web`, `webtv`, `tizen`, `webos`, `tizenmobile`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
 
 Example:
 
@@ -380,7 +380,7 @@ More info at [undefined Guide](engine-rn-web.md)
 
 Supported Platforms:
 
-`web`, `tizen`
+`web`, `webtv`, `tizen`
 
 Example:
 

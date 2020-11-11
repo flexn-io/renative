@@ -299,6 +299,7 @@ ${t.params.map((v) => {
     }
     const inOnlyMode = c.program.only;
     const doPipe = !t.isGlobalScope && (!inOnlyMode || (inOnlyMode && isFirstTask));
+    c.runtime.forceBuildHookRebuild = t.forceBuildHookRebuild;
     if (doPipe) await _executePipe(c, task, 'before');
     await t.fn(c, parentTask, originTask);
     if (doPipe) await _executePipe(c, task, 'after');

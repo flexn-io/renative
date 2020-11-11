@@ -42,11 +42,21 @@ const _registerEnginePlatform = (c, platform, engine) => {
 export const registerEngineExtension = (ext, eExt, extras = []) => {
     const e1 = ext ? `${ext}.` : '';
     const e2 = eExt ? `${eExt}.` : '';
-    const extArr = [
-        `${e1}${e2}jsx`, `${e1}jsx`, `${e1}${e2}js`, `${e1}js`,
-        `${e1}${e2}tsx`, `${e1}tsx`, `${e1}${e2}ts`, `${e1}ts`,
-        ...extras
-    ];
+    let extArr;
+    if (eExt) {
+        extArr = [
+            `${e1}${e2}jsx`, `${e1}jsx`, `${e1}${e2}js`, `${e1}js`,
+            `${e1}${e2}tsx`, `${e1}tsx`, `${e1}${e2}ts`, `${e1}ts`,
+            ...extras
+        ];
+    } else {
+        extArr = [
+            `${e1}jsx`, `${e1}js`,
+            `${e1}tsx`, `${e1}ts`,
+            ...extras
+        ];
+    }
+
     return extArr;
 };
 

@@ -29,8 +29,16 @@ ${extContent}
     return true;
 };
 
-const _getExtensionContent = () => {
-    const out = 'Extenstions are defined via engines';
+const _getExtensionContent = (c, platform) => {
+    let out = `Extenstions are defined via engines. Engines with ${platform} support: \n`;
+
+    const engines = c.runtime.enginesById;
+
+    Object.values(engines).forEach((engine) => {
+        if (Object.keys(engine.platforms || {}).includes(platform)) {
+            out += `- [${engine.config.id}](../engines/${engine.config.id}#extensions)\n`;
+        }
+    });
 
 
     return out;

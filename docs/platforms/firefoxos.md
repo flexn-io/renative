@@ -21,7 +21,9 @@ sidebar_label: Firefox OS
 
 <!--EXTENSION_SUPPORT_START-->
 
-Extenstions are defined via engines
+Extenstions are defined via engines. Engines with firefoxos support: 
+- [engine-rn-web](../engines/engine-rn-web#extensions)
+
 <!--EXTENSION_SUPPORT_END-->
 
 ## Requirements

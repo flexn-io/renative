@@ -9,7 +9,6 @@ export const taskRnvHooksRun = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksRun');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_RUN, originTask);
-    c.runtime.forceBuildHookRebuild = true;
     await buildHooks(c);
 
     if (!c.buildHooks) {
@@ -35,7 +34,6 @@ export const taskRnvHooksRun = async (c, parentTask, originTask) => {
         });
         hookName = selectedHook;
     }
-
     await c.buildHooks[hookName](c);
 
 
@@ -50,4 +48,5 @@ export default {
     platforms: [],
     skipAppConfig: true,
     skipPlatforms: true,
+    forceBuildHookRebuild: true
 };

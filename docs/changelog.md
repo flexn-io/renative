@@ -5,6 +5,56 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.5 (2020-11-9)
+
+### Fixed
+
+- [fix] logger output
+- Merge branch 'fix/tizen-config' of github.com:simpleTechs/renative into simpleTechs-fix/tizen-config
+- Merge pull request #612 from pavjacko/feat/sentry-plugin
+- Merge branch 'develop' into feat/sentry-plugin
+- Merge pull request #610 from pierosavi/fix/readme-quickstart-href
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.32.0-alpha.4 (2020-11-9)
+
+### Fixed
+
+- [id] app config edge cases
+- [fix] enable remote modules in macos
+- [fix] support custom appconfigs paths
+- [fix] reload engines after install
+- Sentry plugin
+- fix typo
+- fix config.xml not being editable
+- Fix README quick start href
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- SetupTools deprecated
+- PluginTools deprecated
+- DeployManager deprecated
+- Must use engines definition in renative.json
+- getSourceExts DEPRECATED
+- getSourceExtsAsString DEPRECATED
+- Common.waitForUrl moved to WebpackUtils.waitForUrl
+- Common.getSourceExts moved to EngineManager.getSourceExts
+- Common.getAppFolder DEPRECATED
+- Common.getAppTemplateFolder DEPRECATED
+- Common.areNodeModulesInstalled moved to NPMUtils.areNodeModulesInstalled
+- Common.importPackageFromProject DEPRECATED
+
 ## v0.32.0-alpha.3 (2020-11-6)
 
 ### Fixed
