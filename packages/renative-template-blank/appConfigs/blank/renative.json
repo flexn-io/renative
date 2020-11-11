@@ -140,6 +140,19 @@
                 }
             }
         },
+        "webtv": {
+            "entryFile": "index.webtv",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false,
+                    "environment": "developement"
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "environment": "production"
+                }
+            }
+        },
         "webos": {
             "entryFile": "index.webos"
         },

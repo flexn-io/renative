@@ -5,6 +5,48 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.6 (2020-11-11)
+
+### Fixed
+
+- [fix] buildHooks, update docs
+- [feat] add support for webtv
+- [fix] changelogs
+
+### Added Features
+
+- none
+
+### Deprecated
+
+renative runtime deprecated API:
+
+- isEngineWeb
+- isEngineNative
+- isBrowser
+- isDesktop
+- isMobile
+- isTv
+- isWatch
+- isAndroid
+- isAndroidtv
+- isAndroidwear
+- isIos
+- isTvos
+- isWeb
+- isWebos
+- isTizen
+- isTizenwatch
+- isTizenmobile
+- isMacos
+- isWindows
+- isFirefoxos
+- isFirefoxtv
+- isKaios
+- isWebtv
+
+### Breaking Changes
+
 ## v0.32.0-alpha.5 (2020-11-9)
 
 ### Fixed

@@ -248,6 +248,28 @@
                "type": "none"
             }
         },
+        "webtv": {
+            "entryFile": "index.webtv",
+            "pagesDir": "src/pages",
+            "webpackConfig": {
+                "devServerHost": "0.0.0.0",
+                "baseUrl": ""
+            },
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "environment": "production"
+                }
+            },
+            "deploy": {
+               "type": "none"
+            }
+        },
         "webos": {
             "entryFile": "index.webos",
             "buildSchemes": {

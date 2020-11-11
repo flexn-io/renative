@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-electron",
-    "version": "0.32.0-alpha.5",
+    "version": "0.32.0-alpha.6",
     "description": "ReNative Engine to build electron based platforms with react native support.",
     "keywords": [
         "electron",

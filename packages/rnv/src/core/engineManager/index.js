@@ -248,7 +248,7 @@ const _registerPlatformEngine = (c, platform) => {
         } else {
             _registerEnginePlatform(c, platform, existingEngine);
         }
-    } else {
+    } else if (platform) {
         logWarning(`Could not find suitable engine for platform ${platform}
 Maybe you forgot to define platforms.${platform}.engine in your renative.json?`);
     }
