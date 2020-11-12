@@ -33,9 +33,7 @@ const {
 } = ProjectManager;
 const {
     CLI_WEBOS_ARES_PACKAGE,
-    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
-    RNV_PROJECT_DIR_NAME,
-    RNV_SERVER_DIR_NAME
+    REMOTE_DEBUGGER_ENABLED_PLATFORMS
 } = Constants;
 const { runWebosSimOrDevice } = SDKManager.Webos;
 
@@ -119,10 +117,8 @@ export const configureWebOSProject = async (c) => {
 
     if (!isPlatformActive(c, platform)) return;
 
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-
     await copyAssetsFolder(c, platform);
-    await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
+    await configureCoreWebProject(c);
     await _configureProject(c);
     return copyBuildsFolder(c, platform);
 };

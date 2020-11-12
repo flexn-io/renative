@@ -122,6 +122,9 @@ export const schemaRoot = {
                 isWrapper: {
                     type: 'boolean',
                 },
+                forceBundleAssets: {
+                    type: 'boolean',
+                },
                 missingEnginePlugins: {
                     additionalProperties: true,
                     type: 'object',

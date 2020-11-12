@@ -1,11 +1,10 @@
 
-import { WebpackUtils, Common, Logger, Constants, PlatformManager, ProjectManager } from 'rnv';
+import { WebpackUtils, Common, Logger, PlatformManager, ProjectManager } from 'rnv';
 
-const { getPlatformProjectDir, getConfigProp } = Common;
+const { getPlatformProjectDir } = Common;
 const { isPlatformActive } = PlatformManager;
 const { logTask } = Logger;
 const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
-const { RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR_NAME } = Constants;
 
 const { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } = WebpackUtils;
 
@@ -21,10 +20,7 @@ export const configureWebProject = async (c) => {
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);
-
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-
-    await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
+    await configureCoreWebProject(c);
 
     return copyBuildsFolder(c, platform);
 };
@@ -36,10 +32,8 @@ export const configureChromecastProject = async (c) => {
 
     c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
-
     await copyAssetsFolder(c, c.platform);
-    await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
+    await configureCoreWebProject(c);
     await _configureProject(c);
     return copyBuildsFolder(c, c.platform);
 };

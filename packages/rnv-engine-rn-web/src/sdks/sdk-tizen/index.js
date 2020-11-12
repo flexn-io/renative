@@ -5,9 +5,7 @@ import { Exec, WebpackUtils, FileUtils, Common, Logger, Constants, SDKManager, P
 const { execCLI } = Exec;
 const {
     CLI_TIZEN,
-    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
-    RNV_PROJECT_DIR_NAME,
-    RNV_SERVER_DIR_NAME
+    REMOTE_DEBUGGER_ENABLED_PLATFORMS
 } = Constants;
 const {
     getPlatformProjectDir,
@@ -160,10 +158,8 @@ export const configureTizenProject = async (c) => {
         await configureTizenGlobal(c);
     }
 
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-
     await copyAssetsFolder(c, platform);
-    await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
+    await configureCoreWebProject(c);
     await _configureProject(c);
     return copyBuildsFolder(c, platform);
 };

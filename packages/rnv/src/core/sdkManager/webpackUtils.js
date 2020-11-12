@@ -96,9 +96,7 @@ const _generateWebpackConfigs = (c, subFolderName) => {
         assetVersion = `-${c.runtime.timestamp}`;
     }
 
-    // const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
-    // Build aways bundles assets
-    const bundleAssets = true;
+    const bundleAssets = c.runtime.forceBundleAssets || getConfigProp(c, c.platform, 'bundleAssets', false);
 
     const obj = {
         modulePaths,
@@ -258,7 +256,7 @@ const _runWebDevServer = async (c, enableRemoteDebugger) => {
     const { debug } = c.program;
 
     const appFolder = getPlatformBuildDir(c);
-    const wpPublic = path.join(appFolder, 'server');
+    const wpPublic = path.join(appFolder, RNV_SERVER_DIR_NAME);
     const wpConfig = path.join(appFolder, 'webpack.config.dev.js');
     const debugObj = { lineBreaks: '\n\n\n', debugVariables: '', remoteDebuggerActive: false };
     let debugOrder = [_runRemoteDebuggerChii, _runRemoteDebuggerWeinre];

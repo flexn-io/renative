@@ -3821,6 +3821,13 @@
     html-webpack-harddisk-plugin "0.2.0"
     html-webpack-plugin "3.2.0"
 
+"@rnv/integration-docker@0.1.0-alpha.0":
+  version "0.1.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@rnv/integration-docker/-/integration-docker-0.1.0-alpha.0.tgz#a9bb0c3a8aa56c900f1bb215f124a7ca2a77b191"
+  integrity sha512-Bz82Mjp7aWAhHPWi+NqMcF0IT/9B3A9SKrxhwySu30AbzZm/WzPvZjnzUMzcX3y1L70dP3i3ZM8dkn4Fa1Ht2Q==
+  dependencies:
+    get-installed-path "^4.0.8"
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.1.tgz#a21117b19ee9be70c379ec1877537ef2e1c63301"

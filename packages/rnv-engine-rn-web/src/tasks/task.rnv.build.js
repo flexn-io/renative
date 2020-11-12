@@ -28,6 +28,9 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
 
     const { platform } = c;
 
+    // Build aways bundles assets
+    c.runtime.forceBundleAssets = true;
+
     await executeOrSkipTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
 
     switch (platform) {

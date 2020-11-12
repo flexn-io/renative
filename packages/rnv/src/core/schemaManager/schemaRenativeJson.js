@@ -222,7 +222,7 @@ const commonProps = {
     },
     author: {
         additionalProperties: true,
-        type: 'object'
+        type: ['object', 'string']
     },
     includedFonts: {
         type: 'array',
@@ -650,6 +650,16 @@ const platformWebProps = {
     }
 };
 
+const platformWebtvProps = {
+    ...engineRnWebConfig,
+    pagesDir: {
+        type: 'string'
+    },
+    environment: {
+        type: 'string'
+    }
+};
+
 const platformTizenProps = {
     ...engineRnWebConfig,
     package: {
@@ -674,6 +684,9 @@ const platformFirefoxProps = {
 const platformMacosProps = {
     ...engineRnElectronConfig,
     appleId: {
+        type: 'string'
+    },
+    environment: {
         type: 'string'
     }
 };
@@ -882,6 +895,13 @@ const pluginProps = {
             ...commonPluginPlatformProps,
         }
     },
+    webtv: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...commonPluginPlatformProps,
+        }
+    },
     chromecast: {
         additionalProperties: false,
         type: 'object',
@@ -976,6 +996,15 @@ export const schemaPlatforms = {
                 ...platformWebProps
             }
         },
+        webtv: {
+            additionalProperties: false,
+            type: 'object',
+            properties: {
+                ...platformCommonProps,
+                ...generateBuildSchemeProps(platformWebtvProps),
+                ...platformWebtvProps
+            }
+        },
         chromecast: {
             additionalProperties: false,
             type: 'object',
@@ -1048,7 +1077,7 @@ export const schemaRoot = {
         },
         ...commonRuntimeProps,
         engines: {
-            additionalProperties: false,
+            additionalProperties: true,
             type: 'object',
             description: 'List of engines available in this project',
             examples: [
@@ -1081,6 +1110,10 @@ export const schemaRoot = {
                 web: {
                     // $ref: 'platforms.json#/definitions/web'
                     ...schemaPlatforms.definitions.web
+                },
+                webtv: {
+                    // $ref: 'platforms.json#/definitions/webtv'
+                    ...schemaPlatforms.definitions.webtv
                 },
                 chromecast: {
                     // $ref: 'platforms.json#/definitions/chromecast'
@@ -1150,10 +1183,10 @@ export const schemaRoot = {
                 }
             ]
         },
-        // env: {
-        //     additionalProperties: true,
-        //     type: 'object'
-        // },
+        env: {
+            additionalProperties: true,
+            type: 'object'
+        },
         defaultTargets: {
             additionalProperties: true,
             type: 'object',
@@ -1548,7 +1581,8 @@ To skip file overrides coming from source plugin you need to detach it from the 
                             windows: 8192,
                             kaios: 8193,
                             firefoxos: 8194,
-                            firefoxtv: 8114
+                            firefoxtv: 8114,
+                            webtv: 8195
                         }
                     ]
                 }

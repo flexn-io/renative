@@ -41,9 +41,7 @@ const {
     copyAssetsFolder
 } = ProjectManager;
 const {
-    MACOS,
-    RNV_PROJECT_DIR_NAME,
-    RNV_SERVER_DIR_NAME
+    MACOS
 } = Constants;
 const { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject, waitForWebpack } = WebpackUtils;
 
@@ -54,8 +52,6 @@ export const configureElectronProject = async (c) => {
     const { platform } = c;
 
     c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-
 
     await copyAssetsFolder(
         c,
@@ -63,7 +59,7 @@ export const configureElectronProject = async (c) => {
         platform === MACOS ? _generateICNS : null
     );
 
-    await configureCoreWebProject(c, bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME);
+    await configureCoreWebProject(c);
 
     await configureProject(c);
     return copyBuildsFolder(c, platform);
