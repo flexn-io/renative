@@ -2,12 +2,12 @@ import { configurePlugins, overrideTemplatePlugins, resolvePluginDependants } fr
 import { chalk, logTask, logInfo } from '../../core/systemManager/logger';
 import { parseRenativeConfigs, checkIsRenativeProject, generateRuntimeConfig } from '../../core/configManager';
 import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
-import { applyTemplate, checkIfTemplateConfigured, configureEntryPoints, configureTemplateFiles, isTemplateInstalled, checkAndCreateBabelConfig } from '../../core/templateManager';
+import { applyTemplate, checkIfTemplateConfigured, configureEntryPoints, configureTemplateFiles, isTemplateInstalled } from '../../core/templateManager';
 import { fsExistsSync, fsMkdirSync } from '../../core/systemManager/fileutils';
 import { checkCrypto } from '../../core/systemManager/crypto';
 import { checkAndMigrateProject } from '../../core/projectManager/migrator';
 import { TASK_INSTALL, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, TASK_APP_CONFIGURE, TASK_WORKSPACE_CONFIGURE, PARAMS } from '../../core/constants';
-import { checkAndCreateProjectPackage, copyRuntimeAssets, cleanPlaformAssets, checkAndCreateGitignore } from '../../core/projectManager';
+import { checkAndCreateBabelConfig, copyRuntimeAssets, cleanPlaformAssets, checkAndCreateGitignore } from '../../core/projectManager';
 import { configureEngines } from '../../core/engineManager';
 import { executeTask, initializeTask, findSuitableTask } from '../../core/taskManager';
 
@@ -22,7 +22,7 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
     await checkAndMigrateProject(c);
     await parseRenativeConfigs(c);
     await checkIsRenativeProject(c);
-    await checkAndCreateProjectPackage(c);
+    // await checkAndCreateProjectPackage(c);
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
 
     if (c.program.only && !!parentTask) {

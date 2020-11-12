@@ -708,6 +708,45 @@ export const getFileListSync = (dir) => {
     return results;
 };
 
+export const loadFile = (fileObj, pathObj, key) => {
+    const pKey = `${key}Exists`;
+    if (!fsExistsSync(pathObj[key])) {
+        pathObj[pKey] = false;
+        logDebug(`WARNING: loadFile: Path ${pathObj[key]} does not exists!`);
+        logDebug(`FILE_EXISTS: ${key}:false path:${pathObj[key]}`);
+        return false;
+    }
+    pathObj[pKey] = true;
+    try {
+        const fileString = fsReadFileSync(pathObj[key]).toString();
+        fileObj[key] = JSON.parse(fileString);
+        pathObj[pKey] = true;
+        logDebug(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
+        // if (validateRuntimeObjectSchema && fileObj[key]) {
+        //     const valid = ajv.validate(schemaRoot, fileObj[key]);
+        //     if (!valid) {
+        //         logWarning(`Invalid schema in ${pathObj[key]}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}`);
+        //     }
+        // }
+        return fileObj[key];
+    } catch (e) {
+        logError(`loadFile: ${pathObj[key]} :: ${e}`, true); // crash if there's an error in the config file
+        return false;
+    }
+};
+
+export const formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return `${parseFloat((bytes / (k ** i)).toFixed(dm))} ${sizes[i]}`;
+};
+
 export default {
     sanitizeDynamicRefs,
     getFileListSync,
