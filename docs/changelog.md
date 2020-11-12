@@ -5,6 +5,23 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.8 (2020-11-12)
+
+### Fixed
+
+- Merge branch 'fix/bootstrap-fix' into develop
+- [fix] webpack Cannot GET /
+- [fix] bootstrap dep resolutions
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.7 (2020-11-12)
 
 ### Fixed

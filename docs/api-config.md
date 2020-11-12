@@ -68,7 +68,7 @@ Common config props used as default props for all available buildSchemes
 **path**
 `renative.json/#/common.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -129,7 +129,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/common.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -1332,7 +1332,8 @@ Allows you to assign custom port per each supported platform specific to this pr
     "windows": 8192,
     "kaios": 8193,
     "firefoxos": 8194,
-    "firefoxtv": 8114
+    "firefoxtv": 8114,
+    "webtv": 8195
   }
 }
 ```
@@ -1558,6 +1559,23 @@ List of engines available in this project
   }
 }
 ```
+
+
+
+
+
+
+
+
+
+---
+## env
+
+**path**
+`renative.json/#/env`
+
+**type** `object`
+
 
 
 
@@ -2198,7 +2216,7 @@ Overrides values in `app/build.gradle` file of generated android based project
 **path**
 `renative.json/#/platforms.android.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -2405,7 +2423,7 @@ Overrides values in `app/build.gradle` file of generated android based project
 **path**
 `renative.json/#/platforms.android.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -4079,7 +4097,7 @@ Overrides values in `app/build.gradle` file of generated android based project
 **path**
 `renative.json/#/platforms.androidtv.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -4286,7 +4304,7 @@ Overrides values in `app/build.gradle` file of generated android based project
 **path**
 `renative.json/#/platforms.androidtv.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -5960,7 +5978,7 @@ Overrides values in `app/build.gradle` file of generated android based project
 **path**
 `renative.json/#/platforms.androidwear.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -6167,7 +6185,7 @@ Overrides values in `app/build.gradle` file of generated android based project
 **path**
 `renative.json/#/platforms.androidwear.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -7723,7 +7741,7 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 **path**
 `renative.json/#/platforms.chromecast.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -7782,7 +7800,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/platforms.chromecast.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -9084,7 +9102,7 @@ Allows you to directly extend/override webpack config of your current platform
 **path**
 `renative.json/#/platforms.firefoxos.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -9143,7 +9161,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/platforms.firefoxos.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -10445,7 +10463,7 @@ Allows you to directly extend/override webpack config of your current platform
 **path**
 `renative.json/#/platforms.firefoxtv.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -10504,7 +10522,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/platforms.firefoxtv.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -11988,7 +12006,7 @@ Allows you to directly extend/override webpack config of your current platform
 **path**
 `renative.json/#/platforms.ios.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -12229,7 +12247,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/platforms.ios.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -14237,7 +14255,7 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 **path**
 `renative.json/#/platforms.kaios.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -14296,7 +14314,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/platforms.kaios.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -15696,7 +15714,7 @@ Default width of electron app
 **path**
 `renative.json/#/platforms.macos.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -15853,7 +15871,7 @@ Default width of electron app
 **path**
 `renative.json/#/platforms.macos.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -16046,6 +16064,20 @@ Allows you to configure electron app as per https://www.electron.build/
 
 **path**
 `renative.json/#/platforms.macos.buildSchemes.[object].entryFile`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.macos.buildSchemes.[object].environment
+
+**path**
+`renative.json/#/platforms.macos.buildSchemes.[object].environment`
 
 **type** `string`
 
@@ -16696,6 +16728,20 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
+#### platforms.macos.environment
+
+**path**
+`renative.json/#/platforms.macos.environment`
+
+**type** `string`
+
+
+
+
+
+
+
+
 #### platforms.macos.excludedPlugins
 
 **path**
@@ -17221,7 +17267,7 @@ Allows you to directly extend/override webpack config of your current platform
 **path**
 `renative.json/#/platforms.tizen.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -17294,7 +17340,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/platforms.tizen.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -18666,7 +18712,7 @@ Allows you to directly extend/override webpack config of your current platform
 **path**
 `renative.json/#/platforms.tizenmobile.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -18739,7 +18785,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/platforms.tizenmobile.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -20111,7 +20157,7 @@ Allows you to directly extend/override webpack config of your current platform
 **path**
 `renative.json/#/platforms.tizenwatch.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -20184,7 +20230,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/platforms.tizenwatch.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -21724,7 +21770,7 @@ Allows you to directly extend/override webpack config of your current platform
 **path**
 `renative.json/#/platforms.tvos.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -21965,7 +22011,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/platforms.tvos.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -23973,7 +24019,7 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 **path**
 `renative.json/#/platforms.web.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -24032,7 +24078,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/platforms.web.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -25390,7 +25436,7 @@ Allows you to directly extend/override webpack config of your current platform
 **path**
 `renative.json/#/platforms.webos.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -25449,7 +25495,7 @@ Defines root view backgroundColor for all platforms in HEX format
 **path**
 `renative.json/#/platforms.webos.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -26733,6 +26779,1423 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 ---
+### platforms.webtv
+
+**path**
+`renative.json/#/platforms.webtv`
+
+**type** `object`
+
+
+
+
+
+
+
+#### platforms.webtv.author
+
+**path**
+`renative.json/#/platforms.webtv.author`
+
+**type** `object,string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.backgroundColor
+
+**path**
+`renative.json/#/platforms.webtv.backgroundColor`
+
+**type** `string`
+
+Defines root view backgroundColor for all platforms in HEX format
+
+**examples**
+
+
+```json
+{
+  "backgroundColor": "#FFFFFF"
+}
+```
+
+
+
+```json
+{
+  "backgroundColor": "#222222"
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes`
+
+**type** `object`
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].author
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].author`
+
+**type** `object,string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].backgroundColor
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].backgroundColor`
+
+**type** `string`
+
+Defines root view backgroundColor for all platforms in HEX format
+
+**examples**
+
+
+```json
+{
+  "backgroundColor": "#FFFFFF"
+}
+```
+
+
+
+```json
+{
+  "backgroundColor": "#222222"
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].bundleAssets
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].bundleAssets`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].bundleIsDev
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].bundleIsDev`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].deploy
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].deploy`
+
+**type** `object`
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].deploy.type
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].deploy.type`
+
+**type** `string`
+
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].description
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].description`
+
+**type** `string`
+
+General description of your app. This prop will be injected to actual projects where description field is applicable
+
+**examples**
+
+
+```json
+{
+  "description": "This app does awesome things"
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].devServerHost
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].devServerHost`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].enabled
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].enabled`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].engine
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].engine`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].entryFile
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].entryFile`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].environment
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].environment`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].excludedPlugins
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].excludedPlugins`
+
+**type** `array`
+
+Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
+
+NOTE: excludedPlugins is evaluated after includedPlugins
+
+**examples**
+
+
+```json
+{
+  "excludedPlugins": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "excludedPlugins": [
+    "react-native-google-cast",
+    "react-navigation-tabs"
+  ]
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].ext
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].ext`
+
+**type** `object`
+
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].id
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].id`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].ignoreLogs
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].ignoreLogs`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].ignoreWarnings
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].ignoreWarnings`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].includedFonts
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].includedFonts`
+
+**type** `array`
+
+Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
+
+**examples**
+
+
+```json
+{
+  "includedFonts": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedFonts": [
+    "TimeBurner",
+    "Entypo"
+  ]
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].includedPermissions
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].includedPermissions`
+
+**type** `array`
+
+Allows you to include specific permissions by their KEY defined in `permissions` object
+
+**examples**
+
+
+```json
+{
+  "includedPermissions": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedPermissions": [
+    "INTERNET",
+    "CAMERA",
+    "SYSTEM_ALERT_WINDOW",
+    "RECORD_AUDIO",
+    "RECORD_VIDEO",
+    "READ_EXTERNAL_STORAGE",
+    "WRITE_EXTERNAL_STORAGE",
+    "ACCESS_FINE_LOCATION",
+    "ACCESS_COARSE_LOCATION",
+    "VIBRATE",
+    "ACCESS_NETWORK_STATE",
+    "ACCESS_WIFI_STATE",
+    "RECEIVE_BOOT_COMPLETED",
+    "WRITE_CONTACTS",
+    "READ_CONTACTS"
+  ]
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].includedPlugins
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].includedPlugins`
+
+**type** `array`
+
+Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
+
+NOTE: includedPlugins is evaluated before excludedPlugins
+
+**examples**
+
+
+```json
+{
+  "includedPlugins": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedPlugins": [
+    "react-native-google-cast",
+    "react-navigation-tabs"
+  ]
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].license
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].license`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].pagesDir
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].pagesDir`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].permissions
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].permissions`
+
+**type** `array`
+
+> DEPRECATED in favor of includedPermissions
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].runtime
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].runtime`
+
+**type** `object`
+
+This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
+
+**examples**
+
+
+```json
+{
+  "runtime": {
+    "someRuntimeProperty": "foo"
+  }
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].splashScreen
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].splashScreen`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].timestampAssets
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].timestampAssets`
+
+**type** `boolean`
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
+
+**examples**
+
+
+```json
+{
+  "timestampAssets": "true"
+}
+```
+
+
+
+```json
+{
+  "timestampAssets": "false"
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].title
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].title`
+
+**type** `string`
+
+Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
+
+**examples**
+
+
+```json
+{
+  "title": "Awesome App"
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].versionedAssets
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].versionedAssets`
+
+**type** `boolean`
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
+
+**examples**
+
+
+```json
+{
+  "versionedAssets": "true"
+}
+```
+
+
+
+```json
+{
+  "versionedAssets": "false"
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].webpackConfig
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].webpackConfig`
+
+**type** `object`
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].webpackConfig.customScripts
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].webpackConfig.customScripts`
+
+**type** `array`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].webpackConfig.devServerHost
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].webpackConfig.devServerHost`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].webpackConfig.metaTags
+
+**path**
+`renative.json/#/platforms.webtv.buildSchemes.[object].webpackConfig.metaTags`
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+#### platforms.webtv.bundleAssets
+
+**path**
+`renative.json/#/platforms.webtv.bundleAssets`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### platforms.webtv.bundleIsDev
+
+**path**
+`renative.json/#/platforms.webtv.bundleIsDev`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### platforms.webtv.deploy
+
+**path**
+`renative.json/#/platforms.webtv.deploy`
+
+**type** `object`
+
+
+
+
+
+
+
+#### platforms.webtv.deploy.type
+
+**path**
+`renative.json/#/platforms.webtv.deploy.type`
+
+**type** `string`
+
+
+
+
+
+
+
+
+
+#### platforms.webtv.description
+
+**path**
+`renative.json/#/platforms.webtv.description`
+
+**type** `string`
+
+General description of your app. This prop will be injected to actual projects where description field is applicable
+
+**examples**
+
+
+```json
+{
+  "description": "This app does awesome things"
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.devServerHost
+
+**path**
+`renative.json/#/platforms.webtv.devServerHost`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.engine
+
+**path**
+`renative.json/#/platforms.webtv.engine`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.entryFile
+
+**path**
+`renative.json/#/platforms.webtv.entryFile`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.environment
+
+**path**
+`renative.json/#/platforms.webtv.environment`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.excludedPlugins
+
+**path**
+`renative.json/#/platforms.webtv.excludedPlugins`
+
+**type** `array`
+
+Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
+
+NOTE: excludedPlugins is evaluated after includedPlugins
+
+**examples**
+
+
+```json
+{
+  "excludedPlugins": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "excludedPlugins": [
+    "react-native-google-cast",
+    "react-navigation-tabs"
+  ]
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.ext
+
+**path**
+`renative.json/#/platforms.webtv.ext`
+
+**type** `object`
+
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.id
+
+**path**
+`renative.json/#/platforms.webtv.id`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.ignoreLogs
+
+**path**
+`renative.json/#/platforms.webtv.ignoreLogs`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### platforms.webtv.ignoreWarnings
+
+**path**
+`renative.json/#/platforms.webtv.ignoreWarnings`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### platforms.webtv.includedFonts
+
+**path**
+`renative.json/#/platforms.webtv.includedFonts`
+
+**type** `array`
+
+Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
+
+**examples**
+
+
+```json
+{
+  "includedFonts": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedFonts": [
+    "TimeBurner",
+    "Entypo"
+  ]
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.includedPermissions
+
+**path**
+`renative.json/#/platforms.webtv.includedPermissions`
+
+**type** `array`
+
+Allows you to include specific permissions by their KEY defined in `permissions` object
+
+**examples**
+
+
+```json
+{
+  "includedPermissions": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedPermissions": [
+    "INTERNET",
+    "CAMERA",
+    "SYSTEM_ALERT_WINDOW",
+    "RECORD_AUDIO",
+    "RECORD_VIDEO",
+    "READ_EXTERNAL_STORAGE",
+    "WRITE_EXTERNAL_STORAGE",
+    "ACCESS_FINE_LOCATION",
+    "ACCESS_COARSE_LOCATION",
+    "VIBRATE",
+    "ACCESS_NETWORK_STATE",
+    "ACCESS_WIFI_STATE",
+    "RECEIVE_BOOT_COMPLETED",
+    "WRITE_CONTACTS",
+    "READ_CONTACTS"
+  ]
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.includedPlugins
+
+**path**
+`renative.json/#/platforms.webtv.includedPlugins`
+
+**type** `array`
+
+Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
+
+NOTE: includedPlugins is evaluated before excludedPlugins
+
+**examples**
+
+
+```json
+{
+  "includedPlugins": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedPlugins": [
+    "react-native-google-cast",
+    "react-navigation-tabs"
+  ]
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.license
+
+**path**
+`renative.json/#/platforms.webtv.license`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.pagesDir
+
+**path**
+`renative.json/#/platforms.webtv.pagesDir`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.permissions
+
+**path**
+`renative.json/#/platforms.webtv.permissions`
+
+**type** `array`
+
+> DEPRECATED in favor of includedPermissions
+
+
+
+
+
+
+#### platforms.webtv.runtime
+
+**path**
+`renative.json/#/platforms.webtv.runtime`
+
+**type** `object`
+
+This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
+
+**examples**
+
+
+```json
+{
+  "runtime": {
+    "someRuntimeProperty": "foo"
+  }
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.splashScreen
+
+**path**
+`renative.json/#/platforms.webtv.splashScreen`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### platforms.webtv.timestampAssets
+
+**path**
+`renative.json/#/platforms.webtv.timestampAssets`
+
+**type** `boolean`
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
+
+**examples**
+
+
+```json
+{
+  "timestampAssets": "true"
+}
+```
+
+
+
+```json
+{
+  "timestampAssets": "false"
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.title
+
+**path**
+`renative.json/#/platforms.webtv.title`
+
+**type** `string`
+
+Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
+
+**examples**
+
+
+```json
+{
+  "title": "Awesome App"
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.versionedAssets
+
+**path**
+`renative.json/#/platforms.webtv.versionedAssets`
+
+**type** `boolean`
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
+
+**examples**
+
+
+```json
+{
+  "versionedAssets": "true"
+}
+```
+
+
+
+```json
+{
+  "versionedAssets": "false"
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.webpackConfig
+
+**path**
+`renative.json/#/platforms.webtv.webpackConfig`
+
+**type** `object`
+
+
+
+
+
+
+
+#### platforms.webtv.webpackConfig.customScripts
+
+**path**
+`renative.json/#/platforms.webtv.webpackConfig.customScripts`
+
+**type** `array`
+
+
+
+
+
+
+
+
+#### platforms.webtv.webpackConfig.devServerHost
+
+**path**
+`renative.json/#/platforms.webtv.webpackConfig.devServerHost`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.webtv.webpackConfig.extend
+
+**path**
+`renative.json/#/platforms.webtv.webpackConfig.extend`
+
+**type** `object`
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+
+
+#### platforms.webtv.webpackConfig.metaTags
+
+**path**
+`renative.json/#/platforms.webtv.webpackConfig.metaTags`
+
+**type** `object`
+
+
+
+
+
+
+
+
+
+
+---
 ### platforms.windows
 
 **path**
@@ -26849,7 +28312,7 @@ Default width of electron app
 **path**
 `renative.json/#/platforms.windows.author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -27006,7 +28469,7 @@ Default width of electron app
 **path**
 `renative.json/#/platforms.windows.buildSchemes.[object].author`
 
-**type** `object`
+**type** `object,string`
 
 
 
@@ -27199,6 +28662,20 @@ Allows you to configure electron app as per https://www.electron.build/
 
 **path**
 `renative.json/#/platforms.windows.buildSchemes.[object].entryFile`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.windows.buildSchemes.[object].environment
+
+**path**
+`renative.json/#/platforms.windows.buildSchemes.[object].environment`
 
 **type** `string`
 
@@ -27839,6 +29316,20 @@ Allows you to configure electron app as per https://www.electron.build/
 
 **path**
 `renative.json/#/platforms.windows.entryFile`
+
+**type** `string`
+
+
+
+
+
+
+
+
+#### platforms.windows.environment
+
+**path**
+`renative.json/#/platforms.windows.environment`
 
 **type** `string`
 
@@ -30217,6 +31708,49 @@ Allows you to configure webpack bahaviour per each individual plugin
 `renative.json/#/plugins.[object].webpackConfig.modulePaths`
 
 **type** `boolean,object`
+
+
+
+
+
+
+
+
+
+---
+### plugins.[object].webtv
+
+**path**
+`renative.json/#/plugins.[object].webtv`
+
+**type** `object`
+
+
+
+
+
+
+
+#### plugins.[object].webtv.enabled
+
+**path**
+`renative.json/#/plugins.[object].webtv.enabled`
+
+**type** `boolean`
+
+
+
+
+
+
+
+
+#### plugins.[object].webtv.webpackConfig
+
+**path**
+`renative.json/#/plugins.[object].webtv.webpackConfig`
+
+**type** `object`
 
 
 
