@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import { INJECTABLE_CONFIG_PROPS } from '../constants';
+import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME } from '../constants';
 import {
     getAppFolder,
     // getAppSubFolder,
@@ -24,44 +24,9 @@ import {
 import { isPlatformActive } from '../platformManager';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/logger';
 import { copyTemplatePluginsSync } from '../pluginManager';
-import { loadFile } from '../configManager';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEngineRunnerByPlatform } from '../engineManager';
 
-
-export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
-    logTask('checkAndCreateProjectPackage');
-
-    if (!fsExistsSync(c.paths.project.package)) {
-        logInfo(
-            `Your ${c.paths.project.package} is missing. CREATING...DONE`
-        );
-
-        const packageName = c.files.project.config.projectName
-                || c.paths.project.dir.split('/').pop();
-        const version = c.files.project.config.defaults?.package?.version || '0.1.0';
-        const templateName = c.files.project.config.defaults?.template
-                || 'renative-template-hello-world';
-        const rnvVersion = c.files.rnv.package.version;
-
-        const pkgJson = {};
-        pkgJson.name = packageName;
-        pkgJson.version = version;
-        pkgJson.dependencies = {
-            renative: rnvVersion
-        };
-        pkgJson.devDependencies = {
-            rnv: rnvVersion
-        };
-        pkgJson.devDependencies[templateName] = rnvVersion;
-        const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
-        fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);
-    }
-
-    loadFile(c.files.project, c.paths.project, 'package');
-
-    resolve();
-});
 
 export const checkAndCreateGitignore = async (c) => {
     logTask('checkAndCreateGitignore');
@@ -78,6 +43,29 @@ export const checkAndCreateGitignore = async (c) => {
     }
     return true;
 };
+
+export const checkAndCreateBabelConfig = async (c) => {
+    logTask('checkAndCreateBabelConfig');
+
+    if (!c.paths.project.configExists) return false;
+
+    // Check babel-config
+    logDebug('configureProject:check babel config');
+    if (!fsExistsSync(c.paths.project.babelConfig)) {
+        logInfo(
+            `Your babel config file ${chalk().white(
+                c.paths.project.babelConfig
+            )} is missing! CREATING...DONE`
+        );
+        copyFileSync(
+            path.join(c.paths.rnv.projectTemplate.dir, RN_BABEL_CONFIG_NAME),
+            c.paths.project.babelConfig
+        );
+    }
+
+    return true;
+};
+
 
 export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     logTask('copyRuntimeAssets');

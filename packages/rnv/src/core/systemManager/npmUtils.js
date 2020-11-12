@@ -2,13 +2,46 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import { executeAsync, commandExistsSync } from './exec';
-import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync } from './fileutils';
+import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync, fsWriteFileSync, loadFile } from './fileutils';
 import { logTask, logWarning, logError, logInfo, logDebug } from './logger';
 import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
 import { doResolve } from './resolve';
 
-
 import { inquirerPrompt } from '../../cli/prompt';
+
+export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
+    logTask('checkAndCreateProjectPackage');
+
+    if (!fsExistsSync(c.paths.project.package)) {
+        logInfo(
+            `Your ${c.paths.project.package} is missing. CREATING...DONE`
+        );
+
+        const packageName = c.files.project.config.projectName
+                || c.paths.project.dir.split('/').pop();
+        const version = c.files.project.config.defaults?.package?.version || '0.1.0';
+        const templateName = c.files.project.config.defaults?.template
+                || 'renative-template-hello-world';
+        const rnvVersion = c.files.rnv.package.version;
+
+        const pkgJson = {};
+        pkgJson.name = packageName;
+        pkgJson.version = version;
+        pkgJson.dependencies = {
+            renative: rnvVersion
+        };
+        pkgJson.devDependencies = {
+            rnv: rnvVersion
+        };
+        pkgJson.devDependencies[templateName] = rnvVersion;
+        const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
+        fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);
+    }
+
+    loadFile(c.files.project, c.paths.project, 'package');
+
+    resolve();
+});
 
 export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 

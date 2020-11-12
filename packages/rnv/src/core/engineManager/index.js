@@ -3,12 +3,10 @@ import path from 'path';
 import { IS_LINKED, RNV_HOME_DIR } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
 import { getConfigProp } from '../common';
-import { executeAsync } from '../systemManager/exec';
 import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
 import { fsExistsSync, writeFileSync } from '../systemManager/fileutils';
-import { installPackageDependencies } from '../systemManager/npmUtils';
-
+import { installPackageDependencies, checkAndCreateProjectPackage } from '../systemManager/npmUtils';
 
 const ENGINES_BY_INDEX = [];
 const ENGINES_BY_ID = {};
@@ -152,21 +150,14 @@ export const loadEngines = async (c) => {
         if (enginesToInstall.length) {
             logInfo(`Some engines not installed in your project:
 ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
- INSTALLING...`);
+ ADDING TO PACKAGE.JSON...DONE`);
 
-            // If package.json exists use conventional install.
-            if (fsExistsSync(c.paths.project.package)) {
-                enginesToInstall.forEach((v) => {
-                    c.files.project.package.devDependencies[v.key] = v.version;
-                    writeFileSync(c.paths.project.package, c.files.project.package);
-                });
-                await installPackageDependencies(c);
-            } else {
-                await Promise.all(enginesToInstall.map(v => executeAsync(`npm i ${v.key}@${v.version}`, {
-                    cwd: c.paths.project.dir
-                })));
-            }
-
+            await checkAndCreateProjectPackage(c);
+            enginesToInstall.forEach((v) => {
+                c.files.project.package.devDependencies[v.key] = v.version;
+                writeFileSync(c.paths.project.package, c.files.project.package);
+            });
+            await installPackageDependencies(c);
 
             return loadEngines(c);
         }
@@ -243,7 +234,11 @@ const _registerPlatformEngine = (c, platform) => {
                     pth
                 )?.default, platform, selectedEngineConfig);
             } else {
-                registerEngine(c, require(selectedEngineConfig.packageName)?.default, platform, selectedEngineConfig);
+                registerEngine(c, require(
+                    selectedEngineConfig.packageName,
+                    { paths: [c.paths.project.dir, path.join(c.paths.project.dir, '..')] }
+                )?.default,
+                platform, selectedEngineConfig);
             }
         } else {
             _registerEnginePlatform(c, platform, existingEngine);
