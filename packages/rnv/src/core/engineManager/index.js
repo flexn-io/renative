@@ -267,6 +267,7 @@ export const getPlatformExtensions = (c, excludeServer = false, addDotPrefix = f
     const { engine } = c.runtime;
     let output;
     const { platforms } = engine;
+
     if (addDotPrefix) {
         output = platforms[c.platform].extenstions.map(v => `.${v}`).filter(ext => !excludeServer || !ext.includes('server.'));
     } else {

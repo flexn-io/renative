@@ -1,13 +1,24 @@
-import { Logger, Constants } from 'rnv';
+import { Logger, Constants, TaskManager } from 'rnv';
 import Docker from '../docker';
 
 const { logTask } = Logger;
-const { PARAMS, WEB } = Constants;
+const { PARAMS, WEB, TASK_EXPORT } = Constants;
+const { executeOrSkipTask, initializeTask, findSuitableTask } = TaskManager;
 
-export const taskRnvDockerExport = async (c) => {
-    logTask('taskRnvDockerExport');
+export const taskRnvDockerExport = async (c, parentTask, originTask) => {
+    logTask('taskRnvDockerExport', `parent:${parentTask}`);
+
+    if (c.program.only) {
+        // If run as standalone command skip all the export
+        await executeOrSkipTask(c, TASK_EXPORT, 'docker export', originTask);
+    } else {
+        const taskInstance = await findSuitableTask(c, TASK_EXPORT);
+        await initializeTask(c, taskInstance.task);
+    }
+
     const docker = new Docker(c);
-    docker.doExport();
+    await docker.doExport();
+    return true;
 };
 
 export default {

@@ -96,7 +96,9 @@ const _generateWebpackConfigs = (c, subFolderName) => {
         assetVersion = `-${c.runtime.timestamp}`;
     }
 
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    // const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    // Build aways bundles assets
+    const bundleAssets = true;
 
     const obj = {
         modulePaths,

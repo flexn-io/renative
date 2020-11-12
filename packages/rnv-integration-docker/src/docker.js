@@ -6,7 +6,7 @@ const { logTask, logInfo, logSuccess } = Logger;
 const { executeAsync, commandExistsSync } = Exec;
 const { inquirerPrompt } = Prompt;
 const { getConfigProp, getPlatformBuildDir } = Common;
-const { copyFolderRecursiveSync, cleanFolder, writeCleanFile } = FileUtils;
+const { copyFolderRecursiveSync, cleanFolder, writeCleanFile, fsExistsSync } = FileUtils;
 
 const rootPath = path.join(__dirname, './');
 
@@ -18,8 +18,12 @@ class Docker {
     async buildImage() {
         const { c } = this;
         const { runtime, platform, files } = c;
-        const outputDir = 'output';
-        const projectBuildWeb = path.join(getPlatformBuildDir(c), outputDir);
+        let outputDir = 'output';
+        let projectBuildWeb = path.join(getPlatformBuildDir(c), outputDir);
+        if (!fsExistsSync(projectBuildWeb)) {
+            outputDir = 'project';
+            projectBuildWeb = path.join(getPlatformBuildDir(c), outputDir);
+        }
         const dockerDestination = path.join(getPlatformBuildDir(c), 'export', 'docker');
 
         const dockerFile = path.join(rootPath, '../Dockerfile');
