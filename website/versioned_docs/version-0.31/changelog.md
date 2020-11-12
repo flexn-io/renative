@@ -6,6 +6,22 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.7 (2020-11-12)
+
+### Fixed
+
+- [feat] integrate docker export into rnv build flow
+- [docs] engine platforms
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.6 (2020-11-11)
 
 ### Fixed

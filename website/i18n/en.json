@@ -429,6 +429,9 @@
       "changelog/0.32.0-alpha.6": {
         "title": "changelog/0.32.0-alpha.6"
       },
+      "changelog/0.32.0-alpha.7": {
+        "title": "changelog/0.32.0-alpha.7"
+      },
       "config-app": {
         "title": "App Configs",
         "sidebar_label": "App Configs"
