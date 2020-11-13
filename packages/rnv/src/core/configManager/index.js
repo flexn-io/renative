@@ -694,6 +694,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
         cli: {},
         runtime: {
             enginesByPlatform: {},
+            enginesByIndex: [],
             enginesById: {}
         },
         paths: {

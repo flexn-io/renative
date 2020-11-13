@@ -3,7 +3,7 @@ import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
-import { getEngineRunner, getEngineTask, getRegisteredEngines, hasEngineTask, getEngineSubTasks } from '../engineManager';
+import { getEngineRunner, getEngineTask, getRegisteredEngines, hasEngineTask, getEngineSubTasks, registerAllPlatformEngines } from '../engineManager';
 import { TASK_CONFIGURE_SOFT } from '../constants';
 
 
@@ -54,7 +54,7 @@ const _getTaskObj = (taskInstance) => {
 
 export const findSuitableTask = async (c, specificTask) => {
     logTask('findSuitableTask');
-    const REGISTERED_ENGINES = getRegisteredEngines();
+    const REGISTERED_ENGINES = getRegisteredEngines(c);
     let task;
     if (!specificTask) {
         if (!c.command) {
@@ -191,6 +191,11 @@ export const findSuitableTask = async (c, specificTask) => {
             // Custom tasks are executed by core engine
             logInfo(`Running custom task ${task}`);
         } else if (!suitableEngines.length) {
+            if (!c.platform || c.platform === true) {
+                // No platform was specified. we have no option other than load all engines and offer platform list next round
+                await registerAllPlatformEngines(c);
+                return findSuitableTask(c);
+            }
             logError(`could not find suitable task for ${chalk().white(c.command)}`);
             c.command = null;
             c.subCommand = null;

@@ -8,18 +8,13 @@ import { getScopedVersion } from '../systemManager/utils';
 import { fsExistsSync, writeFileSync } from '../systemManager/fileutils';
 import { installPackageDependencies, checkAndCreateProjectPackage } from '../systemManager/npmUtils';
 
-const ENGINES_BY_INDEX = [];
-const ENGINES_BY_ID = {};
-const ENGINES_BY_PLATFORM = {};
 const ENGINE_CORE = 'engine-core';
 
 export const registerEngine = async (c, engine, platform, engConfig) => {
-    ENGINES_BY_ID[engine.config.id] = engine;
-
     c.runtime.enginesById[engine.config.id] = engine;
-    ENGINES_BY_INDEX.push(engine);
+    c.runtime.enginesByIndex.push(engine);
     if (engConfig?.packageName) {
-        engine.rootPath = path.dirname(require.resolve(`${engConfig.packageName}/package.json`));
+        engine.rootPath = _resolvePkgPath(c, engConfig.packageName);
         engine.originalTemplatePlatformsDir = path.join(engine.rootPath, 'templates/platforms');
         engine.originalTemplateAssetsDir = path.join(engine.rootPath, 'templates/assets');
         engine.originalTemplatePlatformProjectDir = path.join(
@@ -32,7 +27,6 @@ export const registerEngine = async (c, engine, platform, engConfig) => {
 
 const _registerEnginePlatform = (c, platform, engine) => {
     if (platform) {
-        ENGINES_BY_PLATFORM[platform] = engine;
         c.runtime.enginesByPlatform[platform] = engine;
     }
 };
@@ -120,6 +114,22 @@ export const registerMissingPlatformEngines = async (c, taskInstance) => {
         if (registerEngineList.length) {
             await Promise.all(registerEngineList);
         }
+    }
+
+    return true;
+};
+
+export const registerAllPlatformEngines = async (c) => {
+    logTask('registerAllPlatformEngines');
+    const registerEngineList = [];
+    c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
+        registerEngineList.push(
+            _registerPlatformEngine(c, platform)
+        );
+    });
+
+    if (registerEngineList.length) {
+        await Promise.all(registerEngineList);
     }
 
     return true;
@@ -220,12 +230,26 @@ const _getEngineConfigByPlatform = (c, platform) => {
     return selectedEngineConfig;
 };
 
+const _resolvePkgPath = (c, packageName) => {
+    let pkgPath = path.join(c.paths.project.dir, 'node_modules', packageName);
+    if (fsExistsSync(pkgPath)) {
+        return pkgPath;
+    }
+    pkgPath = path.join(c.paths.project.dir, '../..', 'node_modules', packageName);
+    if (fsExistsSync(pkgPath)) {
+        return pkgPath;
+    }
+    pkgPath = require.resolve(packageName);
+    return pkgPath;
+};
+
 
 const _registerPlatformEngine = (c, platform) => {
     // Only register active platform engine to be faster
+    if (platform === true || !platform) return;
     const selectedEngineConfig = _getEngineConfigByPlatform(c, platform);
     if (selectedEngineConfig) {
-        const existingEngine = ENGINES_BY_ID[selectedEngineConfig.id];
+        const existingEngine = c.runtime.enginesById[selectedEngineConfig.id];
         if (!existingEngine) {
             if (IS_LINKED) {
                 // In the instances of running linked rnv instead of installed one load local packages
@@ -235,15 +259,14 @@ const _registerPlatformEngine = (c, platform) => {
                 )?.default, platform, selectedEngineConfig);
             } else {
                 registerEngine(c, require(
-                    selectedEngineConfig.packageName,
-                    { paths: [c.paths.project.dir, path.join(c.paths.project.dir, '..')] }
+                    _resolvePkgPath(c, selectedEngineConfig.packageName)
                 )?.default,
                 platform, selectedEngineConfig);
             }
         } else {
             _registerEnginePlatform(c, platform, existingEngine);
         }
-    } else if (platform) {
+    } else if (platform !== true && platform) {
         logWarning(`Could not find suitable engine for platform ${platform}
 Maybe you forgot to define platforms.${platform}.engine in your renative.json?`);
     }
@@ -272,7 +295,7 @@ export const getPlatformExtensions = (c, excludeServer = false, addDotPrefix = f
 };
 
 export const getEngineRunnerByPlatform = (c, platform, ignoreMissingError) => {
-    const selectedEngine = ENGINES_BY_PLATFORM[platform];
+    const selectedEngine = c.runtime.enginesByPlatform[platform];
     if (!selectedEngine && !ignoreMissingError) {
         logDebug(`ERROR: Engine for platform: ${platform} does not exists or is not registered ${new Error()}`);
         // logRaw(new Error());
@@ -299,21 +322,25 @@ export const getEngineSubTasks = (task, tasks, exactMatch) => Object.values(task
 
 export const getEngineRunner = (c, task, customTasks) => {
     if (customTasks?.[task]) {
-        return ENGINES_BY_ID[ENGINE_CORE];
+        return c.runtime.enginesById[ENGINE_CORE];
     }
 
     const { configExists } = c.paths.project;
 
-    const engine = ENGINES_BY_PLATFORM[c.platform];
+    const engine = c.runtime.enginesByPlatform[c.platform];
     if (!engine) {
-        if (hasEngineTask(task, ENGINES_BY_ID[ENGINE_CORE].tasks, configExists)) return ENGINES_BY_ID[ENGINE_CORE];
+        if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
+            return c.runtime.enginesById[ENGINE_CORE];
+        }
         throw new Error(`Cound not find active engine for platform ${c.platform}. Available engines:
-        ${ENGINES_BY_INDEX.join(', ')}`);
+        ${c.runtime.enginesByIndex.join(', ')}`);
     }
     if (hasEngineTask(task, engine.tasks, configExists)) return engine;
-    if (hasEngineTask(task, ENGINES_BY_ID[ENGINE_CORE].tasks, configExists)) return ENGINES_BY_ID[ENGINE_CORE];
+    if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
+        return c.runtime.enginesById[ENGINE_CORE];
+    }
 
     throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
 };
 
-export const getRegisteredEngines = () => ENGINES_BY_INDEX;
+export const getRegisteredEngines = c => c.runtime.enginesByIndex;

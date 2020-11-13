@@ -439,10 +439,24 @@ export const buildCoreWebpackProject = async (c) => {
     const environment = getConfigProp(c, c.platform, 'environment', 'production');
     const configName = environment === 'production' ? 'prod' : 'dev';
 
+    const WP_ALTERNATIVE = `${doResolve('webpack')}/bin/webpack.js`;
+
+    let wp = 'webpack';
+    if (fsExistsSync(WEBPACK)) {
+        wp = WEBPACK;
+    } else if (fsExistsSync(WP_ALTERNATIVE)) {
+        wp = WP_ALTERNATIVE;
+    } else {
+        logWarning(`cannot find installed webpack. looked in following locations:
+${chalk().white(WEBPACK)},
+${chalk().white(WP_ALTERNATIVE)}
+will try to use globally installed one`);
+    }
+
 
     await executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=${environment} ${
         debugVariables
-    } node ${WEBPACK} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.${configName}.js`, {
+    } node ${wp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.${configName}.js`, {
         // env: {
         //     RNV_EXTENSIONS: getPlatformExtensions(c)
         // }

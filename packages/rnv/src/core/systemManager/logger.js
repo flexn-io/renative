@@ -1,6 +1,10 @@
 /* eslint-disable no-console */
 import _chalk from 'chalk';
 import stripAnsi from 'strip-ansi';
+import { isSystemWin } from './utils';
+
+const ICN_ROCKET = isSystemWin ? 'RNV' : '🚀';
+const ICN_UNICORN = isSystemWin ? 'unicorn' : '🦄';
 
 const _chalkCols = {
     white: v => v,
@@ -53,7 +57,7 @@ export const logWelcome = () => {
         }
     }
     str += printIntoBox(`      ${currentChalk.grey('https://renative.org')}`, 1);
-    str += printIntoBox(`      🚀 ${currentChalk.yellow('Firing up!...')}`, 1);
+    str += printIntoBox(`      ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox(`      $ ${currentChalk.cyan(getCurrentCommand(true))}`, 1);
     if (_c?.timeStart) {
         str += printIntoBox(
@@ -137,7 +141,7 @@ export const logRaw = (...args) => {
 };
 
 export const logSummary = (header = 'SUMMARY') => {
-    let logContent = printIntoBox('All good as 🦄 ');
+    let logContent = printIntoBox(`All good as ${ICN_UNICORN} `);
     if (_messages && _messages.length) {
         logContent = '';
         _messages.forEach((m) => {
@@ -151,7 +155,7 @@ export const logSummary = (header = 'SUMMARY') => {
         timeString = `| ${_c.timeEnd.toLocaleString()}`;
     }
 
-    let str = printBoxStart(`🚀  ${header} ${timeString}`, getCurrentCommand());
+    let str = printBoxStart(`${ICN_ROCKET}  ${header} ${timeString}`, getCurrentCommand());
     if (_c) {
         str += printIntoBox(
             `ReNative Version: ${_highlightColor(_c.rnvVersion)}`,
@@ -374,7 +378,7 @@ export const logDebug = (...args) => {
 export const isInfoEnabled = () => _isInfoEnabled;
 
 export const logComplete = (isEnd = false) => {
-    console.log(currentChalk.bold.white(`\n ${RNV} - Done! 🚀`));
+    console.log(currentChalk.bold.white(`\n ${RNV} - Done! ${ICN_ROCKET}`));
     if (isEnd) logEnd(0);
 };
 
