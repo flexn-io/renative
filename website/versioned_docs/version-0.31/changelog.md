@@ -6,6 +6,21 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.11 (2020-11-13)
+
+### Fixed
+
+- [fix] dependency injection of runtime config
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.10 (2020-11-13)
 
 ### Fixed
