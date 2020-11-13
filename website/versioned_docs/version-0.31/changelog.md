@@ -6,6 +6,21 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.9 (2020-11-13)
+
+### Fixed
+
+- [fix] webpackUtils
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.8 (2020-11-12)
 
 ### Fixed
