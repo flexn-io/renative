@@ -40,6 +40,7 @@ import taskRnvTargetList from './tasks/task.rnv.target.list';
 import taskRnvTargetLaunch from './tasks/task.rnv.target.launch';
 
 export default {
+    initializeRuntimeConfig: () => {},
     tasks: generateEngineTasks([
         taskRnvCryptoDecrypt,
         taskRnvCryptoEncrypt,

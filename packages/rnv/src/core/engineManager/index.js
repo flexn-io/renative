@@ -12,6 +12,7 @@ const ENGINE_CORE = 'engine-core';
 
 export const registerEngine = async (c, engine, platform, engConfig) => {
     c.runtime.enginesById[engine.config.id] = engine;
+    engine.initializeRuntimeConfig(c);
     c.runtime.enginesByIndex.push(engine);
     if (engConfig?.packageName) {
         engine.rootPath = _resolvePkgPath(c, engConfig.packageName);
