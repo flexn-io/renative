@@ -113,7 +113,7 @@ export const getPlatformOutputDir = (c) => {
         logError('getPlatformOutputDir not available without specific engine');
         return null;
     }
-    return c.runtime.engine.getPlatformOutputDir(c);
+    return path.join(getAppFolder(c), c.runtime.engine.outputDirName || '');
 };
 
 export const getPlatformProjectDir = (c) => {
@@ -122,6 +122,14 @@ export const getPlatformProjectDir = (c) => {
         return null;
     }
     return path.join(getAppFolder(c), c.runtime.engine.projectDirName || '');
+};
+
+export const getPlatformServerDir = (c) => {
+    if (!c.runtime.engine) {
+        logError('getPlatformProjectDir not available without specific engine');
+        return null;
+    }
+    return path.join(getAppFolder(c), c.runtime.engine.serverDirName || '');
 };
 
 export const getTemplateDir = c => path.join(

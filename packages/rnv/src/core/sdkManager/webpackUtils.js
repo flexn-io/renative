@@ -11,13 +11,14 @@ import {
     getAppVersion,
     checkPortInUse,
     getConfigProp,
-    getBuildFilePath,
+    getTemplateProjectDir,
     getAppTitle,
     sanitizeColor,
     confirmActiveBundler,
     getTimestampPathsConfig,
     addSystemInjects,
-    getPlatformProjectDir
+    getPlatformProjectDir,
+    getPlatformServerDir
 } from '../common';
 import { doResolve, doResolvePath } from '../systemManager/resolve';
 import {
@@ -35,16 +36,16 @@ import { getPlatformExtensions } from '../engineManager';
 import { parsePlugins } from '../pluginManager';
 import { getValidLocalhost } from '../systemManager/utils';
 
-import { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR, RNV_PROJECT_DIR_NAME, RNV_SERVER_DIR_NAME } from '../constants';
+import { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR } from '../constants';
 
 const WEBPACK = path.join(RNV_NODE_MODULES_DIR, 'webpack/bin/webpack.js');
 const WEBPACK_DEV_SERVER = path.join(RNV_NODE_MODULES_DIR, 'webpack-dev-server/bin/webpack-dev-server.js');
 
-const _generateWebpackConfigs = (c, subFolderName) => {
+const _generateWebpackConfigs = (c) => {
     logTask('_generateWebpackConfigs');
     const { platform } = c;
     const appFolder = getPlatformBuildDir(c);
-    const appFolderServer = path.join(appFolder, subFolderName);
+    const appFolderServer = getPlatformServerDir(c);
     // const templateFolder = getAppTemplateFolder(c, platform);
 
     let { modulePaths, moduleAliases } = getModuleConfigs(c);
@@ -105,7 +106,7 @@ const _generateWebpackConfigs = (c, subFolderName) => {
         entryFile,
         title,
         assetVersion,
-        buildFolder: bundleAssets ? RNV_PROJECT_DIR_NAME : RNV_SERVER_DIR_NAME,
+        buildFolder: bundleAssets ? getPlatformProjectDir(c) : getPlatformServerDir(c),
         extensions: getPlatformExtensions(c, true),
         ...extendConfig
     };
@@ -116,10 +117,13 @@ const _generateWebpackConfigs = (c, subFolderName) => {
     fsWriteFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
 };
 
-const _parseCssSync = (c, subFolderName) => {
-    const appFolder = getPlatformBuildDir(c);
+const _parseCssSync = (c) => {
+    const templateProjectDir = getTemplateProjectDir(c);
     const timestampPathsConfig = getTimestampPathsConfig(c, c.platform);
     const backgroundColor = getConfigProp(c, c.platform, 'backgroundColor');
+
+    const bundleAssets = c.runtime.forceBundleAssets || getConfigProp(c, c.platform, 'bundleAssets', false);
+    const targetDir = bundleAssets ? getPlatformProjectDir(c) : getPlatformServerDir(c);
 
     const injects = [
         {
@@ -134,8 +138,8 @@ const _parseCssSync = (c, subFolderName) => {
     addSystemInjects(c, injects);
 
     writeCleanFile(
-        getBuildFilePath(c, c.platform, 'project/app.css'),
-        path.join(appFolder, subFolderName, 'app.css'),
+        path.join(templateProjectDir, 'app.css'),
+        path.join(targetDir, 'app.css'),
         injects,
         timestampPathsConfig, c
     );
@@ -255,9 +259,12 @@ const _runWebDevServer = async (c, enableRemoteDebugger) => {
     logTask('_runWebDevServer');
     const { debug } = c.program;
 
+    const environment = getConfigProp(c, c.platform, 'environment', 'production');
+    const configName = environment === 'production' ? 'prod' : 'dev';
+
     const appFolder = getPlatformBuildDir(c);
-    const wpPublic = path.join(appFolder, RNV_SERVER_DIR_NAME);
-    const wpConfig = path.join(appFolder, 'webpack.config.dev.js');
+    const wpPublic = getPlatformServerDir(c);
+    const wpConfig = path.join(appFolder, `webpack.config.${configName}.js`);
     const debugObj = { lineBreaks: '\n\n\n', debugVariables: '', remoteDebuggerActive: false };
     let debugOrder = [_runRemoteDebuggerChii, _runRemoteDebuggerWeinre];
     if (debug === 'weinre') debugOrder = [_runRemoteDebuggerWeinre, _runRemoteDebuggerChii];
@@ -294,7 +301,7 @@ will try to use globally installed one`);
         wpConfig
     }  --inline --hot --colors --content-base ${
         wpPublic
-    } --history-api-fallback --port ${c.runtime.port} --mode=development`;
+    } --history-api-fallback --port ${c.runtime.port} --mode=${environment}`;
     try {
         await executeAsync(c, command, {
             stdio: 'inherit',
@@ -312,10 +319,10 @@ will try to use globally installed one`);
 };
 
 
-export const configureCoreWebProject = async (c, subFolderName = '') => {
+export const configureCoreWebProject = async (c) => {
     logTask('configureCoreWebProject');
-    _generateWebpackConfigs(c, subFolderName);
-    _parseCssSync(c, subFolderName);
+    _generateWebpackConfigs(c);
+    _parseCssSync(c);
 };
 
 export const runWebpackServer = async (c, enableRemoteDebugger) => {
@@ -333,6 +340,12 @@ export const runWebpackServer = async (c, enableRemoteDebugger) => {
 
     const isPortActive = await checkPortInUse(c, platform, port);
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+
+    if (bundleAssets) {
+        await buildCoreWebpackProject(c);
+        logSuccess('bundleAssets set to true. webpack dev server will not run');
+        return true;
+    }
 
     if (!isPortActive) {
         logInfo(
@@ -411,7 +424,7 @@ export const waitForWebpack = async (c, suffix = 'assets/bundle.js') => {
 export const buildCoreWebpackProject = async (c) => {
     const { debug, debugIp } = c.program;
     const { platform } = c;
-    logTask('buildWeb');
+    logTask('buildCoreWebpackProject');
 
     let debugVariables = '';
 
@@ -423,16 +436,20 @@ export const buildCoreWebpackProject = async (c) => {
         debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
     }
 
-    await executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=production ${
+    const environment = getConfigProp(c, c.platform, 'environment', 'production');
+    const configName = environment === 'production' ? 'prod' : 'dev';
+
+
+    await executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=${environment} ${
         debugVariables
-    } node ${WEBPACK} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.prod.js`, {
+    } node ${WEBPACK} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.${configName}.js`, {
         // env: {
         //     RNV_EXTENSIONS: getPlatformExtensions(c)
         // }
     });
     logSuccess(
         `Your Build is located in ${chalk().cyan(
-            path.join(getPlatformProjectDir(c))
+            getPlatformProjectDir(c)
         )} .`
     );
     return true;

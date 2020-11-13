@@ -8,8 +8,6 @@ export const RNV_HOME_DIR = path.join(__dirname, '../..');
 export const IS_LINKED = path.dirname(RNV_HOME_DIR).split(path.sep).pop() === 'packages';
 export const CURRENT_DIR = path.resolve('.');
 export const RNV_NODE_MODULES_DIR = path.join(RNV_HOME_DIR, 'node_modules');
-export const RNV_PROJECT_DIR_NAME = 'project';
-export const RNV_SERVER_DIR_NAME = 'server';
 
 export const ANDROID = 'android';
 export const ANDROID_AUTO = 'androidauto';
