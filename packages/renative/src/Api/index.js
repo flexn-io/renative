@@ -9,9 +9,9 @@ import {
     isPlatformWebos
 } from '../is';
 
-export isWebBased from './isWebBased';
+import isWebBased from './isWebBased';
 
-export { factor, engine, platform };
+export { factor, engine, platform, isWebBased };
 
 export const getScaledValue = (v) => {
     if (isPlatformTizenmobile) return v * 3;
@@ -26,5 +26,6 @@ export default {
     platform,
     formFactor: factor,
     factor,
-    engine
+    engine,
+    isWebBased
 };

@@ -211,7 +211,7 @@ const buildElectron = async (c) => {
 const exportElectron = async (c) => {
     logTask('exportElectron');
 
-    const platformBuildDir = platformBuildDir(c);
+    const platformBuildDir = getPlatformBuildDir(c);
     const buildPath = path.join(platformBuildDir, 'build');
 
     if (fsExistsSync(buildPath)) {

@@ -126,6 +126,7 @@ export const checkIfProjectAndNodeModulesExists = async (c) => {
 };
 
 export const installPackageDependencies = async (c, failOnError = false) => {
+    c.runtime.forceBuildHookRebuild = true;
     const customScript = c.buildConfig?.tasks?.install?.script;
 
     if (customScript) {

@@ -26,7 +26,7 @@ export default {
     ]),
     config: CNF,
     projectDirName: 'project',
-    serverDirName: 'server',
+    serverDirName: 'project',
     ejectPlatform: null,
     platforms: {
         macos: {
