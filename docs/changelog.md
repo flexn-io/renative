@@ -5,6 +5,21 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.12 (2020-11-15)
+
+### Fixed
+
+- [fix] next compile renative, electron
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.11 (2020-11-13)
 
 ### Fixed
