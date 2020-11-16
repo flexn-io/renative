@@ -79,10 +79,15 @@ Dev server running at: ${url}
 `);
             if (!parentTask) {
                 const isRunning = await isBundlerActive(c);
-                const resetCompleted = await confirmActiveBundler(c);
+
                 if (!isRunning || (isRunning && resetCompleted)) {
                     return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
                 }
+                const resetCompleted = await confirmActiveBundler(c);
+                if (resetCompleted) {
+                    return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
+                }
+
                 return true;
             }
             executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
