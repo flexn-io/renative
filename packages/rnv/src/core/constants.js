@@ -388,6 +388,9 @@ export const PARAM_KEYS = {
     hosted: {
         description: 'Run in a hosted environment (skip budleAssets)'
     },
+    hooks: {
+        description: 'Force rebuild hooks'
+    },
     maxErrorLength: {
         value: 'number',
         isRequired: true,
