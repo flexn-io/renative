@@ -37,6 +37,7 @@ export const initializeBuilder = async (cmd, subCmd, process, program) => {
     FileUtils.configureFilesystem(Resolver.getConfigProp, Resolver.doResolve, Utils.isSystemWin);
     const c = ConfigManager.createRnvConfig(program, process, cmd, subCmd);
 
+    Logger.configureLogger(c, Analytics);
     Logger.logInitialize();
 
     return c;
