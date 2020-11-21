@@ -6,6 +6,23 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.13 (2020-11-21)
+
+### Fixed
+
+- rnv config globals
+- [feat] force rebuild build hooks option. ( --hooks )
+- [fix] rnv start  port clash
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.12 (2020-11-15)
 
 ### Fixed
