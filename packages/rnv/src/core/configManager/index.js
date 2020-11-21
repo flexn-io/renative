@@ -946,5 +946,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
         logError(e);
     }
 
+    global.RNV_CONFIG = c;
+
     return c;
 };

@@ -31,13 +31,12 @@ import Analytics from './core/systemManager/analytics';
 import Config from './core/configManager/config';
 import * as WebpackUtils from './core/sdkManager/webpackUtils';
 
-Analytics.initialize();
+global.RNV_ANALYTICS = Analytics.initialize();
 
 export const initializeBuilder = async (cmd, subCmd, process, program) => {
     FileUtils.configureFilesystem(Resolver.getConfigProp, Resolver.doResolve, Utils.isSystemWin);
     const c = ConfigManager.createRnvConfig(program, process, cmd, subCmd);
 
-    Logger.configureLogger(c, Analytics);
     Logger.logInitialize();
 
     return c;

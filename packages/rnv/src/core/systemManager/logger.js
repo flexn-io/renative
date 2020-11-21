@@ -44,10 +44,10 @@ export const logWelcome = () => {
 │                                                                              │
 `);
 
-    if (_c?.files?.rnv?.package?.version) {
-        _c.rnvVersion = _c.files.rnv.package.version;
-        str += printIntoBox(`      Version: ${currentChalk.green(_c.rnvVersion)}`, 1);
-        if (_c.rnvVersion.includes('alpha')) {
+    if (cnf().files?.rnv?.package?.version) {
+        cnf().rnvVersion = cnf().files.rnv.package.version;
+        str += printIntoBox(`      Version: ${currentChalk.green(cnf().rnvVersion)}`, 1);
+        if (cnf().rnvVersion.includes('alpha')) {
             str += printIntoBox(
                 `      ${currentChalk.yellow(
                     'WARNING: this is a prerelease version.'
@@ -59,9 +59,9 @@ export const logWelcome = () => {
     str += printIntoBox(`      ${currentChalk.grey('https://renative.org')}`, 1);
     str += printIntoBox(`      ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox(`      $ ${currentChalk.cyan(getCurrentCommand(true))}`, 1);
-    if (_c?.timeStart) {
+    if (cnf().timeStart) {
         str += printIntoBox(
-            `      Start Time: ${currentChalk.grey(_c.timeStart.toLocaleString())}`
+            `      Start Time: ${currentChalk.grey(cnf().timeStart.toLocaleString())}`
         );
     }
     str += printIntoBox('');
@@ -81,6 +81,14 @@ let _isMono = false;
 let _defaultColor;
 let _highlightColor;
 let _analytics;
+
+const cnf = () => {
+    if (!_c) {
+        _c = global.RNV_CONFIG;
+        configureLogger(global.RNV_CONFIG, global.RNV_ANALYTICS);
+    }
+    return _c || {};
+};
 
 export const configureLogger = (c, analytics) => {
     _messages = [];
@@ -113,7 +121,7 @@ const PRIVATE_PARAMS = ['-k', '--key'];
 
 export const getCurrentCommand = (excludeDollar = false) => {
     if (!_c) return '_c is undefined';
-    const argArr = _c.process.argv.slice(2);
+    const argArr = cnf().process.argv.slice(2);
     let hideNext = false;
     const output = argArr
         .map((v) => {
@@ -151,95 +159,95 @@ export const logSummary = (header = 'SUMMARY') => {
 
     let timeString = '';
     if (_c) {
-        _c.timeEnd = new Date();
-        timeString = `| ${_c.timeEnd.toLocaleString()}`;
+        cnf().timeEnd = new Date();
+        timeString = `| ${cnf().timeEnd.toLocaleString()}`;
     }
 
     let str = printBoxStart(`${ICN_ROCKET}  ${header} ${timeString}`, getCurrentCommand());
     if (_c) {
         str += printIntoBox(
-            `ReNative Version: ${_highlightColor(_c.rnvVersion)}`,
+            `ReNative Version: ${_highlightColor(cnf().rnvVersion)}`,
             1
         );
-        if (_c.files.project.package) {
+        if (cnf().files.project.package) {
             str += printIntoBox(
                 `Project Name ($package.name): ${_highlightColor(
-                    _c.files.project.package.name
+                    cnf().files.project.package.name
                 )}`,
                 1
             );
             str += printIntoBox(
                 `Project Version ($package.version): ${_highlightColor(
-                    _c.files.project.package.version
+                    cnf().files.project.package.version
                 )}`,
                 1
             );
         }
 
-        if (_c.buildConfig?.workspaceID) {
+        if (cnf().buildConfig?.workspaceID) {
             str += printIntoBox(
-                `Workspace ($.workspaceID): ${_highlightColor(_c.buildConfig.workspaceID)}`,
+                `Workspace ($.workspaceID): ${_highlightColor(cnf().buildConfig.workspaceID)}`,
                 1
             );
         }
-        if (_c?.platform) {
-            str += printIntoBox(`Platform (-p): ${_highlightColor(_c.platform)}`, 1);
+        if (cnf().platform) {
+            str += printIntoBox(`Platform (-p): ${_highlightColor(cnf().platform)}`, 1);
         }
-        if (_c?.runtime?.engine) {
+        if (cnf().runtime?.engine) {
             let addon = '';
-            if (_c?.platform) {
-                addon = ` ($.platforms.${_c?.platform}.engine)`;
+            if (cnf().platform) {
+                addon = ` ($.platforms.${cnf().platform}.engine)`;
             }
             str += printIntoBox(`Engine${addon}: ${
-                _highlightColor(_c.runtime.engine?.getId?.())
+                _highlightColor(cnf().runtime.engine?.getId?.())
             }`, 1);
         }
-        if (_c.buildConfig?._meta?.currentAppConfigId) {
+        if (cnf().buildConfig?._meta?.currentAppConfigId) {
             str += printIntoBox(
                 `App Config (-c): ${_highlightColor(
-                    _c.buildConfig._meta?.currentAppConfigId
+                    cnf().buildConfig._meta?.currentAppConfigId
                 )}`,
                 1
             );
         }
-        if (_c.runtime?.scheme) {
+        if (cnf().runtime?.scheme) {
             str += printIntoBox(
-                `Build Scheme (-s): ${_highlightColor(_c.runtime?.scheme)}`,
+                `Build Scheme (-s): ${_highlightColor(cnf().runtime?.scheme)}`,
                 1
             );
         }
-        if (_c?.runtime?.bundleAssets) {
+        if (cnf().runtime?.bundleAssets) {
             str += printIntoBox(
-                `Bundle assets ($.platforms.${_c?.platform}.bundleAssets): ${
-                    _highlightColor(!!_c.runtime?.bundleAssets)}`,
+                `Bundle assets ($.platforms.${cnf().platform}.bundleAssets): ${
+                    _highlightColor(!!cnf().runtime?.bundleAssets)}`,
                 1
             );
         }
-        if (_c.runtime?.target) {
+        if (cnf().runtime?.target) {
             str += printIntoBox(
-                `Target (-t): ${_highlightColor(_c.runtime?.target)}`,
+                `Target (-t): ${_highlightColor(cnf().runtime?.target)}`,
                 1
             );
         }
-        if (_c.program?.reset) {
+        if (cnf().program?.reset) {
             str += printIntoBox(
-                `Reset Project (-r): ${_highlightColor(!!_c.program?.reset)}`,
+                `Reset Project (-r): ${_highlightColor(!!cnf().program?.reset)}`,
                 1
             );
         }
-        if (_c.program?.resetHard) {
+        if (cnf().program?.resetHard) {
             str += printIntoBox(
-                `Reset Project and Assets (-R): ${_highlightColor(!!_c.program?.resetHard)}`,
+                `Reset Project and Assets (-R): ${_highlightColor(!!cnf().program?.resetHard)}`,
                 1
             );
         }
-        if (_c?.runtime?.supportedPlatforms?.length) {
-            const plats = _c.runtime.supportedPlatforms.map(v => `${v.platform}${v.isConnected ? '' : '(ejected)'}`);
+        if (cnf().runtime?.supportedPlatforms?.length) {
+            const plats = cnf().runtime.supportedPlatforms.map(v => `${v.platform}${v.isConnected ? '' : '(ejected)'}`);
             str += printArrIntoBox(plats, 'Supported Platforms: ');
         }
 
-        if (_c?.files?.project?.config?.defaults) {
-            const defaultProjectConfigs = _c.files.project.config.defaults;
+        if (cnf().files?.project?.config?.defaults) {
+            const defaultProjectConfigs = cnf().files.project.config.defaults;
             if (defaultProjectConfigs?.template) {
                 str += printIntoBox(
                     `Master Template: ${_highlightColor(
@@ -250,15 +258,16 @@ export const logSummary = (header = 'SUMMARY') => {
             }
         }
 
-        if (_c.process) {
-            const envString = `${_c.process.platform} | ${_c.process.arch} | node v${_c.process.versions?.node}`;
+        if (cnf().process) {
+            const envString = `${cnf().process.platform} | ${
+                cnf().process.arch} | node v${cnf().process.versions?.node}`;
             str += printIntoBox(`Env Info: ${currentChalk.gray(envString)}`, 1);
         }
 
-        if (_c.timeEnd) {
+        if (cnf().timeEnd) {
             str += printIntoBox(
                 `Executed Time: ${currentChalk.yellow(
-                    _msToTime(_c.timeEnd - _c.timeStart)
+                    _msToTime(cnf().timeEnd - cnf().timeStart)
                 )}`,
                 1
             );
@@ -268,9 +277,9 @@ export const logSummary = (header = 'SUMMARY') => {
     str += printIntoBox('');
     str += logContent.replace(/\n\s*\n\s*\n/g, '\n\n');
     str += printIntoBox('');
-    if (_c?.runtime?.platformBuildsProjectPath) {
+    if (cnf().runtime?.platformBuildsProjectPath) {
         str += printIntoBox('Project location:');
-        str += printIntoBox(`${currentChalk.cyan(_sanitizePaths(_c.runtime.platformBuildsProjectPath))}`, 1);
+        str += printIntoBox(`${currentChalk.cyan(_sanitizePaths(cnf().runtime.platformBuildsProjectPath))}`, 1);
     }
     str += printBoxEnd();
 
@@ -293,11 +302,11 @@ export const setCurrentJob = () => {
     // _currentCommand = job;
 };
 
-const _getCurrentTask = () => (_c?._currentTask ? currentChalk.grey(` [${_c._currentTask}]`) : '');
+const _getCurrentTask = () => (cnf()._currentTask ? currentChalk.grey(` [${cnf()._currentTask}]`) : '');
 
 const _sanitizePaths = (msg) => {
-    if (msg?.replace && _c?.paths?.project?.dir) {
-        return msg.replace(new RegExp(_c.paths.project.dir, 'g'), '.');
+    if (msg?.replace && cnf().paths?.project?.dir) {
+        return msg.replace(new RegExp(cnf().paths.project.dir, 'g'), '.');
     }
     return msg;
 };
@@ -399,7 +408,7 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
     } else {
         logAndSave(currentChalk.red(`[ error ]${_getCurrentTask()} ${e}`), isEnd);
     }
-    _c.runtime.keepSessionActive = false;
+    cnf().runtime.keepSessionActive = false;
     if (isEnd) logEnd(1);
 };
 
