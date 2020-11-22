@@ -551,6 +551,16 @@ const platformIosProps = {
             'iPhone Distribution'
         ]
     },
+    commandLineArguments: {
+        type: 'array',
+        description: 'Allows you to pass launch arguments to active scheme',
+        examples: [
+            [
+                '-FIRAnalyticsDebugEnabled',
+                'MyCustomLaunchArgument'
+            ]
+        ]
+    },
     provisionProfileSpecifier: {
         type: 'string'
     },

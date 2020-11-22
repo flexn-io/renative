@@ -11,6 +11,7 @@ import { installPackageDependencies, checkAndCreateProjectPackage } from '../sys
 const ENGINE_CORE = 'engine-core';
 
 export const registerEngine = async (c, engine, platform, engConfig) => {
+    logTask(`registerEngine:${engine.config.id}`);
     c.runtime.enginesById[engine.config.id] = engine;
     engine.initializeRuntimeConfig(c);
     c.runtime.enginesByIndex.push(engine);
@@ -232,6 +233,12 @@ const _getEngineConfigByPlatform = (c, platform) => {
 };
 
 const _resolvePkgPath = (c, packageName) => {
+    if (IS_LINKED) {
+        // In the instances of running linked rnv instead of installed one load local packages
+        let pkgPathLocal = require.resolve(packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
+        pkgPathLocal = pkgPathLocal.replace('/dist/index.js', '');
+        return pkgPathLocal;
+    }
     let pkgPath = path.join(c.paths.project.dir, 'node_modules', packageName);
     if (fsExistsSync(pkgPath)) {
         return pkgPath;
@@ -252,18 +259,22 @@ const _registerPlatformEngine = (c, platform) => {
     if (selectedEngineConfig) {
         const existingEngine = c.runtime.enginesById[selectedEngineConfig.id];
         if (!existingEngine) {
-            if (IS_LINKED) {
-                // In the instances of running linked rnv instead of installed one load local packages
-                const pth = require.resolve(selectedEngineConfig.packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
-                registerEngine(c, require(
-                    pth
-                )?.default, platform, selectedEngineConfig);
-            } else {
-                registerEngine(c, require(
-                    _resolvePkgPath(c, selectedEngineConfig.packageName)
-                )?.default,
-                platform, selectedEngineConfig);
-            }
+            // if (IS_LINKED) {
+            //     // In the instances of running linked rnv instead of installed one load local packages
+            //     const pth = require.resolve(selectedEngineConfig.packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
+            //     registerEngine(c, require(
+            //         pth
+            //     )?.default, platform, selectedEngineConfig);
+            // } else {
+            //     registerEngine(c, require(
+            //         _resolvePkgPath(c, selectedEngineConfig.packageName)
+            //     )?.default,
+            //     platform, selectedEngineConfig);
+            // }
+            registerEngine(c, require(
+                _resolvePkgPath(c, selectedEngineConfig.packageName)
+            )?.default,
+            platform, selectedEngineConfig);
         } else {
             _registerEnginePlatform(c, platform, existingEngine);
         }

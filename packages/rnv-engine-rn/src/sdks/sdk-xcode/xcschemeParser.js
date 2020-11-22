@@ -5,10 +5,13 @@ import { getAppFolderName } from './common';
 const {
     getAppFolder,
     getAppTemplateFolder,
-    addSystemInjects
+    addSystemInjects,
+    getConfigProp
 } = Common;
 const { logTask } = Logger;
 const { writeCleanFile } = FileUtils;
+// const xml2js = require('xml2js');
+// const parser = new xml2js.Parser();
 
 export const parseXcscheme = async (c, platform) => {
     logTask('parseXcscheme');
@@ -40,9 +43,23 @@ export const parseXcscheme = async (c, platform) => {
         : 'Xcode.DebuggerFoundation.Launcher.LLDB';
     const schemePath = `${appFolderName}.xcodeproj/xcshareddata/xcschemes/${appFolderName}.xcscheme`;
 
+    let _commandLineArguments = '';
+    const commandLineArguments = getConfigProp(c, c.platform, 'commandLineArguments');
+    if (commandLineArguments?.length) {
+        commandLineArguments.forEach((arg) => {
+            _commandLineArguments += `
+        <CommandLineArgument
+           argument = "${arg}"
+           isEnabled = "YES">
+        </CommandLineArgument>
+`;
+        });
+    }
+
     const injects = [
         { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
-        { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId }
+        { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId },
+        { pattern: '{{INJECT_COMMAND_LINE_ARGUMENTS}}', override: _commandLineArguments }
     ];
 
     addSystemInjects(c, injects);
@@ -52,4 +69,6 @@ export const parseXcscheme = async (c, platform) => {
         path.join(appFolder, schemePath),
         injects, null, c
     );
+
+    // const parseObj = await parser.parseStringPromise(path.join(appFolder, schemePath));
 };
