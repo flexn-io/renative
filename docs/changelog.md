@@ -5,6 +5,21 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.15 (2020-11-22)
+
+### Fixed
+
+- [fix] logger
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.14 (2020-11-21)
 
 ### Fixed
