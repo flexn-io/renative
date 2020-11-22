@@ -47,7 +47,7 @@ export const logWelcome = () => {
     if (cnf().files?.rnv?.package?.version) {
         cnf().rnvVersion = cnf().files.rnv.package.version;
         str += printIntoBox(`      Version: ${currentChalk.green(cnf().rnvVersion)}`, 1);
-        if (cnf().rnvVersion.includes('alpha')) {
+        if (cnf().rnvVersion?.includes?.('alpha')) {
             str += printIntoBox(
                 `      ${currentChalk.yellow(
                     'WARNING: this is a prerelease version.'
@@ -72,7 +72,6 @@ export const logWelcome = () => {
 };
 
 let _messages = [];
-// let _currentCommand;
 let _currentProcess;
 let _isInfoEnabled = false;
 let _infoFilter = [];
@@ -84,13 +83,12 @@ let _analytics;
 
 const cnf = () => {
     if (!_c) {
-        _c = global.RNV_CONFIG;
-        configureLogger(global.RNV_CONFIG, global.RNV_ANALYTICS);
+        _configureLogger(global.RNV_CONFIG, global.RNV_ANALYTICS);
     }
-    return _c || {};
+    return _c;
 };
 
-export const configureLogger = (c, analytics) => {
+const _configureLogger = (c, analytics) => {
     _messages = [];
     _c = c;
     _c.timeStart = new Date();
@@ -120,7 +118,6 @@ export const logAndSave = (msg, skipLog) => {
 const PRIVATE_PARAMS = ['-k', '--key'];
 
 export const getCurrentCommand = (excludeDollar = false) => {
-    if (!_c) return '_c is undefined';
     const argArr = cnf().process.argv.slice(2);
     let hideNext = false;
     const output = argArr
@@ -158,120 +155,117 @@ export const logSummary = (header = 'SUMMARY') => {
     }
 
     let timeString = '';
-    if (_c) {
-        cnf().timeEnd = new Date();
-        timeString = `| ${cnf().timeEnd.toLocaleString()}`;
-    }
+    cnf().timeEnd = new Date();
+    timeString = `| ${cnf().timeEnd.toLocaleString()}`;
 
     let str = printBoxStart(`${ICN_ROCKET}  ${header} ${timeString}`, getCurrentCommand());
-    if (_c) {
+
+    str += printIntoBox(
+        `ReNative Version: ${_highlightColor(cnf().rnvVersion)}`,
+        1
+    );
+    if (cnf().files?.project?.package) {
         str += printIntoBox(
-            `ReNative Version: ${_highlightColor(cnf().rnvVersion)}`,
+            `Project Name ($package.name): ${_highlightColor(
+                cnf().files.project.package.name
+            )}`,
             1
         );
-        if (cnf().files.project.package) {
-            str += printIntoBox(
-                `Project Name ($package.name): ${_highlightColor(
-                    cnf().files.project.package.name
-                )}`,
-                1
-            );
-            str += printIntoBox(
-                `Project Version ($package.version): ${_highlightColor(
-                    cnf().files.project.package.version
-                )}`,
-                1
-            );
-        }
+        str += printIntoBox(
+            `Project Version ($package.version): ${_highlightColor(
+                cnf().files.project.package.version
+            )}`,
+            1
+        );
+    }
 
-        if (cnf().buildConfig?.workspaceID) {
-            str += printIntoBox(
-                `Workspace ($.workspaceID): ${_highlightColor(cnf().buildConfig.workspaceID)}`,
-                1
-            );
-        }
+    if (cnf().buildConfig?.workspaceID) {
+        str += printIntoBox(
+            `Workspace ($.workspaceID): ${_highlightColor(cnf().buildConfig.workspaceID)}`,
+            1
+        );
+    }
+    if (cnf().platform) {
+        str += printIntoBox(`Platform (-p): ${_highlightColor(cnf().platform)}`, 1);
+    }
+    if (cnf().runtime?.engine) {
+        let addon = '';
         if (cnf().platform) {
-            str += printIntoBox(`Platform (-p): ${_highlightColor(cnf().platform)}`, 1);
+            addon = ` ($.platforms.${cnf().platform}.engine)`;
         }
-        if (cnf().runtime?.engine) {
-            let addon = '';
-            if (cnf().platform) {
-                addon = ` ($.platforms.${cnf().platform}.engine)`;
-            }
-            str += printIntoBox(`Engine${addon}: ${
-                _highlightColor(cnf().runtime.engine?.getId?.())
-            }`, 1);
-        }
-        if (cnf().buildConfig?._meta?.currentAppConfigId) {
-            str += printIntoBox(
-                `App Config (-c): ${_highlightColor(
+        str += printIntoBox(`Engine${addon}: ${
+            _highlightColor(cnf().runtime?.engine?.config?.id)
+        }`, 1);
+    }
+    if (cnf().buildConfig?._meta?.currentAppConfigId) {
+        str += printIntoBox(
+            `App Config (-c): ${_highlightColor(
                     cnf().buildConfig._meta?.currentAppConfigId
+            )}`,
+            1
+        );
+    }
+    if (cnf().runtime?.scheme) {
+        str += printIntoBox(
+            `Build Scheme (-s): ${_highlightColor(cnf().runtime?.scheme)}`,
+            1
+        );
+    }
+    if (cnf().runtime?.bundleAssets) {
+        str += printIntoBox(
+            `Bundle assets ($.platforms.${cnf().platform}.bundleAssets): ${
+                _highlightColor(!!cnf().runtime?.bundleAssets)}`,
+            1
+        );
+    }
+    if (cnf().runtime?.target) {
+        str += printIntoBox(
+            `Target (-t): ${_highlightColor(cnf().runtime?.target)}`,
+            1
+        );
+    }
+    if (cnf().program?.reset) {
+        str += printIntoBox(
+            `Reset Project (-r): ${_highlightColor(!!cnf().program?.reset)}`,
+            1
+        );
+    }
+    if (cnf().program?.resetHard) {
+        str += printIntoBox(
+            `Reset Project and Assets (-R): ${_highlightColor(!!cnf().program?.resetHard)}`,
+            1
+        );
+    }
+    if (cnf().runtime?.supportedPlatforms?.length) {
+        const plats = cnf().runtime.supportedPlatforms.map(v => `${v.platform}${v.isConnected ? '' : '(ejected)'}`);
+        str += printArrIntoBox(plats, 'Supported Platforms: ');
+    }
+
+    if (cnf().files?.project?.config?.defaults) {
+        const defaultProjectConfigs = cnf().files.project.config.defaults;
+        if (defaultProjectConfigs?.template) {
+            str += printIntoBox(
+                `Master Template: ${_highlightColor(
+                    defaultProjectConfigs.template
                 )}`,
                 1
             );
         }
-        if (cnf().runtime?.scheme) {
-            str += printIntoBox(
-                `Build Scheme (-s): ${_highlightColor(cnf().runtime?.scheme)}`,
-                1
-            );
-        }
-        if (cnf().runtime?.bundleAssets) {
-            str += printIntoBox(
-                `Bundle assets ($.platforms.${cnf().platform}.bundleAssets): ${
-                    _highlightColor(!!cnf().runtime?.bundleAssets)}`,
-                1
-            );
-        }
-        if (cnf().runtime?.target) {
-            str += printIntoBox(
-                `Target (-t): ${_highlightColor(cnf().runtime?.target)}`,
-                1
-            );
-        }
-        if (cnf().program?.reset) {
-            str += printIntoBox(
-                `Reset Project (-r): ${_highlightColor(!!cnf().program?.reset)}`,
-                1
-            );
-        }
-        if (cnf().program?.resetHard) {
-            str += printIntoBox(
-                `Reset Project and Assets (-R): ${_highlightColor(!!cnf().program?.resetHard)}`,
-                1
-            );
-        }
-        if (cnf().runtime?.supportedPlatforms?.length) {
-            const plats = cnf().runtime.supportedPlatforms.map(v => `${v.platform}${v.isConnected ? '' : '(ejected)'}`);
-            str += printArrIntoBox(plats, 'Supported Platforms: ');
-        }
+    }
 
-        if (cnf().files?.project?.config?.defaults) {
-            const defaultProjectConfigs = cnf().files.project.config.defaults;
-            if (defaultProjectConfigs?.template) {
-                str += printIntoBox(
-                    `Master Template: ${_highlightColor(
-                        defaultProjectConfigs.template
-                    )}`,
-                    1
-                );
-            }
-        }
+    if (cnf().process) {
+        const envString = `${cnf().process.platform} | ${
+            cnf().process.arch} | node v${cnf().process.versions?.node}`;
+        str += printIntoBox(`Env Info: ${currentChalk.gray(envString)}`, 1);
+    }
 
-        if (cnf().process) {
-            const envString = `${cnf().process.platform} | ${
-                cnf().process.arch} | node v${cnf().process.versions?.node}`;
-            str += printIntoBox(`Env Info: ${currentChalk.gray(envString)}`, 1);
-        }
-
-        if (cnf().timeEnd) {
-            str += printIntoBox(
-                `Executed Time: ${currentChalk.yellow(
-                    _msToTime(cnf().timeEnd - cnf().timeStart)
-                )}`,
-                1
-            );
-        }
+    if (cnf().timeEnd) {
+        str += printIntoBox(
+            `Executed Time: ${currentChalk.yellow(
+                _msToTime(cnf().timeEnd - cnf().timeStart)
+            )}`,
+            1
+        );
     }
 
     str += printIntoBox('');
@@ -296,10 +290,6 @@ const _msToTime = (seconds) => {
     const hrs = (s - mins) / 60;
 
     return `${hrs}h:${mins}m:${secs}s:${ms}ms`;
-};
-
-export const setCurrentJob = () => {
-    // _currentCommand = job;
 };
 
 const _getCurrentTask = () => (cnf()._currentTask ? currentChalk.grey(` [${cnf()._currentTask}]`) : '');

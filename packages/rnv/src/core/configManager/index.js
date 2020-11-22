@@ -815,6 +815,8 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
         }
     };
 
+    global.RNV_CONFIG = c;
+
     c.program = program;
     c.process = process;
     c.command = cmd;
@@ -945,8 +947,6 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     } catch (e) {
         logError(e);
     }
-
-    global.RNV_CONFIG = c;
 
     return c;
 };
