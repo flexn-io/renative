@@ -292,11 +292,15 @@ export const PARAM_KEYS = {
     },
     reset: {
         shortcut: 'r',
-        description: 'also perform Reset of platform'
+        description: 'also perform reset of platform build'
     },
     resetHard: {
         shortcut: 'R',
-        description: 'also perform Reset of platform and all assets'
+        description: 'also perform reset of platform platform and platform assets'
+    },
+    resetAssets: {
+        shortcut: 'a',
+        description: 'also perform reset of platform assets'
     },
     key: {
         shortcut: 'k',
@@ -422,7 +426,7 @@ Object.keys(PARAM_KEYS).forEach((k) => {
 export const PARAMS = {
     withBase: arr => [PARAM_KEYS.info, PARAM_KEYS.ci, PARAM_KEYS.mono,
         PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
-    withConfigure: arr => [PARAM_KEYS.reset, PARAM_KEYS.resetHard, PARAM_KEYS.engine,
+    withConfigure: arr => [PARAM_KEYS.reset, PARAM_KEYS.resetHard, PARAM_KEYS.engine, PARAM_KEYS.resetAssets,
         PARAM_KEYS.appConfigID, PARAM_KEYS.scheme, PARAM_KEYS.platform].concat(arr || []),
     withRun: arr => [PARAM_KEYS.target, PARAM_KEYS.device, PARAM_KEYS.hosted,
         PARAM_KEYS.port, PARAM_KEYS.debug, PARAM_KEYS.debugIp, PARAM_KEYS.skipTargetCheck,

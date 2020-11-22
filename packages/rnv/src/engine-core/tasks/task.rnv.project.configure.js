@@ -56,13 +56,20 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         await resolvePluginDependants(c);
         await configurePlugins(c);
         await configureRuntimeDefaults(c);
-        if (c.program.resetHard && !c.runtime.disableReset) {
-            logInfo(
-                `You passed ${chalk().white('-R')} argument. "${chalk().white('./platformAssets')}" will be cleaned up first`
-            );
-
-            await cleanPlaformAssets(c);
+        if (!c.runtime.disableReset) {
+            if (c.program.resetHard) {
+                logInfo(
+                    `You passed ${chalk().white('-R, --resetHard')} argument. "${chalk().white('./platformAssets')}" will be cleaned up first`
+                );
+                await cleanPlaformAssets(c);
+            } else if (c.program.resetAssets) {
+                logInfo(
+                    `You passed ${chalk().white('-a, --resetAssets')} argument. "${chalk().white('./platformAssets')}" will be cleaned up first`
+                );
+                await cleanPlaformAssets(c);
+            }
         }
+
         await copyRuntimeAssets(c);
         await configureTemplateFiles(c);
         await checkAndCreateGitignore(c);
