@@ -89,9 +89,19 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
+const getOutputDir = (c) => {
+    const distDir = getConfigProp(c, c.platform, 'outputDir');
+    return distDir || `platformBuilds/${c.runtime.appId}_${c.platform}/.next`;
+};
+
+const getExportDir = (c) => {
+    const outputDir = getConfigProp(c, c.platform, 'exportDir');
+    return outputDir || path.join(getPlatformBuildDir(c), 'output');
+};
+
 const _checkPagesDir = async (c) => {
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
-    const distDir = `platformBuilds/${c.runtime.appId}_${c.platform}/.next`;
+    const distDir = getOutputDir(c);
     if (pagesDir) {
         const pagesDirPath = path.join(c.paths.project.dir, pagesDir);
         if (!fsExistsSync(pagesDirPath)) {
@@ -131,7 +141,6 @@ export const getTranspileModules = (c) => {
 export const buildWebNext = async (c) => {
     logTask('buildWebNext');
     const env = getConfigProp(c, c.platform, 'environment');
-    const platformBuildDir = getPlatformBuildDir(c);
 
     const envExt = await _checkPagesDir(c);
 
@@ -144,7 +153,7 @@ export const buildWebNext = async (c) => {
         }
     });
     logSuccess(
-        `Your build is located in ${chalk().cyan(path.join(platformBuildDir, '.next'))} .`
+        `Your build is located in ${chalk().cyan(getOutputDir(c))} .`
     );
     return true;
 };
@@ -191,7 +200,7 @@ export const exportWebNext = async (c) => {
     // const { platform } = c;
 
     logTask('_exportNext');
-    const exportDir = path.join(getPlatformBuildDir(c), 'output');
+    const exportDir = getExportDir(c);
     const env = getConfigProp(c, c.platform, 'environment');
     const envExt = await _checkPagesDir(c);
 
