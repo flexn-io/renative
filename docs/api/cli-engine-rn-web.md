@@ -41,11 +41,13 @@ Options:
 
 `-o`, `--only` - run Only top command (Skip dependencies)
 
-`-r`, `--reset` - also perform Reset of platform
+`-r`, `--reset` - also perform reset of platform build
 
-`-R`, `--resetHard` - also perform Reset of platform and all assets
+`-R`, `--resetHard` - also perform reset of platform platform and platform assets
 
 `-e`, `--engine` - engine to be used (next)
+
+`-a`, `--resetAssets` - also perform reset of platform assets
 
 `-c`, `--appConfigID` - select specific app Config id
 
@@ -106,11 +108,13 @@ Options:
 
 `-o`, `--only` - run Only top command (Skip dependencies)
 
-`-r`, `--reset` - also perform Reset of platform
+`-r`, `--reset` - also perform reset of platform build
 
-`-R`, `--resetHard` - also perform Reset of platform and all assets
+`-R`, `--resetHard` - also perform reset of platform platform and platform assets
 
 `-e`, `--engine` - engine to be used (next)
+
+`-a`, `--resetAssets` - also perform reset of platform assets
 
 `-c`, `--appConfigID` - select specific app Config id
 
@@ -155,11 +159,13 @@ Options:
 
 `-o`, `--only` - run Only top command (Skip dependencies)
 
-`-r`, `--reset` - also perform Reset of platform
+`-r`, `--reset` - also perform reset of platform build
 
-`-R`, `--resetHard` - also perform Reset of platform and all assets
+`-R`, `--resetHard` - also perform reset of platform platform and platform assets
 
 `-e`, `--engine` - engine to be used (next)
+
+`-a`, `--resetAssets` - also perform reset of platform assets
 
 `-c`, `--appConfigID` - select specific app Config id
 
@@ -204,11 +210,13 @@ Options:
 
 `-o`, `--only` - run Only top command (Skip dependencies)
 
-`-r`, `--reset` - also perform Reset of platform
+`-r`, `--reset` - also perform reset of platform build
 
-`-R`, `--resetHard` - also perform Reset of platform and all assets
+`-R`, `--resetHard` - also perform reset of platform platform and platform assets
 
 `-e`, `--engine` - engine to be used (next)
+
+`-a`, `--resetAssets` - also perform reset of platform assets
 
 `-c`, `--appConfigID` - select specific app Config id
 
@@ -253,11 +261,13 @@ Options:
 
 `-o`, `--only` - run Only top command (Skip dependencies)
 
-`-r`, `--reset` - also perform Reset of platform
+`-r`, `--reset` - also perform reset of platform build
 
-`-R`, `--resetHard` - also perform Reset of platform and all assets
+`-R`, `--resetHard` - also perform reset of platform platform and platform assets
 
 `-e`, `--engine` - engine to be used (next)
+
+`-a`, `--resetAssets` - also perform reset of platform assets
 
 `-c`, `--appConfigID` - select specific app Config id
 
@@ -302,11 +312,13 @@ Options:
 
 `-o`, `--only` - run Only top command (Skip dependencies)
 
-`-r`, `--reset` - also perform Reset of platform
+`-r`, `--reset` - also perform reset of platform build
 
-`-R`, `--resetHard` - also perform Reset of platform and all assets
+`-R`, `--resetHard` - also perform reset of platform platform and platform assets
 
 `-e`, `--engine` - engine to be used (next)
+
+`-a`, `--resetAssets` - also perform reset of platform assets
 
 `-c`, `--appConfigID` - select specific app Config id
 
@@ -351,11 +363,13 @@ Options:
 
 `-o`, `--only` - run Only top command (Skip dependencies)
 
-`-r`, `--reset` - also perform Reset of platform
+`-r`, `--reset` - also perform reset of platform build
 
-`-R`, `--resetHard` - also perform Reset of platform and all assets
+`-R`, `--resetHard` - also perform reset of platform platform and platform assets
 
 `-e`, `--engine` - engine to be used (next)
+
+`-a`, `--resetAssets` - also perform reset of platform assets
 
 `-c`, `--appConfigID` - select specific app Config id
 

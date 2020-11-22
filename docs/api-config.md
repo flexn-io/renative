@@ -12348,6 +12348,33 @@ Special property which tells Xcode how to build your project
 
 
 
+#### platforms.ios.buildSchemes.[object].commandLineArguments
+
+**path**
+`renative.json/#/platforms.ios.buildSchemes.[object].commandLineArguments`
+
+**type** `array`
+
+Allows you to pass launch arguments to active scheme
+
+**examples**
+
+
+```json
+{
+  "commandLineArguments": [
+    "-FIRAnalyticsDebugEnabled",
+    "MyCustomLaunchArgument"
+  ]
+}
+```
+
+
+
+
+
+
+
 #### platforms.ios.buildSchemes.[object].deploy
 
 **path**
@@ -13320,6 +13347,33 @@ Special property which tells Xcode how to build your project
 ```json
 {
   "codeSignIdentity": "iPhone Distribution"
+}
+```
+
+
+
+
+
+
+
+#### platforms.ios.commandLineArguments
+
+**path**
+`renative.json/#/platforms.ios.commandLineArguments`
+
+**type** `array`
+
+Allows you to pass launch arguments to active scheme
+
+**examples**
+
+
+```json
+{
+  "commandLineArguments": [
+    "-FIRAnalyticsDebugEnabled",
+    "MyCustomLaunchArgument"
+  ]
 }
 ```
 
@@ -22112,6 +22166,33 @@ Special property which tells Xcode how to build your project
 
 
 
+#### platforms.tvos.buildSchemes.[object].commandLineArguments
+
+**path**
+`renative.json/#/platforms.tvos.buildSchemes.[object].commandLineArguments`
+
+**type** `array`
+
+Allows you to pass launch arguments to active scheme
+
+**examples**
+
+
+```json
+{
+  "commandLineArguments": [
+    "-FIRAnalyticsDebugEnabled",
+    "MyCustomLaunchArgument"
+  ]
+}
+```
+
+
+
+
+
+
+
 #### platforms.tvos.buildSchemes.[object].deploy
 
 **path**
@@ -23084,6 +23165,33 @@ Special property which tells Xcode how to build your project
 ```json
 {
   "codeSignIdentity": "iPhone Distribution"
+}
+```
+
+
+
+
+
+
+
+#### platforms.tvos.commandLineArguments
+
+**path**
+`renative.json/#/platforms.tvos.commandLineArguments`
+
+**type** `array`
+
+Allows you to pass launch arguments to active scheme
+
+**examples**
+
+
+```json
+{
+  "commandLineArguments": [
+    "-FIRAnalyticsDebugEnabled",
+    "MyCustomLaunchArgument"
+  ]
 }
 ```
 

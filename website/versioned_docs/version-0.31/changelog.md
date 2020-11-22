@@ -6,6 +6,22 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.16 (2020-11-22)
+
+### Fixed
+
+- [feat] support for xcode commandLineArguments
+- [feat] add resetAssets flag
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.15 (2020-11-22)
 
 ### Fixed
