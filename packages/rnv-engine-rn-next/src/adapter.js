@@ -6,7 +6,7 @@ const path = require('path');
 const nextTranspile = require('next-transpile-modules');
 const withCSS = require('@zeit/next-css');
 
-export const withRNV = (config, opts = { legacyImages: true }) => {
+export const withRNV = (config, opts) => {
     const cnf = {
         ...config,
         distDir: process.env.NEXT_DIST_DIR,
@@ -53,7 +53,7 @@ export const withRNV = (config, opts = { legacyImages: true }) => {
         cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
     }
     if (opts?.enableNextCss) {
-        cnf1 = withCSS(cnf);
+        cnf1 = withCSS(cnf1);
     }
     cnf1.pageExtensions = process.env.RNV_EXTENSIONS.split(',');
     return cnf1;
