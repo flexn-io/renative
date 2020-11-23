@@ -5,6 +5,21 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.17 (2020-11-23)
+
+### Fixed
+
+- [fix] next optimised images support, vector icons
+- [feat] support for custom exportDir, outputDir
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- if you use custom vector icons fonts in `appConfigs/base/fonts` make sure you copy latest versions from `node_modules/react-native-vector-icons/Fonts` to that folder.
+
 ## v0.32.0-alpha.16 (2020-11-22)
 
 ### Fixed

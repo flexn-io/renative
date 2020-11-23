@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.32.0-alpha.16",
+            "version": "0.32.0-alpha.17",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -833,7 +833,7 @@
             },
             "engine-rn-next": {
                 "moduleAliases": {
-                  "react-native-vector-icons": "@ovaeasy/react-native-vector-icons"
+                    "react-native-vector-icons": "@ovaeasy/react-native-vector-icons"
                 }
             },
             "npm": {

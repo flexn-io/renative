@@ -24416,6 +24416,38 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+#### platforms.web.buildSchemes.[object].exportDir
+
+**path**
+`renative.json/#/platforms.web.buildSchemes.[object].exportDir`
+
+**type** `string`
+
+Custom export directory used by nextjs equivalent to "npx next export --outdir <exportDir>". Use relative paths
+
+**examples**
+
+
+```json
+{
+  "exportDir": "output"
+}
+```
+
+
+
+```json
+{
+  "exportDir": "custom/location"
+}
+```
+
+
+
+
+
+
+
 #### platforms.web.buildSchemes.[object].ext
 
 **path**
@@ -24624,6 +24656,38 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.web.buildSchemes.[object].outputDir
+
+**path**
+`renative.json/#/platforms.web.buildSchemes.[object].outputDir`
+
+**type** `string`
+
+Custom output directory used by nextjs equivalent to "npx next build" with custom outputDir. Use relative paths
+
+**examples**
+
+
+```json
+{
+  "outputDir": ".next"
+}
+```
+
+
+
+```json
+{
+  "outputDir": "custom/location"
+}
+```
+
+
+
+
+
+
+
 #### platforms.web.buildSchemes.[object].pagesDir
 
 **path**
@@ -24631,6 +24695,16 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 **type** `string`
 
+Custom pages directory used by nextjs. Use relative paths
+
+**examples**
+
+
+```json
+{
+  "pagesDir": "src/customFolder/pages"
+}
+```
 
 
 
@@ -25058,6 +25132,38 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+#### platforms.web.exportDir
+
+**path**
+`renative.json/#/platforms.web.exportDir`
+
+**type** `string`
+
+Custom export directory used by nextjs equivalent to "npx next export --outdir <exportDir>". Use relative paths
+
+**examples**
+
+
+```json
+{
+  "exportDir": "output"
+}
+```
+
+
+
+```json
+{
+  "exportDir": "custom/location"
+}
+```
+
+
+
+
+
+
+
 #### platforms.web.ext
 
 **path**
@@ -25266,6 +25372,38 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.web.outputDir
+
+**path**
+`renative.json/#/platforms.web.outputDir`
+
+**type** `string`
+
+Custom output directory used by nextjs equivalent to "npx next build" with custom outputDir. Use relative paths
+
+**examples**
+
+
+```json
+{
+  "outputDir": ".next"
+}
+```
+
+
+
+```json
+{
+  "outputDir": "custom/location"
+}
+```
+
+
+
+
+
+
+
 #### platforms.web.pagesDir
 
 **path**
@@ -25273,6 +25411,16 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 **type** `string`
 
+Custom pages directory used by nextjs. Use relative paths
+
+**examples**
+
+
+```json
+{
+  "pagesDir": "src/customFolder/pages"
+}
+```
 
 
 
