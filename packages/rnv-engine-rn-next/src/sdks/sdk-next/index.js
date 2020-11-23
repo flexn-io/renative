@@ -149,7 +149,7 @@ export const buildWebNext = async (c) => {
         env: {
             NODE_ENV: env || 'development',
             ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c))
+            ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c))
         }
     });
     logSuccess(
@@ -179,7 +179,7 @@ Dev server running at: ${url}
             env: {
                 NODE_ENV: env || 'development',
                 ...envExt,
-                ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c))
+                ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c))
             },
             interactive: true
         });
@@ -209,7 +209,7 @@ export const exportWebNext = async (c) => {
         env: {
             NODE_ENV: env || 'development',
             ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c))
+            ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c))
         }
     });
     logSuccess(

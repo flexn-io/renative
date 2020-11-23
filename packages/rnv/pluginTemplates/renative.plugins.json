@@ -773,8 +773,11 @@
                 "package": "com.levelasquez.androidopensettings.AndroidOpenSettingsPackage"
             }
         },
+        "@ovaeasy/react-native-vector-icons": {
+            "version": "7.0.4"
+        },
         "react-native-vector-icons": {
-            "version": "6.6.0",
+            "version": "7.1.0",
             "ios": {
                 "podName": "RNVectorIcons",
                 "ignoreProjectFonts": [
@@ -827,6 +830,14 @@
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
+            },
+            "engine-rn-next": {
+                "moduleAliases": {
+                  "react-native-vector-icons": "@ovaeasy/react-native-vector-icons"
+                }
+            },
+            "npm": {
+                "@ovaeasy/react-native-vector-icons": "7.0.4"
             }
         },
         "react-native-sound": {

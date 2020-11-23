@@ -469,7 +469,7 @@ will try to use globally installed one`);
     return true;
 };
 
-export const getModuleConfigs = (c) => {
+export const getModuleConfigs = (c, primaryKey) => {
     let modulePaths = [];
     const moduleAliases = {};
 
@@ -477,7 +477,7 @@ export const getModuleConfigs = (c) => {
 
     // PLUGINS
     parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
-        const webpackConfig = plugin.webpack || plugin.webpackConfig;
+        const webpackConfig = plugin[primaryKey] || plugin.webpack || plugin.webpackConfig;
 
         if (webpackConfig) {
             if (webpackConfig.modulePaths) {

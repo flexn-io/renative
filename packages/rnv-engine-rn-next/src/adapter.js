@@ -1,11 +1,12 @@
 const { withExpo } = require('@expo/next-adapter');
 const withImages = require('next-images');
+const withOptimizedImages = require('next-optimized-images');
 const withFonts = require('next-fonts');
 const path = require('path');
 const nextTranspile = require('next-transpile-modules');
+const withCSS = require('@zeit/next-css');
 
-
-export const withRNV = (config) => {
+export const withRNV = (config, opts = { legacyImages: true }) => {
     const cnf = {
         ...config,
         distDir: process.env.NEXT_DIST_DIR,
@@ -45,7 +46,15 @@ export const withRNV = (config) => {
     }
 
     const withTM = nextTranspile(transModules);
-    const cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
+    let cnf1;
+    if (opts?.enableOptimizedImages) {
+        cnf1 = withExpo(withFonts(withOptimizedImages(withTM(cnf))));
+    } else {
+        cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
+    }
+    if (opts?.enableNextCss) {
+        cnf1 = withCSS(cnf);
+    }
     cnf1.pageExtensions = process.env.RNV_EXTENSIONS.split(',');
     return cnf1;
 };
