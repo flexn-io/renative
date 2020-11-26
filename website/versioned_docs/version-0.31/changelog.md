@@ -6,6 +6,21 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.19 (2020-11-26)
+
+### Fixed
+
+- [feat] versionFormat
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.18 (2020-11-23)
 
 ### Fixed
