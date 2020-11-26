@@ -284,8 +284,6 @@ export const getAppId = (c, platform) => {
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-export const getAppVersion = (c, platform) => getConfigProp(c, platform, 'version') || c.files.project.package?.version;
-
 export const getAppAuthor = (c, platform) => getConfigProp(c, platform, 'author') || c.files.project.package?.author;
 
 export const getAppLicense = (c, platform) => getConfigProp(c, platform, 'license') || c.files.project.package?.license;
@@ -296,6 +294,35 @@ export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'g
 
 export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'description')
     || c.files.project.package?.description;
+
+export const getAppVersion = (c, platform) => {
+    const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
+    const versionFormat = getConfigProp(c, platform, 'versionFormat');
+    if (!versionFormat) return version;
+    const versionCodeArr = versionFormat.split('.');
+    const dotLength = versionCodeArr.length;
+    const isNumArr = versionCodeArr.map(v => !Number.isNaN(Number(v)));
+
+    const verArr = [];
+    let i = 0;
+    version.split('.').map(v => v.split('-').map(v2 => v2.split('+').forEach((v3) => {
+        const isNum = !Number.isNaN(Number(v3));
+        if (isNumArr[i] && isNum) {
+            verArr.push(v3);
+        } else if (!isNumArr[i]) {
+            verArr.push(v3);
+        }
+
+        i++;
+    })));
+    if (verArr.length > dotLength) {
+        verArr.length = dotLength;
+    }
+
+    const output = verArr.join('.');
+    // console.log(`IN: ${version}\nOUT: ${output}`);
+    return output;
+};
 
 export const getAppVersionCode = (c, platform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');

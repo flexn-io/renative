@@ -1414,8 +1414,40 @@ export const schemaRoot = {
                 '10023'
             ],
         },
+        versionFormat: {
+            description: `Allows you to fine-tune auto generated versions.
+If you do not define versionFormat, no formatting will apply to version
+
+"versionCodeFormat" : "0.0.0"
+
+IN: 1.2.3-rc.4+build.56 OUT: 1.2.3
+
+IN: 1.2.3 OUT: 1.2.3
+
+
+
+"versionCodeFormat" : "0.0.0.0.0"
+
+IN: 1.2.3-rc.4+build.56 OUT: 1.2.3.4.56
+
+IN: 1.2.3 OUT: 1.2.3
+
+"versionCodeFormat" : "0.0.0.x.x.x.x"
+
+IN: 1.2.3-rc.4+build.56 OUT: 1.2.3.rc.4.build.56
+
+IN: 1.2.3 OUT: 1.2.3
+
+`,
+            examples: [
+                '0.0.0',
+                '0.0.0.0.0',
+                '0.0.0.x.x.x.x'
+            ],
+            type: 'string'
+        },
         versionCodeFormat: {
-            description: `allows you to fine-tune auto generated version codes
+            description: `Allows you to fine-tune auto generated version codes
 
 default value: 00.00.00
 
@@ -1434,7 +1466,8 @@ IN: 1.2.3 OUT: 102030000
 `,
             examples: [
                 '00.00.00',
-                '00.00.00.00.00'
+                '00.00.00.00.00',
+                '00.00.00.0000'
             ],
             type: 'string'
         },
