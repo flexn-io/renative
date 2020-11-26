@@ -327,23 +327,24 @@ export const getAppVersion = (c, platform) => {
 export const getAppVersionCode = (c, platform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
     if (versionCode) return versionCode;
-    const version = getAppVersion(c, platform);
+    const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
     const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat', '00.00.00');
     const vFormatArr = versionCodeFormat.split('.').map(v => v.length);
     const versionCodeMaxCount = vFormatArr.length;
-
     const verArr = [];
     version.split('.').map(v => v.split('-').map(v2 => v2.split('+').forEach((v3) => {
         const asNumber = Number(v3);
         if (!Number.isNaN(asNumber)) {
             let val = v3;
-            const maxDigits = vFormatArr[verArr.length - 1] || 2;
+            const maxDigits = vFormatArr[verArr.length] || 2;
+
             if (v3.length > maxDigits) {
                 val = v3.substr(0, maxDigits);
             } else if (v3.length < maxDigits) {
                 let toAdd = maxDigits - v3.length;
+                val = v3;
                 while (toAdd > 0) {
-                    val = `0${v3}`;
+                    val = `0${val}`;
                     toAdd--;
                 }
             }
@@ -363,6 +364,7 @@ export const getAppVersionCode = (c, platform) => {
             verCountDiff++;
         }
     }
+
     const output = Number(verArr.join('')).toString();
     // console.log(`IN: ${version}\nOUT: ${output}`);
     return output;
