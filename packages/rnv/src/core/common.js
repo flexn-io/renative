@@ -284,8 +284,6 @@ export const getAppId = (c, platform) => {
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-export const getAppVersion = (c, platform) => getConfigProp(c, platform, 'version') || c.files.project.package?.version;
-
 export const getAppAuthor = (c, platform) => getConfigProp(c, platform, 'author') || c.files.project.package?.author;
 
 export const getAppLicense = (c, platform) => getConfigProp(c, platform, 'license') || c.files.project.package?.license;
@@ -297,26 +295,56 @@ export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'g
 export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'description')
     || c.files.project.package?.description;
 
+export const getAppVersion = (c, platform) => {
+    const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
+    const versionFormat = getConfigProp(c, platform, 'versionFormat');
+    if (!versionFormat) return version;
+    const versionCodeArr = versionFormat.split('.');
+    const dotLength = versionCodeArr.length;
+    const isNumArr = versionCodeArr.map(v => !Number.isNaN(Number(v)));
+
+    const verArr = [];
+    let i = 0;
+    version.split('.').map(v => v.split('-').map(v2 => v2.split('+').forEach((v3) => {
+        const isNum = !Number.isNaN(Number(v3));
+        if (isNumArr[i] && isNum) {
+            verArr.push(v3);
+        } else if (!isNumArr[i]) {
+            verArr.push(v3);
+        }
+
+        i++;
+    })));
+    if (verArr.length > dotLength) {
+        verArr.length = dotLength;
+    }
+
+    const output = verArr.join('.');
+    // console.log(`IN: ${version}\nOUT: ${output}`);
+    return output;
+};
+
 export const getAppVersionCode = (c, platform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
     if (versionCode) return versionCode;
-    const version = getAppVersion(c, platform);
+    const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
     const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat', '00.00.00');
     const vFormatArr = versionCodeFormat.split('.').map(v => v.length);
     const versionCodeMaxCount = vFormatArr.length;
-
     const verArr = [];
     version.split('.').map(v => v.split('-').map(v2 => v2.split('+').forEach((v3) => {
         const asNumber = Number(v3);
         if (!Number.isNaN(asNumber)) {
             let val = v3;
-            const maxDigits = vFormatArr[verArr.length - 1] || 2;
+            const maxDigits = vFormatArr[verArr.length] || 2;
+
             if (v3.length > maxDigits) {
                 val = v3.substr(0, maxDigits);
             } else if (v3.length < maxDigits) {
                 let toAdd = maxDigits - v3.length;
+                val = v3;
                 while (toAdd > 0) {
-                    val = `0${v3}`;
+                    val = `0${val}`;
                     toAdd--;
                 }
             }
@@ -336,6 +364,7 @@ export const getAppVersionCode = (c, platform) => {
             verCountDiff++;
         }
     }
+
     const output = Number(verArr.join('')).toString();
     // console.log(`IN: ${version}\nOUT: ${output}`);
     return output;

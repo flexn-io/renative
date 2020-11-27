@@ -97,7 +97,7 @@ describe('Testing getAppVersionCode functions', () => {
     it('should evaluate 2.0.0+build.1848 with 00.00.0000', async () => {
         const result = getAppVersionCode({
             ...BUILD_CONF,
-            buildConfig: { common: { versionCodeFormat: '00.00.0000' } },
+            buildConfig: { common: { versionCodeFormat: '00.00.00.0000' } },
             files: { project: { package: { version: '2.0.0+build.1848' } } }
         });
         expect(result).toEqual('200001848');
@@ -121,7 +121,7 @@ describe('Testing getAppVersionCode functions', () => {
     it('should evaluate 2.0.1-alpha.1227', async () => {
         const result = getAppVersionCode({
             ...BUILD_CONF,
-            buildConfig: { common: { versionCodeFormat: '00.00.0000' } },
+            buildConfig: { common: { versionCodeFormat: '00.00.00.0000' } },
             files: { project: { package: { version: '2.0.1-alpha.1227' } } }
         });
         expect(result).toEqual('200011227');
