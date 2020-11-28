@@ -1,6 +1,6 @@
 import path from 'path';
 import open from 'better-opn';
-import { Exec, WebpackUtils, FileUtils, Common, Logger, Constants, EngineManager, PluginManager, Utils } from 'rnv';
+import { Exec, WebpackUtils, FileUtils, Common, Logger, Constants, EngineManager, PluginManager } from 'rnv';
 
 const { executeAsync } = Exec;
 const {
@@ -8,6 +8,7 @@ const {
     getConfigProp,
     confirmActiveBundler,
     getPlatformBuildDir,
+    getDevServerHost
 } = Common;
 const { waitForWebpack, getModuleConfigs } = WebpackUtils;
 const { fsExistsSync, writeCleanFile } = FileUtils;
@@ -18,7 +19,6 @@ const {
 const { NEXT_CONFIG_NAME } = Constants;
 const { generateEnvVars } = EngineManager;
 const { parsePlugins } = PluginManager;
-const { getValidLocalhost } = Utils;
 
 export const configureNextIfRequired = async (c) => {
     logTask('configureNextIfRequired');
@@ -40,7 +40,7 @@ export const runWebNext = async (c) => {
     logTask('runWebNext', `port:${port}`);
     const { platform } = c;
 
-    const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
+    const devServerHost = getDevServerHost(c);
 
     const isPortActive = await checkPortInUse(c, platform, port);
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
@@ -163,7 +163,7 @@ export const runWebDevServer = async (c) => {
     const env = getConfigProp(c, c.platform, 'environment');
     const envExt = await _checkPagesDir(c);
 
-    const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
+    const devServerHost = getDevServerHost(c);
 
     const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
     logRaw(`

@@ -18,7 +18,8 @@ import {
     getTimestampPathsConfig,
     addSystemInjects,
     getPlatformProjectDir,
-    getPlatformServerDir
+    getPlatformServerDir,
+    getDevServerHost
 } from '../common';
 import { doResolve, doResolvePath } from '../systemManager/resolve';
 import {
@@ -34,7 +35,6 @@ import {
 } from '../systemManager/logger';
 import { getPlatformExtensions } from '../engineManager';
 import { parsePlugins } from '../pluginManager';
-import { getValidLocalhost } from '../systemManager/utils';
 
 import { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR } from '../constants';
 
@@ -275,7 +275,7 @@ const _runWebDevServer = async (c, enableRemoteDebugger) => {
         }
     }
 
-    const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'webpackConfig', {}).devServerHost, c.runtime.localhost);
+    const devServerHost = getDevServerHost(c);
 
     const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
     logRaw(`${debugObj.lineBreaks}Dev server running at: ${url}\n\n`);
@@ -332,11 +332,7 @@ export const runWebpackServer = async (c, enableRemoteDebugger) => {
 
     let devServerHost = c.runtime.localhost;
 
-    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    devServerHost = getValidLocalhost(
-        extendConfig.devServerHost,
-        c.runtime.localhost
-    );
+    devServerHost = getDevServerHost(c);
 
     const isPortActive = await checkPortInUse(c, platform, port);
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
@@ -384,8 +380,7 @@ export const waitForWebpack = async (c, suffix = 'assets/bundle.js') => {
     const CHECK_INTEVAL = 2000;
     // const spinner = ora('Waiting for webpack to finish...').start();
 
-    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    const devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
+    const devServerHost = getDevServerHost(c);
     const url = `http://${devServerHost}:${c.runtime.port}/${suffix}`;
 
     return new Promise((resolve, reject) => {

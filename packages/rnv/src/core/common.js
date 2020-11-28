@@ -13,6 +13,7 @@ import {
     logDebug,
     logSuccess
 } from './systemManager/logger';
+import { getValidLocalhost } from './systemManager/utils';
 import { inquirerPrompt } from '../cli/prompt';
 import { CLI_PROPS } from './constants';
 
@@ -76,6 +77,27 @@ export const sanitizeColor = (val, key) => {
         rgbDecimal: rgb.map(v => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
         hex
     };
+};
+
+export const getDevServerHost = (c) => {
+    let devServerHostOrig = getConfigProp(c, c.platform, 'devServerHost');
+    if (!devServerHostOrig) {
+        devServerHostOrig = getConfigProp(c, c.platform, 'webpack', {}).devServerHost;
+        if (devServerHostOrig) {
+            logWarning('DEPRECATED: webpack.devServerHost. use devServerHost directly instead');
+        }
+    }
+    if (!devServerHostOrig) {
+        if (!devServerHostOrig) {
+            devServerHostOrig = getConfigProp(c, c.platform, 'webpackConfig', {}).devServerHost;
+            if (devServerHostOrig) {
+                logWarning('DEPRECATED: webpackConfig.devServerHost. use devServerHost directly instead');
+            }
+        }
+    }
+    const devServerHostFixed = getValidLocalhost(devServerHostOrig, c.runtime.localhost);
+
+    return devServerHostFixed;
 };
 
 export const confirmActiveBundler = async (c) => {
