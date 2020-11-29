@@ -6,6 +6,27 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.21 (2020-11-29)
+
+### Fixed
+
+- [feat] add support for custom gradleBuildToolsVersion, gradleWrapperVersion
+- Merge pull request #618 from zatlodan/fix/jdk-14-compatibility
+- Merge pull request #617 from pavjacko/chore/blur-view-plugin
+- remove sandbox attr
+- migrate devServerHost
+- [fix] Bump gradle version for compatibility with JDK 14
+- chore: Update blur view package to the latest version
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.20 (2020-11-26)
 
 ### Fixed
