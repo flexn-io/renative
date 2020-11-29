@@ -6,924 +6,1110 @@ sidebar_label: build config object
 
 List of available config props injected into [Build Hooks](guide-build-hooks.md) via method parameter
 
----
+
 ## _currentTask
 
 
-
-**type** `undefined`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `_currentTask` | `undefined` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## appConfig
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appConfig` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## buildConfig
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildConfig` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## buildHooks
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildHooks` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## buildPipes
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildPipes` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## cli
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `cli` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## command
 
 
-
-**type** `string`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `command` | `string` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## configPropsInjects
 
 
-
-**type** `array`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `configPropsInjects` | `array` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## defaultWorkspace
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `defaultWorkspace` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## files
 
 
-
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `files` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
 ### files.appConfig
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appConfig` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### files.buildHooks
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildHooks` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### files.defaultWorkspace
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `defaultWorkspace` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### files.home
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `home` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### files.project
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `project` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### files.rnv
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `rnv` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### files.template
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `template` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### files.workspace
 
 
-
-**type** `object`
-
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `workspace` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
+
 ## home
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `home` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## isBuildHookReady
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `isBuildHookReady` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## isBuildHooksReady
 
 
-
-**type** `boolean`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `isBuildHooksReady` | `boolean` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## paths
 
 
-
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `paths` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
 ### paths.GLOBAL_RNV_CONFIG
 
 
-
-**type** `string`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `GLOBAL_RNV_CONFIG` | `string` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### paths.GLOBAL_RNV_DIR
 
 
-
-**type** `string`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `GLOBAL_RNV_DIR` | `string` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### paths.appConfig
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appConfig` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### paths.buildHooks
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildHooks` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### paths.defaultWorkspace
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `defaultWorkspace` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### paths.home
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `home` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### paths.project
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `project` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### paths.rnv
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `rnv` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### paths.template
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `template` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### paths.workspace
 
 
-
-**type** `object`
-
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `workspace` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
+
 ## platform
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `platform` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## platformDefaults
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `platformDefaults` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## process
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `process` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## program
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `program` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## project
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `project` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## rnv
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `rnv` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## rnvVersion
 
 
-
-**type** `string`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `rnvVersion` | `string` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## runtime
 
 
-
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
 ### runtime.appId
 
 
-
-**type** `string`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appId` | `string` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.bundleAssets
 
 
-
-**type** `boolean`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.engine
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.enginesById
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enginesById` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.enginesByPlatform
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enginesByPlatform` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.forceBundleAssets
 
 
-
-**type** `boolean`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `forceBundleAssets` | `boolean` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.hosted
 
 
-
-**type** `boolean`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `hosted` | `boolean` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.isWrapper
 
 
-
-**type** `boolean`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `isWrapper` | `boolean` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.localhost
 
 
-
-**type** `string`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `localhost` | `string` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.missingEnginePlugins
 
 
-
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `missingEnginePlugins` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.port
 
 
-
-**type** `integer`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `port` | `integer` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.scheme
 
 
-
-**type** `string`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `scheme` | `string` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.supportedPlatforms
 
 
-
-**type** `array`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `supportedPlatforms` | `array` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.target
 
 
-
-**type** `string`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `target` | `string` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.task
 
 
-
-**type** `string`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `task` | `string` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### runtime.timestamp
 
 
-
-**type** `integer`
-
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestamp` | `integer` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
+
 ## runtimePropsInjects
 
 
-
-**type** `array`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtimePropsInjects` | `array` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## subCommand
 
 
-
-**type** `string`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `subCommand` | `string` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## systemPropsInjects
 
 
-
-**type** `array`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `systemPropsInjects` | `array` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## template
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `template` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## timeStart
 
 
-
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timeStart` | `object` |  | `` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## workspace
 
 
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `workspace` | `object` |  | `` |
 
-**type** `object`
 
 
 
 
+---
 
 
 

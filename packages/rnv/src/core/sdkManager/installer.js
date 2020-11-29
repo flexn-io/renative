@@ -24,10 +24,14 @@ import {
     TIZEN_MOBILE,
     TIZEN_WATCH,
     SDK_PLATFORMS,
+    ANDROID_SDK,
+    TIZEN_SDK,
+    WEBOS_SDK,
+    ANDROID_NDK,
     USER_HOME_DIR
 } from '../constants';
 import { isSystemWin } from '../systemManager/utils';
-import { getRealPath, writeFileSync, fsExistsSync } from '../systemManager/fileutils';
+import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync } from '../systemManager/fileutils';
 import {
     chalk,
     logTask,
@@ -45,6 +49,18 @@ const SDK_LOACTIONS = {
         path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk'),
         path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk'),
         path.join('Program Files (x86)/Android/android-sdk')
+    ],
+    'android-ndk': [
+        path.join('/usr/local/android-sdk/ndk'),
+        path.join(USER_HOME_DIR, 'Library/Android/sdk/ndk'),
+        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk/ndk'),
+        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk/ndk'),
+        path.join('Program Files (x86)/Android/android-sdk/ndk'),
+        path.join('/usr/local/android-sdk/ndk-bundle'),
+        path.join(USER_HOME_DIR, 'Library/Android/sdk/ndk-bundle'),
+        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk/ndk-bundle'),
+        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk/ndk-bundle'),
+        path.join('Program Files (x86)/Android/android-sdk/ndk-bundle')
     ],
     tizen: [
         path.join('usr/local/tizen-studio'),
@@ -184,9 +200,35 @@ const _isSdkInstalled = (c) => {
     return fsExistsSync(getRealPath(c, sdkPath));
 };
 
-const _attemptAutoFix = async (c, sdkPlatform) => {
+const _findFolderWithFile = (dir, fileToFind) => {
+    const opt = path.join(dir, fileToFind);
+    if (fsExistsSync(opt)) {
+        return dir;
+    }
+    let foundDir;
+    fsReaddirSync(dir).forEach((subDirName) => {
+        const subDir = path.join(dir, subDirName);
+        const foundSubDir = _findFolderWithFile(subDir, fileToFind);
+        if (foundSubDir) {
+            foundDir = foundSubDir;
+        }
+    });
+    return foundDir;
+};
+
+const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) => {
     logTask('_attemptAutoFix');
-    const result = SDK_LOACTIONS[sdkPlatform].find(v => fsExistsSync(v));
+    let result = SDK_LOACTIONS[sdkPlatform].find(v => fsExistsSync(v));
+
+    if (result && traverseUntilFoundFile) {
+        const subResult = _findFolderWithFile(result, traverseUntilFoundFile);
+        if (subResult) {
+            result = subResult;
+        } else {
+            result = null;
+        }
+    }
+
     if (result) {
         logSuccess(
             `Found existing ${c.platform} SDK location at ${chalk().white(
@@ -205,12 +247,7 @@ const _attemptAutoFix = async (c, sdkPlatform) => {
 
         if (confirmSdk) {
             try {
-                c.files.workspace.config.sdks[
-                    SDK_PLATFORMS[c.platform]
-                ] = result;
-                if (sdkPlatform === 'android') {
-                    c.files.workspace.config.sdks.ANDROID_NDK = `${path.join(result, 'ndk-bundle')}`;
-                }
+                c.files.workspace.config.sdks[sdkKey] = result;
                 writeFileSync(
                     c.paths.workspace.config,
                     c.files.workspace.config
@@ -248,13 +285,14 @@ export const checkSdk = async (c) => {
             case ANDROID:
             case ANDROID_TV:
             case ANDROID_WEAR:
-                return _attemptAutoFix(c, 'android');
+                await _attemptAutoFix(c, 'android', ANDROID_SDK);
+                return _attemptAutoFix(c, 'android-ndk', ANDROID_NDK, 'source.properties');
             case TIZEN:
             case TIZEN_MOBILE:
             case TIZEN_WATCH:
-                return _attemptAutoFix(c, 'tizen');
+                return _attemptAutoFix(c, 'tizen', TIZEN_SDK);
             case WEBOS:
-                return _attemptAutoFix(c, 'webos');
+                return _attemptAutoFix(c, 'webos', WEBOS_SDK);
             default:
                 return true;
         }

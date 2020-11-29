@@ -24,6 +24,9 @@ import {
     injectPluginGradleSync
 } from './gradleParser';
 import {
+    parseGradleWrapperSync
+} from './gradleWrapperParser';
+import {
     parseValuesStringsSync,
     injectPluginXmlValuesSync,
     parseValuesColorsSync
@@ -653,6 +656,7 @@ export const configureProject = async (c) => {
     parseSettingsGradleSync(c);
     parseAppBuildGradleSync(c);
     parseBuildGradleSync(c);
+    parseGradleWrapperSync(c);
     parseMainActivitySync(c);
     parseMainApplicationSync(c);
     parseSplashActivitySync(c);

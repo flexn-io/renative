@@ -116,7 +116,7 @@ rnv plugin add @react-native-community/async-storage
 ## @react-native-community/blur
 
 
-Version: `3.3.1`
+Version: `3.6.0`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`
 

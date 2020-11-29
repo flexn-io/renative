@@ -21,13 +21,13 @@ Following Config reference applies to all `renative.json` files, including:
 `\<WORKSPACE\>/\<PROJECT_ID\>/appConfigs/\<APP_ID\>/renative.json`
 
 
----
+
 ## common
 
-**path**
-`renative.json/#/common`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `common` | `object` |  | `common` |
 
 Common config props used as default props for all available buildSchemes
 
@@ -60,30 +60,34 @@ Common config props used as default props for all available buildSchemes
 
 
 
-
-
 ---
+
+
+
+
 ### common.author
 
-**path**
-`renative.json/#/common.author`
 
-**type** `object,string`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `common.author` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### common.backgroundColor
 
-**path**
-`renative.json/#/common.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `common.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -107,43 +111,49 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
+
+
+
+
+### common.buildSchemes
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `common.buildSchemes` |
+
+
 
 
 
 ---
-### common.buildSchemes
-
-**path**
-`renative.json/#/common.buildSchemes`
-
-**type** `object`
-
-
-
-
 
 
 
 #### common.buildSchemes.[object].author
 
-**path**
-`renative.json/#/common.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `common.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### common.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/common.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `common.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -167,60 +177,70 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### common.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/common.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `common.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### common.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/common.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `common.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### common.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/common.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `common.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### common.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/common.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `common.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -228,10 +248,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### common.buildSchemes.[object].description
 
-**path**
-`renative.json/#/common.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `common.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -246,58 +266,66 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+
+---
 
 
 
 
 #### common.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/common.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `common.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### common.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/common.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `common.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### common.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/common.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `common.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### common.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/common.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `common.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -328,15 +356,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### common.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/common.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `common.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -354,57 +384,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### common.buildSchemes.[object].id
 
-**path**
-`renative.json/#/common.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `common.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### common.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/common.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `common.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### common.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/common.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `common.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### common.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/common.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `common.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -433,15 +471,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### common.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/common.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `common.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -483,15 +523,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### common.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/common.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `common.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -522,43 +564,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### common.buildSchemes.[object].license
 
-**path**
-`renative.json/#/common.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `common.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### common.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/common.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `common.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### common.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/common.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `common.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -576,29 +624,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### common.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/common.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `common.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### common.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/common.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `common.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -622,15 +674,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### common.buildSchemes.[object].title
 
-**path**
-`renative.json/#/common.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `common.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -646,15 +700,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### common.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/common.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `common.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -678,17 +734,19 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
-
-
-
-
 ---
+
+
+
+
+
+
 ### common.description
 
-**path**
-`renative.json/#/common.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `common.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -704,16 +762,18 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### common.excludedPlugins
 
-**path**
-`renative.json/#/common.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `common.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -744,16 +804,18 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### common.ext
 
-**path**
-`renative.json/#/common.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `common.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -771,61 +833,69 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### common.id
 
-**path**
-`renative.json/#/common.id`
 
-**type** `string`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `common.id` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### common.ignoreLogs
 
-**path**
-`renative.json/#/common.ignoreLogs`
 
-**type** `boolean`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `common.ignoreLogs` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### common.ignoreWarnings
 
-**path**
-`renative.json/#/common.ignoreWarnings`
 
-**type** `boolean`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `common.ignoreWarnings` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### common.includedFonts
 
-**path**
-`renative.json/#/common.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `common.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -854,16 +924,18 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### common.includedPermissions
 
-**path**
-`renative.json/#/common.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `common.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -905,16 +977,18 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### common.includedPlugins
 
-**path**
-`renative.json/#/common.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `common.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -945,46 +1019,52 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### common.license
 
-**path**
-`renative.json/#/common.license`
 
-**type** `string`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `common.license` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### common.permissions
 
-**path**
-`renative.json/#/common.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `common.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### common.runtime
 
-**path**
-`renative.json/#/common.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `common.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -1002,31 +1082,35 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### common.splashScreen
 
-**path**
-`renative.json/#/common.splashScreen`
 
-**type** `boolean`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `common.splashScreen` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### common.timestampAssets
 
-**path**
-`renative.json/#/common.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `common.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -1050,16 +1134,18 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### common.title
 
-**path**
-`renative.json/#/common.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `common.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -1075,16 +1161,18 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### common.versionedAssets
 
-**path**
-`renative.json/#/common.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `common.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -1108,46 +1196,52 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
-
-
-
-
-
-
 ---
+
+
+
+
+
+
+
+
 ## crypto
 
-**path**
-`renative.json/#/crypto`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `crypto` | `object` |  | `crypto` |
 
 This prop enables automatic encrypt and decrypt of sensitive information in your project
 
 
 
+---
+
+
+
+
+### crypto.decrypt
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `decrypt` | `object` |  | `crypto.decrypt` |
+
+
+
 
 
 ---
-### crypto.decrypt
-
-**path**
-`renative.json/#/crypto.decrypt`
-
-**type** `object`
-
-
-
-
 
 
 
 #### crypto.decrypt.source
 
-**path**
-`renative.json/#/crypto.decrypt.source`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `source` | `string` |  | `crypto.decrypt.source` |
 
 Location of encrypted file in your project used as source of decryption into your workspace
 
@@ -1163,30 +1257,34 @@ Location of encrypted file in your project used as source of decryption into you
 
 
 
+---
+
+
+
+
+
+
+### crypto.encrypt
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `encrypt` | `object` |  | `crypto.encrypt` |
+
 
 
 
 
 ---
-### crypto.encrypt
-
-**path**
-`renative.json/#/crypto.encrypt`
-
-**type** `object`
-
-
-
-
 
 
 
 #### crypto.encrypt.dest
 
-**path**
-`renative.json/#/crypto.encrypt.dest`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `dest` | `string` |  | `crypto.encrypt.dest` |
 
 Location of encrypted file in your project used as destination of encryption from your workspace
 
@@ -1202,35 +1300,39 @@ Location of encrypted file in your project used as destination of encryption fro
 
 
 
-
-
-
-
 ---
+
+
+
+
+
+
 ### crypto.optional
 
-**path**
-`renative.json/#/crypto.optional`
 
-**type** `boolean`
-
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `optional` | `boolean` |  | `crypto.optional` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
+
 ## currentTemplate
 
-**path**
-`renative.json/#/currentTemplate`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `currentTemplate` | `string` |  | `currentTemplate` |
 
 Currently active template used in this project. this allows you to re-bootstrap whole project by running `rnv template apply`
 
@@ -1246,18 +1348,20 @@ Currently active template used in this project. this allows you to re-bootstrap 
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## defaultTargets
 
-**path**
-`renative.json/#/defaultTargets`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `defaultTargets` | `object` |  | `defaultTargets` |
 
 List of default target simulators and emulators
 
@@ -1283,32 +1387,36 @@ List of default target simulators and emulators
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## defaults
 
-**path**
-`renative.json/#/defaults`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `defaults` | `object` |  | `defaults` |
 
 Default system config for this project
 
 
 
-
-
 ---
+
+
+
+
 ### defaults.ports
 
-**path**
-`renative.json/#/defaults.ports`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ports` | `object` |  | `defaults.ports` |
 
 Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts
 
@@ -1341,16 +1449,18 @@ Allows you to assign custom port per each supported platform specific to this pr
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### defaults.schemes
 
-**path**
-`renative.json/#/defaults.schemes`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `schemes` | `object` |  | `defaults.schemes` |
 
 List of default schemes for each platform. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`
 
@@ -1369,16 +1479,18 @@ List of default schemes for each platform. This is useful if you want to avoid s
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### defaults.supportedPlatforms
 
-**path**
-`renative.json/#/defaults.supportedPlatforms`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `supportedPlatforms` | `array` |  | `defaults.supportedPlatforms` |
 
 Array list of all supported platforms in current project
 
@@ -1402,16 +1514,18 @@ Array list of all supported platforms in current project
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### defaults.targets
 
-**path**
-`renative.json/#/defaults.targets`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `targets` | `object` |  | `defaults.targets` |
 
 Override of default targets specific to this project
 
@@ -1430,36 +1544,40 @@ Override of default targets specific to this project
 
 
 
-
-
-
-
-
-
 ---
+
+
+
+
+
+
+
+
 ## description
 
-**path**
-`renative.json/#/description`
 
-**type** `string`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `description` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## enableAnalytics
 
-**path**
-`renative.json/#/enableAnalytics`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableAnalytics` | `boolean` |  | `enableAnalytics` |
 
 Enable or disable sending analytics to improve ReNative
 
@@ -1483,18 +1601,20 @@ Enable or disable sending analytics to improve ReNative
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## enableHookRebuild
 
-**path**
-`renative.json/#/enableHookRebuild`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableHookRebuild` | `boolean` |  | `enableHookRebuild` |
 
 If set to true in `./renative.json` build hooks will be compiled at each rnv command run. If set to `false` (default) rebuild will be triggered only if `dist` folder is missing, `-r` has been passed or you run `rnv hooks run` directly making your rnv commands faster
 
@@ -1518,18 +1638,20 @@ If set to true in `./renative.json` build hooks will be compiled at each rnv com
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## engines
 
-**path**
-`renative.json/#/engines`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engines` | `object` |  | `engines` |
 
 List of engines available in this project
 
@@ -1563,35 +1685,39 @@ List of engines available in this project
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## env
 
-**path**
-`renative.json/#/env`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `env` | `object` |  | `env` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## ext
 
-**path**
-`renative.json/#/ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -1609,35 +1735,39 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## extend
 
-**path**
-`renative.json/#/extend`
 
-**type** `string`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `string` |  | `extend` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## hidden
 
-**path**
-`renative.json/#/hidden`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `hidden` | `boolean` |  | `hidden` |
 
 If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`
 
@@ -1661,18 +1791,20 @@ If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidde
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## id
 
-**path**
-`renative.json/#/id`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `id` |
 
 ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name of the folder
 
@@ -1696,83 +1828,93 @@ ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name o
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## integrations
 
-**path**
-`renative.json/#/integrations`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `integrations` | `object` |  | `integrations` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## isMonorepo
 
-**path**
-`renative.json/#/isMonorepo`
 
-**type** `boolean`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `isMonorepo` | `boolean` |  | `isMonorepo` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## isWrapper
 
-**path**
-`renative.json/#/isWrapper`
 
-**type** `boolean`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `isWrapper` | `boolean` |  | `isWrapper` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## paths
 
-**path**
-`renative.json/#/paths`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `paths` | `object` |  | `paths` |
 
 Define custom paths for RNV to look into
 
 
 
-
-
 ---
+
+
+
+
 ### paths.appConfigsDir
 
-**path**
-`renative.json/#/paths.appConfigsDir`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appConfigsDir` | `string` |  | `paths.appConfigsDir` |
 
 Custom path to appConfigs. defaults to `./appConfigs`
 
@@ -1788,16 +1930,18 @@ Custom path to appConfigs. defaults to `./appConfigs`
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### paths.platformAssetsDir
 
-**path**
-`renative.json/#/paths.platformAssetsDir`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `platformAssetsDir` | `string` |  | `paths.platformAssetsDir` |
 
 Custom path to platformAssets folder. defaults to `./platformAssets`
 
@@ -1813,16 +1957,18 @@ Custom path to platformAssets folder. defaults to `./platformAssets`
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### paths.platformBuildsDir
 
-**path**
-`renative.json/#/paths.platformBuildsDir`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `platformBuildsDir` | `string` |  | `paths.platformBuildsDir` |
 
 Custom path to platformBuilds folder. defaults to `./platformBuilds`
 
@@ -1838,16 +1984,18 @@ Custom path to platformBuilds folder. defaults to `./platformBuilds`
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### paths.pluginTemplates
 
-**path**
-`renative.json/#/paths.pluginTemplates`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `pluginTemplates` | `object` |  | `paths.pluginTemplates` |
 
 
 Allows you to define custom plugin template scopes. default scope for all plugins is `rnv`.
@@ -1891,19 +2039,21 @@ To skip file overrides coming from source plugin you need to detach it from the 
 
 
 
-
-
-
-
-
-
 ---
+
+
+
+
+
+
+
+
 ## permissions
 
-**path**
-`renative.json/#/permissions`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `object` |  | `permissions` |
 
 Permission definititions which can be used by app configs via `includedPermissions` and `excludedPermissions` to customize permissions for each app
 
@@ -1922,15 +2072,17 @@ Permission definititions which can be used by app configs via `includedPermissio
 
 
 
-
-
 ---
+
+
+
+
 ### permissions.android
 
-**path**
-`renative.json/#/permissions.android`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `android` | `object` |  | `permissions.android` |
 
 Android SDK specific permissions
 
@@ -1955,16 +2107,18 @@ Android SDK specific permissions
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### permissions.ios
 
-**path**
-`renative.json/#/permissions.ios`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ios` | `object` |  | `permissions.ios` |
 
 iOS SDK specific permissions
 
@@ -2026,19 +2180,21 @@ iOS SDK specific permissions
 
 
 
-
-
-
-
-
-
 ---
+
+
+
+
+
+
+
+
 ## pipes
 
-**path**
-`renative.json/#/pipes`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `pipes` | `array` |  | `pipes` |
 
 To avoid rnv building `buildHooks/src` every time you can specify which specific pipes should trigger recompile of buildHooks
 
@@ -2060,45 +2216,51 @@ To avoid rnv building `buildHooks/src` every time you can specify which specific
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## platforms
 
-**path**
-`renative.json/#/platforms`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `platforms` | `object` |  | `platforms` |
 
 
 
 
 
 ---
+
+
+
+
 ### platforms.android
 
-**path**
-`renative.json/#/platforms.android`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `android` | `object` |  | `platforms.android` |
 
 
+
+
+
+---
 
 
 
 #### platforms.android.AndroidManifest
 
-**path**
-`renative.json/#/platforms.android.AndroidManifest`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `platforms.android.AndroidManifest` |
 
 Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
 
@@ -2151,30 +2313,52 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
+
+---
 
 
 
 
 #### platforms.android.aab
 
-**path**
-`renative.json/#/platforms.android.aab`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `aab` | `boolean` |  | `platforms.android.aab` |
+
+If set to true, android project will generate app.aab instead of apk
+
+**examples**
+
+
+```json
+{
+  "aab": "false"
+}
+```
+
+
+
+```json
+{
+  "aab": "true"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.android.app/build.gradle
 
-**path**
-`renative.json/#/platforms.android.app/build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `platforms.android.app/build.gradle` |
 
 Overrides values in `app/build.gradle` file of generated android based project
 
@@ -2194,43 +2378,49 @@ Overrides values in `app/build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.android.applyPlugin
 
-**path**
-`renative.json/#/platforms.android.applyPlugin`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `platforms.android.applyPlugin` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.author
 
-**path**
-`renative.json/#/platforms.android.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.android.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.backgroundColor
 
-**path**
-`renative.json/#/platforms.android.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.android.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -2254,15 +2444,17 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.android.build.gradle
 
-**path**
-`renative.json/#/platforms.android.build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `platforms.android.build.gradle` |
 
 Overrides values in `build.gradle` file of generated android based project
 
@@ -2284,28 +2476,32 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes
 
-**path**
-`renative.json/#/platforms.android.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.android.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.android.buildSchemes.[object].AndroidManifest
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].AndroidManifest`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `platforms.android.buildSchemes.[object].AndroidManifest` |
 
 Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
 
@@ -2359,29 +2555,51 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].aab
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].aab`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `aab` | `boolean` |  | `platforms.android.buildSchemes.[object].aab` |
+
+If set to true, android project will generate app.aab instead of apk
+
+**examples**
+
+
+```json
+{
+  "aab": "false"
+}
+```
+
+
+
+```json
+{
+  "aab": "true"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].app/build.gradle
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].app/build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `platforms.android.buildSchemes.[object].app/build.gradle` |
 
 Overrides values in `app/build.gradle` file of generated android based project
 
@@ -2401,43 +2619,49 @@ Overrides values in `app/build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].applyPlugin
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].applyPlugin`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `platforms.android.buildSchemes.[object].applyPlugin` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.android.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.android.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -2461,15 +2685,17 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].build.gradle
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `platforms.android.buildSchemes.[object].build.gradle` |
 
 Overrides values in `build.gradle` file of generated android based project
 
@@ -2491,74 +2717,104 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.android.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.android.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].compileSdkVersion
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].compileSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileSdkVersion` | `integer` |  | `platforms.android.buildSchemes.[object].compileSdkVersion` |
+
+Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "compileSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "compileSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.android.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.android.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.android.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -2566,10 +2822,10 @@ Overrides values in `build.gradle` file of generated android based project
 
 #### platforms.android.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.android.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -2585,99 +2841,113 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].enableAndroidX
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].enableAndroidX`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableAndroidX` | `boolean` |  | `platforms.android.buildSchemes.[object].enableAndroidX` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].enableHermes
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].enableHermes`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableHermes` | `boolean` |  | `platforms.android.buildSchemes.[object].enableHermes` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.android.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.android.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.android.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].excludedFeatures
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].excludedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedFeatures` | `array` |  | `platforms.android.buildSchemes.[object].excludedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.android.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -2708,15 +2978,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.android.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -2734,15 +3006,17 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].gradle.properties
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].gradle.properties`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `platforms.android.buildSchemes.[object].gradle.properties` |
 
 Overrides values in `gradle.properties` file of generated android based project
 
@@ -2766,71 +3040,149 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+---
+
+
+
+
+#### platforms.android.buildSchemes.[object].gradleBuildToolsVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleBuildToolsVersion` | `integer` | `3.3.1` | `platforms.android.buildSchemes.[object].gradleBuildToolsVersion` |
+
+Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`
+
+**examples**
+
+
+```json
+{
+  "gradleBuildToolsVersion": "3.3.1"
+}
+```
+
+
+
+```json
+{
+  "gradleBuildToolsVersion": "4.1.0"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.android.buildSchemes.[object].gradleWrapperVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleWrapperVersion` | `integer` | `5.5` | `platforms.android.buildSchemes.[object].gradleWrapperVersion` |
+
+Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`
+
+**examples**
+
+
+```json
+{
+  "gradleWrapperVersion": "5.5"
+}
+```
+
+
+
+```json
+{
+  "gradleWrapperVersion": "6.7.1"
+}
+```
+
+
+
+
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.android.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.android.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.android.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].includedFeatures
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].includedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFeatures` | `array` |  | `platforms.android.buildSchemes.[object].includedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.android.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -2859,15 +3211,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.android.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -2909,15 +3263,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.android.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -2948,99 +3304,113 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].keyAlias
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].keyAlias`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyAlias` | `string` |  | `platforms.android.buildSchemes.[object].keyAlias` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].keyPassword
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].keyPassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyPassword` | `string` |  | `platforms.android.buildSchemes.[object].keyPassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.android.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].minSdkVersion
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].minSdkVersion`
 
-**type** `integer`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minSdkVersion` | `integer` |  | `platforms.android.buildSchemes.[object].minSdkVersion` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].multipleAPKs
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].multipleAPKs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `multipleAPKs` | `boolean` |  | `platforms.android.buildSchemes.[object].multipleAPKs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.android.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.android.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -3058,85 +3428,115 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].signingConfig
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].signingConfig`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingConfig` | `string` |  | `platforms.android.buildSchemes.[object].signingConfig` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.android.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].storeFile
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].storeFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storeFile` | `string` |  | `platforms.android.buildSchemes.[object].storeFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].storePassword
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].storePassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storePassword` | `string` |  | `platforms.android.buildSchemes.[object].storePassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].targetSdkVersion
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].targetSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `targetSdkVersion` | `integer` |  | `platforms.android.buildSchemes.[object].targetSdkVersion` |
+
+Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "targetSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "targetSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.android.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -3160,15 +3560,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.android.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -3184,29 +3586,33 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.android.buildSchemes.[object].universalApk
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].universalApk`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `universalApk` | `boolean` |  | `platforms.android.buildSchemes.[object].universalApk` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.android.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.android.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -3229,6 +3635,8 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+
+---
 
 
 
@@ -3236,69 +3644,97 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 #### platforms.android.bundleAssets
 
-**path**
-`renative.json/#/platforms.android.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.android.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.bundleIsDev
 
-**path**
-`renative.json/#/platforms.android.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.android.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.compileSdkVersion
 
-**path**
-`renative.json/#/platforms.android.compileSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileSdkVersion` | `integer` |  | `platforms.android.compileSdkVersion` |
+
+Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "compileSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "compileSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.android.deploy
 
-**path**
-`renative.json/#/platforms.android.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.android.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.android.deploy.type
 
-**path**
-`renative.json/#/platforms.android.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.android.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -3306,10 +3742,10 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 #### platforms.android.description
 
-**path**
-`renative.json/#/platforms.android.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.android.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -3325,85 +3761,97 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.android.enableAndroidX
 
-**path**
-`renative.json/#/platforms.android.enableAndroidX`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableAndroidX` | `boolean` |  | `platforms.android.enableAndroidX` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.enableHermes
 
-**path**
-`renative.json/#/platforms.android.enableHermes`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableHermes` | `boolean` |  | `platforms.android.enableHermes` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.engine
 
-**path**
-`renative.json/#/platforms.android.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.android.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.entryFile
 
-**path**
-`renative.json/#/platforms.android.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.android.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.excludedFeatures
 
-**path**
-`renative.json/#/platforms.android.excludedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedFeatures` | `array` |  | `platforms.android.excludedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.excludedPlugins
 
-**path**
-`renative.json/#/platforms.android.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.android.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -3434,15 +3882,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.android.ext
 
-**path**
-`renative.json/#/platforms.android.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.android.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -3460,15 +3910,17 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.android.gradle.properties
 
-**path**
-`renative.json/#/platforms.android.gradle.properties`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `platforms.android.gradle.properties` |
 
 Overrides values in `gradle.properties` file of generated android based project
 
@@ -3492,71 +3944,149 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+---
+
+
+
+
+#### platforms.android.gradleBuildToolsVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleBuildToolsVersion` | `integer` | `3.3.1` | `platforms.android.gradleBuildToolsVersion` |
+
+Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`
+
+**examples**
+
+
+```json
+{
+  "gradleBuildToolsVersion": "3.3.1"
+}
+```
+
+
+
+```json
+{
+  "gradleBuildToolsVersion": "4.1.0"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.android.gradleWrapperVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleWrapperVersion` | `integer` | `5.5` | `platforms.android.gradleWrapperVersion` |
+
+Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`
+
+**examples**
+
+
+```json
+{
+  "gradleWrapperVersion": "5.5"
+}
+```
+
+
+
+```json
+{
+  "gradleWrapperVersion": "6.7.1"
+}
+```
+
+
+
+
+---
+
 
 
 
 #### platforms.android.id
 
-**path**
-`renative.json/#/platforms.android.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.android.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.ignoreLogs
 
-**path**
-`renative.json/#/platforms.android.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.android.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.android.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.android.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.includedFeatures
 
-**path**
-`renative.json/#/platforms.android.includedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFeatures` | `array` |  | `platforms.android.includedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.includedFonts
 
-**path**
-`renative.json/#/platforms.android.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.android.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -3585,15 +4115,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.android.includedPermissions
 
-**path**
-`renative.json/#/platforms.android.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.android.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -3635,15 +4167,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.android.includedPlugins
 
-**path**
-`renative.json/#/platforms.android.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.android.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -3674,99 +4208,113 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.android.keyAlias
 
-**path**
-`renative.json/#/platforms.android.keyAlias`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyAlias` | `string` |  | `platforms.android.keyAlias` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.keyPassword
 
-**path**
-`renative.json/#/platforms.android.keyPassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyPassword` | `string` |  | `platforms.android.keyPassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.license
 
-**path**
-`renative.json/#/platforms.android.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.android.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.minSdkVersion
 
-**path**
-`renative.json/#/platforms.android.minSdkVersion`
 
-**type** `integer`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minSdkVersion` | `integer` |  | `platforms.android.minSdkVersion` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.multipleAPKs
 
-**path**
-`renative.json/#/platforms.android.multipleAPKs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `multipleAPKs` | `boolean` |  | `platforms.android.multipleAPKs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.permissions
 
-**path**
-`renative.json/#/platforms.android.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.android.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.android.runtime
 
-**path**
-`renative.json/#/platforms.android.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.android.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -3784,85 +4332,115 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.android.signingConfig
 
-**path**
-`renative.json/#/platforms.android.signingConfig`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingConfig` | `string` |  | `platforms.android.signingConfig` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.splashScreen
 
-**path**
-`renative.json/#/platforms.android.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.android.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.storeFile
 
-**path**
-`renative.json/#/platforms.android.storeFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storeFile` | `string` |  | `platforms.android.storeFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.storePassword
 
-**path**
-`renative.json/#/platforms.android.storePassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storePassword` | `string` |  | `platforms.android.storePassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.targetSdkVersion
 
-**path**
-`renative.json/#/platforms.android.targetSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `targetSdkVersion` | `integer` |  | `platforms.android.targetSdkVersion` |
+
+Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "targetSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "targetSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.android.timestampAssets
 
-**path**
-`renative.json/#/platforms.android.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.android.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -3886,15 +4464,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.android.title
 
-**path**
-`renative.json/#/platforms.android.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.android.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -3910,29 +4490,33 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.android.universalApk
 
-**path**
-`renative.json/#/platforms.android.universalApk`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `universalApk` | `boolean` |  | `platforms.android.universalApk` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.android.versionedAssets
 
-**path**
-`renative.json/#/platforms.android.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.android.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -3956,30 +4540,34 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
+
+
+
+
+
+### platforms.androidtv
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `androidtv` | `object` |  | `platforms.androidtv` |
+
 
 
 
 
 ---
-### platforms.androidtv
-
-**path**
-`renative.json/#/platforms.androidtv`
-
-**type** `object`
-
-
-
-
 
 
 
 #### platforms.androidtv.AndroidManifest
 
-**path**
-`renative.json/#/platforms.androidtv.AndroidManifest`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `platforms.androidtv.AndroidManifest` |
 
 Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
 
@@ -4032,30 +4620,52 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
+
+---
 
 
 
 
 #### platforms.androidtv.aab
 
-**path**
-`renative.json/#/platforms.androidtv.aab`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `aab` | `boolean` |  | `platforms.androidtv.aab` |
+
+If set to true, android project will generate app.aab instead of apk
+
+**examples**
+
+
+```json
+{
+  "aab": "false"
+}
+```
+
+
+
+```json
+{
+  "aab": "true"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidtv.app/build.gradle
 
-**path**
-`renative.json/#/platforms.androidtv.app/build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `platforms.androidtv.app/build.gradle` |
 
 Overrides values in `app/build.gradle` file of generated android based project
 
@@ -4075,43 +4685,49 @@ Overrides values in `app/build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.applyPlugin
 
-**path**
-`renative.json/#/platforms.androidtv.applyPlugin`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `platforms.androidtv.applyPlugin` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.author
 
-**path**
-`renative.json/#/platforms.androidtv.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.androidtv.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.backgroundColor
 
-**path**
-`renative.json/#/platforms.androidtv.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.androidtv.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -4135,15 +4751,17 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.build.gradle
 
-**path**
-`renative.json/#/platforms.androidtv.build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `platforms.androidtv.build.gradle` |
 
 Overrides values in `build.gradle` file of generated android based project
 
@@ -4165,28 +4783,32 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.androidtv.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.androidtv.buildSchemes.[object].AndroidManifest
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].AndroidManifest`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `platforms.androidtv.buildSchemes.[object].AndroidManifest` |
 
 Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
 
@@ -4240,29 +4862,51 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].aab
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].aab`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `aab` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].aab` |
+
+If set to true, android project will generate app.aab instead of apk
+
+**examples**
+
+
+```json
+{
+  "aab": "false"
+}
+```
+
+
+
+```json
+{
+  "aab": "true"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].app/build.gradle
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].app/build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `platforms.androidtv.buildSchemes.[object].app/build.gradle` |
 
 Overrides values in `app/build.gradle` file of generated android based project
 
@@ -4282,43 +4926,49 @@ Overrides values in `app/build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].applyPlugin
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].applyPlugin`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `platforms.androidtv.buildSchemes.[object].applyPlugin` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.androidtv.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.androidtv.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -4342,15 +4992,17 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].build.gradle
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `platforms.androidtv.buildSchemes.[object].build.gradle` |
 
 Overrides values in `build.gradle` file of generated android based project
 
@@ -4372,74 +5024,104 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].compileSdkVersion
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].compileSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileSdkVersion` | `integer` |  | `platforms.androidtv.buildSchemes.[object].compileSdkVersion` |
+
+Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "compileSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "compileSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.androidtv.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.androidtv.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.androidtv.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -4447,10 +5129,10 @@ Overrides values in `build.gradle` file of generated android based project
 
 #### platforms.androidtv.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.androidtv.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -4466,99 +5148,113 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].enableAndroidX
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].enableAndroidX`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableAndroidX` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].enableAndroidX` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].enableHermes
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].enableHermes`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableHermes` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].enableHermes` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.androidtv.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.androidtv.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].excludedFeatures
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].excludedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedFeatures` | `array` |  | `platforms.androidtv.buildSchemes.[object].excludedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.androidtv.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -4589,15 +5285,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.androidtv.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -4615,15 +5313,17 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].gradle.properties
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].gradle.properties`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `platforms.androidtv.buildSchemes.[object].gradle.properties` |
 
 Overrides values in `gradle.properties` file of generated android based project
 
@@ -4647,71 +5347,149 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+---
+
+
+
+
+#### platforms.androidtv.buildSchemes.[object].gradleBuildToolsVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleBuildToolsVersion` | `integer` | `3.3.1` | `platforms.androidtv.buildSchemes.[object].gradleBuildToolsVersion` |
+
+Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`
+
+**examples**
+
+
+```json
+{
+  "gradleBuildToolsVersion": "3.3.1"
+}
+```
+
+
+
+```json
+{
+  "gradleBuildToolsVersion": "4.1.0"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.androidtv.buildSchemes.[object].gradleWrapperVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleWrapperVersion` | `integer` | `5.5` | `platforms.androidtv.buildSchemes.[object].gradleWrapperVersion` |
+
+Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`
+
+**examples**
+
+
+```json
+{
+  "gradleWrapperVersion": "5.5"
+}
+```
+
+
+
+```json
+{
+  "gradleWrapperVersion": "6.7.1"
+}
+```
+
+
+
+
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.androidtv.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].includedFeatures
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].includedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFeatures` | `array` |  | `platforms.androidtv.buildSchemes.[object].includedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.androidtv.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -4740,15 +5518,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.androidtv.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -4790,15 +5570,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.androidtv.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -4829,99 +5611,113 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].keyAlias
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].keyAlias`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyAlias` | `string` |  | `platforms.androidtv.buildSchemes.[object].keyAlias` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].keyPassword
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].keyPassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyPassword` | `string` |  | `platforms.androidtv.buildSchemes.[object].keyPassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.androidtv.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].minSdkVersion
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].minSdkVersion`
 
-**type** `integer`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minSdkVersion` | `integer` |  | `platforms.androidtv.buildSchemes.[object].minSdkVersion` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].multipleAPKs
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].multipleAPKs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `multipleAPKs` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].multipleAPKs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.androidtv.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.androidtv.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -4939,85 +5735,115 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].signingConfig
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].signingConfig`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingConfig` | `string` |  | `platforms.androidtv.buildSchemes.[object].signingConfig` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].storeFile
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].storeFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storeFile` | `string` |  | `platforms.androidtv.buildSchemes.[object].storeFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].storePassword
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].storePassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storePassword` | `string` |  | `platforms.androidtv.buildSchemes.[object].storePassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].targetSdkVersion
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].targetSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `targetSdkVersion` | `integer` |  | `platforms.androidtv.buildSchemes.[object].targetSdkVersion` |
+
+Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "targetSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "targetSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -5041,15 +5867,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.androidtv.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -5065,29 +5893,33 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.buildSchemes.[object].universalApk
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].universalApk`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `universalApk` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].universalApk` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.androidtv.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -5110,6 +5942,8 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+
+---
 
 
 
@@ -5117,69 +5951,97 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 #### platforms.androidtv.bundleAssets
 
-**path**
-`renative.json/#/platforms.androidtv.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.androidtv.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.bundleIsDev
 
-**path**
-`renative.json/#/platforms.androidtv.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.androidtv.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.compileSdkVersion
 
-**path**
-`renative.json/#/platforms.androidtv.compileSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileSdkVersion` | `integer` |  | `platforms.androidtv.compileSdkVersion` |
+
+Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "compileSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "compileSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidtv.deploy
 
-**path**
-`renative.json/#/platforms.androidtv.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.androidtv.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.androidtv.deploy.type
 
-**path**
-`renative.json/#/platforms.androidtv.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.androidtv.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -5187,10 +6049,10 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 #### platforms.androidtv.description
 
-**path**
-`renative.json/#/platforms.androidtv.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.androidtv.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -5206,85 +6068,97 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.enableAndroidX
 
-**path**
-`renative.json/#/platforms.androidtv.enableAndroidX`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableAndroidX` | `boolean` |  | `platforms.androidtv.enableAndroidX` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.enableHermes
 
-**path**
-`renative.json/#/platforms.androidtv.enableHermes`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableHermes` | `boolean` |  | `platforms.androidtv.enableHermes` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.engine
 
-**path**
-`renative.json/#/platforms.androidtv.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.androidtv.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.entryFile
 
-**path**
-`renative.json/#/platforms.androidtv.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.androidtv.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.excludedFeatures
 
-**path**
-`renative.json/#/platforms.androidtv.excludedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedFeatures` | `array` |  | `platforms.androidtv.excludedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.excludedPlugins
 
-**path**
-`renative.json/#/platforms.androidtv.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.androidtv.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -5315,15 +6189,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.ext
 
-**path**
-`renative.json/#/platforms.androidtv.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.androidtv.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -5341,15 +6217,17 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.gradle.properties
 
-**path**
-`renative.json/#/platforms.androidtv.gradle.properties`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `platforms.androidtv.gradle.properties` |
 
 Overrides values in `gradle.properties` file of generated android based project
 
@@ -5373,71 +6251,149 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+---
+
+
+
+
+#### platforms.androidtv.gradleBuildToolsVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleBuildToolsVersion` | `integer` | `3.3.1` | `platforms.androidtv.gradleBuildToolsVersion` |
+
+Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`
+
+**examples**
+
+
+```json
+{
+  "gradleBuildToolsVersion": "3.3.1"
+}
+```
+
+
+
+```json
+{
+  "gradleBuildToolsVersion": "4.1.0"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.androidtv.gradleWrapperVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleWrapperVersion` | `integer` | `5.5` | `platforms.androidtv.gradleWrapperVersion` |
+
+Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`
+
+**examples**
+
+
+```json
+{
+  "gradleWrapperVersion": "5.5"
+}
+```
+
+
+
+```json
+{
+  "gradleWrapperVersion": "6.7.1"
+}
+```
+
+
+
+
+---
+
 
 
 
 #### platforms.androidtv.id
 
-**path**
-`renative.json/#/platforms.androidtv.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.androidtv.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.ignoreLogs
 
-**path**
-`renative.json/#/platforms.androidtv.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.androidtv.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.androidtv.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.androidtv.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.includedFeatures
 
-**path**
-`renative.json/#/platforms.androidtv.includedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFeatures` | `array` |  | `platforms.androidtv.includedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.includedFonts
 
-**path**
-`renative.json/#/platforms.androidtv.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.androidtv.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -5466,15 +6422,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.includedPermissions
 
-**path**
-`renative.json/#/platforms.androidtv.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.androidtv.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -5516,15 +6474,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.includedPlugins
 
-**path**
-`renative.json/#/platforms.androidtv.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.androidtv.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -5555,99 +6515,113 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.keyAlias
 
-**path**
-`renative.json/#/platforms.androidtv.keyAlias`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyAlias` | `string` |  | `platforms.androidtv.keyAlias` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.keyPassword
 
-**path**
-`renative.json/#/platforms.androidtv.keyPassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyPassword` | `string` |  | `platforms.androidtv.keyPassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.license
 
-**path**
-`renative.json/#/platforms.androidtv.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.androidtv.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.minSdkVersion
 
-**path**
-`renative.json/#/platforms.androidtv.minSdkVersion`
 
-**type** `integer`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minSdkVersion` | `integer` |  | `platforms.androidtv.minSdkVersion` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.multipleAPKs
 
-**path**
-`renative.json/#/platforms.androidtv.multipleAPKs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `multipleAPKs` | `boolean` |  | `platforms.androidtv.multipleAPKs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.permissions
 
-**path**
-`renative.json/#/platforms.androidtv.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.androidtv.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.androidtv.runtime
 
-**path**
-`renative.json/#/platforms.androidtv.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.androidtv.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -5665,85 +6639,115 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.signingConfig
 
-**path**
-`renative.json/#/platforms.androidtv.signingConfig`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingConfig` | `string` |  | `platforms.androidtv.signingConfig` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.splashScreen
 
-**path**
-`renative.json/#/platforms.androidtv.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.androidtv.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.storeFile
 
-**path**
-`renative.json/#/platforms.androidtv.storeFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storeFile` | `string` |  | `platforms.androidtv.storeFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.storePassword
 
-**path**
-`renative.json/#/platforms.androidtv.storePassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storePassword` | `string` |  | `platforms.androidtv.storePassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.targetSdkVersion
 
-**path**
-`renative.json/#/platforms.androidtv.targetSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `targetSdkVersion` | `integer` |  | `platforms.androidtv.targetSdkVersion` |
+
+Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "targetSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "targetSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidtv.timestampAssets
 
-**path**
-`renative.json/#/platforms.androidtv.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.androidtv.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -5767,15 +6771,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.title
 
-**path**
-`renative.json/#/platforms.androidtv.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.androidtv.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -5791,29 +6797,33 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.androidtv.universalApk
 
-**path**
-`renative.json/#/platforms.androidtv.universalApk`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `universalApk` | `boolean` |  | `platforms.androidtv.universalApk` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidtv.versionedAssets
 
-**path**
-`renative.json/#/platforms.androidtv.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.androidtv.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -5837,30 +6847,34 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
+
+
+
+
+
+### platforms.androidwear
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `androidwear` | `object` |  | `platforms.androidwear` |
+
 
 
 
 
 ---
-### platforms.androidwear
-
-**path**
-`renative.json/#/platforms.androidwear`
-
-**type** `object`
-
-
-
-
 
 
 
 #### platforms.androidwear.AndroidManifest
 
-**path**
-`renative.json/#/platforms.androidwear.AndroidManifest`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `platforms.androidwear.AndroidManifest` |
 
 Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
 
@@ -5913,30 +6927,52 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
+
+---
 
 
 
 
 #### platforms.androidwear.aab
 
-**path**
-`renative.json/#/platforms.androidwear.aab`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `aab` | `boolean` |  | `platforms.androidwear.aab` |
+
+If set to true, android project will generate app.aab instead of apk
+
+**examples**
+
+
+```json
+{
+  "aab": "false"
+}
+```
+
+
+
+```json
+{
+  "aab": "true"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidwear.app/build.gradle
 
-**path**
-`renative.json/#/platforms.androidwear.app/build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `platforms.androidwear.app/build.gradle` |
 
 Overrides values in `app/build.gradle` file of generated android based project
 
@@ -5956,43 +6992,49 @@ Overrides values in `app/build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.applyPlugin
 
-**path**
-`renative.json/#/platforms.androidwear.applyPlugin`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `platforms.androidwear.applyPlugin` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.author
 
-**path**
-`renative.json/#/platforms.androidwear.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.androidwear.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.backgroundColor
 
-**path**
-`renative.json/#/platforms.androidwear.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.androidwear.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -6016,15 +7058,17 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.build.gradle
 
-**path**
-`renative.json/#/platforms.androidwear.build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `platforms.androidwear.build.gradle` |
 
 Overrides values in `build.gradle` file of generated android based project
 
@@ -6046,28 +7090,32 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.androidwear.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.androidwear.buildSchemes.[object].AndroidManifest
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].AndroidManifest`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `platforms.androidwear.buildSchemes.[object].AndroidManifest` |
 
 Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
 
@@ -6121,29 +7169,51 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].aab
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].aab`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `aab` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].aab` |
+
+If set to true, android project will generate app.aab instead of apk
+
+**examples**
+
+
+```json
+{
+  "aab": "false"
+}
+```
+
+
+
+```json
+{
+  "aab": "true"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].app/build.gradle
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].app/build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `platforms.androidwear.buildSchemes.[object].app/build.gradle` |
 
 Overrides values in `app/build.gradle` file of generated android based project
 
@@ -6163,43 +7233,49 @@ Overrides values in `app/build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].applyPlugin
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].applyPlugin`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `platforms.androidwear.buildSchemes.[object].applyPlugin` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.androidwear.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.androidwear.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -6223,15 +7299,17 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].build.gradle
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `platforms.androidwear.buildSchemes.[object].build.gradle` |
 
 Overrides values in `build.gradle` file of generated android based project
 
@@ -6253,74 +7331,104 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].compileSdkVersion
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].compileSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileSdkVersion` | `integer` |  | `platforms.androidwear.buildSchemes.[object].compileSdkVersion` |
+
+Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "compileSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "compileSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.androidwear.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.androidwear.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.androidwear.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -6328,10 +7436,10 @@ Overrides values in `build.gradle` file of generated android based project
 
 #### platforms.androidwear.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.androidwear.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -6347,99 +7455,113 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].enableAndroidX
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].enableAndroidX`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableAndroidX` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].enableAndroidX` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].enableHermes
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].enableHermes`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableHermes` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].enableHermes` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.androidwear.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.androidwear.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].excludedFeatures
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].excludedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedFeatures` | `array` |  | `platforms.androidwear.buildSchemes.[object].excludedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.androidwear.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -6470,15 +7592,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.androidwear.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -6496,15 +7620,17 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].gradle.properties
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].gradle.properties`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `platforms.androidwear.buildSchemes.[object].gradle.properties` |
 
 Overrides values in `gradle.properties` file of generated android based project
 
@@ -6528,71 +7654,149 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+---
+
+
+
+
+#### platforms.androidwear.buildSchemes.[object].gradleBuildToolsVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleBuildToolsVersion` | `integer` | `3.3.1` | `platforms.androidwear.buildSchemes.[object].gradleBuildToolsVersion` |
+
+Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`
+
+**examples**
+
+
+```json
+{
+  "gradleBuildToolsVersion": "3.3.1"
+}
+```
+
+
+
+```json
+{
+  "gradleBuildToolsVersion": "4.1.0"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.androidwear.buildSchemes.[object].gradleWrapperVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleWrapperVersion` | `integer` | `5.5` | `platforms.androidwear.buildSchemes.[object].gradleWrapperVersion` |
+
+Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`
+
+**examples**
+
+
+```json
+{
+  "gradleWrapperVersion": "5.5"
+}
+```
+
+
+
+```json
+{
+  "gradleWrapperVersion": "6.7.1"
+}
+```
+
+
+
+
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.androidwear.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].includedFeatures
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].includedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFeatures` | `array` |  | `platforms.androidwear.buildSchemes.[object].includedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.androidwear.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -6621,15 +7825,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.androidwear.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -6671,15 +7877,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.androidwear.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -6710,99 +7918,113 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].keyAlias
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].keyAlias`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyAlias` | `string` |  | `platforms.androidwear.buildSchemes.[object].keyAlias` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].keyPassword
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].keyPassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyPassword` | `string` |  | `platforms.androidwear.buildSchemes.[object].keyPassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.androidwear.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].minSdkVersion
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].minSdkVersion`
 
-**type** `integer`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minSdkVersion` | `integer` |  | `platforms.androidwear.buildSchemes.[object].minSdkVersion` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].multipleAPKs
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].multipleAPKs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `multipleAPKs` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].multipleAPKs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.androidwear.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.androidwear.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -6820,85 +8042,115 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].signingConfig
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].signingConfig`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingConfig` | `string` |  | `platforms.androidwear.buildSchemes.[object].signingConfig` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].storeFile
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].storeFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storeFile` | `string` |  | `platforms.androidwear.buildSchemes.[object].storeFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].storePassword
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].storePassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storePassword` | `string` |  | `platforms.androidwear.buildSchemes.[object].storePassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].targetSdkVersion
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].targetSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `targetSdkVersion` | `integer` |  | `platforms.androidwear.buildSchemes.[object].targetSdkVersion` |
+
+Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "targetSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "targetSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -6922,15 +8174,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.androidwear.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -6946,29 +8200,33 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.buildSchemes.[object].universalApk
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].universalApk`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `universalApk` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].universalApk` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.androidwear.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -6991,6 +8249,8 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+
+---
 
 
 
@@ -6998,69 +8258,97 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 #### platforms.androidwear.bundleAssets
 
-**path**
-`renative.json/#/platforms.androidwear.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.androidwear.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.bundleIsDev
 
-**path**
-`renative.json/#/platforms.androidwear.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.androidwear.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.compileSdkVersion
 
-**path**
-`renative.json/#/platforms.androidwear.compileSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileSdkVersion` | `integer` |  | `platforms.androidwear.compileSdkVersion` |
+
+Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "compileSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "compileSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidwear.deploy
 
-**path**
-`renative.json/#/platforms.androidwear.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.androidwear.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.androidwear.deploy.type
 
-**path**
-`renative.json/#/platforms.androidwear.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.androidwear.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -7068,10 +8356,10 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 #### platforms.androidwear.description
 
-**path**
-`renative.json/#/platforms.androidwear.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.androidwear.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -7087,85 +8375,97 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.enableAndroidX
 
-**path**
-`renative.json/#/platforms.androidwear.enableAndroidX`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableAndroidX` | `boolean` |  | `platforms.androidwear.enableAndroidX` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.enableHermes
 
-**path**
-`renative.json/#/platforms.androidwear.enableHermes`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableHermes` | `boolean` |  | `platforms.androidwear.enableHermes` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.engine
 
-**path**
-`renative.json/#/platforms.androidwear.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.androidwear.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.entryFile
 
-**path**
-`renative.json/#/platforms.androidwear.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.androidwear.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.excludedFeatures
 
-**path**
-`renative.json/#/platforms.androidwear.excludedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedFeatures` | `array` |  | `platforms.androidwear.excludedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.excludedPlugins
 
-**path**
-`renative.json/#/platforms.androidwear.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.androidwear.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -7196,15 +8496,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.ext
 
-**path**
-`renative.json/#/platforms.androidwear.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.androidwear.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -7222,15 +8524,17 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.gradle.properties
 
-**path**
-`renative.json/#/platforms.androidwear.gradle.properties`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `platforms.androidwear.gradle.properties` |
 
 Overrides values in `gradle.properties` file of generated android based project
 
@@ -7254,71 +8558,149 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+---
+
+
+
+
+#### platforms.androidwear.gradleBuildToolsVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleBuildToolsVersion` | `integer` | `3.3.1` | `platforms.androidwear.gradleBuildToolsVersion` |
+
+Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`
+
+**examples**
+
+
+```json
+{
+  "gradleBuildToolsVersion": "3.3.1"
+}
+```
+
+
+
+```json
+{
+  "gradleBuildToolsVersion": "4.1.0"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.androidwear.gradleWrapperVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleWrapperVersion` | `integer` | `5.5` | `platforms.androidwear.gradleWrapperVersion` |
+
+Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`
+
+**examples**
+
+
+```json
+{
+  "gradleWrapperVersion": "5.5"
+}
+```
+
+
+
+```json
+{
+  "gradleWrapperVersion": "6.7.1"
+}
+```
+
+
+
+
+---
+
 
 
 
 #### platforms.androidwear.id
 
-**path**
-`renative.json/#/platforms.androidwear.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.androidwear.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.ignoreLogs
 
-**path**
-`renative.json/#/platforms.androidwear.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.androidwear.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.androidwear.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.androidwear.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.includedFeatures
 
-**path**
-`renative.json/#/platforms.androidwear.includedFeatures`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFeatures` | `array` |  | `platforms.androidwear.includedFeatures` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.includedFonts
 
-**path**
-`renative.json/#/platforms.androidwear.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.androidwear.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -7347,15 +8729,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.includedPermissions
 
-**path**
-`renative.json/#/platforms.androidwear.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.androidwear.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -7397,15 +8781,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.includedPlugins
 
-**path**
-`renative.json/#/platforms.androidwear.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.androidwear.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -7436,99 +8822,113 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.keyAlias
 
-**path**
-`renative.json/#/platforms.androidwear.keyAlias`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyAlias` | `string` |  | `platforms.androidwear.keyAlias` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.keyPassword
 
-**path**
-`renative.json/#/platforms.androidwear.keyPassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyPassword` | `string` |  | `platforms.androidwear.keyPassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.license
 
-**path**
-`renative.json/#/platforms.androidwear.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.androidwear.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.minSdkVersion
 
-**path**
-`renative.json/#/platforms.androidwear.minSdkVersion`
 
-**type** `integer`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minSdkVersion` | `integer` |  | `platforms.androidwear.minSdkVersion` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.multipleAPKs
 
-**path**
-`renative.json/#/platforms.androidwear.multipleAPKs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `multipleAPKs` | `boolean` |  | `platforms.androidwear.multipleAPKs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.permissions
 
-**path**
-`renative.json/#/platforms.androidwear.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.androidwear.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.androidwear.runtime
 
-**path**
-`renative.json/#/platforms.androidwear.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.androidwear.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -7546,85 +8946,115 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.signingConfig
 
-**path**
-`renative.json/#/platforms.androidwear.signingConfig`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingConfig` | `string` |  | `platforms.androidwear.signingConfig` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.splashScreen
 
-**path**
-`renative.json/#/platforms.androidwear.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.androidwear.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.storeFile
 
-**path**
-`renative.json/#/platforms.androidwear.storeFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storeFile` | `string` |  | `platforms.androidwear.storeFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.storePassword
 
-**path**
-`renative.json/#/platforms.androidwear.storePassword`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storePassword` | `string` |  | `platforms.androidwear.storePassword` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.targetSdkVersion
 
-**path**
-`renative.json/#/platforms.androidwear.targetSdkVersion`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `targetSdkVersion` | `integer` |  | `platforms.androidwear.targetSdkVersion` |
+
+Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "targetSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "targetSdkVersion": "29"
+}
+```
 
 
 
 
+---
 
 
 
 
 #### platforms.androidwear.timestampAssets
 
-**path**
-`renative.json/#/platforms.androidwear.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.androidwear.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -7648,15 +9078,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.title
 
-**path**
-`renative.json/#/platforms.androidwear.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.androidwear.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -7672,29 +9104,33 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.androidwear.universalApk
 
-**path**
-`renative.json/#/platforms.androidwear.universalApk`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `universalApk` | `boolean` |  | `platforms.androidwear.universalApk` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.androidwear.versionedAssets
 
-**path**
-`renative.json/#/platforms.androidwear.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.androidwear.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -7718,44 +9154,50 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
+
+
+
+
+
+### platforms.chromecast
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `chromecast` | `object` |  | `platforms.chromecast` |
+
 
 
 
 
 ---
-### platforms.chromecast
-
-**path**
-`renative.json/#/platforms.chromecast`
-
-**type** `object`
-
-
-
-
 
 
 
 #### platforms.chromecast.author
 
-**path**
-`renative.json/#/platforms.chromecast.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.chromecast.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.backgroundColor
 
-**path**
-`renative.json/#/platforms.chromecast.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.chromecast.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -7778,43 +9220,49 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.chromecast.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.chromecast.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.chromecast.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.chromecast.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -7838,60 +9286,70 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.chromecast.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.chromecast.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.chromecast.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.chromecast.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.chromecast.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -7899,10 +9357,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.chromecast.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.chromecast.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -7918,71 +9376,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].devServerHost
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.chromecast.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.chromecast.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.chromecast.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.chromecast.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.chromecast.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -8013,15 +9481,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.chromecast.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -8039,57 +9509,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.chromecast.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.chromecast.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.chromecast.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.chromecast.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -8118,15 +9596,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.chromecast.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -8168,15 +9648,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.chromecast.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -8207,43 +9689,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.chromecast.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.chromecast.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.chromecast.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -8261,29 +9749,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.chromecast.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.chromecast.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -8307,15 +9799,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.chromecast.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -8331,15 +9825,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.chromecast.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -8363,56 +9859,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.chromecast.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.chromecast.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.chromecast.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.chromecast.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.chromecast.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -8450,19 +9954,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.chromecast.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.chromecast.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -8471,55 +9979,63 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.chromecast.bundleAssets
 
-**path**
-`renative.json/#/platforms.chromecast.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.chromecast.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.bundleIsDev
 
-**path**
-`renative.json/#/platforms.chromecast.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.chromecast.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.deploy
 
-**path**
-`renative.json/#/platforms.chromecast.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.chromecast.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.chromecast.deploy.type
 
-**path**
-`renative.json/#/platforms.chromecast.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.chromecast.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -8527,10 +10043,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.chromecast.description
 
-**path**
-`renative.json/#/platforms.chromecast.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.chromecast.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -8546,57 +10062,65 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.devServerHost
 
-**path**
-`renative.json/#/platforms.chromecast.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.chromecast.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.engine
 
-**path**
-`renative.json/#/platforms.chromecast.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.chromecast.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.entryFile
 
-**path**
-`renative.json/#/platforms.chromecast.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.chromecast.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.excludedPlugins
 
-**path**
-`renative.json/#/platforms.chromecast.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.chromecast.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -8627,15 +10151,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.ext
 
-**path**
-`renative.json/#/platforms.chromecast.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.chromecast.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -8653,57 +10179,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.id
 
-**path**
-`renative.json/#/platforms.chromecast.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.chromecast.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.ignoreLogs
 
-**path**
-`renative.json/#/platforms.chromecast.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.chromecast.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.chromecast.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.chromecast.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.includedFonts
 
-**path**
-`renative.json/#/platforms.chromecast.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.chromecast.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -8732,15 +10266,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.includedPermissions
 
-**path**
-`renative.json/#/platforms.chromecast.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.chromecast.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -8782,15 +10318,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.includedPlugins
 
-**path**
-`renative.json/#/platforms.chromecast.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.chromecast.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -8821,43 +10359,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.license
 
-**path**
-`renative.json/#/platforms.chromecast.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.chromecast.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.permissions
 
-**path**
-`renative.json/#/platforms.chromecast.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.chromecast.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.chromecast.runtime
 
-**path**
-`renative.json/#/platforms.chromecast.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.chromecast.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -8875,29 +10419,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.splashScreen
 
-**path**
-`renative.json/#/platforms.chromecast.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.chromecast.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.timestampAssets
 
-**path**
-`renative.json/#/platforms.chromecast.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.chromecast.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -8921,15 +10469,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.title
 
-**path**
-`renative.json/#/platforms.chromecast.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.chromecast.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -8945,15 +10495,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.versionedAssets
 
-**path**
-`renative.json/#/platforms.chromecast.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.chromecast.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -8977,56 +10529,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.webpackConfig
 
-**path**
-`renative.json/#/platforms.chromecast.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.chromecast.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.chromecast.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.chromecast.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.chromecast.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.chromecast.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.chromecast.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.chromecast.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.chromecast.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.chromecast.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -9064,59 +10624,67 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.chromecast.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.chromecast.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.chromecast.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ### platforms.firefoxos
 
-**path**
-`renative.json/#/platforms.firefoxos`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `firefoxos` | `object` |  | `platforms.firefoxos` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxos.author
 
-**path**
-`renative.json/#/platforms.firefoxos.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.firefoxos.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.backgroundColor
 
-**path**
-`renative.json/#/platforms.firefoxos.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.firefoxos.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -9139,43 +10707,49 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.firefoxos.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.firefoxos.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.firefoxos.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -9199,60 +10773,70 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.firefoxos.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.firefoxos.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.firefoxos.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.firefoxos.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -9260,10 +10844,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.firefoxos.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.firefoxos.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -9279,71 +10863,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].devServerHost
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.firefoxos.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.firefoxos.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.firefoxos.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.firefoxos.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.firefoxos.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -9374,15 +10968,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.firefoxos.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -9400,57 +10996,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.firefoxos.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.firefoxos.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.firefoxos.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.firefoxos.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -9479,15 +11083,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.firefoxos.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -9529,15 +11135,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.firefoxos.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -9568,43 +11176,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.firefoxos.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.firefoxos.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.firefoxos.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -9622,29 +11236,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.firefoxos.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.firefoxos.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -9668,15 +11286,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.firefoxos.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -9692,15 +11312,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.firefoxos.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -9724,56 +11346,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.firefoxos.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.firefoxos.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.firefoxos.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.firefoxos.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -9811,19 +11441,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.firefoxos.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.firefoxos.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -9832,55 +11466,63 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.firefoxos.bundleAssets
 
-**path**
-`renative.json/#/platforms.firefoxos.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.firefoxos.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.bundleIsDev
 
-**path**
-`renative.json/#/platforms.firefoxos.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.firefoxos.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.deploy
 
-**path**
-`renative.json/#/platforms.firefoxos.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.firefoxos.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxos.deploy.type
 
-**path**
-`renative.json/#/platforms.firefoxos.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.firefoxos.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -9888,10 +11530,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.firefoxos.description
 
-**path**
-`renative.json/#/platforms.firefoxos.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.firefoxos.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -9907,57 +11549,65 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.devServerHost
 
-**path**
-`renative.json/#/platforms.firefoxos.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.firefoxos.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.engine
 
-**path**
-`renative.json/#/platforms.firefoxos.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.firefoxos.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.entryFile
 
-**path**
-`renative.json/#/platforms.firefoxos.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.firefoxos.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.excludedPlugins
 
-**path**
-`renative.json/#/platforms.firefoxos.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.firefoxos.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -9988,15 +11638,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.ext
 
-**path**
-`renative.json/#/platforms.firefoxos.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.firefoxos.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -10014,57 +11666,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.id
 
-**path**
-`renative.json/#/platforms.firefoxos.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.firefoxos.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.ignoreLogs
 
-**path**
-`renative.json/#/platforms.firefoxos.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.firefoxos.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.firefoxos.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.firefoxos.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.includedFonts
 
-**path**
-`renative.json/#/platforms.firefoxos.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.firefoxos.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -10093,15 +11753,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.includedPermissions
 
-**path**
-`renative.json/#/platforms.firefoxos.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.firefoxos.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -10143,15 +11805,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.includedPlugins
 
-**path**
-`renative.json/#/platforms.firefoxos.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.firefoxos.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -10182,43 +11846,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.license
 
-**path**
-`renative.json/#/platforms.firefoxos.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.firefoxos.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.permissions
 
-**path**
-`renative.json/#/platforms.firefoxos.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.firefoxos.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.firefoxos.runtime
 
-**path**
-`renative.json/#/platforms.firefoxos.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.firefoxos.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -10236,29 +11906,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.splashScreen
 
-**path**
-`renative.json/#/platforms.firefoxos.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.firefoxos.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.timestampAssets
 
-**path**
-`renative.json/#/platforms.firefoxos.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.firefoxos.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -10282,15 +11956,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.title
 
-**path**
-`renative.json/#/platforms.firefoxos.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.firefoxos.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -10306,15 +11982,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.versionedAssets
 
-**path**
-`renative.json/#/platforms.firefoxos.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.firefoxos.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -10338,56 +12016,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.webpackConfig
 
-**path**
-`renative.json/#/platforms.firefoxos.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.firefoxos.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxos.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.firefoxos.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.firefoxos.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.firefoxos.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.firefoxos.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxos.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.firefoxos.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.firefoxos.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -10425,59 +12111,67 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.firefoxos.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.firefoxos.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.firefoxos.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ### platforms.firefoxtv
 
-**path**
-`renative.json/#/platforms.firefoxtv`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `firefoxtv` | `object` |  | `platforms.firefoxtv` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxtv.author
 
-**path**
-`renative.json/#/platforms.firefoxtv.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.firefoxtv.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.backgroundColor
 
-**path**
-`renative.json/#/platforms.firefoxtv.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.firefoxtv.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -10500,43 +12194,49 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.firefoxtv.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.firefoxtv.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.firefoxtv.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -10560,60 +12260,70 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.firefoxtv.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.firefoxtv.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.firefoxtv.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.firefoxtv.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -10621,10 +12331,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.firefoxtv.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.firefoxtv.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -10640,71 +12350,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].devServerHost
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.firefoxtv.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.firefoxtv.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.firefoxtv.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.firefoxtv.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.firefoxtv.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -10735,15 +12455,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.firefoxtv.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -10761,57 +12483,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.firefoxtv.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.firefoxtv.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.firefoxtv.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.firefoxtv.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -10840,15 +12570,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.firefoxtv.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -10890,15 +12622,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.firefoxtv.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -10929,43 +12663,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.firefoxtv.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.firefoxtv.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.firefoxtv.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -10983,29 +12723,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.firefoxtv.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.firefoxtv.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -11029,15 +12773,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.firefoxtv.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -11053,15 +12799,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.firefoxtv.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -11085,56 +12833,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.firefoxtv.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.firefoxtv.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.firefoxtv.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.firefoxtv.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -11172,19 +12928,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.firefoxtv.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.firefoxtv.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -11193,55 +12953,63 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.firefoxtv.bundleAssets
 
-**path**
-`renative.json/#/platforms.firefoxtv.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.firefoxtv.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.bundleIsDev
 
-**path**
-`renative.json/#/platforms.firefoxtv.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.firefoxtv.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.deploy
 
-**path**
-`renative.json/#/platforms.firefoxtv.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.firefoxtv.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxtv.deploy.type
 
-**path**
-`renative.json/#/platforms.firefoxtv.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.firefoxtv.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -11249,10 +13017,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.firefoxtv.description
 
-**path**
-`renative.json/#/platforms.firefoxtv.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.firefoxtv.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -11268,57 +13036,65 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.devServerHost
 
-**path**
-`renative.json/#/platforms.firefoxtv.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.firefoxtv.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.engine
 
-**path**
-`renative.json/#/platforms.firefoxtv.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.firefoxtv.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.entryFile
 
-**path**
-`renative.json/#/platforms.firefoxtv.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.firefoxtv.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.excludedPlugins
 
-**path**
-`renative.json/#/platforms.firefoxtv.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.firefoxtv.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -11349,15 +13125,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.ext
 
-**path**
-`renative.json/#/platforms.firefoxtv.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.firefoxtv.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -11375,57 +13153,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.id
 
-**path**
-`renative.json/#/platforms.firefoxtv.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.firefoxtv.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.ignoreLogs
 
-**path**
-`renative.json/#/platforms.firefoxtv.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.firefoxtv.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.firefoxtv.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.firefoxtv.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.includedFonts
 
-**path**
-`renative.json/#/platforms.firefoxtv.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.firefoxtv.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -11454,15 +13240,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.includedPermissions
 
-**path**
-`renative.json/#/platforms.firefoxtv.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.firefoxtv.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -11504,15 +13292,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.includedPlugins
 
-**path**
-`renative.json/#/platforms.firefoxtv.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.firefoxtv.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -11543,43 +13333,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.license
 
-**path**
-`renative.json/#/platforms.firefoxtv.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.firefoxtv.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.permissions
 
-**path**
-`renative.json/#/platforms.firefoxtv.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.firefoxtv.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.firefoxtv.runtime
 
-**path**
-`renative.json/#/platforms.firefoxtv.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.firefoxtv.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -11597,29 +13393,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.splashScreen
 
-**path**
-`renative.json/#/platforms.firefoxtv.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.firefoxtv.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.timestampAssets
 
-**path**
-`renative.json/#/platforms.firefoxtv.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.firefoxtv.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -11643,15 +13443,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.title
 
-**path**
-`renative.json/#/platforms.firefoxtv.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.firefoxtv.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -11667,15 +13469,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.versionedAssets
 
-**path**
-`renative.json/#/platforms.firefoxtv.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.firefoxtv.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -11699,56 +13503,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.webpackConfig
 
-**path**
-`renative.json/#/platforms.firefoxtv.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.firefoxtv.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.firefoxtv.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.firefoxtv.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.firefoxtv.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.firefoxtv.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.firefoxtv.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.firefoxtv.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.firefoxtv.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.firefoxtv.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -11786,174 +13598,200 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.firefoxtv.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.firefoxtv.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.firefoxtv.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ### platforms.ios
 
-**path**
-`renative.json/#/platforms.ios`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ios` | `object` |  | `platforms.ios` |
 
 
+
+
+
+---
 
 
 
 #### platforms.ios.Podfile
 
-**path**
-`renative.json/#/platforms.ios.Podfile`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `Podfile` | `object` |  | `platforms.ios.Podfile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.appDelegateApplicationMethods
 
-**path**
-`renative.json/#/platforms.ios.appDelegateApplicationMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateApplicationMethods` | `object` |  | `platforms.ios.appDelegateApplicationMethods` |
 
 
+
+
+
+---
 
 
 
 #### platforms.ios.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
 
-**path**
-`renative.json/#/platforms.ios.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFailToRegisterForRemoteNotificationsWithError` | `array` |  | `platforms.ios.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.appDelegateApplicationMethods.didFinishLaunchingWithOptions
 
-**path**
-`renative.json/#/platforms.ios.appDelegateApplicationMethods.didFinishLaunchingWithOptions`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFinishLaunchingWithOptions` | `array` |  | `platforms.ios.appDelegateApplicationMethods.didFinishLaunchingWithOptions` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.appDelegateApplicationMethods.didReceive
 
-**path**
-`renative.json/#/platforms.ios.appDelegateApplicationMethods.didReceive`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceive` | `array` |  | `platforms.ios.appDelegateApplicationMethods.didReceive` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.appDelegateApplicationMethods.didReceiveRemoteNotification
 
-**path**
-`renative.json/#/platforms.ios.appDelegateApplicationMethods.didReceiveRemoteNotification`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceiveRemoteNotification` | `array` |  | `platforms.ios.appDelegateApplicationMethods.didReceiveRemoteNotification` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.appDelegateApplicationMethods.didRegister
 
-**path**
-`renative.json/#/platforms.ios.appDelegateApplicationMethods.didRegister`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegister` | `array` |  | `platforms.ios.appDelegateApplicationMethods.didRegister` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
 
-**path**
-`renative.json/#/platforms.ios.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegisterForRemoteNotificationsWithDeviceToken` | `array` |  | `platforms.ios.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.appDelegateApplicationMethods.open
 
-**path**
-`renative.json/#/platforms.ios.appDelegateApplicationMethods.open`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `open` | `array` |  | `platforms.ios.appDelegateApplicationMethods.open` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.appDelegateApplicationMethods.supportedInterfaceOrientationsFor
 
-**path**
-`renative.json/#/platforms.ios.appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `supportedInterfaceOrientationsFor` | `array` |  | `platforms.ios.appDelegateApplicationMethods.supportedInterfaceOrientationsFor` |
 
 
+
+
+
+---
 
 
 
@@ -11961,66 +13799,74 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.ios.appDelegateImports
 
-**path**
-`renative.json/#/platforms.ios.appDelegateImports`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateImports` | `array` |  | `platforms.ios.appDelegateImports` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.appDelegateMethods
 
-**path**
-`renative.json/#/platforms.ios.appDelegateMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateMethods` | `object` |  | `platforms.ios.appDelegateMethods` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.appleId
 
-**path**
-`renative.json/#/platforms.ios.appleId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appleId` | `string` |  | `platforms.ios.appleId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.author
 
-**path**
-`renative.json/#/platforms.ios.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.ios.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.backgroundColor
 
-**path**
-`renative.json/#/platforms.ios.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.ios.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -12044,157 +13890,181 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.ios.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.ios.buildSchemes.[object].Podfile
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].Podfile`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `Podfile` | `object` |  | `platforms.ios.buildSchemes.[object].Podfile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].appDelegateApplicationMethods
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appDelegateApplicationMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateApplicationMethods` | `object` |  | `platforms.ios.buildSchemes.[object].appDelegateApplicationMethods` |
 
 
+
+
+
+---
 
 
 
 #### platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFailToRegisterForRemoteNotificationsWithError` | `array` |  | `platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFinishLaunchingWithOptions` | `array` |  | `platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didReceive
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceive` | `array` |  | `platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didReceive` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceiveRemoteNotification` | `array` |  | `platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didRegister
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegister` | `array` |  | `platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didRegister` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegisterForRemoteNotificationsWithDeviceToken` | `array` |  | `platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.open
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.open`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `open` | `array` |  | `platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.open` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `supportedInterfaceOrientationsFor` | `array` |  | `platforms.ios.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor` |
 
 
+
+
+
+---
 
 
 
@@ -12202,66 +14072,74 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.ios.buildSchemes.[object].appDelegateImports
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appDelegateImports`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateImports` | `array` |  | `platforms.ios.buildSchemes.[object].appDelegateImports` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].appDelegateMethods
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appDelegateMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateMethods` | `object` |  | `platforms.ios.buildSchemes.[object].appDelegateMethods` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].appleId
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].appleId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appleId` | `string` |  | `platforms.ios.buildSchemes.[object].appleId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.ios.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.ios.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -12285,43 +14163,49 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.ios.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.ios.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].codeSignIdentity
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].codeSignIdentity`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `codeSignIdentity` | `string` |  | `platforms.ios.buildSchemes.[object].codeSignIdentity` |
 
 Special property which tells Xcode how to build your project
 
@@ -12345,15 +14229,17 @@ Special property which tells Xcode how to build your project
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].commandLineArguments
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].commandLineArguments`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `commandLineArguments` | `array` |  | `platforms.ios.buildSchemes.[object].commandLineArguments` |
 
 Allows you to pass launch arguments to active scheme
 
@@ -12372,32 +14258,38 @@ Allows you to pass launch arguments to active scheme
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.ios.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.ios.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.ios.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -12405,24 +14297,26 @@ Allows you to pass launch arguments to active scheme
 
 #### platforms.ios.buildSchemes.[object].deploymentTarget
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].deploymentTarget`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploymentTarget` | `string` |  | `platforms.ios.buildSchemes.[object].deploymentTarget` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.ios.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -12438,71 +14332,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.ios.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.ios.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].entitlements
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].entitlements`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entitlements` | `object` |  | `platforms.ios.buildSchemes.[object].entitlements` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.ios.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.ios.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -12533,130 +14437,150 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].exportOptions
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].exportOptions`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `exportOptions` | `object` |  | `platforms.ios.buildSchemes.[object].exportOptions` |
 
 
+
+
+
+---
 
 
 
 #### platforms.ios.buildSchemes.[object].exportOptions.compileBitcode
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].exportOptions.compileBitcode`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileBitcode` | `boolean` |  | `platforms.ios.buildSchemes.[object].exportOptions.compileBitcode` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].exportOptions.method
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].exportOptions.method`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `method` | `string` |  | `platforms.ios.buildSchemes.[object].exportOptions.method` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].exportOptions.provisioningProfiles
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].exportOptions.provisioningProfiles`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningProfiles` | `object` |  | `platforms.ios.buildSchemes.[object].exportOptions.provisioningProfiles` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].exportOptions.signingCertificate
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].exportOptions.signingCertificate`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingCertificate` | `string` |  | `platforms.ios.buildSchemes.[object].exportOptions.signingCertificate` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].exportOptions.signingStyle
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].exportOptions.signingStyle`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingStyle` | `string` |  | `platforms.ios.buildSchemes.[object].exportOptions.signingStyle` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].exportOptions.teamID
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].exportOptions.teamID`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamID` | `string` |  | `platforms.ios.buildSchemes.[object].exportOptions.teamID` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].exportOptions.uploadBitcode
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].exportOptions.uploadBitcode`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `uploadBitcode` | `boolean` |  | `platforms.ios.buildSchemes.[object].exportOptions.uploadBitcode` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].exportOptions.uploadSymbols
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].exportOptions.uploadSymbols`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `uploadSymbols` | `boolean` |  | `platforms.ios.buildSchemes.[object].exportOptions.uploadSymbols` |
 
 
+
+
+
+---
 
 
 
@@ -12664,10 +14588,10 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 #### platforms.ios.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.ios.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -12685,71 +14609,81 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].firebaseId
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].firebaseId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `firebaseId` | `string` |  | `platforms.ios.buildSchemes.[object].firebaseId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.ios.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.ios.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.ios.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.ios.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -12778,15 +14712,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.ios.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -12828,15 +14764,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.ios.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -12867,29 +14805,33 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.ios.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].orientationSupport
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].orientationSupport`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `orientationSupport` | `object` |  | `platforms.ios.buildSchemes.[object].orientationSupport` |
 
 
 
@@ -12918,32 +14860,38 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 #### platforms.ios.buildSchemes.[object].orientationSupport.phone
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].orientationSupport.phone`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `phone` | `array` |  | `platforms.ios.buildSchemes.[object].orientationSupport.phone` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].orientationSupport.tab
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].orientationSupport.tab`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `tab` | `array` |  | `platforms.ios.buildSchemes.[object].orientationSupport.tab` |
 
 
+
+
+
+---
 
 
 
@@ -12951,94 +14899,106 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 #### platforms.ios.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.ios.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].plist
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].plist`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `plist` | `object` |  | `platforms.ios.buildSchemes.[object].plist` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].provisionProfileSpecifier
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].provisionProfileSpecifier`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisionProfileSpecifier` | `string` |  | `platforms.ios.buildSchemes.[object].provisionProfileSpecifier` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].provisioningProfiles
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].provisioningProfiles`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningProfiles` | `object` |  | `platforms.ios.buildSchemes.[object].provisioningProfiles` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].provisioningStyle
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].provisioningStyle`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningStyle` | `string` |  | `platforms.ios.buildSchemes.[object].provisioningStyle` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].runScheme
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].runScheme`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runScheme` | `string` |  | `platforms.ios.buildSchemes.[object].runScheme` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.ios.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -13056,57 +15016,65 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].scheme
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].scheme`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `scheme` | `string` |  | `platforms.ios.buildSchemes.[object].scheme` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].sdk
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].sdk`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `sdk` | `string` |  | `platforms.ios.buildSchemes.[object].sdk` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.ios.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].systemCapabilities
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].systemCapabilities`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `systemCapabilities` | `object` |  | `platforms.ios.buildSchemes.[object].systemCapabilities` |
 
 
 
@@ -13148,57 +15116,65 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].teamID
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].teamID`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamID` | `string` |  | `platforms.ios.buildSchemes.[object].teamID` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].teamIdentifier
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].teamIdentifier`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamIdentifier` | `string` |  | `platforms.ios.buildSchemes.[object].teamIdentifier` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].testFlightId
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].testFlightId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `testFlightId` | `string` |  | `platforms.ios.buildSchemes.[object].testFlightId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.ios.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -13222,15 +15198,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.ios.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -13246,15 +15224,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.ios.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -13278,19 +15258,23 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.ios.buildSchemes.[object].xcodeproj
 
-**path**
-`renative.json/#/platforms.ios.buildSchemes.[object].xcodeproj`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `xcodeproj` | `object` |  | `platforms.ios.buildSchemes.[object].xcodeproj` |
 
 
+
+
+
+---
 
 
 
@@ -13298,38 +15282,42 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 #### platforms.ios.bundleAssets
 
-**path**
-`renative.json/#/platforms.ios.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.ios.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.bundleIsDev
 
-**path**
-`renative.json/#/platforms.ios.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.ios.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.codeSignIdentity
 
-**path**
-`renative.json/#/platforms.ios.codeSignIdentity`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `codeSignIdentity` | `string` |  | `platforms.ios.codeSignIdentity` |
 
 Special property which tells Xcode how to build your project
 
@@ -13353,15 +15341,17 @@ Special property which tells Xcode how to build your project
 
 
 
+---
+
 
 
 
 #### platforms.ios.commandLineArguments
 
-**path**
-`renative.json/#/platforms.ios.commandLineArguments`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `commandLineArguments` | `array` |  | `platforms.ios.commandLineArguments` |
 
 Allows you to pass launch arguments to active scheme
 
@@ -13380,32 +15370,38 @@ Allows you to pass launch arguments to active scheme
 
 
 
+---
+
 
 
 
 #### platforms.ios.deploy
 
-**path**
-`renative.json/#/platforms.ios.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.ios.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.ios.deploy.type
 
-**path**
-`renative.json/#/platforms.ios.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.ios.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -13413,24 +15409,26 @@ Allows you to pass launch arguments to active scheme
 
 #### platforms.ios.deploymentTarget
 
-**path**
-`renative.json/#/platforms.ios.deploymentTarget`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploymentTarget` | `string` |  | `platforms.ios.deploymentTarget` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.description
 
-**path**
-`renative.json/#/platforms.ios.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.ios.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -13446,57 +15444,65 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.ios.engine
 
-**path**
-`renative.json/#/platforms.ios.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.ios.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.entitlements
 
-**path**
-`renative.json/#/platforms.ios.entitlements`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entitlements` | `object` |  | `platforms.ios.entitlements` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.entryFile
 
-**path**
-`renative.json/#/platforms.ios.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.ios.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.excludedPlugins
 
-**path**
-`renative.json/#/platforms.ios.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.ios.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -13527,130 +15533,150 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.ios.exportOptions
 
-**path**
-`renative.json/#/platforms.ios.exportOptions`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `exportOptions` | `object` |  | `platforms.ios.exportOptions` |
 
 
+
+
+
+---
 
 
 
 #### platforms.ios.exportOptions.compileBitcode
 
-**path**
-`renative.json/#/platforms.ios.exportOptions.compileBitcode`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileBitcode` | `boolean` |  | `platforms.ios.exportOptions.compileBitcode` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.exportOptions.method
 
-**path**
-`renative.json/#/platforms.ios.exportOptions.method`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `method` | `string` |  | `platforms.ios.exportOptions.method` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.exportOptions.provisioningProfiles
 
-**path**
-`renative.json/#/platforms.ios.exportOptions.provisioningProfiles`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningProfiles` | `object` |  | `platforms.ios.exportOptions.provisioningProfiles` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.exportOptions.signingCertificate
 
-**path**
-`renative.json/#/platforms.ios.exportOptions.signingCertificate`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingCertificate` | `string` |  | `platforms.ios.exportOptions.signingCertificate` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.exportOptions.signingStyle
 
-**path**
-`renative.json/#/platforms.ios.exportOptions.signingStyle`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingStyle` | `string` |  | `platforms.ios.exportOptions.signingStyle` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.exportOptions.teamID
 
-**path**
-`renative.json/#/platforms.ios.exportOptions.teamID`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamID` | `string` |  | `platforms.ios.exportOptions.teamID` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.exportOptions.uploadBitcode
 
-**path**
-`renative.json/#/platforms.ios.exportOptions.uploadBitcode`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `uploadBitcode` | `boolean` |  | `platforms.ios.exportOptions.uploadBitcode` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.exportOptions.uploadSymbols
 
-**path**
-`renative.json/#/platforms.ios.exportOptions.uploadSymbols`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `uploadSymbols` | `boolean` |  | `platforms.ios.exportOptions.uploadSymbols` |
 
 
+
+
+
+---
 
 
 
@@ -13658,10 +15684,10 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 #### platforms.ios.ext
 
-**path**
-`renative.json/#/platforms.ios.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.ios.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -13679,71 +15705,81 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.ios.firebaseId
 
-**path**
-`renative.json/#/platforms.ios.firebaseId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `firebaseId` | `string` |  | `platforms.ios.firebaseId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.id
 
-**path**
-`renative.json/#/platforms.ios.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.ios.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.ignoreLogs
 
-**path**
-`renative.json/#/platforms.ios.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.ios.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.ios.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.ios.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.includedFonts
 
-**path**
-`renative.json/#/platforms.ios.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.ios.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -13772,15 +15808,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.ios.includedPermissions
 
-**path**
-`renative.json/#/platforms.ios.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.ios.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -13822,15 +15860,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.ios.includedPlugins
 
-**path**
-`renative.json/#/platforms.ios.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.ios.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -13861,29 +15901,33 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.ios.license
 
-**path**
-`renative.json/#/platforms.ios.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.ios.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.orientationSupport
 
-**path**
-`renative.json/#/platforms.ios.orientationSupport`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `orientationSupport` | `object` |  | `platforms.ios.orientationSupport` |
 
 
 
@@ -13912,32 +15956,38 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 #### platforms.ios.orientationSupport.phone
 
-**path**
-`renative.json/#/platforms.ios.orientationSupport.phone`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `phone` | `array` |  | `platforms.ios.orientationSupport.phone` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.orientationSupport.tab
 
-**path**
-`renative.json/#/platforms.ios.orientationSupport.tab`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `tab` | `array` |  | `platforms.ios.orientationSupport.tab` |
 
 
+
+
+
+---
 
 
 
@@ -13945,94 +15995,106 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 #### platforms.ios.permissions
 
-**path**
-`renative.json/#/platforms.ios.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.ios.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.ios.plist
 
-**path**
-`renative.json/#/platforms.ios.plist`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `plist` | `object` |  | `platforms.ios.plist` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.provisionProfileSpecifier
 
-**path**
-`renative.json/#/platforms.ios.provisionProfileSpecifier`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisionProfileSpecifier` | `string` |  | `platforms.ios.provisionProfileSpecifier` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.provisioningProfiles
 
-**path**
-`renative.json/#/platforms.ios.provisioningProfiles`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningProfiles` | `object` |  | `platforms.ios.provisioningProfiles` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.provisioningStyle
 
-**path**
-`renative.json/#/platforms.ios.provisioningStyle`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningStyle` | `string` |  | `platforms.ios.provisioningStyle` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.runScheme
 
-**path**
-`renative.json/#/platforms.ios.runScheme`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runScheme` | `string` |  | `platforms.ios.runScheme` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.runtime
 
-**path**
-`renative.json/#/platforms.ios.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.ios.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -14050,57 +16112,65 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.ios.scheme
 
-**path**
-`renative.json/#/platforms.ios.scheme`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `scheme` | `string` |  | `platforms.ios.scheme` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.sdk
 
-**path**
-`renative.json/#/platforms.ios.sdk`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `sdk` | `string` |  | `platforms.ios.sdk` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.splashScreen
 
-**path**
-`renative.json/#/platforms.ios.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.ios.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.systemCapabilities
 
-**path**
-`renative.json/#/platforms.ios.systemCapabilities`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `systemCapabilities` | `object` |  | `platforms.ios.systemCapabilities` |
 
 
 
@@ -14142,57 +16212,65 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.ios.teamID
 
-**path**
-`renative.json/#/platforms.ios.teamID`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamID` | `string` |  | `platforms.ios.teamID` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.teamIdentifier
 
-**path**
-`renative.json/#/platforms.ios.teamIdentifier`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamIdentifier` | `string` |  | `platforms.ios.teamIdentifier` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.testFlightId
 
-**path**
-`renative.json/#/platforms.ios.testFlightId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `testFlightId` | `string` |  | `platforms.ios.testFlightId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.ios.timestampAssets
 
-**path**
-`renative.json/#/platforms.ios.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.ios.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -14216,15 +16294,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.ios.title
 
-**path**
-`renative.json/#/platforms.ios.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.ios.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -14240,15 +16320,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.ios.versionedAssets
 
-**path**
-`renative.json/#/platforms.ios.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.ios.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -14272,58 +16354,66 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.ios.xcodeproj
 
-**path**
-`renative.json/#/platforms.ios.xcodeproj`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `xcodeproj` | `object` |  | `platforms.ios.xcodeproj` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### platforms.kaios
 
-**path**
-`renative.json/#/platforms.kaios`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `kaios` | `object` |  | `platforms.kaios` |
 
 
+
+
+
+---
 
 
 
 #### platforms.kaios.author
 
-**path**
-`renative.json/#/platforms.kaios.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.kaios.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.backgroundColor
 
-**path**
-`renative.json/#/platforms.kaios.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.kaios.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -14346,43 +16436,49 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.kaios.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.kaios.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.kaios.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.kaios.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -14406,60 +16502,70 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.kaios.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.kaios.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.kaios.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.kaios.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.kaios.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -14467,10 +16573,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.kaios.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.kaios.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -14486,71 +16592,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].devServerHost
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.kaios.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.kaios.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.kaios.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.kaios.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.kaios.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -14581,15 +16697,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.kaios.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -14607,57 +16725,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.kaios.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.kaios.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.kaios.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.kaios.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -14686,15 +16812,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.kaios.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -14736,15 +16864,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.kaios.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -14775,43 +16905,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.kaios.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.kaios.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.kaios.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -14829,29 +16965,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.kaios.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.kaios.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -14875,15 +17015,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.kaios.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -14899,15 +17041,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.kaios.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -14931,56 +17075,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.kaios.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.kaios.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.kaios.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.kaios.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.kaios.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -15018,19 +17170,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.kaios.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.kaios.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.kaios.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -15039,55 +17195,63 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.kaios.bundleAssets
 
-**path**
-`renative.json/#/platforms.kaios.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.kaios.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.bundleIsDev
 
-**path**
-`renative.json/#/platforms.kaios.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.kaios.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.deploy
 
-**path**
-`renative.json/#/platforms.kaios.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.kaios.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.kaios.deploy.type
 
-**path**
-`renative.json/#/platforms.kaios.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.kaios.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -15095,10 +17259,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.kaios.description
 
-**path**
-`renative.json/#/platforms.kaios.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.kaios.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -15114,57 +17278,65 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.kaios.devServerHost
 
-**path**
-`renative.json/#/platforms.kaios.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.kaios.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.engine
 
-**path**
-`renative.json/#/platforms.kaios.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.kaios.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.entryFile
 
-**path**
-`renative.json/#/platforms.kaios.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.kaios.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.excludedPlugins
 
-**path**
-`renative.json/#/platforms.kaios.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.kaios.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -15195,15 +17367,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.kaios.ext
 
-**path**
-`renative.json/#/platforms.kaios.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.kaios.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -15221,57 +17395,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.kaios.id
 
-**path**
-`renative.json/#/platforms.kaios.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.kaios.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.ignoreLogs
 
-**path**
-`renative.json/#/platforms.kaios.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.kaios.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.kaios.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.kaios.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.includedFonts
 
-**path**
-`renative.json/#/platforms.kaios.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.kaios.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -15300,15 +17482,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.kaios.includedPermissions
 
-**path**
-`renative.json/#/platforms.kaios.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.kaios.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -15350,15 +17534,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.kaios.includedPlugins
 
-**path**
-`renative.json/#/platforms.kaios.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.kaios.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -15389,43 +17575,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.kaios.license
 
-**path**
-`renative.json/#/platforms.kaios.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.kaios.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.permissions
 
-**path**
-`renative.json/#/platforms.kaios.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.kaios.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.kaios.runtime
 
-**path**
-`renative.json/#/platforms.kaios.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.kaios.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -15443,29 +17635,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.kaios.splashScreen
 
-**path**
-`renative.json/#/platforms.kaios.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.kaios.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.timestampAssets
 
-**path**
-`renative.json/#/platforms.kaios.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.kaios.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -15489,15 +17685,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.kaios.title
 
-**path**
-`renative.json/#/platforms.kaios.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.kaios.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -15513,15 +17711,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.kaios.versionedAssets
 
-**path**
-`renative.json/#/platforms.kaios.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.kaios.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -15545,56 +17745,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.kaios.webpackConfig
 
-**path**
-`renative.json/#/platforms.kaios.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.kaios.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.kaios.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.kaios.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.kaios.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.kaios.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.kaios.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.kaios.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.kaios.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.kaios.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -15632,45 +17840,51 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.kaios.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.kaios.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.kaios.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ### platforms.macos
 
-**path**
-`renative.json/#/platforms.macos`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `macos` | `object` |  | `platforms.macos` |
 
 
+
+
+
+---
 
 
 
 #### platforms.macos.BrowserWindow
 
-**path**
-`renative.json/#/platforms.macos.BrowserWindow`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BrowserWindow` | `object` |  | `platforms.macos.BrowserWindow` |
 
 Allows you to configure electron wrapper app window
 
@@ -15692,28 +17906,32 @@ Allows you to configure electron wrapper app window
 
 
 
+---
+
 
 
 #### platforms.macos.BrowserWindow.height
 
-**path**
-`renative.json/#/platforms.macos.BrowserWindow.height`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `height` | `integer` |  | `platforms.macos.BrowserWindow.height` |
 
 Default height of electron app
 
 
+
+---
 
 
 
 
 #### platforms.macos.BrowserWindow.webPreferences
 
-**path**
-`renative.json/#/platforms.macos.BrowserWindow.webPreferences`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webPreferences` | `object` |  | `platforms.macos.BrowserWindow.webPreferences` |
 
 Extra web preferences of electron app
 
@@ -15731,19 +17949,23 @@ Extra web preferences of electron app
 
 
 
+---
+
 
 
 
 #### platforms.macos.BrowserWindow.width
 
-**path**
-`renative.json/#/platforms.macos.BrowserWindow.width`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `width` | `integer` |  | `platforms.macos.BrowserWindow.width` |
 
 Default width of electron app
 
 
+
+---
 
 
 
@@ -15751,38 +17973,42 @@ Default width of electron app
 
 #### platforms.macos.appleId
 
-**path**
-`renative.json/#/platforms.macos.appleId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appleId` | `string` |  | `platforms.macos.appleId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.author
 
-**path**
-`renative.json/#/platforms.macos.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.macos.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.backgroundColor
 
-**path**
-`renative.json/#/platforms.macos.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.macos.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -15806,28 +18032,32 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.macos.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.macos.buildSchemes.[object].BrowserWindow
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].BrowserWindow`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BrowserWindow` | `object` |  | `platforms.macos.buildSchemes.[object].BrowserWindow` |
 
 Allows you to configure electron wrapper app window
 
@@ -15849,28 +18079,32 @@ Allows you to configure electron wrapper app window
 
 
 
+---
+
 
 
 #### platforms.macos.buildSchemes.[object].BrowserWindow.height
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].BrowserWindow.height`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `height` | `integer` |  | `platforms.macos.buildSchemes.[object].BrowserWindow.height` |
 
 Default height of electron app
 
 
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].BrowserWindow.webPreferences
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].BrowserWindow.webPreferences`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webPreferences` | `object` |  | `platforms.macos.buildSchemes.[object].BrowserWindow.webPreferences` |
 
 Extra web preferences of electron app
 
@@ -15888,19 +18122,23 @@ Extra web preferences of electron app
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].BrowserWindow.width
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].BrowserWindow.width`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `width` | `integer` |  | `platforms.macos.buildSchemes.[object].BrowserWindow.width` |
 
 Default width of electron app
 
 
+
+---
 
 
 
@@ -15908,38 +18146,42 @@ Default width of electron app
 
 #### platforms.macos.buildSchemes.[object].appleId
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].appleId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appleId` | `string` |  | `platforms.macos.buildSchemes.[object].appleId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.macos.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.macos.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -15963,60 +18205,70 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.macos.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.macos.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.macos.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.macos.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.macos.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -16024,10 +18276,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.macos.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.macos.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -16043,15 +18295,17 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].electronConfig
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].electronConfig`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `electronConfig` | `object` |  | `platforms.macos.buildSchemes.[object].electronConfig` |
 
 Allows you to configure electron app as per https://www.electron.build/
 
@@ -16083,71 +18337,81 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.macos.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.macos.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.macos.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].environment
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].environment`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `environment` | `string` |  | `platforms.macos.buildSchemes.[object].environment` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.macos.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -16178,15 +18442,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.macos.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -16204,57 +18470,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.macos.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.macos.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.macos.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.macos.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -16283,15 +18557,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.macos.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -16333,15 +18609,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.macos.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -16372,43 +18650,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.macos.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.macos.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.macos.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -16426,29 +18710,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.macos.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.macos.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -16472,15 +18760,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.macos.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -16496,15 +18786,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.macos.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -16528,56 +18820,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.macos.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.macos.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.macos.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.macos.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.macos.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -16615,19 +18915,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.macos.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.macos.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.macos.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -16636,55 +18940,63 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.macos.bundleAssets
 
-**path**
-`renative.json/#/platforms.macos.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.macos.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.bundleIsDev
 
-**path**
-`renative.json/#/platforms.macos.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.macos.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.deploy
 
-**path**
-`renative.json/#/platforms.macos.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.macos.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.macos.deploy.type
 
-**path**
-`renative.json/#/platforms.macos.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.macos.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -16692,10 +19004,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.macos.description
 
-**path**
-`renative.json/#/platforms.macos.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.macos.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -16711,15 +19023,17 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.macos.electronConfig
 
-**path**
-`renative.json/#/platforms.macos.electronConfig`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `electronConfig` | `object` |  | `platforms.macos.electronConfig` |
 
 Allows you to configure electron app as per https://www.electron.build/
 
@@ -16751,57 +19065,65 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
+---
+
 
 
 
 #### platforms.macos.engine
 
-**path**
-`renative.json/#/platforms.macos.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.macos.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.entryFile
 
-**path**
-`renative.json/#/platforms.macos.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.macos.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.environment
 
-**path**
-`renative.json/#/platforms.macos.environment`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `environment` | `string` |  | `platforms.macos.environment` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.excludedPlugins
 
-**path**
-`renative.json/#/platforms.macos.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.macos.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -16832,15 +19154,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.macos.ext
 
-**path**
-`renative.json/#/platforms.macos.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.macos.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -16858,57 +19182,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.macos.id
 
-**path**
-`renative.json/#/platforms.macos.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.macos.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.ignoreLogs
 
-**path**
-`renative.json/#/platforms.macos.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.macos.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.macos.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.macos.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.includedFonts
 
-**path**
-`renative.json/#/platforms.macos.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.macos.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -16937,15 +19269,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.macos.includedPermissions
 
-**path**
-`renative.json/#/platforms.macos.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.macos.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -16987,15 +19321,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.macos.includedPlugins
 
-**path**
-`renative.json/#/platforms.macos.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.macos.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -17026,43 +19362,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.macos.license
 
-**path**
-`renative.json/#/platforms.macos.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.macos.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.permissions
 
-**path**
-`renative.json/#/platforms.macos.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.macos.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.macos.runtime
 
-**path**
-`renative.json/#/platforms.macos.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.macos.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -17080,29 +19422,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.macos.splashScreen
 
-**path**
-`renative.json/#/platforms.macos.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.macos.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.timestampAssets
 
-**path**
-`renative.json/#/platforms.macos.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.macos.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -17126,15 +19472,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.macos.title
 
-**path**
-`renative.json/#/platforms.macos.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.macos.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -17150,15 +19498,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.macos.versionedAssets
 
-**path**
-`renative.json/#/platforms.macos.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.macos.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -17182,56 +19532,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.macos.webpackConfig
 
-**path**
-`renative.json/#/platforms.macos.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.macos.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.macos.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.macos.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.macos.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.macos.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.macos.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.macos.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.macos.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.macos.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -17269,73 +19627,83 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.macos.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.macos.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.macos.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ### platforms.tizen
 
-**path**
-`renative.json/#/platforms.tizen`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `tizen` | `object` |  | `platforms.tizen` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizen.appName
 
-**path**
-`renative.json/#/platforms.tizen.appName`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appName` | `string` |  | `platforms.tizen.appName` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.author
 
-**path**
-`renative.json/#/platforms.tizen.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.tizen.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.backgroundColor
 
-**path**
-`renative.json/#/platforms.tizen.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.tizen.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -17358,57 +19726,65 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.tizen.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizen.buildSchemes.[object].appName
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].appName`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appName` | `string` |  | `platforms.tizen.buildSchemes.[object].appName` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.tizen.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.tizen.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -17432,74 +19808,86 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.tizen.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.tizen.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].certificateProfile
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].certificateProfile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `certificateProfile` | `string` |  | `platforms.tizen.buildSchemes.[object].certificateProfile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.tizen.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizen.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.tizen.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -17507,10 +19895,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.tizen.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.tizen.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -17526,71 +19914,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].devServerHost
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizen.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.tizen.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.tizen.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.tizen.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.tizen.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -17621,15 +20019,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.tizen.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -17647,57 +20047,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.tizen.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.tizen.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.tizen.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.tizen.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -17726,15 +20134,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.tizen.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -17776,15 +20186,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.tizen.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -17815,57 +20227,65 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.tizen.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].package
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].package`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `package` | `string` |  | `platforms.tizen.buildSchemes.[object].package` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.tizen.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.tizen.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -17883,29 +20303,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.tizen.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.tizen.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -17929,15 +20353,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.tizen.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -17953,15 +20379,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.tizen.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -17985,56 +20413,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.tizen.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizen.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.tizen.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizen.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.tizen.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -18072,19 +20508,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.tizen.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.tizen.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.tizen.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -18093,69 +20533,79 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.tizen.bundleAssets
 
-**path**
-`renative.json/#/platforms.tizen.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.tizen.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.bundleIsDev
 
-**path**
-`renative.json/#/platforms.tizen.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.tizen.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.certificateProfile
 
-**path**
-`renative.json/#/platforms.tizen.certificateProfile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `certificateProfile` | `string` |  | `platforms.tizen.certificateProfile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.deploy
 
-**path**
-`renative.json/#/platforms.tizen.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.tizen.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizen.deploy.type
 
-**path**
-`renative.json/#/platforms.tizen.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.tizen.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -18163,10 +20613,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.tizen.description
 
-**path**
-`renative.json/#/platforms.tizen.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.tizen.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -18182,57 +20632,65 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.tizen.devServerHost
 
-**path**
-`renative.json/#/platforms.tizen.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizen.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.engine
 
-**path**
-`renative.json/#/platforms.tizen.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.tizen.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.entryFile
 
-**path**
-`renative.json/#/platforms.tizen.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.tizen.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.excludedPlugins
 
-**path**
-`renative.json/#/platforms.tizen.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.tizen.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -18263,15 +20721,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizen.ext
 
-**path**
-`renative.json/#/platforms.tizen.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.tizen.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -18289,57 +20749,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.tizen.id
 
-**path**
-`renative.json/#/platforms.tizen.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.tizen.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.ignoreLogs
 
-**path**
-`renative.json/#/platforms.tizen.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.tizen.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.tizen.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.tizen.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.includedFonts
 
-**path**
-`renative.json/#/platforms.tizen.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.tizen.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -18368,15 +20836,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.tizen.includedPermissions
 
-**path**
-`renative.json/#/platforms.tizen.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.tizen.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -18418,15 +20888,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.tizen.includedPlugins
 
-**path**
-`renative.json/#/platforms.tizen.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.tizen.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -18457,57 +20929,65 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizen.license
 
-**path**
-`renative.json/#/platforms.tizen.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.tizen.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.package
 
-**path**
-`renative.json/#/platforms.tizen.package`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `package` | `string` |  | `platforms.tizen.package` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.permissions
 
-**path**
-`renative.json/#/platforms.tizen.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.tizen.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.tizen.runtime
 
-**path**
-`renative.json/#/platforms.tizen.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.tizen.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -18525,29 +21005,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.tizen.splashScreen
 
-**path**
-`renative.json/#/platforms.tizen.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.tizen.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.timestampAssets
 
-**path**
-`renative.json/#/platforms.tizen.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.tizen.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -18571,15 +21055,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizen.title
 
-**path**
-`renative.json/#/platforms.tizen.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.tizen.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -18595,15 +21081,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.tizen.versionedAssets
 
-**path**
-`renative.json/#/platforms.tizen.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.tizen.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -18627,56 +21115,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizen.webpackConfig
 
-**path**
-`renative.json/#/platforms.tizen.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.tizen.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizen.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.tizen.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.tizen.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.tizen.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizen.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizen.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.tizen.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.tizen.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -18714,73 +21210,83 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.tizen.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.tizen.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.tizen.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ### platforms.tizenmobile
 
-**path**
-`renative.json/#/platforms.tizenmobile`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `tizenmobile` | `object` |  | `platforms.tizenmobile` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenmobile.appName
 
-**path**
-`renative.json/#/platforms.tizenmobile.appName`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appName` | `string` |  | `platforms.tizenmobile.appName` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.author
 
-**path**
-`renative.json/#/platforms.tizenmobile.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.tizenmobile.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.backgroundColor
 
-**path**
-`renative.json/#/platforms.tizenmobile.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.tizenmobile.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -18803,57 +21309,65 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.tizenmobile.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].appName
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].appName`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appName` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].appName` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.tizenmobile.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -18877,74 +21391,86 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.tizenmobile.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.tizenmobile.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].certificateProfile
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].certificateProfile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `certificateProfile` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].certificateProfile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.tizenmobile.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -18952,10 +21478,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.tizenmobile.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -18971,71 +21497,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].devServerHost
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.tizenmobile.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.tizenmobile.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -19066,15 +21602,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.tizenmobile.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -19092,57 +21630,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.tizenmobile.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.tizenmobile.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.tizenmobile.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -19171,15 +21717,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.tizenmobile.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -19221,15 +21769,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.tizenmobile.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -19260,57 +21810,65 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].package
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].package`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `package` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].package` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.tizenmobile.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.tizenmobile.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -19328,29 +21886,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.tizenmobile.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.tizenmobile.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -19374,15 +21936,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -19398,15 +21962,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.tizenmobile.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -19430,56 +21996,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.tizenmobile.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.tizenmobile.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.tizenmobile.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -19517,19 +22091,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.tizenmobile.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.tizenmobile.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -19538,69 +22116,79 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.tizenmobile.bundleAssets
 
-**path**
-`renative.json/#/platforms.tizenmobile.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.tizenmobile.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.bundleIsDev
 
-**path**
-`renative.json/#/platforms.tizenmobile.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.tizenmobile.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.certificateProfile
 
-**path**
-`renative.json/#/platforms.tizenmobile.certificateProfile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `certificateProfile` | `string` |  | `platforms.tizenmobile.certificateProfile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.deploy
 
-**path**
-`renative.json/#/platforms.tizenmobile.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.tizenmobile.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenmobile.deploy.type
 
-**path**
-`renative.json/#/platforms.tizenmobile.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.tizenmobile.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -19608,10 +22196,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.tizenmobile.description
 
-**path**
-`renative.json/#/platforms.tizenmobile.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.tizenmobile.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -19627,57 +22215,65 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.devServerHost
 
-**path**
-`renative.json/#/platforms.tizenmobile.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizenmobile.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.engine
 
-**path**
-`renative.json/#/platforms.tizenmobile.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.tizenmobile.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.entryFile
 
-**path**
-`renative.json/#/platforms.tizenmobile.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.tizenmobile.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.excludedPlugins
 
-**path**
-`renative.json/#/platforms.tizenmobile.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.tizenmobile.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -19708,15 +22304,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.ext
 
-**path**
-`renative.json/#/platforms.tizenmobile.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.tizenmobile.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -19734,57 +22332,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.id
 
-**path**
-`renative.json/#/platforms.tizenmobile.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.tizenmobile.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.ignoreLogs
 
-**path**
-`renative.json/#/platforms.tizenmobile.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.tizenmobile.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.tizenmobile.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.tizenmobile.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.includedFonts
 
-**path**
-`renative.json/#/platforms.tizenmobile.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.tizenmobile.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -19813,15 +22419,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.includedPermissions
 
-**path**
-`renative.json/#/platforms.tizenmobile.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.tizenmobile.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -19863,15 +22471,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.includedPlugins
 
-**path**
-`renative.json/#/platforms.tizenmobile.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.tizenmobile.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -19902,57 +22512,65 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.license
 
-**path**
-`renative.json/#/platforms.tizenmobile.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.tizenmobile.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.package
 
-**path**
-`renative.json/#/platforms.tizenmobile.package`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `package` | `string` |  | `platforms.tizenmobile.package` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.permissions
 
-**path**
-`renative.json/#/platforms.tizenmobile.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.tizenmobile.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.tizenmobile.runtime
 
-**path**
-`renative.json/#/platforms.tizenmobile.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.tizenmobile.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -19970,29 +22588,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.splashScreen
 
-**path**
-`renative.json/#/platforms.tizenmobile.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.tizenmobile.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.timestampAssets
 
-**path**
-`renative.json/#/platforms.tizenmobile.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.tizenmobile.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -20016,15 +22638,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.title
 
-**path**
-`renative.json/#/platforms.tizenmobile.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.tizenmobile.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -20040,15 +22664,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.versionedAssets
 
-**path**
-`renative.json/#/platforms.tizenmobile.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.tizenmobile.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -20072,56 +22698,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.webpackConfig
 
-**path**
-`renative.json/#/platforms.tizenmobile.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.tizenmobile.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenmobile.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.tizenmobile.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.tizenmobile.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.tizenmobile.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizenmobile.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenmobile.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.tizenmobile.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.tizenmobile.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -20159,73 +22793,83 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.tizenmobile.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.tizenmobile.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.tizenmobile.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ### platforms.tizenwatch
 
-**path**
-`renative.json/#/platforms.tizenwatch`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `tizenwatch` | `object` |  | `platforms.tizenwatch` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenwatch.appName
 
-**path**
-`renative.json/#/platforms.tizenwatch.appName`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appName` | `string` |  | `platforms.tizenwatch.appName` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.author
 
-**path**
-`renative.json/#/platforms.tizenwatch.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.tizenwatch.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.backgroundColor
 
-**path**
-`renative.json/#/platforms.tizenwatch.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.tizenwatch.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -20248,57 +22892,65 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.tizenwatch.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].appName
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].appName`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appName` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].appName` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.tizenwatch.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -20322,74 +22974,86 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.tizenwatch.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.tizenwatch.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].certificateProfile
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].certificateProfile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `certificateProfile` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].certificateProfile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.tizenwatch.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -20397,10 +23061,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.tizenwatch.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -20416,71 +23080,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].devServerHost
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.tizenwatch.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.tizenwatch.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -20511,15 +23185,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.tizenwatch.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -20537,57 +23213,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.tizenwatch.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.tizenwatch.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.tizenwatch.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -20616,15 +23300,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.tizenwatch.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -20666,15 +23352,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.tizenwatch.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -20705,57 +23393,65 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].package
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].package`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `package` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].package` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.tizenwatch.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.tizenwatch.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -20773,29 +23469,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.tizenwatch.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.tizenwatch.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -20819,15 +23519,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -20843,15 +23545,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.tizenwatch.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -20875,56 +23579,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.tizenwatch.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.tizenwatch.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.tizenwatch.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -20962,19 +23674,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.tizenwatch.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.tizenwatch.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -20983,69 +23699,79 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.tizenwatch.bundleAssets
 
-**path**
-`renative.json/#/platforms.tizenwatch.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.tizenwatch.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.bundleIsDev
 
-**path**
-`renative.json/#/platforms.tizenwatch.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.tizenwatch.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.certificateProfile
 
-**path**
-`renative.json/#/platforms.tizenwatch.certificateProfile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `certificateProfile` | `string` |  | `platforms.tizenwatch.certificateProfile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.deploy
 
-**path**
-`renative.json/#/platforms.tizenwatch.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.tizenwatch.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenwatch.deploy.type
 
-**path**
-`renative.json/#/platforms.tizenwatch.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.tizenwatch.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -21053,10 +23779,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.tizenwatch.description
 
-**path**
-`renative.json/#/platforms.tizenwatch.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.tizenwatch.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -21072,57 +23798,65 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.devServerHost
 
-**path**
-`renative.json/#/platforms.tizenwatch.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizenwatch.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.engine
 
-**path**
-`renative.json/#/platforms.tizenwatch.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.tizenwatch.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.entryFile
 
-**path**
-`renative.json/#/platforms.tizenwatch.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.tizenwatch.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.excludedPlugins
 
-**path**
-`renative.json/#/platforms.tizenwatch.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.tizenwatch.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -21153,15 +23887,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.ext
 
-**path**
-`renative.json/#/platforms.tizenwatch.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.tizenwatch.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -21179,57 +23915,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.id
 
-**path**
-`renative.json/#/platforms.tizenwatch.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.tizenwatch.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.ignoreLogs
 
-**path**
-`renative.json/#/platforms.tizenwatch.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.tizenwatch.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.tizenwatch.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.tizenwatch.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.includedFonts
 
-**path**
-`renative.json/#/platforms.tizenwatch.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.tizenwatch.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -21258,15 +24002,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.includedPermissions
 
-**path**
-`renative.json/#/platforms.tizenwatch.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.tizenwatch.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -21308,15 +24054,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.includedPlugins
 
-**path**
-`renative.json/#/platforms.tizenwatch.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.tizenwatch.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -21347,57 +24095,65 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.license
 
-**path**
-`renative.json/#/platforms.tizenwatch.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.tizenwatch.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.package
 
-**path**
-`renative.json/#/platforms.tizenwatch.package`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `package` | `string` |  | `platforms.tizenwatch.package` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.permissions
 
-**path**
-`renative.json/#/platforms.tizenwatch.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.tizenwatch.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.tizenwatch.runtime
 
-**path**
-`renative.json/#/platforms.tizenwatch.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.tizenwatch.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -21415,29 +24171,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.splashScreen
 
-**path**
-`renative.json/#/platforms.tizenwatch.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.tizenwatch.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.timestampAssets
 
-**path**
-`renative.json/#/platforms.tizenwatch.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.tizenwatch.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -21461,15 +24221,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.title
 
-**path**
-`renative.json/#/platforms.tizenwatch.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.tizenwatch.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -21485,15 +24247,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.versionedAssets
 
-**path**
-`renative.json/#/platforms.tizenwatch.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.tizenwatch.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -21517,56 +24281,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.webpackConfig
 
-**path**
-`renative.json/#/platforms.tizenwatch.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.tizenwatch.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tizenwatch.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.tizenwatch.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.tizenwatch.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.tizenwatch.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.tizenwatch.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tizenwatch.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.tizenwatch.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.tizenwatch.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -21604,174 +24376,200 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.tizenwatch.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.tizenwatch.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.tizenwatch.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ### platforms.tvos
 
-**path**
-`renative.json/#/platforms.tvos`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `tvos` | `object` |  | `platforms.tvos` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tvos.Podfile
 
-**path**
-`renative.json/#/platforms.tvos.Podfile`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `Podfile` | `object` |  | `platforms.tvos.Podfile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.appDelegateApplicationMethods
 
-**path**
-`renative.json/#/platforms.tvos.appDelegateApplicationMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateApplicationMethods` | `object` |  | `platforms.tvos.appDelegateApplicationMethods` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tvos.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
 
-**path**
-`renative.json/#/platforms.tvos.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFailToRegisterForRemoteNotificationsWithError` | `array` |  | `platforms.tvos.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.appDelegateApplicationMethods.didFinishLaunchingWithOptions
 
-**path**
-`renative.json/#/platforms.tvos.appDelegateApplicationMethods.didFinishLaunchingWithOptions`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFinishLaunchingWithOptions` | `array` |  | `platforms.tvos.appDelegateApplicationMethods.didFinishLaunchingWithOptions` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.appDelegateApplicationMethods.didReceive
 
-**path**
-`renative.json/#/platforms.tvos.appDelegateApplicationMethods.didReceive`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceive` | `array` |  | `platforms.tvos.appDelegateApplicationMethods.didReceive` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.appDelegateApplicationMethods.didReceiveRemoteNotification
 
-**path**
-`renative.json/#/platforms.tvos.appDelegateApplicationMethods.didReceiveRemoteNotification`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceiveRemoteNotification` | `array` |  | `platforms.tvos.appDelegateApplicationMethods.didReceiveRemoteNotification` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.appDelegateApplicationMethods.didRegister
 
-**path**
-`renative.json/#/platforms.tvos.appDelegateApplicationMethods.didRegister`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegister` | `array` |  | `platforms.tvos.appDelegateApplicationMethods.didRegister` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
 
-**path**
-`renative.json/#/platforms.tvos.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegisterForRemoteNotificationsWithDeviceToken` | `array` |  | `platforms.tvos.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.appDelegateApplicationMethods.open
 
-**path**
-`renative.json/#/platforms.tvos.appDelegateApplicationMethods.open`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `open` | `array` |  | `platforms.tvos.appDelegateApplicationMethods.open` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.appDelegateApplicationMethods.supportedInterfaceOrientationsFor
 
-**path**
-`renative.json/#/platforms.tvos.appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `supportedInterfaceOrientationsFor` | `array` |  | `platforms.tvos.appDelegateApplicationMethods.supportedInterfaceOrientationsFor` |
 
 
+
+
+
+---
 
 
 
@@ -21779,66 +24577,74 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.tvos.appDelegateImports
 
-**path**
-`renative.json/#/platforms.tvos.appDelegateImports`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateImports` | `array` |  | `platforms.tvos.appDelegateImports` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.appDelegateMethods
 
-**path**
-`renative.json/#/platforms.tvos.appDelegateMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateMethods` | `object` |  | `platforms.tvos.appDelegateMethods` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.appleId
 
-**path**
-`renative.json/#/platforms.tvos.appleId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appleId` | `string` |  | `platforms.tvos.appleId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.author
 
-**path**
-`renative.json/#/platforms.tvos.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.tvos.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.backgroundColor
 
-**path**
-`renative.json/#/platforms.tvos.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.tvos.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -21862,157 +24668,181 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.tvos.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tvos.buildSchemes.[object].Podfile
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].Podfile`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `Podfile` | `object` |  | `platforms.tvos.buildSchemes.[object].Podfile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateApplicationMethods` | `object` |  | `platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFailToRegisterForRemoteNotificationsWithError` | `array` |  | `platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFinishLaunchingWithOptions` | `array` |  | `platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didFinishLaunchingWithOptions` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didReceive
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didReceive`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceive` | `array` |  | `platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didReceive` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceiveRemoteNotification` | `array` |  | `platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didReceiveRemoteNotification` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didRegister
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didRegister`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegister` | `array` |  | `platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didRegister` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegisterForRemoteNotificationsWithDeviceToken` | `array` |  | `platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.open
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.open`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `open` | `array` |  | `platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.open` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `supportedInterfaceOrientationsFor` | `array` |  | `platforms.tvos.buildSchemes.[object].appDelegateApplicationMethods.supportedInterfaceOrientationsFor` |
 
 
+
+
+
+---
 
 
 
@@ -22020,66 +24850,74 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.tvos.buildSchemes.[object].appDelegateImports
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appDelegateImports`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateImports` | `array` |  | `platforms.tvos.buildSchemes.[object].appDelegateImports` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].appDelegateMethods
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appDelegateMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateMethods` | `object` |  | `platforms.tvos.buildSchemes.[object].appDelegateMethods` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].appleId
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].appleId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appleId` | `string` |  | `platforms.tvos.buildSchemes.[object].appleId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.tvos.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.tvos.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -22103,43 +24941,49 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.tvos.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.tvos.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].codeSignIdentity
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].codeSignIdentity`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `codeSignIdentity` | `string` |  | `platforms.tvos.buildSchemes.[object].codeSignIdentity` |
 
 Special property which tells Xcode how to build your project
 
@@ -22163,15 +25007,17 @@ Special property which tells Xcode how to build your project
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].commandLineArguments
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].commandLineArguments`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `commandLineArguments` | `array` |  | `platforms.tvos.buildSchemes.[object].commandLineArguments` |
 
 Allows you to pass launch arguments to active scheme
 
@@ -22190,32 +25036,38 @@ Allows you to pass launch arguments to active scheme
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.tvos.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tvos.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.tvos.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -22223,24 +25075,26 @@ Allows you to pass launch arguments to active scheme
 
 #### platforms.tvos.buildSchemes.[object].deploymentTarget
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].deploymentTarget`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploymentTarget` | `string` |  | `platforms.tvos.buildSchemes.[object].deploymentTarget` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.tvos.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -22256,71 +25110,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.tvos.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.tvos.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].entitlements
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].entitlements`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entitlements` | `object` |  | `platforms.tvos.buildSchemes.[object].entitlements` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.tvos.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.tvos.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -22351,130 +25215,150 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].exportOptions
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].exportOptions`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `exportOptions` | `object` |  | `platforms.tvos.buildSchemes.[object].exportOptions` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tvos.buildSchemes.[object].exportOptions.compileBitcode
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].exportOptions.compileBitcode`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileBitcode` | `boolean` |  | `platforms.tvos.buildSchemes.[object].exportOptions.compileBitcode` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].exportOptions.method
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].exportOptions.method`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `method` | `string` |  | `platforms.tvos.buildSchemes.[object].exportOptions.method` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].exportOptions.provisioningProfiles
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].exportOptions.provisioningProfiles`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningProfiles` | `object` |  | `platforms.tvos.buildSchemes.[object].exportOptions.provisioningProfiles` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].exportOptions.signingCertificate
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].exportOptions.signingCertificate`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingCertificate` | `string` |  | `platforms.tvos.buildSchemes.[object].exportOptions.signingCertificate` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].exportOptions.signingStyle
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].exportOptions.signingStyle`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingStyle` | `string` |  | `platforms.tvos.buildSchemes.[object].exportOptions.signingStyle` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].exportOptions.teamID
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].exportOptions.teamID`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamID` | `string` |  | `platforms.tvos.buildSchemes.[object].exportOptions.teamID` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].exportOptions.uploadBitcode
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].exportOptions.uploadBitcode`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `uploadBitcode` | `boolean` |  | `platforms.tvos.buildSchemes.[object].exportOptions.uploadBitcode` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].exportOptions.uploadSymbols
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].exportOptions.uploadSymbols`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `uploadSymbols` | `boolean` |  | `platforms.tvos.buildSchemes.[object].exportOptions.uploadSymbols` |
 
 
+
+
+
+---
 
 
 
@@ -22482,10 +25366,10 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 #### platforms.tvos.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.tvos.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -22503,71 +25387,81 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].firebaseId
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].firebaseId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `firebaseId` | `string` |  | `platforms.tvos.buildSchemes.[object].firebaseId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.tvos.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.tvos.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.tvos.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.tvos.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -22596,15 +25490,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.tvos.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -22646,15 +25542,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.tvos.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -22685,29 +25583,33 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.tvos.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].orientationSupport
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].orientationSupport`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `orientationSupport` | `object` |  | `platforms.tvos.buildSchemes.[object].orientationSupport` |
 
 
 
@@ -22736,32 +25638,38 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 #### platforms.tvos.buildSchemes.[object].orientationSupport.phone
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].orientationSupport.phone`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `phone` | `array` |  | `platforms.tvos.buildSchemes.[object].orientationSupport.phone` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].orientationSupport.tab
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].orientationSupport.tab`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `tab` | `array` |  | `platforms.tvos.buildSchemes.[object].orientationSupport.tab` |
 
 
+
+
+
+---
 
 
 
@@ -22769,94 +25677,106 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 #### platforms.tvos.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.tvos.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].plist
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].plist`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `plist` | `object` |  | `platforms.tvos.buildSchemes.[object].plist` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].provisionProfileSpecifier
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].provisionProfileSpecifier`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisionProfileSpecifier` | `string` |  | `platforms.tvos.buildSchemes.[object].provisionProfileSpecifier` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].provisioningProfiles
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].provisioningProfiles`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningProfiles` | `object` |  | `platforms.tvos.buildSchemes.[object].provisioningProfiles` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].provisioningStyle
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].provisioningStyle`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningStyle` | `string` |  | `platforms.tvos.buildSchemes.[object].provisioningStyle` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].runScheme
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].runScheme`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runScheme` | `string` |  | `platforms.tvos.buildSchemes.[object].runScheme` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.tvos.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -22874,57 +25794,65 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].scheme
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].scheme`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `scheme` | `string` |  | `platforms.tvos.buildSchemes.[object].scheme` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].sdk
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].sdk`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `sdk` | `string` |  | `platforms.tvos.buildSchemes.[object].sdk` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.tvos.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].systemCapabilities
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].systemCapabilities`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `systemCapabilities` | `object` |  | `platforms.tvos.buildSchemes.[object].systemCapabilities` |
 
 
 
@@ -22966,57 +25894,65 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].teamID
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].teamID`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamID` | `string` |  | `platforms.tvos.buildSchemes.[object].teamID` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].teamIdentifier
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].teamIdentifier`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamIdentifier` | `string` |  | `platforms.tvos.buildSchemes.[object].teamIdentifier` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].testFlightId
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].testFlightId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `testFlightId` | `string` |  | `platforms.tvos.buildSchemes.[object].testFlightId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.tvos.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -23040,15 +25976,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.tvos.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -23064,15 +26002,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.tvos.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -23096,19 +26036,23 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tvos.buildSchemes.[object].xcodeproj
 
-**path**
-`renative.json/#/platforms.tvos.buildSchemes.[object].xcodeproj`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `xcodeproj` | `object` |  | `platforms.tvos.buildSchemes.[object].xcodeproj` |
 
 
+
+
+
+---
 
 
 
@@ -23116,38 +26060,42 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 #### platforms.tvos.bundleAssets
 
-**path**
-`renative.json/#/platforms.tvos.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.tvos.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.bundleIsDev
 
-**path**
-`renative.json/#/platforms.tvos.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.tvos.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.codeSignIdentity
 
-**path**
-`renative.json/#/platforms.tvos.codeSignIdentity`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `codeSignIdentity` | `string` |  | `platforms.tvos.codeSignIdentity` |
 
 Special property which tells Xcode how to build your project
 
@@ -23171,15 +26119,17 @@ Special property which tells Xcode how to build your project
 
 
 
+---
+
 
 
 
 #### platforms.tvos.commandLineArguments
 
-**path**
-`renative.json/#/platforms.tvos.commandLineArguments`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `commandLineArguments` | `array` |  | `platforms.tvos.commandLineArguments` |
 
 Allows you to pass launch arguments to active scheme
 
@@ -23198,32 +26148,38 @@ Allows you to pass launch arguments to active scheme
 
 
 
+---
+
 
 
 
 #### platforms.tvos.deploy
 
-**path**
-`renative.json/#/platforms.tvos.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.tvos.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tvos.deploy.type
 
-**path**
-`renative.json/#/platforms.tvos.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.tvos.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -23231,24 +26187,26 @@ Allows you to pass launch arguments to active scheme
 
 #### platforms.tvos.deploymentTarget
 
-**path**
-`renative.json/#/platforms.tvos.deploymentTarget`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploymentTarget` | `string` |  | `platforms.tvos.deploymentTarget` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.description
 
-**path**
-`renative.json/#/platforms.tvos.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.tvos.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -23264,57 +26222,65 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.tvos.engine
 
-**path**
-`renative.json/#/platforms.tvos.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.tvos.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.entitlements
 
-**path**
-`renative.json/#/platforms.tvos.entitlements`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entitlements` | `object` |  | `platforms.tvos.entitlements` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.entryFile
 
-**path**
-`renative.json/#/platforms.tvos.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.tvos.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.excludedPlugins
 
-**path**
-`renative.json/#/platforms.tvos.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.tvos.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -23345,130 +26311,150 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tvos.exportOptions
 
-**path**
-`renative.json/#/platforms.tvos.exportOptions`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `exportOptions` | `object` |  | `platforms.tvos.exportOptions` |
 
 
+
+
+
+---
 
 
 
 #### platforms.tvos.exportOptions.compileBitcode
 
-**path**
-`renative.json/#/platforms.tvos.exportOptions.compileBitcode`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileBitcode` | `boolean` |  | `platforms.tvos.exportOptions.compileBitcode` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.exportOptions.method
 
-**path**
-`renative.json/#/platforms.tvos.exportOptions.method`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `method` | `string` |  | `platforms.tvos.exportOptions.method` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.exportOptions.provisioningProfiles
 
-**path**
-`renative.json/#/platforms.tvos.exportOptions.provisioningProfiles`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningProfiles` | `object` |  | `platforms.tvos.exportOptions.provisioningProfiles` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.exportOptions.signingCertificate
 
-**path**
-`renative.json/#/platforms.tvos.exportOptions.signingCertificate`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingCertificate` | `string` |  | `platforms.tvos.exportOptions.signingCertificate` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.exportOptions.signingStyle
 
-**path**
-`renative.json/#/platforms.tvos.exportOptions.signingStyle`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingStyle` | `string` |  | `platforms.tvos.exportOptions.signingStyle` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.exportOptions.teamID
 
-**path**
-`renative.json/#/platforms.tvos.exportOptions.teamID`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamID` | `string` |  | `platforms.tvos.exportOptions.teamID` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.exportOptions.uploadBitcode
 
-**path**
-`renative.json/#/platforms.tvos.exportOptions.uploadBitcode`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `uploadBitcode` | `boolean` |  | `platforms.tvos.exportOptions.uploadBitcode` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.exportOptions.uploadSymbols
 
-**path**
-`renative.json/#/platforms.tvos.exportOptions.uploadSymbols`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `uploadSymbols` | `boolean` |  | `platforms.tvos.exportOptions.uploadSymbols` |
 
 
+
+
+
+---
 
 
 
@@ -23476,10 +26462,10 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 #### platforms.tvos.ext
 
-**path**
-`renative.json/#/platforms.tvos.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.tvos.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -23497,71 +26483,81 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.tvos.firebaseId
 
-**path**
-`renative.json/#/platforms.tvos.firebaseId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `firebaseId` | `string` |  | `platforms.tvos.firebaseId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.id
 
-**path**
-`renative.json/#/platforms.tvos.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.tvos.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.ignoreLogs
 
-**path**
-`renative.json/#/platforms.tvos.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.tvos.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.tvos.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.tvos.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.includedFonts
 
-**path**
-`renative.json/#/platforms.tvos.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.tvos.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -23590,15 +26586,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.tvos.includedPermissions
 
-**path**
-`renative.json/#/platforms.tvos.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.tvos.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -23640,15 +26638,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.tvos.includedPlugins
 
-**path**
-`renative.json/#/platforms.tvos.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.tvos.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -23679,29 +26679,33 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.tvos.license
 
-**path**
-`renative.json/#/platforms.tvos.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.tvos.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.orientationSupport
 
-**path**
-`renative.json/#/platforms.tvos.orientationSupport`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `orientationSupport` | `object` |  | `platforms.tvos.orientationSupport` |
 
 
 
@@ -23730,32 +26734,38 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 #### platforms.tvos.orientationSupport.phone
 
-**path**
-`renative.json/#/platforms.tvos.orientationSupport.phone`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `phone` | `array` |  | `platforms.tvos.orientationSupport.phone` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.orientationSupport.tab
 
-**path**
-`renative.json/#/platforms.tvos.orientationSupport.tab`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `tab` | `array` |  | `platforms.tvos.orientationSupport.tab` |
 
 
+
+
+
+---
 
 
 
@@ -23763,94 +26773,106 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 #### platforms.tvos.permissions
 
-**path**
-`renative.json/#/platforms.tvos.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.tvos.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.tvos.plist
 
-**path**
-`renative.json/#/platforms.tvos.plist`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `plist` | `object` |  | `platforms.tvos.plist` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.provisionProfileSpecifier
 
-**path**
-`renative.json/#/platforms.tvos.provisionProfileSpecifier`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisionProfileSpecifier` | `string` |  | `platforms.tvos.provisionProfileSpecifier` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.provisioningProfiles
 
-**path**
-`renative.json/#/platforms.tvos.provisioningProfiles`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningProfiles` | `object` |  | `platforms.tvos.provisioningProfiles` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.provisioningStyle
 
-**path**
-`renative.json/#/platforms.tvos.provisioningStyle`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `provisioningStyle` | `string` |  | `platforms.tvos.provisioningStyle` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.runScheme
 
-**path**
-`renative.json/#/platforms.tvos.runScheme`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runScheme` | `string` |  | `platforms.tvos.runScheme` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.runtime
 
-**path**
-`renative.json/#/platforms.tvos.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.tvos.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -23868,57 +26890,65 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.tvos.scheme
 
-**path**
-`renative.json/#/platforms.tvos.scheme`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `scheme` | `string` |  | `platforms.tvos.scheme` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.sdk
 
-**path**
-`renative.json/#/platforms.tvos.sdk`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `sdk` | `string` |  | `platforms.tvos.sdk` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.splashScreen
 
-**path**
-`renative.json/#/platforms.tvos.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.tvos.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.systemCapabilities
 
-**path**
-`renative.json/#/platforms.tvos.systemCapabilities`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `systemCapabilities` | `object` |  | `platforms.tvos.systemCapabilities` |
 
 
 
@@ -23960,57 +26990,65 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.tvos.teamID
 
-**path**
-`renative.json/#/platforms.tvos.teamID`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamID` | `string` |  | `platforms.tvos.teamID` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.teamIdentifier
 
-**path**
-`renative.json/#/platforms.tvos.teamIdentifier`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `teamIdentifier` | `string` |  | `platforms.tvos.teamIdentifier` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.testFlightId
 
-**path**
-`renative.json/#/platforms.tvos.testFlightId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `testFlightId` | `string` |  | `platforms.tvos.testFlightId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.tvos.timestampAssets
 
-**path**
-`renative.json/#/platforms.tvos.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.tvos.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -24034,15 +27072,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tvos.title
 
-**path**
-`renative.json/#/platforms.tvos.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.tvos.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -24058,15 +27098,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.tvos.versionedAssets
 
-**path**
-`renative.json/#/platforms.tvos.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.tvos.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -24090,58 +27132,66 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.tvos.xcodeproj
 
-**path**
-`renative.json/#/platforms.tvos.xcodeproj`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `xcodeproj` | `object` |  | `platforms.tvos.xcodeproj` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### platforms.web
 
-**path**
-`renative.json/#/platforms.web`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `web` | `object` |  | `platforms.web` |
 
 
+
+
+
+---
 
 
 
 #### platforms.web.author
 
-**path**
-`renative.json/#/platforms.web.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.web.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.backgroundColor
 
-**path**
-`renative.json/#/platforms.web.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.web.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -24164,43 +27214,49 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+
+---
 
 
 
 
 #### platforms.web.buildSchemes
 
-**path**
-`renative.json/#/platforms.web.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.web.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.web.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.web.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.web.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -24224,60 +27280,70 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.web.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.web.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.web.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.web.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.web.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -24285,10 +27351,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.web.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.web.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -24304,85 +27370,97 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].devServerHost
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.web.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.web.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.web.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.web.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].environment
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].environment`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `environment` | `string` |  | `platforms.web.buildSchemes.[object].environment` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.web.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -24413,15 +27491,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].exportDir
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].exportDir`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `exportDir` | `string` |  | `platforms.web.buildSchemes.[object].exportDir` |
 
 Custom export directory used by nextjs equivalent to "npx next export --outdir <exportDir>". Use relative paths
 
@@ -24445,15 +27525,17 @@ Custom export directory used by nextjs equivalent to "npx next export --outdir <
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.web.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -24471,57 +27553,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.web.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.web.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.web.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.web.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -24550,15 +27640,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.web.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -24600,15 +27692,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.web.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -24639,29 +27733,33 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.web.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].outputDir
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].outputDir`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `outputDir` | `string` |  | `platforms.web.buildSchemes.[object].outputDir` |
 
 Custom output directory used by nextjs equivalent to "npx next build" with custom outputDir. Use relative paths
 
@@ -24685,15 +27783,17 @@ Custom output directory used by nextjs equivalent to "npx next build" with custo
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].pagesDir
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].pagesDir`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `pagesDir` | `string` |  | `platforms.web.buildSchemes.[object].pagesDir` |
 
 Custom pages directory used by nextjs. Use relative paths
 
@@ -24709,29 +27809,33 @@ Custom pages directory used by nextjs. Use relative paths
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.web.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.web.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -24749,29 +27853,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.web.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.web.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -24795,15 +27903,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.web.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -24819,15 +27929,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.web.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -24851,56 +27963,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.web.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.web.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.web.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.web.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.web.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -24938,19 +28058,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.web.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.web.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.web.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -24959,55 +28083,63 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.web.bundleAssets
 
-**path**
-`renative.json/#/platforms.web.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.web.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.bundleIsDev
 
-**path**
-`renative.json/#/platforms.web.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.web.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.deploy
 
-**path**
-`renative.json/#/platforms.web.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.web.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.web.deploy.type
 
-**path**
-`renative.json/#/platforms.web.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.web.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -25015,10 +28147,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.web.description
 
-**path**
-`renative.json/#/platforms.web.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.web.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -25034,71 +28166,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.web.devServerHost
 
-**path**
-`renative.json/#/platforms.web.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.web.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.engine
 
-**path**
-`renative.json/#/platforms.web.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.web.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.entryFile
 
-**path**
-`renative.json/#/platforms.web.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.web.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.environment
 
-**path**
-`renative.json/#/platforms.web.environment`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `environment` | `string` |  | `platforms.web.environment` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.excludedPlugins
 
-**path**
-`renative.json/#/platforms.web.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.web.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -25129,15 +28271,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.web.exportDir
 
-**path**
-`renative.json/#/platforms.web.exportDir`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `exportDir` | `string` |  | `platforms.web.exportDir` |
 
 Custom export directory used by nextjs equivalent to "npx next export --outdir <exportDir>". Use relative paths
 
@@ -25161,15 +28305,17 @@ Custom export directory used by nextjs equivalent to "npx next export --outdir <
 
 
 
+---
+
 
 
 
 #### platforms.web.ext
 
-**path**
-`renative.json/#/platforms.web.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.web.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -25187,57 +28333,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.web.id
 
-**path**
-`renative.json/#/platforms.web.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.web.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.ignoreLogs
 
-**path**
-`renative.json/#/platforms.web.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.web.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.web.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.web.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.includedFonts
 
-**path**
-`renative.json/#/platforms.web.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.web.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -25266,15 +28420,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.web.includedPermissions
 
-**path**
-`renative.json/#/platforms.web.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.web.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -25316,15 +28472,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.web.includedPlugins
 
-**path**
-`renative.json/#/platforms.web.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.web.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -25355,29 +28513,33 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.web.license
 
-**path**
-`renative.json/#/platforms.web.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.web.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.outputDir
 
-**path**
-`renative.json/#/platforms.web.outputDir`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `outputDir` | `string` |  | `platforms.web.outputDir` |
 
 Custom output directory used by nextjs equivalent to "npx next build" with custom outputDir. Use relative paths
 
@@ -25401,15 +28563,17 @@ Custom output directory used by nextjs equivalent to "npx next build" with custo
 
 
 
+---
+
 
 
 
 #### platforms.web.pagesDir
 
-**path**
-`renative.json/#/platforms.web.pagesDir`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `pagesDir` | `string` |  | `platforms.web.pagesDir` |
 
 Custom pages directory used by nextjs. Use relative paths
 
@@ -25425,29 +28589,33 @@ Custom pages directory used by nextjs. Use relative paths
 
 
 
+---
+
 
 
 
 #### platforms.web.permissions
 
-**path**
-`renative.json/#/platforms.web.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.web.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.web.runtime
 
-**path**
-`renative.json/#/platforms.web.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.web.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -25465,29 +28633,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.web.splashScreen
 
-**path**
-`renative.json/#/platforms.web.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.web.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.timestampAssets
 
-**path**
-`renative.json/#/platforms.web.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.web.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -25511,15 +28683,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.web.title
 
-**path**
-`renative.json/#/platforms.web.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.web.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -25535,15 +28709,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.web.versionedAssets
 
-**path**
-`renative.json/#/platforms.web.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.web.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -25567,56 +28743,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.web.webpackConfig
 
-**path**
-`renative.json/#/platforms.web.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.web.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.web.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.web.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.web.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.web.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.web.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.web.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.web.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.web.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -25654,59 +28838,67 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.web.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.web.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.web.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ### platforms.webos
 
-**path**
-`renative.json/#/platforms.webos`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webos` | `object` |  | `platforms.webos` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webos.author
 
-**path**
-`renative.json/#/platforms.webos.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.webos.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.backgroundColor
 
-**path**
-`renative.json/#/platforms.webos.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.webos.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -25729,43 +28921,49 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.webos.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webos.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.webos.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.webos.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -25789,60 +28987,70 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.webos.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.webos.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.webos.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webos.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.webos.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -25850,10 +29058,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.webos.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.webos.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -25869,71 +29077,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].devServerHost
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.webos.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.webos.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.webos.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.webos.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.webos.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -25964,15 +29182,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.webos.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -25990,57 +29210,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.webos.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.webos.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.webos.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.webos.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -26069,15 +29297,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.webos.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -26119,15 +29349,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.webos.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -26158,43 +29390,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.webos.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.webos.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.webos.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -26212,29 +29450,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.webos.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.webos.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -26258,15 +29500,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.webos.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -26282,15 +29526,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.webos.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -26314,56 +29560,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.webos.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webos.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.webos.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.webos.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.webos.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -26401,19 +29655,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.webos.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.webos.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.webos.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -26422,55 +29680,63 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.webos.bundleAssets
 
-**path**
-`renative.json/#/platforms.webos.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.webos.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.bundleIsDev
 
-**path**
-`renative.json/#/platforms.webos.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.webos.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.deploy
 
-**path**
-`renative.json/#/platforms.webos.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.webos.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webos.deploy.type
 
-**path**
-`renative.json/#/platforms.webos.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.webos.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -26478,10 +29744,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.webos.description
 
-**path**
-`renative.json/#/platforms.webos.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.webos.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -26497,57 +29763,65 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.webos.devServerHost
 
-**path**
-`renative.json/#/platforms.webos.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.webos.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.engine
 
-**path**
-`renative.json/#/platforms.webos.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.webos.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.entryFile
 
-**path**
-`renative.json/#/platforms.webos.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.webos.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.excludedPlugins
 
-**path**
-`renative.json/#/platforms.webos.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.webos.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -26578,15 +29852,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.webos.ext
 
-**path**
-`renative.json/#/platforms.webos.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.webos.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -26604,57 +29880,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.webos.id
 
-**path**
-`renative.json/#/platforms.webos.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.webos.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.ignoreLogs
 
-**path**
-`renative.json/#/platforms.webos.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.webos.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.webos.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.webos.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.includedFonts
 
-**path**
-`renative.json/#/platforms.webos.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.webos.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -26683,15 +29967,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.webos.includedPermissions
 
-**path**
-`renative.json/#/platforms.webos.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.webos.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -26733,15 +30019,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.webos.includedPlugins
 
-**path**
-`renative.json/#/platforms.webos.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.webos.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -26772,43 +30060,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.webos.license
 
-**path**
-`renative.json/#/platforms.webos.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.webos.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.permissions
 
-**path**
-`renative.json/#/platforms.webos.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.webos.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.webos.runtime
 
-**path**
-`renative.json/#/platforms.webos.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.webos.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -26826,29 +30120,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.webos.splashScreen
 
-**path**
-`renative.json/#/platforms.webos.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.webos.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.timestampAssets
 
-**path**
-`renative.json/#/platforms.webos.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.webos.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -26872,15 +30170,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.webos.title
 
-**path**
-`renative.json/#/platforms.webos.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.webos.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -26896,15 +30196,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.webos.versionedAssets
 
-**path**
-`renative.json/#/platforms.webos.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.webos.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -26928,56 +30230,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.webos.webpackConfig
 
-**path**
-`renative.json/#/platforms.webos.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.webos.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webos.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.webos.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.webos.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.webos.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.webos.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webos.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.webos.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.webos.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -27015,59 +30325,67 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.webos.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.webos.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.webos.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ### platforms.webtv
 
-**path**
-`renative.json/#/platforms.webtv`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webtv` | `object` |  | `platforms.webtv` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webtv.author
 
-**path**
-`renative.json/#/platforms.webtv.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.webtv.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.backgroundColor
 
-**path**
-`renative.json/#/platforms.webtv.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.webtv.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -27090,43 +30408,49 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.webtv.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webtv.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.webtv.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.webtv.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -27150,60 +30474,70 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.webtv.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.webtv.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.webtv.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webtv.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.webtv.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -27211,10 +30545,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.webtv.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.webtv.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -27230,85 +30564,97 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].devServerHost
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.webtv.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.webtv.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.webtv.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.webtv.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].environment
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].environment`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `environment` | `string` |  | `platforms.webtv.buildSchemes.[object].environment` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.webtv.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -27339,15 +30685,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.webtv.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -27365,57 +30713,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.webtv.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.webtv.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.webtv.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.webtv.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -27444,15 +30800,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.webtv.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -27494,15 +30852,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.webtv.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -27533,57 +30893,65 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.webtv.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].pagesDir
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].pagesDir`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `pagesDir` | `string` |  | `platforms.webtv.buildSchemes.[object].pagesDir` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.webtv.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.webtv.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -27601,29 +30969,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.webtv.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.webtv.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -27647,15 +31019,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.webtv.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -27671,15 +31045,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.webtv.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -27703,56 +31079,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.webtv.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webtv.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.webtv.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.webtv.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.webtv.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -27790,19 +31174,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.webtv.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.webtv.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.webtv.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -27811,55 +31199,63 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.webtv.bundleAssets
 
-**path**
-`renative.json/#/platforms.webtv.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.webtv.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.bundleIsDev
 
-**path**
-`renative.json/#/platforms.webtv.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.webtv.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.deploy
 
-**path**
-`renative.json/#/platforms.webtv.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.webtv.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webtv.deploy.type
 
-**path**
-`renative.json/#/platforms.webtv.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.webtv.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -27867,10 +31263,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.webtv.description
 
-**path**
-`renative.json/#/platforms.webtv.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.webtv.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -27886,71 +31282,81 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.webtv.devServerHost
 
-**path**
-`renative.json/#/platforms.webtv.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.webtv.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.engine
 
-**path**
-`renative.json/#/platforms.webtv.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.webtv.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.entryFile
 
-**path**
-`renative.json/#/platforms.webtv.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.webtv.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.environment
 
-**path**
-`renative.json/#/platforms.webtv.environment`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `environment` | `string` |  | `platforms.webtv.environment` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.excludedPlugins
 
-**path**
-`renative.json/#/platforms.webtv.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.webtv.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -27981,15 +31387,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.webtv.ext
 
-**path**
-`renative.json/#/platforms.webtv.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.webtv.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -28007,57 +31415,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.webtv.id
 
-**path**
-`renative.json/#/platforms.webtv.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.webtv.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.ignoreLogs
 
-**path**
-`renative.json/#/platforms.webtv.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.webtv.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.webtv.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.webtv.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.includedFonts
 
-**path**
-`renative.json/#/platforms.webtv.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.webtv.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -28086,15 +31502,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.webtv.includedPermissions
 
-**path**
-`renative.json/#/platforms.webtv.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.webtv.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -28136,15 +31554,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.webtv.includedPlugins
 
-**path**
-`renative.json/#/platforms.webtv.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.webtv.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -28175,57 +31595,65 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.webtv.license
 
-**path**
-`renative.json/#/platforms.webtv.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.webtv.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.pagesDir
 
-**path**
-`renative.json/#/platforms.webtv.pagesDir`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `pagesDir` | `string` |  | `platforms.webtv.pagesDir` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.permissions
 
-**path**
-`renative.json/#/platforms.webtv.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.webtv.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.webtv.runtime
 
-**path**
-`renative.json/#/platforms.webtv.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.webtv.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -28243,29 +31671,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.webtv.splashScreen
 
-**path**
-`renative.json/#/platforms.webtv.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.webtv.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.timestampAssets
 
-**path**
-`renative.json/#/platforms.webtv.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.webtv.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -28289,15 +31721,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.webtv.title
 
-**path**
-`renative.json/#/platforms.webtv.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.webtv.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -28313,15 +31747,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.webtv.versionedAssets
 
-**path**
-`renative.json/#/platforms.webtv.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.webtv.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -28345,56 +31781,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.webtv.webpackConfig
 
-**path**
-`renative.json/#/platforms.webtv.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.webtv.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.webtv.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.webtv.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.webtv.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.webtv.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.webtv.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.webtv.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.webtv.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.webtv.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -28432,45 +31876,51 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.webtv.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.webtv.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.webtv.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ### platforms.windows
 
-**path**
-`renative.json/#/platforms.windows`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `windows` | `object` |  | `platforms.windows` |
 
 
+
+
+
+---
 
 
 
 #### platforms.windows.BrowserWindow
 
-**path**
-`renative.json/#/platforms.windows.BrowserWindow`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BrowserWindow` | `object` |  | `platforms.windows.BrowserWindow` |
 
 Allows you to configure electron wrapper app window
 
@@ -28492,28 +31942,32 @@ Allows you to configure electron wrapper app window
 
 
 
+---
+
 
 
 #### platforms.windows.BrowserWindow.height
 
-**path**
-`renative.json/#/platforms.windows.BrowserWindow.height`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `height` | `integer` |  | `platforms.windows.BrowserWindow.height` |
 
 Default height of electron app
 
 
+
+---
 
 
 
 
 #### platforms.windows.BrowserWindow.webPreferences
 
-**path**
-`renative.json/#/platforms.windows.BrowserWindow.webPreferences`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webPreferences` | `object` |  | `platforms.windows.BrowserWindow.webPreferences` |
 
 Extra web preferences of electron app
 
@@ -28531,19 +31985,23 @@ Extra web preferences of electron app
 
 
 
+---
+
 
 
 
 #### platforms.windows.BrowserWindow.width
 
-**path**
-`renative.json/#/platforms.windows.BrowserWindow.width`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `width` | `integer` |  | `platforms.windows.BrowserWindow.width` |
 
 Default width of electron app
 
 
+
+---
 
 
 
@@ -28551,38 +32009,42 @@ Default width of electron app
 
 #### platforms.windows.appleId
 
-**path**
-`renative.json/#/platforms.windows.appleId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appleId` | `string` |  | `platforms.windows.appleId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.author
 
-**path**
-`renative.json/#/platforms.windows.author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.windows.author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.backgroundColor
 
-**path**
-`renative.json/#/platforms.windows.backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.windows.backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -28606,28 +32068,32 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.windows.buildSchemes` |
 
 
+
+
+
+---
 
 
 
 #### platforms.windows.buildSchemes.[object].BrowserWindow
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].BrowserWindow`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BrowserWindow` | `object` |  | `platforms.windows.buildSchemes.[object].BrowserWindow` |
 
 Allows you to configure electron wrapper app window
 
@@ -28649,28 +32115,32 @@ Allows you to configure electron wrapper app window
 
 
 
+---
+
 
 
 #### platforms.windows.buildSchemes.[object].BrowserWindow.height
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].BrowserWindow.height`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `height` | `integer` |  | `platforms.windows.buildSchemes.[object].BrowserWindow.height` |
 
 Default height of electron app
 
 
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].BrowserWindow.webPreferences
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].BrowserWindow.webPreferences`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webPreferences` | `object` |  | `platforms.windows.buildSchemes.[object].BrowserWindow.webPreferences` |
 
 Extra web preferences of electron app
 
@@ -28688,19 +32158,23 @@ Extra web preferences of electron app
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].BrowserWindow.width
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].BrowserWindow.width`
 
-**type** `integer`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `width` | `integer` |  | `platforms.windows.buildSchemes.[object].BrowserWindow.width` |
 
 Default width of electron app
 
 
+
+---
 
 
 
@@ -28708,38 +32182,42 @@ Default width of electron app
 
 #### platforms.windows.buildSchemes.[object].appleId
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].appleId`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appleId` | `string` |  | `platforms.windows.buildSchemes.[object].appleId` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].author
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].author`
 
-**type** `object,string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.windows.buildSchemes.[object].author` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].backgroundColor
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].backgroundColor`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.windows.buildSchemes.[object].backgroundColor` |
 
 Defines root view backgroundColor for all platforms in HEX format
 
@@ -28763,60 +32241,70 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].bundleAssets
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.windows.buildSchemes.[object].bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].bundleIsDev
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.windows.buildSchemes.[object].bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].deploy
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.windows.buildSchemes.[object].deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.windows.buildSchemes.[object].deploy.type
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.windows.buildSchemes.[object].deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -28824,10 +32312,10 @@ Defines root view backgroundColor for all platforms in HEX format
 
 #### platforms.windows.buildSchemes.[object].description
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.windows.buildSchemes.[object].description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -28843,15 +32331,17 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].electronConfig
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].electronConfig`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `electronConfig` | `object` |  | `platforms.windows.buildSchemes.[object].electronConfig` |
 
 Allows you to configure electron app as per https://www.electron.build/
 
@@ -28883,71 +32373,81 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].enabled
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.windows.buildSchemes.[object].enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].engine
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.windows.buildSchemes.[object].engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].entryFile
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.windows.buildSchemes.[object].entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].environment
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].environment`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `environment` | `string` |  | `platforms.windows.buildSchemes.[object].environment` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].excludedPlugins
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.windows.buildSchemes.[object].excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -28978,15 +32478,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].ext
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.windows.buildSchemes.[object].ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -29004,57 +32506,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].id
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.windows.buildSchemes.[object].id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].ignoreLogs
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.windows.buildSchemes.[object].ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].ignoreWarnings
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.windows.buildSchemes.[object].ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].includedFonts
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.windows.buildSchemes.[object].includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -29083,15 +32593,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].includedPermissions
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.windows.buildSchemes.[object].includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -29133,15 +32645,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].includedPlugins
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.windows.buildSchemes.[object].includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -29172,43 +32686,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].license
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.windows.buildSchemes.[object].license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].permissions
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.windows.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].runtime
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.windows.buildSchemes.[object].runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -29226,29 +32746,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].splashScreen
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.windows.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].timestampAssets
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.windows.buildSchemes.[object].timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -29272,15 +32796,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].title
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.windows.buildSchemes.[object].title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -29296,15 +32822,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].versionedAssets
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.windows.buildSchemes.[object].versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -29328,56 +32856,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].webpackConfig
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.windows.buildSchemes.[object].webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.windows.buildSchemes.[object].webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.windows.buildSchemes.[object].webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.windows.buildSchemes.[object].webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.buildSchemes.[object].webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.windows.buildSchemes.[object].webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -29415,19 +32951,23 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.windows.buildSchemes.[object].webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.windows.buildSchemes.[object].webpackConfig.metaTags`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.windows.buildSchemes.[object].webpackConfig.metaTags` |
 
 
+
+
+
+---
 
 
 
@@ -29436,55 +32976,63 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.windows.bundleAssets
 
-**path**
-`renative.json/#/platforms.windows.bundleAssets`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.windows.bundleAssets` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.bundleIsDev
 
-**path**
-`renative.json/#/platforms.windows.bundleIsDev`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.windows.bundleIsDev` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.deploy
 
-**path**
-`renative.json/#/platforms.windows.deploy`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.windows.deploy` |
 
 
+
+
+
+---
 
 
 
 #### platforms.windows.deploy.type
 
-**path**
-`renative.json/#/platforms.windows.deploy.type`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.windows.deploy.type` |
 
 
+
+
+
+---
 
 
 
@@ -29492,10 +33040,10 @@ Allows you to directly extend/override webpack config of your current platform
 
 #### platforms.windows.description
 
-**path**
-`renative.json/#/platforms.windows.description`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.windows.description` |
 
 General description of your app. This prop will be injected to actual projects where description field is applicable
 
@@ -29511,15 +33059,17 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+---
+
 
 
 
 #### platforms.windows.electronConfig
 
-**path**
-`renative.json/#/platforms.windows.electronConfig`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `electronConfig` | `object` |  | `platforms.windows.electronConfig` |
 
 Allows you to configure electron app as per https://www.electron.build/
 
@@ -29551,57 +33101,65 @@ Allows you to configure electron app as per https://www.electron.build/
 
 
 
+---
+
 
 
 
 #### platforms.windows.engine
 
-**path**
-`renative.json/#/platforms.windows.engine`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.windows.engine` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.entryFile
 
-**path**
-`renative.json/#/platforms.windows.entryFile`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.windows.entryFile` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.environment
 
-**path**
-`renative.json/#/platforms.windows.environment`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `environment` | `string` |  | `platforms.windows.environment` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.excludedPlugins
 
-**path**
-`renative.json/#/platforms.windows.excludedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.windows.excludedPlugins` |
 
 Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -29632,15 +33190,17 @@ NOTE: excludedPlugins is evaluated after includedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.windows.ext
 
-**path**
-`renative.json/#/platforms.windows.ext`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.windows.ext` |
 
 Object ysed to extend your renative with custom props. This allows renative json schema to be validated
 
@@ -29658,57 +33218,65 @@ Object ysed to extend your renative with custom props. This allows renative json
 
 
 
+---
+
 
 
 
 #### platforms.windows.id
 
-**path**
-`renative.json/#/platforms.windows.id`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.windows.id` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.ignoreLogs
 
-**path**
-`renative.json/#/platforms.windows.ignoreLogs`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.windows.ignoreLogs` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.ignoreWarnings
 
-**path**
-`renative.json/#/platforms.windows.ignoreWarnings`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.windows.ignoreWarnings` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.includedFonts
 
-**path**
-`renative.json/#/platforms.windows.includedFonts`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.windows.includedFonts` |
 
 Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
 
@@ -29737,15 +33305,17 @@ Array of fonts you want to include in specific app or scheme. Should use exact f
 
 
 
+---
+
 
 
 
 #### platforms.windows.includedPermissions
 
-**path**
-`renative.json/#/platforms.windows.includedPermissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.windows.includedPermissions` |
 
 Allows you to include specific permissions by their KEY defined in `permissions` object
 
@@ -29787,15 +33357,17 @@ Allows you to include specific permissions by their KEY defined in `permissions`
 
 
 
+---
+
 
 
 
 #### platforms.windows.includedPlugins
 
-**path**
-`renative.json/#/platforms.windows.includedPlugins`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.windows.includedPlugins` |
 
 Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
 
@@ -29826,43 +33398,49 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+---
+
 
 
 
 #### platforms.windows.license
 
-**path**
-`renative.json/#/platforms.windows.license`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.windows.license` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.permissions
 
-**path**
-`renative.json/#/platforms.windows.permissions`
 
-**type** `array`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.windows.permissions` |
 
 > DEPRECATED in favor of includedPermissions
 
 
+
+---
 
 
 
 
 #### platforms.windows.runtime
 
-**path**
-`renative.json/#/platforms.windows.runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.windows.runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -29880,29 +33458,33 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+---
+
 
 
 
 #### platforms.windows.splashScreen
 
-**path**
-`renative.json/#/platforms.windows.splashScreen`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.windows.splashScreen` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.timestampAssets
 
-**path**
-`renative.json/#/platforms.windows.timestampAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.windows.timestampAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
 
@@ -29926,15 +33508,17 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.windows.title
 
-**path**
-`renative.json/#/platforms.windows.title`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.windows.title` |
 
 Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
 
@@ -29950,15 +33534,17 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+---
+
 
 
 
 #### platforms.windows.versionedAssets
 
-**path**
-`renative.json/#/platforms.windows.versionedAssets`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.windows.versionedAssets` |
 
 If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
 
@@ -29982,56 +33568,64 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+---
+
 
 
 
 #### platforms.windows.webpackConfig
 
-**path**
-`renative.json/#/platforms.windows.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.windows.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 #### platforms.windows.webpackConfig.customScripts
 
-**path**
-`renative.json/#/platforms.windows.webpackConfig.customScripts`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.windows.webpackConfig.customScripts` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.webpackConfig.devServerHost
 
-**path**
-`renative.json/#/platforms.windows.webpackConfig.devServerHost`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.windows.webpackConfig.devServerHost` |
 
 
+
+
+
+---
 
 
 
 
 #### platforms.windows.webpackConfig.extend
 
-**path**
-`renative.json/#/platforms.windows.webpackConfig.extend`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.windows.webpackConfig.extend` |
 
 Allows you to directly extend/override webpack config of your current platform
 
@@ -30069,52 +33663,58 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+---
+
 
 
 
 #### platforms.windows.webpackConfig.metaTags
 
-**path**
-`renative.json/#/platforms.windows.webpackConfig.metaTags`
 
-**type** `object`
-
-
-
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.windows.webpackConfig.metaTags` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
+
+
+
 ## pluginTemplates
 
-**path**
-`renative.json/#/pluginTemplates`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `pluginTemplates` | `object` |  | `pluginTemplates` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## plugins
 
-**path**
-`renative.json/#/plugins`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `plugins` | `object` |  | `plugins` |
 
 Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config
 
@@ -30138,28 +33738,32 @@ Define all plugins available in your project. you can then use `includedPlugins`
 
 
 
+---
+
+
+
+
+### plugins.[object].android
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `android` | `object` |  | `plugins.[object].android` |
+
+
+
 
 
 ---
-### plugins.[object].android
-
-**path**
-`renative.json/#/plugins.[object].android`
-
-**type** `object`
-
-
-
-
 
 
 
 #### plugins.[object].android.AndroidManifest
 
-**path**
-`renative.json/#/plugins.[object].android.AndroidManifest`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `plugins.[object].android.AndroidManifest` |
 
 Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
 
@@ -30212,30 +33816,34 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
+
+---
 
 
 
 
 #### plugins.[object].android.afterEvaluate
 
-**path**
-`renative.json/#/plugins.[object].android.afterEvaluate`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `afterEvaluate` | `array` |  | `plugins.[object].android.afterEvaluate` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].android.app/build.gradle
 
-**path**
-`renative.json/#/plugins.[object].android.app/build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `plugins.[object].android.app/build.gradle` |
 
 Overrides values in `app/build.gradle` file of generated android based project
 
@@ -30254,30 +33862,34 @@ Overrides values in `app/build.gradle` file of generated android based project
 
 
 
+
+---
 
 
 
 
 #### plugins.[object].android.applyPlugin
 
-**path**
-`renative.json/#/plugins.[object].android.applyPlugin`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `plugins.[object].android.applyPlugin` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].android.build.gradle
 
-**path**
-`renative.json/#/plugins.[object].android.build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `plugins.[object].android.build.gradle` |
 
 Overrides values in `build.gradle` file of generated android based project
 
@@ -30298,30 +33910,34 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
+
+---
 
 
 
 
 #### plugins.[object].android.enabled
 
-**path**
-`renative.json/#/plugins.[object].android.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].android.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].android.gradle.properties
 
-**path**
-`renative.json/#/plugins.[object].android.gradle.properties`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `plugins.[object].android.gradle.properties` |
 
 Overrides values in `gradle.properties` file of generated android based project
 
@@ -30344,87 +33960,99 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+
+---
 
 
 
 
 #### plugins.[object].android.package
 
-**path**
-`renative.json/#/plugins.[object].android.package`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `package` | `string` |  | `plugins.[object].android.package` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].android.projectName
 
-**path**
-`renative.json/#/plugins.[object].android.projectName`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `projectName` | `string` |  | `plugins.[object].android.projectName` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].android.skipImplementation
 
-**path**
-`renative.json/#/plugins.[object].android.skipImplementation`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `skipImplementation` | `boolean` |  | `plugins.[object].android.skipImplementation` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].android.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].android.webpackConfig`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].android.webpackConfig` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].androidtv
 
-**path**
-`renative.json/#/plugins.[object].androidtv`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `androidtv` | `object` |  | `plugins.[object].androidtv` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].androidtv.AndroidManifest
 
-**path**
-`renative.json/#/plugins.[object].androidtv.AndroidManifest`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `plugins.[object].androidtv.AndroidManifest` |
 
 Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
 
@@ -30477,30 +34105,34 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
+
+---
 
 
 
 
 #### plugins.[object].androidtv.afterEvaluate
 
-**path**
-`renative.json/#/plugins.[object].androidtv.afterEvaluate`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `afterEvaluate` | `array` |  | `plugins.[object].androidtv.afterEvaluate` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].androidtv.app/build.gradle
 
-**path**
-`renative.json/#/plugins.[object].androidtv.app/build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `plugins.[object].androidtv.app/build.gradle` |
 
 Overrides values in `app/build.gradle` file of generated android based project
 
@@ -30520,29 +34152,33 @@ Overrides values in `app/build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### plugins.[object].androidtv.applyPlugin
 
-**path**
-`renative.json/#/plugins.[object].androidtv.applyPlugin`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `plugins.[object].androidtv.applyPlugin` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].androidtv.build.gradle
 
-**path**
-`renative.json/#/plugins.[object].androidtv.build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `plugins.[object].androidtv.build.gradle` |
 
 Overrides values in `build.gradle` file of generated android based project
 
@@ -30564,29 +34200,33 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### plugins.[object].androidtv.enabled
 
-**path**
-`renative.json/#/plugins.[object].androidtv.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].androidtv.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].androidtv.gradle.properties
 
-**path**
-`renative.json/#/plugins.[object].androidtv.gradle.properties`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `plugins.[object].androidtv.gradle.properties` |
 
 Overrides values in `gradle.properties` file of generated android based project
 
@@ -30610,86 +34250,98 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+---
+
 
 
 
 #### plugins.[object].androidtv.package
 
-**path**
-`renative.json/#/plugins.[object].androidtv.package`
 
-**type** `string`
-
-
-
-
-
-
-
-
-#### plugins.[object].androidtv.projectName
-
-**path**
-`renative.json/#/plugins.[object].androidtv.projectName`
-
-**type** `string`
-
-
-
-
-
-
-
-
-#### plugins.[object].androidtv.skipImplementation
-
-**path**
-`renative.json/#/plugins.[object].androidtv.skipImplementation`
-
-**type** `boolean`
-
-
-
-
-
-
-
-
-#### plugins.[object].androidtv.webpackConfig
-
-**path**
-`renative.json/#/plugins.[object].androidtv.webpackConfig`
-
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `package` | `string` |  | `plugins.[object].androidtv.package` |
 
 
 
 
 
 ---
+
+
+
+
+#### plugins.[object].androidtv.projectName
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `projectName` | `string` |  | `plugins.[object].androidtv.projectName` |
+
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].androidtv.skipImplementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `skipImplementation` | `boolean` |  | `plugins.[object].androidtv.skipImplementation` |
+
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].androidtv.webpackConfig
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].androidtv.webpackConfig` |
+
+
+
+
+
+---
+
+
+
+
+
+
 ### plugins.[object].androidwear
 
-**path**
-`renative.json/#/plugins.[object].androidwear`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `androidwear` | `object` |  | `plugins.[object].androidwear` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].androidwear.AndroidManifest
 
-**path**
-`renative.json/#/plugins.[object].androidwear.AndroidManifest`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `plugins.[object].androidwear.AndroidManifest` |
 
 Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
 
@@ -30743,29 +34395,33 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
+---
+
 
 
 
 #### plugins.[object].androidwear.afterEvaluate
 
-**path**
-`renative.json/#/plugins.[object].androidwear.afterEvaluate`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `afterEvaluate` | `array` |  | `plugins.[object].androidwear.afterEvaluate` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].androidwear.app/build.gradle
 
-**path**
-`renative.json/#/plugins.[object].androidwear.app/build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `plugins.[object].androidwear.app/build.gradle` |
 
 Overrides values in `app/build.gradle` file of generated android based project
 
@@ -30785,29 +34441,33 @@ Overrides values in `app/build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### plugins.[object].androidwear.applyPlugin
 
-**path**
-`renative.json/#/plugins.[object].androidwear.applyPlugin`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `plugins.[object].androidwear.applyPlugin` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].androidwear.build.gradle
 
-**path**
-`renative.json/#/plugins.[object].androidwear.build.gradle`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `plugins.[object].androidwear.build.gradle` |
 
 Overrides values in `build.gradle` file of generated android based project
 
@@ -30829,29 +34489,33 @@ Overrides values in `build.gradle` file of generated android based project
 
 
 
+---
+
 
 
 
 #### plugins.[object].androidwear.enabled
 
-**path**
-`renative.json/#/plugins.[object].androidwear.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].androidwear.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].androidwear.gradle.properties
 
-**path**
-`renative.json/#/plugins.[object].androidwear.gradle.properties`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `plugins.[object].androidwear.gradle.properties` |
 
 Overrides values in `gradle.properties` file of generated android based project
 
@@ -30875,316 +34539,362 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+---
+
 
 
 
 #### plugins.[object].androidwear.package
 
-**path**
-`renative.json/#/plugins.[object].androidwear.package`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `package` | `string` |  | `plugins.[object].androidwear.package` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].androidwear.projectName
 
-**path**
-`renative.json/#/plugins.[object].androidwear.projectName`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `projectName` | `string` |  | `plugins.[object].androidwear.projectName` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].androidwear.skipImplementation
 
-**path**
-`renative.json/#/plugins.[object].androidwear.skipImplementation`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `skipImplementation` | `boolean` |  | `plugins.[object].androidwear.skipImplementation` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].androidwear.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].androidwear.webpackConfig`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].androidwear.webpackConfig` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].chromecast
 
-**path**
-`renative.json/#/plugins.[object].chromecast`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `chromecast` | `object` |  | `plugins.[object].chromecast` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].chromecast.enabled
 
-**path**
-`renative.json/#/plugins.[object].chromecast.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].chromecast.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].chromecast.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].chromecast.webpackConfig`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].chromecast.webpackConfig` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].enabled
 
-**path**
-`renative.json/#/plugins.[object].enabled`
 
-**type** `boolean`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].enabled` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### plugins.[object].firefox
 
-**path**
-`renative.json/#/plugins.[object].firefox`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `firefox` | `object` |  | `plugins.[object].firefox` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].firefox.enabled
 
-**path**
-`renative.json/#/plugins.[object].firefox.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].firefox.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].firefox.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].firefox.webpackConfig`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].firefox.webpackConfig` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].ios
 
-**path**
-`renative.json/#/plugins.[object].ios`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ios` | `object` |  | `plugins.[object].ios` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].ios.Podfile
 
-**path**
-`renative.json/#/plugins.[object].ios.Podfile`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `Podfile` | `object` |  | `plugins.[object].ios.Podfile` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.appDelegateApplicationMethods
 
-**path**
-`renative.json/#/plugins.[object].ios.appDelegateApplicationMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateApplicationMethods` | `object` |  | `plugins.[object].ios.appDelegateApplicationMethods` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].ios.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
 
-**path**
-`renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFailToRegisterForRemoteNotificationsWithError` | `array` |  | `plugins.[object].ios.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.appDelegateApplicationMethods.didFinishLaunchingWithOptions
 
-**path**
-`renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didFinishLaunchingWithOptions`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFinishLaunchingWithOptions` | `array` |  | `plugins.[object].ios.appDelegateApplicationMethods.didFinishLaunchingWithOptions` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.appDelegateApplicationMethods.didReceive
 
-**path**
-`renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didReceive`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceive` | `array` |  | `plugins.[object].ios.appDelegateApplicationMethods.didReceive` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.appDelegateApplicationMethods.didReceiveRemoteNotification
 
-**path**
-`renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didReceiveRemoteNotification`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceiveRemoteNotification` | `array` |  | `plugins.[object].ios.appDelegateApplicationMethods.didReceiveRemoteNotification` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.appDelegateApplicationMethods.didRegister
 
-**path**
-`renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didRegister`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegister` | `array` |  | `plugins.[object].ios.appDelegateApplicationMethods.didRegister` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
 
-**path**
-`renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegisterForRemoteNotificationsWithDeviceToken` | `array` |  | `plugins.[object].ios.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.appDelegateApplicationMethods.open
 
-**path**
-`renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.open`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `open` | `array` |  | `plugins.[object].ios.appDelegateApplicationMethods.open` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.appDelegateApplicationMethods.supportedInterfaceOrientationsFor
 
-**path**
-`renative.json/#/plugins.[object].ios.appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `supportedInterfaceOrientationsFor` | `array` |  | `plugins.[object].ios.appDelegateApplicationMethods.supportedInterfaceOrientationsFor` |
 
 
+
+
+
+---
 
 
 
@@ -31192,241 +34902,273 @@ Overrides values in `gradle.properties` file of generated android based project
 
 #### plugins.[object].ios.appDelegateImports
 
-**path**
-`renative.json/#/plugins.[object].ios.appDelegateImports`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateImports` | `array` |  | `plugins.[object].ios.appDelegateImports` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.appDelegateMethods
 
-**path**
-`renative.json/#/plugins.[object].ios.appDelegateMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateMethods` | `object` |  | `plugins.[object].ios.appDelegateMethods` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.enabled
 
-**path**
-`renative.json/#/plugins.[object].ios.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].ios.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.isStatic
 
-**path**
-`renative.json/#/plugins.[object].ios.isStatic`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `isStatic` | `boolean` |  | `plugins.[object].ios.isStatic` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.plist
 
-**path**
-`renative.json/#/plugins.[object].ios.plist`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `plist` | `object` |  | `plugins.[object].ios.plist` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.podName
 
-**path**
-`renative.json/#/plugins.[object].ios.podName`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `podName` | `string` |  | `plugins.[object].ios.podName` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.podNames
 
-**path**
-`renative.json/#/plugins.[object].ios.podNames`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `podNames` | `array` |  | `plugins.[object].ios.podNames` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].ios.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].ios.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].ios.xcodeproj
 
-**path**
-`renative.json/#/plugins.[object].ios.xcodeproj`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `xcodeproj` | `object` |  | `plugins.[object].ios.xcodeproj` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].macos
 
-**path**
-`renative.json/#/plugins.[object].macos`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `macos` | `object` |  | `plugins.[object].macos` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].macos.enabled
 
-**path**
-`renative.json/#/plugins.[object].macos.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].macos.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].macos.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].macos.webpackConfig`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].macos.webpackConfig` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].no-npm
 
-**path**
-`renative.json/#/plugins.[object].no-npm`
 
-**type** `boolean`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `no-npm` | `boolean` |  | `plugins.[object].no-npm` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### plugins.[object].npm
 
-**path**
-`renative.json/#/plugins.[object].npm`
 
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `npm` | `object` |  | `plugins.[object].npm` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### plugins.[object].pluginDependencies
 
-**path**
-`renative.json/#/plugins.[object].pluginDependencies`
 
-**type** `array,null`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `pluginDependencies` | `array,null` |  | `plugins.[object].pluginDependencies` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### plugins.[object].props
 
-**path**
-`renative.json/#/plugins.[object].props`
 
-**type** `object`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `props` | `object` |  | `plugins.[object].props` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### plugins.[object].skipMerge
 
-**path**
-`renative.json/#/plugins.[object].skipMerge`
 
-**type** `boolean`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `skipMerge` | `boolean` |  | `plugins.[object].skipMerge` |
 
 Will not attempt to merge with existing plugin configuration (ie. coming form renative pluginTemplates)
 
@@ -31452,16 +35194,18 @@ NOTE: if set to `true` you need to configure your plugin object fully
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### plugins.[object].source
 
-**path**
-`renative.json/#/plugins.[object].source`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `source` | `string` |  | `plugins.[object].source` |
 
 Will define custom scope for your plugin config to extend from.
 
@@ -31487,201 +35231,231 @@ NOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}
 
 
 
+---
+
+
+
+
+
+### plugins.[object].tizen
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `tizen` | `object` |  | `plugins.[object].tizen` |
+
+
 
 
 
 ---
-### plugins.[object].tizen
-
-**path**
-`renative.json/#/plugins.[object].tizen`
-
-**type** `object`
-
-
-
-
 
 
 
 #### plugins.[object].tizen.enabled
 
-**path**
-`renative.json/#/plugins.[object].tizen.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].tizen.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tizen.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].tizen.webpackConfig`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].tizen.webpackConfig` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].tvos
 
-**path**
-`renative.json/#/plugins.[object].tvos`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `tvos` | `object` |  | `plugins.[object].tvos` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].tvos.Podfile
 
-**path**
-`renative.json/#/plugins.[object].tvos.Podfile`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `Podfile` | `object` |  | `plugins.[object].tvos.Podfile` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.appDelegateApplicationMethods
 
-**path**
-`renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateApplicationMethods` | `object` |  | `plugins.[object].tvos.appDelegateApplicationMethods` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].tvos.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError
 
-**path**
-`renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFailToRegisterForRemoteNotificationsWithError` | `array` |  | `plugins.[object].tvos.appDelegateApplicationMethods.didFailToRegisterForRemoteNotificationsWithError` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.appDelegateApplicationMethods.didFinishLaunchingWithOptions
 
-**path**
-`renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didFinishLaunchingWithOptions`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didFinishLaunchingWithOptions` | `array` |  | `plugins.[object].tvos.appDelegateApplicationMethods.didFinishLaunchingWithOptions` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.appDelegateApplicationMethods.didReceive
 
-**path**
-`renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didReceive`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceive` | `array` |  | `plugins.[object].tvos.appDelegateApplicationMethods.didReceive` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.appDelegateApplicationMethods.didReceiveRemoteNotification
 
-**path**
-`renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didReceiveRemoteNotification`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didReceiveRemoteNotification` | `array` |  | `plugins.[object].tvos.appDelegateApplicationMethods.didReceiveRemoteNotification` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.appDelegateApplicationMethods.didRegister
 
-**path**
-`renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didRegister`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegister` | `array` |  | `plugins.[object].tvos.appDelegateApplicationMethods.didRegister` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken
 
-**path**
-`renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `didRegisterForRemoteNotificationsWithDeviceToken` | `array` |  | `plugins.[object].tvos.appDelegateApplicationMethods.didRegisterForRemoteNotificationsWithDeviceToken` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.appDelegateApplicationMethods.open
 
-**path**
-`renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.open`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `open` | `array` |  | `plugins.[object].tvos.appDelegateApplicationMethods.open` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.appDelegateApplicationMethods.supportedInterfaceOrientationsFor
 
-**path**
-`renative.json/#/plugins.[object].tvos.appDelegateApplicationMethods.supportedInterfaceOrientationsFor`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `supportedInterfaceOrientationsFor` | `array` |  | `plugins.[object].tvos.appDelegateApplicationMethods.supportedInterfaceOrientationsFor` |
 
 
+
+
+
+---
 
 
 
@@ -31689,386 +35463,438 @@ NOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}
 
 #### plugins.[object].tvos.appDelegateImports
 
-**path**
-`renative.json/#/plugins.[object].tvos.appDelegateImports`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateImports` | `array` |  | `plugins.[object].tvos.appDelegateImports` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.appDelegateMethods
 
-**path**
-`renative.json/#/plugins.[object].tvos.appDelegateMethods`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appDelegateMethods` | `object` |  | `plugins.[object].tvos.appDelegateMethods` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.enabled
 
-**path**
-`renative.json/#/plugins.[object].tvos.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].tvos.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.isStatic
 
-**path**
-`renative.json/#/plugins.[object].tvos.isStatic`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `isStatic` | `boolean` |  | `plugins.[object].tvos.isStatic` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.plist
 
-**path**
-`renative.json/#/plugins.[object].tvos.plist`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `plist` | `object` |  | `plugins.[object].tvos.plist` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.podName
 
-**path**
-`renative.json/#/plugins.[object].tvos.podName`
 
-**type** `string`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `podName` | `string` |  | `plugins.[object].tvos.podName` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.podNames
 
-**path**
-`renative.json/#/plugins.[object].tvos.podNames`
 
-**type** `array`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `podNames` | `array` |  | `plugins.[object].tvos.podNames` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].tvos.webpackConfig`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].tvos.webpackConfig` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].tvos.xcodeproj
 
-**path**
-`renative.json/#/plugins.[object].tvos.xcodeproj`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `xcodeproj` | `object` |  | `plugins.[object].tvos.xcodeproj` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].version
 
-**path**
-`renative.json/#/plugins.[object].version`
 
-**type** `string`
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `version` | `string` |  | `plugins.[object].version` |
 
 
 
 
 
 ---
+
+
+
+
+
 ### plugins.[object].web
 
-**path**
-`renative.json/#/plugins.[object].web`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `web` | `object` |  | `plugins.[object].web` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].web.enabled
 
-**path**
-`renative.json/#/plugins.[object].web.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].web.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].web.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].web.webpackConfig`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].web.webpackConfig` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].webos
 
-**path**
-`renative.json/#/plugins.[object].webos`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webos` | `object` |  | `plugins.[object].webos` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].webos.enabled
 
-**path**
-`renative.json/#/plugins.[object].webos.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].webos.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].webos.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].webos.webpackConfig`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].webos.webpackConfig` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].webpack
 
-**path**
-`renative.json/#/plugins.[object].webpack`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpack` | `object` |  | `plugins.[object].webpack` |
 
 > DEPRECATED in favour of `webpackConfig`
 
 
 
-
-
-
 ---
+
+
+
+
+
 ### plugins.[object].webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].webpackConfig`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].webpackConfig` |
 
 Allows you to configure webpack bahaviour per each individual plugin
 
 
 
+---
+
 
 
 #### plugins.[object].webpackConfig.moduleAliases
 
-**path**
-`renative.json/#/plugins.[object].webpackConfig.moduleAliases`
 
-**type** `boolean,object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `moduleAliases` | `boolean,object` |  | `plugins.[object].webpackConfig.moduleAliases` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].webpackConfig.modulePaths
 
-**path**
-`renative.json/#/plugins.[object].webpackConfig.modulePaths`
 
-**type** `boolean,object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `modulePaths` | `boolean,object` |  | `plugins.[object].webpackConfig.modulePaths` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].webtv
 
-**path**
-`renative.json/#/plugins.[object].webtv`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webtv` | `object` |  | `plugins.[object].webtv` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].webtv.enabled
 
-**path**
-`renative.json/#/plugins.[object].webtv.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].webtv.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].webtv.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].webtv.webpackConfig`
 
-**type** `object`
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].webtv.webpackConfig` |
 
 
 
 
 
 ---
+
+
+
+
+
+
 ### plugins.[object].windows
 
-**path**
-`renative.json/#/plugins.[object].windows`
 
-**type** `object`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `windows` | `object` |  | `plugins.[object].windows` |
 
 
+
+
+
+---
 
 
 
 #### plugins.[object].windows.enabled
 
-**path**
-`renative.json/#/plugins.[object].windows.enabled`
 
-**type** `boolean`
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].windows.enabled` |
 
 
+
+
+
+---
 
 
 
 
 #### plugins.[object].windows.webpackConfig
 
-**path**
-`renative.json/#/plugins.[object].windows.webpackConfig`
 
-**type** `object`
-
-
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].windows.webpackConfig` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
+
+
 ## private
 
-**path**
-`renative.json/#/private`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `private` | `object` |  | `private` |
 
 Special object which contains private info. this object should be used only in `renative.private.json` files and never commited to your repository. Private files usually reside in your workspace and are subject to crypto encryption if enabled. RNV will warn you if it finds private key in your regular `renative.json` file
 
@@ -32086,18 +35912,20 @@ Special object which contains private info. this object should be used only in `
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## projectName
 
-**path**
-`renative.json/#/projectName`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `projectName` | `string` |  | `projectName` |
 
 Name of the project which will be used in workspace as folder name. this will also be used as part of the KEY in crypto env var generator
 
@@ -32121,18 +35949,20 @@ Name of the project which will be used in workspace as folder name. this will al
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## projectTemplates
 
-**path**
-`renative.json/#/projectTemplates`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `projectTemplates` | `object` |  | `projectTemplates` |
 
 Custom list of renative templates (NPM package names) which will be displayed during `rnv new` project bootstrap. This prop usually resides in workspace config.
 
@@ -32150,35 +35980,39 @@ Custom list of renative templates (NPM package names) which will be displayed du
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## publish
 
-**path**
-`renative.json/#/publish`
 
-**type** `object`
-
-
-
-
-
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `publish` | `object` |  | `publish` |
 
 
 
 
 
 ---
+
+
+
+
+
+
+
 ## runtime
 
-**path**
-`renative.json/#/runtime`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `runtime` |
 
 This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
 
@@ -32196,18 +36030,20 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## sdks
 
-**path**
-`renative.json/#/sdks`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `sdks` | `object` |  | `sdks` |
 
 List of SDK locations used by RNV. This property is usually located in your `WORKSPACE/renative.json`
 
@@ -32229,18 +36065,20 @@ List of SDK locations used by RNV. This property is usually located in your `WOR
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## tasks
 
-**path**
-`renative.json/#/tasks`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `tasks` | `object` |  | `tasks` |
 
 Allows to override specific task within renative toolchain. (currently only `install` supported). this is useful if you want to change specific behaviour of built-in task. ie install task triggers yarn/npm install by default. but that might not be desirable installation trigger
 
@@ -32260,18 +36098,20 @@ Allows to override specific task within renative toolchain. (currently only `ins
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## templates
 
-**path**
-`renative.json/#/templates`
 
-**type** `object`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `templates` | `object` |  | `templates` |
 
 Stores installed templates info in your project.
 
@@ -32293,18 +36133,20 @@ NOTE: This prop will be updated by rnv if you run `rnv template install`
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## version
 
-**path**
-`renative.json/#/version`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `version` | `string` |  | `version` |
 
 Semver style version of your app.
 
@@ -32352,18 +36194,20 @@ Semver style version of your app.
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## versionCode
 
-**path**
-`renative.json/#/versionCode`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionCode` | `string` |  | `versionCode` |
 
 Manual verride of generated version code
 
@@ -32387,18 +36231,20 @@ Manual verride of generated version code
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## versionCodeFormat
 
-**path**
-`renative.json/#/versionCodeFormat`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionCodeFormat` | `string` |  | `versionCodeFormat` |
 
 Allows you to fine-tune auto generated version codes.
 
@@ -32460,18 +36306,20 @@ IN: 1.0.23 OUT: 100230000
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## versionFormat
 
-**path**
-`renative.json/#/versionFormat`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionFormat` | `string` |  | `versionFormat` |
 
 Allows you to fine-tune app version defined in package.json or renative.json.
 
@@ -32527,18 +36375,20 @@ IN: 1.2.3 OUT: 1.2.3
 
 
 
-
-
-
-
-
 ---
+
+
+
+
+
+
+
 ## workspaceID
 
-**path**
-`renative.json/#/workspaceID`
 
-**type** `string`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `workspaceID` | `string` |  | `workspaceID` |
 
 Workspace ID your project belongs to. This will mach same folder name in the root of your user directory. ie `~/` on macOS
 
@@ -32561,6 +36411,8 @@ Workspace ID your project belongs to. This will mach same folder name in the roo
 
 
 
+
+---
 
 
 
