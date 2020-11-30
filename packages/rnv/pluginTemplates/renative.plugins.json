@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.32.0-alpha.20",
+            "version": "0.32.0-alpha.21",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -2363,7 +2363,7 @@
             }
         },
         "@react-native-community/blur": {
-            "version": "3.3.1",
+            "version": "3.6.0",
             "ios": {
                 "path": "node_modules/@react-native-community/blur",
                 "podName": "react-native-blur"

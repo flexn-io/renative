@@ -35,16 +35,19 @@ ${exStr}
 
 `;
     }
-    return `${level < 2 ? '---\n' : ''}${header} ${level < 1 ? key : keyPath}
+    const defaultProp = prop.default ? `\`${prop.default}\`` : '';
+    return `${level < 2 ? '\n' : ''}${header} ${level < 1 ? key : keyPath}
 
-${hidePath ? '' : `**path**
-\`renative.json/#/${keyPath}\``}
 
-**type** \`${prop.type}\`
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| \`${key}\` | \`${prop.type}\` | ${defaultProp} | \`${hidePath ? '' : keyPath}\` |
 
 ${prop.description || ''}
 
 ${examplesStr}
+
+---
 
 `;
 };

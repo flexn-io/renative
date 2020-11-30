@@ -32,6 +32,10 @@ export const parseBuildGradleSync = (c) => {
             override: c.pluginConfigAndroid.compileSdkVersion
         },
         {
+            pattern: '{{INJECT_BUILD_TOOLS_VERSION}}',
+            override: c.pluginConfigAndroid.gradleBuildToolsVersion
+        },
+        {
             pattern: '{{SUPPORT_LIB_VERSION}}',
             override: c.pluginConfigAndroid.supportLibVersion
         },
@@ -97,6 +101,12 @@ export const parseAppBuildGradleSync = (c) => {
         platform,
         'compileSdkVersion',
         28
+    );
+    c.pluginConfigAndroid.gradleBuildToolsVersion = getConfigProp(
+        c,
+        platform,
+        'gradleBuildToolsVersion',
+        '3.3.1'
     );
     c.pluginConfigAndroid.supportLibVersion = getConfigProp(
         c,

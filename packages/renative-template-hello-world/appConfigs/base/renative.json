@@ -229,8 +229,8 @@
         "web": {
             "entryFile": "index.web",
             "pagesDir": "src/pages",
+            "devServerHost": "0.0.0.0",
             "webpackConfig": {
-                "devServerHost": "0.0.0.0",
                 "baseUrl": ""
             },
             "buildSchemes": {
@@ -251,8 +251,8 @@
         "webtv": {
             "entryFile": "index.webtv",
             "pagesDir": "src/pages",
+            "devServerHost": "0.0.0.0",
             "webpackConfig": {
-                "devServerHost": "0.0.0.0",
                 "baseUrl": ""
             },
             "buildSchemes": {

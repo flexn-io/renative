@@ -465,13 +465,47 @@ const platformAndroidProps = {
         type: 'boolean'
     },
     aab: {
-        type: 'boolean'
+        type: 'boolean',
+        description: 'If set to true, android project will generate app.aab instead of apk',
+        default: false,
+        examples: [
+            false,
+            true
+        ]
     },
     targetSdkVersion: {
-        type: 'integer'
+        type: 'integer',
+        description: 'Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` ',
+        examples: [
+            28,
+            29
+        ]
     },
     compileSdkVersion: {
-        type: 'integer'
+        type: 'integer',
+        description: 'Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` ',
+        examples: [
+            28,
+            29
+        ]
+    },
+    gradleBuildToolsVersion: {
+        type: 'integer',
+        description: 'Allows you define custom gradle build tools version equivalent to:  `classpath \'com.android.tools.build:gradle:[VERSION]\'`',
+        default: '3.3.1',
+        examples: [
+            '3.3.1',
+            '4.1.0'
+        ]
+    },
+    gradleWrapperVersion: {
+        type: 'integer',
+        description: 'Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`',
+        default: '5.5',
+        examples: [
+            '5.5',
+            '6.7.1'
+        ]
     },
     storeFile: {
         type: 'string'
