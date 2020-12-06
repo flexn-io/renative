@@ -35,6 +35,12 @@ export const parsePodFile = async (c, platform) => {
                 pluginInject += _injectPod(v, pluginPlat, plugin, key);
             });
         }
+        const podDependencies = getFlavouredProp(c, pluginPlat, 'podDependencies');
+        if (podDependencies) {
+            podDependencies.forEach((v) => {
+                pluginInject += `  pod ${v}\n`;
+            });
+        }
         const isStatic = getFlavouredProp(c, pluginPlat, 'isStatic');
         if (isStatic === true) {
             if (!c.pluginConfigiOS.staticFrameworks.includes(podName)) {
