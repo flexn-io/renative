@@ -447,19 +447,46 @@ const platformAndroidProps = {
     ...engineRnConfig,
     ...commonAndroidProps,
     enableAndroidX: {
-        type: 'boolean'
+        type: 'boolean',
+        default: true,
+        examples: [
+            true,
+            false
+        ]
     },
     enableHermes: {
-        type: 'boolean'
+        type: 'boolean',
+        default: false,
+        examples: [
+            true,
+            false
+        ]
     },
     signingConfig: {
-        type: 'string'
+        type: 'string',
+        default: 'Debug',
+        description: 'Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`',
+        examples: [
+            'Debug',
+            'Release'
+        ]
     },
     minSdkVersion: {
-        type: 'integer'
+        type: 'integer',
+        default: 21,
+        examples: [
+            21,
+            22
+        ]
     },
     multipleAPKs: {
-        type: 'boolean'
+        type: 'boolean',
+        default: false,
+        description: 'If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"',
+        examples: [
+            true,
+            false
+        ]
     },
     universalApk: {
         type: 'boolean'
@@ -506,6 +533,22 @@ const platformAndroidProps = {
             '5.5',
             '6.7.1'
         ]
+    },
+    mainActivity: {
+        type: 'object',
+        description: 'Allows you to configure behaviour of MainActivity.kt',
+        default: '{}',
+        properties: {
+            onCreate: {
+                type: 'string',
+                description: 'Overrides super.onCreate method handler of MainActivity.kt',
+                default: 'super.onCreate(savedInstanceState)',
+                examples: [
+                    'super.onCreate(null)',
+                    'super.onCreate(savedInstanceState)'
+                ]
+            }
+        },
     },
     storeFile: {
         type: 'string'

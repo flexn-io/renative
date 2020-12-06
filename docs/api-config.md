@@ -2851,8 +2851,26 @@ General description of your app. This prop will be injected to actual projects w
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `enableAndroidX` | `boolean` |  | `platforms.android.buildSchemes.[object].enableAndroidX` |
+| `enableAndroidX` | `boolean` | `true` | `platforms.android.buildSchemes.[object].enableAndroidX` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableAndroidX": "true"
+}
+```
+
+
+
+```json
+{
+  "enableAndroidX": "false"
+}
+```
 
 
 
@@ -2869,6 +2887,24 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.android.buildSchemes.[object].enableHermes` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableHermes": "true"
+}
+```
+
+
+
+```json
+{
+  "enableHermes": "false"
+}
+```
 
 
 
@@ -3357,13 +3393,81 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.android.buildSchemes.[object].mainActivity
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `mainActivity` | `object` | `{}` | `platforms.android.buildSchemes.[object].mainActivity` |
+
+Allows you to configure behaviour of MainActivity.kt
+
+
+
+---
+
+
+
+#### platforms.android.buildSchemes.[object].mainActivity.onCreate
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `onCreate` | `string` | `super.onCreate(savedInstanceState)` | `platforms.android.buildSchemes.[object].mainActivity.onCreate` |
+
+Overrides super.onCreate method handler of MainActivity.kt
+
+**examples**
+
+
+```json
+{
+  "onCreate": "super.onCreate(null)"
+}
+```
+
+
+
+```json
+{
+  "onCreate": "super.onCreate(savedInstanceState)"
+}
+```
+
+
+
+
+---
+
+
+
+
+
 #### platforms.android.buildSchemes.[object].minSdkVersion
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `minSdkVersion` | `integer` |  | `platforms.android.buildSchemes.[object].minSdkVersion` |
+| `minSdkVersion` | `integer` | `21` | `platforms.android.buildSchemes.[object].minSdkVersion` |
 
+
+
+**examples**
+
+
+```json
+{
+  "minSdkVersion": "21"
+}
+```
+
+
+
+```json
+{
+  "minSdkVersion": "22"
+}
+```
 
 
 
@@ -3380,6 +3484,24 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `multipleAPKs` | `boolean` |  | `platforms.android.buildSchemes.[object].multipleAPKs` |
 
+If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+
+**examples**
+
+
+```json
+{
+  "multipleAPKs": "true"
+}
+```
+
+
+
+```json
+{
+  "multipleAPKs": "false"
+}
+```
 
 
 
@@ -3438,8 +3560,26 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `signingConfig` | `string` |  | `platforms.android.buildSchemes.[object].signingConfig` |
+| `signingConfig` | `string` | `Debug` | `platforms.android.buildSchemes.[object].signingConfig` |
 
+Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
+
+**examples**
+
+
+```json
+{
+  "signingConfig": "Debug"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "Release"
+}
+```
 
 
 
@@ -3771,8 +3911,26 @@ General description of your app. This prop will be injected to actual projects w
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `enableAndroidX` | `boolean` |  | `platforms.android.enableAndroidX` |
+| `enableAndroidX` | `boolean` | `true` | `platforms.android.enableAndroidX` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableAndroidX": "true"
+}
+```
+
+
+
+```json
+{
+  "enableAndroidX": "false"
+}
+```
 
 
 
@@ -3789,6 +3947,24 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.android.enableHermes` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableHermes": "true"
+}
+```
+
+
+
+```json
+{
+  "enableHermes": "false"
+}
+```
 
 
 
@@ -4261,13 +4437,81 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.android.mainActivity
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `mainActivity` | `object` | `{}` | `platforms.android.mainActivity` |
+
+Allows you to configure behaviour of MainActivity.kt
+
+
+
+---
+
+
+
+#### platforms.android.mainActivity.onCreate
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `onCreate` | `string` | `super.onCreate(savedInstanceState)` | `platforms.android.mainActivity.onCreate` |
+
+Overrides super.onCreate method handler of MainActivity.kt
+
+**examples**
+
+
+```json
+{
+  "onCreate": "super.onCreate(null)"
+}
+```
+
+
+
+```json
+{
+  "onCreate": "super.onCreate(savedInstanceState)"
+}
+```
+
+
+
+
+---
+
+
+
+
+
 #### platforms.android.minSdkVersion
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `minSdkVersion` | `integer` |  | `platforms.android.minSdkVersion` |
+| `minSdkVersion` | `integer` | `21` | `platforms.android.minSdkVersion` |
 
+
+
+**examples**
+
+
+```json
+{
+  "minSdkVersion": "21"
+}
+```
+
+
+
+```json
+{
+  "minSdkVersion": "22"
+}
+```
 
 
 
@@ -4284,6 +4528,24 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `multipleAPKs` | `boolean` |  | `platforms.android.multipleAPKs` |
 
+If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+
+**examples**
+
+
+```json
+{
+  "multipleAPKs": "true"
+}
+```
+
+
+
+```json
+{
+  "multipleAPKs": "false"
+}
+```
 
 
 
@@ -4342,8 +4604,26 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `signingConfig` | `string` |  | `platforms.android.signingConfig` |
+| `signingConfig` | `string` | `Debug` | `platforms.android.signingConfig` |
 
+Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
+
+**examples**
+
+
+```json
+{
+  "signingConfig": "Debug"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "Release"
+}
+```
 
 
 
@@ -5158,8 +5438,26 @@ General description of your app. This prop will be injected to actual projects w
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `enableAndroidX` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].enableAndroidX` |
+| `enableAndroidX` | `boolean` | `true` | `platforms.androidtv.buildSchemes.[object].enableAndroidX` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableAndroidX": "true"
+}
+```
+
+
+
+```json
+{
+  "enableAndroidX": "false"
+}
+```
 
 
 
@@ -5176,6 +5474,24 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].enableHermes` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableHermes": "true"
+}
+```
+
+
+
+```json
+{
+  "enableHermes": "false"
+}
+```
 
 
 
@@ -5664,13 +5980,81 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.androidtv.buildSchemes.[object].mainActivity
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `mainActivity` | `object` | `{}` | `platforms.androidtv.buildSchemes.[object].mainActivity` |
+
+Allows you to configure behaviour of MainActivity.kt
+
+
+
+---
+
+
+
+#### platforms.androidtv.buildSchemes.[object].mainActivity.onCreate
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `onCreate` | `string` | `super.onCreate(savedInstanceState)` | `platforms.androidtv.buildSchemes.[object].mainActivity.onCreate` |
+
+Overrides super.onCreate method handler of MainActivity.kt
+
+**examples**
+
+
+```json
+{
+  "onCreate": "super.onCreate(null)"
+}
+```
+
+
+
+```json
+{
+  "onCreate": "super.onCreate(savedInstanceState)"
+}
+```
+
+
+
+
+---
+
+
+
+
+
 #### platforms.androidtv.buildSchemes.[object].minSdkVersion
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `minSdkVersion` | `integer` |  | `platforms.androidtv.buildSchemes.[object].minSdkVersion` |
+| `minSdkVersion` | `integer` | `21` | `platforms.androidtv.buildSchemes.[object].minSdkVersion` |
 
+
+
+**examples**
+
+
+```json
+{
+  "minSdkVersion": "21"
+}
+```
+
+
+
+```json
+{
+  "minSdkVersion": "22"
+}
+```
 
 
 
@@ -5687,6 +6071,24 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `multipleAPKs` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].multipleAPKs` |
 
+If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+
+**examples**
+
+
+```json
+{
+  "multipleAPKs": "true"
+}
+```
+
+
+
+```json
+{
+  "multipleAPKs": "false"
+}
+```
 
 
 
@@ -5745,8 +6147,26 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `signingConfig` | `string` |  | `platforms.androidtv.buildSchemes.[object].signingConfig` |
+| `signingConfig` | `string` | `Debug` | `platforms.androidtv.buildSchemes.[object].signingConfig` |
 
+Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
+
+**examples**
+
+
+```json
+{
+  "signingConfig": "Debug"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "Release"
+}
+```
 
 
 
@@ -6078,8 +6498,26 @@ General description of your app. This prop will be injected to actual projects w
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `enableAndroidX` | `boolean` |  | `platforms.androidtv.enableAndroidX` |
+| `enableAndroidX` | `boolean` | `true` | `platforms.androidtv.enableAndroidX` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableAndroidX": "true"
+}
+```
+
+
+
+```json
+{
+  "enableAndroidX": "false"
+}
+```
 
 
 
@@ -6096,6 +6534,24 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.androidtv.enableHermes` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableHermes": "true"
+}
+```
+
+
+
+```json
+{
+  "enableHermes": "false"
+}
+```
 
 
 
@@ -6568,13 +7024,81 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.androidtv.mainActivity
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `mainActivity` | `object` | `{}` | `platforms.androidtv.mainActivity` |
+
+Allows you to configure behaviour of MainActivity.kt
+
+
+
+---
+
+
+
+#### platforms.androidtv.mainActivity.onCreate
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `onCreate` | `string` | `super.onCreate(savedInstanceState)` | `platforms.androidtv.mainActivity.onCreate` |
+
+Overrides super.onCreate method handler of MainActivity.kt
+
+**examples**
+
+
+```json
+{
+  "onCreate": "super.onCreate(null)"
+}
+```
+
+
+
+```json
+{
+  "onCreate": "super.onCreate(savedInstanceState)"
+}
+```
+
+
+
+
+---
+
+
+
+
+
 #### platforms.androidtv.minSdkVersion
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `minSdkVersion` | `integer` |  | `platforms.androidtv.minSdkVersion` |
+| `minSdkVersion` | `integer` | `21` | `platforms.androidtv.minSdkVersion` |
 
+
+
+**examples**
+
+
+```json
+{
+  "minSdkVersion": "21"
+}
+```
+
+
+
+```json
+{
+  "minSdkVersion": "22"
+}
+```
 
 
 
@@ -6591,6 +7115,24 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `multipleAPKs` | `boolean` |  | `platforms.androidtv.multipleAPKs` |
 
+If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+
+**examples**
+
+
+```json
+{
+  "multipleAPKs": "true"
+}
+```
+
+
+
+```json
+{
+  "multipleAPKs": "false"
+}
+```
 
 
 
@@ -6649,8 +7191,26 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `signingConfig` | `string` |  | `platforms.androidtv.signingConfig` |
+| `signingConfig` | `string` | `Debug` | `platforms.androidtv.signingConfig` |
 
+Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
+
+**examples**
+
+
+```json
+{
+  "signingConfig": "Debug"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "Release"
+}
+```
 
 
 
@@ -7465,8 +8025,26 @@ General description of your app. This prop will be injected to actual projects w
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `enableAndroidX` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].enableAndroidX` |
+| `enableAndroidX` | `boolean` | `true` | `platforms.androidwear.buildSchemes.[object].enableAndroidX` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableAndroidX": "true"
+}
+```
+
+
+
+```json
+{
+  "enableAndroidX": "false"
+}
+```
 
 
 
@@ -7483,6 +8061,24 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].enableHermes` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableHermes": "true"
+}
+```
+
+
+
+```json
+{
+  "enableHermes": "false"
+}
+```
 
 
 
@@ -7971,13 +8567,81 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.androidwear.buildSchemes.[object].mainActivity
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `mainActivity` | `object` | `{}` | `platforms.androidwear.buildSchemes.[object].mainActivity` |
+
+Allows you to configure behaviour of MainActivity.kt
+
+
+
+---
+
+
+
+#### platforms.androidwear.buildSchemes.[object].mainActivity.onCreate
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `onCreate` | `string` | `super.onCreate(savedInstanceState)` | `platforms.androidwear.buildSchemes.[object].mainActivity.onCreate` |
+
+Overrides super.onCreate method handler of MainActivity.kt
+
+**examples**
+
+
+```json
+{
+  "onCreate": "super.onCreate(null)"
+}
+```
+
+
+
+```json
+{
+  "onCreate": "super.onCreate(savedInstanceState)"
+}
+```
+
+
+
+
+---
+
+
+
+
+
 #### platforms.androidwear.buildSchemes.[object].minSdkVersion
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `minSdkVersion` | `integer` |  | `platforms.androidwear.buildSchemes.[object].minSdkVersion` |
+| `minSdkVersion` | `integer` | `21` | `platforms.androidwear.buildSchemes.[object].minSdkVersion` |
 
+
+
+**examples**
+
+
+```json
+{
+  "minSdkVersion": "21"
+}
+```
+
+
+
+```json
+{
+  "minSdkVersion": "22"
+}
+```
 
 
 
@@ -7994,6 +8658,24 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `multipleAPKs` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].multipleAPKs` |
 
+If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+
+**examples**
+
+
+```json
+{
+  "multipleAPKs": "true"
+}
+```
+
+
+
+```json
+{
+  "multipleAPKs": "false"
+}
+```
 
 
 
@@ -8052,8 +8734,26 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `signingConfig` | `string` |  | `platforms.androidwear.buildSchemes.[object].signingConfig` |
+| `signingConfig` | `string` | `Debug` | `platforms.androidwear.buildSchemes.[object].signingConfig` |
 
+Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
+
+**examples**
+
+
+```json
+{
+  "signingConfig": "Debug"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "Release"
+}
+```
 
 
 
@@ -8385,8 +9085,26 @@ General description of your app. This prop will be injected to actual projects w
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `enableAndroidX` | `boolean` |  | `platforms.androidwear.enableAndroidX` |
+| `enableAndroidX` | `boolean` | `true` | `platforms.androidwear.enableAndroidX` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableAndroidX": "true"
+}
+```
+
+
+
+```json
+{
+  "enableAndroidX": "false"
+}
+```
 
 
 
@@ -8403,6 +9121,24 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.androidwear.enableHermes` |
 
+
+
+**examples**
+
+
+```json
+{
+  "enableHermes": "true"
+}
+```
+
+
+
+```json
+{
+  "enableHermes": "false"
+}
+```
 
 
 
@@ -8875,13 +9611,81 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.androidwear.mainActivity
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `mainActivity` | `object` | `{}` | `platforms.androidwear.mainActivity` |
+
+Allows you to configure behaviour of MainActivity.kt
+
+
+
+---
+
+
+
+#### platforms.androidwear.mainActivity.onCreate
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `onCreate` | `string` | `super.onCreate(savedInstanceState)` | `platforms.androidwear.mainActivity.onCreate` |
+
+Overrides super.onCreate method handler of MainActivity.kt
+
+**examples**
+
+
+```json
+{
+  "onCreate": "super.onCreate(null)"
+}
+```
+
+
+
+```json
+{
+  "onCreate": "super.onCreate(savedInstanceState)"
+}
+```
+
+
+
+
+---
+
+
+
+
+
 #### platforms.androidwear.minSdkVersion
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `minSdkVersion` | `integer` |  | `platforms.androidwear.minSdkVersion` |
+| `minSdkVersion` | `integer` | `21` | `platforms.androidwear.minSdkVersion` |
 
+
+
+**examples**
+
+
+```json
+{
+  "minSdkVersion": "21"
+}
+```
+
+
+
+```json
+{
+  "minSdkVersion": "22"
+}
+```
 
 
 
@@ -8898,6 +9702,24 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `multipleAPKs` | `boolean` |  | `platforms.androidwear.multipleAPKs` |
 
+If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+
+**examples**
+
+
+```json
+{
+  "multipleAPKs": "true"
+}
+```
+
+
+
+```json
+{
+  "multipleAPKs": "false"
+}
+```
 
 
 
@@ -8956,8 +9778,26 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `signingConfig` | `string` |  | `platforms.androidwear.signingConfig` |
+| `signingConfig` | `string` | `Debug` | `platforms.androidwear.signingConfig` |
 
+Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
+
+**examples**
+
+
+```json
+{
+  "signingConfig": "Debug"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "Release"
+}
+```
 
 
 

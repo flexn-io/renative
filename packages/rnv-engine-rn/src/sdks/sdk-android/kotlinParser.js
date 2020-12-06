@@ -84,6 +84,12 @@ export const parseMainActivitySync = (c) => {
     const { platform } = c;
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
 
+
+    const mainActivity = getConfigProp(c, platform, 'mainActivity', {});
+
+    c.pluginConfigAndroid.injectActivityOnCreate = mainActivity.onCreate || 'super.onCreate(savedInstanceState)';
+
+
     const injects = [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         {
@@ -97,6 +103,10 @@ export const parseMainActivitySync = (c) => {
         {
             pattern: '{{PLUGIN_ON_CREATE}}',
             override: c.pluginConfigAndroid.pluginActivityCreateMethods
+        },
+        {
+            pattern: '{{INJECT_ON_CREATE}}',
+            override: c.pluginConfigAndroid.injectActivityOnCreate
         },
         {
             pattern: '{{PLUGIN_ON_ACTIVITY_RESULT}}',

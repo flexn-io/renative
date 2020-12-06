@@ -16,8 +16,8 @@ import com.facebook.react.ReactRootView
 class MainActivity : ReactActivity() {
     override fun getMainComponentName(): String? = "App"
 
-    override fun onCreate(bundle: Bundle?) {
-        super.onCreate(bundle)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        {{INJECT_ON_CREATE}}
         {{PLUGIN_ON_CREATE}}
     }
 

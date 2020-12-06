@@ -98,6 +98,11 @@
     "platforms": {
         "web": {
             "engine": "engine-rn-next"
+        },
+        "android": {
+          "mainActivity": {
+            "onCreate": "super.onCreate(null)"
+          }
         }
     },
     "currentTemplate": "renative-template-hello-world",
