@@ -2319,6 +2319,66 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
+#### platforms.android.BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `platforms.android.BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### platforms.android.BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `platforms.android.BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### platforms.android.BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `platforms.android.BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+
+
 #### platforms.android.aab
 
 
@@ -2556,6 +2616,66 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 ---
+
+
+
+
+#### platforms.android.buildSchemes.[object].BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `platforms.android.buildSchemes.[object].BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### platforms.android.buildSchemes.[object].BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `platforms.android.buildSchemes.[object].BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### platforms.android.buildSchemes.[object].BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `platforms.android.buildSchemes.[object].BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
 
 
 
@@ -3197,6 +3317,22 @@ Allows you define custom gradle wrapper version equivalent to: `distributionUrl=
 
 
 
+#### platforms.android.buildSchemes.[object].implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `platforms.android.buildSchemes.[object].implementation` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.android.buildSchemes.[object].includedFeatures
 
 
@@ -3731,22 +3867,6 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
-#### platforms.android.buildSchemes.[object].universalApk
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `universalApk` | `boolean` |  | `platforms.android.buildSchemes.[object].universalApk` |
-
-
-
-
-
----
-
-
-
-
 #### platforms.android.buildSchemes.[object].versionedAssets
 
 
@@ -4231,6 +4351,22 @@ Allows you define custom gradle wrapper version equivalent to: `distributionUrl=
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `ignoreWarnings` | `boolean` |  | `platforms.android.ignoreWarnings` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.android.implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `platforms.android.implementation` |
 
 
 
@@ -4775,22 +4911,6 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
-#### platforms.android.universalApk
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `universalApk` | `boolean` |  | `platforms.android.universalApk` |
-
-
-
-
-
----
-
-
-
-
 #### platforms.android.versionedAssets
 
 
@@ -4902,6 +5022,66 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 ---
+
+
+
+
+#### platforms.androidtv.BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `platforms.androidtv.BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### platforms.androidtv.BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `platforms.androidtv.BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### platforms.androidtv.BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `platforms.androidtv.BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
 
 
 
@@ -5143,6 +5323,66 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 ---
+
+
+
+
+#### platforms.androidtv.buildSchemes.[object].BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `platforms.androidtv.buildSchemes.[object].BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### platforms.androidtv.buildSchemes.[object].BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `platforms.androidtv.buildSchemes.[object].BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### platforms.androidtv.buildSchemes.[object].BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `platforms.androidtv.buildSchemes.[object].BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
 
 
 
@@ -5784,6 +6024,22 @@ Allows you define custom gradle wrapper version equivalent to: `distributionUrl=
 
 
 
+#### platforms.androidtv.buildSchemes.[object].implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `platforms.androidtv.buildSchemes.[object].implementation` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.androidtv.buildSchemes.[object].includedFeatures
 
 
@@ -6318,22 +6574,6 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
-#### platforms.androidtv.buildSchemes.[object].universalApk
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `universalApk` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].universalApk` |
-
-
-
-
-
----
-
-
-
-
 #### platforms.androidtv.buildSchemes.[object].versionedAssets
 
 
@@ -6818,6 +7058,22 @@ Allows you define custom gradle wrapper version equivalent to: `distributionUrl=
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `ignoreWarnings` | `boolean` |  | `platforms.androidtv.ignoreWarnings` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.androidtv.implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `platforms.androidtv.implementation` |
 
 
 
@@ -7362,22 +7618,6 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
-#### platforms.androidtv.universalApk
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `universalApk` | `boolean` |  | `platforms.androidtv.universalApk` |
-
-
-
-
-
----
-
-
-
-
 #### platforms.androidtv.versionedAssets
 
 
@@ -7489,6 +7729,66 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 ---
+
+
+
+
+#### platforms.androidwear.BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `platforms.androidwear.BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### platforms.androidwear.BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `platforms.androidwear.BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### platforms.androidwear.BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `platforms.androidwear.BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
 
 
 
@@ -7730,6 +8030,66 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 ---
+
+
+
+
+#### platforms.androidwear.buildSchemes.[object].BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `platforms.androidwear.buildSchemes.[object].BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### platforms.androidwear.buildSchemes.[object].BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `platforms.androidwear.buildSchemes.[object].BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### platforms.androidwear.buildSchemes.[object].BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `platforms.androidwear.buildSchemes.[object].BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
 
 
 
@@ -8371,6 +8731,22 @@ Allows you define custom gradle wrapper version equivalent to: `distributionUrl=
 
 
 
+#### platforms.androidwear.buildSchemes.[object].implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `platforms.androidwear.buildSchemes.[object].implementation` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.androidwear.buildSchemes.[object].includedFeatures
 
 
@@ -8905,22 +9281,6 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
-#### platforms.androidwear.buildSchemes.[object].universalApk
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `universalApk` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].universalApk` |
-
-
-
-
-
----
-
-
-
-
 #### platforms.androidwear.buildSchemes.[object].versionedAssets
 
 
@@ -9405,6 +9765,22 @@ Allows you define custom gradle wrapper version equivalent to: `distributionUrl=
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `ignoreWarnings` | `boolean` |  | `platforms.androidwear.ignoreWarnings` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.androidwear.implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `platforms.androidwear.implementation` |
 
 
 
@@ -9940,22 +10316,6 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
-
-
-
-
----
-
-
-
-
-#### platforms.androidwear.universalApk
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `universalApk` | `boolean` |  | `platforms.androidwear.universalApk` |
-
 
 
 
@@ -34662,6 +35022,66 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 
+#### plugins.[object].android.BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `plugins.[object].android.BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### plugins.[object].android.BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `plugins.[object].android.BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### plugins.[object].android.BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `plugins.[object].android.BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+
+
 #### plugins.[object].android.afterEvaluate
 
 
@@ -34806,6 +35226,22 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+#### plugins.[object].android.implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `plugins.[object].android.implementation` |
+
+
+
+
+
+---
+
+
+
+
 #### plugins.[object].android.package
 
 
@@ -34813,6 +35249,32 @@ Overrides values in `gradle.properties` file of generated android based project
 | :----- | :----- | :---- | :---- |
 | `package` | `string` |  | `plugins.[object].android.package` |
 
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].android.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].android.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
 
 
 
@@ -34947,6 +35409,66 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 ---
+
+
+
+
+#### plugins.[object].androidtv.BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `plugins.[object].androidtv.BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### plugins.[object].androidtv.BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `plugins.[object].androidtv.BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### plugins.[object].androidtv.BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `plugins.[object].androidtv.BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
 
 
 
@@ -35095,6 +35617,22 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+#### plugins.[object].androidtv.implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `plugins.[object].androidtv.implementation` |
+
+
+
+
+
+---
+
+
+
+
 #### plugins.[object].androidtv.package
 
 
@@ -35102,6 +35640,32 @@ Overrides values in `gradle.properties` file of generated android based project
 | :----- | :----- | :---- | :---- |
 | `package` | `string` |  | `plugins.[object].androidtv.package` |
 
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].androidtv.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].androidtv.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
 
 
 
@@ -35236,6 +35800,66 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 
 ---
+
+
+
+
+#### plugins.[object].androidwear.BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `plugins.[object].androidwear.BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### plugins.[object].androidwear.BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `plugins.[object].androidwear.BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### plugins.[object].androidwear.BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `plugins.[object].androidwear.BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
 
 
 
@@ -35384,6 +36008,22 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+#### plugins.[object].androidwear.implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `plugins.[object].androidwear.implementation` |
+
+
+
+
+
+---
+
+
+
+
 #### plugins.[object].androidwear.package
 
 
@@ -35391,6 +36031,32 @@ Overrides values in `gradle.properties` file of generated android based project
 | :----- | :----- | :---- | :---- |
 | `package` | `string` |  | `plugins.[object].androidwear.package` |
 
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].androidwear.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].androidwear.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
 
 
 
@@ -35481,6 +36147,32 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+#### plugins.[object].chromecast.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].chromecast.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### plugins.[object].chromecast.webpackConfig
 
 
@@ -35538,6 +36230,32 @@ Overrides values in `gradle.properties` file of generated android based project
 | :----- | :----- | :---- | :---- |
 | `enabled` | `boolean` |  | `plugins.[object].firefox.enabled` |
 
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firefox.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].firefox.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
 
 
 
@@ -35804,6 +36522,32 @@ Overrides values in `gradle.properties` file of generated android based project
 
 
 
+#### plugins.[object].ios.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].ios.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### plugins.[object].ios.plist
 
 
@@ -35908,6 +36652,32 @@ Overrides values in `gradle.properties` file of generated android based project
 | :----- | :----- | :---- | :---- |
 | `enabled` | `boolean` |  | `plugins.[object].macos.enabled` |
 
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].macos.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].macos.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
 
 
 
@@ -36099,6 +36869,32 @@ NOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}
 | :----- | :----- | :---- | :---- |
 | `enabled` | `boolean` |  | `plugins.[object].tizen.enabled` |
 
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].tizen.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].tizen.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
 
 
 
@@ -36365,6 +37161,32 @@ NOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}
 
 
 
+#### plugins.[object].tvos.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].tvos.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### plugins.[object].tvos.plist
 
 
@@ -36495,6 +37317,32 @@ NOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}
 
 
 
+#### plugins.[object].web.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].web.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### plugins.[object].web.webpackConfig
 
 
@@ -36535,6 +37383,32 @@ NOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}
 | :----- | :----- | :---- | :---- |
 | `enabled` | `boolean` |  | `plugins.[object].webos.enabled` |
 
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].webos.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].webos.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
 
 
 
@@ -36659,6 +37533,32 @@ Allows you to configure webpack bahaviour per each individual plugin
 
 
 
+#### plugins.[object].webtv.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].webtv.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### plugins.[object].webtv.webpackConfig
 
 
@@ -36699,6 +37599,32 @@ Allows you to configure webpack bahaviour per each individual plugin
 | :----- | :----- | :---- | :---- |
 | `enabled` | `boolean` |  | `plugins.[object].windows.enabled` |
 
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].windows.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].windows.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
 
 
 

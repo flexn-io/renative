@@ -436,6 +436,30 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
     applyPlugin: {
         type: 'array'
     },
+    BuildGradle: {
+        type: 'object',
+        description: 'Allows you to customize `build.gradle` file',
+        properties: {
+            allprojects: {
+                type: 'object',
+                properties: {
+                    repositories: {
+                        type: 'object',
+                        description: 'Customize repositories section of build.gradle',
+                        additionalProperties: true,
+                        examples: [
+                            {
+                                "flatDir { dirs 'libs'}": true
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    implementation: {
+        type: 'object'
+    }
 };
 
 
@@ -487,9 +511,6 @@ const platformAndroidProps = {
             true,
             false
         ]
-    },
-    universalApk: {
-        type: 'boolean'
     },
     aab: {
         type: 'boolean',
@@ -875,6 +896,13 @@ const commonPluginPlatformProps = {
     enabled: {
         type: 'boolean'
     },
+    path: {
+        type: 'string',
+        description: 'Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.',
+        examples: [
+            'node_modules/react-native-video/android-exoplayer'
+        ]
+    }
 };
 
 

@@ -446,7 +446,7 @@ export const configSchema = {
 
 
 export const INJECTABLE_CONFIG_PROPS = ['id', 'title', 'entryFile', 'backgroundColor', 'scheme',
-    'teamID', 'provisioningStyle', 'bundleAssets', 'enableHermes', 'universalApk', 'multipleAPKs', 'pagesDir'];
+    'teamID', 'provisioningStyle', 'bundleAssets', 'enableHermes', 'multipleAPKs', 'pagesDir'];
 export const INJECTABLE_RUNTIME_PROPS = ['appId', 'scheme', 'timestamp', 'localhost', 'target', 'port'];
 
 export const REDASH_URL = 'https://rnv.nxg.staging.24imedia.com/events';
