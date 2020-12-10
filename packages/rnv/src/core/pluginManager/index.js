@@ -14,7 +14,7 @@ import {
 } from '../systemManager/fileutils';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { getConfigProp, getBuildsFolder, getAppFolder } from '../common';
-import { versionCheck, writeRenativeConfigFile } from '../configManager';
+import { writeRenativeConfigFile } from '../configManager';
 
 import { SUPPORTED_PLATFORMS, INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import {
@@ -310,7 +310,7 @@ package.json will be overriden`
     });
 
     // logTask('configurePlugins', `shouldUpdate:${!!hasPackageChanged}:${!c.runtime.skipPackageUpdate}`);
-    await versionCheck(c);
+    // await versionCheck(c);
 
     if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
         _updatePackage(c, { dependencies: newDeps, devDependencies: newDevDeps });

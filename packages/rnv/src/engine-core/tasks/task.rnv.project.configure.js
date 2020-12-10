@@ -1,6 +1,6 @@
 import { configurePlugins, overrideTemplatePlugins, resolvePluginDependants } from '../../core/pluginManager';
 import { chalk, logTask, logInfo } from '../../core/systemManager/logger';
-import { parseRenativeConfigs, checkIsRenativeProject, generateRuntimeConfig } from '../../core/configManager';
+import { parseRenativeConfigs, checkIsRenativeProject, generateRuntimeConfig, versionCheck } from '../../core/configManager';
 import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
 import { applyTemplate, checkIfTemplateConfigured, configureEntryPoints, configureTemplateFiles, isTemplateInstalled } from '../../core/templateManager';
 import { fsExistsSync, fsMkdirSync } from '../../core/systemManager/fileutils';
@@ -52,9 +52,11 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);
         await executeTask(c, TASK_APP_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
         // IMPORTANT: configurePlugins must run after appConfig present to ensure merge of all configs/plugins
+        await versionCheck(c);
         await configureEngines(c);
         await resolvePluginDependants(c);
         await configurePlugins(c);
+
         await configureRuntimeDefaults(c);
         if (!c.runtime.disableReset) {
             if (c.program.resetHard) {
