@@ -6,6 +6,30 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.22 (2020-12-12)
+
+### Fixed
+
+- [feat] support custom android store configs in renative.private.json files
+- [fix] failed emu parse handling
+- [chore] remove cyclic imports
+- [fix] move version check before engine check
+- [docs] update
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- [feat] override MainActivity super.onCreate on android
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- [feat] pod dep parser
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.21 (2020-11-29)
 
 ### Fixed
