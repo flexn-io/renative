@@ -3504,7 +3504,9 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `keyPassword` | `string` |  | `platforms.android.buildSchemes.[object].keyPassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+keyPassword for keystore file
 
 
 
@@ -3764,7 +3766,9 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 | :----- | :----- | :---- | :---- |
 | `storePassword` | `string` |  | `platforms.android.buildSchemes.[object].storePassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+storePassword for keystore file
 
 
 
@@ -4548,7 +4552,9 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `keyPassword` | `string` |  | `platforms.android.keyPassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+keyPassword for keystore file
 
 
 
@@ -4808,7 +4814,9 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 | :----- | :----- | :---- | :---- |
 | `storePassword` | `string` |  | `platforms.android.storePassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+storePassword for keystore file
 
 
 
@@ -6211,7 +6219,9 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `keyPassword` | `string` |  | `platforms.androidtv.buildSchemes.[object].keyPassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+keyPassword for keystore file
 
 
 
@@ -6471,7 +6481,9 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 | :----- | :----- | :---- | :---- |
 | `storePassword` | `string` |  | `platforms.androidtv.buildSchemes.[object].storePassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+storePassword for keystore file
 
 
 
@@ -7255,7 +7267,9 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `keyPassword` | `string` |  | `platforms.androidtv.keyPassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+keyPassword for keystore file
 
 
 
@@ -7515,7 +7529,9 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 | :----- | :----- | :---- | :---- |
 | `storePassword` | `string` |  | `platforms.androidtv.storePassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+storePassword for keystore file
 
 
 
@@ -8918,7 +8934,9 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `keyPassword` | `string` |  | `platforms.androidwear.buildSchemes.[object].keyPassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+keyPassword for keystore file
 
 
 
@@ -9178,7 +9196,9 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 | :----- | :----- | :---- | :---- |
 | `storePassword` | `string` |  | `platforms.androidwear.buildSchemes.[object].storePassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+storePassword for keystore file
 
 
 
@@ -9962,7 +9982,9 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `keyPassword` | `string` |  | `platforms.androidwear.keyPassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+keyPassword for keystore file
 
 
 
@@ -10222,7 +10244,9 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 | :----- | :----- | :---- | :---- |
 | `storePassword` | `string` |  | `platforms.androidwear.storePassword` |
 
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
 
+storePassword for keystore file
 
 
 

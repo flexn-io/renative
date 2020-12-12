@@ -1,7 +1,7 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import { listAppConfigsFoldersSync } from '../../core/configManager';
-import { updateRenativeConfigs } from '../../core/configManager/runtimeParser';
+import { updateRenativeConfigs } from '../../core/runtimeManager';
 import { TASK_APP_CONFIGURE, PARAMS } from '../../core/constants';
 import {
     writeFileSync,

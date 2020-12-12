@@ -258,6 +258,8 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         fileObj.configsLocal = [];
         fileObj.configsPrivate = [];
         const fileObj1 = {};
+
+
         // PATH1: appConfigs/base
         const path1 = path.join(pathObj.appConfigsDir, 'base');
         const pathObj1 = {
@@ -271,7 +273,7 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         pathObj.configs.push(pathObj1.config);
         pathObj.configsPrivate.push(pathObj1.configPrivate);
         pathObj.configsLocal.push(pathObj1.configLocal);
-        // FILE1: appConfigs/<extendConfig>
+        // FILE1: appConfigs/base
         loadFile(fileObj1, pathObj1, 'config');
         loadFile(fileObj1, pathObj1, 'configPrivate');
         loadFile(fileObj1, pathObj1, 'configLocal');
@@ -279,7 +281,7 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         if (fileObj1.configPrivate) fileObj.configsPrivate.push(fileObj1.configPrivate);
         if (fileObj1.configLocal) fileObj.configsLocal.push(fileObj1.configLocal);
 
-        // Check if appConfigs folder exists ie in workspace mirror
+
         if (fsExistsSync(pathObj.appConfigsDir)) {
             const appConfigsDirNames = fsReaddirSync(pathObj.appConfigsDir);
             if (parseAppConfigs && extendAppId && appConfigsDirNames.includes(extendAppId)) {
@@ -318,6 +320,9 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         pathObj.configsLocal.push(path.join(path3, RENATIVE_CONFIG_LOCAL_NAME));
         pathObj.configsPrivate.push(path.join(path3, RENATIVE_CONFIG_PRIVATE_NAME));
         // FILE3: appConfigs/<appId>
+        loadFile(fileObj, pathObj, 'config');
+        loadFile(fileObj, pathObj, 'configPrivate');
+        loadFile(fileObj, pathObj, 'configLocal');
         if (fileObj.config) fileObj.configs.push(fileObj.config);
         if (fileObj.configPrivate) fileObj.configsPrivate.push(fileObj.configPrivate);
         if (fileObj.configLocal) fileObj.configsLocal.push(fileObj.configLocal);

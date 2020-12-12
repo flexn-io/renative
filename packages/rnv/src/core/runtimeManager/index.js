@@ -9,7 +9,7 @@ import {
     logTask,
 } from '../systemManager/logger';
 import { loadPluginTemplates } from '../pluginManager';
-import { parseRenativeConfigs } from './index';
+import { parseRenativeConfigs } from '../configManager/index';
 
 
 export const updateRenativeConfigs = async (c) => {

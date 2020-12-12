@@ -96,6 +96,9 @@ jest.mock('rnv', () => {
             isPlatformActive: () => null,
             logErrorPlatform: () => null
         },
+        RuntimeManager: {
+            updateRenativeConfigs: () => null
+        },
         SDKManager: {
             Apple: {
 

@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-import { configureRuntimeDefaults, updateRenativeConfigs } from '../core/configManager/runtimeParser';
+import { configureRuntimeDefaults, updateRenativeConfigs } from '../core/runtimeManager';
 import { registerEngine, registerMissingPlatformEngines, loadEngines } from '../core/engineManager';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
 import { loadIntegrations } from '../core/integrationManager';

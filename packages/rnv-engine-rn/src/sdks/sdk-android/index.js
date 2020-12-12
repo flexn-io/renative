@@ -5,7 +5,7 @@ import inquirer from 'inquirer';
 import execa from 'execa';
 import { FileUtils, Exec, Utils, Logger, Constants, EngineManager,
     PluginManager, ProjectManager, Common,
-    PlatformManager, Prompt, SDKManager } from 'rnv';
+    PlatformManager, Prompt, SDKManager, RuntimeManager } from 'rnv';
 import {
     parseAndroidManifestSync,
     injectPluginManifestSync
@@ -67,6 +67,7 @@ const { isPlatformActive, createPlatformBuild } = PlatformManager;
 const { generateEnvVars } = EngineManager;
 const { isSystemWin } = Utils;
 const { inquirerPrompt } = Prompt;
+const { updateRenativeConfigs } = RuntimeManager;
 const {
     chalk,
     logTask,
@@ -260,9 +261,9 @@ const _checkSigningCerts = async (c) => {
         'Debug'
     );
     const isRelease = signingConfig === 'Release';
-    const privateConfig = c.files.workspace.appConfig.configPrivate?.[c.platform];
+    const storePath = getConfigProp(c, c.platform, 'storeFile');
 
-    if (isRelease && !privateConfig) {
+    if (isRelease && !storePath) {
         logWarning(
             `You're attempting to ${
                 c.command
@@ -315,7 +316,8 @@ const _checkSigningCerts = async (c) => {
                     const result = await inquirerPrompt({
                         type: 'input',
                         name: 'storeFile',
-                        message: `Paste asolute or relative path to ${chalk().white(
+                        default: './release.keystore',
+                        message: `Paste relative path to ${chalk().white(
                             c.paths.workspace.appConfig.dir
                         )} of your existing ${chalk().white(
                             'release.keystore'
@@ -365,8 +367,10 @@ const _checkSigningCerts = async (c) => {
 
                 if (c.paths.workspace.appConfig.dir) {
                     mkdirSync(c.paths.workspace.appConfig.dir);
-                    c.files.workspace.appConfig.configPrivate = {};
-                    c.files.workspace.appConfig.configPrivate[c.platform] = {
+                    c.files.workspace.appConfig.configPrivate = {
+                        platforms: {}
+                    };
+                    c.files.workspace.appConfig.configPrivate.platforms[c.platform] = {
                         storeFile,
                         storePassword,
                         keyAlias,
@@ -384,7 +388,10 @@ const _checkSigningCerts = async (c) => {
                     c.paths.workspace.appConfig.dir
                 )}.`
             );
-            await configureProject(c);
+            // await configureProject(c);
+            await updateRenativeConfigs(c);
+            await parseAppBuildGradleSync(c);
+            // await configureGradleProject(c);
         } else {
             return Promise.reject("You selected no. Can't proceed");
         }

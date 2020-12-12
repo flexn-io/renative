@@ -1,7 +1,7 @@
 import { logTask } from '../../core/systemManager/logger';
 import { isBuildSchemeSupported } from '../../core/configManager/schemeParser';
 import { isPlatformSupported } from '../../core/platformManager';
-import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
+import { configureRuntimeDefaults } from '../../core/runtimeManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_APP_CONFIGURE, TASK_CONFIGURE_SOFT, PARAMS } from '../../core/constants';
 import { checkSdk } from '../../core/sdkManager/installer';

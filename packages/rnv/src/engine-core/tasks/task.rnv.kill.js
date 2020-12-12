@@ -3,7 +3,7 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { checkPortInUse } from '../../core/common';
 import { executeTask } from '../../core/taskManager';
 import { chalk, logTask, logSuccess } from '../../core/systemManager/logger';
-import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
+import { configureRuntimeDefaults } from '../../core/runtimeManager';
 
 import { PARAMS, TASK_KILL, TASK_APP_CONFIGURE } from '../../core/constants';
 

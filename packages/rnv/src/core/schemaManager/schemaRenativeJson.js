@@ -1,5 +1,7 @@
 
 
+const SENSITIVE = '> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!\n\n';
+
 // ==================================================
 //  PROPS
 // ==================================================
@@ -575,13 +577,16 @@ const platformAndroidProps = {
         type: 'string'
     },
     storePassword: {
-        type: 'string'
+        type: 'string',
+        description: `${SENSITIVE}storePassword for keystore file`
     },
     keyAlias: {
         type: 'string'
     },
     keyPassword: {
-        type: 'string'
+        type: 'string',
+        isSensitive: true,
+        description: `${SENSITIVE}keyPassword for keystore file`
     },
     excludedFeatures: {
         type: 'array'
