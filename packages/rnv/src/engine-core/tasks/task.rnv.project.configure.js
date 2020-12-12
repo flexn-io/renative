@@ -1,13 +1,13 @@
 import { configurePlugins, overrideTemplatePlugins, resolvePluginDependants } from '../../core/pluginManager';
 import { chalk, logTask, logInfo } from '../../core/systemManager/logger';
-import { parseRenativeConfigs, checkIsRenativeProject, generateRuntimeConfig, versionCheck } from '../../core/configManager';
-import { configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
+import { checkIsRenativeProject, generateRuntimeConfig } from '../../core/configManager';
+import { updateRenativeConfigs, configureRuntimeDefaults } from '../../core/configManager/runtimeParser';
 import { applyTemplate, checkIfTemplateConfigured, configureEntryPoints, configureTemplateFiles, isTemplateInstalled } from '../../core/templateManager';
 import { fsExistsSync, fsMkdirSync } from '../../core/systemManager/fileutils';
 import { checkCrypto } from '../../core/systemManager/crypto';
 import { checkAndMigrateProject } from '../../core/projectManager/migrator';
 import { TASK_INSTALL, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, TASK_APP_CONFIGURE, TASK_WORKSPACE_CONFIGURE, PARAMS } from '../../core/constants';
-import { checkAndCreateBabelConfig, copyRuntimeAssets, cleanPlaformAssets, checkAndCreateGitignore } from '../../core/projectManager';
+import { checkAndCreateBabelConfig, copyRuntimeAssets, cleanPlaformAssets, checkAndCreateGitignore, versionCheck } from '../../core/projectManager';
 import { configureEngines } from '../../core/engineManager';
 import { executeTask, initializeTask, findSuitableTask } from '../../core/taskManager';
 
@@ -20,7 +20,7 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         fsMkdirSync(c.paths.project.builds.dir);
     }
     await checkAndMigrateProject(c);
-    await parseRenativeConfigs(c);
+    await updateRenativeConfigs(c);
     await checkIsRenativeProject(c);
     // await checkAndCreateProjectPackage(c);
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
@@ -76,6 +76,9 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         await configureTemplateFiles(c);
         await checkAndCreateGitignore(c);
         await checkAndCreateBabelConfig(c);
+        if (!c.buildConfig.platforms) {
+            await updateRenativeConfigs(c);
+        }
         await configureEntryPoints(c);
         await generateRuntimeConfig(c);
         await overrideTemplatePlugins(c);

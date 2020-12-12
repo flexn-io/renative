@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME } from '../constants';
 import {
@@ -22,7 +21,7 @@ import {
     fsReadFileSync
 } from '../systemManager/fileutils';
 import { isPlatformActive } from '../platformManager';
-import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/logger';
+import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../systemManager/logger';
 import { copyTemplatePluginsSync } from '../pluginManager';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEngineRunnerByPlatform } from '../engineManager';
@@ -409,6 +408,56 @@ const SYNCED_TEMPLATES = [
     'renative-template-hello-world',
     'renative-template-blank'
 ];
+
+export const versionCheck = async (c) => {
+    logTask('versionCheck');
+
+    if (c.runtime.isWrapper || c.runtime.versionCheckCompleted || c.files.project?.config?.skipAutoUpdate) {
+        return true;
+    }
+    c.runtime.rnvVersionRunner = c.files.rnv?.package?.version;
+    c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv;
+    logTask(
+        `versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${
+            c.runtime.rnvVersionProject
+        }`,
+        chalk().grey
+    );
+    if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
+        if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
+            const recCmd = chalk().white(`$ npx ${getCurrentCommand(true)}`);
+            const actionNoUpdate = 'Continue and skip updating package.json';
+            const actionWithUpdate = 'Continue and update package.json';
+            const actionUpgrade = `Upgrade project to ${
+                c.runtime.rnvVersionRunner
+            }`;
+
+            const { chosenAction } = await inquirerPrompt({
+                message: 'What to do next?',
+                type: 'list',
+                name: 'chosenAction',
+                choices: [actionNoUpdate, actionWithUpdate, actionUpgrade],
+                warningMessage: `You are running $rnv v${chalk().red(
+                    c.runtime.rnvVersionRunner
+                )} against project built with rnv v${chalk().red(
+                    c.runtime.rnvVersionProject
+                )}. This might result in unexpected behaviour!
+It is recommended that you run your rnv command with npx prefix: ${
+    recCmd
+} . or manually update your devDependencies.rnv version in your package.json.`
+            });
+
+            c.runtime.versionCheckCompleted = true;
+
+            c.runtime.skipPackageUpdate = chosenAction === actionNoUpdate;
+
+            if (chosenAction === actionUpgrade) {
+                upgradeProjectDependencies(c, c.runtime.rnvVersionRunner);
+            }
+        }
+    }
+    return true;
+};
 
 export const upgradeProjectDependencies = (c, version) => {
     logTask('upgradeProjectDependencies');

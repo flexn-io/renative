@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 /* eslint-disable no-await-in-loop */
 import path from 'path';
 import merge from 'deepmerge';

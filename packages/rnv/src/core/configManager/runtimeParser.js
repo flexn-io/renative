@@ -8,7 +8,15 @@ import { getConfigProp } from '../common';
 import {
     logTask,
 } from '../systemManager/logger';
+import { loadPluginTemplates } from '../pluginManager';
+import { parseRenativeConfigs } from './index';
 
+
+export const updateRenativeConfigs = async (c) => {
+    await loadPluginTemplates(c);
+    await parseRenativeConfigs(c);
+    return true;
+};
 
 export const configureRuntimeDefaults = async (c) => {
     c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId || null;

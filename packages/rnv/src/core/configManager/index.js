@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import merge from 'deepmerge';
 
@@ -39,12 +38,9 @@ import {
     logError,
     logTask,
     logWarning,
-    logDebug,
-    getCurrentCommand
+    logDebug
 } from '../systemManager/logger';
-import { upgradeProjectDependencies } from '../projectManager';
-import { inquirerPrompt } from '../../cli/prompt';
-import { loadPluginTemplates } from '../pluginManager';
+// import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
 
@@ -68,56 +64,6 @@ const _generateConfigPaths = (pathObj, dir) => {
     pathObj.configLocal = path.join(dir, RENATIVE_CONFIG_LOCAL_NAME);
     pathObj.configPrivate = path.join(dir, RENATIVE_CONFIG_PRIVATE_NAME);
     pathObj.appConfigsDir = path.join(dir, '..');
-};
-
-export const versionCheck = async (c) => {
-    logTask('versionCheck');
-
-    if (c.runtime.isWrapper || c.runtime.versionCheckCompleted || c.files.project?.config?.skipAutoUpdate) {
-        return true;
-    }
-    c.runtime.rnvVersionRunner = c.files.rnv?.package?.version;
-    c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv;
-    logTask(
-        `versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${
-            c.runtime.rnvVersionProject
-        }`,
-        chalk().grey
-    );
-    if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
-        if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
-            const recCmd = chalk().white(`$ npx ${getCurrentCommand(true)}`);
-            const actionNoUpdate = 'Continue and skip updating package.json';
-            const actionWithUpdate = 'Continue and update package.json';
-            const actionUpgrade = `Upgrade project to ${
-                c.runtime.rnvVersionRunner
-            }`;
-
-            const { chosenAction } = await inquirerPrompt({
-                message: 'What to do next?',
-                type: 'list',
-                name: 'chosenAction',
-                choices: [actionNoUpdate, actionWithUpdate, actionUpgrade],
-                warningMessage: `You are running $rnv v${chalk().red(
-                    c.runtime.rnvVersionRunner
-                )} against project built with rnv v${chalk().red(
-                    c.runtime.rnvVersionProject
-                )}. This might result in unexpected behaviour!
-It is recommended that you run your rnv command with npx prefix: ${
-    recCmd
-} . or manually update your devDependencies.rnv version in your package.json.`
-            });
-
-            c.runtime.versionCheckCompleted = true;
-
-            c.runtime.skipPackageUpdate = chosenAction === actionNoUpdate;
-
-            if (chosenAction === actionUpgrade) {
-                upgradeProjectDependencies(c, c.runtime.rnvVersionRunner);
-            }
-        }
-    }
-    return true;
 };
 
 
@@ -512,12 +458,6 @@ export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs, appConfigsDirP
     return appConfigsDirs;
 };
 
-export const loadProjectTemplates = (c) => {
-    c.files.rnv.projectTemplates.config = readObjectSync(
-        c.paths.rnv.projectTemplates.config
-    );
-};
-
 const _loadWorkspacesSync = (c) => {
     // CHECK WORKSPACES
     if (fsExistsSync(c.paths.rnv.configWorkspaces)) {
@@ -602,16 +542,12 @@ export const parseRenativeConfigs = async (c) => {
     _loadConfigFiles(c, c.files.defaultWorkspace, c.paths.defaultWorkspace);
 
     // LOAD PROJECT TEMPLATES
-    loadProjectTemplates(c);
+    c.files.rnv.projectTemplates.config = readObjectSync(
+        c.paths.rnv.projectTemplates.config
+    );
 
-    // LOAD PLUGIN TEMPLATES
-    await loadPluginTemplates(c);
-
-    // LOAD PLATFORM TEMPLATES
-    // loadPlatformTemplates(c);
-
-    // LOAD ENGINES
-    // loadEngines(c);
+    // // LOAD PLUGIN TEMPLATES
+    // await loadPluginTemplates(c);
 
     if (!c.files.project.config) {
         logDebug(`BUILD_CONFIG: c.files.project.config does not exists. path: ${c.paths.project.config}`);

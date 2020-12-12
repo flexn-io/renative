@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import path from 'path';
 import { chalk, logTask, logError, logWarning } from '../systemManager/logger';
 import { generateOptions, inquirerPrompt } from '../../cli/prompt';

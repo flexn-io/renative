@@ -1,6 +1,7 @@
 import path from 'path';
 import inquirer from 'inquirer';
-import { parseRenativeConfigs, listAppConfigsFoldersSync } from '../../core/configManager';
+import { listAppConfigsFoldersSync } from '../../core/configManager';
+import { updateRenativeConfigs } from '../../core/configManager/runtimeParser';
 import { TASK_APP_CONFIGURE, PARAMS } from '../../core/constants';
 import {
     writeFileSync,
@@ -205,7 +206,7 @@ export const taskRnvAppConfigure = async (c) => {
     c.runtime.appConfigDir = c.paths.project.appConfigsDirs[
         c.paths.project.appConfigsDirNames.indexOf(c.runtime.appId)];
 
-    await parseRenativeConfigs(c);
+    await updateRenativeConfigs(c);
     logAppInfo(c);
 
     return true;

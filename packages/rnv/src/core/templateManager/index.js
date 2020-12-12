@@ -28,8 +28,7 @@ import { generateOptions } from '../../cli/prompt';
 import {
     listAppConfigsFoldersSync,
     generateBuildConfig,
-    generateLocalConfig,
-    parseRenativeConfigs
+    generateLocalConfig
 } from '../configManager';
 import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
@@ -289,9 +288,9 @@ const _configureRenativeConfig = async (c) => {
 };
 
 const _parseSupportedPlatforms = async (c, callback) => {
-    if (!c.buildConfig.platforms) {
-        await parseRenativeConfigs(c);
-    }
+    // if (!c.buildConfig.platforms) {
+    //     await parseRenativeConfigs(c);
+    // }
     const p = Object.keys(c.buildConfig.platforms);
     const pLen = p.length;
     const supportedPlatforms = c.buildConfig.defaults?.supportedPlatforms;

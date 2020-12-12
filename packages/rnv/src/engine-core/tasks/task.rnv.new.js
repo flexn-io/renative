@@ -20,7 +20,7 @@ import {
     logWarning
 } from '../../core/systemManager/logger';
 import { getWorkspaceOptions } from '../../core/projectManager/workspace';
-import { parseRenativeConfigs } from '../../core/configManager';
+import { updateRenativeConfigs } from '../../core/configManager/runtimeParser';
 import { listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
 import { configureGit } from '../../core/systemManager/gitUtils';
 import Analytics from '../../core/systemManager/analytics';
@@ -214,7 +214,7 @@ export const taskRnvNew = async (c) => {
     data.optionWorkspaces.selectedOption = inputWorkspace;
 
     c.runtime.selectedWorkspace = inputWorkspace;
-    await parseRenativeConfigs(c);
+    await updateRenativeConfigs(c);
     data.optionTemplates = getTemplateOptions(c);
 
     // ==================================================
@@ -270,7 +270,7 @@ export const taskRnvNew = async (c) => {
             }
             c.files.workspace.config.projectTemplates[selectedInputTemplate] = {};
             writeObjectSync(c.paths.workspace.config, c.files.workspace.config);
-            await parseRenativeConfigs(c);
+            await updateRenativeConfigs(c);
 
             logInfo(`Updating ${c.paths.workspace.config}...DONE`);
         }
