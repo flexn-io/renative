@@ -442,9 +442,10 @@ const getEmulatorName = async (c, words) => {
 
     const emulatorReply = await executeTelnet(c, port, 'avd name');
     const emulatorReplyArray = emulatorReply.split('OK');
-    const emulatorName = emulatorReplyArray[
+    const emulatorNameStr = emulatorReplyArray[
         emulatorReplyArray.length - 2
-    ].trim();
+    ];
+    const emulatorName = emulatorNameStr?.trim?.() || '(err: could not parse emulator name)';
     return emulatorName;
 };
 
