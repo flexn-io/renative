@@ -189,6 +189,8 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
 export const configurePlugins = async (c) => {
     logTask('configurePlugins');
 
+    if (c.program.skipDependencyCheck) return true;
+
     if (!c.files.project.package.dependencies) {
         c.files.project.package.dependencies = {};
     }

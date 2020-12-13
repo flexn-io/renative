@@ -35,6 +35,7 @@ import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 
 export const checkIfTemplateConfigured = async (c) => {
     logTask('checkIfTemplateConfigured');
+    if (c.program.skipDependencyCheck) return true;
     if (!c.buildConfig.templates) {
         logWarning(
             `Your ${chalk().white(
@@ -60,6 +61,14 @@ export const checkIfTemplateConfigured = async (c) => {
             c.runtime.requiresBootstrap = true;
         }
         if (c.files.project.package.devDependencies) {
+            if (c.files.project.package.devDependencies[k] !== obj.version) {
+                logInfo(
+                    `Updating template ${chalk().white(
+                        `${k}`
+                    )} => ${chalk().green(obj.version)}. ...DONE`
+                );
+            }
+
             c.files.project.package.devDependencies[k] = obj.version;
         }
     });

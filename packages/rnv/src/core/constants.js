@@ -415,6 +415,9 @@ export const PARAM_KEYS = {
         value: 'value',
         isRequired: true,
         description: 'pass down custom xcodebuild arguments'
+    },
+    skipDependencyCheck: {
+        description: 'Skips auto update of npm dependencies if mismatch found'
     }
 };
 
