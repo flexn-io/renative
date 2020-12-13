@@ -54,6 +54,16 @@ export const parseBuildGradleSync = (c) => {
                 c.pluginConfigAndroid.buildGradleBuildScriptRepositories
         },
         {
+            pattern: '{{INJECT_PLUGINS}}',
+            override:
+                c.pluginConfigAndroid.buildGradlePlugins
+        },
+        {
+            pattern: '{{INJECT_AFTER_ALL}}',
+            override:
+                c.pluginConfigAndroid.buildGradleAfterAll
+        },
+        {
             pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}',
             override:
                 c.pluginConfigAndroid.buildGradleBuildScriptDependencies
@@ -134,7 +144,7 @@ export const parseAppBuildGradleSync = (c) => {
     release`;
     c.pluginConfigAndroid.localProperties = '';
 
-    if (c.files.workspace.appConfig.configPrivate[platform]) {
+    if (c.files.workspace?.appConfig?.configPrivate?.[platform]) {
         logWarning(`DEPRECATED structure in ${chalk().white(c.paths.workspace.appConfig.configPrivate)}.
 Your ${chalk().red(platform)} object needs to be located under ${chalk().green('platforms')} object.`);
     }
@@ -542,13 +552,31 @@ export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
         }
     }
 
-    if (plugin.implementations) {
-        plugin.implementations.forEach((v) => {
+    parseAndroidConfigObject(c, plugin);
+
+    if (!skipPathResolutions) {
+        _fixAndroidLegacy(c, pathAbsolute);
+    }
+};
+
+const getObj = (c, obj, keys) => {
+    for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const val = obj ? obj[key] : getConfigProp(c, c.platform, key);
+        if (val) return val;
+    }
+};
+
+export const parseAndroidConfigObject = (c, obj) => {
+    const implementations = getObj(c, obj, ['implementations']);
+    if (implementations) {
+        implementations.forEach((v) => {
             c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation ${v}\n`;
         });
     }
 
-    const appBuildGradle = plugin['app/build.gradle'];
+    // APP/BUILD.GRADLE
+    const appBuildGradle = getObj(c, obj, ['app/build.gradle']);
     if (appBuildGradle) {
         if (appBuildGradle.apply) {
             appBuildGradle.apply.forEach((v) => {
@@ -563,17 +591,17 @@ export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
         }
     }
 
-    if (plugin.afterEvaluate) {
-        plugin.afterEvaluate.forEach((v) => {
+    const afterEvaluate = getObj(c, obj, ['afterEvaluate']);
+    if (afterEvaluate) {
+        afterEvaluate.forEach((v) => {
             c.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${v}\n`;
         });
     }
-    if (!skipPathResolutions) {
-        _fixAndroidLegacy(c, pathAbsolute);
-    }
 
     // BUILD.GRADLE
-    const buildGradle = plugin.BuildGradle;
+    console.log('==========');
+    const buildGradle = getObj(c, obj, ['BuildGradle', 'build.gradle']);
+
     const allProjRepos = buildGradle?.allprojects?.repositories;
     if (allProjRepos) {
         Object.keys(allProjRepos).forEach((k) => {
@@ -583,6 +611,12 @@ export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
         });
     }
 
+    const plugins = buildGradle?.plugins;
+    if (plugins?.forEach) {
+        plugins.forEach((k) => {
+            c.pluginConfigAndroid.buildGradlePlugins += `${k}\n`;
+        });
+    }
     const buildscriptRepos = buildGradle?.buildscript?.repositories;
     if (buildscriptRepos) {
         Object.keys(buildscriptRepos).forEach((k) => {
@@ -607,6 +641,13 @@ export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
             if (buildscriptDexOptions[k] === true) {
                 c.pluginConfigAndroid.buildGradleBuildScriptDexOptions += `${k}\n`;
             }
+        });
+    }
+
+    const injectAfterAll = buildGradle?.injectAfterAll;
+    if (injectAfterAll?.forEach) {
+        injectAfterAll.forEach((k) => {
+            c.pluginConfigAndroid.buildGradleAfterAll += `${k}\n`;
         });
     }
 };

@@ -21,7 +21,8 @@ import {
     parseBuildGradleSync,
     parseSettingsGradleSync,
     parseGradlePropertiesSync,
-    injectPluginGradleSync
+    injectPluginGradleSync,
+    parseAndroidConfigObject
 } from './gradleParser';
 import {
     parseGradleWrapperSync
@@ -606,6 +607,8 @@ export const configureProject = async (c) => {
         manifestApplication: '',
         buildGradleAllProjectsRepositories: '',
         buildGradleBuildScriptRepositories: '',
+        buildGradlePlugins: '',
+        buildGradleAfterAll: '',
         buildGradleBuildScriptDependencies: '',
         buildGradleBuildScriptDexOptions: '',
         appBuildGradleSigningConfigs: '',
@@ -659,7 +662,7 @@ export const configureProject = async (c) => {
             }
         }
     });
-
+    parseAndroidConfigObject(c);
     parseSettingsGradleSync(c);
     parseAppBuildGradleSync(c);
     parseBuildGradleSync(c);
