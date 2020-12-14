@@ -781,6 +781,7 @@ const configureXcodeProject = async (c) => {
     // INJECTORS
     c.pluginConfigiOS = {
         podfileInject: '',
+        staticPodExtraConditions: '',
         staticFrameworks: [],
         staticPodDefinition: '',
         exportOptions: '',

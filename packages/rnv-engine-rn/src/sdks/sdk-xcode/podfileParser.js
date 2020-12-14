@@ -41,10 +41,19 @@ export const parsePodFile = async (c, platform) => {
                 c.pluginConfigiOS.staticFrameworks.push(`'${podName}'`);
             }
         }
+        const staticPods = getFlavouredProp(c, pluginPlat, 'staticPods');
+        if (staticPods?.forEach) {
+            staticPods.forEach((sPod) => {
+                if (sPod.startsWith('::startsWith::')) {
+                    c.pluginConfigiOS.staticPodExtraConditions += ` || pod.name.start_with?('${sPod.replace('::startsWith::', '')}')`;
+                }
+            });
+        }
+
         const reactSubSpecs = getFlavouredProp(c, pluginPlat, 'reactSubSpecs');
         if (reactSubSpecs) {
             logWarning(
-                'reactSubSpecs prop is deprecated. yoy can safely remove it'
+                'reactSubSpecs prop is deprecated. You can safely remove it'
             );
         }
 
@@ -130,6 +139,10 @@ export const parsePodFile = async (c, platform) => {
         {
             pattern: '{{PLUGIN_STATIC_POD_DEFINITION}}',
             override: c.pluginConfigiOS.staticPodDefinition
+        },
+        {
+            pattern: '{{PLUGIN_STATIC_POD_EXTRA_CONDITIONS}}',
+            override: c.pluginConfigiOS.staticPodExtraConditions
         }
     ];
 
