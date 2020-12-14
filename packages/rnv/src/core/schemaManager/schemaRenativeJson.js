@@ -891,6 +891,15 @@ const pluginIosProps = {
     isStatic: {
         type: 'boolean'
     },
+    staticPods: {
+        type: 'array',
+        description: 'Allows to define extra logic to cover multiple pods subspecs which need to be marked as static',
+        examples: [
+            [
+                '::startsWith::Permission-'
+            ]
+        ]
+    }
 };
 
 const commonPluginPlatformProps = {

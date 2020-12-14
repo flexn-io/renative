@@ -36620,6 +36620,34 @@ Enables you to pass custom path to plugin. If undefined, the default `node_modul
 
 
 
+#### plugins.[object].ios.staticPods
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `staticPods` | `array` |  | `plugins.[object].ios.staticPods` |
+
+Allows to define extra logic to cover multiple pods subspecs which need to be marked as static
+
+**examples**
+
+
+```json
+{
+  "staticPods": [
+    "::startsWith::Permission-"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
 #### plugins.[object].ios.webpackConfig
 
 
@@ -37250,6 +37278,34 @@ Enables you to pass custom path to plugin. If undefined, the default `node_modul
 | :----- | :----- | :---- | :---- |
 | `podNames` | `array` |  | `plugins.[object].tvos.podNames` |
 
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].tvos.staticPods
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `staticPods` | `array` |  | `plugins.[object].tvos.staticPods` |
+
+Allows to define extra logic to cover multiple pods subspecs which need to be marked as static
+
+**examples**
+
+
+```json
+{
+  "staticPods": [
+    "::startsWith::Permission-"
+  ]
+}
+```
 
 
 
