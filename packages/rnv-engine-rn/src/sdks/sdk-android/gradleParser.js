@@ -599,7 +599,6 @@ export const parseAndroidConfigObject = (c, obj) => {
     }
 
     // BUILD.GRADLE
-    console.log('==========');
     const buildGradle = getObj(c, obj, ['BuildGradle', 'build.gradle']);
 
     const allProjRepos = buildGradle?.allprojects?.repositories;

@@ -6,6 +6,22 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.23 (2020-12-14)
+
+### Fixed
+
+- [feat] gradle customisation improvements :  plugins, injectAfterAll
+- [feat] --skipDependencyCheck
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.22 (2020-12-12)
 
 ### Fixed
