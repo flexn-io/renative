@@ -144,16 +144,17 @@ export const parseAppBuildGradleSync = (c) => {
     release`;
     c.pluginConfigAndroid.localProperties = '';
 
-    if (c.files.workspace?.appConfig?.configPrivate?.[platform]) {
+    const obj = c.files.workspace?.appConfig?.configPrivate?.[platform];
+    if (obj) {
         logWarning(`DEPRECATED structure in ${chalk().white(c.paths.workspace.appConfig.configPrivate)}.
 Your ${chalk().red(platform)} object needs to be located under ${chalk().green('platforms')} object.`);
     }
 
 
-    const storeFile = getConfigProp(c, c.platform, 'storeFile');
-    const keyAlias = getConfigProp(c, c.platform, 'keyAlias');
-    const storePassword = getConfigProp(c, c.platform, 'storePassword');
-    const keyPassword = getConfigProp(c, c.platform, 'keyPassword');
+    const storeFile = getConfigProp(c, c.platform, 'storeFile') || obj?.storeFile;
+    const keyAlias = getConfigProp(c, c.platform, 'keyAlias') || obj?.keyAlias;
+    const storePassword = getConfigProp(c, c.platform, 'storePassword') || obj?.storePassword;
+    const keyPassword = getConfigProp(c, c.platform, 'keyPassword') || obj?.keyPassword;
 
     if (!!storeFile && !!keyAlias && !!storePassword && !!keyPassword) {
         const keystorePath = storeFile;
