@@ -5,23 +5,23 @@
     },
     "engineTemplates": {
         "@rnv/engine-rn": {
-            "version": "0.32.0-alpha.23",
+            "version": "0.32.0-alpha.24",
             "id": "engine-rn"
         },
         "@rnv/engine-rn-web": {
-            "version": "0.32.0-alpha.23",
+            "version": "0.32.0-alpha.24",
             "id": "engine-rn-web"
         },
         "@rnv/engine-rn-next": {
-            "version": "0.32.0-alpha.23",
+            "version": "0.32.0-alpha.24",
             "id": "engine-rn-next"
         },
         "@rnv/engine-rn-electron": {
-            "version": "0.32.0-alpha.23",
+            "version": "0.32.0-alpha.24",
             "id": "engine-rn-electron"
         },
         "@rnv/engine-lightning": {
-            "version": "0.32.0-alpha.23",
+            "version": "0.32.0-alpha.24",
             "id": "engine-lightning"
         }
     },

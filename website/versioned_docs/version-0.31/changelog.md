@@ -6,6 +6,25 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.24 (2020-12-14)
+
+### Fixed
+
+- [docs] ios.staticPods
+- add PLUGIN_STATIC_POD_EXTRA_CONDITIONS support ios, tvos
+- Merge branch 'feat/pod-upgrades' into feat/config-private
+- [feat] support for static pod submodules
+- [fix] compatibility for old configPrivate
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.23 (2020-12-14)
 
 ### Fixed
