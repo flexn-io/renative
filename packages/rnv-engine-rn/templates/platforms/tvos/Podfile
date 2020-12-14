@@ -92,7 +92,7 @@ static_frameworks = [{{PLUGIN_STATIC_FRAMEWORKS}}]
 
 pre_install do |installer|
   installer.pod_targets.each do |pod|
-    if static_frameworks.include?(pod.name)
+    if static_frameworks.include?(pod.name){{PLUGIN_STATIC_POD_EXTRA_CONDITIONS}}
       def pod.static_framework?;
         true
       end
