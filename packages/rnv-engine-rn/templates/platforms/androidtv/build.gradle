@@ -27,9 +27,8 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
-        maven { url "{{PATH_REACT_NATIVE}}/android" }
         maven { url "https://jitpack.io" }
-        maven { url("{{PATH_JSC_ANDROID}}/dist") }
+        {{INJECT_REACT_NATIVE_ENGINE}}
         {{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}
     }
 }

@@ -68,15 +68,14 @@ export const parseBuildGradleSync = (c) => {
             override:
                 c.pluginConfigAndroid.buildGradleBuildScriptDependencies
         },
-        { pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}', override: dexOptions },
         {
-            pattern: '{{PATH_JSC_ANDROID}}',
-            override: doResolve('jsc-android', true, { forceForwardPaths: true })
+            pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}',
+            override: dexOptions
         },
         {
-            pattern: '{{PATH_REACT_NATIVE}}',
-            override: doResolve('react-native', true, { forceForwardPaths: true })
-        },
+            pattern: '{{INJECT_REACT_NATIVE_ENGINE}}',
+            override: c.pluginConfigAndroid.injectReactNativeEngine
+        }
     ];
     addSystemInjects(c, injects);
 
@@ -87,7 +86,53 @@ export const parseBuildGradleSync = (c) => {
     );
 };
 
-/* eslint-disable max-len */
+const setReactNativeEngineDefault = (c) => {
+    c.pluginConfigAndroid.injectReactNativeEngine = `
+maven { url "${doResolve('react-native', true, { forceForwardPaths: true })}/android" }
+maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
+`;
+
+    c.pluginConfigAndroid.appBuildGradleImplementations
++= "    implementation 'org.webkit:android-jsc:+'\n";
+
+    c.pluginConfigAndroid.injectHermes = '    enableHermes: false,';
+};
+
+const setReactNativeEngineHermes = (c) => {
+    c.pluginConfigAndroid.injectReactNativeEngine = `
+  maven { url "${doResolve('react-native', true, { forceForwardPaths: true })}/android" }
+  maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
+  `;
+
+
+    c.pluginConfigAndroid.appBuildGradleImplementations += `    debugImplementation files("${doResolve(
+        'hermes-engine', true, { forceForwardPaths: true }
+    )}/android/hermes-debug.aar")\n`;
+    c.pluginConfigAndroid.appBuildGradleImplementations += `    releaseImplementation files("${doResolve(
+        'hermes-engine', true, { forceForwardPaths: true }
+    )}/android/hermes-release.aar")\n`;
+
+
+    c.pluginConfigAndroid.injectHermes = `    enableHermes: true,
+hermesCommand: "{{PATH_HERMES_ENGINE}}/%OS-BIN%/hermes",
+    `;
+};
+
+const setReactNativeEngineV8 = (c, engine) => {
+    c.pluginConfigAndroid.injectReactNativeEngine = `
+maven { url("${doResolve('react-native-v8', true, { forceForwardPaths: true })}/dist") }
+maven { url("${doResolve(engine, true, { forceForwardPaths: true })}/dist") }
+`;
+
+    c.pluginConfigAndroid.appBuildGradleImplementations
++= `    implementation 'org.chromium:${engine}:+'\n`;
+
+    c.pluginConfigAndroid.injectHermes = '    enableHermes: false,';
+
+    c.pluginConfigAndroid.packagingOptions += `
+    exclude '**/libjsc.so'`;
+};
+
 export const parseAppBuildGradleSync = (c) => {
     logTask('parseAppBuildGradleSync');
     const appFolder = getAppFolder(c);
@@ -130,6 +175,46 @@ export const parseAppBuildGradleSync = (c) => {
         'buildToolsVersion',
         '28.0.0'
     );
+
+    // REACT NATIVE ENGINE
+    const enableHermes = getConfigProp(c, platform, 'enableHermes');
+    if (enableHermes === true) {
+        logWarning('enbaleHermes is DEPRECATED. use "reactNativeEngine": "hermes" instead.');
+    }
+
+    const reactNativeEngine = getConfigProp(c, c.platform, 'reactNativeEngine', 'default');
+
+    switch (reactNativeEngine) {
+        case 'default': {
+            setReactNativeEngineDefault(c);
+            break;
+        }
+        case 'v8-android': {
+            setReactNativeEngineV8(c, reactNativeEngine);
+            break;
+        }
+        case 'v8-android-nointl': {
+            setReactNativeEngineV8(c, reactNativeEngine);
+            break;
+        }
+        case 'v8-android-jit': {
+            setReactNativeEngineV8(c, reactNativeEngine);
+            break;
+        }
+        case 'v8-android-jit-nointl': {
+            setReactNativeEngineV8(c, reactNativeEngine);
+            break;
+        }
+        case 'hermes': {
+            setReactNativeEngineHermes(c, reactNativeEngine);
+            break;
+        }
+        default: {
+            logWarning(`Unsupported react native engine ${reactNativeEngine}. Will use default instead`);
+            setReactNativeEngineDefault(c);
+        }
+    }
+
 
     // SIGNING CONFIGS
     const debugSigning = `
@@ -272,7 +357,7 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     }
 
     // PACKAGING OPTIONS
-    c.pluginConfigAndroid.packagingOptions = `
+    c.pluginConfigAndroid.packagingOptions += `
     exclude 'META-INF/DEPENDENCIES.txt'
     exclude 'META-INF/DEPENDENCIES'
     exclude 'META-INF/dependencies.txt'
@@ -315,21 +400,6 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
 
     c.pluginConfigAndroid.appBuildGradleImplementations
         += '    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02"\n';
-    // ENABLE HERMES
-    const enableHermes = getConfigProp(c, platform, 'enableHermes', false);
-
-    if (enableHermes) {
-        c.pluginConfigAndroid.appBuildGradleImplementations += `    debugImplementation files("${doResolve(
-            'hermes-engine', true, { forceForwardPaths: true }
-        )}/android/hermes-debug.aar")\n`;
-        c.pluginConfigAndroid.appBuildGradleImplementations += `    releaseImplementation files("${doResolve(
-            'hermes-engine', true, { forceForwardPaths: true }
-        )}/android/hermes-release.aar")\n`;
-    } else {
-        c.pluginConfigAndroid.appBuildGradleImplementations
-            += "    implementation 'org.webkit:android-jsc:+'\n";
-    }
-    c.pluginConfigAndroid.enableHermes = `    enableHermes: ${enableHermes},`;
 
     const injects = [
         {
@@ -398,12 +468,8 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
             override: c.pluginConfigAndroid.localProperties
         },
         {
-            pattern: '{{PLUGIN_ENABLE_HERMES}}',
-            override: c.pluginConfigAndroid.enableHermes
-        },
-        {
-            pattern: '{{PATH_JSC_ANDROID}}',
-            override: doResolve('jsc-android', true, { forceForwardPaths: true })
+            pattern: '{{INJECT_HERMES}}',
+            override: c.pluginConfigAndroid.injectHermes
         },
         {
             pattern: '{{PATH_REACT_NATIVE}}',

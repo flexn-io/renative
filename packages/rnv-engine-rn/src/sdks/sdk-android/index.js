@@ -610,11 +610,14 @@ export const configureProject = async (c) => {
         buildGradlePlugins: '',
         buildGradleAfterAll: '',
         buildGradleBuildScriptDependencies: '',
+        injectReactNativeEngine: '',
         buildGradleBuildScriptDexOptions: '',
         appBuildGradleSigningConfigs: '',
+        packagingOptions: '',
         appBuildGradleImplementations: '',
         resourceStrings: [],
-        appBuildGradleAfterEvaluate: ''
+        appBuildGradleAfterEvaluate: '',
+        injectHermes: ''
     };
 
     // PLUGINS

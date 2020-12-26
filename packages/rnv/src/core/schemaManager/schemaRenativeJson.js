@@ -483,6 +483,16 @@ const platformAndroidProps = {
     enableHermes: {
         type: 'boolean',
         default: false,
+        description: '> DEPRECATED in favour of `reactNativeEngine`',
+        examples: [
+            true,
+            false
+        ]
+    },
+    reactNativeEngine: {
+        type: 'string',
+        default: 'default',
+        description: 'Allows you to define specific native render engine to be used',
         examples: [
             true,
             false
@@ -493,8 +503,12 @@ const platformAndroidProps = {
         default: 'Debug',
         description: 'Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`',
         examples: [
-            'Debug',
-            'Release'
+            'default',
+            'v8-android',
+            'v8-android-nointl',
+            'v8-android-jit',
+            'v8-android-jit-nointl',
+            'hermes',
         ]
     },
     minSdkVersion: {

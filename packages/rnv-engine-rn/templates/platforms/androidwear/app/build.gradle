@@ -9,8 +9,7 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     entryFile: "index.androidwear.js",
-{{PLUGIN_ENABLE_HERMES}}
-    hermesCommand: "{{PATH_HERMES_ENGINE}}/%OS-BIN%/hermes",
+{{INJECT_HERMES}}
     inputExcludes: ["platformBuilds/**"],
     root: "../../../",
 ]

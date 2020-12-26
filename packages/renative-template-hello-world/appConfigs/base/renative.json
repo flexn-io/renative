@@ -101,7 +101,7 @@
         },
         "android": {
             "entryFile": "index.android",
-            "enableHermes": true,
+            "reactNativeEngine": "hermes",
             "multipleAPKs": false,
             "minSdkVersion": 21,
             "permissions": ["*"],
@@ -124,7 +124,7 @@
         },
         "androidtv": {
             "entryFile": "index.androidtv",
-            "enableHermes": true,
+            "reactNativeEngine": "hermes",
             "multipleAPKs": false,
             "minSdkVersion": 21,
             "permissions": ["*"],
@@ -147,7 +147,7 @@
         },
         "androidwear": {
             "entryFile": "index.androidwear",
-            "enableHermes": true,
+            "reactNativeEngine": "hermes",
             "multipleAPKs": false,
             "minSdkVersion": 23,
             "permissions": ["*"],

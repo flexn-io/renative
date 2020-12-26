@@ -46,7 +46,7 @@
         },
         "android": {
             "entryFile": "index.android",
-            "enableHermes": true,
+            "reactNativeEngine": "hermes",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -62,7 +62,7 @@
         },
         "androidtv": {
             "entryFile": "index.androidtv",
-            "enableHermes": true,
+            "reactNativeEngine": "hermes",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -78,7 +78,7 @@
         },
         "androidwear": {
             "entryFile": "index.androidwear",
-            "enableHermes": true,
+            "reactNativeEngine": "hermes",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
