@@ -3007,7 +3007,7 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.android.buildSchemes.[object].enableHermes` |
 
-
+> DEPRECATED in favour of `reactNativeEngine`
 
 **examples**
 
@@ -3665,6 +3665,40 @@ If set to `true`, apk will be split into multiple ones for each architecture: "a
 
 
 
+#### platforms.android.buildSchemes.[object].reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` | `default` | `platforms.android.buildSchemes.[object].reactNativeEngine` |
+
+Allows you to define specific native render engine to be used
+
+**examples**
+
+
+```json
+{
+  "reactNativeEngine": "true"
+}
+```
+
+
+
+```json
+{
+  "reactNativeEngine": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.android.buildSchemes.[object].runtime
 
 
@@ -3707,7 +3741,7 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Debug"
+  "signingConfig": "default"
 }
 ```
 
@@ -3715,7 +3749,39 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Release"
+  "signingConfig": "v8-android"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "hermes"
 }
 ```
 
@@ -4071,7 +4137,7 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.android.enableHermes` |
 
-
+> DEPRECATED in favour of `reactNativeEngine`
 
 **examples**
 
@@ -4713,6 +4779,40 @@ If set to `true`, apk will be split into multiple ones for each architecture: "a
 
 
 
+#### platforms.android.reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` | `default` | `platforms.android.reactNativeEngine` |
+
+Allows you to define specific native render engine to be used
+
+**examples**
+
+
+```json
+{
+  "reactNativeEngine": "true"
+}
+```
+
+
+
+```json
+{
+  "reactNativeEngine": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.android.runtime
 
 
@@ -4755,7 +4855,7 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Debug"
+  "signingConfig": "default"
 }
 ```
 
@@ -4763,7 +4863,39 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Release"
+  "signingConfig": "v8-android"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "hermes"
 }
 ```
 
@@ -5722,7 +5854,7 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].enableHermes` |
 
-
+> DEPRECATED in favour of `reactNativeEngine`
 
 **examples**
 
@@ -6380,6 +6512,40 @@ If set to `true`, apk will be split into multiple ones for each architecture: "a
 
 
 
+#### platforms.androidtv.buildSchemes.[object].reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` | `default` | `platforms.androidtv.buildSchemes.[object].reactNativeEngine` |
+
+Allows you to define specific native render engine to be used
+
+**examples**
+
+
+```json
+{
+  "reactNativeEngine": "true"
+}
+```
+
+
+
+```json
+{
+  "reactNativeEngine": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.androidtv.buildSchemes.[object].runtime
 
 
@@ -6422,7 +6588,7 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Debug"
+  "signingConfig": "default"
 }
 ```
 
@@ -6430,7 +6596,39 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Release"
+  "signingConfig": "v8-android"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "hermes"
 }
 ```
 
@@ -6786,7 +6984,7 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.androidtv.enableHermes` |
 
-
+> DEPRECATED in favour of `reactNativeEngine`
 
 **examples**
 
@@ -7428,6 +7626,40 @@ If set to `true`, apk will be split into multiple ones for each architecture: "a
 
 
 
+#### platforms.androidtv.reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` | `default` | `platforms.androidtv.reactNativeEngine` |
+
+Allows you to define specific native render engine to be used
+
+**examples**
+
+
+```json
+{
+  "reactNativeEngine": "true"
+}
+```
+
+
+
+```json
+{
+  "reactNativeEngine": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.androidtv.runtime
 
 
@@ -7470,7 +7702,7 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Debug"
+  "signingConfig": "default"
 }
 ```
 
@@ -7478,7 +7710,39 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Release"
+  "signingConfig": "v8-android"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "hermes"
 }
 ```
 
@@ -8437,7 +8701,7 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].enableHermes` |
 
-
+> DEPRECATED in favour of `reactNativeEngine`
 
 **examples**
 
@@ -9095,6 +9359,40 @@ If set to `true`, apk will be split into multiple ones for each architecture: "a
 
 
 
+#### platforms.androidwear.buildSchemes.[object].reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` | `default` | `platforms.androidwear.buildSchemes.[object].reactNativeEngine` |
+
+Allows you to define specific native render engine to be used
+
+**examples**
+
+
+```json
+{
+  "reactNativeEngine": "true"
+}
+```
+
+
+
+```json
+{
+  "reactNativeEngine": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.androidwear.buildSchemes.[object].runtime
 
 
@@ -9137,7 +9435,7 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Debug"
+  "signingConfig": "default"
 }
 ```
 
@@ -9145,7 +9443,39 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Release"
+  "signingConfig": "v8-android"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "hermes"
 }
 ```
 
@@ -9501,7 +9831,7 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `enableHermes` | `boolean` |  | `platforms.androidwear.enableHermes` |
 
-
+> DEPRECATED in favour of `reactNativeEngine`
 
 **examples**
 
@@ -10143,6 +10473,40 @@ If set to `true`, apk will be split into multiple ones for each architecture: "a
 
 
 
+#### platforms.androidwear.reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` | `default` | `platforms.androidwear.reactNativeEngine` |
+
+Allows you to define specific native render engine to be used
+
+**examples**
+
+
+```json
+{
+  "reactNativeEngine": "true"
+}
+```
+
+
+
+```json
+{
+  "reactNativeEngine": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.androidwear.runtime
 
 
@@ -10185,7 +10549,7 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Debug"
+  "signingConfig": "default"
 }
 ```
 
@@ -10193,7 +10557,39 @@ Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
 
 ```json
 {
-  "signingConfig": "Release"
+  "signingConfig": "v8-android"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "hermes"
 }
 ```
 

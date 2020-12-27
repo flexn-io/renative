@@ -325,6 +325,7 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     const isMultiApk = getConfigProp(c, platform, 'multipleAPKs', false) === true;
     c.pluginConfigAndroid.multiAPKs = '';
     if (isMultiApk) {
+        const multiSet = 'Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc))';
         c.pluginConfigAndroid.multiAPKs = `
       ext.abiCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
       import com.android.build.OutputFile
@@ -333,7 +334,7 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
         variant.outputs.each { output ->
           def bavc = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
           if (bavc != null) {
-            output.versionCodeOverride = Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc)) + ${
+            output.versionCodeOverride = ${multiSet} + ${
     versionCodeOffset
 }
           }
