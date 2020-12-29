@@ -56,6 +56,16 @@ export const configureTizenGlobal = c => new Promise((resolve, reject) => {
     // }
 });
 
+const _runTizenSimOrDevice = async (c) => {
+    try {
+        await runTizenSimOrDevice(c);
+    } catch (e) {
+        // TODO: Capture different errors and react accordingly
+        return Promise.reject(e);
+    }
+    return true;
+};
+
 export const runTizen = async (c, target) => {
     logTask('runTizen', `target:${target}`);
     const { platform } = c;
@@ -79,7 +89,7 @@ export const runTizen = async (c, target) => {
 
     if (bundleAssets) {
         await buildCoreWebpackProject(c);
-        await runTizenSimOrDevice(c);
+        await _runTizenSimOrDevice(c);
     } else {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
         const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
@@ -93,7 +103,7 @@ export const runTizen = async (c, target) => {
                 )} is not running. Starting it up for you...`
             );
             waitForWebpack(c)
-                .then(() => runTizenSimOrDevice(c))
+                .then(() => _runTizenSimOrDevice(c))
                 .catch(logError);
             await runWebpackServer(c, isWeinreEnabled);
         } else {
@@ -101,11 +111,11 @@ export const runTizen = async (c, target) => {
 
             if (resetCompleted) {
                 waitForWebpack(c)
-                    .then(() => runTizenSimOrDevice(c))
+                    .then(() => _runTizenSimOrDevice(c))
                     .catch(logError);
                 await runWebpackServer(c, isWeinreEnabled);
             } else {
-                await runTizenSimOrDevice(c);
+                await _runTizenSimOrDevice(c);
             }
         }
     }

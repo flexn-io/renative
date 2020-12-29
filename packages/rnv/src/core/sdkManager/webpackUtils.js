@@ -301,7 +301,9 @@ will try to use globally installed one`);
         wpConfig
     }  --inline --hot --colors --content-base ${
         wpPublic
-    } --history-api-fallback --port ${c.runtime.port} --mode=${environment}`;
+    } --history-api-fallback --port ${c.runtime.port} --mode=${
+        environment
+    } --host ${devServerHost}`;
     try {
         await executeAsync(c, command, {
             stdio: 'inherit',
