@@ -1895,6 +1895,9 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <tr><td style="text-align:left"><code>enableHermes</code></td><td style="text-align:left"><code>boolean</code></td><td style="text-align:left"></td><td style="text-align:left"><code>platforms.android.buildSchemes.[object].enableHermes</code></td></tr>
 </tbody>
 </table>
+<blockquote>
+<p>DEPRECATED in favour of <code>reactNativeEngine</code></p>
+</blockquote>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
   <span class="hljs-attr">"enableHermes"</span>: <span class="hljs-string">"true"</span>
@@ -2309,6 +2312,26 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>DEPRECATED in favor of includedPermissions</p>
 </blockquote>
 <hr>
+<h4><a class="anchor" aria-hidden="true" id="platformsandroidbuildschemesobjectreactnativeengine"></a><a href="#platformsandroidbuildschemesobjectreactnativeengine" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.android.buildSchemes.[object].reactNativeEngine</h4>
+<table>
+<thead>
+<tr><th style="text-align:left">Prop Name</th><th style="text-align:left">Type</th><th style="text-align:left">Default Value</th><th style="text-align:left">Path</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left"><code>reactNativeEngine</code></td><td style="text-align:left"><code>string</code></td><td style="text-align:left"><code>default</code></td><td style="text-align:left"><code>platforms.android.buildSchemes.[object].reactNativeEngine</code></td></tr>
+</tbody>
+</table>
+<p>Allows you to define specific native render engine to be used</p>
+<p><strong>examples</strong></p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"true"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"false"</span>
+}
+</code></pre>
+<hr>
 <h4><a class="anchor" aria-hidden="true" id="platformsandroidbuildschemesobjectruntime"></a><a href="#platformsandroidbuildschemesobjectruntime" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.android.buildSchemes.[object].runtime</h4>
 <table>
 <thead>
@@ -2339,11 +2362,27 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>Equivalent to running <code>./gradlew/assembleDebug</code> or <code>./gradlew/assembleRelease</code></p>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Debug"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"default"</span>
 }
 </code></pre>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Release"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"hermes"</span>
 }
 </code></pre>
 <hr>
@@ -2561,6 +2600,9 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <tr><td style="text-align:left"><code>enableHermes</code></td><td style="text-align:left"><code>boolean</code></td><td style="text-align:left"></td><td style="text-align:left"><code>platforms.android.enableHermes</code></td></tr>
 </tbody>
 </table>
+<blockquote>
+<p>DEPRECATED in favour of <code>reactNativeEngine</code></p>
+</blockquote>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
   <span class="hljs-attr">"enableHermes"</span>: <span class="hljs-string">"true"</span>
@@ -2965,6 +3007,26 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>DEPRECATED in favor of includedPermissions</p>
 </blockquote>
 <hr>
+<h4><a class="anchor" aria-hidden="true" id="platformsandroidreactnativeengine"></a><a href="#platformsandroidreactnativeengine" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.android.reactNativeEngine</h4>
+<table>
+<thead>
+<tr><th style="text-align:left">Prop Name</th><th style="text-align:left">Type</th><th style="text-align:left">Default Value</th><th style="text-align:left">Path</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left"><code>reactNativeEngine</code></td><td style="text-align:left"><code>string</code></td><td style="text-align:left"><code>default</code></td><td style="text-align:left"><code>platforms.android.reactNativeEngine</code></td></tr>
+</tbody>
+</table>
+<p>Allows you to define specific native render engine to be used</p>
+<p><strong>examples</strong></p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"true"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"false"</span>
+}
+</code></pre>
+<hr>
 <h4><a class="anchor" aria-hidden="true" id="platformsandroidruntime"></a><a href="#platformsandroidruntime" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.android.runtime</h4>
 <table>
 <thead>
@@ -2995,11 +3057,27 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>Equivalent to running <code>./gradlew/assembleDebug</code> or <code>./gradlew/assembleRelease</code></p>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Debug"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"default"</span>
 }
 </code></pre>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Release"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"hermes"</span>
 }
 </code></pre>
 <hr>
@@ -3615,6 +3693,9 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <tr><td style="text-align:left"><code>enableHermes</code></td><td style="text-align:left"><code>boolean</code></td><td style="text-align:left"></td><td style="text-align:left"><code>platforms.androidtv.buildSchemes.[object].enableHermes</code></td></tr>
 </tbody>
 </table>
+<blockquote>
+<p>DEPRECATED in favour of <code>reactNativeEngine</code></p>
+</blockquote>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
   <span class="hljs-attr">"enableHermes"</span>: <span class="hljs-string">"true"</span>
@@ -4029,6 +4110,26 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>DEPRECATED in favor of includedPermissions</p>
 </blockquote>
 <hr>
+<h4><a class="anchor" aria-hidden="true" id="platformsandroidtvbuildschemesobjectreactnativeengine"></a><a href="#platformsandroidtvbuildschemesobjectreactnativeengine" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.androidtv.buildSchemes.[object].reactNativeEngine</h4>
+<table>
+<thead>
+<tr><th style="text-align:left">Prop Name</th><th style="text-align:left">Type</th><th style="text-align:left">Default Value</th><th style="text-align:left">Path</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left"><code>reactNativeEngine</code></td><td style="text-align:left"><code>string</code></td><td style="text-align:left"><code>default</code></td><td style="text-align:left"><code>platforms.androidtv.buildSchemes.[object].reactNativeEngine</code></td></tr>
+</tbody>
+</table>
+<p>Allows you to define specific native render engine to be used</p>
+<p><strong>examples</strong></p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"true"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"false"</span>
+}
+</code></pre>
+<hr>
 <h4><a class="anchor" aria-hidden="true" id="platformsandroidtvbuildschemesobjectruntime"></a><a href="#platformsandroidtvbuildschemesobjectruntime" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.androidtv.buildSchemes.[object].runtime</h4>
 <table>
 <thead>
@@ -4059,11 +4160,27 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>Equivalent to running <code>./gradlew/assembleDebug</code> or <code>./gradlew/assembleRelease</code></p>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Debug"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"default"</span>
 }
 </code></pre>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Release"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"hermes"</span>
 }
 </code></pre>
 <hr>
@@ -4281,6 +4398,9 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <tr><td style="text-align:left"><code>enableHermes</code></td><td style="text-align:left"><code>boolean</code></td><td style="text-align:left"></td><td style="text-align:left"><code>platforms.androidtv.enableHermes</code></td></tr>
 </tbody>
 </table>
+<blockquote>
+<p>DEPRECATED in favour of <code>reactNativeEngine</code></p>
+</blockquote>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
   <span class="hljs-attr">"enableHermes"</span>: <span class="hljs-string">"true"</span>
@@ -4685,6 +4805,26 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>DEPRECATED in favor of includedPermissions</p>
 </blockquote>
 <hr>
+<h4><a class="anchor" aria-hidden="true" id="platformsandroidtvreactnativeengine"></a><a href="#platformsandroidtvreactnativeengine" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.androidtv.reactNativeEngine</h4>
+<table>
+<thead>
+<tr><th style="text-align:left">Prop Name</th><th style="text-align:left">Type</th><th style="text-align:left">Default Value</th><th style="text-align:left">Path</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left"><code>reactNativeEngine</code></td><td style="text-align:left"><code>string</code></td><td style="text-align:left"><code>default</code></td><td style="text-align:left"><code>platforms.androidtv.reactNativeEngine</code></td></tr>
+</tbody>
+</table>
+<p>Allows you to define specific native render engine to be used</p>
+<p><strong>examples</strong></p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"true"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"false"</span>
+}
+</code></pre>
+<hr>
 <h4><a class="anchor" aria-hidden="true" id="platformsandroidtvruntime"></a><a href="#platformsandroidtvruntime" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.androidtv.runtime</h4>
 <table>
 <thead>
@@ -4715,11 +4855,27 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>Equivalent to running <code>./gradlew/assembleDebug</code> or <code>./gradlew/assembleRelease</code></p>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Debug"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"default"</span>
 }
 </code></pre>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Release"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"hermes"</span>
 }
 </code></pre>
 <hr>
@@ -5335,6 +5491,9 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <tr><td style="text-align:left"><code>enableHermes</code></td><td style="text-align:left"><code>boolean</code></td><td style="text-align:left"></td><td style="text-align:left"><code>platforms.androidwear.buildSchemes.[object].enableHermes</code></td></tr>
 </tbody>
 </table>
+<blockquote>
+<p>DEPRECATED in favour of <code>reactNativeEngine</code></p>
+</blockquote>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
   <span class="hljs-attr">"enableHermes"</span>: <span class="hljs-string">"true"</span>
@@ -5749,6 +5908,26 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>DEPRECATED in favor of includedPermissions</p>
 </blockquote>
 <hr>
+<h4><a class="anchor" aria-hidden="true" id="platformsandroidwearbuildschemesobjectreactnativeengine"></a><a href="#platformsandroidwearbuildschemesobjectreactnativeengine" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.androidwear.buildSchemes.[object].reactNativeEngine</h4>
+<table>
+<thead>
+<tr><th style="text-align:left">Prop Name</th><th style="text-align:left">Type</th><th style="text-align:left">Default Value</th><th style="text-align:left">Path</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left"><code>reactNativeEngine</code></td><td style="text-align:left"><code>string</code></td><td style="text-align:left"><code>default</code></td><td style="text-align:left"><code>platforms.androidwear.buildSchemes.[object].reactNativeEngine</code></td></tr>
+</tbody>
+</table>
+<p>Allows you to define specific native render engine to be used</p>
+<p><strong>examples</strong></p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"true"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"false"</span>
+}
+</code></pre>
+<hr>
 <h4><a class="anchor" aria-hidden="true" id="platformsandroidwearbuildschemesobjectruntime"></a><a href="#platformsandroidwearbuildschemesobjectruntime" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.androidwear.buildSchemes.[object].runtime</h4>
 <table>
 <thead>
@@ -5779,11 +5958,27 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>Equivalent to running <code>./gradlew/assembleDebug</code> or <code>./gradlew/assembleRelease</code></p>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Debug"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"default"</span>
 }
 </code></pre>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Release"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"hermes"</span>
 }
 </code></pre>
 <hr>
@@ -6001,6 +6196,9 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <tr><td style="text-align:left"><code>enableHermes</code></td><td style="text-align:left"><code>boolean</code></td><td style="text-align:left"></td><td style="text-align:left"><code>platforms.androidwear.enableHermes</code></td></tr>
 </tbody>
 </table>
+<blockquote>
+<p>DEPRECATED in favour of <code>reactNativeEngine</code></p>
+</blockquote>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
   <span class="hljs-attr">"enableHermes"</span>: <span class="hljs-string">"true"</span>
@@ -6405,6 +6603,26 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>DEPRECATED in favor of includedPermissions</p>
 </blockquote>
 <hr>
+<h4><a class="anchor" aria-hidden="true" id="platformsandroidwearreactnativeengine"></a><a href="#platformsandroidwearreactnativeengine" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.androidwear.reactNativeEngine</h4>
+<table>
+<thead>
+<tr><th style="text-align:left">Prop Name</th><th style="text-align:left">Type</th><th style="text-align:left">Default Value</th><th style="text-align:left">Path</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left"><code>reactNativeEngine</code></td><td style="text-align:left"><code>string</code></td><td style="text-align:left"><code>default</code></td><td style="text-align:left"><code>platforms.androidwear.reactNativeEngine</code></td></tr>
+</tbody>
+</table>
+<p>Allows you to define specific native render engine to be used</p>
+<p><strong>examples</strong></p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"true"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"reactNativeEngine"</span>: <span class="hljs-string">"false"</span>
+}
+</code></pre>
+<hr>
 <h4><a class="anchor" aria-hidden="true" id="platformsandroidwearruntime"></a><a href="#platformsandroidwearruntime" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms.androidwear.runtime</h4>
 <table>
 <thead>
@@ -6435,11 +6653,27 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p>Equivalent to running <code>./gradlew/assembleDebug</code> or <code>./gradlew/assembleRelease</code></p>
 <p><strong>examples</strong></p>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Debug"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"default"</span>
 }
 </code></pre>
 <pre><code class="hljs css language-json">{
-  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"Release"</span>
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"v8-android-jit-nointl"</span>
+}
+</code></pre>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">"hermes"</span>
 }
 </code></pre>
 <hr>
