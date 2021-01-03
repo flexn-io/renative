@@ -12,13 +12,13 @@ const DEFAULT_CONFIG = {
     },
 };
 
-const merge = require('deepmerge');
 const indent = level => '    '.repeat(level);
 const removeBlankLines = string => string.replace(/^\s*\n/gm, '');
 const constructMetaTags = tags => Object.keys(tags).map(tag => `<meta name="${tag}" ${tags[tag]} />`);
 
 const htmlTemp = (options) => {
-    const config = merge(DEFAULT_CONFIG, options);
+    const config = Object.assign(DEFAULT_CONFIG, options);
+    config.metaTags = Object.assign(DEFAULT_CONFIG.metaTags, options.metaTags || {});
     const {
         docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment, linkTags, debugPort, remoteDebugScript
     } = config;

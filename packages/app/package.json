@@ -67,14 +67,14 @@
         "react-native-vector-icons": "7.1.0",
         "react-native-web": "0.13.12",
         "react-native-web-image-loader": "0.0.5",
-        "renative": "~0.31.0-RC"
+        "renative": "~0.32.0-RC"
     },
     "devDependencies": {
         "@rnv/engine-lightning": "~0.32.0-RC",
         "@rnv/engine-rn": "~0.32.0-RC",
         "@rnv/engine-rn-electron": "~0.32.0-RC",
         "@rnv/engine-rn-next": "~0.32.0-RC",
-        "@rnv/engine-rn-web": "~0.31.0-RC",
+        "@rnv/engine-rn-web": "~0.32.0-RC",
         "@rnv/integration-docker": "0.1.0-alpha.0",
         "@rnv/integration-vercel": "0.2.0-alpha.0",
         "babel-jest": "24.9.0",
@@ -85,10 +85,10 @@
         "jest-junit": "10.0.0",
         "jest-transform-stub": "2.0.0",
         "jetifier": "1.6.5",
-        "renative-template-blank": "^0.31.0-alpha.11",
-        "renative-template-hello-world": "^0.31.0-alpha.11",
-        "renative-template-kitchen-sink": "^0.31.0-alpha.11",
-        "rnv": "~0.31.0-RC",
+        "renative-template-blank": "~0.32.0-RC",
+        "renative-template-hello-world": "~0.32.0-RC",
+        "renative-template-kitchen-sink": "~0.32.0-RC",
+        "rnv": "~0.32.0-RC",
         "wait-on": "5.0.1",
         "xcode": "2.1.0"
     },
