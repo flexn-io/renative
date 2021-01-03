@@ -243,7 +243,7 @@ Your ${chalk().red(platform)} object needs to be located under ${chalk().green('
 
     if (!!storeFile && !!keyAlias && !!storePassword && !!keyPassword) {
         const keystorePath = storeFile;
-        let keystorePathFull;
+        let keystorePathFull = keystorePath;
         if (keystorePath) {
             if (keystorePath.startsWith('.')) {
                 keystorePathFull = path.join(
