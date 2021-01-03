@@ -21,7 +21,7 @@ More info at [undefined Guide](engine-rn.md)
 
 Supported Platforms:
 
-`ios`, `tvos`, `android`, `androidtv`, `androidwear`
+`ios`, `tvos`, `android`, `androidtv`, `firetv`, `androidwear`
 
 Example:
 
@@ -88,7 +88,7 @@ More info at [undefined Guide](engine-rn.md)
 
 Supported Platforms:
 
-`ios`, `tvos`, `android`, `androidtv`, `androidwear`
+`ios`, `tvos`, `android`, `androidtv`, `firetv`, `androidwear`
 
 Example:
 
@@ -190,7 +190,7 @@ More info at [undefined Guide](engine-rn.md)
 
 Supported Platforms:
 
-`ios`, `tvos`, `android`, `androidtv`, `androidwear`
+`ios`, `tvos`, `android`, `androidtv`, `firetv`, `androidwear`
 
 Example:
 
@@ -241,7 +241,7 @@ More info at [undefined Guide](engine-rn.md)
 
 Supported Platforms:
 
-`ios`, `tvos`, `android`, `androidtv`, `androidwear`
+`ios`, `tvos`, `android`, `androidtv`, `firetv`, `androidwear`
 
 Example:
 
@@ -292,7 +292,7 @@ More info at [undefined Guide](engine-rn.md)
 
 Supported Platforms:
 
-`ios`, `tvos`, `android`, `androidtv`, `androidwear`
+`ios`, `tvos`, `android`, `androidtv`, `firetv`, `androidwear`
 
 Example:
 
@@ -343,7 +343,7 @@ More info at [undefined Guide](engine-rn.md)
 
 Supported Platforms:
 
-`ios`, `tvos`, `android`, `androidtv`, `androidwear`
+`ios`, `tvos`, `android`, `androidtv`, `firetv`, `androidwear`
 
 Example:
 
@@ -394,7 +394,7 @@ More info at [undefined Guide](engine-rn.md)
 
 Supported Platforms:
 
-`ios`, `android`, `androidtv`, `androidwear`, `web`, `webtv`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`ios`, `android`, `firetv`, `androidtv`, `androidwear`, `web`, `webtv`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
 
 Example:
 
@@ -431,7 +431,7 @@ More info at [undefined Guide](engine-rn.md)
 
 Supported Platforms:
 
-`ios`, `android`, `androidtv`, `androidwear`, `web`, `webtv`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`ios`, `android`, `firetv`, `androidtv`, `androidwear`, `web`, `webtv`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
 
 Example:
 
@@ -505,7 +505,7 @@ More info at [undefined Guide](engine-rn.md)
 
 Supported Platforms:
 
-`ios`, `android`, `androidtv`, `androidwear`, `web`, `webtv`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`ios`, `android`, `firetv`, `androidtv`, `androidwear`, `web`, `webtv`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
 
 Example:
 
@@ -542,7 +542,7 @@ More info at [undefined Guide](engine-rn.md)
 
 Supported Platforms:
 
-`ios`, `android`, `androidtv`, `androidwear`, `web`, `webtv`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+`ios`, `android`, `firetv`, `androidtv`, `androidwear`, `web`, `webtv`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
 
 Example:
 
@@ -579,7 +579,7 @@ More info at [undefined Guide](engine-rn.md)
 
 Supported Platforms:
 
-`ios`, `tvos`, `android`, `androidtv`, `androidwear`
+`ios`, `tvos`, `android`, `androidtv`, `firetv`, `androidwear`
 
 Example:
 

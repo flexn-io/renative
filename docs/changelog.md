@@ -5,6 +5,30 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.25 (2021-1-3)
+
+### Fixed
+
+- fixes #629
+- fixes #630
+- [feat] support for firetv platform
+- [docs] update notes
+- Merge pull request #633 from evrifaessa/develop
+- Add files via upload
+- [fix] tizen upgrade
+- [docs] update
+- [feat] support for reactNativeEngine . deprecated enableHermes
+- [fix] limit deprecated override of RCTWebViewBridge only to 0.40.1 [causes apple rejection]
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.24 (2020-12-14)
 
 ### Fixed

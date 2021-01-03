@@ -27,7 +27,7 @@ sidebar_label: FireTV
 
 <!--EXTENSION_SUPPORT_START-->
 
-Extenstions are defined via engines. Engines with firetv support:
+Extenstions are defined via engines. Engines with firetv support: 
 - [engine-rn](../engines/engine-rn#extensions)
 
 <!--EXTENSION_SUPPORT_END-->

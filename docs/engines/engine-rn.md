@@ -15,13 +15,15 @@ Default react-native based engine. Runs standard react native apps with native s
 
 ## Supported Platforms
 
-[ios](platforms/ios.md), [android](platforms/android.md), [androidtv](platforms/androidtv.md), [androidwear](platforms/androidwear.md), [tvos](platforms/tvos.md)
+[ios](platforms/ios.md), [android](platforms/android.md), [androidtv](platforms/androidtv.md), [firetv](platforms/firetv.md), [androidwear](platforms/androidwear.md), [tvos](platforms/tvos.md)
 
 ## Required Plugins
 
 [react](../plugins#react), [react-art](../plugins#react-art), [react-dom](../plugins#react-dom), [react-native](../plugins#react-native), [react-native-web](../plugins#react-native-web), [@react-native-community/cli-platform-ios](../plugins#react-native-communitycli-platform-ios), [@react-native-community/cli](../plugins#react-native-communitycli)
 
 ## Required NPM Packages
+
+
 
 
 
@@ -179,6 +181,69 @@ Default react-native based engine. Runs standard react native apps with native s
 | `androidtv.tsx` | 26 |
 | `androidtv.rn.ts` | 27 |
 | `androidtv.ts` | 28 |
+| `android.rn.jsx` | 29 |
+| `android.jsx` | 30 |
+| `android.rn.js` | 31 |
+| `android.js` | 32 |
+| `android.rn.tsx` | 33 |
+| `android.tsx` | 34 |
+| `android.rn.ts` | 35 |
+| `android.ts` | 36 |
+| `tv.native.rn.jsx` | 37 |
+| `tv.native.jsx` | 38 |
+| `tv.native.rn.js` | 39 |
+| `tv.native.js` | 40 |
+| `tv.native.rn.tsx` | 41 |
+| `tv.native.tsx` | 42 |
+| `tv.native.rn.ts` | 43 |
+| `tv.native.ts` | 44 |
+| `native.rn.jsx` | 45 |
+| `native.jsx` | 46 |
+| `native.rn.js` | 47 |
+| `native.js` | 48 |
+| `native.rn.tsx` | 49 |
+| `native.tsx` | 50 |
+| `native.rn.ts` | 51 |
+| `native.ts` | 52 |
+| `jsx` | 53 |
+| `js` | 54 |
+| `tsx` | 55 |
+| `ts` | 56 |
+| `mjs` | 57 |
+| `json` | 58 |
+| `wasm` | 59 |
+### firetv
+
+| Extension | Priority  |
+      | --------- | :-------: |
+| `engine-rn.jsx` | 1 |
+| `engine-rn.js` | 2 |
+| `engine-rn.tsx` | 3 |
+| `engine-rn.ts` | 4 |
+| `firetv.tv.rn.jsx` | 5 |
+| `firetv.tv.jsx` | 6 |
+| `firetv.tv.rn.js` | 7 |
+| `firetv.tv.js` | 8 |
+| `firetv.tv.rn.tsx` | 9 |
+| `firetv.tv.tsx` | 10 |
+| `firetv.tv.rn.ts` | 11 |
+| `firetv.tv.ts` | 12 |
+| `tv.rn.jsx` | 13 |
+| `tv.jsx` | 14 |
+| `tv.rn.js` | 15 |
+| `tv.js` | 16 |
+| `tv.rn.tsx` | 17 |
+| `tv.tsx` | 18 |
+| `tv.rn.ts` | 19 |
+| `tv.ts` | 20 |
+| `firetv.rn.jsx` | 21 |
+| `firetv.jsx` | 22 |
+| `firetv.rn.js` | 23 |
+| `firetv.js` | 24 |
+| `firetv.rn.tsx` | 25 |
+| `firetv.tsx` | 26 |
+| `firetv.rn.ts` | 27 |
+| `firetv.ts` | 28 |
 | `android.rn.jsx` | 29 |
 | `android.jsx` | 30 |
 | `android.rn.js` | 31 |

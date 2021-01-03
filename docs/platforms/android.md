@@ -27,7 +27,7 @@ sidebar_label: Android
 
 <!--EXTENSION_SUPPORT_START-->
 
-Extenstions are defined via engines. Engines with android support:
+Extenstions are defined via engines. Engines with android support: 
 - [engine-rn](../engines/engine-rn#extensions)
 
 <!--EXTENSION_SUPPORT_END-->
