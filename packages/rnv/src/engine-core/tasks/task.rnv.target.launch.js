@@ -6,6 +6,7 @@ import { IOS,
     TIZEN,
     WEBOS,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     KAIOS,
     TASK_WORKSPACE_CONFIGURE,
@@ -31,6 +32,7 @@ export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
     switch (platform) {
         case ANDROID:
         case ANDROID_TV:
+        case FIRE_TV:
         case ANDROID_WEAR:
             return launchAndroidSimulator(c, target);
         case IOS:

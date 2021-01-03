@@ -12,6 +12,7 @@ const {
     TVOS,
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     TASK_START,
     TASK_CONFIGURE_SOFT,
@@ -26,6 +27,7 @@ BUNDLER_PLATFORMS[IOS] = IOS;
 BUNDLER_PLATFORMS[TVOS] = IOS;
 BUNDLER_PLATFORMS[ANDROID] = ANDROID;
 BUNDLER_PLATFORMS[ANDROID_TV] = ANDROID;
+BUNDLER_PLATFORMS[FIRE_TV] = ANDROID;
 BUNDLER_PLATFORMS[ANDROID_WEAR] = ANDROID;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
@@ -52,6 +54,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
         case TVOS:
         case ANDROID:
         case ANDROID_TV:
+        case FIRE_TV:
         case ANDROID_WEAR: {
             let startCmd = `node ${doResolve(
                 'react-native'
@@ -109,6 +112,7 @@ export default {
         TVOS,
         ANDROID,
         ANDROID_TV,
+        FIRE_TV,
         ANDROID_WEAR,
     ],
 };

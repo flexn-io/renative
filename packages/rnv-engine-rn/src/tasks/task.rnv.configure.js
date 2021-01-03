@@ -10,6 +10,7 @@ const {
     TVOS,
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
@@ -36,6 +37,7 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
             return true;
         case ANDROID:
         case ANDROID_TV:
+        case FIRE_TV:
         case ANDROID_WEAR:
             await configureGradleProject(c);
             await jetifyIfRequired(c);
@@ -56,6 +58,7 @@ export default {
         TVOS,
         ANDROID,
         ANDROID_TV,
+        FIRE_TV,
         ANDROID_WEAR,
     ],
 };

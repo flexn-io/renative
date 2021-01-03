@@ -10,6 +10,7 @@ const {
     TVOS,
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     TASK_RUN,
     TASK_CONFIGURE,
@@ -44,6 +45,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
             return runXcodeProject(c);
         case ANDROID:
         case ANDROID_TV:
+        case FIRE_TV:
         case ANDROID_WEAR:
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
@@ -82,6 +84,7 @@ const Task = {
         TVOS,
         ANDROID,
         ANDROID_TV,
+        FIRE_TV,
         ANDROID_WEAR,
     ],
 };

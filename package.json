@@ -2,7 +2,7 @@
     "name": "renative-wrapper",
     "version": "0.32.0-alpha.24",
     "currentRelease": "0.31",
-    "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV` and `Chromecast` platforms",
+    "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV` and `Chromecast` platforms",
     "keywords": [
         "android tv",
         "android wear",
@@ -14,6 +14,7 @@
         "electron",
         "firefox tv",
         "firefoxox",
+        "firetv",
         "kaios",
         "kit",
         "kotlin",

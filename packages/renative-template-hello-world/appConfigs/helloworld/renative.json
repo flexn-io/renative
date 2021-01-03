@@ -23,6 +23,11 @@
                 "debug": {}
             }
         },
+        "firetv": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
         "androidwear": {
             "buildSchemes": {
                 "debug": {}

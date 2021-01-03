@@ -20,6 +20,7 @@ import {
     ANDROID_WEAR,
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_ADB,
     CLI_ANDROID_AVDMANAGER,
@@ -566,6 +567,7 @@ const _parseDevicesResult = async (
             const matches = (platform === ANDROID && device.isTablet)
                     || (platform === ANDROID_WEAR && device.isWear)
                     || (platform === ANDROID_TV && device.isTV)
+                    || (platform === FIRE_TV && device.isTV)
                     || (platform === ANDROID && device.isMobile);
             logDebug('getDeviceType - filter', {
                 device,
@@ -670,7 +672,7 @@ export const checkForActiveEmulator = c => new Promise((resolve, reject) => {
                         );
                         attempts++;
                         if (
-                            [ANDROID_TV, ANDROID_WEAR].includes(platform)
+                            [ANDROID_TV, FIRE_TV, ANDROID_WEAR].includes(platform)
                                 && attempts === 2
                         ) {
                             await resetAdb(c); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it

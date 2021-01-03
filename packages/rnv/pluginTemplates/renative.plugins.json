@@ -10,6 +10,10 @@
                 "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }",
                 "path": "react-native"
             },
+            "firetv": {
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }",
+                "path": "react-native"
+            },
             "androidwear": {
                 "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }",
                 "path": "react-native"
@@ -134,6 +138,10 @@
                 "path": "node_modules/react-native-gesture-handler/android",
                 "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
             },
+            "firetv": {
+                "path": "node_modules/react-native-gesture-handler/android",
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+            },
             "androidwear": {
                 "path": "node_modules/react-native-gesture-handler/android",
                 "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
@@ -157,6 +165,9 @@
             "androidtv": {
                 "package": "com.brentvatne.react.ReactVideoPackage"
             },
+            "firetv": {
+                "package": "com.brentvatne.react.ReactVideoPackage"
+            },
             "webpack": {
                 "modulePaths": true
             }
@@ -171,6 +182,9 @@
                 "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
             },
             "androidtv": {
+                "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
+            },
+            "firetv": {
                 "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
             }
         },
@@ -187,6 +201,9 @@
             },
             "androidtv": {
                 "package": "com.reactcommunity.rnlocalize.RNLocalizePackage"
+            },
+            "firetv": {
+                "package": "com.reactcommunity.rnlocalize.RNLocalizePackage"
             }
         },
         "react-native-linear-gradient": {
@@ -201,6 +218,9 @@
                 "package": "com.BV.LinearGradient.LinearGradientPackage"
             },
             "androidtv": {
+                "package": "com.BV.LinearGradient.LinearGradientPackage"
+            },
+            "firetv": {
                 "package": "com.BV.LinearGradient.LinearGradientPackage"
             },
             "androidwear": {
@@ -233,6 +253,9 @@
             },
             "androidtv": {
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"
+            },
+            "firetv": {
+                "package": "com.RNFetchBlob.RNFetchBlobPackage"
             }
         },
         "rn-fetch-blob": {
@@ -244,6 +267,9 @@
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"
             },
             "androidtv": {
+                "package": "com.RNFetchBlob.RNFetchBlobPackage"
+            },
+            "firetv": {
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"
             },
             "webpack": {
@@ -264,6 +290,14 @@
                 }
             },
             "androidtv": {
+                "package": "org.reactnative.camera.RNCameraPackage",
+                "app/build.gradle": {
+                    "defaultConfig": [
+                        "missingDimensionStrategy 'react-native-camera', 'general'"
+                    ]
+                }
+            },
+            "firetv": {
                 "package": "org.reactnative.camera.RNCameraPackage",
                 "app/build.gradle": {
                     "defaultConfig": [
@@ -299,6 +333,9 @@
             },
             "androidtv": {
                 "package": "com.rnfs.RNFSPackage"
+            },
+            "firetv": {
+                "package": "com.rnfs.RNFSPackage"
             }
         },
         "react-native-idle-timer": {
@@ -311,6 +348,9 @@
                 "package": "com.marcshilling.idletimer.IdleTimerPackage"
             },
             "androidtv": {
+                "package": "com.marcshilling.idletimer.IdleTimerPackage"
+            },
+            "firetv": {
                 "package": "com.marcshilling.idletimer.IdleTimerPackage"
             }
         },
@@ -343,6 +383,10 @@
                 "package": "cl.hasaezs.rndominantcolor.RNDominantColorPackage"
             },
             "androidtv": {
+                "path": "node_modules/react-native-dominant-color/android",
+                "package": "cl.hasaezs.rndominantcolor.RNDominantColorPackage"
+            },
+            "firetv": {
                 "path": "node_modules/react-native-dominant-color/android",
                 "package": "cl.hasaezs.rndominantcolor.RNDominantColorPackage"
             }
@@ -484,6 +528,27 @@
                         "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
                     ]
                 }
+            },
+            "firetv": {
+                "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
+                "implementations": [
+                    "'com.facebook.android:facebook-android-sdk:[4,5)'"
+                ],
+                "imports": [
+                    "com.facebook.CallbackManager"
+                ],
+                "mainApplication": {
+                    "methods": [
+                        "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}"
+                    ]
+                },
+                "mainActivity": {
+                    "imports": [],
+                    "createMethods": [],
+                    "resultMethods": [
+                        "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
+                    ]
+                }
             }
         },
         "react-native-zip-archive": {
@@ -495,6 +560,9 @@
                 "package": "com.rnziparchive.RNZipArchivePackage"
             },
             "androidtv": {
+                "package": "com.rnziparchive.RNZipArchivePackage"
+            },
+            "firetv": {
                 "package": "com.rnziparchive.RNZipArchivePackage"
             }
         },
@@ -511,6 +579,9 @@
             },
             "androidtv": {
                 "package": "com.imagepicker.ImagePickerPackage"
+            },
+            "firetv": {
+                "package": "com.imagepicker.ImagePickerPackage"
             }
         },
         "react-native-nfc-manager": {
@@ -523,6 +594,9 @@
                 "package": "community.revteltech.nfc.NfcManagerPackage"
             },
             "androidtv": {
+                "package": "community.revteltech.nfc.NfcManagerPackage"
+            },
+            "firetv": {
                 "package": "community.revteltech.nfc.NfcManagerPackage"
             }
         },
@@ -546,6 +620,9 @@
             },
             "androidtv": {
                 "package": "com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage"
+            },
+            "firetv": {
+                "package": "com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage"
             }
         },
         "react-native-pdf": {
@@ -558,6 +635,9 @@
             },
             "androidtv": {
                 "package": "org.wonday.pdf.RCTPdfView"
+            },
+            "firetv": {
+                "package": "org.wonday.pdf.RCTPdfView"
             }
         },
         "react-native-sensors": {
@@ -569,6 +649,9 @@
                 "package": "com.sensors.RNSensorsPackage"
             },
             "androidtv": {
+                "package": "com.sensors.RNSensorsPackage"
+            },
+            "firetv": {
                 "package": "com.sensors.RNSensorsPackage"
             }
         },
@@ -677,6 +760,9 @@
             "androidtv": {
                 "package": "com.corbt.keepawake.KCKeepAwakePackage"
             },
+            "firetv": {
+                "package": "com.corbt.keepawake.KCKeepAwakePackage"
+            },
             "webpack": {
                 "modulePaths": true
             }
@@ -697,6 +783,9 @@
             },
             "androidtv": {
                 "package": "io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage"
+            },
+            "firetv": {
+                "package": "io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage"
             }
         },
         "react-native-image-crop-picker": {
@@ -708,6 +797,9 @@
                 "package": "com.reactnative.ivpusic.imagepicker.PickerPackage"
             },
             "androidtv": {
+                "package": "com.reactnative.ivpusic.imagepicker.PickerPackage"
+            },
+            "firetv": {
                 "package": "com.reactnative.ivpusic.imagepicker.PickerPackage"
             }
         },
@@ -723,6 +815,9 @@
                 "package": "com.horcrux.svg.SvgPackage"
             },
             "androidtv": {
+                "package": "com.horcrux.svg.SvgPackage"
+            },
+            "firetv": {
                 "package": "com.horcrux.svg.SvgPackage"
             },
             "androidwear": {
@@ -748,6 +843,9 @@
             "androidtv": {
                 "package": "com.reactlibrary.SnapScrollviewPackage"
             },
+            "firetv": {
+                "package": "com.reactlibrary.SnapScrollviewPackage"
+            },
             "android": {
                 "package": "com.reactlibrary.SnapScrollviewPackage"
             }
@@ -761,6 +859,9 @@
                 "podName": "react-native-parallax-view"
             },
             "androidtv": {
+                "package": "com.reactlibrary.ParallaxViewPackage"
+            },
+            "firetv": {
                 "package": "com.reactlibrary.ParallaxViewPackage"
             },
             "android": {
@@ -824,6 +925,9 @@
             "androidtv": {
                 "package": "com.oblador.vectoricons.VectorIconsPackage"
             },
+            "firetv": {
+                "package": "com.oblador.vectoricons.VectorIconsPackage"
+            },
             "androidwear": {
                 "package": "com.oblador.vectoricons.VectorIconsPackage"
             },
@@ -862,6 +966,9 @@
             },
             "androidtv": {
                 "package": "com.rnim.rn.audio.ReactNativeAudioPackage"
+            },
+            "firetv": {
+                "package": "com.rnim.rn.audio.ReactNativeAudioPackage"
             }
         },
         "react-native-webview-bridge": {
@@ -874,6 +981,9 @@
             },
             "androidtv": {
                 "package": "com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage"
+            },
+            "firetv": {
+                "package": "com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage"
             }
         },
         "react-native-picker": {
@@ -885,6 +995,9 @@
                 "package": "com.beefe.picker.PickerViewPackage"
             },
             "androidtv": {
+                "package": "com.beefe.picker.PickerViewPackage"
+            },
+            "firetv": {
                 "package": "com.beefe.picker.PickerViewPackage"
             }
         },
@@ -906,6 +1019,9 @@
                 "package": "com.learnium.RNDeviceInfo.RNDeviceInfo"
             },
             "androidtv": {
+                "package": "com.learnium.RNDeviceInfo.RNDeviceInfo"
+            },
+            "firetv": {
                 "package": "com.learnium.RNDeviceInfo.RNDeviceInfo"
             },
             "androidwear": {
@@ -947,6 +1063,12 @@
                 "package": "com.mapbox.rctmgl.RCTMGLPackage",
                 "path": "node_modules/@mapbox/react-native-mapbox-gl/android/rctmgl",
                 "implementation": "  implementation (project(':mapbox-react-native-mapbox-gl')) {\n    implementation ('com.squareup.okhttp3:okhttp:3.6.0') {\n      force = true\n    }\n  }"
+            },
+            "firetv": {
+                "projectName": "mapbox-react-native-mapbox-gl",
+                "package": "com.mapbox.rctmgl.RCTMGLPackage",
+                "path": "node_modules/@mapbox/react-native-mapbox-gl/android/rctmgl",
+                "implementation": "  implementation (project(':mapbox-react-native-mapbox-gl')) {\n    implementation ('com.squareup.okhttp3:okhttp:3.6.0') {\n      force = true\n    }\n  }"
             }
         },
         "react-native-image-resizer": {
@@ -961,6 +1083,9 @@
                 "package": "fr.bamlab.rnimageresizer.ImageResizerPackage"
             },
             "androidtv": {
+                "package": "fr.bamlab.rnimageresizer.ImageResizerPackage"
+            },
+            "firetv": {
                 "package": "fr.bamlab.rnimageresizer.ImageResizerPackage"
             }
         },
@@ -978,6 +1103,9 @@
             },
             "androidtv": {
                 "package": "ui.photoeditor.RNPhotoEditorPackage"
+            },
+            "firetv": {
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
             }
         },
         "react-native-sqlite-storage": {
@@ -987,6 +1115,10 @@
                 "package": "org.pgsqlite.SQLitePluginPackage"
             },
             "androidtv": {
+                "path": "/node_modules/react-native-sqlite-storage/platforms/android",
+                "package": "org.pgsqlite.SQLitePluginPackage"
+            },
+            "firetv": {
                 "path": "/node_modules/react-native-sqlite-storage/platforms/android",
                 "package": "org.pgsqlite.SQLitePluginPackage"
             },
@@ -1020,6 +1152,10 @@
             "androidtv": {
                 "projectName": "reactnativesignaturecapture",
                 "package": "com.rssignaturecapture.RSSignatureCapturePackage"
+            },
+            "firetv": {
+                "projectName": "reactnativesignaturecapture",
+                "package": "com.rssignaturecapture.RSSignatureCapturePackage"
             }
         },
         "react-native-contacts": {
@@ -1031,6 +1167,9 @@
                 "package": "com.rt2zz.reactnativecontacts.ReactNativeContacts"
             },
             "androidtv": {
+                "package": "com.rt2zz.reactnativecontacts.ReactNativeContacts"
+            },
+            "firetv": {
                 "package": "com.rt2zz.reactnativecontacts.ReactNativeContacts"
             }
         },
@@ -1080,6 +1219,9 @@
             "androidtv": {
                 "package": "com.swmansion.reanimated.ReanimatedPackage"
             },
+            "firetv": {
+                "package": "com.swmansion.reanimated.ReanimatedPackage"
+            },
             "androidwear": {
                 "package": "com.swmansion.reanimated.ReanimatedPackage"
             },
@@ -1104,6 +1246,9 @@
                 "package": "com.swmansion.rnscreens.RNScreensPackage"
             },
             "androidtv": {
+                "package": "com.swmansion.rnscreens.RNScreensPackage"
+            },
+            "firetv": {
                 "package": "com.swmansion.rnscreens.RNScreensPackage"
             }
         },
@@ -1270,6 +1415,39 @@
                         "plugin: 'io.fabric'"
                     ]
                 }
+            },
+            "firetv": {
+                "BuildGradle": {
+                    "buildscript": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        },
+                        "dependencies": {
+                            "classpath 'io.fabric.tools:gradle:1.25.4'": true
+                        }
+                    },
+                    "allprojects": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        }
+                    }
+                },
+                "build.gradle": {
+                    "buildscript": {
+                        "dependencies": [
+                            "classpath 'io.fabric.tools:gradle:1.25.4'"
+                        ]
+                    },
+                    "repositories": [
+                        "maven { url 'https://maven.fabric.io/public' }"
+                    ]
+                },
+                "skipImplementation": true,
+                "app/build.gradle": {
+                    "apply": [
+                        "plugin: 'io.fabric'"
+                    ]
+                }
             }
         },
         "Crashlytics": {
@@ -1301,6 +1479,20 @@
                 }
             },
             "androidtv": {
+                "skipImplementation": true,
+                "mainActivity": {
+                    "imports": [
+                        "com.crashlytics.android.Crashlytics",
+                        "com.crashlytics.android.core.CrashlyticsCore"
+                    ],
+                    "createMethods": [
+                        "val core = CrashlyticsCore.Builder().listener {}.build()",
+                        "val crashlyticsKit = Crashlytics.Builder().core(core).build()",
+                        "Fabric.with(this, crashlyticsKit)"
+                    ]
+                }
+            },
+            "firetv": {
                 "skipImplementation": true,
                 "mainActivity": {
                     "imports": [
@@ -1513,6 +1705,10 @@
             "androidtv": {
                 "package": "com.airbnb.android.react.lottie.LottiePackage",
                 "path": "node_modules/lottie-react-native/src/android"
+            },
+            "firetv": {
+                "package": "com.airbnb.android.react.lottie.LottiePackage",
+                "path": "node_modules/lottie-react-native/src/android"
             }
         },
         "react-native-get-real-path": {
@@ -1521,6 +1717,9 @@
                 "package": "com.rngrp.RNGRPPackage"
             },
             "androidtv": {
+                "package": "com.rngrp.RNGRPPackage"
+            },
+            "firetv": {
                 "package": "com.rngrp.RNGRPPackage"
             }
         },
@@ -1535,6 +1734,9 @@
             },
             "androidtv": {
                 "package": "com.reactlibrary.RNSimpleCompassPackage"
+            },
+            "firetv": {
+                "package": "com.reactlibrary.RNSimpleCompassPackage"
             }
         },
         "react-native-prompt-android": {
@@ -1543,6 +1745,9 @@
                 "package": "im.shimo.react.prompt.RNPromptPackage"
             },
             "androidtv": {
+                "package": "im.shimo.react.prompt.RNPromptPackage"
+            },
+            "firetv": {
                 "package": "im.shimo.react.prompt.RNPromptPackage"
             }
         },
@@ -1553,6 +1758,9 @@
             },
             "androidtv": {
                 "package": "it.innove.BleManagerPackage"
+            },
+            "firetv": {
+                "package": "it.innove.BleManagerPackage"
             }
         },
         "react-native-call-log": {
@@ -1561,6 +1769,9 @@
                 "package": "com.wscodelabs.callLogs.CallLogPackage"
             },
             "androidtv": {
+                "package": "com.wscodelabs.callLogs.CallLogPackage"
+            },
+            "firetv": {
                 "package": "com.wscodelabs.callLogs.CallLogPackage"
             }
         },
@@ -1587,6 +1798,22 @@
                 }
             },
             "androidtv": {
+                "package": "io.invertase.firebase.app.ReactNativeFirebaseAppPackage",
+                "projectName": "@react-native-firebase_app",
+                "build.gradle": {
+                    "buildscript": {
+                        "dependencies": [
+                            "classpath 'com.google.gms:google-services:4.2.0'"
+                        ]
+                    }
+                },
+                "app/build.gradle": {
+                    "apply": [
+                        "plugin: 'com.google.gms.google-services'"
+                    ]
+                }
+            },
+            "firetv": {
                 "package": "io.invertase.firebase.app.ReactNativeFirebaseAppPackage",
                 "projectName": "@react-native-firebase_app",
                 "build.gradle": {
@@ -1634,6 +1861,10 @@
             "androidtv": {
                 "package": "io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage",
                 "projectName": "@react-native-firebase_analytics"
+            },
+            "firetv": {
+                "package": "io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage",
+                "projectName": "@react-native-firebase_analytics"
             }
         },
         "@react-native-firebase/messaging": {
@@ -1650,6 +1881,10 @@
                 "projectName": "@react-native-firebase_messaging"
             },
             "androidtv": {
+                "package": "io.invertase.firebase.messaging.ReactNativeFirebaseMessagingPackage",
+                "projectName": "@react-native-firebase_messaging"
+            },
+            "firetv": {
                 "package": "io.invertase.firebase.messaging.ReactNativeFirebaseMessagingPackage",
                 "projectName": "@react-native-firebase_messaging"
             }
@@ -1759,6 +1994,10 @@
                 "package": "com.oney.WebRTCModule.WebRTCModulePackage"
             },
             "androidtv": {
+                "path": "node_modules/react-native-webrtc/android",
+                "package": "com.oney.WebRTCModule.WebRTCModulePackage"
+            },
+            "firetv": {
                 "path": "node_modules/react-native-webrtc/android",
                 "package": "com.oney.WebRTCModule.WebRTCModulePackage"
             }
@@ -2088,6 +2327,13 @@
                     "apply from: '../../../node_modules/react-native-zss-rich-text-editor/htmlCopy.gradle';",
                     "copyEditorHtmlToAppAssets(file('../../../node_modules/react-native-zss-rich-text-editor'))"
                 ]
+            },
+            "firetv": {
+                "skipImplementation": true,
+                "afterEvaluate": [
+                    "apply from: '../../../node_modules/react-native-zss-rich-text-editor/htmlCopy.gradle';",
+                    "copyEditorHtmlToAppAssets(file('../../../node_modules/react-native-zss-rich-text-editor'))"
+                ]
             }
         },
         "native-base": {
@@ -2109,6 +2355,10 @@
                 "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
             },
             "androidtv": {
+                "projectName": "react-native-community-async-storage",
+                "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
+            },
+            "firetv": {
                 "projectName": "react-native-community-async-storage",
                 "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
             },
@@ -2193,6 +2443,9 @@
                 "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
             },
             "androidtv": {
+                "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
+            },
+            "firetv": {
                 "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
             },
             "androidwear": {
@@ -2291,6 +2544,9 @@
             },
             "androidtv": {
                 "package": "com.thebylito.navigationbarcolor.NavigationBarColorPackage"
+            },
+            "firetv": {
+                "package": "com.thebylito.navigationbarcolor.NavigationBarColorPackage"
             }
         },
         "react-native-picker-select": {
@@ -2308,6 +2564,9 @@
                 "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
             },
             "androidtv": {
+                "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
+            },
+            "firetv": {
                 "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
             },
             "androidwear": {
@@ -2332,6 +2591,9 @@
                 "package": "com.ninty.system.setting.SystemSettingPackage"
             },
             "androidtv": {
+                "package": "com.ninty.system.setting.SystemSettingPackage"
+            },
+            "firetv": {
                 "package": "com.ninty.system.setting.SystemSettingPackage"
             }
         },
@@ -2360,6 +2622,11 @@
                 "path": "node_modules/@react-native-community/masked-view/android",
                 "projectName": "react-native-community-masked-view",
                 "package": "org.reactnative.maskedview.RNCMaskedViewPackage"
+            },
+            "firetv": {
+                "path": "node_modules/@react-native-community/masked-view/android",
+                "projectName": "react-native-community-masked-view",
+                "package": "org.reactnative.maskedview.RNCMaskedViewPackage"
             }
         },
         "@react-native-community/blur": {
@@ -2381,6 +2648,11 @@
                 "path": "node_modules/@react-native-community/blur/android",
                 "projectName": "react-native-community-blur",
                 "package": "com.cmcewen.blurview.BlurViewPackage"
+            },
+            "firetv": {
+                "path": "node_modules/@react-native-community/blur/android",
+                "projectName": "react-native-community-blur",
+                "package": "com.cmcewen.blurview.BlurViewPackage"
             }
         },
         "react-native-fast-image": {
@@ -2397,6 +2669,9 @@
             "androidtv": {
                 "package": "com.dylanvann.fastimage.FastImageViewPackage"
             },
+            "firetv": {
+                "package": "com.dylanvann.fastimage.FastImageViewPackage"
+            },
             "webpack": {
                 "modulePaths": true
             }
@@ -2410,6 +2685,9 @@
                 "package": "com.reactnativecommunity.webview.RNCWebViewPackage"
             },
             "androidtv": {
+                "package": "com.reactnativecommunity.webview.RNCWebViewPackage"
+            },
+            "firetv": {
                 "package": "com.reactnativecommunity.webview.RNCWebViewPackage"
             },
             "webpack": {
@@ -2644,6 +2922,17 @@
                         "SplashScreen.show(this)"
                     ]
                 }
+            },
+            "firetv": {
+                "package": "org.devio.rn.splashscreen.SplashScreenReactPackage",
+                "mainActivity": {
+                    "imports": [
+                        "org.devio.rn.splashscreen.SplashScreen"
+                    ],
+                    "createMethods": [
+                        "SplashScreen.show(this)"
+                    ]
+                }
             }
         },
         "tipsi-stripe": {
@@ -2722,6 +3011,17 @@
                 "implementation": "implementation project(':@sentry_react-native')"
             },
             "androidtv": {
+                "app/build.gradle": {
+                    "apply": [
+                        "from: \"../../../node_modules/@sentry/react-native/sentry.gradle\""
+                    ]
+                },
+                "projectName": "@sentry_react-native",
+                "path": "node_modules/@sentry/react-native/android",
+                "package": "io.sentry.RNSentryPackage",
+                "implementation": "implementation project(':@sentry_react-native')"
+            },
+            "firetv": {
                 "app/build.gradle": {
                     "apply": [
                         "from: \"../../../node_modules/@sentry/react-native/sentry.gradle\""

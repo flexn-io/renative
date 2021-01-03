@@ -76,6 +76,22 @@
                 }
             }
         },
+        "firetv": {
+            "entryFile": "index.firetv",
+            "reactNativeEngine": "hermes",
+            "permissions": ["*"],
+            "buildSchemes": {
+                "debug": {
+                    "signingConfig": "Debug",
+                    "bundleAssets": false
+                },
+                "release": {
+                    "signingConfig": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
+        },
         "androidwear": {
             "entryFile": "index.androidwear",
             "reactNativeEngine": "hermes",

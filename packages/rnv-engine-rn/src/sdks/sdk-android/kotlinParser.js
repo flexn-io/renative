@@ -15,16 +15,8 @@ const { logWarning } = Logger;
 const { writeCleanFile } = FileUtils;
 
 const JS_BUNDLE_DEFAULTS = {
-    android: '"super.getJSBundleFile()"',
-    androidtv: '"super.getJSBundleFile()"',
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager
     androidwear: '"assets://index.androidwear.bundle"'
-};
-
-const JS_BUNDLE_DEFAULTS_BUNDLED = {
-    android: '"assets://index.android.bundle"',
-    androidtv: '"assets://index.android.bundle"',
-    androidwear: '"assets://index.android.bundle"'
 };
 
 export const parseMainApplicationSync = (c) => {
@@ -33,9 +25,8 @@ export const parseMainApplicationSync = (c) => {
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const bundleFile = getGetJsBundleFile(c, platform) || bundleAssets
-        ? JS_BUNDLE_DEFAULTS_BUNDLED[platform]
-        : JS_BUNDLE_DEFAULTS[platform];
-    // const host = getConfigProp(c, platform, 'host', '10.0.2.2');
+        ? '"assets://index.android.bundle"'
+        : JS_BUNDLE_DEFAULTS[platform] || '"super.getJSBundleFile()"';
     const bundlerIp = getIP() || '10.0.2.2';
     if (!bundleAssets) {
         c.pluginConfigAndroid.pluginApplicationDebugServer

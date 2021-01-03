@@ -8,6 +8,7 @@ const {
     TVOS,
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     TASK_BUILD, TASK_PACKAGE, TASK_EXPORT,
     PARAMS
@@ -27,6 +28,7 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
     switch (platform) {
         case ANDROID:
         case ANDROID_TV:
+        case FIRE_TV:
         case ANDROID_WEAR:
             return buildAndroid(c);
         case IOS:

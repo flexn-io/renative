@@ -56,6 +56,7 @@ export const configureElectronProject = async (c) => {
     await copyAssetsFolder(
         c,
         platform,
+        null,
         platform === MACOS ? _generateICNS : null
     );
 

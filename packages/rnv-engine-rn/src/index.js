@@ -56,6 +56,12 @@ export default {
                 'androidtv.tv', 'tv', 'androidtv', 'android', 'tv.native', 'native'
             ], CNF)
         },
+        firetv: {
+            defaultPort: 8098,
+            extenstions: generateEngineExtensions([
+                'firetv.tv', 'tv', 'firetv', 'android', 'tv.native', 'native'
+            ], CNF)
+        },
         androidwear: {
             defaultPort: 8084,
             extenstions: generateEngineExtensions([

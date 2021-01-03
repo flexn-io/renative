@@ -27,7 +27,7 @@ sidebar_label: Android
 
 <!--EXTENSION_SUPPORT_START-->
 
-Extenstions are defined via engines. Engines with android support: 
+Extenstions are defined via engines. Engines with android support:
 - [engine-rn](../engines/engine-rn#extensions)
 
 <!--EXTENSION_SUPPORT_END-->
@@ -94,8 +94,8 @@ make sure you have this piece of script in package.json
 
 ## Hermes support
 
-Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.android.enableHermes`
-or `renative.json:platforms.android.buildSchemes.[SCHEME].enableHermes`
+Hermes can be enabled or disabled with `"reactNativeEngine": "hermes"` prop in `renative.json:platforms.android.reactNativeEngine`
+or `renative.json:platforms.android.buildSchemes.[SCHEME].reactNativeEngine`
 
 ## Advanced
 

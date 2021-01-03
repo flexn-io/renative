@@ -8,6 +8,7 @@ import { IOS,
     TIZEN,
     WEBOS,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH,
     PARAMS } from '../../core/constants';
@@ -34,6 +35,7 @@ export const taskRnvTargetList = async (c, parentTask, originTask) => {
     switch (platform) {
         case ANDROID:
         case ANDROID_TV:
+        case FIRE_TV:
         case ANDROID_WEAR:
             return listAndroidTargets(c, platform);
         case IOS:

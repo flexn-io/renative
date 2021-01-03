@@ -10,6 +10,7 @@
     "defaultTargets": {
         "android": "Nexus_5X_API_26",
         "androidtv": "Android_TV_720p_API_22",
+        "firetv": "Android_TV_720p_API_22",
         "androidwear": "Android_Wear_Round_API_28",
         "ios": "iPhone 8",
         "tvos": "Apple TV 4K",

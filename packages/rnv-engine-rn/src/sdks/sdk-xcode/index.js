@@ -876,7 +876,7 @@ const configureXcodeProject = async (c) => {
         );
     }
 
-    await copyAssetsFolder(c, platform);
+    await copyAssetsFolder(c, platform, platform === TVOS ? 'RNVAppTVOS' : 'RNVApp');
     await copyAppleAssets(c, platform, appFolderName);
     await parseAppDelegate(
         c,

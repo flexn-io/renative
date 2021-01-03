@@ -8,6 +8,7 @@ const {
     TVOS,
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     TASK_PACKAGE,
     TASK_CONFIGURE,
@@ -29,6 +30,7 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
             return packageBundleForXcode(c);
         case ANDROID:
         case ANDROID_TV:
+        case FIRE_TV:
         case ANDROID_WEAR:
             return packageAndroid(c);
         default:
@@ -47,6 +49,7 @@ export default {
         TVOS,
         ANDROID,
         ANDROID_TV,
+        FIRE_TV,
         ANDROID_WEAR,
     ],
 };

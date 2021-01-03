@@ -160,7 +160,8 @@ const Index = ({ config: siteConfig, language = '' }) => {
         { title: 'Android Wear', url: 'androidwear' },
         { title: 'Firefox TV', url: 'firefoxtv' },
         { title: 'KaiOS', url: 'kaios' },
-        { title: 'Chromecast', url: 'chromecast' }
+        { title: 'Chromecast', url: 'chromecast' },
+        { title: 'FireTV', url: 'firetv' },
         // { title: 'Chromecast', url: 'chromecast', next: 'next/' }
     ];
 

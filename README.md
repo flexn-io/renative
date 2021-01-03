@@ -183,9 +183,9 @@ Contributing
     </br>
     <a href="#android-wear">Android Wear</a>
     </th><th>
-    <img src="https://renative.org/img/ic_xbox.png" width=20 height=20 />
+    <img src="https://renative.org/img/ic_firetv.png" width=20 height=20 />
     </br>
-    <a href="#xbox">Xbox</a>
+    <a href="#firetv">FireTV</a>
     </th>
   </tr>
   <tr>
@@ -196,7 +196,7 @@ Contributing
     </th><th>
     <img src="https://renative.org/img/rnv_androidwear.gif" width="150" height="150" />
     </th><th>
-    coming soon
+    <img src="https://renative.org/img/rnv_androidtv.gif" width="150" height="150" />
     </th>
   </tr>
 </table>
@@ -218,7 +218,7 @@ Contributing
 <!-- [![OpenCollective](https://opencollective.com/renative/sponsors/badge.svg)](#sponsors) -->
 <!-- [![StackOverflow](http://img.shields.io/badge/stackoverflow-renative-blue.svg)]( http://stackoverflow.com/questions/tagged/renative) -->
 
-> The universal development SDK to build multi-platform projects with [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Firefox OS` and `Firefox TV` platforms
+> The universal development SDK to build multi-platform projects with [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Firefox OS` and `Firefox TV` platforms
 
 ---
 
@@ -400,6 +400,16 @@ More in-depth explanation how ReNative internals work
 `rnv run -p androidtv`
 
 [Documentation for Android TV Platform](https://renative.org/docs/platform-androidtv)
+
+---
+
+<img src="https://renative.org/img/ic_firetv.png" width=50 height=50 />
+
+## FireTV
+
+`rnv run -p firetv`
+
+[Documentation for FireTV Platform](https://renative.org/docs/platform-firetv)
 
 ---
 

@@ -32,6 +32,7 @@
             "platforms/chromecast",
             "platforms/firefoxos",
             "platforms/firefoxtv",
+            "platforms/firetv",
             "platforms/ios",
             "platforms/kaios",
             "platforms/macos",

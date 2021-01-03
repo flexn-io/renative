@@ -145,6 +145,29 @@
                 }
             }
         },
+        "firetv": {
+            "entryFile": "index.firetv",
+            "reactNativeEngine": "hermes",
+            "multipleAPKs": false,
+            "minSdkVersion": 21,
+            "permissions": ["*"],
+            "buildSchemes": {
+                "debug": {
+                    "signingConfig": "Debug",
+                    "bundleAssets": false
+                },
+                "test": {
+                    "signingConfig": "Debug",
+                    "bundleAssets": true
+                },
+                "release": {
+                    "signingConfig": "Release",
+                    "multipleAPKs": true,
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
+        },
         "androidwear": {
             "entryFile": "index.androidwear",
             "reactNativeEngine": "hermes",

@@ -8,6 +8,7 @@ const {
     TVOS,
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     PARAMS
 } = Constants;
@@ -32,6 +33,7 @@ export default {
         TVOS,
         ANDROID,
         ANDROID_TV,
+        FIRE_TV,
         ANDROID_WEAR,
     ],
 };

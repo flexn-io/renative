@@ -220,15 +220,7 @@ export const parseFonts = (c, callback) => {
     }
 };
 
-const ASSET_PATH_ALIASES = {
-    android: 'app/src/main',
-    androidtv: 'app/src/main',
-    androidwear: 'app/src/main',
-    ios: 'RNVApp',
-    tvos: 'RNVAppTVOS'
-};
-
-export const copyAssetsFolder = async (c, platform, customFn) => {
+export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     logTask('copyAssetsFolder');
 
     if (!isPlatformActive(c, platform)) return;
@@ -260,7 +252,7 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
 
     const destPath = path.join(
         getPlatformProjectDir(c, platform),
-        ASSET_PATH_ALIASES[platform] || ''
+        subPath || ''
     );
 
     const tsPathsConfig = getTimestampPathsConfig(c, platform);

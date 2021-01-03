@@ -94,7 +94,7 @@ export default {
 
         },
         firefoxtv: {
-            defaultPort: 8014,
+            defaultPort: 8097,
             isWebHosted: true,
             extenstions: generateEngineExtensions([
                 'firefoxtv.tv', 'web.tv', 'tv', 'firefoxtv', 'tv.web', 'web'

@@ -3,6 +3,7 @@ import factor from './Api/factor';
 import {
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     IOS,
     TVOS,
@@ -22,6 +23,7 @@ import {
 // PLATFORM
 export const isPlatformAndroid = platform === ANDROID;
 export const isPlatformAndroidtv = platform === ANDROID_TV;
+export const isPlatformFiretv = platform === FIRE_TV;
 export const isPlatformAndroidwear = platform === ANDROID_WEAR;
 export const isPlatformIos = platform === IOS;
 export const isPlatformTvos = platform === TVOS;
@@ -55,6 +57,7 @@ export const isEngineWeb = platform === WEB
     || platform === TIZEN_WATCH;
 export const isEngineNative = platform === ANDROID
     || platform === ANDROID_TV
+    || platform === FIRE_TV
     || platform === ANDROID_WEAR
     || platform === IOS
     || platform === TVOS;
@@ -67,6 +70,7 @@ export const isWatch = () => factor === 'watch';
 
 export const isAndroid = () => platform === ANDROID;
 export const isAndroidtv = () => platform === ANDROID_TV;
+export const isFiretv = () => platform === FIRE_TV;
 export const isAndroidwear = () => platform === ANDROID_WEAR;
 export const isIos = () => platform === IOS;
 export const isTvos = () => platform === TVOS;

@@ -19,6 +19,7 @@ import {
     TIZEN,
     WEBOS,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     TIZEN_MOBILE,
     TIZEN_WATCH,
@@ -174,6 +175,7 @@ export const checkAndConfigureSdks = async (c) => {
     switch (c.platform) {
         case ANDROID:
         case ANDROID_TV:
+        case FIRE_TV:
         case ANDROID_WEAR:
             return checkAndConfigureAndroidSdks(c);
         case TIZEN:
@@ -283,6 +285,7 @@ export const checkSdk = async (c) => {
         switch (c.platform) {
             case ANDROID:
             case ANDROID_TV:
+            case FIRE_TV:
             case ANDROID_WEAR:
                 await _attemptAutoFix(c, 'android', ANDROID_SDK);
                 return _attemptAutoFix(c, 'android-ndk', ANDROID_NDK, 'source.properties');

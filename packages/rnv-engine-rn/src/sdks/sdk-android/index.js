@@ -82,6 +82,7 @@ const {
     ANDROID_WEAR,
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     CLI_ANDROID_ADB
 } = Constants;
 
@@ -289,7 +290,7 @@ const _checkSigningCerts = async (c) => {
             });
 
             if (c.files.workspace.appConfig.configPrivate) {
-                const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID];
+                const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID, FIRE_TV];
 
                 platCandidates.forEach((v) => {
                     if (c.files.workspace.appConfig.configPrivate[v]) {
@@ -550,8 +551,7 @@ export const configureGradleProject = async (c) => {
     logTask('configureGradleProject');
 
     if (!isPlatformActive(c, platform)) return;
-
-    await copyAssetsFolder(c, platform);
+    await copyAssetsFolder(c, platform, 'app/src/main');
     await configureAndroidProperties(c);
     await configureProject(c);
     await copyBuildsFolder(c, platform);

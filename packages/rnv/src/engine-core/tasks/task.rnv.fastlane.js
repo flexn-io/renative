@@ -4,6 +4,7 @@ import { IOS,
     TVOS,
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     PARAMS } from '../../core/constants';
 import PlatformSetup from '../../core/setupManager';
@@ -39,6 +40,7 @@ export default {
         TVOS,
         ANDROID,
         ANDROID_TV,
+        FIRE_TV,
         ANDROID_WEAR,
     ],
 };

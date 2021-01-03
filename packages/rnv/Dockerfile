@@ -16,7 +16,7 @@ RUN sdkmanager "system-images;android-28;default;x86"
 COPY . .
 
 # build, link and setup rnv
-RUN npm link && mkdir /root/.rnv/ && echo '{"sdks":{"ANDROID_SDK":"/opt/android-sdk-linux"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /root/.rnv/renative.json
+RUN npm link && mkdir /root/.rnv/ && echo '{"sdks":{"ANDROID_SDK":"/opt/android-sdk-linux"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","firetv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /root/.rnv/renative.json
 
 RUN npm link && mkdir /root/.rnv/ && echo '{"workspaces":{"rnv":{"path":"/root/.rnv"}}}' > /root/.rnv/renative.workspaces.json
 

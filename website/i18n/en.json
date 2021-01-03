@@ -875,6 +875,10 @@
         "title": "Firefox TV Platform",
         "sidebar_label": "Firefox TV"
       },
+      "platforms/firetv": {
+        "title": "FireTV Platform",
+        "sidebar_label": "FireTV"
+      },
       "platforms/ios": {
         "title": "iOS Platform",
         "sidebar_label": "iOS"
@@ -967,6 +971,10 @@
         "title": "0.31.x",
         "sidebar_label": "0.31.x (Baby Yoda)"
       },
+      "releases/0.32.x": {
+        "title": "0.32.x",
+        "sidebar_label": "0.32.x (Rocky Balboa)"
+      },
       "template-blank": {
         "title": "template-blank",
         "sidebar_label": "template-blank"
@@ -1030,6 +1038,10 @@
       "upgrades/'0.31'": {
         "title": "Upgrade to 0.31.x Guide",
         "sidebar_label": "0.31.x"
+      },
+      "upgrades/'0.32'": {
+        "title": "Upgrade to 0.32.x Guide",
+        "sidebar_label": "0.32.x"
       },
       "version-0.28/version-0.28-api-cli-build": {
         "title": "rnv build",

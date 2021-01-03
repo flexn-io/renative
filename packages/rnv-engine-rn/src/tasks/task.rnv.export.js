@@ -8,6 +8,7 @@ const {
     TVOS,
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     TASK_BUILD, TASK_EXPORT,
     PARAMS
@@ -28,6 +29,7 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
             return exportXcodeProject(c, platform);
         case ANDROID:
         case ANDROID_TV:
+        case FIRE_TV:
         case ANDROID_WEAR:
             // Android Platforms don't need extra export step
             return true;
@@ -46,6 +48,7 @@ export default {
         TVOS,
         ANDROID,
         ANDROID_TV,
+        FIRE_TV,
         ANDROID_WEAR,
     ],
 };

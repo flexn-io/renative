@@ -17,7 +17,7 @@ rnv new
 
 ## Supported Platforms
 
-`iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `KaiOS`, `FirefoxOS`, `Firefox TV`
+`iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `KaiOS`, `FirefoxOS`, `Firefox TV`
 
 
 ## Screenshots

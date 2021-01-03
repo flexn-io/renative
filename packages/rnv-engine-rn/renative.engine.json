@@ -50,6 +50,13 @@
                 }
             }
         },
+        "firetv": {
+            "npm": {
+                "devDependencies": {
+                    "jetifier": "1.6.5"
+                }
+            }
+        },
         "tvos": {
             "npm": {
                 "devDependencies": {

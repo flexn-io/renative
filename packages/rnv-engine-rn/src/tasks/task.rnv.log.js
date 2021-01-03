@@ -15,6 +15,7 @@ const {
     TVOS,
     ANDROID,
     ANDROID_TV,
+    FIRE_TV,
     ANDROID_WEAR,
     TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE
 } = Constants;
@@ -31,6 +32,7 @@ export const taskRnvLog = async (c, parentTask, originTask) => {
     switch (c.platform) {
         case ANDROID:
         case ANDROID_TV:
+        case FIRE_TV:
         case ANDROID_WEAR:
             return runAndroidLog(c);
         case IOS:
@@ -51,6 +53,7 @@ export default {
         TVOS,
         ANDROID,
         ANDROID_TV,
+        FIRE_TV,
         ANDROID_WEAR,
     ],
     isGlobalScope: true

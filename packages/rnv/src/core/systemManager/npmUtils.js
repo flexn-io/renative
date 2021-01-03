@@ -4,7 +4,7 @@ import inquirer from 'inquirer';
 import { executeAsync, commandExistsSync } from './exec';
 import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync, fsWriteFileSync, loadFile } from './fileutils';
 import { logTask, logWarning, logError, logInfo, logDebug } from './logger';
-import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
+import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR } from '../constants';
 import { doResolve } from './resolve';
 
 import { inquirerPrompt } from '../../cli/prompt';
@@ -179,7 +179,9 @@ export const installPackageDependencies = async (c, failOnError = false) => {
         const plats = c.files.project.config?.defaults?.supportedPlatforms;
         if (
             Array.isArray(plats) && (plats.includes(ANDROID)
-            || plats.includes(ANDROID_TV) || plats.includes(ANDROID_WEAR))
+            || plats.includes(ANDROID_TV)
+            || plats.includes(FIRE_TV)
+            || plats.includes(ANDROID_WEAR))
         ) {
             if (!c.files.project.configLocal) {
                 c.files.project.configLocal = {};

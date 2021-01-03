@@ -46,6 +46,9 @@
         "androidtv": {
             "engine": "engine-rn"
         },
+        "firetv": {
+            "engine": "engine-rn"
+        },
         "tvos": {
             "engine": "engine-rn"
         },
