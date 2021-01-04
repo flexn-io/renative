@@ -191,7 +191,7 @@ export const findSuitableTask = async (c, specificTask) => {
             // Custom tasks are executed by core engine
             logInfo(`Running custom task ${task}`);
         } else if (!suitableEngines.length) {
-            if (!c.platform || c.platform === true) {
+            if ((!c.platform || c.platform === true) && !c.runtime.hasAllEnginesRegistered) {
                 // No platform was specified. we have no option other than load all engines and offer platform list next round
                 await registerAllPlatformEngines(c);
                 return findSuitableTask(c);

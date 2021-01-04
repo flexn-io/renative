@@ -133,7 +133,7 @@ export const registerAllPlatformEngines = async (c) => {
     if (registerEngineList.length) {
         await Promise.all(registerEngineList);
     }
-
+    c.runtime.hasAllEnginesRegistered = true;
     return true;
 };
 
