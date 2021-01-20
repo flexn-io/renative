@@ -179,7 +179,7 @@ export const parseAppBuildGradleSync = (c) => {
     // REACT NATIVE ENGINE
     const enableHermes = getConfigProp(c, platform, 'enableHermes');
     if (enableHermes === true) {
-        logWarning('enbaleHermes is DEPRECATED. use "reactNativeEngine": "hermes" instead.');
+        logWarning('enableHermes is DEPRECATED. use "reactNativeEngine": "hermes" instead.');
     }
 
     const reactNativeEngine = getConfigProp(c, c.platform, 'reactNativeEngine', 'default');
