@@ -191,7 +191,7 @@ export const parseAndroidManifestSync = (c) => {
             platform,
             'excludedPermissions'
         );
-        if (includedPermissions && configPermissions) {
+        if (includedPermissions?.length && configPermissions) {
             const platPerm = configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
             if (includedPermissions[0] === '*') {
@@ -220,6 +220,8 @@ export const parseAndroidManifestSync = (c) => {
                     }
                 });
             }
+        } else if (includedPermissions) {
+            logWarning('includedPermissions not parsed. make sure it an array format!');
         }
 
         // appConfig FEATURES OVERRIDES

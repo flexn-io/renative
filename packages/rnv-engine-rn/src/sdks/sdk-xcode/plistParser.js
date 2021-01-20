@@ -109,18 +109,20 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
     if (includedPermissions && c.buildConfig.permissions) {
         const platPrem = c.buildConfig.permissions[platform] ? platform : 'ios';
         const pc = c.buildConfig.permissions[platPrem];
-        if (includedPermissions.length && includedPermissions[0] === '*') {
+        if (includedPermissions?.length && includedPermissions[0] === '*') {
             Object.keys(pc).forEach((v) => {
                 const key = pc[v].key || v;
                 plistObj[key] = pc[v].desc;
             });
-        } else {
+        } else if (includedPermissions?.length) {
             includedPermissions.forEach((v) => {
                 if (pc[v]) {
                     const key = pc[v].key || v;
                     plistObj[key] = pc[v].desc;
                 }
             });
+        } else if (includedPermissions) {
+            logWarning('includedPermissions not parsed. make sure it an array format!');
         }
     }
     // ORIENATATIONS

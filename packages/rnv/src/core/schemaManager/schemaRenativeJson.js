@@ -599,7 +599,6 @@ const platformAndroidProps = {
     },
     keyPassword: {
         type: 'string',
-        isSensitive: true,
         description: `${SENSITIVE}keyPassword for keystore file`
     },
     excludedFeatures: {
@@ -1018,6 +1017,15 @@ const pluginProps = {
             ...pluginAndroidProps
         }
     },
+    firetv: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...commonPluginPlatformProps,
+            ...commonAndroidProps,
+            ...pluginAndroidProps
+        }
+    },
     androidwear: {
         additionalProperties: false,
         type: 'object',
@@ -1295,6 +1303,10 @@ export const schemaRoot = {
                     ...schemaPlatforms.definitions.ios
                 },
                 androidtv: {
+                    // $ref: 'platforms.json#/definitions/android'
+                    ...schemaPlatforms.definitions.android
+                },
+                firetv: {
                     // $ref: 'platforms.json#/definitions/android'
                     ...schemaPlatforms.definitions.android
                 },
