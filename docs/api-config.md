@@ -15242,6 +15242,2853 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+### platforms.firetv
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `firetv` | `object` |  | `platforms.firetv` |
+
+
+
+
+
+---
+
+
+
+#### platforms.firetv.AndroidManifest
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `platforms.firetv.AndroidManifest` |
+
+Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
+
+Injects / Overrides values in AndroidManifest.xml file of generated android based project
+
+> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
+
+
+
+**examples**
+
+
+```json
+{
+  "AndroidManifest": {
+    "children": [
+      {
+        "tag": "application",
+        "android:name": ".MainApplication",
+        "children": [
+          {
+            "tag": "activity",
+            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+
+
+```json
+{
+  "AndroidManifest": {
+    "children": [
+      {
+        "tag": "application",
+        "android:name": ".MainApplication",
+        "android:allowBackup": true,
+        "android:largeHeap": true,
+        "android:usesCleartextTraffic": true,
+        "tools:targetApi": 28
+      }
+    ]
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `platforms.firetv.BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### platforms.firetv.BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `platforms.firetv.BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### platforms.firetv.BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `platforms.firetv.BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+
+
+#### platforms.firetv.aab
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `aab` | `boolean` |  | `platforms.firetv.aab` |
+
+If set to true, android project will generate app.aab instead of apk
+
+**examples**
+
+
+```json
+{
+  "aab": "false"
+}
+```
+
+
+
+```json
+{
+  "aab": "true"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.app/build.gradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `platforms.firetv.app/build.gradle` |
+
+Overrides values in `app/build.gradle` file of generated android based project
+
+**examples**
+
+
+```json
+{
+  "app/build.gradle": {
+    "apply": [
+      "plugin: 'io.fabric'"
+    ]
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.applyPlugin
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `platforms.firetv.applyPlugin` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.author
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.firetv.author` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.backgroundColor
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.firetv.backgroundColor` |
+
+Defines root view backgroundColor for all platforms in HEX format
+
+**examples**
+
+
+```json
+{
+  "backgroundColor": "#FFFFFF"
+}
+```
+
+
+
+```json
+{
+  "backgroundColor": "#222222"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.build.gradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `platforms.firetv.build.gradle` |
+
+Overrides values in `build.gradle` file of generated android based project
+
+**examples**
+
+
+```json
+{
+  "build.gradle": {
+    "allprojects": {
+      "repositories": {
+        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
+      }
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.firetv.buildSchemes` |
+
+
+
+
+
+---
+
+
+
+#### platforms.firetv.buildSchemes.[object].AndroidManifest
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `platforms.firetv.buildSchemes.[object].AndroidManifest` |
+
+Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
+
+Injects / Overrides values in AndroidManifest.xml file of generated android based project
+
+> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
+
+
+
+**examples**
+
+
+```json
+{
+  "AndroidManifest": {
+    "children": [
+      {
+        "tag": "application",
+        "android:name": ".MainApplication",
+        "children": [
+          {
+            "tag": "activity",
+            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+
+
+```json
+{
+  "AndroidManifest": {
+    "children": [
+      {
+        "tag": "application",
+        "android:name": ".MainApplication",
+        "android:allowBackup": true,
+        "android:largeHeap": true,
+        "android:usesCleartextTraffic": true,
+        "tools:targetApi": 28
+      }
+    ]
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `platforms.firetv.buildSchemes.[object].BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### platforms.firetv.buildSchemes.[object].BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `platforms.firetv.buildSchemes.[object].BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### platforms.firetv.buildSchemes.[object].BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `platforms.firetv.buildSchemes.[object].BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].aab
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `aab` | `boolean` |  | `platforms.firetv.buildSchemes.[object].aab` |
+
+If set to true, android project will generate app.aab instead of apk
+
+**examples**
+
+
+```json
+{
+  "aab": "false"
+}
+```
+
+
+
+```json
+{
+  "aab": "true"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].app/build.gradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `platforms.firetv.buildSchemes.[object].app/build.gradle` |
+
+Overrides values in `app/build.gradle` file of generated android based project
+
+**examples**
+
+
+```json
+{
+  "app/build.gradle": {
+    "apply": [
+      "plugin: 'io.fabric'"
+    ]
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].applyPlugin
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `platforms.firetv.buildSchemes.[object].applyPlugin` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].author
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.firetv.buildSchemes.[object].author` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].backgroundColor
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.firetv.buildSchemes.[object].backgroundColor` |
+
+Defines root view backgroundColor for all platforms in HEX format
+
+**examples**
+
+
+```json
+{
+  "backgroundColor": "#FFFFFF"
+}
+```
+
+
+
+```json
+{
+  "backgroundColor": "#222222"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].build.gradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `platforms.firetv.buildSchemes.[object].build.gradle` |
+
+Overrides values in `build.gradle` file of generated android based project
+
+**examples**
+
+
+```json
+{
+  "build.gradle": {
+    "allprojects": {
+      "repositories": {
+        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
+      }
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].bundleAssets
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.firetv.buildSchemes.[object].bundleAssets` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].bundleIsDev
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.firetv.buildSchemes.[object].bundleIsDev` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].compileSdkVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileSdkVersion` | `integer` |  | `platforms.firetv.buildSchemes.[object].compileSdkVersion` |
+
+Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "compileSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "compileSdkVersion": "29"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].deploy
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.firetv.buildSchemes.[object].deploy` |
+
+
+
+
+
+---
+
+
+
+#### platforms.firetv.buildSchemes.[object].deploy.type
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.firetv.buildSchemes.[object].deploy.type` |
+
+
+
+
+
+---
+
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].description
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.firetv.buildSchemes.[object].description` |
+
+General description of your app. This prop will be injected to actual projects where description field is applicable
+
+**examples**
+
+
+```json
+{
+  "description": "This app does awesome things"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].enableAndroidX
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableAndroidX` | `boolean` | `true` | `platforms.firetv.buildSchemes.[object].enableAndroidX` |
+
+
+
+**examples**
+
+
+```json
+{
+  "enableAndroidX": "true"
+}
+```
+
+
+
+```json
+{
+  "enableAndroidX": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].enableHermes
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableHermes` | `boolean` |  | `platforms.firetv.buildSchemes.[object].enableHermes` |
+
+> DEPRECATED in favour of `reactNativeEngine`
+
+**examples**
+
+
+```json
+{
+  "enableHermes": "true"
+}
+```
+
+
+
+```json
+{
+  "enableHermes": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].enabled
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `platforms.firetv.buildSchemes.[object].enabled` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].engine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.firetv.buildSchemes.[object].engine` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].entryFile
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.firetv.buildSchemes.[object].entryFile` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].excludedFeatures
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedFeatures` | `array` |  | `platforms.firetv.buildSchemes.[object].excludedFeatures` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].excludedPlugins
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.firetv.buildSchemes.[object].excludedPlugins` |
+
+Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
+
+NOTE: excludedPlugins is evaluated after includedPlugins
+
+**examples**
+
+
+```json
+{
+  "excludedPlugins": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "excludedPlugins": [
+    "react-native-google-cast",
+    "react-navigation-tabs"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].ext
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.firetv.buildSchemes.[object].ext` |
+
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].gradle.properties
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `platforms.firetv.buildSchemes.[object].gradle.properties` |
+
+Overrides values in `gradle.properties` file of generated android based project
+
+**examples**
+
+
+```json
+{
+  "gradle.properties": {
+    "gradle.properties": {
+      "android.debug.obsoleteApi": true,
+      "debug.keystore": "debug.keystore",
+      "org.gradle.daemon": true,
+      "org.gradle.parallel": true,
+      "org.gradle.configureondemand": true
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].gradleBuildToolsVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleBuildToolsVersion` | `integer` | `3.3.1` | `platforms.firetv.buildSchemes.[object].gradleBuildToolsVersion` |
+
+Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`
+
+**examples**
+
+
+```json
+{
+  "gradleBuildToolsVersion": "3.3.1"
+}
+```
+
+
+
+```json
+{
+  "gradleBuildToolsVersion": "4.1.0"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].gradleWrapperVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleWrapperVersion` | `integer` | `5.5` | `platforms.firetv.buildSchemes.[object].gradleWrapperVersion` |
+
+Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`
+
+**examples**
+
+
+```json
+{
+  "gradleWrapperVersion": "5.5"
+}
+```
+
+
+
+```json
+{
+  "gradleWrapperVersion": "6.7.1"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].id
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.firetv.buildSchemes.[object].id` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].ignoreLogs
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.firetv.buildSchemes.[object].ignoreLogs` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].ignoreWarnings
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.firetv.buildSchemes.[object].ignoreWarnings` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `platforms.firetv.buildSchemes.[object].implementation` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].includedFeatures
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFeatures` | `array` |  | `platforms.firetv.buildSchemes.[object].includedFeatures` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].includedFonts
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.firetv.buildSchemes.[object].includedFonts` |
+
+Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
+
+**examples**
+
+
+```json
+{
+  "includedFonts": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedFonts": [
+    "TimeBurner",
+    "Entypo"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].includedPermissions
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.firetv.buildSchemes.[object].includedPermissions` |
+
+Allows you to include specific permissions by their KEY defined in `permissions` object
+
+**examples**
+
+
+```json
+{
+  "includedPermissions": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedPermissions": [
+    "INTERNET",
+    "CAMERA",
+    "SYSTEM_ALERT_WINDOW",
+    "RECORD_AUDIO",
+    "RECORD_VIDEO",
+    "READ_EXTERNAL_STORAGE",
+    "WRITE_EXTERNAL_STORAGE",
+    "ACCESS_FINE_LOCATION",
+    "ACCESS_COARSE_LOCATION",
+    "VIBRATE",
+    "ACCESS_NETWORK_STATE",
+    "ACCESS_WIFI_STATE",
+    "RECEIVE_BOOT_COMPLETED",
+    "WRITE_CONTACTS",
+    "READ_CONTACTS"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].includedPlugins
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.firetv.buildSchemes.[object].includedPlugins` |
+
+Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
+
+NOTE: includedPlugins is evaluated before excludedPlugins
+
+**examples**
+
+
+```json
+{
+  "includedPlugins": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedPlugins": [
+    "react-native-google-cast",
+    "react-navigation-tabs"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].keyAlias
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyAlias` | `string` |  | `platforms.firetv.buildSchemes.[object].keyAlias` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].keyPassword
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyPassword` | `string` |  | `platforms.firetv.buildSchemes.[object].keyPassword` |
+
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
+
+keyPassword for keystore file
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].license
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.firetv.buildSchemes.[object].license` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].mainActivity
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `mainActivity` | `object` | `{}` | `platforms.firetv.buildSchemes.[object].mainActivity` |
+
+Allows you to configure behaviour of MainActivity.kt
+
+
+
+---
+
+
+
+#### platforms.firetv.buildSchemes.[object].mainActivity.onCreate
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `onCreate` | `string` | `super.onCreate(savedInstanceState)` | `platforms.firetv.buildSchemes.[object].mainActivity.onCreate` |
+
+Overrides super.onCreate method handler of MainActivity.kt
+
+**examples**
+
+
+```json
+{
+  "onCreate": "super.onCreate(null)"
+}
+```
+
+
+
+```json
+{
+  "onCreate": "super.onCreate(savedInstanceState)"
+}
+```
+
+
+
+
+---
+
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].minSdkVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minSdkVersion` | `integer` | `21` | `platforms.firetv.buildSchemes.[object].minSdkVersion` |
+
+
+
+**examples**
+
+
+```json
+{
+  "minSdkVersion": "21"
+}
+```
+
+
+
+```json
+{
+  "minSdkVersion": "22"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].multipleAPKs
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `multipleAPKs` | `boolean` |  | `platforms.firetv.buildSchemes.[object].multipleAPKs` |
+
+If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+
+**examples**
+
+
+```json
+{
+  "multipleAPKs": "true"
+}
+```
+
+
+
+```json
+{
+  "multipleAPKs": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].permissions
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.firetv.buildSchemes.[object].permissions` |
+
+> DEPRECATED in favor of includedPermissions
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` | `default` | `platforms.firetv.buildSchemes.[object].reactNativeEngine` |
+
+Allows you to define specific native render engine to be used
+
+**examples**
+
+
+```json
+{
+  "reactNativeEngine": "true"
+}
+```
+
+
+
+```json
+{
+  "reactNativeEngine": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].runtime
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.firetv.buildSchemes.[object].runtime` |
+
+This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
+
+**examples**
+
+
+```json
+{
+  "runtime": {
+    "someRuntimeProperty": "foo"
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].signingConfig
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingConfig` | `string` | `Debug` | `platforms.firetv.buildSchemes.[object].signingConfig` |
+
+Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
+
+**examples**
+
+
+```json
+{
+  "signingConfig": "default"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "hermes"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].splashScreen
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.firetv.buildSchemes.[object].splashScreen` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].storeFile
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storeFile` | `string` |  | `platforms.firetv.buildSchemes.[object].storeFile` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].storePassword
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storePassword` | `string` |  | `platforms.firetv.buildSchemes.[object].storePassword` |
+
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
+
+storePassword for keystore file
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].targetSdkVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `targetSdkVersion` | `integer` |  | `platforms.firetv.buildSchemes.[object].targetSdkVersion` |
+
+Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "targetSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "targetSdkVersion": "29"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].timestampAssets
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.firetv.buildSchemes.[object].timestampAssets` |
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
+
+**examples**
+
+
+```json
+{
+  "timestampAssets": "true"
+}
+```
+
+
+
+```json
+{
+  "timestampAssets": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].title
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.firetv.buildSchemes.[object].title` |
+
+Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
+
+**examples**
+
+
+```json
+{
+  "title": "Awesome App"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].versionedAssets
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.firetv.buildSchemes.[object].versionedAssets` |
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
+
+**examples**
+
+
+```json
+{
+  "versionedAssets": "true"
+}
+```
+
+
+
+```json
+{
+  "versionedAssets": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+
+#### platforms.firetv.bundleAssets
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.firetv.bundleAssets` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.bundleIsDev
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.firetv.bundleIsDev` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.compileSdkVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `compileSdkVersion` | `integer` |  | `platforms.firetv.compileSdkVersion` |
+
+Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "compileSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "compileSdkVersion": "29"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.deploy
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `object` |  | `platforms.firetv.deploy` |
+
+
+
+
+
+---
+
+
+
+#### platforms.firetv.deploy.type
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `type` | `string` |  | `platforms.firetv.deploy.type` |
+
+
+
+
+
+---
+
+
+
+
+
+#### platforms.firetv.description
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.firetv.description` |
+
+General description of your app. This prop will be injected to actual projects where description field is applicable
+
+**examples**
+
+
+```json
+{
+  "description": "This app does awesome things"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.enableAndroidX
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableAndroidX` | `boolean` | `true` | `platforms.firetv.enableAndroidX` |
+
+
+
+**examples**
+
+
+```json
+{
+  "enableAndroidX": "true"
+}
+```
+
+
+
+```json
+{
+  "enableAndroidX": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.enableHermes
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableHermes` | `boolean` |  | `platforms.firetv.enableHermes` |
+
+> DEPRECATED in favour of `reactNativeEngine`
+
+**examples**
+
+
+```json
+{
+  "enableHermes": "true"
+}
+```
+
+
+
+```json
+{
+  "enableHermes": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.engine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.firetv.engine` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.entryFile
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.firetv.entryFile` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.excludedFeatures
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedFeatures` | `array` |  | `platforms.firetv.excludedFeatures` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.excludedPlugins
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.firetv.excludedPlugins` |
+
+Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
+
+NOTE: excludedPlugins is evaluated after includedPlugins
+
+**examples**
+
+
+```json
+{
+  "excludedPlugins": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "excludedPlugins": [
+    "react-native-google-cast",
+    "react-navigation-tabs"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.ext
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.firetv.ext` |
+
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.gradle.properties
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `platforms.firetv.gradle.properties` |
+
+Overrides values in `gradle.properties` file of generated android based project
+
+**examples**
+
+
+```json
+{
+  "gradle.properties": {
+    "gradle.properties": {
+      "android.debug.obsoleteApi": true,
+      "debug.keystore": "debug.keystore",
+      "org.gradle.daemon": true,
+      "org.gradle.parallel": true,
+      "org.gradle.configureondemand": true
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.gradleBuildToolsVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleBuildToolsVersion` | `integer` | `3.3.1` | `platforms.firetv.gradleBuildToolsVersion` |
+
+Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`
+
+**examples**
+
+
+```json
+{
+  "gradleBuildToolsVersion": "3.3.1"
+}
+```
+
+
+
+```json
+{
+  "gradleBuildToolsVersion": "4.1.0"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.gradleWrapperVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradleWrapperVersion` | `integer` | `5.5` | `platforms.firetv.gradleWrapperVersion` |
+
+Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`
+
+**examples**
+
+
+```json
+{
+  "gradleWrapperVersion": "5.5"
+}
+```
+
+
+
+```json
+{
+  "gradleWrapperVersion": "6.7.1"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.id
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.firetv.id` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.ignoreLogs
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.firetv.ignoreLogs` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.ignoreWarnings
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.firetv.ignoreWarnings` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `platforms.firetv.implementation` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.includedFeatures
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFeatures` | `array` |  | `platforms.firetv.includedFeatures` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.includedFonts
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.firetv.includedFonts` |
+
+Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
+
+**examples**
+
+
+```json
+{
+  "includedFonts": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedFonts": [
+    "TimeBurner",
+    "Entypo"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.includedPermissions
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.firetv.includedPermissions` |
+
+Allows you to include specific permissions by their KEY defined in `permissions` object
+
+**examples**
+
+
+```json
+{
+  "includedPermissions": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedPermissions": [
+    "INTERNET",
+    "CAMERA",
+    "SYSTEM_ALERT_WINDOW",
+    "RECORD_AUDIO",
+    "RECORD_VIDEO",
+    "READ_EXTERNAL_STORAGE",
+    "WRITE_EXTERNAL_STORAGE",
+    "ACCESS_FINE_LOCATION",
+    "ACCESS_COARSE_LOCATION",
+    "VIBRATE",
+    "ACCESS_NETWORK_STATE",
+    "ACCESS_WIFI_STATE",
+    "RECEIVE_BOOT_COMPLETED",
+    "WRITE_CONTACTS",
+    "READ_CONTACTS"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.includedPlugins
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.firetv.includedPlugins` |
+
+Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
+
+NOTE: includedPlugins is evaluated before excludedPlugins
+
+**examples**
+
+
+```json
+{
+  "includedPlugins": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedPlugins": [
+    "react-native-google-cast",
+    "react-navigation-tabs"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.keyAlias
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyAlias` | `string` |  | `platforms.firetv.keyAlias` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.keyPassword
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `keyPassword` | `string` |  | `platforms.firetv.keyPassword` |
+
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
+
+keyPassword for keystore file
+
+
+
+---
+
+
+
+
+#### platforms.firetv.license
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.firetv.license` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.mainActivity
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `mainActivity` | `object` | `{}` | `platforms.firetv.mainActivity` |
+
+Allows you to configure behaviour of MainActivity.kt
+
+
+
+---
+
+
+
+#### platforms.firetv.mainActivity.onCreate
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `onCreate` | `string` | `super.onCreate(savedInstanceState)` | `platforms.firetv.mainActivity.onCreate` |
+
+Overrides super.onCreate method handler of MainActivity.kt
+
+**examples**
+
+
+```json
+{
+  "onCreate": "super.onCreate(null)"
+}
+```
+
+
+
+```json
+{
+  "onCreate": "super.onCreate(savedInstanceState)"
+}
+```
+
+
+
+
+---
+
+
+
+
+
+#### platforms.firetv.minSdkVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minSdkVersion` | `integer` | `21` | `platforms.firetv.minSdkVersion` |
+
+
+
+**examples**
+
+
+```json
+{
+  "minSdkVersion": "21"
+}
+```
+
+
+
+```json
+{
+  "minSdkVersion": "22"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.multipleAPKs
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `multipleAPKs` | `boolean` |  | `platforms.firetv.multipleAPKs` |
+
+If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+
+**examples**
+
+
+```json
+{
+  "multipleAPKs": "true"
+}
+```
+
+
+
+```json
+{
+  "multipleAPKs": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.permissions
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.firetv.permissions` |
+
+> DEPRECATED in favor of includedPermissions
+
+
+
+---
+
+
+
+
+#### platforms.firetv.reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` | `default` | `platforms.firetv.reactNativeEngine` |
+
+Allows you to define specific native render engine to be used
+
+**examples**
+
+
+```json
+{
+  "reactNativeEngine": "true"
+}
+```
+
+
+
+```json
+{
+  "reactNativeEngine": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.runtime
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.firetv.runtime` |
+
+This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
+
+**examples**
+
+
+```json
+{
+  "runtime": {
+    "someRuntimeProperty": "foo"
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.signingConfig
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `signingConfig` | `string` | `Debug` | `platforms.firetv.signingConfig` |
+
+Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`
+
+**examples**
+
+
+```json
+{
+  "signingConfig": "default"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "v8-android-jit-nointl"
+}
+```
+
+
+
+```json
+{
+  "signingConfig": "hermes"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.splashScreen
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.firetv.splashScreen` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.storeFile
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storeFile` | `string` |  | `platforms.firetv.storeFile` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.storePassword
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `storePassword` | `string` |  | `platforms.firetv.storePassword` |
+
+> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!
+
+storePassword for keystore file
+
+
+
+---
+
+
+
+
+#### platforms.firetv.targetSdkVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `targetSdkVersion` | `integer` |  | `platforms.firetv.targetSdkVersion` |
+
+Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` 
+
+**examples**
+
+
+```json
+{
+  "targetSdkVersion": "28"
+}
+```
+
+
+
+```json
+{
+  "targetSdkVersion": "29"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.timestampAssets
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.firetv.timestampAssets` |
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
+
+**examples**
+
+
+```json
+{
+  "timestampAssets": "true"
+}
+```
+
+
+
+```json
+{
+  "timestampAssets": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.title
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.firetv.title` |
+
+Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
+
+**examples**
+
+
+```json
+{
+  "title": "Awesome App"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.versionedAssets
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.firetv.versionedAssets` |
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
+
+**examples**
+
+
+```json
+{
+  "versionedAssets": "true"
+}
+```
+
+
+
+```json
+{
+  "versionedAssets": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+
+
 ### platforms.ios
 
 
@@ -36803,6 +39650,397 @@ Enables you to pass custom path to plugin. If undefined, the default `node_modul
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `webpackConfig` | `object` |  | `plugins.[object].firefox.webpackConfig` |
+
+
+
+
+
+---
+
+
+
+
+
+
+### plugins.[object].firetv
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `firetv` | `object` |  | `plugins.[object].firetv` |
+
+
+
+
+
+---
+
+
+
+#### plugins.[object].firetv.AndroidManifest
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `AndroidManifest` | `object` |  | `plugins.[object].firetv.AndroidManifest` |
+
+Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism
+
+Injects / Overrides values in AndroidManifest.xml file of generated android based project
+
+> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
+
+
+
+**examples**
+
+
+```json
+{
+  "AndroidManifest": {
+    "children": [
+      {
+        "tag": "application",
+        "android:name": ".MainApplication",
+        "children": [
+          {
+            "tag": "activity",
+            "android:name": "com.ahmedadeltito.photoeditor.PhotoEditorActivity"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+
+
+```json
+{
+  "AndroidManifest": {
+    "children": [
+      {
+        "tag": "application",
+        "android:name": ".MainApplication",
+        "android:allowBackup": true,
+        "android:largeHeap": true,
+        "android:usesCleartextTraffic": true,
+        "tools:targetApi": 28
+      }
+    ]
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.BuildGradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BuildGradle` | `object` |  | `plugins.[object].firetv.BuildGradle` |
+
+Allows you to customize `build.gradle` file
+
+
+
+---
+
+
+
+#### plugins.[object].firetv.BuildGradle.allprojects
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `allprojects` | `object` |  | `plugins.[object].firetv.BuildGradle.allprojects` |
+
+
+
+
+
+---
+
+
+
+#### plugins.[object].firetv.BuildGradle.allprojects.repositories
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `repositories` | `object` |  | `plugins.[object].firetv.BuildGradle.allprojects.repositories` |
+
+Customize repositories section of build.gradle
+
+**examples**
+
+
+```json
+{
+  "repositories": {
+    "flatDir { dirs 'libs'}": true
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+
+
+#### plugins.[object].firetv.afterEvaluate
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `afterEvaluate` | `array` |  | `plugins.[object].firetv.afterEvaluate` |
+
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.app/build.gradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `app/build.gradle` | `object` |  | `plugins.[object].firetv.app/build.gradle` |
+
+Overrides values in `app/build.gradle` file of generated android based project
+
+**examples**
+
+
+```json
+{
+  "app/build.gradle": {
+    "apply": [
+      "plugin: 'io.fabric'"
+    ]
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.applyPlugin
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `applyPlugin` | `array` |  | `plugins.[object].firetv.applyPlugin` |
+
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.build.gradle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build.gradle` | `object` |  | `plugins.[object].firetv.build.gradle` |
+
+Overrides values in `build.gradle` file of generated android based project
+
+**examples**
+
+
+```json
+{
+  "build.gradle": {
+    "allprojects": {
+      "repositories": {
+        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
+      }
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.enabled
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enabled` | `boolean` |  | `plugins.[object].firetv.enabled` |
+
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.gradle.properties
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `gradle.properties` | `object` |  | `plugins.[object].firetv.gradle.properties` |
+
+Overrides values in `gradle.properties` file of generated android based project
+
+**examples**
+
+
+```json
+{
+  "gradle.properties": {
+    "gradle.properties": {
+      "android.debug.obsoleteApi": true,
+      "debug.keystore": "debug.keystore",
+      "org.gradle.daemon": true,
+      "org.gradle.parallel": true,
+      "org.gradle.configureondemand": true
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.implementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `implementation` | `object` |  | `plugins.[object].firetv.implementation` |
+
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.package
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `package` | `string` |  | `plugins.[object].firetv.package` |
+
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.path
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `path` | `string` |  | `plugins.[object].firetv.path` |
+
+Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.
+
+**examples**
+
+
+```json
+{
+  "path": "node_modules/react-native-video/android-exoplayer"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.projectName
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `projectName` | `string` |  | `plugins.[object].firetv.projectName` |
+
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.skipImplementation
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `skipImplementation` | `boolean` |  | `plugins.[object].firetv.skipImplementation` |
+
+
+
+
+
+---
+
+
+
+
+#### plugins.[object].firetv.webpackConfig
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `plugins.[object].firetv.webpackConfig` |
 
 
 

@@ -5,6 +5,23 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.27 (2021-1-20)
+
+### Fixed
+
+- [fix] do not crash if includedPermissions in wrong format
+- closes #636
+- [feat] support for excludedArchs
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.26 (2021-1-18)
 
 ### Fixed
