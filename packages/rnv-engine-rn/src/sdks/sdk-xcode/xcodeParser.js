@@ -50,6 +50,11 @@ export const parseXcodeProject = async (c) => {
         platform,
         'systemCapabilities'
     );
+    c.runtime.xcodeProj.excludedArchs = getConfigProp(
+        c,
+        platform,
+        'excludedArchs'
+    );
     c.runtime.xcodeProj.runScheme = getConfigProp(c, platform, 'runScheme');
     c.runtime.xcodeProj.teamID = getConfigProp(c, platform, 'teamID');
     c.runtime.xcodeProj.id = getConfigProp(c, platform, 'id');
@@ -123,6 +128,7 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
             provisioningStyle,
             deploymentTarget,
             provisionProfileSpecifier,
+            excludedArchs,
             codeSignIdentity,
             systemCapabilities,
             teamID,
@@ -160,6 +166,14 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
                 `"${provisionProfileSpecifier}"`
             );
         }
+
+        if (excludedArchs) {
+            xcodeProj.updateBuildProperty(
+                'EXCLUDED_ARCHS',
+                `"${excludedArchs.join(' ')}"`
+            );
+        }
+
 
         xcodeProj.updateBuildProperty(
             'CODE_SIGN_IDENTITY',

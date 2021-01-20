@@ -619,6 +619,14 @@ const platformIosProps = {
     teamID: {
         type: 'string'
     },
+    excludedArchs: {
+        type: 'array',
+        description: 'Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`',
+        default: null,
+        examples: [
+            ['arm64']
+        ]
+    },
     teamIdentifier: {
         type: 'string'
     },

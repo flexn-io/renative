@@ -16021,6 +16021,34 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+#### platforms.ios.buildSchemes.[object].excludedArchs
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedArchs` | `array` |  | `platforms.ios.buildSchemes.[object].excludedArchs` |
+
+Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`
+
+**examples**
+
+
+```json
+{
+  "excludedArchs": [
+    "arm64"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.ios.buildSchemes.[object].excludedPlugins
 
 
@@ -17108,6 +17136,34 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `entryFile` | `string` |  | `platforms.ios.entryFile` |
 
+
+
+
+
+---
+
+
+
+
+#### platforms.ios.excludedArchs
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedArchs` | `array` |  | `platforms.ios.excludedArchs` |
+
+Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`
+
+**examples**
+
+
+```json
+{
+  "excludedArchs": [
+    "arm64"
+  ]
+}
+```
 
 
 
@@ -26799,6 +26855,34 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
+#### platforms.tvos.buildSchemes.[object].excludedArchs
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedArchs` | `array` |  | `platforms.tvos.buildSchemes.[object].excludedArchs` |
+
+Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`
+
+**examples**
+
+
+```json
+{
+  "excludedArchs": [
+    "arm64"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.tvos.buildSchemes.[object].excludedPlugins
 
 
@@ -27886,6 +27970,34 @@ General description of your app. This prop will be injected to actual projects w
 | :----- | :----- | :---- | :---- |
 | `entryFile` | `string` |  | `platforms.tvos.entryFile` |
 
+
+
+
+
+---
+
+
+
+
+#### platforms.tvos.excludedArchs
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedArchs` | `array` |  | `platforms.tvos.excludedArchs` |
+
+Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`
+
+**examples**
+
+
+```json
+{
+  "excludedArchs": [
+    "arm64"
+  ]
+}
+```
 
 
 
