@@ -23,14 +23,6 @@ export const taskRnvKill = async (c, parentTask, originTask) => {
         platArray = Object.values(c.runtime.supportedPlatforms);
         ports = c.buildConfig?.defaults?.ports || {};
     }
-    // else {
-    //     logWarning('This folder is not a ReNative project!. only DEFAULT ports will be checked.');
-    //     platArray = SUPPORTED_PLATFORMS;
-    //     ports = {};
-    //     Object.keys(PLATFORMS).forEach((k) => {
-    //         ports[k] = PLATFORMS[k].defaultPort;
-    //     });
-    // }
 
     for (let i = 0; i < platArray.length; i++) {
         const plat = platArray[i];

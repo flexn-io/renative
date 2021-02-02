@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { SUPPORTED_PLATFORMS, TASK_PLATFORM_SETUP, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { TASK_PLATFORM_SETUP, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 import { updateProjectPlatforms } from '../../core/platformManager';
 import { logTask } from '../../core/systemManager/logger';
 import { executeTask } from '../../core/taskManager';
@@ -19,7 +19,7 @@ export const taskRnvPlatformSetup = async (c, parentTask, originTask) => {
         message: 'What platforms would you like to use?',
         validate: val => !!val.length || 'Please select at least a platform',
         default: currentPlatforms,
-        choices: SUPPORTED_PLATFORMS
+        choices: c.runtime.availablePlatforms
     });
 
     updateProjectPlatforms(c, inputSupportedPlatforms);

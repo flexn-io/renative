@@ -105,7 +105,7 @@ export const configureEngines = async (c) => {
 
 export const registerMissingPlatformEngines = async (c, taskInstance) => {
     logTask('registerMissingPlatformEngines');
-    if (!taskInstance.isGlobalScope && taskInstance?.platforms?.length === 0) {
+    if (!taskInstance || (!taskInstance.isGlobalScope && taskInstance?.platforms?.length === 0)) {
         const registerEngineList = [];
         c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
             registerEngineList.push(
