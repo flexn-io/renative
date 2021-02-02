@@ -2,21 +2,21 @@ import path from 'path';
 import { logInfo, logTask } from '../../core/systemManager/logger';
 import { PARAMS } from '../../core/constants';
 import {
-    fsExistsSync, fsRenameSync, fsSymlinkSync
+    fsExistsSync, fsRenameSync, fsUnlinkSync
 } from '../../core/systemManager/fileutils';
 
-export const taskRnvLink = async (c) => {
-    logTask('taskRnvLink');
+export const taskRnvUnlink = async (c) => {
+    logTask('taskRnvUnlink');
 
     const rnvPath = path.join(c.paths.project.nodeModulesDir, 'rnv');
     const rnvPathUnlinked = path.join(c.paths.project.nodeModulesDir, 'rnv_unlinked');
 
 
-    if (fsExistsSync(rnvPathUnlinked)) {
-        logInfo('RNV is already linked');
+    if (!fsExistsSync(rnvPathUnlinked)) {
+        logInfo('RNV is not linked');
     } else if (fsExistsSync(rnvPath)) {
-        fsRenameSync(rnvPath, rnvPathUnlinked);
-        fsSymlinkSync(c.paths.rnv.dir, rnvPath);
+        fsUnlinkSync(rnvPath);
+        fsRenameSync(rnvPathUnlinked, rnvPath);
     }
 
     return true;
@@ -24,8 +24,8 @@ export const taskRnvLink = async (c) => {
 
 export default {
     description: '',
-    fn: taskRnvLink,
-    task: 'link',
+    fn: taskRnvUnlink,
+    task: 'unlink',
     params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
