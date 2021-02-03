@@ -117,6 +117,7 @@ const _generateWebpackConfigs = (c) => {
     fsWriteFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
 };
 
+// TODO: Legacy for backward compatibility, will be removed from webpack utils
 const _parseCssSync = (c) => {
     const templateProjectDir = getTemplateProjectDir(c);
     const timestampPathsConfig = getTimestampPathsConfig(c, c.platform);
@@ -136,13 +137,15 @@ const _parseCssSync = (c) => {
     ];
 
     addSystemInjects(c, injects);
-
-    writeCleanFile(
-        path.join(templateProjectDir, 'app.css'),
-        path.join(targetDir, 'app.css'),
-        injects,
-        timestampPathsConfig, c
-    );
+    const cssPath = path.join(templateProjectDir, 'app.css');
+    if (fsExistsSync(cssPath)) {
+        writeCleanFile(
+            cssPath,
+            path.join(targetDir, 'app.css'),
+            injects,
+            timestampPathsConfig, c
+        );
+    }
 };
 
 export const waitForUrl = url => new Promise((resolve, reject) => {

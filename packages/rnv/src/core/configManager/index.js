@@ -843,10 +843,10 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
         c.paths.project.dir,
         RN_BABEL_CONFIG_NAME
     );
-    c.paths.project.npmLinkPolyfill = path.join(
-        c.paths.project.dir,
-        'npm_link_polyfill.json'
-    );
+    // c.paths.project.npmLinkPolyfill = path.join(
+    //     c.paths.project.dir,
+    //     'npm_link_polyfill.json'
+    // );
     c.paths.project.appConfigBase.dir = path.join(
         c.paths.project.dir,
         'appConfigs',

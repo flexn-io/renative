@@ -235,9 +235,13 @@ const _getEngineConfigByPlatform = (c, platform) => {
 const _resolvePkgPath = (c, packageName) => {
     if (IS_LINKED) {
         // In the instances of running linked rnv instead of installed one load local packages
-        let pkgPathLocal = require.resolve(packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
-        pkgPathLocal = pkgPathLocal.replace('/dist/index.js', '');
-        return pkgPathLocal;
+        try {
+            let pkgPathLocal = require.resolve(packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
+            pkgPathLocal = pkgPathLocal.replace('/dist/index.js', '');
+            return pkgPathLocal;
+        } catch {
+            logInfo(`Running local rnv but did not find linked ${packageName}. moving on...`);
+        }
     }
     let pkgPath = path.join(c.paths.project.dir, 'node_modules', packageName);
     if (fsExistsSync(pkgPath)) {
