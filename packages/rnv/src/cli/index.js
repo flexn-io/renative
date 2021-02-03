@@ -8,6 +8,8 @@ import { initializeTask, findSuitableTask } from '../core/taskManager';
 
 import EngineCore from '../engine-core';
 
+const IGNORE_MISSING_ENGINES_TASKS = ['link', 'unlink'];
+
 const run = async (c) => {
     await registerEngine(c, EngineCore);
     await configureRuntimeDefaults(c);
@@ -25,7 +27,7 @@ const run = async (c) => {
     }
     const taskInstance = await findSuitableTask(c);
     // Some tasks might require all engines to be present (ie rnv platforms list)
-    if (c.command) {
+    if (c.command && !IGNORE_MISSING_ENGINES_TASKS.includes(c.command)) {
         await registerMissingPlatformEngines(c, taskInstance);
     }
     await checkAndCreateBabelConfig(c);

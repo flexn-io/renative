@@ -231,7 +231,7 @@ export const findSuitableTask = async (c, specificTask) => {
         task = specificTask;
         c.runtime.engine = getEngineRunner(c, task);
     }
-    c.runtime.availablePlatforms = Object.keys(c.runtime.engine.platforms);
+    c.runtime.availablePlatforms = Object.keys(c.runtime.engine.platforms || []);
     return getEngineTask(task, c.runtime.engine.tasks);
 };
 
