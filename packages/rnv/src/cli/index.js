@@ -19,9 +19,15 @@ const run = async (c) => {
     if (!result) {
         await updateRenativeConfigs(c);
     }
+    // for root rnv we simply load all engines upfront
+    if (!c.command) {
+        await registerMissingPlatformEngines(c, taskInstance);
+    }
     const taskInstance = await findSuitableTask(c);
     // Some tasks might require all engines to be present (ie rnv platforms list)
-    await registerMissingPlatformEngines(c, taskInstance);
+    if (c.command) {
+        await registerMissingPlatformEngines(c, taskInstance);
+    }
     await checkAndCreateBabelConfig(c);
     await initializeTask(c, taskInstance.task);
 };

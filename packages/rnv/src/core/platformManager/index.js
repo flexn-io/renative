@@ -6,7 +6,6 @@ import {
     copyFolderContentsRecursiveSync,
     writeFileSync
 } from '../systemManager/fileutils';
-import { SUPPORTED_PLATFORMS } from '../constants';
 import { checkAndConfigureSdks } from '../sdkManager/installer';
 import { getTimestampPathsConfig, getPlatformBuildDir } from '../common';
 
@@ -48,7 +47,7 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve) => {
 
     if (platform === 'all') {
         Object.keys(c.buildConfig.platforms).forEach((k) => {
-            if (isPlatformSupportedSync(k)) {
+            if (isPlatformSupportedSync(c, k)) {
                 const pPath = path.join(
                     c.paths.project.builds.dir,
                     `${c.runtime.appId}_${k}`
@@ -56,7 +55,7 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve) => {
                 cleanTasks.push(cleanFolder(pPath));
             }
         });
-    } else if (isPlatformSupportedSync(platform)) {
+    } else if (isPlatformSupportedSync(c, platform)) {
         const pPath = path.join(
             c.paths.project.builds.dir,
             `${c.runtime.appId}_${platform}`
@@ -72,7 +71,7 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve) => {
 export const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     logTask('createPlatformBuild');
 
-    if (!isPlatformSupportedSync(platform, null, reject)) return;
+    if (!isPlatformSupportedSync(c, platform, null, reject)) return;
 
     const pPath = path.join(
         c.paths.project.builds.dir,
@@ -95,13 +94,13 @@ export const isPlatformSupported = async (c) => {
     let platformsAsObj = c.buildConfig
         ? c.buildConfig.platforms
         : c.supportedPlatforms;
-    if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
+    if (!platformsAsObj) platformsAsObj = c.runtime.availablePlatforms;
     const opts = generateOptions(platformsAsObj);
 
     if (
         !c.platform
         || c.platform === true
-        || !SUPPORTED_PLATFORMS.includes(c.platform)
+        || !c.runtime.availablePlatforms.includes(c.platform)
     ) {
         const { platform } = await inquirerPrompt({
             name: 'platform',
@@ -141,7 +140,7 @@ export const isPlatformSupported = async (c) => {
     return c.platform;
 };
 
-export const isPlatformSupportedSync = (platform, resolve, reject) => {
+export const isPlatformSupportedSync = (c, platform, resolve, reject) => {
     if (!platform) {
         if (reject) {
             reject(
@@ -154,12 +153,12 @@ export const isPlatformSupportedSync = (platform, resolve, reject) => {
         }
         return false;
     }
-    if (!SUPPORTED_PLATFORMS.includes(platform)) {
+    if (!c.runtime.availablePlatforms.includes(platform)) {
         if (reject) {
             reject(
                 chalk().red(
                     `Platform ${platform} is not supported. Use one of the following: ${chalk().white(
-                        SUPPORTED_PLATFORMS.join(', ')
+                        c.runtime.availablePlatforms.join(', ')
                     )} .`
                 )
             );

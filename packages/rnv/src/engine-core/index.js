@@ -38,6 +38,8 @@ import taskRvnKill from './tasks/task.rnv.kill';
 import taskRvnDoctor from './tasks/task.rnv.doctor';
 import taskRnvTargetList from './tasks/task.rnv.target.list';
 import taskRnvTargetLaunch from './tasks/task.rnv.target.launch';
+import taskRnvLink from './tasks/task.rnv.link';
+import taskRnvUnlink from './tasks/task.rnv.unlink';
 
 export default {
     initializeRuntimeConfig: () => {},
@@ -80,6 +82,8 @@ export default {
         taskRvnDoctor,
         taskRnvTargetList,
         taskRnvTargetLaunch,
+        taskRnvLink,
+        taskRnvUnlink
     ]),
     config: {
         title: 'Engine Core',

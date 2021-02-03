@@ -145,6 +145,7 @@ export const PACKAGE_JSON_FILEDS = [
     'private',
     'publishConfig'
 ];
+// DEPRECATED
 export const SUPPORTED_PLATFORMS = [
     IOS,
     ANDROID,

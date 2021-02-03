@@ -15,7 +15,7 @@ import { installPackageDependencies } from '../systemManager/npmUtils';
 import { getConfigProp, getBuildsFolder, getAppFolder } from '../common';
 import { writeRenativeConfigFile } from '../configManager';
 
-import { SUPPORTED_PLATFORMS, INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
+import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import {
     chalk,
     logSuccess,
@@ -44,7 +44,7 @@ export const getPluginList = (c, isUpdate = false) => {
             const p = plugins[k];
 
             let platforms = '';
-            SUPPORTED_PLATFORMS.forEach((v) => {
+            c.runtime.availablePlatforms.forEach((v) => {
                 if (p[v]) platforms += `${v}, `;
             });
             if (platforms.length) {
