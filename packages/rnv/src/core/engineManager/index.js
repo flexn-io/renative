@@ -336,7 +336,7 @@ export const hasEngineTask = (task, tasks, isProjectScope) => (
 
 export const getEngineSubTasks = (task, tasks, exactMatch) => Object.values(tasks).filter(v => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
 
-export const getEngineRunner = (c, task, customTasks) => {
+export const getEngineRunner = (c, task, customTasks, failOnMissingEngine = true) => {
     if (customTasks?.[task]) {
         return c.runtime.enginesById[ENGINE_CORE];
     }
@@ -348,15 +348,18 @@ export const getEngineRunner = (c, task, customTasks) => {
         if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
             return c.runtime.enginesById[ENGINE_CORE];
         }
-        throw new Error(`Cound not find active engine for platform ${c.platform}. Available engines:
-        ${c.runtime.enginesByIndex.join(', ')}`);
+        if (failOnMissingEngine) {
+            throw new Error(`Cound not find active engine for platform ${c.platform}. Available engines:
+        ${c.runtime.enginesByIndex.map(v => v.config.id).join(', ')}`);
+        }
+        return null;
     }
     if (hasEngineTask(task, engine.tasks, configExists)) return engine;
     if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
         return c.runtime.enginesById[ENGINE_CORE];
     }
-
-    throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
+    if (failOnMissingEngine) throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
+    return null;
 };
 
 export const getRegisteredEngines = c => c.runtime.enginesByIndex;

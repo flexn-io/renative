@@ -4,6 +4,9 @@ const merge = require('deepmerge');
 const DEFAULT_C = {
     runtime: {
         appId: 'testapp',
+        availablePlatforms: [
+            'ios', 'web'
+        ],
         supportedPlatforms: [
             {
                 engine: 'engine-rn',

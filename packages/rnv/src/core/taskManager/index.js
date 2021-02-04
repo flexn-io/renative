@@ -191,37 +191,27 @@ export const findSuitableTask = async (c, specificTask) => {
             // Custom tasks are executed by core engine
             logInfo(`Running custom task ${task}`);
         } else if (!suitableEngines.length) {
-            if ((!c.platform || c.platform === true) && !c.runtime.hasAllEnginesRegistered) {
+            if (!c.runtime.hasAllEnginesRegistered) {
                 // No platform was specified. we have no option other than load all engines and offer platform list next round
                 await registerAllPlatformEngines(c);
                 return findSuitableTask(c);
             }
+
             logError(`could not find suitable task for ${chalk().white(c.command)}`);
             c.command = null;
             c.subCommand = null;
             return findSuitableTask(c);
         }
-
         if (!c.platform || c.platform === true) {
-            const supportedPlatforms = {};
-            suitableEngines.forEach((engine) => {
-                getEngineTask(task, engine.tasks).platforms.forEach((plat) => {
-                    supportedPlatforms[plat] = true;
-                });
-            });
-            const platforms = Object.keys(supportedPlatforms);
-
-            if (platforms.length) {
-                const { platform } = await inquirerPrompt({
-                    type: 'list',
-                    name: 'platform',
-                    message: `Pick a platform for ${task}`,
-                    choices: platforms,
-                });
-                c.platform = platform;
-            }
+            await _selectPlatform(c, suitableEngines, task);
         }
-        c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS);
+        c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS, false);
+        // Cover scenarios of -p xxxxxxxxx
+        if (!c.runtime.engine) {
+            await _selectPlatform(c, suitableEngines, task);
+            c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS);
+        }
+
         logInfo(`Current Engine: ${chalk().bold.white(
             c.runtime.engine.config.id
         )}`);
@@ -233,6 +223,26 @@ export const findSuitableTask = async (c, specificTask) => {
     }
     c.runtime.availablePlatforms = Object.keys(c.runtime.engine.platforms || []);
     return getEngineTask(task, c.runtime.engine.tasks);
+};
+
+const _selectPlatform = async (c, suitableEngines, task) => {
+    const supportedPlatforms = {};
+    suitableEngines.forEach((engine) => {
+        getEngineTask(task, engine.tasks).platforms.forEach((plat) => {
+            supportedPlatforms[plat] = true;
+        });
+    });
+    const platforms = Object.keys(supportedPlatforms);
+
+    if (platforms.length) {
+        const { platform } = await inquirerPrompt({
+            type: 'list',
+            name: 'platform',
+            message: `Pick a platform for ${task}`,
+            choices: platforms,
+        });
+        c.platform = platform;
+    }
 };
 
 
