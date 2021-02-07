@@ -294,7 +294,7 @@ export const generateEnvVars = (c, moduleConfig, nextConfig) => ({
     RNV_MODULE_ALIASES: moduleConfig?.moduleAliasesArray || [],
     RNV_NEXT_TRANSPILE_MODULES: nextConfig,
     RNV_PROJECT_ROOT: c.paths.project.dir,
-    RNV_MONO_ROOT: c.runtime.isWrapper ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir
+    RNV_MONO_ROOT: (c.runtime.isWrapper || getConfigProp(c, c.platform, 'isMonorepo')) ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir
 });
 
 export const getPlatformExtensions = (c, excludeServer = false, addDotPrefix = false) => {
