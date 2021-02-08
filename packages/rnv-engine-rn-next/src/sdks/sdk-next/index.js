@@ -125,13 +125,19 @@ Alternatively you can configure custom entry folder via ${c.platform}.pagesDir i
 };
 
 export const getTranspileModules = (c) => {
-    let transModules = [];
+    const transModules = [];
     parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
         const webpackConfig = plugin.webpack || plugin.webpackConfig;
         if (webpackConfig) {
             transModules.push(key);
             if (webpackConfig.nextTranspileModules?.length) {
-                transModules = transModules.concat(webpackConfig.nextTranspileModules);
+                webpackConfig.nextTranspileModules.forEach((module) => {
+                    if (module.startsWith('.')) {
+                        transModules.push(path.join(c.paths.project.dir, module));
+                    } else {
+                        transModules.push(module);
+                    }
+                });
             }
         }
     }, true);

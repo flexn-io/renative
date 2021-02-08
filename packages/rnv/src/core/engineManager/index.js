@@ -123,6 +123,10 @@ export const registerMissingPlatformEngines = async (c, taskInstance) => {
 
 export const registerAllPlatformEngines = async (c) => {
     logTask('registerAllPlatformEngines');
+    if (!c.buildConfig?.defaults?.supportedPlatforms?.forEach) {
+        c.runtime.hasAllEnginesRegistered = true;
+        return true;
+    }
     const registerEngineList = [];
     c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
         registerEngineList.push(

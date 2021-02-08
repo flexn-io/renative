@@ -35,6 +35,7 @@ export const withRNV = (config) => {
         watchFolders: [
             path.resolve(projectPath, 'node_modules'),
             path.resolve(monoRootPath, 'node_modules'),
+            path.resolve(monoRootPath, 'packages'),
             ...config?.watchFolders || []
         ],
         projectRoot: path.resolve(projectPath)
