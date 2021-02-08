@@ -20,7 +20,7 @@
             }
         },
         "renative": {
-            "version": "0.32.0-alpha.27",
+            "version": "0.32.0-alpha.28",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -2438,7 +2438,7 @@
             }
         },
         "react-native-safe-area-context": {
-            "version": "3.1.9",
+            "version": "0.7.2",
             "android": {
                 "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
             },

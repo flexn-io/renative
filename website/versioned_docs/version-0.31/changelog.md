@@ -6,6 +6,28 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.28 (2021-2-8)
+
+### Fixed
+
+- [fix] nextTranspileModules for monorepos
+- [fix] support for monorepos
+- [fix] handle unknown platforms
+- [fix] ignore engine registration for non engine tasks
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- [fix] optional css inject
+- [fix] custom engine platforms support
+- [feat] rnv link, rnv unlink
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.27 (2021-1-20)
 
 ### Fixed
