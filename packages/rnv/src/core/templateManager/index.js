@@ -25,6 +25,7 @@ import {
     logDebug
 } from '../systemManager/logger';
 import { generateOptions } from '../../cli/prompt';
+import { getConfigProp } from '../common';
 import {
     listAppConfigsFoldersSync,
     generateBuildConfig,
@@ -296,35 +297,6 @@ const _configureRenativeConfig = async (c) => {
     return true;
 };
 
-const _parseSupportedPlatforms = async (c, callback) => {
-    // if (!c.buildConfig.platforms) {
-    //     await parseRenativeConfigs(c);
-    // }
-    const p = Object.keys(c.buildConfig.platforms);
-    const pLen = p.length;
-    const supportedPlatforms = c.buildConfig.defaults?.supportedPlatforms;
-    for (let i = 0; i < pLen; i++) {
-        const k = p[i];
-
-        const plat = c.buildConfig.platforms[k];
-        const platKeysNum = plat !== undefined ? Object.keys(plat).length : 0;
-
-        if ((supportedPlatforms && supportedPlatforms.includes(k)) || !supportedPlatforms) {
-            callback(k, plat);
-        } else if (platKeysNum > 1) {
-            // Every platform comes always at least with engine prop so let's check for more
-            logWarning(
-                `Extra platform ${chalk().white(
-                    k
-                )} will be ignored because it's not configured in your ${chalk().white(
-                    './renative.json: { defaults.supportedPlatforms }'
-                )} object.`
-            );
-        }
-    }
-    return true;
-};
-
 export const configureTemplateFiles = async (c) => {
     logTask('configureTemplateFiles');
 
@@ -364,61 +336,46 @@ export const configureTemplateFiles = async (c) => {
     }
 };
 
-export const configureEntryPoints = async (c) => {
-    logTask('configureEntryPoints');
-
-    copyFolderContentsRecursiveSync(
-        path.join(c.paths.rnv.dir, 'entry'),
-        c.paths.entryDir
-    );
-
+export const configureEntryPoint = async (c, platform) => {
+    logTask('configureEntryPoint');
+    const entryFile = getConfigProp(c, platform, 'entryFile');
 
     try {
-        if (!fsExistsSync(c.paths.appConfig.config)) {
-            logWarning(
-                `c.paths.appConfig.config at path: ${
-                    c.paths.appConfig.config
-                } does not exist. ReNative will regenerate renative.local.json`
-            );
-            return true;
-        }
-        await _parseSupportedPlatforms(c, (platform, plat) => {
-            const source = path.join(
-                c.paths.template.dir,
-                `${plat.entryFile}.js`
-            );
-            const backupSource = path.join(
-                c.paths.rnv.projectTemplate.dir,
-                'entry',
-                `${plat.entryFile}.js`
-            );
-            const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
-            if (!fsExistsSync(dest)) {
-                if (!plat.entryFile) {
-                    logWarning(
-                        `Missing entryFile key for ${chalk().white(
-                            platform
-                        )} platform in your ${chalk().white(
-                            c.paths.appConfig.config
-                        )}.`
-                    );
-                } else if (!fsExistsSync(source)) {
-                    logInfo(
-                        `Missing entry file ${chalk().white(
-                            `${plat.entryFile}.js`
-                        )}. COPYING from RNV...DONE`
-                    );
-                    copyFileSync(backupSource, dest);
-                } else {
-                    logInfo(
-                        `Missing entry file ${chalk().white(
-                            `${plat.entryFile}.js`
-                        )}. COPYING from TEMPATE...DONE`
-                    );
-                    copyFileSync(source, dest);
-                }
+        const source = path.join(
+            c.paths.template.dir,
+            `${entryFile}.js`
+        );
+        const backupSource = path.join(
+            c.paths.rnv.projectTemplate.dir,
+            'entry',
+            `${entryFile}.js`
+        );
+        const dest = path.join(c.paths.project.dir, `${entryFile}.js`);
+        if (!fsExistsSync(dest)) {
+            if (!entryFile) {
+                logWarning(
+                    `Missing entryFile key for ${chalk().white(
+                        c.platform
+                    )} platform in your ${chalk().white(
+                        c.paths.appConfig.config
+                    )}.`
+                );
+            } else if (!fsExistsSync(source)) {
+                logInfo(
+                    `Missing entry file ${chalk().white(
+                        `${entryFile}.js`
+                    )}. COPYING from RNV...DONE`
+                );
+                copyFileSync(backupSource, dest);
+            } else {
+                logInfo(
+                    `Missing entry file ${chalk().white(
+                        `${entryFile}.js`
+                    )}. COPYING from TEMPATE...DONE`
+                );
+                copyFileSync(source, dest);
             }
-        });
+        }
     } catch (e) {
         return Promise.reject(e);
     }

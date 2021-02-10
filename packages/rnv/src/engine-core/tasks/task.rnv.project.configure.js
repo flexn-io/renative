@@ -2,7 +2,7 @@ import { configurePlugins, overrideTemplatePlugins, resolvePluginDependants } fr
 import { chalk, logTask, logInfo } from '../../core/systemManager/logger';
 import { checkIsRenativeProject, generateRuntimeConfig } from '../../core/configManager';
 import { updateRenativeConfigs, configureRuntimeDefaults } from '../../core/runtimeManager';
-import { applyTemplate, checkIfTemplateConfigured, configureEntryPoints, configureTemplateFiles, isTemplateInstalled } from '../../core/templateManager';
+import { applyTemplate, checkIfTemplateConfigured, configureTemplateFiles, isTemplateInstalled } from '../../core/templateManager';
 import { fsExistsSync, fsMkdirSync } from '../../core/systemManager/fileutils';
 import { checkCrypto } from '../../core/systemManager/crypto';
 import { checkAndMigrateProject } from '../../core/projectManager/migrator';
@@ -79,7 +79,8 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         if (!c.buildConfig.platforms) {
             await updateRenativeConfigs(c);
         }
-        await configureEntryPoints(c);
+        // NOTE: Migrated to engines
+        // await configureEntryPoints(c);
         await generateRuntimeConfig(c);
         await overrideTemplatePlugins(c);
     }

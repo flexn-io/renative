@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager, NPMUtils } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, NPMUtils, TemplateManager } from 'rnv';
 import { configureMetroConfigs } from '../commonEngine';
 import { SDKAndroid, SDKXcode } from '../sdks';
 
@@ -19,12 +19,15 @@ const {
 const { configureXcodeProject } = SDKXcode;
 const { configureGradleProject } = SDKAndroid;
 const { executeTask } = TaskManager;
+const { configureEntryPoint } = TemplateManager;
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
-    await configureMetroConfigs(c, c.platform);
+    await configureMetroConfigs(c);
+
     await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
+    await configureEntryPoint(c, c.platform);
 
     if (c.program.only && !!parentTask) {
         return true;

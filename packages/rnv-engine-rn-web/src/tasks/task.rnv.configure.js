@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, TemplateManager } from 'rnv';
 import { SDKTizen, SDKWebos, SDKFirefox, SDKWebpack } from '../sdks';
 
 const { logErrorPlatform, copySharedPlatforms } = PlatformManager;
@@ -22,11 +22,13 @@ const { configureTizenProject } = SDKTizen;
 const { configureWebOSProject } = SDKWebos;
 const { configureKaiOSProject } = SDKFirefox;
 const { executeTask } = TaskManager;
+const { configureEntryPoint } = TemplateManager;
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
     await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
+    await configureEntryPoint(c, c.platform);
 
     await copySharedPlatforms(c);
 

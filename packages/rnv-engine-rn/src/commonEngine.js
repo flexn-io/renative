@@ -43,10 +43,10 @@ export const waitForBundlerIfRequired = async (c) => {
     return true;
 };
 
-export const configureMetroConfigs = async (c, platform) => {
+export const configureMetroConfigs = async (c) => {
     logTask('configureMetroConfigs');
 
-    const cfPath = path.join(c.paths.project.dir, 'configs', `metro.config.${platform}.js`);
+    const cfPath = path.join(c.paths.project.dir, 'configs', `metro.config.${c.platform}.js`);
     if (fsExistsSync(cfPath)) {
         logWarning(`${chalk().white(cfPath)} is DEPRECATED. use withRnvMetro(config) directly in /.metro.config.js`);
     }
