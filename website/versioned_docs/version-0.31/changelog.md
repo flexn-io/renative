@@ -6,6 +6,23 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.29 (2021-2-10)
+
+### Fixed
+
+- [fix] android release mode fixes, ci fail support
+- [fix] regenerate only relevant entryPoints
+- [chore] deprecate permissions to avoid conflict with root level permissions definition. use includedPermissions only
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.28 (2021-2-8)
 
 ### Fixed
