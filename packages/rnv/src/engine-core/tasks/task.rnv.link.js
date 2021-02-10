@@ -29,4 +29,5 @@ export default {
     params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
+    isGlobalScope: true
 };
