@@ -184,14 +184,13 @@ export const parseAndroidManifestSync = (c) => {
         // appConfig PERMISSIONS OVERRIDES
         const configPermissions = c.buildConfig?.permissions;
 
-        const includedPermissions = getConfigProp(c, platform, 'includedPermissions')
-            || getConfigProp(c, platform, 'permissions');
+        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
         const excludedPermissions = getConfigProp(
             c,
             platform,
             'excludedPermissions'
         );
-        if (includedPermissions?.length && configPermissions) {
+        if (includedPermissions?.forEach && configPermissions) {
             const platPerm = configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
             if (includedPermissions[0] === '*') {

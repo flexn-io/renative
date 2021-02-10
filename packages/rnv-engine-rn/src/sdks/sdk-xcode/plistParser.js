@@ -104,8 +104,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
         plistObj.UIAppFonts = c.pluginConfigiOS.embeddedFonts;
     }
     // PERMISSIONS
-    const includedPermissions = getConfigProp(c, platform, 'includedPermissions')
-            || getConfigProp(c, platform, 'permissions');
+    const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
     if (includedPermissions && c.buildConfig.permissions) {
         const platPrem = c.buildConfig.permissions[platform] ? platform : 'ios';
         const pc = c.buildConfig.permissions[platPrem];
@@ -114,7 +113,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
                 const key = pc[v].key || v;
                 plistObj[key] = pc[v].desc;
             });
-        } else if (includedPermissions?.length) {
+        } else if (includedPermissions?.forEach) {
             includedPermissions.forEach((v) => {
                 if (pc[v]) {
                     const key = pc[v].key || v;
