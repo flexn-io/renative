@@ -241,6 +241,13 @@ Your ${chalk().red(platform)} object needs to be located under ${chalk().green('
     const storePassword = getConfigProp(c, c.platform, 'storePassword') || obj?.storePassword;
     const keyPassword = getConfigProp(c, c.platform, 'keyPassword') || obj?.keyPassword;
 
+    c.pluginConfigAndroid.store = {
+        storeFile,
+        keyAlias,
+        storePassword,
+        keyPassword
+    };
+
     if (!!storeFile && !!keyAlias && !!storePassword && !!keyPassword) {
         const keystorePath = storeFile;
         let keystorePathFull = keystorePath;

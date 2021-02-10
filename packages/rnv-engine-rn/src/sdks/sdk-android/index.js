@@ -263,16 +263,17 @@ const _checkSigningCerts = async (c) => {
         'Debug'
     );
     const isRelease = signingConfig === 'Release';
-    const storePath = getConfigProp(c, c.platform, 'storeFile');
 
-    if (isRelease && !storePath) {
-        logWarning(
-            `You're attempting to ${
-                c.command
-            } app in release mode but you have't configured your ${chalk().white(
-                c.paths.workspace.appConfig.configPrivate
-            )} for ${chalk().white(c.platform)} platform yet.`
-        );
+    if (isRelease && !c.pluginConfigAndroid?.store?.storeFile) {
+        const msg = `You're attempting to ${
+            c.command
+        } app in release mode but you have't configured your ${chalk().white(
+            c.paths.workspace.appConfig.configPrivate
+        )} for ${chalk().white(c.platform)} platform yet.`;
+        if (c.program.ci === true) {
+            return Promise.reject(msg);
+        }
+        logWarning(msg);
 
         const { confirm } = await inquirer.prompt({
             type: 'confirm',
@@ -413,7 +414,7 @@ const _runGradleApp = async (c, platform, device) => {
 
     shell.cd(`${appFolder}`);
 
-    await _checkSigningCerts(c);
+    // await _checkSigningCerts(c);
     await executeAsync(
         c,
         `${isSystemWin ? 'gradlew.bat' : './gradlew'} ${
@@ -502,7 +503,7 @@ export const buildAndroid = async (c) => {
 
     shell.cd(`${appFolder}`);
 
-    await _checkSigningCerts(c);
+    // await _checkSigningCerts(c);
     await executeAsync(c, `${isSystemWin ? 'gradlew.bat' : './gradlew'} assemble${signingConfig} -x bundleReleaseJsAndAssets`);
 
     logSuccess(
@@ -677,6 +678,7 @@ export const configureProject = async (c) => {
     parseValuesColorsSync(c);
     parseAndroidManifestSync(c);
     parseGradlePropertiesSync(c);
+    await _checkSigningCerts(c);
 
     return true;
 };
