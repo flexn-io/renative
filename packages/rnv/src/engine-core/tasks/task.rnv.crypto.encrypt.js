@@ -179,8 +179,8 @@ export const taskRnvCryptoEncrypt = async (c, parentTask, originTask) => {
         //     { privateParams: [key] }
         // );
         removeFilesSync([destTemp]);
-        fsWriteFileSync(`${dest}.timestamp`, timestamp);
-        fsWriteFileSync(`${tsWorkspacePath}`, timestamp);
+        fsWriteFileSync(`${dest}.timestamp`, `${timestamp}`);
+        fsWriteFileSync(`${tsWorkspacePath}`, `${timestamp}`);
         logSuccess(`Files succesfully encrypted into ${dest}`);
     } else {
         logWarning(
