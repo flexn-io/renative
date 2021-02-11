@@ -6,6 +6,22 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.30 (2021-2-11)
+
+### Fixed
+
+- [fix] TypedArray, or DataView. Received undefined TypeError [ERR_INVALID_ARG_TYPE]
+- enable rnv link at monorepo roots
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.29 (2021-2-10)
 
 ### Fixed
