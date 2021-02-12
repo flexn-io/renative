@@ -1,23 +1,32 @@
 import path from 'path';
-import { logInfo, logTask } from '../../core/systemManager/logger';
-import { PARAMS } from '../../core/constants';
+import { logInfo, logTask, logSuccess } from '../../core/systemManager/logger';
+import { PARAMS, RNV_PACKAGES } from '../../core/constants';
 import {
     fsExistsSync, fsRenameSync, fsUnlinkSync
 } from '../../core/systemManager/fileutils';
 
-export const taskRnvUnlink = async (c) => {
-    logTask('taskRnvUnlink');
-
-    const rnvPath = path.join(c.paths.project.nodeModulesDir, 'rnv');
-    const rnvPathUnlinked = path.join(c.paths.project.nodeModulesDir, 'rnv_unlinked');
-
+const _unlinkPackage = (c, key) => {
+    const rnvPath = path.join(c.paths.project.nodeModulesDir, key);
+    const rnvPathUnlinked = path.join(c.paths.project.nodeModulesDir, `${key}_unlinked`);
 
     if (!fsExistsSync(rnvPathUnlinked)) {
-        logInfo('RNV is not linked');
+        logInfo(`${key} is not linked. SKIPPING`);
     } else if (fsExistsSync(rnvPath)) {
         fsUnlinkSync(rnvPath);
         fsRenameSync(rnvPathUnlinked, rnvPath);
+        logSuccess(`${key} => unlink => SUCCESS`);
     }
+};
+
+
+export const taskRnvUnlink = async (c) => {
+    logTask('taskRnvUnlink');
+
+    RNV_PACKAGES.forEach((pkg) => {
+        if (!pkg.skipLinking) {
+            _unlinkPackage(c, pkg.packageName);
+        }
+    });
 
     return true;
 };

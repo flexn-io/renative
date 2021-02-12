@@ -450,6 +450,69 @@ export const configSchema = {
     }
 };
 
+export const RNV_PACKAGES = [
+    {
+        packageName: 'renative',
+        folderName: 'renative',
+        skipLinking: true
+    },
+    {
+        packageName: 'renative-template-hello-world',
+        folderName: 'renative-template-hello-world'
+    },
+    {
+        packageName: 'renative-template-blank',
+        folderName: 'renative-template-blank'
+    },
+    {
+        packageName: 'renative-template-kitchen-sink',
+        folderName: 'renative-template-kitchen-sink'
+    },
+    {
+        packageName: 'rnv',
+        folderName: 'rnv'
+    },
+    {
+        packageName: '@rnv/engine-lightning',
+        folderName: 'rnv-engine-lightning'
+    },
+    {
+        packageName: '@rnv/engine-rn',
+        folderName: 'rnv-engine-rn'
+    },
+    {
+        packageName: '@rnv/engine-rn-electron',
+        folderName: 'rnv-engine-rn-electron'
+    },
+    {
+        packageName: '@rnv/engine-rn-next',
+        folderName: 'rnv-engine-rn-next'
+    },
+    {
+        packageName: '@rnv/engine-rn-tvos',
+        folderName: 'rnv-engine-rn-tvos'
+    },
+    {
+        packageName: '@rnv/engine-rn-web',
+        folderName: 'rnv-engine-rn-web'
+    },
+    {
+        packageName: '@rnv/engine-roku',
+        folderName: 'rnv-engine-roku'
+    },
+    {
+        packageName: '@rnv/integration-docker',
+        folderName: 'rnv-integration-docker'
+    },
+    {
+        packageName: '@rnv/integration-ftp',
+        folderName: 'rnv-integration-ftp'
+    },
+    {
+        packageName: '@rnv/integration-vercel',
+        folderName: 'rnv-integration-vercel'
+    },
+];
 
 export const INJECTABLE_CONFIG_PROPS = ['id', 'title', 'entryFile', 'backgroundColor', 'scheme',
     'teamID', 'provisioningStyle', 'bundleAssets', 'multipleAPKs', 'pagesDir'];
