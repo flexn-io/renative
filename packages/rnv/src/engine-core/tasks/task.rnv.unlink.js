@@ -2,7 +2,7 @@ import path from 'path';
 import { logInfo, logTask, logSuccess } from '../../core/systemManager/logger';
 import { PARAMS, RNV_PACKAGES } from '../../core/constants';
 import {
-    fsExistsSync, fsRenameSync, fsUnlinkSync
+    fsExistsSync, fsRenameSync, fsUnlinkSync, fsLstatSync
 } from '../../core/systemManager/fileutils';
 
 const _unlinkPackage = (c, key) => {
@@ -12,9 +12,13 @@ const _unlinkPackage = (c, key) => {
     if (!fsExistsSync(rnvPathUnlinked)) {
         logInfo(`${key} is not linked. SKIPPING`);
     } else if (fsExistsSync(rnvPath)) {
-        fsUnlinkSync(rnvPath);
-        fsRenameSync(rnvPathUnlinked, rnvPath);
-        logSuccess(`${key} => unlink => SUCCESS`);
+        if (fsLstatSync(rnvPath).isSymbolicLink()) {
+            fsUnlinkSync(rnvPath);
+            fsRenameSync(rnvPathUnlinked, rnvPath);
+            logSuccess(`${key} => unlink => SUCCESS`);
+        } else {
+            logInfo(`${key} is not a symlink anymore. SKIPPING`);
+        }
     }
 };
 
