@@ -60,7 +60,7 @@ export const buildHooks = async (c) => {
                 // removeDirsSync([c.paths.buildHooks.dist.dir]);
                 await executeAsync(
                     c,
-                    `babel ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir}`,
+                    `babel ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --source-maps --retain-lines`,
                     { cwd: c.paths.project.dir, silent: true }
                 );
             } catch (e) {
