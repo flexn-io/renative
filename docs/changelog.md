@@ -5,6 +5,24 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.31 (2021-2-14)
+
+### Fixed
+
+- [chore] retain lines and source maps for buildHooks
+- [feat] run rnv buildHooks outside of rnv project (ie monorepo root)
+- [fix] check valid symlinks
+- [feat] multi-package linking with rnv link
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.30 (2021-2-11)
 
 ### Fixed

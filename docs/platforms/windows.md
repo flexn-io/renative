@@ -27,7 +27,6 @@ sidebar_label: Windows
 <!--EXTENSION_SUPPORT_START-->
 
 Extenstions are defined via engines. Engines with windows support: 
-- [engine-rn-electron](../engines/engine-rn-electron#extensions)
 
 <!--EXTENSION_SUPPORT_END-->
 

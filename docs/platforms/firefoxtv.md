@@ -22,7 +22,6 @@ sidebar_label: Firefox TV
 <!--EXTENSION_SUPPORT_START-->
 
 Extenstions are defined via engines. Engines with firefoxtv support: 
-- [engine-rn-web](../engines/engine-rn-web#extensions)
 
 <!--EXTENSION_SUPPORT_END-->
 

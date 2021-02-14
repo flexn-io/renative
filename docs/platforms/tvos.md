@@ -28,7 +28,6 @@ sidebar_label: tvOS
 <!--EXTENSION_SUPPORT_START-->
 
 Extenstions are defined via engines. Engines with tvos support: 
-- [engine-rn](../engines/engine-rn#extensions)
 
 <!--EXTENSION_SUPPORT_END-->
 
