@@ -1,14 +1,21 @@
 import inquirer from 'inquirer';
-import { logTask } from '../../core/systemManager/logger';
+import { logTask, logInfo } from '../../core/systemManager/logger';
 import { buildHooks } from '../../core/projectManager/buildHooks';
 import { executeTask } from '../../core/taskManager';
+import { fsExistsSync } from '../../core/systemManager/fileutils';
 import { TASK_HOOKS_RUN, TASK_PROJECT_CONFIGURE, PARAMS, PARAM_KEYS } from '../../core/constants';
 
 
 export const taskRnvHooksRun = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksRun');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_RUN, originTask);
+    if (fsExistsSync(c.paths.config)) {
+        await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_RUN, originTask);
+    } else {
+        logInfo('Your are running your buildHook outside of renative project');
+    }
+
+
     await buildHooks(c);
 
     if (!c.buildHooks) {
@@ -48,5 +55,6 @@ export default {
     platforms: [],
     skipAppConfig: true,
     skipPlatforms: true,
-    forceBuildHookRebuild: true
+    forceBuildHookRebuild: true,
+    isGlobalScope: true
 };

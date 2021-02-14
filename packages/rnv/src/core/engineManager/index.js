@@ -346,8 +346,10 @@ export const getEngineRunner = (c, task, customTasks, failOnMissingEngine = true
     }
 
     const { configExists } = c.paths.project;
-
-    const engine = c.runtime.enginesByPlatform[c.platform];
+    let engine = c.runtime.enginesByPlatform[c.platform];
+    if (!engine) {
+        engine = c.runtime.enginesById['engine-core'];
+    }
     if (!engine) {
         if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
             return c.runtime.enginesById[ENGINE_CORE];
