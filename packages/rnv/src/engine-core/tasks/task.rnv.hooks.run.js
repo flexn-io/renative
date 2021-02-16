@@ -9,7 +9,7 @@ import { TASK_HOOKS_RUN, TASK_PROJECT_CONFIGURE, PARAMS, PARAM_KEYS } from '../.
 export const taskRnvHooksRun = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksRun');
 
-    if (fsExistsSync(c.paths.config)) {
+    if (fsExistsSync(c.paths.project.config)) {
         await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_RUN, originTask);
     } else {
         logInfo('Your are running your buildHook outside of renative project');
