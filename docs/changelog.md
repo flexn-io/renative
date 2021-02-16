@@ -5,6 +5,21 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.32 (2021-2-16)
+
+### Fixed
+
+- [fix] wrong config path check
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.31 (2021-2-14)
 
 ### Fixed
