@@ -457,8 +457,23 @@ export const upgradeProjectDependencies = (c, version) => {
     // const templates = c.files.project.config?.templates;
     // TODO: Make this dynamically injected
     // SYNC DEPS
+    const result = upgradeDependencies(
+        c.files.project.package,
+        c.paths.project.package,
+        c.files.project.config,
+        c.paths.project.config,
+        version
+    );
+    c._requiresNpmInstall = true;
+    return result;
+};
 
-    const devDependencies = c.files.project.package?.devDependencies;
+export const upgradeDependencies = (packageFile, packagesPath, configFile, configPath, version) => {
+    // logTask('upgradeDependencies');
+
+    const devDependencies = packageFile?.devDependencies;
+
+    const result = [];
 
     SYNCED_DEV_DEPS.forEach((dep) => {
         if (devDependencies?.[dep]) {
@@ -469,22 +484,26 @@ export const upgradeProjectDependencies = (c, version) => {
         if (devDependencies?.[templ]) {
             devDependencies[templ] = version;
         }
-        if (c.files.project.config?.templates?.[templ]?.version) {
-            c.files.project.config.templates[templ].version = version;
+        if (configFile?.templates?.[templ]?.version) {
+            configFile.templates[templ].version = version;
         }
     });
 
 
-    const dependencies = c.files.project.package?.dependencies;
+    const dependencies = packageFile?.dependencies;
     if (dependencies?.renative) {
         dependencies.renative = version;
     }
 
-    writeFileSync(c.paths.project.package, c.files.project.package);
-
-    c._requiresNpmInstall = true;
-
-    writeFileSync(c.paths.project.config, c.files.project.config);
+    if (packageFile) {
+        writeFileSync(packagesPath, packageFile);
+        result.push(packagesPath);
+    }
+    if (configFile) {
+        writeFileSync(configPath, configFile);
+        result.push(configPath);
+    }
+    return result;
 };
 
 export const cleanPlaformAssets = async (c) => {
