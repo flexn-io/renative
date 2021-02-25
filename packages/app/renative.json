@@ -6,6 +6,7 @@
     "enableHookRebuild": false,
     "workspaceID": "rnv",
     "isWrapper": true,
+    "isMonorepo": true,
     "paths": {
         "appConfigsDir": "./appConfigs",
         "platformAssetsDir": "./platformAssets",

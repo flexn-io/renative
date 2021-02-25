@@ -292,14 +292,18 @@ Maybe you forgot to define platforms.${platform}.engine in your renative.json?`)
     }
 };
 
-export const generateEnvVars = (c, moduleConfig, nextConfig) => ({
-    RNV_EXTENSIONS: getPlatformExtensions(c),
-    RNV_MODULE_PATHS: moduleConfig?.modulePaths || [],
-    RNV_MODULE_ALIASES: moduleConfig?.moduleAliasesArray || [],
-    RNV_NEXT_TRANSPILE_MODULES: nextConfig,
-    RNV_PROJECT_ROOT: c.paths.project.dir,
-    RNV_MONO_ROOT: (c.runtime.isWrapper || getConfigProp(c, c.platform, 'isMonorepo')) ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir
-});
+export const generateEnvVars = (c, moduleConfig, nextConfig) => {
+    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
+    return ({
+        RNV_EXTENSIONS: getPlatformExtensions(c),
+        RNV_MODULE_PATHS: moduleConfig?.modulePaths || [],
+        RNV_MODULE_ALIASES: moduleConfig?.moduleAliasesArray || [],
+        RNV_NEXT_TRANSPILE_MODULES: nextConfig,
+        RNV_PROJECT_ROOT: c.paths.project.dir,
+        RNV_IS_MONOREPO: isMonorepo,
+        RNV_MONO_ROOT: (c.runtime.isWrapper || isMonorepo) ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir
+    });
+};
 
 export const getPlatformExtensions = (c, excludeServer = false, addDotPrefix = false) => {
     const { engine } = c.runtime;

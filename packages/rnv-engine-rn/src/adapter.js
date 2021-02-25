@@ -1,11 +1,20 @@
 const blacklist = require('metro-config/src/defaults/blacklist');
 const path = require('path');
-const { doResolve } = require('rnv');
-
 
 export const withRNV = (config) => {
     const projectPath = process.env.RNV_PROJECT_ROOT || process.cwd();
-    const monoRootPath = process.env.RNV_MONO_ROOT || projectPath;
+
+    const watchFolders = [path.resolve(projectPath, 'node_modules')];
+
+    if (process.env.RNV_IS_MONOREPO) {
+        const monoRootPath = process.env.RNV_MONO_ROOT || projectPath;
+        watchFolders.push(path.resolve(monoRootPath, 'node_modules'));
+        watchFolders.push(path.resolve(monoRootPath, 'packages'));
+    }
+    if (config?.watchFolders?.length) {
+        watchFolders.push(...config.watchFolders);
+    }
+
     const cnf = {
         ...config,
         resolver: {
@@ -26,23 +35,13 @@ export const withRNV = (config) => {
             ]),
             ...config?.resolver || {},
             extraNodeModules: {
-                'react-native': doResolve('react-native'),
-                'react-navigation': doResolve('react-navigation'),
-                renative: doResolve('renative'),
                 ...config?.resolver?.extraNodeModules || []
             }
         },
-        watchFolders: [
-            path.resolve(projectPath, 'node_modules'),
-            path.resolve(monoRootPath, 'node_modules'),
-            path.resolve(monoRootPath, 'packages'),
-            ...config?.watchFolders || []
-        ],
+        watchFolders,
         projectRoot: path.resolve(projectPath)
     };
     cnf.resolver.sourceExts = process.env.RNV_EXTENSIONS.split(',');
-
-    // const mAliases = process.env.RNV_MODULE_ALIASES.split(',');
 
     return cnf;
 };
