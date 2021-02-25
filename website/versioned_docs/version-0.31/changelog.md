@@ -6,6 +6,22 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.33 (2021-2-25)
+
+### Fixed
+
+- [chore] simplify rn-next engine deps
+- [fix] ignore watching packages in standard projects
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.32 (2021-2-16)
 
 ### Fixed

@@ -52,3 +52,5 @@ package-lock.json
 
 Dockerfile
 coverage/
+
+**/__tests__/
