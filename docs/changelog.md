@@ -5,6 +5,22 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.34 (2021-2-25)
+
+### Fixed
+
+- [feat] rnv project upgrade - support for monorepos
+- [fix] process.env.RNV_IS_MONOREPO check
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.33 (2021-2-25)
 
 ### Fixed
