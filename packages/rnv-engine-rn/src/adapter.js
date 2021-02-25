@@ -6,7 +6,7 @@ export const withRNV = (config) => {
 
     const watchFolders = [path.resolve(projectPath, 'node_modules')];
 
-    if (process.env.RNV_IS_MONOREPO) {
+    if (process.env.RNV_IS_MONOREPO === 'true' || process.env.RNV_IS_MONOREPO === true) {
         const monoRootPath = process.env.RNV_MONO_ROOT || projectPath;
         watchFolders.push(path.resolve(monoRootPath, 'node_modules'));
         watchFolders.push(path.resolve(monoRootPath, 'packages'));
