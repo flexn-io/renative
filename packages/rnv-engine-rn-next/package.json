@@ -27,20 +27,11 @@
     },
     "dependencies": {
         "@expo/next-adapter": "2.1.29",
-        "@next/bundle-analyzer": "9.4.4",
-        "@zeit/next-css": "1.0.1",
-        "babel-loader": "8.0.5",
-        "babel-preset-expo": "8.0.0",
-        "html-webpack-harddisk-plugin": "1.0.2",
-        "html-webpack-plugin": "4.5.1",
-        "next": "9.5.3",
-        "next-compose-plugins": "2.2.0",
-        "next-fonts": "1.4.0",
         "next-images": "1.4.1",
         "next-optimized-images": "2.6.2",
-        "next-page-transitions": "1.0.0-beta.2",
-        "next-routes": "1.4.2",
-        "next-transpile-modules": "4.1.0"
+        "next-fonts": "1.4.0",
+        "next-transpile-modules": "4.1.0",
+        "@zeit/next-css": "1.0.1"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -50,8 +41,10 @@
         "@babel/plugin-proposal-optional-chaining": "7.8.3",
         "@babel/preset-env": "7.8.7"
     },
+
     "peerDependencies": {
-        "rnv": "^0.31"
+        "next": ">=9.5.3",
+        "rnv": ">=0.31"
     },
     "private": false,
     "publishConfig": {
