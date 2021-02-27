@@ -168,10 +168,28 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
         }
 
         if (excludedArchs) {
-            xcodeProj.updateBuildProperty(
-                'EXCLUDED_ARCHS',
-                `"${excludedArchs.join(' ')}"`
-            );
+            const tempExcludedArchs = [];
+
+            if (typeof excludedArchs.forEach === 'function') {
+                excludedArchs.forEach((arch) => {
+                    if (typeof arch === 'string') tempExcludedArchs.push(arch);
+                    if (typeof arch === 'object') {
+                        Object.keys(arch).forEach((key) => {
+                            xcodeProj.updateBuildProperty(
+                                `"EXCLUDED_ARCHS[${key}]"`,
+                                `"${arch[key]}"`
+                            );
+                        });
+                    }
+                });
+            }
+
+            if (tempExcludedArchs.length) {
+                xcodeProj.updateBuildProperty(
+                    'EXCLUDED_ARCHS',
+                    `"${tempExcludedArchs.join(' ')}"`
+                );
+            }
         }
 
 
