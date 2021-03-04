@@ -53,7 +53,7 @@ export const buildHooks = async (c) => {
     }
 
     // New projects are not ready to compile babel
-    if (!c.files.project.config?.isNew && doResolve('@babel/cli')) {
+    if (!c.runtime.isFirstRunAfterNew && !c.files.project.config?.isNew && doResolve('@babel/cli')) {
         if (shouldBuildHook && !c.isBuildHooksReady) {
             try {
                 logHook('buildHooks', 'Build hooks not complied. BUILDING...');

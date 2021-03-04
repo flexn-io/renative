@@ -97,7 +97,7 @@
         "chalk": "4.1.0",
         "color-string": "1.5.3",
         "command-exists": "1.2.9",
-        "commander": "7.1.0",
+        "commander": "^3.0.1",
         "compare-versions": "3.6.0",
         "console-table-printer": "1.1.10",
         "copy-webpack-plugin": "4.6.0",

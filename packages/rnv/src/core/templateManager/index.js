@@ -267,6 +267,9 @@ const _configureRenativeConfig = async (c) => {
                 true
             );
             mergedObj.currentTemplate = c.runtime.currentTemplate;
+            if (mergedObj.isNew) {
+                c.runtime.isFirstRunAfterNew = true;
+            }
             mergedObj.isNew = null;
             delete mergedObj.isNew;
             c.files.project.config = mergedObj;

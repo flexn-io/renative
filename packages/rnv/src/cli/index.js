@@ -3,7 +3,6 @@ import { configureRuntimeDefaults, updateRenativeConfigs } from '../core/runtime
 import { registerEngine, registerMissingPlatformEngines, loadEngines } from '../core/engineManager';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
 import { loadIntegrations } from '../core/integrationManager';
-import { checkAndCreateBabelConfig } from '../core/projectManager';
 import { initializeTask, findSuitableTask } from '../core/taskManager';
 
 import EngineCore from '../engine-core';
@@ -30,7 +29,8 @@ const run = async (c) => {
     if (c.command && !IGNORE_MISSING_ENGINES_TASKS.includes(c.command)) {
         await registerMissingPlatformEngines(c, taskInstance);
     }
-    await checkAndCreateBabelConfig(c);
+    // Skip babel.config creation until template check
+    // await checkAndCreateBabelConfig(c);
     await initializeTask(c, taskInstance.task);
 };
 
