@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --trace-warnings
 const program = require('commander');
 const fs = require('fs');
 const path = require('path');
