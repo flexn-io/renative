@@ -197,7 +197,13 @@ export const generateBuildConfig = (c) => {
     out.pluginTemplates = pluginTemplates;
 
     c.buildConfig = sanitizeDynamicRefs(c, out);
-    c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs, {}, c.runtime);
+    const propConfig = {
+        files: c.files,
+        runtimeProps: c.runtime,
+        props: c.buildConfig._refs,
+        configProps: c.configPropsInjects
+    };
+    c.buildConfig = sanitizeDynamicProps(c.buildConfig, propConfig);
 
     logDebug('BUILD_CONFIG', Object.keys(c.buildConfig));
 
@@ -356,8 +362,15 @@ export const generateRuntimeConfig = async (c) => {
         getConfigProp(c, c.platform, 'runtime') || {}
     );
 
+
     if (fsExistsSync(c.paths.project.assets.dir)) {
-        writeFileSync(c.paths.project.assets.config, c.assetConfig);
+        const sanitizedConfig = sanitizeDynamicProps(c.assetConfig, {
+            files: c.files,
+            runtimeProps: c.runtime,
+            props: {},
+            configProps: c.configPropsInjects
+        });
+        writeFileSync(c.paths.project.assets.config, sanitizedConfig);
     }
     return true;
 };
@@ -633,6 +646,7 @@ export const parseRenativeConfigs = async (c) => {
 export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } = {}) => {
     const c = {
         cli: {},
+        configPropsInjects: {},
         runtime: {
             enginesByPlatform: {},
             enginesByIndex: [],

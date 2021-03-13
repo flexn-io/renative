@@ -75,7 +75,7 @@ Any property in `renative.*.json` can be injected into build file.
 Inject example of `myInject.txt`:
 
 ```
-Inject app ID here: {{{{configProps.id}}}}
+Inject app ID here: {{configProps.id}}
 ```
 
 ### runtimeProps
@@ -178,7 +178,7 @@ Instead of overriding complex plugin definition you can simply override props
 
 ### resolvePackage
 
-resolvePackage allows you to dynamically resolve package location within `renative.*.json`` file
+resolvePackage allows you to dynamically resolve package location within `renative.*.json` file
 
 
 ```
@@ -188,6 +188,52 @@ resolvePackage allows you to dynamically resolve package location within `renati
   }
 }
 ```
+
+### files.*
+
+
+you can reference values from all standard file references within renative config.
+
+
+```
+{
+  "runtime": {
+     "myId": "{{files.project.config.common.id}}"
+  }
+}
+```
+
+Supported file references:
+
+```
+files.project.package
+files.project.config
+files.project.configPrivate
+files.project.configLocal
+files.workspace.config
+files.workspace.configPrivate
+files.workspace.configLocal
+files.workspace.project.config
+files.workspace.project.configPrivate
+files.workspace.project.configLocal
+files.appConfig.config
+files.appConfig.configPrivate
+files.appConfig.configLocal
+```
+
+### env
+
+
+You can inject env variables
+
+```
+{
+  "runtime": {
+     "myEnvVariable": "{{env.MY_ENV_VARIABLE}}"
+  }
+}
+```
+
 
 
 ## Config Values Overrides

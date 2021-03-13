@@ -165,9 +165,8 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
     if (typeof plugin === 'string' || plugin instanceof String) {
         currentPlugin = {};
     }
-    const configPropsInjects = {};
     INJECTABLE_CONFIG_PROPS.forEach((v) => {
-        configPropsInjects[v] = getConfigProp(c, c.platform, v);
+        c.configPropsInjects[v] = getConfigProp(c, c.platform, v);
     });
     if (currentPlugin.pluginDependencies) {
         Object.keys(currentPlugin.pluginDependencies).forEach((plugDepKey) => {
@@ -178,10 +177,20 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
     }
     const mergedObj = mergeObjects(c, parentPlugin, currentPlugin, true, true);
     // IMPORTANT: only final top level merge should be sanitized
-    const obj = skipSanitize ? mergedObj : sanitizeDynamicProps(mergedObj, c.buildConfig?._refs);
+    const obj = skipSanitize ? mergedObj : sanitizeDynamicProps(mergedObj, {
+        files: c.files,
+        runtimeProps: c.runtime,
+        props: c.buildConfig?._refs,
+        configProps: c.configPropsInjects
+    });
 
     // IMPORTANT: only final top level merge should be sanitized
-    const mergedPlugin = skipSanitize ? obj : sanitizeDynamicProps(obj, obj.props, configPropsInjects);
+    const mergedPlugin = skipSanitize ? obj : sanitizeDynamicProps(obj, {
+        files: c.files,
+        runtimeProps: c.runtime,
+        props: obj.props,
+        configProps: c.configPropsInjects
+    });
 
     return mergedPlugin;
 };

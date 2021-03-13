@@ -465,7 +465,12 @@ export const readObjectSync = (filePath, sanitize = false, c) => {
                 obj = sanitizeDynamicRefs(c, obj);
             }
             if (obj._refs) {
-                obj = sanitizeDynamicProps(obj, obj._refs);
+                obj = sanitizeDynamicProps(obj, {
+                    files: c.files,
+                    runtimeProps: c.runtime,
+                    props: obj._refs,
+                    configProps: c.configPropsInjects
+                });
             }
         }
     } catch (e) {
@@ -572,6 +577,7 @@ export const sanitizeDynamicRefs = (c, obj) => {
 };
 
 const fixResolve = (text) => {
+    if (typeof text !== 'string') return text;
     const regEx = /{{resolvePackage\(([\s\S]*?)\)}}/g;
     const matches = text.match(regEx);
     let newText = text;
@@ -586,61 +592,32 @@ const fixResolve = (text) => {
     return newText;
 };
 
-export const sanitizeDynamicProps = (obj, props = {}, configProps = {}, runtimeProps = {}) => {
+export const sanitizeDynamicProps = (obj, propConfig) => {
     if (!obj) {
         return obj;
     }
     if (Array.isArray(obj)) {
         obj.forEach((v, i) => {
-            let val = v;
+            const val = v;
             if (typeof val === 'string') {
-                Object.keys(props).forEach((pk) => {
-                    const propVal = props?.[pk];
-                    val = val
-                        .replace(`@${pk}@`, propVal)
-                        .replace(`{{props.${pk}}}`, propVal);
-                    obj[i] = fixResolve(val);
-                });
-                Object.keys(configProps).forEach((pk2) => {
-                    val = val.replace(`{{configProps.${pk2}}}`, configProps[pk2]);
-                    obj[i] = fixResolve(val);
-                });
-                Object.keys(runtimeProps).forEach((pk3) => {
-                    val = val.replace(`{{runtimeProps.${pk3}}}`, runtimeProps[pk3]);
-                    obj[i] = fixResolve(val);
-                });
+                _bindStringVals(obj, val, i, propConfig);
             } else {
-                sanitizeDynamicProps(v, props, configProps, runtimeProps);
+                sanitizeDynamicProps(v, propConfig);
             }
         });
     } else if (typeof obj === 'object') {
         // console.log('KAKAK', obj?.['build.gradle']);
         Object.keys(obj).forEach((key) => {
-            let val = obj[key];
+            const val = obj[key];
             // Some values are passed as keys so have to validate keys as well
             const newKey = fixResolve(key);
             delete obj[key];
             obj[newKey] = val;
             if (val) {
                 if (typeof val === 'string') {
-                    Object.keys(props).forEach((pk) => {
-                        val = val
-                            .replace(`@${pk}@`, props?.[pk])
-                            .replace(`{{props.${pk}}}`, props?.[pk]);
-                        obj[newKey] = fixResolve(val);
-                    });
-
-                    Object.keys(configProps).forEach((pk2) => {
-                        val = val.replace(`{{configProps.${pk2}}}`, configProps[pk2]);
-                        obj[newKey] = fixResolve(val);
-                    });
-
-                    Object.keys(runtimeProps).forEach((pk3) => {
-                        val = val.replace(`{{runtimeProps.${pk3}}}`, runtimeProps[pk3]);
-                        obj[newKey] = fixResolve(val);
-                    });
+                    _bindStringVals(obj, val, newKey, propConfig);
                 } else {
-                    sanitizeDynamicProps(val, props, configProps, runtimeProps);
+                    sanitizeDynamicProps(val, propConfig);
                 }
             }
         });
@@ -649,6 +626,41 @@ export const sanitizeDynamicProps = (obj, props = {}, configProps = {}, runtimeP
     }
 
     return obj;
+};
+
+const BIND_FILES = '{{files.';
+const BIND_PROPS = '{{props.';
+const BIND_CONFIG_PROPS = '{{configProps.';
+const BIND_RUNTIME_PROPS = '{{runtimeProps.';
+const BIND_ENV = '{{env.';
+
+
+const _bindStringVals = (obj, _val, newKey, propConfig) => {
+    const { props = {}, configProps = {}, runtimeProps = {} } = propConfig;
+    let val = _val;
+    if (val.startsWith(BIND_FILES)) {
+        const key = val.replace(BIND_FILES, '').replace('}}', '');
+        const nVal = key.split('.').reduce((o, i) => o?.[i], propConfig.files);
+        obj[newKey] = fixResolve(nVal);
+    } else if (val.startsWith(BIND_PROPS)) {
+        Object.keys(props).forEach((pk) => {
+            val = val.replace(`${BIND_PROPS}${pk}}}`, props?.[pk]);
+            obj[newKey] = fixResolve(val);
+        });
+    } else if (val.startsWith(BIND_CONFIG_PROPS)) {
+        Object.keys(configProps).forEach((pk2) => {
+            val = val.replace(`${BIND_CONFIG_PROPS}${pk2}}}`, configProps[pk2]);
+            obj[newKey] = fixResolve(val);
+        });
+    } else if (val.startsWith(BIND_RUNTIME_PROPS)) {
+        Object.keys(runtimeProps).forEach((pk3) => {
+            val = val.replace(`${BIND_RUNTIME_PROPS}${pk3}}}`, runtimeProps[pk3]);
+            obj[newKey] = fixResolve(val);
+        });
+    } else if (val.startsWith(BIND_ENV)) {
+        const key = val.replace(BIND_ENV, '').replace('}}', '');
+        obj[newKey] = process.env[key];
+    }
 };
 
 export const mergeObjects = (c, obj1, obj2, dynamicRefs = true, replaceArrays = false) => {
