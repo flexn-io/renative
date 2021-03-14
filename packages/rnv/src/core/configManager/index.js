@@ -58,9 +58,9 @@ export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
     return resolve();
 });
 
-const _generateConfigPaths = (pathObj, dir) => {
+const _generateConfigPaths = (pathObj, dir, configName) => {
     pathObj.dir = dir;
-    pathObj.config = path.join(dir, RENATIVE_CONFIG_NAME);
+    pathObj.config = path.join(dir, configName || RENATIVE_CONFIG_NAME);
     pathObj.configLocal = path.join(dir, RENATIVE_CONFIG_LOCAL_NAME);
     pathObj.configPrivate = path.join(dir, RENATIVE_CONFIG_PRIVATE_NAME);
     pathObj.appConfigsDir = path.join(dir, '..');
@@ -827,7 +827,7 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
         mkdirSync(c.paths.GLOBAL_RNV_DIR);
     }
 
-    _generateConfigPaths(c.paths.project, projectRoot || CURRENT_DIR);
+    _generateConfigPaths(c.paths.project, projectRoot || CURRENT_DIR, c.program.configName);
 
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
     c.paths.buildHooks.dist.dir = path.join(

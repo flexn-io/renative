@@ -421,7 +421,12 @@ export const PARAM_KEYS = {
     },
     skipDependencyCheck: {
         description: 'Skips auto update of npm dependencies if mismatch found'
-    }
+    },
+    configName: {
+        value: 'value',
+        isRequired: true,
+        description: 'Use custom name for ./renative.json. (applies only at root level)'
+    },
 };
 
 Object.keys(PARAM_KEYS).forEach((k) => {
