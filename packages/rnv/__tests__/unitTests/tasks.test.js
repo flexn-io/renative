@@ -1,10 +1,11 @@
 /* eslint-disable global-require */
 
 import taskRnvPlatformList from '../../src/engine-core/tasks/task.rnv.platform.list';
+import taskRnvKill from '../../src/engine-core/tasks/task.rnv.kill';
 import taskRnvPlatformConfigure from '../../src/engine-core/tasks/task.rnv.platform.configure';
 // import taskRnvPlatformEject from '../../src/engine-core/tasks/task.rnv.platform.eject';
 // import taskRnvPlatformSetup from '../../src/engine-core/tasks/task.rnv.platform.setup';
-import { generateConfig } from '../../../jest-preset-rnv/mocks';
+import { generateMockConfig } from '../../../jest-preset-rnv/mocks';
 
 
 jest.mock('fs');
@@ -60,7 +61,7 @@ jest.mock('../../src/core/systemManager/logger.js', () => {
     };
 });
 
-const c = generateConfig({});
+const c = generateMockConfig({});
 
 // const parentTask = null;
 const originTask = {};
@@ -82,6 +83,12 @@ test('Execute task.rnv.platform.configure', async () => {
     const taskManager = require('../../src/core/taskManager/index.js');
     await expect(taskRnvPlatformConfigure.fn(c, null, originTask)).resolves.toEqual(true);
     expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform configure', originTask);
+});
+
+test('Execute task.rnv.kill', async () => {
+    const taskManager = require('../../src/core/taskManager/index.js');
+    await expect(taskRnvKill.fn(c, null, originTask)).resolves.toEqual(true);
+    expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'app configure', 'kill', originTask);
 });
 
 

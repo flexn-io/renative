@@ -11,14 +11,14 @@ export const taskRnvKill = async (c, parentTask, originTask) => {
     logTask('taskRnvKill');
 
     const usedPorts = [];
-    let platArray;
+    let platArray = [];
     const results = [];
     let ports;
 
     await configureRuntimeDefaults(c);
 
     if (c.paths.project.configExists) {
-        await executeTask(c, TASK_APP_CONFIGURE, parentTask, originTask);
+        await executeTask(c, TASK_APP_CONFIGURE, TASK_KILL, originTask);
         await configureRuntimeDefaults(c);
         platArray = Object.values(c.runtime.supportedPlatforms);
         ports = c.buildConfig?.defaults?.ports || {};

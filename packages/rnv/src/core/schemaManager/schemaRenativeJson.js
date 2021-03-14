@@ -286,7 +286,12 @@ const platformCommonProps = {
         type: 'string'
     },
     bundleAssets: {
-        type: 'boolean'
+        type: 'boolean',
+        description: 'If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds'
+    },
+    enableSourceMaps: {
+        type: 'boolean',
+        description: 'If set to `true` dedicated source map file will be generated alongside of compiled js bundle'
     },
     bundleIsDev: {
         type: 'boolean'

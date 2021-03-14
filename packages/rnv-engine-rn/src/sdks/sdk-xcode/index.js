@@ -730,6 +730,11 @@ export const packageBundleForXcode = (c, isDev = false) => {
         `${getAppFolder(c, c.platform)}/main.jsbundle`
     ];
 
+    if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
+        args.push('--sourcemap-output');
+        args.push(`${getAppFolder(c, c.platform)}/main.jsbundle.map`);
+    }
+
     if (c.program.info) {
         args.push('--verbose');
     }

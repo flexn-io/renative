@@ -106,6 +106,7 @@ export const packageAndroid = async (c) => {
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
 
     if (!bundleAssets && platform !== ANDROID_WEAR) {
+        logInfo(`bundleAssets in scheme ${chalk().white(c.runtime.scheme)} marked false. SKIPPING PACKAGING...`);
         return true;
     }
 
@@ -123,13 +124,20 @@ export const packageAndroid = async (c) => {
     logInfo('ANDROID PACKAGE STARTING...');
 
     try {
-        await executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${
+        let cmd = `${reactNative} bundle --platform android --dev false --assets-dest ${
             appFolder
         }/app/src/main/res --entry-file ${
         c.buildConfig.platforms[c.platform]?.entryFile
         }.js --bundle-output ${appFolder}/app/src/main/assets/${
             outputFile
-        }.bundle --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
+        }.bundle --config=metro.config.js`;
+
+        if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
+            cmd += ` --sourcemap-output ${appFolder}/app/src/main/assets/${
+                outputFile
+            }.bundle.map`;
+        }
+        await executeAsync(c, cmd, { env: { ...generateEnvVars(c) } });
 
         logInfo('ANDROID PACKAGE FINISHED');
         return true;

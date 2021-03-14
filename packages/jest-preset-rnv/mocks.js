@@ -85,7 +85,8 @@ const DEFAULT_C = {
             assets: {},
             platformTemplates: {},
             appConfigsDirs: [],
-            appConfigsDirNames: []
+            appConfigsDirNames: [],
+            configExists: true
         },
         appConfig: {
             configs: [],
@@ -156,5 +157,5 @@ const DEFAULT_C = {
 };
 
 module.exports = {
-    generateConfig: (cOverride = {}) => merge(DEFAULT_C, cOverride),
+    generateMockConfig: (cOverride = {}) => merge(DEFAULT_C, cOverride),
 };

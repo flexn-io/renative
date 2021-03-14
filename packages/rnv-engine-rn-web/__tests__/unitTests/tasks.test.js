@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 
 import taskRnvRun from '../../src/tasks/task.rnv.run';
-import { generateConfig } from '../../../jest-preset-rnv/mocks';
+import { generateMockConfig } from '../../../jest-preset-rnv/mocks';
 
 jest.mock('fs');
 
@@ -134,7 +134,7 @@ afterEach(() => {
 });
 
 const originTask = {};
-const c = generateConfig({ platform: 'web' });
+const c = generateMockConfig({ platform: 'web' });
 
 test('Execute task.rnv.run', async () => {
     // const taskManager = require('../../src/core/taskManager/index.js');
