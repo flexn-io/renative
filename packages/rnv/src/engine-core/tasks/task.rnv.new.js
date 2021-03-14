@@ -79,6 +79,41 @@ const _prepareProjectOverview = (c, data) => {
 };
 
 
+const interactiveQuestion = async (results, bootstrapQuestions, key = '') => {
+    if (bootstrapQuestions?.length) {
+        for (let i = 0; i < bootstrapQuestions.length; i++) {
+            const q = bootstrapQuestions[i];
+            const choicesObj = {};
+            if (q.options) {
+                q.options.forEach((opt) => {
+                    choicesObj[opt.title] = opt;
+                });
+            }
+            const qKey = `${key}q${i}`;
+            // inquirerObj[qKey] = { ...q, choicesObj };
+            const inqQuestion = {
+                name: qKey,
+                type: q.type,
+                message: q.title,
+                choices: Object.keys(choicesObj)
+            };
+            // eslint-disable-next-line no-await-in-loop
+            const result = await inquirer.prompt(inqQuestion);
+            const val = q.type === 'list' ? choicesObj[result[qKey]]?.value : result[qKey];
+            results[qKey] = {
+                answer: result[qKey],
+                configProp: q.configProp,
+                value: val
+            };
+            if (choicesObj[result[qKey]]?.bootstrapQuestions) {
+                // eslint-disable-next-line no-await-in-loop
+                await interactiveQuestion(results, choicesObj[result[qKey]].bootstrapQuestions, qKey);
+            }
+        }
+    }
+};
+
+
 export const taskRnvNew = async (c) => {
     logTask('taskRnvNew');
     const { args } = c.program;
@@ -299,42 +334,18 @@ export const taskRnvNew = async (c) => {
     // ==================================================
     const renativeTemplateConfigExt = {};
     const bootstrapQuestions = renativeTemplateConfig?.templateConfig?.bootstrapQuestions;
+    const results = {};
+    await interactiveQuestion(results, bootstrapQuestions);
 
-    if (bootstrapQuestions?.length) {
-        const inquirerQuestions = [];
-        const inquirerObj = {};
+    Object.keys(results).forEach((k) => {
+        const objValue = results[k].value;
 
-        bootstrapQuestions.forEach((q, i) => {
-            const choicesObj = {};
-            if (q.options) {
-                q.options.forEach((opt) => {
-                    choicesObj[opt.title] = opt;
-                });
-            }
-            inquirerObj[`q${i}`] = { ...q, choicesObj };
-            inquirerQuestions.push({
-                name: `q${i}`,
-                type: q.type,
-                message: q.title,
-                choices: Object.keys(choicesObj)
-            });
-        });
+        const targetKey = results[k].configProp.key;
 
-
-        const results = await inquirer.prompt(inquirerQuestions);
-
-        Object.keys(results).forEach((k) => {
-            const objConfig = inquirerObj[k];
-            const objResult = results[k];
-            const objValue = objConfig.choicesObj[objResult];
-
-            const targetKey = objConfig?.configProp?.key;
-
-            if (targetKey) {
-                lSet(renativeTemplateConfigExt, targetKey, objValue);
-            }
-        });
-    }
+        if (targetKey) {
+            lSet(renativeTemplateConfigExt, targetKey, objValue);
+        }
+    });
 
     // ==================================================
     // INPUT: Git Enabled

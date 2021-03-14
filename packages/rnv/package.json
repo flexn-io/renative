@@ -114,7 +114,7 @@
         "get-installed-path": "4.0.8",
         "html-webpack-harddisk-plugin": "1.0.2",
         "html-webpack-plugin": "4.5.1",
-        "inquirer": "6.3.1",
+        "inquirer": "8.0.0",
         "iocane": "4.0.0",
         "ios-mobileprovision-finder": "1.0.11",
         "ip": "1.1.5",

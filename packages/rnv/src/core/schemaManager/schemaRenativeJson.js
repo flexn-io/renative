@@ -1909,6 +1909,53 @@ To skip file overrides coming from source plugin you need to detach it from the 
                 false
             ]
         },
+        templateConfig: {
+            description: 'Used in `renative.template.json` allows you to define template behaviour.',
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+                includedPaths: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Defines list of all file/dir paths you want to include in template',
+                    examples: [
+                        ['next.config.js', 'babel.config.js', 'appConfigs', 'public', 'src'],
+                    ]
+                },
+                bootstrapQuestions: {
+                    type: 'array',
+                    items: { type: 'object' },
+                    description: 'Defines list of custom bootstrap questions',
+                    examples: [
+                        [
+
+                            {
+                                title: 'Which service to use?',
+                                type: 'list',
+                                configProp: {
+                                    key: 'runtime.myServiceConfig',
+                                    file: 'renative.json'
+                                },
+                                options: [
+                                    {
+                                        title: 'Service 1',
+                                        value: {
+                                            id: 'xxx1',
+                                        }
+                                    },
+                                    {
+                                        title: 'Service 2',
+                                        value: {
+                                            id: 'xxx2',
+                                        }
+                                    },
+                                ]
+                            }
+                        ]
+                    ]
+                }
+            }
+        },
         enableHookRebuild: {
             type: 'boolean',
             description: 'If set to true in `./renative.json` build hooks will be compiled at each rnv command run. If set to `false` (default) rebuild will be triggered only if `dist` folder is missing, `-r` has been passed or you run `rnv hooks run` directly making your rnv commands faster',
