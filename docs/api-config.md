@@ -189,7 +189,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `common.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -264,6 +264,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### common.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `common.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -2849,7 +2865,7 @@ Overrides values in `build.gradle` file of generated android based project
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.android.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -3026,6 +3042,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.android.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.android.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -3979,7 +4011,7 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.android.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -4156,6 +4188,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.android.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.android.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -5696,7 +5744,7 @@ Overrides values in `build.gradle` file of generated android based project
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -5873,6 +5921,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.androidtv.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -6826,7 +6890,7 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.androidtv.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -7003,6 +7067,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.androidtv.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.androidtv.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -8543,7 +8623,7 @@ Overrides values in `build.gradle` file of generated android based project
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -8720,6 +8800,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.androidwear.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -9673,7 +9769,7 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.androidwear.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -9850,6 +9946,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.androidwear.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.androidwear.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -10918,7 +11030,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.chromecast.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -11009,6 +11121,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.chromecast.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.chromecast.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.chromecast.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -11604,7 +11732,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.chromecast.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -11695,6 +11823,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.chromecast.devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.chromecast.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.chromecast.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -12405,7 +12549,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.firefoxos.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -12496,6 +12640,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.firefoxos.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.firefoxos.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.firefoxos.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -13091,7 +13251,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.firefoxos.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -13182,6 +13342,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.firefoxos.devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.firefoxos.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.firefoxos.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -13892,7 +14068,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.firefoxtv.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -13983,6 +14159,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.firefoxtv.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.firefoxtv.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.firefoxtv.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -14578,7 +14770,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.firefoxtv.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -14669,6 +14861,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.firefoxtv.devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.firefoxtv.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.firefoxtv.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -15851,7 +16059,7 @@ Overrides values in `build.gradle` file of generated android based project
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.firetv.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -16028,6 +16236,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.firetv.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.firetv.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -16981,7 +17205,7 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.firetv.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -17158,6 +17382,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.firetv.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.firetv.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -18642,7 +18882,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.ios.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -18796,6 +19036,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.ios.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.ios.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -19782,7 +20038,7 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.ios.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -19936,6 +20192,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.ios.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.ios.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -21037,7 +21309,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.kaios.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -21128,6 +21400,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.kaios.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.kaios.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.kaios.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -21723,7 +22011,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.kaios.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -21814,6 +22102,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.kaios.devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.kaios.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.kaios.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -22740,7 +23044,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.macos.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -22857,6 +23161,22 @@ Allows you to configure electron app as per https://www.electron.build/
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.macos.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.macos.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -23468,7 +23788,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.macos.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -23585,6 +23905,22 @@ Allows you to configure electron app as per https://www.electron.build/
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.macos.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.macos.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -24343,7 +24679,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.tizen.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -24450,6 +24786,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.tizen.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.tizen.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.tizen.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -25061,7 +25413,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.tizen.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -25168,6 +25520,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.tizen.devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.tizen.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.tizen.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -25926,7 +26294,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.tizenmobile.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -26033,6 +26401,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.tizenmobile.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.tizenmobile.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.tizenmobile.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -26644,7 +27028,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.tizenmobile.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -26751,6 +27135,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.tizenmobile.devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.tizenmobile.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.tizenmobile.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -27509,7 +27909,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.tizenwatch.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -27616,6 +28016,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.tizenwatch.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.tizenwatch.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.tizenwatch.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -28227,7 +28643,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.tizenwatch.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -28334,6 +28750,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.tizenwatch.devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.tizenwatch.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.tizenwatch.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -29476,7 +29908,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.tvos.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -29630,6 +30062,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.tvos.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.tvos.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -30616,7 +31064,7 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.tvos.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -30770,6 +31218,22 @@ General description of your app. This prop will be injected to actual projects w
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.tvos.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.tvos.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -31871,7 +32335,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.web.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -31962,6 +32426,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.web.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.web.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.web.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -32667,7 +33147,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.web.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -32758,6 +33238,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.web.devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.web.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.web.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -33578,7 +34074,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.webos.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -33669,6 +34165,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.webos.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.webos.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.webos.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -34264,7 +34776,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.webos.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -34355,6 +34867,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.webos.devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.webos.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.webos.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -35065,7 +35593,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.webtv.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -35156,6 +35684,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.webtv.buildSchemes.[object].devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.webtv.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.webtv.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -35783,7 +36327,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.webtv.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -35874,6 +36418,22 @@ General description of your app. This prop will be injected to actual projects w
 | `devServerHost` | `string` |  | `platforms.webtv.devServerHost` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.webtv.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.webtv.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -36832,7 +37392,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.windows.buildSchemes.[object].bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -36949,6 +37509,22 @@ Allows you to configure electron app as per https://www.electron.build/
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.windows.buildSchemes.[object].enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 
@@ -37560,7 +38136,7 @@ Allows you to directly extend/override webpack config of your current platform
 | :----- | :----- | :---- | :---- |
 | `bundleAssets` | `boolean` |  | `platforms.windows.bundleAssets` |
 
-
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
 
 
 
@@ -37677,6 +38253,22 @@ Allows you to configure electron app as per https://www.electron.build/
 }
 ```
 
+
+
+
+---
+
+
+
+
+#### platforms.windows.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.windows.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
 
 
 

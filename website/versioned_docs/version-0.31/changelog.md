@@ -6,6 +6,23 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.37 (2021-3-14)
+
+### Fixed
+
+- [feat] add support for --sourcemap-output via enableSourceMaps prop
+- [feat] support for extra injectors
+- [chore] remove --trace-warnings for node compatibility
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.36 (2021-3-4)
 
 ### Fixed
