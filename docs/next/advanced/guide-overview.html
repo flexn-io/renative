@@ -49,8 +49,8 @@
 }
 </code></pre>
 <p>Inject example of <code>myInject.txt</code>:</p>
-<pre><code class="hljs"><span class="xml">Inject app ID here: </span><span class="hljs-template-tag">{{{{<span class="hljs-name">configProps</span>.id}}}}</span><span class="xml">
-</span></code></pre>
+<pre><code class="hljs">Inject app ID here: {{configProps.<span class="hljs-built_in">id</span>}}
+</code></pre>
 <h3><a class="anchor" aria-hidden="true" id="runtimeprops"></a><a href="#runtimeprops" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>runtimeProps</h3>
 <p>runtimeProps are special properties generated during each rnv run.</p>
 <p>Example:</p>
@@ -134,10 +134,41 @@
 }
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="resolvepackage"></a><a href="#resolvepackage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>resolvePackage</h3>
-<p>resolvePackage allows you to dynamically resolve package location within `renative.*.json`` file</p>
+<p>resolvePackage allows you to dynamically resolve package location within <code>renative.*.json</code> file</p>
 <pre><code class="hljs">{
   <span class="hljs-attr">"common"</span>: {
      <span class="hljs-attr">"reactLocation"</span>: <span class="hljs-string">"{{resolvePackage('react')}}"</span>
+  }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="files"></a><a href="#files" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>files.*</h3>
+<p>you can reference values from all standard file references within renative config.</p>
+<pre><code class="hljs">{
+  <span class="hljs-attr">"runtime"</span>: {
+     <span class="hljs-attr">"myId"</span>: <span class="hljs-string">"{{files.project.config.common.id}}"</span>
+  }
+}
+</code></pre>
+<p>Supported file references:</p>
+<pre><code class="hljs"><span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.project</span><span class="hljs-selector-class">.package</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.project</span><span class="hljs-selector-class">.config</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.project</span><span class="hljs-selector-class">.configPrivate</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.project</span><span class="hljs-selector-class">.configLocal</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.workspace</span><span class="hljs-selector-class">.config</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.workspace</span><span class="hljs-selector-class">.configPrivate</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.workspace</span><span class="hljs-selector-class">.configLocal</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.workspace</span><span class="hljs-selector-class">.project</span><span class="hljs-selector-class">.config</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.workspace</span><span class="hljs-selector-class">.project</span><span class="hljs-selector-class">.configPrivate</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.workspace</span><span class="hljs-selector-class">.project</span><span class="hljs-selector-class">.configLocal</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.appConfig</span><span class="hljs-selector-class">.config</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.appConfig</span><span class="hljs-selector-class">.configPrivate</span>
+<span class="hljs-selector-tag">files</span><span class="hljs-selector-class">.appConfig</span><span class="hljs-selector-class">.configLocal</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="env"></a><a href="#env" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>env</h3>
+<p>You can inject env variables</p>
+<pre><code class="hljs">{
+  <span class="hljs-attr">"runtime"</span>: {
+     <span class="hljs-attr">"myEnvVariable"</span>: <span class="hljs-string">"{{env.MY_ENV_VARIABLE}}"</span>
   }
 }
 </code></pre>
@@ -207,7 +238,7 @@
 <h2><a class="anchor" aria-hidden="true" id="runtime-props"></a><a href="#runtime-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Runtime Props</h2>
 <p>When you define object with key <code>runtime</code>, its properties will be merged into final <code>./platformAssets/renative.runtime.json</code> file</p>
 <p>you can import above file into your code and get different values depending on your build</p>
-</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#configuration-merges">Configuration Merges</a></li><li><a href="#dynamic-injectors">Dynamic Injectors</a><ul class="toc-headings"><li><a href="#configprops">configProps</a></li><li><a href="#runtimeprops">runtimeProps</a></li><li><a href="#props">props</a></li><li><a href="#resolvepackage">resolvePackage</a></li></ul></li><li><a href="#config-values-overrides">Config Values Overrides</a></li><li><a href="#build-flavours">Build Flavours</a></li><li><a href="#runtime-props">Runtime Props</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.png" alt="ReNative" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/intro-installation">Getting Started</a><a href="/docs/platform">Platforms</a><a href="/docs/guide-cli">Guides</a></div><div><h5>Community</h5><a href="https://spectrum.chat/renative">Project Chat</a><a href="https://twitter.com/renative" target="_blank" rel="noreferrer noopener">Twitter</a><a href="/help">Contributors</a></div><div><h5>More</h5><a href="https://github.com/pavjacko/renative">GitHub</a><a class="github-button" href="https://github.com/pavjacko/renative" data-icon="octicon-star" data-count-href="/pavjacko/renative/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><div class="social"><a href="https://twitter.com/renative" class="twitter-follow-button">Follow @renative</a></div></div></section><section class="copyright"></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script><script>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#configuration-merges">Configuration Merges</a></li><li><a href="#dynamic-injectors">Dynamic Injectors</a><ul class="toc-headings"><li><a href="#configprops">configProps</a></li><li><a href="#runtimeprops">runtimeProps</a></li><li><a href="#props">props</a></li><li><a href="#resolvepackage">resolvePackage</a></li><li><a href="#files">files.*</a></li><li><a href="#env">env</a></li></ul></li><li><a href="#config-values-overrides">Config Values Overrides</a></li><li><a href="#build-flavours">Build Flavours</a></li><li><a href="#runtime-props">Runtime Props</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.png" alt="ReNative" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/intro-installation">Getting Started</a><a href="/docs/platform">Platforms</a><a href="/docs/guide-cli">Guides</a></div><div><h5>Community</h5><a href="https://spectrum.chat/renative">Project Chat</a><a href="https://twitter.com/renative" target="_blank" rel="noreferrer noopener">Twitter</a><a href="/help">Contributors</a></div><div><h5>More</h5><a href="https://github.com/pavjacko/renative">GitHub</a><a class="github-button" href="https://github.com/pavjacko/renative" data-icon="octicon-star" data-count-href="/pavjacko/renative/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><div class="social"><a href="https://twitter.com/renative" class="twitter-follow-button">Follow @renative</a></div></div></section><section class="copyright"></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;
