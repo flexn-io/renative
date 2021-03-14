@@ -42290,6 +42290,108 @@ Allows to override specific task within renative toolchain. (currently only `ins
 
 
 
+## templateConfig
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `templateConfig` | `object` |  | `templateConfig` |
+
+Used in `renative.template.json` allows you to define template behaviour.
+
+
+
+---
+
+
+
+
+### templateConfig.bootstrapQuestions
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bootstrapQuestions` | `array` |  | `templateConfig.bootstrapQuestions` |
+
+Defines list of custom bootstrap questions
+
+**examples**
+
+
+```json
+{
+  "bootstrapQuestions": [
+    {
+      "title": "Which service to use?",
+      "type": "list",
+      "configProp": {
+        "key": "runtime.myServiceConfig",
+        "file": "renative.json"
+      },
+      "options": [
+        {
+          "title": "Service 1",
+          "value": {
+            "id": "xxx1"
+          }
+        },
+        {
+          "title": "Service 2",
+          "value": {
+            "id": "xxx2"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+
+### templateConfig.includedPaths
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPaths` | `array` |  | `templateConfig.includedPaths` |
+
+Defines list of all file/dir paths you want to include in template
+
+**examples**
+
+
+```json
+{
+  "includedPaths": [
+    "next.config.js",
+    "babel.config.js",
+    "appConfigs",
+    "public",
+    "src"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+
+
+
+
 ## templates
 
 
