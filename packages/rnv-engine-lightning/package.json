@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-lightning",
-    "version": "0.32.0-alpha.38",
+    "version": "0.32.0-alpha.39",
     "description": "ReNative Engine to build lightning based apps.",
     "keywords": [
         "lightning"
