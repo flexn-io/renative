@@ -313,16 +313,17 @@ ${t.params.map((v) => {
         logRaw(`
 =======================================================`);
     }
-
     if (!t.isGlobalScope && isFirstTask) {
         if (c.files.project.package) {
             // This has to happen in order for hooks to be able to run
             await checkIfProjectAndNodeModulesExists(c);
         }
     }
+    if (isFirstTask) {
+        c.runtime.forceBuildHookRebuild = t.forceBuildHookRebuild;
+    }
     const inOnlyMode = c.program.only;
     const doPipe = !t.isGlobalScope && (!inOnlyMode || (inOnlyMode && isFirstTask));
-    c.runtime.forceBuildHookRebuild = t.forceBuildHookRebuild;
     if (doPipe) await _executePipe(c, task, 'before');
     await t.fn(c, parentTask, originTask);
     if (doPipe) await _executePipe(c, task, 'after');
