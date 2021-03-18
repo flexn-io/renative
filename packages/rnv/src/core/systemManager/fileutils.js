@@ -638,26 +638,26 @@ const BIND_ENV = '{{env.';
 const _bindStringVals = (obj, _val, newKey, propConfig) => {
     const { props = {}, configProps = {}, runtimeProps = {} } = propConfig;
     let val = _val;
-    if (val.startsWith(BIND_FILES)) {
+    if (val.includes(BIND_FILES)) {
         const key = val.replace(BIND_FILES, '').replace('}}', '');
         const nVal = key.split('.').reduce((o, i) => o?.[i], propConfig.files);
         obj[newKey] = fixResolve(nVal);
-    } else if (val.startsWith(BIND_PROPS)) {
+    } else if (val.includes(BIND_PROPS)) {
         Object.keys(props).forEach((pk) => {
             val = val.replace(`${BIND_PROPS}${pk}}}`, props?.[pk]);
             obj[newKey] = fixResolve(val);
         });
-    } else if (val.startsWith(BIND_CONFIG_PROPS)) {
+    } else if (val.includes(BIND_CONFIG_PROPS)) {
         Object.keys(configProps).forEach((pk2) => {
             val = val.replace(`${BIND_CONFIG_PROPS}${pk2}}}`, configProps[pk2]);
             obj[newKey] = fixResolve(val);
         });
-    } else if (val.startsWith(BIND_RUNTIME_PROPS)) {
+    } else if (val.includes(BIND_RUNTIME_PROPS)) {
         Object.keys(runtimeProps).forEach((pk3) => {
             val = val.replace(`${BIND_RUNTIME_PROPS}${pk3}}}`, runtimeProps[pk3]);
             obj[newKey] = fixResolve(val);
         });
-    } else if (val.startsWith(BIND_ENV)) {
+    } else if (val.includes(BIND_ENV)) {
         const key = val.replace(BIND_ENV, '').replace('}}', '');
         obj[newKey] = process.env[key];
     }
