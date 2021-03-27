@@ -281,7 +281,7 @@ const decideIfWearRunning = async (c, device) => {
     let isWear = false;
     [fingerprint, name, mod, flavor, description, model, product].forEach(
         (string) => {
-            const cmp = string ? string.toLowerCase() : ''
+            const cmp = string ? string.toLowerCase() : '';
             if ((cmp.includes('wear') || cmp.includes('rubyfish'))) isWear = true;
         }
     );
