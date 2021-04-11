@@ -5,6 +5,22 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.40 (2021-4-11)
+
+### Fixed
+
+- [feat] ignore built in tasks
+- [fix] better version upgrade management
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.39 (2021-3-18)
 
 ### Fixed
