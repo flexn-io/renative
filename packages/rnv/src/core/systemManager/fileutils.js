@@ -145,7 +145,7 @@ export const readCleanFile = (source, overrides) => {
     // logTask(`writeCleanFile`)
     // console.log('readCleanFile', source);
     if (!fs.existsSync(source)) {
-        logError(`Cannot write file. source path doesn't exists: ${source}`);
+        logError(`Cannot read file. source path doesn't exists: ${source}`);
         return;
     }
 

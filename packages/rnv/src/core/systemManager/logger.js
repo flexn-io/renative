@@ -137,8 +137,9 @@ export const getCurrentCommand = (excludeDollar = false) => {
     return `${dollar}rnv ${output}`;
 };
 
-export const logToSummary = (v) => {
-    _messages.push(`\n${v}`);
+export const logToSummary = (v, sanitizePaths) => {
+    const _v = sanitizePaths ? _sanitizePaths(v) : v;
+    _messages.push(`\n${_v}`);
 };
 
 export const logRaw = (...args) => {

@@ -388,12 +388,15 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
     resolve();
 });
 
-const SYNCED_DEV_DEPS = [
+const SYNCED_DEPS = [
     'rnv',
     '@rnv/engine-rn',
     '@rnv/engine-rn-next',
     '@rnv/engine-rn-web',
-    '@rnv/engine-rn-electron'
+    '@rnv/engine-rn-electron',
+    'renative',
+    'renative-template-hello-world',
+    'renative-template-blank'
 ];
 
 const SYNCED_TEMPLATES = [
@@ -471,29 +474,16 @@ export const upgradeProjectDependencies = (c, version) => {
 export const upgradeDependencies = (packageFile, packagesPath, configFile, configPath, version) => {
     // logTask('upgradeDependencies');
 
-    const devDependencies = packageFile?.devDependencies;
-
     const result = [];
 
-    SYNCED_DEV_DEPS.forEach((dep) => {
-        if (devDependencies?.[dep]) {
-            devDependencies[dep] = version;
-        }
-    });
+    _fixDeps(packageFile?.devDependencies, version);
+    _fixDeps(packageFile?.dependencies, version);
+    _fixDeps(packageFile?.peerDependencies, version);
     SYNCED_TEMPLATES.forEach((templ) => {
-        if (devDependencies?.[templ]) {
-            devDependencies[templ] = version;
-        }
         if (configFile?.templates?.[templ]?.version) {
             configFile.templates[templ].version = version;
         }
     });
-
-
-    const dependencies = packageFile?.dependencies;
-    if (dependencies?.renative) {
-        dependencies.renative = version;
-    }
 
     if (packageFile) {
         writeFileSync(packagesPath, packageFile);
@@ -504,6 +494,16 @@ export const upgradeDependencies = (packageFile, packagesPath, configFile, confi
         result.push(configPath);
     }
     return result;
+};
+
+const _fixDeps = (deps, version) => {
+    SYNCED_DEPS.forEach((dep) => {
+        const d = deps?.[dep];
+        if (d) {
+            const prefix = d.match(/~|>|>=|\^|<|<=/) || '';
+            deps[dep] = `${prefix}${version}`;
+        }
+    });
 };
 
 export const cleanPlaformAssets = async (c) => {

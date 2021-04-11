@@ -59,7 +59,7 @@ export const taskRnvProjectUpgrade = async (c, parentTask, originTask) => {
         }
     }
 
-    logToSummary(`Upgraded following files:\n${upgradedPaths.join('\n')}`);
+    logToSummary(`Upgraded following files:\n${upgradedPaths.join('\n')}`, true);
 
 
     return true;
