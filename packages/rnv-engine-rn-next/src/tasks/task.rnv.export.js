@@ -10,13 +10,15 @@ const {
     PARAMS
 } = Constants;
 const { exportWebNext } = SDKNext;
-const { executeOrSkipTask } = TaskManager;
+const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvExport = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);
     const { platform } = c;
 
     await executeOrSkipTask(c, TASK_BUILD, TASK_EXPORT, originTask);
+
+    if (shouldSkipTask(c, platform, TASK_BUILD, originTask)) return true;
 
     switch (platform) {
         case WEB:

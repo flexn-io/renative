@@ -285,6 +285,20 @@ export const executeOrSkipTask = async (c, task, parentTask, originTask) => {
     return executeTask(c, TASK_CONFIGURE_SOFT, parentTask, originTask);
 };
 
+export const shouldSkipTask = async (c, platform, task, originTask) => {
+    const ignoreTask = c.buildConfig?.tasks?.[task]?.platform?.[platform]?.ignore;
+    if (ignoreTask) {
+        logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
+        return true;
+    }
+    const ignoreTasks = c.buildConfig?.tasks?.[originTask]?.platform?.[platform]?.ignoreTasks || [];
+    if (ignoreTasks.includes(task)) {
+        logInfo(`Task ${task} marked to skip during rnv ${originTask}. SKIPPING...`);
+        return true;
+    }
+    return false;
+};
+
 export const executeEngineTask = async (c, task, parentTask, originTask, tasks, isFirstTask) => {
     const needsHelp = Object.prototype.hasOwnProperty.call(c.program, 'help');
 

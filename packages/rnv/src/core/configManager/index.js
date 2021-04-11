@@ -371,6 +371,7 @@ export const generateRuntimeConfig = async (c) => {
             configProps: c.configPropsInjects
         });
         writeFileSync(c.paths.project.assets.config, sanitizedConfig);
+        c.files.project.assets.config = sanitizedConfig;
     }
     return true;
 };
@@ -630,6 +631,8 @@ export const parseRenativeConfigs = async (c) => {
             c.paths.workspace.appConfig,
             true
         );
+
+        loadFile(c.files.project.assets, c.paths.project.assets, 'config');
 
         // LOAD WORKSPACE /RENATIVE.*.JSON
         _generateConfigPaths(

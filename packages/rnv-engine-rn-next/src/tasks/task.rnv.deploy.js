@@ -11,7 +11,7 @@ const {
     PARAMS
 } = Constants;
 const { deployWebNext } = SDKNext;
-const { executeOrSkipTask } = TaskManager;
+const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {
@@ -19,6 +19,8 @@ export const taskRnvDeploy = async (c, parentTask, originTask) => {
     const { platform } = c;
 
     await executeOrSkipTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
+
+    if (shouldSkipTask(c, platform, TASK_EXPORT, originTask)) return true;
 
     switch (platform) {
         case WEB:

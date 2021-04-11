@@ -71,7 +71,6 @@ export const logWelcome = () => {
     console.log(str);
 };
 
-let _messages = [];
 let _currentProcess;
 let _isInfoEnabled = false;
 let _infoFilter = [];
@@ -89,7 +88,7 @@ const cnf = () => {
 };
 
 const _configureLogger = (c, analytics) => {
-    _messages = [];
+    global._messages = [];
     _c = c;
     _c.timeStart = new Date();
     _currentProcess = c.process;
@@ -111,7 +110,7 @@ const _updateDefaultColors = () => {
 _updateDefaultColors();
 
 export const logAndSave = (msg, skipLog) => {
-    if (_messages && !_messages.includes(msg)) _messages.push(msg);
+    if (global._messages && !global._messages.includes(msg)) global._messages.push(msg);
     if (!skipLog) console.log(`${msg}`);
 };
 
@@ -139,7 +138,7 @@ export const getCurrentCommand = (excludeDollar = false) => {
 
 export const logToSummary = (v, sanitizePaths) => {
     const _v = sanitizePaths ? _sanitizePaths(v) : v;
-    _messages.push(`\n${_v}`);
+    global._messages.push(`\n${_v}`);
 };
 
 export const logRaw = (...args) => {
@@ -148,9 +147,9 @@ export const logRaw = (...args) => {
 
 export const logSummary = (header = 'SUMMARY') => {
     let logContent = printIntoBox(`All good as ${ICN_UNICORN} `);
-    if (_messages && _messages.length) {
+    if (global._messages && global._messages.length) {
         logContent = '';
-        _messages.forEach((m) => {
+        global._messages.forEach((m) => {
             logContent += `│ ${m}\n`;
         });
     }
