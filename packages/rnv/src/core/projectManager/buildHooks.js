@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import path from 'path';
-import { logDebug, logHook } from '../systemManager/logger';
+import { logDebug, logHook, logInfo } from '../systemManager/logger';
 import { executeAsync } from '../systemManager/exec';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
@@ -37,6 +37,11 @@ export const buildHooks = async (c) => {
     || c.program.hooks || !fsExistsSync(c.paths.buildHooks.dist.dir) || enableHookRebuild === true
     || c.runtime.forceBuildHookRebuild;
 
+    if ((!fsExistsSync(c.paths.buildHooks.index) && c.program.ci) || c.runtime.skipBuildHooks) {
+        logInfo('No buld hooks found and in --ci mode. SKIPPING');
+        return true;
+    }
+
 
     if (!fsExistsSync(c.paths.buildHooks.index)) {
         const { confirm } = await inquirer.prompt({
@@ -49,6 +54,9 @@ export const buildHooks = async (c) => {
                 path.join(c.paths.rnv.dir, 'coreTemplateFiles/buildHooks/src'),
                 c.paths.buildHooks.dir
             );
+        } else {
+            c.runtime.skipBuildHooks = true;
+            return;
         }
     }
 
