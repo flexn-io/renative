@@ -11,7 +11,7 @@ const {
     PARAMS
 } = Constants;
 const { runElectron } = SDKElectron;
-const { executeOrSkipTask } = TaskManager;
+const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -21,6 +21,8 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
     await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+
+    if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
 
     switch (platform) {
         case MACOS:
@@ -34,7 +36,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
 export default {
     description: 'Run your app on target device or emulator',
     fn: taskRnvRun,
-    task: 'run',
+    task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [
         MACOS,

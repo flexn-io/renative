@@ -125,9 +125,23 @@ export const checkIfProjectAndNodeModulesExists = async (c) => {
     }
 };
 
+const _getInstallScript = (c) => {
+    const tasks = c.buildConfig?.tasks;
+    if (!tasks) return null;
+    if (Array.isArray(tasks)) {
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].name === 'install') {
+                return tasks[i].script;
+            }
+        }
+    } else {
+        return tasks.install?.script;
+    }
+};
+
 export const installPackageDependencies = async (c, failOnError = false) => {
     c.runtime.forceBuildHookRebuild = true;
-    const customScript = c.buildConfig?.tasks?.install?.script;
+    const customScript = _getInstallScript(c);
 
     if (customScript) {
         logTask('installPackageDependencies');

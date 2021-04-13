@@ -21,7 +21,7 @@ const {
     PARAMS
 } = Constants;
 const { runWebpackServer, waitForWebpack } = WebpackUtils;
-const { executeTask } = TaskManager;
+const { executeTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -33,6 +33,8 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
     if (!parentTask) {
         await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
     }
+
+    if (shouldSkipTask(c, TASK_START, originTask)) return true;
 
     if (hosted) {
         waitForWebpack(c)
@@ -65,7 +67,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 export default {
     description: 'Starts bundler / server',
     fn: taskRnvStart,
-    task: 'start',
+    task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,

@@ -20,7 +20,7 @@ export const taskRnvDeploy = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
 
-    if (shouldSkipTask(c, platform, TASK_EXPORT, originTask)) return true;
+    if (shouldSkipTask(c, TASK_DEPLOY, originTask)) return true;
 
     switch (platform) {
         case WEB:
@@ -35,7 +35,7 @@ export const taskRnvDeploy = async (c, parentTask, originTask) => {
 export default {
     description: 'Deploy the binary via selected deployment intgeration or buld hook',
     fn: taskRnvDeploy,
-    task: 'deploy',
+    task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,

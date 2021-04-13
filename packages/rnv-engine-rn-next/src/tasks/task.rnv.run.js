@@ -1,7 +1,7 @@
 import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
 import { SDKNext } from '../sdks';
 
-const { logErrorPlatform } = PlatformManager;
+const { logErrorPlatform, shouldSkipTask } = PlatformManager;
 const { logTask } = Logger;
 const {
     WEB,
@@ -18,6 +18,8 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
+    if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
+
     switch (platform) {
         case WEB:
         case CHROMECAST:
@@ -31,7 +33,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
 export default {
     description: 'Run your app in browser',
     fn: taskRnvRun,
-    task: 'run',
+    task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [
         WEB,

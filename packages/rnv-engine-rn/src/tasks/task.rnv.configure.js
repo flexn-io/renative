@@ -18,7 +18,7 @@ const {
 } = Constants;
 const { configureXcodeProject } = SDKXcode;
 const { configureGradleProject } = SDKAndroid;
-const { executeTask } = TaskManager;
+const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
@@ -27,6 +27,8 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
     await configureMetroConfigs(c);
 
     await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
+    if (shouldSkipTask(c, TASK_CONFIGURE, originTask)) return true;
+
     await configureEntryPoint(c, c.platform);
 
     if (c.program.only && !!parentTask) {

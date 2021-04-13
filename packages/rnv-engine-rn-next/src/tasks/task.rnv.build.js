@@ -10,13 +10,15 @@ const {
     PARAMS
 } = Constants;
 const { buildWebNext } = SDKNext;
-const { executeOrSkipTask } = TaskManager;
+const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvBuild = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild', `parent:${parentTask}`);
     const { platform } = c;
 
     await executeOrSkipTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
+
+    if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
     switch (platform) {
         case WEB:
@@ -31,7 +33,7 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
 export default {
     description: 'Build project binary',
     fn: taskRnvBuild,
-    task: 'build',
+    task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,

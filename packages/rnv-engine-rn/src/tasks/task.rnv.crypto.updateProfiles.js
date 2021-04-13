@@ -5,7 +5,7 @@ const { listAppConfigsFoldersSync } = ConfigManager;
 
 const { chalk, logTask } = Logger;
 const { IOS, TVOS, TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE, PARAMS } = Constants;
-const { executeTask } = TaskManager;
+const { executeTask, shouldSkipTask } = TaskManager;
 
 
 const _updateProfile = (c, v) => new Promise((resolve, reject) => {
@@ -29,6 +29,8 @@ export const taskRnvCryptoUpdateProfiles = async (c, parentTask, originTask) => 
     logTask('taskRnvCryptoUpdateProfiles');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_UPDATE_PROFILES, originTask);
+
+    if (shouldSkipTask(c, TASK_CRYPTO_UPDATE_PROFILES, originTask)) return true;
 
     switch (c.platform) {
         case IOS:

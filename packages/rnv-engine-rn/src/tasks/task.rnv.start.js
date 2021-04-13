@@ -5,7 +5,7 @@ const { getEntryFile, confirmActiveBundler } = Common;
 const { doResolve } = Resolver;
 const { logErrorPlatform } = PlatformManager;
 const { generateEnvVars } = EngineManager;
-const { executeTask } = TaskManager;
+const { executeTask, shouldSkipTask } = TaskManager;
 const { chalk, logTask, logError, logRaw, logInfo } = Logger;
 const {
     IOS,
@@ -48,6 +48,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
         await executeTask(c, TASK_CONFIGURE_SOFT, TASK_START, originTask);
     }
 
+    if (shouldSkipTask(c, TASK_START, originTask)) return true;
 
     switch (platform) {
         case IOS:
@@ -105,7 +106,7 @@ Dev server running at: ${url}
 export default {
     description: 'Starts bundler / server',
     fn: taskRnvStart,
-    task: 'start',
+    task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         IOS,

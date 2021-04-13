@@ -1,4 +1,4 @@
-import { logTask, logInitTask, logExitTask, chalk, logRaw, logError, logInfo } from '../systemManager/logger';
+import { logTask, logInitTask, logExitTask, chalk, logRaw, logError, logInfo, logWarning } from '../systemManager/logger';
 import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
@@ -285,17 +285,64 @@ export const executeOrSkipTask = async (c, task, parentTask, originTask) => {
     return executeTask(c, TASK_CONFIGURE_SOFT, parentTask, originTask);
 };
 
-export const shouldSkipTask = async (c, platform, task, originTask) => {
-    const ignoreTask = c.buildConfig?.tasks?.[task]?.platform?.[platform]?.ignore;
-    if (ignoreTask) {
-        logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
-        return true;
+const ACCEPTED_CONDITIONS = [
+    'platform',
+    'target',
+    'appId',
+    'scheme'
+];
+
+const _logSkip = (task) => {
+    logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
+};
+
+export const shouldSkipTask = (c, task, originTask) => {
+    const tasks = c.buildConfig?.tasks;
+    c.runtime.platform = c.platform;
+    if (!tasks) return;
+
+    if (Array.isArray(tasks)) {
+        for (let k = 0; k < tasks.length; k++) {
+            const t = tasks[k];
+            if (t.name === task) {
+                if (t.filter) {
+                    const conditions = t.filter.split('&');
+                    let conditionsToMatch = conditions.length;
+                    conditions.forEach((con) => {
+                        const conArr = con.split('=');
+                        if (ACCEPTED_CONDITIONS.includes(conArr[0])) {
+                            if (c.runtime[conArr[0]] === conArr[1]) {
+                                conditionsToMatch--;
+                            }
+                        } else {
+                            logWarning(`Condition ${con} not valid. only following keys are valid: ${ACCEPTED_CONDITIONS.join(',')} SKIPPING...`);
+                        }
+                    });
+                    if (conditionsToMatch === 0) {
+                        if (t.ignore) {
+                            _logSkip(task);
+                            return true;
+                        }
+                    }
+                } else if (t.ignore) {
+                    _logSkip(task);
+                    return true;
+                }
+            }
+        }
+    } else {
+        const ignoreTask = tasks[task]?.platform?.[c.platform]?.ignore;
+        if (ignoreTask) {
+            _logSkip(task);
+            return true;
+        }
+        const ignoreTasks = tasks[originTask]?.platform?.[c.platform]?.ignoreTasks || [];
+        if (ignoreTasks.includes(task)) {
+            logInfo(`Task ${task} marked to skip during rnv ${originTask}. SKIPPING...`);
+            return true;
+        }
     }
-    const ignoreTasks = c.buildConfig?.tasks?.[originTask]?.platform?.[platform]?.ignoreTasks || [];
-    if (ignoreTasks.includes(task)) {
-        logInfo(`Task ${task} marked to skip during rnv ${originTask}. SKIPPING...`);
-        return true;
-    }
+
     return false;
 };
 

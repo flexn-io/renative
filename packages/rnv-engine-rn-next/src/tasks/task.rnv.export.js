@@ -18,7 +18,7 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
 
     await executeOrSkipTask(c, TASK_BUILD, TASK_EXPORT, originTask);
 
-    if (shouldSkipTask(c, platform, TASK_BUILD, originTask)) return true;
+    if (shouldSkipTask(c, TASK_EXPORT, originTask)) return true;
 
     switch (platform) {
         case WEB:
@@ -32,7 +32,7 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
 export default {
     description: 'Export the app into deployable binary',
     fn: taskRnvExport,
-    task: 'export',
+    task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,

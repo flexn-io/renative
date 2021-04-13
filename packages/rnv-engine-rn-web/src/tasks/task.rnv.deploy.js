@@ -19,7 +19,7 @@ const {
     PARAMS
 } = Constants;
 const { deployWeb } = SDKWebpack;
-const { executeOrSkipTask } = TaskManager;
+const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);
@@ -27,6 +27,8 @@ export const taskRnvDeploy = async (c, parentTask, originTask) => {
     const { platform } = c;
 
     await executeOrSkipTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
+
+    if (shouldSkipTask(c, TASK_DEPLOY, originTask)) return true;
 
     switch (platform) {
         case WEB:
@@ -41,7 +43,7 @@ export const taskRnvDeploy = async (c, parentTask, originTask) => {
 export default {
     description: 'Deploy the binary via selected deployment intgeration or buld hook',
     fn: taskRnvDeploy,
-    task: 'deploy',
+    task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,

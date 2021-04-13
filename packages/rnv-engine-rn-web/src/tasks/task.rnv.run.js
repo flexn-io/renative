@@ -28,7 +28,7 @@ const { runTizen } = SDKTizen;
 const { runWebOS } = SDKWebos;
 const { runFirefoxProject } = SDKFirefox;
 const { writeCleanFile } = FileUtils;
-const { executeTask, executeOrSkipTask } = TaskManager;
+const { executeTask, executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 const _configureHostedIfRequired = async (c) => {
     logTask('_configureHostedIfRequired');
@@ -71,6 +71,8 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
         return executeTask(c, TASK_START, TASK_RUN, originTask);
     }
 
+    if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
+
     switch (platform) {
         case WEB:
         case WEBTV:
@@ -105,7 +107,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
 export default {
     description: 'Run your app in browser',
     fn: taskRnvRun,
-    task: 'run',
+    task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [
         WEB,

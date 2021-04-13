@@ -7,7 +7,7 @@ const {
 } = Logger;
 const { getFileListSync } = FileUtils;
 const { executeAsync } = Exec;
-const { executeTask } = TaskManager;
+const { executeTask, shouldSkipTask } = TaskManager;
 const { TASK_CRYPTO_INSTALL_CERTS, TASK_PROJECT_CONFIGURE, PARAMS } = Constants;
 
 
@@ -15,6 +15,8 @@ export const taskRnvCryptoInstallCerts = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoInstallCerts');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_INSTALL_CERTS, originTask);
+
+    if (shouldSkipTask(c, TASK_CRYPTO_INSTALL_CERTS, originTask)) return true;
 
     if (c.platform !== 'ios') {
         logError(`_installTempCerts: platform ${c.platform} not supported`);

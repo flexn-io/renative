@@ -2,7 +2,7 @@ import open from 'better-opn';
 import { TaskManager, Constants, Logger, PlatformManager, WebpackUtils } from 'rnv';
 import { SDKNext } from '../sdks';
 
-const { logErrorPlatform } = PlatformManager;
+const { logErrorPlatform, shouldSkipTask } = PlatformManager;
 const { logTask, logError } = Logger;
 const {
     WEB,
@@ -32,6 +32,8 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
         await executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
     }
 
+    if (shouldSkipTask(c, TASK_START, originTask)) return true;
+
     if (hosted) {
         return logError(
             'This platform does not support hosted mode',
@@ -51,7 +53,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 export default {
     description: 'Starts bundler / server',
     fn: taskRnvStart,
-    task: 'start',
+    task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         WEB,

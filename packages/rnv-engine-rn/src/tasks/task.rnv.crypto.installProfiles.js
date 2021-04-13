@@ -13,7 +13,7 @@ const {
     mkdirSync,
     fsExistsSync
 } = FileUtils;
-const { executeTask } = TaskManager;
+const { executeTask, shouldSkipTask } = TaskManager;
 const { TASK_CRYPTO_INSTALL_PROFILES, TASK_PROJECT_CONFIGURE, PARAMS } = Constants;
 
 
@@ -21,6 +21,8 @@ export const taskRnvCryptoInstallProfiles = async (c, parentTask, originTask) =>
     logTask('taskRnvCryptoInstallProfiles');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_INSTALL_PROFILES, originTask);
+
+    if (shouldSkipTask(c, TASK_CRYPTO_INSTALL_PROFILES, originTask)) return true;
 
     if (c.platform !== 'ios') {
         logError(

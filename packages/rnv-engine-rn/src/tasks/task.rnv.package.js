@@ -16,13 +16,15 @@ const {
 } = Constants;
 const { packageBundleForXcode } = SDKXcode;
 const { packageAndroid } = SDKAndroid;
-const { executeOrSkipTask } = TaskManager;
+const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
     const { platform } = c;
 
     await executeOrSkipTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
+
+    if (shouldSkipTask(c, TASK_PACKAGE, originTask)) return true;
 
     switch (platform) {
         case IOS:

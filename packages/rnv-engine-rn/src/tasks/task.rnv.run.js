@@ -18,7 +18,7 @@ const {
 } = Constants;
 const { runXcodeProject } = SDKXcode;
 const { packageAndroid, runAndroid } = SDKAndroid;
-const { executeOrSkipTask } = TaskManager;
+const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -28,6 +28,8 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
     await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
+
+    if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
@@ -74,7 +76,7 @@ const Task = {
     description: 'Run your app on target device or emulator',
     fn: taskRnvRun,
     fnHelp: taskRnvRunHelp,
-    task: 'run',
+    task: TASK_RUN,
     dependencies: {
         before: TASK_CONFIGURE
     },

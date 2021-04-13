@@ -24,7 +24,8 @@ jest.mock('../../src/core/engineManager/index.js', () => ({
 }));
 
 jest.mock('../../src/core/taskManager/index.js', () => ({
-    executeTask: jest.fn()
+    executeTask: jest.fn(),
+    shouldSkipTask: () => false
 }));
 
 jest.mock('../../src/core/configManager/config.js', () => ({

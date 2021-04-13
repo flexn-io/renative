@@ -67,6 +67,7 @@ jest.mock('rnv', () => {
         TaskManager: {
             executeTask: () => null,
             executeOrSkipTask: () => null,
+            shouldSkipTask: () => false
         },
         Exec: {
             executeAsync: () => null,
