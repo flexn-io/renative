@@ -6,6 +6,22 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.41 (2021-4-13)
+
+### Fixed
+
+- [feat] add support for custom task filters
+- [fix] avoid hooks crash if ignored
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.40 (2021-4-11)
 
 ### Fixed
