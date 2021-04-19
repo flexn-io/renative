@@ -2,7 +2,7 @@ import open from 'better-opn';
 import { TaskManager, Constants, Logger, PlatformManager, WebpackUtils } from 'rnv';
 import { SDKNext } from '../sdks';
 
-const { logErrorPlatform, shouldSkipTask } = PlatformManager;
+const { logErrorPlatform } = PlatformManager;
 const { logTask, logError } = Logger;
 const {
     WEB,
@@ -13,7 +13,7 @@ const {
 } = Constants;
 const { waitForWebpack } = WebpackUtils;
 const { runWebNext } = SDKNext;
-const { executeTask } = TaskManager;
+const { executeTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
     const { platform } = c;

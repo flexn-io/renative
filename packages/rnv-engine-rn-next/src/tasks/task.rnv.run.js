@@ -1,7 +1,7 @@
 import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
 import { SDKNext } from '../sdks';
 
-const { logErrorPlatform, shouldSkipTask } = PlatformManager;
+const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     WEB,
@@ -10,7 +10,7 @@ const {
     PARAMS
 } = Constants;
 const { runWebNext } = SDKNext;
-const { executeOrSkipTask } = TaskManager;
+const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;
