@@ -5,6 +5,21 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.42 (2021-4-19)
+
+### Fixed
+
+- [fix] shouldSkipTask import
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.41 (2021-4-13)
 
 ### Fixed
