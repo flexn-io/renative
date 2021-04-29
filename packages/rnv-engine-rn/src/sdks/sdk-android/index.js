@@ -156,8 +156,6 @@ export const runAndroid = async (c, defaultTarget) => {
     // shortcircuit devices logic since aabs can't be installed on a device
     if (outputAab) return _runGradleApp(c, platform, {});
 
-    await resetAdb(c);
-
     if (target && net.isIP(target)) {
         await connectToWifiDevice(c, target);
     }
@@ -176,7 +174,11 @@ export const runAndroid = async (c, defaultTarget) => {
 
     const activeDevices = devicesAndEmulators.filter(d => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter(d => !d.isActive);
-
+	
+    if (activeDevices.length !== 1){
+        await resetAdb(c);
+    }
+	
     const askWhereToRun = async () => {
         if (activeDevices.length === 0 && inactiveDevices.length > 0) {
             // No device active, but there are emulators created
