@@ -65,11 +65,17 @@ export const parsePodFile = async (c, platform) => {
 
         const podfile = getFlavouredProp(c, pluginPlat, 'Podfile');
         if (podfile) {
-            const { injectLines } = podfile;
+            const { injectLines, post_install } = podfile;
             // INJECT LINES
             if (injectLines) {
                 injectLines.forEach((v) => {
                     c.pluginConfigiOS.podfileInject += `${v}\n`;
+                });
+            }
+
+            if (post_install) {
+                post_install.forEach((v) => {
+                    c.pluginConfigiOS.podPostInstall += `${v}\n`;
                 });
             }
         }
@@ -121,6 +127,10 @@ export const parsePodFile = async (c, platform) => {
         {
             pattern: '{{PLUGIN_PODFILE_INJECT}}',
             override: c.pluginConfigiOS.podfileInject
+        },
+        {
+            pattern: '{{INJECT_POST_INSTALL}}',
+            override: c.pluginConfigiOS.podPostInstall
         },
         {
             pattern: '{{PLUGIN_PODFILE_SOURCES}}',

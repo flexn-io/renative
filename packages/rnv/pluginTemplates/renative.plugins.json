@@ -2020,13 +2020,11 @@
                     "Firebase"
                 ],
                 "Podfile": {
-                    "injectLines": [
-                        "post_install do |installer|",
+                    "post_install": [
                         "  rnfirebase = installer.pods_project.targets.find { |target| target.name == 'RNFirebase' }",
                         "  rnfirebase.build_configurations.each do |config|",
                         "    config.build_settings['HEADER_SEARCH_PATHS'] = '$(inherited) ${PODS_ROOT}/Headers/Public/**'",
-                        "  end",
-                        "end"
+                        "  end"
                     ]
                 },
                 "appDelegateMethods": {
