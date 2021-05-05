@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import path from 'path';
-import { logDebug, logHook, logInfo } from '../systemManager/logger';
+import { logDebug, logHook, logInfo, logWarning } from '../systemManager/logger';
 import { executeAsync } from '../systemManager/exec';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
@@ -61,7 +61,8 @@ export const buildHooks = async (c) => {
     }
 
     // New projects are not ready to compile babel
-    if (!c.runtime.isFirstRunAfterNew && !c.files.project.config?.isNew && doResolve('@babel/cli')) {
+    const isBabelResolved = doResolve('@babel/cli');
+    if (!c.runtime.isFirstRunAfterNew && !c.files.project.config?.isNew && isBabelResolved) {
         if (shouldBuildHook && !c.isBuildHooksReady) {
             try {
                 logHook('buildHooks', 'Build hooks not complied. BUILDING...');
@@ -83,6 +84,8 @@ export const buildHooks = async (c) => {
         c.buildHooks = h.hooks;
         c.buildPipes = h.pipes;
         h = require(c.paths.buildHooks.dist.index);
+    } else if (!isBabelResolved) {
+        logWarning('Cannot resolve @babel/cli, ensure you added it to your root package.json');
     }
 
     return true;
