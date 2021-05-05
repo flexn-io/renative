@@ -542,6 +542,15 @@ const platformAndroidProps = {
             true
         ]
     },
+    minifyEnabled: {
+        type: 'boolean',
+        description: 'Sets minifyEnabled buildType property in app/build.gradle',
+        default: false,
+        examples: [
+            false,
+            true
+        ]
+    },
     targetSdkVersion: {
         type: 'integer',
         description: 'Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` ',

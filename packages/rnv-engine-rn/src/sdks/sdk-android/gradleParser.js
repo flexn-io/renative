@@ -240,6 +240,8 @@ Your ${chalk().red(platform)} object needs to be located under ${chalk().green('
     const keyAlias = getConfigProp(c, c.platform, 'keyAlias') || obj?.keyAlias;
     const storePassword = getConfigProp(c, c.platform, 'storePassword') || obj?.storePassword;
     const keyPassword = getConfigProp(c, c.platform, 'keyPassword') || obj?.keyPassword;
+    const minifyEnabled = getConfigProp(c, c.platform, 'minifyEnabled', false);
+
 
     c.pluginConfigAndroid.store = {
         storeFile,
@@ -311,12 +313,12 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     const releaseBuildTypes = pluginConfig?.platforms[platform]?.gradle?.buildTypes?.release ?? [];
     c.pluginConfigAndroid.buildTypes = `
     debug {
-        minifyEnabled false
+        minifyEnabled ${minifyEnabled}
         proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         ${debugBuildTypes.join('\n        ')}
     }
     release {
-        minifyEnabled false
+        minifyEnabled ${minifyEnabled}
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         signingConfig signingConfigs.release
         ${releaseBuildTypes.join('\n        ')}
