@@ -6,6 +6,31 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.43 (2021-5-5)
+
+### Fixed
+
+- [feat] configurable minifyEnabled
+- [fix] missing @babel/cli warning
+- [fix] Xcode 12.5 support
+- 0.32.0-alpha.42
+- [fix] shouldSkipTask import
+- 0.32.0-alpha.41
+- [feat] add support for custom task filters
+- [fix] avoid hooks crash if ignored
+- 0.32.0-alpha.40
+- [feat] ignore built in tasks
+- [fix] better version upgrade management
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.42 (2021-4-19)
 
 ### Fixed

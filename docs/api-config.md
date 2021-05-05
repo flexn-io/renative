@@ -3647,6 +3647,40 @@ Overrides super.onCreate method handler of MainActivity.kt
 
 
 
+#### platforms.android.buildSchemes.[object].minifyEnabled
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minifyEnabled` | `boolean` |  | `platforms.android.buildSchemes.[object].minifyEnabled` |
+
+Sets minifyEnabled buildType property in app/build.gradle
+
+**examples**
+
+
+```json
+{
+  "minifyEnabled": "false"
+}
+```
+
+
+
+```json
+{
+  "minifyEnabled": "true"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.android.buildSchemes.[object].multipleAPKs
 
 
@@ -4766,6 +4800,40 @@ Overrides super.onCreate method handler of MainActivity.kt
 ```json
 {
   "minSdkVersion": "22"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.android.minifyEnabled
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minifyEnabled` | `boolean` |  | `platforms.android.minifyEnabled` |
+
+Sets minifyEnabled buildType property in app/build.gradle
+
+**examples**
+
+
+```json
+{
+  "minifyEnabled": "false"
+}
+```
+
+
+
+```json
+{
+  "minifyEnabled": "true"
 }
 ```
 
@@ -6526,6 +6594,40 @@ Overrides super.onCreate method handler of MainActivity.kt
 
 
 
+#### platforms.androidtv.buildSchemes.[object].minifyEnabled
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minifyEnabled` | `boolean` |  | `platforms.androidtv.buildSchemes.[object].minifyEnabled` |
+
+Sets minifyEnabled buildType property in app/build.gradle
+
+**examples**
+
+
+```json
+{
+  "minifyEnabled": "false"
+}
+```
+
+
+
+```json
+{
+  "minifyEnabled": "true"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.androidtv.buildSchemes.[object].multipleAPKs
 
 
@@ -7645,6 +7747,40 @@ Overrides super.onCreate method handler of MainActivity.kt
 ```json
 {
   "minSdkVersion": "22"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.androidtv.minifyEnabled
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minifyEnabled` | `boolean` |  | `platforms.androidtv.minifyEnabled` |
+
+Sets minifyEnabled buildType property in app/build.gradle
+
+**examples**
+
+
+```json
+{
+  "minifyEnabled": "false"
+}
+```
+
+
+
+```json
+{
+  "minifyEnabled": "true"
 }
 ```
 
@@ -9405,6 +9541,40 @@ Overrides super.onCreate method handler of MainActivity.kt
 
 
 
+#### platforms.androidwear.buildSchemes.[object].minifyEnabled
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minifyEnabled` | `boolean` |  | `platforms.androidwear.buildSchemes.[object].minifyEnabled` |
+
+Sets minifyEnabled buildType property in app/build.gradle
+
+**examples**
+
+
+```json
+{
+  "minifyEnabled": "false"
+}
+```
+
+
+
+```json
+{
+  "minifyEnabled": "true"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.androidwear.buildSchemes.[object].multipleAPKs
 
 
@@ -10524,6 +10694,40 @@ Overrides super.onCreate method handler of MainActivity.kt
 ```json
 {
   "minSdkVersion": "22"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.androidwear.minifyEnabled
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minifyEnabled` | `boolean` |  | `platforms.androidwear.minifyEnabled` |
+
+Sets minifyEnabled buildType property in app/build.gradle
+
+**examples**
+
+
+```json
+{
+  "minifyEnabled": "false"
+}
+```
+
+
+
+```json
+{
+  "minifyEnabled": "true"
 }
 ```
 
@@ -16841,6 +17045,40 @@ Overrides super.onCreate method handler of MainActivity.kt
 
 
 
+#### platforms.firetv.buildSchemes.[object].minifyEnabled
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minifyEnabled` | `boolean` |  | `platforms.firetv.buildSchemes.[object].minifyEnabled` |
+
+Sets minifyEnabled buildType property in app/build.gradle
+
+**examples**
+
+
+```json
+{
+  "minifyEnabled": "false"
+}
+```
+
+
+
+```json
+{
+  "minifyEnabled": "true"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.firetv.buildSchemes.[object].multipleAPKs
 
 
@@ -17960,6 +18198,40 @@ Overrides super.onCreate method handler of MainActivity.kt
 ```json
 {
   "minSdkVersion": "22"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.firetv.minifyEnabled
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `minifyEnabled` | `boolean` |  | `platforms.firetv.minifyEnabled` |
+
+Sets minifyEnabled buildType property in app/build.gradle
+
+**examples**
+
+
+```json
+{
+  "minifyEnabled": "false"
+}
+```
+
+
+
+```json
+{
+  "minifyEnabled": "true"
 }
 ```
 
