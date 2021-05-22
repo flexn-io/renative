@@ -167,6 +167,7 @@ export const installPackageDependencies = async (c, failOnError = false) => {
         // no lock file check cli option
         if (['yarn', 'npm'].includes(c.program.packageManager)) {
             command = c.program.packageManager === 'yarn' ? 'yarn' : 'npm install';
+            if (command === 'yarn' && !isYarnInstalled) throw new Error('You specified yarn as packageManager but it\'s not installed');
         } else {
             throw new Error(`Unsupported package manager ${c.program.packageManager}. Only yarn and npm are supported at the moment.`);
         }
