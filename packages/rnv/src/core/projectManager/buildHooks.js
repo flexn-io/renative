@@ -1,11 +1,9 @@
 import inquirer from 'inquirer';
 import path from 'path';
 import { build } from 'esbuild';
-import { logDebug, logHook, logInfo, logWarning } from '../systemManager/logger';
-import { executeAsync } from '../systemManager/exec';
+import { logDebug, logHook, logInfo } from '../systemManager/logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
-import { doResolve } from '../systemManager/resolve';
 
 export const executePipe = async (c, key) => {
     logHook('executePipe', `('${key}')`);
@@ -73,7 +71,8 @@ export const buildHooks = async (c) => {
                     entryPoints: [`${c.paths.buildHooks.dir}/index.js`],
                     bundle: true,
                     platform: 'node',
-                    external: [...Object.keys(c.files.project.package.dependencies || {}), ...Object.keys(c.files.project.package.devDependencies || {})], // exclude everything that's present in node_modules
+                    external: [...Object.keys(c.files.project.package.dependencies || {}),
+                        ...Object.keys(c.files.project.package.devDependencies || {})], // exclude everything that's present in node_modules
                     outfile: `${c.paths.buildHooks.dist.dir}/index.js`,
                 });
             } catch (e) {
