@@ -14,17 +14,69 @@ import {
     copyFolderContentsRecursiveSync,
     copyFileSync,
     mkdirSync,
+    readObjectSync,
     writeFileSync,
     fsWriteFileSync,
     fsExistsSync,
     fsReaddirSync,
     fsReadFileSync
 } from '../systemManager/fileutils';
+import { executeAsync } from '../systemManager/exec';
 import { isPlatformActive } from '../platformManager';
 import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../systemManager/logger';
 import { copyTemplatePluginsSync } from '../pluginManager';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEngineRunnerByPlatform } from '../engineManager';
+import { configureTemplateFiles, configureEntryPoint } from '../templateManager';
+import { parseRenativeConfigs } from '../configManager';
+
+
+export const checkAndBootstrapIfRequired = async (c) => {
+    const { template } = c.program;
+    if (!c.paths.project.configExists && template) {
+        await executeAsync(`npm i ${template} --no-save`, {
+            cwd: c.paths.project.dir
+        });
+        const templateArr = template.split('@').filter(v => v !== '');
+        const templateDir = template.startsWith('@') ? `@${templateArr[0]}` : templateArr[0];
+        const templatePath = path.join(c.paths.project.dir, 'node_modules', templateDir);
+
+        c.paths.template.dir = templatePath;
+        c.paths.template.configTemplate = path.join(templatePath, 'renative.template.json');
+        const templateObj = readObjectSync(c.paths.template.configTemplate);
+
+        const config = {
+            ...templateObj
+        };
+
+        writeFileSync(c.paths.project.config, config);
+
+        if (config.templateConfig.packageTemplate) {
+            const pkgJson = {};
+            pkgJson.dependencies = {
+                ...config.templateConfig.packageTemplate.dependencies || { },
+
+            };
+            pkgJson.devDependencies = {
+                ...config.templateConfig.packageTemplate.devDependencies || { },
+            };
+            c.files.project.package = pkgJson;
+            writeFileSync(c.paths.project.package, pkgJson);
+        }
+
+
+        delete config.templateConfig;
+
+        await parseRenativeConfigs(c);
+
+        await configureTemplateFiles(c);
+        await configureEntryPoint(c);
+        // await applyTemplate(c);
+
+        // copyFolderContentsRecursiveSync(templatePath, c.paths.project.dir);
+    }
+    return true;
+};
 
 
 export const checkAndCreateGitignore = async (c) => {

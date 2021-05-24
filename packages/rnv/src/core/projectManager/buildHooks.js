@@ -44,6 +44,10 @@ export const buildHooks = async (c) => {
 
 
     if (!fsExistsSync(c.paths.buildHooks.index)) {
+        if (c.program.ci) {
+            c.runtime.skipBuildHooks = true;
+            return;
+        }
         const { confirm } = await inquirer.prompt({
             type: 'confirm',
             name: 'confirm',

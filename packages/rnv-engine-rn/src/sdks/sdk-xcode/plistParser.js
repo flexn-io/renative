@@ -35,7 +35,8 @@ export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) =>
         const expProvProfile = exportOptions.provisioningProfiles[id];
         if (!expProvProfile) {
             logError(
-                `Your exportOptions.provisionProfiles object in ${c.paths.appConfig.config} does not include id ${id}!`
+                `Your exportOptions.provisioningProfiles object in ${
+                    c.paths.appConfig.config} does not include id ${id}!`
             );
         }
     }

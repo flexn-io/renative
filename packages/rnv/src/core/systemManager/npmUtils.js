@@ -9,7 +9,7 @@ import { doResolve } from './resolve';
 
 import { inquirerPrompt } from '../../cli/prompt';
 
-export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
+export const checkAndCreateProjectPackage = async (c) => {
     logTask('checkAndCreateProjectPackage');
 
     if (!fsExistsSync(c.paths.project.package)) {
@@ -20,8 +20,10 @@ export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
         const packageName = c.files.project.config.projectName
                 || c.paths.project.dir.split('/').pop();
         const version = c.files.project.config.defaults?.package?.version || '0.1.0';
-        const templateName = c.files.project.config.defaults?.template
-                || 'renative-template-hello-world';
+        const templateName = c.files.project.config?.currentTemplate;
+        if (!templateName) {
+            logWarning('You are missing currentTemplate in your renative.json');
+        }
         const rnvVersion = c.files.rnv.package.version;
 
         const pkgJson = {};
@@ -33,15 +35,15 @@ export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
         pkgJson.devDependencies = {
             rnv: rnvVersion
         };
-        pkgJson.devDependencies[templateName] = rnvVersion;
+        pkgJson.devDependencies[templateName] = c.files.project.config?.templates[templateName]?.version;
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
         fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);
     }
 
     loadFile(c.files.project, c.paths.project, 'package');
 
-    resolve();
-});
+    return true;
+};
 
 export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
@@ -154,7 +156,11 @@ export const installPackageDependencies = async (c, failOnError = false) => {
     const yarnLockPath = path.join(c.paths.project.dir, 'yarn.lock');
     const npmLockPath = path.join(c.paths.project.dir, 'package-lock.json');
     let command = 'npm install';
-    if (fsExistsSync(yarnLockPath)) {
+    if (c.program.packageManager === 'yarn') {
+        command = 'yarn';
+    } else if (c.program.packageManager === 'npm') {
+        command = 'npm';
+    } else if (fsExistsSync(yarnLockPath)) {
         command = 'yarn';
     } else if (fsExistsSync(npmLockPath)) {
         command = 'npm install';
