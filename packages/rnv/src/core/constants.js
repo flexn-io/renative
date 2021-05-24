@@ -431,7 +431,11 @@ export const PARAM_KEYS = {
         value: 'value',
         isRequired: true,
         options: ['yarn', 'npm'],
-        description: 'Set specific package manager to use'
+        description: 'Set specific package manager to use',
+        examples: [
+            '--packageManager yarn',
+            '--packageManager npm'
+        ]
     }
 };
 
