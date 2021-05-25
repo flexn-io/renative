@@ -319,6 +319,10 @@ export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'de
 
 export const getAppVersion = (c, platform) => {
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
+    if (!version) {
+        logWarning('You are missing version prop in your config. will default to 0');
+        return '0';
+    }
     const versionFormat = getConfigProp(c, platform, 'versionFormat');
     if (!versionFormat) return version;
     const versionCodeArr = versionFormat.split('.');
@@ -350,10 +354,16 @@ export const getAppVersionCode = (c, platform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
     if (versionCode) return versionCode;
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
+    if (!version) {
+        logWarning('You are missing version prop in your config. will default to 0');
+        return '0';
+    }
     const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat', '00.00.00');
     const vFormatArr = versionCodeFormat.split('.').map(v => v.length);
     const versionCodeMaxCount = vFormatArr.length;
     const verArr = [];
+
+
     version.split('.').map(v => v.split('-').map(v2 => v2.split('+').forEach((v3) => {
         const asNumber = Number(v3);
         if (!Number.isNaN(asNumber)) {
