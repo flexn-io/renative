@@ -11,10 +11,11 @@ const {
     addSystemInjects
 } = Common;
 const { logTask, logWarning } = Logger;
-const { parsePlugins, overrideFileContents } = PluginManager;
+const { parsePlugins, sanitizePluginPath, overrideFileContents, includesPluginPath } = PluginManager;
 const { doResolve, doResolvePath } = Resolver;
 const { executeAsync } = Exec;
 const { writeCleanFile } = FileUtils;
+
 
 export const parsePodFile = async (c, platform) => {
     logTask('parsePodFile');
@@ -177,11 +178,18 @@ const REACT_CORE_OVERRIDES = {
     's.dependency "React"': 's.dependency "React-Core"'
 };
 
-const _injectPod = (podName, pluginPlat, plugin, key) => {
+const _injectPod = (_podName, pluginPlat, plugin, _key) => {
+    const key = plugin.packageName || _key;
+    const podName = _podName;
     let pluginInject = '';
+    let podPath;
     const isNpm = plugin['no-npm'] !== true;
     if (isNpm) {
-        const podPath = doResolvePath(pluginPlat.path ?? key);
+        if (includesPluginPath(pluginPlat.path)) {
+            podPath = sanitizePluginPath(pluginPlat.path, key);
+        } else {
+            podPath = doResolvePath(pluginPlat.path ?? key);
+        }
         pluginInject += `  pod '${podName}', :path => '${podPath}'\n`;
         const podspecPath = `${podPath}/${podName}.podspec`;
         // Xcode 12 Migration
@@ -196,7 +204,7 @@ const _injectPod = (podName, pluginPlat, plugin, key) => {
     } else if (pluginPlat.version) {
         pluginInject += `  pod '${podName}', '${pluginPlat.version}'\n`;
     } else {
-        pluginInject += `  pod '${podName}'\n`;
+        pluginInject += `  pod '${sanitizePluginPath(podName, key)}'\n`;
     }
 
     return pluginInject;

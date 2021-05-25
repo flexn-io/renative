@@ -771,6 +771,25 @@ export const copyTemplatePluginsSync = (c) => {
     });
 };
 
+export const sanitizePluginPath = (str, name, mandatory, options) => {
+    let newStr = str;
+    try {
+        if (str?.replace) {
+            newStr = str.replace('{{PLUGIN_ROOT}}', doResolve(name, mandatory, options));
+        }
+    } catch (e) {
+    // Ignore
+    }
+    return newStr;
+};
+
+export const includesPluginPath = (str) => {
+    if (str?.includes) {
+        return str.includes('{{PLUGIN_ROOT}}');
+    }
+    return false;
+};
+
 export const getLocalRenativePlugin = () => ({
     version: 'file:../packages/renative',
     webpack: {
