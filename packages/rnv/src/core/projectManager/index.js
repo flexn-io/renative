@@ -49,8 +49,6 @@ export const checkAndBootstrapIfRequired = async (c) => {
             ...templateObj
         };
 
-        writeFileSync(c.paths.project.config, config);
-
         if (config.templateConfig.packageTemplate) {
             const pkgJson = {};
             pkgJson.dependencies = {
@@ -64,8 +62,16 @@ export const checkAndBootstrapIfRequired = async (c) => {
             writeFileSync(c.paths.project.package, pkgJson);
         }
 
-
         delete config.templateConfig;
+        writeFileSync(c.paths.project.config, config);
+
+        const appConfigsPath = path.join(templatePath, 'appConfigs');
+        if (fsExistsSync(appConfigsPath)) {
+            copyFolderContentsRecursiveSync(
+                appConfigsPath,
+                path.join(c.paths.project.appConfigsDir)
+            );
+        }
 
         await parseRenativeConfigs(c);
 
