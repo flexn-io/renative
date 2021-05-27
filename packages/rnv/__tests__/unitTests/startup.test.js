@@ -45,7 +45,7 @@ describe('Bootstrapping the CLI', () => {
         expect(cKeys).toEqual(expectKeys);
     });
 
-    it('should return app version', () => {
-        expect(() => getAppVersionCode(c, 'android')).toThrow();
+    it('should return app version 0 if not defined', () => {
+        expect(getAppVersionCode(c, 'android')).toEqual('0');
     });
 });
