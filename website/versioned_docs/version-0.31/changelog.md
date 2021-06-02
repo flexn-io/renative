@@ -6,6 +6,21 @@ original_id: changelog
 ---
 
 
+## v0.32.0-alpha.45 (2021-6-2)
+
+### Fixed
+
+- optimise project bootstrap
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.44 (2021-5-27)
 
 ### Fixed
