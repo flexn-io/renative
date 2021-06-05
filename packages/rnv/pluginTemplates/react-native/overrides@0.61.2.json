@@ -2,6 +2,12 @@
   "overrides": {
     "Libraries/Image/RCTUIImageViewAnimated.m": {
       "_currentFrame.CGImage;": "_currentFrame.CGImage ;} else { [super displayLayer:layer];"
+    },
+    "React/CxxBridge/RCTCxxBridge.mm": {
+      "_initializeModules:(NSArray<id<RCTBridgeModule>> *)modules": "_initializeModules:(NSArray<Class> *)modules"
+    },
+    "ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm": {
+      "RCTBridgeModuleNameForClass(module))": "RCTBridgeModuleNameForClass(Class(module)))"
     }
   }
 }
