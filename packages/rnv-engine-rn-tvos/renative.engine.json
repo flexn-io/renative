@@ -6,18 +6,17 @@
         "react": "source:rnv",
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
-        "react-native": "source:rnv",
+        "react-native": "npm:react-native-tvos@latest",
         "react-native-web": "source:rnv",
         "@react-native-community/cli-platform-ios": "source:rnv",
         "@react-native-community/cli": "source:rnv"
     },
     "npm": {
-        "devDependencies": {
-
-        }
+        "devDependencies": {}
     },
     "platforms": {
         "tvos": {
+            "engine": "engine-rn-tvos",
             "npm": {
                 "devDependencies": {
                     "xcode": "2.1.0"
