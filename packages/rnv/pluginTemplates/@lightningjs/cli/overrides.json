@@ -2,6 +2,9 @@
   "overrides": {
     "src/actions/serve.js": {
       "'./build',": "process.env.LNG_BUILD_FOLDER,"
+    },
+    "src/configs/rollup.es6.config.js": {
+      "resolve({ mainFields: ['module', 'main', 'browser'] }),": "resolve({ mainFields: ['module', 'main', 'browser'], extensions: process.env.RNV_EXTENSIONS.split(',').map(extension => `.${extension}`) }),"
     }
   }
 }
