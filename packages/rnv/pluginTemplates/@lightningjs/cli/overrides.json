@@ -1,0 +1,8 @@
+{
+  "overrides": {
+    "src/actions/serve.js": {
+      "'./build',": "process.env.LNG_BUILD_FOLDER,"
+    }
+  }
+}
+
