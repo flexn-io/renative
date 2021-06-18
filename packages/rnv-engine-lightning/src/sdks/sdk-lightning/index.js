@@ -9,7 +9,15 @@ const { generateEnvVars } = EngineManager;
 export const runLightningProject = async (c, target) => {
     logTask('runLightningProject', `target:${target}`);
 
-    await executeAsync(c, 'lng dev', { stdio: 'inherit', silent: false, env: { LNG_BUILD_FOLDER: getPlatformBuildDir(c, true), ...generateEnvVars(c) } });
+    await executeAsync(c, 'lng dev', {
+        stdio: 'inherit',
+        silent: false,
+        env: {
+            LNG_BUILD_FOLDER: getPlatformBuildDir(c, true),
+            LNG_SERVE_PORT: c.runtime.currentPlatform?.defaultPort,
+            ...generateEnvVars(c)
+        }
+    });
     return true;
 };
 
