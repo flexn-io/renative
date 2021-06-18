@@ -1,12 +1,12 @@
 /* eslint-disable import/no-dynamic-require, global-require */
 import path from 'path';
-import { IS_LINKED, RNV_HOME_DIR } from '../constants';
-import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
 import { getConfigProp } from '../common';
+import { IS_LINKED, RNV_HOME_DIR } from '../constants';
+import { fsExistsSync, writeFileSync } from '../systemManager/fileutils';
+import { chalk, logDebug, logInfo, logTask, logWarning } from '../systemManager/logger';
+import { checkAndCreateProjectPackage, installPackageDependencies } from '../systemManager/npmUtils';
 import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
-import { fsExistsSync, writeFileSync } from '../systemManager/fileutils';
-import { installPackageDependencies, checkAndCreateProjectPackage } from '../systemManager/npmUtils';
 
 const ENGINE_CORE = 'engine-core';
 
