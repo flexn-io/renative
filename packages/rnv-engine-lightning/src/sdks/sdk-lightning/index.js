@@ -13,10 +13,17 @@ export const runLightningProject = async (c, target) => {
     return true;
 };
 
-export const buildLightningProject = async () => {
+export const buildLightningProject = async (c) => {
     logTask('buildLightningProject');
 
-
+    await executeAsync(c, 'lng dist', {
+        stdio: 'inherit',
+        silent: false,
+        env: {
+            LNG_DIST_FOLDER: getPlatformBuildDir(c, true),
+            ...generateEnvVars(c),
+        }
+    });
     return true;
 };
 

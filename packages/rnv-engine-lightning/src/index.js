@@ -1,7 +1,7 @@
 import { Config, EngineManager } from 'rnv';
 import CNF from '../renative.engine.json';
 // import taskRnvPackage from './tasks/task.rnv.package';
-// import taskRnvBuild from './tasks/task.rnv.build';
+import taskRnvBuild from './tasks/task.rnv.build';
 import taskRnvConfigure from './tasks/task.rnv.configure';
 import taskRnvRun from './tasks/task.rnv.run';
 // import taskRnvStart from './tasks/task.rnv.start';
@@ -17,7 +17,7 @@ export default {
     tasks: generateEngineTasks([
         taskRnvRun,
         // taskRnvPackage,
-        // taskRnvBuild,
+        taskRnvBuild,
         taskRnvConfigure,
         // taskRnvStart,
         // taskRnvExport,
