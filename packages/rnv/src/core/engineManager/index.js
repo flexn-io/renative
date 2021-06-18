@@ -185,7 +185,8 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
             '@rnv/engine-rn': 'source:rnv',
             '@rnv/engine-rn-web': 'source:rnv',
             '@rnv/engine-rn-next': 'source:rnv',
-            '@rnv/engine-rn-electron': 'source:rnv'
+            '@rnv/engine-rn-electron': 'source:rnv',
+            '@rnv/engine-lightning': 'source:rnv'
         };
         // TODO: use parseRenativeConfigs instead
         c.buildConfig.engines = c.files.project.config.engines;
