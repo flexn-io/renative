@@ -24,10 +24,12 @@ export const runLightningProject = async (c, target) => {
 };
 
 export const buildLightningProject = async (c) => {
+    const { platform } = c;
     logTask('buildLightningProject');
     const entryFile = getConfigProp(c, c.platform, 'entryFile');
+    const target = getConfigProp(c, platform, 'target', 'es6');
 
-    await executeAsync(c, 'lng dist', {
+    await executeAsync(c, `lng dist --${target}`, {
         stdio: 'inherit',
         silent: false,
         env: {
