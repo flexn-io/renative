@@ -56,7 +56,7 @@
         "react": "16.13.1",
         "react-art": "16.13.1",
         "react-dom": "16.13.1",
-        "react-native": "npm:react-native-tvos@latest",
+        "react-native": "0.63.4",
         "react-native-gesture-handler": "1.4.1",
         "react-native-google-cast": "github:hosek/react-native-google-cast#sdk4.4.5",
         "react-native-reanimated": "1.0.0-alpha.12",

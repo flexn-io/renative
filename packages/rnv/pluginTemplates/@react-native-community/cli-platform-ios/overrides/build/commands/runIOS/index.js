@@ -400,7 +400,7 @@ const _default = {
         cmd: 'react-native run-ios --simulator "Apple TV"  --scheme "helloworld-tvOS"'
     }],
     options: [{
-        name: '--simulator [string]',
+        name: '--simulator "[string]"',
         description: 'Explicitly set simulator to use. Optionally include iOS version between' + 'parenthesis at the end to match an exact version: "iPhone 6 (10.0)"',
         default: 'iPhone 11'
     }, {
