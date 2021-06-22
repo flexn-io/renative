@@ -1,7 +1,7 @@
 {
     "id": "engine-rn-tvos",
     "engineExtension": "rnt",
-    "overview": "Default react-native based engine. Runs standard react native apps with native support",
+    "overview": "React native based engine with added support for tvOS platform. Runs standard react native apps with native support",
     "plugins": {
         "react": "source:rnv",
         "react-art": "source:rnv",

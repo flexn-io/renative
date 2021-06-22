@@ -1,4 +1,8 @@
-import { TaskManager, Constants, Logger, PlatformManager, NPMUtils, TemplateManager } from 'rnv';
+import {
+    Constants, Logger, PlatformManager, TaskManager,
+    //  NPMUtils,
+    TemplateManager
+} from 'rnv';
 import { configureMetroConfigs } from '../commonEngine';
 import { SDKXcode } from '../sdks';
 

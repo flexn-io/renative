@@ -1,14 +1,17 @@
-import { TaskManager, Constants, Logger, PlatformManager, Common } from 'rnv';
+import { Common, Constants, Logger, PlatformManager, TaskManager } from 'rnv';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
-import { SDKAndroid, SDKXcode } from '../sdks';
+import {
+    // SDKAndroid,
+    SDKXcode
+} from '../sdks';
 
 const {
     IOS,
     TVOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
+    // ANDROID,
+    // ANDROID_TV,
+    // FIRE_TV,
+    // ANDROID_WEAR,
     TASK_RUN,
     TASK_CONFIGURE,
     PARAMS
