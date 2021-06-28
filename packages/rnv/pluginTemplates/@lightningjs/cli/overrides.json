@@ -3,6 +3,10 @@
     "src/actions/serve.js": {
       "'./build',": "process.env.LNG_BUILD_FOLDER,"
     },
+    "src/actions/dist.js": {
+      "distDir = path.join(baseDistDir, type)": "distDir = path.join(baseDistDir, 'project')",
+      "if (!fs.existsSync(distDir)) {": "if (true) { // need this to always run, since this dir is created by rnv"
+    },
     "src/helpers/build.js": {
       "path.join(process.cwd(), 'src/index.js'),": "path.join(process.cwd(), process.env.LNG_ENTRY_FILE),"
     },
