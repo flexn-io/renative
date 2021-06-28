@@ -3,16 +3,18 @@ import path from 'path';
 import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, ProjectManager, SDKManager } from 'rnv';
 import semver from 'semver';
 
-const { TIZEN } = Constants;
+const { TIZEN, CLI_TIZEN, CLI_WEBOS_ARES_PACKAGE } = Constants;
 const { isPlatformActive } = PlatformManager;
-const { logTask } = Logger;
-const { executeAsync } = Exec;
+const { chalk, logTask, logSuccess } = Logger;
+const { executeAsync, execCLI } = Exec;
 const {
     getPlatformBuildDir, getConfigProp, addSystemInjects, getAppVersion, getPlatformProjectDir, getAppTitle, getAppId, getAppDescription
 } = Common;
 const { generateEnvVars } = EngineManager;
 const { copyAssetsFolder, copyBuildsFolder } = ProjectManager;
 const { writeCleanFile } = FileUtils;
+
+const { DEFAULT_SECURITY_PROFILE_NAME } = SDKManager.Tizen;
 
 export const runLightningProject = async (c, target) => {
     logTask('runLightningProject', `target:${target}`);
@@ -32,10 +34,17 @@ export const runLightningProject = async (c, target) => {
 };
 
 export const buildLightningProject = async (c) => {
-    const { platform } = c;
     logTask('buildLightningProject');
+
+    const { platform } = c;
+    const platformConfig = c.buildConfig.platforms[platform];
+
     const entryFile = getConfigProp(c, c.platform, 'entryFile');
     const target = getConfigProp(c, platform, 'target', 'es6');
+    const tBuild = getPlatformProjectDir(c);
+
+    const tOut = path.join(tBuild, 'output');
+    const certProfile = platformConfig.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
     await executeAsync(c, `lng dist --${target}`, {
         stdio: 'inherit',
@@ -46,6 +55,25 @@ export const buildLightningProject = async (c) => {
             ...generateEnvVars(c),
         }
     });
+
+    if (platform === TIZEN) {
+        await execCLI(
+            c,
+            CLI_TIZEN,
+            `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`
+        );
+
+        logSuccess(
+            `Your WGT package is located in ${chalk().cyan(tOut)} .`
+        );
+    } else {
+        await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tBuild} -n`);
+
+        logSuccess(
+            `Your IPK package is located in ${chalk().cyan(tOut)} .`
+        );
+    }
+
     return true;
 };
 
