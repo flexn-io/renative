@@ -14,22 +14,36 @@ const { generateEnvVars } = EngineManager;
 const { copyAssetsFolder, copyBuildsFolder } = ProjectManager;
 const { writeCleanFile } = FileUtils;
 
-const { DEFAULT_SECURITY_PROFILE_NAME } = SDKManager.Tizen;
+const { runTizenSimOrDevice, DEFAULT_SECURITY_PROFILE_NAME } = SDKManager.Tizen;
+const { runWebosSimOrDevice } = SDKManager.Webos;
 
 export const runLightningProject = async (c, target) => {
     logTask('runLightningProject', `target:${target}`);
     const entryFile = getConfigProp(c, c.platform, 'entryFile');
+    const { platform } = c;
+    const { hosted } = c.program;
+    const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
 
-    await executeAsync(c, 'lng dev', {
-        stdio: 'inherit',
-        silent: false,
-        env: {
-            LNG_BUILD_FOLDER: getPlatformBuildDir(c, true),
-            LNG_ENTRY_FILE: entryFile,
-            LNG_SERVE_PORT: c.runtime.currentPlatform?.defaultPort,
-            ...generateEnvVars(c)
+    if (isHosted) {
+        await executeAsync(c, 'lng dev', {
+            stdio: 'inherit',
+            silent: false,
+            env: {
+                LNG_BUILD_FOLDER: getPlatformBuildDir(c, true),
+                LNG_ENTRY_FILE: entryFile,
+                LNG_SERVE_PORT: c.runtime.currentPlatform?.defaultPort,
+                ...generateEnvVars(c)
+            }
+        });
+    } else {
+        await buildLightningProject(c);
+        if (platform === TIZEN) {
+            await runTizenSimOrDevice(c);
+        } else {
+            await runWebosSimOrDevice(c);
         }
-    });
+    }
+
     return true;
 };
 
