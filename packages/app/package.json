@@ -150,7 +150,8 @@
     },
     "workspaces": {
         "nohoist": [
-            "@lightningjs/sdk"
+            "@lightningjs/sdk",
+            "@lightningjs/cli"
         ]
     }
 }
