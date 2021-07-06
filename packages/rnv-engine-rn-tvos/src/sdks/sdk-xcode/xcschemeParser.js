@@ -10,25 +10,9 @@ const {
 } = Common;
 const { logTask } = Logger;
 const { writeCleanFile } = FileUtils;
-// const xml2js = require('xml2js');
-// const parser = new xml2js.Parser();
 
 export const parseXcscheme = async (c, platform) => {
     logTask('parseXcscheme');
-    // XCSCHEME
-    // const allowProvisioningUpdates = getConfigProp(
-    //     c,
-    //     platform,
-    //     'allowProvisioningUpdates',
-    //     true
-    // );
-    // const provisioningStyle = getConfigProp(
-    //     c,
-    //     platform,
-    //     'provisioningStyle',
-    //     'Automatic'
-    // );
-    // const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
     // Since RN 61+ this must be set to true otherwise debug apps install but not launch
     const poisxSpawn = true;
     const appFolder = getAppFolder(c);
@@ -69,6 +53,4 @@ export const parseXcscheme = async (c, platform) => {
         path.join(appFolder, schemePath),
         injects, null, c
     );
-
-    // const parseObj = await parser.parseStringPromise(path.join(appFolder, schemePath));
 };

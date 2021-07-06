@@ -6,12 +6,7 @@ import {
 } from '../sdks';
 
 const {
-    IOS,
     TVOS,
-    // ANDROID,
-    // ANDROID_TV,
-    // FIRE_TV,
-    // ANDROID_WEAR,
     TASK_RUN,
     TASK_CONFIGURE,
     PARAMS
@@ -37,7 +32,6 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     switch (platform) {
-        case IOS:
         case TVOS:
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
@@ -68,10 +62,7 @@ const Task = {
         before: TASK_CONFIGURE
     },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [
-        TVOS,
-        IOS,
-    ],
+    platforms: [TVOS],
 };
 
 export default Task;

@@ -1,5 +1,5 @@
 import path from 'path';
-import { Resolver, Logger, Constants, Common, PluginManager, Prompt, FileUtils } from 'rnv';
+import { Resolver, Logger, Common, PluginManager, Prompt, FileUtils } from 'rnv';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
 
@@ -13,7 +13,6 @@ const { fsExistsSync, writeFileSync, fsWriteFileSync } = FileUtils;
 const { doResolve } = Resolver;
 const { chalk, logTask, logWarning } = Logger;
 const { inquirerPrompt } = Prompt;
-const { IOS, TVOS } = Constants;
 const { parsePlugins } = PluginManager;
 
 
@@ -148,17 +147,10 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
         xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
-        if (platform === IOS) {
-            xcodeProj.updateBuildProperty(
-                'IPHONEOS_DEPLOYMENT_TARGET',
-                deploymentTarget
-            );
-        } else if (platform === TVOS) {
-            xcodeProj.updateBuildProperty(
-                'TVOS_DEPLOYMENT_TARGET',
-                deploymentTarget
-            );
-        }
+        xcodeProj.updateBuildProperty(
+            'TVOS_DEPLOYMENT_TARGET',
+            deploymentTarget
+        );
 
         if (provisionProfileSpecifier) {
             xcodeProj.updateBuildProperty(
@@ -202,26 +194,12 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
             `"${codeSignIdentity}"`
         );
 
-        // if (codeSignIdentity) {
-        //     const bc = xcodeProj.pbxXCBuildConfigurationSection();
-        //     const cs1 = 'CODE_SIGN_IDENTITY';
-        //     const cs2 = '"CODE_SIGN_IDENTITY[sdk=iphoneos*]"';
-        //     for (const configName in bc) {
-        //         const config = bc[configName];
-        //         if ((runScheme && config.name === runScheme) || (!runScheme)) {
-        //             if (config.buildSettings?.[cs1]) config.buildSettings[cs1] = `"${codeSignIdentity}"`;
-        //             if (config.buildSettings?.[cs2]) config.buildSettings[cs2] = `"${codeSignIdentity}"`;
-        //         }
-        //     }
-        // }
-
         if (systemCapabilities) {
             const sysCapObj = {};
             Object.keys(systemCapabilities).forEach((sk) => {
                 const val = systemCapabilities[sk];
                 sysCapObj[sk] = { enabled: val === true ? 1 : 0 };
             });
-            // const var1 = xcodeProj.getFirstProject().firstProject.attributes.TargetAttributes['200132EF1F6BF9CF00450340'];
             xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
         }
 
@@ -263,7 +241,6 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
                 }
                 if (xcodeprojObj.sourceFiles) {
                     xcodeprojObj.sourceFiles.forEach((v) => {
-                        // const group = xcodeProj.hash.project.objects.PBXGroup['200132F21F6BF9CF00450340'];
                         xcodeProj.addSourceFile(
                             v,
                             null,

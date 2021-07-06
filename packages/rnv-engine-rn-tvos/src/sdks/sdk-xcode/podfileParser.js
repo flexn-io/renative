@@ -150,7 +150,7 @@ export const parsePodFile = async (c, platform) => {
         },
         {
             pattern: '{{PATH_REACT_NATIVE}}',
-            override: doResolve('react-native')
+            override: doResolve('react-native-tvos')
         },
         {
             pattern: '{{PLUGIN_STATIC_POD_DEFINITION}}',

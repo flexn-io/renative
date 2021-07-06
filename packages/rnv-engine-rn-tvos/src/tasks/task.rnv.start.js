@@ -10,10 +10,6 @@ const { chalk, logTask, logError, logRaw, logInfo } = Logger;
 const {
     IOS,
     TVOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
     TASK_START,
     TASK_CONFIGURE_SOFT,
     PARAMS
@@ -23,12 +19,7 @@ const { executeAsync } = Exec;
 
 const BUNDLER_PLATFORMS = {};
 
-BUNDLER_PLATFORMS[IOS] = IOS;
 BUNDLER_PLATFORMS[TVOS] = IOS;
-BUNDLER_PLATFORMS[ANDROID] = ANDROID;
-BUNDLER_PLATFORMS[ANDROID_TV] = ANDROID;
-BUNDLER_PLATFORMS[FIRE_TV] = ANDROID;
-BUNDLER_PLATFORMS[ANDROID_WEAR] = ANDROID;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -51,14 +42,9 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_START, originTask)) return true;
 
     switch (platform) {
-        case IOS:
-        case TVOS:
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR: {
+        case TVOS: {
             let startCmd = `node ${doResolve(
-                'react-native'
+                'react-native-tvos'
             )}/local-cli/cli.js start --port ${
                 c.runtime.port
             } --config=metro.config.js`;
@@ -70,7 +56,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
             }
             if (c.program.resetHard || c.program.reset) {
                 logInfo(
-                    `You passed ${chalk().white('-r')} argument. --reset-cache will be applied to react-native`
+                    `You passed ${chalk().white('-r')} argument. --reset-cache will be applied to react-native-tvos`
                 );
             }
             // logSummary('BUNDLER STARTED');
@@ -108,12 +94,5 @@ export default {
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        IOS,
-        TVOS,
-        ANDROID,
-        ANDROID_TV,
-        FIRE_TV,
-        ANDROID_WEAR,
-    ],
+    platforms: [TVOS],
 };

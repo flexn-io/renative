@@ -9,12 +9,7 @@ import { SDKXcode } from '../sdks';
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
-    IOS,
     TVOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
     TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
     PARAMS
@@ -38,7 +33,6 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
     }
 
     switch (c.platform) {
-        case IOS:
         case TVOS:
             await configureXcodeProject(c);
             return true;
@@ -53,12 +47,5 @@ export default {
     fn: taskRnvConfigure,
     task: 'configure',
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        IOS,
-        TVOS,
-        ANDROID,
-        ANDROID_TV,
-        FIRE_TV,
-        ANDROID_WEAR,
-    ],
+    platforms: [TVOS],
 };

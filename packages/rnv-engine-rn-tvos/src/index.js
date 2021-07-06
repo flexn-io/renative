@@ -4,6 +4,8 @@ import taskRnvConfigure from './tasks/task.rnv.configure';
 import taskRnvStart from './tasks/task.rnv.start';
 import CNF from '../renative.engine.json';
 
+export { withRNV, createEngineAlias } from './adapter';
+
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
 export default {
@@ -20,13 +22,7 @@ export default {
         tvos: {
             defaultPort: 8089,
             extenstions: generateEngineExtensions([
-                'tvos.tv', 'tv', 'tvos', 'ios', 'tv.native', 'native'
-            ], CNF)
-        },
-        ios: {
-            defaultPort: 8082,
-            extenstions: generateEngineExtensions([
-                'ios.mobile', 'mobile', 'ios', 'mobile.native', 'native'
+                'tvos.tv', 'tv', 'tvos', 'tv.native', 'native'
             ], CNF)
         },
     }

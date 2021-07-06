@@ -19,6 +19,9 @@
                 "path": "react-native"
             }
         },
+        "react-native-tvos": {
+            "version": "npm:react-native-tvos@latest"
+        },
         "renative": {
             "version": "0.32.0-alpha.43",
             "webpack": {

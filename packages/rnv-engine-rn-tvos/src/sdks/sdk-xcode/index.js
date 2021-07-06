@@ -1,18 +1,19 @@
-import child_process from 'child_process';
-import crypto from 'crypto';
-import inquirer from 'inquirer';
 import path from 'path';
-import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver, SDKManager } from 'rnv';
-import { getAppFolderName } from './common';
+import child_process from 'child_process';
+import inquirer from 'inquirer';
+import crypto from 'crypto';
+import { Exec, Logger, Constants, Common, FileUtils, EngineManager, Resolver, PlatformManager, ProjectManager, SDKManager } from 'rnv';
 import { registerDevice } from './fastlane';
+import { getAppFolderName } from './common';
 import {
-    parseEntitlementsPlist, parseExportOptionsPlist,
-    parseInfoPlist
+    parseExportOptionsPlist,
+    parseInfoPlist,
+    parseEntitlementsPlist
 } from './plistParser';
-import { parsePodFile } from './podfileParser';
-import { parseAppDelegate } from './swiftParser';
-import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
+import { parsePodFile } from './podfileParser';
+import { parseXcodeProject } from './xcodeParser';
+import { parseAppDelegate } from './swiftParser';
 
 const { getAppleDevices } = SDKManager.Apple;
 
@@ -249,7 +250,6 @@ export const runXcodeProject = async (c) => {
                 type: 'list',
                 choices: devices
             });
-
             if (sim) {
                 return run(sim);
             }
@@ -275,9 +275,9 @@ export const runXcodeProject = async (c) => {
             choices: devices
         });
         c.runtime.target = sim.name;
-        p = `--simulator "${c.runtime.target.replace(/(\s+)/g, '$1')}"`;
+        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     } else {
-        p = `--simulator "${c.runtime.target.replace(/(\s+)/g, '$1')}"`;
+        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     }
 
     if (p) {
@@ -291,8 +291,11 @@ export const runXcodeProject = async (c) => {
 
         if (bundleAssets) {
             return packageBundleForXcode(c, bundleIsDev)
-                .then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
+                .then(() => {
+                    _checkLockAndExec(c, appPath, scheme, runScheme, p);
+                });
         }
+
         return _checkLockAndExec(c, appPath, scheme, runScheme, p);
     }
     return Promise.reject('Missing options for react-native command!');
@@ -300,9 +303,7 @@ export const runXcodeProject = async (c) => {
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
-    const cmd = `node ${doResolve(
-        'react-native'
-    )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+    const cmd = `node ${doResolve('react-native-tvos')}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
@@ -739,7 +740,7 @@ export const packageBundleForXcode = (c, isDev = false) => {
     }
 
     return executeAsync(c, `node ${doResolve(
-        'react-native'
+        'react-native-tvos'
     )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
 };
 

@@ -1,12 +1,13 @@
 {
     "id": "engine-rn-tvos",
-    "engineExtension": "rnt",
+    "engineExtension": "rntvos",
     "overview": "React native based engine with added support for tvOS platform. Runs standard react native apps with native support",
     "plugins": {
         "react": "source:rnv",
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
-        "react-native": "npm:react-native-tvos@latest",
+        "react-native": "source:rnv",
+        "react-native-tvos": "source:rnv",
         "react-native-web": "source:rnv",
         "@react-native-community/cli-platform-ios": "source:rnv",
         "@react-native-community/cli": "source:rnv"
