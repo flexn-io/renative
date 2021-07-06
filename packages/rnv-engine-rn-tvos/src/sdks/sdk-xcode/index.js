@@ -40,7 +40,7 @@ const {
     parseFonts
 } = ProjectManager;
 
-const { IOS, TVOS, MACOS } = Constants;
+const { TVOS } = Constants;
 const {
     chalk,
     logInfo,
@@ -524,14 +524,6 @@ export const buildXcodeProject = async (c) => {
             }
             break;
         }
-        case IOS: {
-            if (c.program.device) {
-                destinationPlatform = 'iOS';
-            } else {
-                destinationPlatform = 'iOS Simulator';
-            }
-            break;
-        }
         default:
             logError(`platform ${c.platform} not supported`);
     }
@@ -604,9 +596,7 @@ const archiveXcodeProject = (c) => {
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
-        if (platform === IOS) sdk = 'iphoneos';
-        if (platform === TVOS) sdk = 'appletvos';
-        if (platform === MACOS) sdk = 'macosx';
+        sdk = 'appletvos';
     }
     const sdkArr = [sdk];
 

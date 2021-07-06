@@ -39,7 +39,7 @@ const {
     parseFonts
 } = ProjectManager;
 
-const { IOS, TVOS, MACOS } = Constants;
+const { IOS, MACOS } = Constants;
 const {
     chalk,
     logInfo,
@@ -275,9 +275,9 @@ export const runXcodeProject = async (c) => {
             choices: devices
         });
         c.runtime.target = sim.name;
-        p = `--simulator "${c.runtime.target.replace(/(\s+)/g, '$1')}"`;
+        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     } else {
-        p = `--simulator "${c.runtime.target.replace(/(\s+)/g, '$1')}"`;
+        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     }
 
     if (p) {
@@ -515,14 +515,6 @@ export const buildXcodeProject = async (c) => {
 
     let destinationPlatform = '';
     switch (c.platform) {
-        case TVOS: {
-            if (c.program.device) {
-                destinationPlatform = 'tvOS';
-            } else {
-                destinationPlatform = 'tvOS Simulator';
-            }
-            break;
-        }
         case IOS: {
             if (c.program.device) {
                 destinationPlatform = 'iOS';
@@ -604,7 +596,6 @@ const archiveXcodeProject = (c) => {
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
         if (platform === IOS) sdk = 'iphoneos';
-        if (platform === TVOS) sdk = 'appletvos';
         if (platform === MACOS) sdk = 'macosx';
     }
     const sdkArr = [sdk];
@@ -881,7 +872,7 @@ const configureXcodeProject = async (c) => {
         );
     }
 
-    await copyAssetsFolder(c, platform, platform === TVOS ? 'RNVAppTVOS' : 'RNVApp');
+    await copyAssetsFolder(c, platform, 'RNVApp');
     await copyAppleAssets(c, platform, appFolderName);
     await parseAppDelegate(
         c,
