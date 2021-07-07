@@ -1,5 +1,3 @@
-
-
 const SENSITIVE = '> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!\n\n';
 
 // ==================================================
@@ -10,13 +8,14 @@ const propExt = {
     ext: {
         additionalProperties: true,
         type: 'object',
-        description: 'Object ysed to extend your renative with custom props. This allows renative json schema to be validated',
+        description:
+      'Object ysed to extend your renative with custom props. This allows renative json schema to be validated',
         examples: [
             {
-                myCustomRenativeProp: 'foo'
-            }
-        ]
-    }
+                myCustomRenativeProp: 'foo',
+            },
+        ],
+    },
 };
 
 const propWebpackConfig = {
@@ -25,22 +24,23 @@ const propWebpackConfig = {
         type: 'object',
         properties: {
             devServerHost: {
-                type: 'string'
+                type: 'string',
             },
             metaTags: {
                 additionalProperties: true,
                 type: 'object',
             },
             customScripts: {
-                type: 'array'
+                type: 'array',
             },
             extend: {
                 additionalProperties: true,
                 type: 'object',
-                description: 'Allows you to directly extend/override webpack config of your current platform',
+                description:
+          'Allows you to directly extend/override webpack config of your current platform',
                 examples: [
                     {
-                        devtool: 'source-map'
+                        devtool: 'source-map',
                     },
                     {
                         module: {
@@ -48,32 +48,28 @@ const propWebpackConfig = {
                                 {
                                     test: /\.js$/,
                                     use: ['source-map-loader'],
-                                    enforce: 'pre'
-                                }
-                            ]
-                        }
-                    }
-                ]
-            }
-        }
+                                    enforce: 'pre',
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
     },
 };
-
 
 // ==================================================
 // ENGINE PROPS
 // ==================================================
 
-const engineRnConfig = {
-
-};
-
+const engineRnConfig = {};
 
 const engineRnWebConfig = {
     ...propWebpackConfig,
     devServerHost: {
-        type: 'string'
-    }
+        type: 'string',
+    },
 };
 
 const engineRnElectronConfig = {
@@ -81,26 +77,23 @@ const engineRnElectronConfig = {
     electronConfig: {
         additionalProperties: true,
         type: 'object',
-        description: 'Allows you to configure electron app as per https://www.electron.build/',
+        description:
+      'Allows you to configure electron app as per https://www.electron.build/',
         examples: [
             {
                 mac: {
-                    target: [
-                        'dmg',
-                        'mas',
-                        'mas-dev'
-                    ],
-                    hardenedRuntime: true
+                    target: ['dmg', 'mas', 'mas-dev'],
+                    hardenedRuntime: true,
                 },
                 dmg: {
-                    sign: false
+                    sign: false,
                 },
                 mas: {
                     type: 'distribution',
-                    hardenedRuntime: false
-                }
-            }
-        ]
+                    hardenedRuntime: false,
+                },
+            },
+        ],
     },
     BrowserWindow: {
         type: 'object',
@@ -111,9 +104,9 @@ const engineRnElectronConfig = {
                 width: 1310,
                 height: 800,
                 webPreferences: {
-                    devTools: true
-                }
-            }
+                    devTools: true,
+                },
+            },
         ],
         properties: {
             width: {
@@ -130,12 +123,12 @@ const engineRnElectronConfig = {
                 description: 'Extra web preferences of electron app',
                 examples: [
                     {
-                        devTools: true
-                    }
-                ]
-            }
-        }
-    }
+                        devTools: true,
+                    },
+                ],
+            },
+        },
+    },
 };
 
 // ==================================================
@@ -146,12 +139,13 @@ const commonRuntimeProps = {
     runtime: {
         additionalProperties: true,
         type: 'object',
-        description: 'This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code',
+        description:
+      'This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code',
         examples: [
             {
-                someRuntimeProperty: 'foo'
-            }
-        ]
+                someRuntimeProperty: 'foo',
+            },
+        ],
     },
 };
 
@@ -160,25 +154,22 @@ const commonProps = {
     excludedPlugins: {
         type: 'array',
         items: { type: 'string' },
-        description: 'Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins',
-        examples: [
-            ['*'],
-            ['react-native-google-cast', 'react-navigation-tabs']
-        ]
+        description:
+      'Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins',
+        examples: [['*'], ['react-native-google-cast', 'react-navigation-tabs']],
     },
     includedPlugins: {
         type: 'array',
         items: { type: 'string' },
-        description: 'Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins',
-        examples: [
-            ['*'],
-            ['react-native-google-cast', 'react-navigation-tabs']
-        ]
+        description:
+      'Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins',
+        examples: [['*'], ['react-native-google-cast', 'react-navigation-tabs']],
     },
     includedPermissions: {
         type: 'array',
         items: { type: 'string' },
-        description: 'Allows you to include specific permissions by their KEY defined in `permissions` object',
+        description:
+      'Allows you to include specific permissions by their KEY defined in `permissions` object',
         examples: [
             ['*'],
             [
@@ -196,105 +187,94 @@ const commonProps = {
                 'ACCESS_WIFI_STATE',
                 'RECEIVE_BOOT_COMPLETED',
                 'WRITE_CONTACTS',
-                'READ_CONTACTS'
-            ]
-        ]
+                'READ_CONTACTS',
+            ],
+        ],
     },
     permissions: {
         description: '> DEPRECATED in favor of includedPermissions',
         type: 'array',
-        items: { type: 'string' }
+        items: { type: 'string' },
     },
     id: {
-        type: 'string'
+        type: 'string',
     },
     title: {
         type: 'string',
-        description: 'Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website',
-        examples: [
-            'Awesome App'
-        ]
+        description:
+      'Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website',
+        examples: ['Awesome App'],
     },
     description: {
         type: 'string',
-        description: 'General description of your app. This prop will be injected to actual projects where description field is applicable',
-        examples: [
-            'This app does awesome things'
-        ]
+        description:
+      'General description of your app. This prop will be injected to actual projects where description field is applicable',
+        examples: ['This app does awesome things'],
     },
     author: {
         additionalProperties: true,
-        type: ['object', 'string']
+        type: ['object', 'string'],
     },
     includedFonts: {
         type: 'array',
         items: { type: 'string' },
-        description: 'Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all',
-        examples: [
-            ['*'],
-            [
-                'TimeBurner',
-                'Entypo'
-            ]
-        ]
+        description:
+      'Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all',
+        examples: [['*'], ['TimeBurner', 'Entypo']],
     },
     backgroundColor: {
         type: 'string',
-        description: 'Defines root view backgroundColor for all platforms in HEX format',
-        examples: [
-            '#FFFFFF',
-            '#222222'
-        ]
+        description:
+      'Defines root view backgroundColor for all platforms in HEX format',
+        examples: ['#FFFFFF', '#222222'],
     },
     splashScreen: {
-        type: 'boolean'
+        type: 'boolean',
     },
     ignoreWarnings: {
-        type: 'boolean'
+        type: 'boolean',
     },
     ignoreLogs: {
-        type: 'boolean'
+        type: 'boolean',
     },
     license: {
-        type: 'string'
+        type: 'string',
     },
     timestampAssets: {
         type: 'boolean',
-        description: 'If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy',
-        examples: [
-            true,
-            false
-        ]
+        description:
+      'If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy',
+        examples: [true, false],
     },
     versionedAssets: {
         type: 'boolean',
-        description: 'If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy',
-        examples: [
-            true,
-            false
-        ]
+        description:
+      'If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy',
+        examples: [true, false],
     },
-    ...propExt
+    ...propExt,
 };
 
 const platformCommonProps = {
     ...commonProps,
     engine: {
-        type: 'string'
+        type: 'string',
     },
     entryFile: {
-        type: 'string'
+        type: 'string',
     },
     bundleAssets: {
         type: 'boolean',
-        description: 'If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds'
+        description:
+      'If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds',
     },
     enableSourceMaps: {
         type: 'boolean',
-        description: 'If set to `true` dedicated source map file will be generated alongside of compiled js bundle'
+        description:
+      'If set to `true` dedicated source map file will be generated alongside of compiled js bundle',
     },
     bundleIsDev: {
-        type: 'boolean'
+        type: 'boolean',
     },
     deploy: {
         additionalProperties: true,
@@ -302,23 +282,23 @@ const platformCommonProps = {
         properties: {
             type: {
                 type: 'string',
-            }
-        }
-    }
+            },
+        },
+    },
 };
 
 const commonIosProps = {
     Podfile: {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
     },
     xcodeproj: {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
     },
     plist: {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
     },
     appDelegateApplicationMethods: {
         type: 'object',
@@ -346,15 +326,15 @@ const commonIosProps = {
             },
             didRegisterForRemoteNotificationsWithDeviceToken: {
                 type: 'array',
-            }
-        }
+            },
+        },
     },
     appDelegateMethods: {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
     },
     appDelegateImports: {
-        type: 'array'
+        type: 'array',
     },
 };
 
@@ -362,7 +342,8 @@ const commonAndroidProps = {
     'gradle.properties': {
         additionalProperties: true,
         type: 'object',
-        description: 'Overrides values in `gradle.properties` file of generated android based project',
+        description:
+      'Overrides values in `gradle.properties` file of generated android based project',
         examples: [
             {
                 'gradle.properties': {
@@ -370,36 +351,36 @@ const commonAndroidProps = {
                     'debug.keystore': 'debug.keystore',
                     'org.gradle.daemon': true,
                     'org.gradle.parallel': true,
-                    'org.gradle.configureondemand': true
-                }
-            }
-        ]
+                    'org.gradle.configureondemand': true,
+                },
+            },
+        ],
     },
     'build.gradle': {
         additionalProperties: true,
         type: 'object',
-        description: 'Overrides values in `build.gradle` file of generated android based project',
+        description:
+      'Overrides values in `build.gradle` file of generated android based project',
         examples: [
             {
                 allprojects: {
                     repositories: {
-                        'maven { url "https://dl.bintray.com/onfido/maven" }': true
-                    }
-                }
-            }
-        ]
+                        'maven { url "https://dl.bintray.com/onfido/maven" }': true,
+                    },
+                },
+            },
+        ],
     },
     'app/build.gradle': {
         additionalProperties: true,
         type: 'object',
-        description: 'Overrides values in `app/build.gradle` file of generated android based project',
+        description:
+      'Overrides values in `app/build.gradle` file of generated android based project',
         examples: [
             {
-                apply: [
-                    "plugin: 'io.fabric'"
-                ]
-            }
-        ]
+                apply: ["plugin: 'io.fabric'"],
+            },
+        ],
     },
     AndroidManifest: {
         additionalProperties: true,
@@ -420,11 +401,12 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
                         children: [
                             {
                                 tag: 'activity',
-                                'android:name': 'com.ahmedadeltito.photoeditor.PhotoEditorActivity'
-                            }
-                        ]
-                    }
-                ]
+                                'android:name':
+                  'com.ahmedadeltito.photoeditor.PhotoEditorActivity',
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 children: [
@@ -434,14 +416,14 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
                         'android:allowBackup': true,
                         'android:largeHeap': true,
                         'android:usesCleartextTraffic': true,
-                        'tools:targetApi': 28
-                    }
-                ]
-            }
-        ]
+                        'tools:targetApi': 28,
+                    },
+                ],
+            },
+        ],
     },
     applyPlugin: {
-        type: 'array'
+        type: 'array',
     },
     BuildGradle: {
         type: 'object',
@@ -456,19 +438,18 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
                         additionalProperties: true,
                         examples: [
                             {
-                                "flatDir { dirs 'libs'}": true
-                            }
-                        ]
-                    }
-                }
-            }
-        }
+                                "flatDir { dirs 'libs'}": true,
+                            },
+                        ],
+                    },
+                },
+            },
+        },
     },
     implementation: {
-        type: 'object'
-    }
+        type: 'object',
+    },
 };
-
 
 // ==================================================
 // PLATFORM PROPS
@@ -480,33 +461,26 @@ const platformAndroidProps = {
     enableAndroidX: {
         type: 'boolean',
         default: true,
-        examples: [
-            true,
-            false
-        ]
+        examples: [true, false],
     },
     enableHermes: {
         type: 'boolean',
         default: false,
         description: '> DEPRECATED in favour of `reactNativeEngine`',
-        examples: [
-            true,
-            false
-        ]
+        examples: [true, false],
     },
     reactNativeEngine: {
         type: 'string',
         default: 'default',
-        description: 'Allows you to define specific native render engine to be used',
-        examples: [
-            true,
-            false
-        ]
+        description:
+      'Allows you to define specific native render engine to be used',
+        examples: [true, false],
     },
     signingConfig: {
         type: 'string',
         default: 'Debug',
-        description: 'Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`',
+        description:
+      'Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`',
         examples: [
             'default',
             'v8-android',
@@ -514,76 +488,58 @@ const platformAndroidProps = {
             'v8-android-jit',
             'v8-android-jit-nointl',
             'hermes',
-        ]
+        ],
     },
     minSdkVersion: {
         type: 'integer',
         default: 21,
-        examples: [
-            21,
-            22
-        ]
+        examples: [21, 22],
     },
     multipleAPKs: {
         type: 'boolean',
         default: false,
-        description: 'If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"',
-        examples: [
-            true,
-            false
-        ]
+        description:
+      'If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"',
+        examples: [true, false],
     },
     aab: {
         type: 'boolean',
-        description: 'If set to true, android project will generate app.aab instead of apk',
+        description:
+      'If set to true, android project will generate app.aab instead of apk',
         default: false,
-        examples: [
-            false,
-            true
-        ]
+        examples: [false, true],
     },
     minifyEnabled: {
         type: 'boolean',
         description: 'Sets minifyEnabled buildType property in app/build.gradle',
         default: false,
-        examples: [
-            false,
-            true
-        ]
+        examples: [false, true],
     },
     targetSdkVersion: {
         type: 'integer',
-        description: 'Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` ',
-        examples: [
-            28,
-            29
-        ]
+        description:
+      'Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` ',
+        examples: [28, 29],
     },
     compileSdkVersion: {
         type: 'integer',
-        description: 'Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` ',
-        examples: [
-            28,
-            29
-        ]
+        description:
+      'Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` ',
+        examples: [28, 29],
     },
     gradleBuildToolsVersion: {
         type: 'integer',
-        description: 'Allows you define custom gradle build tools version equivalent to:  `classpath \'com.android.tools.build:gradle:[VERSION]\'`',
+        description:
+      "Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`",
         default: '3.3.1',
-        examples: [
-            '3.3.1',
-            '4.1.0'
-        ]
+        examples: ['3.3.1', '4.1.0'],
     },
     gradleWrapperVersion: {
         type: 'integer',
-        description: 'Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`',
+        description:
+      'Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`',
         default: '5.5',
-        examples: [
-            '5.5',
-            '6.7.1'
-        ]
+        examples: ['5.5', '6.7.1'],
     },
     mainActivity: {
         type: 'object',
@@ -592,63 +548,63 @@ const platformAndroidProps = {
         properties: {
             onCreate: {
                 type: 'string',
-                description: 'Overrides super.onCreate method handler of MainActivity.kt',
+                description:
+          'Overrides super.onCreate method handler of MainActivity.kt',
                 default: 'super.onCreate(savedInstanceState)',
                 examples: [
                     'super.onCreate(null)',
-                    'super.onCreate(savedInstanceState)'
-                ]
-            }
+                    'super.onCreate(savedInstanceState)',
+                ],
+            },
         },
     },
     storeFile: {
-        type: 'string'
+        type: 'string',
     },
     storePassword: {
         type: 'string',
-        description: `${SENSITIVE}storePassword for keystore file`
+        description: `${SENSITIVE}storePassword for keystore file`,
     },
     keyAlias: {
-        type: 'string'
+        type: 'string',
     },
     keyPassword: {
         type: 'string',
-        description: `${SENSITIVE}keyPassword for keystore file`
+        description: `${SENSITIVE}keyPassword for keystore file`,
     },
     excludedFeatures: {
-        type: 'array'
+        type: 'array',
     },
     includedFeatures: {
-        type: 'array'
-    }
+        type: 'array',
+    },
 };
 
 const platformIosProps = {
     ...engineRnConfig,
     ...commonIosProps,
     deploymentTarget: {
-        type: 'string'
+        type: 'string',
     },
     teamID: {
-        type: 'string'
+        type: 'string',
     },
     excludedArchs: {
         type: 'array',
-        description: 'Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`',
+        description:
+      'Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`',
         default: null,
-        examples: [
-            ['arm64']
-        ]
+        examples: [['arm64']],
     },
     teamIdentifier: {
-        type: 'string'
+        type: 'string',
     },
     scheme: {
-        type: 'string'
+        type: 'string',
     },
 
     appleId: {
-        type: 'string'
+        type: 'string',
     },
     orientationSupport: {
         type: 'object',
@@ -658,7 +614,7 @@ const platformIosProps = {
             },
             tab: {
                 type: 'array',
-            }
+            },
         },
         examples: [
             {
@@ -666,41 +622,33 @@ const platformIosProps = {
                     'UIInterfaceOrientationPortrait',
                     'UIInterfaceOrientationPortraitUpsideDown',
                     'UIInterfaceOrientationLandscapeLeft',
-                    'UIInterfaceOrientationLandscapeRight'
+                    'UIInterfaceOrientationLandscapeRight',
                 ],
                 tab: [
                     'UIInterfaceOrientationPortrait',
                     'UIInterfaceOrientationPortraitUpsideDown',
                     'UIInterfaceOrientationLandscapeLeft',
-                    'UIInterfaceOrientationLandscapeRight'
-                ]
-            }
+                    'UIInterfaceOrientationLandscapeRight',
+                ],
+            },
         ],
     },
 
     provisioningStyle: {
-        type: 'string'
+        type: 'string',
     },
     codeSignIdentity: {
         type: 'string',
         description: 'Special property which tells Xcode how to build your project',
-        examples: [
-            'iPhone Developer',
-            'iPhone Distribution'
-        ]
+        examples: ['iPhone Developer', 'iPhone Distribution'],
     },
     commandLineArguments: {
         type: 'array',
         description: 'Allows you to pass launch arguments to active scheme',
-        examples: [
-            [
-                '-FIRAnalyticsDebugEnabled',
-                'MyCustomLaunchArgument'
-            ]
-        ]
+        examples: [['-FIRAnalyticsDebugEnabled', 'MyCustomLaunchArgument']],
     },
     provisionProfileSpecifier: {
-        type: 'string'
+        type: 'string',
     },
     provisioningProfiles: {
         additionalProperties: true,
@@ -735,25 +683,25 @@ const platformIosProps = {
                 'com.apple.Keychain': false,
                 'com.apple.Maps.iOS': false,
                 'com.apple.Siri': false,
-                'com.apple.NetworkExtensions.iOS': false
-            }
-        ]
+                'com.apple.NetworkExtensions.iOS': false,
+            },
+        ],
     },
     entitlements: {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
     },
     runScheme: {
-        type: 'string'
+        type: 'string',
     },
     sdk: {
-        type: 'string'
+        type: 'string',
     },
     testFlightId: {
-        type: 'string'
+        type: 'string',
     },
     firebaseId: {
-        type: 'string'
+        type: 'string',
     },
     exportOptions: {
         type: 'object',
@@ -783,9 +731,9 @@ const platformIosProps = {
             provisioningProfiles: {
                 additionalProperties: true,
                 type: 'object',
-            }
-        }
-    }
+            },
+        },
+    },
 };
 
 const platformWebProps = {
@@ -793,84 +741,77 @@ const platformWebProps = {
     pagesDir: {
         type: 'string',
         description: 'Custom pages directory used by nextjs. Use relative paths',
-        examples: [
-            'src/customFolder/pages'
-        ]
+        examples: ['src/customFolder/pages'],
     },
     outputDir: {
         type: 'string',
-        description: 'Custom output directory used by nextjs equivalent to "npx next build" with custom outputDir. Use relative paths',
-        examples: [
-            '.next',
-            'custom/location'
-        ]
+        description:
+      'Custom output directory used by nextjs equivalent to "npx next build" with custom outputDir. Use relative paths',
+        examples: ['.next', 'custom/location'],
     },
     exportDir: {
         type: 'string',
-        description: 'Custom export directory used by nextjs equivalent to "npx next export --outdir <exportDir>". Use relative paths',
-        examples: [
-            'output',
-            'custom/location'
-        ]
+        description:
+      'Custom export directory used by nextjs equivalent to "npx next export --outdir <exportDir>". Use relative paths',
+        examples: ['output', 'custom/location'],
     },
     environment: {
-        type: 'string'
-    }
+        type: 'string',
+    },
 };
 
 const platformWebtvProps = {
     ...engineRnWebConfig,
     pagesDir: {
-        type: 'string'
+        type: 'string',
     },
     environment: {
-        type: 'string'
-    }
+        type: 'string',
+    },
 };
 
 const platformTizenProps = {
     ...engineRnWebConfig,
     package: {
-        type: 'string'
+        type: 'string',
     },
     certificateProfile: {
-        type: 'string'
+        type: 'string',
     },
     appName: {
-        type: 'string'
-    }
+        type: 'string',
+    },
 };
 
 const platformWebosProps = {
-    ...engineRnWebConfig
+    ...engineRnWebConfig,
 };
 
 const platformFirefoxProps = {
-    ...engineRnWebConfig
+    ...engineRnWebConfig,
 };
 
 const platformMacosProps = {
     ...engineRnElectronConfig,
     appleId: {
-        type: 'string'
+        type: 'string',
     },
     environment: {
-        type: 'string'
-    }
+        type: 'string',
+    },
 };
 
 const platformWindowsProps = {
-    ...engineRnElectronConfig
+    ...engineRnElectronConfig,
 };
 
 const platformChromecastProps = {
-    ...engineRnWebConfig
+    ...engineRnWebConfig,
 };
 
 // ==================================================
 // BUILD SCHEME PROPS
 // ==================================================
-
 
 const generateBuildSchemeProps = obj => ({
     buildSchemes: {
@@ -879,23 +820,21 @@ const generateBuildSchemeProps = obj => ({
             additionalProperties: false,
             properties: {
                 enabled: {
-                    type: 'boolean'
+                    type: 'boolean',
                 },
                 description: {
                     type: 'string',
-                    description: 'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`',
-                    examples: [
-                        'This is some build scheme'
-                    ]
+                    description:
+            'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`',
+                    examples: ['This is some build scheme'],
                 },
                 ...platformCommonProps,
                 ...obj,
-            }
+            },
         },
-        type: 'object'
+        type: 'object',
     },
 });
-
 
 // ==================================================
 // PLUGIN PROPS
@@ -903,87 +842,78 @@ const generateBuildSchemeProps = obj => ({
 
 const pluginAndroidProps = {
     package: {
-        type: 'string'
+        type: 'string',
     },
     projectName: {
-        type: 'string'
+        type: 'string',
     },
     skipImplementation: {
-        type: 'boolean'
+        type: 'boolean',
     },
     afterEvaluate: {
-        type: 'array'
-    }
+        type: 'array',
+    },
 };
 
 const pluginIosProps = {
     podName: {
-        type: 'string'
+        type: 'string',
     },
     podNames: {
-        type: 'array'
+        type: 'array',
     },
     isStatic: {
-        type: 'boolean'
+        type: 'boolean',
     },
     staticPods: {
         type: 'array',
-        description: 'Allows to define extra logic to cover multiple pods subspecs which need to be marked as static',
-        examples: [
-            [
-                '::startsWith::Permission-'
-            ]
-        ]
-    }
+        description:
+      'Allows to define extra logic to cover multiple pods subspecs which need to be marked as static',
+        examples: [['::startsWith::Permission-']],
+    },
 };
 
 const commonPluginPlatformProps = {
     webpackConfig: {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
     },
     enabled: {
-        type: 'boolean'
+        type: 'boolean',
     },
     path: {
         type: 'string',
-        description: 'Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.',
-        examples: [
-            'node_modules/react-native-video/android-exoplayer'
-        ]
-    }
+        description:
+      'Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.',
+        examples: ['node_modules/react-native-video/android-exoplayer'],
+    },
 };
-
 
 const pluginProps = {
     enabled: {
-        type: 'boolean'
+        type: 'boolean',
     },
     props: {
         additionalProperties: true,
-        type: 'object'
+        type: 'object',
     },
     version: {
-        type: 'string'
+        type: 'string',
     },
     source: {
         type: 'string',
-        description: 'Will define custom scope for your plugin config to extend from.\n\nNOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}',
-        examples: [
-            'rnv',
-            'myCustomScope'
-        ]
+        description:
+      'Will define custom scope for your plugin config to extend from.\n\nNOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}',
+        examples: ['rnv', 'myCustomScope'],
     },
     'no-npm': {
-        type: 'boolean'
+        type: 'boolean',
     },
     skipMerge: {
         type: 'boolean',
-        description: 'Will not attempt to merge with existing plugin configuration (ie. coming form renative pluginTemplates)\n\nNOTE: if set to `true` you need to configure your plugin object fully',
-        examples: [
-            true,
-            false
-        ]
+        description:
+      'Will not attempt to merge with existing plugin configuration (ie. coming form renative pluginTemplates)\n\nNOTE: if set to `true` you need to configure your plugin object fully',
+        examples: [true, false],
     },
     npm: {
         additionalProperties: true,
@@ -996,12 +926,13 @@ const pluginProps = {
     webpack: {
         additionalProperties: true,
         type: 'object',
-        description: '> DEPRECATED in favour of `webpackConfig`'
+        description: '> DEPRECATED in favour of `webpackConfig`',
     },
     webpackConfig: {
         additionalProperties: false,
         type: 'object',
-        description: 'Allows you to configure webpack bahaviour per each individual plugin',
+        description:
+      'Allows you to configure webpack bahaviour per each individual plugin',
         properties: {
             modulePaths: {
                 type: ['boolean', 'object'],
@@ -1010,8 +941,8 @@ const pluginProps = {
             moduleAliases: {
                 type: ['boolean', 'object'],
                 additionalProperties: true,
-            }
-        }
+            },
+        },
     },
     android: {
         additionalProperties: false,
@@ -1019,8 +950,8 @@ const pluginProps = {
         properties: {
             ...commonPluginPlatformProps,
             ...commonAndroidProps,
-            ...pluginAndroidProps
-        }
+            ...pluginAndroidProps,
+        },
     },
     androidtv: {
         additionalProperties: false,
@@ -1028,8 +959,8 @@ const pluginProps = {
         properties: {
             ...commonPluginPlatformProps,
             ...commonAndroidProps,
-            ...pluginAndroidProps
-        }
+            ...pluginAndroidProps,
+        },
     },
     firetv: {
         additionalProperties: false,
@@ -1037,8 +968,8 @@ const pluginProps = {
         properties: {
             ...commonPluginPlatformProps,
             ...commonAndroidProps,
-            ...pluginAndroidProps
-        }
+            ...pluginAndroidProps,
+        },
     },
     androidwear: {
         additionalProperties: false,
@@ -1046,8 +977,8 @@ const pluginProps = {
         properties: {
             ...commonPluginPlatformProps,
             ...commonAndroidProps,
-            ...pluginAndroidProps
-        }
+            ...pluginAndroidProps,
+        },
     },
     ios: {
         additionalProperties: false,
@@ -1056,7 +987,7 @@ const pluginProps = {
             ...commonPluginPlatformProps,
             ...commonIosProps,
             ...pluginIosProps,
-        }
+        },
     },
     tvos: {
         additionalProperties: false,
@@ -1065,64 +996,64 @@ const pluginProps = {
             ...commonPluginPlatformProps,
             ...commonIosProps,
             ...pluginIosProps,
-        }
+        },
     },
     tizen: {
         additionalProperties: false,
         type: 'object',
         properties: {
             ...commonPluginPlatformProps,
-        }
+        },
     },
     webos: {
         additionalProperties: false,
         type: 'object',
         properties: {
             ...commonPluginPlatformProps,
-        }
+        },
     },
     web: {
         additionalProperties: false,
         type: 'object',
         properties: {
             ...commonPluginPlatformProps,
-        }
+        },
     },
     webtv: {
         additionalProperties: false,
         type: 'object',
         properties: {
             ...commonPluginPlatformProps,
-        }
+        },
     },
     chromecast: {
         additionalProperties: false,
         type: 'object',
         properties: {
             ...commonPluginPlatformProps,
-        }
+        },
     },
     firefox: {
         additionalProperties: false,
         type: 'object',
         properties: {
             ...commonPluginPlatformProps,
-        }
+        },
     },
     macos: {
         additionalProperties: false,
         type: 'object',
         properties: {
             ...commonPluginPlatformProps,
-        }
+        },
     },
     windows: {
         additionalProperties: false,
         type: 'object',
         properties: {
             ...commonPluginPlatformProps,
-        }
-    }
+        },
+    },
 };
 
 // ==================================================
@@ -1141,8 +1072,8 @@ export const schemaPlatforms = {
             properties: {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformAndroidProps),
-                ...platformAndroidProps
-            }
+                ...platformAndroidProps,
+            },
         },
         ios: {
             additionalProperties: false,
@@ -1150,8 +1081,8 @@ export const schemaPlatforms = {
             properties: {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformIosProps),
-                ...platformIosProps
-            }
+                ...platformIosProps,
+            },
         },
         tvos: {
             additionalProperties: false,
@@ -1159,8 +1090,8 @@ export const schemaPlatforms = {
             properties: {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformIosProps),
-                ...platformIosProps
-            }
+                ...platformIosProps,
+            },
         },
         tizen: {
             additionalProperties: false,
@@ -1168,8 +1099,8 @@ export const schemaPlatforms = {
             properties: {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformTizenProps),
-                ...platformTizenProps
-            }
+                ...platformTizenProps,
+            },
         },
         webos: {
             additionalProperties: false,
@@ -1177,8 +1108,8 @@ export const schemaPlatforms = {
             properties: {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformWebosProps),
-                ...platformWebosProps
-            }
+                ...platformWebosProps,
+            },
         },
         web: {
             additionalProperties: false,
@@ -1186,8 +1117,8 @@ export const schemaPlatforms = {
             properties: {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformWebProps),
-                ...platformWebProps
-            }
+                ...platformWebProps,
+            },
         },
         webtv: {
             additionalProperties: false,
@@ -1195,8 +1126,8 @@ export const schemaPlatforms = {
             properties: {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformWebtvProps),
-                ...platformWebtvProps
-            }
+                ...platformWebtvProps,
+            },
         },
         chromecast: {
             additionalProperties: false,
@@ -1204,8 +1135,8 @@ export const schemaPlatforms = {
             properties: {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformChromecastProps),
-                ...platformChromecastProps
-            }
+                ...platformChromecastProps,
+            },
         },
         firefox: {
             additionalProperties: false,
@@ -1214,7 +1145,7 @@ export const schemaPlatforms = {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformFirefoxProps),
                 ...platformFirefoxProps,
-            }
+            },
         },
         macos: {
             additionalProperties: false,
@@ -1222,8 +1153,8 @@ export const schemaPlatforms = {
             properties: {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformMacosProps),
-                ...platformMacosProps
-            }
+                ...platformMacosProps,
+            },
         },
         windows: {
             additionalProperties: false,
@@ -1231,11 +1162,10 @@ export const schemaPlatforms = {
             properties: {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformWindowsProps),
-                ...platformWindowsProps
-            }
-        }
-    }
-
+                ...platformWindowsProps,
+            },
+        },
+    },
 };
 
 export const schemaRoot = {
@@ -1246,27 +1176,28 @@ export const schemaRoot = {
         common: {
             additionalProperties: false,
             type: 'object',
-            description: 'Common config props used as default props for all available buildSchemes',
+            description:
+        'Common config props used as default props for all available buildSchemes',
             examples: [
                 {
                     author: {
                         name: 'Pavel Jacko',
                         email: 'Pavel Jacko <pavel.jacko@gmail.com>',
-                        url: 'https://github.com/pavjacko'
+                        url: 'https://github.com/pavjacko',
                     },
                     license: 'MIT',
                     includedPlugins: ['*'],
                     includedFonts: ['*'],
                     backgroundColor: '#111111',
                     runtime: {
-                        welcomeMessage: 'Hello ReNative!'
-                    }
-                }
+                        welcomeMessage: 'Hello ReNative!',
+                    },
+                },
             ],
             properties: {
                 ...commonProps,
                 ...generateBuildSchemeProps({}),
-            }
+            },
         },
         ...commonRuntimeProps,
         engines: {
@@ -1278,15 +1209,15 @@ export const schemaRoot = {
                     '@rnv/engine-rn': 'source:rnv',
                     '@rnv/engine-rn-web': 'source:rnv',
                     '@rnv/engine-rn-next': 'source:rnv',
-                    '@rnv/engine-rn-electron': 'source:rnv'
+                    '@rnv/engine-rn-electron': 'source:rnv',
                 },
                 {
                     '@rnv/engine-rn': 'source:rnv',
                     'custom-engine': {
-                        version: '1.0.0'
-                    }
-                }
-            ]
+                        version: '1.0.0',
+                    },
+                },
+            ],
         },
         platforms: {
             additionalProperties: false,
@@ -1294,95 +1225,96 @@ export const schemaRoot = {
             properties: {
                 ios: {
                     // $ref: 'platforms.json#/definitions/ios'
-                    ...schemaPlatforms.definitions.ios
+                    ...schemaPlatforms.definitions.ios,
                 },
                 android: {
                     // $ref: 'platforms.json#/definitions/android'
-                    ...schemaPlatforms.definitions.android
+                    ...schemaPlatforms.definitions.android,
                 },
                 web: {
                     // $ref: 'platforms.json#/definitions/web'
-                    ...schemaPlatforms.definitions.web
+                    ...schemaPlatforms.definitions.web,
                 },
                 webtv: {
                     // $ref: 'platforms.json#/definitions/webtv'
-                    ...schemaPlatforms.definitions.webtv
+                    ...schemaPlatforms.definitions.webtv,
                 },
                 chromecast: {
                     // $ref: 'platforms.json#/definitions/chromecast'
-                    ...schemaPlatforms.definitions.chromecast
+                    ...schemaPlatforms.definitions.chromecast,
                 },
                 tvos: {
                     // $ref: 'platforms.json#/definitions/ios'
-                    ...schemaPlatforms.definitions.ios
+                    ...schemaPlatforms.definitions.ios,
                 },
                 androidtv: {
                     // $ref: 'platforms.json#/definitions/android'
-                    ...schemaPlatforms.definitions.android
+                    ...schemaPlatforms.definitions.android,
                 },
                 firetv: {
                     // $ref: 'platforms.json#/definitions/android'
-                    ...schemaPlatforms.definitions.android
+                    ...schemaPlatforms.definitions.android,
                 },
                 webos: {
                     // $ref: 'platforms.json#/definitions/webos'
-                    ...schemaPlatforms.definitions.webos
+                    ...schemaPlatforms.definitions.webos,
                 },
                 macos: {
                     // $ref: 'platforms.json#/definitions/macos'
-                    ...schemaPlatforms.definitions.macos
+                    ...schemaPlatforms.definitions.macos,
                 },
                 tizen: {
                     // $ref: 'platforms.json#/definitions/tizen'
-                    ...schemaPlatforms.definitions.tizen
+                    ...schemaPlatforms.definitions.tizen,
                 },
                 windows: {
                     // $ref: 'platforms.json#/definitions/macos'
-                    ...schemaPlatforms.definitions.macos
+                    ...schemaPlatforms.definitions.windows,
                 },
                 firefoxtv: {
                     // $ref: 'platforms.json#/definitions/firefox'
-                    ...schemaPlatforms.definitions.firefox
+                    ...schemaPlatforms.definitions.firefox,
                 },
                 firefoxos: {
                     // $ref: 'platforms.json#/definitions/firefox'
-                    ...schemaPlatforms.definitions.firefox
+                    ...schemaPlatforms.definitions.firefox,
                 },
                 tizenmobile: {
                     // $ref: 'platforms.json#/definitions/tizen'
-                    ...schemaPlatforms.definitions.tizen
+                    ...schemaPlatforms.definitions.tizen,
                 },
                 tizenwatch: {
                     // $ref: 'platforms.json#/definitions/tizen'
-                    ...schemaPlatforms.definitions.tizen
+                    ...schemaPlatforms.definitions.tizen,
                 },
                 androidwear: {
                     // $ref: 'platforms.json#/definitions/android'
-                    ...schemaPlatforms.definitions.android
+                    ...schemaPlatforms.definitions.android,
                 },
                 kaios: {
                     // $ref: 'platforms.json#/definitions/firefox'
-                    ...schemaPlatforms.definitions.firefox
-                }
-            }
+                    ...schemaPlatforms.definitions.firefox,
+                },
+            },
         },
         sdks: {
             additionalProperties: true,
             type: 'object',
-            description: 'List of SDK locations used by RNV. This property is usually located in your `WORKSPACE/renative.json`',
+            description:
+        'List of SDK locations used by RNV. This property is usually located in your `WORKSPACE/renative.json`',
             examples: [
                 {
                     ANDROID_SDK: '/Users/paveljacko/Library/Android/sdk',
                     ANDROID_NDK: '/Users/paveljacko/Library/Android/sdk/ndk-bundle',
                     TIZEN_SDK: '/Users/paveljacko/tizen-studio',
                     WEBOS_SDK: '/opt/webOS_TV_SDK',
-                    KAIOS_SDK: '/Applications/Kaiosrt.app'
-                }
-            ]
+                    KAIOS_SDK: '/Applications/Kaiosrt.app',
+                },
+            ],
         },
         env: {
             additionalProperties: true,
-            type: 'object'
+            type: 'object',
         },
         defaultTargets: {
             additionalProperties: true,
@@ -1398,13 +1330,14 @@ export const schemaRoot = {
                     tizen: 'T-samsung-5.5-x86',
                     tizenwatch: 'W-5.5-circle-x86',
                     tizenmobile: 'M-5.5-x86',
-                    webos: 'emulator'
-                }
-            ]
+                    webos: 'emulator',
+                },
+            ],
         },
         plugins: {
             type: 'object',
-            description: 'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config',
+            description:
+        'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config',
             examples: [
                 {
                     renative: 'source:rnv',
@@ -1412,16 +1345,16 @@ export const schemaRoot = {
                     'react-native-cached-image': 'source:rnv',
                     'react-native-web-image-loader': 'source:rnv',
                     'react-native-gesture-handler': {
-                        version: '1.0.0'
+                        version: '1.0.0',
                     },
-                }
+                },
             ],
             additionalProperties: {
                 type: ['object', 'string'],
                 additionalProperties: false,
                 properties: {
-                    ...pluginProps
-                }
+                    ...pluginProps,
+                },
                 // if: {
                 //     type: 'object'
                 // },
@@ -1444,41 +1377,41 @@ export const schemaRoot = {
                 //     },
                 //     { type: 'string' }
                 // ]
-            }
+            },
         },
         projectName: {
             type: 'string',
-            description: 'Name of the project which will be used in workspace as folder name. this will also be used as part of the KEY in crypto env var generator',
-            examples: [
-                'my-project',
-                'myProject'
-            ]
+            description:
+        'Name of the project which will be used in workspace as folder name. this will also be used as part of the KEY in crypto env var generator',
+            examples: ['my-project', 'myProject'],
         },
         // name: {
         //     type: 'string'
         // },
         extend: {
-            type: 'string'
+            type: 'string',
         },
         projectTemplates: {
             additionalProperties: true,
             type: 'object',
-            description: 'Custom list of renative templates (NPM package names) which will be displayed during `rnv new` project bootstrap. This prop usually resides in workspace config.',
+            description:
+        'Custom list of renative templates (NPM package names) which will be displayed during `rnv new` project bootstrap. This prop usually resides in workspace config.',
             examples: [
                 {
-                    'my-custom-template': {}
-                }
-            ]
+                    'my-custom-template': {},
+                },
+            ],
         },
         permissions: {
             additionalProperties: false,
             type: 'object',
-            description: 'Permission definititions which can be used by app configs via `includedPermissions` and `excludedPermissions` to customize permissions for each app',
+            description:
+        'Permission definititions which can be used by app configs via `includedPermissions` and `excludedPermissions` to customize permissions for each app',
             examples: [
                 {
                     ios: {},
-                    android: {}
-                }
+                    android: {},
+                },
             ],
             properties: {
                 android: {
@@ -1489,14 +1422,14 @@ export const schemaRoot = {
                         {
                             INTERNET: {
                                 key: 'android.permission.INTERNET',
-                                security: 'normal'
+                                security: 'normal',
                             },
                             SYSTEM_ALERT_WINDOW: {
                                 key: 'android.permission.SYSTEM_ALERT_WINDOW',
-                                security: 'signature'
-                            }
-                        }
-                    ]
+                                security: 'signature',
+                            },
+                        },
+                    ],
                 },
                 ios: {
                     additionalProperties: true,
@@ -1505,62 +1438,61 @@ export const schemaRoot = {
                     examples: [
                         {
                             NSAppleMusicUsageDescription: {
-                                desc: 'Get favorite music'
+                                desc: 'Get favorite music',
                             },
                             NSBluetoothPeripheralUsageDescription: {
-                                desc: 'Allow you to use your bluetooth to play music'
+                                desc: 'Allow you to use your bluetooth to play music',
                             },
                             NSCalendarsUsageDescription: {
-                                desc: 'Calendar for add events'
+                                desc: 'Calendar for add events',
                             },
                             NSCameraUsageDescription: {
-                                desc: 'Need camera to scan QR Codes'
+                                desc: 'Need camera to scan QR Codes',
                             },
                             NSLocationWhenInUseUsageDescription: {
-                                desc: 'Geolocation tags for photos'
+                                desc: 'Geolocation tags for photos',
                             },
                             NSMicrophoneUsageDescription: {
-                                desc: 'Need microphone for videos'
+                                desc: 'Need microphone for videos',
                             },
                             NSMotionUsageDescription: {
-                                desc: 'To know when device is moving'
+                                desc: 'To know when device is moving',
                             },
                             NSPhotoLibraryAddUsageDescription: {
-                                desc: 'Need library to save images'
+                                desc: 'Need library to save images',
                             },
                             NSPhotoLibraryUsageDescription: {
-                                desc: 'Allows to upload images from photo library'
+                                desc: 'Allows to upload images from photo library',
                             },
                             NSSpeechRecognitionUsageDescription: {
-                                desc: 'Speech Recognition to run in app commands'
+                                desc: 'Speech Recognition to run in app commands',
                             },
                             NSContactsUsageDescription: {
-                                desc: 'Get contacts list'
+                                desc: 'Get contacts list',
                             },
                             NSFaceIDUsageDescription: {
-                                desc: 'Requires FaceID access to allows you quick and secure access.'
+                                desc:
+                  'Requires FaceID access to allows you quick and secure access.',
                             },
                             NSLocationAlwaysUsageDescription: {
-                                desc: 'Geolocation tags for photos'
+                                desc: 'Geolocation tags for photos',
                             },
                             NSBluetoothAlwaysUsageDescription: {
-                                desc: 'Allow you to use your bluetooth to play music'
+                                desc: 'Allow you to use your bluetooth to play music',
                             },
                             NSLocationAlwaysAndWhenInUseUsageDescription: {
-                                desc: 'Geolocation tags for photos'
-                            }
-                        }
-                    ]
-                }
-            }
+                                desc: 'Geolocation tags for photos',
+                            },
+                        },
+                    ],
+                },
+            },
         },
         workspaceID: {
             type: 'string',
-            description: 'Workspace ID your project belongs to. This will mach same folder name in the root of your user directory. ie `~/` on macOS',
-            examples: [
-                'rnv',
-                'myCustomWorkspace',
-            ],
+            description:
+        'Workspace ID your project belongs to. This will mach same folder name in the root of your user directory. ie `~/` on macOS',
+            examples: ['rnv', 'myCustomWorkspace'],
         },
         version: {
             type: 'string',
@@ -1576,10 +1508,7 @@ export const schemaRoot = {
         versionCode: {
             description: 'Manual verride of generated version code',
             type: 'string',
-            examples: [
-                '1000',
-                '10023'
-            ],
+            examples: ['1000', '10023'],
         },
         versionFormat: {
             description: `Allows you to fine-tune app version defined in package.json or renative.json.
@@ -1607,12 +1536,8 @@ IN: 1.2.3-rc.4+build.56 OUT: 1.2.3.rc.4.build.56
 IN: 1.2.3 OUT: 1.2.3
 
 `,
-            examples: [
-                '0.0.0',
-                '0.0.0.0.0',
-                '0.0.0.x.x.x.x'
-            ],
-            type: 'string'
+            examples: ['0.0.0', '0.0.0.0.0', '0.0.0.x.x.x.x'],
+            type: 'string',
         },
         versionCodeFormat: {
             description: `Allows you to fine-tune auto generated version codes.
@@ -1646,37 +1571,28 @@ IN: 1.0.23-rc.15 OUT: 100230015
 IN: 1.0.23 OUT: 100230000
 
 `,
-            examples: [
-                '00.00.00',
-                '00.00.00.00.00',
-                '00.00.00.0000'
-            ],
-            type: 'string'
+            examples: ['00.00.00', '00.00.00.00.00', '00.00.00.0000'],
+            type: 'string',
         },
         description: {
-            type: 'string'
+            type: 'string',
         },
         id: {
             type: 'string',
-            description: 'ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name of the folder',
-            examples: [
-                'helloworld',
-                'someapp'
-            ]
+            description:
+        'ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name of the folder',
+            examples: ['helloworld', 'someapp'],
         },
         isWrapper: {
-            type: 'boolean'
+            type: 'boolean',
         },
         isMonorepo: {
-            type: 'boolean'
+            type: 'boolean',
         },
         enableAnalytics: {
             type: 'boolean',
             description: 'Enable or disable sending analytics to improve ReNative',
-            examples: [
-                true,
-                false
-            ]
+            examples: [true, false],
         },
         paths: {
             additionalProperties: false,
@@ -1686,23 +1602,19 @@ IN: 1.0.23 OUT: 100230000
                 appConfigsDir: {
                     type: 'string',
                     description: 'Custom path to appConfigs. defaults to `./appConfigs`',
-                    examples: [
-                        './appConfigs'
-                    ]
+                    examples: ['./appConfigs'],
                 },
                 platformAssetsDir: {
                     type: 'string',
-                    description: 'Custom path to platformAssets folder. defaults to `./platformAssets`',
-                    examples: [
-                        './platformAssets'
-                    ]
+                    description:
+            'Custom path to platformAssets folder. defaults to `./platformAssets`',
+                    examples: ['./platformAssets'],
                 },
                 platformBuildsDir: {
                     type: 'string',
-                    description: 'Custom path to platformBuilds folder. defaults to `./platformBuilds`',
-                    examples: [
-                        './platformBuilds'
-                    ]
+                    description:
+            'Custom path to platformBuilds folder. defaults to `./platformBuilds`',
+                    examples: ['./platformBuilds'],
                 },
                 pluginTemplates: {
                     additionalProperties: true,
@@ -1735,37 +1647,39 @@ To skip file overrides coming from source plugin you need to detach it from the 
                         {
                             myCustomScope: {
                                 npm: 'some-renative-template-package',
-                                path: './pluginTemplates'
-                            }
-                        }
-                    ]
+                                path: './pluginTemplates',
+                            },
+                        },
+                    ],
                 },
-            }
+            },
         },
         tasks: {
             additionalProperties: true,
             type: 'object',
-            description: 'Allows to override specific task within renative toolchain. (currently only `install` supported). this is useful if you want to change specific behaviour of built-in task. ie install task triggers yarn/npm install by default. but that might not be desirable installation trigger',
+            description:
+        'Allows to override specific task within renative toolchain. (currently only `install` supported). this is useful if you want to change specific behaviour of built-in task. ie install task triggers yarn/npm install by default. but that might not be desirable installation trigger',
             examples: [
                 {
                     install: {
-                        script: 'yarn bootstrap'
-                    }
-                }
-            ]
+                        script: 'yarn bootstrap',
+                    },
+                },
+            ],
         },
         pipes: {
             type: 'array',
-            description: 'To avoid rnv building `buildHooks/src` every time you can specify which specific pipes should trigger recompile of buildHooks',
+            description:
+        'To avoid rnv building `buildHooks/src` every time you can specify which specific pipes should trigger recompile of buildHooks',
             examples: [
                 [
                     'configure:after',
                     'start:before',
                     'deploy:after',
                     'export:before',
-                    'export:after'
-                ]
-            ]
+                    'export:after',
+                ],
+            ],
         },
         defaults: {
             additionalProperties: false,
@@ -1774,7 +1688,8 @@ To skip file overrides coming from source plugin you need to detach it from the 
             properties: {
                 supportedPlatforms: {
                     type: 'array',
-                    description: 'Array list of all supported platforms in current project',
+                    description:
+            'Array list of all supported platforms in current project',
                     examples: [
                         [
                             'ios',
@@ -1783,19 +1698,20 @@ To skip file overrides coming from source plugin you need to detach it from the 
                             'web',
                             'macos',
                             'tvos',
-                            'androidwear'
-                        ]
-                    ]
+                            'androidwear',
+                        ],
+                    ],
                 },
                 schemes: {
                     type: 'object',
-                    description: 'List of default schemes for each platform. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`',
+                    description:
+            'List of default schemes for each platform. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`',
                     examples: [
                         {
                             ios: 'myCustomScheme',
-                            android: 'otherCustomScheme'
-                        }
-                    ]
+                            android: 'otherCustomScheme',
+                        },
+                    ],
                 },
                 targets: {
                     type: 'object',
@@ -1803,13 +1719,14 @@ To skip file overrides coming from source plugin you need to detach it from the 
                     examples: [
                         {
                             ios: 'iPhone 8',
-                            tvos: 'Apple TV 4K'
-                        }
-                    ]
+                            tvos: 'Apple TV 4K',
+                        },
+                    ],
                 },
                 ports: {
                     type: 'object',
-                    description: 'Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts',
+                    description:
+            'Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts',
                     examples: [
                         {
                             ios: 8182,
@@ -1827,39 +1744,40 @@ To skip file overrides coming from source plugin you need to detach it from the 
                             kaios: 8193,
                             firefoxos: 8194,
                             firefoxtv: 8114,
-                            webtv: 8195
-                        }
-                    ]
-                }
-            }
+                            webtv: 8195,
+                        },
+                    ],
+                },
+            },
         },
         pluginTemplates: {
             additionalProperties: true,
-            type: 'object'
+            type: 'object',
         },
         templates: {
             additionalProperties: true,
             type: 'object',
-            description: 'Stores installed templates info in your project.\n\nNOTE: This prop will be updated by rnv if you run `rnv template install`',
+            description:
+        'Stores installed templates info in your project.\n\nNOTE: This prop will be updated by rnv if you run `rnv template install`',
             examples: [
                 {
                     'renative-template-hello-world': {
-                        version: '0.31.0'
-                    }
-                }
-            ]
+                        version: '0.31.0',
+                    },
+                },
+            ],
         },
         currentTemplate: {
             type: 'string',
-            description: 'Currently active template used in this project. this allows you to re-bootstrap whole project by running `rnv template apply`',
-            examples: [
-                'renative-template-hello-world'
-            ]
+            description:
+        'Currently active template used in this project. this allows you to re-bootstrap whole project by running `rnv template apply`',
+            examples: ['renative-template-hello-world'],
         },
         crypto: {
             additionalProperties: false,
             type: 'object',
-            description: 'This prop enables automatic encrypt and decrypt of sensitive information in your project',
+            description:
+        'This prop enables automatic encrypt and decrypt of sensitive information in your project',
             properties: {
                 encrypt: {
                     additionalProperties: false,
@@ -1867,12 +1785,11 @@ To skip file overrides coming from source plugin you need to detach it from the 
                     properties: {
                         dest: {
                             type: 'string',
-                            description: 'Location of encrypted file in your project used as destination of encryption from your workspace',
-                            examples: [
-                                'PROJECT_HOME/ci/privateConfigs.enc'
-                            ]
-                        }
-                    }
+                            description:
+                'Location of encrypted file in your project used as destination of encryption from your workspace',
+                            examples: ['PROJECT_HOME/ci/privateConfigs.enc'],
+                        },
+                    },
                 },
                 decrypt: {
                     additionalProperties: false,
@@ -1880,56 +1797,62 @@ To skip file overrides coming from source plugin you need to detach it from the 
                     properties: {
                         source: {
                             type: 'string',
-                            description: 'Location of encrypted file in your project used as source of decryption into your workspace',
-                            examples: [
-                                'PROJECT_HOME/ci/privateConfigs.enc'
-                            ]
-                        }
-                    }
+                            description:
+                'Location of encrypted file in your project used as source of decryption into your workspace',
+                            examples: ['PROJECT_HOME/ci/privateConfigs.enc'],
+                        },
+                    },
                 },
                 optional: {
-                    type: 'boolean'
+                    type: 'boolean',
                 },
-            }
+            },
         },
         integrations: {
             additionalProperties: true,
-            type: 'object'
+            type: 'object',
         },
         publish: {
             additionalProperties: true,
-            type: 'object'
+            type: 'object',
         },
         private: {
             additionalProperties: true,
             type: 'object',
-            description: 'Special object which contains private info. this object should be used only in `renative.private.json` files and never commited to your repository. Private files usually reside in your workspace and are subject to crypto encryption if enabled. RNV will warn you if it finds private key in your regular `renative.json` file',
+            description:
+        'Special object which contains private info. this object should be used only in `renative.private.json` files and never commited to your repository. Private files usually reside in your workspace and are subject to crypto encryption if enabled. RNV will warn you if it finds private key in your regular `renative.json` file',
             examples: [
                 {
-                    myPrivateKy: '6568347563858739'
-                }
-            ]
+                    myPrivateKy: '6568347563858739',
+                },
+            ],
         },
         hidden: {
             type: 'boolean',
-            description: 'If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`',
-            examples: [
-                true,
-                false
-            ]
+            description:
+        'If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`',
+            examples: [true, false],
         },
         templateConfig: {
-            description: 'Used in `renative.template.json` allows you to define template behaviour.',
+            description:
+        'Used in `renative.template.json` allows you to define template behaviour.',
             type: 'object',
             additionalProperties: false,
             properties: {
                 includedPaths: {
                     type: 'array',
                     items: { type: 'string' },
-                    description: 'Defines list of all file/dir paths you want to include in template',
+                    description:
+            'Defines list of all file/dir paths you want to include in template',
                     examples: [
-                        ['next.config.js', 'babel.config.js', 'appConfigs', 'public', 'src'],
-                    ]
+                        [
+                            'next.config.js',
+                            'babel.config.js',
+                            'appConfigs',
+                            'public',
+                            'src',
+                        ],
+                    ],
                 },
                 bootstrapQuestions: {
                     type: 'array',
@@ -1937,44 +1860,41 @@ To skip file overrides coming from source plugin you need to detach it from the 
                     description: 'Defines list of custom bootstrap questions',
                     examples: [
                         [
-
                             {
                                 title: 'Which service to use?',
                                 type: 'list',
                                 configProp: {
                                     key: 'runtime.myServiceConfig',
-                                    file: 'renative.json'
+                                    file: 'renative.json',
                                 },
                                 options: [
                                     {
                                         title: 'Service 1',
                                         value: {
                                             id: 'xxx1',
-                                        }
+                                        },
                                     },
                                     {
                                         title: 'Service 2',
                                         value: {
                                             id: 'xxx2',
-                                        }
+                                        },
                                     },
-                                ]
-                            }
-                        ]
-                    ]
-                }
-            }
+                                ],
+                            },
+                        ],
+                    ],
+                },
+            },
         },
         enableHookRebuild: {
             type: 'boolean',
-            description: 'If set to true in `./renative.json` build hooks will be compiled at each rnv command run. If set to `false` (default) rebuild will be triggered only if `dist` folder is missing, `-r` has been passed or you run `rnv hooks run` directly making your rnv commands faster',
-            examples: [
-                true,
-                false
-            ]
+            description:
+        'If set to true in `./renative.json` build hooks will be compiled at each rnv command run. If set to `false` (default) rebuild will be triggered only if `dist` folder is missing, `-r` has been passed or you run `rnv hooks run` directly making your rnv commands faster',
+            examples: [true, false],
         },
-        ...propExt
-    }
+        ...propExt,
+    },
 };
 
 export const SCHEMAS_RENATIVE_JSON = [schemaRoot, schemaPlatforms];
