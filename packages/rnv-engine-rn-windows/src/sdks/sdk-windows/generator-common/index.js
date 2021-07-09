@@ -1,8 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-restricted-syntax */
-
 
 /**
  * Copyright (c) Microsoft Corporation.
@@ -36,7 +31,6 @@ function resolveContents(srcPath, replacements) {
     let content = fs.readFileSync(srcPath, 'utf8');
     if (content.includes('\r\n')) {
         // CRLF file, make sure multiline replacements are also CRLF
-        // eslint-disable-next-line no-unused-vars
         for (const key of Object.keys(replacements)) {
             if (typeof replacements[key] === 'string') {
                 replacements[key] = replacements[key].replace(/(?<!\r)\n/g, '\r\n');
@@ -178,12 +172,9 @@ function createDir(destPath) {
     }
 }
 exports.createDir = createDir;
-async function copyAndReplaceWithChangedCallback(srcPath, destRoot, relativeDestPath, replacements, alwaysOverwrite) {
-    if (!replacements) {
-        replacements = {};
-    }
+async function copyAndReplaceWithChangedCallback(srcPath, destRoot, relativeDestPath, replacements = {}, alwaysOverwrite) {
     const contentChangedCallback = alwaysOverwrite
-        ? (_, contentChanged) => alwaysOverwriteContentChangedCallback(srcPath, relativeDestPath, contentChanged)
+        ? (_, contentChanged) => alwaysOverwriteContentChangedCallback(relativeDestPath, contentChanged)
         : (_, contentChanged) => upgradeFileContentChangedCallback(srcPath, relativeDestPath, contentChanged);
     await copyAndReplace(srcPath, path.join(destRoot, relativeDestPath), replacements, contentChangedCallback);
 }
@@ -196,7 +187,7 @@ async function copyAndReplaceAll(srcPath, destPath, relativeDestDir, replacement
     }
 }
 exports.copyAndReplaceAll = copyAndReplaceAll;
-async function alwaysOverwriteContentChangedCallback(absoluteSrcFilePath, relativeDestPath, contentChanged) {
+async function alwaysOverwriteContentChangedCallback(relativeDestPath, contentChanged) {
     if (contentChanged === 'new') {
         console.log(`${chalk.bold('new')} ${relativeDestPath}`);
         return 'overwrite';
@@ -235,4 +226,3 @@ async function upgradeFileContentChangedCallback(absoluteSrcFilePath, relativeDe
     }
     throw new Error(`Unknown file changed state: ${relativeDestPath}, ${contentChanged}`);
 }
-// # sourceMappingURL=index.js.map

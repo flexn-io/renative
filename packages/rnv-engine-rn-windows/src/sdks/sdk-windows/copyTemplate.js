@@ -7,7 +7,7 @@
  * @format
  */
 // DEPS
-import { Common } from 'rnv';
+import { Common, Constants } from 'rnv';
 
 const chalk = require('chalk');
 const path = require('path');
@@ -23,15 +23,15 @@ const configUtils_1 = require('./config/configUtils');
 const generator_common_1 = require('./generator-common');
 
 // EXTRACTS FROM RNV
-const { getAppFolder } = Common;
+const { getAppFolder, getAppTitle } = Common;
+const { WINDOWS } = Constants;
 
 // CONSTS
 const bundleDir = 'Bundle';
 
 // FUNCTIONS
 async function generateCertificate(
-    // TO DO. What is srcPath and destPath?
-    srcPath, destPath,
+    srcPath,
     currentUser,
     c
 ) {
@@ -73,31 +73,31 @@ async function generateCertificate(
     );
     await generator_common_1.copyAndReplaceWithChangedCallback(
         path.join(srcPath, 'keys', 'MyApp_TemporaryKey.pfx'),
-        destPath,
+        c.paths.project.dir,
         path.join(appFolder, c.runtime.appId, `${c.runtime.appId}_TemporaryKey.pfx`)
     );
     return null;
 }
-// function pascalCase(str) {
-//     const camelCase = _.camelCase(str);
-//     return camelCase[0].toUpperCase() + camelCase.substr(1);
-// }
+
+const options = {
+    language: 'cpp',
+    experimentalNuGetDependency: false,
+    useWinUI3: false,
+    nuGetTestVersion: null,
+    useHermes: false,
+    nuGetTestFeed: null,
+    overwrite: false
+};
+
 // Existing high cyclomatic complexity
 // eslint-disable-next-line complexity
 export async function copyProjectTemplateAndReplace(
-    // TO DO. What is and how to inject srcRootPath and destPath
-    srcRootPath, destPath,
-    namespace,
-    options,
     c
 ) {
-    if (!srcRootPath) {
-        throw new Error('Need a path to copy from');
-    }
-    if (!destPath) {
+    if (!c.paths.project.dir) {
         throw new Error('Need a path to copy to');
     }
-    const { projectType } = options;
+
     // React-native init only allows alphanumerics in project names, but other
     // new project tools (like create-react-native-module) are less strict.
 
@@ -111,32 +111,35 @@ export async function copyProjectTemplateAndReplace(
     //         .join('.');
     // }
     // -------------------------------------------------------------------
-    console.log('-------------------------------------------------------------------');
-    console.log('Destination Path', destPath);
-    console.log('ROOT Path', srcRootPath);
-    console.log('-------------------------------------------------------------------');
+
+    // TO DO. Can this be considered namespace?
+    const appTitle = getAppTitle(c, WINDOWS);
     const appFolder = getAppFolder(c, true);
-    generator_common_1.createDir(path.join(destPath, appFolder));
-    generator_common_1.createDir(path.join(destPath, appFolder, c.runtime.appId));
+
+    generator_common_1.createDir(path.join(c.paths.project.dir, appFolder));
+    generator_common_1.createDir(path.join(c.paths.project.dir, appFolder, c.runtime.appId));
     // if (projectType === 'app') {
     generator_common_1.createDir(
-        path.join(destPath, appFolder, c.runtime.appId, bundleDir)
+        path.join(c.paths.project.dir, appFolder, c.runtime.appId, bundleDir)
     );
     generator_common_1.createDir(
-        path.join(destPath, appFolder, c.runtime.appId, 'BundleBuilder')
+        path.join(c.paths.project.dir, appFolder, c.runtime.appId, 'BundleBuilder')
     );
     // }
     const { language } = options;
-    const namespaceCpp = toCppNamespace(namespace);
+    const namespaceCpp = toCppNamespace(appTitle);
     if (options.experimentalNuGetDependency) {
         console.log('Using experimental NuGet dependency.');
     }
     if (options.useWinUI3) {
         console.log('Using experimental WinUI3 dependency.');
     }
+    const RNWTemplatePath = path.join(path.dirname(require.resolve('react-native-windows/package.json', {
+        paths: [c.paths.project.dir],
+    })), 'template');
     const projDir = 'proj';
-    const srcPath = path.join(srcRootPath, `${language}-${projectType}`);
-    const sharedPath = path.join(srcRootPath, `shared-${projectType}`);
+    const srcPath = path.join(RNWTemplatePath, `${language}-app`);
+    const sharedPath = path.join(RNWTemplatePath, 'shared-app');
     const projectGuid = uuid.v4();
     // eslint-disable-next-line global-require
     const rnwVersion = require('react-native-windows/package.json').version;
@@ -144,17 +147,16 @@ export async function copyProjectTemplateAndReplace(
     const packageGuid = uuid.v4();
     const currentUser = username.sync(); // Gets the current username depending on the platform.
     let mainComponentName = c.runtime.appId;
-    const appJsonPath = await findUp('app.json', { cwd: destPath });
+    const appJsonPath = await findUp('app.json', { cwd: c.paths.project.dir });
     if (appJsonPath) {
         mainComponentName = JSON.parse(fs.readFileSync(appJsonPath, 'utf8')).name;
     }
-    const certificateThumbprint = projectType === 'app'
-        ? await generateCertificate(
-            srcPath, destPath,
-            currentUser,
-            c
-        )
-        : null;
+    const certificateThumbprint = await generateCertificate(
+        srcPath,
+        currentUser,
+        c
+    );
+
     const xamlNamespace = options.useWinUI3
         ? 'Microsoft.UI.Xaml'
         : 'Windows.UI.Xaml';
@@ -220,7 +222,7 @@ export async function copyProjectTemplateAndReplace(
         useMustache: true,
         regExpPatternsToRemove: [],
         name: c.runtime.appId,
-        namespace,
+        namespace: appTitle,
         namespaceCpp,
         languageIsCpp: language === 'cpp',
         mainComponentName,
@@ -252,139 +254,90 @@ export async function copyProjectTemplateAndReplace(
         autolinkCppPackageProviders:
       '\n    UNREFERENCED_PARAMETER(packageProviders);',
     };
-    const commonMappings = projectType === 'app'
-        ? [
-            // app common mappings
-            {
-                from: path.join(
-                    srcRootPath,
-                    options.useDevMode ? 'metro.devMode.config.js' : 'metro.config.js'
-                ),
-                to: 'metro.config.js',
-            },
-            {
-                from: path.join(srcRootPath, 'index.windows.bundle'),
-                to: path.join(
-                    appFolder,
-                    c.runtime.appId,
-                    bundleDir,
-                    'index.windows.bundle'
-                ),
-            },
-            {
-                from: path.join(srcPath, projDir, 'MyApp.sln'),
-                to: path.join(appFolder, `${c.runtime.appId}.sln`),
-            },
-        ]
-        : [
-            // lib common mappings
-            {
-                from: path.join(srcPath, projDir, 'MyLib.sln'),
-                to: path.join(appFolder, `${c.runtime.appId}.sln`),
-            },
-        ];
+    const commonMappings = [
+        // app common mappings
+        {
+            from: path.join(
+                RNWTemplatePath,
+                options.useDevMode ? 'metro.devMode.config.js' : 'metro.config.js'
+            ),
+            to: 'metro.config.js',
+        },
+        {
+            from: path.join(RNWTemplatePath, 'index.windows.bundle'),
+            to: path.join(
+                appFolder,
+                c.runtime.appId,
+                bundleDir,
+                'index.windows.bundle'
+            ),
+        },
+        {
+            from: path.join(srcPath, projDir, 'MyApp.sln'),
+            to: path.join(appFolder, `${c.runtime.appId}.sln`),
+        },
+    ];
+
     for (const mapping of commonMappings) {
         await generator_common_1.copyAndReplaceWithChangedCallback(
             mapping.from,
-            destPath,
+            c.paths.project.dir,
             mapping.to,
             templateVars,
             options.overwrite
         );
     }
     if (language === 'cs') {
-        const csMappings = projectType === 'app'
-            ? [
-                // cs app mappings
-                {
-                    from: path.join(srcPath, projDir, 'MyApp.csproj'),
-                    to: path.join(
-                        appFolder,
-                        c.runtime.appId,
-                        `${c.runtime.appId}.csproj`
-                    ),
-                },
-            ]
-            : [
-                // cs lib mappings
-                {
-                    from: path.join(srcPath, projDir, 'MyLib.csproj'),
-                    to: path.join(
-                        appFolder,
-                        c.runtime.appId,
-                        `${c.runtime.appId}.csproj`
-                    ),
-                },
-            ];
+        const csMappings = [
+            // cs app mappings
+            {
+                from: path.join(srcPath, projDir, 'MyApp.csproj'),
+                to: path.join(
+                    appFolder,
+                    c.runtime.appId,
+                    `${c.runtime.appId}.csproj`
+                ),
+            },
+        ];
+
         for (const mapping of csMappings) {
             await generator_common_1.copyAndReplaceWithChangedCallback(
                 mapping.from,
-                destPath,
+                c.paths.project.dir,
                 mapping.to,
                 templateVars,
                 options.overwrite
             );
         }
     } else {
-        const cppMappings = projectType === 'app'
-            ? [
-                // cpp app mappings
-                {
-                    from: path.join(srcPath, projDir, 'MyApp.vcxproj'),
-                    to: path.join(
-                        appFolder,
-                        c.runtime.appId,
-                        `${c.runtime.appId}.vcxproj`
-                    ),
-                },
-                {
-                    from: path.join(srcPath, projDir, 'MyApp.vcxproj.filters'),
-                    to: path.join(
-                        appFolder,
-                        c.runtime.appId,
-                        `${c.runtime.appId}.vcxproj.filters`
-                    ),
-                },
-                {
-                    from: path.join(srcPath, projDir, 'packages.config'),
-                    to: path.join(appFolder, c.runtime.appId, 'packages.config'),
-                },
-            ]
-            : [
-                // cpp lib mappings
-                {
-                    from: path.join(srcPath, projDir, 'MyLib.vcxproj'),
-                    to: path.join(
-                        appFolder,
-                        c.runtime.appId,
-                        `${c.runtime.appId}.vcxproj`
-                    ),
-                },
-                {
-                    from: path.join(srcPath, projDir, 'MyLib.vcxproj.filters'),
-                    to: path.join(
-                        appFolder,
-                        c.runtime.appId,
-                        `${c.runtime.appId}.vcxproj.filters`
-                    ),
-                },
-                {
-                    from: path.join(srcPath, projDir, 'MyLib.def'),
-                    to: path.join(
-                        appFolder,
-                        c.runtime.appId,
-                        `${c.runtime.appId}.def`
-                    ),
-                },
-                {
-                    from: path.join(srcPath, projDir, 'packages.config'),
-                    to: path.join(appFolder, c.runtime.appId, 'packages.config'),
-                },
-            ];
+        const cppMappings = [
+            // cpp app mappings
+            {
+                from: path.join(srcPath, projDir, 'MyApp.vcxproj'),
+                to: path.join(
+                    appFolder,
+                    c.runtime.appId,
+                    `${c.runtime.appId}.vcxproj`
+                ),
+            },
+            {
+                from: path.join(srcPath, projDir, 'MyApp.vcxproj.filters'),
+                to: path.join(
+                    appFolder,
+                    c.runtime.appId,
+                    `${c.runtime.appId}.vcxproj.filters`
+                ),
+            },
+            {
+                from: path.join(srcPath, projDir, 'packages.config'),
+                to: path.join(appFolder, c.runtime.appId, 'packages.config'),
+            },
+        ];
+
         for (const mapping of cppMappings) {
             await generator_common_1.copyAndReplaceWithChangedCallback(
                 mapping.from,
-                destPath,
+                c.paths.project.dir,
                 mapping.to,
                 templateVars,
                 options.overwrite
@@ -411,7 +364,7 @@ export async function copyProjectTemplateAndReplace(
         for (const mapping of sharedProjMappings) {
             await generator_common_1.copyAndReplaceWithChangedCallback(
                 mapping.from,
-                destPath,
+                c.paths.project.dir,
                 mapping.to,
                 templateVars,
                 options.overwrite
@@ -422,7 +375,7 @@ export async function copyProjectTemplateAndReplace(
     if (fs.existsSync(path.join(sharedPath, 'assets'))) {
         await generator_common_1.copyAndReplaceAll(
             path.join(sharedPath, 'assets'),
-            destPath,
+            c.paths.project.dir,
             path.join(appFolder, c.runtime.appId, 'Assets'),
             templateVars,
             options.overwrite
@@ -432,7 +385,7 @@ export async function copyProjectTemplateAndReplace(
     if (fs.existsSync(path.join(sharedPath, 'src'))) {
         await generator_common_1.copyAndReplaceAll(
             path.join(sharedPath, 'src'),
-            destPath,
+            c.paths.project.dir,
             path.join(appFolder, c.runtime.appId),
             templateVars,
             options.overwrite
@@ -442,16 +395,15 @@ export async function copyProjectTemplateAndReplace(
     if (fs.existsSync(path.join(srcPath, 'src'))) {
         await generator_common_1.copyAndReplaceAll(
             path.join(srcPath, 'src'),
-            destPath,
+            c.paths.project.dir,
             path.join(appFolder, c.runtime.appId),
             templateVars,
             options.overwrite
         );
     }
-    if (projectType === 'app') {
-        console.log(chalk.white.bold('To run your app on UWP:'));
-        console.log(chalk.white('   npx react-native run-windows'));
-    }
+
+    console.log(chalk.white.bold('To run your app on UWP:'));
+    console.log(chalk.white('   rnv run -p windows'));
 }
 
 function toCppNamespace(namespace) {

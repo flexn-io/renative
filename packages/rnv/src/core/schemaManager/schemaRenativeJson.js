@@ -131,6 +131,31 @@ const engineRnElectronConfig = {
     },
 };
 
+const engineRNWindowsConfig = {
+    language: {
+        type: 'string',
+        description: 'Either cpp for C++ or cs for C#'
+    },
+    experimentalNuGetDependency: {
+        type: 'boolean'
+    },
+    useWinUI3: {
+        type: 'boolean'
+    },
+    nuGetTestVersion: {
+        type: 'object'
+    },
+    useHermes: {
+        type: 'boolean'
+    },
+    nuGetTestFeed: {
+        type: 'object'
+    },
+    overwrite: {
+        type: 'boolean'
+    }
+};
+
 // ==================================================
 // COMMON PROPS
 // ==================================================
@@ -802,7 +827,7 @@ const platformMacosProps = {
 };
 
 const platformWindowsProps = {
-    ...engineRnElectronConfig,
+    ...engineRNWindowsConfig,
 };
 
 const platformChromecastProps = {
@@ -1210,6 +1235,7 @@ export const schemaRoot = {
                     '@rnv/engine-rn-web': 'source:rnv',
                     '@rnv/engine-rn-next': 'source:rnv',
                     '@rnv/engine-rn-electron': 'source:rnv',
+                    '@rnv/engine-rn-windows': 'source:rnv',
                 },
                 {
                     '@rnv/engine-rn': 'source:rnv',

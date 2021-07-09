@@ -32,7 +32,7 @@ export default {
             defaultPort: 8092,
             isWebHosted: true,
             extenstions: generateEngineExtensions([
-                'windows', 'desktop'
+                'windows.desktop', 'desktop', 'windows'
             ], CNF)
 
         }
