@@ -1,7 +1,7 @@
-import { Common, Constants, Logger, PlatformManager, ProjectManager, TaskManager, TemplateManager } from 'rnv';
+import { Constants, Logger, PlatformManager, TaskManager, TemplateManager } from 'rnv';
 import { SDKWindows } from '../sdks';
 
-const { logErrorPlatform, copySharedPlatforms, isPlatformActive } = PlatformManager;
+const { logErrorPlatform, copySharedPlatforms } = PlatformManager;
 const { logTask } = Logger;
 const {
     WINDOWS,
@@ -10,11 +10,9 @@ const {
 } = Constants;
 
 // TO DO implement configure
-const { ruWindowsProject } = SDKWindows;
+const { configureWindowsProject } = SDKWindows;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
-const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
-const { getPlatformProjectDir } = Common;
 
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
@@ -32,25 +30,10 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
 
     switch (c.platform) {
         case WINDOWS:
-            return ruWindowsProject(c);
+            return configureWindowsProject(c);
         default:
             return logErrorPlatform(c);
     }
-};
-
-export const configureWebProject = async (c) => {
-    logTask('configureWebProject');
-
-    const { platform } = c;
-
-    c.runtime.platformBuildsProjectPath = getPlatformProjectDir(c);
-
-    if (!isPlatformActive(c, platform)) return;
-
-    await copyAssetsFolder(c, platform);
-    // await configureCoreWebProject(c);
-
-    return copyBuildsFolder(c, platform);
 };
 
 export default {

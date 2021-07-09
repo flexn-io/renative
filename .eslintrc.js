@@ -88,6 +88,7 @@ module.exports = {
         'max-len': [
             'warn',
             { code: 120, ignoreComments: true, ignoreStrings: true }
-        ]
+        ], 
+        'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix']
     }
 };

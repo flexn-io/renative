@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useEffect } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { Button, usePop } from 'renative';
@@ -37,9 +38,7 @@ const ScreenModal = (props) => {
                 />
             </View>
             <ScrollView contentContainerStyle={themeStyles.container}>
-                <Text style={themeStyles.textH2}>
-This is my Modal!
-                </Text>
+                <Text style={themeStyles.textH2}>This is my Modal!</Text>
             </ScrollView>
         </View>
     );
