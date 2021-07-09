@@ -1,0 +1,24 @@
+{
+  "id": "engine-rn-macos",
+  "engineExtension": "rnm",
+  "overview": "React native based engine with added support for macOS platform",
+  "plugins": {
+    "react": "source:rnv",
+    "react-art": "source:rnv",
+    "react-dom": "source:rnv",
+    "react-native": "0.63.4",
+    "react-native-macos": "source:rnv",
+    "@react-native-community/cli-platform-ios": "source:rnv",
+    "@react-native-community/cli": "source:rnv"
+  },
+  "npm": {
+    "devDependencies": {}
+  },
+  "platforms": {
+    "macos": {
+      "npm": {
+        "devDependencies": {}
+      }
+    }
+  }
+}

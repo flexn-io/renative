@@ -56,7 +56,7 @@
         "react": "16.13.1",
         "react-art": "16.13.1",
         "react-dom": "16.13.1",
-        "react-native": "0.61.2",
+        "react-native": "0.63.4",
         "react-native-gesture-handler": "1.4.1",
         "react-native-google-cast": "github:hosek/react-native-google-cast#sdk4.4.5",
         "react-native-reanimated": "1.0.0-alpha.12",
@@ -67,7 +67,8 @@
         "react-native-vector-icons": "7.1.0",
         "react-native-web": "0.13.12",
         "react-native-web-image-loader": "0.0.5",
-        "renative": "~0.32.0-RC"
+        "renative": "~0.32.0-RC",
+        "react-native-macos": "0.63.37"
     },
     "devDependencies": {
         "@rnv/engine-lightning": "~0.32.0-RC",
@@ -75,6 +76,7 @@
         "@rnv/engine-rn-electron": "~0.32.0-RC",
         "@rnv/engine-rn-next": "~0.32.0-RC",
         "@rnv/engine-rn-web": "~0.32.0-RC",
+        "@rnv/engine-rn-macos": "~0.32.0-RC",
         "@rnv/integration-docker": "0.1.0-alpha.0",
         "@rnv/integration-vercel": "0.2.0-alpha.0",
         "babel-jest": "24.9.0",

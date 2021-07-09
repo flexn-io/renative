@@ -1,0 +1,59 @@
+{{PLUGIN_PODFILE_SOURCES}}
+platform :macos, '{{PLUGIN_DEPLOYMENT_TARGET}}'
+{{PLUGIN_WARNINGS}}
+
+# ReNative: To allow dynamic plugins via flavours autolinking has to be disabled
+# require_relative '../../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+target 'RNVAppMACOS' do
+
+   # Everything below is from here 'node_modules/react-native-macos/scripts/react_native_pods'
+
+   # Include DevSupport dependency
+   # TODO: make sure we need it and remove it if not
+   production = false
+ 
+   # The Pods which should be included in all projects
+   pod 'FBLazyVector', :path => "{{PATH_REACT_NATIVE}}/Libraries/FBLazyVector"
+   pod 'FBReactNativeSpec', :path => "{{PATH_REACT_NATIVE}}/Libraries/FBReactNativeSpec"
+   pod 'RCTRequired', :path => "{{PATH_REACT_NATIVE}}/Libraries/RCTRequired"
+   pod 'RCTTypeSafety', :path => "{{PATH_REACT_NATIVE}}/Libraries/TypeSafety"
+   pod 'React', :path => "{{PATH_REACT_NATIVE}}/"
+   pod 'React-Core', :path => "{{PATH_REACT_NATIVE}}/"
+   pod 'React-CoreModules', :path => "{{PATH_REACT_NATIVE}}/React/CoreModules"
+   pod 'React-RCTActionSheet', :path => "{{PATH_REACT_NATIVE}}/Libraries/ActionSheetIOS"
+   pod 'React-RCTAnimation', :path => "{{PATH_REACT_NATIVE}}/Libraries/NativeAnimation"
+   pod 'React-RCTBlob', :path => "{{PATH_REACT_NATIVE}}/Libraries/Blob"
+   pod 'React-RCTImage', :path => "{{PATH_REACT_NATIVE}}/Libraries/Image"
+   pod 'React-RCTLinking', :path => "{{PATH_REACT_NATIVE}}/Libraries/LinkingIOS"
+   pod 'React-RCTNetwork', :path => "{{PATH_REACT_NATIVE}}/Libraries/Network"
+   pod 'React-RCTSettings', :path => "{{PATH_REACT_NATIVE}}/Libraries/Settings"
+   pod 'React-RCTText', :path => "{{PATH_REACT_NATIVE}}/Libraries/Text"
+   pod 'React-RCTVibration', :path => "{{PATH_REACT_NATIVE}}/Libraries/Vibration"
+   pod 'React-Core/RCTWebSocket', :path => "{{PATH_REACT_NATIVE}}/"
+ 
+   unless production
+     pod 'React-Core/DevSupport', :path => "{{PATH_REACT_NATIVE}}/"
+   end
+ 
+   pod 'React-cxxreact', :path => "{{PATH_REACT_NATIVE}}/ReactCommon/cxxreact"
+   pod 'React-jsi', :path => "{{PATH_REACT_NATIVE}}/ReactCommon/jsi"
+   pod 'React-jsiexecutor', :path => "{{PATH_REACT_NATIVE}}/ReactCommon/jsiexecutor"
+   pod 'React-jsinspector', :path => "{{PATH_REACT_NATIVE}}/ReactCommon/jsinspector"
+   pod 'React-callinvoker', :path => "{{PATH_REACT_NATIVE}}/ReactCommon/callinvoker"
+   pod 'ReactCommon/turbomodule/core', :path => "{{PATH_REACT_NATIVE}}/ReactCommon"
+   pod 'Yoga', :path => "{{PATH_REACT_NATIVE}}/ReactCommon/yoga", :modular_headers => true
+ 
+   pod 'DoubleConversion', :podspec => "{{PATH_REACT_NATIVE}}/third-party-podspecs/DoubleConversion.podspec"
+   pod 'glog', :podspec => "{{PATH_REACT_NATIVE}}/third-party-podspecs/glog.podspec"
+   pod 'RCT-Folly', :podspec => "{{PATH_REACT_NATIVE}}/third-party-podspecs/RCT-Folly.podspec"
+ 
+   # TODO(macOS GH#214)
+   pod 'boost-for-react-native', :podspec => "{{PATH_REACT_NATIVE}}/third-party-podspecs/boost-for-react-native.podspec"
+
+   {{PLUGIN_PATHS}}
+
+  # Pods specifically for macOS target
+end
+
+{{PLUGIN_PODFILE_INJECT}}

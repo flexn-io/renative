@@ -110,15 +110,15 @@
         },
         "macos": {
             "entryFile": "index.macos",
+            "teamID": "",
+            "provisioningStyle": "Automatic",
+            "entitlements": {},
+            "permissions": ["*"],
+            "scheme": "RNVAppMACOS",
             "buildSchemes": {
                 "debug": {
-                    "bundleAssets": false,
-                    "environment": "development"
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "environment": "production"
+                    "runScheme": "Debug",
+                    "bundleAssets": false
                 }
             }
         },

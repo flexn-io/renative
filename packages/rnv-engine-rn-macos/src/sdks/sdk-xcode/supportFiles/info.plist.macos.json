@@ -1,0 +1,23 @@
+{
+    "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
+    "CFBundleExecutable": "$(EXECUTABLE_NAME)",
+    "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
+    "CFBundleInfoDictionaryVersion": "6.0",
+    "CFBundleName": "$(PRODUCT_NAME)",
+    "CFBundlePackageType": "$(PRODUCT_BUNDLE_PACKAGE_TYPE)",
+    "CFBundleShortVersionString": "{{PLUGIN_VERSION_STRING}}",
+    "CFBundleVersion": "1",
+    "LSMinimumSystemVersion": "$(MACOSX_DEPLOYMENT_TARGET)",
+    "NSAppTransportSecurity": {
+        "NSAllowsArbitraryLoads": true,
+        "NSExceptionDomains": {
+            "localhost": {
+                "NSExceptionAllowsInsecureHTTPLoads": true
+            }
+        }
+    },
+    "NSMainStoryboardFile": "Main",
+    "NSPrincipalClass": "NSApplication",
+    "NSSupportsAutomaticTermination": true,
+    "NSSupportsSuddenTermination": true
+}

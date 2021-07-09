@@ -3033,6 +3033,9 @@
         },
         "@lightningjs/sdk": {
             "version": "3.0.0"
+        },
+        "react-native-macos": {
+            "version": "0.63.37"
         }
     }
 }
