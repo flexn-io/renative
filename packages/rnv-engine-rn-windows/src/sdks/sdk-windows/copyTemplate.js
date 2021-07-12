@@ -257,13 +257,6 @@ export async function copyProjectTemplateAndReplace(
     const commonMappings = [
         // app common mappings
         {
-            from: path.join(
-                RNWTemplatePath,
-                options.useDevMode ? 'metro.devMode.config.js' : 'metro.config.js'
-            ),
-            to: 'metro.config.js',
-        },
-        {
             from: path.join(RNWTemplatePath, 'index.windows.bundle'),
             to: path.join(
                 appFolder,

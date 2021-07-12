@@ -1,4 +1,5 @@
 import { Config, EngineManager } from 'rnv';
+import { withRNV } from './adapter';
 import CNF from '../renative.engine.json';
 import taskRnvBuild from './tasks/task.rnv.build';
 import taskRnvConfigure from './tasks/task.rnv.configure';
@@ -39,3 +40,5 @@ export default {
     }
 
 };
+
+export { withRNV };

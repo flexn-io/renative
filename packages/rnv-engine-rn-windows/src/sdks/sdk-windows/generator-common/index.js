@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 
 /**
  * Copyright (c) Microsoft Corporation.
@@ -172,18 +175,16 @@ function createDir(destPath) {
     }
 }
 exports.createDir = createDir;
-async function copyAndReplaceWithChangedCallback(srcPath, destRoot, relativeDestPath, replacements = {}, alwaysOverwrite) {
-    const contentChangedCallback = alwaysOverwrite
-        ? (_, contentChanged) => alwaysOverwriteContentChangedCallback(relativeDestPath, contentChanged)
-        : (_, contentChanged) => upgradeFileContentChangedCallback(srcPath, relativeDestPath, contentChanged);
+async function copyAndReplaceWithChangedCallback(srcPath, destRoot, relativeDestPath, replacements = {}) {
+    const contentChangedCallback =  (_, contentChanged) => alwaysOverwriteContentChangedCallback(relativeDestPath, contentChanged);
     await copyAndReplace(srcPath, path.join(destRoot, relativeDestPath), replacements, contentChangedCallback);
 }
 exports.copyAndReplaceWithChangedCallback = copyAndReplaceWithChangedCallback;
-async function copyAndReplaceAll(srcPath, destPath, relativeDestDir, replacements, alwaysOverwrite) {
+async function copyAndReplaceAll(srcPath, destPath, relativeDestDir, replacements) {
     for (const absoluteSrcFilePath of walk(srcPath)) {
         const filename = path.relative(srcPath, absoluteSrcFilePath);
         const relativeDestPath = path.join(relativeDestDir, filename);
-        await copyAndReplaceWithChangedCallback(absoluteSrcFilePath, destPath, relativeDestPath, replacements, alwaysOverwrite);
+        await copyAndReplaceWithChangedCallback(absoluteSrcFilePath, destPath, relativeDestPath, replacements);
     }
 }
 exports.copyAndReplaceAll = copyAndReplaceAll;
@@ -195,31 +196,6 @@ async function alwaysOverwriteContentChangedCallback(relativeDestPath, contentCh
     if (contentChanged === 'changed') {
         console.log(`${chalk.bold('changed')} ${relativeDestPath} ${chalk.yellow('[overwriting]')}`);
         return 'overwrite';
-    }
-    if (contentChanged === 'identical') {
-        return 'keep';
-    }
-    throw new Error(`Unknown file changed state: ${relativeDestPath}, ${contentChanged}`);
-}
-async function upgradeFileContentChangedCallback(absoluteSrcFilePath, relativeDestPath, contentChanged) {
-    if (contentChanged === 'new') {
-        console.log(`${chalk.bold('new')} ${relativeDestPath}`);
-        return 'overwrite';
-    }
-    if (contentChanged === 'changed') {
-        console.log(`${chalk.bold(relativeDestPath)} `
-            + `has changed in the new version.\nDo you want to keep your ${relativeDestPath} or replace it with the `
-            + 'latest version?\nMake sure you have any changes you made to this file saved somewhere.\n'
-            + `You can see the new version here: ${absoluteSrcFilePath}`);
-        const { shouldReplace } = await inquirer.prompt([
-            {
-                name: 'shouldReplace',
-                type: 'confirm',
-                message: `Do you want to replace ${relativeDestPath}?`,
-                default: false,
-            },
-        ]);
-        return shouldReplace ? 'overwrite' : 'keep';
     }
     if (contentChanged === 'identical') {
         return 'keep';
