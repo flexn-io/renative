@@ -2,9 +2,8 @@ import child_process from 'child_process';
 import crypto from 'crypto';
 import inquirer from 'inquirer';
 import path from 'path';
-import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver, SDKManager } from 'rnv';
+import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver } from 'rnv';
 import { getAppFolderName } from './common';
-import { registerDevice } from './fastlane';
 import {
     parseEntitlementsPlist, parseExportOptionsPlist,
     parseInfoPlist
@@ -14,8 +13,6 @@ import { parsePodFile } from './podfileParser';
 // import { parseAppDelegate } from './swiftParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
-
-const { getAppleDevices } = SDKManager.Apple;
 
 const {
     fsExistsSync,
@@ -40,7 +37,7 @@ const {
     parseFonts
 } = ProjectManager;
 
-const { IOS, TVOS, MACOS } = Constants;
+const { MACOS } = Constants;
 const {
     chalk,
     logInfo,
@@ -158,12 +155,10 @@ export const runXcodeProject = async (c) => {
     logTask('runXcodeProject', `target:${c.runtime.target}`);
 
     const appPath = getAppFolder(c, c.platform);
-    const { device } = c.program;
     const scheme = getConfigProp(c, c.platform, 'scheme');
     const runScheme = getConfigProp(c, c.platform, 'runScheme');
     const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
-    let p;
 
     if (!scheme) {
         return Promise.reject(
@@ -177,175 +172,24 @@ export const runXcodeProject = async (c) => {
         );
     }
 
-    let devicesArr;
-    if (device === true) {
-        devicesArr = await getAppleDevices(c, false, true);
-    } else if (c.runtime.target === true) {
-        devicesArr = await getAppleDevices(c, true, false);
+    if (bundleAssets) {
+        return packageBundleForXcode(c, bundleIsDev)
+            .then(() => _checkLockAndExec(c, appPath, scheme, runScheme));
     }
-
-    if (device === true) {
-        if (devicesArr.length === 1) {
-            logSuccess(
-                `Found one device connected! device name: ${chalk().white(
-                    devicesArr[0].name
-                )} udid: ${chalk().white(devicesArr[0].udid)}`
-            );
-            if (devicesArr[0].udid) {
-                p = `--device --udid ${devicesArr[0].udid}`;
-                c.runtime.targetUDID = devicesArr[0].udid;
-            } else {
-                p = `--device ${devicesArr[0].name}`;
-            }
-        } else if (devicesArr.length > 1) {
-            const run = (selectedDevice) => {
-                logDebug(
-                    `Selected device: ${JSON.stringify(
-                        selectedDevice,
-                        null,
-                        3
-                    )}`
-                );
-                c.runtime.targetUDID = selectedDevice.udid;
-                if (selectedDevice.udid) {
-                    p = `--device --udid ${selectedDevice.udid}`;
-                } else {
-                    p = `--device ${selectedDevice.name}`;
-                }
-
-                logDebug(`RN params: ${p}`);
-
-                if (bundleAssets) {
-                    logDebug('Assets will be bundled');
-                    return packageBundleForXcode(
-                        c,
-                        bundleIsDev
-                    ).then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
-                }
-                return _checkLockAndExec(c, appPath, scheme, runScheme, p);
-            };
-
-            if (c.runtime.target !== true) {
-                const selectedDevice = devicesArr.find(
-                    d => d.name === c.runtime.target
-                );
-                if (selectedDevice) {
-                    return run(selectedDevice);
-                }
-                logWarning(`Could not find device ${c.runtime.target}`);
-            }
-
-            const devices = devicesArr.map(v => ({
-                name: `${v.name} | ${v.icon} | v: ${chalk().green(
-                    v.version
-                )} | udid: ${chalk().grey(v.udid)}${
-                    v.isDevice ? chalk().red(' (device)') : ''
-                }`,
-                value: v
-            }));
-
-            const { sim } = await inquirer.prompt({
-                name: 'sim',
-                message: 'Select the device you want to launch on',
-                type: 'list',
-                choices: devices
-            });
-
-            if (sim) {
-                return run(sim);
-            }
-        } else {
-            return Promise.reject(`No ${c.platform} devices connected!`);
-        }
-    } else if (device) {
-        p = `--device ${device}`;
-    } else if (c.runtime.target === true) {
-        const devices = devicesArr.map(v => ({
-            name: `${v.name} | ${v.icon} | v: ${chalk().green(
-                v.version
-            )} | udid: ${chalk().grey(v.udid)}${
-                v.isDevice ? chalk().red(' (device)') : ''
-            }`,
-            value: v
-        }));
-
-        const { sim } = await inquirer.prompt({
-            name: 'sim',
-            message: 'Select the device you want to launch on',
-            type: 'list',
-            choices: devices
-        });
-        c.runtime.target = sim.name;
-        p = `--simulator "${c.runtime.target.replace(/(\s+)/g, '$1')}"`;
-    } else {
-        p = `--simulator "${c.runtime.target.replace(/(\s+)/g, '$1')}"`;
-    }
-
-    if (p) {
-        // const allowProvisioningUpdates = getConfigProp(
-        //     c,
-        //     c.platform,
-        //     'allowProvisioningUpdates',
-        //     true
-        // );
-        // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
-
-        if (bundleAssets) {
-            return packageBundleForXcode(c, bundleIsDev)
-                .then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
-        }
-        return _checkLockAndExec(c, appPath, scheme, runScheme, p);
-    }
-    return Promise.reject('Missing options for react-native command!');
+    return _checkLockAndExec(c, appPath, scheme, runScheme);
 };
 
-const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
+const _checkLockAndExec = async (c, appPath, scheme, runScheme) => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
     const cmd = `node ${doResolve(
-        'react-native'
-    )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+        'react-native-macos'
+    )}/local-cli/cli.js run-macos --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme}`;
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
         return executeAsync(c, cmd);
     } catch (e) {
         if (e && e.includes) {
-            const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
-            if (isDeviceLocked) {
-                await inquirer.prompt({
-                    message: 'Unlock your device and press ENTER',
-                    type: 'confirm',
-                    name: 'confirm'
-                });
-                return executeAsync(c, cmd);
-            }
-            const isDeviceNotRegistered = e.includes(
-                "doesn't include the currently selected device"
-            );
-            if (isDeviceNotRegistered) {
-                logError(e);
-                logWarning(
-                    `${c.platform} DEVICE: ${chalk().white(
-                        c.runtime.target
-                    )} with UDID: ${chalk().white(
-                        c.runtime.targetUDID
-                    )} is not included in your provisionong profile in TEAM: ${chalk().white(
-                        getConfigProp(c, c.platform, 'teamID')
-                    )}`
-                );
-                const { confirm } = await inquirer.prompt({
-                    name: 'confirm',
-                    message: 'Do you want to register it?',
-                    type: 'confirm'
-                });
-                if (confirm) {
-                    await registerDevice(c);
-                    return Promise.reject('Updated. Re-run your last command');
-                    // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
-                    // await configureXcodeProject(c, c.platform);
-                    // return runXcodeProject(c);
-                }
-            }
             const isDevelopmentTeamMissing = e.includes(
                 'requires a development team. Select a development team'
             );
@@ -380,7 +224,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
                 return _handleProvisioningIssues(
                     c,
                     e,
-                    "Your iOS App Development provisioning profiles don't match. under manual signing mode"
+                    "Your macOS App Development provisioning profiles don't match. under manual signing mode"
                 );
             }
             const isProvisioningMissing = e.includes(
@@ -390,7 +234,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
                 return _handleProvisioningIssues(
                     c,
                     e,
-                    'Your iOS App requires a provisioning profile'
+                    'Your macOS App requires a provisioning profile'
                 );
             }
         }
@@ -400,7 +244,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
 ${chalk().green('SUGGESTION:')}
 
 ${chalk().yellow('STEP 1:')}
-Open xcode workspace at: ${chalk().white(`${appPath}/RNVApp.xcworkspace`)}
+Open xcode workspace at: ${chalk().white(`${appPath}/RNVAppMACOS.xcworkspace`)}
 
 ${chalk().yellow('STEP 2:')}
 ${chalk().white('Run app and observe any extra errors')}
@@ -425,7 +269,7 @@ const _handleProvisioningIssues = async (c, e, msg) => {
         } , platform: ${c.platform}, scheme: ${c.runtime.scheme}`;
     const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
     const workspacePath = chalk().white(
-        `${getAppFolder(c, c.platform)}/RNVApp.xcworkspace`
+        `${getAppFolder(c, c.platform)}/RNVAppMACOS.xcworkspace`
     );
     logError(e);
     logWarning(`${msg}. To fix try:
@@ -516,22 +360,6 @@ export const buildXcodeProject = async (c) => {
 
     let destinationPlatform = '';
     switch (c.platform) {
-        case TVOS: {
-            if (c.program.device) {
-                destinationPlatform = 'tvOS';
-            } else {
-                destinationPlatform = 'tvOS Simulator';
-            }
-            break;
-        }
-        case IOS: {
-            if (c.program.device) {
-                destinationPlatform = 'iOS';
-            } else {
-                destinationPlatform = 'iOS Simulator';
-            }
-            break;
-        }
         case MACOS: {
             destinationPlatform = 'macOS';
             break;
@@ -608,8 +436,6 @@ const archiveXcodeProject = (c) => {
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
-        if (platform === IOS) sdk = 'iphoneos';
-        if (platform === TVOS) sdk = 'appletvos';
         if (platform === MACOS) sdk = 'macosx';
     }
     const sdkArr = [sdk];
@@ -656,7 +482,6 @@ const archiveXcodeProject = (c) => {
 
     if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) { p.push('-allowProvisioningUpdates'); }
     if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
-    // if (sdk === 'iphonesimulator') p.push('ONLY_ACTIVE_ARCH=NO', "-destination='name=iPhone 7,OS=10.2'");
 
     logTask('archiveXcodeProject', 'STARTING xcodebuild ARCHIVE...');
 
@@ -780,7 +605,6 @@ const runAppleLog = c => new Promise(() => {
 
 const configureXcodeProject = async (c) => {
     logTask('configureXcodeProject');
-    const { device } = c.program;
     const { platform } = c;
     // const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c);
@@ -876,23 +700,10 @@ const configureXcodeProject = async (c) => {
         }
     });
 
-    // CHECK TEAM ID IF DEVICE
-    const tId = getConfigProp(c, platform, 'teamID');
-    if (device && (!tId || tId === '')) {
-        logError(
-            `You're missing teamID in your ${chalk().white(
-                c.paths.appConfig.config
-            )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`
-        );
-    }
-
     let subPath;
     switch (platform) {
         case MACOS:
             subPath = 'RNVAppMACOS';
-            break;
-        case TVOS:
-            subPath = 'RNVAppTVOS';
             break;
         default:
             subPath = 'RNVApp';

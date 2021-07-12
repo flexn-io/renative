@@ -44,6 +44,21 @@
                 }
             }
         },
+        "macos": {
+            "entryFile": "index.macos",
+            "teamID": "",
+            "provisioningStyle": "Automatic",
+            "entitlements": {},
+            "permissions": ["*"],
+            "scheme": "RNVAppMACOS",
+            "codeSignIdentity": "-",
+            "buildSchemes": {
+                "debug": {
+                    "runScheme": "Debug",
+                    "bundleAssets": false
+                }
+            }
+        },
         "android": {
             "entryFile": "index.android",
             "reactNativeEngine": "hermes",
@@ -105,20 +120,6 @@
                     "signingConfig": "Release",
                     "bundleAssets": true,
                     "bundleIsDev": false
-                }
-            }
-        },
-        "macos": {
-            "entryFile": "index.macos",
-            "teamID": "",
-            "provisioningStyle": "Automatic",
-            "entitlements": {},
-            "permissions": ["*"],
-            "scheme": "RNVAppMACOS",
-            "buildSchemes": {
-                "debug": {
-                    "runScheme": "Debug",
-                    "bundleAssets": false
                 }
             }
         },
