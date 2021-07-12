@@ -4,7 +4,7 @@ import CNF from '../renative.engine.json';
 // import taskRnvPackage from './tasks/task.rnv.package';
 // import taskRnvBuild from './tasks/task.rnv.build';
 import taskRnvConfigure from './tasks/task.rnv.configure';
-// import taskRnvStart from './tasks/task.rnv.start';
+import taskRnvStart from './tasks/task.rnv.start';
 // import taskRnvExport from './tasks/task.rnv.export';
 // import taskRnvDeploy from './tasks/task.rnv.deploy';
 // import taskRnvDebug from './tasks/task.rnv.debug';
@@ -18,7 +18,7 @@ export default {
         // taskRnvPackage,
         // taskRnvBuild,
         taskRnvConfigure,
-        // taskRnvStart,
+        taskRnvStart,
         // taskRnvExport,
         // taskRnvDeploy,
         // taskRnvDebug,
