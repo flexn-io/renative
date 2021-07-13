@@ -143,16 +143,13 @@ const engineRNWindowsConfig = {
         type: 'boolean'
     },
     nuGetTestVersion: {
-        type: 'object'
+        type: 'string'
     },
-    useHermes: {
-        type: 'boolean'
+    reactNativeEngine: {
+        type: 'string'
     },
     nuGetTestFeed: {
-        type: 'object'
-    },
-    overwrite: {
-        type: 'boolean'
+        type: 'string'
     }
 };
 

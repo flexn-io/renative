@@ -27,7 +27,6 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case WINDOWS:
-            c.runtime.shouldOpenBrowser = true;
             return ruWindowsProject(c);
         default:
             return logErrorPlatform(c);

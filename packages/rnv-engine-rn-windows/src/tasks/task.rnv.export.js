@@ -9,7 +9,7 @@ const {
     TASK_EXPORT,
     PARAMS
 } = Constants;
-// TO DO Implement exportWindowsApp
+// TODO Implement exportWindowsApp
 const { ruWindowsProject } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 

@@ -23,7 +23,7 @@ const configUtils_1 = require('./config/configUtils');
 const generator_common_1 = require('./generator-common');
 
 // EXTRACTS FROM RNV
-const { getAppFolder, getAppTitle } = Common;
+const { getAppFolder, getAppTitle, getConfigProp, isMonorepo } = Common;
 const { WINDOWS } = Constants;
 
 // CONSTS
@@ -39,7 +39,7 @@ async function generateCertificate(
     const appFolder = getAppFolder(c, true);
     if (os.platform() === 'win32') {
         try {
-            // TO DO. What's with this timeout?
+            // TODO. What's with this timeout?
             const timeout = 10000; // 10 seconds;
             const thumbprint = childProcess
                 .execSync(
@@ -48,10 +48,6 @@ async function generateCertificate(
                 )
                 .toString()
                 .trim();
-            // TO DO. Does RNV generate it? Or should it be done here?
-            // if (!fs.existsSync(path.join(windowsDir, newProjectName))) {
-            //     fs.mkdirSync(path.join(windowsDir, newProjectName));
-            // }
             childProcess.execSync(
                 `powershell -NoProfile -Command "$pwd = (ConvertTo-SecureString -String password -Force -AsPlainText); Export-PfxCertificate -Cert 'cert:\\CurrentUser\\My\\${thumbprint}' -FilePath ${path.join(
                     appFolder,
@@ -79,20 +75,12 @@ async function generateCertificate(
     return null;
 }
 
-const options = {
-    language: 'cpp',
-    experimentalNuGetDependency: false,
-    useWinUI3: false,
-    nuGetTestVersion: null,
-    useHermes: false,
-    nuGetTestFeed: null,
-    overwrite: false
-};
 
 // Existing high cyclomatic complexity
 // eslint-disable-next-line complexity
 export async function copyProjectTemplateAndReplace(
-    c
+    c,
+    options
 ) {
     if (!c.paths.project.dir) {
         throw new Error('Need a path to copy to');
@@ -101,7 +89,7 @@ export async function copyProjectTemplateAndReplace(
     // React-native init only allows alphanumerics in project names, but other
     // new project tools (like create-react-native-module) are less strict.
 
-    // TO DO. Is this needed?
+    // TODO. Is this needed?
     // -------------------------------------------------------------------
     // Similar to the above, but we want to retain namespace separators
     // if (projectType === 'lib') {
@@ -112,9 +100,16 @@ export async function copyProjectTemplateAndReplace(
     // }
     // -------------------------------------------------------------------
 
-    // TO DO. Can this be considered namespace?
+    // TODO. Can this be considered namespace?
     const appTitle = getAppTitle(c, WINDOWS);
     const appFolder = getAppFolder(c, true);
+
+    const language = getConfigProp(c, c.platform, 'language', options.language);
+    const experimentalNuGetDependency = getConfigProp(c, c.platform, 'experimentalNuGetDependency', options.experimentalNuGetDependency);
+    const useWinUI3 = getConfigProp(c, c.platform, 'useWinUI3', options.useWinUI3);
+    const nuGetTestVersion = getConfigProp(c, c.platform, 'nuGetTestVersion', options.nuGetTestVersion);
+    const useHermes = !!getConfigProp(c, c.platform, 'reactNativeEngine', options.reactNativeEngine) === 'hermes';
+    const nuGetTestFeed = getConfigProp(c, c.platform, 'nuGetTestFeed', options.nuGetTestFeed);
 
     generator_common_1.createDir(path.join(c.paths.project.dir, appFolder));
     generator_common_1.createDir(path.join(c.paths.project.dir, appFolder, c.runtime.appId));
@@ -126,12 +121,12 @@ export async function copyProjectTemplateAndReplace(
         path.join(c.paths.project.dir, appFolder, c.runtime.appId, 'BundleBuilder')
     );
     // }
-    const { language } = options;
+
     const namespaceCpp = toCppNamespace(appTitle);
-    if (options.experimentalNuGetDependency) {
+    if (experimentalNuGetDependency) {
         console.log('Using experimental NuGet dependency.');
     }
-    if (options.useWinUI3) {
+    if (useWinUI3) {
         console.log('Using experimental WinUI3 dependency.');
     }
     const RNWTemplatePath = path.join(path.dirname(require.resolve('react-native-windows/package.json', {
@@ -143,7 +138,7 @@ export async function copyProjectTemplateAndReplace(
     const projectGuid = uuid.v4();
     // eslint-disable-next-line global-require
     const rnwVersion = require('react-native-windows/package.json').version;
-    const nugetVersion = options.nuGetTestVersion || rnwVersion;
+    const nugetVersion = nuGetTestVersion || rnwVersion;
     const packageGuid = uuid.v4();
     const currentUser = username.sync(); // Gets the current username depending on the platform.
     let mainComponentName = c.runtime.appId;
@@ -157,7 +152,7 @@ export async function copyProjectTemplateAndReplace(
         c
     );
 
-    const xamlNamespace = options.useWinUI3
+    const xamlNamespace = useWinUI3
         ? 'Microsoft.UI.Xaml'
         : 'Windows.UI.Xaml';
     const xamlNamespaceCpp = toCppNamespace(xamlNamespace);
@@ -186,13 +181,13 @@ export async function copyProjectTemplateAndReplace(
             hasTargets: true,
         },
         {
-            id: options.useWinUI3 ? 'Microsoft.WinUI' : 'Microsoft.UI.Xaml',
-            version: options.useWinUI3 ? winui3Version : '2.3.191129002',
+            id: useWinUI3 ? 'Microsoft.WinUI' : 'Microsoft.UI.Xaml',
+            version: useWinUI3 ? winui3Version : '2.3.191129002',
             hasProps: false,
             hasTargets: false,
         },
     ];
-    if (options.experimentalNuGetDependency) {
+    if (experimentalNuGetDependency) {
         csNugetPackages.push({
             id: 'Microsoft.ReactNative.Managed',
             version: nugetVersion,
@@ -210,7 +205,7 @@ export async function copyProjectTemplateAndReplace(
             hasTargets: true,
         });
     }
-    if (options.useHermes) {
+    if (useHermes) {
         cppNugetPackages.push({
             id: 'ReactNative.Hermes.Windows',
             version: '0.7.2',
@@ -219,6 +214,7 @@ export async function copyProjectTemplateAndReplace(
         });
     }
     const templateVars = {
+        rnwPackagePath: isMonorepo() ? '..\\..\\..\\..\\node_modules\\react-native-windows' : '..\\..\\node_modules\\react-native-windows',
         useMustache: true,
         regExpPatternsToRemove: [],
         name: c.runtime.appId,
@@ -235,11 +231,11 @@ export async function copyProjectTemplateAndReplace(
         packageGuid,
         currentUser,
         certificateThumbprint,
-        useExperimentalNuget: options.experimentalNuGetDependency,
-        nuGetTestFeed: options.nuGetTestFeed,
+        useExperimentalNuget: experimentalNuGetDependency,
+        nuGetTestFeed,
         // cpp template variables
-        useWinUI3: options.useWinUI3,
-        useHermes: options.useHermes,
+        useWinUI3,
+        useHermes,
         xamlNamespace,
         xamlNamespaceCpp,
         cppNugetPackages,
@@ -276,8 +272,7 @@ export async function copyProjectTemplateAndReplace(
             mapping.from,
             c.paths.project.dir,
             mapping.to,
-            templateVars,
-            options.overwrite
+            templateVars
         );
     }
     if (language === 'cs') {
@@ -298,8 +293,7 @@ export async function copyProjectTemplateAndReplace(
                 mapping.from,
                 c.paths.project.dir,
                 mapping.to,
-                templateVars,
-                options.overwrite
+                templateVars
             );
         }
     } else {
@@ -332,8 +326,7 @@ export async function copyProjectTemplateAndReplace(
                 mapping.from,
                 c.paths.project.dir,
                 mapping.to,
-                templateVars,
-                options.overwrite
+                templateVars
             );
         }
     }
@@ -359,8 +352,7 @@ export async function copyProjectTemplateAndReplace(
                 mapping.from,
                 c.paths.project.dir,
                 mapping.to,
-                templateVars,
-                options.overwrite
+                templateVars
             );
         }
     }
@@ -370,8 +362,7 @@ export async function copyProjectTemplateAndReplace(
             path.join(sharedPath, 'assets'),
             c.paths.project.dir,
             path.join(appFolder, c.runtime.appId, 'Assets'),
-            templateVars,
-            options.overwrite
+            templateVars
         );
     }
     // shared src
@@ -380,8 +371,7 @@ export async function copyProjectTemplateAndReplace(
             path.join(sharedPath, 'src'),
             c.paths.project.dir,
             path.join(appFolder, c.runtime.appId),
-            templateVars,
-            options.overwrite
+            templateVars
         );
     }
     // src
@@ -390,8 +380,7 @@ export async function copyProjectTemplateAndReplace(
             path.join(srcPath, 'src'),
             c.paths.project.dir,
             path.join(appFolder, c.runtime.appId),
-            templateVars,
-            options.overwrite
+            templateVars
         );
     }
 

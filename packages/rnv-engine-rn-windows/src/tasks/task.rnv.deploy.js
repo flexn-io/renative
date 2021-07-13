@@ -9,7 +9,7 @@ const {
     TASK_DEPLOY,
     PARAMS
 } = Constants;
-// TO DO Implement deploy windows app
+// TODO Implement deploy windows app
 const { ruWindowsProject } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 

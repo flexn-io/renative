@@ -2,7 +2,7 @@
 import path from 'path';
 import { IS_LINKED, RNV_HOME_DIR } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
-import { getConfigProp } from '../common';
+import { getAppFolder, getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
 import { fsExistsSync, writeFileSync } from '../systemManager/fileutils';
@@ -241,7 +241,7 @@ const _resolvePkgPath = (c, packageName) => {
         // In the instances of running linked rnv instead of installed one load local packages
         try {
             let pkgPathLocal = require.resolve(packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
-            pkgPathLocal = pkgPathLocal.replace('/dist/index.js', '');
+            pkgPathLocal = pkgPathLocal.replace('/dist/index.js', '').replace('\\dist\\index.js', '');
             return pkgPathLocal;
         } catch {
             logInfo(`Running local rnv but did not find linked ${packageName}. moving on...`);
@@ -256,6 +256,7 @@ const _resolvePkgPath = (c, packageName) => {
         return pkgPath;
     }
     pkgPath = require.resolve(packageName);
+
     return pkgPath;
 };
 
@@ -300,6 +301,7 @@ export const generateEnvVars = (c, moduleConfig, nextConfig) => {
         RNV_MODULE_ALIASES: moduleConfig?.moduleAliasesArray || [],
         RNV_NEXT_TRANSPILE_MODULES: nextConfig,
         RNV_PROJECT_ROOT: c.paths.project.dir,
+        RNV_APP_BUILD_DIR: getAppFolder(c),
         RNV_IS_MONOREPO: isMonorepo,
         RNV_MONO_ROOT: (c.runtime.isWrapper || isMonorepo) ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir
     });

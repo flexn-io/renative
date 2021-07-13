@@ -176,7 +176,7 @@ function createDir(destPath) {
 }
 exports.createDir = createDir;
 async function copyAndReplaceWithChangedCallback(srcPath, destRoot, relativeDestPath, replacements = {}) {
-    const contentChangedCallback =  (_, contentChanged) => alwaysOverwriteContentChangedCallback(relativeDestPath, contentChanged);
+    const contentChangedCallback = (_, contentChanged) => alwaysOverwriteContentChangedCallback(relativeDestPath, contentChanged);
     await copyAndReplace(srcPath, path.join(destRoot, relativeDestPath), replacements, contentChangedCallback);
 }
 exports.copyAndReplaceWithChangedCallback = copyAndReplaceWithChangedCallback;

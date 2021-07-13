@@ -56,7 +56,7 @@
         "react": "16.13.1",
         "react-art": "16.13.1",
         "react-dom": "16.13.1",
-        "react-native": "0.61.2",
+        "react-native": "0.64.2",
         "react-native-gesture-handler": "1.4.1",
         "react-native-google-cast": "github:hosek/react-native-google-cast#sdk4.4.5",
         "react-native-reanimated": "1.0.0-alpha.12",
@@ -67,7 +67,8 @@
         "react-native-vector-icons": "7.1.0",
         "react-native-web": "0.13.12",
         "react-native-web-image-loader": "0.0.5",
-        "renative": "~0.32.0-RC"
+        "renative": "~0.32.0-RC",
+        "react-native-windows": "0.64.12"
     },
     "devDependencies": {
         "@rnv/engine-lightning": "~0.32.0-RC",
@@ -90,7 +91,8 @@
         "renative-template-kitchen-sink": "~0.32.0-RC",
         "rnv": "~0.32.0-RC",
         "wait-on": "5.0.1",
-        "xcode": "2.1.0"
+        "xcode": "2.1.0",
+        "metro": "0.66.0"
     },
     "optionalDependencies": {
         "ios-deploy": "1.10.0"
