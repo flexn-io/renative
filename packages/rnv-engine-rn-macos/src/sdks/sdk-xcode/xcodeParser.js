@@ -1,5 +1,5 @@
 import path from 'path';
-import { Resolver, Logger, Constants, Common, PluginManager, Prompt, FileUtils } from 'rnv';
+import { Resolver, Logger, Common, PluginManager, Prompt, FileUtils } from 'rnv';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
 
@@ -13,7 +13,6 @@ const { fsExistsSync, writeFileSync, fsWriteFileSync } = FileUtils;
 const { doResolve } = Resolver;
 const { chalk, logTask, logWarning } = Logger;
 const { inquirerPrompt } = Prompt;
-const { IOS, TVOS, MACOS } = Constants;
 const { parsePlugins } = PluginManager;
 
 
@@ -43,7 +42,7 @@ export const parseXcodeProject = async (c) => {
         c,
         platform,
         'codeSignIdentity',
-        'iPhone Developer'
+        '-'
     );
     c.runtime.xcodeProj.systemCapabilities = getConfigProp(
         c,
@@ -148,22 +147,10 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
         xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
-        if (platform === IOS) {
-            xcodeProj.updateBuildProperty(
-                'IPHONEOS_DEPLOYMENT_TARGET',
-                deploymentTarget
-            );
-        } else if (platform === TVOS) {
-            xcodeProj.updateBuildProperty(
-                'TVOS_DEPLOYMENT_TARGET',
-                deploymentTarget
-            );
-        } else if (platform === MACOS) {
-            xcodeProj.updateBuildProperty(
-                'MACOSX_DEPLOYMENT_TARGET',
-                deploymentTarget
-            );
-        }
+        xcodeProj.updateBuildProperty(
+            'MACOSX_DEPLOYMENT_TARGET',
+            deploymentTarget
+        );
 
         if (provisionProfileSpecifier) {
             xcodeProj.updateBuildProperty(
@@ -200,10 +187,6 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
 
         xcodeProj.updateBuildProperty(
             'CODE_SIGN_IDENTITY',
-            `"${codeSignIdentity}"`
-        );
-        xcodeProj.updateBuildProperty(
-            '"CODE_SIGN_IDENTITY[sdk=iphoneos*]"',
             `"${codeSignIdentity}"`
         );
 

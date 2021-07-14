@@ -51,7 +51,6 @@
             "entitlements": {},
             "permissions": ["*"],
             "scheme": "RNVAppMACOS",
-            "codeSignIdentity": "-",
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
