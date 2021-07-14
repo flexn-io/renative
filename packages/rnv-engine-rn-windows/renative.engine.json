@@ -6,11 +6,13 @@
     "react-art": "source:rnv",
     "react-dom": "source:rnv",
     "react-native": {
-        "version": "0.64.2",
-        "source" : "rnv"
+        "version": "0.64.2"
     },
     "react-native-windows": "source:rnv",
-    "@react-native-community/cli": "source:rnv"
+    "@react-native-community/cli": {
+      "version": "5.0.1"
+    },
+    "@react-native-windows/cli": "source:rnv"
   },
   "npm": {
     "devDependencies": {

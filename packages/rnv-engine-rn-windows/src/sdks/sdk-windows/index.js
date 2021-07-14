@@ -1,6 +1,6 @@
 
 
-import { Common, Logger } from 'rnv';
+import { Common, Logger, Exec, EngineManager, Resolver } from 'rnv';
 import { copyProjectTemplateAndReplace } from './copyTemplate';
 
 // TODO Is there a a workaround or function for this?
@@ -12,8 +12,11 @@ const runWindows = require(
     '@react-native-windows/cli/lib-commonjs/runWindows/runWindows'
 ).runWindowsCommand.func;
 
-const { logTask } = Logger;
+const { logTask, logWarning } = Logger;
 const { getAppFolder, getConfigProp } = Common;
+const { executeAsync } = Exec;
+const { generateEnvVars } = EngineManager;
+const { doResolve } = Resolver;
 
 const defaultOptions = {
     language: 'cpp',
@@ -25,11 +28,13 @@ const defaultOptions = {
     overwrite: false
 };
 
-
+// TODO Document/comment each of the functions
 export const ruWindowsProject = async (c) => {
     logTask('runWindowsProject');
 
     const language = getConfigProp(c, c.platform, 'language', defaultOptions.language);
+
+    const env = getConfigProp(c, c.platform, 'environment');
 
     // TODO Default options, need to configure this via renative.json
     const options = {
@@ -50,13 +55,25 @@ export const ruWindowsProject = async (c) => {
         deploy: true,
         sln: undefined,
         proj: c.paths.project.dir,
+        appPath: getAppFolder(c),
         msbuildprops: undefined,
         buildLogDirectory: undefined,
         info: undefined,
         directDebugging: undefined,
-        telemetry: false
+        telemetry: false,
+        devPort: 8092,
+        additionalMetroOptions: {
+            env: {
+                NODE_ENV: env || 'development',
+                ...generateEnvVars(c)
+            }
+        }
     };
     const args = [];
+
+    if (!options.additionalMetroOptions.env.RNV_APP_BUILD_DIR) {
+        logWarning('Enviroment variables not injected properly! Running metro will return an error!');
+    }
 
     const projectConfig = {
         windows: {
@@ -98,5 +115,36 @@ const copyWindowsTemplateProject = async (c) => {
     return true;
 };
 
+export const packageBundleForVStudio = (c, isDev = false) => {
+    logTask('packageBundleForVStudio');
+    // const { maxErrorLength } = c.program;
+    const args = [
+        'bundle',
+        '--platform',
+        'windows',
+        '--dev',
+        isDev,
+        '--assets-dest',
+        `platformBuilds/${c.runtime.appId}_${c.platform}`
+        // ,
+        // '--entry-file',
+        // `${c.buildConfig.platforms[c.platform].entryFile}.js`,
+        // '--bundle-output',
+        // `${getAppFolder(c, c.platform)}/main.jsbundle`
+    ];
+
+    if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
+        args.push('--sourcemap-output');
+        args.push(`${getAppFolder(c, c.platform)}/main.jsbundle.map`);
+    }
+
+    if (c.program.info) {
+        args.push('--verbose');
+    }
+
+    return executeAsync(c, `node ${doResolve(
+        'react-native'
+    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
+};
 
 export { copyWindowsTemplateProject as configureWindowsProject };

@@ -68,6 +68,8 @@
         "react-native-web": "0.13.12",
         "react-native-web-image-loader": "0.0.5",
         "renative": "~0.32.0-RC",
+        "@react-native-community/cli": "5.0.1",
+        "@react-native-windows/cli": "0.64.4",
         "react-native-windows": "0.64.12"
     },
     "devDependencies": {

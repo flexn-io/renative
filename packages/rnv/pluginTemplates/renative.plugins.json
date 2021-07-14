@@ -1,7 +1,7 @@
 {
     "pluginTemplates": {
         "react-native": {
-            "version": "0.61.2",
+            "version": "0.64.2",
             "android": {
                 "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }",
                 "path": "react-native"
@@ -321,7 +321,7 @@
             }
         },
         "react-native-fs": {
-            "version": "2.14.1",
+            "version": "2.18.0",
             "ios": {
                 "podName": "RNFS"
             },
@@ -2964,7 +2964,7 @@
             "no-npm": true
         },
         "@react-native-community/cli": {
-            "no-npm": true
+            "version": "5.0.1"
         },
         "recyclerlistview": {
             "version": "3.0.0",

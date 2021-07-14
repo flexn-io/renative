@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 const blacklist = require('metro-config/src/defaults/blacklist');
 const path = require('path');
 

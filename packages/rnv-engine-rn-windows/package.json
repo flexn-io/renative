@@ -38,7 +38,9 @@
     "metro": "0.66.0"
   },
   "peerDependencies": {
-    "rnv": "^0.31"
+    "rnv": "^0.31",
+    "react-native": "0.64.2",
+    "@react-native-community/cli": "5.0.1"
   },
   "private": false,
   "publishConfig": {
