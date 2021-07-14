@@ -26,7 +26,7 @@
 #pragma mark - RCTBridgeDelegate Methods
 
 - (NSURL *)sourceURLForBridge:(__unused RCTBridge *)bridge {
-    return [NSURL URLWithString:@"http://0.0.0.0:8186/index.macos.bundle?platform=ios"];
+    return [NSURL URLWithString:@"http://0.0.0.0:8186/index.macos.bundle?platform=macos"];
 }
 
 @end

@@ -8,7 +8,6 @@ const { generateEnvVars } = EngineManager;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { chalk, logTask, logError, logRaw, logInfo } = Logger;
 const {
-    IOS,
     MACOS,
     TASK_START,
     TASK_CONFIGURE_SOFT,
@@ -19,7 +18,7 @@ const { executeAsync } = Exec;
 
 const BUNDLER_PLATFORMS = {};
 
-BUNDLER_PLATFORMS[MACOS] = IOS;
+BUNDLER_PLATFORMS[MACOS] = MACOS;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
     const { platform } = c;
