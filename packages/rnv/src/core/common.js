@@ -422,6 +422,10 @@ export const getBuildsFolder = (c, platform, customPath) => {
     // if (!fsExistsSync(pp)) {
     //     logWarning(`Path ${chalk().white(pp)} does not exist! creating one for you..`);
     // }
+    if (!pp) {
+        logWarning(`getBuildsFolder: Path ${chalk().white('c.paths.appConfig.dir')} not defined! can't return path. You might not be in renative project`);
+        return null;
+    }
     const p = path.join(pp, `builds/${platform}@${c.runtime.scheme}`);
     if (fsExistsSync(p)) return p;
     return path.join(pp, `builds/${platform}`);
