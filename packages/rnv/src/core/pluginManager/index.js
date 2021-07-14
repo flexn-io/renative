@@ -1,32 +1,23 @@
 /* eslint-disable no-await-in-loop */
-import path from 'path';
 import merge from 'deepmerge';
-import {
-    mergeObjects,
-    sanitizeDynamicProps,
-    readObjectSync,
-    copyFolderContentsRecursiveSync,
-    fsWriteFileSync,
-    fsExistsSync,
-    fsLstatSync,
-    fsReadFileSync
-} from '../systemManager/fileutils';
-import { installPackageDependencies } from '../systemManager/npmUtils';
-import { getConfigProp, getBuildsFolder, getAppFolder } from '../common';
+import path from 'path';
+import { inquirerPrompt } from '../../cli/prompt';
+import { getAppFolder, getBuildsFolder, getConfigProp } from '../common';
 import { writeRenativeConfigFile } from '../configManager';
-
 import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import {
-    chalk,
-    logSuccess,
+    copyFolderContentsRecursiveSync, fsExistsSync,
+    fsLstatSync,
+    fsReadFileSync, fsWriteFileSync, mergeObjects, readObjectSync, sanitizeDynamicProps
+} from '../systemManager/fileutils';
+import {
+    chalk, logDebug, logError, logInfo, logSuccess,
     logTask,
-    logWarning,
-    logError,
-    logDebug,
-    logInfo
+    logWarning
 } from '../systemManager/logger';
+import { installPackageDependencies } from '../systemManager/npmUtils';
 import { doResolve } from '../systemManager/resolve';
-import { inquirerPrompt } from '../../cli/prompt';
+
 
 export const getPluginList = (c, isUpdate = false) => {
     const output = {
@@ -412,7 +403,9 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
         );
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
+
             if (plugins) {
+                let totalIncludedPlugins = 0;
                 Object.keys(plugins).forEach((key) => {
                     if (
                         (includedPlugins.includes('*')
@@ -423,6 +416,7 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
                         if (plugin) {
                             const pluginPlat = plugin[platform];
                             if (ignorePlatformObjectCheck) {
+                                totalIncludedPlugins++;
                                 pluginCallback(plugin, pluginPlat, key);
                             } else if (pluginPlat) {
                                 if (
@@ -445,6 +439,11 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
                         }
                     }
                 });
+                if (totalIncludedPlugins === 0) {
+                    logWarning(
+                        `Found plugins in your app but non are included. are you sure you added ${chalk().white('includedPlugins')} in your renative.json config?`
+                    );
+                }
             } else {
                 logError(
                     `You have no plugins defined in ${chalk().white(
@@ -652,7 +651,6 @@ export const overrideFileContents = (dest, override, overridePath = '') => {
 Consider update or removal of ${chalk().white(overridePath)}`);
         });
     }
-
     fsWriteFileSync(dest, fileToFix);
 };
 
@@ -670,7 +668,6 @@ export const overrideTemplatePlugins = async (c) => {
     const rnvPluginsDirs = c.paths.rnv.pluginTemplates.dirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
     const appBasePluginDir = c.paths.project.appConfigBase.pluginsDir;
-
     parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
         if (plugin?._scopes?.length) {
             plugin._scopes.forEach((pluginScope) => {
