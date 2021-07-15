@@ -61,7 +61,7 @@ export const ruWindowsProject = async (c) => {
         info: undefined,
         directDebugging: undefined,
         telemetry: false,
-        devPort: 8092,
+        devPort: c.runtime.port,
         additionalMetroOptions: {
             env: {
                 NODE_ENV: env || 'development',

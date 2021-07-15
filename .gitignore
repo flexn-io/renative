@@ -61,3 +61,4 @@ coverage
 
 # RN Windows Engine
 .binlog
+packages/app/msbuild.binlog

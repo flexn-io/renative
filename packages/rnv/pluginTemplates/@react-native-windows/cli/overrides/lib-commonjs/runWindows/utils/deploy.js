@@ -243,13 +243,15 @@ function startServerInNewWindow(options, verbose) {
 }
 exports.startServerInNewWindow = startServerInNewWindow;
 function launchServer(options, verbose) {
-    commandWithProgress_1.newSuccess('Starting the React-Native Server');
+    commandWithProgress_1.newSuccess(`Starting the React-Native Server on port ${options.devPort || 8081}`);
     const opts = {
         cwd: options.root,
         detached: true,
         stdio: verbose ? 'inherit' : 'ignore',
         ...(options.additionalMetroOptions ? options.additionalMetroOptions : {})
     };
-    child_process_1.spawn('cmd.exe', ['/C', 'start npx --no-install react-native start'], opts);
+    child_process_1.spawn('cmd.exe', ['/C', `start npx --no-install react-native start --port ${
+        options.devPort || 8081
+    }`], opts);
 }
 //# sourceMappingURL=deploy.js.map
