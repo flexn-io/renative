@@ -7,9 +7,10 @@ const {
     getAppFolder,
     getAppId,
     getConfigProp,
-    getFlavouredProp
+    getFlavouredProp,
+    addSystemInjects
 } = Common;
-const { fsExistsSync, writeFileSync, fsWriteFileSync } = FileUtils;
+const { fsExistsSync, fsMkdirSync, writeFileSync, fsWriteFileSync, writeCleanFile } = FileUtils;
 const { doResolve } = Resolver;
 const { chalk, logTask, logWarning } = Logger;
 const { inquirerPrompt } = Prompt;
@@ -322,14 +323,33 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
             }
         });
 
-        // TODO: Figure out why this throws type error
-        // // FONTS
-        // // Cocoapods take care of this
-        // c.pluginConfigiOS.embeddedFontSources.forEach((v) => {
-        //     xcodeProj.addResourceFile(v, { variantGroup: false });
-        // });
-
         fsWriteFileSync(projectPath, xcodeProj.writeSync());
+
+        const appConfigFontsDir = c.paths.project.appConfigBase.fontsDir;
+        const vectorIconsFontsDir = `${doResolve('react-native-vector-icons')}/Fonts`;
+
+        let fontsDir;
+
+        if (fsExistsSync(appConfigFontsDir)) fontsDir = appConfigFontsDir;
+        else if (fsExistsSync(vectorIconsFontsDir)) fontsDir = vectorIconsFontsDir;
+        // if neither appConfigs/base/fonts nor react-native-vector-icons/Fonts exists,
+        // create empty folder `fonts` inside of appConfigs/base (so xcode could point to that empty folder and build wouldn't crash)
+        else {
+            fsMkdirSync(appConfigFontsDir);
+            fontsDir = appConfigFontsDir;
+        }
+
+        const injects = [
+            { pattern: '{{RNV_INJECT_FONTS_DIR}}', override: fontsDir }];
+
+        addSystemInjects(c, injects);
+
+        writeCleanFile(
+            projectPath,
+            projectPath,
+            injects, null, c
+        );
+
         resolve();
     });
 });

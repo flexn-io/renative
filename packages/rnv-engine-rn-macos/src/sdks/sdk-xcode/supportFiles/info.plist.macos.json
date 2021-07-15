@@ -1,4 +1,5 @@
 {
+    "ATSApplicationFontsPath": "Fonts",
     "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
     "CFBundleExecutable": "$(EXECUTABLE_NAME)",
     "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
