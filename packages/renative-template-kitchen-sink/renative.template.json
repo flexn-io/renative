@@ -163,6 +163,9 @@
                     }
                 ]
             }
+        },
+        "windows": {
+            "engine": "engine-rn-windows"
         }
     }
 }
