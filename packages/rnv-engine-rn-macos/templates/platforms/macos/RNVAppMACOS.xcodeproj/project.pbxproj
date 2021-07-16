@@ -83,7 +83,6 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				38ABA9FBD9C4D7744B368C25 /* libPods-RNVAppMACOS.a */,
 			);
 			name = Frameworks;
