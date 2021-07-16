@@ -9,14 +9,12 @@ import {
     parseInfoPlist
 } from './plistParser';
 import { parsePodFile } from './podfileParser';
-// TODO: re-write parser so it would work with objective-c files and not swift
-// import { parseAppDelegate } from './swiftParser';
+import { parseAppDelegate } from './objcParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
 
 const {
     fsExistsSync,
-    copyFileSync,
     mkdirSync,
     writeFileSync,
     fsWriteFileSync,
@@ -26,7 +24,7 @@ const { executeAsync, commandExistsSync } = Exec;
 const {
     getAppFolder,
     getConfigProp,
-    // getIP,
+    getIP,
 } = Common;
 const { generateEnvVars } = EngineManager;
 const { doResolve } = Resolver;
@@ -34,7 +32,6 @@ const { isPlatformActive } = PlatformManager;
 const {
     copyAssetsFolder,
     copyBuildsFolder,
-    parseFonts
 } = ProjectManager;
 
 const { MACOS } = Constants;
@@ -605,12 +602,13 @@ const runAppleLog = c => new Promise(() => {
 
 const configureXcodeProject = async (c) => {
     logTask('configureXcodeProject');
+    const { device } = c.program;
     const { platform } = c;
-    // const bundlerIp = device ? getIP() : 'localhost';
+    const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c);
-    c.runtime.platformBuildsProjectPath = `${appFolder}/RNVApp.xcworkspace`;
+    c.runtime.platformBuildsProjectPath = `${appFolder}/RNVAppMACOS.xcworkspace`;
     const appFolderName = getAppFolderName(c, platform);
-    // const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     // INJECTORS
     c.pluginConfigiOS = {
         podfileInject: '',
@@ -644,81 +642,17 @@ const configureXcodeProject = async (c) => {
         podfileSources: []
     };
 
-    // FONTS
-    // parsePlugins(c, platform, (plugin, pluginPlat) => {
-    //     // const ignoreProjectFonts = getFlavouredProp(
-    //     //     c,
-    //     //     pluginPlat,
-    //     //     'ignoreProjectFonts'
-    //     // );
-    //
-    //     // TODO: enable this once mmoved to modular_headers Podfile
-    //     // if (ignoreProjectFonts) {
-    //     //     ignoreProjectFonts.forEach((v) => {
-    //     //         if (!c.pluginConfigiOS.ignoreProjectFonts.includes(v)) {
-    //     //             logDebug(`Igonoring font: ${v}`);
-    //     //             c.pluginConfigiOS.ignoreProjectFonts.push(v);
-    //     //         }
-    //     //     });
-    //     // }
-    // });
-    const embeddedFontSourcesCheck = [];
-    parseFonts(c, (font, dir) => {
-        if (font.includes('.ttf') || font.includes('.otf')) {
-            const key = font.split('.')[0];
-            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
-            if (
-                includedFonts
-                && (includedFonts.includes('*') || includedFonts.includes(key))
-            ) {
-                const fontSource = path.join(dir, font);
-                if (fsExistsSync(fontSource)) {
-                    const fontFolder = path.join(appFolder, 'fonts');
-                    mkdirSync(fontFolder);
-                    const fontDest = path.join(fontFolder, font);
-                    copyFileSync(fontSource, fontDest);
-
-                    if (
-                        !c.pluginConfigiOS.ignoreProjectFonts.includes(font)
-                        && !embeddedFontSourcesCheck.includes(font)
-                    ) {
-                        c.pluginConfigiOS.embeddedFontSources.push(fontSource);
-                        embeddedFontSourcesCheck.push(font);
-                    }
-
-                    if (!c.pluginConfigiOS.embeddedFonts.includes(font)) {
-                        c.pluginConfigiOS.embeddedFonts.push(font);
-                    }
-                } else {
-                    logWarning(
-                        `Font ${chalk().white(
-                            fontSource
-                        )} doesn't exist! Skipping.`
-                    );
-                }
-            }
-        }
-    });
-
-    let subPath;
-    switch (platform) {
-        case MACOS:
-            subPath = 'RNVAppMACOS';
-            break;
-        default:
-            subPath = 'RNVApp';
-            break;
-    }
+    const subPath = 'RNVAppMACOS';
     await copyAssetsFolder(c, platform, subPath);
     await copyAppleAssets(c, platform, appFolderName);
-    // await parseAppDelegate(
-    //     c,
-    //     platform,
-    //     appFolder,
-    //     appFolderName,
-    //     bundleAssets,
-    //     bundlerIp
-    // );
+    await parseAppDelegate(
+        c,
+        platform,
+        appFolder,
+        appFolderName,
+        bundleAssets,
+        bundlerIp
+    );
     await parseExportOptionsPlist(c, platform);
     await parseXcscheme(c, platform);
     await parsePodFile(c, platform);
