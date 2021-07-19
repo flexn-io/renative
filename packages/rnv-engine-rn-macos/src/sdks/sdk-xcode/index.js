@@ -399,7 +399,7 @@ export const buildXcodeProject = async (c) => {
     }
     if (!ps.includes('-destination')) {
         p.push('-destination');
-        p.push(`platform=${destinationPlatform},name=${c.runtime.target}`);
+        p.push(`platform=${destinationPlatform}`);
     }
 
     p.push('build');
