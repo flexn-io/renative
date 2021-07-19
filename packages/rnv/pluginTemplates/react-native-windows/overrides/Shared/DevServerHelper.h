@@ -62,7 +62,7 @@ class DevServerHelper {
   //TODO Port needs to be dynamically added, not always it will default to 8092
   // currently set to 8129 cause that what app in renative uses
   static constexpr const char DefaultPackagerHost[] = "localhost";
-  static const uint16_t DefaultPackagerPort = 8192;
+  static const uint16_t DefaultPackagerPort = 8092;
 
  private:
   static std::string GetDeviceLocalHost(const std::string &sourceBundleHost, const uint16_t sourceBundlePort) {

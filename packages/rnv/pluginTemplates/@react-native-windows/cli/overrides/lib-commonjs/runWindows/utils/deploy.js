@@ -222,7 +222,7 @@ function startServerInNewWindow(options, verbose) {
     return new Promise(resolve => {
         if (options.packager) {
             http
-                .get(`http://localhost:${options.devPort || 8081}/status`, res => {
+                .get(`http://localhost:${options.devPort || 8092}/status`, res => {
                 if (res.statusCode === 200) {
                     commandWithProgress_1.newSuccess('React-Native Server already started');
                 }
@@ -246,12 +246,12 @@ function launchServer(options, verbose) {
     commandWithProgress_1.newSuccess(`Starting the React-Native Server on port ${options.devPort || 8081}`);
     const opts = {
         cwd: options.root,
-        detached: true,
+        detached: false,
         stdio: verbose ? 'inherit' : 'ignore',
         ...(options.additionalMetroOptions ? options.additionalMetroOptions : {})
     };
     child_process_1.spawn('cmd.exe', ['/C', `start npx --no-install react-native start --port ${
-        options.devPort || 8081
+        options.devPort || 8092
     }`], opts);
 }
 //# sourceMappingURL=deploy.js.map

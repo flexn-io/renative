@@ -239,6 +239,8 @@ export async function copyProjectTemplateAndReplace(
         xamlNamespace,
         xamlNamespaceCpp,
         cppNugetPackages,
+        // Development port config
+        devPort: c.runtime.port || 8092,
         // cs template variables
         csNugetPackages,
         // autolinking template variables

@@ -13,7 +13,7 @@ const runWindows = require(
 ).runWindowsCommand.func;
 
 const { logTask, logWarning } = Logger;
-const { getAppFolder, getConfigProp, getAppTitle } = Common;
+const { getAppFolder, getConfigProp } = Common;
 const { generateEnvVars } = EngineManager;
 
 const defaultOptions = {
@@ -75,35 +75,40 @@ const defaultOptions = {
 };
 
 // TODO Document/comment each of the functions
-export const ruWindowsProject = async (c) => {
+export const ruWindowsProject = async (c, injectedOptions = {}) => {
     logTask('runWindowsProject');
 
-    const language = getConfigProp(c, c.platform, 'language', defaultOptions.language);
-    const release = getConfigProp(c, c.platform, 'release', defaultOptions.release);
+    const opts = {
+        ...defaultOptions,
+        ...injectedOptions
+    };
+
+    const language = getConfigProp(c, c.platform, 'language', opts.language);
+    const release = getConfigProp(c, c.platform, 'release', opts.release);
     const root = getConfigProp(c, c.platform, 'root', c.paths.project.dir);
-    const arch = getConfigProp(c, c.platform, 'arch', defaultOptions.arch);
-    const singleproc = getConfigProp(c, c.platform, 'singleproc', defaultOptions.singleproc);
-    const emulator = getConfigProp(c, c.platform, 'emulator', defaultOptions.emulator);
-    const device = getConfigProp(c, c.platform, 'device', defaultOptions.device);
-    const target = getConfigProp(c, c.platform, 'target', defaultOptions.target);
-    const remoteDebugging = getConfigProp(c, c.platform, 'remoteDebugging', defaultOptions.remoteDebugging);
-    const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
-    const packager = getConfigProp(c, c.platform, 'packager', defaultOptions.packager);
-    const bundle = getConfigProp(c, c.platform, 'bundle', defaultOptions.bundle);
-    const launch = getConfigProp(c, c.platform, 'launch', defaultOptions.launch);
-    const autolink = getConfigProp(c, c.platform, 'autolink', defaultOptions.autolink);
-    const build = getConfigProp(c, c.platform, 'build', defaultOptions.build);
-    const deploy = getConfigProp(c, c.platform, 'deploy', defaultOptions.deploy);
-    const sln = getConfigProp(c, c.platform, 'sln', defaultOptions.sln);
+    const arch = getConfigProp(c, c.platform, 'arch', opts.arch);
+    const singleproc = getConfigProp(c, c.platform, 'singleproc', opts.singleproc);
+    const emulator = getConfigProp(c, c.platform, 'emulator', opts.emulator);
+    const device = getConfigProp(c, c.platform, 'device', opts.device);
+    const target = getConfigProp(c, c.platform, 'target', opts.target);
+    const remoteDebugging = getConfigProp(c, c.platform, 'remoteDebugging', opts.remoteDebugging);
+    const logging = getConfigProp(c, c.platform, 'logging', opts.logging);
+    const packager = getConfigProp(c, c.platform, 'packager', opts.packager);
+    const bundle = getConfigProp(c, c.platform, 'bundle', opts.bundle);
+    const launch = getConfigProp(c, c.platform, 'launch', opts.launch);
+    const autolink = getConfigProp(c, c.platform, 'autolink', opts.autolink);
+    const build = getConfigProp(c, c.platform, 'build', opts.build);
+    const deploy = getConfigProp(c, c.platform, 'deploy', opts.deploy);
+    const sln = getConfigProp(c, c.platform, 'sln', opts.sln);
     const proj = getConfigProp(c, c.platform, 'proj', c.paths.project.dir);
     const appPath = getConfigProp(c, c.platform, 'appPath', getAppFolder(c));
-    const msbuildprops = getConfigProp(c, c.platform, 'msbuildprops', defaultOptions.msbuildprops);
-    const buildLogDirectory = getConfigProp(c, c.platform, 'buildLogDirectory', defaultOptions.buildLogDirectory);
-    const info = getConfigProp(c, c.platform, 'info', defaultOptions.info);
-    const directDebugging = getConfigProp(c, c.platform, 'directDebugging', c.runtime.port);
-    const telemetry = getConfigProp(c, c.platform, 'telemetry', defaultOptions.telemetry);
+    const msbuildprops = getConfigProp(c, c.platform, 'msbuildprops', opts.msbuildprops);
+    const buildLogDirectory = getConfigProp(c, c.platform, 'buildLogDirectory', opts.buildLogDirectory);
+    const info = getConfigProp(c, c.platform, 'info', opts.info);
+    const directDebugging = getConfigProp(c, c.platform, 'directDebugging', opts.directDebugging);
+    const telemetry = getConfigProp(c, c.platform, 'telemetry', opts.telemetry);
     const devPort = getConfigProp(c, c.platform, 'devPort', c.runtime.port);
-    const additionalMetroOptions = getConfigProp(c, c.platform, 'additionalMetroOptions', defaultOptions.additionalMetroOptions);
+    const additionalMetroOptions = getConfigProp(c, c.platform, 'additionalMetroOptions', opts.additionalMetroOptions);
 
     const env = getConfigProp(c, c.platform, 'environment');
 
@@ -154,11 +159,11 @@ export const ruWindowsProject = async (c) => {
             sourceDir: getAppFolder(c, true),
             solutionFile: `${c.runtime.appId}.sln`,
             project: {
-                projectName: getAppTitle(c, c.platform),
+                projectName: c.runtime.appId,
                 projectFile: `${c.runtime.appId}\\${c.runtime.appId}.vcxproj`,
                 projectLang: language,
                 // TODO Validate if this is ok
-                projectGuid: getAppTitle(c, c.platform)
+                projectGuid: c.runtime.appId
             },
             folder: c.paths.project.dir
 
@@ -181,11 +186,16 @@ export const ruWindowsProject = async (c) => {
     };
 
     await runWindows(args, config, options);
-    return true;
+    // return true;
 };
 
-const copyWindowsTemplateProject = async (c) => {
-    await copyProjectTemplateAndReplace(c, defaultOptions);
+const copyWindowsTemplateProject = async (c, injectedOptions = {}) => {
+    const opts = {
+        ...defaultOptions,
+        ...injectedOptions
+    };
+
+    await copyProjectTemplateAndReplace(c, opts);
     return true;
 };
 
