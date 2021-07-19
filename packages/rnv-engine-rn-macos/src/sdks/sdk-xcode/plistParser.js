@@ -86,7 +86,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
     const appFolder = getAppFolder(c);
     const appFolderName = getAppFolderName(c, platform);
     const plat = c.buildConfig.platforms[platform];
-    const { orientationSupport, urlScheme } = plat;
+    const { urlScheme } = plat;
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     // PLIST
@@ -99,10 +99,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);
     plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
     plistObj.CFBundleVersion = getAppVersionCode(c, platform);
-    // FONTS
-    if (c.pluginConfigiOS.embeddedFonts.length) {
-        plistObj.UIAppFonts = c.pluginConfigiOS.embeddedFonts;
-    }
+
     // PERMISSIONS
     const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
     if (includedPermissions && c.buildConfig.permissions) {
@@ -124,23 +121,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
             logWarning('includedPermissions not parsed. make sure it an array format!');
         }
     }
-    // ORIENATATIONS
-    if (orientationSupport) {
-        if (orientationSupport.phone) {
-            plistObj.UISupportedInterfaceOrientations = orientationSupport.phone;
-        } else {
-            plistObj.UISupportedInterfaceOrientations = [
-                'UIInterfaceOrientationPortrait'
-            ];
-        }
-        if (orientationSupport.tab) {
-            plistObj['UISupportedInterfaceOrientations~ipad'] = orientationSupport.tab;
-        } else {
-            plistObj['UISupportedInterfaceOrientations~ipad'] = [
-                'UIInterfaceOrientationPortrait'
-            ];
-        }
-    }
+
     // URL_SCHEMES (LEGACY)
     if (urlScheme) {
         logWarning(
