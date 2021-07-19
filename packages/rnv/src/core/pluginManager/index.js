@@ -428,6 +428,7 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
                                         logWarning(plugin.deprecated);
                                     }
                                     if (pluginCallback) {
+                                        totalIncludedPlugins++;
                                         pluginCallback(plugin, pluginPlat, key);
                                     }
                                 } else {
