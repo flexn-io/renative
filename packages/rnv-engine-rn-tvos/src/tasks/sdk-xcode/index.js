@@ -298,7 +298,7 @@ export const runXcodeProject = async (c) => {
 
         return _checkLockAndExec(c, appPath, scheme, runScheme, p);
     }
-    return Promise.reject('Missing options for react-native command!');
+    return Promise.reject('Missing options for react-native-tvos command!');
 };
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
@@ -731,7 +731,7 @@ export const packageBundleForXcode = (c, isDev = false) => {
 
     return executeAsync(c, `node ${doResolve(
         'react-native-tvos'
-    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
+    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.rnt.js`, { env: { ...generateEnvVars(c) } });
 };
 
 // Resolve or reject will not be called so this will keep running

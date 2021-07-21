@@ -47,7 +47,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
                 'react-native-tvos'
             )}/local-cli/cli.js start --port ${
                 c.runtime.port
-            } --config=metro.config.js`;
+            } --config=metro.config.rnt.js`;
 
             if (c.program.resetHard) {
                 startCmd += ' --reset-cache';

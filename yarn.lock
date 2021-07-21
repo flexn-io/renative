@@ -1770,6 +1770,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.14.6":
+  version "7.14.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
+  integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@7.0.0-beta.44":
   version "7.0.0-beta.44"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.0.0-beta.44.tgz#f8832f4fdcee5d59bf515e595fc5106c529b394f"
@@ -17089,7 +17096,7 @@ react-native-tab-view@2.13.0:
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.13.0.tgz#23037aa43b0f8f682ddc20415a4baaaf6f82ae8f"
   integrity sha512-AeYbp/u91+D/C9+PmVEPBmFb3ixv8IkLMC3Sc5MajJ/fg0Zl3Of+BcEknBvTnKoe7Fj2y8+Qf9zorBbh5xzh4A==
 
-"react-native-tvos@npm:react-native-tvos@latest":
+"react-native-tvos@npm:react-native-tvos@0.63.4-0":
   version "0.63.4-0"
   resolved "https://registry.yarnpkg.com/react-native-tvos/-/react-native-tvos-0.63.4-0.tgz#f717aeaf799fe2b35fae3c12e3b475d2ebad94fb"
   integrity sha512-bOF5BDGm1O8LJ+btBeVu8S/VpjyXm8EbC/HAdStlRmgiddQiO8cKjgt/rZhcGQz7U9kwCWiF6hKBILT7kB1+pA==

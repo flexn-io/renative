@@ -54,16 +54,3 @@ export const withRNV = (config) => {
 
     return cnf;
 };
-
-export const createEngineAlias = (customAlias) => {
-    const projectPath = process.env.RNV_PROJECT_ROOT || process.cwd();
-    const isMonorepo = process.env.RNV_IS_MONOREPO === 'true' || process.env.RNV_IS_MONOREPO === true;
-    const rootPath = isMonorepo ? process.env.RNV_MONO_ROOT || projectPath : projectPath;
-    const alias = customAlias ? { ...customAlias } : {};
-
-    if (process.env.RNV_IS_TVOS === 'true' || process.env.RNV_IS_TVOS === true) {
-        alias['react-native'] = `${rootPath}/node_modules/react-native-tvos`;
-    }
-
-    return alias;
-};

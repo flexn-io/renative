@@ -109,7 +109,25 @@
         "android": {
             "mainActivity": {
                 "onCreate": "super.onCreate(null)"
-            }
+            },
+            "includedPermissions": [
+                "INTERNET"
+            ]
+        },
+        "androidtv": {
+            "includedPermissions": [
+                "INTERNET"
+            ]
+        },
+        "firetv": {
+            "includedPermissions": [
+                "INTERNET"
+            ]
+        },
+        "androidwear": {
+            "includedPermissions": [
+                "INTERNET"
+            ]
         }
     },
     "currentTemplate": "renative-template-hello-world",
