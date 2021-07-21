@@ -1,20 +1,23 @@
 import {
-    Constants, Logger, PlatformManager, TaskManager,
-    //  NPMUtils,
-    TemplateManager
+    Constants, Logger, PlatformManager, TaskManager, NPMUtils, TemplateManager
 } from 'rnv';
 import { configureMetroConfigs } from '../commonEngine';
-import { SDKXcode } from '../sdks';
+import { SDKAndroid, SDKXcode } from '../sdks';
+
+const { jetifyIfRequired } = NPMUtils;
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     TVOS,
+    ANDROID_TV,
+    FIRE_TV,
     TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
 const { configureXcodeProject } = SDKXcode;
+const { configureGradleProject } = SDKAndroid;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
 
@@ -33,6 +36,11 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
     }
 
     switch (c.platform) {
+        case ANDROID_TV:
+        case FIRE_TV:
+            await configureGradleProject(c);
+            await jetifyIfRequired(c);
+            return true;
         case TVOS:
             await configureXcodeProject(c);
             return true;
@@ -47,5 +55,5 @@ export default {
     fn: taskRnvConfigure,
     task: 'configure',
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TVOS],
+    platforms: [TVOS, ANDROID_TV, FIRE_TV],
 };

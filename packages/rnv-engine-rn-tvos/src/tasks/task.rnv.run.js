@@ -1,13 +1,14 @@
 import { Common, Constants, Logger, PlatformManager, TaskManager } from 'rnv';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
-import {
-    // SDKAndroid,
-    SDKXcode
-} from '../sdks';
+import { SDKAndroid, SDKXcode } from '../sdks';
+
+const { runAndroid } = SDKAndroid;
 
 const {
     TVOS,
     TASK_RUN,
+    ANDROID_TV,
+    FIRE_TV,
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
@@ -32,6 +33,17 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     switch (platform) {
+        case ANDROID_TV:
+        case FIRE_TV:
+            if (!c.program.only) {
+                await startBundlerIfRequired(c, TASK_RUN, originTask);
+                await runAndroid(c, target);
+                if (!bundleAssets) {
+                    logSummary('BUNDLER STARTED');
+                }
+                return waitForBundlerIfRequired(c);
+            }
+            return runAndroid(c, target);
         case TVOS:
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
@@ -62,7 +74,7 @@ const Task = {
         before: TASK_CONFIGURE
     },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [TVOS],
+    platforms: [TVOS, ANDROID_TV, FIRE_TV],
 };
 
 export default Task;

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-dynamic-require, global-require */
 import path from 'path';
-import { IS_LINKED, RNV_HOME_DIR, TVOS } from '../constants';
+import { IS_LINKED, RNV_HOME_DIR, TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
 import { getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
@@ -303,7 +303,7 @@ export const generateEnvVars = (c, moduleConfig, nextConfig) => {
         RNV_PROJECT_ROOT: c.paths.project.dir,
         RNV_IS_MONOREPO: isMonorepo,
         RNV_MONO_ROOT: (c.runtime.isWrapper || isMonorepo) ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir,
-        RNV_IS_TVOS: c.platform === TVOS
+        RNV_IS_NATIVE_TV: [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform)
     });
 };
 

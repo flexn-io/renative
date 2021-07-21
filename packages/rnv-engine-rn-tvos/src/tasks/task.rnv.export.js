@@ -5,7 +5,10 @@ const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     TVOS,
-    TASK_BUILD, TASK_EXPORT,
+    ANDROID_TV,
+    FIRE_TV,
+    TASK_BUILD,
+    TASK_EXPORT,
     PARAMS
 } = Constants;
 const { exportXcodeProject } = SDKXcode;
@@ -21,6 +24,10 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_EXPORT, originTask)) return true;
 
     switch (platform) {
+        case ANDROID_TV:
+        case FIRE_TV:
+            // Android Platforms don't need extra export step
+            return true;
         case TVOS:
             return exportXcodeProject(c, platform);
         default:
@@ -33,5 +40,5 @@ export default {
     fn: taskRnvExport,
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TVOS],
+    platforms: [TVOS, ANDROID_TV, FIRE_TV],
 };

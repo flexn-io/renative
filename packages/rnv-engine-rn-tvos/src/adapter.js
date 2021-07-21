@@ -61,7 +61,7 @@ export const createEngineAlias = (customAlias) => {
     const rootPath = isMonorepo ? process.env.RNV_MONO_ROOT || projectPath : projectPath;
     const alias = customAlias ? { ...customAlias } : {};
 
-    if (process.env.RNV_IS_TVOS === 'true' || process.env.RNV_IS_TVOS === true) {
+    if (process.env.RNV_IS_NATIVE_TV === 'true' || process.env.RNV_IS_NATIVE_TV === true) {
         alias['react-native'] = `${rootPath}/node_modules/react-native-tvos`;
     }
 

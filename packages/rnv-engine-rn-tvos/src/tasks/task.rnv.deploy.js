@@ -4,6 +4,8 @@ const { logTask } = Logger;
 const {
     TASK_EXPORT,
     TASK_DEPLOY,
+    ANDROID_TV,
+    FIRE_TV,
     TVOS,
     PARAMS
 } = Constants;
@@ -25,5 +27,5 @@ export default {
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TVOS],
+    platforms: [TVOS, ANDROID_TV, FIRE_TV],
 };

@@ -1,15 +1,18 @@
 import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
-import { SDKXcode } from '../sdks';
+import { SDKAndroid, SDKXcode } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     TVOS,
+    ANDROID_TV,
+    FIRE_TV,
     TASK_PACKAGE,
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
 const { packageBundleForXcode } = SDKXcode;
+const { packageAndroid } = SDKAndroid;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
@@ -21,6 +24,9 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_PACKAGE, originTask)) return true;
 
     switch (platform) {
+        case ANDROID_TV:
+        case FIRE_TV:
+            return packageAndroid(c);
         case TVOS:
             return packageBundleForXcode(c);
         default:
@@ -34,5 +40,5 @@ export default {
     fn: taskRnvPackage,
     task: 'package',
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TVOS],
+    platforms: [TVOS, ANDROID_TV, FIRE_TV],
 };

@@ -1,14 +1,17 @@
 import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
-import { SDKXcode } from '../sdks';
+import { SDKAndroid, SDKXcode } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     TVOS,
+    ANDROID_TV,
+    FIRE_TV,
     TASK_BUILD, TASK_PACKAGE, TASK_EXPORT,
     PARAMS
 } = Constants;
 const { buildXcodeProject } = SDKXcode;
+const { buildAndroid } = SDKAndroid;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvBuild = async (c, parentTask, originTask) => {
@@ -20,6 +23,9 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
     switch (platform) {
+        case ANDROID_TV:
+        case FIRE_TV:
+            return buildAndroid(c);
         case TVOS:
             if (parentTask === TASK_EXPORT) {
                 // build task is not necessary when exporting ios
@@ -36,5 +42,5 @@ export default {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [TVOS],
+    platforms: [TVOS, ANDROID_TV, FIRE_TV],
 };
