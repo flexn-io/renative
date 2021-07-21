@@ -115,11 +115,13 @@
             ]
         },
         "androidtv": {
+            "engine": "engine-rn-tvos",
             "includedPermissions": [
                 "INTERNET"
             ]
         },
         "firetv": {
+            "engine": "engine-rn-tvos",
             "includedPermissions": [
                 "INTERNET"
             ]
