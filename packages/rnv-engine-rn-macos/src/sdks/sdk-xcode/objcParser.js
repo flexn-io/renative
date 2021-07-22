@@ -31,9 +31,7 @@ export const parseAppDelegate = (
     if (forceBundle) {
         bundle = forceBundle;
     } else if (isBundled) {
-        bundle = `[[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"${
-            entryFile
-        }",  fallbackResource:nil]`;
+        bundle = '[[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"]';
     } else {
         bundle = `[NSURL URLWithString:@"http://${ip}:${newPort}/${entryFile}.bundle?platform=macos"]`;
     }
