@@ -1751,6 +1751,24 @@ rnv plugin add react-native-localize
 ```
 
 
+## react-native-macos
+
+
+Version: `0.63.37`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-macos
+
+Installation:
+
+```
+rnv plugin add react-native-macos
+```
+
+
 ## react-native-maps
 
 
@@ -2816,7 +2834,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-alpha.43`
+Version: `0.32.0-feat-rnmacos-0`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

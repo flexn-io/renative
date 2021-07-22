@@ -1,6 +1,6 @@
 {
     "name": "renative-app",
-    "version": "0.32.0-alpha.43",
+    "version": "0.32.0-feat-rnmacos-0",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "homepage": "https://github.com/pavjacko/renative#readme",
     "bugs": {
@@ -59,6 +59,7 @@
         "react-native": "0.63.4",
         "react-native-gesture-handler": "1.4.1",
         "react-native-google-cast": "github:hosek/react-native-google-cast#sdk4.4.5",
+        "react-native-macos": "0.63.37",
         "react-native-reanimated": "1.0.0-alpha.12",
         "react-native-safe-area-context": "0.7.2",
         "react-native-safe-area-view": "0.14.5",
@@ -67,16 +68,15 @@
         "react-native-vector-icons": "7.1.0",
         "react-native-web": "0.13.12",
         "react-native-web-image-loader": "0.0.5",
-        "renative": "~0.32.0-RC",
-        "react-native-macos": "0.63.37"
+        "renative": "~0.32.0-RC"
     },
     "devDependencies": {
         "@rnv/engine-lightning": "~0.32.0-RC",
         "@rnv/engine-rn": "~0.32.0-RC",
         "@rnv/engine-rn-electron": "~0.32.0-RC",
+        "@rnv/engine-rn-macos": "~0.32.0-RC",
         "@rnv/engine-rn-next": "~0.32.0-RC",
         "@rnv/engine-rn-web": "~0.32.0-RC",
-        "@rnv/engine-rn-macos": "~0.32.0-RC",
         "@rnv/integration-docker": "0.1.0-alpha.0",
         "@rnv/integration-vercel": "0.2.0-alpha.0",
         "babel-jest": "24.9.0",
