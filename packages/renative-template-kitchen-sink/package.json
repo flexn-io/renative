@@ -52,5 +52,6 @@
         "access": "public"
     },
     "title": "Kitchen Sink ReNative Template",
-    "codename": "Hairy Goblin"
+    "codename": "Hairy Goblin",
+    "gitHead": "366ba69a44add1964f58413087a5dcab985b5eaa"
 }

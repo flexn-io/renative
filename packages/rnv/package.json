@@ -188,5 +188,6 @@
         "preset": "react-native",
         "collectCoverage": true
     },
-    "title": "ReNative CLI"
+    "title": "ReNative CLI",
+    "gitHead": "366ba69a44add1964f58413087a5dcab985b5eaa"
 }
