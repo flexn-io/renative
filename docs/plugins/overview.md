@@ -836,7 +836,7 @@ rnv plugin add react-hot-loader
 ## react-native
 
 
-Version: `0.61.2`
+Version: `0.63.4`
 
 Platforms: `android`,`androidtv`,`firetv`,`androidwear`
 
@@ -2471,6 +2471,24 @@ rnv plugin add react-native-tab-view
 ```
 
 
+## react-native-tvos
+
+
+Version: `npm:react-native-tvos@0.63.4-0`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-tvos
+
+Installation:
+
+```
+rnv plugin add react-native-tvos
+```
+
+
 ## react-native-uri-scheme
 
 
@@ -2816,7 +2834,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-alpha.43`
+Version: `0.32.0-feat-tvos.0`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
