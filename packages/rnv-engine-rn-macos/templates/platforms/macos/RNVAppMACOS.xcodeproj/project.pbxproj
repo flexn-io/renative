@@ -17,11 +17,12 @@
 		514201522437B4B40078DB4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514201512437B4B40078DB4F /* Assets.xcassets */; };
 		514201552437B4B40078DB4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 514201532437B4B40078DB4F /* Main.storyboard */; };
 		514201582437B4B40078DB4F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 514201572437B4B40078DB4F /* main.m */; };
+		F12B682026A6EE8900F2A8D3 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = F12B681F26A6EE8900F2A8D3 /* main.jsbundle */; };
 		F1926202269F2BE700B1CDCF /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = F19261C1269F229C00B1CDCF /* Fonts */; };
+		F1EA065826A98FE900040910 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = F1EA065726A98FE900040910 /* assets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		02422F9FB6FF5F34B4E63E6F /* Pods-Shared-RNVAppMACOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shared-RNVAppMACOS.debug.xcconfig"; path = "Target Support Files/Pods-Shared-RNVAppMACOS/Pods-Shared-RNVAppMACOS.debug.xcconfig"; sourceTree = "<group>"; };
 		0AF6D48225826727B7FDC5A2 /* Pods-RNVAppMACOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVAppMACOS.release.xcconfig"; path = "Target Support Files/Pods-RNVAppMACOS/Pods-RNVAppMACOS.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* RNVAppMACOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNVAppMACOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,7 +32,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RNVAppMACOS/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		38423A3E24576CBC00BC2EAC /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		38ABA9FBD9C4D7744B368C25 /* libPods-RNVAppMACOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNVAppMACOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		514201492437B4B30078DB4F /* RNVAppMACOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNVAppMACOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5142014B2437B4B30078DB4F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -46,7 +46,9 @@
 		C8741E0D5119B2D694E0D02F /* Pods-RNVAppMACOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVAppMACOS.debug.xcconfig"; path = "Target Support Files/Pods-RNVAppMACOS/Pods-RNVAppMACOS.debug.xcconfig"; sourceTree = "<group>"; };
 		CE0E74F571E1F48FF00A8324 /* Pods-Shared-RNVAppMACOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shared-RNVAppMACOS.release.xcconfig"; path = "Target Support Files/Pods-Shared-RNVAppMACOS/Pods-Shared-RNVAppMACOS.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F12B681F26A6EE8900F2A8D3 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = file; path = main.jsbundle; sourceTree = SOURCE_ROOT; };
 		F19261C1269F229C00B1CDCF /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "{{RNV_INJECT_FONTS_DIR}}"; sourceTree = "<group>"; };
+		F1EA065726A98FE900040910 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +93,7 @@
 		5142014A2437B4B30078DB4F /* RNVAppMACOS */ = {
 			isa = PBXGroup;
 			children = (
-				38423A3E24576CBC00BC2EAC /* main.jsbundle */,
+				F12B681F26A6EE8900F2A8D3 /* main.jsbundle */,
 				5142014B2437B4B30078DB4F /* AppDelegate.h */,
 				5142014C2437B4B30078DB4F /* AppDelegate.m */,
 				5142014E2437B4B30078DB4F /* ViewController.h */,
@@ -115,6 +117,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				F1EA065726A98FE900040910 /* assets */,
 				F19261C1269F229C00B1CDCF /* Fonts */,
 				5142014A2437B4B30078DB4F /* RNVAppMACOS */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -209,9 +212,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F1EA065826A98FE900040910 /* assets in Resources */,
 				F1926202269F2BE700B1CDCF /* Fonts in Resources */,
 				514201522437B4B40078DB4F /* Assets.xcassets in Resources */,
 				514201552437B4B40078DB4F /* Main.storyboard in Resources */,
+				F12B682026A6EE8900F2A8D3 /* main.jsbundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

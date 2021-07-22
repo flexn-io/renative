@@ -5,7 +5,7 @@ import taskRnvPackage from './tasks/task.rnv.package';
 import taskRnvBuild from './tasks/task.rnv.build';
 import taskRnvConfigure from './tasks/task.rnv.configure';
 import taskRnvStart from './tasks/task.rnv.start';
-// import taskRnvExport from './tasks/task.rnv.export';
+import taskRnvExport from './tasks/task.rnv.export';
 // import taskRnvDeploy from './tasks/task.rnv.deploy';
 // import taskRnvDebug from './tasks/task.rnv.debug';
 
@@ -19,7 +19,7 @@ export default {
         taskRnvBuild,
         taskRnvConfigure,
         taskRnvStart,
-        // taskRnvExport,
+        taskRnvExport,
         // taskRnvDeploy,
         // taskRnvDebug,
     ]),

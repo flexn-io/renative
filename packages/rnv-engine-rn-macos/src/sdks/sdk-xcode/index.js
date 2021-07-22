@@ -149,7 +149,7 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
 });
 
 export const runXcodeProject = async (c) => {
-    logTask('runXcodeProject', `target:${c.runtime.target}`);
+    logTask('runXcodeProject');
 
     const appPath = getAppFolder(c, c.platform);
     const scheme = getConfigProp(c, c.platform, 'scheme');
@@ -535,7 +535,7 @@ const exportXcodeProject = async (c) => {
     logTask('exportXcodeProject', 'STARTING xcodebuild EXPORT...');
 
     return executeAsync(c, `xcodebuild ${p.join(' ')}`).then(() => {
-        logSuccess(`Your IPA is located in ${chalk().cyan(exportPath)} .`);
+        logSuccess(`Your export is located in ${chalk().cyan(exportPath)} .`);
     });
 };
 
