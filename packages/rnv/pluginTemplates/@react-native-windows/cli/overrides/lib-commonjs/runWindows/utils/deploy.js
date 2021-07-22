@@ -250,8 +250,8 @@ function launchServer(options, verbose) {
         stdio: verbose ? 'inherit' : 'ignore',
         ...(options.additionalMetroOptions ? options.additionalMetroOptions : {})
     };
-    child_process_1.spawn('cmd.exe', ['/C', `start npx --no-install react-native start --port ${
-        options.devPort || 8092
-    }`], opts);
+    // child_process_1.spawn('cmd.exe', ['/C', `start npx --no-install react-native start --port ${
+    //     options.devPort || 8092
+    // }`], opts);
 }
 //# sourceMappingURL=deploy.js.map

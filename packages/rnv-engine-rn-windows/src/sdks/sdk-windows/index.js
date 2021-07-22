@@ -1,6 +1,6 @@
 
 
-import { Common, Logger, EngineManager } from 'rnv';
+import { Common, Logger, EngineManager, Resolver, Exec } from 'rnv';
 import { copyProjectTemplateAndReplace } from './copyTemplate';
 
 // TODO Is there a a workaround or function for this?
@@ -12,9 +12,11 @@ const runWindows = require(
     '@react-native-windows/cli/lib-commonjs/runWindows/runWindows'
 ).runWindowsCommand.func;
 
-const { logTask, logWarning } = Logger;
+const { logTask, logWarning, logDebug } = Logger;
 const { getAppFolder, getConfigProp } = Common;
 const { generateEnvVars } = EngineManager;
+const { doResolve } = Resolver;
+const { executeAsync } = Exec;
 
 const defaultOptions = {
     language: 'cpp',
@@ -45,7 +47,7 @@ const defaultOptions = {
     // Do not launch packager while building
     packager: true,
     // Enable Bundle configuration.
-    bundle: undefined,
+    bundle: true,
     // Launch the app after deployment
     launch: true,
     // Run autolinking
@@ -67,7 +69,7 @@ const defaultOptions = {
     // Number - Enable direct debugging on specified port
     directDebugging: undefined,
     // Sending telemetry that allows analysis of usage and failures of the react-native-windows CLI to Microsoft
-    telemetry: false,
+    telemetry: true,
     // Bundler port to run on
     devPort: undefined,
     // Additional options/args passed to react native's cli's metro server start function
@@ -109,8 +111,9 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
     const telemetry = getConfigProp(c, c.platform, 'telemetry', opts.telemetry);
     const devPort = getConfigProp(c, c.platform, 'devPort', c.runtime.port);
     const additionalMetroOptions = getConfigProp(c, c.platform, 'additionalMetroOptions', opts.additionalMetroOptions);
-
     const env = getConfigProp(c, c.platform, 'environment');
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
+    const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
 
     // TODO Default options, need to configure this via renative.json
     const options = {
@@ -185,6 +188,15 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
         project: projectConfig
     };
 
+    // For release bundle needs to be created
+    if (bundleAssets || release) {
+        logDebug('Assets will be bundled');
+        await packageBundleForWindows(
+            c,
+            bundleIsDev
+        );
+    }
+
     await runWindows(args, config, options);
     // return true;
 };
@@ -199,4 +211,35 @@ const copyWindowsTemplateProject = async (c, injectedOptions = {}) => {
     return true;
 };
 
-export { copyWindowsTemplateProject as configureWindowsProject };
+const packageBundleForWindows = (c, isDev = false) => {
+    logTask('packageBundleForWindows');
+    // const { maxErrorLength } = c.program;
+    const args = [
+        'bundle',
+        '--platform',
+        'ios',
+        '--dev',
+        isDev,
+        '--assets-dest',
+        `platformBuilds/${c.runtime.appId}_${c.platform}`,
+        '--entry-file',
+        `${c.buildConfig.platforms[c.platform].entryFile}.js`,
+        '--bundle-output',
+        `${getAppFolder(c, c.platform)}/main.jsbundle`
+    ];
+
+    if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
+        args.push('--sourcemap-output');
+        args.push(`${getAppFolder(c, c.platform)}/${c.runtime.appId}/Bundle/index.windows.bundle`);
+    }
+
+    if (c.program.info) {
+        args.push('--verbose');
+    }
+
+    return executeAsync(c, `node ${doResolve(
+        'react-native'
+    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
+};
+
+export { copyWindowsTemplateProject as configureWindowsProject, packageBundleForWindows };

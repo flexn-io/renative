@@ -1,5 +1,6 @@
 import { Constants, Logger, PlatformManager, TaskManager } from 'rnv';
 import { SDKWindows } from '../sdks';
+import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
 
 
 const { logErrorPlatform } = PlatformManager;
@@ -27,7 +28,9 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case WINDOWS:
-            return ruWindowsProject(c);
+            await startBundlerIfRequired(c, TASK_RUN, originTask);
+            await ruWindowsProject(c);
+            return waitForBundlerIfRequired(c);
         default:
             return logErrorPlatform(c);
     }

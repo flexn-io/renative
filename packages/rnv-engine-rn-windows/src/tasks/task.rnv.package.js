@@ -1,29 +1,32 @@
-import { TaskManager, Constants, Logger } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { SDKWindows } from '../sdks';
 
+const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
-    WEB,
-    TIZEN,
-    WEBOS,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
-    KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
-    CHROMECAST,
+    WINDOWS,
     TASK_PACKAGE,
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
-
-const { executeOrSkipTask } = TaskManager;
+const { packageBundleForWindows } = SDKWindows;
+const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
+    const { platform } = c;
 
     await executeOrSkipTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
 
-    return true;
+    if (shouldSkipTask(c, TASK_PACKAGE, originTask)) return true;
+
+    switch (platform) {
+        case WINDOWS:
+            return packageBundleForWindows(c);
+        default:
+            logErrorPlatform(c);
+            return false;
+    }
 };
 
 export default {
@@ -32,14 +35,6 @@ export default {
     task: 'package',
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
-        WEB,
-        TIZEN,
-        WEBOS,
-        TIZEN_MOBILE,
-        TIZEN_WATCH,
-        KAIOS,
-        FIREFOX_OS,
-        FIREFOX_TV,
-        CHROMECAST,
+        WINDOWS
     ],
 };

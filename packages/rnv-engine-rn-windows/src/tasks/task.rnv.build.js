@@ -1,26 +1,18 @@
-import {
-    Constants, Logger,
-    //  PlatformManager,
-    TaskManager
-} from 'rnv';
-import { WINDOWS } from 'rnv/dist/core/constants';
+import { Constants, Logger, TaskManager } from 'rnv';
 import { SDKWindows } from '../sdks';
 
-// const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
-    // WINDOWS,
-    TASK_BUILD, TASK_PACKAGE,
+    WINDOWS,
+    TASK_BUILD,
+    TASK_PACKAGE,
     PARAMS
 } = Constants;
-
-const { buildWindowsProject } = SDKWindows;
+const { ruWindowsProject } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvBuild = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild', `parent:${parentTask}`);
-
-    const { platform } = c;
 
     // Build aways bundles assets
     c.runtime.forceBundleAssets = true;
@@ -29,7 +21,7 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
 
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
-    await buildWindowsProject(c, platform);
+    await ruWindowsProject(c, { release: true, launch: false, deploy: false });
 };
 
 export default {

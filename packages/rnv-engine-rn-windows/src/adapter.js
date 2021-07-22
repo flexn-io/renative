@@ -1,11 +1,16 @@
+const fs = require('fs');
 const path = require('path');
 // eslint-disable-next-line import/no-unresolved
 const exclusionList = require('metro-config/src/defaults/exclusionList');
 
 export const withRNV = (config) => {
+    const rnwPath = fs.realpathSync(
+        path.resolve(require.resolve('react-native-windows/package.json'), '..'),
+    );
+
     const projectPath = process.env.RNV_PROJECT_ROOT || process.cwd();
 
-    const watchFolders = [path.resolve(projectPath, 'node_modules')];
+    const watchFolders = [rnwPath, path.resolve(projectPath, 'node_modules')];
 
     if (process.env.RNV_IS_MONOREPO === 'true' || process.env.RNV_IS_MONOREPO === true) {
         const monoRootPath = process.env.RNV_MONO_ROOT || projectPath;
@@ -15,6 +20,7 @@ export const withRNV = (config) => {
     if (config?.watchFolders?.length) {
         watchFolders.push(...config.watchFolders);
     }
+
 
     const cnf = {
         ...config,
@@ -41,6 +47,10 @@ export const withRNV = (config) => {
                 /renative.local.*/,
                 /metro.config.local.*/,
             ]),
+            extraNodeModules: {
+                // Redirect react-native-windows to avoid symlink (metro doesn't like symlinks)
+                'react-native-windows': rnwPath,
+            },
         },
         transformer: {
             getTransformOptions: async () => ({
