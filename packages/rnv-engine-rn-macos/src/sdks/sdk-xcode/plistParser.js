@@ -29,6 +29,8 @@ export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) =>
     const exportOptions = getConfigProp(c, platform, 'exportOptions') || {};
     const id = getConfigProp(c, platform, 'id');
 
+    if (tId && tId !== '' && !exportOptions.teamID) exportOptions.teamID = tId;
+
     c.pluginConfigiOS.exportOptions = objToPlist(exportOptions);
 
     if (exportOptions.provisioningProfiles) {
@@ -43,7 +45,6 @@ export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) =>
     const bPath = getBuildFilePath(c, platform, 'exportOptions.plist');
 
     const injects = [
-        { pattern: '{{TEAM_ID}}', override: tId },
         {
             pattern: '{{PLUGIN_EXPORT_OPTIONS}}',
             override: c.pluginConfigiOS.exportOptions
