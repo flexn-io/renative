@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "0.32.0-feat-tvos.0",
+    "version": "0.32.0-feat-tvos.1",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"
@@ -45,5 +45,5 @@
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "366ba69a44add1964f58413087a5dcab985b5eaa"
+    "gitHead": "2f915145306f72bba3dd6466d7e878dcbb0dead4"
 }

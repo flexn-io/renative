@@ -34,6 +34,7 @@
     "react-art": "source:rnv",
     "react-dom": "source:rnv",
     "react-native": "source:rnv",
+    "react-native-tvos": "source:rnv",
     "react-native-web": "source:rnv",
     "react-native-web-image-loader": "source:rnv",
     "react-native-gesture-handler": "source:rnv",

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-electron",
-    "version": "0.32.0-feat-tvos.0",
+    "version": "0.32.0-feat-tvos.1",
     "description": "ReNative Engine to build electron based platforms with react native support.",
     "keywords": [
         "electron",
@@ -46,5 +46,5 @@
     "publishConfig": {
         "access": "public"
     },
-    "gitHead": "366ba69a44add1964f58413087a5dcab985b5eaa"
+    "gitHead": "2f915145306f72bba3dd6466d7e878dcbb0dead4"
 }
