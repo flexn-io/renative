@@ -47,7 +47,7 @@ const defaultOptions = {
     // Do not launch packager while building
     packager: true,
     // Enable Bundle configuration.
-    bundle: true,
+    bundle: false,
     // Launch the app after deployment
     launch: true,
     // Run autolinking
@@ -217,7 +217,7 @@ const packageBundleForWindows = (c, isDev = false) => {
     const args = [
         'bundle',
         '--platform',
-        'ios',
+        'windows',
         '--dev',
         isDev,
         '--assets-dest',
@@ -225,12 +225,13 @@ const packageBundleForWindows = (c, isDev = false) => {
         '--entry-file',
         `${c.buildConfig.platforms[c.platform].entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c, c.platform)}/main.jsbundle`
+        `${getAppFolder(c, c.platform)}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`,
+        `--assets-dest ${getAppFolder(c, c.platform)}\\${c.runtime.appId}\\Bundle`
     ];
 
     if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
         args.push('--sourcemap-output');
-        args.push(`${getAppFolder(c, c.platform)}/${c.runtime.appId}/Bundle/index.windows.bundle`);
+        args.push(`${getAppFolder(c, c.platform)}\\Release\\${c.runtime.appId}\\sourcemaps\\react\\index.windows.bundle.map`);
     }
 
     if (c.program.info) {

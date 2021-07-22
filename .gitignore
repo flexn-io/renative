@@ -63,3 +63,4 @@ coverage
 .binlog
 packages/app/msbuild.binlog
 packages/app/App.js
+packages/app/app.json
