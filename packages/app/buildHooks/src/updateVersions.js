@@ -74,6 +74,14 @@ export const updateVersions = async (c) => {
         ),
         v
     );
+    _updateJson(
+        c,
+        path.join(
+            pkgFolder,
+            'rnv-engine-rn-macos/package.json'
+        ),
+        v
+    );
     _updateJson(c, path.join(pkgFolder, 'renative/package.json'), v);
     _updateJson(
         c,
@@ -100,7 +108,8 @@ export const updateVersions = async (c) => {
                 '@rnv/engine-rn-web': v,
                 '@rnv/engine-rn-next': v,
                 '@rnv/engine-rn-electron': v,
-                '@rnv/engine-lightning': v
+                '@rnv/engine-lightning': v,
+                '@rnv/engine-rn-macos': v,
             },
         }
     );
