@@ -121,6 +121,8 @@ export const parsePodFile = async (c, platform) => {
         // Ignore
     }
 
+    const title = getConfigProp(c, platform, 'title');
+
     const injects = [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
@@ -159,7 +161,8 @@ export const parsePodFile = async (c, platform) => {
         {
             pattern: '{{PLUGIN_STATIC_POD_EXTRA_CONDITIONS}}',
             override: c.pluginConfigiOS.staticPodExtraConditions
-        }
+        },
+        { pattern: '{{TITLE}}', override: title },
     ];
 
     addSystemInjects(c, injects);

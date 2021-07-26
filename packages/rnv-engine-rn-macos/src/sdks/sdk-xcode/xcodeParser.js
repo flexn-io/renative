@@ -339,8 +339,12 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
             fontsDir = appConfigFontsDir;
         }
 
+        const title = getConfigProp(c, platform, 'title');
+
         const injects = [
-            { pattern: '{{RNV_INJECT_FONTS_DIR}}', override: fontsDir }];
+            { pattern: '{{RNV_INJECT_FONTS_DIR}}', override: fontsDir },
+            { pattern: '{{TITLE}}', override: title },
+        ];
 
         addSystemInjects(c, injects);
 

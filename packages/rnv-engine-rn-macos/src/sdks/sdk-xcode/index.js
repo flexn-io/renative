@@ -661,8 +661,8 @@ const configureXcodeProject = async (c) => {
     await parseEntitlementsPlist(c, platform);
     await parseInfoPlist(c, platform);
     await copyBuildsFolder(c, platform);
-    await runCocoaPods(c);
     await parseXcodeProject(c, platform);
+    await runCocoaPods(c);
     return true;
 };
 
