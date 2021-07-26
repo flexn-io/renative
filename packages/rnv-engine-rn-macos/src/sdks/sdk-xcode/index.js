@@ -12,6 +12,7 @@ import { parsePodFile } from './podfileParser';
 import { parseAppDelegate } from './objcParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
+import { parseStoryboard } from './storyboardParser';
 
 const {
     fsExistsSync,
@@ -653,6 +654,7 @@ const configureXcodeProject = async (c) => {
         bundleAssets,
         bundlerIp
     );
+    await parseStoryboard(c, platform, appFolder, appFolderName);
     await parseExportOptionsPlist(c, platform);
     await parseXcscheme(c, platform);
     await parsePodFile(c, platform);
