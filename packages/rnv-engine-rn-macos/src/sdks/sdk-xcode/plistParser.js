@@ -97,6 +97,8 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
             `../../../src/sdks/sdk-xcode/supportFiles/info.plist.${platform}.json`
         )
     );
+
+    plistObj.CFBundleName = getAppTitle(c, platform);
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);
     plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
     plistObj.CFBundleVersion = getAppVersionCode(c, platform);

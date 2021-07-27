@@ -6,6 +6,7 @@ import { parseProvisioningProfiles } from './provisionParser';
 const {
     getAppFolder,
     getAppId,
+    getAppTitle,
     getConfigProp,
     getFlavouredProp,
     addSystemInjects
@@ -339,7 +340,7 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
             fontsDir = appConfigFontsDir;
         }
 
-        const title = getConfigProp(c, platform, 'title');
+        const title = getAppTitle(c, platform);
 
         const injects = [
             { pattern: '{{RNV_INJECT_FONTS_DIR}}', override: fontsDir },

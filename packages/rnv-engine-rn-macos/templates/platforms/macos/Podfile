@@ -5,7 +5,7 @@ platform :macos, '{{PLUGIN_DEPLOYMENT_TARGET}}'
 # ReNative: To allow dynamic plugins via flavours autolinking has to be disabled
 # require_relative '../../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target '{{TITLE}}' do
+target 'RNVAppMACOS' do
 
    # Everything below is from here 'node_modules/react-native-macos/scripts/react_native_pods'
 
