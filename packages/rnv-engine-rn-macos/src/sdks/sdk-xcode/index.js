@@ -568,7 +568,7 @@ export const packageBundleForXcode = (c, isDev = false) => {
 
     return executeAsync(c, `node ${doResolve(
         'react-native'
-    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
+    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.rnm.js`, { env: { ...generateEnvVars(c) } });
 };
 
 // Resolve or reject will not be called so this will keep running
