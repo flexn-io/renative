@@ -1206,7 +1206,7 @@
             }
         },
         "react-native-reanimated": {
-            "version": "1.0.0-alpha.12",
+            "version": "2.2.0",
             "ios": {
                 "podName": "RNReanimated"
             },
@@ -2418,16 +2418,16 @@
         "@react-navigation": {
             "npm": {
                 "@react-navigation/core": "5.2.1",
-                "@react-navigation/drawer": "5.1.1",
+                "@react-navigation/drawer": "5.9.0",
                 "@react-navigation/bottom-tabs": "5.1.1",
                 "@react-navigation/material-bottom-tabs": "5.1.1",
                 "@react-navigation/native": "5.0.9",
-                "@react-navigation/stack": "5.1.1",
+                "@react-navigation/stack": "5.9.0",
                 "@react-navigation/routers": "5.1.0",
                 "@react-navigation/material-top-tabs": "5.1.1",
                 "@react-navigation/web": "1.0.0-alpha.9",
                 "@react-native-community/masked-view": "0.1.6",
-                "react-native-safe-area-context": "0.7.2"
+                "react-native-safe-area-context": "3.1.0"
             },
             "pluginDependencies": {
                 "react-native-screens": "source:rnv",
@@ -2436,7 +2436,7 @@
             }
         },
         "react-native-safe-area-context": {
-            "version": "0.7.2",
+            "version": "3.1.0",
             "android": {
                 "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
             },
