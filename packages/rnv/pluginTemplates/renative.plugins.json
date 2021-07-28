@@ -20,7 +20,7 @@
             }
         },
         "renative": {
-            "version": "0.32.0-feat-rnmacos-1",
+            "version": "0.32.0-feat-rnmacos-2",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
