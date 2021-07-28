@@ -1,5 +1,5 @@
 import path from 'path';
-import { FileUtils, Logger, Common } from 'rnv';
+import { Common, FileUtils, Logger } from 'rnv';
 
 const {
     getAppFolder,
@@ -15,7 +15,7 @@ const { logWarning } = Logger;
 const { writeCleanFile } = FileUtils;
 
 const JS_BUNDLE_DEFAULTS = {
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager
+    // Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     androidwear: '"assets://index.androidwear.bundle"'
 };
 
@@ -25,7 +25,7 @@ export const parseMainApplicationSync = (c) => {
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const bundleFile = getGetJsBundleFile(c, platform) || bundleAssets
-        ? '"assets://index.android.bundle"'
+        ? `"assets://${getEntryFile(c, platform)}.bundle"`
         : JS_BUNDLE_DEFAULTS[platform] || '"super.getJSBundleFile()"';
     const bundlerIp = getIP() || '10.0.2.2';
     if (!bundleAssets) {

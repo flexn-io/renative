@@ -1,36 +1,26 @@
-import path from 'path';
-import net from 'net';
-import shell from 'shelljs';
-import inquirer from 'inquirer';
 import execa from 'execa';
-import { FileUtils, Exec, Utils, Logger, Constants, EngineManager,
-    PluginManager, ProjectManager, Common,
-    PlatformManager, Prompt, SDKManager, RuntimeManager } from 'rnv';
+import inquirer from 'inquirer';
+import net from 'net';
+import path from 'path';
+import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, PluginManager, ProjectManager, Prompt, RuntimeManager, SDKManager, Utils } from 'rnv';
+import shell from 'shelljs';
 import {
-    parseAndroidManifestSync,
-    injectPluginManifestSync
-} from './manifestParser';
-import {
-    parseMainActivitySync,
-    parseSplashActivitySync,
-    parseMainApplicationSync,
-    injectPluginKotlinSync
-} from './kotlinParser';
-import {
-    parseAppBuildGradleSync,
-    parseBuildGradleSync,
-    parseSettingsGradleSync,
-    parseGradlePropertiesSync,
     injectPluginGradleSync,
-    parseAndroidConfigObject
+    parseAndroidConfigObject, parseAppBuildGradleSync,
+    parseBuildGradleSync, parseGradlePropertiesSync, parseSettingsGradleSync
 } from './gradleParser';
 import {
     parseGradleWrapperSync
 } from './gradleWrapperParser';
 import {
-    parseValuesStringsSync,
+    injectPluginKotlinSync, parseMainActivitySync, parseMainApplicationSync, parseSplashActivitySync
+} from './kotlinParser';
+import {
+    injectPluginManifestSync, parseAndroidManifestSync
+} from './manifestParser';
+import {
     injectPluginXmlValuesSync,
-    parseValuesColorsSync
+    parseValuesColorsSync, parseValuesStringsSync
 } from './xmlValuesParser';
 
 const {
@@ -62,6 +52,7 @@ const { executeAsync, execCLI } = Exec;
 const {
     getAppFolder,
     getConfigProp,
+    getEntryFile,
     getAppId
 } = Common;
 const { isPlatformActive, createPlatformBuild } = PlatformManager;
@@ -86,19 +77,6 @@ const {
     CLI_ANDROID_ADB
 } = Constants;
 
-const _getEntryOutputName = (c) => {
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
-    const { entryFile } = c.buildConfig.platforms[c.platform];
-    // TODO Android PROD Crashes if not using this hardcoded one
-    let outputFile;
-    if (c.platform === ANDROID_WEAR) {
-        outputFile = entryFile;
-    } else {
-        outputFile = 'index.android';
-    }
-    return outputFile;
-};
-
 export const packageAndroid = async (c) => {
     logTask('packageAndroid');
     const { platform } = c;
@@ -110,7 +88,7 @@ export const packageAndroid = async (c) => {
         return true;
     }
 
-    const outputFile = _getEntryOutputName(c);
+    const outputFile = getEntryFile(c, platform);
 
     const appFolder = getAppFolder(c);
     let reactNative = 'react-native';
@@ -587,7 +565,7 @@ export const configureProject = async (c) => {
         return true;
     }
 
-    const outputFile = _getEntryOutputName(c);
+    const outputFile = getEntryFile(c, platform);
 
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(
