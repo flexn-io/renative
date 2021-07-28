@@ -546,7 +546,7 @@ export const packageBundleForXcode = (c, isDev = false) => {
     const args = [
         'bundle',
         '--platform',
-        'ios',
+        'macos',
         '--dev',
         isDev,
         '--assets-dest',
