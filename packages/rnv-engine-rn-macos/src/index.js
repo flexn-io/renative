@@ -8,7 +8,7 @@ import taskRnvConfigure from './tasks/task.rnv.configure';
 import taskRnvStart from './tasks/task.rnv.start';
 import taskRnvExport from './tasks/task.rnv.export';
 // import taskRnvDeploy from './tasks/task.rnv.deploy';
-// import taskRnvDebug from './tasks/task.rnv.debug';
+// import taskRnvLog from './tasks/task.rnv.log';
 
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
@@ -22,7 +22,7 @@ export default {
         taskRnvStart,
         taskRnvExport,
         // taskRnvDeploy,
-        // taskRnvDebug,
+        // taskRnvLog,
     ]),
     config: CNF,
     projectDirName: '',
