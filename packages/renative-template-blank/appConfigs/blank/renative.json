@@ -48,7 +48,6 @@
             "entryFile": "index.macos",
             "teamID": "",
             "provisioningStyle": "Automatic",
-            "entitlements": {},
             "permissions": ["*"],
             "scheme": "RNVAppMACOS",
             "buildSchemes": {

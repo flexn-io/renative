@@ -379,6 +379,7 @@
 			baseConfigurationReference = C8741E0D5119B2D694E0D02F /* Pods-RNVAppMACOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = RNVAppMACOS/RNVAppMACOS.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				INFOPLIST_FILE = RNVAppMACOS/Info.plist;
@@ -400,6 +401,7 @@
 			baseConfigurationReference = 0AF6D48225826727B7FDC5A2 /* Pods-RNVAppMACOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = RNVAppMACOS/RNVAppMACOS.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = RNVAppMACOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

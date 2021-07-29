@@ -1,1 +1,3 @@
-{}
+{
+    "com.apple.security.app-sandbox": true
+}
