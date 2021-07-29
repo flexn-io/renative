@@ -20,7 +20,7 @@
             }
         },
         "renative": {
-            "version": "0.32.0-alpha.43",
+            "version": "0.32.0-feat-androidwear-0",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
