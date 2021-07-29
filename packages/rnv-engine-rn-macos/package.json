@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-macos",
-    "version": "0.32.0-feat-rnmacos-4",
+    "version": "0.32.0-feat-rnmacos-5",
     "description": "ReNative Engine to build react-native macOS platform.",
     "keywords": [
         "react-native-macos"
