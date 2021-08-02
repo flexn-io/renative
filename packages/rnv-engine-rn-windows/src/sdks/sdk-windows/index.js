@@ -32,8 +32,11 @@ const defaultOptions = {
     root: undefined,
     // 'x86' | 'x64' | 'ARM' | 'ARM64'
     arch: 'x86',
-    //  opt out of multi-proc builds
-    singleproc: false,
+    // TODO By default this leaves open MSBuild proccesses in the background
+    // which will hang the run if it is run with -r flag
+    // -----------------------------------------------------------------------
+    // Opt out of multi-proc builds
+    singleproc: true,
     // Deploy to the emulator ??
     emulator: undefined,
     // Deploy to a device ??
@@ -188,6 +191,11 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
         project: projectConfig
     };
 
+    // This needs to be set before the first run to make sure there is just
+    // one build process running and the run command does not hang if you use
+    // it with -r flag
+    await setSingleBuildProcessForWindows(c);
+
     // For release bundle needs to be created
     if (bundleAssets || release) {
         logDebug('Assets will be bundled');
@@ -198,7 +206,14 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
     }
 
     await runWindows(args, config, options);
-    // return true;
+
+    // This needs to run after the build because otherwise such folder will not exist
+    if (getConfigProp(c, c.platform, 'enableSourceMaps', true)) {
+        args.push('--sourcemap-output');
+        args.push(`${getAppFolder(c, c.platform)}\\Release\\${c.runtime.appId}\\sourcemaps\\react\\index.windows.bundle.map`);
+    }
+
+    return true;
 };
 
 const copyWindowsTemplateProject = async (c, injectedOptions = {}) => {
@@ -229,11 +244,6 @@ const packageBundleForWindows = (c, isDev = false) => {
         `--assets-dest ${getAppFolder(c, c.platform)}\\${c.runtime.appId}\\Bundle`
     ];
 
-    if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
-        args.push('--sourcemap-output');
-        args.push(`${getAppFolder(c, c.platform)}\\Release\\${c.runtime.appId}\\sourcemaps\\react\\index.windows.bundle.map`);
-    }
-
     if (c.program.info) {
         args.push('--verbose');
     }
@@ -241,6 +251,12 @@ const packageBundleForWindows = (c, isDev = false) => {
     return executeAsync(c, `node ${doResolve(
         'react-native'
     )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
+};
+
+const setSingleBuildProcessForWindows = (c) => {
+    logTask('setSingleBuildProcessForWindows');
+
+    return executeAsync(c, 'set MSBUILDDISABLENODEREUSE=1');
 };
 
 export { copyWindowsTemplateProject as configureWindowsProject, packageBundleForWindows };
