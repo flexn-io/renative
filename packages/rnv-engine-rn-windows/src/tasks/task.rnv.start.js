@@ -45,7 +45,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
             let startCmd = `node ${doResolve(
                 'react-native'
             )}/local-cli/cli.js start --port ${
-                c.runtime.port
+                c.runtime.port || 8092
             } --config=metro.config.js`;
 
 
@@ -61,7 +61,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
                 );
             }
             // logSummary('BUNDLER STARTED');
-            const url = chalk().cyan(`http://${c.runtime.localhost}:${c.runtime.port}/${
+            const url = chalk().cyan(`http://${c.runtime.localhost}:${c.runtime.port || 8092}/${
                 getEntryFile(c, c.platform)}.bundle?platform=${BUNDLER_PLATFORMS[platform]}`);
             logRaw(`
 

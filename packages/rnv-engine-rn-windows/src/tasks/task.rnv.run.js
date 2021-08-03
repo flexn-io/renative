@@ -11,7 +11,7 @@ const {
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
-const { ruWindowsProject } = SDKWindows;
+const { ruWindowsProject, clearWindowsTemporaryFiles } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 
@@ -28,6 +28,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case WINDOWS:
+            await clearWindowsTemporaryFiles(c);
             await startBundlerIfRequired(c, TASK_RUN, originTask);
             await ruWindowsProject(c);
             return waitForBundlerIfRequired(c);

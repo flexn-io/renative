@@ -13,7 +13,6 @@ const { executeTask } = TaskManager;
 let keepRNVRunning = false;
 
 export const startBundlerIfRequired = async (c, parentTask, originTask) => {
-    console.log('STARTING THE BUNDLER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     logTask('startBundlerIfRequired');
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;

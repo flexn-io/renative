@@ -49,9 +49,9 @@ async function runPowerShellScriptFunction(taskDescription, script, funcName, ve
     }
 }
 exports.runPowerShellScriptFunction = runPowerShellScriptFunction;
-function commandWithProgress(spinner, taskDoingName, command, args, verbose, additionalMetroOptions = {}) {
+function commandWithProgress(spinner, taskDoingName, command, args, verbose, additionalMetroOptions) {
     return new Promise((resolve, reject) => {
-        const spawnOptions = verbose ? { stdio: 'inherit', ...additionalMetroOptions} : { ...additionalMetroOptions };
+        const spawnOptions = verbose ? { stdio: 'inherit', ...(additionalMetroOptions ? additionalMetroOptions : {})} : additionalMetroOptions ?  additionalMetroOptions : null;
         if (verbose) {
             spinner.stop();
         }

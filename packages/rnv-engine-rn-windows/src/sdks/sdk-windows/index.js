@@ -205,10 +205,14 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
         );
     }
 
+    // Files need to be cleared otherwise after release build
+    // all builds will fail with null pointer exception from Visual Studio
+    // await clearWindowsTemporaryFiles(c);
+
     await runWindows(args, config, options);
 
     // This needs to run after the build because otherwise such folder will not exist
-    if (getConfigProp(c, c.platform, 'enableSourceMaps', true)) {
+    if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
         args.push('--sourcemap-output');
         args.push(`${getAppFolder(c, c.platform)}\\Release\\${c.runtime.appId}\\sourcemaps\\react\\index.windows.bundle.map`);
     }
@@ -225,6 +229,21 @@ const copyWindowsTemplateProject = async (c, injectedOptions = {}) => {
     await copyProjectTemplateAndReplace(c, opts);
     return true;
 };
+
+function clearWindowsTemporaryFiles(options, verbose) {
+    logTask('clearWindowsTemporaryFiles');
+    const opts = {
+        cwd: options.root,
+        detached: false,
+        stdio: verbose ? 'inherit' : 'ignore',
+        ...(options.additionalMetroOptions ? options.additionalMetroOptions : {})
+    };
+
+    // This should resolve as it used internally by react-native-windows
+    // eslint-disable-next-line global-require
+    const child_process_1 = require('child_process');
+    child_process_1.spawn('cmd.exe', ['/C', 'del /q/f/s %TEMP%\\*'], opts);
+}
 
 const packageBundleForWindows = (c, isDev = false) => {
     logTask('packageBundleForWindows');
@@ -259,4 +278,4 @@ const setSingleBuildProcessForWindows = (c) => {
     return executeAsync(c, 'set MSBUILDDISABLENODEREUSE=1');
 };
 
-export { copyWindowsTemplateProject as configureWindowsProject, packageBundleForWindows };
+export { copyWindowsTemplateProject as configureWindowsProject, packageBundleForWindows, clearWindowsTemporaryFiles };
