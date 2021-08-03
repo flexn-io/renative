@@ -2096,7 +2096,7 @@ rnv plugin add react-native-prompt-android
 ## react-native-reanimated
 
 
-Version: `2.2.0`
+Version: `1.13.3`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
@@ -2834,7 +2834,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-feat-rnmacos-6`
+Version: `0.32.0-feat-rnmacos-7`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
