@@ -1206,7 +1206,7 @@
             }
         },
         "react-native-reanimated": {
-            "version": "2.2.0",
+            "version": "1.13.3",
             "ios": {
                 "podName": "RNReanimated"
             },
