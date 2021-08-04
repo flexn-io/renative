@@ -291,11 +291,8 @@ export const runXcodeProject = async (c) => {
 
         if (bundleAssets) {
             return packageBundleForXcode(c, bundleIsDev)
-                .then(() => {
-                    _checkLockAndExec(c, appPath, scheme, runScheme, p);
-                });
+                .then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
         }
-
         return _checkLockAndExec(c, appPath, scheme, runScheme, p);
     }
     return Promise.reject('Missing options for react-native-tvos command!');
