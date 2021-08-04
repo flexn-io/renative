@@ -46,6 +46,14 @@ export const updateVersions = async (c) => {
         c,
         path.join(
             pkgFolder,
+            'rnv-engine-rn-tvos/package.json'
+        ),
+        v
+    );
+    _updateJson(
+        c,
+        path.join(
+            pkgFolder,
             'rnv-engine-rn-next/package.json'
         ),
         v
@@ -101,7 +109,7 @@ export const updateVersions = async (c) => {
                 '@rnv/engine-rn-web': v,
                 '@rnv/engine-rn-next': v,
                 '@rnv/engine-rn-electron': v,
-                '@rnv/engine-lightning': v
+                '@rnv/engine-lightning': v,
             },
         }
     );
