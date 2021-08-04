@@ -6,6 +6,7 @@
         "license": "MIT",
         "includedPlugins": ["*"],
         "includedFonts": ["*"],
+        "includedPermissions": ["INTERNET"],
         "buildSchemes": {
             "debug": {
                 "description": "Use for local development"
