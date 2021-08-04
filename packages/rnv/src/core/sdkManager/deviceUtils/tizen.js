@@ -1,27 +1,17 @@
-import path from 'path';
 import inquirer from 'inquirer';
 import net from 'net';
-
-import { execCLI } from '../../systemManager/exec';
+import path from 'path';
+import { getConfigProp, getPlatformProjectDir } from '../../common';
 import {
-    RENATIVE_CONFIG_NAME,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_SDB_TIZEN,
+    CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, RENATIVE_CONFIG_NAME
 } from '../../constants';
-import { getPlatformProjectDir, getConfigProp } from '../../common';
-import {
-    chalk,
-    logTask,
-    logError,
-    logWarning,
-    logDebug,
-    logToSummary,
-    logInfo
-} from '../../systemManager/logger';
-import { waitForEmulator } from './common';
+import { execCLI } from '../../systemManager/exec';
 import { fsRenameSync } from '../../systemManager/fileutils';
+import {
+    chalk, logDebug, logError, logInfo, logTask, logToSummary, logWarning
+} from '../../systemManager/logger';
 import { buildCoreWebpackProject } from '../webpackUtils';
+import { waitForEmulator } from './common';
 
 
 const xml2js = require('xml2js');
@@ -37,7 +27,7 @@ const formatXMLObject = (obj) => {
     if (platKeyArr) {
         return {
             ...platKeyArr.reduce((acc, cur) => {
-                acc[cur.name] = cur.$t;
+                acc[cur.$.name] = cur._;
                 return acc;
             }, {})
         };
