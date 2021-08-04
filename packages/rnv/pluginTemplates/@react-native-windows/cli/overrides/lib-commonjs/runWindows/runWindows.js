@@ -215,7 +215,7 @@ async function runWindowsInternal(args, config, options) {
         msBuildProps.RunAutolinkCheck = 'false';
         try {
             runWindowsPhase = 'FindSolution';
-            await build.buildSolution(buildTools, slnFile, buildType, options.arch, msBuildProps, verbose, 'build', options.buildLogDirectory, options.singleproc, options.additionalMetroOptions);
+            await build.buildSolution(buildTools, slnFile, buildType, options.arch, msBuildProps, verbose, 'build', options.buildLogDirectory, options.singleproc, options.release ? options.additionalMetroOptions : undefined);
         }
         catch (e) {
             commandWithProgress_1.newError(`Build failed with message ${e.message}. Check your build configuration.`);

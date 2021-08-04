@@ -51,7 +51,13 @@ async function runPowerShellScriptFunction(taskDescription, script, funcName, ve
 exports.runPowerShellScriptFunction = runPowerShellScriptFunction;
 function commandWithProgress(spinner, taskDoingName, command, args, verbose, additionalMetroOptions) {
     return new Promise((resolve, reject) => {
-        const spawnOptions = verbose ? { stdio: 'inherit', ...(additionalMetroOptions ? additionalMetroOptions : {})} : additionalMetroOptions ?  additionalMetroOptions : null;
+        // const spawnOptions = verbose ? { stdio: 'inherit', env: additionalMetroOptions?.env} :  {env: additionalMetroOptions?.env};
+        let spawnOptions = verbose ? { stdio: 'inherit'} :  {};
+        // TODO This ijection is needed for release builds, but it also is a reason
+        // for another crash on both release an non release builds (when building via CLI)...
+        // if(additionalMetroOptions && additionalMetroOptions.env){
+        //     spawnOptions = verbose ? { stdio: 'inherit', env: additionalMetroOptions.env} :  {env: additionalMetroOptions.env};
+        // }
         if (verbose) {
             spinner.stop();
         }

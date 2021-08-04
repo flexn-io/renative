@@ -267,6 +267,19 @@ export async function copyProjectTemplateAndReplace(
             from: path.join(srcPath, projDir, 'MyApp.sln'),
             to: path.join(appFolder, `${c.runtime.appId}.sln`),
         },
+        {
+            from: path.join(RNWTemplatePath, 'index.windows.bundle'),
+            to: path.join(
+                appFolder,
+                c.runtime.appId,
+                bundleDir,
+                'index.windows.bundle'
+            ),
+        },
+        {
+            from: path.join(RNWTemplatePath, 'app.json'),
+            to: 'app.json',
+        },
     ];
 
     for (const mapping of commonMappings) {
