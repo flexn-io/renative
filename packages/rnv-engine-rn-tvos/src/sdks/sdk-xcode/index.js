@@ -767,7 +767,7 @@ const configureXcodeProject = async (c) => {
     const { platform } = c;
     const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c);
-    c.runtime.platformBuildsProjectPath = `${appFolder}/RNVApp.xcworkspace`;
+    c.runtime.platformBuildsProjectPath = `${appFolder}/RNVAppTVOS.xcworkspace`;
     const appFolderName = getAppFolderName(c, platform);
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     // INJECTORS
