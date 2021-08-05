@@ -1,5 +1,5 @@
 import path from 'path';
-import { FileUtils, Logger, Resolver, Common } from 'rnv';
+import { FileUtils, Logger, Resolver, Common, Utils } from 'rnv';
 
 const {
     getAppFolder,
@@ -13,6 +13,7 @@ const {
 const { fsExistsSync, writeCleanFile, fsWriteFileSync } = FileUtils;
 const { doResolve, doResolvePath } = Resolver;
 const { chalk, logTask, logWarning, logDebug } = Logger;
+const { isSystemWin } = Utils;
 
 
 export const parseBuildGradleSync = (c) => {
@@ -264,6 +265,9 @@ Your ${chalk().red(platform)} object needs to be located under ${chalk().green('
                     c.paths.workspace.appConfig.dir,
                     keystorePath
                 );
+            }
+            if (isSystemWin) {
+                keystorePathFull = keystorePathFull.replace(/\\/g, '/');
             }
         }
         if (fsExistsSync(keystorePathFull)) {
