@@ -192,7 +192,7 @@ export const runXcodeProject = async (c) => {
                 )} udid: ${chalk().white(devicesArr[0].udid)}`
             );
             if (devicesArr[0].udid) {
-                p = `--device --udid ${devicesArr[0].udid}`;
+                p = `--udid ${devicesArr[0].udid}`;
                 c.runtime.targetUDID = devicesArr[0].udid;
             } else {
                 p = `--device ${devicesArr[0].name}`;
@@ -208,7 +208,7 @@ export const runXcodeProject = async (c) => {
                 );
                 c.runtime.targetUDID = selectedDevice.udid;
                 if (selectedDevice.udid) {
-                    p = `--device --udid ${selectedDevice.udid}`;
+                    p = `--udid ${selectedDevice.udid}`;
                 } else {
                     p = `--device ${selectedDevice.name}`;
                 }

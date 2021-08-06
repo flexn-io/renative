@@ -65,6 +65,16 @@ function _cliTools() {
   return data;
 }
 
+function _ora() {
+  const data = _interopRequireDefault(require("ora"));
+
+  _ora = function () {
+    return data;
+  };
+
+  return data;
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -74,12 +84,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * LICENSE file in the root directory of this source tree.
  *
  */
-let counter = 0;
-function runIOS(_, ctx, args) {
-  if (counter === 1) {
-      return;
-  }
-  counter++;
+// ↓↓↓ ReNative overrides ↓↓↓
+ let counter = 0;
+ function runIOS(_, ctx, args) {
+   if (counter === 1) {
+       return;
+   }
+   counter++;
+// ↑↑↑ ReNative overrides ↑↑↑
   if (!_fs().default.existsSync(args.projectPath)) {
     throw new (_cliTools().CLIError)('iOS project folder not found. Are you sure this is a React Native project?');
   }
@@ -150,22 +162,13 @@ async function runOnSimulator(xcodeProject, scheme, args) {
    * - iPhone 8
    */
 
-  // throw new (_cliTools().CLIError)(JSON.stringify(args));
 
-  // args.simulator = 'Apple TV 4K';
-  
   const fallbackSimulators = ['iPhone X', 'iPhone 8'];
   const selectedSimulator = fallbackSimulators.reduce((simulator, fallback) => {
     return simulator || (0, _findMatchingSimulator.default)(simulators, {
       simulator: fallback
     });
   }, (0, _findMatchingSimulator.default)(simulators, args));
-
-  // throw new (_cliTools().CLIError)(JSON.stringify(selectedSimulator));
-
-  // const selectedSimulator = simulators.devices['com.apple.CoreSimulator.SimRuntime.tvOS-14-3'][0];
-
-  // throw new (_cliTools().CLIError)(JSON.stringify(selectedSimulator, null, 2));
 
   if (!selectedSimulator) {
     throw new (_cliTools().CLIError)(`No simulator available with ${args.simulator ? `name "${args.simulator}"` : `udid "${args.udid}"`}`);
@@ -223,12 +226,27 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, args) {
   });
 
   if (isIOSDeployInstalled.error) {
-    throw new (_cliTools().CLIError)(`Failed to install the app on the device because we couldn't execute the "ios-deploy" command. Please install it by running "${_chalk().default.bold('npm install -g ios-deploy')}" and try again.`);
+    // ↓↓↓ ReNative overrides ↓↓↓
+    
+    _child_process().default.spawnSync('npm', ['install', '-g', 'ios-deploy@1.10.0'], {
+        encoding: 'utf8'
+    });
+
+    // throw new (_cliTools().CLIError)(`Failed to install the app on the device because we couldn't execute the "ios-deploy" command. Please install it by running "${_chalk().default.bold('npm install -g ios-deploy')}" and try again.`);
+
+    // ↑↑↑ ReNative overrides ↑↑↑
   }
 
   const appName = await buildProject(xcodeProject, selectedDevice.udid, scheme, args);
-  const iosDeployInstallArgs = ['--bundle', getBuildPath(xcodeProject, args.configuration, appName, true, scheme), '--id', selectedDevice.udid, '--justlaunch'];
+  const iosDeployInstallArgs = ['--bundle', getBuildPath(
+    // ↓↓↓ ReNative overrides ↓↓↓
+    //   xcodeProject, 
+    // ↑↑↑ ReNative overrides ↑↑↑
+      args.configuration, appName, true, scheme), '--id', selectedDevice.udid, '--justlaunch'];
 
+  // ↓↓↓ ReNative overrides ↓↓↓
+  _cliTools().logger.info(`running: ios-deploy ${iosDeployInstallArgs.join(' ')}`);
+  // ↑↑↑ ReNative overrides ↑↑↑
   _cliTools().logger.info(`Installing and launching your app on ${selectedDevice.name}`);
 
   const iosDeployOutput = _child_process().default.spawnSync('ios-deploy', iosDeployInstallArgs, {
@@ -244,7 +262,11 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, args) {
 
 function buildProject(xcodeProject, udid, scheme, args) {
   return new Promise((resolve, reject) => {
-    const xcodebuildArgs = [xcodeProject.isWorkspace ? '-workspace' : '-project', xcodeProject.name, '-configuration', args.configuration, '-scheme', scheme, '-destination', `id=${udid}`];
+    const xcodebuildArgs = [xcodeProject.isWorkspace ? '-workspace' : '-project', xcodeProject.name, '-configuration', args.configuration, '-scheme', scheme, '-destination', `id=${udid}`, 
+        // ↓↓↓ ReNative overrides ↓↓↓
+        '-derivedDataPath', `build/${scheme}`];
+        // ↑↑↑ ReNative overrides ↑↑↑
+    const loader = (0, _ora().default)();
 
     _cliTools().logger.info(`Building ${_chalk().default.dim(`(using "xcodebuild ${xcodebuildArgs.join(' ')}")`)}`);
 
@@ -270,7 +292,7 @@ function buildProject(xcodeProject, udid, scheme, args) {
         if (_cliTools().logger.isVerbose()) {
           _cliTools().logger.debug(stringData);
         } else {
-          process.stdout.write('.');
+          loader.start(`Building the app${'.'.repeat(buildOutput.length % 10)}`);
         }
       }
     });
@@ -281,7 +303,7 @@ function buildProject(xcodeProject, udid, scheme, args) {
       if (xcpretty) {
         xcpretty.stdin.end();
       } else {
-        process.stdout.write('\n');
+        loader.stop();
       }
 
       if (code !== 0) {
@@ -294,6 +316,8 @@ function buildProject(xcodeProject, udid, scheme, args) {
           `, buildOutput + '\n' + errorOutput));
         return;
       }
+
+      _cliTools().logger.success('Successfully built the app');
 
       resolve(getProductName(buildOutput) || scheme);
     });
@@ -311,44 +335,80 @@ function bootSimulator(selectedSimulator) {
     // but we want it to only launch the simulator
   }
 }
+ // ↓↓↓ ReNative overrides ↓↓↓
 
-function getTargetBuildDir(buildSettings) {
-  const settings = JSON.parse(buildSettings); // Find app in all building settings - look for WRAPPER_EXTENSION: 'app',
+// function getTargetPaths(buildSettings) {
+//   const settings = JSON.parse(buildSettings); // Find app in all building settings - look for WRAPPER_EXTENSION: 'app',
 
-  for (const i in settings) {
-    const wrapperExtension = settings[i].buildSettings.WRAPPER_EXTENSION;
+//   for (const i in settings) {
+//     const wrapperExtension = settings[i].buildSettings.WRAPPER_EXTENSION;
 
-    if (wrapperExtension === 'app') {
-      return settings[i].buildSettings.TARGET_BUILD_DIR;
+//     if (wrapperExtension === 'app') {
+//       return {
+//         targetBuildDir: settings[i].buildSettings.TARGET_BUILD_DIR,
+//         executableFolderPath: settings[i].buildSettings.EXECUTABLE_FOLDER_PATH
+//       };
+//     }
+//   }
+
+//   return {};
+// }
+
+// function getBuildPath(xcodeProject, configuration, appName, isDevice, scheme) {
+//   let device;
+
+//   if (isDevice) {
+//     device = 'iphoneos';
+//   } else if (appName.toLowerCase().includes('tvos')) {
+//     device = 'appletvsimulator';
+//   } else {
+//     device = 'iphonesimulator';
+//   }
+
+//   const buildSettings = _child_process().default.execFileSync('xcodebuild', [xcodeProject.isWorkspace ? '-workspace' : '-project', xcodeProject.name, '-scheme', scheme, '-sdk', device, '-configuration', configuration, '-showBuildSettings', '-json'], {
+//     encoding: 'utf8'
+//   });
+
+//   const {
+//     targetBuildDir,
+//     executableFolderPath
+//   } = getTargetPaths(buildSettings);
+
+//   if (!targetBuildDir) {
+//     throw new (_cliTools().CLIError)('Failed to get the target build directory.');
+//   }
+
+//   if (!executableFolderPath) {
+//     throw new (_cliTools().CLIError)('Failed to get the app name.');
+//   }
+
+//   return `${targetBuildDir}/${executableFolderPath}`;
+// }
+
+function getBuildPath(configuration, appName, isDevice, scheme) {
+    let device;
+    if (isDevice) {
+        if (appName.toLowerCase().includes('tvos')) {
+            device = 'appletvos';
+        } else {
+            device = 'iphoneos';
+        }
+    } else if (appName.toLowerCase().includes('tvos')) {
+        device = 'appletvsimulator';
+    } else {
+        device = 'iphonesimulator';
     }
-  }
-
-  return null;
+    const buildPath = `build/${scheme}/Build/Products/${configuration}-${device}/${appName}.app`; // Check wether app file exist, sometimes `-derivedDataPath` option of `xcodebuild` not works as expected.
+    if (!_fs().default.existsSync(_path().default.join(buildPath))) {
+        if (process.argv[4].includes('platformBuilds')) {
+            return _path().default.join(process.argv[4], buildPath);
+        }
+        return `DerivedData/Build/Products/${configuration}-${device}/${appName}.app`;
+    }
+    return buildPath;
 }
 
-function getBuildPath(xcodeProject, configuration, appName, isDevice, scheme) {
-  let device;
-
-  if (isDevice) {
-    device = 'iphoneos';
-  } else if (appName.toLowerCase().includes('tvos')) {
-    device = 'appletvsimulator';
-  } else {
-    device = 'iphonesimulator';
-  }
-
-  const buildSettings = _child_process().default.execFileSync('xcodebuild', [xcodeProject.isWorkspace ? '-workspace' : '-project', xcodeProject.name, '-scheme', scheme, '-sdk', device, '-configuration', configuration, '-showBuildSettings', '-json'], {
-    encoding: 'utf8'
-  });
-
-  const targetBuildDir = getTargetBuildDir(buildSettings);
-
-  if (!targetBuildDir) {
-    throw new (_cliTools().CLIError)('Failed to get the target build directory.');
-  }
-
-  return `${targetBuildDir}/${appName}.app`;
-}
+// ↑↑↑ ReNative overrides ↑↑↑
 
 function getProductName(buildOutput) {
   const productNameMatch = /export FULL_PRODUCT_NAME="?(.+).app"?$/m.exec(buildOutput);
