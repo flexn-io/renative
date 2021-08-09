@@ -37418,6 +37418,22 @@ Default width of electron app
 
 
 
+#### platforms.windows.appleId
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appleId` | `string` |  | `platforms.windows.appleId` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.author
 
 
@@ -37571,6 +37587,22 @@ Default width of electron app
 
 ---
 
+
+
+
+
+#### platforms.windows.buildSchemes.[object].appleId
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appleId` | `string` |  | `platforms.windows.buildSchemes.[object].appleId` |
+
+
+
+
+
+---
 
 
 
@@ -37811,6 +37843,22 @@ If set to `true` dedicated source map file will be generated alongside of compil
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `entryFile` | `string` |  | `platforms.windows.buildSchemes.[object].entryFile` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].environment
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `environment` | `string` |  | `platforms.windows.buildSchemes.[object].environment` |
 
 
 
@@ -38523,6 +38571,22 @@ If set to `true` dedicated source map file will be generated alongside of compil
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `entryFile` | `string` |  | `platforms.windows.entryFile` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.environment
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `environment` | `string` |  | `platforms.windows.environment` |
 
 
 
