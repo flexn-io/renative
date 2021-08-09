@@ -3138,6 +3138,32 @@ rnv run -p android
 - none
 
 
+## v0.32.0-feat-winbuilds-0 (2021-8-6)
+
+### Fixed
+
+- fix(Windows): Fixing android release builds execution on windows
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.30.0-rc1 (2020-6-21)
 
 ### Fixed
