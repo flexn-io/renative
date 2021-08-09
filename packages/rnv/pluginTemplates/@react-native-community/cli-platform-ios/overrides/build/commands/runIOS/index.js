@@ -197,7 +197,7 @@ async function runOnSimulator(xcodeProject, scheme, args) {
   }
 
   const appName = await buildProject(xcodeProject, selectedSimulator.udid, scheme, args);
-  const appPath = getBuildPath(xcodeProject, args.configuration, appName, false, scheme);
+  const appPath = getBuildPath(args.configuration, appName, false, scheme);
 
   _cliTools().logger.info(`Installing "${_chalk().default.bold(appPath)}"`);
 
