@@ -59,7 +59,7 @@
         "react-native": "0.64.2",
         "react-native-gesture-handler": "1.4.1",
         "react-native-google-cast": "github:hosek/react-native-google-cast#sdk4.4.5",
-        "react-native-reanimated": "1.0.0-alpha.12",
+        "react-native-reanimated": "1.13.3",
         "react-native-safe-area-context": "3.1.0",
         "react-native-screens": "2.2.0",
         "react-native-tab-view": "2.13.0",
