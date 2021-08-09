@@ -2,7 +2,7 @@ import { Common, Constants, Logger, PlatformManager, TaskManager } from 'rnv';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
 import { SDKAndroid, SDKXcode } from '../sdks';
 
-const { runAndroid } = SDKAndroid;
+const { packageAndroid, runAndroid } = SDKAndroid;
 
 const {
     TVOS,
@@ -37,6 +37,9 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
         case FIRE_TV:
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
+                if (bundleAssets) {
+                    await packageAndroid(c);
+                }
                 await runAndroid(c, target);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
