@@ -422,8 +422,6 @@ const _runGradleApp = async (c, platform, device) => {
 
     shell.cd(`${appFolder}`);
 
-    if (isSystemWin) { await _checkSigningCerts(c); }
-
     await executeAsync(
         c,
         `${isSystemWin ? 'gradlew.bat' : './gradlew'} ${
