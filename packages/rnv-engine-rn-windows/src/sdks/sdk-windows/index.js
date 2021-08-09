@@ -246,7 +246,7 @@ function clearWindowsTemporaryFiles(options, verbose) {
     child_process_1.spawn('cmd.exe', ['/C', 'del /q/f/s %TEMP%\\*'], opts);
 
     // NuGet cache
-    child_process_1.spawn('cmd.exe', ['/C', 'dotnet nuget locals http-cache --clear & dotnet nuget locals global-packages --clear & dotnet nuget locals temp --clear & dotnet nuget locals plugins-cache --clear & dotnet nuget locals all --clear'], opts);
+    child_process_1.spawn('cmd.exe', ['/C', 'dotnet nuget locals all --clear'], opts);
 
     // Yarn/NPM cache
     child_process_1.spawn('cmd.exe', ['/C', 'npm cache clean --force & yarn cache clean --all'], opts);
