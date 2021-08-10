@@ -1,25 +1,16 @@
-import { Constants, Logger, PlatformManager, Exec, TaskManager } from 'rnv';
+import { Constants, Logger, PlatformManager } from 'rnv';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const { WEB, WEBTV, TIZEN, PARAMS, TASK_DEBUG } = Constants;
-const { executeAsync } = Exec;
-const { shouldSkipTask } = TaskManager;
+const { PARAMS } = Constants;
 
-export const taskRnvDebug = async (c, parentTask, originTask) => {
+export const taskRnvDebug = async (c, parentTask) => {
     logTask('taskRnvDebug', `parent:${parentTask}`);
-
-    if (shouldSkipTask(c, TASK_DEBUG, originTask)) return true;
-
     const { platform } = c;
 
     switch (platform) {
-        case WEB:
-        case WEBTV:
-        case TIZEN:
-            return executeAsync(c, 'npx weinre --boundHost -all-');
         default:
-            logErrorPlatform(c);
+            return logErrorPlatform(c);
     }
 };
 
@@ -28,9 +19,5 @@ export default {
     fn: taskRnvDebug,
     task: 'debug',
     params: PARAMS.withBase(),
-    platforms: [
-        WEB,
-        WEBTV,
-        TIZEN
-    ],
+    platforms: [],
 };

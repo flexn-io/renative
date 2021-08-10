@@ -21,7 +21,7 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
 
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
-    await ruWindowsProject(c, { release: true, launch: false, deploy: false });
+    await ruWindowsProject(c, { release: true, launch: false, deploy: false, logging: false });
 };
 
 export default {

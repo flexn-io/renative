@@ -9,7 +9,7 @@ const {
     TASK_EXPORT,
     PARAMS
 } = Constants;
-// TODO Implement exportWindowsApp
+// TODO Implement export windows app (currently it only seems to be available through VS Studio itself...)
 const { ruWindowsProject } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 

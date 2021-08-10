@@ -9,7 +9,6 @@ const {
     PARAMS
 } = Constants;
 
-// TODO implement configure
 const { configureWindowsProject } = SDKWindows;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
