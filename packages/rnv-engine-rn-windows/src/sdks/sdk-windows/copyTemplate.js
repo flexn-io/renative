@@ -35,7 +35,7 @@ async function generateCertificate(
     currentUser,
     c
 ) {
-    console.log('Generating self-signed certificate...');
+    // console.log('Generating self-signed certificate...');
     const appFolder = getAppFolder(c, true);
     if (os.platform() === 'win32') {
         try {
@@ -56,17 +56,17 @@ async function generateCertificate(
                 )}_TemporaryKey.pfx -Password $pwd"`,
                 { timeout }
             );
-            console.log(
-                chalk.green('Self-signed certificate generated successfully.')
-            );
+            // console.log(
+            //     chalk.green('Self-signed certificate generated successfully.')
+            // );
             return thumbprint;
         } catch (err) {
             console.log(chalk.yellow('Failed to generate Self-signed certificate.'));
         }
     }
-    console.log(
-        chalk.yellow('Using Default Certificate. Use Visual Studio to renew it.')
-    );
+    // console.log(
+    //     chalk.yellow('Using Default Certificate. Use Visual Studio to renew it.')
+    // );
     await generator_common_1.copyAndReplaceWithChangedCallback(
         path.join(srcPath, 'keys', 'MyApp_TemporaryKey.pfx'),
         c.paths.project.dir,
@@ -378,6 +378,48 @@ export async function copyProjectTemplateAndReplace(
             c.paths.project.dir,
             path.join(appFolder, c.runtime.appId, 'Assets'),
             templateVars
+        );
+    }
+
+    const RNIconsPluginPath = path.join(path.dirname(require.resolve('react-native-vector-icons/package.json', {
+        paths: [c.paths.project.dir],
+    })), 'Fonts');
+
+    const RNIconsGlyphmapsPluginPath = path.join(path.dirname(require.resolve('react-native-vector-icons/package.json', {
+        paths: [c.paths.project.dir],
+    })), 'glyphmaps');
+
+    // react native vector icons fonts
+    if (fs.existsSync(RNIconsPluginPath)) {
+        // Default React Native Windows Debug apps use this location
+        await generator_common_1.copyAndReplaceAll(
+            RNIconsPluginPath,
+            c.paths.project.dir,
+            path.join(appFolder, c.runtime.appId, 'Assets'),
+            // Nothing must be changed or overriden in Font files
+            {}
+        );
+
+        // Default React Native Windows Release apps use this location
+        await generator_common_1.copyAndReplaceAll(
+            RNIconsPluginPath,
+            c.paths.project.dir,
+            path.join(appFolder, c.runtime.appId, 'Bundle', 'assets'),
+            // Nothing must be changed or overriden in Font files
+            {}
+        );
+
+        const glyphmapsDir = path.join(appFolder, c.runtime.appId, 'Assets', 'node_modules', 'react-native-vector-icons', 'glyphmaps');
+        if (!fs.existsSync(glyphmapsDir)) {
+            fs.mkdirSync(glyphmapsDir, { recursive: true });
+        }
+        // TODO. Not sure if this is needed, but RN Windows does this in a regular proejct by default
+        await generator_common_1.copyAndReplaceAll(
+            RNIconsGlyphmapsPluginPath,
+            c.paths.project.dir,
+            glyphmapsDir,
+            // Nothing must be changed or overriden in Font files
+            {}
         );
     }
     // shared src

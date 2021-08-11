@@ -1,5 +1,5 @@
-
-
+import path from 'path';
+import fs from 'fs';
 import { Common, Logger, EngineManager, Resolver, Exec } from 'rnv';
 import { copyProjectTemplateAndReplace } from './copyTemplate';
 
@@ -211,12 +211,6 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
 
     await runWindows(args, config, options);
 
-    // This needs to run after the build because otherwise such folder will not exist
-    if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
-        args.push('--sourcemap-output');
-        args.push(`${getAppFolder(c, c.platform)}\\Release\\${c.runtime.appId}\\sourcemaps\\react\\index.windows.bundle.map`);
-    }
-
     return true;
 };
 
@@ -272,6 +266,17 @@ const packageBundleForWindows = (c, isDev = false) => {
 
     if (c.program.info) {
         args.push('--verbose');
+    }
+
+    if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
+        // Directory might not exist yet (created during builds proccess)
+        const dir = path.join(getAppFolder(c, c.platform), 'Release', c.runtime.appId, 'sourcemaps', 'react');
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+
+        args.push('--sourcemap-output');
+        args.push(`${dir}\\index.windows.bundle.map`);
     }
 
     return executeAsync(c, `node ${doResolve(

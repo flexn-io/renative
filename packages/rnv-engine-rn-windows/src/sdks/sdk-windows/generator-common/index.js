@@ -190,11 +190,11 @@ async function copyAndReplaceAll(srcPath, destPath, relativeDestDir, replacement
 exports.copyAndReplaceAll = copyAndReplaceAll;
 async function alwaysOverwriteContentChangedCallback(relativeDestPath, contentChanged) {
     if (contentChanged === 'new') {
-        console.log(`${chalk.bold('new')} ${relativeDestPath}`);
+        // console.log(`${chalk.bold('new')} ${relativeDestPath}`);
         return 'overwrite';
     }
     if (contentChanged === 'changed') {
-        console.log(`${chalk.bold('changed')} ${relativeDestPath} ${chalk.yellow('[overwriting]')}`);
+        // console.log(`${chalk.bold('changed')} ${relativeDestPath} ${chalk.yellow('[overwriting]')}`);
         return 'overwrite';
     }
     if (contentChanged === 'identical') {

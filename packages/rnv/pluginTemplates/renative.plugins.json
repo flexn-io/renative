@@ -878,7 +878,7 @@
             "version": "7.0.4"
         },
         "react-native-vector-icons": {
-            "version": "7.1.0",
+            "version": "8.1.0",
             "ios": {
                 "podName": "RNVectorIcons",
                 "ignoreProjectFonts": [
@@ -2417,11 +2417,11 @@
         },
         "@react-navigation": {
             "npm": {
-                "@react-navigation/core": "5.2.1",
+                "@react-navigation/core": "5.12.3",
                 "@react-navigation/drawer": "5.9.0",
                 "@react-navigation/bottom-tabs": "5.1.1",
                 "@react-navigation/material-bottom-tabs": "5.1.1",
-                "@react-navigation/native": "5.0.9",
+                "@react-navigation/native": "5.7.3",
                 "@react-navigation/stack": "5.9.0",
                 "@react-navigation/routers": "5.1.0",
                 "@react-navigation/material-top-tabs": "5.1.1",
