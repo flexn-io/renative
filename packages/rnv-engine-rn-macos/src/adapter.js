@@ -21,7 +21,7 @@ export const withRNV = (config) => {
             getTransformOptions: async () => ({
                 transform: {
                     experimentalImportSupport: false,
-                    // can be set to `true` once `react-native` version used in `renative` will
+                    // can be set to `false` once `react-native` version used in `renative` will
                     // match the one used in the application
                     inlineRequires: true,
                 },
