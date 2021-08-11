@@ -107,6 +107,7 @@ export const RENATIVE_CONFIG_TEMPLATES_NAME = 'renative.templates.json';
 export const RENATIVE_CONFIG_PLATFORMS_NAME = 'renative.platforms.json';
 export const RENATIVE_CONFIG_ENGINE_NAME = 'renative.engine.json';
 export const RN_CLI_CONFIG_NAME = 'metro.config.js';
+export const RNT_CLI_CONFIG_NAME = 'metro.config.rnt.js'; // cli config for rn-tvos engine (rnt)
 export const RN_BABEL_CONFIG_NAME = 'babel.config.js';
 export const NEXT_CONFIG_NAME = 'next.config.js';
 export const SAMPLE_APP_ID = 'helloworld';

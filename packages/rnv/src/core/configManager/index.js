@@ -10,6 +10,7 @@ import {
     RENATIVE_CONFIG_PLUGINS_NAME,
     RENATIVE_CONFIG_TEMPLATES_NAME,
     RN_CLI_CONFIG_NAME,
+    RNT_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
     // PLATFORMS,
     USER_HOME_DIR,
@@ -855,6 +856,10 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     c.paths.project.rnCliConfig = path.join(
         c.paths.project.dir,
         RN_CLI_CONFIG_NAME
+    );
+    c.paths.project.rntCliConfig = path.join( // cli config for rn-tvos engine (rnt)
+        c.paths.project.dir,
+        RNT_CLI_CONFIG_NAME
     );
     c.paths.project.babelConfig = path.join(
         c.paths.project.dir,

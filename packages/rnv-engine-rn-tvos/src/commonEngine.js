@@ -6,7 +6,7 @@ import { TaskManager, Constants, Logger, Common, FileUtils } from 'rnv';
 const { getConfigProp, confirmActiveBundler } = Common;
 const { chalk, logTask, logInfo, logWarning } = Logger;
 const { fsExistsSync, copyFileSync } = FileUtils;
-const { TASK_START, RN_CLI_CONFIG_NAME } = Constants;
+const { TASK_START, RNT_CLI_CONFIG_NAME } = Constants;
 const { executeTask } = TaskManager;
 
 
@@ -51,17 +51,17 @@ export const configureMetroConfigs = async (c) => {
         logWarning(`${chalk().white(cfPath)} is DEPRECATED. use withRnvMetro(config) directly in /.metro.config.js`);
     }
 
-
+    
     // Check rn-cli-config
-    if (!fsExistsSync(c.paths.project.rnCliConfig)) {
+    if (!fsExistsSync(c.paths.project.rntCliConfig)) {
         logInfo(
             `Your rn-cli config file ${chalk().white(
-                c.paths.project.rnCliConfig
+                c.paths.project.rntCliConfig
             )} is missing! INSTALLING...DONE`
         );
         copyFileSync(
-            path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME),
-            c.paths.project.rnCliConfig
+            path.join(c.paths.rnv.projectTemplate.dir, RNT_CLI_CONFIG_NAME),
+            c.paths.project.rntCliConfig
         );
     }
 };
