@@ -33,7 +33,7 @@ export default {
             defaultPort: 8086,
             isWebHosted: true,
             extenstions: generateEngineExtensions(
-                ['macos.desktop', 'desktop', 'macos'],
+                ['macos.desktop', 'desktop', 'macos', 'ios', 'desktop.native', 'native'],
                 CNF
             ),
         },
