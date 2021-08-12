@@ -109,6 +109,9 @@
         "platforms": {
             "web": {
                 "engine": "engine-rn-next"
+            },
+            "macos": {
+                "engine": "engine-rn-macos"
             }
         }
     },
