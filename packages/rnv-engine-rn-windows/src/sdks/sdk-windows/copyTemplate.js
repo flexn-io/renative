@@ -223,6 +223,7 @@ export async function copyProjectTemplateAndReplace(
         regExpPatternsToRemove: [],
         name: c.runtime.appId,
         namespace: appTitle,
+        title: appTitle,
         namespaceCpp,
         languageIsCpp: language === 'cpp',
         mainComponentName,
