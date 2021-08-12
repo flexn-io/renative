@@ -1,5 +1,6 @@
 import platform from './Api/platform';
 import factor from './Api/factor';
+import engine from './Api/engine';
 import {
     ANDROID,
     ANDROID_TV,
@@ -45,6 +46,12 @@ export const isFactorDesktop = factor === 'desktop';
 export const isFactorMobile = factor === 'mobile';
 export const isFactorTv = factor === 'tv';
 export const isFactorWatch = factor === 'watch';
+
+export const isEngineRnElectron = engine === 'engine-rn-electron';
+export const isEngineRnMacos = engine === 'engine-rn-macos';
+export const isEngineRnNext = engine === 'engine-rn-next';
+export const isEngineRnWeb = engine === 'engine-rn-web';
+export const isEngineRn = engine === 'engine-rn';
 
 // =================================================
 // DEPRECATED
