@@ -60,6 +60,8 @@
   <ItemGroup>
     <Page Include="MainPage.xaml" />
   </ItemGroup>
+   <!-- Only add Fonts as dependencies if vector icons package is installed as a plugin -->
+    {{#hasAdditionalAssets }}
    <ItemGroup>
     <Font Include="Assets\AntDesign.ttf">
       <Filter>Assets</Filter>
@@ -110,4 +112,5 @@
       <Filter>Assets</Filter>
     </Font>
   </ItemGroup>
+   {{/hasAdditionalAssets }}
 </Project>

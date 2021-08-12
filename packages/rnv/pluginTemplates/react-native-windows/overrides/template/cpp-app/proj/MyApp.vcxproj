@@ -185,7 +185,8 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-   <!-- Font files inserted by default, perhaps this should be injected -->
+   <!-- Only add Fonts as dependencies if vector icons package is installed as a plugin -->
+  {{#hasAdditionalAssets }}
   <ItemGroup>
     <Font Include="Assets\AntDesign.ttf" />
     <Font Include="Assets\Entypo.ttf" />
@@ -204,6 +205,7 @@
     <Font Include="Assets\SimpleLineIcons.ttf" />
     <Font Include="Assets\Zocial.ttf" />
   </ItemGroup>
+  {{/hasAdditionalAssets }}
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ReactNativeWindowsTargets">
     <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets')" />

@@ -46,7 +46,7 @@ const defaultOptions = {
     // Boolean - Run using remote JS proxy
     remoteDebugging: undefined,
     // Enables logging of build steps
-    logging: true,
+    logging: false,
     // Do not launch packager while building
     packager: true,
     // Enable Bundle configuration.
@@ -256,12 +256,11 @@ const packageBundleForWindows = (c, isDev = false) => {
         '--dev',
         isDev,
         '--assets-dest',
-        `platformBuilds/${c.runtime.appId}_${c.platform}`,
+        `${getAppFolder(c, c.platform)}\\${c.runtime.appId}\\Bundle`,
         '--entry-file',
         `${c.buildConfig.platforms[c.platform].entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c, c.platform)}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`,
-        `--assets-dest ${getAppFolder(c, c.platform)}\\${c.runtime.appId}\\Bundle`
+        `${getAppFolder(c, c.platform)}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`
     ];
 
     if (c.program.info) {

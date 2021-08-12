@@ -7,7 +7,7 @@
  * @format
  */
 // DEPS
-import { Common, Constants } from 'rnv';
+import { Common, Constants, FileUtils } from 'rnv';
 
 const chalk = require('chalk');
 const path = require('path');
@@ -25,6 +25,7 @@ const generator_common_1 = require('./generator-common');
 // EXTRACTS FROM RNV
 const { getAppFolder, getAppTitle, getConfigProp, isMonorepo } = Common;
 const { WINDOWS } = Constants;
+const { copyFolderContentsRecursive } = FileUtils;
 
 // CONSTS
 const bundleDir = 'Bundle';
@@ -103,6 +104,9 @@ export async function copyProjectTemplateAndReplace(
     // TODO. Can this be considered namespace?
     const appTitle = getAppTitle(c, WINDOWS);
     const appFolder = getAppFolder(c, true);
+    const RNIconsPluginPath = path.join(path.dirname(require.resolve('react-native-vector-icons/package.json', {
+        paths: [c.paths.project.dir],
+    })), 'Fonts');
 
     const language = getConfigProp(c, c.platform, 'language', options.language);
     const experimentalNuGetDependency = getConfigProp(c, c.platform, 'experimentalNuGetDependency', options.experimentalNuGetDependency);
@@ -251,6 +255,7 @@ export async function copyProjectTemplateAndReplace(
         autolinkCppIncludes: '',
         autolinkCppPackageProviders:
       '\n    UNREFERENCED_PARAMETER(packageProviders);',
+        hasAdditionalAssets: fs.existsSync(RNIconsPluginPath)
     };
     const commonMappings = [
         // app common mappings
@@ -280,7 +285,31 @@ export async function copyProjectTemplateAndReplace(
             from: path.join(RNWTemplatePath, 'app.json'),
             to: 'app.json',
         },
+        {
+            from: path.join(RNWTemplatePath, 'app.json'),
+            to: path.join(
+                appFolder,
+                c.runtime.appId,
+                bundleDir,
+                'assets',
+                'app.json'
+            ),
+        },
     ];
+
+    if (!fs.existsSync(path.join(
+        appFolder,
+        c.runtime.appId,
+        bundleDir,
+        'assets'
+    ))) {
+        fs.mkdirSync(path.join(
+            appFolder,
+            c.runtime.appId,
+            bundleDir,
+            'assets'
+        ), { recursive: true });
+    }
 
     for (const mapping of commonMappings) {
         await generator_common_1.copyAndReplaceWithChangedCallback(
@@ -381,45 +410,34 @@ export async function copyProjectTemplateAndReplace(
         );
     }
 
-    const RNIconsPluginPath = path.join(path.dirname(require.resolve('react-native-vector-icons/package.json', {
-        paths: [c.paths.project.dir],
-    })), 'Fonts');
-
     const RNIconsGlyphmapsPluginPath = path.join(path.dirname(require.resolve('react-native-vector-icons/package.json', {
         paths: [c.paths.project.dir],
     })), 'glyphmaps');
+    const appFolderFull = getAppFolder(c);
 
     // react native vector icons fonts
+    // Only copy the files if the plugin is added to the project, aka plugin dir exists
     if (fs.existsSync(RNIconsPluginPath)) {
         // Default React Native Windows Debug apps use this location
-        await generator_common_1.copyAndReplaceAll(
+        copyFolderContentsRecursive(
             RNIconsPluginPath,
-            c.paths.project.dir,
-            path.join(appFolder, c.runtime.appId, 'Assets'),
-            // Nothing must be changed or overriden in Font files
-            {}
+            path.join(appFolderFull, c.runtime.appId, 'Assets'),
         );
 
         // Default React Native Windows Release apps use this location
-        await generator_common_1.copyAndReplaceAll(
+        copyFolderContentsRecursive(
             RNIconsPluginPath,
-            c.paths.project.dir,
-            path.join(appFolder, c.runtime.appId, 'Bundle', 'assets'),
-            // Nothing must be changed or overriden in Font files
-            {}
+            path.join(appFolderFull, c.runtime.appId, 'Bundle', 'assets'),
         );
 
-        const glyphmapsDir = path.join(appFolder, c.runtime.appId, 'Assets', 'node_modules', 'react-native-vector-icons', 'glyphmaps');
+        const glyphmapsDir = path.join(appFolderFull, c.runtime.appId, 'Assets', 'node_modules', 'react-native-vector-icons', 'glyphmaps');
         if (!fs.existsSync(glyphmapsDir)) {
             fs.mkdirSync(glyphmapsDir, { recursive: true });
         }
         // TODO. Not sure if this is needed, but RN Windows does this in a regular proejct by default
-        await generator_common_1.copyAndReplaceAll(
+        copyFolderContentsRecursive(
             RNIconsGlyphmapsPluginPath,
-            c.paths.project.dir,
             glyphmapsDir,
-            // Nothing must be changed or overriden in Font files
-            {}
         );
     }
     // shared src
