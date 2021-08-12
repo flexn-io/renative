@@ -108,12 +108,14 @@
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
-                    "bundleAssets": false
+                    "bundleAssets": false,
+                    "environment": "development"
                 },
                 "release": {
                     "runScheme": "Release",
                     "bundleAssets": true,
-                    "bundleIsDev": false
+                    "bundleIsDev": false,
+                    "environment": "production"
                 }
             }
         },
