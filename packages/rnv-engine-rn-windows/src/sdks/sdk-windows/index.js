@@ -1,16 +1,26 @@
 import path from 'path';
 import fs from 'fs';
 import { Common, Logger, EngineManager, Resolver, Exec } from 'rnv';
+// import cli from '@react-native-windows/cli';
+// import runWindowsCMD from '@react-native-windows/cli/lib-commonjs/runWindows/runWindows';
+// import msBuildTools from '@react-native-windows/cli/lib-commonjs/runWindows/utils/msbuildtools';
+// import info from '@react-native-windows/cli/lib-commonjs/runWindows/utils/info';
+
 import { copyProjectTemplateAndReplace } from './copyTemplate';
 
-// TODO Is there a a workaround or function for this?
+// TODO Is there a way to convert these requires into proper imports
 // eslint-disable-next-line global-require
 const cli = require('@react-native-windows/cli');
-// TODO Is there a a workaround or function for this?
 // eslint-disable-next-line global-require
 const runWindows = require(
     '@react-native-windows/cli/lib-commonjs/runWindows/runWindows'
 ).runWindowsCommand.func;
+const msBuildTools = require(
+    '@react-native-windows/cli/lib-commonjs/runWindows/utils/msbuildtools'
+).default;
+const { commandWithProgress, newSpinner } = require(
+    '@react-native-windows/cli/lib-commonjs/runWindows/utils/commandWithProgress'
+);
 
 const { logTask, logWarning, logDebug } = Logger;
 const { getAppFolder, getConfigProp } = Common;
@@ -46,7 +56,7 @@ const defaultOptions = {
     // Boolean - Run using remote JS proxy
     remoteDebugging: undefined,
     // Enables logging of build steps
-    logging: false,
+    logging: true,
     // Do not launch packager while building
     packager: true,
     // Enable Bundle configuration.
@@ -68,7 +78,7 @@ const defaultOptions = {
     // Comma separated props to pass to msbuild, eg: prop1=value1,prop2=value2
     msbuildprops: undefined,
     buildLogDirectory: undefined,
-    info: undefined,
+    info: false,
     // Number - Enable direct debugging on specified port
     directDebugging: undefined,
     // Sending telemetry that allows analysis of usage and failures of the react-native-windows CLI to Microsoft
@@ -76,44 +86,41 @@ const defaultOptions = {
     // Bundler port to run on
     devPort: undefined,
     // Additional options/args passed to react native's cli's metro server start function
-    additionalMetroOptions: {}
+    additionalMetroOptions: {},
+    // UWP App can be packaged into .appx or .msix
+    packageExtension: 'appx'
 };
 
 // TODO Document/comment each of the functions
 export const ruWindowsProject = async (c, injectedOptions = {}) => {
     logTask('runWindowsProject');
 
-    const opts = {
-        ...defaultOptions,
-        ...injectedOptions
-    };
-
-    const language = getConfigProp(c, c.platform, 'language', opts.language);
-    const release = getConfigProp(c, c.platform, 'release', opts.release);
+    const language = getConfigProp(c, c.platform, 'language', defaultOptions.language);
+    const release = getConfigProp(c, c.platform, 'release', defaultOptions.release);
     const root = getConfigProp(c, c.platform, 'root', c.paths.project.dir);
-    const arch = getConfigProp(c, c.platform, 'arch', opts.arch);
-    const singleproc = getConfigProp(c, c.platform, 'singleproc', opts.singleproc);
-    const emulator = getConfigProp(c, c.platform, 'emulator', opts.emulator);
-    const device = getConfigProp(c, c.platform, 'device', opts.device);
-    const target = getConfigProp(c, c.platform, 'target', opts.target);
-    const remoteDebugging = getConfigProp(c, c.platform, 'remoteDebugging', opts.remoteDebugging);
-    const logging = getConfigProp(c, c.platform, 'logging', opts.logging);
-    const packager = getConfigProp(c, c.platform, 'packager', opts.packager);
-    const bundle = getConfigProp(c, c.platform, 'bundle', opts.bundle);
-    const launch = getConfigProp(c, c.platform, 'launch', opts.launch);
-    const autolink = getConfigProp(c, c.platform, 'autolink', opts.autolink);
-    const build = getConfigProp(c, c.platform, 'build', opts.build);
-    const deploy = getConfigProp(c, c.platform, 'deploy', opts.deploy);
-    const sln = getConfigProp(c, c.platform, 'sln', opts.sln);
+    const arch = getConfigProp(c, c.platform, 'arch', defaultOptions.arch);
+    const singleproc = getConfigProp(c, c.platform, 'singleproc', defaultOptions.singleproc);
+    const emulator = getConfigProp(c, c.platform, 'emulator', defaultOptions.emulator);
+    const device = getConfigProp(c, c.platform, 'device', defaultOptions.device);
+    const target = getConfigProp(c, c.platform, 'target', defaultOptions.target);
+    const remoteDebugging = getConfigProp(c, c.platform, 'remoteDebugging', defaultOptions.remoteDebugging);
+    const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
+    const packager = getConfigProp(c, c.platform, 'packager', defaultOptions.packager);
+    const bundle = getConfigProp(c, c.platform, 'bundle', defaultOptions.bundle);
+    const launch = getConfigProp(c, c.platform, 'launch', defaultOptions.launch);
+    const autolink = getConfigProp(c, c.platform, 'autolink', defaultOptions.autolink);
+    const build = getConfigProp(c, c.platform, 'build', defaultOptions.build);
+    const deploy = getConfigProp(c, c.platform, 'deploy', defaultOptions.deploy);
+    const sln = getConfigProp(c, c.platform, 'sln', defaultOptions.sln);
     const proj = getConfigProp(c, c.platform, 'proj', c.paths.project.dir);
     const appPath = getConfigProp(c, c.platform, 'appPath', getAppFolder(c));
-    const msbuildprops = getConfigProp(c, c.platform, 'msbuildprops', opts.msbuildprops);
-    const buildLogDirectory = getConfigProp(c, c.platform, 'buildLogDirectory', opts.buildLogDirectory);
-    const info = getConfigProp(c, c.platform, 'info', opts.info);
-    const directDebugging = getConfigProp(c, c.platform, 'directDebugging', opts.directDebugging);
-    const telemetry = getConfigProp(c, c.platform, 'telemetry', opts.telemetry);
+    const msbuildprops = getConfigProp(c, c.platform, 'msbuildprops', defaultOptions.msbuildprops);
+    const buildLogDirectory = getConfigProp(c, c.platform, 'buildLogDirectory', defaultOptions.buildLogDirectory);
+    const info = getConfigProp(c, c.platform, 'info', defaultOptions.info);
+    const directDebugging = getConfigProp(c, c.platform, 'directDebugging', defaultOptions.directDebugging);
+    const telemetry = getConfigProp(c, c.platform, 'telemetry', defaultOptions.telemetry);
     const devPort = getConfigProp(c, c.platform, 'devPort', c.runtime.port);
-    const additionalMetroOptions = getConfigProp(c, c.platform, 'additionalMetroOptions', opts.additionalMetroOptions);
+    const additionalMetroOptions = getConfigProp(c, c.platform, 'additionalMetroOptions', defaultOptions.additionalMetroOptions);
     const env = getConfigProp(c, c.platform, 'environment');
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
     const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
@@ -152,7 +159,8 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
                 NODE_ENV: env || 'development',
                 ...generateEnvVars(c)
             }
-        }
+        },
+        ...injectedOptions
     };
     const args = [];
 
@@ -205,10 +213,6 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
         );
     }
 
-    // Files need to be cleared otherwise after release build
-    // all builds will fail with null pointer exception from Visual Studio
-    // await clearWindowsTemporaryFiles(c);
-
     await runWindows(args, config, options);
 
     return true;
@@ -224,13 +228,13 @@ const copyWindowsTemplateProject = async (c, injectedOptions = {}) => {
     return true;
 };
 
-function clearWindowsTemporaryFiles(options, verbose) {
+function clearWindowsTemporaryFiles(c) {
     logTask('clearWindowsTemporaryFiles');
+    const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
     const opts = {
-        cwd: options.root,
+        cwd: c.paths.project.dir,
         detached: false,
-        stdio: verbose ? 'inherit' : 'ignore',
-        ...(options.additionalMetroOptions ? options.additionalMetroOptions : {})
+        stdio: logging ? 'inherit' : 'ignore'
     };
 
     // TODO This should be part of rnv clean and rnv run -r and not part of the SDK
@@ -289,4 +293,34 @@ const setSingleBuildProcessForWindows = (c) => {
     return executeAsync(c, 'set MSBUILDDISABLENODEREUSE=1');
 };
 
-export { copyWindowsTemplateProject as configureWindowsProject, packageBundleForWindows, clearWindowsTemporaryFiles };
+const packageWindowsApp = async (c) => {
+    try {
+        const arch = getConfigProp(c, c.platform, 'arch', defaultOptions.arch);
+        const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
+        const packageExtension = getConfigProp(c, c.platform, 'packageExtension', defaultOptions.packageExtension);
+        const appFolder = getAppFolder(c);
+        // Find available SDKs, which have MakeAppx tool
+        const sdks = msBuildTools.getAllAvailableUAPVersions();
+        const packageTaskDescription = 'Packaging UWP Application';
+        // TODO Implement sign with a certiface valid for stores (not self signed)
+        const signTaskDescription = 'Signing your UWP application with self generated certificate';
+
+        // Create a package for the app
+        // TODO Ideally this would be done with ReNative's executeAsync, but it throws path not found error
+        await commandWithProgress(newSpinner(packageTaskDescription), packageTaskDescription,
+            `C:\\Program Files (x86)\\Windows Kits\\10\\bin\\${sdks[0]}\\${arch}\\makeappx.exe`,
+            ['pack', '/o', '/d', `${appFolder}/Release/${c.runtime.appId}`, '/p', `platformBuilds/${c.runtime.appId}_windows/${c.runtime.appId}.${packageExtension}`], logging);
+        // Sign the package with self signed certificate
+        // TODO Signing algorithm and password need to be dynamic
+        await commandWithProgress(newSpinner(signTaskDescription), signTaskDescription,
+            `C:\\Program Files (x86)\\Windows Kits\\10\\bin\\${sdks[0]}\\${arch}\\SignTool.exe`,
+            ['sign', '/v', '/fd', 'sha256', '/a', '/f', `${appFolder}/${c.runtime.appId}/${c.runtime.appId}_TemporaryKey.pfx`, '/p', 'password', `${appFolder}/${c.runtime.appId}.${packageExtension}`], logging);
+    } catch (e) {
+        console.error('App packaging failed with error: ', e);
+    }
+};
+
+export { copyWindowsTemplateProject as configureWindowsProject,
+    packageBundleForWindows,
+    clearWindowsTemporaryFiles,
+    packageWindowsApp };
