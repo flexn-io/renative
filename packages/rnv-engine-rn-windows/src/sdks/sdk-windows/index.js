@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import glob from 'glob';
 import { Common, Logger, EngineManager, Resolver, Exec } from 'rnv';
 // import cli from '@react-native-windows/cli';
 // import runWindowsCMD from '@react-native-windows/cli/lib-commonjs/runWindows/runWindows';
@@ -18,7 +19,7 @@ const runWindows = require(
 const msBuildTools = require(
     '@react-native-windows/cli/lib-commonjs/runWindows/utils/msbuildtools'
 ).default;
-const { commandWithProgress, newSpinner } = require(
+const { commandWithProgress, newSpinner, runPowerShellScriptFunction } = require(
     '@react-native-windows/cli/lib-commonjs/runWindows/utils/commandWithProgress'
 );
 
@@ -293,6 +294,30 @@ const setSingleBuildProcessForWindows = (c) => {
     return executeAsync(c, 'set MSBUILDDISABLENODEREUSE=1');
 };
 
+// Copied from @react-native-windows/cli/overrides/lib-commonjs/runWindows/utils/deploy.js
+const pushd = (pathArg) => {
+    const cwd = process.cwd();
+    process.chdir(pathArg);
+    return () => process.chdir(cwd);
+};
+
+// Copied from @react-native-windows/cli/overrides/lib-commonjs/runWindows/utils/deploy.js
+const getWindowsStoreAppUtils = (c) => {
+    const appFolder = getAppFolder(c);
+    const RNWinPath = path.join(path.dirname(require.resolve('@react-native-windows/cli/package.json', {
+        paths: [c.paths.project.dir],
+    })));
+    logWarning('RN Win Path', RNWinPath);
+    const popd = pushd(appFolder);
+    const windowsStoreAppUtilsPath = path.join(RNWinPath, 'powershell', 'WindowsStoreAppUtils.ps1');
+    // This should resolve as it used internally by react-native-windows
+    // eslint-disable-next-line global-require
+    const child_process_1 = require('child_process');
+    child_process_1.execSync(`powershell -NoProfile Unblock-File "${windowsStoreAppUtilsPath}"`);
+    popd();
+    return windowsStoreAppUtilsPath;
+};
+
 const packageWindowsApp = async (c) => {
     try {
         const arch = getConfigProp(c, c.platform, 'arch', defaultOptions.arch);
@@ -315,6 +340,13 @@ const packageWindowsApp = async (c) => {
         await commandWithProgress(newSpinner(signTaskDescription), signTaskDescription,
             `C:\\Program Files (x86)\\Windows Kits\\10\\bin\\${sdks[0]}\\${arch}\\SignTool.exe`,
             ['sign', '/v', '/fd', 'sha256', '/a', '/f', `${appFolder}/${c.runtime.appId}/${c.runtime.appId}_TemporaryKey.pfx`, '/p', 'password', `${appFolder}/${c.runtime.appId}.${packageExtension}`], logging);
+        // Install the generated .cer into Trusted Root Certificate Authorities
+        // await commandWithProgress(newSpinner('Saving certificate in the local certificate store'), 'Saving certificate in the local certificate store',
+        //     `C:\\Program Files (x86)\\Windows Kits\\10\\bin\\${sdks[0]}\\${arch}\\certmgr.exe`,
+        //     ['/add', '/c', `${appFolder}/AppPackages/${c.runtime.appId}/${c.runtime.appId}_1.0.0.0_Win32_Test/${c.runtime.appId}_1.0.0.0_Win32.cer`, '/s', 'root', '/v'], logging);
+        const windowsStoreAppUtils = getWindowsStoreAppUtils(c);
+        const script = glob.sync(path.join(appFolder, 'AppPackages', c.runtime.appId, `${c.runtime.appId}_1.0.0.0_Win32_Test`, 'Add-AppDevPackage.ps1'))[0];
+        await runPowerShellScriptFunction('Installing new version of the app', windowsStoreAppUtils, `Install-App "${script}" -Force`, true);
     } catch (e) {
         console.error('App packaging failed with error: ', e);
     }
