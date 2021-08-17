@@ -219,7 +219,10 @@ const _findFolderWithFile = (dir, fileToFind) => {
 
 const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) => {
     logTask('_attemptAutoFix');
-    let result = SDK_LOACTIONS[sdkPlatform].find(v => fsExistsSync(v));
+    // try common Android SDK env variables
+    const { ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK: ANDROID_SDK_ENV } = process.env;
+
+    let result = [...SDK_LOACTIONS[sdkPlatform], ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK_ENV].find(v => fsExistsSync(v));
 
     if (result && traverseUntilFoundFile) {
         const subResult = _findFolderWithFile(result, traverseUntilFoundFile);
