@@ -9,7 +9,7 @@ import { doResolve } from './resolve';
 
 import { inquirerPrompt } from '../../cli/prompt';
 
-export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
+export const checkAndCreateProjectPackage = async (c) => {
     logTask('checkAndCreateProjectPackage');
 
     if (!fsExistsSync(c.paths.project.package)) {
@@ -20,8 +20,10 @@ export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
         const packageName = c.files.project.config.projectName
                 || c.paths.project.dir.split('/').pop();
         const version = c.files.project.config.defaults?.package?.version || '0.1.0';
-        const templateName = c.files.project.config.defaults?.template
-                || 'renative-template-hello-world';
+        const templateName = c.files.project.config?.currentTemplate;
+        if (!templateName) {
+            logWarning('You are missing currentTemplate in your renative.json');
+        }
         const rnvVersion = c.files.rnv.package.version;
 
         const pkgJson = {};
@@ -33,15 +35,15 @@ export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
         pkgJson.devDependencies = {
             rnv: rnvVersion
         };
-        pkgJson.devDependencies[templateName] = rnvVersion;
+        pkgJson.devDependencies[templateName] = c.files.project.config?.templates[templateName]?.version;
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
         fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);
     }
 
     loadFile(c.files.project, c.paths.project, 'package');
 
-    resolve();
-});
+    return true;
+};
 
 export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
@@ -154,11 +156,26 @@ export const installPackageDependencies = async (c, failOnError = false) => {
     const yarnLockPath = path.join(c.paths.project.dir, 'yarn.lock');
     const npmLockPath = path.join(c.paths.project.dir, 'package-lock.json');
     let command = 'npm install';
-    if (fsExistsSync(yarnLockPath)) {
-        command = 'yarn';
-    } else if (fsExistsSync(npmLockPath)) {
-        command = 'npm install';
-    } else if (isYarnInstalled) {
+
+
+    const yarnLockExists = fsExistsSync(yarnLockPath);
+    const packageLockExists = fsExistsSync(npmLockPath);
+
+    if (yarnLockExists || packageLockExists) {
+        // a lock file exists, defaulting to whichever is present
+        if (yarnLockExists && !isYarnInstalled) throw new Error('You have a yarn.lock file but you don\'t have yarn installed. Install it or delete yarn.lock');
+        command = yarnLockExists ? 'yarn' : 'npm install';
+    } else if (c.program.packageManager) {
+        // no lock file check cli option
+        if (['yarn', 'npm'].includes(c.program.packageManager)) {
+            command = c.program.packageManager === 'yarn' ? 'yarn' : 'npm install';
+            if (command === 'yarn' && !isYarnInstalled) throw new Error('You specified yarn as packageManager but it\'s not installed');
+        } else {
+            throw new Error(`Unsupported package manager ${
+                c.program.packageManager}. Only yarn and npm are supported at the moment.`);
+        }
+    } else {
+        // no cli option either, asking
         const { packageManager } = await inquirerPrompt({
             type: 'list',
             name: 'packageManager',
@@ -168,6 +185,7 @@ export const installPackageDependencies = async (c, failOnError = false) => {
         });
         if (packageManager === 'yarn') command = 'yarn';
     }
+
     logTask('installPackageDependencies', `packageManager:(${command})`);
 
     try {

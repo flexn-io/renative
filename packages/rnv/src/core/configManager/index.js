@@ -220,6 +220,10 @@ export const generateBuildConfig = (c) => {
         );
 
         if (c.paths.project.builds.dir) {
+            if (!fsExistsSync(c.paths.project.builds.dir)) {
+                mkdirSync(c.paths.project.builds.dir);
+            }
+
             const result = writeFileSync(c.paths.project.builds.config, c.buildConfig);
             if (result) {
                 const size = formatBytes(Buffer.byteLength(result || '', 'utf8'));

@@ -14,17 +14,166 @@ import {
     copyFolderContentsRecursiveSync,
     copyFileSync,
     mkdirSync,
+    readObjectSync,
     writeFileSync,
     fsWriteFileSync,
     fsExistsSync,
     fsReaddirSync,
     fsReadFileSync
 } from '../systemManager/fileutils';
+import { installPackageDependencies } from '../systemManager/npmUtils';
+import { executeAsync } from '../systemManager/exec';
 import { isPlatformActive } from '../platformManager';
 import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../systemManager/logger';
 import { copyTemplatePluginsSync } from '../pluginManager';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEngineRunnerByPlatform } from '../engineManager';
+import { configureTemplateFiles, configureEntryPoint } from '../templateManager';
+import { parseRenativeConfigs } from '../configManager';
+
+
+export const checkAndBootstrapIfRequired = async (c) => {
+    logTask('checkAndBootstrapIfRequired');
+    const { template } = c.program;
+    if (!c.paths.project.configExists && template) {
+        await executeAsync(`npm i ${template} --no-save`, {
+            cwd: c.paths.project.dir
+        });
+        const templateArr = template.split('@').filter(v => v !== '');
+        const templateDir = template.startsWith('@') ? `@${templateArr[0]}` : templateArr[0];
+        const templatePath = path.join(c.paths.project.dir, 'node_modules', templateDir);
+
+        c.paths.template.dir = templatePath;
+        c.paths.template.configTemplate = path.join(templatePath, 'renative.template.json');
+
+        const templateObj = readObjectSync(c.paths.template.configTemplate);
+        const appConfigPath = path.join(c.paths.project.appConfigsDir, c.program.appConfigID, 'renative.json');
+        const appConfigObj = readObjectSync(appConfigPath);
+        const supportedPlatforms = appConfigObj?.defaults?.supportedPlatforms;
+        const engineTemplates = c.files.rnv.projectTemplates?.config?.engineTemplates;
+        const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
+        const activeEngineKeys = [];
+
+        supportedPlatforms.forEach((supPlat) => {
+            Object.keys(engineTemplates).forEach((eKey) => {
+                if (engineTemplates[eKey].id === rnvPlatforms[supPlat]?.engine) {
+                    activeEngineKeys.push(eKey);
+                }
+            });
+        });
+
+        const config = {
+            ...templateObj
+        };
+
+        // Clean unused engines
+        Object.keys(config.engines).forEach((k) => {
+            if (!activeEngineKeys.includes(k)) {
+                delete config.engines[k];
+            }
+        });
+
+
+        if (config.templateConfig.packageTemplate) {
+            const pkgJson = {};
+            pkgJson.dependencies = {
+                ...config.templateConfig.packageTemplate.dependencies || { },
+
+            };
+            pkgJson.devDependencies = {
+                ...config.templateConfig.packageTemplate.devDependencies || { },
+            };
+            c.files.project.package = pkgJson;
+
+
+            const installPromises = [];
+            Object.keys(pkgJson.devDependencies).forEach((devDepKey) => {
+                if (activeEngineKeys.includes(devDepKey)) {
+                    installPromises.push(executeAsync(`npm i ${
+                        devDepKey}@${pkgJson.devDependencies[devDepKey]} --no-save`, {
+                        cwd: c.paths.project.dir
+                    }));
+                }
+            });
+
+            if (installPromises.length) {
+                await Promise.all(installPromises);
+
+                logInfo('Installed engines DONE');
+
+                activeEngineKeys.forEach((aek) => {
+                    const engineConfigPath = path.join(c.paths.project.dir, 'node_modules', aek, 'renative.engine.json');
+                    const eConfig = readObjectSync(engineConfigPath);
+                    if (eConfig.platforms) {
+                        supportedPlatforms.forEach((supPlat) => {
+                            const engPlatNpm = eConfig.platforms[supPlat]?.npm;
+                            if (engPlatNpm) {
+                                const engPlatDeps = engPlatNpm.dependencies;
+                                pkgJson.dependencies = pkgJson.dependencies || {};
+                                if (engPlatDeps) {
+                                    Object.keys(engPlatDeps).forEach((engPlatDepKey) => {
+                                        if (!pkgJson.dependencies[engPlatDepKey]) {
+                                            logInfo(`Installing active engine dependency ${engPlatDepKey}`);
+                                            pkgJson.dependencies[engPlatDepKey] = engPlatDeps[engPlatDepKey];
+                                        }
+                                    });
+                                }
+
+                                const engPlatDevDeps = engPlatNpm.devDependencies;
+                                if (engPlatDevDeps) {
+                                    Object.keys(engPlatDevDeps).forEach((engPlatDevDepKey) => {
+                                        pkgJson.devDependencies = pkgJson.devDependencies || {};
+                                        if (!pkgJson.devDependencies[engPlatDevDepKey]) {
+                                            logInfo(`Installing active engine dependency ${engPlatDevDepKey}`);
+                                            pkgJson.devDependencies[
+                                                engPlatDevDepKey] = engPlatDevDeps[engPlatDevDepKey];
+                                        }
+                                    });
+                                }
+
+                                const engPlatOptDeps = engPlatNpm.optionalDependencies;
+                                if (engPlatOptDeps) {
+                                    Object.keys(engPlatOptDeps).forEach((engPlatOptDepKey) => {
+                                        pkgJson.optionalDependencies = pkgJson.optionalDependencies || {};
+                                        if (!pkgJson.optionalDependencies[engPlatOptDepKey]) {
+                                            logInfo(`Installing active engine dependency ${engPlatOptDepKey}`);
+                                            pkgJson.optionalDependencies[
+                                                engPlatOptDepKey] = engPlatOptDeps[engPlatOptDepKey];
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            writeFileSync(c.paths.project.package, pkgJson);
+        }
+
+        delete config.templateConfig;
+        writeFileSync(c.paths.project.config, config);
+
+        const appConfigsPath = path.join(templatePath, 'appConfigs');
+        if (fsExistsSync(appConfigsPath)) {
+            copyFolderContentsRecursiveSync(
+                appConfigsPath,
+                path.join(c.paths.project.appConfigsDir)
+            );
+        }
+
+        await installPackageDependencies(c);
+
+        await parseRenativeConfigs(c);
+
+        await configureTemplateFiles(c);
+        await configureEntryPoint(c);
+        // await applyTemplate(c);
+
+        // copyFolderContentsRecursiveSync(templatePath, c.paths.project.dir);
+    }
+    return true;
+};
 
 
 export const checkAndCreateGitignore = async (c) => {

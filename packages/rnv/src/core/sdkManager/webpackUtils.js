@@ -34,7 +34,7 @@ import {
     logSummary
 } from '../systemManager/logger';
 import { getPlatformExtensions } from '../engineManager';
-import { parsePlugins } from '../pluginManager';
+import { parsePlugins, includesPluginPath, sanitizePluginPath } from '../pluginManager';
 
 import { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR } from '../constants';
 
@@ -489,6 +489,8 @@ export const getModuleConfigs = (c, primaryKey) => {
                     webpackConfig.modulePaths.forEach((v) => {
                         if (typeof v === 'string') {
                             modulePaths.push(v);
+                        } else if (includesPluginPath(v.projectPath)) {
+                            doNotResolveModulePaths.push(sanitizePluginPath(v.projectPath, key));
                         } else if (v?.projectPath) {
                             doNotResolveModulePaths.push(path.join(c.paths.project.dir, v.projectPath));
                         }
@@ -505,6 +507,8 @@ export const getModuleConfigs = (c, primaryKey) => {
                             moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
                         } else if (mAlias.path) {
                             moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
+                        } else if (includesPluginPath(mAlias.projectPath)) {
+                            moduleAliases[key] = sanitizePluginPath(mAlias.projectPath, key);
                         } else if (mAlias.projectPath) {
                             moduleAliases[key] = path.join(c.paths.project.dir, mAlias.projectPath);
                         }

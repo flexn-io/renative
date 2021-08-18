@@ -768,7 +768,40 @@ export const copyTemplatePluginsSync = (c) => {
             path.join(c.paths.workspace.appConfig.dir, `plugins/${key}`)
         );
         copyFolderContentsRecursiveSync(sourcePath2sec, destPath, true, false, false, objectInject);
+
+        // FOLDER MERGES FROM SCOPED PLUGIN TEMPLATES
+        Object.keys(c.paths.rnv.pluginTemplates.dirs).forEach((pathKey) => {
+            if (pathKey !== 'rnv') {
+                const pluginTemplatePath = c.paths.rnv.pluginTemplates.dirs[pathKey];
+
+                const sourcePath4sec = getBuildsFolder(
+                    c,
+                    platform,
+                    path.join(pluginTemplatePath, key)
+                );
+                copyFolderContentsRecursiveSync(sourcePath4sec, destPath, true, false, false, objectInject);
+            }
+        });
     });
+};
+
+export const sanitizePluginPath = (str, name, mandatory, options) => {
+    let newStr = str;
+    try {
+        if (str?.replace) {
+            newStr = str.replace('{{PLUGIN_ROOT}}', doResolve(name, mandatory, options));
+        }
+    } catch (e) {
+    // Ignore
+    }
+    return newStr;
+};
+
+export const includesPluginPath = (str) => {
+    if (str?.includes) {
+        return str.includes('{{PLUGIN_ROOT}}');
+    }
+    return false;
 };
 
 export const getLocalRenativePlugin = () => ({
