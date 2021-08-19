@@ -28,6 +28,7 @@ import {
     fsReadFileSync,
     fsReaddirSync,
     fsLstatSync,
+    fsWriteFileSync,
     loadFile,
     formatBytes
 } from '../systemManager/fileutils';
@@ -653,6 +654,13 @@ export const parseRenativeConfigs = async (c) => {
 export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } = {}) => {
     const c = {
         cli: {},
+        api: {
+            fsExistsSync,
+            fsReadFileSync,
+            fsReaddirSync,
+            fsWriteFileSync,
+            path
+        },
         configPropsInjects: {},
         runtime: {
             enginesByPlatform: {},
