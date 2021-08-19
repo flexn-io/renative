@@ -7,7 +7,8 @@
         "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
         "license": "MIT",
         "includedPlugins": ["*"],
-        "includedFonts": ["*"]
+        "includedFonts": ["*"],
+        "includedPermissions": ["INTERNET"]
     },
     "platforms": {
         "ios": {
