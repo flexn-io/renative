@@ -85,6 +85,21 @@
         ]
       }
     },
+    "androidwear": {
+      "gradle.properties": {
+        "android.useDeprecatedNdk": true
+      },
+      "AndroidManifest": {
+        "children": [
+          {
+            "tag": "application",
+            "android:name": ".MainApplication",
+            "android:usesCleartextTraffic": true,
+            "tools:targetApi": 28
+          }
+        ]
+      }
+    },
     "firetv": {
       "gradle.properties": {
         "android.useDeprecatedNdk": true
@@ -100,20 +115,14 @@
         ]
       }
     },
-    "androidwear": {
-      "gradle.properties": {
-        "android.useDeprecatedNdk": true
-      },
-      "AndroidManifest": {
-        "children": [
-          {
-            "tag": "application",
-            "android:name": ".MainApplication",
-            "android:usesCleartextTraffic": true,
-            "tools:targetApi": 28
-          }
-        ]
-      }
+    "web": {
+      "engine": "engine-rn-next"
+    },
+    "tvos": {
+      "engine": "engine-rn-tvos"
+    },
+    "macos": {
+      "engine": "engine-rn-macos"
     }
   }
 }

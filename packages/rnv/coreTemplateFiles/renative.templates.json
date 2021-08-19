@@ -27,6 +27,10 @@
         "@rnv/engine-lightning": {
             "version": "0.32.0-alpha.45",
             "id": "engine-lightning"
+        },
+        "@rnv/engine-rn-macos": {
+            "version": "0.32.0-feat-rnmacos-8",
+            "id": "engine-rn-macos"
         }
     },
     "integrationTemplates": {

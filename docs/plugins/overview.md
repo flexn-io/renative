@@ -1751,6 +1751,24 @@ rnv plugin add react-native-localize
 ```
 
 
+## react-native-macos
+
+
+Version: `0.63.37`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-macos
+
+Installation:
+
+```
+rnv plugin add react-native-macos
+```
+
+
 ## react-native-maps
 
 
@@ -2078,7 +2096,7 @@ rnv plugin add react-native-prompt-android
 ## react-native-reanimated
 
 
-Version: `1.0.0-alpha.12`
+Version: `1.13.3`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
@@ -2132,7 +2150,7 @@ rnv plugin add react-native-root-toast
 ## react-native-safe-area-context
 
 
-Version: `0.7.2`
+Version: `3.1.0`
 
 Platforms: `android`,`androidtv`,`firetv`,`androidwear`,`ios`,`tvos`
 
