@@ -51,7 +51,7 @@ export const configureMetroConfigs = async (c) => {
         logWarning(`${chalk().white(cfPath)} is DEPRECATED. use withRnvMetro(config) directly in /.metro.config.js`);
     }
 
-    
+
     // Check rn-cli-config
     if (!fsExistsSync(c.paths.project.rntCliConfig)) {
         logInfo(
