@@ -1,5 +1,5 @@
-import { FileUtils, Doctor } from 'rnv';
 import path from 'path';
+import { Doctor, FileUtils } from 'rnv';
 
 const merge = require('deepmerge');
 
@@ -119,6 +119,7 @@ export const updateVersions = async (c) => {
                 '@rnv/engine-rn-electron': v,
                 '@rnv/engine-lightning': v,
                 '@rnv/engine-rn-macos': v,
+                '@rnv/engine-rn-windows': v
             },
         }
     );

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -41,10 +42,7 @@ const ScreenHome = (props) => {
                 <Text style={themeStyles.textH2}>
                     {CONFIG.welcomeMessage}
                 </Text>
-                <Text style={themeStyles.textH2}>
-v
-                    {packageJson.version}
-                </Text>
+                <Text style={themeStyles.textH2}>v {packageJson.version}</Text>
                 <Text style={themeStyles.textH3}>
                     {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
                 </Text>

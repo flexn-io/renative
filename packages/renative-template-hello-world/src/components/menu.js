@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 
 import React, { useEffect } from 'react';
@@ -70,9 +71,7 @@ const Menu = (props) => {
 
     return (
         <View style={styles.container}>
-            <Text style={themeStyles.text}>
-Menu
-            </Text>
+            <Text style={themeStyles.text}> Menu </Text>
             <Button
                 // to={ROUTES.HOME}
                 title="Home"

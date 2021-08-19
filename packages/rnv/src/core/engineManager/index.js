@@ -2,7 +2,7 @@
 import path from 'path';
 import { IS_LINKED, RNV_HOME_DIR, TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
-import { getConfigProp } from '../common';
+import { getAppFolder, getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
 import { fsExistsSync, writeFileSync } from '../systemManager/fileutils';
@@ -257,6 +257,7 @@ const _resolvePkgPath = (c, packageName) => {
         return pkgPath;
     }
     pkgPath = require.resolve(packageName);
+
     return pkgPath;
 };
 
@@ -302,6 +303,7 @@ export const generateEnvVars = (c, moduleConfig, nextConfig) => {
         RNV_MODULE_ALIASES: moduleConfig?.moduleAliasesArray || [],
         RNV_NEXT_TRANSPILE_MODULES: nextConfig,
         RNV_PROJECT_ROOT: c.paths.project.dir,
+        RNV_APP_BUILD_DIR: getAppFolder(c),
         RNV_IS_MONOREPO: isMonorepo,
         RNV_MONO_ROOT: (c.runtime.isWrapper || isMonorepo) ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir,
         RNV_IS_NATIVE_TV: [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform)

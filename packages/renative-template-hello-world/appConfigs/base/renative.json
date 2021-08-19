@@ -310,14 +310,15 @@
             }
         },
         "windows": {
-            "entryFile": "index.windows",
+            "language": "cpp",
+            "reactNativeEngine": "chakra",
             "buildSchemes": {
                 "debug": {
-                    "bundleAssets": false
+                    "release": false
                 },
                 "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false
+                    "release": true,
+                    "logging": false
                 }
             }
         },

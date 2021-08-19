@@ -1,7 +1,7 @@
 {
     "pluginTemplates": {
         "react-native": {
-            "version": "0.63.4",
+            "version": "0.64.2",
             "android": {
                 "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }",
                 "path": "react-native"
@@ -324,7 +324,7 @@
             }
         },
         "react-native-fs": {
-            "version": "2.14.1",
+            "version": "2.18.0",
             "ios": {
                 "podName": "RNFS"
             },
@@ -881,7 +881,7 @@
             "version": "7.0.4"
         },
         "react-native-vector-icons": {
-            "version": "7.1.0",
+            "version": "8.1.0",
             "ios": {
                 "podName": "RNVectorIcons",
                 "ignoreProjectFonts": [
@@ -2420,11 +2420,11 @@
         },
         "@react-navigation": {
             "npm": {
-                "@react-navigation/core": "5.2.1",
+                "@react-navigation/core": "5.12.3",
                 "@react-navigation/drawer": "5.9.0",
                 "@react-navigation/bottom-tabs": "5.1.1",
                 "@react-navigation/material-bottom-tabs": "5.1.1",
-                "@react-navigation/native": "5.0.9",
+                "@react-navigation/native": "5.7.3",
                 "@react-navigation/stack": "5.9.0",
                 "@react-navigation/routers": "5.1.0",
                 "@react-navigation/material-top-tabs": "5.1.1",
@@ -2434,8 +2434,7 @@
             },
             "pluginDependencies": {
                 "react-native-screens": "source:rnv",
-                "react-native-safe-area-context": "source:rnv",
-                "react-native-safe-area-view": "source:rnv"
+                "react-native-safe-area-context": "source:rnv"
             }
         },
         "react-native-safe-area-context": {
@@ -2967,7 +2966,7 @@
             "no-npm": true
         },
         "@react-native-community/cli": {
-            "no-npm": true
+            "version": "5.0.1"
         },
         "recyclerlistview": {
             "version": "3.0.0",
@@ -3063,6 +3062,21 @@
         },
         "react-native-macos": {
             "version": "0.63.37"
+        },
+        "@react-native-windows/cli": {
+            "version": "0.64.4"
+        },
+        "@react-native-windows/find-repo-root": {
+            "version": "0.64.0"
+        },
+        "@react-native-windows/package-utils": {
+            "version": "0.64.0"
+        },
+        "@react-native-windows/telemetry": {
+            "version": "0.64.0"
+        },
+        "react-native-windows": {
+            "version": "0.64.12"
         }
     }
 }

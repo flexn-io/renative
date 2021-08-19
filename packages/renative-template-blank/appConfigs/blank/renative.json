@@ -180,7 +180,17 @@
             "entryFile": "index.webos"
         },
         "windows": {
-            "entryFile": "index.windows"
+            "language": "cpp",
+            "reactNativeEngine": "chakra",
+            "buildSchemes": {
+                "debug": {
+                    "release": false
+                },
+                "release": {
+                    "release": true,
+                    "logging": false
+                }
+            }
         },
         "kaios": {
             "entryFile": "index.kaios",
