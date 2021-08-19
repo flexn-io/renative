@@ -1,14 +1,16 @@
 import path from 'path';
-import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME } from '../constants';
+import { inquirerPrompt } from '../../cli/prompt';
 import {
-    getAppFolder,
+    getAppFolder, getBuildsFolder,
+    getConfigProp,
     // getAppSubFolder,
     getPlatformBuildDir,
-    getPlatformProjectDir,
-    getBuildsFolder,
-    getConfigProp,
-    getTimestampPathsConfig
+    getPlatformProjectDir, getTimestampPathsConfig
 } from '../common';
+import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME } from '../constants';
+import { getEngineRunnerByPlatform } from '../engineManager';
+import { isPlatformActive } from '../platformManager';
+import { copyTemplatePluginsSync } from '../pluginManager';
 import {
     cleanFolder,
     copyFolderContentsRecursiveSync,
@@ -23,11 +25,10 @@ import {
 } from '../systemManager/fileutils';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { executeAsync } from '../systemManager/exec';
-import { isPlatformActive } from '../platformManager';
+
 import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../systemManager/logger';
-import { copyTemplatePluginsSync } from '../pluginManager';
-import { inquirerPrompt } from '../../cli/prompt';
-import { getEngineRunnerByPlatform } from '../engineManager';
+
+
 import { configureTemplateFiles, configureEntryPoint } from '../templateManager';
 import { parseRenativeConfigs } from '../configManager';
 
@@ -543,6 +544,7 @@ const SYNCED_DEPS = [
     '@rnv/engine-rn-next',
     '@rnv/engine-rn-web',
     '@rnv/engine-rn-electron',
+    '@rnv/engine-rn-tvos',
     'renative',
     'renative-template-hello-world',
     'renative-template-blank'

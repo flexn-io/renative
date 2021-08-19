@@ -1285,6 +1285,7 @@ export const schemaRoot = {
             examples: [
                 {
                     '@rnv/engine-rn': 'source:rnv',
+                    '@rnv/engine-rn-tvos': 'source:rnv',
                     '@rnv/engine-rn-web': 'source:rnv',
                     '@rnv/engine-rn-next': 'source:rnv',
                     '@rnv/engine-rn-electron': 'source:rnv'

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-tvos",
-    "version": "0.32.0-alpha.1",
+    "version": "0.32.0-feat-tvos-4",
     "description": "ReNative Engine to build react-native tvos platform.",
     "keywords": [
         "react-native"
@@ -38,5 +38,6 @@
     "private": false,
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "gitHead": "2f915145306f72bba3dd6466d7e878dcbb0dead4"
 }

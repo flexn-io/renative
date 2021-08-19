@@ -3102,6 +3102,120 @@ rnv run -p android
 
 - none
 
+## v0.32.0-feat-tvos.2 (2021-8-4)
+
+### Fixed
+
+- chore (buildHooks): add rn-tvos engine package.json to `updateVersions` build hook
+- 0.32.0-feat-tvos.1
+- 0.32.0-feat-tvos.0
+- 0.32.0-feat-tvos.0
+- set default engine as engine-rn-tvos for native tvs
+- Add android tv and firetv to tvos engine
+- fix android based platforms connection to bundler, add dedicated metro config for tvos engine
+- remove some unneded cli overrides
+- bring back removed metro config
+- add missing tasks to engine-rn-tvos
+- remove tvos from engine-rn
+- tvos as separate engine
+- fix(iOS:RN Engine): After version bump up for react-native iOS build failing fix
+- improvement(RN Engine tvOS): Added tvOS engine to templates and other places where other engines are specified
+- engine tvos wip
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-tvos.1 (2021-7-22)
+
+### Fixed
+
+- 0.32.0-feat-tvos.0
+- 0.32.0-feat-tvos.0
+- set default engine as engine-rn-tvos for native tvs
+- Add android tv and firetv to tvos engine
+- fix android based platforms connection to bundler, add dedicated metro config for tvos engine
+- remove some unneded cli overrides
+- bring back removed metro config
+- add missing tasks to engine-rn-tvos
+- remove tvos from engine-rn
+- tvos as separate engine
+- fix(iOS:RN Engine): After version bump up for react-native iOS build failing fix
+- improvement(RN Engine tvOS): Added tvOS engine to templates and other places where other engines are specified
+- engine tvos wip
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-tvos.0 (2021-7-22)
+
+### Fixed
+
+- set default engine as engine-rn-tvos for native tvs
+- Add android tv and firetv to tvos engine
+- fix android based platforms connection to bundler, add dedicated metro config for tvos engine
+- remove some unneded cli overrides
+- bring back removed metro config
+- add missing tasks to engine-rn-tvos
+- remove tvos from engine-rn
+- tvos as separate engine
+- fix(iOS:RN Engine): After version bump up for react-native iOS build failing fix
+- improvement(RN Engine tvOS): Added tvOS engine to templates and other places where other engines are specified
+- engine tvos wip
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.31.0-feat-tasks.4 (2020-9-11)
 
 ### Fixed
@@ -3187,6 +3301,26 @@ rnv run -p android
 ### Fixed
 
 - fix(Windows): Fixing android release builds execution on windows
+## v0.32.0-feat-tvos-3 (2021-8-4)
+
+### Fixed
+
+- 0.32.0-feat-tvos.2
+- chore (buildHooks): add rn-tvos engine package.json to `updateVersions` build hook
+- 0.32.0-feat-tvos.1
+- 0.32.0-feat-tvos.0
+- 0.32.0-feat-tvos.0
+- set default engine as engine-rn-tvos for native tvs
+- Add android tv and firetv to tvos engine
+- fix android based platforms connection to bundler, add dedicated metro config for tvos engine
+- remove some unneded cli overrides
+- bring back removed metro config
+- add missing tasks to engine-rn-tvos
+- remove tvos from engine-rn
+- tvos as separate engine
+- fix(iOS:RN Engine): After version bump up for react-native iOS build failing fix
+- improvement(RN Engine tvOS): Added tvOS engine to templates and other places where other engines are specified
+- engine tvos wip
 - 0.32.0-alpha.44
 - app config merges
 - scoped plugin builds merges
@@ -3216,6 +3350,33 @@ rnv run -p android
 - fix(Windows Workspace): Fix issues with workspace config on Windows caused by my previous commit
 - 0.32.0-feat-winbuilds-0
 - fix(Windows): Fixing android release builds execution on windows
+## v0.32.0-feat-tvos-4 (2021-8-10)
+
+### Fixed
+
+- fix (rn-tvos engine, androidtv/firetv): fix app deployment in release mode
+- fix (rn-tvos engine, tvOS: @react-native-community overrides): remove extra parameter from a function call to fix running an app on tvOS simulator
+- fix (rn-tvos engine, tvOS): fix tvos app deployment to devices
+- refactor (rn-tvos engine): rename xcode workspace file name to correct one
+- fix (rn-tvos engine): fix the issue where tvos simulator and app wouldn't open when running in release mode
+- refactor (rn-engine tvos): remove unused files
+- 0.32.0-feat-tvos-3
+- 0.32.0-feat-tvos.2
+- chore (buildHooks): add rn-tvos engine package.json to `updateVersions` build hook
+- 0.32.0-feat-tvos.1
+- 0.32.0-feat-tvos.0
+- 0.32.0-feat-tvos.0
+- set default engine as engine-rn-tvos for native tvs
+- Add android tv and firetv to tvos engine
+- fix android based platforms connection to bundler, add dedicated metro config for tvos engine
+- remove some unneded cli overrides
+- bring back removed metro config
+- add missing tasks to engine-rn-tvos
+- remove tvos from engine-rn
+- tvos as separate engine
+- fix(iOS:RN Engine): After version bump up for react-native iOS build failing fix
+- improvement(RN Engine tvOS): Added tvOS engine to templates and other places where other engines are specified
+- engine tvos wip
 - 0.32.0-alpha.44
 - app config merges
 - scoped plugin builds merges
