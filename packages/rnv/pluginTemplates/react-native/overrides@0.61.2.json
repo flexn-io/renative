@@ -8,6 +8,9 @@
     },
     "ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm": {
       "RCTBridgeModuleNameForClass(module))": "RCTBridgeModuleNameForClass(Class(module)))"
+    },
+    "Libraries/Image/AssetSourceResolver.js": {
+      "this.fromSource(path + getScaledAssetPath(this.asset));": "this.fromSource(path + getScaledAssetPath(this.asset).replace(/\\.\\.\\//g, '_'));"
     }
   }
 }
