@@ -5,10 +5,28 @@ sidebar_label: Plugins Overview
 ---
 
 
+## @lightningjs/cli
+
+
+Version: `2.5.1`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/@lightningjs/cli
+
+Installation:
+
+```
+rnv plugin add @lightningjs/cli
+```
+
+
 ## @lightningjs/sdk
 
 
-Version: `3.0.0`
+Version: `4.3.3`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

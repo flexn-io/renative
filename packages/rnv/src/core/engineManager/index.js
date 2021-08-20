@@ -1,12 +1,12 @@
 /* eslint-disable import/no-dynamic-require, global-require */
 import path from 'path';
+import { fsExistsSync, writeFileSync } from '../systemManager/fileutils';
+import { checkAndCreateProjectPackage, installPackageDependencies } from '../systemManager/npmUtils';
 import { IS_LINKED, RNV_HOME_DIR, TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
 import { getAppFolder, getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
-import { fsExistsSync, writeFileSync } from '../systemManager/fileutils';
-import { installPackageDependencies, checkAndCreateProjectPackage } from '../systemManager/npmUtils';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -186,6 +186,7 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
             '@rnv/engine-rn-web': 'source:rnv',
             '@rnv/engine-rn-next': 'source:rnv',
             '@rnv/engine-rn-electron': 'source:rnv',
+            '@rnv/engine-lightning': 'source:rnv',
             '@rnv/engine-rn-macos': 'source:rnv',
         };
         // TODO: use parseRenativeConfigs instead
@@ -306,6 +307,7 @@ export const generateEnvVars = (c, moduleConfig, nextConfig) => {
         RNV_APP_BUILD_DIR: getAppFolder(c),
         RNV_IS_MONOREPO: isMonorepo,
         RNV_MONO_ROOT: (c.runtime.isWrapper || isMonorepo) ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir,
+        RNV_ENGINE: c.runtime.engine.config.id,
         RNV_IS_NATIVE_TV: [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform)
     });
 };

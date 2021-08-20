@@ -3034,7 +3034,10 @@
             }
         },
         "@lightningjs/sdk": {
-            "version": "3.0.0"
+            "version": "4.3.3"
+        },
+        "@lightningjs/cli": {
+            "version": "2.5.1"
         },
         "react-native-carplay": {
             "version": "2.0.0",

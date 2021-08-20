@@ -21,7 +21,8 @@ import {
     fsWriteFileSync,
     fsExistsSync,
     fsReaddirSync,
-    fsReadFileSync
+    fsReadFileSync, fsWriteFileSync, mkdirSync,
+    writeFileSync
 } from '../systemManager/fileutils';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { executeAsync } from '../systemManager/exec';
@@ -542,6 +543,7 @@ const SYNCED_DEPS = [
     'rnv',
     '@rnv/engine-rn',
     '@rnv/engine-rn-next',
+    '@rnv/engine-lightning',
     '@rnv/engine-rn-web',
     '@rnv/engine-rn-electron',
     '@rnv/engine-rn-tvos',

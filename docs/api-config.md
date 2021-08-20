@@ -1681,6 +1681,7 @@ List of engines available in this project
     "@rnv/engine-rn-tvos": "source:rnv",
     "@rnv/engine-rn-web": "source:rnv",
     "@rnv/engine-rn-next": "source:rnv",
+    "@rnv/engine-lightning": "source:rnv",
     "@rnv/engine-rn-electron": "source:rnv"
   }
 }

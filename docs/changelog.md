@@ -3294,6 +3294,30 @@ rnv run -p android
 
 - none
 
+## v0.32.0-feat-lightning-1 (2021-7-15)
+
+### Fixed
+
+- chore(Lightning): bump lightning cli
+- fix(Lightning): required build files not always being generated
+- feat: enable hosted param for lightning and run the app to simulator
+- feat: package lightning apps using rnv build
+- chore: dont hoist lightning cli dep
+- fix: change lightning esbuild override targets, since previous didnt match
+- feat(Lightning): add configure task
+- chore: add lng engine templates
+- fix(Lightning): override es5 configs to support extensions and different entry files
+- improvement: add current engine to env variables
+- feat(Lightning): allow specifying build target in renative config
+- improvement(Lightning): override entry file location to match other platforms
+- improvement(Lightning): use platform ports
+- chore: add lightning engine references
+- improvement(Lightning): add build task
+- feat(Lightning): add webos to lightning engine
+- feat(Lightning): resolve .lng extensions
+- feat(Lightning): override hardcoded served build folder path in lng package
+- fix(Lightning): enable relative path for build folder
+- chore: bump lightning sdk package and add cli
 
 ## v0.32.0-feat-winbuilds-0 (2021-8-6)
 
