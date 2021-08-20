@@ -21,7 +21,7 @@ const autolink_1 = require("./utils/autolink");
 const os_1 = require("os");
 function setExitProcessWithError(loggingWasEnabled) {
     if (!loggingWasEnabled) {
-        console.log(`Re-run the command with ${chalk.bold('--logging')} for more information`);
+        console.log(`Re-run the command with ${chalk.bold('logging: true')} set in renative.config for more information`);
         if (telemetry_1.Telemetry.client) {
             console.log(`Your session id was ${telemetry_1.Telemetry.client.commonProperties.sessionId}`);
         }
@@ -42,7 +42,16 @@ function getPkgVersion(pkgName) {
     commandWithProgress_1.newWarn(`Could not determine ${pkgName} version`);
     return '';
 }
-let runWindowsPhase = 'None';
+var RunWindowsPhase;	
+(function (RunWindowsPhase) {	
+    RunWindowsPhase[RunWindowsPhase["None"] = 0] = "None";	
+    RunWindowsPhase[RunWindowsPhase["AutoLink"] = 1] = "AutoLink";	
+    RunWindowsPhase[RunWindowsPhase["FindBuildTools"] = 2] = "FindBuildTools";	
+    RunWindowsPhase[RunWindowsPhase["NuGetRestore"] = 3] = "NuGetRestore";	
+    RunWindowsPhase[RunWindowsPhase["FindSolution"] = 4] = "FindSolution";	
+    RunWindowsPhase[RunWindowsPhase["Deploy"] = 5] = "Deploy";	
+})(RunWindowsPhase || (RunWindowsPhase = {}));	
+let runWindowsPhase = RunWindowsPhase.None;
 /**
  * Performs build deploy and launch of RNW apps.
  * @param args Unprocessed args passed from react-native CLI.
@@ -123,7 +132,7 @@ async function runWindows(args, config, options) {
                 msftInternal: telemetry_1.isMSFTInternal(),
                 durationInSecs: process.uptime(),
                 success: runWindowsError === undefined,
-                phase: runWindowsPhase,
+                phase: RunWindowsPhase[runWindowsPhase],
                 totalMem: os_1.totalmem(),
                 diskFree: telemetry_1.getDiskFreeSpace(__dirname),
                 cpus: os_1.cpus().length,
@@ -174,7 +183,7 @@ async function runWindowsInternal(args, config, options) {
                 proj: options.proj,
                 sln: options.sln,
             };
-            runWindowsPhase = 'AutoLink';
+            runWindowsPhase = RunWindowsPhase.AutoLink;
             await autolink_1.autoLinkCommand.func(autolinkArgs, autolinkConfig, autoLinkOptions);
         }
         else {
@@ -186,7 +195,7 @@ async function runWindowsInternal(args, config, options) {
         throw e;
     }
     let buildTools;
-    runWindowsPhase = 'FindBuildTools';
+    runWindowsPhase = RunWindowsPhase.FindBuildTools;
     try {
         buildTools = msbuildtools_1.default.findAvailableVersion(options.arch, verbose);
     }
@@ -203,10 +212,18 @@ async function runWindowsInternal(args, config, options) {
         }
     }
     if (options.build) {
-        runWindowsPhase = 'FindSolution';
+        runWindowsPhase = RunWindowsPhase.FindSolution;
         if (!slnFile) {
             commandWithProgress_1.newError('Visual Studio Solution file not found. Maybe run "npx react-native-windows-init" first?');
             throw new Error('Cannot find solution file');
+        }
+        try {	
+            runWindowsPhase = RunWindowsPhase.NuGetRestore;	
+            await build.restoreNuGetPackages(slnFile, buildTools, verbose);	
+        }	
+        catch (e) {	
+            commandWithProgress_1.newError('Failed to restore the NuGet packages: ' + e.toString());	
+            throw e;	
         }
         // Get build/deploy options
         const buildType = deploy.getBuildConfiguration(options);
@@ -214,7 +231,7 @@ async function runWindowsInternal(args, config, options) {
         // Disable the autolink check since we just ran it
         msBuildProps.RunAutolinkCheck = 'false';
         try {
-            runWindowsPhase = 'FindSolution';
+            runWindowsPhase = RunWindowsPhase.FindSolution;
             await build.buildSolution(buildTools, slnFile, buildType, options.arch, msBuildProps, verbose, 'build', options.buildLogDirectory, options.singleproc);
         }
         catch (e) {
@@ -230,13 +247,13 @@ async function runWindowsInternal(args, config, options) {
     }
     // await deploy.startServerInNewWindow(options, verbose);
     if (options.deploy) {
-        runWindowsPhase = 'FindSolution';
+        runWindowsPhase = RunWindowsPhase.FindSolution;
         if (!slnFile) {
             commandWithProgress_1.newError('Visual Studio Solution file not found. Maybe run "npx react-native-windows-init" first?');
             throw new Error('Cannot find solution file');
         }
         try {
-            runWindowsPhase = 'Deploy';
+            runWindowsPhase = RunWindowsPhase.Deploy;
             if (options.device || options.emulator || options.target) {
                 await deploy.deployToDevice(options, verbose);
             }

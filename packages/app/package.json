@@ -55,7 +55,7 @@
         "react": "16.13.1",
         "react-art": "16.13.1",
         "react-dom": "16.13.1",
-        "react-native": "0.64.2",
+        "react-native": "0.63.4",
         "react-native-gesture-handler": "1.4.1",
         "react-native-google-cast": "github:hosek/react-native-google-cast#sdk4.4.5",
         "react-native-reanimated": "1.13.3",
@@ -67,8 +67,8 @@
         "react-native-web-image-loader": "0.0.5",
         "renative": "~0.32.0-RC",
         "@react-native-community/cli": "5.0.1",
-        "@react-native-windows/cli": "0.64.4",
-        "react-native-windows": "0.64.12",
+        "@react-native-windows/cli": "0.63.12",
+        "react-native-windows": "0.63.36",
         "@ovaeasy/react-native-vector-icons": "7.0.4"
     },
     "devDependencies": {
@@ -93,7 +93,7 @@
         "rnv": "~0.32.0-RC",
         "wait-on": "5.0.1",
         "xcode": "2.1.0",
-        "metro": "0.66.0"
+        "metro": "0.59.0"
     },
     "optionalDependencies": {
         "ios-deploy": "1.10.0"

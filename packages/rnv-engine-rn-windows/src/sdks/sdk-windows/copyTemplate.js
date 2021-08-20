@@ -65,9 +65,9 @@ async function generateCertificate(
             console.log(chalk.yellow('Failed to generate Self-signed certificate.'));
         }
     }
-    // console.log(
-    //     chalk.yellow('Using Default Certificate. Use Visual Studio to renew it.')
-    // );
+    console.log(
+        chalk.yellow('Using Default Certificate. Use Visual Studio to renew it.')
+    );
     await generator_common_1.copyAndReplaceWithChangedCallback(
         path.join(srcPath, 'keys', 'MyApp_TemporaryKey.pfx'),
         c.paths.project.dir,
@@ -90,18 +90,6 @@ export async function copyProjectTemplateAndReplace(
     // React-native init only allows alphanumerics in project names, but other
     // new project tools (like create-react-native-module) are less strict.
 
-    // TODO. Is this needed?
-    // -------------------------------------------------------------------
-    // Similar to the above, but we want to retain namespace separators
-    // if (projectType === 'lib') {
-    //     namespace = namespace
-    //         .split(/[.:]+/)
-    //         .map(pascalCase)
-    //         .join('.');
-    // }
-    // -------------------------------------------------------------------
-
-    // TODO. Can this be considered namespace?
     const appTitle = getAppTitle(c, WINDOWS);
     const appFolder = getAppFolder(c, true);
     const RNIconsPluginPath = path.join(path.dirname(require.resolve('react-native-vector-icons/package.json', {
@@ -133,12 +121,30 @@ export async function copyProjectTemplateAndReplace(
     if (useWinUI3) {
         console.log('Using experimental WinUI3 dependency.');
     }
-    const RNWTemplatePath = path.join(path.dirname(require.resolve('react-native-windows/package.json', {
-        paths: [c.paths.project.dir],
-    })), 'template');
+
+    // eslint-disable-next-line global-require
+    const reactNative = require('react-native/package.json');
+    const rnVersion = parseFloat(reactNative.version);
+
+    let RNWTemplatePath;
+    let srcPath;
+    let sharedPath;
+    // In 0.64 version of RN Windows the location was changed and some folders were renamed (separation between lib abd app)
+    if (rnVersion >= 0.64) {
+        RNWTemplatePath = path.join(path.dirname(require.resolve('react-native-windows/package.json', {
+            paths: [c.paths.project.dir],
+        })), 'template');
+        srcPath = path.join(RNWTemplatePath, `${language}-app`);
+        sharedPath = path.join(RNWTemplatePath, 'shared-app');
+    } else if (rnVersion >= 0.63) {
+        RNWTemplatePath = path.join(path.dirname(require.resolve('@react-native-windows/cli/package.json', {
+            paths: [c.paths.project.dir],
+        })), 'templates');
+        srcPath = path.join(RNWTemplatePath, `${language}`);
+        sharedPath = path.join(RNWTemplatePath, 'shared');
+    }
+
     const projDir = 'proj';
-    const srcPath = path.join(RNWTemplatePath, `${language}-app`);
-    const sharedPath = path.join(RNWTemplatePath, 'shared-app');
     const projectGuid = uuid.v4();
     // eslint-disable-next-line global-require
     const rnwVersion = require('react-native-windows/package.json').version;
@@ -179,7 +185,7 @@ export async function copyProjectTemplateAndReplace(
     const cppNugetPackages = [
         {
             id: 'Microsoft.Windows.CppWinRT',
-            version: '2.0.210312.4',
+            version: rnVersion > 0.64 ? '2.0.210312.4' : '2.0.200615.7',
             propsTopOfFile: true,
             hasProps: true,
             hasTargets: true,
@@ -209,7 +215,7 @@ export async function copyProjectTemplateAndReplace(
             hasTargets: true,
         });
     }
-    if (useHermes) {
+    if (useHermes && rnVersion > 0.64) {
         cppNugetPackages.push({
             id: 'ReactNative.Hermes.Windows',
             version: '0.7.2',
@@ -259,6 +265,13 @@ export async function copyProjectTemplateAndReplace(
         hasAdditionalAssets: fs.existsSync(RNIconsPluginPath)
     };
     const commonMappings = [
+        {
+            from: path.join(
+                RNWTemplatePath,
+                'metro.config.js'
+            ),
+            to: 'metro.config.rnwin.js'
+        },
         // app common mappings
         {
             from: path.join(RNWTemplatePath, 'index.windows.bundle'),
@@ -375,30 +388,34 @@ export async function copyProjectTemplateAndReplace(
             );
         }
     }
+
+    // This is default in version 0.64 of react native windows, but not in 0.63 or lower
+    if (options.experimentalNuGetDependency || rnVersion > 0.64) {
     // shared proj
-    if (fs.existsSync(path.join(sharedPath, projDir))) {
-        const sharedProjMappings = [];
-        sharedProjMappings.push({
-            from: path.join(sharedPath, projDir, 'NuGet.Config'),
-            to: path.join(appFolder, 'NuGet.Config'),
-        });
-        if (
-            fs.existsSync(
-                path.join(sharedPath, projDir, 'ExperimentalFeatures.props')
-            )
-        ) {
+        if (fs.existsSync(path.join(sharedPath, projDir))) {
+            const sharedProjMappings = [];
             sharedProjMappings.push({
-                from: path.join(sharedPath, projDir, 'ExperimentalFeatures.props'),
-                to: path.join(appFolder, 'ExperimentalFeatures.props'),
+                from: path.join(sharedPath, projDir, 'NuGet.Config'),
+                to: path.join(appFolder, 'NuGet.Config'),
             });
-        }
-        for (const mapping of sharedProjMappings) {
-            await generator_common_1.copyAndReplaceWithChangedCallback(
-                mapping.from,
-                c.paths.project.dir,
-                mapping.to,
-                templateVars
-            );
+            if (
+                fs.existsSync(
+                    path.join(sharedPath, projDir, 'ExperimentalFeatures.props')
+                )
+            ) {
+                sharedProjMappings.push({
+                    from: path.join(sharedPath, projDir, 'ExperimentalFeatures.props'),
+                    to: path.join(appFolder, 'ExperimentalFeatures.props'),
+                });
+            }
+            for (const mapping of sharedProjMappings) {
+                await generator_common_1.copyAndReplaceWithChangedCallback(
+                    mapping.from,
+                    c.paths.project.dir,
+                    mapping.to,
+                    templateVars
+                );
+            }
         }
     }
     // shared assets

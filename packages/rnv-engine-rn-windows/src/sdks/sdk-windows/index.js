@@ -41,7 +41,7 @@ const defaultOptions = {
     nuGetTestVersion: null,
     reactNativeEngine: 'chakra',
     nuGetTestFeed: null,
-    overwrite: false,
+    overwrite: true,
     // Whether it's a release build
     release: false,
     // Where app entry .js file is
@@ -300,13 +300,26 @@ const packageBundleForWindows = (c, isDev = false) => {
 
     return executeAsync(c, `node ${doResolve(
         'react-native'
-    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
+    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.rnwin.js`, { env: { ...generateEnvVars(c) } });
 };
 
 const setSingleBuildProcessForWindows = (c) => {
     logTask('setSingleBuildProcessForWindows');
+    // eslint-disable-next-line eqeqeq
+    if (process.env.MSBUILDDISABLENODEREUSE != 1) {
+        const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
+        const opts = {
+            cwd: c.paths.project.dir,
+            detached: false,
+            stdio: logging ? 'inherit' : 'ignore'
+        };
 
-    return executeAsync(c, 'set MSBUILDDISABLENODEREUSE=1');
+        // TODO This should be part of rnv clean and rnv run -r and not part of the SDK
+        // This should resolve as it used internally by react-native-windows
+        // eslint-disable-next-line global-require
+        const child_process_1 = require('child_process');
+        child_process_1.spawn('cmd.exe', ['/C', 'set MSBUILDDISABLENODEREUSE=1'], opts);
+    }
 };
 
 // Copied from @react-native-windows/cli/overrides/lib-commonjs/runWindows/utils/deploy.js

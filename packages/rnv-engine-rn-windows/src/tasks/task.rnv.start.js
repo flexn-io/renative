@@ -46,7 +46,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
                 'react-native'
             )}/local-cli/cli.js start --port ${
                 c.runtime.port || 8092
-            } --config=metro.config.js`;
+            } --config=metro.config.rnwin.js`;
 
 
             if (c.program.resetHard) {

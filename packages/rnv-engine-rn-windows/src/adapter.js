@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 // eslint-disable-next-line import/no-unresolved
-const exclusionList = require('metro-config/src/defaults/exclusionList');
+const blacklist = require('metro-config/src/defaults/blacklist');
 
 export const withRNV = (config) => {
     const rnwPath = fs.realpathSync(
@@ -25,7 +25,7 @@ export const withRNV = (config) => {
     const cnf = {
         ...config,
         resolver: {
-            blockList: exclusionList([
+            blacklistRE: blacklist([
                 // This stops "react-native run-windows" from causing the metro server to crash if its already running
                 // TODO. Project name should be dynamically injected here somehow
                 new RegExp(
