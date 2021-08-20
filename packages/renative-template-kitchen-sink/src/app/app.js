@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 
 import React from 'react';
@@ -23,9 +24,7 @@ const App = () => (
     <ScrollView contentContainerStyle={{ paddingTop: 50 }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
             <Tile title="Text">
-                <Text>
-Lorem Ipsum
-                </Text>
+                <Text>Lorem Ipsum</Text>
             </Tile>
             <Tile title="Input">
                 <TextInput />
@@ -44,9 +43,7 @@ Lorem Ipsum
             </Tile>
             <Tile title="ImageBackground">
                 <ImageBackground source={{ uri: 'http://gis.mrrb.government.bg/tiles/mrr_vids/16/36914/23809.png' }} style={{ flex: 1 }}>
-                    <Text>
-Lorem Ipsum
-                    </Text>
+                    <Text>Lorem Ipsum</Text>
                 </ImageBackground>
             </Tile>
             <Tile title="ProgressViewIOS">
@@ -55,6 +52,8 @@ Lorem Ipsum
 
             <Tile title="ViewPager">
                 <Text>
+
+
 TODO
                 </Text>
             </Tile>

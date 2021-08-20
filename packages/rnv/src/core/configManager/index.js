@@ -10,11 +10,13 @@ import {
     RENATIVE_CONFIG_PLUGINS_NAME,
     RENATIVE_CONFIG_TEMPLATES_NAME,
     RN_CLI_CONFIG_NAME,
+    RNT_CLI_CONFIG_NAME,
+    RNM_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
     // PLATFORMS,
     USER_HOME_DIR,
     RNV_HOME_DIR,
-    CURRENT_DIR
+    CURRENT_DIR,
 } from '../constants';
 import {
     mkdirSync,
@@ -28,6 +30,7 @@ import {
     fsReadFileSync,
     fsReaddirSync,
     fsLstatSync,
+    fsWriteFileSync,
     loadFile,
     formatBytes
 } from '../systemManager/fileutils';
@@ -220,6 +223,10 @@ export const generateBuildConfig = (c) => {
         );
 
         if (c.paths.project.builds.dir) {
+            if (!fsExistsSync(c.paths.project.builds.dir)) {
+                mkdirSync(c.paths.project.builds.dir);
+            }
+
             const result = writeFileSync(c.paths.project.builds.config, c.buildConfig);
             if (result) {
                 const size = formatBytes(Buffer.byteLength(result || '', 'utf8'));
@@ -649,6 +656,13 @@ export const parseRenativeConfigs = async (c) => {
 export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } = {}) => {
     const c = {
         cli: {},
+        api: {
+            fsExistsSync,
+            fsReadFileSync,
+            fsReaddirSync,
+            fsWriteFileSync,
+            path
+        },
         configPropsInjects: {},
         runtime: {
             enginesByPlatform: {},
@@ -855,6 +869,14 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     c.paths.project.rnCliConfig = path.join(
         c.paths.project.dir,
         RN_CLI_CONFIG_NAME
+    );
+    c.paths.project.rntCliConfig = path.join( // cli config for rn-tvos engine (rnt)
+        c.paths.project.dir,
+        RNT_CLI_CONFIG_NAME
+    );
+    c.paths.project.rnmCliConfig = path.join( // cli config for rn-macos engine (rnm)
+        c.paths.project.dir,
+        RNM_CLI_CONFIG_NAME
     );
     c.paths.project.babelConfig = path.join(
         c.paths.project.dir,

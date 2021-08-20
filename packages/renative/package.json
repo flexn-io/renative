@@ -1,6 +1,6 @@
 {
     "name": "renative",
-    "version": "0.32.0-feat-lightning-1",
+    "version": "0.32.0-alpha.45",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -61,7 +61,7 @@
         "history": "^4.9.0",
         "react": "16.13.1",
         "react-dom": "16.13.1",
-        "react-native": "0.61.2"
+        "react-native": "0.64.2"
     },
     "devDependencies": {
         "babel-eslint": "8.2.6",
@@ -95,5 +95,6 @@
         "hooks": {
             "pre-commit": "pretty-quick --staged"
         }
-    }
+    },
+    "gitHead": "2f915145306f72bba3dd6466d7e878dcbb0dead4"
 }

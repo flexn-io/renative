@@ -5,6 +5,49 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.45 (2021-6-2)
+
+### Fixed
+
+- optimise project bootstrap
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-alpha.44 (2021-5-27)
+
+### Fixed
+
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+- 0.32.0-alpha.43
+- [feat] configurable minifyEnabled
+- [fix] missing @babel/cli warning
+- [fix] Xcode 12.5 support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.43 (2021-5-5)
 
 ### Fixed
@@ -3058,6 +3101,120 @@ rnv run -p android
 
 - none
 
+## v0.32.0-feat-tvos.2 (2021-8-4)
+
+### Fixed
+
+- chore (buildHooks): add rn-tvos engine package.json to `updateVersions` build hook
+- 0.32.0-feat-tvos.1
+- 0.32.0-feat-tvos.0
+- 0.32.0-feat-tvos.0
+- set default engine as engine-rn-tvos for native tvs
+- Add android tv and firetv to tvos engine
+- fix android based platforms connection to bundler, add dedicated metro config for tvos engine
+- remove some unneded cli overrides
+- bring back removed metro config
+- add missing tasks to engine-rn-tvos
+- remove tvos from engine-rn
+- tvos as separate engine
+- fix(iOS:RN Engine): After version bump up for react-native iOS build failing fix
+- improvement(RN Engine tvOS): Added tvOS engine to templates and other places where other engines are specified
+- engine tvos wip
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-tvos.1 (2021-7-22)
+
+### Fixed
+
+- 0.32.0-feat-tvos.0
+- 0.32.0-feat-tvos.0
+- set default engine as engine-rn-tvos for native tvs
+- Add android tv and firetv to tvos engine
+- fix android based platforms connection to bundler, add dedicated metro config for tvos engine
+- remove some unneded cli overrides
+- bring back removed metro config
+- add missing tasks to engine-rn-tvos
+- remove tvos from engine-rn
+- tvos as separate engine
+- fix(iOS:RN Engine): After version bump up for react-native iOS build failing fix
+- improvement(RN Engine tvOS): Added tvOS engine to templates and other places where other engines are specified
+- engine tvos wip
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-tvos.0 (2021-7-22)
+
+### Fixed
+
+- set default engine as engine-rn-tvos for native tvs
+- Add android tv and firetv to tvos engine
+- fix android based platforms connection to bundler, add dedicated metro config for tvos engine
+- remove some unneded cli overrides
+- bring back removed metro config
+- add missing tasks to engine-rn-tvos
+- remove tvos from engine-rn
+- tvos as separate engine
+- fix(iOS:RN Engine): After version bump up for react-native iOS build failing fix
+- improvement(RN Engine tvOS): Added tvOS engine to templates and other places where other engines are specified
+- engine tvos wip
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.31.0-feat-tasks.4 (2020-9-11)
 
 ### Fixed
@@ -3137,7 +3294,6 @@ rnv run -p android
 
 - none
 
-
 ## v0.32.0-feat-lightning-1 (2021-7-15)
 
 ### Fixed
@@ -3162,6 +3318,579 @@ rnv run -p android
 - feat(Lightning): override hardcoded served build folder path in lng package
 - fix(Lightning): enable relative path for build folder
 - chore: bump lightning sdk package and add cli
+
+## v0.32.0-feat-winbuilds-0 (2021-8-6)
+
+### Fixed
+
+- fix(Windows): Fixing android release builds execution on windows
+## v0.32.0-feat-tvos-3 (2021-8-4)
+
+### Fixed
+
+- 0.32.0-feat-tvos.2
+- chore (buildHooks): add rn-tvos engine package.json to `updateVersions` build hook
+- 0.32.0-feat-tvos.1
+- 0.32.0-feat-tvos.0
+- 0.32.0-feat-tvos.0
+- set default engine as engine-rn-tvos for native tvs
+- Add android tv and firetv to tvos engine
+- fix android based platforms connection to bundler, add dedicated metro config for tvos engine
+- remove some unneded cli overrides
+- bring back removed metro config
+- add missing tasks to engine-rn-tvos
+- remove tvos from engine-rn
+- tvos as separate engine
+- fix(iOS:RN Engine): After version bump up for react-native iOS build failing fix
+- improvement(RN Engine tvOS): Added tvOS engine to templates and other places where other engines are specified
+- engine tvos wip
+## v0.32.0-feat-rnmacos-0 (2021-7-22)
+
+### Fixed
+
+- fix (rn-macos engine): add `teamID` to `exportOptions`
+- fix (rn-macos engine): AppDelegate script for bundle
+- improvement (rn-macos engine): add `export` command and make possible to run app in release mode via cli
+- improvement (rn-macos engine): add `package` and `build` rnv commands
+- refactor (rn-macos engine): clean up some code and rename some files
+- chore (rn-macos engine): add missing macos engine package to both `blank`and `hello-world`templates renative config
+- improvement (rn-macos engine: AppDelegate): dynamic bundle url
+- fix (rn-macos engine: xcode project configuration): remove unused children from frameworks
+- fix (rn-macos engine): fix fonts
+- improvement (renative package): add Api constant for `engine-rn-macos`
+- improvement (rn-macos engine): remove ios/tvos related stuff from xcodeParser, remove unecessary property from template apps renative.json
+- improvement (rn-macos engine): remove unused swiftParser
+- fix (rn-macos engine): fix runtime errors when running the app by changing the platform to correct one in bundle url
+- chore (rn-macos engine): removed some ios/tvos platforms related configuration from xcode project config
+- improvement (rn-macos engine): add `run` command
+- improvement (rn-macos engine): add `start` command
+- chore: remove ios target from rn-macos engine xcode project
+- feat (macos engine): initial engine setup, `configure` command
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-rnmacos-1 (2021-7-23)
+
+### Fixed
+
+- chore (builhooks): add rn-macos engine to `updateVersions` hook
+- 0.32.0-feat-rnmacos-0
+- fix (rn-macos engine): add `teamID` to `exportOptions`
+- fix (rn-macos engine): AppDelegate script for bundle
+- improvement (rn-macos engine): add `export` command and make possible to run app in release mode via cli
+- improvement (rn-macos engine): add `package` and `build` rnv commands
+- refactor (rn-macos engine): clean up some code and rename some files
+- chore (rn-macos engine): add missing macos engine package to both `blank`and `hello-world`templates renative config
+- improvement (rn-macos engine: AppDelegate): dynamic bundle url
+- fix (rn-macos engine: xcode project configuration): remove unused children from frameworks
+- fix (rn-macos engine): fix fonts
+- improvement (renative package): add Api constant for `engine-rn-macos`
+- improvement (rn-macos engine): remove ios/tvos related stuff from xcodeParser, remove unecessary property from template apps renative.json
+- improvement (rn-macos engine): remove unused swiftParser
+- fix (rn-macos engine): fix runtime errors when running the app by changing the platform to correct one in bundle url
+- chore (rn-macos engine): removed some ios/tvos platforms related configuration from xcode project config
+- improvement (rn-macos engine): add `run` command
+- improvement (rn-macos engine): add `start` command
+- chore: remove ios target from rn-macos engine xcode project
+- feat (macos engine): initial engine setup, `configure` command
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-rnmacos-2 (2021-7-28)
+
+### Fixed
+
+- refactor (rn-macos engine): remove unused file
+- chore (rn-macos engine): add `rnm` specific metro config
+- fix (rn-macos engine: `package` script): change platform from `ios`to `macos`when packaging
+- fix (rn-template-hello-world, macOS: app): add a check to not render a CastButton for `desktop`platforms
+- chore (app/rnv/hello-world): upgrade `react-navigation/stack`, `react-navigation/native`, `react-native-reanimated` and `react-native-safe-area-context` versions for macOS to work properly
+- fix (rn-macos engine): dynamic app title
+- feat (rn-macos): inject dynamic application title to podfile and xcode project configuration
+- feat (rn-macos engine): add storyboard parser so it would be possible to inject dynamic application title
+- 0.32.0-feat-rnmacos-1
+- chore (builhooks): add rn-macos engine to `updateVersions` hook
+- 0.32.0-feat-rnmacos-0
+- fix (rn-macos engine): add `teamID` to `exportOptions`
+- fix (rn-macos engine): AppDelegate script for bundle
+- improvement (rn-macos engine): add `export` command and make possible to run app in release mode via cli
+- improvement (rn-macos engine): add `package` and `build` rnv commands
+- refactor (rn-macos engine): clean up some code and rename some files
+- chore (rn-macos engine): add missing macos engine package to both `blank`and `hello-world`templates renative config
+- improvement (rn-macos engine: AppDelegate): dynamic bundle url
+- fix (rn-macos engine: xcode project configuration): remove unused children from frameworks
+- fix (rn-macos engine): fix fonts
+- improvement (renative package): add Api constant for `engine-rn-macos`
+- improvement (rn-macos engine): remove ios/tvos related stuff from xcodeParser, remove unecessary property from template apps renative.json
+- improvement (rn-macos engine): remove unused swiftParser
+- fix (rn-macos engine): fix runtime errors when running the app by changing the platform to correct one in bundle url
+- chore (rn-macos engine): removed some ios/tvos platforms related configuration from xcode project config
+- improvement (rn-macos engine): add `run` command
+- improvement (rn-macos engine): add `start` command
+- chore: remove ios target from rn-macos engine xcode project
+- feat (macos engine): initial engine setup, `configure` command
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-rnmacos-3 (2021-7-28)
+
+### Fixed
+
+- fix (rn-macos engine): fix missed things for specific metro config
+- 0.32.0-feat-rnmacos-2
+- refactor (rn-macos engine): remove unused file
+- chore (rn-macos engine): add `rnm` specific metro config
+- fix (rn-macos engine: `package` script): change platform from `ios`to `macos`when packaging
+- fix (rn-template-hello-world, macOS: app): add a check to not render a CastButton for `desktop`platforms
+- chore (app/rnv/hello-world): upgrade `react-navigation/stack`, `react-navigation/native`, `react-native-reanimated` and `react-native-safe-area-context` versions for macOS to work properly
+- fix (rn-macos engine): dynamic app title
+- feat (rn-macos): inject dynamic application title to podfile and xcode project configuration
+- feat (rn-macos engine): add storyboard parser so it would be possible to inject dynamic application title
+- 0.32.0-feat-rnmacos-1
+- chore (builhooks): add rn-macos engine to `updateVersions` hook
+- 0.32.0-feat-rnmacos-0
+- fix (rn-macos engine): add `teamID` to `exportOptions`
+- fix (rn-macos engine): AppDelegate script for bundle
+- improvement (rn-macos engine): add `export` command and make possible to run app in release mode via cli
+- improvement (rn-macos engine): add `package` and `build` rnv commands
+- refactor (rn-macos engine): clean up some code and rename some files
+- chore (rn-macos engine): add missing macos engine package to both `blank`and `hello-world`templates renative config
+- improvement (rn-macos engine: AppDelegate): dynamic bundle url
+- fix (rn-macos engine: xcode project configuration): remove unused children from frameworks
+- fix (rn-macos engine): fix fonts
+- improvement (renative package): add Api constant for `engine-rn-macos`
+- improvement (rn-macos engine): remove ios/tvos related stuff from xcodeParser, remove unecessary property from template apps renative.json
+- improvement (rn-macos engine): remove unused swiftParser
+- fix (rn-macos engine): fix runtime errors when running the app by changing the platform to correct one in bundle url
+- chore (rn-macos engine): removed some ios/tvos platforms related configuration from xcode project config
+- improvement (rn-macos engine): add `run` command
+- improvement (rn-macos engine): add `start` command
+- chore: remove ios target from rn-macos engine xcode project
+- feat (macos engine): initial engine setup, `configure` command
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-rnmacos-4 (2021-7-29)
+
+### Fixed
+
+- fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
+- fix (template-hello-world: macOS): removed `macos` specific file
+- improvements (rn-macos engine): add missing default  app icons to `assets`
+- fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
+- chore (rn-macos engine): add `macos`to missing engines config
+- 0.32.0-feat-rnmacos-3
+- fix (rn-macos engine): fix missed things for specific metro config
+- 0.32.0-feat-rnmacos-2
+- refactor (rn-macos engine): remove unused file
+- chore (rn-macos engine): add `rnm` specific metro config
+- fix (rn-macos engine: `package` script): change platform from `ios`to `macos`when packaging
+- fix (rn-template-hello-world, macOS: app): add a check to not render a CastButton for `desktop`platforms
+- chore (app/rnv/hello-world): upgrade `react-navigation/stack`, `react-navigation/native`, `react-native-reanimated` and `react-native-safe-area-context` versions for macOS to work properly
+- fix (rn-macos engine): dynamic app title
+- feat (rn-macos): inject dynamic application title to podfile and xcode project configuration
+- feat (rn-macos engine): add storyboard parser so it would be possible to inject dynamic application title
+- 0.32.0-feat-rnmacos-1
+- chore (builhooks): add rn-macos engine to `updateVersions` hook
+- 0.32.0-feat-rnmacos-0
+- fix (rn-macos engine): add `teamID` to `exportOptions`
+- fix (rn-macos engine): AppDelegate script for bundle
+- improvement (rn-macos engine): add `export` command and make possible to run app in release mode via cli
+- improvement (rn-macos engine): add `package` and `build` rnv commands
+- refactor (rn-macos engine): clean up some code and rename some files
+- chore (rn-macos engine): add missing macos engine package to both `blank`and `hello-world`templates renative config
+- improvement (rn-macos engine: AppDelegate): dynamic bundle url
+- fix (rn-macos engine: xcode project configuration): remove unused children from frameworks
+- fix (rn-macos engine): fix fonts
+- improvement (renative package): add Api constant for `engine-rn-macos`
+- improvement (rn-macos engine): remove ios/tvos related stuff from xcodeParser, remove unecessary property from template apps renative.json
+- improvement (rn-macos engine): remove unused swiftParser
+- fix (rn-macos engine): fix runtime errors when running the app by changing the platform to correct one in bundle url
+- chore (rn-macos engine): removed some ios/tvos platforms related configuration from xcode project config
+- improvement (rn-macos engine): add `run` command
+- improvement (rn-macos engine): add `start` command
+- chore: remove ios target from rn-macos engine xcode project
+- feat (macos engine): initial engine setup, `configure` command
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-winbuilds-1 (2021-8-9)
+
+### Fixed
+
+- Merge branch 'fix/windows-android-builds' of https://github.com/pavjacko/renative into fix/windows-android-builds
+- fix(Windows Workspace): Fix issues with workspace config on Windows caused by my previous commit
+- 0.32.0-feat-winbuilds-0
+- fix(Windows): Fixing android release builds execution on windows
+## v0.32.0-feat-tvos-4 (2021-8-10)
+
+### Fixed
+
+- fix (rn-tvos engine, androidtv/firetv): fix app deployment in release mode
+- fix (rn-tvos engine, tvOS: @react-native-community overrides): remove extra parameter from a function call to fix running an app on tvOS simulator
+- fix (rn-tvos engine, tvOS): fix tvos app deployment to devices
+- refactor (rn-tvos engine): rename xcode workspace file name to correct one
+- fix (rn-tvos engine): fix the issue where tvos simulator and app wouldn't open when running in release mode
+- refactor (rn-engine tvos): remove unused files
+- 0.32.0-feat-tvos-3
+- 0.32.0-feat-tvos.2
+- chore (buildHooks): add rn-tvos engine package.json to `updateVersions` build hook
+- 0.32.0-feat-tvos.1
+- 0.32.0-feat-tvos.0
+- 0.32.0-feat-tvos.0
+- set default engine as engine-rn-tvos for native tvs
+- Add android tv and firetv to tvos engine
+- fix android based platforms connection to bundler, add dedicated metro config for tvos engine
+- remove some unneded cli overrides
+- bring back removed metro config
+- add missing tasks to engine-rn-tvos
+- remove tvos from engine-rn
+- tvos as separate engine
+- fix(iOS:RN Engine): After version bump up for react-native iOS build failing fix
+- improvement(RN Engine tvOS): Added tvOS engine to templates and other places where other engines are specified
+- engine tvos wip
+## v0.32.0-feat-rnmacos-5 (2021-7-29)
+
+### Fixed
+
+- chore (rn-macos engine): add few more default properties to entitlements
+- 0.32.0-feat-rnmacos-4
+- fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
+- fix (template-hello-world: macOS): removed `macos` specific file
+- improvements (rn-macos engine): add missing default  app icons to `assets`
+- fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
+- chore (rn-macos engine): add `macos`to missing engines config
+- 0.32.0-feat-rnmacos-3
+- fix (rn-macos engine): fix missed things for specific metro config
+- 0.32.0-feat-rnmacos-2
+- refactor (rn-macos engine): remove unused file
+- chore (rn-macos engine): add `rnm` specific metro config
+- fix (rn-macos engine: `package` script): change platform from `ios`to `macos`when packaging
+- fix (rn-template-hello-world, macOS: app): add a check to not render a CastButton for `desktop`platforms
+- chore (app/rnv/hello-world): upgrade `react-navigation/stack`, `react-navigation/native`, `react-native-reanimated` and `react-native-safe-area-context` versions for macOS to work properly
+- fix (rn-macos engine): dynamic app title
+- feat (rn-macos): inject dynamic application title to podfile and xcode project configuration
+- feat (rn-macos engine): add storyboard parser so it would be possible to inject dynamic application title
+- 0.32.0-feat-rnmacos-1
+- chore (builhooks): add rn-macos engine to `updateVersions` hook
+- 0.32.0-feat-rnmacos-0
+- fix (rn-macos engine): add `teamID` to `exportOptions`
+- fix (rn-macos engine): AppDelegate script for bundle
+- improvement (rn-macos engine): add `export` command and make possible to run app in release mode via cli
+- improvement (rn-macos engine): add `package` and `build` rnv commands
+- refactor (rn-macos engine): clean up some code and rename some files
+- chore (rn-macos engine): add missing macos engine package to both `blank`and `hello-world`templates renative config
+- improvement (rn-macos engine: AppDelegate): dynamic bundle url
+- fix (rn-macos engine: xcode project configuration): remove unused children from frameworks
+- fix (rn-macos engine): fix fonts
+- improvement (renative package): add Api constant for `engine-rn-macos`
+- improvement (rn-macos engine): remove ios/tvos related stuff from xcodeParser, remove unecessary property from template apps renative.json
+- improvement (rn-macos engine): remove unused swiftParser
+- fix (rn-macos engine): fix runtime errors when running the app by changing the platform to correct one in bundle url
+- chore (rn-macos engine): removed some ios/tvos platforms related configuration from xcode project config
+- improvement (rn-macos engine): add `run` command
+- improvement (rn-macos engine): add `start` command
+- chore: remove ios target from rn-macos engine xcode project
+- feat (macos engine): initial engine setup, `configure` command
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-rnmacos-6 (2021-7-29)
+
+### Fixed
+
+- 0.32.0-feat-rnmacos-5
+- chore (rn-macos engine): add few more default properties to entitlements
+- 0.32.0-feat-rnmacos-4
+- fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
+- fix (template-hello-world: macOS): removed `macos` specific file
+- improvements (rn-macos engine): add missing default  app icons to `assets`
+- fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
+- chore (rn-macos engine): add `macos`to missing engines config
+- 0.32.0-feat-rnmacos-3
+- fix (rn-macos engine): fix missed things for specific metro config
+- 0.32.0-feat-rnmacos-2
+- refactor (rn-macos engine): remove unused file
+- chore (rn-macos engine): add `rnm` specific metro config
+- fix (rn-macos engine: `package` script): change platform from `ios`to `macos`when packaging
+- fix (rn-template-hello-world, macOS: app): add a check to not render a CastButton for `desktop`platforms
+- chore (app/rnv/hello-world): upgrade `react-navigation/stack`, `react-navigation/native`, `react-native-reanimated` and `react-native-safe-area-context` versions for macOS to work properly
+- fix (rn-macos engine): dynamic app title
+- feat (rn-macos): inject dynamic application title to podfile and xcode project configuration
+- feat (rn-macos engine): add storyboard parser so it would be possible to inject dynamic application title
+- 0.32.0-feat-rnmacos-1
+- chore (builhooks): add rn-macos engine to `updateVersions` hook
+- 0.32.0-feat-rnmacos-0
+- fix (rn-macos engine): add `teamID` to `exportOptions`
+- fix (rn-macos engine): AppDelegate script for bundle
+- improvement (rn-macos engine): add `export` command and make possible to run app in release mode via cli
+- improvement (rn-macos engine): add `package` and `build` rnv commands
+- refactor (rn-macos engine): clean up some code and rename some files
+- chore (rn-macos engine): add missing macos engine package to both `blank`and `hello-world`templates renative config
+- improvement (rn-macos engine: AppDelegate): dynamic bundle url
+- fix (rn-macos engine: xcode project configuration): remove unused children from frameworks
+- fix (rn-macos engine): fix fonts
+- improvement (renative package): add Api constant for `engine-rn-macos`
+- improvement (rn-macos engine): remove ios/tvos related stuff from xcodeParser, remove unecessary property from template apps renative.json
+- improvement (rn-macos engine): remove unused swiftParser
+- fix (rn-macos engine): fix runtime errors when running the app by changing the platform to correct one in bundle url
+- chore (rn-macos engine): removed some ios/tvos platforms related configuration from xcode project config
+- improvement (rn-macos engine): add `run` command
+- improvement (rn-macos engine): add `start` command
+- chore: remove ios target from rn-macos engine xcode project
+- feat (macos engine): initial engine setup, `configure` command
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-rnmacos-7 (2021-8-3)
+
+### Fixed
+
+- improvement (rn-macos engine): add default metro.config.rnm.js file for macOS platform and additional constant `RNM_CLI_CONFIG_NAME`
+- chore (react-native-reanimated): downgrade plugin version and add temp overrides for macOS platform to work properly
+- 0.32.0-feat-rnmacos-6
+- 0.32.0-feat-rnmacos-5
+- chore (rn-macos engine): add few more default properties to entitlements
+- 0.32.0-feat-rnmacos-4
+- fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
+- fix (template-hello-world: macOS): removed `macos` specific file
+- improvements (rn-macos engine): add missing default  app icons to `assets`
+- fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
+- chore (rn-macos engine): add `macos`to missing engines config
+- 0.32.0-feat-rnmacos-3
+- fix (rn-macos engine): fix missed things for specific metro config
+- 0.32.0-feat-rnmacos-2
+- refactor (rn-macos engine): remove unused file
+- chore (rn-macos engine): add `rnm` specific metro config
+- fix (rn-macos engine: `package` script): change platform from `ios`to `macos`when packaging
+- fix (rn-template-hello-world, macOS: app): add a check to not render a CastButton for `desktop`platforms
+- chore (app/rnv/hello-world): upgrade `react-navigation/stack`, `react-navigation/native`, `react-native-reanimated` and `react-native-safe-area-context` versions for macOS to work properly
+- fix (rn-macos engine): dynamic app title
+- feat (rn-macos): inject dynamic application title to podfile and xcode project configuration
+- feat (rn-macos engine): add storyboard parser so it would be possible to inject dynamic application title
+- 0.32.0-feat-rnmacos-1
+- chore (builhooks): add rn-macos engine to `updateVersions` hook
+- 0.32.0-feat-rnmacos-0
+- fix (rn-macos engine): add `teamID` to `exportOptions`
+- fix (rn-macos engine): AppDelegate script for bundle
+- improvement (rn-macos engine): add `export` command and make possible to run app in release mode via cli
+- improvement (rn-macos engine): add `package` and `build` rnv commands
+- refactor (rn-macos engine): clean up some code and rename some files
+- chore (rn-macos engine): add missing macos engine package to both `blank`and `hello-world`templates renative config
+- improvement (rn-macos engine: AppDelegate): dynamic bundle url
+- fix (rn-macos engine: xcode project configuration): remove unused children from frameworks
+- fix (rn-macos engine): fix fonts
+- improvement (renative package): add Api constant for `engine-rn-macos`
+- improvement (rn-macos engine): remove ios/tvos related stuff from xcodeParser, remove unecessary property from template apps renative.json
+- improvement (rn-macos engine): remove unused swiftParser
+- fix (rn-macos engine): fix runtime errors when running the app by changing the platform to correct one in bundle url
+- chore (rn-macos engine): removed some ios/tvos platforms related configuration from xcode project config
+- improvement (rn-macos engine): add `run` command
+- improvement (rn-macos engine): add `start` command
+- chore: remove ios target from rn-macos engine xcode project
+- feat (macos engine): initial engine setup, `configure` command
+- 0.32.0-alpha.44
+- app config merges
+- scoped plugin builds merges
+- [feat] support for plugin root path
+- lint fixes
+- Merge branch 'feat/esbuild_for_hooks' into feat/auto-init-template
+- Merge branch 'feat/packageManager_option' into feat/auto-init-template
+- [feat] auto init project
+- let's see how this goes
+- extra check
+- added packageManager cli option support
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-feat-rnmacos-8 (2021-8-12)
+
+### Fixed
+
+- chore (macos engines): make `rn-electron` default macos engine and change the engine to `rn-macos` only for hello-world app
+- fix (rn-macos, rn-electron engines): make it possible to run macos platform on both engines
+- chore (renative): add constants which determines current engine
+- fix (rn-macos engine): remove `ios` extension to fix app crashing on launch
+- refactor (rn-macos engine): change `overview` field for the engine
+- chore (rn-macos engine): added more extensions for the macos platform
+- refactor (rn-macos engine): fix a comment
+- 0.32.0-feat-rnmacos-7
+- improvement (rn-macos engine): add default metro.config.rnm.js file for macOS platform and additional constant `RNM_CLI_CONFIG_NAME`
+- chore (react-native-reanimated): downgrade plugin version and add temp overrides for macOS platform to work properly
+- 0.32.0-feat-rnmacos-6
+- 0.32.0-feat-rnmacos-5
+- chore (rn-macos engine): add few more default properties to entitlements
+- 0.32.0-feat-rnmacos-4
+- fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
+- fix (template-hello-world: macOS): removed `macos` specific file
+- improvements (rn-macos engine): add missing default  app icons to `assets`
+- fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
+- chore (rn-macos engine): add `macos`to missing engines config
+- 0.32.0-feat-rnmacos-3
+- fix (rn-macos engine): fix missed things for specific metro config
+- 0.32.0-feat-rnmacos-2
+- refactor (rn-macos engine): remove unused file
+- chore (rn-macos engine): add `rnm` specific metro config
+- fix (rn-macos engine: `package` script): change platform from `ios`to `macos`when packaging
+- fix (rn-template-hello-world, macOS: app): add a check to not render a CastButton for `desktop`platforms
+- chore (app/rnv/hello-world): upgrade `react-navigation/stack`, `react-navigation/native`, `react-native-reanimated` and `react-native-safe-area-context` versions for macOS to work properly
+- fix (rn-macos engine): dynamic app title
+- feat (rn-macos): inject dynamic application title to podfile and xcode project configuration
+- feat (rn-macos engine): add storyboard parser so it would be possible to inject dynamic application title
+- 0.32.0-feat-rnmacos-1
+- chore (builhooks): add rn-macos engine to `updateVersions` hook
+- 0.32.0-feat-rnmacos-0
+- fix (rn-macos engine): add `teamID` to `exportOptions`
+- fix (rn-macos engine): AppDelegate script for bundle
+- improvement (rn-macos engine): add `export` command and make possible to run app in release mode via cli
+- improvement (rn-macos engine): add `package` and `build` rnv commands
+- refactor (rn-macos engine): clean up some code and rename some files
+- chore (rn-macos engine): add missing macos engine package to both `blank`and `hello-world`templates renative config
+- improvement (rn-macos engine: AppDelegate): dynamic bundle url
+- fix (rn-macos engine: xcode project configuration): remove unused children from frameworks
+- fix (rn-macos engine): fix fonts
+- improvement (renative package): add Api constant for `engine-rn-macos`
+- improvement (rn-macos engine): remove ios/tvos related stuff from xcodeParser, remove unecessary property from template apps renative.json
+- improvement (rn-macos engine): remove unused swiftParser
+- fix (rn-macos engine): fix runtime errors when running the app by changing the platform to correct one in bundle url
+- chore (rn-macos engine): removed some ios/tvos platforms related configuration from xcode project config
+- improvement (rn-macos engine): add `run` command
+- improvement (rn-macos engine): add `start` command
+- chore: remove ios target from rn-macos engine xcode project
+- feat (macos engine): initial engine setup, `configure` command
 - 0.32.0-alpha.44
 - app config merges
 - scoped plugin builds merges

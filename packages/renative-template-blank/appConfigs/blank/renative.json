@@ -7,6 +7,7 @@
         "license": "MIT",
         "includedPlugins": ["*"],
         "includedFonts": ["*"],
+        "includedPermissions": ["INTERNET"],
         "backgroundColor": "#FFFFFF"
     },
     "platforms": {
@@ -41,6 +42,26 @@
                     "runScheme": "Release",
                     "bundleAssets": true,
                     "bundleIsDev": false
+                }
+            }
+        },
+         "macos": {
+            "entryFile": "index.macos",
+            "teamID": "",
+            "provisioningStyle": "Automatic",
+            "permissions": ["*"],
+            "scheme": "RNVAppMACOS",
+            "buildSchemes": {
+                "debug": {
+                    "runScheme": "Debug",
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "release": {
+                    "runScheme": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "environment": "production"
                 }
             }
         },
@@ -108,20 +129,6 @@
                 }
             }
         },
-        "macos": {
-            "entryFile": "index.macos",
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false,
-                    "environment": "development"
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "environment": "production"
-                }
-            }
-        },
         "tizen": {
             "appName": "ReNativeTV",
             "package": "NkVRhWHJST",
@@ -173,7 +180,17 @@
             "entryFile": "index.webos"
         },
         "windows": {
-            "entryFile": "index.windows"
+            "language": "cpp",
+            "reactNativeEngine": "chakra",
+            "buildSchemes": {
+                "debug": {
+                    "release": false
+                },
+                "release": {
+                    "release": true,
+                    "logging": false
+                }
+            }
         },
         "kaios": {
             "entryFile": "index.kaios",

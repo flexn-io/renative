@@ -6,6 +6,7 @@
         "license": "MIT",
         "includedPlugins": ["*"],
         "includedFonts": ["*"],
+        "includedPermissions": ["INTERNET"],
         "buildSchemes": {
             "debug": {
                 "description": "Use for local development"
@@ -99,6 +100,26 @@
                 }
             }
         },
+        "macos": {
+            "entryFile": "index.macos",
+            "teamID": "",
+            "provisioningStyle": "Automatic",
+            "permissions": ["*"],
+            "scheme": "RNVAppMACOS",
+            "buildSchemes": {
+                "debug": {
+                    "runScheme": "Debug",
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "release": {
+                    "runScheme": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "environment": "production"
+                }
+            }
+        },
         "android": {
             "entryFile": "index.android",
             "reactNativeEngine": "hermes",
@@ -187,20 +208,6 @@
                     "signingConfig": "Release",
                     "bundleAssets": true,
                     "bundleIsDev": false
-                }
-            }
-        },
-        "macos": {
-            "entryFile": "index.macos",
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false,
-                    "environment": "development"
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "environment": "production"
                 }
             }
         },
@@ -303,14 +310,15 @@
             }
         },
         "windows": {
-            "entryFile": "index.windows",
+            "language": "cpp",
+            "reactNativeEngine": "chakra",
             "buildSchemes": {
                 "debug": {
-                    "bundleAssets": false
+                    "release": false
                 },
                 "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false
+                    "release": true,
+                    "logging": false
                 }
             }
         },

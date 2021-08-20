@@ -59,9 +59,9 @@ export const logWelcome = () => {
     str += printIntoBox(`      ${currentChalk.grey('https://renative.org')}`, 1);
     str += printIntoBox(`      ${ICN_ROCKET} ${currentChalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox(`      $ ${currentChalk.cyan(getCurrentCommand(true))}`, 1);
-    if (cnf().timeStart) {
+    if (global.timeStart) {
         str += printIntoBox(
-            `      Start Time: ${currentChalk.grey(cnf().timeStart.toLocaleString())}`
+            `      Start Time: ${currentChalk.grey(global.timeStart.toLocaleString())}`
         );
     }
     str += printIntoBox('');
@@ -90,7 +90,7 @@ const cnf = () => {
 const _configureLogger = (c, analytics) => {
     global._messages = [];
     _c = c;
-    _c.timeStart = new Date();
+    if (!global.timeStart) global.timeStart = new Date();
     _currentProcess = c.process;
     _isInfoEnabled = !!c.program.info;
     _infoFilter = c.program.info?.split?.(',');
@@ -155,8 +155,8 @@ export const logSummary = (header = 'SUMMARY') => {
     }
 
     let timeString = '';
-    cnf().timeEnd = new Date();
-    timeString = `| ${cnf().timeEnd.toLocaleString()}`;
+    global.timeEnd = new Date();
+    timeString = `| ${global.timeEnd.toLocaleString()}`;
 
     let str = printBoxStart(`${ICN_ROCKET}  ${header} ${timeString}`, getCurrentCommand());
 
@@ -259,10 +259,10 @@ export const logSummary = (header = 'SUMMARY') => {
         str += printIntoBox(`Env Info: ${currentChalk.gray(envString)}`, 1);
     }
 
-    if (cnf().timeEnd) {
+    if (global.timeEnd) {
         str += printIntoBox(
             `Executed Time: ${currentChalk.yellow(
-                _msToTime(cnf().timeEnd - cnf().timeStart)
+                _msToTime(global.timeEnd - global.timeStart)
             )}`,
             1
         );

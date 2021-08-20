@@ -30,7 +30,7 @@ target 'RNVApp' do
   pod 'React-jsi', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsi'
   pod 'React-jsiexecutor', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsiexecutor'
   pod 'React-jsinspector', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsinspector'
-  pod 'ReactCommon/jscallinvoker', :path => "{{PATH_REACT_NATIVE}}/ReactCommon"
+  pod 'React-callinvoker', :path => "{{PATH_REACT_NATIVE}}/ReactCommon/callinvoker"
   pod 'ReactCommon/turbomodule/core', :path => "{{PATH_REACT_NATIVE}}/ReactCommon"
   pod 'Yoga', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/yoga'
 
@@ -66,25 +66,7 @@ end
 
 
 post_install do |installer|
-  ## Fix for XCode 12.5
-  find_and_replace("{{PATH_REACT_NATIVE}}/React/CxxBridge/RCTCxxBridge.mm",
-  "_initializeModules:(NSArray<id<RCTBridgeModule>> *)modules", "_initializeModules:(NSArray<Class> *)modules")
-  find_and_replace("{{PATH_REACT_NATIVE}}/ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm",
-  "RCTBridgeModuleNameForClass(module))", "RCTBridgeModuleNameForClass(Class(module)))")
   {{INJECT_POST_INSTALL}}
-end
-
-def find_and_replace(dir, findstr, replacestr)
-  Dir[dir].each do |name|
-      text = File.read(name)
-      replace = text.gsub(findstr,replacestr)
-      if text != replace
-          puts "Fix: " + name
-          File.open(name, "w") { |file| file.puts replace }
-          STDOUT.flush
-      end
-  end
-  Dir[dir + '*/'].each(&method(:find_and_replace))
 end
 
 {{PLUGIN_PODFILE_INJECT}}

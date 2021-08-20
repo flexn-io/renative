@@ -1,7 +1,7 @@
 {
     "pluginTemplates": {
         "react-native": {
-            "version": "0.61.2",
+            "version": "0.64.2",
             "android": {
                 "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }",
                 "path": "react-native"
@@ -19,8 +19,11 @@
                 "path": "react-native"
             }
         },
+        "react-native-tvos": {
+            "version": "npm:react-native-tvos@0.63.4-0"
+        },
         "renative": {
-            "version": "0.32.0-feat-lightning-1",
+            "version": "0.32.0-alpha.45",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -321,7 +324,7 @@
             }
         },
         "react-native-fs": {
-            "version": "2.14.1",
+            "version": "2.18.0",
             "ios": {
                 "podName": "RNFS"
             },
@@ -878,7 +881,7 @@
             "version": "7.0.4"
         },
         "react-native-vector-icons": {
-            "version": "7.1.0",
+            "version": "8.1.0",
             "ios": {
                 "podName": "RNVectorIcons",
                 "ignoreProjectFonts": [
@@ -1206,7 +1209,7 @@
             }
         },
         "react-native-reanimated": {
-            "version": "1.0.0-alpha.12",
+            "version": "1.13.3",
             "ios": {
                 "podName": "RNReanimated"
             },
@@ -2417,26 +2420,25 @@
         },
         "@react-navigation": {
             "npm": {
-                "@react-navigation/core": "5.2.1",
-                "@react-navigation/drawer": "5.1.1",
+                "@react-navigation/core": "5.12.3",
+                "@react-navigation/drawer": "5.9.0",
                 "@react-navigation/bottom-tabs": "5.1.1",
                 "@react-navigation/material-bottom-tabs": "5.1.1",
-                "@react-navigation/native": "5.0.9",
-                "@react-navigation/stack": "5.1.1",
+                "@react-navigation/native": "5.7.3",
+                "@react-navigation/stack": "5.9.0",
                 "@react-navigation/routers": "5.1.0",
                 "@react-navigation/material-top-tabs": "5.1.1",
                 "@react-navigation/web": "1.0.0-alpha.9",
                 "@react-native-community/masked-view": "0.1.6",
-                "react-native-safe-area-context": "0.7.2"
+                "react-native-safe-area-context": "3.1.0"
             },
             "pluginDependencies": {
                 "react-native-screens": "source:rnv",
-                "react-native-safe-area-context": "source:rnv",
-                "react-native-safe-area-view": "source:rnv"
+                "react-native-safe-area-context": "source:rnv"
             }
         },
         "react-native-safe-area-context": {
-            "version": "0.7.2",
+            "version": "3.1.0",
             "android": {
                 "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
             },
@@ -2964,7 +2966,7 @@
             "no-npm": true
         },
         "@react-native-community/cli": {
-            "no-npm": true
+            "version": "5.0.1"
         },
         "recyclerlistview": {
             "version": "3.0.0",
@@ -3036,6 +3038,48 @@
         },
         "@lightningjs/cli": {
             "version": "2.5.1"
+        },
+        "react-native-carplay": {
+            "version": "2.0.0",
+            "ios": {
+                "path": "node_modules/react-native-carplay",
+                "podName": "react-native-carplay",
+                "appDelegateImports": [
+                    "CarPlay",
+                    "react_native_carplay"
+                ],
+                "appDelegateExtensions": [
+                    "CPApplicationDelegate"
+                ],
+                "appDelegateMethods": {
+                    "application": {
+                        "didConnectCarInterfaceController": [
+                            "RNCarPlay.connect(with: interfaceController, window: window)"
+                        ],
+                        "didDisconnectCarInterfaceController": [
+                            "RNCarPlay.disconnect()"
+                        ]
+                    }
+                }
+            }
+        },
+        "react-native-macos": {
+            "version": "0.63.37"
+        },
+        "@react-native-windows/cli": {
+            "version": "0.64.4"
+        },
+        "@react-native-windows/find-repo-root": {
+            "version": "0.64.0"
+        },
+        "@react-native-windows/package-utils": {
+            "version": "0.64.0"
+        },
+        "@react-native-windows/telemetry": {
+            "version": "0.64.0"
+        },
+        "react-native-windows": {
+            "version": "0.64.12"
         }
     }
 }

@@ -41,11 +41,11 @@ describe('Bootstrapping the CLI', () => {
 
     it('should create C variable correctly', async () => {
         const cKeys = Object.keys(c).sort();
-        const expectKeys = ['buildConfig', 'cli', 'command', 'configPropsInjects', 'files', 'paths', 'platform', 'process', 'program', 'runtime', 'subCommand'];
+        const expectKeys = ['api', 'buildConfig', 'cli', 'command', 'configPropsInjects', 'files', 'paths', 'platform', 'process', 'program', 'runtime', 'subCommand'];
         expect(cKeys).toEqual(expectKeys);
     });
 
-    it('should return app version', () => {
-        expect(() => getAppVersionCode(c, 'android')).toThrow();
+    it('should return app version 0 if not defined', () => {
+        expect(getAppVersionCode(c, 'android')).toEqual('0');
     });
 });

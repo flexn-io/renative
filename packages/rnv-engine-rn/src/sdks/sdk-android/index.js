@@ -125,17 +125,17 @@ export const packageAndroid = async (c) => {
 
     try {
         let cmd = `${reactNative} bundle --platform android --dev false --assets-dest ${
-            appFolder
-        }/app/src/main/res --entry-file ${
+            path.join(appFolder, 'app', 'src', 'main', 'res')
+        } --entry-file ${
         c.buildConfig.platforms[c.platform]?.entryFile
-        }.js --bundle-output ${appFolder}/app/src/main/assets/${
+        }.js --bundle-output ${path.join(appFolder, 'app', 'src', 'main', 'assets', `${
             outputFile
-        }.bundle --config=metro.config.js`;
+        }.bundle`)} --config=metro.config.js`;
 
         if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
-            cmd += ` --sourcemap-output ${appFolder}/app/src/main/assets/${
+            cmd += ` --sourcemap-output ${path.join(appFolder, 'app', 'src', 'main', 'assets', `${
                 outputFile
-            }.bundle.map`;
+            }.bundle.map`)}`;
         }
         await executeAsync(c, cmd, { env: { ...generateEnvVars(c) } });
 
@@ -360,7 +360,7 @@ const _checkSigningCerts = async (c) => {
                 ]);
 
                 if (confirmNewKeystore) {
-                    const keystorePath = `${c.paths.workspace.appConfig.dir}/release.keystore`;
+                    const keystorePath = path.join(c.paths.workspace.appConfig.dir, 'release.keystore');
                     mkdirSync(c.paths.workspace.appConfig.dir);
                     const keytoolCmd = `keytool -genkey -v -keystore ${
                         keystorePath
@@ -422,7 +422,6 @@ const _runGradleApp = async (c, platform, device) => {
 
     shell.cd(`${appFolder}`);
 
-    // await _checkSigningCerts(c);
     await executeAsync(
         c,
         `${isSystemWin ? 'gradlew.bat' : './gradlew'} ${
@@ -535,7 +534,7 @@ export const configureAndroidProperties = async (c) => {
 
     const addNDK = c.buildConfig?.sdks?.ANDROID_NDK
             && !c.buildConfig.sdks.ANDROID_NDK.includes('<USER>');
-    const ndkString = `ndk.dir=${getRealPath(
+    let ndkString = `ndk.dir=${getRealPath(
         c,
         c.buildConfig?.sdks?.ANDROID_NDK
     )}`;
@@ -543,6 +542,7 @@ export const configureAndroidProperties = async (c) => {
 
     if (isSystemWin) {
         sdkDir = sdkDir.replace(/\\/g, '/');
+        ndkString = ndkString.replace(/\\/g, '/');
     }
 
     fsWriteFileSync(

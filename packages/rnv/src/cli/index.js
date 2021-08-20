@@ -2,6 +2,7 @@
 import { configureRuntimeDefaults, updateRenativeConfigs } from '../core/runtimeManager';
 import { registerEngine, registerMissingPlatformEngines, loadEngines } from '../core/engineManager';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
+import { checkAndBootstrapIfRequired } from '../core/projectManager';
 import { loadIntegrations } from '../core/integrationManager';
 import { initializeTask, findSuitableTask } from '../core/taskManager';
 
@@ -14,6 +15,7 @@ const run = async (c) => {
     await configureRuntimeDefaults(c);
     await checkAndMigrateProject(c);
     await updateRenativeConfigs(c);
+    await checkAndBootstrapIfRequired(c);
     await loadIntegrations(c);
     const result = await loadEngines(c);
     // If false make sure we reload configs as it's freshly installed

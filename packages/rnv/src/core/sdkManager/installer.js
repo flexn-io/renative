@@ -42,7 +42,7 @@ import {
 import PlatformSetup from '../setupManager';
 import { generateBuildConfig } from '../configManager';
 
-const SDK_LOACTIONS = {
+const SDK_LOCATIONS = {
     android: [
         path.join('/usr/local/android-sdk'),
         path.join(USER_HOME_DIR, 'Library/Android/sdk'),
@@ -219,7 +219,10 @@ const _findFolderWithFile = (dir, fileToFind) => {
 
 const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) => {
     logTask('_attemptAutoFix');
-    let result = SDK_LOACTIONS[sdkPlatform].find(v => fsExistsSync(v));
+    // try common Android SDK env variables
+    const { ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK: ANDROID_SDK_ENV } = process.env;
+
+    let result = [...SDK_LOCATIONS[sdkPlatform], ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK_ENV].find(v => fsExistsSync(v));
 
     if (result && traverseUntilFoundFile) {
         const subResult = _findFolderWithFile(result, traverseUntilFoundFile);
@@ -263,7 +266,7 @@ const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) =
         }
     }
 
-    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOACTIONS[sdkPlatform].join(', ')}`);
+    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS[sdkPlatform].join(', ')}`);
 
     const setupInstance = PlatformSetup(c);
     await setupInstance.askToInstallSDK(sdkPlatform);

@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper",
-    "version": "0.32.0-feat-lightning-1",
+    "version": "0.32.0-alpha.45",
     "currentRelease": "0.31",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV` and `Chromecast` platforms",
     "keywords": [
@@ -81,6 +81,7 @@
     "devDependencies": {
         "babel-eslint": "8.2.6",
         "babel-jest": "24.9.0",
+        "babel-plugin-polyfill-corejs2": "0.2.2",
         "lerna": "3.16.4",
         "eslint": "6.2.2",
         "eslint-plugin-detox": "1.0.0",
