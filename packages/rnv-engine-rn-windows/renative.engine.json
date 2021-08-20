@@ -1,23 +1,19 @@
 {
   "id": "engine-rn-windows",
+  "engineExtension": "rnwin",
   "overview": "React native based engine with react-native-windows cli tool",
   "plugins": {
     "react": "source:rnv",
     "react-art": "source:rnv",
     "react-dom": "source:rnv",
     "react-native": {
-        "version": "0.64.2"
+        "version": "0.63.4"
     },
     "react-native-windows": "source:rnv",
     "@react-native-community/cli": {
       "version": "5.0.1"
     },
     "@react-native-windows/cli": "source:rnv"
-  },
-  "npm": {
-    "devDependencies": {
-        "metro": "0.66.0"
-    }
   },
   "platforms": {
     "windows": {

@@ -21,8 +21,7 @@ import {
     fsWriteFileSync,
     fsExistsSync,
     fsReaddirSync,
-    fsReadFileSync, fsWriteFileSync, mkdirSync,
-    writeFileSync
+    fsReadFileSync,
 } from '../systemManager/fileutils';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { executeAsync } from '../systemManager/exec';

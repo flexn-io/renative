@@ -26,7 +26,7 @@
     "watch": "nodemon --watch src --exec yarn build:dev"
   },
   "dependencies": {
-    "react-native-windows": "0.64.12"
+    "react-native-windows": "0.63.36"
   },
   "devDependencies": {
     "@babel/cli": "7.8.3",
@@ -35,11 +35,11 @@
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
     "@babel/plugin-proposal-optional-chaining": "7.8.3",
     "@babel/preset-env": "7.8.7",
-    "metro": "0.66.0"
+    "metro": "0.59.0"
   },
   "peerDependencies": {
     "rnv": "^0.31",
-    "react-native": "0.64.2",
+    "react-native": "0.63.4",
     "@react-native-community/cli": "5.0.1"
   },
   "private": false,

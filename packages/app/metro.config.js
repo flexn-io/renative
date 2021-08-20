@@ -1,5 +1,5 @@
 const path = require('path');
-const { withRNV } = require('@rnv/engine-rn-windows');
+const { withRNV } = require('@rnv/engine-rn');
 
 const defaultConfig = {
     watchFolders: [

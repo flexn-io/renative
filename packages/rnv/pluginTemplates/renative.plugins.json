@@ -1,7 +1,7 @@
 {
     "pluginTemplates": {
         "react-native": {
-            "version": "0.64.2",
+            "version": "0.63.4",
             "android": {
                 "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }",
                 "path": "react-native"
@@ -3067,7 +3067,7 @@
             "version": "0.63.37"
         },
         "@react-native-windows/cli": {
-            "version": "0.64.4"
+            "version": "0.63.12"
         },
         "@react-native-windows/find-repo-root": {
             "version": "0.64.0"
@@ -3076,10 +3076,10 @@
             "version": "0.64.0"
         },
         "@react-native-windows/telemetry": {
-            "version": "0.64.0"
+            "version": "0.63.4"
         },
         "react-native-windows": {
-            "version": "0.64.12"
+            "version": "0.63.36"
         }
     }
 }

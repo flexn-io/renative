@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import glob from 'glob';
-import { Common, Logger, EngineManager, Resolver, Exec } from 'rnv';
+import { Common, Logger, EngineManager, Resolver, Exec, FileUtils } from 'rnv';
 // import cli from '@react-native-windows/cli';
 // import runWindowsCMD from '@react-native-windows/cli/lib-commonjs/runWindows/runWindows';
 // import msBuildTools from '@react-native-windows/cli/lib-commonjs/runWindows/utils/msbuildtools';
@@ -16,18 +16,23 @@ const cli = require('@react-native-windows/cli');
 const runWindows = require(
     '@react-native-windows/cli/lib-commonjs/runWindows/runWindows'
 ).runWindowsCommand.func;
-const msBuildTools = require(
-    '@react-native-windows/cli/lib-commonjs/runWindows/utils/msbuildtools'
-).default;
-const { commandWithProgress, newSpinner, runPowerShellScriptFunction } = require(
+// const msBuildTools = require(
+//     '@react-native-windows/cli/lib-commonjs/runWindows/utils/msbuildtools'
+// ).default;
+const {
+    runPowerShellScriptFunction
+    // commandWithProgress,
+    // newSpinner,
+} = require(
     '@react-native-windows/cli/lib-commonjs/runWindows/utils/commandWithProgress'
 );
 
-const { logTask, logWarning, logDebug } = Logger;
+const { logTask, logWarning, logDebug, logError } = Logger;
 const { getAppFolder, getConfigProp } = Common;
 const { generateEnvVars } = EngineManager;
 const { doResolve } = Resolver;
 const { executeAsync } = Exec;
+const { copyFileSync } = FileUtils;
 
 const defaultOptions = {
     language: 'cpp',
@@ -36,7 +41,7 @@ const defaultOptions = {
     nuGetTestVersion: null,
     reactNativeEngine: 'chakra',
     nuGetTestFeed: null,
-    overwrite: false,
+    overwrite: true,
     // Whether it's a release build
     release: false,
     // Where app entry .js file is
@@ -57,7 +62,7 @@ const defaultOptions = {
     // Boolean - Run using remote JS proxy
     remoteDebugging: undefined,
     // Enables logging of build steps
-    logging: true,
+    logging: false,
     // Do not launch packager while building
     packager: true,
     // Enable Bundle configuration.
@@ -92,10 +97,7 @@ const defaultOptions = {
     packageExtension: 'appx'
 };
 
-// TODO Document/comment each of the functions
-export const ruWindowsProject = async (c, injectedOptions = {}) => {
-    logTask('runWindowsProject');
-
+const getOptions = (c, injectedOptions = {}) => {
     const language = getConfigProp(c, c.platform, 'language', defaultOptions.language);
     const release = getConfigProp(c, c.platform, 'release', defaultOptions.release);
     const root = getConfigProp(c, c.platform, 'root', c.paths.project.dir);
@@ -121,10 +123,11 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
     const directDebugging = getConfigProp(c, c.platform, 'directDebugging', defaultOptions.directDebugging);
     const telemetry = getConfigProp(c, c.platform, 'telemetry', defaultOptions.telemetry);
     const devPort = getConfigProp(c, c.platform, 'devPort', c.runtime.port);
-    const additionalMetroOptions = getConfigProp(c, c.platform, 'additionalMetroOptions', defaultOptions.additionalMetroOptions);
     const env = getConfigProp(c, c.platform, 'environment');
+    // Aditional ReNative property configurations
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
     const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
+    const additionalMetroOptions = getConfigProp(c, c.platform, 'additionalMetroOptions', defaultOptions.additionalMetroOptions);
 
     // TODO Default options, need to configure this via renative.json
     const options = {
@@ -152,6 +155,9 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
         directDebugging,
         telemetry,
         devPort,
+        language,
+        bundleAssets,
+        bundleIsDev,
         // Additional values passed to react native cli start function call
         additionalMetroOptions: {
             ...additionalMetroOptions,
@@ -163,6 +169,15 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
         },
         ...injectedOptions
     };
+
+    return options;
+};
+
+// TODO Document/comment each of the functions
+export const ruWindowsProject = async (c, injectedOptions) => {
+    logTask('runWindowsProject');
+
+    const options = getOptions(c, injectedOptions);
     const args = [];
 
     if (!options.additionalMetroOptions.env.RNV_APP_BUILD_DIR) {
@@ -176,7 +191,7 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
             project: {
                 projectName: c.runtime.appId,
                 projectFile: `${c.runtime.appId}\\${c.runtime.appId}.vcxproj`,
-                projectLang: language,
+                projectLang: options.language,
                 // TODO Validate if this is ok
                 projectGuid: c.runtime.appId
             },
@@ -206,11 +221,11 @@ export const ruWindowsProject = async (c, injectedOptions = {}) => {
     await setSingleBuildProcessForWindows(c);
 
     // For release bundle needs to be created
-    if (bundleAssets || release) {
+    if (options.bundleAssets || options.release) {
         logDebug('Assets will be bundled');
         await packageBundleForWindows(
             c,
-            bundleIsDev
+            options.bundleIsDev
         );
     }
 
@@ -285,13 +300,26 @@ const packageBundleForWindows = (c, isDev = false) => {
 
     return executeAsync(c, `node ${doResolve(
         'react-native'
-    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
+    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.rnwin.js`, { env: { ...generateEnvVars(c) } });
 };
 
 const setSingleBuildProcessForWindows = (c) => {
     logTask('setSingleBuildProcessForWindows');
+    // eslint-disable-next-line eqeqeq
+    if (process.env.MSBUILDDISABLENODEREUSE != 1) {
+        const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
+        const opts = {
+            cwd: c.paths.project.dir,
+            detached: false,
+            stdio: logging ? 'inherit' : 'ignore'
+        };
 
-    return executeAsync(c, 'set MSBUILDDISABLENODEREUSE=1');
+        // TODO This should be part of rnv clean and rnv run -r and not part of the SDK
+        // This should resolve as it used internally by react-native-windows
+        // eslint-disable-next-line global-require
+        const child_process_1 = require('child_process');
+        child_process_1.spawn('cmd.exe', ['/C', 'set MSBUILDDISABLENODEREUSE=1'], opts);
+    }
 };
 
 // Copied from @react-native-windows/cli/overrides/lib-commonjs/runWindows/utils/deploy.js
@@ -318,41 +346,90 @@ const getWindowsStoreAppUtils = (c) => {
     return windowsStoreAppUtilsPath;
 };
 
-const packageWindowsApp = async (c) => {
-    try {
-        const arch = getConfigProp(c, c.platform, 'arch', defaultOptions.arch);
-        const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
-        const packageExtension = getConfigProp(c, c.platform, 'packageExtension', defaultOptions.packageExtension);
-        const appFolder = getAppFolder(c);
-        // Find available SDKs, which have MakeAppx tool
-        const sdks = msBuildTools.getAllAvailableUAPVersions();
-        const packageTaskDescription = 'Packaging UWP Application';
-        // TODO Implement sign with a certiface valid for stores (not self signed)
-        const signTaskDescription = 'Signing your UWP application with self generated certificate';
 
-        // Create a package for the app
-        // TODO Ideally this would be done with ReNative's executeAsync, but it throws path not found error
-        await commandWithProgress(newSpinner(packageTaskDescription), packageTaskDescription,
-            `C:\\Program Files (x86)\\Windows Kits\\10\\bin\\${sdks[0]}\\${arch}\\makeappx.exe`,
-            ['pack', '/o', '/d', `${appFolder}/Release/${c.runtime.appId}`, '/p', `platformBuilds/${c.runtime.appId}_windows/${c.runtime.appId}.${packageExtension}`], logging);
-        // Sign the package with self signed certificate
-        // TODO Signing algorithm and password need to be dynamic
-        await commandWithProgress(newSpinner(signTaskDescription), signTaskDescription,
-            `C:\\Program Files (x86)\\Windows Kits\\10\\bin\\${sdks[0]}\\${arch}\\SignTool.exe`,
-            ['sign', '/v', '/fd', 'sha256', '/a', '/f', `${appFolder}/${c.runtime.appId}/${c.runtime.appId}_TemporaryKey.pfx`, '/p', 'password', `${appFolder}/${c.runtime.appId}.${packageExtension}`], logging);
-        // Install the generated .cer into Trusted Root Certificate Authorities
-        // await commandWithProgress(newSpinner('Saving certificate in the local certificate store'), 'Saving certificate in the local certificate store',
-        //     `C:\\Program Files (x86)\\Windows Kits\\10\\bin\\${sdks[0]}\\${arch}\\certmgr.exe`,
-        //     ['/add', '/c', `${appFolder}/AppPackages/${c.runtime.appId}/${c.runtime.appId}_1.0.0.0_Win32_Test/${c.runtime.appId}_1.0.0.0_Win32.cer`, '/s', 'root', '/v'], logging);
+function getAppPackage(c, injectedOptions) {
+    const options = getOptions(c, injectedOptions);
+    const appFolder = getAppFolder(c, c.platform);
+
+    let appPackage;
+    const rootGlob = `${appFolder.replace(/\\/g, '/')}/{*/AppPackages,AppPackages/*}`;
+    const newGlob = `${rootGlob}/*_${options.arch === 'x86' ? '{Win32,x86}' : options.arch}_Test`;
+    const result = glob.sync(newGlob);
+    if (result.length > 1 && c.runtime.appId) {
+        const newFilteredGlobs = result.filter(x => x.includes(c.runtime.appId));
+        if (newFilteredGlobs.length >= 1) {
+            logWarning(`More than one app package found: ${result}`);
+        }
+        appPackage = newFilteredGlobs[0];
+    } else if (result.length === 1) {
+        appPackage = result[0];
+    }
+    if (!appPackage) {
+        throw new Error(`Unable to find app package using search path: "${appPackage}"`);
+    }
+    return appPackage;
+}
+
+const signWindowsApp = async (c, script, windowsStoreAppUtils) => {
+    try {
+        const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
+        // TODO Installs the app instead of just saving a certificate
+        await runPowerShellScriptFunction('Saving certificate in the local certificate store', windowsStoreAppUtils, `Install-App "${script}" -Force`, logging);
+    } catch (err) {
+        logError(err);
+    }
+};
+
+const installWindowsApp = async (c, script, windowsStoreAppUtils) => {
+    const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
+    await runPowerShellScriptFunction('Removing old version of the app', windowsStoreAppUtils, `Uninstall-App ${c.runtime.appId}`, logging);
+    await runPowerShellScriptFunction('Installing new version of the app', windowsStoreAppUtils, `Install-App "${script}" -Force`, logging);
+};
+
+const packageWindowsApp = async (c, injectedOptions) => {
+    try {
+        const appFolder = getAppFolder(c);
         const windowsStoreAppUtils = getWindowsStoreAppUtils(c);
-        const script = glob.sync(path.join(appFolder, 'AppPackages', c.runtime.appId, `${c.runtime.appId}_1.0.0.0_Win32_Test`, 'Add-AppDevPackage.ps1'))[0];
-        await runPowerShellScriptFunction('Installing new version of the app', windowsStoreAppUtils, `Install-App "${script}" -Force`, true);
+        const appPackage = getAppPackage(c, injectedOptions);
+
+        // TODO For the most part package generated by runWindows with release option set to true is enough
+        // but you might want to package and sign the app manually with a different certificate
+        // const arch = getConfigProp(c, c.platform, 'arch', defaultOptions.arch);
+        // const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
+        // const packageExtension = getConfigProp(c, c.platform, 'packageExtension', defaultOptions.packageExtension);
+        // // const packageExtension = getConfigProp(c, c.platform, 'packageExtension', defaultOptions.packageExtension);
+        // // Find available SDKs, which have MakeAppx tool
+        // const sdks = msBuildTools.getAllAvailableUAPVersions();
+        // const packageTaskDescription = 'Packaging UWP Application';
+        // const signTaskDescription = 'Signing your UWP application with self generated certificate';
+
+        // // Create a package for the app
+        // await commandWithProgress(newSpinner(packageTaskDescription), packageTaskDescription,
+        //     `C:\\Program Files (x86)\\Windows Kits\\10\\bin\\${sdks[0]}\\${arch}\\makeappx.exe`,
+        //     ['pack', '/o', '/d', `${appFolder}/Release/${c.runtime.appId}`, '/p', `platformBuilds/${c.runtime.appId}_windows/${c.runtime.appId}.${packageExtension}`], logging);
+        // // Sign the package with self signed certificate
+        // await commandWithProgress(newSpinner(signTaskDescription), signTaskDescription,
+        //     `C:\\Program Files (x86)\\Windows Kits\\10\\bin\\${sdks[0]}\\${arch}\\SignTool.exe`,
+        //     ['sign', '/v', '/fd', 'sha256', '/a', '/f', `${appFolder}/${c.runtime.appId}/${c.runtime.appId}_TemporaryKey.pfx`, '/p', 'password', `${appFolder}/${c.runtime.appId}.${packageExtension}`], logging);
+        const RNWinPowershellPath = path.join(path.dirname(require.resolve('@react-native-windows/cli/package.json', {
+            paths: [c.paths.project.dir],
+        })), 'powershell');
+
+        // TODO Sign-AppDevPackage cannot be executed
+        copyFileSync(path.join(RNWinPowershellPath, 'Sign-AppDevPackage.ps1'), path.join(appFolder, 'AppPackages', c.runtime.appId, `${c.runtime.appId}_1.0.0.0_Win32_Test`));
+        const script = glob.sync(path.join(c.paths.project.dir, appPackage, 'Add-AppDevPackage.ps1'))[0];
+        // await signWindowsApp(c, script, windowsStoreAppUtils);
+        await installWindowsApp(c, script, windowsStoreAppUtils);
     } catch (e) {
         console.error('App packaging failed with error: ', e);
     }
 };
 
-export { copyWindowsTemplateProject as configureWindowsProject,
+export {
+    copyWindowsTemplateProject as configureWindowsProject,
     packageBundleForWindows,
     clearWindowsTemporaryFiles,
-    packageWindowsApp };
+    packageWindowsApp,
+    installWindowsApp,
+    signWindowsApp
+};

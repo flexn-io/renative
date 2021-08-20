@@ -26,7 +26,7 @@
 # http://go.microsoft.com/fwlink/?LinkId=243053
 
 param(
-    [switch]$Force,
+    [switch]$Force = $false,
     [switch]$GetDeveloperLicense = $false,
     [switch]$SkipLoggingTelemetry = $false,
     [string]$CertificatePath = $null
@@ -623,7 +623,7 @@ function DoStandardOperations
         LaunchElevated
     }
 
-    InstallPackageWithDependencies
+    # InstallPackageWithDependencies
 }
 
 #

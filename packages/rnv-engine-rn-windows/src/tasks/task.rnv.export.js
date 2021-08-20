@@ -10,7 +10,7 @@ const {
     PARAMS
 } = Constants;
 // TODO Implement export windows app (currently it only seems to be available through VS Studio itself...)
-const { packageWindowsApp } = SDKWindows;
+const { packageWindowsApp, clearWindowsTemporaryFiles } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvExport = async (c, parentTask, originTask) => {
@@ -24,6 +24,7 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case WINDOWS:
+            await clearWindowsTemporaryFiles(c);
             return packageWindowsApp(c);
         default:
             logErrorPlatform(c);
