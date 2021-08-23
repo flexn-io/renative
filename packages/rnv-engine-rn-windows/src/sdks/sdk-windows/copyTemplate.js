@@ -476,9 +476,6 @@ export async function copyProjectTemplateAndReplace(
             templateVars
         );
     }
-
-    console.log(chalk.white.bold('To run your app on UWP:'));
-    console.log(chalk.white('   rnv run -p windows'));
 }
 
 function toCppNamespace(namespace) {

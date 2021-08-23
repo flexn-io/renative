@@ -1,7 +1,3 @@
-/**
- * Override here is needed because Microsoft hardcoded /windows to be the folder 
- * where script expects to find the solution
- */
 "use strict";
 /**
  * Copyright (c) Microsoft Corporation.
@@ -19,7 +15,6 @@ const parse = require("xml-parser");
 const winappdeploytool_1 = require("./winappdeploytool");
 const commandWithProgress_1 = require("./commandWithProgress");
 const build = require("./build");
-const version_1 = require("./version");
 function pushd(pathArg) {
     const cwd = process.cwd();
     process.chdir(pathArg);
@@ -43,7 +38,7 @@ function getAppPackage(options, projectName) {
     const packageFolder = options.arch === 'x86'
         ? `{*_x86_${configuration}_*,*_Win32_${configuration}_*}`
         : `*_${options.arch}_${configuration}_*`;
-    const appPackageGlob = `${options.appPath}/{*/AppPackages,AppPackages/*}/${packageFolder}`;
+    const appPackageGlob = `${options.appPath.replace( /\\/g, '/' )}/{*/AppPackages,AppPackages/*}/${packageFolder}`;
     const appPackageCandidates = glob.sync(appPackageGlob);
     let appPackage;
     if (appPackageCandidates.length === 1 || !projectName) {
@@ -58,8 +53,8 @@ function getAppPackage(options, projectName) {
     if (!appPackage && options.release) {
         // in the latest vs, Release is removed
         commandWithProgress_1.newWarn('No package found in *_Release_* folder, removing the _Release_ prefix and checking again');
-        const rootGlob = `${options.appPath}/{*/AppPackages,AppPackages/*}`;
-        const newGlob = `${rootGlob}/*_${options.arch === 'x86' ? '{Win32,x86}' : options.arch}_Test`;
+        const rootGlob = `${options.appPath.replace( /\\/g, '/' )}/{*/AppPackages,AppPackages/*}`;
+        const newGlob = `${rootGlob}/*_${options.arch === 'x86' ? 'Win32' : options.arch}_${options.release ? '' : 'Debug_'}Test`;
         const result = glob.sync(newGlob);
         if (result.length > 1 && projectName) {
             const newFilteredGlobs = result.filter(x => x.includes(projectName));
@@ -79,22 +74,26 @@ function getAppPackage(options, projectName) {
     return appPackage;
 }
 function getWindowsStoreAppUtils(options) {
-    const popd = pushd(options.appPath);
-    const windowsStoreAppUtilsPath = path.resolve(__dirname, '..', '..', '..', 'powershell', 'WindowsStoreAppUtils.ps1');
-    child_process_1.execSync(`powershell -NoProfile Unblock-File "${windowsStoreAppUtilsPath}"`);
+    const popd = pushd(options.root);
+    const RNWinPath = path.join(path.dirname(require.resolve('@react-native-windows/cli/package.json', {
+        paths: [options.root],
+    })));
+    // Relative path in default deploy script is not a good idea as it could be monorepo, could be normal project
+    const windowsStoreAppUtilsPath = path.resolve(RNWinPath, 'powershell', 'WindowsStoreAppUtils.ps1');
+    child_process_1.execSync(`powershell Unblock-File "${windowsStoreAppUtilsPath}"`);
     popd();
     return windowsStoreAppUtilsPath;
 }
 function getAppxManifestPath(options, projectName) {
     const configuration = getBuildConfiguration(options);
-    const appxManifestGlob = `{*/bin/${options.arch}/${configuration},${configuration}/*,target/${options.arch}/${configuration},${options.arch}/${configuration}/*}/AppxManifest.xml`;
-    const globs = glob.sync(path.join(options.appPath, appxManifestGlob));
+    const appxManifestGlob = `platformBuilds/${projectName}_windows/{*/bin/${options.arch}/${configuration},${configuration}/*,target/${options.arch}/${configuration},${options.arch}/${configuration}/*}/AppxManifest.xml`;
+    const globs = glob.sync(path.join(options.root, appxManifestGlob));
     let appxPath;
     if (globs.length === 1 || !projectName) {
         appxPath = globs[0];
     }
     else {
-        const filteredGlobs = globs.filter(x => x.includes(projectName));
+        const filteredGlobs = globs.filter(x => x.indexOf(projectName) !== -1);
         if (filteredGlobs.length > 1) {
             commandWithProgress_1.newWarn(`More than one appxmanifest for ${projectName}: ${filteredGlobs.join(',')}`);
         }
@@ -130,7 +129,7 @@ async function deployToDevice(options, verbose) {
     const deployTool = new winappdeploytool_1.default();
     const appxManifest = getAppxManifest(options);
     const shouldLaunch = shouldLaunchApp(options);
-    const identity = appxManifest.root.children.filter(x => {
+    const identity = appxManifest.root.children.filter(function (x) {
         return x.name === 'mp:PhoneIdentity';
     })[0];
     const appName = identity.attributes.PhoneProductId;
@@ -162,46 +161,48 @@ async function deployToDesktop(options, verbose, config, buildTools) {
         : options.sln;
     const projectName = windowsConfig && windowsConfig.project && windowsConfig.project.projectName
         ? windowsConfig.project.projectName
-        : path.parse(options.proj).name;
+        : options.proj;
+    const appPackageFolder = getAppPackage(options, projectName);
     const windowsStoreAppUtils = getWindowsStoreAppUtils(options);
     const appxManifestPath = getAppxManifestPath(options, projectName);
     const appxManifest = parseAppxManifest(appxManifestPath);
-    const identity = appxManifest.root.children.filter(x => {
+    const identity = appxManifest.root.children.filter(function (x) {
         return x.name === 'Identity';
     })[0];
     const appName = identity.attributes.Name;
-    const vsVersion = version_1.default.fromString(buildTools.installationVersion);
-    const args = [];
+    const script = glob.sync(path.join(appPackageFolder, 'Add-AppDevPackage.ps1'))[0];
+    const vsVersion = buildTools.installationVersion;
+    if (vsVersion.startsWith('16.5') || vsVersion.startsWith('16.6')) {
+        // VS 16.5 and 16.6 introduced a regression in packaging where the certificates created in the UI will render the package uninstallable.
+        // This will be fixed in 16.7. In the meantime we need to copy the Add-AppDevPackage that has the fix for this EKU issue:
+        // https://developercommunity.visualstudio.com/content/problem/1012921/uwp-packaging-generates-incompatible-certificate.html
+        if (verbose) {
+            commandWithProgress_1.newWarn('Applying Add-AppDevPackage.ps1 workaround for VS 16.5-16.6 bug - see https://developercommunity.visualstudio.com/content/problem/1012921/uwp-packaging-generates-incompatible-certificate.html');
+        }
+        const RNWinPath = path.join(path.dirname(require.resolve('@react-native-windows/cli/package.json', {
+            paths: [options.root],
+        })));
+        // Relative path in default deploy script is not a good idea as it could be monorepo, could be normal project
+        fs.copyFileSync(path.join(RNWinPath, 'powershell', 'Add-AppDevPackage.ps1'), script);
+    }
+    let args = [];
     if (options.remoteDebugging) {
         args.push('--remote-debugging');
     }
     if (options.directDebugging) {
         args.push('--direct-debugging', options.directDebugging.toString());
     }
+    await commandWithProgress_1.runPowerShellScriptFunction('Removing old version of the app', windowsStoreAppUtils, `Uninstall-App ${appName}`, verbose);
     await commandWithProgress_1.runPowerShellScriptFunction('Enabling Developer Mode', windowsStoreAppUtils, 'EnableDevMode', verbose);
-    const appPackageFolder = getAppPackage(options, projectName);
     if (options.release) {
-        await commandWithProgress_1.runPowerShellScriptFunction('Removing old version of the app', windowsStoreAppUtils, `Uninstall-App ${appName}`, verbose);
-        const script = glob.sync(path.join(appPackageFolder, 'Add-AppDevPackage.ps1'))[0];
         await commandWithProgress_1.runPowerShellScriptFunction('Installing new version of the app', windowsStoreAppUtils, `Install-App "${script}" -Force`, verbose);
     }
     else {
-        // If we have DeployAppRecipe.exe, use it (start in 16.8.4, earlier 16.8 versions have bugs)
-        const appxRecipe = path.join(path.dirname(appxManifestPath), `${projectName}.build.appxrecipe`);
-        const ideFolder = `${buildTools.installationPath}\\Common7\\IDE`;
-        const deployAppxRecipeExePath = `${ideFolder}\\DeployAppRecipe.exe`;
-        if (vsVersion.gte(version_1.default.fromString('16.8.30906.45')) &&
-            fs.existsSync(deployAppxRecipeExePath)) {
-            await commandWithProgress_1.commandWithProgress(commandWithProgress_1.newSpinner('Deploying'), `Deploying ${appxRecipe}`, deployAppxRecipeExePath, [appxRecipe], verbose);
-        }
-        else {
-            // Install the app package's dependencies before attempting to deploy.
-            await commandWithProgress_1.runPowerShellScriptFunction('Installing dependent framework packages', windowsStoreAppUtils, `Install-AppDependencies ${appxManifestPath} ${appPackageFolder} ${options.arch}`, verbose);
-            await build.buildSolution(buildTools, slnFile, 
-            /* options.release ? 'Release' : */ 'Debug', options.arch, { DeployLayout: 'true' }, verbose, 'deploy', options.buildLogDirectory);
-        }
+        // Install the app package's dependencies before attempting to deploy.
+        await commandWithProgress_1.runPowerShellScriptFunction('Installing dependent framework packages', windowsStoreAppUtils, `Install-AppDependencies ${appxManifestPath} ${appPackageFolder} ${options.arch}`, verbose);
+        await build.buildSolution(buildTools, slnFile, options.release ? 'Release' : 'Debug', options.arch, { DeployLayout: 'true' }, verbose, 'Deploy', options.buildLogDirectory);
     }
-    const appFamilyName = child_process_1.execSync(`powershell -NoProfile -c $(Get-AppxPackage -Name ${appName}).PackageFamilyName`)
+    const appFamilyName = child_process_1.execSync(`powershell -c $(Get-AppxPackage -Name ${appName}).PackageFamilyName`)
         .toString()
         .trim();
     if (!appFamilyName) {
@@ -222,7 +223,7 @@ function startServerInNewWindow(options, verbose) {
     return new Promise(resolve => {
         if (options.packager) {
             http
-                .get(`http://localhost:${options.devPort || 8092}/status`, res => {
+            .get(`http://localhost:${options.devPort || 8092}/status`, res => {
                 if (res.statusCode === 200) {
                     commandWithProgress_1.newSuccess('React-Native Server already started');
                 }
@@ -243,10 +244,10 @@ function startServerInNewWindow(options, verbose) {
 }
 exports.startServerInNewWindow = startServerInNewWindow;
 function launchServer(options, verbose) {
-    commandWithProgress_1.newSuccess(`Starting the React-Native Server on port ${options.devPort || 8081}`);
+    commandWithProgress_1.newSuccess(`Starting the React-Native Server Server on port ${options.devPort || 8092}`);
     const opts = {
         cwd: options.root,
-        detached: false,
+        detached: true,
         stdio: verbose ? 'inherit' : 'ignore',
         ...(options.additionalMetroOptions ? options.additionalMetroOptions : {})
     };

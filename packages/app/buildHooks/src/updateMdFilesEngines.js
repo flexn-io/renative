@@ -22,7 +22,10 @@ const _generateEngineDoc = (c, engine) => {
     let npmPackages = '';
     let extensions = '';
 
-    const enginePlatforms = engine?.platforms || {};
+    let enginePlatforms = {};
+    if (engine && engine.platforms) {
+        enginePlatforms = engine.platforms;
+    }
 
     Object.keys(enginePlatforms).forEach((v) => {
         const { npm } = enginePlatforms[v];
@@ -38,10 +41,16 @@ const _generateEngineDoc = (c, engine) => {
     });
 
 
+    let extraCntnt = 'N/A';
+    let extraPlgns = {};
+    if (engine.config) {
+        if (engine.config.overview) { extraCntnt = engine.config.overview; }
+        if (engine.config.plugins) { extraPlgns = engine.config.plugins; }
+    }
     const extContent = `
 ## Overview
 
-${engine.config?.overview || 'N/A'}
+${extraCntnt}
 
 ## Supported Platforms
 
@@ -49,7 +58,7 @@ ${Object.keys(enginePlatforms).map(v => `[${v}](platforms/${v}.md)`).join(', ')}
 
 ## Required Plugins
 
-${Object.keys(engine.config?.plugins || {}).map(v => `[${v}](../plugins#${cleanUrl(v)})`).join(', ')}
+${Object.keys(extraPlgns).map(v => `[${v}](../plugins#${cleanUrl(v)})`).join(', ')}
 
 ## Required NPM Packages
 
@@ -76,9 +85,13 @@ ${extContent}
 
 const _getExtensionContent = (c, platform, engine) => {
     let out = '';
-    const p = engine?.platforms?.[platform];
+    let p = {};
+    if (engine && engine.platforms && engine.platforms[platform]) {
+        p = engine.platforms[platform];
+    }
     out += `### ${platform}\n\n`;
-    const extenstions = p?.extenstions;
+    let extenstions = [];
+    if (p.extenstions) { extenstions = p.extensions; }
     if (extenstions) {
         out += `| Extension | Priority  |
       | --------- | :-------: |\n`;
