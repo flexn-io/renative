@@ -38,7 +38,6 @@
                     "bundleAssets": false
                 },
                 "release": {
-                    "scheme": "RNVAppTVOSRelease",
                     "runScheme": "Release",
                     "bundleAssets": true,
                     "bundleIsDev": false
