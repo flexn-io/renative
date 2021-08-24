@@ -112,7 +112,7 @@ export async function copyProjectTemplateAndReplace(
     );
 
 
-    const namespaceCpp = toCppNamespace(appTitle);
+    const namespaceCpp = toCppNamespace(c.runtime.appId);
     if (experimentalNuGetDependency) {
         console.log('Using experimental NuGet dependency.');
     }
@@ -228,7 +228,7 @@ export async function copyProjectTemplateAndReplace(
         useMustache: true,
         regExpPatternsToRemove: [],
         name: c.runtime.appId,
-        namespace: appTitle,
+        namespace: namespaceCpp,
         title: appTitle,
         namespaceCpp,
         languageIsCpp: language === 'cpp',
