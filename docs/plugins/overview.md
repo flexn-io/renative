@@ -152,13 +152,13 @@ rnv plugin add @react-native-community/cameraroll
 ## @react-native-community/cli
 
 
-
+Version: `5.0.1`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
-
+Npm: https://www.npmjs.com/package/@react-native-community/cli
 
 Installation:
 
@@ -380,6 +380,78 @@ Installation:
 
 ```
 rnv plugin add @react-native-firebase/messaging
+```
+
+
+## @react-native-windows/cli
+
+
+Version: `0.63.12`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/@react-native-windows/cli
+
+Installation:
+
+```
+rnv plugin add @react-native-windows/cli
+```
+
+
+## @react-native-windows/find-repo-root
+
+
+Version: `0.64.0`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/@react-native-windows/find-repo-root
+
+Installation:
+
+```
+rnv plugin add @react-native-windows/find-repo-root
+```
+
+
+## @react-native-windows/package-utils
+
+
+Version: `0.64.0`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/@react-native-windows/package-utils
+
+Installation:
+
+```
+rnv plugin add @react-native-windows/package-utils
+```
+
+
+## @react-native-windows/telemetry
+
+
+Version: `0.63.4`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/@react-native-windows/telemetry
+
+Installation:
+
+```
+rnv plugin add @react-native-windows/telemetry
 ```
 
 
@@ -836,7 +908,7 @@ rnv plugin add react-hot-loader
 ## react-native
 
 
-Version: `0.61.2`
+Version: `0.63.4`
 
 Platforms: `android`,`androidtv`,`firetv`,`androidwear`
 
@@ -1448,7 +1520,7 @@ rnv plugin add react-native-firebase
 ## react-native-fs
 
 
-Version: `2.14.1`
+Version: `2.18.0`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`
 
@@ -2078,7 +2150,7 @@ rnv plugin add react-native-prompt-android
 ## react-native-reanimated
 
 
-Version: `1.0.0-alpha.12`
+Version: `1.13.3`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
@@ -2132,7 +2204,7 @@ rnv plugin add react-native-root-toast
 ## react-native-safe-area-context
 
 
-Version: `0.7.2`
+Version: `3.1.0`
 
 Platforms: `android`,`androidtv`,`firetv`,`androidwear`,`ios`,`tvos`
 
@@ -2492,7 +2564,7 @@ rnv plugin add react-native-uri-scheme
 ## react-native-vector-icons
 
 
-Version: `7.1.0`
+Version: `8.1.0`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
@@ -2669,6 +2741,24 @@ rnv plugin add react-native-webview-bridge
 ```
 
 
+## react-native-windows
+
+
+Version: `0.63.36`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-windows
+
+Installation:
+
+```
+rnv plugin add react-native-windows
+```
+
+
 ## react-native-zip-archive
 
 
@@ -2816,7 +2906,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-alpha.43`
+Version: `0.32.0-feat-rnwin-0`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

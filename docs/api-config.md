@@ -1680,7 +1680,8 @@ List of engines available in this project
     "@rnv/engine-rn": "source:rnv",
     "@rnv/engine-rn-web": "source:rnv",
     "@rnv/engine-rn-next": "source:rnv",
-    "@rnv/engine-rn-electron": "source:rnv"
+    "@rnv/engine-rn-electron": "source:rnv",
+    "@rnv/engine-rn-windows": "source:rnv"
   }
 }
 ```
@@ -37326,114 +37327,6 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
-#### platforms.windows.BrowserWindow
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `BrowserWindow` | `object` |  | `platforms.windows.BrowserWindow` |
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
----
-
-
-
-#### platforms.windows.BrowserWindow.height
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `height` | `integer` |  | `platforms.windows.BrowserWindow.height` |
-
-Default height of electron app
-
-
-
----
-
-
-
-
-#### platforms.windows.BrowserWindow.webPreferences
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `webPreferences` | `object` |  | `platforms.windows.BrowserWindow.webPreferences` |
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
----
-
-
-
-
-#### platforms.windows.BrowserWindow.width
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `width` | `integer` |  | `platforms.windows.BrowserWindow.width` |
-
-Default width of electron app
-
-
-
----
-
-
-
-
-
-#### platforms.windows.appleId
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `appleId` | `string` |  | `platforms.windows.appleId` |
-
-
-
-
-
----
-
-
-
-
 #### platforms.windows.author
 
 
@@ -37496,114 +37389,6 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 ---
-
-
-
-#### platforms.windows.buildSchemes.[object].BrowserWindow
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `BrowserWindow` | `object` |  | `platforms.windows.buildSchemes.[object].BrowserWindow` |
-
-Allows you to configure electron wrapper app window
-
-**examples**
-
-
-```json
-{
-  "BrowserWindow": {
-    "width": 1310,
-    "height": 800,
-    "webPreferences": {
-      "devTools": true
-    }
-  }
-}
-```
-
-
-
-
----
-
-
-
-#### platforms.windows.buildSchemes.[object].BrowserWindow.height
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `height` | `integer` |  | `platforms.windows.buildSchemes.[object].BrowserWindow.height` |
-
-Default height of electron app
-
-
-
----
-
-
-
-
-#### platforms.windows.buildSchemes.[object].BrowserWindow.webPreferences
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `webPreferences` | `object` |  | `platforms.windows.buildSchemes.[object].BrowserWindow.webPreferences` |
-
-Extra web preferences of electron app
-
-**examples**
-
-
-```json
-{
-  "webPreferences": {
-    "devTools": true
-  }
-}
-```
-
-
-
-
----
-
-
-
-
-#### platforms.windows.buildSchemes.[object].BrowserWindow.width
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `width` | `integer` |  | `platforms.windows.buildSchemes.[object].BrowserWindow.width` |
-
-Default width of electron app
-
-
-
----
-
-
-
-
-
-#### platforms.windows.buildSchemes.[object].appleId
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `appleId` | `string` |  | `platforms.windows.buildSchemes.[object].appleId` |
-
-
-
-
-
----
-
 
 
 
@@ -37747,48 +37532,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.windows.buildSchemes.[object].electronConfig
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `electronConfig` | `object` |  | `platforms.windows.buildSchemes.[object].electronConfig` |
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
----
-
-
-
-
 #### platforms.windows.buildSchemes.[object].enableSourceMaps
 
 
@@ -37853,22 +37596,6 @@ If set to `true` dedicated source map file will be generated alongside of compil
 
 
 
-#### platforms.windows.buildSchemes.[object].environment
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `environment` | `string` |  | `platforms.windows.buildSchemes.[object].environment` |
-
-
-
-
-
----
-
-
-
-
 #### platforms.windows.buildSchemes.[object].excludedPlugins
 
 
@@ -37901,6 +37628,22 @@ NOTE: excludedPlugins is evaluated after includedPlugins
   ]
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].experimentalNuGetDependency
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `experimentalNuGetDependency` | `boolean` |  | `platforms.windows.buildSchemes.[object].experimentalNuGetDependency` |
+
 
 
 
@@ -38118,12 +37861,60 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.windows.buildSchemes.[object].language
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `language` | `string` |  | `platforms.windows.buildSchemes.[object].language` |
+
+Either cpp for C++ or cs for C#
+
+
+
+---
+
+
+
+
 #### platforms.windows.buildSchemes.[object].license
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `license` | `string` |  | `platforms.windows.buildSchemes.[object].license` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].nuGetTestFeed
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `nuGetTestFeed` | `string` |  | `platforms.windows.buildSchemes.[object].nuGetTestFeed` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].nuGetTestVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `nuGetTestVersion` | `string` |  | `platforms.windows.buildSchemes.[object].nuGetTestVersion` |
 
 
 
@@ -38142,6 +37933,22 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | `permissions` | `array` |  | `platforms.windows.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` |  | `platforms.windows.buildSchemes.[object].reactNativeEngine` |
+
+
 
 
 
@@ -38254,6 +38061,22 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+#### platforms.windows.buildSchemes.[object].useWinUI3
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `useWinUI3` | `boolean` |  | `platforms.windows.buildSchemes.[object].useWinUI3` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.buildSchemes.[object].versionedAssets
 
 
@@ -38284,118 +38107,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 ---
-
-
-
-
-#### platforms.windows.buildSchemes.[object].webpackConfig
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `webpackConfig` | `object` |  | `platforms.windows.buildSchemes.[object].webpackConfig` |
-
-
-
-
-
----
-
-
-
-#### platforms.windows.buildSchemes.[object].webpackConfig.customScripts
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `customScripts` | `array` |  | `platforms.windows.buildSchemes.[object].webpackConfig.customScripts` |
-
-
-
-
-
----
-
-
-
-
-#### platforms.windows.buildSchemes.[object].webpackConfig.devServerHost
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `devServerHost` | `string` |  | `platforms.windows.buildSchemes.[object].webpackConfig.devServerHost` |
-
-
-
-
-
----
-
-
-
-
-#### platforms.windows.buildSchemes.[object].webpackConfig.extend
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `extend` | `object` |  | `platforms.windows.buildSchemes.[object].webpackConfig.extend` |
-
-Allows you to directly extend/override webpack config of your current platform
-
-**examples**
-
-
-```json
-{
-  "extend": {
-    "devtool": "source-map"
-  }
-}
-```
-
-
-
-```json
-{
-  "extend": {
-    "module": {
-      "rules": [
-        {
-          "test": {},
-          "use": [
-            "source-map-loader"
-          ],
-          "enforce": "pre"
-        }
-      ]
-    }
-  }
-}
-```
-
-
-
-
----
-
-
-
-
-#### platforms.windows.buildSchemes.[object].webpackConfig.metaTags
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `metaTags` | `object` |  | `platforms.windows.buildSchemes.[object].webpackConfig.metaTags` |
-
-
-
-
-
----
-
 
 
 
@@ -38491,48 +38202,6 @@ General description of your app. This prop will be injected to actual projects w
 
 
 
-#### platforms.windows.electronConfig
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `electronConfig` | `object` |  | `platforms.windows.electronConfig` |
-
-Allows you to configure electron app as per https://www.electron.build/
-
-**examples**
-
-
-```json
-{
-  "electronConfig": {
-    "mac": {
-      "target": [
-        "dmg",
-        "mas",
-        "mas-dev"
-      ],
-      "hardenedRuntime": true
-    },
-    "dmg": {
-      "sign": false
-    },
-    "mas": {
-      "type": "distribution",
-      "hardenedRuntime": false
-    }
-  }
-}
-```
-
-
-
-
----
-
-
-
-
 #### platforms.windows.enableSourceMaps
 
 
@@ -38581,22 +38250,6 @@ If set to `true` dedicated source map file will be generated alongside of compil
 
 
 
-#### platforms.windows.environment
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `environment` | `string` |  | `platforms.windows.environment` |
-
-
-
-
-
----
-
-
-
-
 #### platforms.windows.excludedPlugins
 
 
@@ -38629,6 +38282,22 @@ NOTE: excludedPlugins is evaluated after includedPlugins
   ]
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.experimentalNuGetDependency
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `experimentalNuGetDependency` | `boolean` |  | `platforms.windows.experimentalNuGetDependency` |
+
 
 
 
@@ -38846,12 +38515,60 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.windows.language
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `language` | `string` |  | `platforms.windows.language` |
+
+Either cpp for C++ or cs for C#
+
+
+
+---
+
+
+
+
 #### platforms.windows.license
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `license` | `string` |  | `platforms.windows.license` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.nuGetTestFeed
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `nuGetTestFeed` | `string` |  | `platforms.windows.nuGetTestFeed` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.nuGetTestVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `nuGetTestVersion` | `string` |  | `platforms.windows.nuGetTestVersion` |
 
 
 
@@ -38870,6 +38587,22 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | `permissions` | `array` |  | `platforms.windows.permissions` |
 
 > DEPRECATED in favor of includedPermissions
+
+
+
+---
+
+
+
+
+#### platforms.windows.reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` |  | `platforms.windows.reactNativeEngine` |
+
+
 
 
 
@@ -38982,6 +38715,22 @@ Title of your app will be used to create title of the binary. ie App title of in
 
 
 
+#### platforms.windows.useWinUI3
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `useWinUI3` | `boolean` |  | `platforms.windows.useWinUI3` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.versionedAssets
 
 
@@ -39012,118 +38761,6 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 ---
-
-
-
-
-#### platforms.windows.webpackConfig
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `webpackConfig` | `object` |  | `platforms.windows.webpackConfig` |
-
-
-
-
-
----
-
-
-
-#### platforms.windows.webpackConfig.customScripts
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `customScripts` | `array` |  | `platforms.windows.webpackConfig.customScripts` |
-
-
-
-
-
----
-
-
-
-
-#### platforms.windows.webpackConfig.devServerHost
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `devServerHost` | `string` |  | `platforms.windows.webpackConfig.devServerHost` |
-
-
-
-
-
----
-
-
-
-
-#### platforms.windows.webpackConfig.extend
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `extend` | `object` |  | `platforms.windows.webpackConfig.extend` |
-
-Allows you to directly extend/override webpack config of your current platform
-
-**examples**
-
-
-```json
-{
-  "extend": {
-    "devtool": "source-map"
-  }
-}
-```
-
-
-
-```json
-{
-  "extend": {
-    "module": {
-      "rules": [
-        {
-          "test": {},
-          "use": [
-            "source-map-loader"
-          ],
-          "enforce": "pre"
-        }
-      ]
-    }
-  }
-}
-```
-
-
-
-
----
-
-
-
-
-#### platforms.windows.webpackConfig.metaTags
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `metaTags` | `object` |  | `platforms.windows.webpackConfig.metaTags` |
-
-
-
-
-
----
-
 
 
 
