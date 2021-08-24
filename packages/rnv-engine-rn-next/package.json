@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "0.32.0-feat-rnwin-0",
+    "version": "0.32.0-feat-rnwin-1",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",

@@ -20,7 +20,7 @@
             }
         },
         "renative": {
-            "version": "0.32.0-feat-rnwin-0",
+            "version": "0.32.0-feat-rnwin-1",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
