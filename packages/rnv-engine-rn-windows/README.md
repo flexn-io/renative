@@ -1,4 +1,4 @@
-# @rnv/engine-rn-web
+# @rnv/engine-rn-windows
 
 ReNative Engine to build Windows applications (library development support is to be added).
 As the title suggests this engine utilizes React Native for Windows package created and maintained by Microsoft.

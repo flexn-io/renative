@@ -1,10 +1,6 @@
 const path = require('path');
 const { withRNV } = require('@rnv/engine-rn-windows');
 
-const defaultConfig = {
-    watchFolders: [
-        path.resolve(__dirname, '../renative')
-    ]
-};
+const defaultConfig = {};
 
 module.exports = withRNV(defaultConfig);

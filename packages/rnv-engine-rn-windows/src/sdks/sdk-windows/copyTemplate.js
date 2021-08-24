@@ -34,7 +34,8 @@ const bundleDir = 'Bundle';
 async function generateCertificate(
     srcPath,
     currentUser,
-    c
+    c,
+    options
 ) {
     console.log('Generating self-signed certificate...');
     const appFolder = getAppFolder(c, true);
@@ -71,7 +72,8 @@ async function generateCertificate(
     await generator_common_1.copyAndReplaceWithChangedCallback(
         path.join(srcPath, 'keys', 'MyApp_TemporaryKey.pfx'),
         c.paths.project.dir,
-        path.join(appFolder, c.runtime.appId, `${c.runtime.appId}_TemporaryKey.pfx`)
+        path.join(appFolder, c.runtime.appId, `${c.runtime.appId}_TemporaryKey.pfx`),
+        options.overwrite
     );
     return null;
 }
@@ -156,7 +158,8 @@ export async function copyProjectTemplateAndReplace(
     const certificateThumbprint = await generateCertificate(
         srcPath,
         currentUser,
-        c
+        c,
+        options
     );
 
     const xamlNamespace = useWinUI3
@@ -327,7 +330,8 @@ export async function copyProjectTemplateAndReplace(
             mapping.from,
             c.paths.project.dir,
             mapping.to,
-            templateVars
+            templateVars,
+            options.overwrite
         );
     }
     if (language === 'cs') {
@@ -348,7 +352,8 @@ export async function copyProjectTemplateAndReplace(
                 mapping.from,
                 c.paths.project.dir,
                 mapping.to,
-                templateVars
+                templateVars,
+                options.overwrite
             );
         }
     } else {
@@ -381,7 +386,8 @@ export async function copyProjectTemplateAndReplace(
                 mapping.from,
                 c.paths.project.dir,
                 mapping.to,
-                templateVars
+                templateVars,
+                options.overwrite
             );
         }
     }
@@ -410,7 +416,8 @@ export async function copyProjectTemplateAndReplace(
                     mapping.from,
                     c.paths.project.dir,
                     mapping.to,
-                    templateVars
+                    templateVars,
+                    options.overwrite
                 );
             }
         }

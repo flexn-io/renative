@@ -114,7 +114,7 @@ async function copyAndReplace(srcPath, destPath, replacements, contentChangedCal
         // Text file
         const srcPermissions = fs.statSync(srcPath).mode;
         const content = resolveContents(srcPath, replacements);
-        let shouldOverwrite = 'overwrite';
+        let shouldOverwrite = 'keepOriginal';
         if (contentChangedCallback) {
             // Check if contents changed and ask to overwrite
             let contentChanged = 'identical';
