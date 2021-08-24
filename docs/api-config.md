@@ -37327,12 +37327,202 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+#### platforms.windows.BrowserWindow
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BrowserWindow` | `object` |  | `platforms.windows.BrowserWindow` |
+
+Allows you to configure electron wrapper app window
+
+**examples**
+
+
+```json
+{
+  "BrowserWindow": {
+    "width": 1310,
+    "height": 800,
+    "webPreferences": {
+      "devTools": true
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+#### platforms.windows.BrowserWindow.height
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `height` | `integer` |  | `platforms.windows.BrowserWindow.height` |
+
+Default height of electron app
+
+
+
+---
+
+
+
+
+#### platforms.windows.BrowserWindow.webPreferences
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webPreferences` | `object` |  | `platforms.windows.BrowserWindow.webPreferences` |
+
+Extra web preferences of electron app
+
+**examples**
+
+
+```json
+{
+  "webPreferences": {
+    "devTools": true
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.BrowserWindow.width
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `width` | `integer` |  | `platforms.windows.BrowserWindow.width` |
+
+Default width of electron app
+
+
+
+---
+
+
+
+
+
+#### platforms.windows.additionalMetroOptions
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `additionalMetroOptions` | `object` |  | `platforms.windows.additionalMetroOptions` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.appPath
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appPath` | `string` |  | `platforms.windows.appPath` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.arch
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `arch` | `string` |  | `platforms.windows.arch` |
+
+Specification of targeted architecture
+
+**examples**
+
+
+```json
+{
+  "arch": "x86"
+}
+```
+
+
+
+```json
+{
+  "arch": "x64"
+}
+```
+
+
+
+```json
+{
+  "arch": "ARM"
+}
+```
+
+
+
+```json
+{
+  "arch": "ARM64"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.author
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `author` | `object,string` |  | `platforms.windows.author` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.autolink
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `autolink` | `boolean` |  | `platforms.windows.autolink` |
 
 
 
@@ -37377,6 +37567,38 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+#### platforms.windows.build
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build` | `boolean` |  | `platforms.windows.build` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildLogDirectory
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildLogDirectory` | `string` |  | `platforms.windows.buildLogDirectory` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.buildSchemes
 
 
@@ -37392,12 +37614,202 @@ Defines root view backgroundColor for all platforms in HEX format
 
 
 
+#### platforms.windows.buildSchemes.[object].BrowserWindow
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BrowserWindow` | `object` |  | `platforms.windows.buildSchemes.[object].BrowserWindow` |
+
+Allows you to configure electron wrapper app window
+
+**examples**
+
+
+```json
+{
+  "BrowserWindow": {
+    "width": 1310,
+    "height": 800,
+    "webPreferences": {
+      "devTools": true
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+#### platforms.windows.buildSchemes.[object].BrowserWindow.height
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `height` | `integer` |  | `platforms.windows.buildSchemes.[object].BrowserWindow.height` |
+
+Default height of electron app
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].BrowserWindow.webPreferences
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webPreferences` | `object` |  | `platforms.windows.buildSchemes.[object].BrowserWindow.webPreferences` |
+
+Extra web preferences of electron app
+
+**examples**
+
+
+```json
+{
+  "webPreferences": {
+    "devTools": true
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].BrowserWindow.width
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `width` | `integer` |  | `platforms.windows.buildSchemes.[object].BrowserWindow.width` |
+
+Default width of electron app
+
+
+
+---
+
+
+
+
+
+#### platforms.windows.buildSchemes.[object].additionalMetroOptions
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `additionalMetroOptions` | `object` |  | `platforms.windows.buildSchemes.[object].additionalMetroOptions` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].appPath
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appPath` | `string` |  | `platforms.windows.buildSchemes.[object].appPath` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].arch
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `arch` | `string` |  | `platforms.windows.buildSchemes.[object].arch` |
+
+Specification of targeted architecture
+
+**examples**
+
+
+```json
+{
+  "arch": "x86"
+}
+```
+
+
+
+```json
+{
+  "arch": "x64"
+}
+```
+
+
+
+```json
+{
+  "arch": "ARM"
+}
+```
+
+
+
+```json
+{
+  "arch": "ARM64"
+}
+```
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.buildSchemes.[object].author
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `author` | `object,string` |  | `platforms.windows.buildSchemes.[object].author` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].autolink
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `autolink` | `boolean` |  | `platforms.windows.buildSchemes.[object].autolink` |
 
 
 
@@ -37433,6 +37845,54 @@ Defines root view backgroundColor for all platforms in HEX format
   "backgroundColor": "#222222"
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].build
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build` | `boolean` |  | `platforms.windows.buildSchemes.[object].build` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].buildLogDirectory
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildLogDirectory` | `string` |  | `platforms.windows.buildSchemes.[object].buildLogDirectory` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].bundle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundle` | `boolean` |  | `platforms.windows.buildSchemes.[object].bundle` |
+
 
 
 
@@ -37479,29 +37939,13 @@ If set to `true` compiled js bundle file will generated. this is needed if you w
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `deploy` | `object` |  | `platforms.windows.buildSchemes.[object].deploy` |
+| `deploy` | `boolean` |  | `platforms.windows.buildSchemes.[object].deploy` |
 
 
 
 
 
 ---
-
-
-
-#### platforms.windows.buildSchemes.[object].deploy.type
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `type` | `string` |  | `platforms.windows.buildSchemes.[object].deploy.type` |
-
-
-
-
-
----
-
 
 
 
@@ -37523,6 +37967,112 @@ General description of your app. This prop will be injected to actual projects w
   "description": "This app does awesome things"
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].devPort
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devPort` | `string` |  | `platforms.windows.buildSchemes.[object].devPort` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].device
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `device` | `boolean` |  | `platforms.windows.buildSchemes.[object].device` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].directDebugging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `directDebugging` | `boolean` |  | `platforms.windows.buildSchemes.[object].directDebugging` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].electronConfig
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `electronConfig` | `object` |  | `platforms.windows.buildSchemes.[object].electronConfig` |
+
+Allows you to configure electron app as per https://www.electron.build/
+
+**examples**
+
+
+```json
+{
+  "electronConfig": {
+    "mac": {
+      "target": [
+        "dmg",
+        "mas",
+        "mas-dev"
+      ],
+      "hardenedRuntime": true
+    },
+    "dmg": {
+      "sign": false
+    },
+    "mas": {
+      "type": "distribution",
+      "hardenedRuntime": false
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].emulator
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `emulator` | `boolean` |  | `platforms.windows.buildSchemes.[object].emulator` |
+
 
 
 
@@ -37861,6 +38411,22 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.windows.buildSchemes.[object].info
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `info` | `boolean` |  | `platforms.windows.buildSchemes.[object].info` |
+
+Print information about the build machine to console
+
+
+
+---
+
+
+
+
 #### platforms.windows.buildSchemes.[object].language
 
 
@@ -37868,7 +38434,23 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `language` | `string` |  | `platforms.windows.buildSchemes.[object].language` |
 
-Either cpp for C++ or cs for C#
+Specify generated project language: cpp for C++ or cs for C#
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].launch
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `launch` | `boolean` |  | `platforms.windows.buildSchemes.[object].launch` |
+
+
 
 
 
@@ -37883,6 +38465,38 @@ Either cpp for C++ or cs for C#
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `license` | `string` |  | `platforms.windows.buildSchemes.[object].license` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].logging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `logging` | `boolean` |  | `platforms.windows.buildSchemes.[object].logging` |
+
+Logging all the build proccesses to console
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].msbuildprops
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `msbuildprops` | `string` |  | `platforms.windows.buildSchemes.[object].msbuildprops` |
 
 
 
@@ -37925,6 +38539,54 @@ Either cpp for C++ or cs for C#
 
 
 
+#### platforms.windows.buildSchemes.[object].overwrite
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `overwrite` | `boolean` |  | `platforms.windows.buildSchemes.[object].overwrite` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].packageExtension
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `packageExtension` | `string` |  | `platforms.windows.buildSchemes.[object].packageExtension` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].packager
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `packager` | `boolean` |  | `platforms.windows.buildSchemes.[object].packager` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.buildSchemes.[object].permissions
 
 
@@ -37941,6 +38603,22 @@ Either cpp for C++ or cs for C#
 
 
 
+#### platforms.windows.buildSchemes.[object].proj
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `proj` | `string` |  | `platforms.windows.buildSchemes.[object].proj` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.buildSchemes.[object].reactNativeEngine
 
 
@@ -37949,6 +38627,54 @@ Either cpp for C++ or cs for C#
 | `reactNativeEngine` | `string` |  | `platforms.windows.buildSchemes.[object].reactNativeEngine` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].release
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `release` | `boolean` |  | `platforms.windows.buildSchemes.[object].release` |
+
+Enables full packaging of the app for release
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].remoteDebugging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `remoteDebugging` | `boolean` |  | `platforms.windows.buildSchemes.[object].remoteDebugging` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].root
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `root` | `string` |  | `platforms.windows.buildSchemes.[object].root` |
+
+Project root folder location (not the app itself, which is in platformBuilds)
 
 
 
@@ -37985,6 +38711,38 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+#### platforms.windows.buildSchemes.[object].singleproc
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `singleproc` | `boolean` |  | `platforms.windows.buildSchemes.[object].singleproc` |
+
+Opt out of multi-proc builds (only available in 0.64 and newer versions of react-native-windows)
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].sln
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `sln` | `string` |  | `platforms.windows.buildSchemes.[object].sln` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.buildSchemes.[object].splashScreen
 
 
@@ -37993,6 +38751,38 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 | `splashScreen` | `boolean` |  | `platforms.windows.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].target
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `target` | `string` |  | `platforms.windows.buildSchemes.[object].target` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].telemetry
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `telemetry` | `boolean` |  | `platforms.windows.buildSchemes.[object].telemetry` |
+
+Send analytics data of @react-native-windows/cli usage to Microsoft
 
 
 
@@ -38111,6 +38901,134 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 
+#### platforms.windows.buildSchemes.[object].webpackConfig
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.windows.buildSchemes.[object].webpackConfig` |
+
+
+
+
+
+---
+
+
+
+#### platforms.windows.buildSchemes.[object].webpackConfig.customScripts
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.windows.buildSchemes.[object].webpackConfig.customScripts` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].webpackConfig.devServerHost
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.windows.buildSchemes.[object].webpackConfig.devServerHost` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].webpackConfig.extend
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.windows.buildSchemes.[object].webpackConfig.extend` |
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].webpackConfig.metaTags
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.windows.buildSchemes.[object].webpackConfig.metaTags` |
+
+
+
+
+
+---
+
+
+
+
+
+
+#### platforms.windows.bundle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundle` | `boolean` |  | `platforms.windows.bundle` |
+
+
+
+
+
+---
+
+
+
 
 #### platforms.windows.bundleAssets
 
@@ -38149,29 +39067,13 @@ If set to `true` compiled js bundle file will generated. this is needed if you w
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `deploy` | `object` |  | `platforms.windows.deploy` |
+| `deploy` | `boolean` |  | `platforms.windows.deploy` |
 
 
 
 
 
 ---
-
-
-
-#### platforms.windows.deploy.type
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `type` | `string` |  | `platforms.windows.deploy.type` |
-
-
-
-
-
----
-
 
 
 
@@ -38193,6 +39095,112 @@ General description of your app. This prop will be injected to actual projects w
   "description": "This app does awesome things"
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.devPort
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devPort` | `string` |  | `platforms.windows.devPort` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.device
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `device` | `boolean` |  | `platforms.windows.device` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.directDebugging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `directDebugging` | `boolean` |  | `platforms.windows.directDebugging` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.electronConfig
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `electronConfig` | `object` |  | `platforms.windows.electronConfig` |
+
+Allows you to configure electron app as per https://www.electron.build/
+
+**examples**
+
+
+```json
+{
+  "electronConfig": {
+    "mac": {
+      "target": [
+        "dmg",
+        "mas",
+        "mas-dev"
+      ],
+      "hardenedRuntime": true
+    },
+    "dmg": {
+      "sign": false
+    },
+    "mas": {
+      "type": "distribution",
+      "hardenedRuntime": false
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.emulator
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `emulator` | `boolean` |  | `platforms.windows.emulator` |
+
 
 
 
@@ -38515,6 +39523,22 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.windows.info
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `info` | `boolean` |  | `platforms.windows.info` |
+
+Print information about the build machine to console
+
+
+
+---
+
+
+
+
 #### platforms.windows.language
 
 
@@ -38522,7 +39546,23 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | :----- | :----- | :---- | :---- |
 | `language` | `string` |  | `platforms.windows.language` |
 
-Either cpp for C++ or cs for C#
+Specify generated project language: cpp for C++ or cs for C#
+
+
+
+---
+
+
+
+
+#### platforms.windows.launch
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `launch` | `boolean` |  | `platforms.windows.launch` |
+
+
 
 
 
@@ -38537,6 +39577,38 @@ Either cpp for C++ or cs for C#
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `license` | `string` |  | `platforms.windows.license` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.logging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `logging` | `boolean` |  | `platforms.windows.logging` |
+
+Logging all the build proccesses to console
+
+
+
+---
+
+
+
+
+#### platforms.windows.msbuildprops
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `msbuildprops` | `string` |  | `platforms.windows.msbuildprops` |
 
 
 
@@ -38579,6 +39651,54 @@ Either cpp for C++ or cs for C#
 
 
 
+#### platforms.windows.overwrite
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `overwrite` | `boolean` |  | `platforms.windows.overwrite` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.packageExtension
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `packageExtension` | `string` |  | `platforms.windows.packageExtension` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.packager
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `packager` | `boolean` |  | `platforms.windows.packager` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.permissions
 
 
@@ -38595,6 +39715,22 @@ Either cpp for C++ or cs for C#
 
 
 
+#### platforms.windows.proj
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `proj` | `string` |  | `platforms.windows.proj` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.reactNativeEngine
 
 
@@ -38603,6 +39739,54 @@ Either cpp for C++ or cs for C#
 | `reactNativeEngine` | `string` |  | `platforms.windows.reactNativeEngine` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.windows.release
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `release` | `boolean` |  | `platforms.windows.release` |
+
+Enables full packaging of the app for release
+
+
+
+---
+
+
+
+
+#### platforms.windows.remoteDebugging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `remoteDebugging` | `boolean` |  | `platforms.windows.remoteDebugging` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.root
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `root` | `string` |  | `platforms.windows.root` |
+
+Project root folder location (not the app itself, which is in platformBuilds)
 
 
 
@@ -38639,6 +39823,38 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+#### platforms.windows.singleproc
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `singleproc` | `boolean` |  | `platforms.windows.singleproc` |
+
+Opt out of multi-proc builds (only available in 0.64 and newer versions of react-native-windows)
+
+
+
+---
+
+
+
+
+#### platforms.windows.sln
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `sln` | `string` |  | `platforms.windows.sln` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.splashScreen
 
 
@@ -38647,6 +39863,38 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 | `splashScreen` | `boolean` |  | `platforms.windows.splashScreen` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.windows.target
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `target` | `string` |  | `platforms.windows.target` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.telemetry
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `telemetry` | `boolean` |  | `platforms.windows.telemetry` |
+
+Send analytics data of @react-native-windows/cli usage to Microsoft
 
 
 
@@ -38761,6 +40009,118 @@ If set to `true` generated js (bundle.js) files will be timestamped and named (b
 
 
 ---
+
+
+
+
+#### platforms.windows.webpackConfig
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.windows.webpackConfig` |
+
+
+
+
+
+---
+
+
+
+#### platforms.windows.webpackConfig.customScripts
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.windows.webpackConfig.customScripts` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.webpackConfig.devServerHost
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.windows.webpackConfig.devServerHost` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.webpackConfig.extend
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.windows.webpackConfig.extend` |
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.webpackConfig.metaTags
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.windows.webpackConfig.metaTags` |
+
+
+
+
+
+---
+
 
 
 
