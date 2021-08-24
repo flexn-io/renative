@@ -134,7 +134,7 @@ const engineRnElectronConfig = {
 const engineRNWindowsConfig = {
     language: {
         type: 'string',
-        description: 'Either cpp for C++ or cs for C#'
+        description: 'Specify generated project language: cpp for C++ or cs for C#'
     },
     experimentalNuGetDependency: {
         type: 'boolean'
@@ -149,6 +149,95 @@ const engineRNWindowsConfig = {
         type: 'string'
     },
     nuGetTestFeed: {
+        type: 'string'
+    },
+    overwrite: {
+        type: 'boolean'
+    },
+    release: {
+        type: 'boolean',
+        description: 'Enables full packaging of the app for release'
+    },
+    root: {
+        type: 'string',
+        description: 'Project root folder location (not the app itself, which is in platformBuilds)'
+    },
+    arch: {
+        type: 'string',
+        description: 'Specification of targeted architecture',
+        examples: ['x86', 'x64', 'ARM', 'ARM64']
+    },
+    singleproc: {
+        type: 'boolean',
+        description: 'Opt out of multi-proc builds (only available in 0.64 and newer versions of react-native-windows)'
+    },
+    emulator: {
+        type: 'boolean'
+    },
+    device: {
+        type: 'boolean'
+    },
+    target: {
+        type: 'string'
+    },
+    remoteDebugging: {
+        type: 'boolean'
+    },
+    logging: {
+        type: 'boolean',
+        description: 'Logging all the build proccesses to console'
+    },
+    packager: {
+        type: 'boolean'
+    },
+    bundle: {
+        type: 'boolean'
+    },
+    launch: {
+        type: 'boolean'
+    },
+    autolink: {
+        type: 'boolean'
+    },
+    build: {
+        type: 'boolean'
+    },
+    deploy: {
+        type: 'boolean'
+    },
+    sln: {
+        type: 'string'
+    },
+    proj: {
+        type: 'string'
+    },
+    appPath: {
+        type: 'string'
+    },
+    msbuildprops: {
+        type: 'string'
+    },
+    buildLogDirectory: {
+        type: 'string'
+    },
+    info: {
+        type: 'boolean',
+        description: 'Print information about the build machine to console'
+    },
+    directDebugging: {
+        type: 'boolean'
+    },
+    telemetry: {
+        type: 'boolean',
+        description: 'Send analytics data of @react-native-windows/cli usage to Microsoft'
+    },
+    devPort: {
+        type: 'string'
+    },
+    additionalMetroOptions: {
+        type: 'object',
+    },
+    packageExtension: {
         type: 'string'
     }
 };
@@ -824,6 +913,7 @@ const platformMacosProps = {
 };
 
 const platformWindowsProps = {
+    ...engineRnElectronConfig,
     ...engineRNWindowsConfig,
 };
 
@@ -1291,7 +1381,7 @@ export const schemaRoot = {
                     ...schemaPlatforms.definitions.tizen,
                 },
                 windows: {
-                    // $ref: 'platforms.json#/definitions/macos'
+                    // $ref: 'platforms.json#/definitions/windows'
                     ...schemaPlatforms.definitions.windows,
                 },
                 firefoxtv: {
