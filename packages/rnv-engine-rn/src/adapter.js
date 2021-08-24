@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-unresolved
-const exclusionList = require('metro-config/src/defaults/exclusionList');
+const blacklist = require('metro-config/src/defaults/blacklist');
 const path = require('path');
 
 export const withRNV = (config) => {
@@ -19,7 +18,7 @@ export const withRNV = (config) => {
     const cnf = {
         ...config,
         resolver: {
-            blockList: exclusionList([
+            blacklistRE: blacklist([
                 /platformBuilds\/.*/,
                 /buildHooks\/.*/,
                 /projectConfig\/.*/,

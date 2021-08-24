@@ -19,6 +19,11 @@
       "npm": {
         "devDependencies": {}
       }
+    },
+    "windows": {
+      "npm": {
+        "devDependencies": {}
+      }
     }
   }
 }

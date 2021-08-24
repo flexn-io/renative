@@ -36,7 +36,7 @@ async function generateCertificate(
     currentUser,
     c
 ) {
-    // console.log('Generating self-signed certificate...');
+    console.log('Generating self-signed certificate...');
     const appFolder = getAppFolder(c, true);
     if (os.platform() === 'win32') {
         try {
@@ -57,9 +57,9 @@ async function generateCertificate(
                 )}_TemporaryKey.pfx -Password $pwd"`,
                 { timeout }
             );
-            // console.log(
-            //     chalk.green('Self-signed certificate generated successfully.')
-            // );
+            console.log(
+                chalk.green('Self-signed certificate generated successfully.')
+            );
             return thumbprint;
         } catch (err) {
             console.log(chalk.yellow('Failed to generate Self-signed certificate.'));
@@ -78,7 +78,6 @@ async function generateCertificate(
 
 
 // Existing high cyclomatic complexity
-// eslint-disable-next-line complexity
 export async function copyProjectTemplateAndReplace(
     c,
     options
@@ -86,9 +85,6 @@ export async function copyProjectTemplateAndReplace(
     if (!c.paths.project.dir) {
         throw new Error('Need a path to copy to');
     }
-
-    // React-native init only allows alphanumerics in project names, but other
-    // new project tools (like create-react-native-module) are less strict.
 
     const appTitle = getAppTitle(c, WINDOWS);
     const appFolder = getAppFolder(c, true);
@@ -105,14 +101,14 @@ export async function copyProjectTemplateAndReplace(
 
     generator_common_1.createDir(path.join(c.paths.project.dir, appFolder));
     generator_common_1.createDir(path.join(c.paths.project.dir, appFolder, c.runtime.appId));
-    // if (projectType === 'app') {
+
     generator_common_1.createDir(
         path.join(c.paths.project.dir, appFolder, c.runtime.appId, bundleDir)
     );
     generator_common_1.createDir(
         path.join(c.paths.project.dir, appFolder, c.runtime.appId, 'BundleBuilder')
     );
-    // }
+
 
     const namespaceCpp = toCppNamespace(appTitle);
     if (experimentalNuGetDependency) {
@@ -134,6 +130,7 @@ export async function copyProjectTemplateAndReplace(
         RNWTemplatePath = path.join(path.dirname(require.resolve('react-native-windows/package.json', {
             paths: [c.paths.project.dir],
         })), 'template');
+        // TODO Add support for developing libs, not just apps using renative (RN Windows added this in 0.64 version)
         srcPath = path.join(RNWTemplatePath, `${language}-app`);
         sharedPath = path.join(RNWTemplatePath, 'shared-app');
     } else if (rnVersion >= 0.63) {
@@ -452,7 +449,7 @@ export async function copyProjectTemplateAndReplace(
         if (!fs.existsSync(glyphmapsDir)) {
             fs.mkdirSync(glyphmapsDir, { recursive: true });
         }
-        // TODO. Not sure if this is needed, but RN Windows does this in a regular proejct by default
+        // TODO. Not sure if this is needed, but RN Windows does this in a regular project by default
         copyFolderContentsRecursive(
             RNIconsGlyphmapsPluginPath,
             glyphmapsDir,
@@ -476,9 +473,6 @@ export async function copyProjectTemplateAndReplace(
             templateVars
         );
     }
-
-    console.log(chalk.white.bold('To run your app on UWP:'));
-    console.log(chalk.white('   rnv run -p windows'));
 }
 
 function toCppNamespace(namespace) {

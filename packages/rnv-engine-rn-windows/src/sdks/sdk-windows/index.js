@@ -79,7 +79,7 @@ const defaultOptions = {
     sln: undefined,
     // Where the proj directory is
     proj: undefined,
-    // Where the build is placed
+    // Where the build is placed (default is full path to platformBuilds/projectName_windows)
     appPath: undefined,
     // Comma separated props to pass to msbuild, eg: prop1=value1,prop2=value2
     msbuildprops: undefined,
@@ -276,11 +276,11 @@ const packageBundleForWindows = (c, isDev = false) => {
         '--dev',
         isDev,
         '--assets-dest',
-        `${getAppFolder(c, c.platform)}\\${c.runtime.appId}\\Bundle`,
+        `${getAppFolder(c, c.platform).replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle`,
         '--entry-file',
         `${c.buildConfig.platforms[c.platform].entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c, c.platform)}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`
+        `${getAppFolder(c, c.platform).replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`
     ];
 
     if (c.program.info) {
@@ -299,8 +299,8 @@ const packageBundleForWindows = (c, isDev = false) => {
     }
 
     return executeAsync(c, `node ${doResolve(
-        'react-native'
-    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.rnwin.js`, { env: { ...generateEnvVars(c) } });
+        'react-native', true, { forceForwardPaths: false }
+    )}\\local-cli\\cli.js ${args.join(' ')} --config=metro.config.rnwin.js`, { env: { ...generateEnvVars(c) } });
 };
 
 const setSingleBuildProcessForWindows = (c) => {
