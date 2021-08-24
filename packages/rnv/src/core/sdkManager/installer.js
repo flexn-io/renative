@@ -251,6 +251,7 @@ const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) =
 
         if (confirmSdk) {
             try {
+                if (!c.files.workspace.config.sdks) c.files.workspace.config.sdks = {};
                 c.files.workspace.config.sdks[sdkKey] = result;
                 writeFileSync(
                     c.paths.workspace.config,
