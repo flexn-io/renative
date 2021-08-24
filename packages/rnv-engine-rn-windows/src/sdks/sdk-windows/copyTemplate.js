@@ -265,13 +265,6 @@ export async function copyProjectTemplateAndReplace(
         hasAdditionalAssets: fs.existsSync(RNIconsPluginPath)
     };
     const commonMappings = [
-        {
-            from: path.join(
-                RNWTemplatePath,
-                'metro.config.js'
-            ),
-            to: 'metro.config.rnwin.js'
-        },
         // app common mappings
         {
             from: path.join(RNWTemplatePath, 'index.windows.bundle'),
@@ -310,6 +303,21 @@ export async function copyProjectTemplateAndReplace(
             ),
         },
     ];
+
+    if (!fs.existsSync(path.join(
+        c.paths.project.dir,
+        'metro.config.rnwin.js'
+    ))) {
+        commonMappings.push(
+            {
+                from: path.join(
+                    RNWTemplatePath,
+                    'metro.config.js'
+                ),
+                to: 'metro.config.rnwin.js'
+            }
+        );
+    }
 
     if (!fs.existsSync(path.join(
         appFolder,
