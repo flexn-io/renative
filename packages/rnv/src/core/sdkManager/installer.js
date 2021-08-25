@@ -31,7 +31,7 @@ import {
     USER_HOME_DIR
 } from '../constants';
 import { isSystemWin } from '../systemManager/utils';
-import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync } from '../systemManager/fileutils';
+import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync, fsLstatSync } from '../systemManager/fileutils';
 import {
     chalk,
     logTask,
@@ -208,6 +208,8 @@ const _findFolderWithFile = (dir, fileToFind) => {
     }
     let foundDir;
     fsReaddirSync(dir).forEach((subDirName) => {
+        // not a directory check
+        if (!fsLstatSync(subDirName).isDirectory()) return;
         const subDir = path.join(dir, subDirName);
         const foundSubDir = _findFolderWithFile(subDir, fileToFind);
         if (foundSubDir) {
