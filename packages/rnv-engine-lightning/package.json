@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-lightning",
-    "version": "0.32.0-feat-asdk-4",
+    "version": "0.32.0-feat-asdk-5",
     "description": "ReNative Engine to build lightning based apps.",
     "keywords": [
         "lightning"

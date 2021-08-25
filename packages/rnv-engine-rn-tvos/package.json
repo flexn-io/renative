@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-tvos",
-    "version": "0.32.0-feat-asdk-4",
+    "version": "0.32.0-feat-asdk-5",
     "description": "ReNative Engine to build react-native tvos platform.",
     "keywords": [
         "react-native"
