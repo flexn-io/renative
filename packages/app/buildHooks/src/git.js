@@ -5,7 +5,11 @@ import { Logger } from 'rnv';
 import simpleGit from 'simple-git';
 
 export const gitCommit = async (c) => {
-    const version = c.files.project?.package?.version;
+    let version;
+    if (c.files.project && c.files.project.package && c.files.project.package.version) {
+        // eslint-disable-next-line prefer-destructuring
+        version = c.files.project.package.version;
+    }
     const baseDir = path.join(c.paths.project.dir, '../..');
     Logger.logHook(`gitCommitAndTagVersion v${version}`);
     const git = simpleGit({ baseDir });
@@ -17,7 +21,11 @@ export const gitCommit = async (c) => {
 };
 
 export const gitTag = async (c) => {
-    const version = c.files.project?.package?.version;
+    let version;
+    if (c.files.project && c.files.project.package && c.files.project.package.version) {
+        // eslint-disable-next-line prefer-destructuring
+        version = c.files.project.package.version;
+    }
     const baseDir = path.join(c.paths.project.dir, '../..');
     Logger.logHook(`gitTagAndPush v${version}`);
     const git = simpleGit({ baseDir });
