@@ -267,6 +267,11 @@ function clearWindowsTemporaryFiles(c) {
 
     // Yarn/NPM cache
     child_process_1.spawn('cmd.exe', ['/C', 'npm cache clean --force & yarn cache clean --all'], opts);
+
+    // TODO Arbitrary 3s delay before continuing to make sure all files were removed is not ideal
+    // But without it bundler executes at the same time deletion occurs and therefore bundler
+    // fails to initiate
+    return new Promise(resolve => setTimeout(() => resolve(true), 3000));
 }
 
 const packageBundleForWindows = (c, isDev = false) => {

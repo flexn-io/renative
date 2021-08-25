@@ -7,7 +7,7 @@
  * @format
  */
 // DEPS
-import { Common, Constants, FileUtils } from 'rnv';
+import { Common, Constants, FileUtils, Logger } from 'rnv';
 
 const chalk = require('chalk');
 const path = require('path');
@@ -26,6 +26,7 @@ const generator_common_1 = require('./generator-common');
 const { getAppFolder, getAppTitle, getConfigProp, isMonorepo } = Common;
 const { WINDOWS } = Constants;
 const { copyFolderContentsRecursive } = FileUtils;
+const { logError } = Logger;
 
 // CONSTS
 const bundleDir = 'Bundle';
@@ -141,6 +142,8 @@ export async function copyProjectTemplateAndReplace(
         })), 'templates');
         srcPath = path.join(RNWTemplatePath, `${language}`);
         sharedPath = path.join(RNWTemplatePath, 'shared');
+    } else {
+        logError("ReNative's React Native Windows engine does not support version of React Native older than 0.63");
     }
 
     const projDir = 'proj';
@@ -262,7 +265,7 @@ export async function copyProjectTemplateAndReplace(
         autolinkCppIncludes: '',
         autolinkCppPackageProviders:
       '\n    UNREFERENCED_PARAMETER(packageProviders);',
-        hasAdditionalAssets: fs.existsSync(RNIconsPluginPath)
+        hasAdditionalAssets: RNIconsPluginPath && fs.existsSync(RNIconsPluginPath)
     };
     const commonMappings = [
         // app common mappings
@@ -304,6 +307,7 @@ export async function copyProjectTemplateAndReplace(
         },
     ];
 
+    // Do not override metro inside the project if one already exists
     if (!fs.existsSync(path.join(
         c.paths.project.dir,
         'metro.config.rnwin.js'
@@ -440,14 +444,11 @@ export async function copyProjectTemplateAndReplace(
         );
     }
 
-    const RNIconsGlyphmapsPluginPath = path.join(path.dirname(require.resolve('react-native-vector-icons/package.json', {
-        paths: [c.paths.project.dir],
-    })), 'glyphmaps');
+    // Non relative path to appFolder is needed
     const appFolderFull = getAppFolder(c);
-
     // react native vector icons fonts
     // Only copy the files if the plugin is added to the project, aka plugin dir exists
-    if (fs.existsSync(RNIconsPluginPath)) {
+    if (RNIconsPluginPath && fs.existsSync(RNIconsPluginPath)) {
         // Default React Native Windows Debug apps use this location
         copyFolderContentsRecursive(
             RNIconsPluginPath,
@@ -465,6 +466,10 @@ export async function copyProjectTemplateAndReplace(
             fs.mkdirSync(glyphmapsDir, { recursive: true });
         }
         // TODO. Not sure if this is needed, but RN Windows does this in a regular project by default
+        const RNIconsGlyphmapsPluginPath = path.join(path.dirname(require.resolve('react-native-vector-icons/package.json', {
+            paths: [c.paths.project.dir],
+        })), 'glyphmaps');
+
         copyFolderContentsRecursive(
             RNIconsGlyphmapsPluginPath,
             glyphmapsDir,
