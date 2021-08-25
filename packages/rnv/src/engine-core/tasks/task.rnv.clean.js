@@ -170,8 +170,6 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
         logToSummary('Nothing to clean');
         return Promise.resolve();
     }
-    console.log('IS WIN', isSystemWin);
-    console.log('WARNINGINGINGINGINGNIGNGINGING', answers);
 
     if (answers.modules) {
         await removeDirs(pathsToRemove);
