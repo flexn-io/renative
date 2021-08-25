@@ -152,7 +152,8 @@ const engineRNWindowsConfig = {
         type: 'string'
     },
     overwrite: {
-        type: 'boolean'
+        type: 'boolean',
+        description: 'Whether to attempt to override the existing builds files when running a build once more'
     },
     release: {
         type: 'boolean',
@@ -194,31 +195,39 @@ const engineRNWindowsConfig = {
         type: 'boolean'
     },
     launch: {
-        type: 'boolean'
+        type: 'boolean',
+        description: 'Launches the application once the build process is finished'
     },
     autolink: {
-        type: 'boolean'
+        type: 'boolean',
+        description: 'Launches the application once the build process is finished'
     },
     build: {
-        type: 'boolean'
+        type: 'boolean',
+        description: 'Builds the application before launching it'
     },
     deploy: {
         type: 'boolean'
     },
     sln: {
-        type: 'string'
+        type: 'string',
+        description: 'Location of Visual Studio solution .sln file (wraps multiple projects)'
     },
     proj: {
-        type: 'string'
+        type: 'string',
+        description: 'Root project directory for your React Native Windows project (not Visual Studio project)'
     },
     appPath: {
-        type: 'string'
+        type: 'string',
+        description: 'Full path to windows plaform build directory'
     },
     msbuildprops: {
-        type: 'string'
+        type: 'string',
+        description: 'Comma separated props to pass to msbuild, eg: prop1=value1,prop2=value2'
     },
     buildLogDirectory: {
-        type: 'string'
+        type: 'string',
+        description: 'Full path to directory where builds logs should be stored, default - project path'
     },
     info: {
         type: 'boolean',

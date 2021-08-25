@@ -76,13 +76,16 @@ const DEFAULT_C = {
         },
         project: {
             appConfigBase: {},
+            dir: '',
             builds: {
                 dir: ''
             },
             platformTemplatesDirs: {
                 ios: ''
             },
-            assets: {},
+            assets: {
+                dir: ''
+            },
             platformTemplates: {},
             appConfigsDirs: [],
             appConfigsDirNames: [],

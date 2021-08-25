@@ -170,6 +170,8 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
         logToSummary('Nothing to clean');
         return Promise.resolve();
     }
+    console.log('IS WIN', isSystemWin);
+    console.log('WARNINGINGINGINGINGNIGNGINGING', answers);
 
     if (answers.modules) {
         await removeDirs(pathsToRemove);
@@ -181,7 +183,9 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
         await removeDirs(localFiles);
     }
     if (answers.cache) {
-        if (!isSystemWin) {
+        if (isSystemWin) {
+            clearWindowsCacheFiles();
+        } else {
             try {
                 await executeAsync(c, 'watchman watch-del-all');
             } catch (e) {
@@ -192,10 +196,9 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
                 c,
                 'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*'
             );
-        } else {
-            clearWindowsCacheFiles();
         }
     }
+    return true;
 };
 
 export default {
