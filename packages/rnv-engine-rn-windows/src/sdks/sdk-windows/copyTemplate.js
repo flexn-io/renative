@@ -7,7 +7,7 @@
  * @format
  */
 // DEPS
-import { Common, Constants, FileUtils, Logger } from 'rnv';
+import { Common, Constants, FileUtils, Logger, ProjectManager } from 'rnv';
 
 const chalk = require('chalk');
 const path = require('path');
@@ -27,6 +27,7 @@ const { getAppFolder, getAppTitle, getConfigProp, isMonorepo } = Common;
 const { WINDOWS } = Constants;
 const { copyFolderContentsRecursive } = FileUtils;
 const { logError } = Logger;
+const { copyAssetsFolder } = ProjectManager;
 
 // CONSTS
 const bundleDir = 'Bundle';
@@ -434,13 +435,18 @@ export async function copyProjectTemplateAndReplace(
             }
         }
     }
+
+    // Firstly attempt to copy assets specified in project, if user has none specified use default from renative
+    await copyAssetsFolder(c, c.platform, c.runtime.appId);
+
     // shared assets
     if (fs.existsSync(path.join(sharedPath, 'assets'))) {
-        await generator_common_1.copyAndReplaceAll(
+        await generator_common_1.copyAndReplaceWithChangedCallback(
             path.join(sharedPath, 'assets'),
             c.paths.project.dir,
             path.join(appFolder, c.runtime.appId, 'Assets'),
-            templateVars
+            templateVars,
+            options.overwrite
         );
     }
 
