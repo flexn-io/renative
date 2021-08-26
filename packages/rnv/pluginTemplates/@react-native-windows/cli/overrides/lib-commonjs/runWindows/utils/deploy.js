@@ -86,8 +86,8 @@ function getWindowsStoreAppUtils(options) {
 }
 function getAppxManifestPath(options, projectName) {
     const configuration = getBuildConfiguration(options);
-    const appxManifestGlob = `platformBuilds/${projectName}_windows/{*/bin/${options.arch}/${configuration},${configuration}/*,target/${options.arch}/${configuration},${options.arch}/${configuration}/*}/AppxManifest.xml`;
-    const globs = glob.sync(path.join(options.root, appxManifestGlob));
+    const appxManifestGlob = `${options.appPath.replace( /\\/g, '/' )}/{*/bin/${options.arch}/${configuration},${configuration}/*,target/${options.arch}/${configuration},${options.arch}/${configuration}/*}/AppxManifest.xml`;
+    const globs = glob.sync(appxManifestGlob);
     let appxPath;
     if (globs.length === 1 || !projectName) {
         appxPath = globs[0];
@@ -233,6 +233,7 @@ function startServerInNewWindow(options, verbose) {
                 resolve();
             })
                 .on('error', () => {
+                // Attempts to launch Metro server in a new CMD window and we don't want that 
                 // launchServer(options, verbose);
                 resolve();
             });

@@ -7,7 +7,7 @@
  * @format
  */
 // DEPS
-import { Common, Constants, FileUtils } from 'rnv';
+import { Common, Constants, FileUtils, Logger, ProjectManager } from 'rnv';
 
 const chalk = require('chalk');
 const path = require('path');
@@ -26,6 +26,8 @@ const generator_common_1 = require('./generator-common');
 const { getAppFolder, getAppTitle, getConfigProp, isMonorepo } = Common;
 const { WINDOWS } = Constants;
 const { copyFolderContentsRecursive } = FileUtils;
+const { logError } = Logger;
+const { copyAssetsFolder } = ProjectManager;
 
 // CONSTS
 const bundleDir = 'Bundle';
@@ -34,9 +36,10 @@ const bundleDir = 'Bundle';
 async function generateCertificate(
     srcPath,
     currentUser,
-    c
+    c,
+    options
 ) {
-    // console.log('Generating self-signed certificate...');
+    console.log('Generating self-signed certificate...');
     const appFolder = getAppFolder(c, true);
     if (os.platform() === 'win32') {
         try {
@@ -57,9 +60,9 @@ async function generateCertificate(
                 )}_TemporaryKey.pfx -Password $pwd"`,
                 { timeout }
             );
-            // console.log(
-            //     chalk.green('Self-signed certificate generated successfully.')
-            // );
+            console.log(
+                chalk.green('Self-signed certificate generated successfully.')
+            );
             return thumbprint;
         } catch (err) {
             console.log(chalk.yellow('Failed to generate Self-signed certificate.'));
@@ -71,14 +74,14 @@ async function generateCertificate(
     await generator_common_1.copyAndReplaceWithChangedCallback(
         path.join(srcPath, 'keys', 'MyApp_TemporaryKey.pfx'),
         c.paths.project.dir,
-        path.join(appFolder, c.runtime.appId, `${c.runtime.appId}_TemporaryKey.pfx`)
+        path.join(appFolder, c.runtime.appId, `${c.runtime.appId}_TemporaryKey.pfx`),
+        options.overwrite
     );
     return null;
 }
 
 
 // Existing high cyclomatic complexity
-// eslint-disable-next-line complexity
 export async function copyProjectTemplateAndReplace(
     c,
     options
@@ -86,9 +89,6 @@ export async function copyProjectTemplateAndReplace(
     if (!c.paths.project.dir) {
         throw new Error('Need a path to copy to');
     }
-
-    // React-native init only allows alphanumerics in project names, but other
-    // new project tools (like create-react-native-module) are less strict.
 
     const appTitle = getAppTitle(c, WINDOWS);
     const appFolder = getAppFolder(c, true);
@@ -105,16 +105,16 @@ export async function copyProjectTemplateAndReplace(
 
     generator_common_1.createDir(path.join(c.paths.project.dir, appFolder));
     generator_common_1.createDir(path.join(c.paths.project.dir, appFolder, c.runtime.appId));
-    // if (projectType === 'app') {
+
     generator_common_1.createDir(
         path.join(c.paths.project.dir, appFolder, c.runtime.appId, bundleDir)
     );
     generator_common_1.createDir(
         path.join(c.paths.project.dir, appFolder, c.runtime.appId, 'BundleBuilder')
     );
-    // }
 
-    const namespaceCpp = toCppNamespace(appTitle);
+
+    const namespaceCpp = toCppNamespace(c.runtime.appId);
     if (experimentalNuGetDependency) {
         console.log('Using experimental NuGet dependency.');
     }
@@ -134,6 +134,7 @@ export async function copyProjectTemplateAndReplace(
         RNWTemplatePath = path.join(path.dirname(require.resolve('react-native-windows/package.json', {
             paths: [c.paths.project.dir],
         })), 'template');
+        // TODO Add support for developing libs, not just apps using renative (RN Windows added this in 0.64 version)
         srcPath = path.join(RNWTemplatePath, `${language}-app`);
         sharedPath = path.join(RNWTemplatePath, 'shared-app');
     } else if (rnVersion >= 0.63) {
@@ -142,6 +143,8 @@ export async function copyProjectTemplateAndReplace(
         })), 'templates');
         srcPath = path.join(RNWTemplatePath, `${language}`);
         sharedPath = path.join(RNWTemplatePath, 'shared');
+    } else {
+        logError("ReNative's React Native Windows engine does not support version of React Native older than 0.63");
     }
 
     const projDir = 'proj';
@@ -159,7 +162,8 @@ export async function copyProjectTemplateAndReplace(
     const certificateThumbprint = await generateCertificate(
         srcPath,
         currentUser,
-        c
+        c,
+        options
     );
 
     const xamlNamespace = useWinUI3
@@ -228,7 +232,7 @@ export async function copyProjectTemplateAndReplace(
         useMustache: true,
         regExpPatternsToRemove: [],
         name: c.runtime.appId,
-        namespace: appTitle,
+        namespace: namespaceCpp,
         title: appTitle,
         namespaceCpp,
         languageIsCpp: language === 'cpp',
@@ -262,16 +266,9 @@ export async function copyProjectTemplateAndReplace(
         autolinkCppIncludes: '',
         autolinkCppPackageProviders:
       '\n    UNREFERENCED_PARAMETER(packageProviders);',
-        hasAdditionalAssets: fs.existsSync(RNIconsPluginPath)
+        hasAdditionalAssets: RNIconsPluginPath && fs.existsSync(RNIconsPluginPath)
     };
     const commonMappings = [
-        {
-            from: path.join(
-                RNWTemplatePath,
-                'metro.config.js'
-            ),
-            to: 'metro.config.rnwin.js'
-        },
         // app common mappings
         {
             from: path.join(RNWTemplatePath, 'index.windows.bundle'),
@@ -311,6 +308,22 @@ export async function copyProjectTemplateAndReplace(
         },
     ];
 
+    // Do not override metro inside the project if one already exists
+    if (!fs.existsSync(path.join(
+        c.paths.project.dir,
+        'metro.config.rnwin.js'
+    ))) {
+        commonMappings.push(
+            {
+                from: path.join(
+                    RNWTemplatePath,
+                    'metro.config.js'
+                ),
+                to: 'metro.config.rnwin.js'
+            }
+        );
+    }
+
     if (!fs.existsSync(path.join(
         appFolder,
         c.runtime.appId,
@@ -330,7 +343,8 @@ export async function copyProjectTemplateAndReplace(
             mapping.from,
             c.paths.project.dir,
             mapping.to,
-            templateVars
+            templateVars,
+            options.overwrite
         );
     }
     if (language === 'cs') {
@@ -351,7 +365,8 @@ export async function copyProjectTemplateAndReplace(
                 mapping.from,
                 c.paths.project.dir,
                 mapping.to,
-                templateVars
+                templateVars,
+                options.overwrite
             );
         }
     } else {
@@ -384,7 +399,8 @@ export async function copyProjectTemplateAndReplace(
                 mapping.from,
                 c.paths.project.dir,
                 mapping.to,
-                templateVars
+                templateVars,
+                options.overwrite
             );
         }
     }
@@ -413,29 +429,32 @@ export async function copyProjectTemplateAndReplace(
                     mapping.from,
                     c.paths.project.dir,
                     mapping.to,
-                    templateVars
+                    templateVars,
+                    options.overwrite
                 );
             }
         }
     }
+
+    // Firstly attempt to copy assets specified in project, if user has none specified use default from renative
+    await copyAssetsFolder(c, c.platform, c.runtime.appId);
+
     // shared assets
     if (fs.existsSync(path.join(sharedPath, 'assets'))) {
-        await generator_common_1.copyAndReplaceAll(
+        await generator_common_1.copyAndReplaceWithChangedCallback(
             path.join(sharedPath, 'assets'),
             c.paths.project.dir,
             path.join(appFolder, c.runtime.appId, 'Assets'),
-            templateVars
+            templateVars,
+            options.overwrite
         );
     }
 
-    const RNIconsGlyphmapsPluginPath = path.join(path.dirname(require.resolve('react-native-vector-icons/package.json', {
-        paths: [c.paths.project.dir],
-    })), 'glyphmaps');
+    // Non relative path to appFolder is needed
     const appFolderFull = getAppFolder(c);
-
     // react native vector icons fonts
     // Only copy the files if the plugin is added to the project, aka plugin dir exists
-    if (fs.existsSync(RNIconsPluginPath)) {
+    if (RNIconsPluginPath && fs.existsSync(RNIconsPluginPath)) {
         // Default React Native Windows Debug apps use this location
         copyFolderContentsRecursive(
             RNIconsPluginPath,
@@ -452,7 +471,11 @@ export async function copyProjectTemplateAndReplace(
         if (!fs.existsSync(glyphmapsDir)) {
             fs.mkdirSync(glyphmapsDir, { recursive: true });
         }
-        // TODO. Not sure if this is needed, but RN Windows does this in a regular proejct by default
+        // TODO. Not sure if this is needed, but RN Windows does this in a regular project by default
+        const RNIconsGlyphmapsPluginPath = path.join(path.dirname(require.resolve('react-native-vector-icons/package.json', {
+            paths: [c.paths.project.dir],
+        })), 'glyphmaps');
+
         copyFolderContentsRecursive(
             RNIconsGlyphmapsPluginPath,
             glyphmapsDir,

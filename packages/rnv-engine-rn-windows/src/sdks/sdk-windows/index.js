@@ -1,12 +1,11 @@
-import path from 'path';
 import fs from 'fs';
 import glob from 'glob';
-import { Common, Logger, EngineManager, Resolver, Exec, FileUtils } from 'rnv';
+import path from 'path';
+import { Common, EngineManager, Exec, FileUtils, Logger, Resolver } from 'rnv';
 // import cli from '@react-native-windows/cli';
 // import runWindowsCMD from '@react-native-windows/cli/lib-commonjs/runWindows/runWindows';
 // import msBuildTools from '@react-native-windows/cli/lib-commonjs/runWindows/utils/msbuildtools';
 // import info from '@react-native-windows/cli/lib-commonjs/runWindows/utils/info';
-
 import { copyProjectTemplateAndReplace } from './copyTemplate';
 
 // TODO Is there a way to convert these requires into proper imports
@@ -41,7 +40,7 @@ const defaultOptions = {
     nuGetTestVersion: null,
     reactNativeEngine: 'chakra',
     nuGetTestFeed: null,
-    overwrite: true,
+    overwrite: false,
     // Whether it's a release build
     release: false,
     // Where app entry .js file is
@@ -79,7 +78,7 @@ const defaultOptions = {
     sln: undefined,
     // Where the proj directory is
     proj: undefined,
-    // Where the build is placed
+    // Where the build is placed (default is full path to platformBuilds/projectName_windows)
     appPath: undefined,
     // Comma separated props to pass to msbuild, eg: prop1=value1,prop2=value2
     msbuildprops: undefined,
@@ -106,6 +105,7 @@ const getOptions = (c, injectedOptions = {}) => {
     const emulator = getConfigProp(c, c.platform, 'emulator', defaultOptions.emulator);
     const device = getConfigProp(c, c.platform, 'device', defaultOptions.device);
     const target = getConfigProp(c, c.platform, 'target', defaultOptions.target);
+    const overwrite = getConfigProp(c, c.platform, 'overwrite', defaultOptions.overwrite);
     const remoteDebugging = getConfigProp(c, c.platform, 'remoteDebugging', defaultOptions.remoteDebugging);
     const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
     const packager = getConfigProp(c, c.platform, 'packager', defaultOptions.packager);
@@ -156,6 +156,7 @@ const getOptions = (c, injectedOptions = {}) => {
         telemetry,
         devPort,
         language,
+        overwrite,
         bundleAssets,
         bundleIsDev,
         // Additional values passed to react native cli start function call
@@ -235,8 +236,10 @@ export const ruWindowsProject = async (c, injectedOptions) => {
 };
 
 const copyWindowsTemplateProject = async (c, injectedOptions = {}) => {
+    const options = getOptions(c, injectedOptions);
+
     const opts = {
-        ...defaultOptions,
+        ...options,
         ...injectedOptions
     };
 
@@ -264,6 +267,11 @@ function clearWindowsTemporaryFiles(c) {
 
     // Yarn/NPM cache
     child_process_1.spawn('cmd.exe', ['/C', 'npm cache clean --force & yarn cache clean --all'], opts);
+
+    // TODO Arbitrary 3s delay before continuing to make sure all files were removed is not ideal
+    // But without it bundler executes at the same time deletion occurs and therefore bundler
+    // fails to initiate
+    return new Promise(resolve => setTimeout(() => resolve(true), 3000));
 }
 
 const packageBundleForWindows = (c, isDev = false) => {

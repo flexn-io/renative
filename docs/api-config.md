@@ -1682,7 +1682,8 @@ List of engines available in this project
     "@rnv/engine-rn-web": "source:rnv",
     "@rnv/engine-rn-next": "source:rnv",
     "@rnv/engine-lightning": "source:rnv",
-    "@rnv/engine-rn-electron": "source:rnv"
+    "@rnv/engine-rn-electron": "source:rnv",
+    "@rnv/engine-rn-windows": "source:rnv"
   }
 }
 ```
@@ -37420,13 +37421,79 @@ Default width of electron app
 
 
 
-#### platforms.windows.appleId
+#### platforms.windows.additionalMetroOptions
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `appleId` | `string` |  | `platforms.windows.appleId` |
+| `additionalMetroOptions` | `object` |  | `platforms.windows.additionalMetroOptions` |
 
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.appPath
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appPath` | `string` |  | `platforms.windows.appPath` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.arch
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `arch` | `string` |  | `platforms.windows.arch` |
+
+Specification of targeted architecture
+
+**examples**
+
+
+```json
+{
+  "arch": "x86"
+}
+```
+
+
+
+```json
+{
+  "arch": "x64"
+}
+```
+
+
+
+```json
+{
+  "arch": "ARM"
+}
+```
+
+
+
+```json
+{
+  "arch": "ARM64"
+}
+```
 
 
 
@@ -37442,6 +37509,22 @@ Default width of electron app
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `author` | `object,string` |  | `platforms.windows.author` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.autolink
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `autolink` | `boolean` |  | `platforms.windows.autolink` |
 
 
 
@@ -37477,6 +37560,38 @@ Defines root view backgroundColor for all platforms in HEX format
   "backgroundColor": "#222222"
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.build
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build` | `boolean` |  | `platforms.windows.build` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildLogDirectory
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildLogDirectory` | `string` |  | `platforms.windows.buildLogDirectory` |
+
 
 
 
@@ -37593,13 +37708,79 @@ Default width of electron app
 
 
 
-#### platforms.windows.buildSchemes.[object].appleId
+#### platforms.windows.buildSchemes.[object].additionalMetroOptions
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `appleId` | `string` |  | `platforms.windows.buildSchemes.[object].appleId` |
+| `additionalMetroOptions` | `object` |  | `platforms.windows.buildSchemes.[object].additionalMetroOptions` |
 
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].appPath
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appPath` | `string` |  | `platforms.windows.buildSchemes.[object].appPath` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].arch
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `arch` | `string` |  | `platforms.windows.buildSchemes.[object].arch` |
+
+Specification of targeted architecture
+
+**examples**
+
+
+```json
+{
+  "arch": "x86"
+}
+```
+
+
+
+```json
+{
+  "arch": "x64"
+}
+```
+
+
+
+```json
+{
+  "arch": "ARM"
+}
+```
+
+
+
+```json
+{
+  "arch": "ARM64"
+}
+```
 
 
 
@@ -37615,6 +37796,22 @@ Default width of electron app
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `author` | `object,string` |  | `platforms.windows.buildSchemes.[object].author` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].autolink
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `autolink` | `boolean` |  | `platforms.windows.buildSchemes.[object].autolink` |
 
 
 
@@ -37650,6 +37847,54 @@ Defines root view backgroundColor for all platforms in HEX format
   "backgroundColor": "#222222"
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].build
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build` | `boolean` |  | `platforms.windows.buildSchemes.[object].build` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].buildLogDirectory
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildLogDirectory` | `string` |  | `platforms.windows.buildSchemes.[object].buildLogDirectory` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].bundle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundle` | `boolean` |  | `platforms.windows.buildSchemes.[object].bundle` |
+
 
 
 
@@ -37696,29 +37941,13 @@ If set to `true` compiled js bundle file will generated. this is needed if you w
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `deploy` | `object` |  | `platforms.windows.buildSchemes.[object].deploy` |
+| `deploy` | `boolean` |  | `platforms.windows.buildSchemes.[object].deploy` |
 
 
 
 
 
 ---
-
-
-
-#### platforms.windows.buildSchemes.[object].deploy.type
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `type` | `string` |  | `platforms.windows.buildSchemes.[object].deploy.type` |
-
-
-
-
-
----
-
 
 
 
@@ -37740,6 +37969,54 @@ General description of your app. This prop will be injected to actual projects w
   "description": "This app does awesome things"
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].devPort
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devPort` | `string` |  | `platforms.windows.buildSchemes.[object].devPort` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].device
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `device` | `boolean` |  | `platforms.windows.buildSchemes.[object].device` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].directDebugging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `directDebugging` | `boolean` |  | `platforms.windows.buildSchemes.[object].directDebugging` |
+
 
 
 
@@ -37782,6 +38059,22 @@ Allows you to configure electron app as per https://www.electron.build/
   }
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].emulator
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `emulator` | `boolean` |  | `platforms.windows.buildSchemes.[object].emulator` |
+
 
 
 
@@ -37855,22 +38148,6 @@ If set to `true` dedicated source map file will be generated alongside of compil
 
 
 
-#### platforms.windows.buildSchemes.[object].environment
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `environment` | `string` |  | `platforms.windows.buildSchemes.[object].environment` |
-
-
-
-
-
----
-
-
-
-
 #### platforms.windows.buildSchemes.[object].excludedPlugins
 
 
@@ -37903,6 +38180,22 @@ NOTE: excludedPlugins is evaluated after includedPlugins
   ]
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].experimentalNuGetDependency
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `experimentalNuGetDependency` | `boolean` |  | `platforms.windows.buildSchemes.[object].experimentalNuGetDependency` |
+
 
 
 
@@ -38120,12 +38413,172 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.windows.buildSchemes.[object].info
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `info` | `boolean` |  | `platforms.windows.buildSchemes.[object].info` |
+
+Print information about the build machine to console
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].language
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `language` | `string` |  | `platforms.windows.buildSchemes.[object].language` |
+
+Specify generated project language: cpp for C++ or cs for C#
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].launch
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `launch` | `boolean` |  | `platforms.windows.buildSchemes.[object].launch` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.buildSchemes.[object].license
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `license` | `string` |  | `platforms.windows.buildSchemes.[object].license` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].logging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `logging` | `boolean` |  | `platforms.windows.buildSchemes.[object].logging` |
+
+Logging all the build proccesses to console
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].msbuildprops
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `msbuildprops` | `string` |  | `platforms.windows.buildSchemes.[object].msbuildprops` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].nuGetTestFeed
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `nuGetTestFeed` | `string` |  | `platforms.windows.buildSchemes.[object].nuGetTestFeed` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].nuGetTestVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `nuGetTestVersion` | `string` |  | `platforms.windows.buildSchemes.[object].nuGetTestVersion` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].overwrite
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `overwrite` | `boolean` |  | `platforms.windows.buildSchemes.[object].overwrite` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].packageExtension
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `packageExtension` | `string` |  | `platforms.windows.buildSchemes.[object].packageExtension` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].packager
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `packager` | `boolean` |  | `platforms.windows.buildSchemes.[object].packager` |
 
 
 
@@ -38144,6 +38597,86 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | `permissions` | `array` |  | `platforms.windows.buildSchemes.[object].permissions` |
 
 > DEPRECATED in favor of includedPermissions
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].proj
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `proj` | `string` |  | `platforms.windows.buildSchemes.[object].proj` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` |  | `platforms.windows.buildSchemes.[object].reactNativeEngine` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].release
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `release` | `boolean` |  | `platforms.windows.buildSchemes.[object].release` |
+
+Enables full packaging of the app for release
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].remoteDebugging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `remoteDebugging` | `boolean` |  | `platforms.windows.buildSchemes.[object].remoteDebugging` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].root
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `root` | `string` |  | `platforms.windows.buildSchemes.[object].root` |
+
+Project root folder location (not the app itself, which is in platformBuilds)
 
 
 
@@ -38180,6 +38713,38 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+#### platforms.windows.buildSchemes.[object].singleproc
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `singleproc` | `boolean` |  | `platforms.windows.buildSchemes.[object].singleproc` |
+
+Opt out of multi-proc builds (only available in 0.64 and newer versions of react-native-windows)
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].sln
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `sln` | `string` |  | `platforms.windows.buildSchemes.[object].sln` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.buildSchemes.[object].splashScreen
 
 
@@ -38188,6 +38753,38 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 | `splashScreen` | `boolean` |  | `platforms.windows.buildSchemes.[object].splashScreen` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].target
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `target` | `string` |  | `platforms.windows.buildSchemes.[object].target` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].telemetry
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `telemetry` | `boolean` |  | `platforms.windows.buildSchemes.[object].telemetry` |
+
+Send analytics data of @react-native-windows/cli usage to Microsoft
 
 
 
@@ -38247,6 +38844,22 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.buildSchemes.[object].useWinUI3
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `useWinUI3` | `boolean` |  | `platforms.windows.buildSchemes.[object].useWinUI3` |
+
 
 
 
@@ -38403,6 +39016,22 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+#### platforms.windows.bundle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundle` | `boolean` |  | `platforms.windows.bundle` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.bundleAssets
 
 
@@ -38440,29 +39069,13 @@ If set to `true` compiled js bundle file will generated. this is needed if you w
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
-| `deploy` | `object` |  | `platforms.windows.deploy` |
+| `deploy` | `boolean` |  | `platforms.windows.deploy` |
 
 
 
 
 
 ---
-
-
-
-#### platforms.windows.deploy.type
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `type` | `string` |  | `platforms.windows.deploy.type` |
-
-
-
-
-
----
-
 
 
 
@@ -38484,6 +39097,54 @@ General description of your app. This prop will be injected to actual projects w
   "description": "This app does awesome things"
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.devPort
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devPort` | `string` |  | `platforms.windows.devPort` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.device
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `device` | `boolean` |  | `platforms.windows.device` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.directDebugging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `directDebugging` | `boolean` |  | `platforms.windows.directDebugging` |
+
 
 
 
@@ -38526,6 +39187,22 @@ Allows you to configure electron app as per https://www.electron.build/
   }
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.emulator
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `emulator` | `boolean` |  | `platforms.windows.emulator` |
+
 
 
 
@@ -38583,22 +39260,6 @@ If set to `true` dedicated source map file will be generated alongside of compil
 
 
 
-#### platforms.windows.environment
-
-
-| Prop Name | Type | Default Value | Path |
-| :----- | :----- | :---- | :---- |
-| `environment` | `string` |  | `platforms.windows.environment` |
-
-
-
-
-
----
-
-
-
-
 #### platforms.windows.excludedPlugins
 
 
@@ -38631,6 +39292,22 @@ NOTE: excludedPlugins is evaluated after includedPlugins
   ]
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.experimentalNuGetDependency
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `experimentalNuGetDependency` | `boolean` |  | `platforms.windows.experimentalNuGetDependency` |
+
 
 
 
@@ -38848,12 +39525,172 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 
 
 
+#### platforms.windows.info
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `info` | `boolean` |  | `platforms.windows.info` |
+
+Print information about the build machine to console
+
+
+
+---
+
+
+
+
+#### platforms.windows.language
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `language` | `string` |  | `platforms.windows.language` |
+
+Specify generated project language: cpp for C++ or cs for C#
+
+
+
+---
+
+
+
+
+#### platforms.windows.launch
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `launch` | `boolean` |  | `platforms.windows.launch` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.license
 
 
 | Prop Name | Type | Default Value | Path |
 | :----- | :----- | :---- | :---- |
 | `license` | `string` |  | `platforms.windows.license` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.logging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `logging` | `boolean` |  | `platforms.windows.logging` |
+
+Logging all the build proccesses to console
+
+
+
+---
+
+
+
+
+#### platforms.windows.msbuildprops
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `msbuildprops` | `string` |  | `platforms.windows.msbuildprops` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.nuGetTestFeed
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `nuGetTestFeed` | `string` |  | `platforms.windows.nuGetTestFeed` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.nuGetTestVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `nuGetTestVersion` | `string` |  | `platforms.windows.nuGetTestVersion` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.overwrite
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `overwrite` | `boolean` |  | `platforms.windows.overwrite` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.packageExtension
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `packageExtension` | `string` |  | `platforms.windows.packageExtension` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.packager
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `packager` | `boolean` |  | `platforms.windows.packager` |
 
 
 
@@ -38872,6 +39709,86 @@ NOTE: includedPlugins is evaluated before excludedPlugins
 | `permissions` | `array` |  | `platforms.windows.permissions` |
 
 > DEPRECATED in favor of includedPermissions
+
+
+
+---
+
+
+
+
+#### platforms.windows.proj
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `proj` | `string` |  | `platforms.windows.proj` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` |  | `platforms.windows.reactNativeEngine` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.release
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `release` | `boolean` |  | `platforms.windows.release` |
+
+Enables full packaging of the app for release
+
+
+
+---
+
+
+
+
+#### platforms.windows.remoteDebugging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `remoteDebugging` | `boolean` |  | `platforms.windows.remoteDebugging` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.root
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `root` | `string` |  | `platforms.windows.root` |
+
+Project root folder location (not the app itself, which is in platformBuilds)
 
 
 
@@ -38908,6 +39825,38 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 
 
 
+#### platforms.windows.singleproc
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `singleproc` | `boolean` |  | `platforms.windows.singleproc` |
+
+Opt out of multi-proc builds (only available in 0.64 and newer versions of react-native-windows)
+
+
+
+---
+
+
+
+
+#### platforms.windows.sln
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `sln` | `string` |  | `platforms.windows.sln` |
+
+
+
+
+
+---
+
+
+
+
 #### platforms.windows.splashScreen
 
 
@@ -38916,6 +39865,38 @@ This object will be automatically injected into `./platfromAssets/renative.runti
 | `splashScreen` | `boolean` |  | `platforms.windows.splashScreen` |
 
 
+
+
+
+---
+
+
+
+
+#### platforms.windows.target
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `target` | `string` |  | `platforms.windows.target` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.telemetry
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `telemetry` | `boolean` |  | `platforms.windows.telemetry` |
+
+Send analytics data of @react-native-windows/cli usage to Microsoft
 
 
 
@@ -38975,6 +39956,22 @@ Title of your app will be used to create title of the binary. ie App title of in
   "title": "Awesome App"
 }
 ```
+
+
+
+
+---
+
+
+
+
+#### platforms.windows.useWinUI3
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `useWinUI3` | `boolean` |  | `platforms.windows.useWinUI3` |
+
 
 
 

@@ -114,7 +114,7 @@ async function copyAndReplace(srcPath, destPath, replacements, contentChangedCal
         // Text file
         const srcPermissions = fs.statSync(srcPath).mode;
         const content = resolveContents(srcPath, replacements);
-        let shouldOverwrite = 'overwrite';
+        let shouldOverwrite = 'keepOriginal';
         if (contentChangedCallback) {
             // Check if contents changed and ask to overwrite
             let contentChanged = 'identical';
@@ -174,11 +174,28 @@ function createDir(destPath) {
         fs.mkdirSync(destPath);
     }
 }
+
+async function upgradeFileContentChangedCallback(absoluteSrcFilePath, relativeDestPath, contentChanged) {
+    if (contentChanged === 'new') {
+        return 'overwrite';
+    }
+    if (contentChanged === 'changed') {
+        return 'keep';
+    }
+    if (contentChanged === 'identical') {
+        return 'keep';
+    }
+    throw new Error(`Unknown file changed state: ${relativeDestPath}, ${contentChanged}`);
+}
+
 exports.createDir = createDir;
-async function copyAndReplaceWithChangedCallback(srcPath, destRoot, relativeDestPath, replacements = {}) {
-    const contentChangedCallback = (_, contentChanged) => alwaysOverwriteContentChangedCallback(relativeDestPath, contentChanged);
+async function copyAndReplaceWithChangedCallback(srcPath, destRoot, relativeDestPath, replacements = {}, alwaysOverwrite) {
+    const contentChangedCallback = alwaysOverwrite
+        ? (_, contentChanged) => alwaysOverwriteContentChangedCallback(srcPath, relativeDestPath, contentChanged)
+        : (_, contentChanged) => upgradeFileContentChangedCallback(srcPath, relativeDestPath, contentChanged);
     await copyAndReplace(srcPath, path.join(destRoot, relativeDestPath), replacements, contentChangedCallback);
 }
+
 exports.copyAndReplaceWithChangedCallback = copyAndReplaceWithChangedCallback;
 async function copyAndReplaceAll(srcPath, destPath, relativeDestDir, replacements) {
     for (const absoluteSrcFilePath of walk(srcPath)) {

@@ -3320,11 +3320,27 @@ rnv run -p android
 - feat(Lightning): override hardcoded served build folder path in lng package
 - fix(Lightning): enable relative path for build folder
 - chore: bump lightning sdk package and add cli
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
 ## v0.32.0-feat-winbuilds-0 (2021-8-6)
 
 ### Fixed
 
 - fix(Windows): Fixing android release builds execution on windows
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
 ## v0.32.0-feat-tvos-3 (2021-8-4)
 
 ### Fixed
@@ -3345,6 +3361,14 @@ rnv run -p android
 - fix(iOS:RN Engine): After version bump up for react-native iOS build failing fix
 - improvement(RN Engine tvOS): Added tvOS engine to templates and other places where other engines are specified
 - engine tvos wip
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
 ## v0.32.0-feat-rnmacos-0 (2021-7-22)
 
 ### Fixed
@@ -3412,6 +3436,50 @@ rnv run -p android
 - improvement (rn-macos engine): add `start` command
 - chore: remove ios target from rn-macos engine xcode project
 - feat (macos engine): initial engine setup, `configure` command
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.32.0-feat-rnwin-0 (2021-8-24)
+
+### Fixed
+
+- fix(RN Windows): Fixes for RN Windows engine copied over from engines merged branch
+- refactor(RN): Downgrade react native version to the maximum supported one by the tvos engine
+- fix(Export): Fix some issues with exporting a package
+- improve(Export): Add install and sign scripts as part of of export function for now
+- feat(Windows Export): Added export command logic for RN Windows engine
+- feat(App Title): getAppTitle from renative is now used to set the title of the application
+- feat(App Icons): ReNative icons added for RN Windows applications as the default icons
+- fix(Icons): Fixed linking for icon files
+- fix(Plugins): Update navigation and reanimated plugins to versions, which support react native windows
+- fix(Windows Builds): Fixed renative build cli function for Windows
+- fix(Reanimated plugin): Bump up version for the plugin as it causes a crash within react navigation
+- fix(Windows Release): Cleaned up cache clearing command
+- fix(Windows Release): Added additional cache clearing which seems to have fixed release builds via CLI
+- fix(Windows Build): Fixing debug builds via CLI
+- improvement(Windows Clean): Added temporary files cleaning to the build process
+- fix(Windows Run): Fixing -r flag run process hang on Windows
+- fix(Windows Navigation): Fix issues with react navigation
+- fix(Windows Metro): Fix bundle placing
+- fix(Windows Metro): Fix the issue with packager running in a separate window
+- fix(Windows Metro): Fix custom server port config via renative for app to run
+- improve(Run): Updated Windows SDK to allow for more configuration via renative.json
+- fix(Run): Windows application launches and runs using rnv
+- fix(Run): Initial issues fixing for metro, that prevent bundler from starting
+- fix(Run): Windows builds the project successfully with rnv
+- fix(Configure): Don't override the metro config by default
+- feat(Configure): Initial version of configure command for RN WIndows Engine
+- temp(RN Windows): Rewriting configure from RN Windows CLI
+- improvement(Configure): Working on Windows configure task
+- improvement(Windows Engine): Copied the generated logic into templates and prepared for initial setup
+- feat(RNW): Added packages needed for react native windows
+- 0.32.0-alpha.45
+- optimise project bootstrap
 - 0.32.0-alpha.44
 - app config merges
 - scoped plugin builds merges
@@ -3683,6 +3751,44 @@ rnv run -p android
 - improvement (rn-macos engine): add `start` command
 - chore: remove ios target from rn-macos engine xcode project
 - feat (macos engine): initial engine setup, `configure` command
+## v0.32.0-feat-rnwin-1 (2021-8-24)
+
+### Fixed
+
+- fix(RN Windows): Fix documentation of RN Windows engine
+- 0.32.0-feat-rnwin-0
+- fix(RN Windows): Fixes for RN Windows engine copied over from engines merged branch
+- refactor(RN): Downgrade react native version to the maximum supported one by the tvos engine
+- fix(Export): Fix some issues with exporting a package
+- improve(Export): Add install and sign scripts as part of of export function for now
+- feat(Windows Export): Added export command logic for RN Windows engine
+- feat(App Title): getAppTitle from renative is now used to set the title of the application
+- feat(App Icons): ReNative icons added for RN Windows applications as the default icons
+- fix(Icons): Fixed linking for icon files
+- fix(Plugins): Update navigation and reanimated plugins to versions, which support react native windows
+- fix(Windows Builds): Fixed renative build cli function for Windows
+- fix(Reanimated plugin): Bump up version for the plugin as it causes a crash within react navigation
+- fix(Windows Release): Cleaned up cache clearing command
+- fix(Windows Release): Added additional cache clearing which seems to have fixed release builds via CLI
+- fix(Windows Build): Fixing debug builds via CLI
+- improvement(Windows Clean): Added temporary files cleaning to the build process
+- fix(Windows Run): Fixing -r flag run process hang on Windows
+- fix(Windows Navigation): Fix issues with react navigation
+- fix(Windows Metro): Fix bundle placing
+- fix(Windows Metro): Fix the issue with packager running in a separate window
+- fix(Windows Metro): Fix custom server port config via renative for app to run
+- improve(Run): Updated Windows SDK to allow for more configuration via renative.json
+- fix(Run): Windows application launches and runs using rnv
+- fix(Run): Initial issues fixing for metro, that prevent bundler from starting
+- fix(Run): Windows builds the project successfully with rnv
+- fix(Configure): Don't override the metro config by default
+- feat(Configure): Initial version of configure command for RN WIndows Engine
+- temp(RN Windows): Rewriting configure from RN Windows CLI
+- improvement(Configure): Working on Windows configure task
+- improvement(Windows Engine): Copied the generated logic into templates and prepared for initial setup
+- feat(RNW): Added packages needed for react native windows
+- 0.32.0-alpha.45
+- optimise project bootstrap
 - 0.32.0-alpha.44
 - app config merges
 - scoped plugin builds merges
@@ -3748,6 +3854,55 @@ rnv run -p android
 - improvement (rn-macos engine): add `start` command
 - chore: remove ios target from rn-macos engine xcode project
 - feat (macos engine): initial engine setup, `configure` command
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.32.0-feat-rnwin-2 (2021-8-24)
+
+### Fixed
+
+- fix(RN Windows): Fix existing metro config in project getting overriden
+- fix(RN Windows): Fix overrides of the default project files
+- 0.32.0-feat-rnwin-1
+- fix(RN Windows): Fix documentation of RN Windows engine
+- 0.32.0-feat-rnwin-0
+- fix(RN Windows): Fixes for RN Windows engine copied over from engines merged branch
+- refactor(RN): Downgrade react native version to the maximum supported one by the tvos engine
+- fix(Export): Fix some issues with exporting a package
+- improve(Export): Add install and sign scripts as part of of export function for now
+- feat(Windows Export): Added export command logic for RN Windows engine
+- feat(App Title): getAppTitle from renative is now used to set the title of the application
+- feat(App Icons): ReNative icons added for RN Windows applications as the default icons
+- fix(Icons): Fixed linking for icon files
+- fix(Plugins): Update navigation and reanimated plugins to versions, which support react native windows
+- fix(Windows Builds): Fixed renative build cli function for Windows
+- fix(Reanimated plugin): Bump up version for the plugin as it causes a crash within react navigation
+- fix(Windows Release): Cleaned up cache clearing command
+- fix(Windows Release): Added additional cache clearing which seems to have fixed release builds via CLI
+- fix(Windows Build): Fixing debug builds via CLI
+- improvement(Windows Clean): Added temporary files cleaning to the build process
+- fix(Windows Run): Fixing -r flag run process hang on Windows
+- fix(Windows Navigation): Fix issues with react navigation
+- fix(Windows Metro): Fix bundle placing
+- fix(Windows Metro): Fix the issue with packager running in a separate window
+- fix(Windows Metro): Fix custom server port config via renative for app to run
+- improve(Run): Updated Windows SDK to allow for more configuration via renative.json
+- fix(Run): Windows application launches and runs using rnv
+- fix(Run): Initial issues fixing for metro, that prevent bundler from starting
+- fix(Run): Windows builds the project successfully with rnv
+- fix(Configure): Don't override the metro config by default
+- feat(Configure): Initial version of configure command for RN WIndows Engine
+- temp(RN Windows): Rewriting configure from RN Windows CLI
+- improvement(Configure): Working on Windows configure task
+- improvement(Windows Engine): Copied the generated logic into templates and prepared for initial setup
+- feat(RNW): Added packages needed for react native windows
+- 0.32.0-alpha.45
+- optimise project bootstrap
 - 0.32.0-alpha.44
 - app config merges
 - scoped plugin builds merges
@@ -3816,6 +3971,58 @@ rnv run -p android
 - improvement (rn-macos engine): add `start` command
 - chore: remove ios target from rn-macos engine xcode project
 - feat (macos engine): initial engine setup, `configure` command
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.32.0-feat-rnwin-3 (2021-8-24)
+
+### Fixed
+
+- Merge branch 'feat/react-native-windows' of github.com:pavjacko/renative into feat/react-native-windows
+- fix(RN Windows): Fix namespace being assigned a title with spaces in between
+- 0.32.0-feat-rnwin-2
+- fix(RN Windows): Fix existing metro config in project getting overriden
+- fix(RN Windows): Fix overrides of the default project files
+- 0.32.0-feat-rnwin-1
+- fix(RN Windows): Fix documentation of RN Windows engine
+- 0.32.0-feat-rnwin-0
+- fix(RN Windows): Fixes for RN Windows engine copied over from engines merged branch
+- refactor(RN): Downgrade react native version to the maximum supported one by the tvos engine
+- fix(Export): Fix some issues with exporting a package
+- improve(Export): Add install and sign scripts as part of of export function for now
+- feat(Windows Export): Added export command logic for RN Windows engine
+- feat(App Title): getAppTitle from renative is now used to set the title of the application
+- feat(App Icons): ReNative icons added for RN Windows applications as the default icons
+- fix(Icons): Fixed linking for icon files
+- fix(Plugins): Update navigation and reanimated plugins to versions, which support react native windows
+- fix(Windows Builds): Fixed renative build cli function for Windows
+- fix(Reanimated plugin): Bump up version for the plugin as it causes a crash within react navigation
+- fix(Windows Release): Cleaned up cache clearing command
+- fix(Windows Release): Added additional cache clearing which seems to have fixed release builds via CLI
+- fix(Windows Build): Fixing debug builds via CLI
+- improvement(Windows Clean): Added temporary files cleaning to the build process
+- fix(Windows Run): Fixing -r flag run process hang on Windows
+- fix(Windows Navigation): Fix issues with react navigation
+- fix(Windows Metro): Fix bundle placing
+- fix(Windows Metro): Fix the issue with packager running in a separate window
+- fix(Windows Metro): Fix custom server port config via renative for app to run
+- improve(Run): Updated Windows SDK to allow for more configuration via renative.json
+- fix(Run): Windows application launches and runs using rnv
+- fix(Run): Initial issues fixing for metro, that prevent bundler from starting
+- fix(Run): Windows builds the project successfully with rnv
+- fix(Configure): Don't override the metro config by default
+- feat(Configure): Initial version of configure command for RN WIndows Engine
+- temp(RN Windows): Rewriting configure from RN Windows CLI
+- improvement(Configure): Working on Windows configure task
+- improvement(Windows Engine): Copied the generated logic into templates and prepared for initial setup
+- feat(RNW): Added packages needed for react native windows
+- 0.32.0-alpha.45
+- optimise project bootstrap
 - 0.32.0-alpha.44
 - app config merges
 - scoped plugin builds merges
@@ -3892,6 +4099,62 @@ rnv run -p android
 - improvement (rn-macos engine): add `start` command
 - chore: remove ios target from rn-macos engine xcode project
 - feat (macos engine): initial engine setup, `configure` command
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.32.0-feat-rnwin-4 (2021-8-25)
+
+### Fixed
+
+- fix(Logs): Remove console.logs accidentally added by the previous commit
+- improvement(Docs): Updated documentation for configuration properties accepted by RN Windows
+- fix(clean): Fix rnv clean cache command on Windows machines
+- 0.32.0-feat-rnwin-3
+- Merge branch 'feat/react-native-windows' of github.com:pavjacko/renative into feat/react-native-windows
+- fix(RN Windows): Fix namespace being assigned a title with spaces in between
+- 0.32.0-feat-rnwin-2
+- fix(RN Windows): Fix existing metro config in project getting overriden
+- fix(RN Windows): Fix overrides of the default project files
+- 0.32.0-feat-rnwin-1
+- fix(RN Windows): Fix documentation of RN Windows engine
+- 0.32.0-feat-rnwin-0
+- fix(RN Windows): Fixes for RN Windows engine copied over from engines merged branch
+- refactor(RN): Downgrade react native version to the maximum supported one by the tvos engine
+- fix(Export): Fix some issues with exporting a package
+- improve(Export): Add install and sign scripts as part of of export function for now
+- feat(Windows Export): Added export command logic for RN Windows engine
+- feat(App Title): getAppTitle from renative is now used to set the title of the application
+- feat(App Icons): ReNative icons added for RN Windows applications as the default icons
+- fix(Icons): Fixed linking for icon files
+- fix(Plugins): Update navigation and reanimated plugins to versions, which support react native windows
+- fix(Windows Builds): Fixed renative build cli function for Windows
+- fix(Reanimated plugin): Bump up version for the plugin as it causes a crash within react navigation
+- fix(Windows Release): Cleaned up cache clearing command
+- fix(Windows Release): Added additional cache clearing which seems to have fixed release builds via CLI
+- fix(Windows Build): Fixing debug builds via CLI
+- improvement(Windows Clean): Added temporary files cleaning to the build process
+- fix(Windows Run): Fixing -r flag run process hang on Windows
+- fix(Windows Navigation): Fix issues with react navigation
+- fix(Windows Metro): Fix bundle placing
+- fix(Windows Metro): Fix the issue with packager running in a separate window
+- fix(Windows Metro): Fix custom server port config via renative for app to run
+- improve(Run): Updated Windows SDK to allow for more configuration via renative.json
+- fix(Run): Windows application launches and runs using rnv
+- fix(Run): Initial issues fixing for metro, that prevent bundler from starting
+- fix(Run): Windows builds the project successfully with rnv
+- fix(Configure): Don't override the metro config by default
+- feat(Configure): Initial version of configure command for RN WIndows Engine
+- temp(RN Windows): Rewriting configure from RN Windows CLI
+- improvement(Configure): Working on Windows configure task
+- improvement(Windows Engine): Copied the generated logic into templates and prepared for initial setup
+- feat(RNW): Added packages needed for react native windows
+- 0.32.0-alpha.45
+- optimise project bootstrap
 - 0.32.0-alpha.44
 - app config merges
 - scoped plugin builds merges
