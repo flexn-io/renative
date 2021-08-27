@@ -118,7 +118,7 @@ const getOptions = (c, injectedOptions = {}) => {
     const proj = getConfigProp(c, c.platform, 'proj', c.paths.project.dir);
     const appPath = getConfigProp(c, c.platform, 'appPath', getAppFolder(c));
     const msbuildprops = getConfigProp(c, c.platform, 'msbuildprops', defaultOptions.msbuildprops);
-    const buildLogDirectory = getConfigProp(c, c.platform, 'buildLogDirectory', defaultOptions.buildLogDirectory);
+    const buildLogDirectory = getConfigProp(c, c.platform, 'buildLogDirectory', getAppFolder(c));
     const info = getConfigProp(c, c.platform, 'info', defaultOptions.info);
     const directDebugging = getConfigProp(c, c.platform, 'directDebugging', defaultOptions.directDebugging);
     const telemetry = getConfigProp(c, c.platform, 'telemetry', defaultOptions.telemetry);
@@ -429,7 +429,7 @@ const packageWindowsApp = async (c, injectedOptions) => {
         // await signWindowsApp(c, script, windowsStoreAppUtils);
         await installWindowsApp(c, script, windowsStoreAppUtils);
     } catch (e) {
-        console.error('App packaging failed with error: ', e);
+        logError('App packaging failed with error: ', e);
     }
 };
 

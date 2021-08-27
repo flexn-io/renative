@@ -8,10 +8,14 @@
 using namespace winrt::{{ namespaceCpp }};	
 using namespace winrt::{{ namespaceCpp }}::implementation;
 using namespace winrt;
+using namespace Windows::Foundation;
 using namespace {{ xamlNamespaceCpp }};
 using namespace {{ xamlNamespaceCpp }}::Controls;
 using namespace {{ xamlNamespaceCpp }}::Navigation;
 using namespace Windows::ApplicationModel;
+// After the other namespace imports
+using namespace winrt::Windows::UI::ViewManagement;
+
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of
 /// authored code executed, and as such is the logical equivalent of main() or
@@ -42,6 +46,9 @@ App::App() noexcept
     PackageProviders().Append(make<ReactPackageProvider>()); // Includes all modules in this project
 
     InitializeComponent();
+
+    // In the constructor, AFTER the InitializeComponent() call
+    Application::Current().RequiresPointerMode(ApplicationRequiresPointerMode::WhenRequested);
 }
 
 /// <summary>
@@ -54,7 +61,11 @@ void App::OnLaunched(activation::LaunchActivatedEventArgs const& e)
     super::OnLaunched(e);
 
     Frame rootFrame = Window::Current().Content().as<Frame>();
-    rootFrame.Navigate(xaml_typename<{{ namespaceCpp }}::MainPage>(), box_value(e.Arguments()));	
+    rootFrame.Navigate(xaml_typename<{{ namespaceCpp }}::MainPage>(), box_value(e.Arguments()));
+
+    // In the OnLaunched override after the call to super::OnLaunched(e);	
+    ApplicationViewScaling::TrySetDisableLayoutScaling(true);
+    ApplicationView::GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode::UseCoreWindow);
 
 }
 

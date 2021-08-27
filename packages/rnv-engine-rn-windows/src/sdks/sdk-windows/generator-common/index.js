@@ -177,18 +177,22 @@ function createDir(destPath) {
 
 async function upgradeFileContentChangedCallback(absoluteSrcFilePath, relativeDestPath, contentChanged) {
     if (contentChanged === 'new') {
+        // console.log(`${chalk.bold('changed')} ${relativeDestPath} ${chalk.yellow('[overwriting]')}`);
         return 'overwrite';
     }
     if (contentChanged === 'changed') {
+        // console.log(`${chalk.bold('changed')} ${relativeDestPath} ${chalk.yellow('[keep]')}`);
         return 'keep';
     }
     if (contentChanged === 'identical') {
+        // console.log(`${chalk.bold('identical')} ${relativeDestPath} ${chalk.yellow('[keep]')}`);
         return 'keep';
     }
     throw new Error(`Unknown file changed state: ${relativeDestPath}, ${contentChanged}`);
 }
 
 exports.createDir = createDir;
+// eslint-disable-next-line max-len
 async function copyAndReplaceWithChangedCallback(srcPath, destRoot, relativeDestPath, replacements = {}, alwaysOverwrite) {
     const contentChangedCallback = alwaysOverwrite
         ? (_, contentChanged) => alwaysOverwriteContentChangedCallback(srcPath, relativeDestPath, contentChanged)
@@ -215,6 +219,7 @@ async function alwaysOverwriteContentChangedCallback(relativeDestPath, contentCh
         return 'overwrite';
     }
     if (contentChanged === 'identical') {
+        // console.log(`${chalk.bold('identical')} ${relativeDestPath} ${chalk.yellow('[keep]')}`);
         return 'keep';
     }
     throw new Error(`Unknown file changed state: ${relativeDestPath}, ${contentChanged}`);

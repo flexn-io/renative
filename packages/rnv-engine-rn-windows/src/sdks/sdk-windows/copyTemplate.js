@@ -26,7 +26,7 @@ const generator_common_1 = require('./generator-common');
 const { getAppFolder, getAppTitle, getConfigProp, isMonorepo } = Common;
 const { WINDOWS } = Constants;
 const { copyFolderContentsRecursive } = FileUtils;
-const { logError } = Logger;
+const { logError, logTask, logInfo, logWarning, logSuccess } = Logger;
 const { copyAssetsFolder } = ProjectManager;
 
 // CONSTS
@@ -39,7 +39,7 @@ async function generateCertificate(
     c,
     options
 ) {
-    console.log('Generating self-signed certificate...');
+    logTask('Generating self-signed certificate');
     const appFolder = getAppFolder(c, true);
     if (os.platform() === 'win32') {
         try {
@@ -47,12 +47,14 @@ async function generateCertificate(
             const timeout = 10000; // 10 seconds;
             const thumbprint = childProcess
                 .execSync(
+                    // eslint-disable-next-line max-len
                     `powershell -NoProfile -Command "Write-Output (New-SelfSignedCertificate -KeyUsage DigitalSignature -KeyExportPolicy Exportable -Subject 'CN=${currentUser}' -TextExtension @('2.5.29.37={text}1.3.6.1.5.5.7.3.3', '2.5.29.19={text}Subject Type:End Entity') -CertStoreLocation 'Cert:\\CurrentUser\\My').Thumbprint"`,
                     { timeout }
                 )
                 .toString()
                 .trim();
             childProcess.execSync(
+                // eslint-disable-next-line max-len
                 `powershell -NoProfile -Command "$pwd = (ConvertTo-SecureString -String password -Force -AsPlainText); Export-PfxCertificate -Cert 'cert:\\CurrentUser\\My\\${thumbprint}' -FilePath ${path.join(
                     appFolder,
                     c.runtime.appId,
@@ -60,17 +62,13 @@ async function generateCertificate(
                 )}_TemporaryKey.pfx -Password $pwd"`,
                 { timeout }
             );
-            console.log(
-                chalk.green('Self-signed certificate generated successfully.')
-            );
+            logSuccess('Self-signed certificate generated successfully.');
             return thumbprint;
         } catch (err) {
-            console.log(chalk.yellow('Failed to generate Self-signed certificate.'));
+            logError('Failed to generate Self-signed certificate.');
         }
     }
-    console.log(
-        chalk.yellow('Using Default Certificate. Use Visual Studio to renew it.')
-    );
+    logWarning('Using Default Certificate. Use Visual Studio to renew it.');
     await generator_common_1.copyAndReplaceWithChangedCallback(
         path.join(srcPath, 'keys', 'MyApp_TemporaryKey.pfx'),
         c.paths.project.dir,
@@ -116,10 +114,10 @@ export async function copyProjectTemplateAndReplace(
 
     const namespaceCpp = toCppNamespace(c.runtime.appId);
     if (experimentalNuGetDependency) {
-        console.log('Using experimental NuGet dependency.');
+        logInfo('Using experimental NuGet dependency.');
     }
     if (useWinUI3) {
-        console.log('Using experimental WinUI3 dependency.');
+        logInfo('Using experimental WinUI3 dependency.');
     }
 
     // eslint-disable-next-line global-require
@@ -446,7 +444,7 @@ export async function copyProjectTemplateAndReplace(
             c.paths.project.dir,
             path.join(appFolder, c.runtime.appId, 'Assets'),
             templateVars,
-            options.overwrite
+            true
         );
     }
 
