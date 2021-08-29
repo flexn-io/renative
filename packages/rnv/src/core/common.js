@@ -350,7 +350,7 @@ export const getAppVersionCode = (c, platform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
     if (versionCode) return versionCode;
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
-    if (!version) {
+    if (!version || typeof version !== 'string') {
         logWarning('You are missing version prop in your config. will default to 0');
         return '0';
     }
