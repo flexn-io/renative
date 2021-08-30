@@ -37444,7 +37444,7 @@ Default width of electron app
 | :----- | :----- | :---- | :---- |
 | `appPath` | `string` |  | `platforms.windows.appPath` |
 
-
+Full path to windows plaform build directory
 
 
 
@@ -37526,7 +37526,7 @@ Specification of targeted architecture
 | :----- | :----- | :---- | :---- |
 | `autolink` | `boolean` |  | `platforms.windows.autolink` |
 
-
+Launches the application once the build process is finished
 
 
 
@@ -37576,7 +37576,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `build` | `boolean` |  | `platforms.windows.build` |
 
-
+Builds the application before launching it
 
 
 
@@ -37592,7 +37592,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `buildLogDirectory` | `string` |  | `platforms.windows.buildLogDirectory` |
 
-
+Full path to directory where builds logs should be stored, default - project path
 
 
 
@@ -37731,7 +37731,7 @@ Default width of electron app
 | :----- | :----- | :---- | :---- |
 | `appPath` | `string` |  | `platforms.windows.buildSchemes.[object].appPath` |
 
-
+Full path to windows plaform build directory
 
 
 
@@ -37813,7 +37813,7 @@ Specification of targeted architecture
 | :----- | :----- | :---- | :---- |
 | `autolink` | `boolean` |  | `platforms.windows.buildSchemes.[object].autolink` |
 
-
+Launches the application once the build process is finished
 
 
 
@@ -37863,7 +37863,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `build` | `boolean` |  | `platforms.windows.buildSchemes.[object].build` |
 
-
+Builds the application before launching it
 
 
 
@@ -37879,7 +37879,7 @@ Defines root view backgroundColor for all platforms in HEX format
 | :----- | :----- | :---- | :---- |
 | `buildLogDirectory` | `string` |  | `platforms.windows.buildSchemes.[object].buildLogDirectory` |
 
-
+Full path to directory where builds logs should be stored, default - project path
 
 
 
@@ -38452,7 +38452,7 @@ Specify generated project language: cpp for C++ or cs for C#
 | :----- | :----- | :---- | :---- |
 | `launch` | `boolean` |  | `platforms.windows.buildSchemes.[object].launch` |
 
-
+Launches the application once the build process is finished
 
 
 
@@ -38500,7 +38500,7 @@ Logging all the build proccesses to console
 | :----- | :----- | :---- | :---- |
 | `msbuildprops` | `string` |  | `platforms.windows.buildSchemes.[object].msbuildprops` |
 
-
+Comma separated props to pass to msbuild, eg: prop1=value1,prop2=value2
 
 
 
@@ -38548,7 +38548,7 @@ Logging all the build proccesses to console
 | :----- | :----- | :---- | :---- |
 | `overwrite` | `boolean` |  | `platforms.windows.buildSchemes.[object].overwrite` |
 
-
+Whether to attempt to override the existing builds files when running a build once more
 
 
 
@@ -38612,7 +38612,7 @@ Logging all the build proccesses to console
 | :----- | :----- | :---- | :---- |
 | `proj` | `string` |  | `platforms.windows.buildSchemes.[object].proj` |
 
-
+Root project directory for your React Native Windows project (not Visual Studio project)
 
 
 
@@ -38736,7 +38736,7 @@ Opt out of multi-proc builds (only available in 0.64 and newer versions of react
 | :----- | :----- | :---- | :---- |
 | `sln` | `string` |  | `platforms.windows.buildSchemes.[object].sln` |
 
-
+Location of Visual Studio solution .sln file (wraps multiple projects)
 
 
 
@@ -39564,7 +39564,7 @@ Specify generated project language: cpp for C++ or cs for C#
 | :----- | :----- | :---- | :---- |
 | `launch` | `boolean` |  | `platforms.windows.launch` |
 
-
+Launches the application once the build process is finished
 
 
 
@@ -39612,7 +39612,7 @@ Logging all the build proccesses to console
 | :----- | :----- | :---- | :---- |
 | `msbuildprops` | `string` |  | `platforms.windows.msbuildprops` |
 
-
+Comma separated props to pass to msbuild, eg: prop1=value1,prop2=value2
 
 
 
@@ -39660,7 +39660,7 @@ Logging all the build proccesses to console
 | :----- | :----- | :---- | :---- |
 | `overwrite` | `boolean` |  | `platforms.windows.overwrite` |
 
-
+Whether to attempt to override the existing builds files when running a build once more
 
 
 
@@ -39724,7 +39724,7 @@ Logging all the build proccesses to console
 | :----- | :----- | :---- | :---- |
 | `proj` | `string` |  | `platforms.windows.proj` |
 
-
+Root project directory for your React Native Windows project (not Visual Studio project)
 
 
 
@@ -39848,7 +39848,7 @@ Opt out of multi-proc builds (only available in 0.64 and newer versions of react
 | :----- | :----- | :---- | :---- |
 | `sln` | `string` |  | `platforms.windows.sln` |
 
-
+Location of Visual Studio solution .sln file (wraps multiple projects)
 
 
 
