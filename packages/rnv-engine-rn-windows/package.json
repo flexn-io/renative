@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-windows",
-    "version": "0.32.0-feat-rnwin-4",
+    "version": "0.32.0-alpha.45",
     "description": "ReNative Engine to build for Windows platform with react native support.",
     "keywords": [
         "react-native"
