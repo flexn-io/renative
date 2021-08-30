@@ -31,7 +31,7 @@ import {
     USER_HOME_DIR
 } from '../constants';
 import { isSystemWin } from '../systemManager/utils';
-import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync } from '../systemManager/fileutils';
+import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync, fsLstatSync } from '../systemManager/fileutils';
 import {
     chalk,
     logTask,
@@ -208,6 +208,8 @@ const _findFolderWithFile = (dir, fileToFind) => {
     }
     let foundDir;
     fsReaddirSync(dir).forEach((subDirName) => {
+        // not a directory check
+        if (!fsLstatSync(subDirName).isDirectory()) return;
         const subDir = path.join(dir, subDirName);
         const foundSubDir = _findFolderWithFile(subDir, fileToFind);
         if (foundSubDir) {
@@ -219,10 +221,21 @@ const _findFolderWithFile = (dir, fileToFind) => {
 
 const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) => {
     logTask('_attemptAutoFix');
-    // try common Android SDK env variables
-    const { ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK: ANDROID_SDK_ENV } = process.env;
 
-    let result = [...SDK_LOCATIONS[sdkPlatform], ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK_ENV].find(v => fsExistsSync(v));
+    let locations = SDK_LOCATIONS[sdkPlatform];
+
+    // try common Android SDK env variables
+    if (sdkKey === ANDROID_SDK) {
+        const { ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK: ANDROID_SDK_ENV } = process.env;
+        locations = locations.concat([ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK_ENV]);
+    }
+
+    if (sdkKey === ANDROID_NDK) {
+        const { ANDROID_NDK_HOME } = process.env;
+        locations.push(ANDROID_NDK_HOME);
+    }
+
+    let result = locations.find(v => fsExistsSync(v));
 
     if (result && traverseUntilFoundFile) {
         const subResult = _findFolderWithFile(result, traverseUntilFoundFile);
@@ -251,6 +264,7 @@ const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) =
 
         if (confirmSdk) {
             try {
+                if (!c.files.workspace.config.sdks) c.files.workspace.config.sdks = {};
                 c.files.workspace.config.sdks[sdkKey] = result;
                 writeFileSync(
                     c.paths.workspace.config,

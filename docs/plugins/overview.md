@@ -1175,6 +1175,24 @@ rnv plugin add react-native-camera
 ```
 
 
+## react-native-carplay
+
+
+Version: `2.0.0`
+
+Platforms: `ios`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-carplay
+
+Installation:
+
+```
+rnv plugin add react-native-carplay
+```
+
+
 ## react-native-circular-progress
 
 
@@ -2960,7 +2978,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-alpha.45`
+Version: `0.32.0-feat-engines-merged-1`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

@@ -142,7 +142,7 @@ const _applyTemplate = async (c) => {
         'appConfigs'
     );
     c.paths.template.appConfigBase.dir = path.join(
-        c.paths.template.dir,
+        c.paths.template.appConfigsDir,
         'base'
     );
     c.runtime.currentTemplate = c.files.project.config.currentTemplate;
