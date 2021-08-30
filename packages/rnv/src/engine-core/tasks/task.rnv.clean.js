@@ -29,6 +29,8 @@ function clearWindowsCacheFiles() {
 
     // Watchman cache
     child_process_1.spawn('cmd.exe', ['/C', 'watchman watch-del-all'], opts);
+
+    return true;
 }
 
 export const taskRnvClean = async (c, skipQuestionParam = false) => {

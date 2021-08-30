@@ -7,7 +7,7 @@
  * @format
  */
 // DEPS
-import { Common, Constants, FileUtils, Logger, ProjectManager } from 'rnv';
+import { Common, FileUtils, Logger, ProjectManager } from 'rnv';
 
 const chalk = require('chalk');
 const path = require('path');
@@ -19,12 +19,11 @@ const os = require('os');
 // eslint-disable-next-line no-unused-vars
 const _ = require('lodash');
 const findUp = require('find-up');
-const configUtils_1 = require('./config/configUtils');
 const generator_common_1 = require('./generator-common');
+const configUtils_1 = require('./config/configUtils');
 
 // EXTRACTS FROM RNV
 const { getAppFolder, getAppTitle, getConfigProp, isMonorepo } = Common;
-const { WINDOWS } = Constants;
 const { copyFolderContentsRecursive } = FileUtils;
 const { logError, logTask, logInfo, logWarning, logSuccess } = Logger;
 const { copyAssetsFolder } = ProjectManager;
@@ -73,7 +72,8 @@ async function generateCertificate(
         path.join(srcPath, 'keys', 'MyApp_TemporaryKey.pfx'),
         c.paths.project.dir,
         path.join(appFolder, c.runtime.appId, `${c.runtime.appId}_TemporaryKey.pfx`),
-        options.overwrite
+        undefined,
+        options
     );
     return null;
 }
@@ -88,7 +88,7 @@ export async function copyProjectTemplateAndReplace(
         throw new Error('Need a path to copy to');
     }
 
-    const appTitle = getAppTitle(c, WINDOWS);
+    const appTitle = getAppTitle(c, c.platform);
     const appFolder = getAppFolder(c, true);
     const RNIconsPluginPath = path.join(path.dirname(require.resolve('react-native-vector-icons/package.json', {
         paths: [c.paths.project.dir],
@@ -342,7 +342,7 @@ export async function copyProjectTemplateAndReplace(
             c.paths.project.dir,
             mapping.to,
             templateVars,
-            options.overwrite
+            options
         );
     }
     if (language === 'cs') {
@@ -364,7 +364,7 @@ export async function copyProjectTemplateAndReplace(
                 c.paths.project.dir,
                 mapping.to,
                 templateVars,
-                options.overwrite
+                options
             );
         }
     } else {
@@ -398,7 +398,7 @@ export async function copyProjectTemplateAndReplace(
                 c.paths.project.dir,
                 mapping.to,
                 templateVars,
-                options.overwrite
+                options
             );
         }
     }
@@ -428,7 +428,7 @@ export async function copyProjectTemplateAndReplace(
                     c.paths.project.dir,
                     mapping.to,
                     templateVars,
-                    options.overwrite
+                    options
                 );
             }
         }
@@ -439,12 +439,12 @@ export async function copyProjectTemplateAndReplace(
 
     // shared assets
     if (fs.existsSync(path.join(sharedPath, 'assets'))) {
-        await generator_common_1.copyAndReplaceWithChangedCallback(
+        await generator_common_1.copyAndReplaceAll(
             path.join(sharedPath, 'assets'),
             c.paths.project.dir,
             path.join(appFolder, c.runtime.appId, 'Assets'),
             templateVars,
-            true
+            options
         );
     }
 
