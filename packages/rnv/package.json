@@ -152,6 +152,7 @@
         "xml2js": "0.4.23"
     },
     "devDependencies": {
+        "@babel/helper-builder-react-jsx-experimental": "^7.12.11",
         "crypto-js": "4.0.0",
         "eslint": "6.2.2",
         "eslint-config-airbnb": "17.0.0",
