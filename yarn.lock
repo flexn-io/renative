@@ -295,6 +295,14 @@
     "@babel/helper-explode-assignable-expression" "^7.14.5"
     "@babel/types" "^7.14.5"
 
+"@babel/helper-builder-react-jsx@7.14.5":
+  version "7.14.5"
+  resolved "https://registry.yarnpkg.com/@babel/helper-builder-react-jsx/-/helper-builder-react-jsx-7.14.5.tgz#87620c97a8729e91caf9e6f0d324fff23e90bb5d"
+  integrity sha512-LT/856RUBXAHjmvJuLuI6XYZZAZNMSS+N2Yf5EUoHgSWtiWrAaGh7t5saP7sPCq07uvWVxxK3gwwm3weA9gKLg==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.14.5"
+    "@babel/types" "^7.14.5"
+
 "@babel/helper-compilation-targets@^7.10.4", "@babel/helper-compilation-targets@^7.13.0", "@babel/helper-compilation-targets@^7.14.5", "@babel/helper-compilation-targets@^7.15.0", "@babel/helper-compilation-targets@^7.8.7":
   version "7.15.0"
   resolved "https://registry.yarnpkg.com/@babel/helper-compilation-targets/-/helper-compilation-targets-7.15.0.tgz#973df8cbd025515f3ff25db0c05efc704fa79818"
