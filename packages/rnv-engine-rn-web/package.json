@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "0.32.0-feat-engines-merged-1",
+    "version": "0.32.0-feat-engines-merged-2",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"

@@ -20820,6 +20820,1422 @@ Allows you to directly extend/override webpack config of your current platform
 
 
 
+### platforms.xbox
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `xbox` | `object` |  | `platforms.xbox` |
+
+
+
+
+
+---
+
+
+
+#### platforms.xbox.BrowserWindow
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `BrowserWindow` | `object` |  | `platforms.xbox.BrowserWindow` |
+
+Allows you to configure electron wrapper app window
+
+**examples**
+
+
+```json
+{
+  "BrowserWindow": {
+    "width": 1310,
+    "height": 800,
+    "webPreferences": {
+      "devTools": true
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+#### platforms.xbox.BrowserWindow.height
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `height` | `integer` |  | `platforms.xbox.BrowserWindow.height` |
+
+Default height of electron app
+
+
+
+---
+
+
+
+
+#### platforms.xbox.BrowserWindow.webPreferences
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webPreferences` | `object` |  | `platforms.xbox.BrowserWindow.webPreferences` |
+
+Extra web preferences of electron app
+
+**examples**
+
+
+```json
+{
+  "webPreferences": {
+    "devTools": true
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.BrowserWindow.width
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `width` | `integer` |  | `platforms.xbox.BrowserWindow.width` |
+
+Default width of electron app
+
+
+
+---
+
+
+
+
+
+#### platforms.xbox.additionalMetroOptions
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `additionalMetroOptions` | `object` |  | `platforms.xbox.additionalMetroOptions` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.appPath
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `appPath` | `string` |  | `platforms.xbox.appPath` |
+
+Full path to windows plaform build directory
+
+
+
+---
+
+
+
+
+#### platforms.xbox.arch
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `arch` | `string` |  | `platforms.xbox.arch` |
+
+Specification of targeted architecture
+
+**examples**
+
+
+```json
+{
+  "arch": "x86"
+}
+```
+
+
+
+```json
+{
+  "arch": "x64"
+}
+```
+
+
+
+```json
+{
+  "arch": "ARM"
+}
+```
+
+
+
+```json
+{
+  "arch": "ARM64"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.author
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `author` | `object,string` |  | `platforms.xbox.author` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.autolink
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `autolink` | `boolean` |  | `platforms.xbox.autolink` |
+
+Launches the application once the build process is finished
+
+
+
+---
+
+
+
+
+#### platforms.xbox.backgroundColor
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `backgroundColor` | `string` |  | `platforms.xbox.backgroundColor` |
+
+Defines root view backgroundColor for all platforms in HEX format
+
+**examples**
+
+
+```json
+{
+  "backgroundColor": "#FFFFFF"
+}
+```
+
+
+
+```json
+{
+  "backgroundColor": "#222222"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.build
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `build` | `boolean` |  | `platforms.xbox.build` |
+
+Builds the application before launching it
+
+
+
+---
+
+
+
+
+#### platforms.xbox.buildLogDirectory
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildLogDirectory` | `string` |  | `platforms.xbox.buildLogDirectory` |
+
+Full path to directory where builds logs should be stored, default - project path
+
+
+
+---
+
+
+
+
+#### platforms.xbox.buildSchemes
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `buildSchemes` | `object` |  | `platforms.xbox.buildSchemes` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.bundle
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundle` | `boolean` |  | `platforms.xbox.bundle` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.bundleAssets
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleAssets` | `boolean` |  | `platforms.xbox.bundleAssets` |
+
+If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds
+
+
+
+---
+
+
+
+
+#### platforms.xbox.bundleIsDev
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `bundleIsDev` | `boolean` |  | `platforms.xbox.bundleIsDev` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.deploy
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `deploy` | `boolean` |  | `platforms.xbox.deploy` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.description
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `description` | `string` |  | `platforms.xbox.description` |
+
+General description of your app. This prop will be injected to actual projects where description field is applicable
+
+**examples**
+
+
+```json
+{
+  "description": "This app does awesome things"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.devPort
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devPort` | `string` |  | `platforms.xbox.devPort` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.device
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `device` | `boolean` |  | `platforms.xbox.device` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.directDebugging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `directDebugging` | `boolean` |  | `platforms.xbox.directDebugging` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.electronConfig
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `electronConfig` | `object` |  | `platforms.xbox.electronConfig` |
+
+Allows you to configure electron app as per https://www.electron.build/
+
+**examples**
+
+
+```json
+{
+  "electronConfig": {
+    "mac": {
+      "target": [
+        "dmg",
+        "mas",
+        "mas-dev"
+      ],
+      "hardenedRuntime": true
+    },
+    "dmg": {
+      "sign": false
+    },
+    "mas": {
+      "type": "distribution",
+      "hardenedRuntime": false
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.emulator
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `emulator` | `boolean` |  | `platforms.xbox.emulator` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.enableSourceMaps
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `enableSourceMaps` | `boolean` |  | `platforms.xbox.enableSourceMaps` |
+
+If set to `true` dedicated source map file will be generated alongside of compiled js bundle
+
+
+
+---
+
+
+
+
+#### platforms.xbox.engine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `engine` | `string` |  | `platforms.xbox.engine` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.entryFile
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `entryFile` | `string` |  | `platforms.xbox.entryFile` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.excludedPlugins
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `excludedPlugins` | `array` |  | `platforms.xbox.excludedPlugins` |
+
+Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
+
+NOTE: excludedPlugins is evaluated after includedPlugins
+
+**examples**
+
+
+```json
+{
+  "excludedPlugins": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "excludedPlugins": [
+    "react-native-google-cast",
+    "react-navigation-tabs"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.experimentalNuGetDependency
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `experimentalNuGetDependency` | `boolean` |  | `platforms.xbox.experimentalNuGetDependency` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.ext
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ext` | `object` |  | `platforms.xbox.ext` |
+
+Object ysed to extend your renative with custom props. This allows renative json schema to be validated
+
+**examples**
+
+
+```json
+{
+  "ext": {
+    "myCustomRenativeProp": "foo"
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.id
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `id` | `string` |  | `platforms.xbox.id` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.ignoreLogs
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreLogs` | `boolean` |  | `platforms.xbox.ignoreLogs` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.ignoreWarnings
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `ignoreWarnings` | `boolean` |  | `platforms.xbox.ignoreWarnings` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.includedFonts
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedFonts` | `array` |  | `platforms.xbox.includedFonts` |
+
+Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all
+
+**examples**
+
+
+```json
+{
+  "includedFonts": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedFonts": [
+    "TimeBurner",
+    "Entypo"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.includedPermissions
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPermissions` | `array` |  | `platforms.xbox.includedPermissions` |
+
+Allows you to include specific permissions by their KEY defined in `permissions` object
+
+**examples**
+
+
+```json
+{
+  "includedPermissions": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedPermissions": [
+    "INTERNET",
+    "CAMERA",
+    "SYSTEM_ALERT_WINDOW",
+    "RECORD_AUDIO",
+    "RECORD_VIDEO",
+    "READ_EXTERNAL_STORAGE",
+    "WRITE_EXTERNAL_STORAGE",
+    "ACCESS_FINE_LOCATION",
+    "ACCESS_COARSE_LOCATION",
+    "VIBRATE",
+    "ACCESS_NETWORK_STATE",
+    "ACCESS_WIFI_STATE",
+    "RECEIVE_BOOT_COMPLETED",
+    "WRITE_CONTACTS",
+    "READ_CONTACTS"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.includedPlugins
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `includedPlugins` | `array` |  | `platforms.xbox.includedPlugins` |
+
+Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.
+
+NOTE: includedPlugins is evaluated before excludedPlugins
+
+**examples**
+
+
+```json
+{
+  "includedPlugins": [
+    "*"
+  ]
+}
+```
+
+
+
+```json
+{
+  "includedPlugins": [
+    "react-native-google-cast",
+    "react-navigation-tabs"
+  ]
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.info
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `info` | `boolean` |  | `platforms.xbox.info` |
+
+Print information about the build machine to console
+
+
+
+---
+
+
+
+
+#### platforms.xbox.language
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `language` | `string` |  | `platforms.xbox.language` |
+
+Specify generated project language: cpp for C++ or cs for C#
+
+
+
+---
+
+
+
+
+#### platforms.xbox.launch
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `launch` | `boolean` |  | `platforms.xbox.launch` |
+
+Launches the application once the build process is finished
+
+
+
+---
+
+
+
+
+#### platforms.xbox.license
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `license` | `string` |  | `platforms.xbox.license` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.logging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `logging` | `boolean` |  | `platforms.xbox.logging` |
+
+Logging all the build proccesses to console
+
+
+
+---
+
+
+
+
+#### platforms.xbox.msbuildprops
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `msbuildprops` | `string` |  | `platforms.xbox.msbuildprops` |
+
+Comma separated props to pass to msbuild, eg: prop1=value1,prop2=value2
+
+
+
+---
+
+
+
+
+#### platforms.xbox.nuGetTestFeed
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `nuGetTestFeed` | `string` |  | `platforms.xbox.nuGetTestFeed` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.nuGetTestVersion
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `nuGetTestVersion` | `string` |  | `platforms.xbox.nuGetTestVersion` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.overwrite
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `overwrite` | `boolean` |  | `platforms.xbox.overwrite` |
+
+Whether to attempt to override the existing builds files when running a build once more
+
+
+
+---
+
+
+
+
+#### platforms.xbox.packageExtension
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `packageExtension` | `string` |  | `platforms.xbox.packageExtension` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.packager
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `packager` | `boolean` |  | `platforms.xbox.packager` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.permissions
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `permissions` | `array` |  | `platforms.xbox.permissions` |
+
+> DEPRECATED in favor of includedPermissions
+
+
+
+---
+
+
+
+
+#### platforms.xbox.proj
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `proj` | `string` |  | `platforms.xbox.proj` |
+
+Root project directory for your React Native Windows project (not Visual Studio project)
+
+
+
+---
+
+
+
+
+#### platforms.xbox.reactNativeEngine
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `reactNativeEngine` | `string` |  | `platforms.xbox.reactNativeEngine` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.release
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `release` | `boolean` |  | `platforms.xbox.release` |
+
+Enables full packaging of the app for release
+
+
+
+---
+
+
+
+
+#### platforms.xbox.remoteDebugging
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `remoteDebugging` | `boolean` |  | `platforms.xbox.remoteDebugging` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.root
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `root` | `string` |  | `platforms.xbox.root` |
+
+Project root folder location (not the app itself, which is in platformBuilds)
+
+
+
+---
+
+
+
+
+#### platforms.xbox.runtime
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `runtime` | `object` |  | `platforms.xbox.runtime` |
+
+This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code
+
+**examples**
+
+
+```json
+{
+  "runtime": {
+    "someRuntimeProperty": "foo"
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.singleproc
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `singleproc` | `boolean` |  | `platforms.xbox.singleproc` |
+
+Opt out of multi-proc builds (only available in 0.64 and newer versions of react-native-windows)
+
+
+
+---
+
+
+
+
+#### platforms.xbox.sln
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `sln` | `string` |  | `platforms.xbox.sln` |
+
+Location of Visual Studio solution .sln file (wraps multiple projects)
+
+
+
+---
+
+
+
+
+#### platforms.xbox.splashScreen
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `splashScreen` | `boolean` |  | `platforms.xbox.splashScreen` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.target
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `target` | `string` |  | `platforms.xbox.target` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.telemetry
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `telemetry` | `boolean` |  | `platforms.xbox.telemetry` |
+
+Send analytics data of @react-native-windows/cli usage to Microsoft
+
+
+
+---
+
+
+
+
+#### platforms.xbox.timestampAssets
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `timestampAssets` | `boolean` |  | `platforms.xbox.timestampAssets` |
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
+
+**examples**
+
+
+```json
+{
+  "timestampAssets": "true"
+}
+```
+
+
+
+```json
+{
+  "timestampAssets": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.title
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `title` | `string` |  | `platforms.xbox.title` |
+
+Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website
+
+**examples**
+
+
+```json
+{
+  "title": "Awesome App"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.useWinUI3
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `useWinUI3` | `boolean` |  | `platforms.xbox.useWinUI3` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.versionedAssets
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `versionedAssets` | `boolean` |  | `platforms.xbox.versionedAssets` |
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
+
+**examples**
+
+
+```json
+{
+  "versionedAssets": "true"
+}
+```
+
+
+
+```json
+{
+  "versionedAssets": "false"
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.webpackConfig
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `webpackConfig` | `object` |  | `platforms.xbox.webpackConfig` |
+
+
+
+
+
+---
+
+
+
+#### platforms.xbox.webpackConfig.customScripts
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `customScripts` | `array` |  | `platforms.xbox.webpackConfig.customScripts` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.webpackConfig.devServerHost
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `devServerHost` | `string` |  | `platforms.xbox.webpackConfig.devServerHost` |
+
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.webpackConfig.extend
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `extend` | `object` |  | `platforms.xbox.webpackConfig.extend` |
+
+Allows you to directly extend/override webpack config of your current platform
+
+**examples**
+
+
+```json
+{
+  "extend": {
+    "devtool": "source-map"
+  }
+}
+```
+
+
+
+```json
+{
+  "extend": {
+    "module": {
+      "rules": [
+        {
+          "test": {},
+          "use": [
+            "source-map-loader"
+          ],
+          "enforce": "pre"
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+---
+
+
+
+
+#### platforms.xbox.webpackConfig.metaTags
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `metaTags` | `object` |  | `platforms.xbox.webpackConfig.metaTags` |
+
+
+
+
+
+---
+
+
+
+
+
+
+
 
 
 
