@@ -3,7 +3,7 @@
     "version": "0.32.0-feat-engines-merged-1",
     "description": "ReNative Engine to build for Windows platform with react native support.",
     "keywords": [
-        "react-native"
+        "react-native", "react-native-windows"
     ],
     "homepage": "https://github.com/pavjacko/renative#readme",
     "bugs": {

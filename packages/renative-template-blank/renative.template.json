@@ -127,6 +127,9 @@
     },
     "windows": {
       "engine": "engine-rn-windows"
+    },
+    "xbox": {
+        "engine": "engine-rn-windows"
     }
   }
 }

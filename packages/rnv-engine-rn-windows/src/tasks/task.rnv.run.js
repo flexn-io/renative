@@ -7,6 +7,7 @@ const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     WINDOWS,
+    XBOX,
     TASK_RUN,
     TASK_CONFIGURE,
     PARAMS
@@ -27,6 +28,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_RUN, originTask)) return true;
 
     switch (platform) {
+        case XBOX:
         case WINDOWS:
             await clearWindowsTemporaryFiles(c);
             await startBundlerIfRequired(c, TASK_RUN, originTask);
@@ -43,6 +45,7 @@ export default {
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [
-        WINDOWS
+        WINDOWS,
+        XBOX
     ],
 };

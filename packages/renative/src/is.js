@@ -18,7 +18,8 @@ import {
     WINDOWS,
     FIREFOX_OS,
     FIREFOX_TV,
-    KAIOS
+    KAIOS,
+    XBOX
 } from './Constants';
 
 // PLATFORM
@@ -39,6 +40,7 @@ export const isPlatformFirefoxos = platform === FIREFOX_OS;
 export const isPlatformFirefoxtv = platform === FIREFOX_TV;
 export const isPlatformKaios = platform === KAIOS;
 export const isPlatformWebtv = platform === WEBTV;
+export const isPlatformXbox = platform === XBOX;
 
 // FACTOR
 export const isFactorBrowser = factor === 'browser';

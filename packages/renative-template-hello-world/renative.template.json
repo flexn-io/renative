@@ -18,7 +18,8 @@
       "firefoxos",
       "firefoxtv",
       "chromecast",
-      "webtv"
+      "webtv",
+      "xbox"
     ]
   },
   "engines": {
@@ -133,6 +134,9 @@
       "engine": "engine-rn-macos"
     },
     "windows": {
+      "engine": "engine-rn-windows"
+    },
+    "xbox": {
       "engine": "engine-rn-windows"
     }
   },

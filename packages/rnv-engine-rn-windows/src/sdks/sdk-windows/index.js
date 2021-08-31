@@ -118,7 +118,7 @@ const getOptions = (c, injectedOptions = {}) => {
     const proj = getConfigProp(c, c.platform, 'proj', c.paths.project.dir);
     const appPath = getConfigProp(c, c.platform, 'appPath', getAppFolder(c));
     const msbuildprops = getConfigProp(c, c.platform, 'msbuildprops', defaultOptions.msbuildprops);
-    const buildLogDirectory = getConfigProp(c, c.platform, 'buildLogDirectory', getAppFolder(c));
+    const buildLogDirectory = getConfigProp(c, c.platform, 'buildLogDirectory', path.join(getAppFolder(c), 'BuildLogs'));
     const info = getConfigProp(c, c.platform, 'info', defaultOptions.info);
     const directDebugging = getConfigProp(c, c.platform, 'directDebugging', defaultOptions.directDebugging);
     const telemetry = getConfigProp(c, c.platform, 'telemetry', defaultOptions.telemetry);
@@ -185,21 +185,23 @@ export const ruWindowsProject = async (c, injectedOptions) => {
         logWarning('Enviroment variables not injected properly! Running metro will return an error!');
     }
 
-    const projectConfig = {
-        windows: {
-            sourceDir: getAppFolder(c, true),
-            solutionFile: `${c.runtime.appId}.sln`,
-            project: {
-                projectName: c.runtime.appId,
-                projectFile: `${c.runtime.appId}\\${c.runtime.appId}.vcxproj`,
-                projectLang: options.language,
-                // TODO Validate if this is ok
-                projectGuid: c.runtime.appId
-            },
-            folder: c.paths.project.dir
-
+    const cnfg = {
+        sourceDir: getAppFolder(c, true),
+        solutionFile: `${c.runtime.appId}.sln`,
+        project: {
+            projectName: c.runtime.appId,
+            projectFile: `${c.runtime.appId}\\${c.runtime.appId}.vcxproj`,
+            projectLang: options.language,
+            // TODO Validate if this is ok
+            projectGuid: c.runtime.appId
         },
+        folder: c.paths.project.dir
     };
+
+    const projectConfig = {
+        windows: cnfg
+    };
+
     const config = {
         root: c.paths.project.dir,
         commands: cli.commands,
@@ -244,6 +246,10 @@ const copyWindowsTemplateProject = async (c, injectedOptions = {}) => {
     };
 
     await copyProjectTemplateAndReplace(c, opts);
+
+    if (!fs.existsSync(opts.buildLogDirectory)) {
+        fs.mkdirSync(opts.buildLogDirectory, { recursive: true });
+    }
     return true;
 };
 
@@ -260,18 +266,18 @@ function clearWindowsTemporaryFiles(c) {
     // This should resolve as it used internally by react-native-windows
     // eslint-disable-next-line global-require
     const child_process_1 = require('child_process');
-    child_process_1.spawn('cmd.exe', ['/C', 'del /q/f/s %TEMP%\\*'], opts);
 
     // NuGet cache
     child_process_1.spawn('cmd.exe', ['/C', 'dotnet nuget locals all --clear'], opts);
 
-    // Yarn/NPM cache
-    child_process_1.spawn('cmd.exe', ['/C', 'npm cache clean --force & yarn cache clean --all'], opts);
+    // NPM cache
+    delete process.env.NPM_CONFIG_CACHE;
+    delete process.env.NPM_CONFIG_PREFIX;
 
     // TODO Arbitrary 3s delay before continuing to make sure all files were removed is not ideal
     // But without it bundler executes at the same time deletion occurs and therefore bundler
     // fails to initiate
-    return new Promise(resolve => setTimeout(() => resolve(true), 3000));
+    return new Promise(resolve => setTimeout(() => resolve(true), 4000));
 }
 
 const packageBundleForWindows = (c, isDev = false) => {
@@ -429,7 +435,7 @@ const packageWindowsApp = async (c, injectedOptions) => {
         // await signWindowsApp(c, script, windowsStoreAppUtils);
         await installWindowsApp(c, script, windowsStoreAppUtils);
     } catch (e) {
-        logError('App packaging failed with error: ', e);
+        logError(`App packaging failed with error: ${e}`);
     }
 };
 

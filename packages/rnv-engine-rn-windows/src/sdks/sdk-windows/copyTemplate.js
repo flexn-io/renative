@@ -24,7 +24,7 @@ const configUtils_1 = require('./config/configUtils');
 
 // EXTRACTS FROM RNV
 const { getAppFolder, getAppTitle, getConfigProp, isMonorepo } = Common;
-const { copyFolderContentsRecursive } = FileUtils;
+const { copyFolderContentsRecursive, copyFolderContentsRecursiveSync } = FileUtils;
 const { logError, logTask, logInfo, logWarning, logSuccess } = Logger;
 const { copyAssetsFolder } = ProjectManager;
 
@@ -157,12 +157,18 @@ export async function copyProjectTemplateAndReplace(
     if (appJsonPath) {
         mainComponentName = JSON.parse(fs.readFileSync(appJsonPath, 'utf8')).name;
     }
-    const certificateThumbprint = await generateCertificate(
-        srcPath,
-        currentUser,
-        c,
-        options
-    );
+
+    let certificateThumbprint;
+    if (!fs.existsSync(path.join(appFolder, c.runtime.appId, `${c.runtime.appId}_TemporaryKey.pfx`))) {
+        certificateThumbprint = await generateCertificate(
+            srcPath,
+            currentUser,
+            c,
+            options
+        );
+    } else {
+        logInfo('[generateCertificate] Certificate already exists, skipping generation of a new one.');
+    }
 
     const xamlNamespace = useWinUI3
         ? 'Microsoft.UI.Xaml'
@@ -439,12 +445,13 @@ export async function copyProjectTemplateAndReplace(
 
     // shared assets
     if (fs.existsSync(path.join(sharedPath, 'assets'))) {
-        await generator_common_1.copyAndReplaceAll(
+        copyFolderContentsRecursiveSync(
             path.join(sharedPath, 'assets'),
-            c.paths.project.dir,
             path.join(appFolder, c.runtime.appId, 'Assets'),
-            templateVars,
-            options
+            true,
+            false,
+            // Must not override, project defined assets used, if new ones are added later on - rebuild will cover it
+            true
         );
     }
 
@@ -485,7 +492,8 @@ export async function copyProjectTemplateAndReplace(
             path.join(sharedPath, 'src'),
             c.paths.project.dir,
             path.join(appFolder, c.runtime.appId),
-            templateVars
+            templateVars,
+            options
         );
     }
     // src
@@ -494,7 +502,8 @@ export async function copyProjectTemplateAndReplace(
             path.join(srcPath, 'src'),
             c.paths.project.dir,
             path.join(appFolder, c.runtime.appId),
-            templateVars
+            templateVars,
+            options
         );
     }
 }

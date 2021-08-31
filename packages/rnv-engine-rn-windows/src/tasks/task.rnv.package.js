@@ -5,6 +5,7 @@ const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     WINDOWS,
+    XBOX,
     TASK_PACKAGE,
     TASK_CONFIGURE,
     PARAMS
@@ -21,6 +22,7 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_PACKAGE, originTask)) return true;
 
     switch (platform) {
+        case XBOX:
         case WINDOWS:
             return packageBundleForWindows(c);
         default:
@@ -35,6 +37,7 @@ export default {
     task: 'package',
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
-        WINDOWS
+        WINDOWS,
+        XBOX
     ],
 };

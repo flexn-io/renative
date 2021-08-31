@@ -309,6 +309,7 @@
             }
         },
         "windows": {
+            "entryFile": "index.windows",
             "language": "cpp",
             "reactNativeEngine": "chakra",
             "buildSchemes": {
@@ -318,6 +319,24 @@
                 "release": {
                     "release": true,
                     "logging": false
+                }
+            }
+        },
+        "xbox": {
+            "entryFile": "index.xbox",
+            "language": "cpp",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false,
+                    "bundleIsDev": true,
+                    "arch": "x64"
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "release": true,
+                    "sourcemaps": true,
+                    "arch": "x64"
                 }
             }
         },

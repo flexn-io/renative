@@ -5,6 +5,7 @@ const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     WINDOWS,
+    XBOX,
     TASK_EXPORT,
     TASK_DEPLOY,
     PARAMS
@@ -23,6 +24,7 @@ export const taskRnvDeploy = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_DEPLOY, originTask)) return true;
 
     switch (platform) {
+        case XBOX:
         case WINDOWS:
             return ruWindowsProject(c);
         default:
@@ -36,6 +38,7 @@ export default {
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
-        WINDOWS
+        WINDOWS,
+        XBOX
     ],
 };

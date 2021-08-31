@@ -5,6 +5,7 @@ const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     WINDOWS,
+    XBOX,
     TASK_BUILD,
     TASK_EXPORT,
     PARAMS
@@ -23,6 +24,7 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_EXPORT, originTask)) return true;
 
     switch (platform) {
+        case XBOX:
         case WINDOWS:
             await clearWindowsTemporaryFiles(c);
             return packageWindowsApp(c);
@@ -37,6 +39,7 @@ export default {
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
-        WINDOWS
+        WINDOWS,
+        XBOX
     ],
 };

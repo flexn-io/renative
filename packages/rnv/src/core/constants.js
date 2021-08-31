@@ -109,6 +109,7 @@ export const RENATIVE_CONFIG_ENGINE_NAME = 'renative.engine.json';
 export const RN_CLI_CONFIG_NAME = 'metro.config.js';
 export const RNT_CLI_CONFIG_NAME = 'metro.config.rnt.js'; // cli config for rn-tvos engine (rnt)
 export const RNM_CLI_CONFIG_NAME = 'metro.config.rnm.js'; // rn-macos engine metro.config.js
+export const RNWIN_CLI_CONFIG_NAME = 'metro.config.rnwin.js'; // rn-windows engine metro.config.js
 export const RN_BABEL_CONFIG_NAME = 'babel.config.js';
 export const NEXT_CONFIG_NAME = 'next.config.js';
 export const SAMPLE_APP_ID = 'helloworld';
@@ -500,6 +501,10 @@ export const RNV_PACKAGES = [
     {
         packageName: '@rnv/engine-rn-electron',
         folderName: 'rnv-engine-rn-electron'
+    },
+    {
+        packageName: '@rnv/engine-rn-windows',
+        folderName: 'rnv-engine-rn-windows'
     },
     {
         packageName: '@rnv/engine-rn-next',

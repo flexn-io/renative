@@ -1,9 +1,11 @@
-import { Constants, Logger, TaskManager } from 'rnv';
+import { Constants, Logger, TaskManager, PlatformManager } from 'rnv';
 import { SDKWindows } from '../sdks';
 
+const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     WINDOWS,
+    XBOX,
     TASK_BUILD,
     TASK_PACKAGE,
     PARAMS
@@ -12,16 +14,20 @@ const { ruWindowsProject } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvBuild = async (c, parentTask, originTask) => {
-    logTask('taskRnvBuild', `parent:${parentTask}`);
-
-    // Build aways bundles assets
-    c.runtime.forceBundleAssets = true;
+    logTask('taskRnvBuild');
+    const { platform } = c;
 
     await executeOrSkipTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
 
     if (shouldSkipTask(c, TASK_BUILD, originTask)) return true;
 
-    await ruWindowsProject(c, { release: true, launch: false, deploy: false, logging: false });
+    switch (platform) {
+        case XBOX:
+        case WINDOWS:
+            return ruWindowsProject(c, { release: true, launch: false, deploy: false, logging: false });
+        default:
+            return logErrorPlatform(c);
+    }
 };
 
 export default {
@@ -30,6 +36,7 @@ export default {
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
-        WINDOWS
+        WINDOWS,
+        XBOX
     ],
 };

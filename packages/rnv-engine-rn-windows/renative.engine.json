@@ -20,6 +20,11 @@
       "npm": {
         "dependencies": {}
       }
+    },
+    "xbox": {
+      "npm": {
+        "dependencies": {}
+      }
     }
   }
 }

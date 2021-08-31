@@ -70,6 +70,9 @@
         "windows": {
             "engine": "engine-rn-windows"
         },
+        "xbox": {
+            "engine": "engine-rn-windows"
+        },
         "tizen": {
             "engine": "engine-rn-web"
         },

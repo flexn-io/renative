@@ -1184,6 +1184,13 @@ const pluginProps = {
             ...commonPluginPlatformProps,
         },
     },
+    xbox: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...commonPluginPlatformProps,
+        },
+    },
 };
 
 // ==================================================
@@ -1287,6 +1294,15 @@ export const schemaPlatforms = {
             },
         },
         windows: {
+            additionalProperties: false,
+            type: 'object',
+            properties: {
+                ...platformCommonProps,
+                ...generateBuildSchemeProps(platformWindowsProps),
+                ...platformWindowsProps,
+            },
+        },
+        xbox: {
             additionalProperties: false,
             type: 'object',
             properties: {
@@ -1403,6 +1419,10 @@ export const schemaRoot = {
                 windows: {
                     // $ref: 'platforms.json#/definitions/windows'
                     ...schemaPlatforms.definitions.windows,
+                },
+                xbox: {
+                    // $ref: 'platforms.json#/definitions/windows'
+                    ...schemaPlatforms.definitions.xbox,
                 },
                 firefoxtv: {
                     // $ref: 'platforms.json#/definitions/firefox'

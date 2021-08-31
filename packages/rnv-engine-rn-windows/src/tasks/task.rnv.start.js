@@ -8,6 +8,7 @@ const { executeTask, shouldSkipTask } = TaskManager;
 const { chalk, logTask, logError, logRaw, logInfo } = Logger;
 const {
     WINDOWS,
+    XBOX,
     TASK_START,
     TASK_CONFIGURE_SOFT,
     PARAMS
@@ -19,6 +20,7 @@ const { doResolve } = Resolver;
 const BUNDLER_PLATFORMS = {};
 
 BUNDLER_PLATFORMS[WINDOWS] = WINDOWS;
+BUNDLER_PLATFORMS[XBOX] = WINDOWS;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -41,6 +43,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_START, originTask)) return true;
 
     switch (platform) {
+        case XBOX:
         case WINDOWS: {
             let startCmd = `node ${doResolve(
                 'react-native'
@@ -100,6 +103,7 @@ export default {
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
-        WINDOWS
+        WINDOWS,
+        XBOX
     ],
 };
