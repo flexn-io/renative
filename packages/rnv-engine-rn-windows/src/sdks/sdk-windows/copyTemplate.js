@@ -23,7 +23,7 @@ const generator_common_1 = require('./generator-common');
 const configUtils_1 = require('./config/configUtils');
 
 // EXTRACTS FROM RNV
-const { getAppFolder, getAppTitle, getConfigProp, isMonorepo } = Common;
+const { getAppFolder, getAppTitle, getConfigProp } = Common;
 const { copyFolderContentsRecursive, copyFolderContentsRecursiveSync } = FileUtils;
 const { logError, logTask, logInfo, logWarning, logSuccess } = Logger;
 const { copyAssetsFolder } = ProjectManager;
@@ -77,7 +77,6 @@ async function generateCertificate(
     );
     return null;
 }
-
 
 // Existing high cyclomatic complexity
 export async function copyProjectTemplateAndReplace(
@@ -231,8 +230,11 @@ export async function copyProjectTemplateAndReplace(
             hasTargets: true,
         });
     }
+
+    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo', false);
+
     const templateVars = {
-        rnwPackagePath: isMonorepo() ? '..\\..\\..\\..\\node_modules\\react-native-windows' : '..\\..\\node_modules\\react-native-windows',
+        rnwPackagePath: isMonorepo ? '..\\..\\..\\..\\node_modules\\react-native-windows' : '..\\..\\node_modules\\react-native-windows',
         useMustache: true,
         regExpPatternsToRemove: [],
         name: c.runtime.appId,

@@ -179,15 +179,33 @@
             "entryFile": "index.webos"
         },
         "windows": {
+            "entryFile": "index.windows",
             "language": "cpp",
-            "reactNativeEngine": "chakra",
             "buildSchemes": {
                 "debug": {
-                    "release": false
+                    "bundleAssets": false
                 },
                 "release": {
                     "release": true,
-                    "logging": false
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "sourcemaps": true
+                }
+            }
+        },
+        "xbox": {
+            "entryFile": "index.xbox",
+            "language": "cpp",
+            "arch": "x64",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "release": true,
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "sourcemaps": true
                 }
             }
         },

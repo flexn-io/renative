@@ -68,7 +68,7 @@
             "engine": "engine-rn-macos"
         },
         "windows": {
-            "engine": "engine-rn-windows"
+            "engine": "engine-rn-electron"
         },
         "xbox": {
             "engine": "engine-rn-windows"

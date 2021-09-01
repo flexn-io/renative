@@ -51,6 +51,7 @@ export const isFactorWatch = factor === 'watch';
 
 export const isEngineRnElectron = engine === 'engine-rn-electron';
 export const isEngineRnMacos = engine === 'engine-rn-macos';
+export const isEngineRnWindows = engine === 'engine-rn-windows';
 export const isEngineRnNext = engine === 'engine-rn-next';
 export const isEngineRnWeb = engine === 'engine-rn-web';
 export const isEngineRn = engine === 'engine-rn';

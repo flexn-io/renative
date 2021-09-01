@@ -50,6 +50,7 @@
             "tizenwatch": 8190,
             "tizenmobile": 8191,
             "windows": 8192,
+            "xbox": 8199,
             "kaios": 8193,
             "firefoxos": 8194,
             "firefoxtv": 8114
@@ -112,6 +113,12 @@
         "macos": {
             "engine": "engine-rn-macos"
         },
+        "windows": {
+            "engine": "engine-rn-electron"
+        },
+        "xbox": {
+            "engine": "engine-rn-windows"
+        },
         "android": {
             "mainActivity": {
                 "onCreate": "super.onCreate(null)"
@@ -139,12 +146,6 @@
             "mainActivity": {
                 "onCreate": "super.onCreate(null)"
             }
-        },
-        "windows": {
-            "engine": "engine-rn-windows"
-        },
-        "xbox": {
-            "engine": "engine-rn-windows"
         }
     },
     "currentTemplate": "renative-template-hello-world",

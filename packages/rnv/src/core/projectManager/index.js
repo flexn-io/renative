@@ -437,10 +437,15 @@ const generateDefaultAssets = async (c, platform, sourcePath) => {
 
     if (confirmAssets) {
         const engine = getEngineRunnerByPlatform(c, c.platform);
-        copyFolderContentsRecursiveSync(
-            path.join(engine.originalTemplateAssetsDir, platform),
-            sourcePath
-        );
+        if (fsExistsSync(path.join(engine.originalTemplateAssetsDir, platform))) {
+            copyFolderContentsRecursiveSync(
+                path.join(engine.originalTemplateAssetsDir, platform),
+                sourcePath
+            );
+        } else {
+            logWarning('Currently used engine does not have default assets, creating an empty folder');
+            mkdirSync(sourcePath);
+        }
     }
 };
 

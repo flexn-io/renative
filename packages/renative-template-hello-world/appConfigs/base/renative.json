@@ -311,32 +311,31 @@
         "windows": {
             "entryFile": "index.windows",
             "language": "cpp",
-            "reactNativeEngine": "chakra",
             "buildSchemes": {
                 "debug": {
-                    "release": false
+                    "bundleAssets": false
                 },
                 "release": {
                     "release": true,
-                    "logging": false
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "sourcemaps": true
                 }
             }
         },
         "xbox": {
             "entryFile": "index.xbox",
             "language": "cpp",
+            "arch": "x64",
             "buildSchemes": {
                 "debug": {
-                    "bundleAssets": false,
-                    "bundleIsDev": true,
-                    "arch": "x64"
+                    "bundleAssets": false
                 },
                 "release": {
+                    "release": true,
                     "bundleAssets": true,
                     "bundleIsDev": false,
-                    "release": true,
-                    "sourcemaps": true,
-                    "arch": "x64"
+                    "sourcemaps": true
                 }
             }
         },
