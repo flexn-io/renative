@@ -10,9 +10,6 @@
         "version": "0.63.4"
     },
     "react-native-windows": "source:rnv",
-    "@react-native-community/cli": {
-      "version": "5.0.1"
-    },
     "@react-native-windows/cli": "source:rnv"
   },
   "platforms": {
