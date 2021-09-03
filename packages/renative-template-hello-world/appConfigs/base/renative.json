@@ -319,7 +319,7 @@
                     "release": true,
                     "bundleAssets": true,
                     "bundleIsDev": false,
-                    "sourcemaps": true
+                    "enableSourceMaps": true
                 }
             }
         },
@@ -335,7 +335,7 @@
                     "release": true,
                     "bundleAssets": true,
                     "bundleIsDev": false,
-                    "sourcemaps": true
+                    "enableSourceMaps": true
                 }
             }
         },
