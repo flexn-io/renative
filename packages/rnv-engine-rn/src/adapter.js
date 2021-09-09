@@ -48,7 +48,8 @@ export const withRNV = (config) => {
         watchFolders,
         projectRoot: path.resolve(projectPath)
     };
-    cnf.resolver.sourceExts = process.env.RNV_EXTENSIONS.split(',');
+    const exts = process.env.RNV_EXTENSIONS || '';
+    cnf.resolver.sourceExts = exts.split(',');
 
     return cnf;
 };

@@ -152,10 +152,6 @@ export const runAndroid = async (c, defaultTarget) => {
     const { platform } = c;
     logTask('runAndroid', `target:${target} default:${defaultTarget}`);
 
-    const outputAab = getConfigProp(c, platform, 'aab', false);
-    // shortcircuit devices logic since aabs can't be installed on a device
-    if (outputAab) return _runGradleApp(c, platform, {});
-
     await resetAdb(c);
 
     if (target && net.isIP(target)) {
@@ -426,7 +422,7 @@ const _runGradleApp = async (c, platform, device) => {
     await executeAsync(
         c,
         `${isSystemWin ? 'gradlew.bat' : './gradlew'} ${
-            outputAab ? 'bundle' : 'assemble'
+            outputAab && c.runtime.task !== 'run' ? 'bundle' : 'assemble'
         }${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`,
         // { interactive: true }
     );
@@ -508,6 +504,10 @@ export const buildAndroid = async (c) => {
         'signingConfig',
         'Debug'
     );
+
+    const outputAab = getConfigProp(c, platform, 'aab', false);
+    // shortcircuit devices logic since aabs can't be installed on a device
+    if (outputAab) return _runGradleApp(c, platform, {});
 
     shell.cd(`${appFolder}`);
 
