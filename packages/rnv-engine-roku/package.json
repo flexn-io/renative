@@ -37,7 +37,7 @@
         "next-images": "1.4.1",
         "next-page-transitions": "1.0.0-beta.2",
         "next-routes": "1.4.2",
-        "next-transpile-modules": "4.1.0"
+        "next-transpile-modules": "8.0.0"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",

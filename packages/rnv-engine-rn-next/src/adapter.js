@@ -9,6 +9,7 @@ const withCSS = require('@zeit/next-css');
 export const withRNV = (config, opts) => {
     const cnf = {
         ...config,
+        webpack5: false,
         distDir: process.env.NEXT_DIST_DIR,
         webpack: (cfg, props) => {
             const { isServer } = props;
