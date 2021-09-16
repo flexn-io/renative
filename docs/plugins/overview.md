@@ -95,24 +95,6 @@ rnv plugin add @noriginmedia/react-spatial-navigation
 ```
 
 
-## @ovaeasy/react-native-vector-icons
-
-
-Version: `7.0.4`
-
-Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
-
-
-
-Npm: https://www.npmjs.com/package/@ovaeasy/react-native-vector-icons
-
-Installation:
-
-```
-rnv plugin add @ovaeasy/react-native-vector-icons
-```
-
-
 ## @react-native-community/async-storage
 
 
@@ -2924,7 +2906,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-feat-engines-merged-4`
+Version: `0.32.0-feat-engines-merged-5`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
