@@ -504,7 +504,7 @@ var _default = {
   }],
   options: [{
     name: '--simulator [string]',
-    description: 'Explicitly set simulator to use. Optionally include iOS version between ' + 'parenthesis at the end to match an exact version: "iPhone 6 (10.0)"',
+    description: 'Explicitly set simulator to use. Optionally include iOS version between ' + 'parenthesis at the end to match an exact version: "iPhone 8 (10.0)"',
     default: 'iPhone 11'
   }, {
     name: '--configuration [string]',

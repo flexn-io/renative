@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, Common } from 'rnv';
 import { SDKAndroid, SDKXcode } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
@@ -13,6 +13,7 @@ const {
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
+const { getConfigProp } = Common;
 const { packageBundleForXcode } = SDKXcode;
 const { packageAndroid } = SDKAndroid;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
@@ -24,6 +25,12 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
     await executeOrSkipTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
 
     if (shouldSkipTask(c, TASK_PACKAGE, originTask)) return true;
+
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+
+    if (!bundleAssets) {
+        return true;
+    }
 
     switch (platform) {
         case IOS:

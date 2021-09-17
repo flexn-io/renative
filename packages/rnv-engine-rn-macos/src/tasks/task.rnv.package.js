@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, Common } from 'rnv';
 import { SDKXcode } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
@@ -9,6 +9,7 @@ const {
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
+const { getConfigProp } = Common;
 const { packageBundleForXcode } = SDKXcode;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
@@ -17,6 +18,12 @@ export const taskRnvPackage = async (c, parentTask, originTask) => {
     const { platform } = c;
 
     await executeOrSkipTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
+
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+
+    if (!bundleAssets) {
+        return true;
+    }
 
     if (shouldSkipTask(c, TASK_PACKAGE, originTask)) return true;
 
