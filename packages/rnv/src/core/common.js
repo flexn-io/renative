@@ -99,6 +99,10 @@ export const getDevServerHost = (c) => {
 export const confirmActiveBundler = async (c) => {
     if (c.runtime.skipActiveServerCheck) return true;
 
+    if (c.program.ci) {
+        return killPort(c.runtime.port);
+    }
+
     const choices = ['Restart the server (recommended)', 'Use existing session'];
 
     const { selectedOption } = await inquirerPrompt({
