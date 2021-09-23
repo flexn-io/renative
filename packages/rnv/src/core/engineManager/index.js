@@ -253,7 +253,8 @@ const _resolvePkgPath = (c, packageName) => {
     if (fsExistsSync(pkgPath)) {
         return pkgPath;
     }
-    pkgPath = path.join(c.paths.project.dir, '../..', 'node_modules', packageName);
+    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
+    pkgPath = path.join(c.paths.project.dir, monoRoot || '../..', 'node_modules', packageName);
     if (fsExistsSync(pkgPath)) {
         return pkgPath;
     }
@@ -297,6 +298,7 @@ Maybe you forgot to define platforms.${platform}.engine in your renative.json?`)
 
 export const generateEnvVars = (c, moduleConfig, nextConfig) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
+    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
 
     return ({
         RNV_EXTENSIONS: getPlatformExtensions(c),
@@ -306,7 +308,7 @@ export const generateEnvVars = (c, moduleConfig, nextConfig) => {
         RNV_PROJECT_ROOT: c.paths.project.dir,
         RNV_APP_BUILD_DIR: getAppFolder(c),
         RNV_IS_MONOREPO: isMonorepo,
-        RNV_MONO_ROOT: (c.runtime.isWrapper || isMonorepo) ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir,
+        RNV_MONO_ROOT: (c.runtime.isWrapper || isMonorepo) ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir,
         RNV_ENGINE: c.runtime.engine.config.id,
         RNV_IS_NATIVE_TV: [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform)
     });

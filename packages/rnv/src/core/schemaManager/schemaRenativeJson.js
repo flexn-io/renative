@@ -1742,6 +1742,11 @@ IN: 1.0.23 OUT: 100230000
         isMonorepo: {
             type: 'boolean',
         },
+        monoRepo: {
+            type: 'string',
+            description: 'Define custom path to monorepo root where starting point is project directory',
+            example: '../../..'
+        },
         enableAnalytics: {
             type: 'boolean',
             description: 'Enable or disable sending analytics to improve ReNative',
