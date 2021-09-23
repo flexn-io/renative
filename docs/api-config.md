@@ -1289,6 +1289,25 @@ ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name o
 
 
 
+## monoRepo
+
+
+| Prop Name | Type | Default Value | Path |
+| :----- | :----- | :---- | :---- |
+| `monoRepo` | `string` |  | `monoRepo` |
+
+Define custom path to monorepo root where starting point is project directory
+
+
+
+---
+
+
+
+
+
+
+
 ## paths
 
 
