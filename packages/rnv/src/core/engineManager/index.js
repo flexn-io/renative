@@ -141,7 +141,7 @@ export const registerAllPlatformEngines = async (c) => {
     return true;
 };
 
-export const loadEngines = async (c) => {
+export const loadEngines = async (c, failOnMissingDeps) => {
     logTask('loadEngines');
     const engines = c.buildConfig?.engines;
     // c.runtime.engineConfigs = {};
@@ -156,7 +156,8 @@ export const loadEngines = async (c) => {
                 if (engVer) {
                     enginesToInstall.push({
                         key: k,
-                        version: engVer
+                        version: engVer,
+                        engineRootPath
                     });
                 }
             } else {
@@ -164,6 +165,10 @@ export const loadEngines = async (c) => {
             }
         });
         if (enginesToInstall.length) {
+            if (failOnMissingDeps) {
+                return Promise.reject(`Failed to load some engines:
+${enginesToInstall.map(v => `> ${v.key}@${v.version} path: ${v.engineRootPath}`).join('\n')}`);
+            }
             logInfo(`Some engines not installed in your project:
 ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
  ADDING TO PACKAGE.JSON...DONE`);
@@ -175,7 +180,7 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
             });
             await installPackageDependencies(c);
 
-            return loadEngines(c);
+            return loadEngines(c, true);
         }
         // All engines ready to be registered
         _registerPlatformEngine(c, c.platform);
