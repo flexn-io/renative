@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-lightning",
-    "version": "0.32.0-feat-engines-merged-9",
+    "version": "0.32.0-feat-engines-merged-10",
     "description": "ReNative Engine to build lightning based apps.",
     "keywords": [
         "lightning"
