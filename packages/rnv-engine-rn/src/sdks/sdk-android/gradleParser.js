@@ -315,6 +315,7 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     const pluginConfig = c.buildConfig ?? {};
     const debugBuildTypes = pluginConfig?.platforms[platform]?.gradle?.buildTypes?.debug ?? [];
     const releaseBuildTypes = pluginConfig?.platforms[platform]?.gradle?.buildTypes?.release ?? [];
+    const isSigningDisabled = getConfigProp(c, platform, 'disableSigning') === true;
     c.pluginConfigAndroid.buildTypes = `
     debug {
         minifyEnabled ${minifyEnabled}
@@ -324,7 +325,7 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     release {
         minifyEnabled ${minifyEnabled}
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        signingConfig signingConfigs.release
+        ${isSigningDisabled ? '' : 'signingConfig signingConfigs.release'}
         ${releaseBuildTypes.join('\n        ')}
     }`;
 
