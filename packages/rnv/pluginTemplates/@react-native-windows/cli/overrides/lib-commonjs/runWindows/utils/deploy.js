@@ -5,7 +5,7 @@
  * @format
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.startServerInNewWindow = exports.deployToDesktop = exports.deployToDevice = exports.getBuildConfiguration = void 0;
+exports.deployToDesktop = exports.deployToDevice = exports.getBuildConfiguration = void 0;
 const child_process_1 = require("child_process");
 const fs = require("fs");
 const http = require("http");
@@ -219,41 +219,5 @@ async function deployToDesktop(options, verbose, config, buildTools) {
     }
 }
 exports.deployToDesktop = deployToDesktop;
-function startServerInNewWindow(options, verbose) {
-    return new Promise(resolve => {
-        if (options.packager) {
-            http
-            .get(`http://localhost:${options.devPort || 8092}/status`, res => {
-                if (res.statusCode === 200) {
-                    commandWithProgress_1.newSuccess('React-Native Server already started');
-                }
-                else {
-                    commandWithProgress_1.newError('React-Native Server not responding');
-                }
-                resolve();
-            })
-                .on('error', () => {
-                // Attempts to launch Metro server in a new CMD window and we don't want that 
-                // launchServer(options, verbose);
-                resolve();
-            });
-        }
-        else {
-            resolve();
-        }
-    });
-}
-exports.startServerInNewWindow = startServerInNewWindow;
-function launchServer(options, verbose) {
-    commandWithProgress_1.newSuccess(`Starting the React-Native Server Server on port ${options.devPort || 8092}`);
-    const opts = {
-        cwd: options.root,
-        detached: true,
-        stdio: verbose ? 'inherit' : 'ignore',
-        ...(options.additionalMetroOptions ? options.additionalMetroOptions : {})
-    };
-    child_process_1.spawn('cmd.exe', ['/C', `start npx --no-install react-native start --port ${
-        options.devPort || 8092
-    }`], opts);
-}
+
 //# sourceMappingURL=deploy.js.map

@@ -232,9 +232,10 @@ export async function copyProjectTemplateAndReplace(
     }
 
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo', false);
+    const monoRoot = getConfigProp(c, c.platform, 'monoRoot') || '..\\..';
 
     const templateVars = {
-        rnwPackagePath: isMonorepo ? '..\\..\\..\\..\\node_modules\\react-native-windows' : '..\\..\\node_modules\\react-native-windows',
+        rnwPackagePath: isMonorepo ? `${monoRoot.replace(/\//g, '\\')}\\..\\..\\node_modules\\react-native-windows` : '..\\..\\node_modules\\react-native-windows',
         useMustache: true,
         regExpPatternsToRemove: [],
         name: c.runtime.appId,
