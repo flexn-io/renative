@@ -21,6 +21,11 @@ export const withRNV = (config, opts) => {
                 mAliases.forEach((mAlias) => {
                     const aliasArr = mAlias.split(':');
                     cfg.resolve.alias[aliasArr[0]] = aliasArr[1];
+                    // On Windows paths include ':' character (ex. C:\\Folder), so a third
+                    // value exists and needs to be appended to path in order to resolve modules
+                    if (aliasArr[2]) {
+                        cfg.resolve.alias[aliasArr[0]] += `:${aliasArr[2]}`;
+                    }
                 });
             }
             cfg.module.rules[0].test = /\.(tsx|ts|js|mjs|jsx)$/;
@@ -36,6 +41,11 @@ export const withRNV = (config, opts) => {
             // });
             if (typeof config.webpack === 'function') {
                 return config.webpack(cfg, props);
+            }
+
+            // TODO This feels like haxx
+            if (cfg.module.rules[1].oneOf[5].include && Array.isArray(cfg.module.rules[1].oneOf[5].include.or)) {
+                cfg.module.rules[1].oneOf[5].include.or = cfg.module.rules[1].oneOf[5].include.or.filter(pth => !!pth);
             }
             return cfg;
         },
