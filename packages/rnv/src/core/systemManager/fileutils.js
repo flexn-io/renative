@@ -759,6 +759,11 @@ export const formatBytes = (bytes, decimals = 2) => {
     return `${parseFloat((bytes / (k ** i)).toFixed(dm))} ${sizes[i]}`;
 };
 
+// Return all directories within a directory
+export const getDirectories = source => fs.readdirSync(source, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
+
 export default {
     sanitizeDynamicRefs,
     getFileListSync,
@@ -779,5 +784,6 @@ export default {
     arrayMerge,
     mergeObjects,
     updateConfigFile,
-    replaceHomeFolder
+    replaceHomeFolder,
+    getDirectories
 };

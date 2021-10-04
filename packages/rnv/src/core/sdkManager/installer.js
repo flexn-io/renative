@@ -67,7 +67,10 @@ const SDK_LOCATIONS = {
         path.join(USER_HOME_DIR, 'tizen-studio'),
         path.join('C:\\tizen-studio')
     ],
-    webos: [path.join('/opt/webOS_TV_SDK')]
+    webos: [
+        path.join('/opt/webOS_TV_SDK'),
+        path.join('C:\\webOS_TV_SDK')
+    ]
 };
 
 const _logSdkWarning = (c) => {
