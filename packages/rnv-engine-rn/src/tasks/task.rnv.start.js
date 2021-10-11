@@ -9,6 +9,7 @@ const { executeTask, shouldSkipTask } = TaskManager;
 const { chalk, logTask, logError, logRaw, logInfo } = Logger;
 const {
     IOS,
+    MACOS,
     ANDROID,
     ANDROID_TV,
     FIRE_TV,
@@ -23,6 +24,7 @@ const { executeAsync } = Exec;
 const BUNDLER_PLATFORMS = {};
 
 BUNDLER_PLATFORMS[IOS] = IOS;
+BUNDLER_PLATFORMS[MACOS] = IOS;
 BUNDLER_PLATFORMS[ANDROID] = ANDROID;
 BUNDLER_PLATFORMS[ANDROID_TV] = ANDROID;
 BUNDLER_PLATFORMS[FIRE_TV] = ANDROID;
@@ -50,6 +52,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case IOS:
+        case MACOS:
         case ANDROID:
         case ANDROID_TV:
         case FIRE_TV:
@@ -111,6 +114,7 @@ export default {
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         IOS,
+        MACOS,
         ANDROID,
         ANDROID_TV,
         FIRE_TV,

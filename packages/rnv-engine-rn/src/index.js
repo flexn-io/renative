@@ -67,6 +67,12 @@ export default {
             extenstions: generateEngineExtensions([
                 'androidwear.watch', 'watch', 'androidwear', 'android', 'watch.native', 'native'
             ], CNF)
+        },
+        macos: {
+            defaultPort: 8086,
+            extenstions: generateEngineExtensions([
+                'macos.desktop', 'desktop', 'macos', 'ios', 'desktop.native', 'native'
+            ], CNF)
         }
     }
 

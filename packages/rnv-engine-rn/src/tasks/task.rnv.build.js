@@ -8,6 +8,7 @@ const {
     ANDROID,
     ANDROID_TV,
     FIRE_TV,
+    MACOS,
     ANDROID_WEAR,
     TASK_BUILD, TASK_PACKAGE, TASK_EXPORT,
     PARAMS
@@ -33,6 +34,7 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
         case ANDROID_WEAR:
             return buildAndroid(c);
         case IOS:
+        case MACOS:
             if (parentTask === TASK_EXPORT) {
                 // build task is not necessary when exporting ios
                 return true;
@@ -53,5 +55,6 @@ export default {
         ANDROID,
         ANDROID_TV,
         ANDROID_WEAR,
+        MACOS
     ],
 };

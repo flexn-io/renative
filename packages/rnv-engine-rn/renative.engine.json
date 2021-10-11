@@ -26,6 +26,17 @@
                 }
             }
         },
+        "macos": {
+            "engine": "engine-rn",
+              "npm": {
+                "devDependencies": {
+                    "xcode": "2.1.0"
+                },
+                "optionalDependencies": {
+                    "ios-deploy": "1.10.0"
+                }
+            }
+        },
         "android": {
             "engine": "engine-rn",
             "npm": {

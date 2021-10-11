@@ -7,6 +7,7 @@ const { logErrorPlatform } = PlatformManager;
 const { logTask, logSummary, logRaw } = Logger;
 const {
     IOS,
+    MACOS,
     ANDROID,
     ANDROID_TV,
     FIRE_TV,
@@ -34,6 +35,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case IOS:
+        case MACOS:
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
                 await runXcodeProject(c);
@@ -81,6 +83,7 @@ const Task = {
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [
         IOS,
+        MACOS,
         ANDROID,
         ANDROID_TV,
         FIRE_TV,

@@ -183,6 +183,8 @@ export const runXcodeProject = async (c) => {
         devicesArr = await getAppleDevices(c, true, false);
     }
 
+    console.log('WAFAFFA', device);
+
     if (device === true) {
         if (devicesArr.length === 1) {
             logSuccess(
@@ -274,6 +276,7 @@ export const runXcodeProject = async (c) => {
             type: 'list',
             choices: devices
         });
+        console.log('WTFFFFFF', sim);
         c.runtime.target = sim.name;
         p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     } else {
