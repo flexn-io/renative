@@ -117,6 +117,10 @@
                 "podName": "RNGestureHandler",
                 "path": "node_modules/react-native-gesture-handler"
             },
+            "macos": {
+                "podName": "RNGestureHandler",
+                "path": "node_modules/react-native-gesture-handler"
+            },
             "tvos": {
                 "podName": "RNGestureHandler",
                 "path": "node_modules/react-native-gesture-handler"
@@ -212,6 +216,9 @@
         "react-native-linear-gradient": {
             "version": "2.4.0",
             "ios": {
+                "podName": "BVLinearGradient"
+            },
+            "macos": {
                 "podName": "BVLinearGradient"
             },
             "tvos": {
@@ -811,6 +818,9 @@
             "ios": {
                 "podName": "RNSVG"
             },
+            "macos": {
+                "podName": "RNSVG"
+            },
             "tvos": {
                 "podName": "RNSVG"
             },
@@ -996,6 +1006,9 @@
         "react-native-permissions": {
             "version": "1.1.1",
             "ios": {
+                "podName": "ReactNativePermissions"
+            },
+            "macos": {
                 "podName": "ReactNativePermissions"
             }
         },
@@ -2338,6 +2351,9 @@
                 "podName": "RNCAsyncStorage"
             },
             "tvos": {
+                "podName": "RNCAsyncStorage"
+            },
+            "macos": {
                 "podName": "RNCAsyncStorage"
             },
             "android": {
