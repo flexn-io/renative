@@ -634,7 +634,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
         }
     }
 
-    parseAndroidConfigObject(c, plugin);
+    parseAndroidConfigObject(c, plugin, key);
 
     if (!skipPathResolutions) {
         _fixAndroidLegacy(c, pathAbsolute);
@@ -649,11 +649,11 @@ const getObj = (c, obj, keys) => {
     }
 };
 
-export const parseAndroidConfigObject = (c, obj) => {
+export const parseAndroidConfigObject = (c, obj, key) => {
     const implementations = getObj(c, obj, ['implementations']);
     if (implementations) {
         implementations.forEach((v) => {
-            c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation ${v}\n`;
+            c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation ${sanitizePluginPath(v, key)}\n`;
         });
     }
 
@@ -662,13 +662,13 @@ export const parseAndroidConfigObject = (c, obj) => {
     if (appBuildGradle) {
         if (appBuildGradle.apply) {
             appBuildGradle.apply.forEach((v) => {
-                c.pluginConfigAndroid.applyPlugin += `apply ${v}\n`;
+                c.pluginConfigAndroid.applyPlugin += `apply ${sanitizePluginPath(v, key)}\n`;
             });
         }
 
         if (appBuildGradle.defaultConfig) {
             appBuildGradle.defaultConfig.forEach((v) => {
-                c.pluginConfigAndroid.defaultConfig += `${v}\n`;
+                c.pluginConfigAndroid.defaultConfig += `${sanitizePluginPath(v, key)}\n`;
             });
         }
     }
@@ -676,7 +676,7 @@ export const parseAndroidConfigObject = (c, obj) => {
     const afterEvaluate = getObj(c, obj, ['afterEvaluate']);
     if (afterEvaluate) {
         afterEvaluate.forEach((v) => {
-            c.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${v}\n`;
+            c.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${sanitizePluginPath(v, key)}\n`;
         });
     }
 
@@ -687,7 +687,7 @@ export const parseAndroidConfigObject = (c, obj) => {
     if (allProjRepos) {
         Object.keys(allProjRepos).forEach((k) => {
             if (allProjRepos[k] === true) {
-                c.pluginConfigAndroid.buildGradleAllProjectsRepositories += `${k}\n`;
+                c.pluginConfigAndroid.buildGradleAllProjectsRepositories += `${sanitizePluginPath(k, key)}\n`;
             }
         });
     }
@@ -728,7 +728,7 @@ export const parseAndroidConfigObject = (c, obj) => {
     const injectAfterAll = buildGradle?.injectAfterAll;
     if (injectAfterAll?.forEach) {
         injectAfterAll.forEach((k) => {
-            c.pluginConfigAndroid.buildGradleAfterAll += `${k}\n`;
+            c.pluginConfigAndroid.buildGradleAfterAll += `${sanitizePluginPath(k, key)}\n`;
         });
     }
 };
