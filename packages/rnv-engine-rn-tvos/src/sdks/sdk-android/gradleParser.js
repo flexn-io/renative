@@ -1,5 +1,5 @@
 import path from 'path';
-import { FileUtils, Logger, Resolver, Common } from 'rnv';
+import { FileUtils, Logger, Resolver, Common, PluginManager } from 'rnv';
 
 const {
     getAppFolder,
@@ -13,6 +13,7 @@ const {
 const { fsExistsSync, writeCleanFile, fsWriteFileSync } = FileUtils;
 const { doResolve, doResolvePath } = Resolver;
 const { chalk, logTask, logWarning, logDebug } = Logger;
+const { sanitizePluginPath, includesPluginPath } = PluginManager;
 
 
 export const parseBuildGradleSync = (c) => {
@@ -594,7 +595,11 @@ export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
     let pathAbsolute;
 
     if (!skipPathResolutions) {
-        pathAbsolute = doResolvePath(pathFixed, true, { forceForwardPaths: true });
+        if (includesPluginPath(pathFixed)) {
+            pathAbsolute = sanitizePluginPath(pathFixed, key, true, { forceForwardPaths: true });
+        } else {
+            pathAbsolute = doResolvePath(pathFixed, true, { forceForwardPaths: true });
+        }
     }
 
     // APP/BUILD.GRADLE

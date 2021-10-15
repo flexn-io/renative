@@ -3007,7 +3007,7 @@
             "android": {
                 "app/build.gradle": {
                     "apply": [
-                        "from: \"../../../node_modules/@sentry/react-native/sentry.gradle\""
+                        "from: \"{{PLUGIN_ROOT}}/sentry.gradle\""
                     ]
                 },
                 "projectName": "@sentry_react-native",
@@ -3018,7 +3018,7 @@
             "androidtv": {
                 "app/build.gradle": {
                     "apply": [
-                        "from: \"../../../node_modules/@sentry/react-native/sentry.gradle\""
+                        "from: \"{{PLUGIN_ROOT}}/sentry.gradle\""
                     ]
                 },
                 "projectName": "@sentry_react-native",
@@ -3029,7 +3029,7 @@
             "firetv": {
                 "app/build.gradle": {
                     "apply": [
-                        "from: \"../../../node_modules/@sentry/react-native/sentry.gradle\""
+                        "from: \"{{PLUGIN_ROOT}}/sentry.gradle\""
                     ]
                 },
                 "projectName": "@sentry_react-native",
