@@ -100,7 +100,7 @@ rnv plugin add @noriginmedia/react-spatial-navigation
 
 Version: `1.12.0`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`
+Platforms: `ios`,`tvos`,`macos`,`android`,`androidtv`,`firetv`
 
 
 
@@ -1504,7 +1504,7 @@ rnv plugin add react-native-fs
 
 Version: `1.4.1`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
+Platforms: `ios`,`macos`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
 
 
@@ -1738,7 +1738,7 @@ rnv plugin add react-native-languages
 
 Version: `2.4.0`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
+Platforms: `ios`,`macos`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
 
 
@@ -2026,7 +2026,7 @@ rnv plugin add react-native-pdf-view
 
 Version: `1.1.1`
 
-Platforms: `ios`
+Platforms: `ios`,`macos`
 
 
 
@@ -2440,7 +2440,7 @@ rnv plugin add react-native-sqlite-storage
 
 Version: `9.4.0`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
+Platforms: `ios`,`macos`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
 
 
@@ -2906,7 +2906,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-feat-engines-merged-12`
+Version: `0.32.0-feat-engines-merged-13`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
