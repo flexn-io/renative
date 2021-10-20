@@ -5,6 +5,7 @@ const {
     TASK_EXPORT,
     TASK_DEPLOY,
     IOS,
+    MACOS,
     ANDROID,
     ANDROID_TV,
     FIRE_TV,
@@ -31,6 +32,7 @@ export default {
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         IOS,
+        MACOS,
         ANDROID,
         ANDROID_TV,
         FIRE_TV,

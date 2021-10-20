@@ -5,10 +5,10 @@ const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     IOS,
+    MACOS,
     ANDROID,
     ANDROID_TV,
     FIRE_TV,
-    MACOS,
     ANDROID_WEAR,
     TASK_BUILD, TASK_PACKAGE, TASK_EXPORT,
     PARAMS
