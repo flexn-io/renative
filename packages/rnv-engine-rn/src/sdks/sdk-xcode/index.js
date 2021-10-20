@@ -183,8 +183,6 @@ export const runXcodeProject = async (c) => {
         devicesArr = await getAppleDevices(c, true, false);
     }
 
-    console.log('WAFAFFA', device);
-
     if (device === true) {
         if (devicesArr.length === 1) {
             logSuccess(
@@ -276,32 +274,42 @@ export const runXcodeProject = async (c) => {
             type: 'list',
             choices: devices
         });
-        console.log('WTFFFFFF', sim);
         c.runtime.target = sim.name;
-        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
-    } else {
-        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
-    }
-
-    if (p) {
-        // const allowProvisioningUpdates = getConfigProp(
-        //     c,
-        //     c.platform,
-        //     'allowProvisioningUpdates',
-        //     true
-        // );
-        // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
-
-        if (bundleAssets) {
-            return packageBundleForXcode(c, bundleIsDev)
-                .then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
+        if (c.runtime.target) {
+            p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
         }
-        return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+    } else if (c.runtime.target) {
+        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     }
-    return Promise.reject('Missing options for react-native command!');
+
+    if (c.platform === MACOS) {
+        await buildXcodeProject(c, c.platform);
+        return executeAsync(c, `open ${path.join(appPath, 'build/RNVApp/Build/Products/Debug-maccatalyst/RNVApp.app')}`);
+    }
+
+    // if (p) {
+    // const allowProvisioningUpdates = getConfigProp(
+    //     c,
+    //     c.platform,
+    //     'allowProvisioningUpdates',
+    //     true
+    // );
+    // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
+    return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p);
+
+    // }
+    // return Promise.reject('Missing options for react-native command!');
 };
 
-const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
+const _packageOrRun = (c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p) => {
+    if (bundleAssets) {
+        return packageBundleForXcode(c, bundleIsDev)
+            .then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
+    }
+    return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+};
+
+const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
     const cmd = `node ${doResolve(
         'react-native'
@@ -526,6 +534,10 @@ export const buildXcodeProject = async (c) => {
             }
             break;
         }
+        case MACOS: {
+            destinationPlatform = 'macOS';
+            break;
+        }
         default:
             logError(`platform ${c.platform} not supported`);
     }
@@ -564,7 +576,11 @@ export const buildXcodeProject = async (c) => {
     }
     if (!ps.includes('-destination')) {
         p.push('-destination');
-        p.push(`platform=${destinationPlatform},name=${c.runtime.target}`);
+        if (platform === MACOS) {
+            p.push(`platform=${destinationPlatform}`);
+        } else {
+            p.push(`platform=${destinationPlatform},name=${c.runtime.target}`);
+        }
     }
 
     p.push('build');
