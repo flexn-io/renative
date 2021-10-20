@@ -96,6 +96,28 @@ export const getDevServerHost = (c) => {
     return devServerHostFixed;
 };
 
+export const existBuildsOverrideForTargetPathSync = (c, destPath) => {
+    const appFolder = getAppFolder(c);
+    const relativePath = path.relative(appFolder, destPath);
+    let result = false;
+
+    const pathsToCheck = [];
+
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            pathsToCheck.push(getBuildsFolder(c, c.platform, v));
+        });
+    }
+
+    for (let i = 0; i < pathsToCheck.length; i++) {
+        if (fsExistsSync(path.join(pathsToCheck[i], relativePath))) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+};
+
 export const confirmActiveBundler = async (c) => {
     if (c.runtime.skipActiveServerCheck) return true;
 
