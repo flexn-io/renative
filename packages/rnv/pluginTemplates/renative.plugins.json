@@ -258,6 +258,9 @@
             "tvos": {
                 "podName": "react-native-fetch-blob"
             },
+            "macos": {
+                "podName": "react-native-fetch-blob"
+            },
             "android": {
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"
             },
@@ -336,6 +339,9 @@
                 "podName": "RNFS"
             },
             "tvos": {
+                "podName": "RNFS"
+            },
+            "macos": {
                 "podName": "RNFS"
             },
             "android": {
@@ -638,6 +644,9 @@
         "react-native-pdf": {
             "version": "5.0.6",
             "ios": {
+                "podName": "react-native-pdf"
+            },
+            "macos": {
                 "podName": "react-native-pdf"
             },
             "android": {
@@ -1148,6 +1157,9 @@
         "react-native-signature-capture": {
             "version": "0.4.9",
             "ios": {
+                "podName": "react-native-signature-capture"
+            },
+            "macos": {
                 "podName": "react-native-signature-capture"
             },
             "android": {
