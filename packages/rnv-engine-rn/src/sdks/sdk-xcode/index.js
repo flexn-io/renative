@@ -615,9 +615,13 @@ const archiveXcodeProject = (c) => {
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
         if (platform === IOS) sdk = 'iphoneos';
-        if (platform === MACOS) sdk = 'macosx';
+        // if (platform === MACOS) sdk = 'macosx';
     }
-    const sdkArr = [sdk];
+    const sdkArr = [];
+
+    if (sdk) {
+        sdkArr.push(sdk);
+    }
 
     const appPath = getAppFolder(c);
     const exportPath = path.join(appPath, 'release');
@@ -645,7 +649,7 @@ const archiveXcodeProject = (c) => {
         p.push('-scheme');
         p.push(scheme);
     }
-    if (!ps.includes('-sdk')) {
+    if (!ps.includes('-sdk') && sdkArr.length) {
         p.push('-sdk');
         p.push(...sdkArr);
     }
