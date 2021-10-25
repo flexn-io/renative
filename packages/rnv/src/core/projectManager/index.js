@@ -37,14 +37,10 @@ export const checkAndBootstrapIfRequired = async (c) => {
     logTask('checkAndBootstrapIfRequired');
     const { template } = c.program;
     if (!c.paths.project.configExists && template) {
-        try {
-            await executeAsync(`npm i ${template} --no-save`, {
-                cwd: c.paths.project.dir
-            });
-            console.log('*********');
-        } catch (e) {
-            console.log('&&&&&&&&&&&&&&&&&&&&&&&&', e);
-        }
+        await executeAsync(`npm i ${template} --no-save`, {
+            cwd: c.paths.project.dir
+        });
+
         const templateArr = template.split('@').filter(v => v !== '');
         const templateDir = template.startsWith('@') ? `@${templateArr[0]}` : templateArr[0];
         const templatePath = path.join(c.paths.project.dir, 'node_modules', templateDir);

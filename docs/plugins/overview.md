@@ -1432,7 +1432,7 @@ rnv plugin add react-native-fbsdk
 
 Version: `0.10.8`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`
+Platforms: `ios`,`tvos`,`macos`,`android`,`androidtv`,`firetv`
 
 
 
@@ -1486,7 +1486,7 @@ rnv plugin add react-native-firebase
 
 Version: `2.18.0`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`
+Platforms: `ios`,`tvos`,`macos`,`android`,`androidtv`,`firetv`
 
 
 
@@ -1990,7 +1990,7 @@ rnv plugin add react-native-parallax-view
 
 Version: `5.0.6`
 
-Platforms: `ios`,`android`,`androidtv`,`firetv`
+Platforms: `ios`,`macos`,`android`,`androidtv`,`firetv`
 
 
 
@@ -2260,7 +2260,7 @@ rnv plugin add react-native-sensors
 
 Version: `0.4.9`
 
-Platforms: `ios`,`android`,`androidtv`,`firetv`
+Platforms: `ios`,`macos`,`android`,`androidtv`,`firetv`
 
 
 
@@ -2906,7 +2906,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-feat-engines-merged-14`
+Version: `0.32.0-feat-engines-merged-15`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
