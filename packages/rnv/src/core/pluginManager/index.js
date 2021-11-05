@@ -316,6 +316,7 @@ package.json will be overriden`
     if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
         _updatePackage(c, { dependencies: newDeps, devDependencies: newDevDeps });
     }
+
     return true;
 };
 
@@ -660,8 +661,66 @@ export const installPackageDependenciesAndPlugins = async (c) => {
 
     await installPackageDependencies(c);
     await overrideTemplatePlugins(c);
+    await _checkForPluginDependencies(c);
 };
 
+const _getPluginConfiguration = (c, pluginName) => {
+    let renativePluginPath;
+    try {
+        renativePluginPath = require.resolve(`${pluginName}/renative.plugin.json`, { paths: [c.paths.project.dir] });
+    } catch {
+        //
+    }
+
+    if (renativePluginPath) {
+        return readObjectSync(renativePluginPath);
+    }
+    return null;
+};
+
+const _checkForPluginDependencies = async (c) => {
+    const toAdd = {};
+    Object.keys(c.buildConfig.plugins).forEach((pluginName) => {
+        const renativePluginConfig = _getPluginConfiguration(c, pluginName);
+
+        if (renativePluginConfig?.plugins) {
+            // we have dependencies for this plugin
+            Object.keys(renativePluginConfig.plugins).forEach((p) => {
+                if (!c.buildConfig.plugins[p] && c.buildConfig.plugins[pluginName].plugins?.[p] !== null) {
+                    logWarning(`Plugin ${p} is not installed yet.`);
+                    toAdd[p] = renativePluginConfig.plugins[p];
+                    c.buildConfig.plugins[p] = renativePluginConfig.plugins[p];
+                }
+            });
+        }
+    });
+
+    if (Object.keys(toAdd).length) {
+        // ask the user
+        let install = false;
+        if (!c.program.ci) {
+            const answer = await inquirerPrompt({
+                type: 'confirm',
+                message: `Install ${Object.keys(toAdd).join(', ')}?`,
+                warningMessage: `One or more dependencies are not installed: ${chalk().white(Object.keys(toAdd).join(', '))}`
+            });
+            install = answer.confirm;
+        } else {
+            logWarning('CI detected. Automatically installing dependencies');
+            install = true;
+        }
+
+        if (install) {
+            c.files.project.config.plugins = {
+                ...c.files.project.config.plugins,
+                ...toAdd
+            };
+            writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
+            await configurePlugins(c);
+            await installPackageDependenciesAndPlugins(c);
+        }
+    }
+};
 
 export const overrideTemplatePlugins = async (c) => {
     logTask('overrideTemplatePlugins');
