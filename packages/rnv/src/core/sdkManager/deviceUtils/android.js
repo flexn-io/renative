@@ -451,10 +451,12 @@ const getEmulatorName = async (c, words) => {
 };
 
 export const connectToWifiDevice = async (c, target) => {
-    let connect_str = 'connect '+target;
-    if(target.split(':')[1] === null){
-        connect_str = 'connect '+target+':5555';
+    let connect_str = `connect ${target}`;
+
+    if (!target.includes(':')) {
+        connect_str = `connect ${target}:5555`;
     }
+
     const deviceResponse = await execCLI(
         c,
         CLI_ANDROID_ADB,
