@@ -55,6 +55,11 @@ export const parseBuildGradleSync = (c) => {
                 c.pluginConfigAndroid.buildGradleBuildScriptRepositories
         },
         {
+            pattern: '{{INJECT_KOTLIN_VERSION}}',
+            override:
+                c.pluginConfigAndroid.kotlinVersion || '1.3.0'
+        },
+        {
             pattern: '{{INJECT_PLUGINS}}',
             override:
                 c.pluginConfigAndroid.buildGradlePlugins
