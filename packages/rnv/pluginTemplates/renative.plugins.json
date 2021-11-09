@@ -23,7 +23,7 @@
             "version": "npm:react-native-tvos@0.63.4-0"
         },
         "renative": {
-            "version": "0.32.0-feat-engines-merged-15",
+            "version": "0.32.0-feat-engines-merged-16",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -114,16 +114,13 @@
         "react-native-gesture-handler": {
             "version": "1.4.1",
             "ios": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
+                "podName": "RNGestureHandler"
             },
             "macos": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
+                "podName": "RNGestureHandler"
             },
             "tvos": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
+                "podName": "RNGestureHandler"
             },
             "android": {
                 "path": "node_modules/react-native-gesture-handler/android",
