@@ -65,7 +65,7 @@
             "engine": "engine-rn-tvos"
         },
         "macos": {
-            "engine": "engine-rn-macos"
+            "engine": "engine-rn"
         },
         "windows": {
             "engine": "engine-rn-electron"

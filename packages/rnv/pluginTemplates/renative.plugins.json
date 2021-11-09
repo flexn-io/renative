@@ -114,16 +114,13 @@
         "react-native-gesture-handler": {
             "version": "1.4.1",
             "ios": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
+                "podName": "RNGestureHandler"
             },
             "macos": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
+                "podName": "RNGestureHandler"
             },
             "tvos": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
+                "podName": "RNGestureHandler"
             },
             "android": {
                 "path": "node_modules/react-native-gesture-handler/android",
