@@ -639,7 +639,10 @@ const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
         .then(() => execCLI(
             c,
             CLI_ANDROID_AVDMANAGER,
-            `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`
+            `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`,
+            {
+                interactive: true
+            }
         ))
         .catch(e => logError(e, true));
 };

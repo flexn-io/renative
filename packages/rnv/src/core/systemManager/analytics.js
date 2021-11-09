@@ -6,7 +6,7 @@ import path from 'path';
 
 import Config from '../configManager/config';
 import pkg from '../../../package.json';
-import { REDASH_KEY, REDASH_URL } from '../constants';
+import { REDASH_KEY, REDASH_URL, REDASH_ENDPOINT } from '../constants';
 
 // deal with useless duplicate errors on sentry because of different error texts
 const sanitizeError = (err) => {
@@ -57,7 +57,7 @@ class Analytics {
 
             this.errorFixer.init({
                 dsn:
-                    'https://004caee3caa04c81a10f2ba31a945362@sentry.io/1795473',
+                    REDASH_ENDPOINT,
                 release: `rnv@${pkg.version}`,
                 integrations: [
                     new RewriteFrames({

@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { CastButton } from 'react-native-google-cast';
-import { getScaledValue } from 'renative';
+import { getScaledValue, isFactorDesktop } from 'renative';
 import ScreenHome from '../components/screenHome';
 import ScreenMyPage from '../components/screenMyPage';
 import ScreenModal from '../components/screenModal';
@@ -43,9 +43,16 @@ const StackNavigator = ({ navigation }) => (
             component={ScreenHome}
             options={{
                 headerLeft: () => <DrawerButton navigation={navigation} />,
-                headerRight: () => (
-                    <CastButton style={{ width: Theme.iconSize, height: Theme.iconSize, tintColor: Theme.color3 }} />
-                )
+                headerRight: () => {
+                    if (!isFactorDesktop) {
+                        return (
+                            <CastButton style={{
+                                width: Theme.iconSize, height: Theme.iconSize, tintColor: Theme.color3
+                            }}
+                            />
+                        );
+                    }
+                }
             }}
         />
         <Stack.Screen name="my-page" component={ScreenMyPage} />
@@ -65,6 +72,7 @@ const App = () => {
     }, []);
     return (
         <NavigationContainer>
+            {/* TODO: [macOS] fix the issue where drawer buttons just closes the drawer */}
             <Drawer.Navigator drawerContent={Menu}>
                 <Drawer.Screen name="drawer" component={ModalNavigator} />
             </Drawer.Navigator>

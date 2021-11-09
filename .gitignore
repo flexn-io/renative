@@ -58,3 +58,8 @@ coverage
 
 # IMPORTANT. in rnv .next should NOT be at the root level but in platformBuilds. if you see it in root level you should delete it
 # .next
+
+# RN Windows Engine
+.binlog
+packages/app/app.json
+packages/**/*.binlog

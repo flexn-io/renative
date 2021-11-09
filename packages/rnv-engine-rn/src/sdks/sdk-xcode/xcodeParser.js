@@ -13,7 +13,7 @@ const { fsExistsSync, writeFileSync, fsWriteFileSync } = FileUtils;
 const { doResolve } = Resolver;
 const { chalk, logTask, logWarning } = Logger;
 const { inquirerPrompt } = Prompt;
-const { IOS, TVOS } = Constants;
+const { IOS } = Constants;
 const { parsePlugins } = PluginManager;
 
 
@@ -39,12 +39,24 @@ export const parseXcodeProject = async (c) => {
         platform,
         'provisionProfileSpecifier'
     );
+    c.runtime.xcodeProj.provisionProfileSpecifiers = getConfigProp(
+        c,
+        platform,
+        'provisionProfileSpecifiers'
+    );
     c.runtime.xcodeProj.codeSignIdentity = getConfigProp(
         c,
         platform,
         'codeSignIdentity',
         'iPhone Developer'
     );
+
+    c.runtime.xcodeProj.codeSignIdentities = getConfigProp(
+        c,
+        platform,
+        'codeSignIdentities'
+    );
+
     c.runtime.xcodeProj.systemCapabilities = getConfigProp(
         c,
         platform,
@@ -128,8 +140,10 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
             provisioningStyle,
             deploymentTarget,
             provisionProfileSpecifier,
+            provisionProfileSpecifiers,
             excludedArchs,
             codeSignIdentity,
+            codeSignIdentities,
             systemCapabilities,
             teamID,
             appId
@@ -153,11 +167,6 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
                 'IPHONEOS_DEPLOYMENT_TARGET',
                 deploymentTarget
             );
-        } else if (platform === TVOS) {
-            xcodeProj.updateBuildProperty(
-                'TVOS_DEPLOYMENT_TARGET',
-                deploymentTarget
-            );
         }
 
         if (provisionProfileSpecifier) {
@@ -165,6 +174,13 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
                 'PROVISIONING_PROFILE_SPECIFIER',
                 `"${provisionProfileSpecifier}"`
             );
+        }
+
+        if (provisionProfileSpecifiers) {
+            Object.keys(provisionProfileSpecifiers).forEach(key => xcodeProj.updateBuildProperty(
+                `"PROVISIONING_PROFILE_SPECIFIER[${key}]"`,
+                `"${provisionProfileSpecifiers[key]}"`
+            ));
         }
 
         if (excludedArchs) {
@@ -201,6 +217,13 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
             '"CODE_SIGN_IDENTITY[sdk=iphoneos*]"',
             `"${codeSignIdentity}"`
         );
+
+        if (codeSignIdentities) {
+            Object.keys(codeSignIdentities).forEach(key => xcodeProj.updateBuildProperty(
+                `"CODE_SIGN_IDENTITY[${key}]"`,
+                `"${codeSignIdentities[key]}"`
+            ));
+        }
 
         // if (codeSignIdentity) {
         //     const bc = xcodeProj.pbxXCBuildConfigurationSection();

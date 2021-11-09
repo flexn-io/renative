@@ -1,14 +1,16 @@
 import path from 'path';
-import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME } from '../constants';
+import { inquirerPrompt } from '../../cli/prompt';
 import {
-    getAppFolder,
+    getAppFolder, getBuildsFolder,
+    getConfigProp,
     // getAppSubFolder,
     getPlatformBuildDir,
-    getPlatformProjectDir,
-    getBuildsFolder,
-    getConfigProp,
-    getTimestampPathsConfig
+    getPlatformProjectDir, getTimestampPathsConfig
 } from '../common';
+import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME } from '../constants';
+import { getEngineRunnerByPlatform } from '../engineManager';
+import { isPlatformActive } from '../platformManager';
+import { copyTemplatePluginsSync } from '../pluginManager';
 import {
     cleanFolder,
     copyFolderContentsRecursiveSync,
@@ -19,15 +21,14 @@ import {
     fsWriteFileSync,
     fsExistsSync,
     fsReaddirSync,
-    fsReadFileSync
+    fsReadFileSync,
 } from '../systemManager/fileutils';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { executeAsync } from '../systemManager/exec';
-import { isPlatformActive } from '../platformManager';
+
 import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../systemManager/logger';
-import { copyTemplatePluginsSync } from '../pluginManager';
-import { inquirerPrompt } from '../../cli/prompt';
-import { getEngineRunnerByPlatform } from '../engineManager';
+
+
 import { configureTemplateFiles, configureEntryPoint } from '../templateManager';
 import { parseRenativeConfigs } from '../configManager';
 
@@ -39,6 +40,7 @@ export const checkAndBootstrapIfRequired = async (c) => {
         await executeAsync(`npm i ${template} --no-save`, {
             cwd: c.paths.project.dir
         });
+
         const templateArr = template.split('@').filter(v => v !== '');
         const templateDir = template.startsWith('@') ? `@${templateArr[0]}` : templateArr[0];
         const templatePath = path.join(c.paths.project.dir, 'node_modules', templateDir);
@@ -436,10 +438,15 @@ const generateDefaultAssets = async (c, platform, sourcePath) => {
 
     if (confirmAssets) {
         const engine = getEngineRunnerByPlatform(c, c.platform);
-        copyFolderContentsRecursiveSync(
-            path.join(engine.originalTemplateAssetsDir, platform),
-            sourcePath
-        );
+        if (fsExistsSync(path.join(engine.originalTemplateAssetsDir, platform))) {
+            copyFolderContentsRecursiveSync(
+                path.join(engine.originalTemplateAssetsDir, platform),
+                sourcePath
+            );
+        } else {
+            logWarning('Currently used engine does not have default assets, creating an empty folder');
+            mkdirSync(sourcePath);
+        }
     }
 };
 
@@ -541,8 +548,10 @@ const SYNCED_DEPS = [
     'rnv',
     '@rnv/engine-rn',
     '@rnv/engine-rn-next',
+    '@rnv/engine-lightning',
     '@rnv/engine-rn-web',
     '@rnv/engine-rn-electron',
+    '@rnv/engine-rn-tvos',
     'renative',
     'renative-template-hello-world',
     'renative-template-blank'

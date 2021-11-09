@@ -1,6 +1,6 @@
 import path from 'path';
 import inquirer from 'inquirer';
-import { fsExistsSync, getRealPath, fsReadFileSync } from '../../systemManager/fileutils';
+import { fsExistsSync, getRealPath, fsReadFileSync, getDirectories } from '../../systemManager/fileutils';
 import { executeAsync, execCLI, openCommand } from '../../systemManager/exec';
 import { getPlatformProjectDir, getPlatformBuildDir } from '../../common';
 
@@ -26,9 +26,14 @@ import { isSystemWin, isUrlLocalhost } from '../../systemManager/utils';
 export const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');
 
+    const availableEmulatorVersions = getDirectories(path.join(
+        getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK),
+        'Emulator'
+    ));
+
     const ePath = path.join(
         getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK),
-        `Emulator/v4.0.0/LG_webOS_TV_Emulator${
+        `Emulator/${availableEmulatorVersions?.[0] || 'v4.0.0'}/LG_webOS_TV_Emulator${
             isSystemWin ? '.exe' : '_RCU.app'
         }`
     );

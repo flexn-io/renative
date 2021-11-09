@@ -106,7 +106,7 @@ export const parsePodFile = async (c, platform) => {
         c,
         platform,
         'deploymentTarget',
-        '10.0'
+        '11.0'
     );
     c.pluginConfigiOS.deploymentTarget = deploymentTarget;
 

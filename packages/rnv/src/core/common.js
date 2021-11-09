@@ -1,21 +1,17 @@
-import killPort from 'kill-port';
-import path from 'path';
+import colorString from 'color-string';
 import detectPort from 'detect-port';
 import ip from 'ip';
+import killPort from 'kill-port';
 import lGet from 'lodash.get';
-import colorString from 'color-string';
-import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
-import {
-    chalk,
-    logError,
-    logTask,
-    logWarning,
-    logDebug,
-    logSuccess
-} from './systemManager/logger';
-import { getValidLocalhost } from './systemManager/utils';
+import path from 'path';
 import { inquirerPrompt } from '../cli/prompt';
 import { CLI_PROPS } from './constants';
+import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
+import {
+    chalk, logDebug, logError, logSuccess, logTask,
+    logWarning
+} from './systemManager/logger';
+import { getValidLocalhost } from './systemManager/utils';
 
 export const getTimestampPathsConfig = (c, platform) => {
     let timestampBuildFiles;
@@ -100,8 +96,34 @@ export const getDevServerHost = (c) => {
     return devServerHostFixed;
 };
 
+export const existBuildsOverrideForTargetPathSync = (c, destPath) => {
+    const appFolder = getAppFolder(c);
+    const relativePath = path.relative(appFolder, destPath);
+    let result = false;
+
+    const pathsToCheck = [];
+
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            pathsToCheck.push(getBuildsFolder(c, c.platform, v));
+        });
+    }
+
+    for (let i = 0; i < pathsToCheck.length; i++) {
+        if (fsExistsSync(path.join(pathsToCheck[i], relativePath))) {
+            result = true;
+            break;
+        }
+    }
+    return result;
+};
+
 export const confirmActiveBundler = async (c) => {
     if (c.runtime.skipActiveServerCheck) return true;
+
+    if (c.program.ci) {
+        return killPort(c.runtime.port);
+    }
 
     const choices = ['Restart the server (recommended)', 'Use existing session'];
 
@@ -122,12 +144,12 @@ export const confirmActiveBundler = async (c) => {
     return true;
 };
 
-export const getPlatformBuildDir = (c) => {
+export const getPlatformBuildDir = (c, isRelativePath) => {
     if (!c.runtime.engine) {
         logError('getPlatformBuildDir not available without specific engine');
         return null;
     }
-    return getAppFolder(c);
+    return getAppFolder(c, isRelativePath);
 };
 
 export const getPlatformOutputDir = (c) => {
@@ -354,7 +376,7 @@ export const getAppVersionCode = (c, platform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
     if (versionCode) return versionCode;
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
-    if (!version) {
+    if (!version || typeof version !== 'string') {
         logWarning('You are missing version prop in your config. will default to 0');
         return '0';
     }

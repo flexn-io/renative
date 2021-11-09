@@ -6,6 +6,7 @@
         "license": "MIT",
         "includedPlugins": ["*"],
         "includedFonts": ["*"],
+        "includedPermissions": ["INTERNET"],
         "buildSchemes": {
             "debug": {
                 "description": "Use for local development"
@@ -92,10 +93,29 @@
                     "sdk": "appletvsimulator"
                 },
                 "release": {
-                    "scheme": "RNVAppTVOSRelease",
                     "runScheme": "Release",
                     "bundleAssets": true,
                     "bundleIsDev": false
+                }
+            }
+        },
+        "macos": {
+            "entryFile": "index.macos",
+            "teamID": "",
+            "provisioningStyle": "Automatic",
+            "permissions": ["*"],
+            "scheme": "RNVAppMACOS",
+            "buildSchemes": {
+                "debug": {
+                    "runScheme": "Debug",
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "release": {
+                    "runScheme": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "environment": "production"
                 }
             }
         },
@@ -187,20 +207,6 @@
                     "signingConfig": "Release",
                     "bundleAssets": true,
                     "bundleIsDev": false
-                }
-            }
-        },
-        "macos": {
-            "entryFile": "index.macos",
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false,
-                    "environment": "development"
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "environment": "production"
                 }
             }
         },
@@ -304,13 +310,32 @@
         },
         "windows": {
             "entryFile": "index.windows",
+            "language": "cpp",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
                 },
                 "release": {
+                    "release": true,
                     "bundleAssets": true,
-                    "bundleIsDev": false
+                    "bundleIsDev": false,
+                    "enableSourceMaps": true
+                }
+            }
+        },
+        "xbox": {
+            "entryFile": "index.xbox",
+            "language": "cpp",
+            "arch": "x64",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "release": true,
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "enableSourceMaps": true
                 }
             }
         },

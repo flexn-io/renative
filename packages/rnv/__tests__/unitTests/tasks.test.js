@@ -3,12 +3,17 @@
 import taskRnvPlatformList from '../../src/engine-core/tasks/task.rnv.platform.list';
 import taskRnvKill from '../../src/engine-core/tasks/task.rnv.kill';
 import taskRnvPlatformConfigure from '../../src/engine-core/tasks/task.rnv.platform.configure';
+import taskRnvClean from '../../src/engine-core/tasks/task.rnv.clean';
 // import taskRnvPlatformEject from '../../src/engine-core/tasks/task.rnv.platform.eject';
 // import taskRnvPlatformSetup from '../../src/engine-core/tasks/task.rnv.platform.setup';
 import { generateMockConfig } from '../../../jest-preset-rnv/mocks';
 
 
 jest.mock('fs');
+
+jest.mock('inquirer', () => ({
+    prompt: () => true
+}));
 
 jest.mock('../../src/core/engineManager/index.js', () => ({
     // getEngineConfigByPlatform: () => ({
@@ -23,6 +28,10 @@ jest.mock('../../src/core/engineManager/index.js', () => ({
     })
 }));
 
+jest.mock('child_process', () => ({
+    spawn: jest.fn()
+}));
+
 jest.mock('../../src/core/taskManager/index.js', () => ({
     executeTask: jest.fn(),
     shouldSkipTask: () => false
@@ -30,6 +39,10 @@ jest.mock('../../src/core/taskManager/index.js', () => ({
 
 jest.mock('../../src/core/configManager/config.js', () => ({
     getConfig: () => null
+}));
+
+jest.mock('../../src/core/systemManager/utils.js', () => ({
+    isSystemWin: false
 }));
 
 jest.mock('../../src/core/systemManager/logger.js', () => {
@@ -62,6 +75,17 @@ jest.mock('../../src/core/systemManager/logger.js', () => {
     };
 });
 
+jest.mock('../../src/core/systemManager/fileutils.js', () => ({
+    removeDirs: jest.fn(),
+    fsExistsSync: () => true,
+    fsReaddirSync: () => [],
+    copyFolderContentsRecursiveSync: jest.fn()
+}));
+
+jest.mock('../../src/core/systemManager/exec.js', () => ({
+    executeAsync: jest.fn()
+}));
+
 const c = generateMockConfig({});
 
 // const parentTask = null;
@@ -92,7 +116,35 @@ test('Execute task.rnv.kill', async () => {
     expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'app configure', 'kill', originTask);
 });
 
+test('Execute task.rnv.clean', async () => {
+    const configure = generateMockConfig({});
+    const systemManager = require('../../src/core/systemManager/exec.js');
+    const fileUtils = require('../../src/core/systemManager/fileutils.js');
 
+    await expect(taskRnvClean.fn(configure, true)).resolves.toEqual(true);
+    expect(fileUtils.removeDirs).toHaveBeenCalledTimes(3);
+    expect(systemManager.executeAsync).toHaveBeenCalledWith(configure, 'watchman watch-del-all');
+    expect(systemManager.executeAsync).toHaveBeenCalledWith(configure, 'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*');
+});
+
+// TODO Mocking isSystemWin to true does not work. Need to figure out how to have different values for each test
+// test('Execute task.rnv.clean on Windows', async () => {
+//     const opts = {
+//         detached: false,
+//         stdio: 'ignore'
+//     };
+//     const configure = generateMockConfig({});
+//     const child_process = require('child_process');
+//     jest.doMock('../../src/core/systemManager/utils.js', () => ({
+//         isSystemWin: true
+//     }));
+
+//     await expect(taskRnvClean.fn(configure, true)).resolves.toEqual(true);
+//     expect(child_process.spawn).toHaveBeenCalledWith('cmd.exe', ['/C', 'del /q/f/s %TEMP%\\*'], opts);
+//     expect(child_process.spawn).toHaveBeenCalledWith('cmd.exe', ['/C', 'dotnet nuget locals all --clear'], opts);
+//     expect(child_process.spawn).toHaveBeenCalledWith('cmd.exe', ['/C', 'npm cache clean --force & yarn cache clean --all'], opts);
+//     expect(child_process.spawn).toHaveBeenCalledWith('cmd.exe', ['/C', 'watchman watch-del-all'], opts);
+// });
 // describe('Test task.rnv.platform.list', () => {
 //     // const MOCK_FILE_INFO = {
 //     //     '/path/to/file1.js': 'console.log("file1 contents");',

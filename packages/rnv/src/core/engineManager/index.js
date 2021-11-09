@@ -1,12 +1,12 @@
 /* eslint-disable import/no-dynamic-require, global-require */
 import path from 'path';
-import { IS_LINKED, RNV_HOME_DIR } from '../constants';
+import { fsExistsSync, writeFileSync } from '../systemManager/fileutils';
+import { checkAndCreateProjectPackage, installPackageDependencies } from '../systemManager/npmUtils';
+import { IS_LINKED, RNV_HOME_DIR, TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
-import { getConfigProp } from '../common';
+import { getAppFolder, getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
-import { fsExistsSync, writeFileSync } from '../systemManager/fileutils';
-import { installPackageDependencies, checkAndCreateProjectPackage } from '../systemManager/npmUtils';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -141,7 +141,7 @@ export const registerAllPlatformEngines = async (c) => {
     return true;
 };
 
-export const loadEngines = async (c) => {
+export const loadEngines = async (c, failOnMissingDeps) => {
     logTask('loadEngines');
     const engines = c.buildConfig?.engines;
     // c.runtime.engineConfigs = {};
@@ -156,7 +156,8 @@ export const loadEngines = async (c) => {
                 if (engVer) {
                     enginesToInstall.push({
                         key: k,
-                        version: engVer
+                        version: engVer,
+                        engineRootPath
                     });
                 }
             } else {
@@ -164,6 +165,10 @@ export const loadEngines = async (c) => {
             }
         });
         if (enginesToInstall.length) {
+            if (failOnMissingDeps) {
+                return Promise.reject(`Failed to load some engines:
+${enginesToInstall.map(v => `> ${v.key}@${v.version} path: ${v.engineRootPath}`).join('\n')}`);
+            }
             logInfo(`Some engines not installed in your project:
 ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
  ADDING TO PACKAGE.JSON...DONE`);
@@ -175,7 +180,7 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
             });
             await installPackageDependencies(c);
 
-            return loadEngines(c);
+            return loadEngines(c, true);
         }
         // All engines ready to be registered
         _registerPlatformEngine(c, c.platform);
@@ -185,7 +190,9 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
             '@rnv/engine-rn': 'source:rnv',
             '@rnv/engine-rn-web': 'source:rnv',
             '@rnv/engine-rn-next': 'source:rnv',
-            '@rnv/engine-rn-electron': 'source:rnv'
+            '@rnv/engine-rn-electron': 'source:rnv',
+            '@rnv/engine-lightning': 'source:rnv',
+            '@rnv/engine-rn-macos': 'source:rnv',
         };
         // TODO: use parseRenativeConfigs instead
         c.buildConfig.engines = c.files.project.config.engines;
@@ -241,7 +248,7 @@ const _resolvePkgPath = (c, packageName) => {
         // In the instances of running linked rnv instead of installed one load local packages
         try {
             let pkgPathLocal = require.resolve(packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
-            pkgPathLocal = pkgPathLocal.replace('/dist/index.js', '');
+            pkgPathLocal = pkgPathLocal.replace('/dist/index.js', '').replace('\\dist\\index.js', '');
             return pkgPathLocal;
         } catch {
             logInfo(`Running local rnv but did not find linked ${packageName}. moving on...`);
@@ -251,11 +258,13 @@ const _resolvePkgPath = (c, packageName) => {
     if (fsExistsSync(pkgPath)) {
         return pkgPath;
     }
-    pkgPath = path.join(c.paths.project.dir, '../..', 'node_modules', packageName);
+    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
+    pkgPath = path.join(c.paths.project.dir, monoRoot || '../..', 'node_modules', packageName);
     if (fsExistsSync(pkgPath)) {
         return pkgPath;
     }
     pkgPath = require.resolve(packageName);
+
     return pkgPath;
 };
 
@@ -294,14 +303,19 @@ Maybe you forgot to define platforms.${platform}.engine in your renative.json?`)
 
 export const generateEnvVars = (c, moduleConfig, nextConfig) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
+    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
+
     return ({
         RNV_EXTENSIONS: getPlatformExtensions(c),
         RNV_MODULE_PATHS: moduleConfig?.modulePaths || [],
         RNV_MODULE_ALIASES: moduleConfig?.moduleAliasesArray || [],
         RNV_NEXT_TRANSPILE_MODULES: nextConfig,
         RNV_PROJECT_ROOT: c.paths.project.dir,
+        RNV_APP_BUILD_DIR: getAppFolder(c),
         RNV_IS_MONOREPO: isMonorepo,
-        RNV_MONO_ROOT: (c.runtime.isWrapper || isMonorepo) ? path.join(c.paths.project.dir, '../..') : c.paths.project.dir
+        RNV_MONO_ROOT: (c.runtime.isWrapper || isMonorepo) ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir,
+        RNV_ENGINE: c.runtime.engine.config.id,
+        RNV_IS_NATIVE_TV: [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform)
     });
 };
 

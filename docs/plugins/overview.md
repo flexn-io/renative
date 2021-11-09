@@ -5,10 +5,28 @@ sidebar_label: Plugins Overview
 ---
 
 
+## @lightningjs/cli
+
+
+Version: `2.5.1`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/@lightningjs/cli
+
+Installation:
+
+```
+rnv plugin add @lightningjs/cli
+```
+
+
 ## @lightningjs/sdk
 
 
-Version: `3.0.0`
+Version: `4.3.3`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -77,30 +95,12 @@ rnv plugin add @noriginmedia/react-spatial-navigation
 ```
 
 
-## @ovaeasy/react-native-vector-icons
-
-
-Version: `7.0.4`
-
-Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
-
-
-
-Npm: https://www.npmjs.com/package/@ovaeasy/react-native-vector-icons
-
-Installation:
-
-```
-rnv plugin add @ovaeasy/react-native-vector-icons
-```
-
-
 ## @react-native-community/async-storage
 
 
 Version: `1.12.0`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`
+Platforms: `ios`,`tvos`,`macos`,`android`,`androidtv`,`firetv`
 
 
 
@@ -152,13 +152,13 @@ rnv plugin add @react-native-community/cameraroll
 ## @react-native-community/cli
 
 
-
+Version: `5.0.1`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
-
+Npm: https://www.npmjs.com/package/@react-native-community/cli
 
 Installation:
 
@@ -380,6 +380,24 @@ Installation:
 
 ```
 rnv plugin add @react-native-firebase/messaging
+```
+
+
+## @react-native-windows/cli
+
+
+Version: `0.63.12`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/@react-native-windows/cli
+
+Installation:
+
+```
+rnv plugin add @react-native-windows/cli
 ```
 
 
@@ -836,7 +854,7 @@ rnv plugin add react-hot-loader
 ## react-native
 
 
-Version: `0.61.2`
+Version: `0.63.4`
 
 Platforms: `android`,`androidtv`,`firetv`,`androidwear`
 
@@ -1082,6 +1100,24 @@ Installation:
 
 ```
 rnv plugin add react-native-camera
+```
+
+
+## react-native-carplay
+
+
+Version: `2.0.0`
+
+Platforms: `ios`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-carplay
+
+Installation:
+
+```
+rnv plugin add react-native-carplay
 ```
 
 
@@ -1396,7 +1432,7 @@ rnv plugin add react-native-fbsdk
 
 Version: `0.10.8`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`
+Platforms: `ios`,`tvos`,`macos`,`android`,`androidtv`,`firetv`
 
 
 
@@ -1448,9 +1484,9 @@ rnv plugin add react-native-firebase
 ## react-native-fs
 
 
-Version: `2.14.1`
+Version: `2.18.0`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`
+Platforms: `ios`,`tvos`,`macos`,`android`,`androidtv`,`firetv`
 
 
 
@@ -1468,7 +1504,7 @@ rnv plugin add react-native-fs
 
 Version: `1.4.1`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
+Platforms: `ios`,`macos`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
 
 
@@ -1702,7 +1738,7 @@ rnv plugin add react-native-languages
 
 Version: `2.4.0`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
+Platforms: `ios`,`macos`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
 
 
@@ -1748,6 +1784,24 @@ Installation:
 
 ```
 rnv plugin add react-native-localize
+```
+
+
+## react-native-macos
+
+
+Version: `0.63.37`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-macos
+
+Installation:
+
+```
+rnv plugin add react-native-macos
 ```
 
 
@@ -1936,7 +1990,7 @@ rnv plugin add react-native-parallax-view
 
 Version: `5.0.6`
 
-Platforms: `ios`,`android`,`androidtv`,`firetv`
+Platforms: `ios`,`macos`,`android`,`androidtv`,`firetv`
 
 
 
@@ -1972,7 +2026,7 @@ rnv plugin add react-native-pdf-view
 
 Version: `1.1.1`
 
-Platforms: `ios`
+Platforms: `ios`,`macos`
 
 
 
@@ -2078,7 +2132,7 @@ rnv plugin add react-native-prompt-android
 ## react-native-reanimated
 
 
-Version: `1.0.0-alpha.12`
+Version: `1.13.3`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
@@ -2132,7 +2186,7 @@ rnv plugin add react-native-root-toast
 ## react-native-safe-area-context
 
 
-Version: `0.7.2`
+Version: `3.1.0`
 
 Platforms: `android`,`androidtv`,`firetv`,`androidwear`,`ios`,`tvos`
 
@@ -2206,7 +2260,7 @@ rnv plugin add react-native-sensors
 
 Version: `0.4.9`
 
-Platforms: `ios`,`android`,`androidtv`,`firetv`
+Platforms: `ios`,`macos`,`android`,`androidtv`,`firetv`
 
 
 
@@ -2386,7 +2440,7 @@ rnv plugin add react-native-sqlite-storage
 
 Version: `9.4.0`
 
-Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
+Platforms: `ios`,`macos`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
 
 
@@ -2471,6 +2525,24 @@ rnv plugin add react-native-tab-view
 ```
 
 
+## react-native-tvos
+
+
+Version: `npm:react-native-tvos@0.63.4-0`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-tvos
+
+Installation:
+
+```
+rnv plugin add react-native-tvos
+```
+
+
 ## react-native-uri-scheme
 
 
@@ -2492,7 +2564,7 @@ rnv plugin add react-native-uri-scheme
 ## react-native-vector-icons
 
 
-Version: `7.1.0`
+Version: `8.1.0`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`,`firetv`,`androidwear`
 
@@ -2669,6 +2741,24 @@ rnv plugin add react-native-webview-bridge
 ```
 
 
+## react-native-windows
+
+
+Version: `0.63.36`
+
+Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-windows
+
+Installation:
+
+```
+rnv plugin add react-native-windows
+```
+
+
 ## react-native-zip-archive
 
 
@@ -2816,7 +2906,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-alpha.45`
+Version: `0.32.0-feat-engines-merged-16`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

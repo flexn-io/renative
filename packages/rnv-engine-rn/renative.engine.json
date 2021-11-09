@@ -12,14 +12,23 @@
         "@react-native-community/cli": "source:rnv"
     },
     "npm": {
-        "devDependencies": {
-
-        }
+        "devDependencies": {}
     },
     "platforms": {
         "ios": {
             "engine": "engine-rn",
             "npm": {
+                "devDependencies": {
+                    "xcode": "2.1.0"
+                },
+                "optionalDependencies": {
+                    "ios-deploy": "1.10.0"
+                }
+            }
+        },
+        "macos": {
+            "engine": "engine-rn",
+              "npm": {
                 "devDependencies": {
                     "xcode": "2.1.0"
                 },
@@ -54,16 +63,6 @@
             "npm": {
                 "devDependencies": {
                     "jetifier": "1.6.5"
-                }
-            }
-        },
-        "tvos": {
-            "npm": {
-                "devDependencies": {
-                    "xcode": "2.1.0"
-                },
-                "optionalDependencies": {
-                    "ios-deploy": "1.10.0"
                 }
             }
         }

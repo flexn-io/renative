@@ -31,7 +31,7 @@ import {
     USER_HOME_DIR
 } from '../constants';
 import { isSystemWin } from '../systemManager/utils';
-import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync } from '../systemManager/fileutils';
+import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync, fsLstatSync } from '../systemManager/fileutils';
 import {
     chalk,
     logTask,
@@ -42,7 +42,7 @@ import {
 import PlatformSetup from '../setupManager';
 import { generateBuildConfig } from '../configManager';
 
-const SDK_LOACTIONS = {
+const SDK_LOCATIONS = {
     android: [
         path.join('/usr/local/android-sdk'),
         path.join(USER_HOME_DIR, 'Library/Android/sdk'),
@@ -67,7 +67,10 @@ const SDK_LOACTIONS = {
         path.join(USER_HOME_DIR, 'tizen-studio'),
         path.join('C:\\tizen-studio')
     ],
-    webos: [path.join('/opt/webOS_TV_SDK')]
+    webos: [
+        path.join('/opt/webOS_TV_SDK'),
+        path.join('C:\\webOS_TV_SDK')
+    ]
 };
 
 const _logSdkWarning = (c) => {
@@ -80,6 +83,30 @@ export const checkAndConfigureAndroidSdks = async (c) => {
     const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
     logTask('checkAndConfigureAndroidSdks', `(${sdk})`);
 
+    let sdkManagerPath = getRealPath(
+        c,
+        path.join(sdk, `cmdline-tools/latest/bin/sdkmanager${isSystemWin ? '.bat' : ''}`)
+    );
+
+    if (!fsExistsSync(sdkManagerPath)) {
+        sdkManagerPath = getRealPath(
+            c,
+            path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`)
+        );
+    }
+
+    let avdManagerPath = getRealPath(
+        c,
+        path.join(sdk, `cmdline-tools/latest/bin/avdmanager${isSystemWin ? '.bat' : ''}`)
+    );
+
+    if (!fsExistsSync(avdManagerPath)) {
+        avdManagerPath = getRealPath(
+            c,
+            path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`)
+        );
+    }
+
     if (sdk) {
         c.cli[CLI_ANDROID_EMULATOR] = getRealPath(
             c,
@@ -89,14 +116,8 @@ export const checkAndConfigureAndroidSdks = async (c) => {
             c,
             path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`)
         );
-        c.cli[CLI_ANDROID_AVDMANAGER] = getRealPath(
-            c,
-            path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`)
-        );
-        c.cli[CLI_ANDROID_SDKMANAGER] = getRealPath(
-            c,
-            path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`)
-        );
+        c.cli[CLI_ANDROID_AVDMANAGER] = avdManagerPath;
+        c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
     } else {
         _logSdkWarning(c);
     }
@@ -208,6 +229,8 @@ const _findFolderWithFile = (dir, fileToFind) => {
     }
     let foundDir;
     fsReaddirSync(dir).forEach((subDirName) => {
+        // not a directory check
+        if (!fsLstatSync(subDirName).isDirectory()) return;
         const subDir = path.join(dir, subDirName);
         const foundSubDir = _findFolderWithFile(subDir, fileToFind);
         if (foundSubDir) {
@@ -219,7 +242,21 @@ const _findFolderWithFile = (dir, fileToFind) => {
 
 const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) => {
     logTask('_attemptAutoFix');
-    let result = SDK_LOACTIONS[sdkPlatform].find(v => fsExistsSync(v));
+
+    let locations = SDK_LOCATIONS[sdkPlatform];
+
+    // try common Android SDK env variables
+    if (sdkKey === ANDROID_SDK) {
+        const { ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK: ANDROID_SDK_ENV } = process.env;
+        locations = locations.concat([ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK_ENV]);
+    }
+
+    if (sdkKey === ANDROID_NDK) {
+        const { ANDROID_NDK_HOME } = process.env;
+        locations.push(ANDROID_NDK_HOME);
+    }
+
+    let result = locations.find(v => fsExistsSync(v));
 
     if (result && traverseUntilFoundFile) {
         const subResult = _findFolderWithFile(result, traverseUntilFoundFile);
@@ -248,6 +285,7 @@ const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) =
 
         if (confirmSdk) {
             try {
+                if (!c.files.workspace.config.sdks) c.files.workspace.config.sdks = {};
                 c.files.workspace.config.sdks[sdkKey] = result;
                 writeFileSync(
                     c.paths.workspace.config,
@@ -263,7 +301,7 @@ const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) =
         }
     }
 
-    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOACTIONS[sdkPlatform].join(', ')}`);
+    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS[sdkPlatform].join(', ')}`);
 
     const setupInstance = PlatformSetup(c);
     await setupInstance.askToInstallSDK(sdkPlatform);

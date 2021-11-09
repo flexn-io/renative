@@ -5,7 +5,7 @@ const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const {
     IOS,
-    TVOS,
+    MACOS,
     ANDROID,
     ANDROID_TV,
     FIRE_TV,
@@ -34,7 +34,7 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
         case ANDROID_WEAR:
             return buildAndroid(c);
         case IOS:
-        case TVOS:
+        case MACOS:
             if (parentTask === TASK_EXPORT) {
                 // build task is not necessary when exporting ios
                 return true;
@@ -52,9 +52,9 @@ export default {
     params: PARAMS.withBase(PARAMS.withConfigure()),
     platforms: [
         IOS,
-        TVOS,
         ANDROID,
         ANDROID_TV,
         ANDROID_WEAR,
+        MACOS
     ],
 };

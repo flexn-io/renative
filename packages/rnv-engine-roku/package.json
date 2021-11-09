@@ -28,7 +28,7 @@
         "@expo/next-adapter": "2.1.29",
         "@next/bundle-analyzer": "9.4.4",
         "babel-loader": "8.0.5",
-        "babel-preset-expo": "8.0.0",
+        "babel-preset-expo": "8.4.0",
         "html-webpack-harddisk-plugin": "1.0.2",
         "html-webpack-plugin": "4.5.1",
         "next": "9.5.3",
@@ -37,7 +37,7 @@
         "next-images": "1.4.1",
         "next-page-transitions": "1.0.0-beta.2",
         "next-routes": "1.4.2",
-        "next-transpile-modules": "4.1.0"
+        "next-transpile-modules": "8.0.0"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",

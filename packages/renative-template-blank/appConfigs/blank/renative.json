@@ -7,6 +7,7 @@
         "license": "MIT",
         "includedPlugins": ["*"],
         "includedFonts": ["*"],
+        "includedPermissions": ["INTERNET"],
         "backgroundColor": "#FFFFFF"
     },
     "platforms": {
@@ -37,10 +38,29 @@
                     "bundleAssets": false
                 },
                 "release": {
-                    "scheme": "RNVAppTVOSRelease",
                     "runScheme": "Release",
                     "bundleAssets": true,
                     "bundleIsDev": false
+                }
+            }
+        },
+         "macos": {
+            "entryFile": "index.macos",
+            "teamID": "",
+            "provisioningStyle": "Automatic",
+            "permissions": ["*"],
+            "scheme": "RNVAppMACOS",
+            "buildSchemes": {
+                "debug": {
+                    "runScheme": "Debug",
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "release": {
+                    "runScheme": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "environment": "production"
                 }
             }
         },
@@ -108,20 +128,6 @@
                 }
             }
         },
-        "macos": {
-            "entryFile": "index.macos",
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false,
-                    "environment": "development"
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "environment": "production"
-                }
-            }
-        },
         "tizen": {
             "appName": "ReNativeTV",
             "package": "NkVRhWHJST",
@@ -173,7 +179,35 @@
             "entryFile": "index.webos"
         },
         "windows": {
-            "entryFile": "index.windows"
+            "entryFile": "index.windows",
+            "language": "cpp",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "release": true,
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "enableSourceMaps": true
+                }
+            }
+        },
+        "xbox": {
+            "entryFile": "index.xbox",
+            "language": "cpp",
+            "arch": "x64",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "release": true,
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "enableSourceMaps": true
+                }
+            }
         },
         "kaios": {
             "entryFile": "index.kaios",

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "0.32.0-alpha.45",
+    "version": "0.32.0-feat-engines-merged-16",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",
@@ -31,7 +31,7 @@
         "next-fonts": "1.4.0",
         "next-images": "1.4.1",
         "next-optimized-images": "2.6.2",
-        "next-transpile-modules": "4.1.0"
+        "next-transpile-modules": "8.0.0"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",

@@ -6,7 +6,8 @@ import {
     isPlatformTizenwatch,
     isPlatformTvos,
     isPlatformTizen,
-    isPlatformWebos
+    isPlatformWebos,
+    isPlatformXbox
 } from '../is';
 
 import isWebBased from './isWebBased';
@@ -19,6 +20,7 @@ export const getScaledValue = (v) => {
     if (isPlatformTvos) return v * 2;
     if (isPlatformTizen) return v * 2;
     if (isPlatformWebos) return v * 2;
+    if (isPlatformXbox) return v * 1.5;
     return v;
 };
 

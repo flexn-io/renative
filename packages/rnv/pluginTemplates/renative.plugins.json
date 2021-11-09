@@ -1,7 +1,7 @@
 {
     "pluginTemplates": {
         "react-native": {
-            "version": "0.61.2",
+            "version": "0.63.4",
             "android": {
                 "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }",
                 "path": "react-native"
@@ -19,8 +19,11 @@
                 "path": "react-native"
             }
         },
+        "react-native-tvos": {
+            "version": "npm:react-native-tvos@0.63.4-0"
+        },
         "renative": {
-            "version": "0.32.0-alpha.45",
+            "version": "0.32.0-feat-engines-merged-16",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -111,12 +114,13 @@
         "react-native-gesture-handler": {
             "version": "1.4.1",
             "ios": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
+                "podName": "RNGestureHandler"
+            },
+            "macos": {
+                "podName": "RNGestureHandler"
             },
             "tvos": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
+                "podName": "RNGestureHandler"
             },
             "android": {
                 "path": "node_modules/react-native-gesture-handler/android",
@@ -211,6 +215,9 @@
             "ios": {
                 "podName": "BVLinearGradient"
             },
+            "macos": {
+                "podName": "BVLinearGradient"
+            },
             "tvos": {
                 "podName": "BVLinearGradient"
             },
@@ -246,6 +253,9 @@
                 "podName": "react-native-fetch-blob"
             },
             "tvos": {
+                "podName": "react-native-fetch-blob"
+            },
+            "macos": {
                 "podName": "react-native-fetch-blob"
             },
             "android": {
@@ -321,11 +331,14 @@
             }
         },
         "react-native-fs": {
-            "version": "2.14.1",
+            "version": "2.18.0",
             "ios": {
                 "podName": "RNFS"
             },
             "tvos": {
+                "podName": "RNFS"
+            },
+            "macos": {
                 "podName": "RNFS"
             },
             "android": {
@@ -630,6 +643,9 @@
             "ios": {
                 "podName": "react-native-pdf"
             },
+            "macos": {
+                "podName": "react-native-pdf"
+            },
             "android": {
                 "package": "org.wonday.pdf.RCTPdfView"
             },
@@ -808,6 +824,9 @@
             "ios": {
                 "podName": "RNSVG"
             },
+            "macos": {
+                "podName": "RNSVG"
+            },
             "tvos": {
                 "podName": "RNSVG"
             },
@@ -874,11 +893,8 @@
                 "package": "com.levelasquez.androidopensettings.AndroidOpenSettingsPackage"
             }
         },
-        "@ovaeasy/react-native-vector-icons": {
-            "version": "7.0.4"
-        },
         "react-native-vector-icons": {
-            "version": "7.1.0",
+            "version": "8.1.0",
             "ios": {
                 "podName": "RNVectorIcons",
                 "ignoreProjectFonts": [
@@ -934,14 +950,6 @@
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
-            },
-            "engine-rn-next": {
-                "moduleAliases": {
-                    "react-native-vector-icons": "@ovaeasy/react-native-vector-icons"
-                }
-            },
-            "npm": {
-                "@ovaeasy/react-native-vector-icons": "7.0.4"
             }
         },
         "react-native-sound": {
@@ -1004,6 +1012,9 @@
         "react-native-permissions": {
             "version": "1.1.1",
             "ios": {
+                "podName": "ReactNativePermissions"
+            },
+            "macos": {
                 "podName": "ReactNativePermissions"
             }
         },
@@ -1145,6 +1156,9 @@
             "ios": {
                 "podName": "react-native-signature-capture"
             },
+            "macos": {
+                "podName": "react-native-signature-capture"
+            },
             "android": {
                 "projectName": "reactnativesignaturecapture",
                 "package": "com.rssignaturecapture.RSSignatureCapturePackage"
@@ -1206,7 +1220,7 @@
             }
         },
         "react-native-reanimated": {
-            "version": "1.0.0-alpha.12",
+            "version": "1.13.3",
             "ios": {
                 "podName": "RNReanimated"
             },
@@ -2348,6 +2362,9 @@
             "tvos": {
                 "podName": "RNCAsyncStorage"
             },
+            "macos": {
+                "podName": "RNCAsyncStorage"
+            },
             "android": {
                 "projectName": "react-native-community-async-storage",
                 "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
@@ -2417,26 +2434,25 @@
         },
         "@react-navigation": {
             "npm": {
-                "@react-navigation/core": "5.2.1",
-                "@react-navigation/drawer": "5.1.1",
+                "@react-navigation/core": "5.12.3",
+                "@react-navigation/drawer": "5.9.0",
                 "@react-navigation/bottom-tabs": "5.1.1",
                 "@react-navigation/material-bottom-tabs": "5.1.1",
-                "@react-navigation/native": "5.0.9",
-                "@react-navigation/stack": "5.1.1",
+                "@react-navigation/native": "5.7.3",
+                "@react-navigation/stack": "5.9.0",
                 "@react-navigation/routers": "5.1.0",
                 "@react-navigation/material-top-tabs": "5.1.1",
                 "@react-navigation/web": "1.0.0-alpha.9",
                 "@react-native-community/masked-view": "0.1.6",
-                "react-native-safe-area-context": "0.7.2"
+                "react-native-safe-area-context": "3.1.0"
             },
             "pluginDependencies": {
                 "react-native-screens": "source:rnv",
-                "react-native-safe-area-context": "source:rnv",
-                "react-native-safe-area-view": "source:rnv"
+                "react-native-safe-area-context": "source:rnv"
             }
         },
         "react-native-safe-area-context": {
-            "version": "0.7.2",
+            "version": "3.1.0",
             "android": {
                 "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
             },
@@ -2964,7 +2980,7 @@
             "no-npm": true
         },
         "@react-native-community/cli": {
-            "no-npm": true
+            "version": "5.0.1"
         },
         "recyclerlistview": {
             "version": "3.0.0",
@@ -3000,7 +3016,7 @@
             "android": {
                 "app/build.gradle": {
                     "apply": [
-                        "from: \"../../../node_modules/@sentry/react-native/sentry.gradle\""
+                        "from: \"{{PLUGIN_ROOT}}/sentry.gradle\""
                     ]
                 },
                 "projectName": "@sentry_react-native",
@@ -3011,7 +3027,7 @@
             "androidtv": {
                 "app/build.gradle": {
                     "apply": [
-                        "from: \"../../../node_modules/@sentry/react-native/sentry.gradle\""
+                        "from: \"{{PLUGIN_ROOT}}/sentry.gradle\""
                     ]
                 },
                 "projectName": "@sentry_react-native",
@@ -3022,7 +3038,7 @@
             "firetv": {
                 "app/build.gradle": {
                     "apply": [
-                        "from: \"../../../node_modules/@sentry/react-native/sentry.gradle\""
+                        "from: \"{{PLUGIN_ROOT}}/sentry.gradle\""
                     ]
                 },
                 "projectName": "@sentry_react-native",
@@ -3032,7 +3048,43 @@
             }
         },
         "@lightningjs/sdk": {
-            "version": "3.0.0"
+            "version": "4.3.3"
+        },
+        "@lightningjs/cli": {
+            "version": "2.5.1"
+        },
+        "react-native-carplay": {
+            "version": "2.0.0",
+            "ios": {
+                "path": "node_modules/react-native-carplay",
+                "podName": "react-native-carplay",
+                "appDelegateImports": [
+                    "CarPlay",
+                    "react_native_carplay"
+                ],
+                "appDelegateExtensions": [
+                    "CPApplicationDelegate"
+                ],
+                "appDelegateMethods": {
+                    "application": {
+                        "didConnectCarInterfaceController": [
+                            "RNCarPlay.connect(with: interfaceController, window: window)"
+                        ],
+                        "didDisconnectCarInterfaceController": [
+                            "RNCarPlay.disconnect()"
+                        ]
+                    }
+                }
+            }
+        },
+        "react-native-macos": {
+            "version": "0.63.37"
+        },
+        "@react-native-windows/cli": {
+            "version": "0.63.12"
+        },
+        "react-native-windows": {
+            "version": "0.63.36"
         }
     }
 }

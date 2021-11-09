@@ -5,6 +5,33 @@ import { removeDirs, fsExistsSync, fsReaddirSync } from '../../core/systemManage
 import { chalk, logTask, logToSummary, logDebug } from '../../core/systemManager/logger';
 import { executeAsync } from '../../core/systemManager/exec';
 import { PARAMS } from '../../core/constants';
+import { isSystemWin } from '../../core/systemManager/utils';
+
+function clearWindowsCacheFiles() {
+    const opts = {
+        detached: false,
+        stdio: 'ignore'
+    };
+
+    // TODO using executeAsync for these scripts returns an error, so this is just a temporary workaround
+    // This should resolve as it used internally by @react-native-community/cli
+    // eslint-disable-next-line global-require
+    const child_process_1 = require('child_process');
+
+    // Temporary cache files located in C:/Users/<UserName>/AppData/Local/Temp
+    child_process_1.spawn('cmd.exe', ['/C', 'del /q/f/s %TEMP%\\*'], opts);
+
+    // NuGet cache
+    child_process_1.spawn('cmd.exe', ['/C', 'dotnet nuget locals all --clear'], opts);
+
+    // Yarn/NPM cache
+    child_process_1.spawn('cmd.exe', ['/C', 'npm cache clean --force & yarn cache clean --all'], opts);
+
+    // Watchman cache
+    child_process_1.spawn('cmd.exe', ['/C', 'watchman watch-del-all'], opts);
+
+    return true;
+}
 
 export const taskRnvClean = async (c, skipQuestionParam = false) => {
     logTask('taskRnvClean');
@@ -156,17 +183,22 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
         await removeDirs(localFiles);
     }
     if (answers.cache) {
-        try {
-            await executeAsync(c, 'watchman watch-del-all');
-        } catch (e) {
-            logDebug('watchman not installed. skipping');
-        }
+        if (isSystemWin) {
+            clearWindowsCacheFiles();
+        } else {
+            try {
+                await executeAsync(c, 'watchman watch-del-all');
+            } catch (e) {
+                logDebug('watchman not installed. skipping');
+            }
 
-        await executeAsync(
-            c,
-            'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*'
-        );
+            await executeAsync(
+                c,
+                'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*'
+            );
+        }
     }
+    return true;
 };
 
 export default {

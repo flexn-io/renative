@@ -17,6 +17,15 @@ export const withRNV = (config) => {
 
     const cnf = {
         ...config,
+        transformer: {
+            getTransformOptions: async () => ({
+                transform: {
+                    // this defeats the RCTDeviceEventEmitter is not a registered callable module
+                    inlineRequires: true,
+                },
+            }),
+            ...config?.transformer || {},
+        },
         resolver: {
             blacklistRE: blacklist([
                 /platformBuilds\/.*/,
@@ -34,14 +43,13 @@ export const withRNV = (config) => {
                 /metro.config.local.*/,
             ]),
             ...config?.resolver || {},
-            extraNodeModules: {
-                ...config?.resolver?.extraNodeModules || []
-            }
+            extraNodeModules: config?.resolver?.extraNodeModules
         },
         watchFolders,
         projectRoot: path.resolve(projectPath)
     };
-    cnf.resolver.sourceExts = process.env.RNV_EXTENSIONS.split(',');
+    const exts = process.env.RNV_EXTENSIONS || '';
+    cnf.resolver.sourceExts = exts.split(',');
 
     return cnf;
 };

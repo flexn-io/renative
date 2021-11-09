@@ -1,19 +1,18 @@
-import path from 'path';
 import child_process from 'child_process';
-import inquirer from 'inquirer';
 import crypto from 'crypto';
-import { Exec, Logger, Constants, Common, FileUtils, EngineManager, Resolver, PlatformManager, ProjectManager, SDKManager } from 'rnv';
-import { registerDevice } from './fastlane';
+import inquirer from 'inquirer';
+import path from 'path';
+import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver, SDKManager } from 'rnv';
 import { getAppFolderName } from './common';
+import { registerDevice } from './fastlane';
 import {
-    parseExportOptionsPlist,
-    parseInfoPlist,
-    parseEntitlementsPlist
+    parseEntitlementsPlist, parseExportOptionsPlist,
+    parseInfoPlist
 } from './plistParser';
-import { parseXcscheme } from './xcschemeParser';
 import { parsePodFile } from './podfileParser';
-import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
+import { parseXcodeProject } from './xcodeParser';
+import { parseXcscheme } from './xcschemeParser';
 
 const { getAppleDevices } = SDKManager.Apple;
 
@@ -40,7 +39,7 @@ const {
     parseFonts
 } = ProjectManager;
 
-const { IOS, TVOS, MACOS } = Constants;
+const { IOS, MACOS } = Constants;
 const {
     chalk,
     logInfo,
@@ -192,7 +191,7 @@ export const runXcodeProject = async (c) => {
                 )} udid: ${chalk().white(devicesArr[0].udid)}`
             );
             if (devicesArr[0].udid) {
-                p = `--device --udid ${devicesArr[0].udid}`;
+                p = `--udid ${devicesArr[0].udid}`;
                 c.runtime.targetUDID = devicesArr[0].udid;
             } else {
                 p = `--device ${devicesArr[0].name}`;
@@ -208,7 +207,7 @@ export const runXcodeProject = async (c) => {
                 );
                 c.runtime.targetUDID = selectedDevice.udid;
                 if (selectedDevice.udid) {
-                    p = `--device --udid ${selectedDevice.udid}`;
+                    p = `--udid ${selectedDevice.udid}`;
                 } else {
                     p = `--device ${selectedDevice.name}`;
                 }
@@ -276,30 +275,41 @@ export const runXcodeProject = async (c) => {
             choices: devices
         });
         c.runtime.target = sim.name;
-        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
-    } else {
-        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
-    }
-
-    if (p) {
-        // const allowProvisioningUpdates = getConfigProp(
-        //     c,
-        //     c.platform,
-        //     'allowProvisioningUpdates',
-        //     true
-        // );
-        // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
-
-        if (bundleAssets) {
-            return packageBundleForXcode(c, bundleIsDev)
-                .then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
+        if (c.runtime.target) {
+            p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
         }
-        return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+    } else if (c.runtime.target) {
+        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     }
-    return Promise.reject('Missing options for react-native command!');
+
+    if (c.platform === MACOS) {
+        await buildXcodeProject(c, c.platform);
+        return executeAsync(c, `open ${path.join(appPath, 'build/RNVApp/Build/Products/Debug-maccatalyst/RNVApp.app')}`);
+    }
+
+    // if (p) {
+    // const allowProvisioningUpdates = getConfigProp(
+    //     c,
+    //     c.platform,
+    //     'allowProvisioningUpdates',
+    //     true
+    // );
+    // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
+    return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p);
+
+    // }
+    // return Promise.reject('Missing options for react-native command!');
 };
 
-const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
+const _packageOrRun = (c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p) => {
+    if (bundleAssets) {
+        return packageBundleForXcode(c, bundleIsDev)
+            .then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
+    }
+    return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+};
+
+const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
     const cmd = `node ${doResolve(
         'react-native'
@@ -516,20 +526,16 @@ export const buildXcodeProject = async (c) => {
 
     let destinationPlatform = '';
     switch (c.platform) {
-        case TVOS: {
-            if (c.program.device) {
-                destinationPlatform = 'tvOS';
-            } else {
-                destinationPlatform = 'tvOS Simulator';
-            }
-            break;
-        }
         case IOS: {
             if (c.program.device) {
                 destinationPlatform = 'iOS';
             } else {
                 destinationPlatform = 'iOS Simulator';
             }
+            break;
+        }
+        case MACOS: {
+            destinationPlatform = 'macOS';
             break;
         }
         default:
@@ -570,7 +576,11 @@ export const buildXcodeProject = async (c) => {
     }
     if (!ps.includes('-destination')) {
         p.push('-destination');
-        p.push(`platform=${destinationPlatform},name=${c.runtime.target}`);
+        if (platform === MACOS) {
+            p.push(`platform=${destinationPlatform}`);
+        } else {
+            p.push(`platform=${destinationPlatform},name=${c.runtime.target}`);
+        }
     }
 
     p.push('build');
@@ -605,10 +615,13 @@ const archiveXcodeProject = (c) => {
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
         if (platform === IOS) sdk = 'iphoneos';
-        if (platform === TVOS) sdk = 'appletvos';
-        if (platform === MACOS) sdk = 'macosx';
+        // if (platform === MACOS) sdk = 'macosx';
     }
-    const sdkArr = [sdk];
+    const sdkArr = [];
+
+    if (sdk) {
+        sdkArr.push(sdk);
+    }
 
     const appPath = getAppFolder(c);
     const exportPath = path.join(appPath, 'release');
@@ -636,7 +649,7 @@ const archiveXcodeProject = (c) => {
         p.push('-scheme');
         p.push(scheme);
     }
-    if (!ps.includes('-sdk')) {
+    if (!ps.includes('-sdk') && sdkArr.length) {
         p.push('-sdk');
         p.push(...sdkArr);
     }
@@ -796,6 +809,7 @@ const configureXcodeProject = async (c) => {
         ignoreProjectFonts: [],
         pluginAppDelegateImports: '',
         pluginAppDelegateMethods: '',
+        pluginAppDelegateExtensions: '',
         appDelegateMethods: {
             application: {
                 didFinishLaunchingWithOptions: [],
@@ -807,7 +821,10 @@ const configureXcodeProject = async (c) => {
                 didReceive: [],
                 didRegister: [],
                 didRegisterForRemoteNotificationsWithDeviceToken: [],
-                continue: []
+                continue: [],
+                didConnectCarInterfaceController: [],
+                didDisconnectCarInterfaceController: []
+
             },
             userNotificationCenter: {
                 willPresent: []
@@ -882,7 +899,7 @@ const configureXcodeProject = async (c) => {
         );
     }
 
-    await copyAssetsFolder(c, platform, platform === TVOS ? 'RNVAppTVOS' : 'RNVApp');
+    await copyAssetsFolder(c, platform, 'RNVApp');
     await copyAppleAssets(c, platform, appFolderName);
     await parseAppDelegate(
         c,

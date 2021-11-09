@@ -63,9 +63,12 @@ const _parseSubProps = (c, obj, level, parentKey, conf) => {
     for (let i = 0; i < l; i++) {
         header += '#';
     }
-    let properties = obj?.properties;
-    if (!properties) {
-        properties = obj?.additionalProperties?.properties;
+    let properties = {};
+    // eslint-disable-next-line prefer-destructuring
+    if (obj.properties) { properties = obj.properties; }
+    if (!properties && obj && obj.additionalProperties && obj.additionalProperties.properties) {
+        // eslint-disable-next-line prefer-destructuring
+        properties = obj.additionalProperties.properties;
         if (properties) {
             pk = `${pk}.[object]`;
         }

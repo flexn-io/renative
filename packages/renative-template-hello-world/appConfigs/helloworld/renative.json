@@ -43,6 +43,11 @@
                 "debug": {}
             }
         },
+        "macos": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
         "tizen": {
             "package": "NkVRhWHJST",
             "id": "NkVRhWHJST.RNVanillaTV"

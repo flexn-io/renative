@@ -1,8 +1,9 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 
 import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
-import { Icon, Button, getScaledValue, useNavigate, useOpenDrawer, StyleSheet } from 'renative';
+import { Icon, Button, getScaledValue, useNavigate, useOpenDrawer, StyleSheet, isPlatformWindows } from 'renative';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI, ROUTES } from '../config';
 
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: getScaledValue(hasHorizontalMenu ? 20 : 40),
         paddingLeft: getScaledValue(hasHorizontalMenu ? 40 : 40),
-        width: Theme.menuWidth,
+        width: isPlatformWindows ? '100%' : Theme.menuWidth,
         height: Theme.menuHeight,
         backgroundColor: Theme.color1,
         alignItems: 'flex-start',
@@ -70,9 +71,7 @@ const Menu = (props) => {
 
     return (
         <View style={styles.container}>
-            <Text style={themeStyles.text}>
-Menu
-            </Text>
+            <Text style={themeStyles.text}> Menu </Text>
             <Button
                 // to={ROUTES.HOME}
                 title="Home"

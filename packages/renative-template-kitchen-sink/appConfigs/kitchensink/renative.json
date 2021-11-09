@@ -7,7 +7,8 @@
         "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
         "license": "MIT",
         "includedPlugins": ["*"],
-        "includedFonts": ["*"]
+        "includedFonts": ["*"],
+        "includedPermissions": ["INTERNET"]
     },
     "platforms": {
         "ios": {
@@ -173,7 +174,35 @@
             "entryFile": "index.webos"
         },
         "windows": {
-            "entryFile": "index.windows"
+            "entryFile": "index.windows",
+            "language": "cpp",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "release": true,
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "enableSourceMaps": true
+                }
+            }
+        },
+        "xbox": {
+            "entryFile": "index.xbox",
+            "language": "cpp",
+            "arch": "x64",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "release": true,
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "enableSourceMaps": true
+                }
+            }
         },
         "kaios": {
             "entryFile": "index.kaios",

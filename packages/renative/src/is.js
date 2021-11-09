@@ -1,5 +1,6 @@
 import platform from './Api/platform';
 import factor from './Api/factor';
+import engine from './Api/engine';
 import {
     ANDROID,
     ANDROID_TV,
@@ -17,7 +18,8 @@ import {
     WINDOWS,
     FIREFOX_OS,
     FIREFOX_TV,
-    KAIOS
+    KAIOS,
+    XBOX
 } from './Constants';
 
 // PLATFORM
@@ -38,6 +40,7 @@ export const isPlatformFirefoxos = platform === FIREFOX_OS;
 export const isPlatformFirefoxtv = platform === FIREFOX_TV;
 export const isPlatformKaios = platform === KAIOS;
 export const isPlatformWebtv = platform === WEBTV;
+export const isPlatformXbox = platform === XBOX;
 
 // FACTOR
 export const isFactorBrowser = factor === 'browser';
@@ -45,6 +48,13 @@ export const isFactorDesktop = factor === 'desktop';
 export const isFactorMobile = factor === 'mobile';
 export const isFactorTv = factor === 'tv';
 export const isFactorWatch = factor === 'watch';
+
+export const isEngineRnElectron = engine === 'engine-rn-electron';
+export const isEngineRnMacos = engine === 'engine-rn-macos';
+export const isEngineRnWindows = engine === 'engine-rn-windows';
+export const isEngineRnNext = engine === 'engine-rn-next';
+export const isEngineRnWeb = engine === 'engine-rn-web';
+export const isEngineRn = engine === 'engine-rn';
 
 // =================================================
 // DEPRECATED

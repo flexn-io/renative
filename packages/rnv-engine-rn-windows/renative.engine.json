@@ -1,0 +1,27 @@
+{
+  "id": "engine-rn-windows",
+  "engineExtension": "rnwin",
+  "overview": "React native based engine with react-native-windows cli tool",
+  "plugins": {
+    "react": "source:rnv",
+    "react-art": "source:rnv",
+    "react-dom": "source:rnv",
+    "react-native": {
+        "version": "0.63.4"
+    },
+    "react-native-windows": "source:rnv",
+    "@react-native-windows/cli": "source:rnv"
+  },
+  "platforms": {
+    "windows": {
+      "npm": {
+        "dependencies": {}
+      }
+    },
+    "xbox": {
+      "npm": {
+        "dependencies": {}
+      }
+    }
+  }
+}

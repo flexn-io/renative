@@ -23,7 +23,7 @@ const {
 } = Constants;
 const { runChromecast } = SDKWebpack;
 const { runWebpackServer } = WebpackUtils;
-const { getConfigProp, getPlatformProjectDir } = Common;
+const { getConfigProp, getPlatformProjectDir, existBuildsOverrideForTargetPathSync } = Common;
 const { runTizen } = SDKTizen;
 const { runWebOS } = SDKWebos;
 const { runFirefoxProject } = SDKFirefox;
@@ -36,7 +36,7 @@ const _configureHostedIfRequired = async (c) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
     const hostedShellHeaders = getConfigProp(c, c.platform, 'hostedShellHeaders', '');
 
-    if (!bundleAssets) {
+    if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir(c), 'index.html'))) {
         logDebug('Running hosted build');
         const { rnv } = c.paths;
         writeCleanFile(

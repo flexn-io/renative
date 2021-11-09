@@ -1,6 +1,6 @@
 {
     "name": "rnv",
-    "version": "0.32.0-alpha.45",
+    "version": "0.32.0-feat-engines-merged-16",
     "description": "💻 CLI for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`",
     "keywords": [
         "android tv",
@@ -72,6 +72,7 @@
     "dependencies": {
         "@babel/cli": "7.8.3",
         "@babel/core": "7.8.3",
+        "@babel/helper-builder-react-jsx": "7.14.5",
         "@babel/plugin-proposal-class-properties": "7.8.3",
         "@babel/plugin-proposal-decorators": "7.8.3",
         "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
@@ -122,8 +123,8 @@
         "kill-port": "1.6.1",
         "lodash.get": "4.4.2",
         "lodash.set": "4.3.2",
-        "metro-react-native-babel-preset": "0.51.1",
-        "metro-resolver": "0.48.3",
+        "metro-react-native-babel-preset": "0.59.0",
+        "metro-resolver": "0.59.0",
         "mini-css-extract-plugin": "0.8.0",
         "minimist": "1.2.5",
         "modclean": "3.0.0-beta.1",
@@ -138,9 +139,9 @@
         "source-map-loader": "0.2.4",
         "source-map-support": "0.5.13",
         "strip-ansi": "5.2.0",
-        "style-loader": "0.19.0",
+        "style-loader": "1.2.1",
         "svg2js": "0.0.4-alpha1",
-        "tar": "4.4.10",
+        "tar": "4.4.19",
         "url-loader": "1.1.1",
         "webpack": "^4.44.2",
         "webpack-bundle-analyzer": "3.5.1",
@@ -151,6 +152,7 @@
         "xml2js": "0.4.23"
     },
     "devDependencies": {
+        "@babel/helper-builder-react-jsx-experimental": "^7.12.11",
         "crypto-js": "4.0.0",
         "eslint": "6.2.2",
         "eslint-config-airbnb": "17.0.0",
