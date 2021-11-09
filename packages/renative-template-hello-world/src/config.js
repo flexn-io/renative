@@ -1,5 +1,5 @@
 import { getScaledValue, isFactorMobile, isFactorDesktop,
-    isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker, isWebBased, StyleSheet } from 'renative';
+    isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker, isWebBased, StyleSheet, isPlatformWeb } from 'renative';
 import '../platformAssets/runtime/fontManager'; // eslint-disable-line import/extensions, import/no-unresolved
 
 export CONFIG from '../platformAssets/renative.runtime.json'; // eslint-disable-line import/no-unresolved
@@ -147,7 +147,7 @@ export const themeStyles = StyleSheet.create({
 });
 
 export const ROUTES = {
-    HOME: 'home',
+    HOME: isPlatformWeb ? '/' : 'home',
     MY_PAGE: 'my-page',
     MODAL: 'modal'
 };
