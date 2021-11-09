@@ -49,7 +49,7 @@
             "teamID": "",
             "provisioningStyle": "Automatic",
             "permissions": ["*"],
-            "scheme": "RNVAppMACOS",
+            "scheme": "RNVApp",
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
