@@ -99,6 +99,7 @@
         "renative-template-hello-world": "~0.32.0-RC",
         "renative-template-kitchen-sink": "~0.32.0-RC",
         "rnv": "~0.32.0-RC",
+        "ttab": "^0.7.2",
         "wait-on": "5.0.1",
         "xcode": "2.1.0"
     },

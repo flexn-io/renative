@@ -83,6 +83,30 @@ export const checkAndConfigureAndroidSdks = async (c) => {
     const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
     logTask('checkAndConfigureAndroidSdks', `(${sdk})`);
 
+    let sdkManagerPath = getRealPath(
+        c,
+        path.join(sdk, `cmdline-tools/latest/bin/sdkmanager${isSystemWin ? '.bat' : ''}`)
+    );
+
+    if (!fsExistsSync(sdkManagerPath)) {
+        sdkManagerPath = getRealPath(
+            c,
+            path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`)
+        );
+    }
+
+    let avdManagerPath = getRealPath(
+        c,
+        path.join(sdk, `cmdline-tools/latest/bin/avdmanager${isSystemWin ? '.bat' : ''}`)
+    );
+
+    if (!fsExistsSync(avdManagerPath)) {
+        avdManagerPath = getRealPath(
+            c,
+            path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`)
+        );
+    }
+
     if (sdk) {
         c.cli[CLI_ANDROID_EMULATOR] = getRealPath(
             c,
@@ -92,14 +116,8 @@ export const checkAndConfigureAndroidSdks = async (c) => {
             c,
             path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`)
         );
-        c.cli[CLI_ANDROID_AVDMANAGER] = getRealPath(
-            c,
-            path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`)
-        );
-        c.cli[CLI_ANDROID_SDKMANAGER] = getRealPath(
-            c,
-            path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`)
-        );
+        c.cli[CLI_ANDROID_AVDMANAGER] = avdManagerPath;
+        c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
     } else {
         _logSdkWarning(c);
     }
