@@ -1,29 +1,41 @@
-import path from 'path';
 import inquirer from 'inquirer';
-import semver from 'semver';
 import lSet from 'lodash.set';
-import { RENATIVE_CONFIG_NAME, CURRENT_DIR, PARAMS } from '../../core/constants';
-import { getTemplateOptions } from '../../core/templateManager';
-import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync, writeObjectSync, readObjectSync, removeDirs } from '../../core/systemManager/fileutils';
-import { checkAndCreateGitignore } from '../../core/projectManager';
-import { executeAsync } from '../../core/systemManager/exec';
+import path from 'path';
+import semver from 'semver';
 import {
-    chalk,
-    printIntoBox,
-    printBoxStart,
-    printBoxEnd,
-    printArrIntoBox,
-    logTask,
-    logSuccess,
-    logInfo,
-    logDebug,
-    logWarning
-} from '../../core/systemManager/logger';
+    CURRENT_DIR,
+    PARAMS,
+    RENATIVE_CONFIG_NAME
+} from '../../core/constants';
+import { checkAndCreateGitignore } from '../../core/projectManager';
 import { getWorkspaceOptions } from '../../core/projectManager/workspace';
 import { updateRenativeConfigs } from '../../core/runtimeManager';
-import { listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
-import { configureGit } from '../../core/systemManager/gitUtils';
 import Analytics from '../../core/systemManager/analytics';
+import { executeAsync } from '../../core/systemManager/exec';
+import {
+    cleanFolder,
+    fsExistsSync,
+    mkdirSync,
+    readObjectSync,
+    removeDirs,
+    writeFileSync,
+    writeObjectSync
+} from '../../core/systemManager/fileutils';
+import { configureGit } from '../../core/systemManager/gitUtils';
+import {
+    chalk,
+    logDebug,
+    logInfo,
+    logSuccess,
+    logTask,
+    logWarning,
+    printArrIntoBox,
+    printBoxEnd,
+    printBoxStart,
+    printIntoBox
+} from '../../core/systemManager/logger';
+import { listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
+import { getTemplateOptions } from '../../core/templateManager';
 
 const highlight = chalk().green;
 
@@ -34,7 +46,9 @@ const _prepareProjectOverview = (c, data) => {
         ? data.inputAppID.replace(/\s+/g, '-').toLowerCase()
         : data.appID;
     data.version = data.inputVersion || data.defaultVersion;
-    const tempString = `${data.optionTemplates.selectedOption}@${data.optionTemplates.selectedVersion}`;
+    const tempString = `${data.optionTemplates.selectedOption}@${
+        data.optionTemplates.selectedVersion
+    }`;
 
     let str = printBoxStart('🚀  ReNative Project Generator');
     str += printIntoBox('');
@@ -58,7 +72,8 @@ const _prepareProjectOverview = (c, data) => {
     str += printIntoBox('Project Structure:');
     str += printIntoBox('');
     str += printIntoBox(data.projectName);
-    str += chalk().gray(`│   ├── appConfigs            # Application flavour configuration files/assets │
+    str += chalk()
+        .gray(`│   ├── appConfigs            # Application flavour configuration files/assets │
 │   │   └── [APP_ID]          # Example application flavour                    │
 │   │       ├── assets        # Platform assets injected to ./platformAssets   │
 │   │       ├── builds        # Platform files injected to ./platformBuilds    │
@@ -78,7 +93,6 @@ const _prepareProjectOverview = (c, data) => {
     data.confirmString = str;
 };
 
-
 const interactiveQuestion = async (results, bootstrapQuestions, key = '') => {
     if (bootstrapQuestions?.length) {
         for (let i = 0; i < bootstrapQuestions.length; i++) {
@@ -95,7 +109,7 @@ const interactiveQuestion = async (results, bootstrapQuestions, key = '') => {
                 name: qKey,
                 type: q.type,
                 message: q.title,
-                choices: Object.keys(choicesObj)
+                choices: Object.keys(choicesObj),
             };
             // eslint-disable-next-line no-await-in-loop
             const result = await inquirer.prompt(inqQuestion);
@@ -103,27 +117,29 @@ const interactiveQuestion = async (results, bootstrapQuestions, key = '') => {
             results[qKey] = {
                 answer: result[qKey],
                 configProp: q.configProp,
-                value: val
+                value: val,
             };
             if (choicesObj[result[qKey]]?.bootstrapQuestions) {
                 // eslint-disable-next-line no-await-in-loop
-                await interactiveQuestion(results, choicesObj[result[qKey]].bootstrapQuestions, qKey);
+                await interactiveQuestion(
+                    results,
+                    choicesObj[result[qKey]].bootstrapQuestions,
+                    qKey
+                );
             }
         }
     }
 };
 
-
 export const taskRnvNew = async (c) => {
     logTask('taskRnvNew');
-    const { args } = c.program;
-
+    const { args, ci } = c.program;
     if (fsExistsSync(c.paths.project.config)) {
         logWarning(`You are in ReNative project. Found: ${c.paths.project.config}`);
         const { confirmInRnvProject } = await inquirer.prompt({
             name: 'confirmInRnvProject',
             type: 'confirm',
-            message: 'Are you sure you want to continue?'
+            message: 'Are you sure you want to continue?',
         });
         if (!confirmInRnvProject) {
             return Promise.reject('Cancelled');
@@ -131,25 +147,27 @@ export const taskRnvNew = async (c) => {
     }
 
     if (fsExistsSync(c.paths.project.nodeModulesDir)) {
-        logWarning(`Found node_modules directory at your location. If you continue it will be deleted: ${
-            c.paths.project.nodeModulesDir}`);
+        logWarning(
+            `Found node_modules directory at your location. If you continue it will be deleted: ${
+                c.paths.project.nodeModulesDir
+            }`
+        );
         const { confirmDeleteNodeModules } = await inquirer.prompt({
             name: 'confirmDeleteNodeModules',
             type: 'confirm',
-            message: 'Are you sure you want to continue?'
+            message: 'Are you sure you want to continue?',
         });
         if (confirmDeleteNodeModules) {
             await removeDirs([c.paths.project.nodeModulesDir]);
         }
     }
 
-
     let data = {
         defaultVersion: '0.1.0',
         defaultTemplate: 'renative-template-hello-world',
         defaultProjectName: 'helloRenative',
         defaultAppTitle: 'Hello Renative',
-        defaultWorkspace: 'rnv'
+        defaultWorkspace: 'rnv',
     };
     data.optionPlatforms = {};
     data.optionTemplates = {};
@@ -169,7 +187,7 @@ export const taskRnvNew = async (c) => {
             type: 'input',
             validate: value => !!value,
             message:
-                "What's your project Name? (no spaces, folder based on ID will be created in this directory)"
+        "What's your project Name? (no spaces, folder based on ID will be created in this directory)",
         });
         inputProjectName = inputProjectNameObj?.inputProjectName;
     }
@@ -183,7 +201,9 @@ export const taskRnvNew = async (c) => {
         const { confirm } = await inquirer.prompt({
             type: 'confirm',
             name: 'confirm',
-            message: `Folder ${c.paths.project.dir} already exists. RNV will override it. Continue?`
+            message: `Folder ${
+                c.paths.project.dir
+            } already exists. RNV will override it. Continue?`,
         });
 
         if (!confirm) {
@@ -197,58 +217,78 @@ export const taskRnvNew = async (c) => {
     // ==================================================
     // INPUT: Project Title, ID, Version
     // ==================================================
-    const {
-        inputAppTitle,
-        inputAppID,
-        inputVersion
-    } = await inquirer.prompt([
-        {
-            name: 'inputAppTitle',
-            type: 'input',
-            default: data.defaultAppTitle,
-            validate: val => !!val || 'Please enter a title',
-            message: "What's your project Title?"
-        },
-        {
-            name: 'inputAppID',
-            type: 'input',
-            default: () => {
-                data.appID = `com.mycompany.${inputProjectName
-                    .replace(/\s+/g, '')
-                    .toLowerCase()}`;
-                return data.appID;
+    let inputAppTitle;
+    let inputAppID;
+    let inputVersion;
+    if (
+        args[2]
+    && args[2] !== ''
+    && args[3]
+    && args[3] !== ''
+    && args[4]
+    && args[4] !== ''
+    ) {
+        inputAppTitle = args[2];
+        inputAppID = args[3];
+        inputVersion = args[4];
+    } else {
+        const answers = await inquirer.prompt([
+            {
+                name: 'inputAppTitle',
+                type: 'input',
+                default: data.defaultAppTitle,
+                validate: val => !!val || 'Please enter a title',
+                message: "What's your project Title?",
             },
-            validate: id => !!id.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/)
-                || 'Please enter a valid appID (com.test.app)',
-            message: "What's your App ID?"
-        },
-        {
-            name: 'inputVersion',
-            type: 'input',
-            default: data.defaultVersion,
-            validate: v => !!semver.valid(semver.coerce(v))
-                || 'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
-            message: "What's your Version?"
-        }
-    ]);
+            {
+                name: 'inputAppID',
+                type: 'input',
+                default: () => {
+                    data.appID = `com.mycompany.${inputProjectName
+                        .replace(/\s+/g, '')
+                        .toLowerCase()}`;
+                    return data.appID;
+                },
+                validate: id => !!id.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/)
+          || 'Please enter a valid appID (com.test.app)',
+                message: "What's your App ID?",
+            },
+            {
+                name: 'inputVersion',
+                type: 'input',
+                default: data.defaultVersion,
+                validate: v => !!semver.valid(semver.coerce(v))
+          || 'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
+                message: "What's your Version?",
+            },
+        ]);
+        inputAppTitle = answers?.inputAppTitle;
+        inputAppID = answers?.inputAppID;
+        inputVersion = answers?.inputVersion;
+    }
 
     // ==================================================
     // INPUT: Workspace
     // ==================================================
-    const {
-        inputWorkspace
-    } = await inquirer.prompt([
-        {
-            name: 'inputWorkspace',
-            type: 'list',
-            message: 'What workspace to use?',
-            default: data.defaultWorkspace,
-            choices: data.optionWorkspaces.keysAsArray
-        }
-    ]);
-    data.optionWorkspaces.selectedOption = inputWorkspace;
+    let inputWorkspace;
+    if (args[5] && args[5] !== '') {
+        inputWorkspace = args[5];
+    } else {
+        const answer = await inquirer.prompt([
+            {
+                name: 'inputWorkspace',
+                type: 'list',
+                message: 'What workspace to use?',
+                default: data.defaultWorkspace,
+                choices: data.optionWorkspaces.keysAsArray,
+            },
+        ]);
 
+        inputWorkspace = answer?.inputWorkspace;
+    }
+    data.optionWorkspaces.selectedOption = inputWorkspace;
     c.runtime.selectedWorkspace = inputWorkspace;
+
     await updateRenativeConfigs(c);
     data.optionTemplates = getTemplateOptions(c);
 
@@ -258,45 +298,60 @@ export const taskRnvNew = async (c) => {
     const customTemplate = 'Custom Template ...';
 
     data.optionTemplates.keysAsArray.push(customTemplate);
-
-    const { inputTemplate } = await inquirer.prompt({
-        name: 'inputTemplate',
-        type: 'list',
-        message: 'What template to use?',
-        default: data.defaultTemplate,
-        choices: data.optionTemplates.keysAsArray
-    });
-
     let selectedInputTemplate;
-    if (inputTemplate === customTemplate) {
-        const { inputTemplateCustom } = await inquirer.prompt({
-            name: 'inputTemplateCustom',
-            type: 'input',
-            message: 'Type exact name of your template NPM package.',
-        });
-        selectedInputTemplate = inputTemplateCustom;
+    if (args[6] && args[6] !== '') {
+        selectedInputTemplate = args[6];
     } else {
-        selectedInputTemplate = inputTemplate;
+        const { inputTemplate } = await inquirer.prompt({
+            name: 'inputTemplate',
+            type: 'list',
+            message: 'What template to use?',
+            default: data.defaultTemplate,
+            choices: data.optionTemplates.keysAsArray,
+        });
+
+
+        if (inputTemplate === customTemplate) {
+            const { inputTemplateCustom } = await inquirer.prompt({
+                name: 'inputTemplateCustom',
+                type: 'input',
+                message: 'Type exact name of your template NPM package.',
+            });
+            selectedInputTemplate = inputTemplateCustom;
+        } else {
+            selectedInputTemplate = inputTemplate;
+        }
     }
 
     data.optionTemplates.selectedOption = selectedInputTemplate;
 
-
-    const inputTemplateVersion = await listAndSelectNpmVersion(c,
-        data.optionTemplates.selectedOption, Object.keys(c.files.rnv.projectTemplates.config.projectTemplates));
+    let inputTemplateVersion;
+    if (args[7] && args[7] !== '') {
+        inputTemplateVersion = args[7];
+    } else {
+        inputTemplateVersion = await listAndSelectNpmVersion(
+            c,
+            data.optionTemplates.selectedOption,
+            Object.keys(c.files.rnv.projectTemplates.config.projectTemplates)
+        );
+    }
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
 
-    await executeAsync(`npm i ${selectedInputTemplate}@${inputTemplateVersion} --no-save`, {
-        cwd: c.paths.project.dir
-    });
+    await executeAsync(
+        `npm i ${selectedInputTemplate}@${inputTemplateVersion} --no-save`,
+        {
+            cwd: c.paths.project.dir,
+        }
+    );
 
     if (!data.optionTemplates.keysAsArray.includes(selectedInputTemplate)) {
         const { confirmAddTemplate } = await inquirer.prompt({
             name: 'confirmAddTemplate',
             type: 'confirm',
-            message: `Would you like to add ${
-                chalk().white(selectedInputTemplate)} to your ${c.runtime.selectedWorkspace} workspace template list?`
+            message: `Would you like to add ${chalk().white(
+                selectedInputTemplate
+            )} to your ${c.runtime.selectedWorkspace} workspace template list?`,
         });
 
         if (confirmAddTemplate) {
@@ -311,23 +366,35 @@ export const taskRnvNew = async (c) => {
         }
     }
 
-    const renativeTemplateConfig = readObjectSync(path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, 'renative.template.json'));
+    const renativeTemplateConfig = readObjectSync(
+        path.join(
+            c.paths.project.dir,
+            'node_modules',
+            selectedInputTemplate,
+            'renative.template.json'
+        )
+    );
 
     // ==================================================
     // INPUT: Supported Platforms
     // ==================================================
 
     const supportedPlatforms = renativeTemplateConfig?.defaults?.supportedPlatforms || [];
-
-    const { inputSupportedPlatforms } = await inquirer.prompt({
-        name: 'inputSupportedPlatforms',
-        type: 'checkbox',
-        pageSize: 20,
-        message: 'What platforms would you like to use?',
-        validate: val => !!val.length || 'Please select at least a platform',
-        default: supportedPlatforms,
-        choices: supportedPlatforms
-    });
+    let inputSupportedPlatforms;
+    if (args[8] && args[8] !== '') {
+        inputSupportedPlatforms = args[8].split(',');
+    } else {
+        const answer = await inquirer.prompt({
+            name: 'inputSupportedPlatforms',
+            type: 'checkbox',
+            pageSize: 20,
+            message: 'What platforms would you like to use?',
+            validate: val => !!val.length || 'Please select at least a platform',
+            default: supportedPlatforms,
+            choices: supportedPlatforms,
+        });
+        inputSupportedPlatforms = answer?.inputSupportedPlatforms;
+    }
 
     // ==================================================
     // INPUT: Custom Questions
@@ -354,7 +421,7 @@ export const taskRnvNew = async (c) => {
     const { gitEnabled } = await inquirer.prompt({
         name: 'gitEnabled',
         type: 'confirm',
-        message: 'Do you want to set-up git in your new project?'
+        message: 'Do you want to set-up git in your new project?',
     });
 
     // ==================================================
@@ -367,10 +434,10 @@ export const taskRnvNew = async (c) => {
         inputAppTitle,
         inputAppID,
         inputVersion,
-        inputTemplate,
+        inputTemplate: selectedInputTemplate,
         inputSupportedPlatforms,
         inputWorkspace,
-        gitEnabled
+        gitEnabled,
     };
     data.optionPlatforms.selectedOptions = inputSupportedPlatforms;
 
@@ -379,10 +446,10 @@ export const taskRnvNew = async (c) => {
     const { confirm } = await inquirer.prompt({
         type: 'confirm',
         name: 'confirm',
-        message: `\n${data.confirmString}\nIs all this correct?`
+        message: `\n${data.confirmString}\nIs all this correct?`,
     });
 
-    if (!confirm) {
+    if (!confirm && !ci) {
         return;
     }
 
@@ -392,30 +459,29 @@ export const taskRnvNew = async (c) => {
     try {
         await Analytics.captureEvent({
             type: 'newProject',
-            template: inputTemplate,
-            platforms: inputSupportedPlatforms
+            template: selectedInputTemplate,
+            platforms: inputSupportedPlatforms,
         });
     } catch (e) {
         logDebug(e);
     }
 
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
-    c.paths.project.config = path.join(
-        c.paths.project.dir,
-        RENATIVE_CONFIG_NAME
-    );
+    c.paths.project.config = path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME);
 
     data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
 
     const templates = {};
 
     logTask(
-        `_generateProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
+        `_generateProject:${data.optionTemplates.selectedOption}:${
+            data.optionTemplates.selectedVersion
+        }`,
         chalk().grey
     );
 
     templates[data.optionTemplates.selectedOption] = {
-        version: data.optionTemplates.selectedVersion
+        version: data.optionTemplates.selectedVersion,
     };
 
     const config = {
@@ -432,12 +498,12 @@ export const taskRnvNew = async (c) => {
         defaults: {
             title: data.appTitle,
             id: data.appID,
-            supportedPlatforms: data.optionPlatforms.selectedOptions
+            supportedPlatforms: data.optionPlatforms.selectedOptions,
         },
         templates,
         currentTemplate: data.optionTemplates.selectedOption,
         isNew: true,
-        isMonorepo: false
+        isMonorepo: false,
     };
     delete config.templateConfig;
 
@@ -451,9 +517,7 @@ export const taskRnvNew = async (c) => {
     logSuccess(
         `Your project is ready! navigate to project ${chalk().white(
             `cd ${data.projectName}`
-        )} and run ${chalk().white(
-            'rnv run'
-        )} to see magic happen!`
+        )} and run ${chalk().white('rnv run')} to see magic happen!`
     );
 };
 
@@ -463,5 +527,5 @@ export default {
     task: 'new',
     params: PARAMS.withBase(),
     platforms: [],
-    isGlobalScope: true
+    isGlobalScope: true,
 };
