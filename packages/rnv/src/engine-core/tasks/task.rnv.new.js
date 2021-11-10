@@ -442,16 +442,18 @@ export const taskRnvNew = async (c) => {
     data.optionPlatforms.selectedOptions = inputSupportedPlatforms;
 
     _prepareProjectOverview(c, data);
+    if (!ci) {
+        const { confirm } = await inquirer.prompt({
+            type: 'confirm',
+            name: 'confirm',
+            message: `\n${data.confirmString}\nIs all this correct?`,
+        });
 
-    const { confirm } = await inquirer.prompt({
-        type: 'confirm',
-        name: 'confirm',
-        message: `\n${data.confirmString}\nIs all this correct?`,
-    });
-
-    if (!confirm && !ci) {
-        return;
+        if (!confirm) {
+            return;
+        }
     }
+
 
     // ==================================================
     // Setup Project
