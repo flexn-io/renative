@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-lightning",
-    "version": "0.32.0-feat-task-rnv-new-args-0",
+    "version": "0.32.0-feat-task-rnv-new-args-1",
     "description": "ReNative Engine to build lightning based apps.",
     "keywords": [
         "lightning"
