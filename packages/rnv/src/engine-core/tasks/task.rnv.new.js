@@ -133,7 +133,7 @@ const interactiveQuestion = async (results, bootstrapQuestions, key = '') => {
 
 export const taskRnvNew = async (c) => {
     logTask('taskRnvNew');
-    const { args, ci } = c.program;
+    const { rawArgs, ci } = c.program; // using rawArgs since 3rd argument is circular reference for some reason
     if (fsExistsSync(c.paths.project.config)) {
         logWarning(`You are in ReNative project. Found: ${c.paths.project.config}`);
         const { confirmInRnvProject } = await inquirer.prompt({
@@ -179,8 +179,8 @@ export const taskRnvNew = async (c) => {
 
     let inputProjectName;
 
-    if (args[1] && args[1] !== '') {
-        inputProjectName = args[1];
+    if (rawArgs[3] && rawArgs[3] !== '') {
+        inputProjectName = rawArgs[3];
     } else {
         const inputProjectNameObj = await inquirer.prompt({
             name: 'inputProjectName',
@@ -221,16 +221,16 @@ export const taskRnvNew = async (c) => {
     let inputAppID;
     let inputVersion;
     if (
-        args[2]
-    && args[2] !== ''
-    && args[3]
-    && args[3] !== ''
-    && args[4]
-    && args[4] !== ''
+        rawArgs[4]
+    && rawArgs[4] !== ''
+    && rawArgs[5]
+    && rawArgs[5] !== ''
+    && rawArgs[6]
+    && rawArgs[6] !== ''
     ) {
-        inputAppTitle = args[2];
-        inputAppID = args[3];
-        inputVersion = args[4];
+        inputAppTitle = rawArgs[4];
+        inputAppID = rawArgs[5];
+        inputVersion = rawArgs[6];
     } else {
         const answers = await inquirer.prompt([
             {
@@ -271,8 +271,8 @@ export const taskRnvNew = async (c) => {
     // INPUT: Workspace
     // ==================================================
     let inputWorkspace;
-    if (args[5] && args[5] !== '') {
-        inputWorkspace = args[5];
+    if (rawArgs[7] && rawArgs[7] !== '') {
+        inputWorkspace = rawArgs[7];
     } else {
         const answer = await inquirer.prompt([
             {
@@ -299,8 +299,8 @@ export const taskRnvNew = async (c) => {
 
     data.optionTemplates.keysAsArray.push(customTemplate);
     let selectedInputTemplate;
-    if (args[6] && args[6] !== '') {
-        selectedInputTemplate = args[6];
+    if (rawArgs[8] && rawArgs[8] !== '') {
+        selectedInputTemplate = rawArgs[8];
     } else {
         const { inputTemplate } = await inquirer.prompt({
             name: 'inputTemplate',
@@ -326,8 +326,8 @@ export const taskRnvNew = async (c) => {
     data.optionTemplates.selectedOption = selectedInputTemplate;
 
     let inputTemplateVersion;
-    if (args[7] && args[7] !== '') {
-        inputTemplateVersion = args[7];
+    if (rawArgs[9] && rawArgs[9] !== '') {
+        inputTemplateVersion = rawArgs[9];
     } else {
         inputTemplateVersion = await listAndSelectNpmVersion(
             c,
@@ -381,8 +381,8 @@ export const taskRnvNew = async (c) => {
 
     const supportedPlatforms = renativeTemplateConfig?.defaults?.supportedPlatforms || [];
     let inputSupportedPlatforms;
-    if (args[8] && args[8] !== '') {
-        inputSupportedPlatforms = args[8].split(',');
+    if (rawArgs[10] && rawArgs[10] !== '') {
+        inputSupportedPlatforms = rawArgs[10].split(',');
     } else {
         const answer = await inquirer.prompt({
             name: 'inputSupportedPlatforms',
@@ -427,7 +427,6 @@ export const taskRnvNew = async (c) => {
     // ==================================================
     // INPUT: Confirm Overview
     // ==================================================
-
     data = {
         ...data,
         inputProjectName,
@@ -515,7 +514,6 @@ export const taskRnvNew = async (c) => {
         await checkAndCreateGitignore(c);
         await configureGit(c);
     }
-
     logSuccess(
         `Your project is ready! navigate to project ${chalk().white(
             `cd ${data.projectName}`
