@@ -89,7 +89,7 @@
         "babel-jest": "24.9.0",
         "babel-loader": "8.0.5",
         "cypress": "4.8.0",
-        "detox": "17.8.0",
+        "detox": "18.20.2",
         "jest": "26.4.2",
         "jest-junit": "10.0.0",
         "jest-transform-stub": "2.0.0",

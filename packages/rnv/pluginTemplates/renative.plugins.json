@@ -2741,7 +2741,7 @@
             }
         },
         "detox": {
-            "version": "17.8.0",
+            "version": "18.20.2",
             "android": {
                 "implementation": "androidTestImplementation('com.wix:detox:+') { transitive = true }\nandroidTestImplementation 'junit:junit:4.12'",
                 "app/build.gradle": {
