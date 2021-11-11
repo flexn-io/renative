@@ -602,7 +602,7 @@ rnv plugin add crashlytics
 ## detox
 
 
-Version: `17.8.0`
+Version: `18.20.2`
 
 Platforms: `android`
 
@@ -2906,7 +2906,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-feat-task-rnv-new-args-2`
+Version: `0.32.0-feat-task-rnv-new-args-3`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
