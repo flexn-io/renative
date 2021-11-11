@@ -222,7 +222,7 @@ const exportElectron = async (c) => {
 
     await executeAsync(
         c,
-        `npx -p electron-builder electron-builder --config ${path.join(
+        `npx electron-builder --config ${path.join(
             platformBuildDir,
             'electronConfig.json'
         )}`
