@@ -27,7 +27,7 @@ const formatXMLObject = (obj) => {
     if (platKeyArr) {
         return {
             ...platKeyArr.reduce((acc, cur) => {
-                acc[cur.name] = cur.$t;
+                acc[cur.$.name] = cur._;
                 return acc;
             }, {})
         };

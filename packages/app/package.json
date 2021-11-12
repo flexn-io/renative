@@ -1,6 +1,6 @@
 {
     "name": "renative-app",
-    "version": "0.32.0-feat-engines-merged-16",
+    "version": "0.32.0-feat-rn-electron-0",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "homepage": "https://github.com/pavjacko/renative#readme",
     "bugs": {
@@ -89,7 +89,7 @@
         "babel-jest": "24.9.0",
         "babel-loader": "8.0.5",
         "cypress": "4.8.0",
-        "detox": "17.8.0",
+        "detox": "18.20.2",
         "jest": "26.4.2",
         "jest-junit": "10.0.0",
         "jest-transform-stub": "2.0.0",

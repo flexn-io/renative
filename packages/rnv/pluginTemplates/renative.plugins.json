@@ -23,7 +23,7 @@
             "version": "npm:react-native-tvos@0.63.4-0"
         },
         "renative": {
-            "version": "0.32.0-feat-engines-merged-16",
+            "version": "0.32.0-feat-rn-electron-0",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -2741,7 +2741,7 @@
             }
         },
         "detox": {
-            "version": "17.8.0",
+            "version": "18.20.2",
             "android": {
                 "implementation": "androidTestImplementation('com.wix:detox:+') { transitive = true }\nandroidTestImplementation 'junit:junit:4.12'",
                 "app/build.gradle": {
