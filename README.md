@@ -240,13 +240,13 @@ $ rnv new
 
 ## Features
 
--   Learn
--   Write
--   Build
--   Integrate
--   Debug
--   Test
--   Deploy
+- Learn
+- Write
+- Build
+- Integrate
+- Debug
+- Test
+- Deploy
 
 [Explore ReNative Features](https://renative.org/docs/intro-features)
 
@@ -553,11 +553,11 @@ If you face unexpected issues always good to check if there is a quick solution 
 
 ---
 
-<img src="https://renative.org/img/ic_chat.png" width=50 height=50 />
+<!-- <img src="https://renative.org/img/ic_chat.png" width=50 height=50 />
 
 ## Discussions
 
-https://spectrum.chat/renative
+https://spectrum.chat/renative -->
 
 ---
 
@@ -587,11 +587,11 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 Special thanks to open-source initiatives this project utilises, notably:
 
--   https://www.npmjs.com/package/react-native
--   https://www.npmjs.com/package/react-native-web
--   https://www.npmjs.com/package/webpack
--   https://www.npmjs.com/package/babel-cli
--   https://www.npmjs.com/package/electron
+- https://www.npmjs.com/package/react-native
+- https://www.npmjs.com/package/react-native-web
+- https://www.npmjs.com/package/webpack
+- https://www.npmjs.com/package/babel-cli
+- https://www.npmjs.com/package/electron
 
 ---
 
