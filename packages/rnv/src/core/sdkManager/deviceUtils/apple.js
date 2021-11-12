@@ -16,11 +16,15 @@ export const getAppleDevices = async (
     const {
         program: { skipTargetCheck }
     } = c;
-    // const devices = child_process.execFileSync('xcrun', ['instruments', '-s'], {
-    //     encoding: 'utf8',
-    // });
 
-    const devicesAndSims = await executeAsync('xcrun instruments -s');
+    let devicesAndSims;
+    try {
+        // xcode < 13
+        devicesAndSims = await executeAsync('xcrun instruments -s');
+    } catch {
+        // xcode >= 13
+        devicesAndSims = await executeAsync('xcrun xctrace list devices');
+    }
     const simctl = JSON.parse(await executeAsync('xcrun simctl list --json'));
     const availableSims = [];
     Object.keys(simctl.devices).forEach((runtime) => {
