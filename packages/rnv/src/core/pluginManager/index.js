@@ -310,10 +310,8 @@ package.json will be overriden`
         }
     });
 
-    // logTask('configurePlugins', `shouldUpdate:${!!hasPackageChanged}:${!c.runtime.skipPackageUpdate}`);
-    // await versionCheck(c);
-
-    if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
+    // c.runtime.skipPackageUpdate only reflects rnv version mismatch. should not prevent updating other deps
+    if (hasPackageChanged /*! c.runtime.skipPackageUpdate */) {
         _updatePackage(c, { dependencies: newDeps, devDependencies: newDevDeps });
     }
 
