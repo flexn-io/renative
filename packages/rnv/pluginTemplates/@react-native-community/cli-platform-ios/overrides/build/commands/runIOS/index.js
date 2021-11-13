@@ -92,7 +92,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
    if (counter === 1) {
        return;
    }
-   console.log('!!!!!!!!!args', args);
    counter++;
 // ↑↑↑ ReNative overrides ↑↑↑
   if (!_fs().default.existsSync(args.projectPath)) {
@@ -260,7 +259,6 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, args) {
       args.configuration, appName, true, scheme), '--id', selectedDevice.udid, '--justlaunch'];
 
   // ↓↓↓ ReNative overrides ↓↓↓
-  console.log("JJJJJJJJJJJJ", iosDeployInstallArgs.join(' '))
   _cliTools().logger.info(`running: ios-deploy ${iosDeployInstallArgs.join(' ')}`);
   // ↑↑↑ ReNative overrides ↑↑↑
   _cliTools().logger.info(`Installing and launching your app on ${selectedDevice.name}`);
