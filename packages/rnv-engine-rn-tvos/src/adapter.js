@@ -1,5 +1,10 @@
 const blacklist = require('metro-config/src/defaults/blacklist');
 const path = require('path');
+const os = require('os');
+
+const _require2 = require('metro-cache');
+
+const { FileStore } = _require2;
 
 export const withRNV = (config) => {
     const projectPath = process.env.RNV_PROJECT_ROOT || process.cwd();
@@ -17,6 +22,11 @@ export const withRNV = (config) => {
 
     const cnf = {
         ...config,
+        cacheStores: [
+            new FileStore({
+                root: path.join(os.tmpdir(), 'metro-cache-tvos')
+            })
+        ],
         transformer: {
             getTransformOptions: async () => ({
                 transform: {
