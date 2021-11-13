@@ -436,11 +436,30 @@ export const taskRnvNew = async (c) => {
             id: data.appID,
             supportedPlatforms: data.optionPlatforms.selectedOptions
         },
+        engines: {},
         templates,
         currentTemplate: data.optionTemplates.selectedOption,
         isNew: true,
         isMonorepo: false
     };
+
+    const { supportedPlatforms: supPlats } = config.defaults;
+
+    // Remove unused platforms
+    Object.keys(config.platforms).forEach((k) => {
+        if (!supPlats.includes(k)) {
+            delete config.platforms[k];
+        }
+    });
+
+    // Remove unused engines based on selected platforms
+    supPlats.forEach((k) => {
+        const selectedEngineId = config.platforms[k].engine || c.files.rnv.projectTemplates.config.platforms[k].engine;
+        const selectedEngineKey = findEngineKeyById(c, selectedEngineId);
+        config.engines[selectedEngineKey] = renativeTemplateConfig.engines[selectedEngineKey];
+    });
+
+
     delete config.templateConfig;
 
     writeFileSync(c.paths.project.config, config);
@@ -457,6 +476,16 @@ export const taskRnvNew = async (c) => {
             'rnv run'
         )} to see magic happen!`
     );
+};
+
+const findEngineKeyById = (c, id) => {
+    const { engineTemplates } = c.files.rnv.projectTemplates.config;
+    const etk = Object.keys(engineTemplates);
+    for (let i = 0; i < etk.length; i++) {
+        if (engineTemplates[etk[i]].id === id) {
+            return etk[i];
+        }
+    }
 };
 
 export default {
