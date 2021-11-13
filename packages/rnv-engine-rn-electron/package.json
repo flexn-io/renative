@@ -27,7 +27,7 @@
     },
     "dependencies": {
         "babel-loader": "8.0.5",
-        "electron": "11.0.0",
+        "electron": "11.5.0",
         "electron-builder": "22.13.1",
         "electron-notarize": "1.0.0"
     },
