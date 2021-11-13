@@ -341,17 +341,16 @@ export const runXcodeProject = async (c) => {
         return executeAsync(c, `open ${path.join(appPath, 'build/RNVApp/Build/Products/Debug-maccatalyst/RNVApp.app')}`);
     }
 
-    // if (p) {
-    // const allowProvisioningUpdates = getConfigProp(
-    //     c,
-    //     c.platform,
-    //     'allowProvisioningUpdates',
-    //     true
-    // );
-    // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
-    return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p);
-
-    // }
+    if (p) {
+        const allowProvisioningUpdates = getConfigProp(
+            c,
+            c.platform,
+            'allowProvisioningUpdates',
+            true
+        );
+        if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
+        return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p);
+    }
     // return Promise.reject('Missing options for react-native command!');
 };
 

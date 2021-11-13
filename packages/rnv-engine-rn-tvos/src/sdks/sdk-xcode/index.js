@@ -335,13 +335,13 @@ export const runXcodeProject = async (c) => {
     }
 
     if (p) {
-        // const allowProvisioningUpdates = getConfigProp(
-        //     c,
-        //     c.platform,
-        //     'allowProvisioningUpdates',
-        //     true
-        // );
-        // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
+        const allowProvisioningUpdates = getConfigProp(
+            c,
+            c.platform,
+            'allowProvisioningUpdates',
+            true
+        );
+        if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
 
         if (bundleAssets) {
             return packageBundleForXcode(c, bundleIsDev)

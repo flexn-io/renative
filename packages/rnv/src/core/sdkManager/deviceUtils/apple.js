@@ -18,12 +18,14 @@ export const getAppleDevices = async (
     } = c;
 
     let devicesAndSims;
+    let isXcode13 = false;
     try {
+        // xcode >= 13
+        isXcode13 = true;
+        devicesAndSims = await executeAsync('xcrun xctrace list devices');
+    } catch {
         // xcode < 13
         devicesAndSims = await executeAsync('xcrun instruments -s');
-    } catch {
-        // xcode >= 13
-        devicesAndSims = await executeAsync('xcrun xctrace list devices');
     }
     const simctl = JSON.parse(await executeAsync('xcrun simctl list --json'));
     const availableSims = [];
@@ -39,12 +41,17 @@ export const getAppleDevices = async (
         });
     });
 
-    const devicesArr = _parseIOSDevicesList(
+    let parseFunction = _parseIOSDevicesList;
+    if (isXcode13) {
+        parseFunction = _parseNewIOSDevicesList;
+    }
+    const devicesArr = parseFunction(
         devicesAndSims,
         platform,
         ignoreDevices,
         ignoreSimulators
     );
+
     const simulatorsArr = _parseIOSDevicesList(
         availableSims,
         platform,
@@ -55,7 +62,7 @@ export const getAppleDevices = async (
 
     if (!skipTargetCheck) {
         // filter watches
-        allDevices = allDevices.filter(d => !d.version.includes('watchOS'));
+        allDevices = allDevices.filter(d => !d.version?.includes('watchOS'));
         // filter other platforms
         allDevices = allDevices.filter((d) => {
             if (
@@ -67,6 +74,60 @@ export const getAppleDevices = async (
         });
     }
     return allDevices;
+};
+
+const _parseNewIOSDevicesList = (
+    rawDevices,
+    platform,
+    ignoreDevices = false,
+) => {
+    const devices = [];
+    if (ignoreDevices) return devices;
+    const decideIcon = (device) => {
+        const { name, isDevice } = device;
+        switch (platform) {
+            case IOS:
+                if (
+                    name.includes('iPhone')
+                    || name.includes('iPad')
+                    || name.includes('iPod')
+                ) {
+                    let icon = 'Phone 📱';
+                    if (name.includes('iPad')) icon = 'Tablet 💊';
+                    return icon;
+                }
+                return null;
+            case TVOS:
+                if (
+                    name.includes('TV')
+                    && !name.includes('iPhone')
+                    && !name.includes('iPad')
+                ) {
+                    return 'TV 📺';
+                }
+                return null;
+            default:
+                if (isDevice) {
+                    return 'Apple Device';
+                }
+                return null;
+        }
+    };
+    const lines = rawDevices.split('\n');
+    const devicesOnly = lines.slice(1, lines.indexOf(''));
+    devicesOnly.forEach((device) => {
+        const udid = device.match(/\(([^()]*)\)$/)[1];
+        const name = device.split(' (').slice(0, -1).join(' (');
+        const icon = decideIcon({ name, isDevice: true });
+        devices.push({
+            udid,
+            name,
+            icon,
+            isDevice: true
+        });
+    });
+
+    return devices;
 };
 
 const _parseIOSDevicesList = (
