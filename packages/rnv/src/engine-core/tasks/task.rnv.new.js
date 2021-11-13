@@ -21,7 +21,7 @@ import {
 } from '../../core/systemManager/logger';
 import { getWorkspaceOptions } from '../../core/projectManager/workspace';
 import { updateRenativeConfigs } from '../../core/runtimeManager';
-import { listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
+import { checkNpxIsInstalled, listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
 import { configureGit } from '../../core/systemManager/gitUtils';
 import Analytics from '../../core/systemManager/analytics';
 
@@ -287,7 +287,9 @@ export const taskRnvNew = async (c) => {
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
 
-    await executeAsync(`npm i ${selectedInputTemplate}@${inputTemplateVersion} --no-save`, {
+    await checkNpxIsInstalled();
+
+    await executeAsync(`npx yarn add ${selectedInputTemplate}@${inputTemplateVersion}`, {
         cwd: c.paths.project.dir
     });
 

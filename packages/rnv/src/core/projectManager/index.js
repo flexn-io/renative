@@ -37,7 +37,7 @@ export const checkAndBootstrapIfRequired = async (c) => {
     logTask('checkAndBootstrapIfRequired');
     const { template } = c.program;
     if (!c.paths.project.configExists && template) {
-        await executeAsync(`npm i ${template} --no-save`, {
+        await executeAsync(`npx yarn add ${template}`, {
             cwd: c.paths.project.dir
         });
 
@@ -91,8 +91,8 @@ export const checkAndBootstrapIfRequired = async (c) => {
             const installPromises = [];
             Object.keys(pkgJson.devDependencies).forEach((devDepKey) => {
                 if (activeEngineKeys.includes(devDepKey)) {
-                    installPromises.push(executeAsync(`npm i ${
-                        devDepKey}@${pkgJson.devDependencies[devDepKey]} --no-save`, {
+                    installPromises.push(executeAsync(`npx yarn add ${
+                        devDepKey}@${pkgJson.devDependencies[devDepKey]}`, {
                         cwd: c.paths.project.dir
                     }));
                 }

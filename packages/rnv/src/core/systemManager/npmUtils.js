@@ -2,17 +2,45 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import { executeAsync, commandExistsSync } from './exec';
-import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync, fsWriteFileSync, loadFile } from './fileutils';
+import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync, fsWriteFileSync, loadFile, readObjectSync } from './fileutils';
 import { logTask, logWarning, logError, logInfo, logDebug } from './logger';
 import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR } from '../constants';
 import { doResolve } from './resolve';
 
 import { inquirerPrompt } from '../../cli/prompt';
 
+const packageJsonIsValid = (c) => {
+    if (!fsExistsSync(c.paths.project.package)) return false;
+    const pkg = readObjectSync(c.paths.project.package);
+    if (!pkg) return false;
+    // yarn add creates a package.json with only dependencies, that is not valid
+    if (Object.keys(pkg).length === 1 && Object.keys(pkg)[0] === 'dependencies') return false;
+    return true;
+};
+
+export const checkNpxIsInstalled = async () => {
+    logTask('checkNpxIsInstalled');
+    if (!commandExistsSync('npx')) {
+        logWarning('npx is not installed, please install it before running this command');
+
+        const { confirm } = inquirerPrompt({
+            type: 'confirm',
+            message: 'Do you want to install npx it now?',
+        });
+
+        if (confirm) {
+            await executeAsync('npm install -g npx');
+            return true;
+        }
+
+        throw new Error('npx is not installed');
+    }
+};
+
 export const checkAndCreateProjectPackage = async (c) => {
     logTask('checkAndCreateProjectPackage');
 
-    if (!fsExistsSync(c.paths.project.package)) {
+    if (!packageJsonIsValid(c)) {
         logInfo(
             `Your ${c.paths.project.package} is missing. CREATING...DONE`
         );
