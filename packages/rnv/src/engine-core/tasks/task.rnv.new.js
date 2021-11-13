@@ -454,7 +454,7 @@ export const taskRnvNew = async (c) => {
 
     // Remove unused engines based on selected platforms
     supPlats.forEach((k) => {
-        const selectedEngineId = config.platforms[k].engine || c.files.rnv.projectTemplates.config.platforms[k].engine;
+        const selectedEngineId = config.platforms[k]?.engine || c.files.rnv.projectTemplates.config.platforms[k].engine;
         const selectedEngineKey = findEngineKeyById(c, selectedEngineId);
         config.engines[selectedEngineKey] = renativeTemplateConfig.engines[selectedEngineKey];
     });
