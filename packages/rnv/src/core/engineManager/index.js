@@ -1,6 +1,6 @@
 /* eslint-disable import/no-dynamic-require, global-require */
 import path from 'path';
-import { fsExistsSync, readObjectSync, writeFileSync } from '../systemManager/fileutils';
+import { fsExistsSync, readObjectSync, writeFileSync, writeObjectSync } from '../systemManager/fileutils';
 import { checkAndCreateProjectPackage, installPackageDependencies } from '../systemManager/npmUtils';
 import { IS_LINKED, RNV_HOME_DIR, TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
@@ -166,6 +166,56 @@ export const loadEnginePluginDeps = async (c, engineConfigs) => {
     });
 };
 
+export const loadEnginePackageDeps = async (c, engineConfigs) => {
+    logTask('loadEnginePackageDeps');
+    // Check engine dependencies
+    const addedDeps = [];
+    engineConfigs.forEach((ecf) => {
+        const engineConfig = readObjectSync(ecf.configPath);
+        c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
+            const npm = engineConfig?.platforms?.[platform]?.npm;
+            if (npm) {
+                const deps = c.files.project.package.devDependencies || {};
+                if (npm.devDependencies) {
+                    Object.keys(npm.devDependencies).forEach((k) => {
+                        if (!deps[k]) {
+                            logInfo(`Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. ADDING...DONE`);
+                            deps[k] = npm?.devDependencies[k];
+                            addedDeps.push(k);
+                        }
+                    });
+                    c.files.project.package.devDependencies = deps;
+                }
+                if (npm.dependencies) {
+                    Object.keys(npm.dependencies).forEach((k) => {
+                        if (!deps[k]) {
+                            logInfo(`Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. ADDING...DONE`);
+                            deps[k] = npm?.dependencies[k];
+                            addedDeps.push(k);
+                        }
+                    });
+                    c.files.project.package.dependencies = deps;
+                }
+                if (npm.optionalDependencies) {
+                    Object.keys(npm.optionalDependencies).forEach((k) => {
+                        if (!deps[k]) {
+                            logInfo(`Engine ${ecf.key} requires npm optionalDependency ${k} for platform ${platform}. ADDING...DONE`);
+                            deps[k] = npm?.optionalDependencies[k];
+                            addedDeps.push(k);
+                        }
+                    });
+                    c.files.project.package.optionalDependencies = deps;
+                }
+
+                if (addedDeps.length > 0) {
+                    writeObjectSync(c.paths.project.package, c.files.project.package);
+                }
+                //
+            }
+        });
+    });
+};
+
 export const loadEngines = async (c, failOnMissingDeps) => {
     logTask('loadEngines');
     const engines = c.buildConfig?.engines;
@@ -215,6 +265,7 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
             return loadEngines(c, true);
         }
         await loadEnginePluginDeps(c, engineConfigs);
+        await loadEnginePackageDeps(c, engineConfigs);
 
         // All engines ready to be registered
         _registerPlatformEngine(c, c.platform);
