@@ -387,7 +387,17 @@ export const logSuccess = (msg) => {
 
 export const logError = (e, isEnd = false, skipAnalytics = false) => {
     if (!skipAnalytics && !!_analytics) {
-        _analytics.captureException(e);
+        const extra = {
+            command: getCurrentCommand(),
+            version: cnf().rnvVersion,
+            engine: cnf().runtime?.engine?.config?.id,
+            platform: cnf().platform,
+            bundleAssets: !!cnf().runtime?.bundleAssets,
+            os: cnf().process?.platform,
+            arch: cnf().process?.arch,
+            node: cnf().process?.versions?.node,
+        };
+        _analytics.captureException(e, { extra });
     }
 
     if (e && e.message) {
