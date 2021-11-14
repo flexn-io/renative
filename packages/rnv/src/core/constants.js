@@ -542,6 +542,6 @@ export const INJECTABLE_RUNTIME_PROPS = ['appId', 'scheme', 'timestamp', 'localh
 
 export const REDASH_URL = '';
 export const REDASH_KEY = '';
-export const REDASH_ENDPOINT = '';
+export const SENTRY_ENDPOINT = 'https://004caee3caa04c81a10f2ba31a945362@sentry.io/1795473';
 
 export const REMOTE_DEBUGGER_ENABLED_PLATFORMS = [TIZEN, TIZEN_MOBILE, TIZEN_WATCH];
