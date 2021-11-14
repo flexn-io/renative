@@ -646,10 +646,12 @@ export const overrideFileContents = (dest, override, overridePath = '') => {
         });
         if (!foundRegEx) {
             failTerms.forEach((term) => {
-                logWarning(`No Match found in ${chalk().red(
-                    dest
-                )} for expression: ${chalk().red(term)}.
+                if (!fileToFix.includes(override[term])) {
+                    logWarning(`No Match found in ${chalk().red(
+                        dest
+                    )} for expression: ${chalk().red(term)}.
 Consider update or removal of ${chalk().white(overridePath)}`);
+                }
             });
         }
         fsWriteFileSync(dest, fileToFix);

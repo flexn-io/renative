@@ -266,8 +266,11 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
             await installPackageDependencies(c);
             return loadEngines(c, true);
         }
-        await loadEnginePluginDeps(c, engineConfigs);
-        await loadEnginePackageDeps(c, engineConfigs);
+        if (!c.runtime.isWrapper) {
+            await loadEnginePluginDeps(c, engineConfigs);
+            await loadEnginePackageDeps(c, engineConfigs);
+        }
+
 
         // All engines ready to be registered
         _registerPlatformEngine(c, c.platform);
