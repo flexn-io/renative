@@ -12266,10 +12266,10 @@ iocane@4.0.0:
   dependencies:
     pbkdf2 "~3.0.17"
 
-ios-deploy@1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/ios-deploy/-/ios-deploy-1.10.0.tgz#ecca74c2d88ce36a1f59bbcf1562d4486db6ce1f"
-  integrity sha512-sklB6PkJkWrHDublkZJeY4z9i7hl0nS2aRVse+/idGnb4eZddMQRfPVB4YzkEoyJ4FyW1I3sdLP6/cg/Imu/sw==
+ios-deploy@1.11.4:
+  version "1.11.4"
+  resolved "https://registry.yarnpkg.com/ios-deploy/-/ios-deploy-1.11.4.tgz#d1813b11c9f292d757be33fa63399b510a64980a"
+  integrity sha512-NZ96/s7klyWySKTI8rTU+vXEIxIMrv6K+7j5VMcqUVShaAUdDX+Ov4nVdSStYOAGFVpl8q56SpAwjEDIvBrswQ==
 
 ios-mobileprovision-finder@1.0.11:
   version "1.0.11"

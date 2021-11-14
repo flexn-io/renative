@@ -235,22 +235,6 @@ async function runOnSimulator(xcodeProject, scheme, args) {
 }
 
 async function runOnDevice(selectedDevice, scheme, xcodeProject, args) {
-  const isIOSDeployInstalled = _child_process().default.spawnSync('ios-deploy', ['--version'], {
-    encoding: 'utf8'
-  });
-
-  if (isIOSDeployInstalled.error) {
-    // ↓↓↓ ReNative overrides ↓↓↓
-    
-    _child_process().default.spawnSync('npm', ['install', '-g', 'ios-deploy@1.10.0'], {
-        encoding: 'utf8'
-    });
-
-    // throw new (_cliTools().CLIError)(`Failed to install the app on the device because we couldn't execute the "ios-deploy" command. Please install it by running "${_chalk().default.bold('npm install -g ios-deploy')}" and try again.`);
-
-    // ↑↑↑ ReNative overrides ↑↑↑
-  }
-
   const appName = await buildProject(xcodeProject, selectedDevice.udid, scheme, args);
   const iosDeployInstallArgs = ['--bundle', getBuildPath(
     // ↓↓↓ ReNative overrides ↓↓↓
