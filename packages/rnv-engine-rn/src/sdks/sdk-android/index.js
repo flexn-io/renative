@@ -147,9 +147,10 @@ export const packageAndroid = async (c) => {
     }
 };
 
-export const runAndroid = async (c, defaultTarget) => {
+export const runAndroid = async (c) => {
     const { target } = c.program;
     const { platform } = c;
+    const defaultTarget = c.runtime.target;
     logTask('runAndroid', `target:${target} default:${defaultTarget}`);
 
     await resetAdb(c);
