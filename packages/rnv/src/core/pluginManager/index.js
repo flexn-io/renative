@@ -622,36 +622,40 @@ const _overridePlugin = (c, pluginsPath, dir) => {
 };
 
 export const overrideFileContents = (dest, override, overridePath = '') => {
-    let fileToFix = fsReadFileSync(dest).toString();
-    let foundRegEx = false;
-    const failTerms = [];
-    Object.keys(override).forEach((fk) => {
-        const regEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
-        const count = (fileToFix.match(regEx) || []).length;
+    if (fsExistsSync(dest)) {
+        let fileToFix = fsReadFileSync(dest).toString();
+        let foundRegEx = false;
+        const failTerms = [];
+        Object.keys(override).forEach((fk) => {
+            const regEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
+            const count = (fileToFix.match(regEx) || []).length;
 
-        const overrided = override[fk];
-        const regEx2 = new RegExp(getCleanRegExString(overrided), 'g');
-        const count2 = (fileToFix.match(regEx2) || []).length;
-        if (!count) {
-            if (!count2) {
-                failTerms.push(fk);
+            const overrided = override[fk];
+            const regEx2 = new RegExp(getCleanRegExString(overrided), 'g');
+            const count2 = (fileToFix.match(regEx2) || []).length;
+            if (!count) {
+                if (!count2) {
+                    failTerms.push(fk);
+                } else {
+                    foundRegEx = true;
+                }
             } else {
                 foundRegEx = true;
+                fileToFix = fileToFix.replace(regEx, override[fk]);
             }
-        } else {
-            foundRegEx = true;
-            fileToFix = fileToFix.replace(regEx, override[fk]);
-        }
-    });
-    if (!foundRegEx) {
-        failTerms.forEach((term) => {
-            logWarning(`No Match found in ${chalk().red(
-                dest
-            )} for expression: ${chalk().red(term)}.
-Consider update or removal of ${chalk().white(overridePath)}`);
         });
+        if (!foundRegEx) {
+            failTerms.forEach((term) => {
+                logWarning(`No Match found in ${chalk().red(
+                    dest
+                )} for expression: ${chalk().red(term)}.
+Consider update or removal of ${chalk().white(overridePath)}`);
+            });
+        }
+        fsWriteFileSync(dest, fileToFix);
+    } else {
+        logDebug(`overrideFileContents Warning: path does not exists ${dest}`);
     }
-    fsWriteFileSync(dest, fileToFix);
 };
 
 export const installPackageDependenciesAndPlugins = async (c) => {

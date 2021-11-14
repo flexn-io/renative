@@ -175,8 +175,8 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
         c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
             const npm = engineConfig?.platforms?.[platform]?.npm;
             if (npm) {
-                const deps = c.files.project.package.devDependencies || {};
                 if (npm.devDependencies) {
+                    const deps = c.files.project.package.devDependencies || {};
                     Object.keys(npm.devDependencies).forEach((k) => {
                         if (!deps[k]) {
                             logInfo(`Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. ADDING...DONE`);
@@ -187,6 +187,7 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
                     c.files.project.package.devDependencies = deps;
                 }
                 if (npm.dependencies) {
+                    const deps = c.files.project.package.dependencies || {};
                     Object.keys(npm.dependencies).forEach((k) => {
                         if (!deps[k]) {
                             logInfo(`Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. ADDING...DONE`);
@@ -197,6 +198,7 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
                     c.files.project.package.dependencies = deps;
                 }
                 if (npm.optionalDependencies) {
+                    const deps = c.files.project.package.optionalDependencies || {};
                     Object.keys(npm.optionalDependencies).forEach((k) => {
                         if (!deps[k]) {
                             logInfo(`Engine ${ecf.key} requires npm optionalDependency ${k} for platform ${platform}. ADDING...DONE`);
