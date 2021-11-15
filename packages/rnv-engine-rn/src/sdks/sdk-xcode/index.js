@@ -179,7 +179,7 @@ export const runXcodeProject = async (c) => {
     let devicesArr;
     if (device === true) {
         devicesArr = await getAppleDevices(c, false, true);
-    } else if (c.runtime.target === true) {
+    } else if (c.runtime.target) {
         devicesArr = await getAppleDevices(c, true, false);
     }
 
@@ -279,7 +279,61 @@ export const runXcodeProject = async (c) => {
             p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
         }
     } else if (c.runtime.target) {
-        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
+        // check if the default sim is available
+        const desiredSim = devicesArr.find(d => d.name === c.runtime.target && !d.isDevice);
+        if (!desiredSim) {
+            const { sim } = await inquirer.prompt({
+                name: 'sim',
+                message: `We couldn't find ${c.runtime.target} as a device supported by the current version of your Xcode. Please select another sim`,
+                type: 'list',
+                choices: devicesArr.filter(d => !d.isDevice).map(v => ({
+                    name: `${v.name} | ${v.icon} | v: ${chalk().green(
+                        v.version
+                    )} | udid: ${chalk().grey(v.udid)}${
+                        v.isDevice ? chalk().red(' (device)') : ''
+                    }`,
+                    value: v
+                }))
+            });
+
+            const localOverridden = !!c.files.project.configLocal?.defaultTargets?.[c.platform];
+
+            const actionLocalUpdate = `Update ${chalk().green('project')} default target for platform ${c.platform}`;
+            const actionGlobalUpdate = `Update ${chalk().green('global')}${localOverridden ? ` and ${chalk().green('project')}` : ''} default target for platform ${c.platform}`;
+            const actionNoUpdate = 'Don\'t update';
+
+            const { chosenAction } = await inquirer.prompt({
+                message: 'What to do next?',
+                type: 'list',
+                name: 'chosenAction',
+                choices: [actionLocalUpdate, actionGlobalUpdate, actionNoUpdate],
+                warningMessage: `Your default target for platform ${c.platform} is set to ${c.runtime.target}. This seems to not be supported by Xcode anymore`
+            });
+
+            c.runtime.target = sim.name;
+
+            if (chosenAction === actionLocalUpdate || (chosenAction === actionGlobalUpdate && localOverridden)) {
+                const configLocal = c.files.project.configLocal || {};
+                if (!configLocal.defaultTargets) configLocal.defaultTargets = {};
+                configLocal.defaultTargets[c.platform] = sim.name;
+
+                c.files.project.configLocal = configLocal;
+                writeFileSync(c.paths.project.configLocal, configLocal);
+            }
+
+            if (chosenAction === actionGlobalUpdate) {
+                const configGlobal = c.files.workspace.config || {};
+                if (!configGlobal.defaultTargets) configGlobal.defaultTargets = {};
+                configGlobal.defaultTargets[c.platform] = sim.name;
+
+                c.files.workspace.config = configGlobal;
+                writeFileSync(c.paths.workspace.config, configGlobal);
+            }
+        }
+
+        const target = c.runtime.target.replace(/(\s+)/g, '\\$1');
+
+        p = `--simulator ${target}`;
     }
 
     if (c.platform === MACOS) {
@@ -287,17 +341,16 @@ export const runXcodeProject = async (c) => {
         return executeAsync(c, `open ${path.join(appPath, 'build/RNVApp/Build/Products/Debug-maccatalyst/RNVApp.app')}`);
     }
 
-    // if (p) {
-    // const allowProvisioningUpdates = getConfigProp(
-    //     c,
-    //     c.platform,
-    //     'allowProvisioningUpdates',
-    //     true
-    // );
-    // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
-    return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p);
-
-    // }
+    if (p) {
+        const allowProvisioningUpdates = getConfigProp(
+            c,
+            c.platform,
+            'allowProvisioningUpdates',
+            true
+        );
+        if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
+        return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p);
+    }
     // return Promise.reject('Missing options for react-native command!');
 };
 

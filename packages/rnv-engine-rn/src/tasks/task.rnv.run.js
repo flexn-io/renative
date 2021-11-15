@@ -23,9 +23,8 @@ const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
-    const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask('taskRnvRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
+    logTask('taskRnvRun', `parent:${parentTask} port:${port} hosted:${hosted}`);
 
     await executeOrSkipTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
@@ -54,13 +53,13 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
                 if (bundleAssets || platform === ANDROID_WEAR) {
                     await packageAndroid(c);
                 }
-                await runAndroid(c, target);
+                await runAndroid(c);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
                 return waitForBundlerIfRequired(c);
             }
-            return runAndroid(c, target);
+            return runAndroid(c);
         default:
             return logErrorPlatform(c);
     }

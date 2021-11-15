@@ -386,7 +386,6 @@ export const generateRuntimeConfig = async (c) => {
 export const generateLocalConfig = (c, resetAppId) => {
     logTask('generateLocalConfig', `resetAppId:${!!resetAppId}`);
     const configLocal = c.files.project.configLocal || {};
-    // configLocal.kokot = 'fooo';
     configLocal._meta = configLocal._meta || {};
     if (resetAppId) {
         delete configLocal._meta.currentAppConfigId;

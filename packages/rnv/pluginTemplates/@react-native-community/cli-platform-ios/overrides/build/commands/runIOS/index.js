@@ -55,6 +55,8 @@ var _warnAboutManuallyLinkedLibs = _interopRequireDefault(require("../../link/wa
 
 var _warnAboutPodInstall = _interopRequireDefault(require("../../link/warnAboutPodInstall"));
 
+var _parseXctraceIOSDevicesList = _interopRequireDefault(require("./parseXctraceIOSDevicesList"));
+
 function _cliTools() {
   const data = require("@react-native-community/cli-tools");
 
@@ -119,10 +121,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   if (args.device && args.udid) {
     return _cliTools().logger.error('The `device` and `udid` options are mutually exclusive.');
   }
-
-  const devices = (0, _parseIOSDevicesList.default)(_child_process().default.execFileSync('xcrun', ['instruments', '-s'], {
-    encoding: 'utf8'
-  }));
+  // ↓↓↓ ReNative overrides ↓↓↓
+  let devices;
+  try {
+    devices = (0, _parseXctraceIOSDevicesList.default)(_child_process().default.execFileSync('xcrun', ['xctrace', 'list', 'devices'], {
+      encoding: 'utf8'
+    }));
+  } catch {
+    devices = (0, _parseIOSDevicesList.default)(_child_process().default.execFileSync('xcrun', ['instruments', '-s'], {
+      encoding: 'utf8'
+    }));
+  }
+  // ↑↑↑ ReNative overrides ↑↑↑
 
   if (args.udid) {
     const device = devices.find(d => d.udid === args.udid);
@@ -225,22 +235,6 @@ async function runOnSimulator(xcodeProject, scheme, args) {
 }
 
 async function runOnDevice(selectedDevice, scheme, xcodeProject, args) {
-  const isIOSDeployInstalled = _child_process().default.spawnSync('ios-deploy', ['--version'], {
-    encoding: 'utf8'
-  });
-
-  if (isIOSDeployInstalled.error) {
-    // ↓↓↓ ReNative overrides ↓↓↓
-    
-    _child_process().default.spawnSync('npm', ['install', '-g', 'ios-deploy@1.10.0'], {
-        encoding: 'utf8'
-    });
-
-    // throw new (_cliTools().CLIError)(`Failed to install the app on the device because we couldn't execute the "ios-deploy" command. Please install it by running "${_chalk().default.bold('npm install -g ios-deploy')}" and try again.`);
-
-    // ↑↑↑ ReNative overrides ↑↑↑
-  }
-
   const appName = await buildProject(xcodeProject, selectedDevice.udid, scheme, args);
   const iosDeployInstallArgs = ['--bundle', getBuildPath(
     // ↓↓↓ ReNative overrides ↓↓↓
@@ -269,6 +263,7 @@ function buildProject(xcodeProject, udid, scheme, args) {
     const xcodebuildArgs = [xcodeProject.isWorkspace ? '-workspace' : '-project', xcodeProject.name, '-configuration', args.configuration, '-scheme', scheme, '-destination', `id=${udid}`, 
         // ↓↓↓ ReNative overrides ↓↓↓
         '-derivedDataPath', `build/${scheme}`];
+        if (args.allowProvisioningUpdates) xcodebuildArgs.push('-allowProvisioningUpdates');
         // ↑↑↑ ReNative overrides ↑↑↑
     const loader = (0, _ora().default)();
 
@@ -526,7 +521,14 @@ var _default = {
   }, {
     name: '--no-packager',
     description: 'Do not launch packager while building'
-  }, {
+  }, 
+  // ↓↓↓ ReNative overrides ↓↓↓
+  {
+    name: '--allowProvisioningUpdates',
+    description: 'Allow provisioning updates'
+  }, 
+  // ↑↑↑ ReNative overrides ↑↑↑
+  {
     name: '--verbose',
     description: 'Do not use xcpretty even if installed'
   }, {

@@ -22,18 +22,18 @@
                     "xcode": "2.1.0"
                 },
                 "optionalDependencies": {
-                    "ios-deploy": "1.10.0"
+                    "ios-deploy": "1.11.4"
                 }
             }
         },
         "macos": {
             "engine": "engine-rn",
-              "npm": {
+            "npm": {
                 "devDependencies": {
                     "xcode": "2.1.0"
                 },
                 "optionalDependencies": {
-                    "ios-deploy": "1.10.0"
+                    "ios-deploy": "1.11.4"
                 }
             }
         },

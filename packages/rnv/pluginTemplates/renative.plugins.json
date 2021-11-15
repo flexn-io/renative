@@ -23,7 +23,7 @@
             "version": "npm:react-native-tvos@0.63.4-0"
         },
         "renative": {
-            "version": "0.32.0-feat-task-rnv-new-args-3",
+            "version": "0.32.0-alpha.49",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -1766,14 +1766,20 @@
             }
         },
         "react-native-ble-manager": {
-            "version": "6.2.4",
+            "version": "7.4.2",
             "android": {
+                "package": "it.innove.BleManagerPackage"
+            },
+            "androidwear": {
                 "package": "it.innove.BleManagerPackage"
             },
             "androidtv": {
                 "package": "it.innove.BleManagerPackage"
             },
             "firetv": {
+                "package": "it.innove.BleManagerPackage"
+            },
+            "ios": {
                 "package": "it.innove.BleManagerPackage"
             }
         },

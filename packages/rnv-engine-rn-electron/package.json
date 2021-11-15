@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-electron",
-    "version": "0.32.0-feat-task-rnv-new-args-3",
+    "version": "0.32.0-alpha.49",
     "description": "ReNative Engine to build electron based platforms with react native support.",
     "keywords": [
         "electron",
@@ -27,7 +27,7 @@
     },
     "dependencies": {
         "babel-loader": "8.0.5",
-        "electron": "11.0.0",
+        "electron": "11.5.0",
         "electron-builder": "22.13.1",
         "electron-notarize": "1.0.0"
     },

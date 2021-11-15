@@ -281,7 +281,8 @@ const decideIfWearRunning = async (c, device) => {
     let isWear = false;
     [fingerprint, name, mod, flavor, description, model, product].forEach(
         (string) => {
-            if (string && string.toLowerCase().includes('wear')) isWear = true;
+            const cmp = string ? string.toLowerCase() : '';
+            if ((cmp.includes('wear') || cmp.includes('rubyfish') || cmp.includes('watch'))) isWear = true;
         }
     );
     return isWear;
@@ -289,11 +290,6 @@ const decideIfWearRunning = async (c, device) => {
 
 const getDeviceType = async (device, c) => {
     logDebug('getDeviceType - in', { device });
-
-    if (device.product === 'tunny') {
-        device.isNotEligibleAndroid = true;
-        return device;
-    }
 
     if (device.udid !== 'unknown') {
         const screenSizeResult = await execCLI(

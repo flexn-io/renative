@@ -9,7 +9,8 @@ export const taskRnvInstall = async (c, parentTask) => {
     if (c.program.only && !!parentTask) return true;
 
     // Check node_modules
-    if (!areNodeModulesInstalled() || (c._requiresNpmInstall && !c.runtime.skipPackageUpdate)) {
+    // c.runtime.skipPackageUpdate only reflects rnv version mismatch. should not prevent updating other deps
+    if (!areNodeModulesInstalled() || c._requiresNpmInstall /* && !c.runtime.skipPackageUpdate */) {
         if (!areNodeModulesInstalled()) {
             logInfo(
                 'node_modules folder is missing. INSTALLING...'

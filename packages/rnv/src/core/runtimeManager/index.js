@@ -35,7 +35,7 @@ export const configureRuntimeDefaults = async (c) => {
   || c.runtime.currentPlatform?.defaultPort; //  PLATFORMS[c.platform]?.defaultPort;
     if (c.program.target !== true) {
         c.runtime.target = c.program.target
-      || c.files.workspace.config?.defaultTargets?.[c.platform];
+      || c.buildConfig?.defaultTargets?.[c.platform];
     } else c.runtime.target = c.program.target;
     c.runtime.scheme = c.program.scheme || 'debug';
     c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';

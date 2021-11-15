@@ -1034,9 +1034,9 @@ rnv plugin add react-native-biometrics
 ## react-native-ble-manager
 
 
-Version: `6.2.4`
+Version: `7.4.2`
 
-Platforms: `android`,`androidtv`,`firetv`
+Platforms: `android`,`androidwear`,`androidtv`,`firetv`,`ios`
 
 
 
@@ -2906,7 +2906,7 @@ rnv plugin add recyclerlistview
 ## renative
 
 
-Version: `0.32.0-feat-task-rnv-new-args-3`
+Version: `0.32.0-alpha.49`
 
 Platforms: `ios`,`android`,`firetv`,`androidtv`,`androidwear`,`web`,`webtv`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

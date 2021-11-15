@@ -26,7 +26,7 @@ export const configureNextIfRequired = async (c) => {
     const { platformTemplatesDirs, dir } = c.paths.project;
     // const pagesDir = path.resolve(getConfigProp(c, c.platform, 'pagesDir') || 'src/app');
     // const _appFile = path.join(pagesDir, '_app.js');
-    const supportFilesDir = path.join(platformTemplatesDirs[c.platform], '../supportFiles');
+    const supportFilesDir = path.join(platformTemplatesDirs[c.platform], '../../supportFiles');
     const configFile = path.join(dir, NEXT_CONFIG_NAME);
 
     // add config

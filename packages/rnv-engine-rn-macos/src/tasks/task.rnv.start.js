@@ -68,11 +68,15 @@ Dev server running at: ${url}
 `);
             if (!parentTask) {
                 const isRunning = await isBundlerActive(c);
+                let resetCompleted = false;
+                if (isRunning) {
+                    resetCompleted = await confirmActiveBundler(c);
+                }
+
 
                 if (!isRunning || (isRunning && resetCompleted)) {
-                    return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
+                    return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c), RCT_NO_LAUNCH_PACKAGER: 1 } });
                 }
-                const resetCompleted = await confirmActiveBundler(c);
                 if (resetCompleted) {
                     return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
                 }

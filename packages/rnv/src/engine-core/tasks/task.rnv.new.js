@@ -34,8 +34,9 @@ import {
     printBoxStart,
     printIntoBox
 } from '../../core/systemManager/logger';
-import { listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
+import { checkNpxIsInstalled, listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
 import { getTemplateOptions } from '../../core/templateManager';
+
 
 const highlight = chalk().green;
 
@@ -338,12 +339,11 @@ export const taskRnvNew = async (c) => {
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
 
-    await executeAsync(
-        `npm i ${selectedInputTemplate}@${inputTemplateVersion} --no-save`,
-        {
-            cwd: c.paths.project.dir,
-        }
-    );
+    await checkNpxIsInstalled();
+
+    await executeAsync(`npx yarn add ${selectedInputTemplate}@${inputTemplateVersion}`, {
+        cwd: c.paths.project.dir
+    });
 
     if (!data.optionTemplates.keysAsArray.includes(selectedInputTemplate)) {
         const { confirmAddTemplate } = await inquirer.prompt({
@@ -501,11 +501,32 @@ export const taskRnvNew = async (c) => {
             id: data.appID,
             supportedPlatforms: data.optionPlatforms.selectedOptions,
         },
+        engines: {},
         templates,
         currentTemplate: data.optionTemplates.selectedOption,
         isNew: true,
         isMonorepo: false,
     };
+
+    const { supportedPlatforms: supPlats } = config.defaults;
+
+    // Remove unused platforms
+    Object.keys(config.platforms).forEach((k) => {
+        if (!supPlats.includes(k)) {
+            delete config.platforms[k];
+        }
+    });
+
+    // Remove unused engines based on selected platforms
+    supPlats.forEach((k) => {
+        const selectedEngineId = config.platforms[k]?.engine || c.files.rnv.projectTemplates.config.platforms[k]?.engine;
+        if (selectedEngineId) {
+            const selectedEngine = findEngineKeyById(c, selectedEngineId);
+            config.engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
+        }
+    });
+
+
     delete config.templateConfig;
 
     writeFileSync(c.paths.project.config, config);
@@ -519,6 +540,18 @@ export const taskRnvNew = async (c) => {
             `cd ${data.projectName}`
         )} and run ${chalk().white('rnv run')} to see magic happen!`
     );
+};
+
+const findEngineKeyById = (c, id) => {
+    const { engineTemplates } = c.files.rnv.projectTemplates.config;
+    const etk = Object.keys(engineTemplates);
+    for (let i = 0; i < etk.length; i++) {
+        const engine = engineTemplates[etk[i]];
+        if (engine.id === id) {
+            engine.key = etk[i];
+            return engine;
+        }
+    }
 };
 
 export default {
