@@ -58,7 +58,7 @@ export const parseBuildGradleSync = (c) => {
         {
             pattern: '{{INJECT_KOTLIN_VERSION}}',
             override:
-                c.pluginConfigAndroid.kotlinVersion || '1.3.0'
+                c.pluginConfigAndroid.kotlinVersion
         },
         {
             pattern: '{{INJECT_PLUGINS}}',
@@ -181,6 +181,12 @@ export const parseAppBuildGradleSync = (c) => {
         platform,
         'buildToolsVersion',
         '28.0.0'
+    );
+    c.pluginConfigAndroid.kotlinVersion = getConfigProp(
+        c,
+        platform,
+        'kotlinVersion',
+        '1.3.0'
     );
 
     // REACT NATIVE ENGINE
