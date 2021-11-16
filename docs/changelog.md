@@ -1850,6 +1850,22 @@ renative runtime deprecated API:
 - none
 
   
+## v0.32.0 (2021-11-16)
+
+### Fixed
+
+- 0.32.0-rc.1
+- [fix] improve dep resolutions during bootstrap
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.31.2 (2020-10-19)
 
 ### Fixed
