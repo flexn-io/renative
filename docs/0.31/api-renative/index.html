@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>renative API Reference · ReNative</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## getScaledValue"/><meta name="docsearch:version" content="0.31"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="renative API Reference · ReNative"/><meta property="og:type" content="website"/><meta property="og:url" content="https://renative.org/"/><meta property="og:description" content="## getScaledValue"/><meta property="og:image" content="https://renative.org/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://renative.org/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/dark.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.png" alt="ReNative"/><h2 class="headerTitleWithLogo">ReNative</h2></a><a href="/versions"><h3>0.31</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/0.31/intro-quickstart" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/docs/0.31/api-config" target="_self">API</a></li><li class=""><a href="https://twitter.com/renative" target="_self">Twitter</a></li><li class=""><a href="https://github.com/pavjacko/renative" target="_self">Github</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Runtime</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">CLI<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/0.31/api-cli-engine-core">Engine Core</a></li><li class="navListItem"><a class="navItem" href="/docs/0.31/api-cli-engine-rn">Engine RN</a></li><li class="navListItem"><a class="navItem" href="/docs/0.31/api-cli-engine-rn-web">Engine RN Web</a></li><li class="navListItem"><a class="navItem" href="/docs/0.31/api-cli-engine-rn-next">Engine RN Next</a></li><li class="navListItem"><a class="navItem" href="/docs/0.31/api-cli-engine-rn-electron">Engine RN Electron</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Config<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/0.31/api-config">renative.json</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Runtime<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem navListItemActive"><a class="navItem" href="/docs/0.31/api-renative">renative</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">RNV<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/0.31/api-rnv">rnv</a></li><li class="navListItem"><a class="navItem" href="/docs/0.31/api-rnv-config">build config object</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">renative API Reference</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="getscaledvalue"></a><a href="#getscaledvalue" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getScaledValue</h2>
+<p>Help to render UI with unified relative scaled factor</p>
+<p>type: <code>function</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { getScaledValue } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+
+StyleSheet.<span class="hljs-keyword">create</span>({
+    <span class="hljs-keyword">view</span>: {
+      width: getScaledValue(<span class="hljs-number">50</span>),
+      height: getScaledValue(<span class="hljs-number">50</span>)
+    }
+})
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="useopenurl"></a><a href="#useopenurl" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>useOpenURL</h2>
+<p>Cross-platform hook to open external URLs</p>
+<p>type: <code>function</code></p>
+<pre><code class="hljs">import { useOpenURL } from 'renative'
+
+const openURL = use<span class="hljs-constructor">OpenURL()</span>;
+<span class="hljs-keyword">open</span><span class="hljs-constructor">URL('<span class="hljs-params">https</span>:<span class="hljs-operator">/</span><span class="hljs-operator">/</span><span class="hljs-params">renative</span>.<span class="hljs-params">org</span>')</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="usenavigate"></a><a href="#usenavigate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>useNavigate</h2>
+<p>Cross-platform hook to navigate to specific section of app</p>
+<p>type: <code>function</code></p>
+<pre><code class="hljs">import { useNavigate } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+
+<span class="hljs-keyword">const</span> navigate = useNavigate();
+navigate(route, opts, <span class="hljs-keyword">params</span>)
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="usepop"></a><a href="#usepop" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>usePop</h2>
+<p>Cross-platform hook to navigate back to previous screen</p>
+<p>type: <code>function</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { usePop } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+
+const <span class="hljs-keyword">pop</span> = usePop();
+<span class="hljs-keyword">pop</span>()
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="useopendrawer"></a><a href="#useopendrawer" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>useOpenDrawer</h2>
+<p>Cross-platform hook to open drawer</p>
+<p>type: <code>function</code></p>
+<pre><code class="hljs"><span class="hljs-variable">import</span> { <span class="hljs-variable">useOpenDrawer</span> } <span class="hljs-variable">from</span> <span class="hljs-string">'renative'</span>
+
+<span class="hljs-variable">const</span> <span class="hljs-variable">openDrawer</span> = <span class="hljs-function"><span class="hljs-title">useOpenDrawer</span>();
+<span class="hljs-title">openDrawer</span>(<span class="hljs-variable">drawerName</span>)</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="platform"></a><a href="#platform" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platform</h2>
+<p>Returns string representing current platform</p>
+<p>type: <code>string</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { platform } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="factor"></a><a href="#factor" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>factor</h2>
+<p>Returns string representing current form factor</p>
+<p>type: <code>string</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { factor } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="engine"></a><a href="#engine" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>engine</h2>
+<p>Returns string representing current core engine</p>
+<p>type: <code>string</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { engine } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="isplatform"></a><a href="#isplatform" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatform...</h2>
+<p>Built-time platform checks for renative target platform</p>
+<p>returns true if running under specific platform via <code>rnv ... -p &lt;PLATFORM&gt;</code></p>
+<h3><a class="anchor" aria-hidden="true" id="isplatformandroid"></a><a href="#isplatformandroid" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformAndroid</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformAndroid } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformandroidtv"></a><a href="#isplatformandroidtv" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformAndroidtv</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformAndroidtv } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformandroidwear"></a><a href="#isplatformandroidwear" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformAndroidwear</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformAndroidwear } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformios"></a><a href="#isplatformios" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformIos</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformIos } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformtvos"></a><a href="#isplatformtvos" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformTvos</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformTvos } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformweb"></a><a href="#isplatformweb" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformWeb</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformWeb } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformwebos"></a><a href="#isplatformwebos" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformWebos</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformWebos } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformtizen"></a><a href="#isplatformtizen" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformTizen</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformTizen } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformtizenwatch"></a><a href="#isplatformtizenwatch" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformTizenwatch</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformTizenwatch } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformtizenmobile"></a><a href="#isplatformtizenmobile" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformTizenmobile</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformTizenmobile } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformmacos"></a><a href="#isplatformmacos" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformMacos</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformMacos } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformwindows"></a><a href="#isplatformwindows" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformWindows</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformWindows } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformfirefoxos"></a><a href="#isplatformfirefoxos" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformFirefoxos</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformFirefoxos } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformfirefoxtv"></a><a href="#isplatformfirefoxtv" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformFirefoxtv</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformFirefoxtv } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isplatformkaios"></a><a href="#isplatformkaios" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isPlatformKaios</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isPlatformKaios } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="isengine"></a><a href="#isengine" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isEngine...</h2>
+<p>Built-time platform checks for renative core engine</p>
+<h3><a class="anchor" aria-hidden="true" id="isenginenative"></a><a href="#isenginenative" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isEngineNative</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isEngineNative } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isengineweb"></a><a href="#isengineweb" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isEngineWeb</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isEngineWeb } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="isfactor"></a><a href="#isfactor" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isFactor...</h2>
+<p>Built-time platform checks for renative form factor per each specific platform</p>
+<p>returns true if running under specific form factor via <code>rnv ... -p &lt;PLATFORM&gt;</code> and matches one of the form factors ie for android:
+<a href="/docs/0.31/platform-android#file-extension-support">Android Extenstion Support</a></p>
+<h3><a class="anchor" aria-hidden="true" id="isfactorbrowser"></a><a href="#isfactorbrowser" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isFactorBrowser</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isFactorBrowser } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isfactordesktop"></a><a href="#isfactordesktop" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isFactorDesktop</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isFactorDesktop } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isfactormobile"></a><a href="#isfactormobile" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isFactorMobile</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isFactorMobile } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isfactortv"></a><a href="#isfactortv" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isFactorTv</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isFactorTv } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="isfactorwatch"></a><a href="#isfactorwatch" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>isFactorWatch</h3>
+<p>type: <code>bool</code></p>
+<pre><code class="hljs"><span class="hljs-keyword">import</span> { isFactorWatch } <span class="hljs-keyword">from</span> <span class="hljs-string">'renative'</span>
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/0.31/api-config"><span class="arrow-prev">← </span><span>renative.json</span></a><a class="docs-next button" href="/docs/0.31/api-rnv"><span>rnv</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#getscaledvalue">getScaledValue</a></li><li><a href="#useopenurl">useOpenURL</a></li><li><a href="#usenavigate">useNavigate</a></li><li><a href="#usepop">usePop</a></li><li><a href="#useopendrawer">useOpenDrawer</a></li><li><a href="#platform">platform</a></li><li><a href="#factor">factor</a></li><li><a href="#engine">engine</a></li><li><a href="#isplatform">isPlatform...</a><ul class="toc-headings"><li><a href="#isplatformandroid">isPlatformAndroid</a></li><li><a href="#isplatformandroidtv">isPlatformAndroidtv</a></li><li><a href="#isplatformandroidwear">isPlatformAndroidwear</a></li><li><a href="#isplatformios">isPlatformIos</a></li><li><a href="#isplatformtvos">isPlatformTvos</a></li><li><a href="#isplatformweb">isPlatformWeb</a></li><li><a href="#isplatformwebos">isPlatformWebos</a></li><li><a href="#isplatformtizen">isPlatformTizen</a></li><li><a href="#isplatformtizenwatch">isPlatformTizenwatch</a></li><li><a href="#isplatformtizenmobile">isPlatformTizenmobile</a></li><li><a href="#isplatformmacos">isPlatformMacos</a></li><li><a href="#isplatformwindows">isPlatformWindows</a></li><li><a href="#isplatformfirefoxos">isPlatformFirefoxos</a></li><li><a href="#isplatformfirefoxtv">isPlatformFirefoxtv</a></li><li><a href="#isplatformkaios">isPlatformKaios</a></li></ul></li><li><a href="#isengine">isEngine...</a><ul class="toc-headings"><li><a href="#isenginenative">isEngineNative</a></li><li><a href="#isengineweb">isEngineWeb</a></li></ul></li><li><a href="#isfactor">isFactor...</a><ul class="toc-headings"><li><a href="#isfactorbrowser">isFactorBrowser</a></li><li><a href="#isfactordesktop">isFactorDesktop</a></li><li><a href="#isfactormobile">isFactorMobile</a></li><li><a href="#isfactortv">isFactorTv</a></li><li><a href="#isfactorwatch">isFactorWatch</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.png" alt="ReNative" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/intro-installation">Getting Started</a><a href="/docs/platform">Platforms</a><a href="/docs/guide-cli">Guides</a></div><div><h5>Community</h5><a href="https://spectrum.chat/renative">Project Chat</a><a href="https://twitter.com/renative" target="_blank" rel="noreferrer noopener">Twitter</a><a href="/help">Contributors</a></div><div><h5>More</h5><a href="https://github.com/pavjacko/renative">GitHub</a><a class="github-button" href="https://github.com/pavjacko/renative" data-icon="octicon-star" data-count-href="/pavjacko/renative/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><div class="social"><a href="https://twitter.com/renative" class="twitter-follow-button">Follow @renative</a></div></div></section><section class="copyright"></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: 'ce70fa21a21dad8ee49ed142a8a63b67',
+                indexName: 'renative',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>
