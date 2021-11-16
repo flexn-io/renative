@@ -34,9 +34,11 @@ import {
     printBoxStart,
     printIntoBox
 } from '../../core/systemManager/logger';
-import { checkNpxIsInstalled, listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
+import {
+    checkNpxIsInstalled,
+    listAndSelectNpmVersion
+} from '../../core/systemManager/npmUtils';
 import { getTemplateOptions } from '../../core/templateManager';
-
 
 const highlight = chalk().green;
 
@@ -134,7 +136,18 @@ const interactiveQuestion = async (results, bootstrapQuestions, key = '') => {
 
 export const taskRnvNew = async (c) => {
     logTask('taskRnvNew');
-    const { rawArgs, ci } = c.program; // using rawArgs since 3rd argument is circular reference for some reason
+    const {
+        ci,
+        projectName,
+        title,
+        id,
+        appVersion,
+        workspace,
+        template,
+        templateVersion,
+        platform,
+    } = c.program;
+
     if (fsExistsSync(c.paths.project.config)) {
         logWarning(`You are in ReNative project. Found: ${c.paths.project.config}`);
         const { confirmInRnvProject } = await inquirer.prompt({
@@ -180,8 +193,8 @@ export const taskRnvNew = async (c) => {
 
     let inputProjectName;
 
-    if (rawArgs[3] && rawArgs[3] !== '') {
-        inputProjectName = rawArgs[3];
+    if (projectName && projectName !== '') {
+        inputProjectName = projectName;
     } else {
         const inputProjectNameObj = await inquirer.prompt({
             name: 'inputProjectName',
@@ -198,6 +211,7 @@ export const taskRnvNew = async (c) => {
         CURRENT_DIR,
         data.projectName.replace(/(\s+)/g, '_')
     );
+
     if (fsExistsSync(c.paths.project.dir)) {
         const { confirm } = await inquirer.prompt({
             type: 'confirm',
@@ -222,16 +236,16 @@ export const taskRnvNew = async (c) => {
     let inputAppID;
     let inputVersion;
     if (
-        rawArgs[4]
-    && rawArgs[4] !== ''
-    && rawArgs[5]
-    && rawArgs[5] !== ''
-    && rawArgs[6]
-    && rawArgs[6] !== ''
+        title
+    && title !== ''
+    && id
+    && id !== ''
+    && appVersion
+    && appVersion !== ''
     ) {
-        inputAppTitle = rawArgs[4];
-        inputAppID = rawArgs[5];
-        inputVersion = rawArgs[6];
+        inputAppTitle = title;
+        inputAppID = id;
+        inputVersion = appVersion;
     } else {
         const answers = await inquirer.prompt([
             {
@@ -250,7 +264,7 @@ export const taskRnvNew = async (c) => {
                         .toLowerCase()}`;
                     return data.appID;
                 },
-                validate: id => !!id.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/)
+                validate: appId => !!appId.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/)
           || 'Please enter a valid appID (com.test.app)',
                 message: "What's your App ID?",
             },
@@ -272,8 +286,8 @@ export const taskRnvNew = async (c) => {
     // INPUT: Workspace
     // ==================================================
     let inputWorkspace;
-    if (rawArgs[7] && rawArgs[7] !== '') {
-        inputWorkspace = rawArgs[7];
+    if (workspace && workspace !== '') {
+        inputWorkspace = workspace;
     } else {
         const answer = await inquirer.prompt([
             {
@@ -300,8 +314,8 @@ export const taskRnvNew = async (c) => {
 
     data.optionTemplates.keysAsArray.push(customTemplate);
     let selectedInputTemplate;
-    if (rawArgs[8] && rawArgs[8] !== '') {
-        selectedInputTemplate = rawArgs[8];
+    if (template && template !== '') {
+        selectedInputTemplate = template;
     } else {
         const { inputTemplate } = await inquirer.prompt({
             name: 'inputTemplate',
@@ -310,7 +324,6 @@ export const taskRnvNew = async (c) => {
             default: data.defaultTemplate,
             choices: data.optionTemplates.keysAsArray,
         });
-
 
         if (inputTemplate === customTemplate) {
             const { inputTemplateCustom } = await inquirer.prompt({
@@ -327,8 +340,8 @@ export const taskRnvNew = async (c) => {
     data.optionTemplates.selectedOption = selectedInputTemplate;
 
     let inputTemplateVersion;
-    if (rawArgs[9] && rawArgs[9] !== '') {
-        inputTemplateVersion = rawArgs[9];
+    if (templateVersion && templateVersion !== '') {
+        inputTemplateVersion = templateVersion;
     } else {
         inputTemplateVersion = await listAndSelectNpmVersion(
             c,
@@ -341,9 +354,12 @@ export const taskRnvNew = async (c) => {
 
     await checkNpxIsInstalled();
 
-    await executeAsync(`npx yarn add ${selectedInputTemplate}@${inputTemplateVersion}`, {
-        cwd: c.paths.project.dir
-    });
+    await executeAsync(
+        `npx yarn add ${selectedInputTemplate}@${inputTemplateVersion}`,
+        {
+            cwd: c.paths.project.dir,
+        }
+    );
 
     if (!data.optionTemplates.keysAsArray.includes(selectedInputTemplate)) {
         const { confirmAddTemplate } = await inquirer.prompt({
@@ -380,9 +396,10 @@ export const taskRnvNew = async (c) => {
     // ==================================================
 
     const supportedPlatforms = renativeTemplateConfig?.defaults?.supportedPlatforms || [];
+
     let inputSupportedPlatforms;
-    if (rawArgs[10] && rawArgs[10] !== '') {
-        inputSupportedPlatforms = rawArgs[10].split(',');
+    if (platform && platform !== '') {
+        inputSupportedPlatforms = platform.split(',');
     } else {
         const answer = await inquirer.prompt({
             name: 'inputSupportedPlatforms',
@@ -453,7 +470,6 @@ export const taskRnvNew = async (c) => {
         }
     }
 
-
     // ==================================================
     // Setup Project
 
@@ -519,13 +535,13 @@ export const taskRnvNew = async (c) => {
 
     // Remove unused engines based on selected platforms
     supPlats.forEach((k) => {
-        const selectedEngineId = config.platforms[k]?.engine || c.files.rnv.projectTemplates.config.platforms[k]?.engine;
+        const selectedEngineId = config.platforms[k]?.engine
+      || c.files.rnv.projectTemplates.config.platforms[k]?.engine;
         if (selectedEngineId) {
             const selectedEngine = findEngineKeyById(c, selectedEngineId);
             config.engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
         }
     });
-
 
     delete config.templateConfig;
 
