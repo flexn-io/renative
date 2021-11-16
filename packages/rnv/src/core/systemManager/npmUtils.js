@@ -177,6 +177,7 @@ export const installPackageDependencies = async (c, failOnError = false) => {
         logTask('installPackageDependencies');
         logInfo(`Found custom task for install: ${customScript}.`);
         await executeAsync(customScript);
+        c._requiresNpmInstall = false;
         return true;
     }
 
@@ -252,6 +253,7 @@ export const installPackageDependencies = async (c, failOnError = false) => {
             c.files.project.configLocal._meta.requiresJetify = true;
             writeFileSync(c.paths.project.configLocal, c.files.project.configLocal);
         }
+        c._requiresNpmInstall = false;
         return true;
     } catch (jetErr) {
         logError(jetErr);
