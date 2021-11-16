@@ -705,6 +705,9 @@
       "changelog/0.32.0-feat-winbuilds-1": {
         "title": "changelog/0.32.0-feat-winbuilds-1"
       },
+      "changelog/0.32.0-rc.1": {
+        "title": "changelog/0.32.0-rc.1"
+      },
       "config-app": {
         "title": "App Configs",
         "sidebar_label": "App Configs"
