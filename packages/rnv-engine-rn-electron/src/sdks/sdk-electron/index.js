@@ -53,11 +53,17 @@ export const configureElectronProject = async (c) => {
 
     c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
 
+    // If path does not exist for png, try iconset
+    const pngPath = path.join(
+        c.paths.appConfig.dir,
+        `assets/${platform}/resources/icon.png`
+    );
+
     await copyAssetsFolder(
         c,
         platform,
         null,
-        platform === MACOS ? _generateICNS : null
+        platform === MACOS && !pngPath ? _generateICNS : null
     );
 
     await configureCoreWebProject(c);
@@ -79,6 +85,11 @@ const configureProject = c => new Promise((resolve, reject) => {
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
     const packagePath = path.join(platformProjectDir, 'package.json');
+    // If path does not exist for png, try iconset
+    const pngIconPath = path.join(
+        c.paths.appConfig.dir,
+        `assets/${platform}/resources/icon.png`
+    );
     const appId = getAppId(c, platform);
 
     if (!fsExistsSync(packagePath)) {
@@ -110,7 +121,10 @@ const configureProject = c => new Promise((resolve, reject) => {
     let browserWindow = {
         width: 1200,
         height: 800,
-        webPreferences: { nodeIntegration: true, enableRemoteModule: true }
+        webPreferences: { nodeIntegration: true, enableRemoteModule: true },
+        icon: platform === MACOS && !pngIconPath
+            ? path.join(platformProjectDir, 'resources', 'icon.icns')
+            : path.join(platformProjectDir, 'resources', 'icon.png')
     };
     const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
     if (browserWindowExt) {
@@ -124,6 +138,10 @@ const configureProject = c => new Promise((resolve, reject) => {
             {
                 pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
                 override: browserWindowStr
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_ICON_LOCATION}}',
+                override: browserWindow.icon
             }
         ];
 
@@ -143,6 +161,10 @@ const configureProject = c => new Promise((resolve, reject) => {
             {
                 pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
                 override: browserWindowStr
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_ICON_LOCATION}}',
+                override: browserWindow.icon
             }
         ];
 
@@ -318,6 +340,7 @@ const _generateICNS = c => new Promise((resolve, reject) => {
         'resources/icon.icns'
     );
 
+    // It's ok if icns are not generated as png is also valid https://www.electron.build/icons.html#macos
     if (!source) {
         logWarning(
             `You are missing AppIcon.iconset in ${chalk().white(

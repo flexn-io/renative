@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, nativeImage } = require('electron');
 const { initContextMenu } = require('./contextMenu')
 if(initContextMenu) initContextMenu(createWindow)
 
@@ -49,5 +49,13 @@ app.on('activate', () => {
     }
 });
 
+const isMacos = process.platform === 'darwin';
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+// This applies logo to the application when it is displayed in the dock on macOS
+if (isMacos) {
+    const image = nativeImage.createFromPath("{{PLUGIN_INJECT_ICON_LOCATION}}");
+    app.dock.setIcon(image);
+}
