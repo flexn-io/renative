@@ -4,7 +4,7 @@ import semver from 'semver';
 import lSet from 'lodash.set';
 import { RENATIVE_CONFIG_NAME, CURRENT_DIR, PARAMS } from '../../core/constants';
 import { getTemplateOptions } from '../../core/templateManager';
-import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync, writeObjectSync, readObjectSync, removeDirs } from '../../core/systemManager/fileutils';
+import { mkdirSync, writeFileSync, cleanFolder, fsExistsSync, readObjectSync, removeDirs } from '../../core/systemManager/fileutils';
 import { checkAndCreateGitignore } from '../../core/projectManager';
 import { executeAsync } from '../../core/systemManager/exec';
 import {
@@ -306,7 +306,7 @@ export const taskRnvNew = async (c) => {
                 c.files.workspace.config.projectTemplates = {};
             }
             c.files.workspace.config.projectTemplates[selectedInputTemplate] = {};
-            writeObjectSync(c.paths.workspace.config, c.files.workspace.config);
+            writeFileSync(c.paths.workspace.config, c.files.workspace.config);
             await updateRenativeConfigs(c);
 
             logInfo(`Updating ${c.paths.workspace.config}...DONE`);
