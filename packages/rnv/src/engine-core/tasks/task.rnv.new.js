@@ -143,7 +143,7 @@ export const taskRnvNew = async (c) => {
         id,
         appVersion,
         workspace,
-        template,
+        projectTemplate,
         templateVersion,
         platform,
     } = c.program;
@@ -314,8 +314,8 @@ export const taskRnvNew = async (c) => {
 
     data.optionTemplates.keysAsArray.push(customTemplate);
     let selectedInputTemplate;
-    if (template && template !== '') {
-        selectedInputTemplate = template;
+    if (projectTemplate && projectTemplate !== '') {
+        selectedInputTemplate = projectTemplate;
     } else {
         const { inputTemplate } = await inquirer.prompt({
             name: 'inputTemplate',

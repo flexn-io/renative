@@ -270,6 +270,14 @@ export const PARAM_KEYS = {
         value: 'value',
         description: 'select the name of the new project',
     },
+    projectTemplate: {
+        value: 'value',
+        description: 'select the template of new project',
+    },
+    templateVersion: {
+        value: 'value',
+        description: 'select the template version',
+    },
     title: {
         value: 'value',
         description: 'select the title of the app',
@@ -285,10 +293,6 @@ export const PARAM_KEYS = {
     workspace: {
         value: 'value',
         description: 'select the workspace for the new project',
-    },
-    templateVersion: {
-        value: 'value',
-        description: 'select the template version',
     },
     template: {
         shortcut: 'T',
