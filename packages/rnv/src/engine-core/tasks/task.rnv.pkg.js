@@ -5,12 +5,12 @@ import semver from 'semver';
 import Config from '../../core/configManager/config';
 import { executeAsync } from '../../core/systemManager/exec';
 import {
-    writeObjectSync,
     copyFileSync,
     updateObjectSync,
     fsExistsSync,
     fsReaddirSync,
-    fsLstatSync
+    fsLstatSync,
+    writeFileSync
 } from '../../core/systemManager/fileutils';
 import { PARAMS, TASK_PKG, TASK_PROJECT_CONFIGURE } from '../../core/constants';
 import { logError, logTask } from '../../core/systemManager/logger';
@@ -36,7 +36,7 @@ const bumpVersions = (version) => {
                 // we found a packaaaage, fist-bumpin' it
                 const existingPkgJson = require(pkgJsonPath);
                 existingPkgJson.version = version;
-                writeObjectSync(pkgJsonPath, existingPkgJson);
+                writeFileSync(pkgJsonPath, existingPkgJson);
             }
         });
         // check if it's our turf and do some extra magic

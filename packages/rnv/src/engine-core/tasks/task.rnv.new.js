@@ -2,25 +2,17 @@ import inquirer from 'inquirer';
 import lSet from 'lodash.set';
 import path from 'path';
 import semver from 'semver';
+import { RENATIVE_CONFIG_NAME, CURRENT_DIR, PARAMS } from '../../core/constants';
+import { getTemplateOptions } from '../../core/templateManager';
 import {
-    CURRENT_DIR,
-    PARAMS,
-    RENATIVE_CONFIG_NAME
-} from '../../core/constants';
+    mkdirSync, writeFileSync, cleanFolder, fsExistsSync, readObjectSync, removeDirs,
+} from '../../core/systemManager/fileutils';
 import { checkAndCreateGitignore } from '../../core/projectManager';
 import { getWorkspaceOptions } from '../../core/projectManager/workspace';
 import { updateRenativeConfigs } from '../../core/runtimeManager';
 import Analytics from '../../core/systemManager/analytics';
 import { executeAsync } from '../../core/systemManager/exec';
-import {
-    cleanFolder,
-    fsExistsSync,
-    mkdirSync,
-    readObjectSync,
-    removeDirs,
-    writeFileSync,
-    writeObjectSync
-} from '../../core/systemManager/fileutils';
+
 import { configureGit } from '../../core/systemManager/gitUtils';
 import {
     chalk,
@@ -38,7 +30,7 @@ import {
     checkNpxIsInstalled,
     listAndSelectNpmVersion
 } from '../../core/systemManager/npmUtils';
-import { getTemplateOptions } from '../../core/templateManager';
+
 
 const highlight = chalk().green;
 
@@ -375,7 +367,7 @@ export const taskRnvNew = async (c) => {
                 c.files.workspace.config.projectTemplates = {};
             }
             c.files.workspace.config.projectTemplates[selectedInputTemplate] = {};
-            writeObjectSync(c.paths.workspace.config, c.files.workspace.config);
+            writeFileSync(c.paths.workspace.config, c.files.workspace.config);
             await updateRenativeConfigs(c);
 
             logInfo(`Updating ${c.paths.workspace.config}...DONE`);

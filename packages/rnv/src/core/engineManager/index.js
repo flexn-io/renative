@@ -1,6 +1,6 @@
 /* eslint-disable import/no-dynamic-require, global-require */
 import path from 'path';
-import { fsExistsSync, readObjectSync, writeFileSync, writeObjectSync } from '../systemManager/fileutils';
+import { fsExistsSync, readObjectSync, writeFileSync } from '../systemManager/fileutils';
 import { checkAndCreateProjectPackage, installPackageDependencies } from '../systemManager/npmUtils';
 import { IS_LINKED, RNV_HOME_DIR, TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
@@ -210,12 +210,15 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
                 }
 
                 if (addedDeps.length > 0) {
-                    writeObjectSync(c.paths.project.package, c.files.project.package);
+                    writeFileSync(c.paths.project.package, c.files.project.package);
                 }
                 //
             }
         });
     });
+    if (addedDeps.length > 0) {
+        await installPackageDependencies(c);
+    }
 };
 
 export const loadEngines = async (c, failOnMissingDeps) => {
