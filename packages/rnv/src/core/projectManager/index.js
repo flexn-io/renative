@@ -577,7 +577,7 @@ export const versionCheck = async (c) => {
         chalk().grey
     );
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
-        if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
+        if ((c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) && !c.program.skipRnvCheck) {
             const recCmd = chalk().white(`$ npx ${getCurrentCommand(true)}`);
             const actionNoUpdate = 'Continue and skip updating package.json';
             const actionWithUpdate = 'Continue and update package.json';

@@ -5,6 +5,41 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.0-alpha.50 (2021-11-16)
+
+### Fixed
+
+- [fix] writeObject warnings, install missing deps during bootstrap
+- extra data for sentry
+- upgrade sentry
+- fixes #694
+- closes #731
+- added support for tunny watch
+- 0.32.0-alpha.49
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- [fix] incorrect override warning
+- [fix] correct dep update targets
+- added sentry back
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- tvos ios-deploy fix
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- [fix] install engine deps before loading engine
+- signing for tvos and removed cl
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- fix runios
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- [fix] bootstrap deps
+- fix engines
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.49 (2021-11-14)
 
 ### Fixed
@@ -1790,6 +1825,37 @@ renative runtime deprecated API:
 - fixed web and webtv debug enviroment
 - Fix FireTV documentation link
 - Bump hosted-git-info from 2.8.8 to 2.8.9 in /website
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0-rc.1 (2021-11-16)
+
+### Fixed
+
+- [fix] improve dep resolutions during bootstrap
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.0 (2021-11-16)
+
+### Fixed
+
+- 0.32.0-rc.1
+- [fix] improve dep resolutions during bootstrap
 
 ### Added Features
 

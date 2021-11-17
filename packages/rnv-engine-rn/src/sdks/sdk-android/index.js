@@ -627,7 +627,8 @@ export const configureProject = async (c) => {
         appBuildGradleImplementations: '',
         resourceStrings: [],
         appBuildGradleAfterEvaluate: '',
-        injectHermes: ''
+        injectHermes: '',
+        kotlinVersion: ''
     };
 
     // PLUGINS

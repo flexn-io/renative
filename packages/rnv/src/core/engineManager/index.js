@@ -8,6 +8,7 @@ import { getAppFolder, getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
 import { writeRenativeConfigFile } from '../configManager';
+import { configurePlugins } from '../pluginManager';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -164,6 +165,7 @@ export const loadEnginePluginDeps = async (c, engineConfigs) => {
             //
         }
     });
+    return addedPlugins.length;
 };
 
 export const loadEnginePackageDeps = async (c, engineConfigs) => {
@@ -216,9 +218,10 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
             }
         });
     });
-    if (addedDeps.length > 0) {
-        await installPackageDependencies(c);
-    }
+    // if (addedDeps.length > 0) {
+    //     await installPackageDependencies(c);
+    // }
+    return addedDeps.length;
 };
 
 export const loadEngines = async (c, failOnMissingDeps) => {
@@ -270,8 +273,15 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
             return loadEngines(c, true);
         }
         if (!c.runtime.isWrapper) {
-            await loadEnginePluginDeps(c, engineConfigs);
-            await loadEnginePackageDeps(c, engineConfigs);
+            const plugDepsCount = await loadEnginePluginDeps(c, engineConfigs);
+            const pkgDepsCount = await loadEnginePackageDeps(c, engineConfigs);
+
+            if (plugDepsCount + pkgDepsCount > 0) {
+                c.runtime._skipPluginScopeWarnings = true;
+                await configurePlugins(c, true); // TODO: This is too early as scoped plugin have not been installed
+                c.runtime._skipPluginScopeWarnings = false;
+                await installPackageDependencies(c);
+            }
         }
 
 
