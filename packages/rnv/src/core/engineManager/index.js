@@ -277,7 +277,9 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
             const pkgDepsCount = await loadEnginePackageDeps(c, engineConfigs);
 
             if (plugDepsCount + pkgDepsCount > 0) {
-                await configurePlugins(c);
+                c.runtime._skipPluginScopeWarnings = true;
+                await configurePlugins(c, true); // TODO: This is too early as scoped plugin have not been installed
+                c.runtime._skipPluginScopeWarnings = false;
                 await installPackageDependencies(c);
             }
         }

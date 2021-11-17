@@ -142,7 +142,7 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
             version: npmVersion
         };
     }
-    if (scope !== '' && !!scope && !c.buildConfig.pluginTemplates?.[scope]) {
+    if (scope !== '' && !!scope && !c.buildConfig.pluginTemplates?.[scope] && !c.runtime._skipPluginScopeWarnings) {
         logWarning(
             `Plugin ${pluginKey} is not recognized plugin in ${scope} scope`
         );
@@ -216,45 +216,56 @@ export const configurePlugins = async (c) => {
                 )}`
             );
         } else if (dependencies && dependencies[k]) {
-            if (plugin['no-active'] !== true && plugin['no-npm'] !== true
-                    && dependencies[k] !== plugin.version) {
-                if (k === 'renative' && c.runtime.isWrapper) {
-                    logWarning(
-                        "You're in ReNative wrapper mode. plugin renative will stay as local dep!"
-                    );
-                } else {
-                    logWarning(
-                        `Version mismatch of dependency ${chalk().white(
-                            k
-                        )} between:
+            if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
+                if (!plugin.version) {
+                    if (!c.runtime._skipPluginScopeWarnings) {
+                        logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
+                    }
+                } else if (dependencies[k] !== plugin.version) {
+                    if (k === 'renative' && c.runtime.isWrapper) {
+                        logWarning(
+                            "You're in ReNative wrapper mode. plugin renative will stay as local dep!"
+                        );
+                    } else {
+                        logWarning(
+                            `Version mismatch of dependency ${chalk().white(
+                                k
+                            )} between:
 ${chalk().white(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
 ${chalk().white(c.paths.project.builds.config)}: v(${chalk().green(
     plugin.version
 )}).
 package.json will be overriden`
-                    );
+                        );
 
-                    hasPackageChanged = true;
-                    newDeps[k] = plugin.version;
+                        hasPackageChanged = true;
+                        newDeps[k] = plugin.version;
+                    }
                 }
             }
         } else if (devDependencies && devDependencies[k]) {
             if (
                 plugin['no-active'] !== true
                     && plugin['no-npm'] !== true
-                    && devDependencies[k] !== plugin.version
+
             ) {
-                logWarning(
-                    `Version mismatch of devDependency ${chalk().white(
-                        k
-                    )} between package.json: v(${chalk().red(
-                        devDependencies[k]
-                    )}) and plugins.json: v(${chalk().red(
-                        plugin.version
-                    )}). package.json will be overriden`
-                );
-                hasPackageChanged = true;
-                newDevDeps[k] = plugin.version;
+                if (!plugin.version) {
+                    if (!c.runtime._skipPluginScopeWarnings) {
+                        logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
+                    }
+                } else if (devDependencies[k] !== plugin.version) {
+                    logWarning(
+                        `Version mismatch of devDependency ${chalk().white(
+                            k
+                        )} between package.json: v(${chalk().red(
+                            devDependencies[k]
+                        )}) and plugins.json: v(${chalk().red(
+                            plugin.version
+                        )}). package.json will be overriden`
+                    );
+                    hasPackageChanged = true;
+                    newDevDeps[k] = plugin.version;
+                }
             }
         } else if (
             plugin['no-active'] !== true

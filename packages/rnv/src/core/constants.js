@@ -425,6 +425,9 @@ export const PARAM_KEYS = {
     skipDependencyCheck: {
         description: 'Skips auto update of npm dependencies if mismatch found'
     },
+    skipRnvCheck: {
+        description: 'Skips auto update of rnv dependencies if mismatch found'
+    },
     configName: {
         value: 'value',
         isRequired: true,
