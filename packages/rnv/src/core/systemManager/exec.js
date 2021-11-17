@@ -51,6 +51,8 @@ const _execute = (c, command, opts = {}) => {
 
     const mergedOpts = { ...defaultOpts, ...opts };
 
+    const env = opts.env && c.program.info ? Object.keys(opts.env).map(k => `${k}=${opts.env[k]}`).join(' ') : null;
+
     let cleanCommand = command;
     let interval;
     const intervalTimer = 30000; // 30s
@@ -70,6 +72,7 @@ const _execute = (c, command, opts = {}) => {
         );
     }
 
+    logMessage = `${env ? `${env} ` : ''}${logMessage}`;
     logDebug(`_execute: ${logMessage}`);
     const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
     const spinner = !silent && !mono && ora({ text: `Executing: ${logMessage}` }).start();
