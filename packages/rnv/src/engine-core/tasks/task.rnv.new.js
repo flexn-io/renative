@@ -17,7 +17,8 @@ import {
     logSuccess,
     logInfo,
     logDebug,
-    logWarning
+    logWarning,
+    logError
 } from '../../core/systemManager/logger';
 import { getWorkspaceOptions } from '../../core/projectManager/workspace';
 import { updateRenativeConfigs } from '../../core/runtimeManager';
@@ -292,6 +293,13 @@ export const taskRnvNew = async (c) => {
     await executeAsync(`npx yarn add ${selectedInputTemplate}@${inputTemplateVersion}`, {
         cwd: c.paths.project.dir
     });
+
+    // Check if node_modules folder exists
+    if (!fsExistsSync(path.join(c.paths.project.dir, 'node_modules'))) {
+        logError(`npx yarn add ${selectedInputTemplate}@${inputTemplateVersion
+        } : FAILED. this could happen if you have package.json accidentally created somewhere in parent directory`);
+        return;
+    }
 
     if (!data.optionTemplates.keysAsArray.includes(selectedInputTemplate)) {
         const { confirmAddTemplate } = await inquirer.prompt({
