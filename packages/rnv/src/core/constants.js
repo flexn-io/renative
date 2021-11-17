@@ -266,6 +266,34 @@ export const PARAM_KEYS = {
         value: 'value',
         description: 'select specific Target device/simulator'
     },
+    projectName: {
+        value: 'value',
+        description: 'select the name of the new project',
+    },
+    projectTemplate: {
+        value: 'value',
+        description: 'select the template of new project',
+    },
+    templateVersion: {
+        value: 'value',
+        description: 'select the template version',
+    },
+    title: {
+        value: 'value',
+        description: 'select the title of the app',
+    },
+    id: {
+        value: 'value',
+        description: 'select the id of the app',
+    },
+    appVersion: {
+        value: 'value',
+        description: 'select the version of the app',
+    },
+    workspace: {
+        value: 'value',
+        description: 'select the workspace for the new project',
+    },
     template: {
         shortcut: 'T',
         value: 'value',
