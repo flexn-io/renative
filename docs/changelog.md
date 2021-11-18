@@ -5,6 +5,48 @@ sidebar_label: Changelog
 ---
 
 
+## v0.32.2 (2021-11-18)
+
+### Fixed
+
+- Merge pull request #740 from pavjacko/feat/display_env
+- added env variables debug with -i
+- Merge pull request #739 from pavjacko/feat/use_whole_template
+- use the whole packageTemplate
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.1 (2021-11-17)
+
+### Fixed
+
+- [feat] check for accidental parent projects (yarn add will ignore current dir due to resolve up hierarchy)
+- [fix] bootstrap of scoped plugins, --skipRnvCheck
+- Merge pull request #736 from TheDuc/patch-2
+- Update index.js
+- Update index.js
+- Update gradleParser.js
+- update gradleParser.js
+- 0.32.0
+- 0.32.0-rc.1
+- [fix] improve dep resolutions during bootstrap
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.50 (2021-11-16)
 
 ### Fixed

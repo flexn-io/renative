@@ -77,14 +77,9 @@ export const checkAndBootstrapIfRequired = async (c) => {
 
 
         if (config.templateConfig.packageTemplate) {
-            const pkgJson = {};
-            pkgJson.dependencies = {
-                ...config.templateConfig.packageTemplate.dependencies || { },
-
-            };
-            pkgJson.devDependencies = {
-                ...config.templateConfig.packageTemplate.devDependencies || { },
-            };
+            const pkgJson = config.templateConfig.packageTemplate;
+            if (!pkgJson.devDependencies) pkgJson.devDependencies = {};
+            if (!pkgJson.dependencies) pkgJson.dependencies = {};
             c.files.project.package = pkgJson;
 
 

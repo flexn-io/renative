@@ -711,6 +711,12 @@
       "changelog/0.32.0": {
         "title": "changelog/0.32.0"
       },
+      "changelog/0.32.1": {
+        "title": "changelog/0.32.1"
+      },
+      "changelog/0.32.2": {
+        "title": "changelog/0.32.2"
+      },
       "config-app": {
         "title": "App Configs",
         "sidebar_label": "App Configs"
