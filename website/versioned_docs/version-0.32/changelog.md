@@ -6,6 +6,24 @@ original_id: changelog
 ---
 
 
+## v0.32.2 (2021-11-18)
+
+### Fixed
+
+- Merge pull request #740 from pavjacko/feat/display_env
+- added env variables debug with -i
+- Merge pull request #739 from pavjacko/feat/use_whole_template
+- use the whole packageTemplate
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.1 (2021-11-17)
 
 ### Fixed
