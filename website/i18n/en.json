@@ -684,6 +684,18 @@
       "changelog/0.32.0-feat-rnwin-5": {
         "title": "changelog/0.32.0-feat-rnwin-5"
       },
+      "changelog/0.32.0-feat-task-rnv-new-args-0": {
+        "title": "changelog/0.32.0-feat-task-rnv-new-args-0"
+      },
+      "changelog/0.32.0-feat-task-rnv-new-args-1": {
+        "title": "changelog/0.32.0-feat-task-rnv-new-args-1"
+      },
+      "changelog/0.32.0-feat-task-rnv-new-args-2": {
+        "title": "changelog/0.32.0-feat-task-rnv-new-args-2"
+      },
+      "changelog/0.32.0-feat-task-rnv-new-args-3": {
+        "title": "changelog/0.32.0-feat-task-rnv-new-args-3"
+      },
       "changelog/0.32.0-feat-tvos-3": {
         "title": "changelog/0.32.0-feat-tvos-3"
       },
@@ -716,6 +728,9 @@
       },
       "changelog/0.32.2": {
         "title": "changelog/0.32.2"
+      },
+      "changelog/0.33.0-alpha.1": {
+        "title": "changelog/0.33.0-alpha.1"
       },
       "config-app": {
         "title": "App Configs",
