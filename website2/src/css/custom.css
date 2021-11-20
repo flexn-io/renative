@@ -6,7 +6,7 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #25c2a0;
+  --ifm-color-primary: #0a74e6;
   --ifm-color-primary-dark: rgb(33, 175, 144);
   --ifm-color-primary-darker: rgb(31, 165, 136);
   --ifm-color-primary-darkest: rgb(26, 136, 112);
@@ -14,6 +14,8 @@
   --ifm-color-primary-lighter: rgb(102, 212, 189);
   --ifm-color-primary-lightest: rgb(146, 224, 208);
   --ifm-code-font-size: 95%;
+  --ifm-color-secondary: #0a74e6;
+  --ifm-navbar-shadow: transparent;
 }
 
 .docusaurus-highlight-code-line {
@@ -23,6 +25,68 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
-html[data-theme='dark'] .docusaurus-highlight-code-line {
+html[data-theme="dark"] {
+  --ifm-background-color: #000000;
+  --ifm-background-surface-color: #000000;
+  --ifm-navbar-background-color: #000000;
+}
+
+html[data-theme="dark"] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
+
+.hero__title {
+  margin: auto;
+  font-size: 7em;
+  font-weight: 700;
+  height: 1.3em;
+}
+
+.hero__title_alt {
+  color: #0a74e6;
+}
+
+.container {
+  text-align: center;
+}
+
+.button.button--secondary {
+  color: white;
+}
+
+.col--4 {
+  max-width: 500px;
+  margin: auto;
+  margin-bottom: 50px;
+}
+
+.hero--primary {
+  /* background-color: transparent;
+  --ifm-hero-text-color: #000;
+  --ifm-color-primary: #fff;
+  --ifm-font-color-base-inverse: #fff; */
+  /* --ifm-font-color-base-inverse: #ff0000; */
+  color: var(--ifm-color-primary-contrast-foreground);
+  background-color: transparent;
+  box-sizing: unset;
+}
+
+.navbar {
+  box-shadow: transparent;
+}
+.footer {
+  --ifm-footer-background-color: transparent;
+}
+
+h3 {
+  font-size: 3em;
+}
+
+/* .container-in {
+  width: 800px;
+  height: 200px;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  background-color: blue;
+} */
