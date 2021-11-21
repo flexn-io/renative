@@ -34,6 +34,10 @@ function HomepageHeader() {
             Try it out
                     </Link>
                 </div>
+                <p>
+                  ReNative allows you build apps and scalable products via single development environment
+
+                </p>
             </div>
         </header>
     );

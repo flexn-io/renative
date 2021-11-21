@@ -4,8 +4,15 @@ import styles from './HomepageFeatures.module.css';
 
 const FeatureList = [
     {
-        title: 'on steroids',
+        title: 'Any device',
+        Svg: require('../../static/img/image0.svg').default,
+        float: 'top',
+        imageWidth: 800,
+    },
+    {
+        title: 'Supercharged frameworks',
         Svg: require('../../static/img/image1.svg').default,
+        float: 'left',
         description: (
       <>
         Docusaurus was designed from the ground up to be easily installed and
@@ -13,21 +20,21 @@ const FeatureList = [
       </>
         ),
     },
+
     {
-        title: 'with plugins',
+        title: '1000+ plugins',
         Svg: require('../../static/img/image2.svg').default,
+        float: 'right',
         description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>
-docs
-      </code> directory.
+        ReNative supports standard community driven react-native plugins you can use to enhance the functionality of your apps
       </>
         ),
     },
     {
-        title: 'templates',
+        title: 'Powerful templates',
         Svg: require('../../static/img/image3.svg').default,
+        float: 'left',
         description: (
       <>
         Extend or customize your website layout by reusing React. Docusaurus can
@@ -36,48 +43,50 @@ docs
         ),
     },
     {
-        title: 'intergations',
+        title: 'Intergations',
         Svg: require('../../static/img/image4.svg').default,
+        float: 'right',
         description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        ReNative supports integration for various services and deployment infrastructures for your apps
       </>
         ),
     },
     {
-        title: 'configurations',
+        title: 'Scalable configurations',
         Svg: require('../../static/img/image5.svg').default,
+        float: 'left',
         description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Tired of setting up and managing countless of various projects?
+        you can go as simple as most basic json config file to get yourself up and running
       </>
         ),
     },
     {
-        title: 'build hooks',
+        title: 'Build hooks',
         Svg: require('../../static/img/image6.svg').default,
+        float: 'right',
         description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you
       </>
         ),
     },
     {
-        title: 'runtime',
+        title: 'Minimalistic Runtime',
         Svg: require('../../static/img/image7.svg').default,
+        float: 'left',
         description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        ReNative runtime is an NPM dependency used abstract away some of the complexities of building UI interfaces and features for large number of target platforms
       </>
         ),
     },
     {
-        title: 'CLI',
+        title: 'powerful CLI',
         Svg: require('../../static/img/image8.svg').default,
+        float: 'right',
         description: (
       <>
         Extend or customize your website layout by reusing React. Docusaurus can
@@ -89,9 +98,9 @@ docs
 
 const LineSvg = require('../../static/img/line.svg').default;
 
-function Feature({ Svg, title, description }) {
+function Feature({ Svg, title, description, float, imageWidth = 400 }) {
     return (
-        <div className={clsx('col col--4')}>
+        <div className={clsx('col col--6')}>
             <div className="text--center">
                 <LineSvg className={styles.lineSvg} alt={title} />
             </div>
@@ -99,13 +108,21 @@ function Feature({ Svg, title, description }) {
                 <h3>
                     {title}
                 </h3>
-                <p>
-                    {description}
-                </p>
+
+                <div>
+                    {description ? (
+                        <p style={{ float, width: '50%', padding: 100 }}>
+                            {description}
+                        </p>
+                    ) : null}
+
+                    <div className="text--center">
+                        <Svg className={styles.featureSvg} style={{ width: imageWidth }} alt={title} />
+                    </div>
+                </div>
+
             </div>
-            <div className="text--center">
-                <Svg className={styles.featureSvg} alt={title} />
-            </div>
+
         </div>
     );
 }

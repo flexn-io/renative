@@ -5,6 +5,8 @@
  */
 
 /* You can override the default Infima variables here. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;800&display=swap");
+
 :root {
   --ifm-color-primary: #0a74e6;
   --ifm-color-primary-dark: rgb(33, 175, 144);
@@ -16,6 +18,10 @@
   --ifm-code-font-size: 95%;
   --ifm-color-secondary: #0a74e6;
   --ifm-navbar-shadow: transparent;
+  --ifm-button-font-weight: 300
+  /* --ifm-font-family-base: BooYaa; */
+  font-family: "Inter";
+  font-weight: 300;
 }
 
 .docusaurus-highlight-code-line {
@@ -38,7 +44,7 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 .hero__title {
   margin: auto;
   font-size: 7em;
-  font-weight: 700;
+  font-weight: 800;
   height: 1.3em;
 }
 
@@ -81,6 +87,11 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 h3 {
   font-size: 3em;
 }
+
+/* .padding-horiz--md {
+  float: left;
+  width: 200;
+} */
 
 /* .container-in {
   width: 800px;
