@@ -64,6 +64,23 @@ const config = {
                 },
             ],
         },
+        colorMode: {
+            defaultMode: 'light',
+            disableSwitch: false,
+            respectPrefersColorScheme: true,
+            switchConfig: {
+                darkIcon: '⚫',
+                lightIcon: '🔆',
+                // React inline style object
+                // see https://reactjs.org/docs/dom-elements.html#style
+                darkIconStyle: {
+                    marginLeft: '0px',
+                },
+                lightIconStyle: {
+                    marginLeft: '0px',
+                },
+            },
+        },
         footer: {
             style: 'dark',
             links: [
