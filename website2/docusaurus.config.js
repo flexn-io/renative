@@ -109,6 +109,7 @@ const config = {
             ],
             copyright: `Copyright © ${new Date().getFullYear()} ReNative, Inc. Built with Docusaurus.`,
         },
+        image: 'img/logo.svg',
         prism: {
             theme: lightCodeTheme,
             darkTheme: darkCodeTheme,
