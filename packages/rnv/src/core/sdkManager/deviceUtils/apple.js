@@ -212,6 +212,7 @@ export const launchAppleSimulator = async (c, target) => {
     logTask('launchAppleSimulator', `${target}`);
 
     const devicesArr = await getAppleDevices(c, true);
+
     let selectedDevice;
     for (let i = 0; i < devicesArr.length; i++) {
         if (devicesArr[i].name === target) {
@@ -219,7 +220,7 @@ export const launchAppleSimulator = async (c, target) => {
         }
     }
     if (selectedDevice) {
-        _launchSimulator(selectedDevice);
+        await _launchSimulator(selectedDevice);
         return selectedDevice.name;
     }
 
@@ -243,23 +244,25 @@ export const launchAppleSimulator = async (c, target) => {
     });
 
     if (sim) {
-        _launchSimulator(sim);
+        await _launchSimulator(sim);
         return sim.name;
     }
     return Promise.reject('Action canceled!');
 };
 
-const _launchSimulator = (selectedDevice) => {
+const _launchSimulator = async (selectedDevice) => {
     try {
         child_process.spawnSync('xcrun', [
-            'instruments',
-            '-w',
+            'simctl',
+            'boot',
             selectedDevice.udid
         ]);
     } catch (e) {
         // instruments always fail with 255 because it expects more arguments,
         // but we want it to only launch the simulator
     }
+
+    return true;
 };
 
 export const listAppleDevices = async (c) => {

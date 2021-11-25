@@ -14,7 +14,7 @@ import { parseAppDelegate } from './swiftParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
 
-const { getAppleDevices } = SDKManager.Apple;
+const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
 const {
     fsExistsSync,
@@ -340,6 +340,8 @@ export const runXcodeProject = async (c) => {
         await buildXcodeProject(c, c.platform);
         return executeAsync(c, `open ${path.join(appPath, 'build/RNVApp/Build/Products/Debug-maccatalyst/RNVApp.app')}`);
     }
+    await launchAppleSimulator(c, c.runtime.target);
+
 
     if (p) {
         const allowProvisioningUpdates = getConfigProp(

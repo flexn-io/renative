@@ -15,7 +15,7 @@ import { parsePodFile } from './podfileParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
 
-const { getAppleDevices } = SDKManager.Apple;
+const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
 const {
     fsExistsSync,
@@ -333,6 +333,7 @@ export const runXcodeProject = async (c) => {
 
         p = `--simulator ${target}`;
     }
+    await launchAppleSimulator(c, c.runtime.target);
 
     if (p) {
         const allowProvisioningUpdates = getConfigProp(
