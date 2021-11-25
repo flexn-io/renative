@@ -336,6 +336,8 @@ export const checkSdk = async (c) => {
             default:
                 return true;
         }
+    } else {
+        await checkAndConfigureAndroidSdks(c);
     }
     return true;
 };
