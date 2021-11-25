@@ -732,6 +732,9 @@
       "changelog/0.33.0-alpha.1": {
         "title": "changelog/0.33.0-alpha.1"
       },
+      "changelog/0.33.0-alpha.2": {
+        "title": "changelog/0.33.0-alpha.2"
+      },
       "config-app": {
         "title": "App Configs",
         "sidebar_label": "App Configs"
