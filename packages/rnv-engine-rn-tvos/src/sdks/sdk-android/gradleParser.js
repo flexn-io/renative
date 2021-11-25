@@ -60,6 +60,11 @@ export const parseBuildGradleSync = (c) => {
                 c.pluginConfigAndroid.kotlinVersion
         },
         {
+            pattern: '{{INJECT_GOOGLE_SERVICES_VERSION}}',
+            override:
+                c.pluginConfigAndroid.googleServicesVersion
+        },
+        {
             pattern: '{{INJECT_PLUGINS}}',
             override:
                 c.pluginConfigAndroid.buildGradlePlugins
@@ -186,6 +191,12 @@ export const parseAppBuildGradleSync = (c) => {
         platform,
         'kotlinVersion',
         '1.3.0'
+    );
+    c.pluginConfigAndroid.googleServicesVersion = getConfigProp(
+        c,
+        platform,
+        'googleServicesVersion',
+        '4.2.0'
     );
 
     // REACT NATIVE ENGINE
