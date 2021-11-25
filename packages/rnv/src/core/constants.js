@@ -461,6 +461,11 @@ export const PARAM_KEYS = {
         isRequired: true,
         description: 'Use custom name for ./renative.json. (applies only at root level)'
     },
+    sourceAppConfigID: {
+        value: 'value',
+        isRequired: true,
+        description: 'name of source appConfig folder to copy from'
+    },
     packageManager: {
         value: 'value',
         isRequired: true,
