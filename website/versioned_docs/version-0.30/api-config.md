@@ -11,14 +11,14 @@ Define paths to your SDK Configurations
 
 ```json
 {
-    "sdks": {
-        "ANDROID_SDK": "",
-        "ANDROID_NDK": "",
-        "IOS_SDK": "",
-        "TIZEN_SDK": "",
-        "WEBOS_SDK": "",
-        "KAIOS_SDK": ""
-    }
+  "sdks": {
+    "ANDROID_SDK": "",
+    "ANDROID_NDK": "",
+    "IOS_SDK": "",
+    "TIZEN_SDK": "",
+    "WEBOS_SDK": "",
+    "KAIOS_SDK": ""
+  }
 }
 ```
 
@@ -28,7 +28,7 @@ Current workspace this project belongs to
 
 ```json
 {
-    "workspaceID": "rnv"
+  "workspaceID": "rnv"
 }
 ```
 
@@ -38,10 +38,10 @@ Define custom paths for RNV to look into
 
 ```json
 {
-    "paths": {
-        "platformAssetsDir": "./platformAssets",
-        "platformBuildsDir": "./platformBuilds"
-    }
+  "paths": {
+    "platformAssetsDir": "./platformAssets",
+    "platformBuildsDir": "./platformBuilds"
+  }
 }
 ```
 
@@ -51,20 +51,20 @@ Default system config for this project
 
 ```json
 {
-    "defaults": {
-        "supportedPlatforms": [
-            "ios",
-            "android",
-            "androidtv",
-            "web",
-            "macos",
-            "tvos",
-            "androidwear"
-        ],
-        "template": "",
-        "schemes": {},
-        "targets": {}
-    }
+  "defaults": {
+    "supportedPlatforms": [
+      "ios",
+      "android",
+      "androidtv",
+      "web",
+      "macos",
+      "tvos",
+      "androidwear"
+    ],
+    "template": "",
+    "schemes": {},
+    "targets": {}
+  }
 }
 ```
 
@@ -74,13 +74,13 @@ To avoid rnv building `buildHooks/src` every time you can specify which specific
 
 ```json
 {
-    "pipes": [
-        "configure:after",
-        "start:before",
-        "deploy:after",
-        "export:before",
-        "export:after"
-    ]
+  "pipes": [
+    "configure:after",
+    "start:before",
+    "deploy:after",
+    "export:before",
+    "export:after"
+  ]
 }
 ```
 
@@ -94,21 +94,21 @@ Plugin configurations
 
 ```json
 {
-    "plugins": {
-        "plugin-name": {
-            "version": "",
-            "enabled": true,
-            "no-npm": false,
-            "ios": {
-                "isStatic": false
-            },
-            "android": {},
-            "webpack": {
-                "modulePaths": [],
-                "moduleAliases": {}
-            }
-        }
+  "plugins": {
+    "plugin-name": {
+      "version": "",
+      "enabled": true,
+      "no-npm": false,
+      "ios": {
+        "isStatic": false
+      },
+      "android": {},
+      "webpack": {
+        "modulePaths": [],
+        "moduleAliases": {}
+      }
     }
+  }
 }
 ```
 
@@ -120,11 +120,11 @@ NOTE: if set to `true` you need to configure your plugin object fully
 
 ```json
 {
-    "plugins": {
-        "plugin-name": {
-            "skipMerge": true
-        }
+  "plugins": {
+    "plugin-name": {
+      "skipMerge": true
     }
+  }
 }
 ```
 
@@ -134,17 +134,17 @@ Will define custom scope for your plugin config to extend from
 
 ```json
 {
-    "plugins": {
-        "plugin-name": {
-            "source": "rnv"
-        }
+  "plugins": {
+    "plugin-name": {
+      "source": "rnv"
     }
+  }
 }
 ```
 
 custom scopes can be defined via:
 
-```json
+````json
 {
   "paths": {
       "pluginTemplates": {
@@ -164,36 +164,35 @@ those will allow you to use direct pointer to preconfigured plugin:
         "plugin-name": "source:myCustomScope"
     }
 }
-```
+````
 
 NOTE: by default every plugin you define with scope will also merge any files defined in overrides automatically to your project
 To skip file overrides coming from source plugin you need to detach it from the scope:
 
 ```json
 {
-    "plugins": {
-        "plugin-name": {
-            "source": ""
-        }
+  "plugins": {
+    "plugin-name": {
+      "source": ""
     }
+  }
 }
 ```
-
 
 ### ios
 
 ```json
 {
-    "plugins": {
-        "plugin-name": {
-            "ios": {
-                "isStatic": false,
-                "appDelegateMethods": {},
-                "podName": "",
-                "path": ""
-            }
-        }
+  "plugins": {
+    "plugin-name": {
+      "ios": {
+        "isStatic": false,
+        "appDelegateMethods": {},
+        "podName": "",
+        "path": ""
+      }
     }
+  }
 }
 ```
 
@@ -201,14 +200,14 @@ To skip file overrides coming from source plugin you need to detach it from the 
 
 ```json
 {
-    "plugins": {
-        "plugin-name": {
-            "ios": {
-                "path": "",
-                "package": ""
-            }
-        }
+  "plugins": {
+    "plugin-name": {
+      "ios": {
+        "path": "",
+        "package": ""
+      }
     }
+  }
 }
 ```
 
@@ -218,108 +217,108 @@ Define list of permissions to be used in project
 
 ```json
 {
-    "permissions": {
-        "ios": {
-            "NSAppleMusicUsageDescription": {
-                "desc": "Get favorite music"
-            },
-            "NSBluetoothPeripheralUsageDescription": {
-                "desc": "Allow you to use your bluetooth to play music"
-            },
-            "NSCalendarsUsageDescription": {
-                "desc": "Calendar for add events"
-            },
-            "NSCameraUsageDescription": {
-                "desc": "Need camera to scan QR Codes"
-            },
-            "NSLocationWhenInUseUsageDescription": {
-                "desc": "Geolocation tags for photos"
-            },
-            "NSMicrophoneUsageDescription": {
-                "desc": "Need microphone for videos"
-            },
-            "NSMotionUsageDescription": {
-                "desc": "To know when device is moving"
-            },
-            "NSPhotoLibraryAddUsageDescription": {
-                "desc": "Need library to save images"
-            },
-            "NSPhotoLibraryUsageDescription": {
-                "desc": "Allows to upload images from photo library"
-            },
-            "NSSpeechRecognitionUsageDescription": {
-                "desc": "Speech Recognition to run in app commands"
-            },
-            "NSContactsUsageDescription": {
-                "desc": "Get contacts list"
-            },
-            "NSFaceIDUsageDescription": {
-                "desc": "Requires FaceID access to allows you quick and secure access."
-            },
-            "NSLocationAlwaysUsageDescription": {
-                "desc": "Geolocation tags for photos"
-            },
-            "NSBluetoothAlwaysUsageDescription": {
-                "desc": "Allow you to use your bluetooth to play music"
-            },
-            "NSLocationAlwaysAndWhenInUseUsageDescription": {
-                "desc": "Geolocation tags for photos"
-            }
-        },
-        "android": {
-            "WAKE_LOCK": {
-                "key": "android.permission.WAKE_LOCK"
-            },
-            "INTERNET": {
-                "key": "android.permission.INTERNET"
-            },
-            "SYSTEM_ALERT_WINDOW": {
-                "key": "android.permission.SYSTEM_ALERT_WINDOW"
-            },
-            "CAMERA": {
-                "key": "android.permission.CAMERA"
-            },
-            "RECORD_AUDIO": {
-                "key": "android.permission.RECORD_AUDIO"
-            },
-            "RECORD_VIDEO": {
-                "key": "android.permission.RECORD_VIDEO"
-            },
-            "READ_EXTERNAL_STORAGE": {
-                "key": "android.permission.READ_EXTERNAL_STORAGE"
-            },
-            "WRITE_EXTERNAL_STORAGE": {
-                "key": "android.permission.WRITE_EXTERNAL_STORAGE"
-            },
-            "ACCESS_FINE_LOCATION": {
-                "key": "android.permission.ACCESS_FINE_LOCATION"
-            },
-            "ACCESS_COARSE_LOCATION": {
-                "key": "android.permission.ACCESS_COARSE_LOCATION"
-            },
-            "VIBRATE": {
-                "key": "android.permission.VIBRATE"
-            },
-            "ACCESS_NETWORK_STATE": {
-                "key": "android.permission.ACCESS_NETWORK_STATE"
-            },
-            "ACCESS_WIFI_STATE": {
-                "key": "android.permission.ACCESS_WIFI_STATE"
-            },
-            "RECEIVE_BOOT_COMPLETED": {
-                "key": "android.permission.RECEIVE_BOOT_COMPLETED"
-            },
-            "WRITE_CONTACTS": {
-                "key": "android.permission.WRITE_CONTACTS"
-            },
-            "READ_CALL_LOG": {
-                "key": "android.permission.READ_CALL_LOG"
-            },
-            "USE_FINGERPRINT": {
-                "key": "android.permission.USE_FINGERPRINT"
-            }
-        }
+  "permissions": {
+    "ios": {
+      "NSAppleMusicUsageDescription": {
+        "desc": "Get favorite music"
+      },
+      "NSBluetoothPeripheralUsageDescription": {
+        "desc": "Allow you to use your bluetooth to play music"
+      },
+      "NSCalendarsUsageDescription": {
+        "desc": "Calendar for add events"
+      },
+      "NSCameraUsageDescription": {
+        "desc": "Need camera to scan QR Codes"
+      },
+      "NSLocationWhenInUseUsageDescription": {
+        "desc": "Geolocation tags for photos"
+      },
+      "NSMicrophoneUsageDescription": {
+        "desc": "Need microphone for videos"
+      },
+      "NSMotionUsageDescription": {
+        "desc": "To know when device is moving"
+      },
+      "NSPhotoLibraryAddUsageDescription": {
+        "desc": "Need library to save images"
+      },
+      "NSPhotoLibraryUsageDescription": {
+        "desc": "Allows to upload images from photo library"
+      },
+      "NSSpeechRecognitionUsageDescription": {
+        "desc": "Speech Recognition to run in app commands"
+      },
+      "NSContactsUsageDescription": {
+        "desc": "Get contacts list"
+      },
+      "NSFaceIDUsageDescription": {
+        "desc": "Requires FaceID access to allows you quick and secure access."
+      },
+      "NSLocationAlwaysUsageDescription": {
+        "desc": "Geolocation tags for photos"
+      },
+      "NSBluetoothAlwaysUsageDescription": {
+        "desc": "Allow you to use your bluetooth to play music"
+      },
+      "NSLocationAlwaysAndWhenInUseUsageDescription": {
+        "desc": "Geolocation tags for photos"
+      }
+    },
+    "android": {
+      "WAKE_LOCK": {
+        "key": "android.permission.WAKE_LOCK"
+      },
+      "INTERNET": {
+        "key": "android.permission.INTERNET"
+      },
+      "SYSTEM_ALERT_WINDOW": {
+        "key": "android.permission.SYSTEM_ALERT_WINDOW"
+      },
+      "CAMERA": {
+        "key": "android.permission.CAMERA"
+      },
+      "RECORD_AUDIO": {
+        "key": "android.permission.RECORD_AUDIO"
+      },
+      "RECORD_VIDEO": {
+        "key": "android.permission.RECORD_VIDEO"
+      },
+      "READ_EXTERNAL_STORAGE": {
+        "key": "android.permission.READ_EXTERNAL_STORAGE"
+      },
+      "WRITE_EXTERNAL_STORAGE": {
+        "key": "android.permission.WRITE_EXTERNAL_STORAGE"
+      },
+      "ACCESS_FINE_LOCATION": {
+        "key": "android.permission.ACCESS_FINE_LOCATION"
+      },
+      "ACCESS_COARSE_LOCATION": {
+        "key": "android.permission.ACCESS_COARSE_LOCATION"
+      },
+      "VIBRATE": {
+        "key": "android.permission.VIBRATE"
+      },
+      "ACCESS_NETWORK_STATE": {
+        "key": "android.permission.ACCESS_NETWORK_STATE"
+      },
+      "ACCESS_WIFI_STATE": {
+        "key": "android.permission.ACCESS_WIFI_STATE"
+      },
+      "RECEIVE_BOOT_COMPLETED": {
+        "key": "android.permission.RECEIVE_BOOT_COMPLETED"
+      },
+      "WRITE_CONTACTS": {
+        "key": "android.permission.WRITE_CONTACTS"
+      },
+      "READ_CALL_LOG": {
+        "key": "android.permission.READ_CALL_LOG"
+      },
+      "USE_FINGERPRINT": {
+        "key": "android.permission.USE_FINGERPRINT"
+      }
     }
+  }
 }
 ```
 
@@ -329,33 +328,33 @@ Common properties inherited for every platform
 
 ```json
 {
-    "common": {
-        "id": "",
-        "title": "",
-        "description": "",
-        "author": {
-            "name": "",
-            "email": "",
-            "url": ""
-        },
-        "license": "",
-        "runScheme": "",
-        "bundleAssets": false,
-        "entryFile": "",
-        "scheme": "",
-        "bundleAssets": true,
-        "bundleIsDev": true,
-        "includedPlugins": [],
-        "excludedPlugins": [],
-        "includedPermissions": [],
-        "excludedPermissions": [],
-        "includedFonts": [],
-        "excludedFonts": [],
-        "backgroundColor": "",
-        "port": 1111,
-        "versionCodeOffset": 0,
-        "runtime": {}
-    }
+  "common": {
+    "id": "",
+    "title": "",
+    "description": "",
+    "author": {
+      "name": "",
+      "email": "",
+      "url": ""
+    },
+    "license": "",
+    "runScheme": "",
+    "bundleAssets": false,
+    "entryFile": "",
+    "scheme": "",
+    "bundleAssets": true,
+    "bundleIsDev": true,
+    "includedPlugins": [],
+    "excludedPlugins": [],
+    "includedPermissions": [],
+    "excludedPermissions": [],
+    "includedFonts": [],
+    "excludedFonts": [],
+    "backgroundColor": "",
+    "port": 1111,
+    "versionCodeOffset": 0,
+    "runtime": {}
+  }
 }
 ```
 
@@ -365,12 +364,12 @@ Platform specififc configurations
 
 ```json
 {
-    "platforms": {
-        "ios": {},
-        "android": {},
-        "tvos": {},
-        "web": {}
-    }
+  "platforms": {
+    "ios": {},
+    "android": {},
+    "tvos": {},
+    "web": {}
+  }
 }
 ```
 
@@ -378,37 +377,37 @@ Platform specififc configurations
 
 ```json
 {
-    "platforms": {
-        "ios": {
-            "teamID": "",
-            "deploymentTarget": "",
-            "provisioningStyle": "",
-            "systemCapabilities": {},
-            "scheme": "",
-            "entitlements": {},
-            "orientationSupport": {
-                "phone": [],
-                "tab": []
-            },
-            "appDelegateImports": [],
-            "appDelegateMethods": {},
-            "Podfile": {
-                "sources": []
-            },
-            "plist": {},
-            "xcodeproj": {},
-            "appDelegateApplicationMethods": {
-                "didFinishLaunchingWithOptions": [],
-                "open": [],
-                "supportedInterfaceOrientationsFor": [],
-                "didReceiveRemoteNotification": [],
-                "didFailToRegisterForRemoteNotificationsWithError": [],
-                "didReceive": [],
-                "didRegister": [],
-                "didRegisterForRemoteNotificationsWithDeviceToken": []
-            }
-        }
+  "platforms": {
+    "ios": {
+      "teamID": "",
+      "deploymentTarget": "",
+      "provisioningStyle": "",
+      "systemCapabilities": {},
+      "scheme": "",
+      "entitlements": {},
+      "orientationSupport": {
+        "phone": [],
+        "tab": []
+      },
+      "appDelegateImports": [],
+      "appDelegateMethods": {},
+      "Podfile": {
+        "sources": []
+      },
+      "plist": {},
+      "xcodeproj": {},
+      "appDelegateApplicationMethods": {
+        "didFinishLaunchingWithOptions": [],
+        "open": [],
+        "supportedInterfaceOrientationsFor": [],
+        "didReceiveRemoteNotification": [],
+        "didFailToRegisterForRemoteNotificationsWithError": [],
+        "didReceive": [],
+        "didRegister": [],
+        "didRegisterForRemoteNotificationsWithDeviceToken": []
+      }
     }
+  }
 }
 ```
 
@@ -416,27 +415,27 @@ Platform specififc configurations
 
 ```json
 {
-    "platforms": {
-        "android": {
-            "gradle.properties": {},
-            "AndroidManifest": {},
-            "build.gradle": {},
-            "app/build.gradle": {},
-            "implementation": "",
-            "universalApk": false,
-            "multipleAPKs": false,
-            "minSdkVersion": 21,
-            "signingConfig": "",
-            "aab": false,
-            "storeFile": "",
-            "storePassword": "",
-            "keyAlias": "",
-            "keyPassword": "",
-            "enableHermes": false,
-            "timestampAssets": false,
-            "versionedAssets": false
-        }
+  "platforms": {
+    "android": {
+      "gradle.properties": {},
+      "AndroidManifest": {},
+      "build.gradle": {},
+      "app/build.gradle": {},
+      "implementation": "",
+      "universalApk": false,
+      "multipleAPKs": false,
+      "minSdkVersion": 24,
+      "signingConfig": "",
+      "aab": false,
+      "storeFile": "",
+      "storePassword": "",
+      "keyAlias": "",
+      "keyPassword": "",
+      "enableHermes": false,
+      "timestampAssets": false,
+      "versionedAssets": false
     }
+  }
 }
 ```
 
@@ -448,17 +447,17 @@ Example:
 
 ```json
 {
-    "platforms": {
-        "android": {
-            "gradle.properties": {
-                "android.debug.obsoleteApi": true,
-                "debug.keystore": "debug.keystore",
-                "org.gradle.daemon": true,
-                "org.gradle.parallel": true,
-                "org.gradle.configureondemand": true
-            }
-        }
-     }
+  "platforms": {
+    "android": {
+      "gradle.properties": {
+        "android.debug.obsoleteApi": true,
+        "debug.keystore": "debug.keystore",
+        "org.gradle.daemon": true,
+        "org.gradle.parallel": true,
+        "org.gradle.configureondemand": true
+      }
+    }
+  }
 }
 ```
 
@@ -466,28 +465,28 @@ Example:
 
 Injects / Overrides values in `AndroidManifest.xml` file of generated android based project
 
-*IMPORTANT*: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
+_IMPORTANT_: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
 
 Example:
 
 ```json
 {
-    "platforms": {
-        "android": {
-            "AndroidManifest": {
-              "children": [
-                   {
-                       "tag": "application",
-                       "android:name": ".MainApplication",
-                       "android:allowBackup": true,
-                       "android:largeHeap": true,
-                       "android:usesCleartextTraffic": true,
-                       "tools:targetApi": 28
-                   }
-               ]
-            }
-        }
+  "platforms": {
+    "android": {
+      "AndroidManifest": {
+        "children": [
+          {
+            "tag": "application",
+            "android:name": ".MainApplication",
+            "android:allowBackup": true,
+            "android:largeHeap": true,
+            "android:usesCleartextTraffic": true,
+            "tools:targetApi": 28
+          }
+        ]
+      }
     }
+  }
 }
 ```
 
@@ -497,17 +496,17 @@ Overrides values in `build.gradle` file of generated android based project
 
 ```json
 {
-    "platforms": {
-        "android": {
-            "BuildGradle": {
-                "allprojects": {
-                    "repositories": {
-                        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
-                    }
-                }
-            }
+  "platforms": {
+    "android": {
+      "BuildGradle": {
+        "allprojects": {
+          "repositories": {
+            "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
+          }
         }
+      }
     }
+  }
 }
 ```
 
@@ -519,52 +518,47 @@ Example:
 
 ```json
 {
-    "platforms": {
-        "android": {
-            "app/build.gradle": {
-                "apply": [
-                    "plugin: 'io.fabric'"
-                ]
-            }
-        }
+  "platforms": {
+    "android": {
+      "app/build.gradle": {
+        "apply": ["plugin: 'io.fabric'"]
+      }
     }
+  }
 }
 ```
-
-
 
 Example:
 
 ```json
 {
-    "platforms": {
-        "android": {
-            "gradle.properties": {
-                "android.debug.obsoleteApi": true,
-                "debug.keystore": "debug.keystore",
-                "org.gradle.daemon": true,
-                "org.gradle.parallel": true,
-                "org.gradle.configureondemand": true
-            }
-        }
-     }
+  "platforms": {
+    "android": {
+      "gradle.properties": {
+        "android.debug.obsoleteApi": true,
+        "debug.keystore": "debug.keystore",
+        "org.gradle.daemon": true,
+        "org.gradle.parallel": true,
+        "org.gradle.configureondemand": true
+      }
+    }
+  }
 }
 ```
-
 
 ### web
 
 ```json
 {
-    "platforms": {
-        "web": {
-            "environment": "",
-            "webpackConfig": {
-                "devServerHost": "",
-                "customScripts": []
-            }
-        }
+  "platforms": {
+    "web": {
+      "environment": "",
+      "webpackConfig": {
+        "devServerHost": "",
+        "customScripts": []
+      }
     }
+  }
 }
 ```
 
@@ -575,11 +569,11 @@ This is useful if you want to enforce invalidate cache agains standard CDN cache
 
 ```json
 {
-    "platforms": {
-        "web": {
-            "timestampAssets": true
-        }
+  "platforms": {
+    "web": {
+      "timestampAssets": true
     }
+  }
 }
 ```
 
@@ -590,11 +584,11 @@ This is useful if you want to enforce invalidate cache agains standard CDN cache
 
 ```json
 {
-    "platforms": {
-        "web": {
-            "versionedAssets": true
-        }
+  "platforms": {
+    "web": {
+      "versionedAssets": true
     }
+  }
 }
 ```
 
@@ -602,13 +596,13 @@ This is useful if you want to enforce invalidate cache agains standard CDN cache
 
 ```json
 {
-    "platforms": {
-        "tizen": {
-            "appName": "",
-            "package": "",
-            "certificateProfile": ""
-        }
+  "platforms": {
+    "tizen": {
+      "appName": "",
+      "package": "",
+      "certificateProfile": ""
     }
+  }
 }
 ```
 
@@ -618,9 +612,9 @@ Special runtime injection object to be available for runtime code via `platformA
 
 ```json
 {
-    "runtime": {
-        "foo": "bar"
-    }
+  "runtime": {
+    "foo": "bar"
+  }
 }
 ```
 
@@ -628,12 +622,12 @@ Special runtime injection object to be available for runtime code via `platformA
 
 ```json
 {
-    "platforms": {
-        "[PLATFORM]": {
-            "buildSchemes": {
-                "[BUILD_SCHEME_KEY]": {}
-            }
-        }
+  "platforms": {
+    "[PLATFORM]": {
+      "buildSchemes": {
+        "[BUILD_SCHEME_KEY]": {}
+      }
     }
+  }
 }
 ```

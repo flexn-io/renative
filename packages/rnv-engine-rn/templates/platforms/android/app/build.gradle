@@ -70,7 +70,6 @@ configurations.all {
         // TODO: Line below required for Detox since version 12.5
         //   It should removed as soon as the project compiles without it
         force 'androidx.annotation:annotation:1.0.0'
-        force 'org.jetbrains.kotlin:kotlin-stdlib:1.3.0'
         // To resolve android crash on version 11 and above https://github.com/facebook/SoLoader/issues/59
         force "com.facebook.soloader:soloader:0.9.0"
     }
