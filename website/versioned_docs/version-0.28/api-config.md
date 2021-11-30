@@ -72,11 +72,11 @@ Define custom paths for RNV to look into
 
 ```json
 {
-    "paths": {
-        "entryDir": "./",
-        "platformAssetsDir": "./platformAssets",
-        "platformBuildsDir": "./platformBuilds"
-    }
+  "paths": {
+    "entryDir": "./",
+    "platformAssetsDir": "./platformAssets",
+    "platformBuildsDir": "./platformBuilds"
+  }
 }
 ```
 
@@ -86,17 +86,17 @@ Default system config for this project
 
 ```json
 {
-    "defaults": {
-        "supportedPlatforms": [
-            "ios",
-            "android",
-            "androidtv",
-            "web",
-            "macos",
-            "tvos",
-            "androidwear"
-        ]
-    }
+  "defaults": {
+    "supportedPlatforms": [
+      "ios",
+      "android",
+      "androidtv",
+      "web",
+      "macos",
+      "tvos",
+      "androidwear"
+    ]
+  }
 }
 ```
 
@@ -148,31 +148,31 @@ COMMON_PROPS
 
 ```json
 {
-    "id": "",
-    "title": "",
-    "description": "",
-    "author": {
-        "name": "",
-        "email": "",
-        "url": ""
-    },
-    "license": "",
-    "runScheme": "",
-    "bundleAssets": false,
-    "entryFile": "",
-    "scheme": "",
-    "bundleAssets": true,
-    "bundleIsDev": true,
-    "includedPlugins": [],
-    "excludedPlugins": [],
-    "includedPermissions": [],
-    "excludedPermissions": [],
-    "includedFonts": [],
-    "excludedFonts": [],
-    "backgroundColor": "",
-    "port": 1111,
-    "versionCodeOffset": 0,
-    "runtime": {}
+  "id": "",
+  "title": "",
+  "description": "",
+  "author": {
+    "name": "",
+    "email": "",
+    "url": ""
+  },
+  "license": "",
+  "runScheme": "",
+  "bundleAssets": false,
+  "entryFile": "",
+  "scheme": "",
+  "bundleAssets": true,
+  "bundleIsDev": true,
+  "includedPlugins": [],
+  "excludedPlugins": [],
+  "includedPermissions": [],
+  "excludedPermissions": [],
+  "includedFonts": [],
+  "excludedFonts": [],
+  "backgroundColor": "",
+  "port": 1111,
+  "versionCodeOffset": 0,
+  "runtime": {}
 }
 ```
 
@@ -195,12 +195,12 @@ PATH_PROPS
 
 ```json
 {
-    "appConfigsDir": "",
-    "appConfigsDirs": "",
-    "platformTemplatesDir": "",
-    "entryDir": "",
-    "platformAssetsDir": "",
-    "platformBuildsDir": ""
+  "appConfigsDir": "",
+  "appConfigsDirs": "",
+  "platformTemplatesDir": "",
+  "entryDir": "",
+  "platformAssetsDir": "",
+  "platformBuildsDir": ""
 }
 ```
 
@@ -208,12 +208,12 @@ SDK_PROPS
 
 ```json
 {
-    "ANDROID_SDK": "",
-    "ANDROID_NDK": "",
-    "IOS_SDK": "",
-    "TIZEN_SDK": "",
-    "WEBOS_SDK": "",
-    "KAIOS_SDK": ""
+  "ANDROID_SDK": "",
+  "ANDROID_NDK": "",
+  "IOS_SDK": "",
+  "TIZEN_SDK": "",
+  "WEBOS_SDK": "",
+  "KAIOS_SDK": ""
 }
 ```
 
@@ -221,12 +221,12 @@ DEFAULTS_PROPS
 
 ```json
 {
-    "template": "",
-    "supportedPlatforms": ["[PLATFORM]"],
-    "schemes": {},
-    "targets": {
-        "[PLATFORM]": ""
-    }
+  "template": "",
+  "supportedPlatforms": ["[PLATFORM]"],
+  "schemes": {},
+  "targets": {
+    "[PLATFORM]": ""
+  }
 }
 ```
 
@@ -240,23 +240,23 @@ Following props are only accepted per specific platform
 
 ```json
 {
-    "appDelegateImports": [],
-    "appDelegateMethods": {},
-    "Podfile": {
-        "sources": []
-    },
-    "plist": {},
-    "xcodeproj": {},
-    "appDelegateApplicationMethods": {
-        "didFinishLaunchingWithOptions": [],
-        "open": [],
-        "supportedInterfaceOrientationsFor": [],
-        "didReceiveRemoteNotification": [],
-        "didFailToRegisterForRemoteNotificationsWithError": [],
-        "didReceive": [],
-        "didRegister": [],
-        "didRegisterForRemoteNotificationsWithDeviceToken": []
-    }
+  "appDelegateImports": [],
+  "appDelegateMethods": {},
+  "Podfile": {
+    "sources": []
+  },
+  "plist": {},
+  "xcodeproj": {},
+  "appDelegateApplicationMethods": {
+    "didFinishLaunchingWithOptions": [],
+    "open": [],
+    "supportedInterfaceOrientationsFor": [],
+    "didReceiveRemoteNotification": [],
+    "didFailToRegisterForRemoteNotificationsWithError": [],
+    "didReceive": [],
+    "didRegister": [],
+    "didRegisterForRemoteNotificationsWithDeviceToken": []
+  }
 }
 ```
 
@@ -264,9 +264,9 @@ Following props are only accepted per specific platform
 
 ```json
 {
-    "appDelegateMethods": {},
-    "podName": "",
-    "path": ""
+  "appDelegateMethods": {},
+  "podName": "",
+  "path": ""
 }
 ```
 
@@ -274,16 +274,16 @@ Following props are only accepted per specific platform
 
 ```json
 {
-    "teamID": "",
-    "deploymentTarget": "",
-    "provisioningStyle": "",
-    "systemCapabilities": {},
-    "scheme": "",
-    "entitlements": {},
-    "orientationSupport": {
-        "phone": [],
-        "tab": []
-    }
+  "teamID": "",
+  "deploymentTarget": "",
+  "provisioningStyle": "",
+  "systemCapabilities": {},
+  "scheme": "",
+  "entitlements": {},
+  "orientationSupport": {
+    "phone": [],
+    "tab": []
+  }
 }
 ```
 
@@ -293,11 +293,11 @@ Following props are only accepted per specific platform
 
 ```json
 {
-    "gradle.properties": {},
-    "AndroidManifest": {},
-    "BuildGradle": {},
-    "AppBuildGradle": {},
-    "implementation": ""
+  "gradle.properties": {},
+  "AndroidManifest": {},
+  "BuildGradle": {},
+  "AppBuildGradle": {},
+  "implementation": ""
 }
 ```
 
@@ -305,8 +305,8 @@ Following props are only accepted per specific platform
 
 ```json
 {
-    "path": "",
-    "package": ""
+  "path": "",
+  "package": ""
 }
 ```
 
@@ -314,16 +314,16 @@ Following props are only accepted per specific platform
 
 ```json
 {
-    "universalApk": false,
-    "multipleAPKs": false,
-    "minSdkVersion": 21,
-    "signingConfig": "",
-    "aab": false,
-    "storeFile": "",
-    "storePassword": "",
-    "keyAlias": "",
-    "keyPassword": "",
-    "enableHermes": false
+  "universalApk": false,
+  "multipleAPKs": false,
+  "minSdkVersion": 24,
+  "signingConfig": "",
+  "aab": false,
+  "storeFile": "",
+  "storePassword": "",
+  "keyAlias": "",
+  "keyPassword": "",
+  "enableHermes": false
 }
 ```
 
@@ -345,11 +345,11 @@ Following props are only accepted per specific platform
 
 ```json
 {
-    "environment": "",
-    "webpackConfig": {
-        "devServerHost": "",
-        "customScripts": []
-    }
+  "environment": "",
+  "webpackConfig": {
+    "devServerHost": "",
+    "customScripts": []
+  }
 }
 ```
 
@@ -371,8 +371,8 @@ Following props are only accepted per specific platform
 
 ```json
 {
-    "appName": "",
-    "package": "",
-    "certificateProfile": ""
+  "appName": "",
+  "package": "",
+  "certificateProfile": ""
 }
 ```

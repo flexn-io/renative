@@ -155,7 +155,7 @@ export const parseAppBuildGradleSync = (c) => {
         c,
         platform,
         'minSdkVersion',
-        21
+        24
     );
     c.pluginConfigAndroid.targetSdkVersion = getConfigProp(
         c,
@@ -173,7 +173,7 @@ export const parseAppBuildGradleSync = (c) => {
         c,
         platform,
         'gradleBuildToolsVersion',
-        '3.3.1'
+        '4.2.2'
     );
     c.pluginConfigAndroid.supportLibVersion = getConfigProp(
         c,
@@ -191,7 +191,7 @@ export const parseAppBuildGradleSync = (c) => {
         c,
         platform,
         'kotlinVersion',
-        '1.3.0'
+        '1.4.20'
     );
     c.pluginConfigAndroid.googleServicesVersion = getConfigProp(
         c,
