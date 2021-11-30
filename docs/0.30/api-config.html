@@ -57,60 +57,60 @@
         </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">renative.json API Reference</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="sdks"></a><a href="#sdks" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sdks</h2>
 <p>Define paths to your SDK Configurations</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"sdks"</span>: {
-        <span class="hljs-attr">"ANDROID_SDK"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"ANDROID_NDK"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"IOS_SDK"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"TIZEN_SDK"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"WEBOS_SDK"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"KAIOS_SDK"</span>: <span class="hljs-string">""</span>
-    }
+  <span class="hljs-attr">"sdks"</span>: {
+    <span class="hljs-attr">"ANDROID_SDK"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"ANDROID_NDK"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"IOS_SDK"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"TIZEN_SDK"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"WEBOS_SDK"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"KAIOS_SDK"</span>: <span class="hljs-string">""</span>
+  }
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="workspaceid"></a><a href="#workspaceid" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>workspaceID</h2>
 <p>Current workspace this project belongs to</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"workspaceID"</span>: <span class="hljs-string">"rnv"</span>
+  <span class="hljs-attr">"workspaceID"</span>: <span class="hljs-string">"rnv"</span>
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="paths"></a><a href="#paths" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>paths</h2>
 <p>Define custom paths for RNV to look into</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"paths"</span>: {
-        <span class="hljs-attr">"platformAssetsDir"</span>: <span class="hljs-string">"./platformAssets"</span>,
-        <span class="hljs-attr">"platformBuildsDir"</span>: <span class="hljs-string">"./platformBuilds"</span>
-    }
+  <span class="hljs-attr">"paths"</span>: {
+    <span class="hljs-attr">"platformAssetsDir"</span>: <span class="hljs-string">"./platformAssets"</span>,
+    <span class="hljs-attr">"platformBuildsDir"</span>: <span class="hljs-string">"./platformBuilds"</span>
+  }
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="defaults"></a><a href="#defaults" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>defaults</h2>
 <p>Default system config for this project</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"defaults"</span>: {
-        <span class="hljs-attr">"supportedPlatforms"</span>: [
-            <span class="hljs-string">"ios"</span>,
-            <span class="hljs-string">"android"</span>,
-            <span class="hljs-string">"androidtv"</span>,
-            <span class="hljs-string">"web"</span>,
-            <span class="hljs-string">"macos"</span>,
-            <span class="hljs-string">"tvos"</span>,
-            <span class="hljs-string">"androidwear"</span>
-        ],
-        <span class="hljs-attr">"template"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"schemes"</span>: {},
-        <span class="hljs-attr">"targets"</span>: {}
-    }
+  <span class="hljs-attr">"defaults"</span>: {
+    <span class="hljs-attr">"supportedPlatforms"</span>: [
+      <span class="hljs-string">"ios"</span>,
+      <span class="hljs-string">"android"</span>,
+      <span class="hljs-string">"androidtv"</span>,
+      <span class="hljs-string">"web"</span>,
+      <span class="hljs-string">"macos"</span>,
+      <span class="hljs-string">"tvos"</span>,
+      <span class="hljs-string">"androidwear"</span>
+    ],
+    <span class="hljs-attr">"template"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"schemes"</span>: {},
+    <span class="hljs-attr">"targets"</span>: {}
+  }
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="pipes"></a><a href="#pipes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>pipes</h2>
 <p>To avoid rnv building <code>buildHooks/src</code> every time you can specify which specific pipes should trigger recompile of buildHooks</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"pipes"</span>: [
-        <span class="hljs-string">"configure:after"</span>,
-        <span class="hljs-string">"start:before"</span>,
-        <span class="hljs-string">"deploy:after"</span>,
-        <span class="hljs-string">"export:before"</span>,
-        <span class="hljs-string">"export:after"</span>
-    ]
+  <span class="hljs-attr">"pipes"</span>: [
+    <span class="hljs-string">"configure:after"</span>,
+    <span class="hljs-string">"start:before"</span>,
+    <span class="hljs-string">"deploy:after"</span>,
+    <span class="hljs-string">"export:before"</span>,
+    <span class="hljs-string">"export:after"</span>
+  ]
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="enableanalytics"></a><a href="#enableanalytics" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>enableAnalytics</h2>
@@ -118,42 +118,42 @@
 <h2><a class="anchor" aria-hidden="true" id="plugins"></a><a href="#plugins" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>plugins</h2>
 <p>Plugin configurations</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"plugins"</span>: {
-        <span class="hljs-attr">"plugin-name"</span>: {
-            <span class="hljs-attr">"version"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"enabled"</span>: <span class="hljs-literal">true</span>,
-            <span class="hljs-attr">"no-npm"</span>: <span class="hljs-literal">false</span>,
-            <span class="hljs-attr">"ios"</span>: {
-                <span class="hljs-attr">"isStatic"</span>: <span class="hljs-literal">false</span>
-            },
-            <span class="hljs-attr">"android"</span>: {},
-            <span class="hljs-attr">"webpack"</span>: {
-                <span class="hljs-attr">"modulePaths"</span>: [],
-                <span class="hljs-attr">"moduleAliases"</span>: {}
-            }
-        }
+  <span class="hljs-attr">"plugins"</span>: {
+    <span class="hljs-attr">"plugin-name"</span>: {
+      <span class="hljs-attr">"version"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"enabled"</span>: <span class="hljs-literal">true</span>,
+      <span class="hljs-attr">"no-npm"</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">"ios"</span>: {
+        <span class="hljs-attr">"isStatic"</span>: <span class="hljs-literal">false</span>
+      },
+      <span class="hljs-attr">"android"</span>: {},
+      <span class="hljs-attr">"webpack"</span>: {
+        <span class="hljs-attr">"modulePaths"</span>: [],
+        <span class="hljs-attr">"moduleAliases"</span>: {}
+      }
     }
+  }
 }
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="skipmerge"></a><a href="#skipmerge" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>skipMerge</h3>
 <p>Will not attempt to merge with existing plugin configuration (ie. coming form renative pluginTemplates)</p>
 <p>NOTE: if set to <code>true</code> you need to configure your plugin object fully</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"plugins"</span>: {
-        <span class="hljs-attr">"plugin-name"</span>: {
-            <span class="hljs-attr">"skipMerge"</span>: <span class="hljs-literal">true</span>
-        }
+  <span class="hljs-attr">"plugins"</span>: {
+    <span class="hljs-attr">"plugin-name"</span>: {
+      <span class="hljs-attr">"skipMerge"</span>: <span class="hljs-literal">true</span>
     }
+  }
 }
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="source"></a><a href="#source" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>source</h3>
 <p>Will define custom scope for your plugin config to extend from</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"plugins"</span>: {
-        <span class="hljs-attr">"plugin-name"</span>: {
-            <span class="hljs-attr">"source"</span>: <span class="hljs-string">"rnv"</span>
-        }
+  <span class="hljs-attr">"plugins"</span>: {
+    <span class="hljs-attr">"plugin-name"</span>: {
+      <span class="hljs-attr">"source"</span>: <span class="hljs-string">"rnv"</span>
     }
+  }
 }
 </code></pre>
 <p>custom scopes can be defined via:</p>
@@ -180,264 +180,264 @@ those will allow you to use direct pointer to preconfigured plugin:
 <p>NOTE: by default every plugin you define with scope will also merge any files defined in overrides automatically to your project
 To skip file overrides coming from source plugin you need to detach it from the scope:</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"plugins"</span>: {
-        <span class="hljs-attr">"plugin-name"</span>: {
-            <span class="hljs-attr">"source"</span>: <span class="hljs-string">""</span>
-        }
+  <span class="hljs-attr">"plugins"</span>: {
+    <span class="hljs-attr">"plugin-name"</span>: {
+      <span class="hljs-attr">"source"</span>: <span class="hljs-string">""</span>
     }
+  }
 }
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="ios"></a><a href="#ios" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ios</h3>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"plugins"</span>: {
-        <span class="hljs-attr">"plugin-name"</span>: {
-            <span class="hljs-attr">"ios"</span>: {
-                <span class="hljs-attr">"isStatic"</span>: <span class="hljs-literal">false</span>,
-                <span class="hljs-attr">"appDelegateMethods"</span>: {},
-                <span class="hljs-attr">"podName"</span>: <span class="hljs-string">""</span>,
-                <span class="hljs-attr">"path"</span>: <span class="hljs-string">""</span>
-            }
-        }
+  <span class="hljs-attr">"plugins"</span>: {
+    <span class="hljs-attr">"plugin-name"</span>: {
+      <span class="hljs-attr">"ios"</span>: {
+        <span class="hljs-attr">"isStatic"</span>: <span class="hljs-literal">false</span>,
+        <span class="hljs-attr">"appDelegateMethods"</span>: {},
+        <span class="hljs-attr">"podName"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-attr">"path"</span>: <span class="hljs-string">""</span>
+      }
     }
+  }
 }
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="android"></a><a href="#android" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>android</h3>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"plugins"</span>: {
-        <span class="hljs-attr">"plugin-name"</span>: {
-            <span class="hljs-attr">"ios"</span>: {
-                <span class="hljs-attr">"path"</span>: <span class="hljs-string">""</span>,
-                <span class="hljs-attr">"package"</span>: <span class="hljs-string">""</span>
-            }
-        }
+  <span class="hljs-attr">"plugins"</span>: {
+    <span class="hljs-attr">"plugin-name"</span>: {
+      <span class="hljs-attr">"ios"</span>: {
+        <span class="hljs-attr">"path"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-attr">"package"</span>: <span class="hljs-string">""</span>
+      }
     }
+  }
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="permissions"></a><a href="#permissions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>permissions</h2>
 <p>Define list of permissions to be used in project</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"permissions"</span>: {
-        <span class="hljs-attr">"ios"</span>: {
-            <span class="hljs-attr">"NSAppleMusicUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Get favorite music"</span>
-            },
-            <span class="hljs-attr">"NSBluetoothPeripheralUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Allow you to use your bluetooth to play music"</span>
-            },
-            <span class="hljs-attr">"NSCalendarsUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Calendar for add events"</span>
-            },
-            <span class="hljs-attr">"NSCameraUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Need camera to scan QR Codes"</span>
-            },
-            <span class="hljs-attr">"NSLocationWhenInUseUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Geolocation tags for photos"</span>
-            },
-            <span class="hljs-attr">"NSMicrophoneUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Need microphone for videos"</span>
-            },
-            <span class="hljs-attr">"NSMotionUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"To know when device is moving"</span>
-            },
-            <span class="hljs-attr">"NSPhotoLibraryAddUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Need library to save images"</span>
-            },
-            <span class="hljs-attr">"NSPhotoLibraryUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Allows to upload images from photo library"</span>
-            },
-            <span class="hljs-attr">"NSSpeechRecognitionUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Speech Recognition to run in app commands"</span>
-            },
-            <span class="hljs-attr">"NSContactsUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Get contacts list"</span>
-            },
-            <span class="hljs-attr">"NSFaceIDUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Requires FaceID access to allows you quick and secure access."</span>
-            },
-            <span class="hljs-attr">"NSLocationAlwaysUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Geolocation tags for photos"</span>
-            },
-            <span class="hljs-attr">"NSBluetoothAlwaysUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Allow you to use your bluetooth to play music"</span>
-            },
-            <span class="hljs-attr">"NSLocationAlwaysAndWhenInUseUsageDescription"</span>: {
-                <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Geolocation tags for photos"</span>
-            }
-        },
-        <span class="hljs-attr">"android"</span>: {
-            <span class="hljs-attr">"WAKE_LOCK"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.WAKE_LOCK"</span>
-            },
-            <span class="hljs-attr">"INTERNET"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.INTERNET"</span>
-            },
-            <span class="hljs-attr">"SYSTEM_ALERT_WINDOW"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.SYSTEM_ALERT_WINDOW"</span>
-            },
-            <span class="hljs-attr">"CAMERA"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.CAMERA"</span>
-            },
-            <span class="hljs-attr">"RECORD_AUDIO"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.RECORD_AUDIO"</span>
-            },
-            <span class="hljs-attr">"RECORD_VIDEO"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.RECORD_VIDEO"</span>
-            },
-            <span class="hljs-attr">"READ_EXTERNAL_STORAGE"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.READ_EXTERNAL_STORAGE"</span>
-            },
-            <span class="hljs-attr">"WRITE_EXTERNAL_STORAGE"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.WRITE_EXTERNAL_STORAGE"</span>
-            },
-            <span class="hljs-attr">"ACCESS_FINE_LOCATION"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.ACCESS_FINE_LOCATION"</span>
-            },
-            <span class="hljs-attr">"ACCESS_COARSE_LOCATION"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.ACCESS_COARSE_LOCATION"</span>
-            },
-            <span class="hljs-attr">"VIBRATE"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.VIBRATE"</span>
-            },
-            <span class="hljs-attr">"ACCESS_NETWORK_STATE"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.ACCESS_NETWORK_STATE"</span>
-            },
-            <span class="hljs-attr">"ACCESS_WIFI_STATE"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.ACCESS_WIFI_STATE"</span>
-            },
-            <span class="hljs-attr">"RECEIVE_BOOT_COMPLETED"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.RECEIVE_BOOT_COMPLETED"</span>
-            },
-            <span class="hljs-attr">"WRITE_CONTACTS"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.WRITE_CONTACTS"</span>
-            },
-            <span class="hljs-attr">"READ_CALL_LOG"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.READ_CALL_LOG"</span>
-            },
-            <span class="hljs-attr">"USE_FINGERPRINT"</span>: {
-                <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.USE_FINGERPRINT"</span>
-            }
-        }
+  <span class="hljs-attr">"permissions"</span>: {
+    <span class="hljs-attr">"ios"</span>: {
+      <span class="hljs-attr">"NSAppleMusicUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Get favorite music"</span>
+      },
+      <span class="hljs-attr">"NSBluetoothPeripheralUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Allow you to use your bluetooth to play music"</span>
+      },
+      <span class="hljs-attr">"NSCalendarsUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Calendar for add events"</span>
+      },
+      <span class="hljs-attr">"NSCameraUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Need camera to scan QR Codes"</span>
+      },
+      <span class="hljs-attr">"NSLocationWhenInUseUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Geolocation tags for photos"</span>
+      },
+      <span class="hljs-attr">"NSMicrophoneUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Need microphone for videos"</span>
+      },
+      <span class="hljs-attr">"NSMotionUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"To know when device is moving"</span>
+      },
+      <span class="hljs-attr">"NSPhotoLibraryAddUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Need library to save images"</span>
+      },
+      <span class="hljs-attr">"NSPhotoLibraryUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Allows to upload images from photo library"</span>
+      },
+      <span class="hljs-attr">"NSSpeechRecognitionUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Speech Recognition to run in app commands"</span>
+      },
+      <span class="hljs-attr">"NSContactsUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Get contacts list"</span>
+      },
+      <span class="hljs-attr">"NSFaceIDUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Requires FaceID access to allows you quick and secure access."</span>
+      },
+      <span class="hljs-attr">"NSLocationAlwaysUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Geolocation tags for photos"</span>
+      },
+      <span class="hljs-attr">"NSBluetoothAlwaysUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Allow you to use your bluetooth to play music"</span>
+      },
+      <span class="hljs-attr">"NSLocationAlwaysAndWhenInUseUsageDescription"</span>: {
+        <span class="hljs-attr">"desc"</span>: <span class="hljs-string">"Geolocation tags for photos"</span>
+      }
+    },
+    <span class="hljs-attr">"android"</span>: {
+      <span class="hljs-attr">"WAKE_LOCK"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.WAKE_LOCK"</span>
+      },
+      <span class="hljs-attr">"INTERNET"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.INTERNET"</span>
+      },
+      <span class="hljs-attr">"SYSTEM_ALERT_WINDOW"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.SYSTEM_ALERT_WINDOW"</span>
+      },
+      <span class="hljs-attr">"CAMERA"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.CAMERA"</span>
+      },
+      <span class="hljs-attr">"RECORD_AUDIO"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.RECORD_AUDIO"</span>
+      },
+      <span class="hljs-attr">"RECORD_VIDEO"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.RECORD_VIDEO"</span>
+      },
+      <span class="hljs-attr">"READ_EXTERNAL_STORAGE"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.READ_EXTERNAL_STORAGE"</span>
+      },
+      <span class="hljs-attr">"WRITE_EXTERNAL_STORAGE"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.WRITE_EXTERNAL_STORAGE"</span>
+      },
+      <span class="hljs-attr">"ACCESS_FINE_LOCATION"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.ACCESS_FINE_LOCATION"</span>
+      },
+      <span class="hljs-attr">"ACCESS_COARSE_LOCATION"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.ACCESS_COARSE_LOCATION"</span>
+      },
+      <span class="hljs-attr">"VIBRATE"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.VIBRATE"</span>
+      },
+      <span class="hljs-attr">"ACCESS_NETWORK_STATE"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.ACCESS_NETWORK_STATE"</span>
+      },
+      <span class="hljs-attr">"ACCESS_WIFI_STATE"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.ACCESS_WIFI_STATE"</span>
+      },
+      <span class="hljs-attr">"RECEIVE_BOOT_COMPLETED"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.RECEIVE_BOOT_COMPLETED"</span>
+      },
+      <span class="hljs-attr">"WRITE_CONTACTS"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.WRITE_CONTACTS"</span>
+      },
+      <span class="hljs-attr">"READ_CALL_LOG"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.READ_CALL_LOG"</span>
+      },
+      <span class="hljs-attr">"USE_FINGERPRINT"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"android.permission.USE_FINGERPRINT"</span>
+      }
     }
+  }
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="common"></a><a href="#common" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>common</h2>
 <p>Common properties inherited for every platform</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"common"</span>: {
-        <span class="hljs-attr">"id"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"title"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"description"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"author"</span>: {
-            <span class="hljs-attr">"name"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"email"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"url"</span>: <span class="hljs-string">""</span>
-        },
-        <span class="hljs-attr">"license"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"runScheme"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"bundleAssets"</span>: <span class="hljs-literal">false</span>,
-        <span class="hljs-attr">"entryFile"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"scheme"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"bundleAssets"</span>: <span class="hljs-literal">true</span>,
-        <span class="hljs-attr">"bundleIsDev"</span>: <span class="hljs-literal">true</span>,
-        <span class="hljs-attr">"includedPlugins"</span>: [],
-        <span class="hljs-attr">"excludedPlugins"</span>: [],
-        <span class="hljs-attr">"includedPermissions"</span>: [],
-        <span class="hljs-attr">"excludedPermissions"</span>: [],
-        <span class="hljs-attr">"includedFonts"</span>: [],
-        <span class="hljs-attr">"excludedFonts"</span>: [],
-        <span class="hljs-attr">"backgroundColor"</span>: <span class="hljs-string">""</span>,
-        <span class="hljs-attr">"port"</span>: <span class="hljs-number">1111</span>,
-        <span class="hljs-attr">"versionCodeOffset"</span>: <span class="hljs-number">0</span>,
-        <span class="hljs-attr">"runtime"</span>: {}
-    }
+  <span class="hljs-attr">"common"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"title"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"description"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"author"</span>: {
+      <span class="hljs-attr">"name"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"email"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"url"</span>: <span class="hljs-string">""</span>
+    },
+    <span class="hljs-attr">"license"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"runScheme"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"bundleAssets"</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">"entryFile"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"scheme"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"bundleAssets"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"bundleIsDev"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"includedPlugins"</span>: [],
+    <span class="hljs-attr">"excludedPlugins"</span>: [],
+    <span class="hljs-attr">"includedPermissions"</span>: [],
+    <span class="hljs-attr">"excludedPermissions"</span>: [],
+    <span class="hljs-attr">"includedFonts"</span>: [],
+    <span class="hljs-attr">"excludedFonts"</span>: [],
+    <span class="hljs-attr">"backgroundColor"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"port"</span>: <span class="hljs-number">1111</span>,
+    <span class="hljs-attr">"versionCodeOffset"</span>: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">"runtime"</span>: {}
+  }
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="platforms"></a><a href="#platforms" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms</h2>
 <p>Platform specififc configurations</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"ios"</span>: {},
-        <span class="hljs-attr">"android"</span>: {},
-        <span class="hljs-attr">"tvos"</span>: {},
-        <span class="hljs-attr">"web"</span>: {}
-    }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"ios"</span>: {},
+    <span class="hljs-attr">"android"</span>: {},
+    <span class="hljs-attr">"tvos"</span>: {},
+    <span class="hljs-attr">"web"</span>: {}
+  }
 }
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="ios-1"></a><a href="#ios-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ios</h3>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"ios"</span>: {
-            <span class="hljs-attr">"teamID"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"deploymentTarget"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"provisioningStyle"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"systemCapabilities"</span>: {},
-            <span class="hljs-attr">"scheme"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"entitlements"</span>: {},
-            <span class="hljs-attr">"orientationSupport"</span>: {
-                <span class="hljs-attr">"phone"</span>: [],
-                <span class="hljs-attr">"tab"</span>: []
-            },
-            <span class="hljs-attr">"appDelegateImports"</span>: [],
-            <span class="hljs-attr">"appDelegateMethods"</span>: {},
-            <span class="hljs-attr">"Podfile"</span>: {
-                <span class="hljs-attr">"sources"</span>: []
-            },
-            <span class="hljs-attr">"plist"</span>: {},
-            <span class="hljs-attr">"xcodeproj"</span>: {},
-            <span class="hljs-attr">"appDelegateApplicationMethods"</span>: {
-                <span class="hljs-attr">"didFinishLaunchingWithOptions"</span>: [],
-                <span class="hljs-attr">"open"</span>: [],
-                <span class="hljs-attr">"supportedInterfaceOrientationsFor"</span>: [],
-                <span class="hljs-attr">"didReceiveRemoteNotification"</span>: [],
-                <span class="hljs-attr">"didFailToRegisterForRemoteNotificationsWithError"</span>: [],
-                <span class="hljs-attr">"didReceive"</span>: [],
-                <span class="hljs-attr">"didRegister"</span>: [],
-                <span class="hljs-attr">"didRegisterForRemoteNotificationsWithDeviceToken"</span>: []
-            }
-        }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"ios"</span>: {
+      <span class="hljs-attr">"teamID"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"deploymentTarget"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"provisioningStyle"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"systemCapabilities"</span>: {},
+      <span class="hljs-attr">"scheme"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"entitlements"</span>: {},
+      <span class="hljs-attr">"orientationSupport"</span>: {
+        <span class="hljs-attr">"phone"</span>: [],
+        <span class="hljs-attr">"tab"</span>: []
+      },
+      <span class="hljs-attr">"appDelegateImports"</span>: [],
+      <span class="hljs-attr">"appDelegateMethods"</span>: {},
+      <span class="hljs-attr">"Podfile"</span>: {
+        <span class="hljs-attr">"sources"</span>: []
+      },
+      <span class="hljs-attr">"plist"</span>: {},
+      <span class="hljs-attr">"xcodeproj"</span>: {},
+      <span class="hljs-attr">"appDelegateApplicationMethods"</span>: {
+        <span class="hljs-attr">"didFinishLaunchingWithOptions"</span>: [],
+        <span class="hljs-attr">"open"</span>: [],
+        <span class="hljs-attr">"supportedInterfaceOrientationsFor"</span>: [],
+        <span class="hljs-attr">"didReceiveRemoteNotification"</span>: [],
+        <span class="hljs-attr">"didFailToRegisterForRemoteNotificationsWithError"</span>: [],
+        <span class="hljs-attr">"didReceive"</span>: [],
+        <span class="hljs-attr">"didRegister"</span>: [],
+        <span class="hljs-attr">"didRegisterForRemoteNotificationsWithDeviceToken"</span>: []
+      }
     }
+  }
 }
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="android-1"></a><a href="#android-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>android</h3>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"android"</span>: {
-            <span class="hljs-attr">"gradle.properties"</span>: {},
-            <span class="hljs-attr">"AndroidManifest"</span>: {},
-            <span class="hljs-attr">"build.gradle"</span>: {},
-            <span class="hljs-attr">"app/build.gradle"</span>: {},
-            <span class="hljs-attr">"implementation"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"universalApk"</span>: <span class="hljs-literal">false</span>,
-            <span class="hljs-attr">"multipleAPKs"</span>: <span class="hljs-literal">false</span>,
-            <span class="hljs-attr">"minSdkVersion"</span>: <span class="hljs-number">21</span>,
-            <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"aab"</span>: <span class="hljs-literal">false</span>,
-            <span class="hljs-attr">"storeFile"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"storePassword"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"keyAlias"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"keyPassword"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"enableHermes"</span>: <span class="hljs-literal">false</span>,
-            <span class="hljs-attr">"timestampAssets"</span>: <span class="hljs-literal">false</span>,
-            <span class="hljs-attr">"versionedAssets"</span>: <span class="hljs-literal">false</span>
-        }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"android"</span>: {
+      <span class="hljs-attr">"gradle.properties"</span>: {},
+      <span class="hljs-attr">"AndroidManifest"</span>: {},
+      <span class="hljs-attr">"build.gradle"</span>: {},
+      <span class="hljs-attr">"app/build.gradle"</span>: {},
+      <span class="hljs-attr">"implementation"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"universalApk"</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">"multipleAPKs"</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">"minSdkVersion"</span>: <span class="hljs-number">24</span>,
+      <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"aab"</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">"storeFile"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"storePassword"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"keyAlias"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"keyPassword"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"enableHermes"</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">"timestampAssets"</span>: <span class="hljs-literal">false</span>,
+      <span class="hljs-attr">"versionedAssets"</span>: <span class="hljs-literal">false</span>
     }
+  }
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="gradleproperties"></a><a href="#gradleproperties" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>gradle.properties</h4>
 <p>Overrides values in <code>gradle.properties</code> file of generated android based project</p>
 <p>Example:</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"android"</span>: {
-            <span class="hljs-attr">"gradle.properties"</span>: {
-                <span class="hljs-attr">"android.debug.obsoleteApi"</span>: <span class="hljs-literal">true</span>,
-                <span class="hljs-attr">"debug.keystore"</span>: <span class="hljs-string">"debug.keystore"</span>,
-                <span class="hljs-attr">"org.gradle.daemon"</span>: <span class="hljs-literal">true</span>,
-                <span class="hljs-attr">"org.gradle.parallel"</span>: <span class="hljs-literal">true</span>,
-                <span class="hljs-attr">"org.gradle.configureondemand"</span>: <span class="hljs-literal">true</span>
-            }
-        }
-     }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"android"</span>: {
+      <span class="hljs-attr">"gradle.properties"</span>: {
+        <span class="hljs-attr">"android.debug.obsoleteApi"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"debug.keystore"</span>: <span class="hljs-string">"debug.keystore"</span>,
+        <span class="hljs-attr">"org.gradle.daemon"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"org.gradle.parallel"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"org.gradle.configureondemand"</span>: <span class="hljs-literal">true</span>
+      }
+    }
+  }
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="androidmanifest"></a><a href="#androidmanifest" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>AndroidManifest</h4>
@@ -445,133 +445,131 @@ To skip file overrides coming from source plugin you need to detach it from the 
 <p><em>IMPORTANT</em>: always ensure that your object contains <code>tag</code> and <code>android:name</code> to target correct tag to merge into</p>
 <p>Example:</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"android"</span>: {
-            <span class="hljs-attr">"AndroidManifest"</span>: {
-              <span class="hljs-attr">"children"</span>: [
-                   {
-                       <span class="hljs-attr">"tag"</span>: <span class="hljs-string">"application"</span>,
-                       <span class="hljs-attr">"android:name"</span>: <span class="hljs-string">".MainApplication"</span>,
-                       <span class="hljs-attr">"android:allowBackup"</span>: <span class="hljs-literal">true</span>,
-                       <span class="hljs-attr">"android:largeHeap"</span>: <span class="hljs-literal">true</span>,
-                       <span class="hljs-attr">"android:usesCleartextTraffic"</span>: <span class="hljs-literal">true</span>,
-                       <span class="hljs-attr">"tools:targetApi"</span>: <span class="hljs-number">28</span>
-                   }
-               ]
-            }
-        }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"android"</span>: {
+      <span class="hljs-attr">"AndroidManifest"</span>: {
+        <span class="hljs-attr">"children"</span>: [
+          {
+            <span class="hljs-attr">"tag"</span>: <span class="hljs-string">"application"</span>,
+            <span class="hljs-attr">"android:name"</span>: <span class="hljs-string">".MainApplication"</span>,
+            <span class="hljs-attr">"android:allowBackup"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"android:largeHeap"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"android:usesCleartextTraffic"</span>: <span class="hljs-literal">true</span>,
+            <span class="hljs-attr">"tools:targetApi"</span>: <span class="hljs-number">28</span>
+          }
+        ]
+      }
     }
+  }
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="buildgradle"></a><a href="#buildgradle" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>build.gradle</h4>
 <p>Overrides values in <code>build.gradle</code> file of generated android based project</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"android"</span>: {
-            <span class="hljs-attr">"BuildGradle"</span>: {
-                <span class="hljs-attr">"allprojects"</span>: {
-                    <span class="hljs-attr">"repositories"</span>: {
-                        <span class="hljs-attr">"maven { url \"https://dl.bintray.com/onfido/maven\" }"</span>: <span class="hljs-literal">true</span>
-                    }
-                }
-            }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"android"</span>: {
+      <span class="hljs-attr">"BuildGradle"</span>: {
+        <span class="hljs-attr">"allprojects"</span>: {
+          <span class="hljs-attr">"repositories"</span>: {
+            <span class="hljs-attr">"maven { url \"https://dl.bintray.com/onfido/maven\" }"</span>: <span class="hljs-literal">true</span>
+          }
         }
+      }
     }
+  }
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="appbuildgradle"></a><a href="#appbuildgradle" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>app/build.gradle</h4>
 <p>Overrides values in <code>app/build.gradle</code> file of generated android based project</p>
 <p>Example:</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"android"</span>: {
-            <span class="hljs-attr">"app/build.gradle"</span>: {
-                <span class="hljs-attr">"apply"</span>: [
-                    <span class="hljs-string">"plugin: 'io.fabric'"</span>
-                ]
-            }
-        }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"android"</span>: {
+      <span class="hljs-attr">"app/build.gradle"</span>: {
+        <span class="hljs-attr">"apply"</span>: [<span class="hljs-string">"plugin: 'io.fabric'"</span>]
+      }
     }
+  }
 }
 </code></pre>
 <p>Example:</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"android"</span>: {
-            <span class="hljs-attr">"gradle.properties"</span>: {
-                <span class="hljs-attr">"android.debug.obsoleteApi"</span>: <span class="hljs-literal">true</span>,
-                <span class="hljs-attr">"debug.keystore"</span>: <span class="hljs-string">"debug.keystore"</span>,
-                <span class="hljs-attr">"org.gradle.daemon"</span>: <span class="hljs-literal">true</span>,
-                <span class="hljs-attr">"org.gradle.parallel"</span>: <span class="hljs-literal">true</span>,
-                <span class="hljs-attr">"org.gradle.configureondemand"</span>: <span class="hljs-literal">true</span>
-            }
-        }
-     }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"android"</span>: {
+      <span class="hljs-attr">"gradle.properties"</span>: {
+        <span class="hljs-attr">"android.debug.obsoleteApi"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"debug.keystore"</span>: <span class="hljs-string">"debug.keystore"</span>,
+        <span class="hljs-attr">"org.gradle.daemon"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"org.gradle.parallel"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"org.gradle.configureondemand"</span>: <span class="hljs-literal">true</span>
+      }
+    }
+  }
 }
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="web"></a><a href="#web" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>web</h3>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"web"</span>: {
-            <span class="hljs-attr">"environment"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"webpackConfig"</span>: {
-                <span class="hljs-attr">"devServerHost"</span>: <span class="hljs-string">""</span>,
-                <span class="hljs-attr">"customScripts"</span>: []
-            }
-        }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"web"</span>: {
+      <span class="hljs-attr">"environment"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"webpackConfig"</span>: {
+        <span class="hljs-attr">"devServerHost"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-attr">"customScripts"</span>: []
+      }
     }
+  }
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="timestampassets"></a><a href="#timestampassets" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>timestampAssets</h4>
 <p>If set to <code>true</code> generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build.
 This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"web"</span>: {
-            <span class="hljs-attr">"timestampAssets"</span>: <span class="hljs-literal">true</span>
-        }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"web"</span>: {
+      <span class="hljs-attr">"timestampAssets"</span>: <span class="hljs-literal">true</span>
     }
+  }
 }
 </code></pre>
 <h4><a class="anchor" aria-hidden="true" id="versionedassets"></a><a href="#versionedassets" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>versionedAssets</h4>
 <p>If set to <code>true</code> generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version.
 This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy</p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"web"</span>: {
-            <span class="hljs-attr">"versionedAssets"</span>: <span class="hljs-literal">true</span>
-        }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"web"</span>: {
+      <span class="hljs-attr">"versionedAssets"</span>: <span class="hljs-literal">true</span>
     }
+  }
 }
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="tizen"></a><a href="#tizen" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>tizen</h3>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"tizen"</span>: {
-            <span class="hljs-attr">"appName"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"package"</span>: <span class="hljs-string">""</span>,
-            <span class="hljs-attr">"certificateProfile"</span>: <span class="hljs-string">""</span>
-        }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"tizen"</span>: {
+      <span class="hljs-attr">"appName"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"package"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"certificateProfile"</span>: <span class="hljs-string">""</span>
     }
+  }
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="runtime"></a><a href="#runtime" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>runtime</h2>
 <p>Special runtime injection object to be available for runtime code via <code>platformAssets/runtime.json</code></p>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"runtime"</span>: {
-        <span class="hljs-attr">"foo"</span>: <span class="hljs-string">"bar"</span>
-    }
+  <span class="hljs-attr">"runtime"</span>: {
+    <span class="hljs-attr">"foo"</span>: <span class="hljs-string">"bar"</span>
+  }
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="buildschemes"></a><a href="#buildschemes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>buildSchemes</h2>
 <pre><code class="hljs css language-json">{
-    <span class="hljs-attr">"platforms"</span>: {
-        <span class="hljs-attr">"[PLATFORM]"</span>: {
-            <span class="hljs-attr">"buildSchemes"</span>: {
-                <span class="hljs-attr">"[BUILD_SCHEME_KEY]"</span>: {}
-            }
-        }
+  <span class="hljs-attr">"platforms"</span>: {
+    <span class="hljs-attr">"[PLATFORM]"</span>: {
+      <span class="hljs-attr">"buildSchemes"</span>: {
+        <span class="hljs-attr">"[BUILD_SCHEME_KEY]"</span>: {}
+      }
     }
+  }
 }
 </code></pre>
 </span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/0.30/api-cli-workspace"><span class="arrow-prev">← </span><span>Previous</span></a><a class="docs-next button" href="/docs/0.30/api-renative"><span>renative</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#sdks">sdks</a></li><li><a href="#workspaceid">workspaceID</a></li><li><a href="#paths">paths</a></li><li><a href="#defaults">defaults</a></li><li><a href="#pipes">pipes</a></li><li><a href="#enableanalytics">enableAnalytics</a></li><li><a href="#plugins">plugins</a><ul class="toc-headings"><li><a href="#skipmerge">skipMerge</a></li><li><a href="#source">source</a></li><li><a href="#ios">ios</a></li><li><a href="#android">android</a></li></ul></li><li><a href="#permissions">permissions</a></li><li><a href="#common">common</a></li><li><a href="#platforms">platforms</a><ul class="toc-headings"><li><a href="#ios-1">ios</a></li><li><a href="#android-1">android</a></li><li><a href="#web">web</a></li><li><a href="#tizen">tizen</a></li></ul></li><li><a href="#runtime">runtime</a></li><li><a href="#buildschemes">buildSchemes</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.png" alt="ReNative" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/intro-installation">Getting Started</a><a href="/docs/platform">Platforms</a><a href="/docs/guide-cli">Guides</a></div><div><h5>Community</h5><a href="https://spectrum.chat/renative">Project Chat</a><a href="https://twitter.com/renative" target="_blank" rel="noreferrer noopener">Twitter</a><a href="/help">Contributors</a></div><div><h5>More</h5><a href="https://github.com/pavjacko/renative">GitHub</a><a class="github-button" href="https://github.com/pavjacko/renative" data-icon="octicon-star" data-count-href="/pavjacko/renative/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><div class="social"><a href="https://twitter.com/renative" class="twitter-follow-button">Follow @renative</a></div></div></section><section class="copyright"></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script><script>
