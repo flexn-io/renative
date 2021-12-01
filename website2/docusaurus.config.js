@@ -47,7 +47,7 @@ const config = {
             hideOnScroll: true,
             logo: {
                 alt: 'My Site Logo',
-                src: 'img/logo.png',
+                src: 'img/renative-logo-transparent.png',
             },
             items: [
                 {
