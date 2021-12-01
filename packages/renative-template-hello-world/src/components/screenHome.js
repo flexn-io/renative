@@ -58,10 +58,10 @@ const ScreenHome = (props) => {
                     title="Try Me!"
                     className="focusable"
                     onPress={() => {
-                        setBgColor(bgColor === '#666666' ? Theme.color1 : '#666666');
+                        setBgColor(bgColor === '#FFFFFF' ? Theme.color1 : '#FFFFFF');
                     }}
                     onEnterPress={() => {
-                        setBgColor(bgColor === '#666666' ? Theme.color1 : '#666666');
+                        setBgColor(bgColor === '#FFFFFF' ? Theme.color1 : '#FFFFFF');
                     }}
                     onBecameFocused={handleFocus}
                     onArrowPress={handleUp}

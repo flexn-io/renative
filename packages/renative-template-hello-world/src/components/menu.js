@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontFamily: 'TimeBurner',
-        color: '#62DBFB',
+        color: '#FFFFFF',
         fontSize: getScaledValue(20)
     }
 });

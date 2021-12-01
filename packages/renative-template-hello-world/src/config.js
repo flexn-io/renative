@@ -1,5 +1,7 @@
-import { getScaledValue, isFactorMobile, isFactorDesktop,
-    isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker, isWebBased, StyleSheet, isPlatformWeb } from 'renative';
+import {
+    getScaledValue, isFactorMobile, isFactorDesktop,
+    isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker, isWebBased, StyleSheet, isPlatformWeb
+} from 'renative';
 import '../platformAssets/runtime/fontManager'; // eslint-disable-line import/extensions, import/no-unresolved
 
 export CONFIG from '../platformAssets/renative.runtime.json'; // eslint-disable-line import/no-unresolved
@@ -17,10 +19,10 @@ export const hasWebFocusableUI = isWebBased && isFactorTv;
 console.disableYellowBox = true; // eslint-disable-line no-console
 
 const theme = {
-    color1: '#222222',
-    color2: '#62DBFB',
+    color1: '#000000',
+    color2: '#A1A1A1',
     color3: '#FB8D62',
-    color4: '#FFFFFF',
+    color4: '#FB8D62',
     color5: '#AAAAAA',
     primaryFontFamily: 'TimeBurner',
     iconSize: getScaledValue(40),
@@ -141,8 +143,8 @@ export const themeStyles = StyleSheet.create({
     },
     image: {
         marginBottom: getScaledValue(30),
-        width: getScaledValue(83),
-        height: getScaledValue(97),
+        width: getScaledValue(93),
+        height: getScaledValue(90)
     }
 });
 
