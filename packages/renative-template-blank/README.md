@@ -22,4 +22,4 @@ rnv new
 
 ## Screenshots
 
-<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-blank/docs/web.png" width="600px" />
+<img src="https://github.com/renative-org/renative/blob/develop/packages/renative-template-blank/docs/web.png" width="600px" />

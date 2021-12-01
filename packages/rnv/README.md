@@ -1,42 +1,73 @@
-<p align='center'>
-    <br />
-    <br />
-  <p align='center'>
-    <a href="https://www.npmjs.com/package/renative">
-    <img width="300" height="321" src="https://renative.org/img/logo-512.png" />
-    </a>
-  </p>
-  <p align='center'>"One CLI to rule them all, one CLI to find them, One CLI to bring them all and in the darkness bind them."</p>
-  <br />
-  <br />
-
-  <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
-  <p align='center'>
-  <img src="https://img.shields.io/badge/Platforms_Supported-14-blue.svg" />
-  <img src="https://img.shields.io/badge/React_Native-0.59.5-blue.svg" />
-  <img src="https://img.shields.io/badge/React-16.8.6-blue.svg" />
-  <img src="https://img.shields.io/badge/Plugins-45-red.svg" />
-  </p>
+<p align="center">
+  <a href="https://renative.org">
+    <img src="https://renative.org/img/renative-logo-framed.png?raw=true" height="128" width="128">
+    <h1 align="center">ReNative</h1>
+  </a>
+  <p align="center">Unified Development Platform</p>
+    <p align="center">💻📱⌚📺🖥️</p>
+  
 </p>
 
-   <br />
-    <br />
-      <br />
-       <br />
-
-<p align='center'>
-    <a href="https://github.com/pavjacko/renative"><img src="https://img.shields.io/github/stars/pavjacko/renative.svg?style=social" /></a>
-    <a href="https://github.com/pavjacko/renative"><img src="https://img.shields.io/github/forks/pavjacko/renative.svg?style=social" />
-    <a href="https://spectrum.chat/renative"><img src="https://withspectrum.github.io/badge/badge.svg" /></a>
-        </a>
-    <a href="https://twitter.com/renative"><img src="https://img.shields.io/twitter/follow/renative.svg?style=social" /></a>
+<p align="center">
+  <a aria-label="NPM version" href="https://www.npmjs.com/package/renative">
+    <img alt="" src="https://img.shields.io/npm/v/renative.svg?style=for-the-badge&labelColor=000000">
+  </a>
+  <a aria-label="License" href="https://github.com/renative-org/renative/blob/main/license.md">
+    <img alt="" src="https://img.shields.io/npm/l/renative.svg?style=for-the-badge&labelColor=000000">
+  </a>
+  <a aria-label="Join the community on GitHub" href="https://github.com/renative-org/renative/discussions">
+    <img alt="" src="https://img.shields.io/badge/Join%20the%20community-blueviolet.svg?style=for-the-badge&logo=ReNative&labelColor=000000&logoWidth=20">
+  </a>
 </p>
 
 
-## 🚀 Quick Start
+ReNative allows you to bootstrap, develop and deploy apps for mobile, web, TVs, desktops, consoles, wearables and more via single development environment.
 
-```bash
-$ npm install rnv -g
+Supports popular front-end frameworks like [React](https://reactjs.org/), [React Native](https://reactnative.dev/), [NextJS](https://nextjs.org/), [Electron](https://www.electronjs.org/)
 
-$ rnv
+
+
+## Usage
+
+To install the latest version of ReNative CLI run this command:
+
 ```
+npm i -g rnv
+```
+
+To start new project, run following command:
+
+```
+rnv new
+```
+
+## Getting Started
+
+Visit <a aria-label="ReNative learn" href="https://renative.org/learn">https://renative.org/learn</a> to get started with ReNative.
+
+
+## Documentation
+
+Visit <a aria-label="ReNative learn" href="https://renative.org/docs">https://renative.org/docs</a> to view full documentation.
+
+## Community
+
+ReNative community can be found on <a aria-label="ReNative Discussions" href="https://github.com/renative-org/renative/discussions">Github Discussions</a>.
+
+
+## Core Maintainers
+
+- Pavel Jacko ([@pavjacko](https://twitter.com/pavjacko)) - https://github.com/pavjacko
+- Mihai Blaga ([@blaga_mihai](https://twitter.com/blaga_mihai)) - https://github.com/mihaiblaga89
+
+## Contributors
+
+Thanks to all contributors [[Contribute]](CONTRIBUTING.md).
+
+<a href="graphs/contributors"><img src="https://opencollective.com/renative/contributors.svg?width=890" /></a>
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/renative#backer)]
+
+<a href="https://opencollective.com/renative#backers" target="_blank"><img src="https://opencollective.com/renative/backers.svg?width=890"></a>

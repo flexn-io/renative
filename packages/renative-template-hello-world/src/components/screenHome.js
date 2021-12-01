@@ -90,7 +90,7 @@ const ScreenHome = (props) => {
                         iconSize={Theme.iconSize}
                         style={themeStyles.icon}
                         onPress={() => {
-                            openURL('https://github.com/pavjacko/renative');
+                            openURL('https://github.com/renative-org/renative');
                         }}
                     />
                     <Button

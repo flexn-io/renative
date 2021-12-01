@@ -114,7 +114,7 @@ sidebar_label: Changelog
         output
     );
 
-    updateCurrentLiveChangelog(c, chlogTotal);
+    // updateCurrentLiveChangelog(c, chlogTotal);
 };
 
 export const updateCurrentLiveChangelog = async (c, chlogVal) => {
