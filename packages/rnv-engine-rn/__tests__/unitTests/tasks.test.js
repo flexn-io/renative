@@ -102,7 +102,7 @@ jest.mock('rnv', () => {
         },
         SDKManager: {
             Apple: {
-
+                launchAppleSimulator: () => null
             },
             Android: {
 

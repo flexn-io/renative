@@ -6,6 +6,49 @@ original_id: changelog
 ---
 
 
+## v0.33.0-alpha.3 (2021-11-30)
+
+### Fixed
+
+- Merge pull request #750 from pavjacko/feat/gradle-6.7-support
+- [chore] remove legacy code
+- [fix] add support for gradle 6.7.1, kotlin 1.4.20, OpenJDK 11
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.33.0-alpha.2 (2021-11-25)
+
+### Fixed
+
+- Merge pull request #748 from pavjacko/feat/custom-gservices-versions
+- [feat] support for custom google services version
+- Merge pull request #747 from pavjacko/feat/rnv-cli-commands
+- [feat]  rnv app create => support for cli arguments
+- [fix] rnv target list -p android
+- [feat] add support for `rnv app create`
+- [fix] rnv template list (globally)
+- [fix] rnv global command
+- [fix] fix emulator
+- [fix] rnv target list -p
+- Merge pull request #742 from mmehtonen-24i/fix/help-task
+- Fix taskRnvHelp task
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.33.0-alpha.1 (2021-11-18)
 
 ### Fixed

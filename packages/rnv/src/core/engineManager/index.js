@@ -181,7 +181,8 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
                     const deps = c.files.project.package.devDependencies || {};
                     Object.keys(npm.devDependencies).forEach((k) => {
                         if (!deps[k]) {
-                            logInfo(`Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. ADDING...DONE`);
+                            logInfo(`Engine ${ecf.key} requires npm devDependency ${
+                                k} for platform ${platform}. ADDING...DONE`);
                             deps[k] = npm?.devDependencies[k];
                             addedDeps.push(k);
                         }
@@ -192,7 +193,8 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
                     const deps = c.files.project.package.dependencies || {};
                     Object.keys(npm.dependencies).forEach((k) => {
                         if (!deps[k]) {
-                            logInfo(`Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. ADDING...DONE`);
+                            logInfo(`Engine ${ecf.key} requires npm dependency ${
+                                k} for platform ${platform}. ADDING...DONE`);
                             deps[k] = npm?.dependencies[k];
                             addedDeps.push(k);
                         }
@@ -203,7 +205,8 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
                     const deps = c.files.project.package.optionalDependencies || {};
                     Object.keys(npm.optionalDependencies).forEach((k) => {
                         if (!deps[k]) {
-                            logInfo(`Engine ${ecf.key} requires npm optionalDependency ${k} for platform ${platform}. ADDING...DONE`);
+                            logInfo(`Engine ${ecf.key} requires npm optionalDependency ${
+                                k} for platform ${platform}. ADDING...DONE`);
                             deps[k] = npm?.optionalDependencies[k];
                             addedDeps.push(k);
                         }

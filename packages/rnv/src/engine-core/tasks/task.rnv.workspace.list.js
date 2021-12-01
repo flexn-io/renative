@@ -10,7 +10,9 @@ import { TASK_WORKSPACE_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/
 export const taskRnvWorkspaceList = async (c, parentTask, originTask) => {
     logTask('taskRnvWorkspaceList');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_WORKSPACE_LIST, originTask);
+    if (c.paths.project.configExists) {
+        await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_WORKSPACE_LIST, originTask);
+    }
 
     const opts = generateOptions(
         c.files.rnv.configWorkspaces?.workspaces,

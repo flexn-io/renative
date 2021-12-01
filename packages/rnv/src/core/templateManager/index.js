@@ -396,8 +396,14 @@ const _writeObjectSync = (c, p, s) => {
     generateBuildConfig(c);
 };
 
-export const getTemplateOptions = (c) => {
-    const defaultProjectTemplates = c.buildConfig.projectTemplates || {};
+export const getTemplateOptions = (c, isGlobalScope) => {
+    let defaultProjectTemplates;
+    if (isGlobalScope) {
+        defaultProjectTemplates = c.files.rnv.projectTemplates.config.projectTemplates;
+    } else {
+        defaultProjectTemplates = c.buildConfig.projectTemplates || {};
+    }
+
     return generateOptions(
         defaultProjectTemplates,
         false,

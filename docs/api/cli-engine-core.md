@@ -1215,6 +1215,43 @@ More info at [Engine Core Guide](engine-core.md)
 
 ---
 
+## app create
+
+> Create new app config
+
+Supported Platforms:
+
+`ios`, `android`, `firetv`, `androidtv`, `androidwear`, `web`, `webtv`, `tizen`, `tizenmobile`, `tvos`, `webos`, `macos`, `windows`, `tizenwatch`, `kaios`, `firefoxos`, `firefoxtv`, `chromecast`
+
+Example:
+
+```bash
+rnv app create
+```
+
+Options:
+
+`-i`, `--info` - Show full debug Info
+
+`--ci` - CI/CD flag so it wont ask questions
+
+`--mono` - Monochrome console output without chalk
+
+`--maxErrorLength` - Specify how many characters each error should display. Default 200
+
+`-o`, `--only` - run Only top command (Skip dependencies)
+
+
+
+
+---
+
+This command reference applies if your platform uses engine `engine-core`.
+
+More info at [Engine Core Guide](engine-core.md)
+
+---
+
 ## workspace configure
 
 > 

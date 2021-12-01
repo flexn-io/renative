@@ -8,6 +8,7 @@ import {
 } from '../systemManager/fileutils';
 import { checkAndConfigureSdks } from '../sdkManager/installer';
 import { getTimestampPathsConfig, getPlatformBuildDir } from '../common';
+import { SUPPORTED_PLATFORMS } from '../constants';
 
 
 export const logErrorPlatform = (c) => {
@@ -89,11 +90,21 @@ export const createPlatformBuild = (c, platform) => new Promise((resolve, reject
     resolve();
 });
 
-export const isPlatformSupported = async (c) => {
+export const isPlatformSupported = async (c, isGlobalScope = false) => {
     logTask('isPlatformSupported');
-    let platformsAsObj = c.buildConfig
-        ? c.buildConfig.platforms
-        : c.supportedPlatforms;
+
+
+    if (c.platform && c.platform !== true && isGlobalScope) {
+        return c.platform;
+    }
+
+    let platformsAsObj;
+    if (isGlobalScope) {
+        platformsAsObj = SUPPORTED_PLATFORMS;
+    } else {
+        platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
+    }
+
     if (!platformsAsObj) platformsAsObj = c.runtime.availablePlatforms;
     const opts = generateOptions(platformsAsObj);
 
@@ -114,6 +125,7 @@ export const isPlatformSupported = async (c) => {
     }
 
     const configuredPlatforms = c.files.project.config?.defaults?.supportedPlatforms;
+
     if (
         Array.isArray(configuredPlatforms)
         && !configuredPlatforms.includes(c.platform)

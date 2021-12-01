@@ -187,15 +187,40 @@ export const parseAppDelegate = (
         }
         return output;
     };
+
+    // REORDER Injects
+    const injectors = [];
+    let cleanedLinesArr;
     Object.keys(methods).forEach((key) => {
         const method = methods[key];
         Object.keys(method).forEach((key2) => {
             const f = method[key2];
-            c.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(
-                c.pluginConfigiOS.appDelegateMethods[key][key2],
-                f
-            );
+            const lines = c.pluginConfigiOS.appDelegateMethods[key][key2];
+            const cleanedLines = {};
+
+            lines.forEach((l) => {
+                if (!cleanedLines[l.value]) {
+                    cleanedLines[l.value] = l;
+                }
+
+                if (cleanedLines[l.value].weight < l.weight) {
+                    cleanedLines[l.value] = l;
+                }
+            });
+            cleanedLinesArr = Object.values(cleanedLines).sort((a, b) => a.order - b.order).map(v => v.value);
+
+            injectors.push({
+                f,
+                lines: cleanedLinesArr
+            });
         });
+    });
+
+    injectors.forEach((v) => {
+        c.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(
+            v.lines,
+            v.f
+        );
     });
 
     const injects = [
@@ -286,9 +311,11 @@ export const injectPluginSwiftSync = (c, plugin, key) => {
                     const plugVal = appDelegateMethods[delKey][key2];
                     if (plugVal) {
                         plugVal.forEach((v) => {
-                            if (!plugArr.includes(v)) {
-                                plugArr.push(v);
-                            }
+                            plugArr.push({
+                                order: v?.order || 0,
+                                value: v?.value || v,
+                                weight: v?.weight || 0
+                            });
                         });
                     }
                 }
