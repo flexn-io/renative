@@ -1869,7 +1869,10 @@
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
-                            "FirebaseApp.configure()"
+                            {
+                                "order": -1,
+                                "value": "FirebaseApp.configure()"
+                            }
                         ]
                     }
                 }
@@ -1934,7 +1937,10 @@
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
-                            "FirebaseApp.configure()"
+                            {
+                                "order": -1,
+                                "value": "FirebaseApp.configure()"
+                            }
                         ]
                     }
                 }
@@ -2050,7 +2056,10 @@
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
-                            "FirebaseApp.configure()"
+                            {
+                                "order": -1,
+                                "value": "FirebaseApp.configure()"
+                            }
                         ]
                     }
                 },
