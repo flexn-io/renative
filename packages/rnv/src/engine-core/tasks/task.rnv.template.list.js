@@ -6,9 +6,10 @@ import { TASK_TEMPLATE_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/c
 export const taskRnvTemplateList = async (c, parentTask, originTask) => {
     logTask('taskRnvTemplateList');
 
-    await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_LIST, originTask);
-
-    const opts = getTemplateOptions(c);
+    if (c.paths.project.configExists) {
+        await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_LIST, originTask);
+    }
+    const opts = getTemplateOptions(c, !c.paths.project.configExists);
     logToSummary(`Templates:\n\n${opts.asString}`);
     return true;
 };
@@ -20,4 +21,5 @@ export default {
     params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
+    isGlobalScope: true
 };

@@ -32,6 +32,7 @@ import taskRnvInstall from './tasks/task.rnv.install';
 import taskRnvProjectConfigure from './tasks/task.rnv.project.configure';
 import taskRnvProjectUpgrade from './tasks/task.rnv.project.upgrade';
 import taskRnvAppConfigure from './tasks/task.rnv.app.configure';
+import taskRnvAppCreate from './tasks/task.rnv.app.create';
 import taskRnvWorkspaceConfigure from './tasks/task.rnv.workspace.configure';
 import taskRnvConfigureSoft from './tasks/task.rnv.configureSoft';
 import taskRvnKill from './tasks/task.rnv.kill';
@@ -76,6 +77,7 @@ export default {
         taskRnvProjectConfigure,
         taskRnvProjectUpgrade,
         taskRnvAppConfigure,
+        taskRnvAppCreate,
         taskRnvWorkspaceConfigure,
         taskRnvConfigureSoft,
         taskRvnKill,

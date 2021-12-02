@@ -4128,6 +4128,68 @@
     history "^4.7.2"
     query-string "^6.2.0"
 
+"@rnv/engine-lightning@~0.32.0-RC":
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-lightning/-/engine-lightning-0.32.2.tgz#2aba1ba82609d680b34d71fffb2da40ebaf3bc8c"
+  integrity sha512-AGslPSjnTIgorzoOuUYpPtvsi+sYyK7VlRa47dPIZGrolbUl5f2SEPAejVHubMQOp/d1Q73tTeZ37O6hJG4pWQ==
+  dependencies:
+    babel-loader "8.0.5"
+    html-webpack-harddisk-plugin "1.0.2"
+    html-webpack-plugin "4.5.1"
+
+"@rnv/engine-rn-electron@~0.32.0-RC":
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn-electron/-/engine-rn-electron-0.32.2.tgz#f15ef4ba3e026bcccbf8864cc67f62031a154472"
+  integrity sha512-fDqZ1NvXsXBTQIL94zSgaAv2AkxfP50oQSFXAw+bnN2LoyMry982cG/Vt2co7MKWJXiq8cynetRO0Rmg7sPWZg==
+  dependencies:
+    babel-loader "8.0.5"
+    electron "11.5.0"
+    electron-builder "22.13.1"
+    electron-notarize "1.0.0"
+
+"@rnv/engine-rn-macos@~0.32.0-RC":
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn-macos/-/engine-rn-macos-0.32.2.tgz#2952b9b30502e1df866a1192df9dbc3868bf3f6b"
+  integrity sha512-VXHw7rrysTrES3i77qll+gC272gGmpsuQbGt0eacRGDHjIMJk+Q8noKDmWpClBUEQIjzrkIRaS9kgSpQhTT69g==
+
+"@rnv/engine-rn-next@~0.32.0-RC":
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn-next/-/engine-rn-next-0.32.2.tgz#154941c94742af018e21f7fca35b1a18bf91732b"
+  integrity sha512-MAhNeHEpE8l96UtTo1o95uPO8/TLXDjkcV2V1/YfHSiMSgoXnd2yMZKka9Y2J909wMQ6EYpvY2BhIJNmWxRorg==
+  dependencies:
+    "@expo/next-adapter" "2.1.29"
+    "@zeit/next-css" "1.0.1"
+    next-fonts "1.4.0"
+    next-images "1.4.1"
+    next-optimized-images "2.6.2"
+    next-transpile-modules "8.0.0"
+
+"@rnv/engine-rn-tvos@~0.32.0-RC":
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn-tvos/-/engine-rn-tvos-0.32.2.tgz#acd1d60597c24f33f44a668af3586afb2eabf985"
+  integrity sha512-tcSDs44VJoRwzdIJ3eIYfaVgA+jUz7wEoz3pbUF0+XvY2Rdb96y0OHQ8wBx+5g26oejuX+gxY/jwCP9TYT2yBQ==
+
+"@rnv/engine-rn-web@~0.32.0-RC":
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn-web/-/engine-rn-web-0.32.2.tgz#70578fb8f507e0362df9ee2723a13b2d2ce3f7dd"
+  integrity sha512-+46J+AaJfYZFFr7TD1oO/oq3c0Xt0zaVhgz/n//iZvOr2ZoO3bt9zxPbhuHdFW0K7t5XnPn5eGXXx0q3yY2Xaw==
+  dependencies:
+    babel-loader "8.0.5"
+    html-webpack-harddisk-plugin "1.0.2"
+    html-webpack-plugin "4.5.1"
+
+"@rnv/engine-rn-windows@~0.32.0-RC":
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn-windows/-/engine-rn-windows-0.32.2.tgz#b43b0f4988472751b72ad652a94fe1e7b1d56a05"
+  integrity sha512-TZhm1z+D74/UqS+mH8TpHTAjaNFO++MJBf799VJgBGMrmEIeGuHUwUCV+j/L9C0El98pGgy1YhMFYl7u8Un+PA==
+  dependencies:
+    react-native-windows "0.63.36"
+
+"@rnv/engine-rn@~0.32.0-RC":
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn/-/engine-rn-0.32.2.tgz#7d5a28c763b08c9c6adb2fa402ee842032fea26b"
+  integrity sha512-waUe2D9oE+F93qJO5YBCzgCYZelMp3Q3BgSjjyNQfx2fInl3Eyjdk5kBXQeGScmtfB2/ROA0wWa7K2Fwiynnhg==
+
 "@rnv/integration-docker@0.1.0-alpha.0":
   version "0.1.0-alpha.0"
   resolved "https://registry.yarnpkg.com/@rnv/integration-docker/-/integration-docker-0.1.0-alpha.0.tgz#a9bb0c3a8aa56c900f1bb215f124a7ca2a77b191"
@@ -18837,6 +18899,35 @@ remove-trailing-separator@^1.0.1:
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
 
+renative-template-blank@~0.32.0-RC:
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/renative-template-blank/-/renative-template-blank-0.32.2.tgz#9a6d832b2092a4d78bced6022e29800ee5e43eba"
+  integrity sha512-lI9IehvR925+zu650avRY1dtkwN+N6eFxTlQitslehoTsG20as3jMHFDzOqLyuCuu6yJ6LIdSJl/ibKmdHai8w==
+
+renative-template-hello-world@~0.32.0-RC:
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/renative-template-hello-world/-/renative-template-hello-world-0.32.2.tgz#93b1ea3ab44e9697c1b8296b22a4d2c291ee5cbc"
+  integrity sha512-JbmxJPosT4TQfxa5WqZkup8KVlPW/RCCRTn7TfkfUsTaZC1DLuhw7JTcSzrNk2EIs9OJZsqzwtlrIe4xEXrv6w==
+  dependencies:
+    "@noriginmedia/react-spatial-navigation" "2.12.1"
+
+renative-template-kitchen-sink@~0.32.0-RC:
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/renative-template-kitchen-sink/-/renative-template-kitchen-sink-0.32.2.tgz#661913a19af99a306d35bfdbc5ca8dda27fb4e3a"
+  integrity sha512-6LziKL3Pnkn9HyPaizeEYLIOpukuIDKzVDTDXE2I1QgVEZJFtSQDOp0IJluep3J0T0K6b/GQvSI0IxKr0+tA+A==
+
+renative@~0.32.0-RC:
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/renative/-/renative-0.32.2.tgz#ff799bf1310bfee6f187433007d7f5bf8cb2885b"
+  integrity sha512-CEzK6lRH+Ym8pScUdtBmIc8o3dJhpBzq5GnMviQF5lAxrz4QGAL00SZDS0OlZqd2r4ncPr/6/obPeDPVZWZ5/Q==
+  dependencies:
+    "@noriginmedia/react-spatial-navigation" "2.12.1"
+    "@reach/router" "1.3.4"
+    history "^4.9.0"
+    react "16.13.1"
+    react-dom "16.13.1"
+    react-native "0.63.4"
+
 renderkid@^2.0.4:
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/renderkid/-/renderkid-2.0.7.tgz#464f276a6bdcee606f4a15993f9b29fc74ca8609"
@@ -19141,6 +19232,92 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+rnv@~0.32.0-RC:
+  version "0.32.2"
+  resolved "https://registry.yarnpkg.com/rnv/-/rnv-0.32.2.tgz#5dc9d8c4a06bc90991bf040c6ab0704fbbbeef6e"
+  integrity sha512-cfWii1/Mz4CeHhhOLN9OUNGQmJxEanDPHiPa9QNbdP8cvGwtFgg2s4WqajjTlmdhYJqt7+yPU74w42TCZFpBHA==
+  dependencies:
+    "@babel/cli" "7.8.3"
+    "@babel/core" "7.8.3"
+    "@babel/helper-builder-react-jsx" "7.14.5"
+    "@babel/plugin-proposal-class-properties" "7.8.3"
+    "@babel/plugin-proposal-decorators" "7.8.3"
+    "@babel/plugin-proposal-nullish-coalescing-operator" "7.8.3"
+    "@babel/plugin-proposal-optional-chaining" "7.8.3"
+    "@babel/plugin-transform-runtime" "7.8.3"
+    "@babel/preset-env" "7.8.7"
+    "@babel/runtime" "7.8.3"
+    "@sentry/integrations" "6.14.3"
+    "@sentry/node" "6.14.3"
+    ajv "7.0.0-beta.0"
+    axios "0.19.0"
+    babel-eslint "8.2.6"
+    babel-jest "24.9.0"
+    babel-loader "8.0.5"
+    babel-plugin-module-resolver "3.2.0"
+    babel-plugin-react-native-web "0.8.9"
+    babel-plugin-transform-decorators-legacy "1.3.4"
+    babel-plugin-transform-imports "1.4.1"
+    babel-plugin-transform-object-rest-spread "6.26.0"
+    babel-plugin-transform-runtime "6.23.0"
+    babel-polyfill "6.26.0"
+    better-opn "1.0.0"
+    chalk "4.1.0"
+    color-string "1.5.3"
+    command-exists "1.2.9"
+    commander "^3.0.1"
+    compare-versions "3.6.0"
+    console-table-printer "1.1.10"
+    copy-webpack-plugin "4.6.0"
+    cross-env "5.2.0"
+    crypto-random-string "3.2.0"
+    css-hot-loader "1.4.2"
+    css-loader "3.2.0"
+    deepmerge "3.2.0"
+    detect-port "1.3.0"
+    dotenv "8.1.0"
+    esbuild "^0.12.1"
+    execa "2.0.4"
+    file-loader "1.1.11"
+    ftp-deploy "2.3.3"
+    get-installed-path "4.0.8"
+    html-webpack-harddisk-plugin "1.0.2"
+    html-webpack-plugin "4.5.1"
+    inquirer "8.0.0"
+    iocane "4.0.0"
+    ios-mobileprovision-finder "1.0.11"
+    ip "1.1.5"
+    kill-port "1.6.1"
+    lodash.get "4.4.2"
+    lodash.set "4.3.2"
+    metro-react-native-babel-preset "0.59.0"
+    metro-resolver "0.59.0"
+    mini-css-extract-plugin "0.8.0"
+    minimist "1.2.5"
+    modclean "3.0.0-beta.1"
+    natives "1.1.6"
+    ncp "2.0.0"
+    netcat "1.4.0"
+    node-fetch "2.6.1"
+    node-machine-id "^1.1.12"
+    resolve "^1.0.0"
+    shelljs "0.8.4"
+    simple-git "2.20.1"
+    source-map-loader "0.2.4"
+    source-map-support "0.5.13"
+    strip-ansi "5.2.0"
+    style-loader "1.2.1"
+    svg2js "0.0.4-alpha1"
+    tar "4.4.19"
+    url-loader "1.1.1"
+    webpack "^4.44.2"
+    webpack-bundle-analyzer "3.5.1"
+    webpack-cli "3.1.2"
+    webpack-dev-server "3.2.1"
+    webpack-merge "4.1.4"
+    write-json-webpack-plugin "1.1.0"
+    xml2js "0.4.23"
 
 roarr@^2.15.3:
   version "2.15.4"

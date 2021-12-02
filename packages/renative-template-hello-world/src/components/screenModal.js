@@ -1,12 +1,14 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { Button, usePop } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
-import Theme, { themeStyles, hasWebFocusableUI } from '../config';
+import { ThemeContext, hasWebFocusableUI } from '../config';
 
 const ScreenModal = (props) => {
     const pop = usePop(props);
+    const { theme } = useContext(ThemeContext);
+
     if (hasWebFocusableUI) {
         useEffect(() => {
             const { setFocus } = props;
@@ -18,16 +20,16 @@ const ScreenModal = (props) => {
         }, []);
     }
     return (
-        <View style={themeStyles.screenModal}>
-            <View style={themeStyles.modalHeader}>
+        <View style={theme.styles.screenModal}>
+            <View style={theme.styles.modalHeader}>
                 <Button
                     focusKey="close"
                     iconFont="ionicons"
                     iconName="md-close-circle"
                     className="focusable"
-                    iconColor={Theme.color3}
-                    iconSize={Theme.iconSize}
-                    style={themeStyles.icon}
+                    iconColor={theme.static.colorBrand}
+                    iconSize={theme.static.buttonSize}
+                    style={theme.styles.icon}
                     // to="/"
                     onEnterPress={() => {
                         pop();
@@ -37,8 +39,8 @@ const ScreenModal = (props) => {
                     }}
                 />
             </View>
-            <ScrollView contentContainerStyle={themeStyles.container}>
-                <Text style={themeStyles.textH2}>This is my Modal!</Text>
+            <ScrollView contentContainerStyle={theme.styles.container}>
+                <Text style={theme.styles.textH2}>This is my Modal!</Text>
             </ScrollView>
         </View>
     );

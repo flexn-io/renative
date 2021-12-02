@@ -20,6 +20,7 @@ import {
     logInfo,
     logSuccess,
     logTask,
+    logError,
     logWarning,
     printArrIntoBox,
     printBoxEnd,
@@ -352,6 +353,13 @@ export const taskRnvNew = async (c) => {
             cwd: c.paths.project.dir,
         }
     );
+
+    // Check if node_modules folder exists
+    if (!fsExistsSync(path.join(c.paths.project.dir, 'node_modules'))) {
+        logError(`npx yarn add ${selectedInputTemplate}@${inputTemplateVersion
+        } : FAILED. this could happen if you have package.json accidentally created somewhere in parent directory`);
+        return;
+    }
 
     if (!data.optionTemplates.keysAsArray.includes(selectedInputTemplate)) {
         const { confirmAddTemplate } = await inquirer.prompt({

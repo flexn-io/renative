@@ -23,8 +23,8 @@ const run = async (c) => {
         await updateRenativeConfigs(c);
     }
     // for root rnv we simply load all engines upfront
-    if (!c.command) {
-        await registerMissingPlatformEngines(c, taskInstance);
+    if (!c.command && c.paths.project.configExists) {
+        await registerMissingPlatformEngines(c);
     }
     const taskInstance = await findSuitableTask(c);
     // Some tasks might require all engines to be present (ie rnv platforms list)

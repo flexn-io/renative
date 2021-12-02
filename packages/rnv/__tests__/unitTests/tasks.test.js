@@ -79,6 +79,7 @@ jest.mock('../../src/core/systemManager/fileutils.js', () => ({
     removeDirs: jest.fn(),
     fsExistsSync: () => true,
     fsReaddirSync: () => [],
+    getRealPath: () => '',
     copyFolderContentsRecursiveSync: jest.fn()
 }));
 
@@ -86,7 +87,13 @@ jest.mock('../../src/core/systemManager/exec.js', () => ({
     executeAsync: jest.fn()
 }));
 
-const c = generateMockConfig({});
+const c = generateMockConfig({
+    buildConfig: {
+        sdks: {
+            ANDROID_SDK: ''
+        }
+    }
+});
 
 // const parentTask = null;
 const originTask = {};

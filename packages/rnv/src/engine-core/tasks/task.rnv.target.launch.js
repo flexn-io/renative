@@ -23,7 +23,7 @@ import { executeTask } from '../../core/taskManager';
 export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetLaunch');
 
-    await isPlatformSupported(c);
+    await isPlatformSupported(c, true);
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH, originTask);
 
     const { platform, program } = c;

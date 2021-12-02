@@ -18,7 +18,6 @@
 * [ ] android simulator
 * [ ] android device
 * [ ] web browser
-* [ ] web -e next browser
 * [ ] tvos simulator
 * [ ] tvos device
 * [ ] androidtv simulator
@@ -42,7 +41,6 @@ New project:
 * [ ] android simulator
 * [ ] android device
 * [ ] web browser
-* [ ] web -e next browser
 * [ ] tvos simulator
 * [ ] tvos device
 * [ ] androidtv simulator
@@ -66,7 +64,6 @@ Existing Project created with previous version of renative:
 * [ ] android simulator
 * [ ] android device
 * [ ] web browser
-* [ ] web -e next browser
 * [ ] tvos simulator
 * [ ] tvos device
 * [ ] androidtv simulator

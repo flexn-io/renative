@@ -12,7 +12,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/pavjacko/renative.git"
+        "url": "git+https://github.com/renative-org/renative.git"
     },
     "keywords": [
         "rnv",
@@ -25,12 +25,12 @@
     ],
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/pavjacko/renative/issues"
+        "url": "https://github.com/renative-org/renative/issues"
     },
     "publishConfig": {
         "access": "public"
     },
-    "homepage": "https://github.com/pavjacko/renative#readme",
+    "homepage": "https://github.com/renative-org/renative#readme",
     "peerDependencies": {
         "rnv": "~0.31.2"
     },

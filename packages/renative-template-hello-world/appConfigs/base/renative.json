@@ -123,7 +123,7 @@
             "entryFile": "index.android",
             "reactNativeEngine": "hermes",
             "multipleAPKs": false,
-            "minSdkVersion": 21,
+            "minSdkVersion": 24,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -146,7 +146,7 @@
             "entryFile": "index.androidtv",
             "reactNativeEngine": "hermes",
             "multipleAPKs": false,
-            "minSdkVersion": 21,
+            "minSdkVersion": 24,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -169,7 +169,7 @@
             "entryFile": "index.firetv",
             "reactNativeEngine": "hermes",
             "multipleAPKs": false,
-            "minSdkVersion": 21,
+            "minSdkVersion": 24,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {

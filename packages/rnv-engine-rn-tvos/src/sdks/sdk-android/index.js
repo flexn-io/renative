@@ -627,7 +627,8 @@ export const configureProject = async (c) => {
         resourceStrings: [],
         appBuildGradleAfterEvaluate: '',
         injectHermes: '',
-        kotlinVersion: ''
+        kotlinVersion: '',
+        googleServicesVersion: ''
     };
 
     // PLUGINS

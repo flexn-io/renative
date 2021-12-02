@@ -25,17 +25,15 @@ export const taskRnvHelp = (c) => {
     });
 
     // TASKS
-    let cmdsString = '';
-    const tasksObj = {};
+    const commands = [];
     const engines = getRegisteredEngines(c);
 
     engines.forEach((engine) => {
-        const tasks = engine.getTasks();
-        tasks.forEach((t) => {
-            tasksObj[t.task] = true;
+        Object.values(engine.tasks).forEach(({ task }) => {
+            commands.push(task);
         });
     });
-    cmdsString = Object.keys(tasksObj).join(', ');
+    const cmdsString = commands.join(', ');
 
 
     logToSummary(`

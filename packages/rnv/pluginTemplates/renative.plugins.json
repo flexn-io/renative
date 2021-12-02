@@ -23,7 +23,7 @@
             "version": "npm:react-native-tvos@0.63.4-0"
         },
         "renative": {
-            "version": "0.32.0",
+            "version": "0.33.0-alpha.3",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -1869,7 +1869,10 @@
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
-                            "FirebaseApp.configure()"
+                            {
+                                "order": -1,
+                                "value": "FirebaseApp.configure()"
+                            }
                         ]
                     }
                 }
@@ -1934,7 +1937,10 @@
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
-                            "FirebaseApp.configure()"
+                            {
+                                "order": -1,
+                                "value": "FirebaseApp.configure()"
+                            }
                         ]
                     }
                 }
@@ -2050,7 +2056,10 @@
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
-                            "FirebaseApp.configure()"
+                            {
+                                "order": -1,
+                                "value": "FirebaseApp.configure()"
+                            }
                         ]
                     }
                 },

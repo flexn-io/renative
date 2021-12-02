@@ -5,6 +5,122 @@ sidebar_label: Changelog
 ---
 
 
+## v0.33.0-alpha.3 (2021-11-30)
+
+### Fixed
+
+- Merge pull request #750 from pavjacko/feat/gradle-6.7-support
+- [chore] remove legacy code
+- [fix] add support for gradle 6.7.1, kotlin 1.4.20, OpenJDK 11
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.33.0-alpha.2 (2021-11-25)
+
+### Fixed
+
+- Merge pull request #748 from pavjacko/feat/custom-gservices-versions
+- [feat] support for custom google services version
+- Merge pull request #747 from pavjacko/feat/rnv-cli-commands
+- [feat]  rnv app create => support for cli arguments
+- [fix] rnv target list -p android
+- [feat] add support for `rnv app create`
+- [fix] rnv template list (globally)
+- [fix] rnv global command
+- [fix] fix emulator
+- [fix] rnv target list -p
+- Merge pull request #742 from mmehtonen-24i/fix/help-task
+- Fix taskRnvHelp task
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.33.0-alpha.1 (2021-11-18)
+
+### Fixed
+
+- Merge branch 'release/0.32' into develop
+- Merge branch 'release/0.32' into develop
+- Merge pull request #732 from pavjacko/feat/task-rnv-new-args
+- Merge branch 'develop' into feat/task-rnv-new-args
+- Merge pull request #733 from pavjacko/fix/electron-macos-icons
+- fix(macOS: Electron): Fixed macOS icons for electron engine
+- fix: template arg in rnv new
+- feat: named args in rnv new
+- Merge branch 'develop' into feat/task-rnv-new-args
+- 0.32.0-feat-task-rnv-new-args-3
+- Merge branch 'develop' into feat/task-rnv-new-args
+- 0.32.0-feat-task-rnv-new-args-2
+- fix: use rawArgs instead
+- 0.32.0-feat-task-rnv-new-args-1
+- fix: ignore correct info check when creating new project if ci is passed
+- 0.32.0-feat-task-rnv-new-args-0
+- feat: make rnv new accept args instead of prompt
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.2 (2021-11-18)
+
+### Fixed
+
+- Merge pull request #740 from pavjacko/feat/display_env
+- added env variables debug with -i
+- Merge pull request #739 from pavjacko/feat/use_whole_template
+- use the whole packageTemplate
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.32.1 (2021-11-17)
+
+### Fixed
+
+- [feat] check for accidental parent projects (yarn add will ignore current dir due to resolve up hierarchy)
+- [fix] bootstrap of scoped plugins, --skipRnvCheck
+- Merge pull request #736 from TheDuc/patch-2
+- Update index.js
+- Update index.js
+- Update gradleParser.js
+- update gradleParser.js
+- 0.32.0
+- 0.32.0-rc.1
+- [fix] improve dep resolutions during bootstrap
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.0-alpha.50 (2021-11-16)
 
 ### Fixed

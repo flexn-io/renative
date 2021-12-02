@@ -8,7 +8,7 @@ const {
     getGetJsBundleFile,
     sanitizeColor,
     getFlavouredProp,
-    addSystemInjects
+    addSystemInjects,
 } = Common;
 const { chalk, logTask, logDebug, logWarning } = Logger;
 const { parsePlugins } = PluginManager;
@@ -20,7 +20,7 @@ export const parseAppDelegate = (
     appFolder,
     appFolderName,
     isBundled = false,
-    ip = 'localhost',
+    ip = 'localhost'
 ) => new Promise((resolve) => {
     const newPort = c.runtime?.port;
     logTask('parseAppDelegateSync', `ip:${ip} port:${newPort}`);
@@ -33,9 +33,7 @@ export const parseAppDelegate = (
     if (forceBundle) {
         bundle = forceBundle;
     } else if (isBundled) {
-        bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${
-            entryFile
-        }", fallbackResource: nil)`;
+        bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
     } else {
         bundle = `URL(string: "http://${ip}:${newPort}/${entryFile}.bundle?platform=ios")`;
     }
@@ -56,17 +54,18 @@ export const parseAppDelegate = (
     //     }
     // }
 
-    const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor'), 'backgroundColor')
-        .rgbDecimal;
-    const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${
-        clr[0]
+    const clr = sanitizeColor(
+        getConfigProp(c, platform, 'backgroundColor'),
+        'backgroundColor'
+    ).rgbDecimal;
+    const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]
     }, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
     const methods = {
         application: {
             didFinishLaunchingWithOptions: {
                 isRequired: true,
                 func:
-                        'func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {',
+                    'func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {',
                 begin: `
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let vc = UIViewController()
@@ -83,81 +82,81 @@ export const parseAppDelegate = (
         UNUserNotificationCenter.current().delegate = self
                 `,
                 render: v => `${v}`,
-                end: 'return true'
+                end: 'return true',
             },
             applicationDidBecomeActive: {
                 func:
-                        'func applicationDidBecomeActive(_ application: UIApplication) {',
+                    'func applicationDidBecomeActive(_ application: UIApplication) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null
+                end: null,
             },
             open: {
                 func:
-                        'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
+                    'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
                 begin: 'var handled = false',
                 render: v => `if(!handled) { handled = ${v} }`,
-                end: 'return handled'
+                end: 'return handled',
             },
             continue: {
                 func:
-                        'func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {',
+                    'func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {',
                 begin: null,
                 render: v => `return ${v}`,
-                end: null
+                end: null,
             },
             supportedInterfaceOrientationsFor: {
                 func:
-                        'func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {',
+                    'func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {',
                 begin: null,
                 render: v => `return ${v}`,
-                end: null
+                end: null,
             },
             didReceiveRemoteNotification: {
                 func:
-                        'func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {',
+                    'func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null
+                end: null,
             },
             didFailToRegisterForRemoteNotificationsWithError: {
                 func:
-                        'func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {',
+                    'func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null
+                end: null,
             },
             didReceive: {
                 func:
-                        'func application(_ application: UIApplication, didReceive notification: UILocalNotification) {',
+                    'func application(_ application: UIApplication, didReceive notification: UILocalNotification) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null
+                end: null,
             },
             didRegister: {
                 func:
-                        'func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {',
+                    'func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null
+                end: null,
             },
             didRegisterForRemoteNotificationsWithDeviceToken: {
                 func:
-                        'func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {',
+                    'func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null
-            }
+                end: null,
+            },
         },
         userNotificationCenter: {
             willPresent: {
                 func:
-                        'func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {',
+                    'func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null
-            }
-        }
+                end: null,
+            },
+        },
     };
 
     const constructMethod = (lines, method) => {
@@ -173,15 +172,40 @@ export const parseAppDelegate = (
         }
         return output;
     };
+
+    // REORDER Injects
+    const injectors = [];
+    let cleanedLinesArr;
     Object.keys(methods).forEach((key) => {
         const method = methods[key];
         Object.keys(method).forEach((key2) => {
             const f = method[key2];
-            c.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(
-                c.pluginConfigiOS.appDelegateMethods[key][key2],
-                f
-            );
+            const lines = c.pluginConfigiOS.appDelegateMethods[key][key2];
+            const cleanedLines = {};
+
+            lines.forEach((l) => {
+                if (!cleanedLines[l.value]) {
+                    cleanedLines[l.value] = l;
+                }
+
+                if (cleanedLines[l.value].weight < l.weight) {
+                    cleanedLines[l.value] = l;
+                }
+            });
+            cleanedLinesArr = Object.values(cleanedLines).sort((a, b) => a.order - b.order).map(v => v.value);
+
+            injectors.push({
+                f,
+                lines: cleanedLinesArr
+            });
         });
+    });
+
+    injectors.forEach((v) => {
+        c.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(
+            v.lines,
+            v.f
+        );
     });
 
     const injects = [
@@ -192,35 +216,33 @@ export const parseAppDelegate = (
         { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
         {
             pattern: '{{APPDELEGATE_IMPORTS}}',
-            override: c.pluginConfigiOS.pluginAppDelegateImports
+            override: c.pluginConfigiOS.pluginAppDelegateImports,
         },
         {
             pattern: '{{APPDELEGATE_METHODS}}',
-            override: c.pluginConfigiOS.pluginAppDelegateMethods
-        }
+            override: c.pluginConfigiOS.pluginAppDelegateMethods,
+        },
+        {
+            pattern: '{{APPDELEGATE_EXTENSIONS}}',
+            override: c.pluginConfigiOS.pluginAppDelegateExtensions,
+        },
     ];
 
     addSystemInjects(c, injects);
 
     writeCleanFile(
-        path.join(
-            getAppTemplateFolder(c, platform),
-            appFolderName,
-            appDelegate
-        ),
+        path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
         path.join(appFolder, appFolderName, appDelegate),
-        injects, null, c
+        injects,
+        null,
+        c
     );
     resolve();
 });
 
 export const injectPluginSwiftSync = (c, plugin, key) => {
     logDebug(`injectPluginSwiftSync:${c.platform}:${key}`);
-    const appDelegateImports = getFlavouredProp(
-        c,
-        plugin,
-        'appDelegateImports'
-    );
+    const appDelegateImports = getFlavouredProp(c, plugin, 'appDelegateImports');
     if (appDelegateImports instanceof Array) {
         appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
@@ -239,24 +261,46 @@ export const injectPluginSwiftSync = (c, plugin, key) => {
     //     c.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     // }
 
-    const appDelegateMethods = getFlavouredProp(
+    const appDelegateExtensions = getFlavouredProp(
         c,
         plugin,
-        'appDelegateMethods'
+        'appDelegateExtensions'
     );
+    if (appDelegateExtensions instanceof Array) {
+        appDelegateExtensions.forEach((appDelegateExtension) => {
+            // Avoid duplicate imports
+            logDebug('appDelegateExtensions add');
+            if (
+                c.pluginConfigiOS.pluginAppDelegateExtensions.indexOf(
+                    appDelegateExtension
+                ) === -1
+            ) {
+                logDebug('appDelegateExtensions add ok');
+                c.pluginConfigiOS.pluginAppDelegateExtensions += `, ${appDelegateExtension}`;
+            }
+        });
+    }
+
+    const appDelegateMethods = getFlavouredProp(c, plugin, 'appDelegateMethods');
     if (appDelegateMethods) {
         Object.keys(appDelegateMethods).forEach((delKey) => {
             Object.keys(appDelegateMethods[delKey]).forEach((key2) => {
                 const plugArr = c.pluginConfigiOS.appDelegateMethods[delKey][key2];
                 if (!plugArr) {
-                    logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
+                    logWarning(
+                        `appDelegateMethods.${delKey}.${chalk().red(
+                            key2
+                        )} not supported. SKIPPING.`
+                    );
                 } else {
                     const plugVal = appDelegateMethods[delKey][key2];
                     if (plugVal) {
                         plugVal.forEach((v) => {
-                            if (!plugArr.includes(v)) {
-                                plugArr.push(v);
-                            }
+                            plugArr.push({
+                                order: v?.order || 0,
+                                value: v?.value || v,
+                                weight: v?.weight || 0
+                            });
                         });
                     }
                 }

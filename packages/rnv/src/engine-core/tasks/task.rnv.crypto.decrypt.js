@@ -162,7 +162,7 @@ ${e}
 
       ${chalk().yellow('IF ALL HOPE IS LOST:')}
       Raise new issue and copy this SUMMARY box output at:
-      ${chalk().white('https://github.com/pavjacko/renative/issues')}
+      ${chalk().white('https://github.com/renative-org/renative/issues')}
       and we will try to help!
 
       `;
@@ -184,7 +184,7 @@ run crypto decrypt again
 
 ${chalk().yellow('IF ALL HOPE IS LOST:')}
 Raise new issue and copy this SUMMARY box output at:
-${chalk().white('https://github.com/pavjacko/renative/issues')}
+${chalk().white('https://github.com/renative-org/renative/issues')}
 and we will try to help!
 
 `);

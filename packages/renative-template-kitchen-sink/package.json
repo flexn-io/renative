@@ -1,7 +1,7 @@
 {
     "name": "renative-template-kitchen-sink",
-    "version": "0.32.0",
-    "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
+    "version": "0.33.0-alpha.3",
+    "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
         "android wear",
@@ -35,16 +35,16 @@
         "webos",
         "windows"
     ],
-    "homepage": "https://github.com/pavjacko/renative#readme",
+    "homepage": "https://github.com/renative-org/renative#readme",
     "bugs": {
-        "url": "https://github.com/pavjacko/renative/issues"
+        "url": "https://github.com/renative-org/renative/issues"
     },
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "repository": {
         "type": "git",
-        "url": "git://github.com/pavjacko/renative.git"
+        "url": "git://github.com/renative-org/renative.git"
     },
     "scripts": {},
     "private": false,

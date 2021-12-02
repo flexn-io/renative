@@ -15,7 +15,7 @@ import { parsePodFile } from './podfileParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
 
-const { getAppleDevices } = SDKManager.Apple;
+const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
 const {
     fsExistsSync,
@@ -172,7 +172,7 @@ export const runXcodeProject = async (c) => {
             )} in your ${chalk().white(
                 c.paths.appConfig.config
             )}! Check example config for more info:  ${chalk().grey(
-                'https://github.com/pavjacko/renative/blob/master/appConfigs/helloworld/renative.json'
+                'https://github.com/renative-org/renative/blob/master/appConfigs/helloworld/renative.json'
             )} `
         );
     }
@@ -333,6 +333,7 @@ export const runXcodeProject = async (c) => {
 
         p = `--simulator ${target}`;
     }
+    await launchAppleSimulator(c, c.runtime.target);
 
     if (p) {
         const allowProvisioningUpdates = getConfigProp(
@@ -458,7 +459,7 @@ ${chalk().white('Run app and observe any extra errors')}
 
 ${chalk().yellow('IF ALL HOPE IS LOST:')}
 Raise new issue and copy this SUMMARY box output at:
-${chalk().white('https://github.com/pavjacko/renative/issues')}
+${chalk().white('https://github.com/renative-org/renative/issues')}
 and we will try to help!
 
 `);
