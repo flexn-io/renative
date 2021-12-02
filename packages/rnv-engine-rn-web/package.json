@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "0.33.0-alpha.3",
+    "version": "0.33.0-alpha.4",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"
