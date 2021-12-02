@@ -1,6 +1,6 @@
-import path from 'path';
 import { spawn } from 'child_process';
-import { Exec, WebpackUtils, FileUtils, Common, Logger, Constants, Resolver, PlatformManager, ProjectManager } from 'rnv';
+import path from 'path';
+import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver, WebpackUtils } from 'rnv';
 
 const { createPlatformBuild, isPlatformActive } = PlatformManager;
 const { executeAsync } = Exec;
@@ -247,7 +247,7 @@ const exportElectron = async (c) => {
         `npx electron-builder --config ${path.join(
             platformBuildDir,
             'electronConfig.json'
-        )}`
+        )} -${c.platform[0]}`
     );
 
     logSuccess(
