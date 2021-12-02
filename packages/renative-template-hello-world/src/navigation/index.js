@@ -47,7 +47,7 @@ const StackNavigator = ({ navigation }) => {
             />
             <Stack.Screen name="my-page" component={ScreenMyPage} />
         </Stack.Navigator>
-    )
+    );
 };
 
 const ModalNavigator = () => (

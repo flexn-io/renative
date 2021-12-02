@@ -13,7 +13,7 @@ const ScreenMyPage = () => {
                 <Text style={theme.styles.textH2}>This is my Page!</Text>
             </ScrollView>
         </View>
-    )
+    );
 };
 
 export default (hasWebFocusableUI ? withFocusable()(ScreenMyPage) : ScreenMyPage);

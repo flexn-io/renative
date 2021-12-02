@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import {
     getScaledValue, isFactorMobile, isFactorDesktop, isPlatformWindows,
     isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker, isWebBased, StyleSheet, isPlatformWeb
@@ -28,7 +30,7 @@ const staticTheme = {
     menuHeight: hasHorizontalMenu ? getScaledValue(80) : '100%',
     colorLight: '#FFFFFF',
     colorBrand: '#0A74E6'
-}
+};
 
 const staticThemes = {
     dark: {
@@ -50,153 +52,151 @@ const staticThemes = {
 
 };
 
-const createStyleSheet = (currentTheme) => {
-    return StyleSheet.create({
-        app: {
-            flexDirection: isFactorDesktop ? 'row' : 'column', position: 'absolute', top: 0, right: 0, left: 0, bottom: 0
-        },
-        appContainer: {
-            position: 'absolute',
-            left: hasVerticalMenu ? getScaledValue(280) : 0,
-            right: 0,
-            top: hasHorizontalMenu ? getScaledValue(80) : 0,
-            bottom: 0
-        },
-        container: {
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingVertical: getScaledValue(50),
-            minHeight: getScaledValue(300),
-            alignSelf: 'stretch',
-            width: '100%'
-        },
-        modalContainer: isWebBased ? {
-            position: 'absolute',
-            backgroundColor: currentTheme.colorBgPrimary,
-            zIndex: 100,
-            top: 0,
-            left: 0,
-            height: '100vh',
-            width: '100%'
-        } : {
-            flex: 1,
-            backgroundColor: currentTheme.colorBgPrimary
-        },
-        textH2: {
-            fontFamily: currentTheme.primaryFontFamily,
-            fontSize: getScaledValue(20),
-            marginHorizontal: getScaledValue(20),
-            color: currentTheme.colorTextPrimary,
-            justifyContent: 'center',
-            alignItems: 'center',
-            textAlign: 'center'
-        },
-        textH3: {
-            fontFamily: currentTheme.primaryFontFamily,
-            fontSize: getScaledValue(15),
-            marginHorizontal: getScaledValue(20),
-            marginTop: getScaledValue(5),
-            color: currentTheme.colorTextSecondary,
-            justifyContent: 'center',
-            alignItems: 'center',
-            textAlign: 'center'
-        },
-        text: {
-            fontFamily: currentTheme.primaryFontFamily,
-            color: currentTheme.colorTextPrimary,
-            fontSize: getScaledValue(20),
-            marginTop: getScaledValue(10),
-            textAlign: 'left',
-        },
-        icon: {
-            width: getScaledValue(40),
-            height: getScaledValue(40),
-            margin: getScaledValue(10)
-        },
-        button: {
-            marginHorizontal: getScaledValue(20),
-            borderRadius: getScaledValue(10),
-            height: getScaledValue(50),
-            minWidth: getScaledValue(150),
-            maxWidth: getScaledValue(200),
-            marginTop: getScaledValue(20),
-            backgroundColor: currentTheme.colorBrand
+const createStyleSheet = currentTheme => StyleSheet.create({
+    app: {
+        flexDirection: isFactorDesktop ? 'row' : 'column', position: 'absolute', top: 0, right: 0, left: 0, bottom: 0
+    },
+    appContainer: {
+        position: 'absolute',
+        left: hasVerticalMenu ? getScaledValue(280) : 0,
+        right: 0,
+        top: hasHorizontalMenu ? getScaledValue(80) : 0,
+        bottom: 0
+    },
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: getScaledValue(50),
+        minHeight: getScaledValue(300),
+        alignSelf: 'stretch',
+        width: '100%'
+    },
+    modalContainer: isWebBased ? {
+        position: 'absolute',
+        backgroundColor: currentTheme.colorBgPrimary,
+        zIndex: 100,
+        top: 0,
+        left: 0,
+        height: '100vh',
+        width: '100%'
+    } : {
+        flex: 1,
+        backgroundColor: currentTheme.colorBgPrimary
+    },
+    textH2: {
+        fontFamily: currentTheme.primaryFontFamily,
+        fontSize: getScaledValue(20),
+        marginHorizontal: getScaledValue(20),
+        color: currentTheme.colorTextPrimary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center'
+    },
+    textH3: {
+        fontFamily: currentTheme.primaryFontFamily,
+        fontSize: getScaledValue(15),
+        marginHorizontal: getScaledValue(20),
+        marginTop: getScaledValue(5),
+        color: currentTheme.colorTextSecondary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center'
+    },
+    text: {
+        fontFamily: currentTheme.primaryFontFamily,
+        color: currentTheme.colorTextPrimary,
+        fontSize: getScaledValue(20),
+        marginTop: getScaledValue(10),
+        textAlign: 'left',
+    },
+    icon: {
+        width: getScaledValue(40),
+        height: getScaledValue(40),
+        margin: getScaledValue(10)
+    },
+    button: {
+        marginHorizontal: getScaledValue(20),
+        borderRadius: getScaledValue(10),
+        height: getScaledValue(50),
+        minWidth: getScaledValue(150),
+        maxWidth: getScaledValue(200),
+        marginTop: getScaledValue(20),
+        backgroundColor: currentTheme.colorBrand
 
-        },
-        buttonText: {
-            fontFamily: currentTheme.primaryFontFamily,
-            color: currentTheme.colorLight,
-            fontSize: getScaledValue(20),
-        },
-        screen: {
-            position: 'absolute',
-            backgroundColor: currentTheme.colorBgPrimary,
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0
-        },
-        screenModal: {
-            position: 'absolute',
-            backgroundColor: currentTheme.colorBgPrimary,
-            top: hasHorizontalMenu && isWebBased ? -currentTheme.menuHeight : 0,
-            left: hasHorizontalMenu || hasFullScreenMenu || isEngineNative ? 0 : -currentTheme.menuWidth,
-            right: 0,
-            bottom: 0
-        },
-        headerTitleStyle: {
-            backgroundColor: 'red'
-        },
-        headerTitle: {
-            color: currentTheme.colorTextPrimary,
-            fontFamily: currentTheme.primaryFontFamily,
-            fontSize: getScaledValue(18)
-        },
-        header: {
-            backgroundColor: currentTheme.colorBgPrimary,
-            borderBottomWidth: 1,
-            borderBottomColor: currentTheme.colorBorder,
-            height: getScaledValue(70)
-        },
-        modalHeader: {
-            width: '100%',
-            height: getScaledValue(80),
-            alignItems: 'flex-end',
-            paddingTop: getScaledValue(20)
-        },
-        image: {
-            marginBottom: getScaledValue(30),
-            width: getScaledValue(93),
-            height: getScaledValue(90)
-        },
-        menuContainer: {
-            paddingTop: getScaledValue(hasHorizontalMenu ? 20 : 40),
-            paddingLeft: getScaledValue(hasHorizontalMenu ? 40 : 40),
-            width: isPlatformWindows ? '100%' : currentTheme.menuWidth,
-            height: currentTheme.menuHeight,
-            backgroundColor: currentTheme.colorBgPrimary,
-            alignItems: 'flex-start',
-            borderRightWidth: getScaledValue(hasHorizontalMenu ? 0 : 1),
-            borderBottomWidth: getScaledValue(hasHorizontalMenu ? 1 : 0),
-            borderColor: currentTheme.colorBorder,
-            flexDirection: hasHorizontalMenu ? 'row' : 'column'
-        },
-        menuButton: {
-            alignSelf: 'flex-start',
-            justifyContent: 'flex-start',
-            marginHorizontal: hasHorizontalMenu ? getScaledValue(20) : 0,
-            marginTop: hasHorizontalMenu ? getScaledValue(10) : getScaledValue(20),
-            maxWidth: getScaledValue(400),
-            minWidth: getScaledValue(50),
-            borderWidth: 0
-        },
-        menuButtonText: {
-            fontFamily: currentTheme.primaryFontFamily,
-            color: currentTheme.colorTextPrimary,
-            fontSize: getScaledValue(20)
-        }
-    });
-}
+    },
+    buttonText: {
+        fontFamily: currentTheme.primaryFontFamily,
+        color: currentTheme.colorLight,
+        fontSize: getScaledValue(20),
+    },
+    screen: {
+        position: 'absolute',
+        backgroundColor: currentTheme.colorBgPrimary,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0
+    },
+    screenModal: {
+        position: 'absolute',
+        backgroundColor: currentTheme.colorBgPrimary,
+        top: hasHorizontalMenu && isWebBased ? -currentTheme.menuHeight : 0,
+        left: hasHorizontalMenu || hasFullScreenMenu || isEngineNative ? 0 : -currentTheme.menuWidth,
+        right: 0,
+        bottom: 0
+    },
+    headerTitleStyle: {
+        backgroundColor: 'red'
+    },
+    headerTitle: {
+        color: currentTheme.colorTextPrimary,
+        fontFamily: currentTheme.primaryFontFamily,
+        fontSize: getScaledValue(18)
+    },
+    header: {
+        backgroundColor: currentTheme.colorBgPrimary,
+        borderBottomWidth: 1,
+        borderBottomColor: currentTheme.colorBorder,
+        height: getScaledValue(70)
+    },
+    modalHeader: {
+        width: '100%',
+        height: getScaledValue(80),
+        alignItems: 'flex-end',
+        paddingTop: getScaledValue(20)
+    },
+    image: {
+        marginBottom: getScaledValue(30),
+        width: getScaledValue(93),
+        height: getScaledValue(90)
+    },
+    menuContainer: {
+        paddingTop: getScaledValue(hasHorizontalMenu ? 20 : 40),
+        paddingLeft: getScaledValue(hasHorizontalMenu ? 40 : 40),
+        width: isPlatformWindows ? '100%' : currentTheme.menuWidth,
+        height: currentTheme.menuHeight,
+        backgroundColor: currentTheme.colorBgPrimary,
+        alignItems: 'flex-start',
+        borderRightWidth: getScaledValue(hasHorizontalMenu ? 0 : 1),
+        borderBottomWidth: getScaledValue(hasHorizontalMenu ? 1 : 0),
+        borderColor: currentTheme.colorBorder,
+        flexDirection: hasHorizontalMenu ? 'row' : 'column'
+    },
+    menuButton: {
+        alignSelf: 'flex-start',
+        justifyContent: 'flex-start',
+        marginHorizontal: hasHorizontalMenu ? getScaledValue(20) : 0,
+        marginTop: hasHorizontalMenu ? getScaledValue(10) : getScaledValue(20),
+        maxWidth: getScaledValue(400),
+        minWidth: getScaledValue(50),
+        borderWidth: 0
+    },
+    menuButtonText: {
+        fontFamily: currentTheme.primaryFontFamily,
+        color: currentTheme.colorTextPrimary,
+        fontSize: getScaledValue(20)
+    }
+});
 
 
 export const ROUTES = {
@@ -214,7 +214,7 @@ const themes = {
         static: { ...staticThemes.dark },
         styles: createStyleSheet(staticThemes.dark)
     }
-}
+};
 
 export const ThemeContext = createContext(
     themes.dark // default value
@@ -237,6 +237,6 @@ export function ThemeProvider({ children }) {
     );
 }
 
-export const themeStyles = themes.dark.styles
+export const themeStyles = themes.dark.styles;
 
 export default staticThemes.dark;
