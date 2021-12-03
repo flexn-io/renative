@@ -247,7 +247,7 @@ const exportElectron = async (c) => {
         `npx electron-builder --config ${path.join(
             platformBuildDir,
             'electronConfig.json'
-        )} -${c.platform[0]}`
+        )} --${c.platform}`
     );
 
     logSuccess(
