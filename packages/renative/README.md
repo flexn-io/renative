@@ -43,7 +43,7 @@ rnv new
 
 ## Getting Started
 
-Visit <a aria-label="ReNative learn" href="https://renative.org/learn">https://renative.org/learn</a> to get started with ReNative.
+Visit <a aria-label="ReNative learn" href="https://renative.org/docs/overview/quickstart">https://renative.org/learn</a> to get started with ReNative.
 
 
 ## Documentation
@@ -64,7 +64,7 @@ ReNative community can be found on <a aria-label="ReNative Discussions" href="ht
 
 Thanks to all contributors [[Contribute]](CONTRIBUTING.md).
 
-<a href="graphs/contributors"><img src="https://opencollective.com/renative/contributors.svg?width=890" /></a>
+<a href="https://github.com/renative-org/renative/graphs/contributors"><img src="https://opencollective.com/renative/contributors.svg?width=890" /></a>
 
 ## Backers
 
