@@ -1,10 +1,11 @@
-import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { Constants, Logger, PlatformManager, TaskManager } from 'rnv';
 import { SDKElectron } from '../sdks';
 
 const { logTask } = Logger;
 const {
     MACOS,
     WINDOWS,
+    LINUX,
     TASK_BUILD, TASK_PACKAGE,
     PARAMS
 } = Constants;
@@ -23,6 +24,7 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
     switch (platform) {
         case MACOS:
         case WINDOWS:
+        case LINUX:
             await buildElectron(c);
             return;
         default:
@@ -38,5 +40,6 @@ export default {
     platforms: [
         MACOS,
         WINDOWS,
+        LINUX
     ],
 };

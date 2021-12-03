@@ -2,7 +2,7 @@ import { Constants, Logger, PlatformManager } from 'rnv';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const { MACOS, WINDOWS, PARAMS } = Constants;
+const { MACOS, WINDOWS, LINUX, PARAMS } = Constants;
 
 export const taskRnvDebug = async (c) => {
     logTask('taskRnvDebug');
@@ -22,5 +22,6 @@ export default {
     platforms: [
         MACOS,
         WINDOWS,
+        LINUX
     ],
 };

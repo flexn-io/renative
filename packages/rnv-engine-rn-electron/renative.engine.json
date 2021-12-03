@@ -24,6 +24,11 @@
       "npm": {
         "devDependencies": {}
       }
+    },
+    "linux": {
+      "npm": {
+        "devDependencies": {}
+      }
     }
   }
 }

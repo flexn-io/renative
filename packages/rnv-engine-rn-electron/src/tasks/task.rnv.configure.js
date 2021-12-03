@@ -1,9 +1,11 @@
-import { TaskManager, Constants, Logger, PlatformManager, TemplateManager } from 'rnv';
+import { Constants, Logger, PlatformManager, TaskManager, TemplateManager } from 'rnv';
 import { SDKElectron } from '../sdks';
 
 const { logErrorPlatform, copySharedPlatforms } = PlatformManager;
 const { logTask } = Logger;
-const { MACOS, WINDOWS, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS } = Constants;
+const {
+    MACOS, WINDOWS, LINUX, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS
+} = Constants;
 const { configureElectronProject } = SDKElectron;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
@@ -26,6 +28,7 @@ export const taskRnvConfigure = async (c, parentTask, originTask) => {
     switch (c.platform) {
         case MACOS:
         case WINDOWS:
+        case LINUX:
             return configureElectronProject(c);
         default:
             return logErrorPlatform(c);
@@ -40,5 +43,6 @@ export default {
     platforms: [
         MACOS,
         WINDOWS,
+        LINUX
     ],
 };

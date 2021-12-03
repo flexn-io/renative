@@ -13,6 +13,7 @@
       "tizenmobile",
       "webos",
       "windows",
+      "linux",
       "tizenwatch",
       "kaios",
       "firefoxos",
@@ -132,6 +133,9 @@
     },
     "macos": {
       "engine": "engine-rn"
+    },
+    "linux": {
+      "engine": "engine-rn-electron"
     },
     "windows": {
       "engine": "engine-rn-windows"

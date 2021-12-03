@@ -1,25 +1,11 @@
-import platform from './Api/platform';
-import factor from './Api/factor';
 import engine from './Api/engine';
+import factor from './Api/factor';
+import platform from './Api/platform';
 import {
     ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    IOS,
-    TVOS,
-    WEB,
-    WEBTV,
-    WEBOS,
-    TIZEN,
-    TIZEN_WATCH,
-    TIZEN_MOBILE,
-    MACOS,
-    WINDOWS,
-    FIREFOX_OS,
-    FIREFOX_TV,
-    KAIOS,
-    XBOX
+    ANDROID_TV, ANDROID_WEAR, FIREFOX_OS,
+    FIREFOX_TV, FIRE_TV, IOS, KAIOS, LINUX, MACOS, TIZEN, TIZEN_MOBILE, TIZEN_WATCH, TVOS,
+    WEB, WEBOS, WEBTV, WINDOWS, XBOX
 } from './Constants';
 
 // PLATFORM
@@ -36,6 +22,7 @@ export const isPlatformTizenwatch = platform === TIZEN_WATCH;
 export const isPlatformTizenmobile = platform === TIZEN_MOBILE;
 export const isPlatformMacos = platform === MACOS;
 export const isPlatformWindows = platform === WINDOWS;
+export const isPlatformLinux = platform === LINUX;
 export const isPlatformFirefoxos = platform === FIREFOX_OS;
 export const isPlatformFirefoxtv = platform === FIREFOX_TV;
 export const isPlatformKaios = platform === KAIOS;

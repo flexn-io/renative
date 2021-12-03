@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { Constants, Logger, PlatformManager, TaskManager } from 'rnv';
 import { SDKElectron } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
@@ -6,6 +6,7 @@ const { logTask } = Logger;
 const {
     MACOS,
     WINDOWS,
+    LINUX,
     TASK_RUN,
     TASK_CONFIGURE,
     PARAMS
@@ -27,6 +28,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
     switch (platform) {
         case MACOS:
         case WINDOWS:
+        case LINUX:
             return runElectron(c);
         default:
             return logErrorPlatform(c);
@@ -41,5 +43,6 @@ export default {
     platforms: [
         MACOS,
         WINDOWS,
+        LINUX
     ],
 };
