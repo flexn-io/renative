@@ -1,4 +1,11 @@
 {
+  "templateConfig": {
+    "includedPaths": [
+      "buildHooks",
+      "src",
+      "index.macos.js"
+    ]
+  },
   "defaults": {
     "supportedPlatforms": [
       "android",

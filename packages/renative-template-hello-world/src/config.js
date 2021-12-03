@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import {
-    getScaledValue, isFactorMobile, isFactorDesktop, isPlatformWindows,
+    getScaledValue, isFactorMobile, isFactorDesktop, isPlatformWindows, isPlatformMacos,
     isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker, isWebBased, StyleSheet, isPlatformWeb
 } from 'renative';
 import '../platformAssets/runtime/fontManager'; // eslint-disable-line import/extensions, import/no-unresolved
@@ -46,7 +46,7 @@ const staticThemes = {
         colorTextPrimary: '#000000',
         colorTextSecondary: '#333333',
         colorBorder: '#EEEEEE',
-        statusBar: 'light-content',
+        statusBar: 'dark-content',
         ...staticTheme
     }
 
@@ -141,7 +141,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
         position: 'absolute',
         backgroundColor: currentTheme.colorBgPrimary,
         top: hasHorizontalMenu && isWebBased ? -currentTheme.menuHeight : 0,
-        left: hasHorizontalMenu || hasFullScreenMenu || isEngineNative ? 0 : -currentTheme.menuWidth,
+        left: hasHorizontalMenu || hasFullScreenMenu || isEngineNative || isPlatformMacos ? 0 : -currentTheme.menuWidth,
         right: 0,
         bottom: 0
     },
