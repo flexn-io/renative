@@ -99,14 +99,14 @@ sidebar_label: Changelog
         };
     });
     chlogArrObj.sort((x, y) => y.versionNumber - x.versionNumber);
-    let chlogTotal = '';
+    // let chlogTotal = '';
     chlogArrObj.forEach((chlog) => {
         const chlogPath = path.join(chlogDirPath, chlog.value);
 
         const chlogVal = fs.readFileSync(chlogPath);
 
         output += `\n${chlogVal}`;
-        chlogTotal += `\n${chlogVal}`;
+        // chlogTotal += `\n${chlogVal}`;
     });
 
     fs.writeFileSync(
@@ -114,7 +114,7 @@ sidebar_label: Changelog
         output
     );
 
-    updateCurrentLiveChangelog(c, chlogTotal);
+    // updateCurrentLiveChangelog(c, chlogTotal);
 };
 
 export const updateCurrentLiveChangelog = async (c, chlogVal) => {

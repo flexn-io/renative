@@ -1,8 +1,8 @@
 {
   "name": "renative-wrapper",
-  "version": "0.33.0-alpha.3",
+  "version": "0.33.0-alpha.4",
   "currentRelease": "0.32",
-  "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV` and `Chromecast` platforms",
+  "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV` and `Chromecast` platforms",
   "keywords": [
     "android tv",
     "android wear",
@@ -38,9 +38,9 @@
     "webos",
     "windows"
   ],
-  "homepage": "https://github.com/pavjacko/renative#readme",
+  "homepage": "https://github.com/renative-org/renative#readme",
   "bugs": {
-    "url": "https://github.com/pavjacko/renative/issues"
+    "url": "https://github.com/renative-org/renative/issues"
   },
   "license": "MIT",
   "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
@@ -55,7 +55,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/pavjacko/renative.git"
+    "url": "git://github.com/renative-org/renative.git"
   },
   "scripts": {
     "bootstrap": "yarn run link:rnv && npx lerna bootstrap && yarn build",
@@ -67,14 +67,11 @@
     "lint": "npx eslint ./packages",
     "test": "lerna run test --stream",
     "watch": "lerna run --parallel --concurrency 2 watch",
-    "version": "cd website && yarn run version",
-    "docs": "cd website && yarn start",
     "deploy-prepare": "cd packages/app && yarn deploy-prepare",
     "git-commit": "cd packages/app && rnv hooks run -x gitCommit -r",
     "git-tag": "cd packages/app && rnv hooks run -x gitTag -r",
     "git-commit-tag": "cd packages/app && rnv hooks run -x gitCommitAndTag -r",
-    "deploy-website": "cd website && yarn && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true yarn publish-gh-pages",
-    "deploy-all": "npm run test && npm run deploy-prepare && npm run deploy-website && npm run git-commit-tag",
+    "deploy-all": "npm run test && npm run deploy-prepare && npm run git-commit-tag",
     "deploy:feat": "npm run test && npm run deploy-prepare && npm run git-commit-tag && npx lerna publish from-package --dist-tag feat --yes && git push origin HEAD",
     "deploy:alpha": "npm run deploy-all && npx lerna publish from-package --dist-tag alpha --yes && git push origin HEAD",
     "deploy:alpha:soft": "npm run test && npm run deploy-prepare && npm run git-commit-tag && npx lerna publish from-package --dist-tag alpha --yes",

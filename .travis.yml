@@ -2,7 +2,7 @@ env:
   global:
     - NODE_OPTIONS=--max_old_space_size=8192
     - ACCOUNT_NAME=rnv
-    - REPO_NAME=pavjacko/renative
+    - REPO_NAME=renative-org/renative
     - PROJECT_NAME=renative
 jobs:
   include:

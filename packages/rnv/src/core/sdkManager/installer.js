@@ -83,6 +83,8 @@ export const checkAndConfigureAndroidSdks = async (c) => {
     const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
     logTask('checkAndConfigureAndroidSdks', `(${sdk})`);
 
+    if (!sdk) return _logSdkWarning(c);
+
     let sdkManagerPath = getRealPath(
         c,
         path.join(sdk, `cmdline-tools/latest/bin/sdkmanager${isSystemWin ? '.bat' : ''}`)
@@ -107,20 +109,16 @@ export const checkAndConfigureAndroidSdks = async (c) => {
         );
     }
 
-    if (sdk) {
-        c.cli[CLI_ANDROID_EMULATOR] = getRealPath(
-            c,
-            path.join(sdk, `emulator/emulator${isSystemWin ? '.exe' : ''}`)
-        );
-        c.cli[CLI_ANDROID_ADB] = getRealPath(
-            c,
-            path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`)
-        );
-        c.cli[CLI_ANDROID_AVDMANAGER] = avdManagerPath;
-        c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
-    } else {
-        _logSdkWarning(c);
-    }
+    c.cli[CLI_ANDROID_EMULATOR] = getRealPath(
+        c,
+        path.join(sdk, `emulator/emulator${isSystemWin ? '.exe' : ''}`)
+    );
+    c.cli[CLI_ANDROID_ADB] = getRealPath(
+        c,
+        path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`)
+    );
+    c.cli[CLI_ANDROID_AVDMANAGER] = avdManagerPath;
+    c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
 };
 
 export const checkAndConfigureTizenSdks = async (c) => {
