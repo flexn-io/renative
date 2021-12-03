@@ -5,6 +5,23 @@ sidebar_label: Changelog
 ---
 
 
+## v0.33.0-alpha.5 (2021-12-3)
+
+### Fixed
+
+- [fix] macos fixes
+- [fix] tvos,androidtv images
+- cleanup, updates
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.33.0-alpha.4 (2021-12-2)
 
 ### Fixed
