@@ -1,6 +1,7 @@
 const blacklist = require('metro-config/src/defaults/blacklist');
 const path = require('path');
 const os = require('os');
+const { doResolve } = require('rnv');
 
 const _require2 = require('metro-cache');
 
@@ -34,6 +35,9 @@ export const withRNV = (config) => {
                     inlineRequires: true,
                 },
             }),
+            assetRegistryPath: path.resolve(
+                `${doResolve('react-native-tvos')}/Libraries/Image/AssetRegistry.js`
+            ),
             ...config?.transformer || {},
         },
         resolver: {
