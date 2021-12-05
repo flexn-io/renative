@@ -131,6 +131,20 @@ sidebar_label: Changelog
 - none
 
   
+## v0.33.0 (2021-12-5)
+
+### Fixed
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.32.2 (2021-11-18)
 
 ### Fixed
