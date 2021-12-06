@@ -1,6 +1,6 @@
 {
     "name": "renative-template-hello-world",
-    "version": "0.33.0",
+    "version": "0.34.0-feat-electron-linux.0",
     "description": "🚧 Hello World Template for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`, `Linux",
     "keywords": [
         "android tv",
@@ -17,6 +17,7 @@
         "kit",
         "kotlin",
         "lg",
+        "linux",
         "macos",
         "multiplatform",
         "native",
@@ -33,8 +34,7 @@
         "watch",
         "web",
         "webos",
-        "windows",
-        "linux"
+        "windows"
     ],
     "homepage": "https://github.com/renative-org/renative#readme",
     "bugs": {

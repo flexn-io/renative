@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-lightning",
-    "version": "0.33.0",
+    "version": "0.34.0-feat-electron-linux.0",
     "description": "ReNative Engine to build lightning based apps.",
     "keywords": [
         "lightning"
