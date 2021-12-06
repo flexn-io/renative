@@ -5,6 +5,23 @@ sidebar_label: Changelog
 ---
 
 
+## v0.33.0-alpha.5 (2021-12-3)
+
+### Fixed
+
+- [fix] macos fixes
+- [fix] tvos,androidtv images
+- cleanup, updates
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
 ## v0.33.0-alpha.4 (2021-12-2)
 
 ### Fixed
@@ -104,6 +121,20 @@ sidebar_label: Changelog
 - fix: ignore correct info check when creating new project if ci is passed
 - 0.32.0-feat-task-rnv-new-args-0
 - feat: make rnv new accept args instead of prompt
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+  
+## v0.33.0 (2021-12-5)
+
+### Fixed
+
 
 ### Added Features
 
