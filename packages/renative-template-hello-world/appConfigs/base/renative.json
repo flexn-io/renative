@@ -323,6 +323,20 @@
                 }
             }
         },
+        "linux": {
+            "entryFile": "index.linux",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "release": true,
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "enableSourceMaps": true
+                }
+            }
+        },
         "xbox": {
             "entryFile": "index.xbox",
             "language": "cpp",

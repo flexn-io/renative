@@ -53,6 +53,7 @@ export const WEBOS = 'webos';
 export const WEBIAN = 'webian';
 export const WII = 'wii';
 export const WINDOWS = 'windows';
+export const LINUX = 'linux';
 export const WP10 = 'wp10';
 export const WP8 = 'wp8';
 export const XBOX = 'xbox';
@@ -163,6 +164,7 @@ export const SUPPORTED_PLATFORMS = [
     WEBOS,
     MACOS,
     WINDOWS,
+    LINUX,
     TIZEN_WATCH,
     KAIOS,
     FIREFOX_OS,

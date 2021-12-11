@@ -1,12 +1,13 @@
-import { TaskManager, Constants, Logger, PlatformManager, WebpackUtils } from 'rnv';
-
 import open from 'better-opn';
+import { Constants, Logger, PlatformManager, TaskManager, WebpackUtils } from 'rnv';
+
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask, logError } = Logger;
 const {
     MACOS,
     WINDOWS,
+    LINUX,
     TASK_START,
     TASK_CONFIGURE,
     PARAMS
@@ -36,6 +37,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
     switch (platform) {
         case MACOS:
         case WINDOWS:
+        case LINUX:
             return runWebpackServer(c);
         default:
             return logErrorPlatform(c);
@@ -50,5 +52,6 @@ export default {
     platforms: [
         MACOS,
         WINDOWS,
+        LINUX
     ],
 };

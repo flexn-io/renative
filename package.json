@@ -2,7 +2,7 @@
   "name": "renative-wrapper",
   "version": "0.34.0-alpha.0",
   "currentRelease": "0.33",
-  "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV` and `Chromecast` platforms",
+  "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`, `Linux` and `Chromecast` platforms",
   "keywords": [
     "android tv",
     "android wear",
@@ -36,7 +36,8 @@
     "watch",
     "web",
     "webos",
-    "windows"
+    "windows",
+    "linux"
   ],
   "homepage": "https://github.com/renative-org/renative#readme",
   "bugs": {

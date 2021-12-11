@@ -1,9 +1,10 @@
-import { TaskManager, Constants, Logger } from 'rnv';
+import { Constants, Logger, TaskManager } from 'rnv';
 
 const { logTask } = Logger;
 const {
     MACOS,
     WINDOWS,
+    LINUX,
     TASK_EXPORT,
     TASK_DEPLOY,
     PARAMS
@@ -29,5 +30,6 @@ export default {
     platforms: [
         MACOS,
         WINDOWS,
+        LINUX
     ],
 };

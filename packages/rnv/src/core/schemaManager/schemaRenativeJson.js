@@ -930,6 +930,10 @@ const platformMacosProps = {
     },
 };
 
+const platformLinuxProps = {
+    ...engineRnElectronConfig
+};
+
 const platformWindowsProps = {
     ...engineRnElectronConfig,
     ...engineRNWindowsConfig,
@@ -1177,6 +1181,13 @@ const pluginProps = {
             ...commonPluginPlatformProps,
         },
     },
+    linux: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...commonPluginPlatformProps,
+        },
+    },
     windows: {
         additionalProperties: false,
         type: 'object',
@@ -1291,6 +1302,15 @@ export const schemaPlatforms = {
                 ...platformCommonProps,
                 ...generateBuildSchemeProps(platformMacosProps),
                 ...platformMacosProps,
+            },
+        },
+        linux: {
+            additionalProperties: false,
+            type: 'object',
+            properties: {
+                ...platformCommonProps,
+                ...generateBuildSchemeProps(platformLinuxProps),
+                ...platformLinuxProps,
             },
         },
         windows: {
@@ -1411,6 +1431,10 @@ export const schemaRoot = {
                 macos: {
                     // $ref: 'platforms.json#/definitions/macos'
                     ...schemaPlatforms.definitions.macos,
+                },
+                linux: {
+                    // $ref: 'platforms.json#/definitions/linux'
+                    ...schemaPlatforms.definitions.linux,
                 },
                 tizen: {
                     // $ref: 'platforms.json#/definitions/tizen'
@@ -1903,6 +1927,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
                             firefoxos: 8194,
                             firefoxtv: 8114,
                             webtv: 8195,
+                            linux: 8200
                         },
                     ],
                 },
