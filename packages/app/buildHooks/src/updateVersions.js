@@ -3,6 +3,22 @@ import { Doctor, FileUtils } from 'rnv';
 
 const merge = require('deepmerge');
 
+const VERSIONED_PACKAGES = [
+    'rnv',
+    'renative-template-hello-world',
+    'renative-template-blank',
+    'renative-template-kitchen-sink',
+    'rnv-engine-rn',
+    'rnv-engine-rn-tvos',
+    'rnv-engine-rn-macos',
+    'rnv-engine-rn-next',
+    'rnv-engine-rn-web',
+    'rnv-engine-lightning',
+    'rnv-engine-rn-electron',
+    'rnv-engine-rn-windows',
+    'renative',
+];
+
 export const updateVersions = async (c) => {
     const rootPackage = FileUtils.readObjectSync(
         path.join(c.paths.project.dir, '/../../', 'package.json')
@@ -12,93 +28,11 @@ export const updateVersions = async (c) => {
     };
     const pkgFolder = path.join(c.paths.project.dir, '/../');
     _updateJson(c, c.paths.project.package, v);
-    _updateJson(c, path.join(pkgFolder, 'rnv/package.json'), v);
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'renative-template-hello-world/package.json'
-        ),
-        v
-    );
-    _updateJson(
-        c,
-        path.join(pkgFolder, 'renative-template-blank/package.json'),
-        v
-    );
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'renative-template-kitchen-sink/package.json'
-        ),
-        v
-    );
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'rnv-engine-rn/package.json'
-        ),
-        v
-    );
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'rnv-engine-rn-tvos/package.json'
-        ),
-        v
-    );
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'rnv-engine-rn-next/package.json'
-        ),
-        v
-    );
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'rnv-engine-rn-web/package.json'
-        ),
-        v
-    );
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'rnv-engine-lightning/package.json'
-        ),
-        v
-    );
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'rnv-engine-rn-electron/package.json'
-        ),
-        v
-    );
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'rnv-engine-rn-macos/package.json'
-        ),
-        v
-    );
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'rnv-engine-rn-windows/package.json'
-        ),
-        v
-    );
-    _updateJson(c, path.join(pkgFolder, 'renative/package.json'), v);
+
+    VERSIONED_PACKAGES.forEach((pkgName) => {
+        _updateJson(c, path.join(pkgFolder, pkgName, 'package.json'), v);
+    });
+
     _updateJson(
         c,
         path.join(
