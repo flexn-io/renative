@@ -4387,7 +4387,7 @@ rnv run -p android
 
 - none
 
-## v0.34.0-alpha.0 (2021-12-6)
+## v0.33.0 (2021-12-6)
 
 ### Fixed
 
