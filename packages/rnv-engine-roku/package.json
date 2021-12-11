@@ -25,19 +25,7 @@
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
-        "@expo/next-adapter": "2.1.29",
-        "@next/bundle-analyzer": "9.4.4",
-        "babel-loader": "8.0.5",
-        "babel-preset-expo": "8.4.0",
-        "html-webpack-harddisk-plugin": "1.0.2",
-        "html-webpack-plugin": "4.5.1",
-        "next": "9.5.3",
-        "next-compose-plugins": "2.2.0",
-        "next-fonts": "1.4.0",
-        "next-images": "1.4.1",
-        "next-page-transitions": "1.0.0-beta.2",
-        "next-routes": "1.4.2",
-        "next-transpile-modules": "8.0.0"
+        
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -48,7 +36,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.31"
+        "rnv": "^0.33"
     },
     "private": false,
     "publishConfig": {

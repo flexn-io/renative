@@ -85,19 +85,19 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "~0.32.0-RC",
+            "version": "0.33.0",
             "webpack": {
                 "moduleAliases": true
             }
         },
         "renative-template-blank": {
-            "version": "~0.32.0-RC",
+            "version": "0.33.0",
             "webpack": {
                 "moduleAliases": true
             }
         },
         "renative-template-kitchen-sink": {
-            "version": "~0.32.0-RC",
+            "version": "0.33.0",
             "webpack": {
                 "moduleAliases": true
             }

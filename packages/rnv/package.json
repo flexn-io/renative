@@ -84,7 +84,7 @@
         "@sentry/integrations": "6.14.3",
         "@sentry/node": "6.14.3",
         "ajv": "7.0.0-beta.0",
-        "axios": "0.19.0",
+        "axios": "0.21.2",
         "babel-eslint": "8.2.6",
         "babel-jest": "24.9.0",
         "babel-loader": "8.0.5",
@@ -102,7 +102,7 @@
         "commander": "^3.0.1",
         "compare-versions": "3.6.0",
         "console-table-printer": "1.1.10",
-        "copy-webpack-plugin": "4.6.0",
+        "copy-webpack-plugin": "10.1.0",
         "cross-env": "5.2.0",
         "crypto-random-string": "3.2.0",
         "css-hot-loader": "1.4.2",
@@ -176,9 +176,6 @@
         "rimraf": "2.6.2",
         "schedule": "0.4.0",
         "semver": "5.5.0"
-    },
-    "peerDependencies": {
-        "now": "15.3.0"
     },
     "engines": {
         "node": ">=6.0.0",
