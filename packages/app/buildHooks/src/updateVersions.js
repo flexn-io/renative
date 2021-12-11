@@ -71,6 +71,11 @@ export const updateVersions = async (c) => {
         path.join(pkgFolder, 'renative/README.md')
     );
 
+    FileUtils.copyFileSync(
+        path.join(c.paths.project.dir, '/../../README.md'),
+        path.join(pkgFolder, 'rnv/README.md')
+    );
+
     // const packagesDir = path.join(c.paths.project.dir, '..');
     //
     // const engines = [
