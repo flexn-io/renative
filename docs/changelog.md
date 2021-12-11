@@ -4,7 +4,6 @@ title: Changelog
 sidebar_label: Changelog
 ---
 
-
 ## v0.33.0-alpha.5 (2021-12-3)
 
 ### Fixed
@@ -21,7 +20,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.33.0-alpha.4 (2021-12-2)
 
 ### Fixed
@@ -56,7 +54,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.33.0-alpha.3 (2021-11-30)
 
 ### Fixed
@@ -73,7 +70,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.33.0-alpha.2 (2021-11-25)
 
 ### Fixed
@@ -81,7 +77,7 @@ sidebar_label: Changelog
 - Merge pull request #748 from pavjacko/feat/custom-gservices-versions
 - [feat] support for custom google services version
 - Merge pull request #747 from pavjacko/feat/rnv-cli-commands
-- [feat]  rnv app create => support for cli arguments
+- [feat] rnv app create => support for cli arguments
 - [fix] rnv target list -p android
 - [feat] add support for `rnv app create`
 - [fix] rnv template list (globally)
@@ -99,7 +95,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.33.0-alpha.1 (2021-11-18)
 
 ### Fixed
@@ -130,11 +125,9 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.33.0 (2021-12-5)
 
 ### Fixed
-
 
 ### Added Features
 
@@ -144,7 +137,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.2 (2021-11-18)
 
 ### Fixed
@@ -162,7 +154,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.1 (2021-11-17)
 
 ### Fixed
@@ -186,7 +177,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.50 (2021-11-16)
 
 ### Fixed
@@ -221,7 +211,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.49 (2021-11-14)
 
 ### Fixed
@@ -249,13 +238,12 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.48 (2021-11-13)
 
 ### Fixed
 
 - Merge branch 'develop' of github.com:pavjacko/renative into develop
-- [fix] engine-rn-tvos  to run in parallel with engine-rn
+- [fix] engine-rn-tvos to run in parallel with engine-rn
 - Merge branch 'develop' of github.com:pavjacko/renative into develop
 - handle wrong sims #707
 - [fix] rnv start offers reset bundler/server unnecessarily
@@ -473,7 +461,7 @@ sidebar_label: Changelog
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -564,7 +552,7 @@ sidebar_label: Changelog
 - Bump postcss from 7.0.35 to 7.0.36 in /website
 - feat(CarPlay): Add CarPlay plugin to the list of possible plugins
 - feat(AppDelegate): Added extensions for application and methods needed for CarPlay support
-- [ReNative][Android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
+- [ReNative][android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
 - [fix] resolve paths in monorepo projects
 - engine tvos wip
 - [fix] Xcode 12.5 fix edge cases with RN Pod override
@@ -583,7 +571,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.47 (2021-11-12)
 
 ### Fixed
@@ -790,7 +777,7 @@ sidebar_label: Changelog
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -881,7 +868,7 @@ sidebar_label: Changelog
 - Bump postcss from 7.0.35 to 7.0.36 in /website
 - feat(CarPlay): Add CarPlay plugin to the list of possible plugins
 - feat(AppDelegate): Added extensions for application and methods needed for CarPlay support
-- [ReNative][Android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
+- [ReNative][android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
 - [fix] resolve paths in monorepo projects
 - engine tvos wip
 - [fix] Xcode 12.5 fix edge cases with RN Pod override
@@ -898,7 +885,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.45 (2021-6-2)
 
 ### Fixed
@@ -913,7 +899,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.44 (2021-5-27)
 
 ### Fixed
@@ -941,7 +926,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.43 (2021-5-5)
 
 ### Fixed
@@ -966,7 +950,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.42 (2021-4-19)
 
 ### Fixed
@@ -981,7 +964,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.41 (2021-4-13)
 
 ### Fixed
@@ -997,7 +979,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.40 (2021-4-11)
 
 ### Fixed
@@ -1013,7 +994,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.39 (2021-3-18)
 
 ### Fixed
@@ -1039,7 +1019,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.38 (2021-3-14)
 
 ### Fixed
@@ -1055,7 +1034,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.37 (2021-3-14)
 
 ### Fixed
@@ -1072,7 +1050,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.36 (2021-3-4)
 
 ### Fixed
@@ -1088,7 +1065,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.35 (2021-3-3)
 
 ### Fixed
@@ -1106,7 +1082,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.34 (2021-2-25)
 
 ### Fixed
@@ -1122,7 +1097,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.33 (2021-2-25)
 
 ### Fixed
@@ -1138,7 +1112,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.32 (2021-2-16)
 
 ### Fixed
@@ -1153,7 +1126,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.31 (2021-2-14)
 
 ### Fixed
@@ -1171,7 +1143,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.30 (2021-2-11)
 
 ### Fixed
@@ -1187,7 +1158,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.29 (2021-2-10)
 
 ### Fixed
@@ -1204,7 +1174,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.28 (2021-2-8)
 
 ### Fixed
@@ -1226,7 +1195,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.27 (2021-1-20)
 
 ### Fixed
@@ -1243,7 +1211,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.26 (2021-1-18)
 
 ### Fixed
@@ -1266,7 +1233,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.25 (2021-1-3)
 
 ### Fixed
@@ -1290,7 +1256,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.24 (2020-12-14)
 
 ### Fixed
@@ -1309,12 +1274,11 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.23 (2020-12-14)
 
 ### Fixed
 
-- [feat] gradle customisation improvements :  plugins, injectAfterAll
+- [feat] gradle customisation improvements : plugins, injectAfterAll
 - [feat] --skipDependencyCheck
 
 ### Added Features
@@ -1325,7 +1289,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.22 (2020-12-12)
 
 ### Fixed
@@ -1349,7 +1312,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.21 (2020-11-29)
 
 ### Fixed
@@ -1370,7 +1332,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.20 (2020-11-26)
 
 ### Fixed
@@ -1385,7 +1346,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.19 (2020-11-26)
 
 ### Fixed
@@ -1400,11 +1360,9 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.18 (2020-11-23)
 
 ### Fixed
-
 
 ### Added Features
 
@@ -1414,7 +1372,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.17 (2020-11-23)
 
 ### Fixed
@@ -1445,7 +1402,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.15 (2020-11-22)
 
 ### Fixed
@@ -1460,11 +1416,9 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.14 (2020-11-21)
 
 ### Fixed
-
 
 ### Added Features
 
@@ -1474,14 +1428,13 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.13 (2020-11-21)
 
 ### Fixed
 
 - rnv config globals
 - [feat] force rebuild build hooks option. ( --hooks )
-- [fix] rnv start  port clash
+- [fix] rnv start port clash
 
 ### Added Features
 
@@ -1491,7 +1444,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.12 (2020-11-15)
 
 ### Fixed
@@ -1506,7 +1458,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.11 (2020-11-13)
 
 ### Fixed
@@ -1521,7 +1472,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.10 (2020-11-13)
 
 ### Fixed
@@ -1536,7 +1486,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.9 (2020-11-13)
 
 ### Fixed
@@ -1551,7 +1500,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.8 (2020-11-12)
 
 ### Fixed
@@ -1568,7 +1516,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.7 (2020-11-12)
 
 ### Fixed
@@ -1584,7 +1531,6 @@ sidebar_label: Changelog
 
 - none
 
-  
 ## v0.32.0-alpha.6 (2020-11-11)
 
 ### Fixed
@@ -1703,7 +1649,6 @@ renative runtime deprecated API:
 ### Breaking Changes
 
 - none
-
 
 ## v0.32.0-alpha.1 (2021-11-12)
 
@@ -1908,7 +1853,7 @@ renative runtime deprecated API:
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -1999,7 +1944,7 @@ renative runtime deprecated API:
 - Bump postcss from 7.0.35 to 7.0.36 in /website
 - feat(CarPlay): Add CarPlay plugin to the list of possible plugins
 - feat(AppDelegate): Added extensions for application and methods needed for CarPlay support
-- [ReNative][Android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
+- [ReNative][android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
 - [fix] resolve paths in monorepo projects
 - engine tvos wip
 - [fix] Xcode 12.5 fix edge cases with RN Pod override
@@ -2016,7 +1961,6 @@ renative runtime deprecated API:
 
 - none
 
-  
 ## v0.32.0-rc.1 (2021-11-16)
 
 ### Fixed
@@ -2031,7 +1975,6 @@ renative runtime deprecated API:
 
 - none
 
-  
 ## v0.32.0 (2021-11-16)
 
 ### Fixed
@@ -2047,7 +1990,6 @@ renative runtime deprecated API:
 
 - none
 
-  
 ## v0.31.2 (2020-10-19)
 
 ### Fixed
@@ -2084,7 +2026,6 @@ renative runtime deprecated API:
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.1 (2020-10-15)
 
@@ -2134,7 +2075,7 @@ renative runtime deprecated API:
 - [chore] dependency cleanup
 - docs cleanup
 - 0.31.0-RC.4
-- refactor  cypress e2e
+- refactor cypress e2e
 - [feat] offer server restart in port clashes
 - template cleanup
 - git rename hack
@@ -2147,7 +2088,7 @@ renative runtime deprecated API:
 - 0.31.0-RC.1
 - 0.31.0-RC.1
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -2162,7 +2103,6 @@ renative runtime deprecated API:
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.34 (2020-10-3)
 
@@ -2193,7 +2133,6 @@ renative runtime deprecated API:
 
 - none
 
-
 ## v0.31.0-alpha.33 (2020-10-1)
 
 ### Fixed
@@ -2202,7 +2141,7 @@ renative runtime deprecated API:
 - [feat] custom templates
 - [fix] skip buildHooks pipes for global commands
 - [fix] improve dependency resolutions of complex plugins
-- [fix]  premature dependenaculation
+- [fix] premature dependenaculation
 - [fix] react-native focus fix
 - [fix] rnv clean, skip depUpdates
 - 0.31.0-alpha.32
@@ -2214,7 +2153,6 @@ renative runtime deprecated API:
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.32 (2020-9-29)
 
@@ -2246,16 +2184,13 @@ renative runtime deprecated API:
 
 ### Added Features
 
-- withRNV abstracts most of the complexity of configuring aliases and module paths. it uses renative.*.json plugins to do so behind the scenes
-
+- withRNV abstracts most of the complexity of configuring aliases and module paths. it uses renative.\*.json plugins to do so behind the scenes
 
 ### Breaking Changes
-
 
 NextJS config should migrate to use withRNV from `@rnv/engine-rn-next`:
 
 `next.config.js`
-
 
 ```
 const { withRNV } = require('@rnv/engine-rn-next');
@@ -2267,7 +2202,6 @@ const config = {
 
 module.exports = withRNV(config);
 ```
-
 
 Metro config should migrate to use withRNV from `@rnv/engine-rn`:
 
@@ -2298,7 +2232,6 @@ module.exports = withRNV(config);
 
 - none
 
-
 ## v0.31.0-alpha.29 (2020-9-21)
 
 ### Fixed
@@ -2318,7 +2251,6 @@ module.exports = withRNV(config);
 
 - none
 
-
 ## v0.31.0-alpha.28 (2020-9-20)
 
 ### Fixed
@@ -2332,7 +2264,6 @@ module.exports = withRNV(config);
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.27 (2020-9-20)
 
@@ -2360,7 +2291,6 @@ module.exports = withRNV(config);
 
 - none
 
-
 ## v0.31.0-alpha.26 (2020-9-17)
 
 ### Fixed
@@ -2385,7 +2315,7 @@ module.exports = withRNV(config);
 
 ### Breaking Changes
 
-- appConfigs/\*\*/builds/_shared is DEPRECATED. use appConfigs/\*\*/builds/<PLATFORM> instead
+- appConfigs/\*\*/builds/\_shared is DEPRECATED. use appConfigs/\*\*/builds/<PLATFORM> instead
 
 ## v0.31.0-alpha.25 (2020-9-15)
 
@@ -2403,7 +2333,6 @@ module.exports = withRNV(config);
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.24 (2020-9-13)
 
@@ -2433,7 +2362,6 @@ module.exports = withRNV(config);
 
 - none
 
-
 ## v0.31.0-alpha.23 (2020-7-31)
 
 ### Fixed
@@ -2449,11 +2377,11 @@ module.exports = withRNV(config);
 ### Breaking Changes
 
 - `.next.js` extension is DEPRECATED. use `.web.js` and `.server.web.js` in combination with engine `engine-rn-next` instead
-REASON: next.js was temporary `web-next` platform extension. this has been replaced with `engine-rn-next` which supports standard `-p web`
+  REASON: next.js was temporary `web-next` platform extension. this has been replaced with `engine-rn-next` which supports standard `-p web`
 
 - `rnv configure` now requires platform `-p` specified. if you don't, rnv will ask you to pick one. if you use `--ci` option command will fail.
-REASON: `rnv configure` used to run configure command on all supported platforms of the project at once but that is hardly ever needed as all platform commands chain back to configure anyway. this created unnecessary log builds
-NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / export / package` afterwards as these commands will run configure task as dependency anyway
+  REASON: `rnv configure` used to run configure command on all supported platforms of the project at once but that is hardly ever needed as all platform commands chain back to configure anyway. this created unnecessary log builds
+  NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / export / package` afterwards as these commands will run configure task as dependency anyway
 
 ## v0.31.0-alpha.22 (2020-7-30)
 
@@ -2469,7 +2397,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.21 (2020-7-29)
 
@@ -2487,7 +2414,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-alpha.20 (2020-7-28)
 
 ### Fixed
@@ -2503,7 +2429,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.19 (2020-7-28)
 
@@ -2524,7 +2449,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.18 (2020-7-28)
 
@@ -2549,7 +2473,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-alpha.17 (2020-7-27)
 
 ### Fixed
@@ -2568,7 +2491,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.16 (2020-7-26)
 
@@ -2591,7 +2513,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-alpha.15 (2020-7-26)
 
 ### Fixed
@@ -2608,7 +2529,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.14 (2020-7-26)
 
@@ -2627,7 +2547,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-alpha.13 (2020-7-25)
 
 ### Fixed
@@ -2642,7 +2561,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-alpha.12 (2020-7-25)
 
 ### Fixed
@@ -2656,7 +2574,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - app config edge cases, task descriptions
 - log fixes
 - fix template selection
-- refactor app config  logic
+- refactor app config logic
 - fix missing appConfig crash
 - fix cycled deps, platform support for tasks
 - abstract engine injections
@@ -2719,7 +2637,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - Merge branch 'release/0.30' into feat/plugin-dep-resolvers
 - fix: #548 initial focus on tizen
-- fix: #550 splash screen  androidtv support
+- fix: #550 splash screen androidtv support
 - 0.30.4
 - fix crypto security import
 - add rn-iap plugin
@@ -2731,7 +2649,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-RC.10 (2020-10-12)
 
@@ -2772,7 +2689,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - [chore] dependency cleanup
 - docs cleanup
 - 0.31.0-RC.4
-- refactor  cypress e2e
+- refactor cypress e2e
 - [feat] offer server restart in port clashes
 - template cleanup
 - git rename hack
@@ -2785,7 +2702,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - 0.31.0-RC.1
 - 0.31.0-RC.1
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -2801,7 +2718,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-alpha.10 (2020-7-12)
 
 ### Fixed
@@ -2816,7 +2732,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-RC.9 (2020-10-11)
 
@@ -2855,7 +2770,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - [chore] dependency cleanup
 - docs cleanup
 - 0.31.0-RC.4
-- refactor  cypress e2e
+- refactor cypress e2e
 - [feat] offer server restart in port clashes
 - template cleanup
 - git rename hack
@@ -2868,7 +2783,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - 0.31.0-RC.1
 - 0.31.0-RC.1
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -2884,7 +2799,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-alpha.9 (2020-7-12)
 
 ### Fixed
@@ -2898,7 +2812,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-RC.8 (2020-10-9)
 
@@ -2921,7 +2834,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - [chore] dependency cleanup
 - docs cleanup
 - 0.31.0-RC.4
-- refactor  cypress e2e
+- refactor cypress e2e
 - [feat] offer server restart in port clashes
 - template cleanup
 - git rename hack
@@ -2934,7 +2847,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - 0.31.0-RC.1
 - 0.31.0-RC.1
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -2950,7 +2863,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-alpha.8 (2020-7-11)
 
 ### Fixed
@@ -2962,7 +2874,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - fix configureWeb task
 - fix webos emulator detection
 - refactor engine runners
-- fix   cleanPlatformIfRequired
+- fix cleanPlatformIfRequired
 - improved logs
 - update task logs
 - migrate packageParser, log updates, fix package override
@@ -2975,7 +2887,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-RC.7 (2020-10-8)
 
@@ -2993,7 +2904,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - [chore] dependency cleanup
 - docs cleanup
 - 0.31.0-RC.4
-- refactor  cypress e2e
+- refactor cypress e2e
 - [feat] offer server restart in port clashes
 - template cleanup
 - git rename hack
@@ -3006,7 +2917,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - 0.31.0-RC.1
 - 0.31.0-RC.1
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -3022,7 +2933,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-alpha.7 (2020-7-11)
 
 ### Fixed
@@ -3032,7 +2942,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - fix configureWeb task
 - fix webos emulator detection
 - refactor engine runners
-- fix   cleanPlatformIfRequired
+- fix cleanPlatformIfRequired
 - improved logs
 - update task logs
 - migrate packageParser, log updates, fix package override
@@ -3046,7 +2956,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-RC.6 (2020-10-6)
 
 ### Fixed
@@ -3059,7 +2968,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - [chore] dependency cleanup
 - docs cleanup
 - 0.31.0-RC.4
-- refactor  cypress e2e
+- refactor cypress e2e
 - [feat] offer server restart in port clashes
 - template cleanup
 - git rename hack
@@ -3072,7 +2981,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - 0.31.0-RC.1
 - 0.31.0-RC.1
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -3087,7 +2996,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.6 (2020-7-9)
 
@@ -3104,7 +3012,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-RC.5 (2020-10-5)
 
 ### Fixed
@@ -3112,7 +3019,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - [chore] dependency cleanup
 - docs cleanup
 - 0.31.0-RC.4
-- refactor  cypress e2e
+- refactor cypress e2e
 - [feat] offer server restart in port clashes
 - template cleanup
 - git rename hack
@@ -3125,7 +3032,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - 0.31.0-RC.1
 - 0.31.0-RC.1
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -3140,7 +3047,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.5 (2020-7-9)
 
@@ -3156,12 +3062,11 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-RC.4 (2020-10-4)
 
 ### Fixed
 
-- refactor  cypress e2e
+- refactor cypress e2e
 - [feat] offer server restart in port clashes
 - template cleanup
 - git rename hack
@@ -3174,7 +3079,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - 0.31.0-RC.1
 - 0.31.0-RC.1
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -3190,13 +3095,12 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-alpha.4 (2020-7-8)
 
 ### Fixed
 
 - feat: add project links helper
-- feat: add support for application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler
+- feat: add support for application(\_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler
 - rename npminstall
 - npm dep invalidation fix
 
@@ -3208,7 +3112,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-RC.3 (2020-10-4)
 
 ### Fixed
@@ -3219,7 +3122,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - 0.31.0-RC.1
 - 0.31.0-RC.1
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -3234,7 +3137,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.3 (2020-7-8)
 
@@ -3253,7 +3155,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 
 - none
 
-
 ## v0.31.0-RC.2 (2020-10-4)
 
 ### Fixed
@@ -3262,7 +3163,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - 0.31.0-RC.1
 - 0.31.0-RC.1
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -3277,7 +3178,6 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 ### Breaking Changes
 
 - none
-
 
 ## v0.31.0-alpha.2 (2020-7-7)
 
@@ -3296,7 +3196,7 @@ NOTE: `rnv configure` is not necessary if you plan to run `rnv run / build / exp
 - feat: convert tvos template to use lauchscreen storyboard
 - xcodebuild args
 - Merge branch 'develop' into feat/launch-screen
-- fix: quote escapes for --xcodebuildArchiveArgs "...." ios   option
+- fix: quote escapes for --xcodebuildArchiveArgs "...." ios option
 - auto update live changelog every release
 - fix: don't override already generated version changelogs
 - update docs
@@ -3314,11 +3214,11 @@ Use:
 
 ```json
 {
-    "platforms": {
-        "web": {
-            "engine": "engine-rn-next"
-        }
+  "platforms": {
+    "web": {
+      "engine": "engine-rn-next"
     }
+  }
 }
 ```
 
@@ -3329,7 +3229,7 @@ instead
 ### Fixed
 
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -3345,7 +3245,6 @@ instead
 
 - none
 
-
 ## v0.31.0-alpha.1 (2020-6-30)
 
 ### Fixed
@@ -3360,10 +3259,9 @@ instead
 
 ### Breaking Changes
 
-iOS Template has been updated to follow new requirements for storyboard based launch screen. More info:  https://developer.apple.com/news/?id=01132020b
+iOS Template has been updated to follow new requirements for storyboard based launch screen. More info: https://developer.apple.com/news/?id=01132020b
 
 new launch images should be placed to your assets configs typically:
-
 
 ```
 .
@@ -3423,7 +3321,7 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 - [chore] dependency cleanup
 - docs cleanup
 - 0.31.0-RC.4
-- refactor  cypress e2e
+- refactor cypress e2e
 - [feat] offer server restart in port clashes
 - template cleanup
 - git rename hack
@@ -3436,7 +3334,7 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 - 0.31.0-RC.1
 - 0.31.0-RC.1
 - [docs] update upgrade & release notes
-- [fix] remove   'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
+- [fix] remove 'transform-react-remove-prop-types' not to break some 3rd part libs (ie rn navigation)
 - [fix] ios14 image render fix for react-native (https://github.com/facebook/react-native/issues/29279)
 - [chore] migrate tasks to separate folder
 - [fix] migrate platform eject / connect to engines
@@ -3451,7 +3349,6 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 ### Breaking Changes
 
 - none
-
 
 ## v0.30.4 (2020-7-14)
 
@@ -3471,7 +3368,7 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 - fix configureWeb task
 - fix webos emulator detection
 - refactor engine runners
-- fix   cleanPlatformIfRequired
+- fix cleanPlatformIfRequired
 - improved logs
 - update task logs
 - migrate packageParser, log updates, fix package override
@@ -3483,7 +3380,7 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 - auto install node_modules after plugin updates
 - 0.31.0-alpha.4
 - feat: add project links helper
-- feat: add support for application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler
+- feat: add support for application(\_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler
 - rename npminstall
 - npm dep invalidation fix
 - 0.31.0-alpha.3
@@ -3505,7 +3402,7 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 - feat: convert tvos template to use lauchscreen storyboard
 - xcodebuild args
 - Merge branch 'develop' into feat/launch-screen
-- fix: quote escapes for --xcodebuildArchiveArgs "...." ios   option
+- fix: quote escapes for --xcodebuildArchiveArgs "...." ios option
 - auto update live changelog every release
 - fix: don't override already generated version changelogs
 - update docs
@@ -3522,7 +3419,6 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 ### Breaking Changes
 
 - none
-
 
 ## v0.30.3 (2020-6-26)
 
@@ -3559,7 +3455,6 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 
 - none
 
-
 ## v0.30.2-alpha.1 (2020-6-24)
 
 ### Fixed
@@ -3574,7 +3469,6 @@ Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen d
 ### Breaking Changes
 
 - none
-
 
 ## v0.30.2 (2020-6-25)
 
@@ -3649,7 +3543,6 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.25 (2020-6-20)
 
 ### Fixed
@@ -3663,7 +3556,6 @@ NOTE: Following plugins have been updated to newer versions:
 ### Breaking Changes
 
 - none
-
 
 ## v0.29.1-alpha.24 (2020-6-19)
 
@@ -3712,7 +3604,7 @@ NOTE: Following plugins have been updated to newer versions:
 - fix export for ios
 - add engine configs
 - Merge branch 'develop' into feat/e2e-ci
-- dynamic  injectors via json functions
+- dynamic injectors via json functions
 - downgrade detox workaround for https://github.com/wix/detox/issues/152
 - init detox
 
@@ -3741,7 +3633,6 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.20 (2020-6-11)
 
 ### Fixed
@@ -3758,7 +3649,6 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.19 (2020-6-9)
 
 ### Fixed
@@ -3767,7 +3657,7 @@ NOTE: Following plugins have been updated to newer versions:
 - Merge pull request #515 from pavjacko/feat/cast-update
 - update g cast
 - Merge branch 'develop' into feat/cast-update
-- add support for typescript  and SSR extensions
+- add support for typescript and SSR extensions
 - Merge pull request #512 from pavjacko/feat/asset-timestamps
 - Sdk update
 
@@ -3778,7 +3668,6 @@ NOTE: Following plugins have been updated to newer versions:
 ### Breaking Changes
 
 - none
-
 
 ## v0.29.1-alpha.18 (2020-6-2)
 
@@ -3795,7 +3684,6 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.16 (2020-6-2)
 
 ### Fixed
@@ -3809,7 +3697,6 @@ NOTE: Following plugins have been updated to newer versions:
 ### Breaking Changes
 
 - none
-
 
 ## v0.29.1-alpha.15 (2020-5-31)
 
@@ -3829,7 +3716,6 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.14 (2020-5-31)
 
 ### Fixed
@@ -3843,7 +3729,6 @@ NOTE: Following plugins have been updated to newer versions:
 ### Breaking Changes
 
 - none
-
 
 ## v0.29.1-alpha.13 (2020-5-30)
 
@@ -3864,7 +3749,6 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.12 (2020-5-24)
 
 ### Fixed
@@ -3881,13 +3765,12 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.11 (2020-5-23)
 
 ### Fixed
 
 - tizen device detection
-- _withPathFix
+- \_withPathFix
 - resolve fix for win
 - better handling of unlink for win
 - Merge branch 'fix/windows-chores' of github.com:pavjacko/renative into fix/windows-chores
@@ -3907,7 +3790,6 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.10 (2020-5-22)
 
 ### Fixed
@@ -3925,7 +3807,6 @@ NOTE: Following plugins have been updated to newer versions:
 
 - none
 
-
 ## v0.29.1-alpha.9 (2020-5-20)
 
 ### Fixed
@@ -3937,7 +3818,7 @@ NOTE: Following plugins have been updated to newer versions:
 - now next export to docker works without run first, added extra docker message
 - Merge branch 'develop' into feat/docker_next_export_deploy
 - Merge branch 'develop' into fix/remove-node-expat-dep
-- replace heavy xml2json with light  xml2js
+- replace heavy xml2json with light xml2js
 - Merge pull request #503 from TheDuc/TheDuc-patch-3
 - fixed syntax
 - replace APP_VERSION in tizen template
@@ -3955,9 +3836,9 @@ if you using next engine (`-e next`) in your app make sure you add
 
 ```json
 {
-   "plugins": {
-       "next": "source:rnv"
-   }
+  "plugins": {
+    "next": "source:rnv"
+  }
 }
 ```
 
@@ -3997,7 +3878,6 @@ to your `./renative.json`
 
 - none
 
-
 ## v0.29.0 (2020-5-18)
 
 ### Fixed
@@ -4016,16 +3896,15 @@ to your `./renative.json`
 
 ### Fixed
 
--   Migration to React Native 0.61.2
--   Support for Hermes Engine
--   AndroidX Support
+- Migration to React Native 0.61.2
+- Support for Hermes Engine
+- AndroidX Support
 
--   Migrated 30+ plugins
+- Migrated 30+ plugins
 
--   RN Camera
--   Local Storage
--   NetInfo
-
+- RN Camera
+- Local Storage
+- NetInfo
 
 ### Added Features
 
@@ -4041,7 +3920,6 @@ to your `./renative.json`
 
 - none
 
-
 ### Added Features
 
 - none
@@ -4055,7 +3933,6 @@ to your `./renative.json`
 ### Fixed
 
 - none
-
 
 ### Added Features
 
@@ -4071,7 +3948,6 @@ to your `./renative.json`
 
 - none
 
-
 ### Added Features
 
 - none
@@ -4085,7 +3961,6 @@ to your `./renative.json`
 ### Fixed
 
 - none
-
 
 ### Added Features
 
@@ -4101,7 +3976,6 @@ to your `./renative.json`
 
 - none
 
-
 ### Added Features
 
 - none
@@ -4112,35 +3986,33 @@ to your `./renative.json`
 
 ## v0.21.6 (2019-5-23)
 
-
 ### Fixes
 
-- fix readme	bf2b9fd3	Pavel Jacko <beherithrone@gmail.com>	23 May 2019 at 07:41
-- webpack updates, docs	93d7b7b5	Pavel Jacko <beherithrone@gmail.com>	23 May 2019 at 07:39
-- Merge branch 'master' of github.com:pavjacko/renative	ad6a8ae0	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 19:25
-- webpack	a56ff08d	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 19:25
-- Merge pull request #59 from mihaiblaga89/eslint_plugin_add	5f46b68c	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 19:14
-- 0.21.6-alpha.1	1f832112	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 16:56
-- opt platforms	43f42a60	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 16:37
-- added eslint-plugin-detox	b11a510e	Mihai Blaga <mihaiblaga89@gmail.com>	22 May 2019 at 15:43
-- linter updates	9ec5af1a	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 15:11
-- Merge branch 'master' of github.com:pavjacko/renative	a176b84b	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 12:39
-- Merge pull request #58 from mihaiblaga89/format_everything_ftw	89519fbb	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 12:37
-- missed a file	3a8b390d	Mihai Blaga <legolas8911@gmail.com>	21 May 2019 at 23:35
-- added husky and ran prettier on every .js	93b11655	Mihai Blaga <legolas8911@gmail.com>	21 May 2019 at 23:27
-- Merge pull request #1 from pavjacko/master	19db3fda	Mihai Blaga <legolas8911@gmail.com>	21 May 2019 at 23:25
-- Merge pull request #57 from mihaiblaga89/pods_error_handling	28840463	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 16:21
-- added function to check if Cocoapods is installed before invoking it	59463502	Mihai Blaga <mihaiblaga89@gmail.com>	21 May 2019 at 14:10
-- Merge pull request #56 from hosek/androidTV-theme	95b271b8	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 13:20
-- AndroidTV style updated to AppCompat Added support for Android phones display notches	e1c0545c	Roman Hosek <>	21 May 2019 at 12:47
-- Merge branch 'master' of github.com:pavjacko/renative	9871189e	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 10:27
-- Merge pull request #52 from hosek/master	3090c7eb	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 10:23
-- Merge pull request #50 from CHaNGeTe/fix/gradlew-windows	f15ce642	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 10:22
-- Merge pull request #51 from CHaNGeTe/fix/native-orientation-locker	15bfb18c	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 10:22
-- support for cocoapods commit	a8bab1fe	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 10:22
-- add packages install	30921c39	Roman Hosek <>	10 May 2019 at 14:08
-- create ANdroid emulator on demand	48da08cd	Roman Hosek <>	9 May 2019 at 16:24
-
+- fix readme bf2b9fd3 Pavel Jacko <beherithrone@gmail.com> 23 May 2019 at 07:41
+- webpack updates, docs 93d7b7b5 Pavel Jacko <beherithrone@gmail.com> 23 May 2019 at 07:39
+- Merge branch 'master' of github.com:pavjacko/renative ad6a8ae0 Pavel Jacko <beherithrone@gmail.com> 22 May 2019 at 19:25
+- webpack a56ff08d Pavel Jacko <beherithrone@gmail.com> 22 May 2019 at 19:25
+- Merge pull request #59 from mihaiblaga89/eslint_plugin_add 5f46b68c Pavel Jacko <beherithrone@gmail.com> 22 May 2019 at 19:14
+- 0.21.6-alpha.1 1f832112 Pavel Jacko <beherithrone@gmail.com> 22 May 2019 at 16:56
+- opt platforms 43f42a60 Pavel Jacko <beherithrone@gmail.com> 22 May 2019 at 16:37
+- added eslint-plugin-detox b11a510e Mihai Blaga <mihaiblaga89@gmail.com> 22 May 2019 at 15:43
+- linter updates 9ec5af1a Pavel Jacko <beherithrone@gmail.com> 22 May 2019 at 15:11
+- Merge branch 'master' of github.com:pavjacko/renative a176b84b Pavel Jacko <beherithrone@gmail.com> 22 May 2019 at 12:39
+- Merge pull request #58 from mihaiblaga89/format_everything_ftw 89519fbb Pavel Jacko <beherithrone@gmail.com> 22 May 2019 at 12:37
+- missed a file 3a8b390d Mihai Blaga <legolas8911@gmail.com> 21 May 2019 at 23:35
+- added husky and ran prettier on every .js 93b11655 Mihai Blaga <legolas8911@gmail.com> 21 May 2019 at 23:27
+- Merge pull request #1 from pavjacko/master 19db3fda Mihai Blaga <legolas8911@gmail.com> 21 May 2019 at 23:25
+- Merge pull request #57 from mihaiblaga89/pods_error_handling 28840463 Pavel Jacko <beherithrone@gmail.com> 21 May 2019 at 16:21
+- added function to check if Cocoapods is installed before invoking it 59463502 Mihai Blaga <mihaiblaga89@gmail.com> 21 May 2019 at 14:10
+- Merge pull request #56 from hosek/androidTV-theme 95b271b8 Pavel Jacko <beherithrone@gmail.com> 21 May 2019 at 13:20
+- AndroidTV style updated to AppCompat Added support for Android phones display notches e1c0545c Roman Hosek <> 21 May 2019 at 12:47
+- Merge branch 'master' of github.com:pavjacko/renative 9871189e Pavel Jacko <beherithrone@gmail.com> 21 May 2019 at 10:27
+- Merge pull request #52 from hosek/master 3090c7eb Pavel Jacko <beherithrone@gmail.com> 21 May 2019 at 10:23
+- Merge pull request #50 from CHaNGeTe/fix/gradlew-windows f15ce642 Pavel Jacko <beherithrone@gmail.com> 21 May 2019 at 10:22
+- Merge pull request #51 from CHaNGeTe/fix/native-orientation-locker 15bfb18c Pavel Jacko <beherithrone@gmail.com> 21 May 2019 at 10:22
+- support for cocoapods commit a8bab1fe Pavel Jacko <beherithrone@gmail.com> 21 May 2019 at 10:22
+- add packages install 30921c39 Roman Hosek <> 10 May 2019 at 14:08
+- create ANdroid emulator on demand 48da08cd Roman Hosek <> 9 May 2019 at 16:24
 
 ### Optional Platforms Support
 
@@ -4184,16 +4056,15 @@ rnv run -p android
 
 ### Bug Fixes
 
--   Android TV theme error
--   Added eslint detox
--   improved webpack config
+- Android TV theme error
+- Added eslint detox
+- improved webpack config
 
 ## v0.21.0 (2019-05-4)
 
 ### Fixed
 
 - none
-
 
 ### Added Features
 
@@ -4209,7 +4080,6 @@ rnv run -p android
 
 - none
 
-
 ### Added Features
 
 - none
@@ -4223,7 +4093,6 @@ rnv run -p android
 ### Fixed
 
 - none
-
 
 ### Added Features
 
@@ -4239,7 +4108,6 @@ rnv run -p android
 
 - none
 
-
 ### Added Features
 
 - none
@@ -4253,7 +4121,6 @@ rnv run -p android
 ### Fixed
 
 - none
-
 
 ### Added Features
 
@@ -4269,7 +4136,6 @@ rnv run -p android
 
 - none
 
-
 ### Added Features
 
 - none
@@ -4283,7 +4149,6 @@ rnv run -p android
 ### Fixed
 
 - none
-
 
 ### Added Features
 
@@ -4299,7 +4164,6 @@ rnv run -p android
 
 - none
 
-
 ### Added Features
 
 - none
@@ -4314,7 +4178,6 @@ rnv run -p android
 
 - none
 
-
 ### Added Features
 
 - none
@@ -4328,7 +4191,6 @@ rnv run -p android
 ### Fixed
 
 - none
-
 
 ### Added Features
 
@@ -4377,7 +4239,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-tvos.1 (2021-7-22)
 
 ### Fixed
@@ -4415,7 +4276,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-tvos.0 (2021-7-22)
 
 ### Fixed
@@ -4451,7 +4311,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.31.0-feat-tasks.4 (2020-9-11)
 
 ### Fixed
@@ -4475,7 +4334,6 @@ rnv run -p android
 
 - none
 
-
 ## v0.31.0-feat-tasks.3 (2020-9-10)
 
 ### Fixed
@@ -4496,7 +4354,6 @@ rnv run -p android
 
 - none
 
-
 ## v0.31.0-feat-tasks.2 (2020-9-8)
 
 ### Fixed
@@ -4515,7 +4372,6 @@ rnv run -p android
 
 - none
 
-
 ## v0.31.0-feat-tasks.1 (2020-8-26)
 
 ### Fixed
@@ -4531,8 +4387,7 @@ rnv run -p android
 
 - none
 
-
-## v0.34.0-feat-electron-linux.0 (2021-12-6)
+## v0.34.0-alpha.0 (2021-12-6)
 
 ### Fixed
 
@@ -4554,7 +4409,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-asdk-0 (2021-8-18)
 
 ### Fixed
@@ -4581,7 +4435,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-asdk-1 (2021-8-18)
 
 ### Fixed
@@ -4600,7 +4453,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-asdk-2 (2021-8-20)
 
 ### Fixed
@@ -4674,7 +4526,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -4774,7 +4626,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-asdk-3 (2021-8-24)
 
 ### Fixed
@@ -4849,7 +4700,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -4949,7 +4800,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-asdk-4 (2021-8-25)
 
 ### Fixed
@@ -5031,7 +4881,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -5131,7 +4981,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-asdk-5 (2021-8-25)
 
 ### Fixed
@@ -5214,7 +5063,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -5314,7 +5163,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-asdk-6 (2021-8-25)
 
 ### Fixed
@@ -5398,7 +5246,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -5498,7 +5346,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-asdk-7 (2021-8-29)
 
 ### Fixed
@@ -5583,7 +5430,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -5683,7 +5530,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-1 (2021-8-30)
 
 ### Fixed
@@ -5793,7 +5639,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -5893,7 +5739,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-10 (2021-9-28)
 
 ### Fixed
@@ -6031,7 +5876,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -6131,7 +5976,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-11 (2021-10-7)
 
 ### Fixed
@@ -6274,7 +6118,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -6374,7 +6218,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-12 (2021-10-12)
 
 ### Fixed
@@ -6519,7 +6362,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -6619,7 +6462,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-13 (2021-10-18)
 
 ### Fixed
@@ -6771,7 +6613,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -6871,7 +6713,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-14 (2021-10-20)
 
 ### Fixed
@@ -7027,7 +6868,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -7127,7 +6968,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-15 (2021-10-25)
 
 ### Fixed
@@ -7287,7 +7127,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -7387,7 +7227,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-16 (2021-11-9)
 
 ### Fixed
@@ -7552,7 +7391,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -7652,7 +7491,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-2 (2021-8-31)
 
 ### Fixed
@@ -7767,7 +7605,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -7867,7 +7705,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-3 (2021-9-1)
 
 ### Fixed
@@ -7984,7 +7821,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -8084,7 +7921,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-4 (2021-9-3)
 
 ### Fixed
@@ -8204,7 +8040,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -8304,7 +8140,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-5 (2021-9-16)
 
 ### Fixed
@@ -8431,7 +8266,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -8531,7 +8366,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-6 (2021-9-17)
 
 ### Fixed
@@ -8660,7 +8494,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -8760,7 +8594,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-7 (2021-9-17)
 
 ### Fixed
@@ -8891,7 +8724,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -8991,7 +8824,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-8 (2021-9-23)
 
 ### Fixed
@@ -9125,7 +8957,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -9225,7 +9057,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-engines-merged-9 (2021-9-23)
 
 ### Fixed
@@ -9361,7 +9192,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -9461,7 +9292,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-lightning-1 (2021-7-15)
 
 ### Fixed
@@ -9506,7 +9336,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rn-electron-0 (2021-11-10)
 
 ### Fixed
@@ -9702,7 +9531,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -9793,7 +9622,7 @@ rnv run -p android
 - Bump postcss from 7.0.35 to 7.0.36 in /website
 - feat(CarPlay): Add CarPlay plugin to the list of possible plugins
 - feat(AppDelegate): Added extensions for application and methods needed for CarPlay support
-- [ReNative][Android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
+- [ReNative][android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
 - [fix] resolve paths in monorepo projects
 - engine tvos wip
 - [fix] Xcode 12.5 fix edge cases with RN Pod override
@@ -9810,7 +9639,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnmacos-0 (2021-7-22)
 
 ### Fixed
@@ -9853,7 +9681,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnmacos-1 (2021-7-23)
 
 ### Fixed
@@ -9898,7 +9725,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnmacos-2 (2021-7-28)
 
 ### Fixed
@@ -9952,7 +9778,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnmacos-3 (2021-7-28)
 
 ### Fixed
@@ -10008,14 +9833,13 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnmacos-4 (2021-7-29)
 
 ### Fixed
 
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -10070,7 +9894,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnmacos-5 (2021-7-29)
 
 ### Fixed
@@ -10079,7 +9902,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -10134,7 +9957,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnmacos-6 (2021-7-29)
 
 ### Fixed
@@ -10144,7 +9966,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -10199,7 +10021,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnmacos-7 (2021-8-3)
 
 ### Fixed
@@ -10212,7 +10033,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -10267,7 +10088,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnmacos-8 (2021-8-12)
 
 ### Fixed
@@ -10288,7 +10108,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -10343,7 +10163,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnwin-0 (2021-8-24)
 
 ### Fixed
@@ -10400,7 +10219,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnwin-1 (2021-8-24)
 
 ### Fixed
@@ -10459,7 +10277,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnwin-2 (2021-8-24)
 
 ### Fixed
@@ -10521,7 +10338,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnwin-3 (2021-8-24)
 
 ### Fixed
@@ -10586,7 +10402,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnwin-4 (2021-8-25)
 
 ### Fixed
@@ -10655,7 +10470,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-rnwin-5 (2021-8-26)
 
 ### Fixed
@@ -10726,7 +10540,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-task-rnv-new-args-0 (2021-11-10)
 
 ### Fixed
@@ -10921,7 +10734,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -11012,7 +10825,7 @@ rnv run -p android
 - Bump postcss from 7.0.35 to 7.0.36 in /website
 - feat(CarPlay): Add CarPlay plugin to the list of possible plugins
 - feat(AppDelegate): Added extensions for application and methods needed for CarPlay support
-- [ReNative][Android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
+- [ReNative][android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
 - [fix] resolve paths in monorepo projects
 - engine tvos wip
 - [fix] Xcode 12.5 fix edge cases with RN Pod override
@@ -11029,7 +10842,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-task-rnv-new-args-1 (2021-11-10)
 
 ### Fixed
@@ -11226,7 +11038,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -11317,7 +11129,7 @@ rnv run -p android
 - Bump postcss from 7.0.35 to 7.0.36 in /website
 - feat(CarPlay): Add CarPlay plugin to the list of possible plugins
 - feat(AppDelegate): Added extensions for application and methods needed for CarPlay support
-- [ReNative][Android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
+- [ReNative][android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
 - [fix] resolve paths in monorepo projects
 - engine tvos wip
 - [fix] Xcode 12.5 fix edge cases with RN Pod override
@@ -11334,7 +11146,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-task-rnv-new-args-2 (2021-11-10)
 
 ### Fixed
@@ -11533,7 +11344,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -11624,7 +11435,7 @@ rnv run -p android
 - Bump postcss from 7.0.35 to 7.0.36 in /website
 - feat(CarPlay): Add CarPlay plugin to the list of possible plugins
 - feat(AppDelegate): Added extensions for application and methods needed for CarPlay support
-- [ReNative][Android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
+- [ReNative][android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
 - [fix] resolve paths in monorepo projects
 - engine tvos wip
 - [fix] Xcode 12.5 fix edge cases with RN Pod override
@@ -11641,7 +11452,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-task-rnv-new-args-3 (2021-11-11)
 
 ### Fixed
@@ -11849,7 +11659,7 @@ rnv run -p android
 - 0.32.0-feat-rnmacos-4
 - fix (rn-macos engine): fix code signing entitlements and add default properties to entitlements.plist
 - fix (template-hello-world: macOS): removed `macos` specific file
-- improvements (rn-macos engine): add missing default  app icons to `assets`
+- improvements (rn-macos engine): add missing default app icons to `assets`
 - fix (rn-macos engine): change engine `projectDirName` from `project` to empty string so application assets would be copied properly
 - chore (rn-macos engine): add `macos`to missing engines config
 - 0.32.0-feat-rnmacos-3
@@ -11940,7 +11750,7 @@ rnv run -p android
 - Bump postcss from 7.0.35 to 7.0.36 in /website
 - feat(CarPlay): Add CarPlay plugin to the list of possible plugins
 - feat(AppDelegate): Added extensions for application and methods needed for CarPlay support
-- [ReNative][Android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
+- [ReNative][android][Debug-RunAndroid] support rnv run -p android -t 127.0.0.1:7555
 - [fix] resolve paths in monorepo projects
 - engine tvos wip
 - [fix] Xcode 12.5 fix edge cases with RN Pod override
@@ -11957,7 +11767,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-tvos-3 (2021-8-4)
 
 ### Fixed
@@ -11998,7 +11807,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-tvos-4 (2021-8-10)
 
 ### Fixed
@@ -12046,7 +11854,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-winbuilds-0 (2021-8-6)
 
 ### Fixed
@@ -12072,7 +11879,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.32.0-feat-winbuilds-1 (2021-8-9)
 
 ### Fixed
@@ -12101,7 +11907,6 @@ rnv run -p android
 
 - none
 
-  
 ## v0.30.0-rc1 (2020-6-21)
 
 ### Fixed
@@ -12124,7 +11929,6 @@ rnv run -p android
 
 - none
 
-
 ## v0.30.0-rc2 (2020-6-21)
 
 ### Fixed
@@ -12138,4 +11942,3 @@ rnv run -p android
 ### Breaking Changes
 
 - none
-
