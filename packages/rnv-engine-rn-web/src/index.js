@@ -10,7 +10,23 @@ import taskRnvDeploy from './tasks/task.rnv.deploy';
 import taskRnvDebug from './tasks/task.rnv.debug';
 
 
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
+
+
+export {
+    webpack,
+    HtmlWebpackPlugin,
+    HtmlWebpackHarddiskPlugin,
+    MiniCssExtractPlugin,
+    BundleAnalyzerPlugin
+};
 
 export default {
     initializeRuntimeConfig: c => Config.initializeConfig(c),

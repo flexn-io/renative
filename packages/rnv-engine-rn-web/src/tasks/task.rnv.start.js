@@ -1,7 +1,8 @@
 import open from 'better-opn';
-import { TaskManager, Constants, Logger, PlatformManager, Common, WebpackUtils } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, Common } from 'rnv';
+import { runWebpackServer } from '../sdks/sdk-webpack/webpackUtils';
 
-const { getConfigProp } = Common;
+const { getConfigProp, waitForHost } = Common;
 const { logErrorPlatform } = PlatformManager;
 const { logTask, logError } = Logger;
 const {
@@ -20,7 +21,7 @@ const {
     REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     PARAMS
 } = Constants;
-const { runWebpackServer, waitForWebpack } = WebpackUtils;
+
 const { executeTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
@@ -37,7 +38,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_START, originTask)) return true;
 
     if (hosted) {
-        waitForWebpack(c)
+        waitForHost(c)
             .then(() => open(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }

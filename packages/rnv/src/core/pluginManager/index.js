@@ -16,7 +16,7 @@ import {
     logWarning
 } from '../systemManager/logger';
 import { installPackageDependencies } from '../systemManager/npmUtils';
-import { doResolve } from '../systemManager/resolve';
+import { doResolve, doResolvePath } from '../systemManager/resolve';
 
 
 export const getPluginList = (c, isUpdate = false) => {
@@ -887,3 +887,68 @@ export const getLocalRenativePlugin = () => ({
         }
     }
 });
+
+
+export const getModuleConfigs = (c, primaryKey) => {
+    let modulePaths = [];
+    const moduleAliases = {};
+
+    const doNotResolveModulePaths = [];
+
+    // PLUGINS
+    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
+        const webpackConfig = plugin[primaryKey] || plugin.webpack || plugin.webpackConfig;
+
+        if (webpackConfig) {
+            if (webpackConfig.modulePaths) {
+                if (webpackConfig.modulePaths === false) {
+                    // ignore
+                } else if (webpackConfig.modulePaths === true) {
+                    modulePaths.push(`node_modules/${key}`);
+                } else {
+                    webpackConfig.modulePaths.forEach((v) => {
+                        if (typeof v === 'string') {
+                            modulePaths.push(v);
+                        } else if (includesPluginPath(v.projectPath)) {
+                            doNotResolveModulePaths.push(sanitizePluginPath(v.projectPath, key));
+                        } else if (v?.projectPath) {
+                            doNotResolveModulePaths.push(path.join(c.paths.project.dir, v.projectPath));
+                        }
+                    });
+                }
+            }
+            if (webpackConfig.moduleAliases) {
+                if (webpackConfig.moduleAliases === true) {
+                    moduleAliases[key] = doResolvePath(key, true, {}, c.paths.project.nodeModulesDir);
+                } else {
+                    Object.keys(webpackConfig.moduleAliases).forEach((aKey) => {
+                        const mAlias = webpackConfig.moduleAliases[aKey];
+                        if (typeof mAlias === 'string') {
+                            moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
+                        } else if (mAlias.path) {
+                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
+                        } else if (includesPluginPath(mAlias.projectPath)) {
+                            moduleAliases[key] = sanitizePluginPath(mAlias.projectPath, key);
+                        } else if (mAlias.projectPath) {
+                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.projectPath);
+                        }
+                    });
+                }
+            }
+        }
+    }, true);
+
+    const moduleAliasesArray = [];
+    Object.keys(moduleAliases).forEach((key) => {
+        moduleAliasesArray.push(`${key}:${moduleAliases[key]}`);
+    });
+
+    modulePaths = modulePaths
+        .map(v => doResolvePath(v, true, {}, c.paths.project.dir))
+        .concat(doNotResolveModulePaths)
+        .concat([c.paths.project.assets.dir])
+        .filter(Boolean);
+
+
+    return { modulePaths, moduleAliases, moduleAliasesArray };
+};

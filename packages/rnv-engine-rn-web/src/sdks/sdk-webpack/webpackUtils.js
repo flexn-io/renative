@@ -4,9 +4,9 @@ import open from 'better-opn';
 import axios from 'axios';
 import ip from 'ip';
 import commandExists from 'command-exists';
-import { fsExistsSync, readObjectSync, writeCleanFile, fsWriteFileSync, mkdirSync } from '../systemManager/fileutils';
-import { executeAsync } from '../systemManager/exec';
-import {
+import { Common, Logger, EngineManager, Resolver, FileUtils, PluginManager, Constants, Exec } from 'rnv';
+
+const {
     getPlatformBuildDir,
     getAppVersion,
     checkPortInUse,
@@ -19,10 +19,11 @@ import {
     addSystemInjects,
     getPlatformProjectDir,
     getPlatformServerDir,
-    getDevServerHost
-} from '../common';
-import { doResolve, doResolvePath } from '../systemManager/resolve';
-import {
+    getDevServerHost,
+    waitForHost
+} = Common;
+const { doResolve, doResolvePath } = Resolver;
+const {
     chalk,
     logTask,
     logInfo,
@@ -32,14 +33,13 @@ import {
     logRaw,
     logError,
     logSummary
-} from '../systemManager/logger';
-import { getPlatformExtensions } from '../engineManager';
-import { parsePlugins, includesPluginPath, sanitizePluginPath } from '../pluginManager';
+} = Logger;
+const { fsExistsSync, readObjectSync, writeCleanFile, fsWriteFileSync, mkdirSync } = FileUtils;
+const { getPlatformExtensions } = EngineManager;
+const { getModuleConfigs } = PluginManager;
+const { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR } = Constants;
+const { executeAsync } = Exec;
 
-import { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR } from '../constants';
-
-const WEBPACK = path.join(RNV_NODE_MODULES_DIR, 'webpack/bin/webpack.js');
-const WEBPACK_DEV_SERVER = path.join(RNV_NODE_MODULES_DIR, 'webpack-dev-server/bin/webpack-dev-server.js');
 
 const _generateWebpackConfigs = (c) => {
     logTask('_generateWebpackConfigs');
@@ -175,7 +175,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
         '_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`
     );
     if (!c.runtime.shouldOpenBrowser) return resolve();
-    const wait = waitForWebpack(c)
+    const wait = waitForHost(c)
         .then(() => {
             open(`http://${devServerHost}:${port}/`);
         })
@@ -258,6 +258,11 @@ Debugger running at: ${debugUrl}`);
     return true;
 };
 
+
+const WEBPACK_DEV_SERVER = `${path.join(__dirname, '../../../node_modules/webpack-dev-server')}/bin/webpack-dev-server.js`;
+const WEBPACK = `${path.join(__dirname, '../../../node_modules/webpack')}/bin/webpack.js`;
+
+
 const _runWebDevServer = async (c, enableRemoteDebugger) => {
     logTask('_runWebDevServer');
     const { debug } = c.program;
@@ -283,21 +288,33 @@ const _runWebDevServer = async (c, enableRemoteDebugger) => {
     const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
     logRaw(`${debugObj.lineBreaks}Dev server running at: ${url}\n\n`);
 
-
     const WPS_ALTERNATIVE = `${doResolve('webpack-dev-server')}/bin/webpack-dev-server.js`;
+    const WPS_ALTERNATIVE2 = path.join(RNV_NODE_MODULES_DIR, 'webpack-dev-server/bin/webpack-dev-server.js');
 
     let wps = 'webpack-dev-server';
     if (fsExistsSync(WEBPACK_DEV_SERVER)) {
         wps = WEBPACK_DEV_SERVER;
     } else if (fsExistsSync(WPS_ALTERNATIVE)) {
         wps = WPS_ALTERNATIVE;
+    } else if (fsExistsSync(WPS_ALTERNATIVE2)) {
+        wps = WPS_ALTERNATIVE2;
     } else {
         logWarning(`cannot find installed webpack-dev-server. looked in following locations:
-${chalk().white(WEBPACK_DEV_SERVER)},
-${chalk().white(WPS_ALTERNATIVE)}
-will try to use globally installed one`);
+    ${chalk().white(WEBPACK_DEV_SERVER)},
+    ${chalk().white(WPS_ALTERNATIVE)}
+    will try to use globally installed one`);
     }
 
+
+    // const command = `npx cross-env PLATFORM=${c.platform} ${
+    //     debugObj.debugVariables
+    // } webpack serve --devtool eval --config ${
+    //     wpConfig
+    // }  --progress --hot --color --static ${
+    //     wpPublic
+    // } --history-api-fallback --port ${c.runtime.port} --mode=${
+    //     environment
+    // } --host ${devServerHost}`;
     const command = `npx cross-env PLATFORM=${c.platform} ${
         debugObj.debugVariables
     } ${wps} -d --devtool source-map --config ${
@@ -307,6 +324,7 @@ will try to use globally installed one`);
     } --history-api-fallback --port ${c.runtime.port} --mode=${
         environment
     } --host ${devServerHost}`;
+
     try {
         await executeAsync(c, command, {
             stdio: 'inherit',
@@ -467,68 +485,4 @@ will try to use globally installed one`);
         )} .`
     );
     return true;
-};
-
-export const getModuleConfigs = (c, primaryKey) => {
-    let modulePaths = [];
-    const moduleAliases = {};
-
-    const doNotResolveModulePaths = [];
-
-    // PLUGINS
-    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
-        const webpackConfig = plugin[primaryKey] || plugin.webpack || plugin.webpackConfig;
-
-        if (webpackConfig) {
-            if (webpackConfig.modulePaths) {
-                if (webpackConfig.modulePaths === false) {
-                    // ignore
-                } else if (webpackConfig.modulePaths === true) {
-                    modulePaths.push(`node_modules/${key}`);
-                } else {
-                    webpackConfig.modulePaths.forEach((v) => {
-                        if (typeof v === 'string') {
-                            modulePaths.push(v);
-                        } else if (includesPluginPath(v.projectPath)) {
-                            doNotResolveModulePaths.push(sanitizePluginPath(v.projectPath, key));
-                        } else if (v?.projectPath) {
-                            doNotResolveModulePaths.push(path.join(c.paths.project.dir, v.projectPath));
-                        }
-                    });
-                }
-            }
-            if (webpackConfig.moduleAliases) {
-                if (webpackConfig.moduleAliases === true) {
-                    moduleAliases[key] = doResolvePath(key, true, {}, c.paths.project.nodeModulesDir);
-                } else {
-                    Object.keys(webpackConfig.moduleAliases).forEach((aKey) => {
-                        const mAlias = webpackConfig.moduleAliases[aKey];
-                        if (typeof mAlias === 'string') {
-                            moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
-                        } else if (mAlias.path) {
-                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
-                        } else if (includesPluginPath(mAlias.projectPath)) {
-                            moduleAliases[key] = sanitizePluginPath(mAlias.projectPath, key);
-                        } else if (mAlias.projectPath) {
-                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.projectPath);
-                        }
-                    });
-                }
-            }
-        }
-    }, true);
-
-    const moduleAliasesArray = [];
-    Object.keys(moduleAliases).forEach((key) => {
-        moduleAliasesArray.push(`${key}:${moduleAliases[key]}`);
-    });
-
-    modulePaths = modulePaths
-        .map(v => doResolvePath(v, true, {}, c.paths.project.dir))
-        .concat(doNotResolveModulePaths)
-        .concat([c.paths.project.assets.dir])
-        .filter(Boolean);
-
-
-    return { modulePaths, moduleAliases, moduleAliasesArray };
 };

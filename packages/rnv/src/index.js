@@ -30,7 +30,6 @@ import * as Logger from './core/systemManager/logger';
 import * as Resolver from './core/systemManager/resolve';
 import Analytics from './core/systemManager/analytics';
 import Config from './core/configManager/config';
-import * as WebpackUtils from './core/sdkManager/webpackUtils';
 
 global.RNV_ANALYTICS = Analytics;
 
@@ -72,7 +71,6 @@ export {
     TaskManager,
     RuntimeManager,
     // SUBMODULES
-    WebpackUtils,
     Exec,
     FileUtils,
     ObjectUtils,

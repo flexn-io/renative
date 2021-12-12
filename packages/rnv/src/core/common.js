@@ -2,6 +2,7 @@ import colorString from 'color-string';
 import detectPort from 'detect-port';
 import ip from 'ip';
 import killPort from 'kill-port';
+import axios from 'axios';
 import lGet from 'lodash.get';
 import path from 'path';
 import { inquirerPrompt } from '../cli/prompt';
@@ -94,6 +95,49 @@ export const getDevServerHost = (c) => {
     const devServerHostFixed = getValidLocalhost(devServerHostOrig, c.runtime.localhost);
 
     return devServerHostFixed;
+};
+
+export const waitForHost = async (c, suffix = 'assets/bundle.js') => {
+    logTask('waitForHost', `port:${c.runtime.port}`);
+    let attempts = 0;
+    const maxAttempts = 10;
+    const CHECK_INTEVAL = 2000;
+    // const spinner = ora('Waiting for webpack to finish...').start();
+
+    const devServerHost = getDevServerHost(c);
+    const url = `http://${devServerHost}:${c.runtime.port}/${suffix}`;
+
+    return new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+            axios
+                .get(url)
+                .then((res) => {
+                    if (res.status === 200) {
+                        clearInterval(interval);
+                        // spinner.succeed();
+                        return resolve(true);
+                    }
+                    attempts++;
+                    if (attempts === maxAttempts) {
+                        clearInterval(interval);
+                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                        return reject(
+                            "Can't connect to host. Try restarting it."
+                        );
+                    }
+                })
+                .catch(() => {
+                    attempts++;
+                    if (attempts > maxAttempts) {
+                        clearInterval(interval);
+                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                        return reject(
+                            "Can't connect to host. Try restarting it."
+                        );
+                    }
+                });
+        }, CHECK_INTEVAL);
+    });
 };
 
 export const existBuildsOverrideForTargetPathSync = (c, destPath) => {

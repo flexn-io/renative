@@ -2397,7 +2397,7 @@
             }
         },
         "react-native-web": {
-            "version": "0.13.12",
+            "version": "0.17.5",
             "pluginDependencies": {
                 "react": "source:rnv"
             }

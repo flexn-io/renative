@@ -1,5 +1,6 @@
 import path from 'path';
-import { PlatformManager, WebpackUtils, FileUtils, Common, Logger, ProjectManager, SDKManager } from 'rnv';
+import { PlatformManager, FileUtils, Common, Logger, ProjectManager, SDKManager } from 'rnv';
+import { buildCoreWebpackProject, configureCoreWebProject } from '../sdk-webpack/webpackUtils';
 
 const {
     getPlatformProjectDir,
@@ -12,7 +13,7 @@ const { fsWriteFileSync, fsReadFileSync } = FileUtils;
 const { logTask } = Logger;
 const { isPlatformActive } = PlatformManager;
 const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
-const { buildWeb, configureCoreWebProject } = WebpackUtils;
+
 const { launchKaiOSSimulator } = SDKManager.Kaios;
 
 export const configureKaiOSProject = async (c) => {
@@ -59,7 +60,7 @@ export const runFirefoxProject = async (c) => {
     logTask('runFirefoxProject');
     const { platform } = c;
 
-    await buildWeb(c);
+    await buildCoreWebpackProject(c);
     await launchKaiOSSimulator(c, platform);
     return true;
 };
@@ -67,6 +68,6 @@ export const runFirefoxProject = async (c) => {
 export const buildFirefoxProject = async (c) => {
     logTask('buildFirefoxProject');
 
-    await buildWeb(c);
+    await buildCoreWebpackProject(c);
     return true;
 };

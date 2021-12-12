@@ -113,6 +113,13 @@
   "workspaces": {
     "packages": [
       "packages/*"
+    ],
+    "nohoist": [
+      "**/html-webpack-plugin",
+      "**/html-webpack-harddisk-plugin",
+      "**/webpack",
+      "**/mini-css-extract-plugin",
+      "**/@zeit/next-css"
     ]
   }
 }

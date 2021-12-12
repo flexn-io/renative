@@ -1,6 +1,6 @@
 import path from 'path';
 import open from 'better-opn';
-import { Exec, WebpackUtils, FileUtils, Common, Logger, Constants, EngineManager, PluginManager } from 'rnv';
+import { Exec, FileUtils, Common, Logger, Constants, EngineManager, PluginManager } from 'rnv';
 
 const { executeAsync } = Exec;
 const {
@@ -8,9 +8,9 @@ const {
     getConfigProp,
     confirmActiveBundler,
     getPlatformBuildDir,
-    getDevServerHost
+    getDevServerHost,
+    waitForHost
 } = Common;
-const { waitForWebpack, getModuleConfigs } = WebpackUtils;
 const { fsExistsSync, writeCleanFile } = FileUtils;
 const {
     chalk, logTask, logInfo, logWarning,
@@ -18,7 +18,7 @@ const {
 } = Logger;
 const { NEXT_CONFIG_NAME } = Constants;
 const { generateEnvVars } = EngineManager;
-const { parsePlugins } = PluginManager;
+const { parsePlugins, getModuleConfigs } = PluginManager;
 
 export const configureNextIfRequired = async (c) => {
     logTask('configureNextIfRequired');
@@ -78,7 +78,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
         '_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`
     );
     if (!c.runtime.shouldOpenBrowser) return resolve();
-    const wait = waitForWebpack(c, '')
+    const wait = waitForHost(c, '')
         .then(() => {
             open(`http://${devServerHost}:${port}/`);
         })

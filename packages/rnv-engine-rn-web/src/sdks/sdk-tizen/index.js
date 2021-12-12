@@ -1,6 +1,7 @@
 import path from 'path';
 import semver from 'semver';
-import { Exec, WebpackUtils, FileUtils, Common, Logger, Constants, SDKManager, PlatformManager, ProjectManager } from 'rnv';
+import { Exec, FileUtils, Common, Logger, Constants, SDKManager, PlatformManager, ProjectManager } from 'rnv';
+import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '../sdk-webpack/webpackUtils';
 
 const { execCLI } = Exec;
 const {
@@ -14,7 +15,8 @@ const {
     getConfigProp,
     checkPortInUse,
     confirmActiveBundler,
-    addSystemInjects
+    addSystemInjects,
+    waitForHost
 } = Common;
 const {
     chalk,
@@ -27,7 +29,7 @@ const {
 } = Logger;
 const { isPlatformActive } = PlatformManager;
 const { writeCleanFile, fsExistsSync } = FileUtils;
-const { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject, waitForWebpack } = WebpackUtils;
+
 const { copyAssetsFolder, copyBuildsFolder } = ProjectManager;
 
 const {
@@ -58,7 +60,7 @@ export const configureTizenGlobal = c => new Promise((resolve, reject) => {
 
 const _runTizenSimOrDevice = async (c) => {
     try {
-        await runTizenSimOrDevice(c);
+        await runTizenSimOrDevice(c, buildCoreWebpackProject);
     } catch (e) {
         // TODO: Capture different errors and react accordingly
         return Promise.reject(e);
@@ -102,7 +104,7 @@ export const runTizen = async (c, target) => {
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );
-            waitForWebpack(c)
+            waitForHost(c)
                 .then(() => _runTizenSimOrDevice(c))
                 .catch(logError);
             await runWebpackServer(c, isWeinreEnabled);
@@ -110,7 +112,7 @@ export const runTizen = async (c, target) => {
             const resetCompleted = await confirmActiveBundler(c);
 
             if (resetCompleted) {
-                waitForWebpack(c)
+                waitForHost(c)
                     .then(() => _runTizenSimOrDevice(c))
                     .catch(logError);
                 await runWebpackServer(c, isWeinreEnabled);

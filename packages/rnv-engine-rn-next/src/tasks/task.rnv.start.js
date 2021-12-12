@@ -1,5 +1,5 @@
 import open from 'better-opn';
-import { TaskManager, Constants, Logger, PlatformManager, WebpackUtils } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, Common } from 'rnv';
 import { SDKNext } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
@@ -11,9 +11,9 @@ const {
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
-const { waitForWebpack } = WebpackUtils;
 const { runWebNext } = SDKNext;
 const { executeTask, shouldSkipTask } = TaskManager;
+const { waitForHost } = Common;
 
 export const taskRnvStart = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -23,7 +23,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
     logTask('taskRnvStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
 
     if (hosted) {
-        waitForWebpack(c)
+        waitForHost(c)
             .then(() => open(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }

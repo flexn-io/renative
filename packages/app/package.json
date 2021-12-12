@@ -70,7 +70,7 @@
         "react-native-tab-view": "2.13.0",
         "react-native-tvos": "npm:react-native-tvos@0.63.4-0",
         "react-native-vector-icons": "8.1.0",
-        "react-native-web": "0.13.12",
+        "react-native-web": "0.17.5",
         "react-native-web-image-loader": "0.0.5",
         "react-native-windows": "0.63.36",
         "renative": "0.33.0"
