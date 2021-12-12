@@ -1,4 +1,4 @@
-
+import 'regenerator-runtime/runtime';
 import * as Common from './core/common';
 import * as Utils from './core/systemManager/utils';
 import * as Prompt from './cli/prompt';
@@ -43,6 +43,7 @@ export const initializeBuilder = async (cmd, subCmd, process, program) => {
 };
 
 const run = (cmd, subCmd, program, process) => {
+    console.log('AMAMMMAMAMAM');
     initializeBuilder(cmd, subCmd, process, program)
         .then(c => Config.initializeConfig(c))
         .then(c => CLI(c))

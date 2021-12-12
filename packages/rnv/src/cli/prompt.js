@@ -5,7 +5,7 @@ import Config from '../core/configManager/config';
 export const inquirerPrompt = async (params) => {
     const c = Config.getConfig();
     const msg = params.logMessage || params.warningMessage || params.message;
-    if (c.program.ci) {
+    if (c.program?.ci) {
         if (Array.isArray(params.choices) && typeof params.default !== 'undefined' && params.choices.includes(params.default)) {
             logDebug(`defaulting to choice '${params.default}' for prompt '${params.name}'`);
             return Promise.resolve({ [params.name]: params.default });

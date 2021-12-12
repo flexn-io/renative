@@ -119,8 +119,6 @@
         "kill-port": "1.6.1",
         "lodash.get": "4.4.2",
         "lodash.set": "4.3.2",
-        "metro-react-native-babel-preset": "0.59.0",
-        "metro-resolver": "0.59.0",
         "minimist": "1.2.5",
         "modclean": "3.0.0-beta.1",
         "natives": "1.1.6",
@@ -134,10 +132,8 @@
         "source-map-loader": "0.2.4",
         "source-map-support": "0.5.13",
         "strip-ansi": "5.2.0",
-        "style-loader": "1.2.1",
         "svg2js": "0.0.4-alpha1",
         "tar": "4.4.19",
-        "url-loader": "1.1.1",
         "xml2js": "0.4.23"
     },
     "devDependencies": {
@@ -171,10 +167,6 @@
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "jest": {
-        "preset": "react-native",
-        "collectCoverage": true
     },
     "title": "ReNative CLI"
 }

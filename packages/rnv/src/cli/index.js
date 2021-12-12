@@ -11,6 +11,7 @@ import EngineCore from '../engine-core';
 const IGNORE_MISSING_ENGINES_TASKS = ['link', 'unlink'];
 
 const run = async (c) => {
+    console.log('DKLKDKDLKDJLDKJDLKDJ');
     await registerEngine(c, EngineCore);
     await configureRuntimeDefaults(c);
     await checkAndMigrateProject(c);
