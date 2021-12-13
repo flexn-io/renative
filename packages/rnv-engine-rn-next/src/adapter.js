@@ -9,12 +9,18 @@ const withCSS = require('@zeit/next-css');
 export const withRNV = (config, opts) => {
     const cnf = {
         ...config,
-        webpack5: false,
+        images: {
+            disableStaticImages: true
+        },
+        // webpack5: false,
         distDir: process.env.NEXT_DIST_DIR,
         webpack: (cfg, props) => {
             const { isServer } = props;
             const rootPath = process.env.RNV_PROJECT_ROOT || process.cwd();
-            cfg.resolve.extensions = process.env.RNV_EXTENSIONS.split(',').map(e => `.${e}`).filter(ext => isServer || !ext.includes('server.'));
+            if (process.env.RNV_EXTENSIONS) {
+                cfg.resolve.extensions = process.env.RNV_EXTENSIONS.split(',').map(e => `.${e}`).filter(ext => isServer || !ext.includes('server.'));
+            }
+
             cfg.resolve.modules.unshift(path.resolve(rootPath));
             if (process.env.RNV_MODULE_ALIASES) {
                 const mAliases = process.env.RNV_MODULE_ALIASES.split(',');
@@ -43,10 +49,10 @@ export const withRNV = (config, opts) => {
                 return config.webpack(cfg, props);
             }
 
-            // TODO This feels like haxx
-            if (cfg.module.rules[1].oneOf[5].include && Array.isArray(cfg.module.rules[1].oneOf[5].include.or)) {
-                cfg.module.rules[1].oneOf[5].include.or = cfg.module.rules[1].oneOf[5].include.or.filter(pth => !!pth);
-            }
+            // TODO This feels like haxx //=> THIS BREAKS in Next 12 + Webpack 5
+            // if (cfg.module.rules[1].oneOf[5].include && Array.isArray(cfg.module.rules[1].oneOf[5].include.or)) {
+            //     cfg.module.rules[1].oneOf[5].include.or = cfg.module.rules[1].oneOf[5].include.or.filter(pth => !!pth);
+            // }
             return cfg;
         },
     };
@@ -66,6 +72,9 @@ export const withRNV = (config, opts) => {
     if (opts?.enableNextCss) {
         cnf1 = withCSS(cnf1);
     }
-    cnf1.pageExtensions = process.env.RNV_EXTENSIONS.split(',');
+    if (process.env.RNV_EXTENSIONS) {
+        cnf1.pageExtensions = process.env.RNV_EXTENSIONS.split(',');
+    }
+
     return cnf1;
 };

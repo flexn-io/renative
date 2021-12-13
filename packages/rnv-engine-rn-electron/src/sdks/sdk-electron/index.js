@@ -1,6 +1,7 @@
 import { spawn } from 'child_process';
 import path from 'path';
-import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver, WebpackUtils } from 'rnv';
+import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver } from 'rnv';
+import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '../sdk-webpack/webpackUtils';
 
 const { createPlatformBuild, isPlatformActive } = PlatformManager;
 const { executeAsync } = Exec;
@@ -26,6 +27,7 @@ const {
     checkPortInUse,
     confirmActiveBundler,
     addSystemInjects,
+    waitForHost
 } = Common;
 const { doResolve } = Resolver;
 const {
@@ -43,7 +45,6 @@ const {
 const {
     MACOS
 } = Constants;
-const { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject, waitForWebpack } = WebpackUtils;
 
 
 export const configureElectronProject = async (c) => {
@@ -279,7 +280,7 @@ export const runElectron = async (c) => {
                     port
                 )} is not running. Starting it up for you...`
             );
-            waitForWebpack(c)
+            waitForHost(c)
                 .then(() => _runElectronSimulator(c))
                 .catch(logError);
             // await _runElectronSimulator(c);
@@ -287,7 +288,7 @@ export const runElectron = async (c) => {
         } else {
             const resetCompleted = await confirmActiveBundler(c);
             if (resetCompleted) {
-                waitForWebpack(c)
+                waitForHost(c)
                     .then(() => _runElectronSimulator(c))
                     .catch(logError);
                 // await _runElectronSimulator(c);

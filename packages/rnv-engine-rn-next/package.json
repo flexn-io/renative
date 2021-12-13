@@ -28,10 +28,17 @@
     "dependencies": {
         "@expo/next-adapter": "3.1.12",
         "@zeit/next-css": "1.0.1",
-        "next-fonts": "1.4.0",
-        "next-images": "1.4.1",
+        "next-fonts": "1.5.1",
+        "next-images": "1.8.4",
         "next-optimized-images": "2.6.2",
-        "next-transpile-modules": "8.0.0"
+        "next-transpile-modules": "9.0.0",
+        "ally.js": "1.4.1",
+        "webpack": "5.65.0",
+        "webpack-bundle-analyzer": "3.5.1",
+        "webpack-cli": "4.9.1",
+        "webpack-dev-server": "4.6.0",
+        "webpack-merge": "4.1.4",
+        "write-json-webpack-plugin": "1.1.0"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -42,8 +49,8 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "next": ">=9.5.4",
-        "rnv": ">=0.31"
+        "next": ">=12.0.7",
+        "rnv": "^0.33"
     },
     "private": false,
     "publishConfig": {

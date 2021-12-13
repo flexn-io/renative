@@ -1,9 +1,12 @@
 const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+const {
+    webpack,
+    HtmlWebpackPlugin,
+    HtmlWebpackHarddiskPlugin,
+    MiniCssExtractPlugin,
+    BundleAnalyzerPlugin
+} = require('@rnv/engine-rn-web');
 
 function generateConfig(config) {
     const projectDir = path.resolve(__dirname, '../..');

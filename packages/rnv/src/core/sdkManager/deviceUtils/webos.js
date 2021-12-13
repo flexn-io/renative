@@ -109,7 +109,7 @@ const installAndLaunchApp = async (c, target, appPath, tId) => {
     const toReturn = true;
     // if (isHosted) {
     //     toReturn = startHostedServerIfRequired(c);
-    //     await waitForWebpack(c);
+    //     await waitForHost(c);
     // }
     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${target} ${tId}`);
     return toReturn;

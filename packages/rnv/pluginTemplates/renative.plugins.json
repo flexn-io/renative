@@ -2397,7 +2397,7 @@
             }
         },
         "react-native-web": {
-            "version": "0.13.12",
+            "version": "0.17.5",
             "pluginDependencies": {
                 "react": "source:rnv"
             }
@@ -2989,7 +2989,7 @@
             }
         },
         "next": {
-            "version": "9.5.3"
+            "version": "12.0.7"
         },
         "@react-native-community/cli-platform-ios": {
             "no-npm": true

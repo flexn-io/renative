@@ -10,7 +10,6 @@ import { fsRenameSync } from '../../systemManager/fileutils';
 import {
     chalk, logDebug, logError, logInfo, logTask, logToSummary, logWarning
 } from '../../systemManager/logger';
-import { buildCoreWebpackProject } from '../webpackUtils';
 import { waitForEmulator } from './common';
 
 
@@ -218,7 +217,7 @@ const _composeDevicesString = devices => devices.map(device => ({
 //     }
 // };
 
-export const runTizenSimOrDevice = async (c) => {
+export const runTizenSimOrDevice = async (c, buildCoreWebpackProject) => {
     const { hosted } = c.program;
     const { target, engine } = c.runtime;
     const { platform } = c;
@@ -303,7 +302,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
     const continueLaunching = async () => {
         let hasDevice = false;
 
-        if (!isLightningEngine) { // lightning engine handles the build and packaging
+        if (!isLightningEngine && buildCoreWebpackProject) { // lightning engine handles the build and packaging
             !isHosted && (await buildCoreWebpackProject(c));
             await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
             await execCLI(
@@ -362,7 +361,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
         // if (isHosted) {
         //     toReturn = startHostedServerIfRequired(c);
-        //     await waitForWebpack(c);
+        //     await waitForHost(c);
         // }
 
         if (

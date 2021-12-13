@@ -27,7 +27,7 @@
     "dependencies": {
         "babel-loader": "8.0.5",
         "html-webpack-harddisk-plugin": "1.0.2",
-        "html-webpack-plugin": "4.5.1"
+        "html-webpack-plugin": "5.5.0"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",

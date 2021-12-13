@@ -1,6 +1,7 @@
 import path from 'path';
 import semver from 'semver';
-import { Exec, WebpackUtils, FileUtils, Common, Logger, Constants, PlatformManager, ProjectManager, SDKManager } from 'rnv';
+import { Exec, FileUtils, Common, Logger, Constants, PlatformManager, ProjectManager, SDKManager } from 'rnv';
+import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '../sdk-webpack/webpackUtils';
 
 const { writeCleanFile } = FileUtils;
 const { execCLI } = Exec;
@@ -15,9 +16,9 @@ const {
     getConfigProp,
     checkPortInUse,
     confirmActiveBundler,
-    addSystemInjects
+    addSystemInjects,
+    waitForHost
 } = Common;
-const { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject, waitForWebpack } = WebpackUtils;
 
 const { isPlatformActive } = PlatformManager;
 const {
@@ -74,14 +75,14 @@ export const runWebOS = async (c) => {
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );
-            waitForWebpack(c)
+            waitForHost(c)
                 .then(() => runWebosSimOrDevice(c))
                 .catch(logError);
             await runWebpackServer(c, isWeinreEnabled);
         } else {
             const resetCompleted = await confirmActiveBundler(c);
             if (resetCompleted) {
-                waitForWebpack(c)
+                waitForHost(c)
                     .then(() => runWebosSimOrDevice(c))
                     .catch(logError);
                 await runWebpackServer(c, isWeinreEnabled);

@@ -29,7 +29,16 @@
         "babel-loader": "8.0.5",
         "electron": "11.5.0",
         "electron-builder": "22.13.1",
-        "electron-notarize": "1.0.0"
+        "electron-notarize": "1.0.0",
+        "html-webpack-harddisk-plugin": "1.0.2",
+        "html-webpack-plugin": "4.5.1",
+        "@babel/preset-react": "7.16.0",
+        "webpack": "4.44.2",
+        "webpack-bundle-analyzer": "3.5.1",
+        "webpack-cli": "3.1.2",
+        "webpack-dev-server": "3.2.1",
+        "webpack-merge": "4.1.4",
+        "write-json-webpack-plugin": "1.1.0"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
