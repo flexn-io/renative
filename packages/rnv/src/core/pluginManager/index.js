@@ -609,7 +609,28 @@ const _overridePlugin = (c, pluginsPath, dir) => {
         );
     }
 
-    let overridePath = path.resolve(pluginsPath, dir, `overrides@${plugin.version}.json`);
+    const pluginVerArr = plugin.version.split('.');
+    const pluginVersions = [];
+    let prevVersion;
+    pluginVerArr.forEach((v) => {
+        if (prevVersion) {
+            prevVersion = `${prevVersion}.${v}`;
+        } else {
+            prevVersion = `${v}`;
+        }
+        pluginVersions.push(prevVersion);
+    });
+    pluginVersions.reverse();
+
+
+    let overridePath;
+    for (let i = 0; i < pluginVersions.length; i++) {
+        overridePath = path.resolve(pluginsPath, dir, `overrides@${pluginVersions[i]}.json`);
+        if (fsExistsSync(overridePath)) {
+            break;
+        }
+    }
+
     if (!fsExistsSync(overridePath)) {
         overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
     }
