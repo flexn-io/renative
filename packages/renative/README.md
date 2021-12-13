@@ -20,12 +20,9 @@
   </a>
 </p>
 
-
 ReNative allows you to bootstrap, develop and deploy apps for mobile, web, TVs, desktops, consoles, wearables and more via single development environment.
 
 Supports popular front-end frameworks like [React](https://reactjs.org/), [React Native](https://reactnative.dev/), [NextJS](https://nextjs.org/), [Electron](https://www.electronjs.org/)
-
-
 
 ## Usage
 
@@ -45,15 +42,15 @@ rnv new
 
 Visit <a aria-label="ReNative learn" href="https://renative.org/docs/overview/quickstart">https://renative.org/learn</a> to get started with ReNative.
 
-
 ## Documentation
 
 Visit <a aria-label="ReNative learn" href="https://renative.org/docs">https://renative.org/docs</a> to view full documentation.
 
+Documentation source code can be found at https://github.com/renative-org/renative-docs
+
 ## Community
 
 ReNative community can be found on <a aria-label="ReNative Discussions" href="https://github.com/renative-org/renative/discussions">Github Discussions</a>.
-
 
 ## Core Maintainers
 
