@@ -43,7 +43,6 @@ export const initializeBuilder = async (cmd, subCmd, process, program) => {
 };
 
 const run = (cmd, subCmd, program, process) => {
-    console.log('AMAMMMAMAMAM');
     initializeBuilder(cmd, subCmd, process, program)
         .then(c => Config.initializeConfig(c))
         .then(c => CLI(c))

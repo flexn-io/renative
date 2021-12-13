@@ -119,7 +119,10 @@
       "**/html-webpack-harddisk-plugin",
       "**/webpack",
       "**/mini-css-extract-plugin",
-      "**/@zeit/next-css"
+      "**/@zeit/next-css",
+      "**/@expo/next-adapter",
+      "**/@expo/webpack-config",
+      "**/@expo/**"
     ]
   }
 }
