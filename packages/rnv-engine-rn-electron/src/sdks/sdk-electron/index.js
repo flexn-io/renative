@@ -1,6 +1,7 @@
 import { spawn } from 'child_process';
 import path from 'path';
-import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver, WebpackUtils } from 'rnv';
+import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver } from 'rnv';
+import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '../sdk-webpack/webpackUtils';
 
 const { createPlatformBuild, isPlatformActive } = PlatformManager;
 const { executeAsync } = Exec;
@@ -44,7 +45,6 @@ const {
 const {
     MACOS
 } = Constants;
-const { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } = WebpackUtils;
 
 
 export const configureElectronProject = async (c) => {

@@ -123,13 +123,7 @@ jest.mock('rnv', () => {
             Kaios: {
 
             }
-        },
-        // WebpackUtils: {
-        //     buildCoreWebpackProject: () => null,
-        //     runWebpackServer: () => 'runWebpackServer called',
-        //     configureCoreWebProject: () => null,
-        //     waitForWebpack: () => null,
-        // }
+        }
     };
 });
 
