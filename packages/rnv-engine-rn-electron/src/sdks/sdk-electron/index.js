@@ -41,7 +41,8 @@ const {
     copyAssetsFolder
 } = ProjectManager;
 const {
-    MACOS
+    MACOS,
+    LINUX
 } = Constants;
 const { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject, waitForWebpack } = WebpackUtils;
 
@@ -54,16 +55,16 @@ export const configureElectronProject = async (c) => {
     c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
 
     // If path does not exist for png, try iconset
-    const pngPath = path.join(
+    const iconsetPath = path.join(
         c.paths.appConfig.dir,
-        `assets/${platform}/resources/icon.png`
+        `assets/${platform}/resources/AppIcon.iconset`
     );
 
     await copyAssetsFolder(
         c,
         platform,
         null,
-        platform === MACOS && !pngPath ? _generateICNS : null
+        (platform === MACOS || platform === LINUX) && fsExistsSync(iconsetPath) ? _generateICNS : null
     );
 
     await configureCoreWebProject(c);
@@ -122,7 +123,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         width: 1200,
         height: 800,
         webPreferences: { nodeIntegration: true, enableRemoteModule: true },
-        icon: platform === MACOS && !pngIconPath
+        icon: (platform === MACOS || platform === LINUX) && !fsExistsSync(pngIconPath)
             ? path.join(platformProjectDir, 'resources', 'icon.icns')
             : path.join(platformProjectDir, 'resources', 'icon.png')
     };
