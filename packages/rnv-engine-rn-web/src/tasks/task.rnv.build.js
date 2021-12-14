@@ -1,5 +1,6 @@
 import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
-import { SDKTizen, SDKWebos, SDKFirefox, SDKWebpack } from '../sdks';
+import { buildWeb } from '@rnv/sdk-webpack';
+import { SDKTizen, SDKWebos, SDKFirefox } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
@@ -17,7 +18,7 @@ const {
     TASK_BUILD, TASK_PACKAGE,
     PARAMS
 } = Constants;
-const { buildWeb } = SDKWebpack;
+
 const { buildTizenProject } = SDKTizen;
 const { buildWebOSProject } = SDKWebos;
 const { buildFirefoxProject } = SDKFirefox;

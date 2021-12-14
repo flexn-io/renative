@@ -1,12 +1,16 @@
 
 import { Common, Logger, PlatformManager, ProjectManager } from 'rnv';
 
-import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from './webpackUtils';
+import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer, waitForUrl, waitForWebpack } from '@rnv/sdk-webpack';
 
 const { getPlatformProjectDir } = Common;
 const { isPlatformActive } = PlatformManager;
 const { logTask } = Logger;
 const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
+
+export {
+    buildCoreWebpackProject, configureCoreWebProject, runWebpackServer, waitForUrl, waitForWebpack
+};
 
 export const buildWeb = async c => buildCoreWebpackProject(c);
 

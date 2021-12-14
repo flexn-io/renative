@@ -1,5 +1,6 @@
 import { TaskManager, Constants, Logger, PlatformManager, TemplateManager } from 'rnv';
-import { SDKTizen, SDKWebos, SDKFirefox, SDKWebpack } from '../sdks';
+import { configureWebProject, configureChromecastProject } from '@rnv/sdk-webpack';
+import { SDKTizen, SDKWebos, SDKFirefox } from '../sdks';
 
 const { logErrorPlatform, copySharedPlatforms } = PlatformManager;
 const { logTask } = Logger;
@@ -17,7 +18,7 @@ const {
     TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE,
     PARAMS
 } = Constants;
-const { configureWebProject, configureChromecastProject } = SDKWebpack;
+
 const { configureTizenProject } = SDKTizen;
 const { configureWebOSProject } = SDKWebos;
 const { configureKaiOSProject } = SDKFirefox;
