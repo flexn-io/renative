@@ -1,7 +1,9 @@
+export * from './kotlinParser';
+
 const runner = {
     foo: () => {
-        console.log('bar');
+        console.log('bar2');
     }
-}
+};
 
-export default runner
+export default runner;

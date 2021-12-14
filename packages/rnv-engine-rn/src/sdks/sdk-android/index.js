@@ -6,16 +6,16 @@ import execa from 'execa';
 import { FileUtils, Exec, Utils, Logger, Constants, EngineManager,
     PluginManager, ProjectManager, Common,
     PlatformManager, Prompt, SDKManager, RuntimeManager } from 'rnv';
-import {
-    parseAndroidManifestSync,
-    injectPluginManifestSync
-} from './manifestParser';
-import {
+import SDKAndroid, {
     parseMainActivitySync,
     parseSplashActivitySync,
     parseMainApplicationSync,
     injectPluginKotlinSync
-} from './kotlinParser';
+} from '@rnv/sdk-android';
+import {
+    parseAndroidManifestSync,
+    injectPluginManifestSync
+} from './manifestParser';
 import {
     parseAppBuildGradleSync,
     parseBuildGradleSync,

@@ -14,19 +14,20 @@ const {
 const { logWarning } = Logger;
 const { writeCleanFile } = FileUtils;
 
-const JS_BUNDLE_DEFAULTS = {
+const JS_BUNDLE_DEFAULTS: any = {
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager
     androidwear: '"assets://index.androidwear.bundle"'
 };
 
-export const parseMainApplicationSync = (c) => {
+export const parseMainApplicationSync = (c: any) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
-    const bundleFile = getGetJsBundleFile(c, platform) || bundleAssets
+    const bundleDefault = JS_BUNDLE_DEFAULTS[platform];
+    const bundleFile: string = getGetJsBundleFile(c, platform) || bundleAssets
         ? '"assets://index.android.bundle"'
-        : JS_BUNDLE_DEFAULTS[platform] || '"super.getJSBundleFile()"';
+        : bundleDefault || '"super.getJSBundleFile()"';
     const bundlerIp = getIP() || '10.0.2.2';
     if (!bundleAssets) {
         c.pluginConfigAndroid.pluginApplicationDebugServer
@@ -70,7 +71,7 @@ export const parseMainApplicationSync = (c) => {
     );
 };
 
-export const parseMainActivitySync = (c) => {
+export const parseMainActivitySync = (c: any) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
@@ -114,7 +115,7 @@ export const parseMainActivitySync = (c) => {
     );
 };
 
-export const parseSplashActivitySync = (c) => {
+export const parseSplashActivitySync = (c: any) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
     const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
@@ -146,9 +147,9 @@ export const parseSplashActivitySync = (c) => {
     );
 };
 
-export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
+export const injectPluginKotlinSync = (c: any, plugin: any, key: any, pkg:any) => {
     if (plugin.activityImports instanceof Array) {
-        plugin.activityImports.forEach((activityImport) => {
+        plugin.activityImports.forEach((activityImport: any) => {
             // Avoid duplicate imports
             if (
                 c.pluginConfigAndroid.pluginActivityImports.indexOf(
@@ -184,7 +185,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
         }
 
         if (mainActivity.imports instanceof Array) {
-            mainActivity.imports.forEach((v) => {
+            mainActivity.imports.forEach((v: any) => {
                 c.pluginConfigAndroid.pluginActivityImports += `import ${v}\n`;
             });
         }
@@ -198,7 +199,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
     }
 
     if (plugin.imports) {
-        plugin.imports.forEach((v) => {
+        plugin.imports.forEach((v: any) => {
             c.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
         });
     }
@@ -207,7 +208,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
 
     if (plugin.MainApplication) {
         if (plugin.MainApplication.packages) {
-            plugin.MainApplication.packages.forEach((v) => {
+            plugin.MainApplication.packages.forEach((v: any) => {
                 _injectPackage(c, plugin, v);
             });
         }
@@ -223,7 +224,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
         }
 
         if (mainApplication.imports instanceof Array) {
-            mainApplication.imports.forEach((v) => {
+            mainApplication.imports.forEach((v: any) => {
                 c.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
             });
         }
@@ -248,7 +249,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
     }
 };
 
-const _injectPackage = (c, plugin, pkg) => {
+const _injectPackage = (c: any, plugin: any, pkg: any) => {
     if (pkg) { c.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`; }
     let packageParams = '';
     if (plugin.packageParams) {
@@ -259,4 +260,4 @@ const _injectPackage = (c, plugin, pkg) => {
     if (className) { c.pluginConfigAndroid.pluginPackages += `${className}(${packageParams}),\n`; }
 };
 
-const _extractClassName = pkg => (pkg ? pkg.split('.').pop() : null);
+const _extractClassName = (pkg: any) => (pkg ? pkg.split('.').pop() : null);

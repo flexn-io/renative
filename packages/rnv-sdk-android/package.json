@@ -38,6 +38,9 @@
     "lint-staged": "8.1.0",
     "husky": "4.2.5"
   },
+  "peerDependencies": {
+    "rnv": "^0.34.0-alpha.1"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint && yarn test"
