@@ -22,11 +22,12 @@ const VERSIONED_PACKAGES = [
     'renative',
 ];
 
-const updateDeps = (pkgFile, depKey, packageNamesAll, packageConfigs) => {
+const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer = '') => {
+    const { pkgFile } = pkgConfig;
     packageNamesAll.forEach((v) => {
         const currVer = pkgFile?.[depKey]?.[v];
         if (currVer) {
-            const newVer = packageConfigs[v].pkgFile?.version;
+            const newVer = `${semVer}${packageConfigs[v].pkgFile?.version}`;
 
             if (currVer !== newVer) {
                 console.log('Found linked dependency to update:', v, currVer, newVer);
@@ -35,16 +36,18 @@ const updateDeps = (pkgFile, depKey, packageNamesAll, packageConfigs) => {
             }
         }
     });
+    const output = Doctor.fixPackageObject(pkgFile);
+    FileUtils.writeFileSync(pkgConfig.pkgPath, output, 4, true);
 };
 
 export const updateVersions = async (c) => {
     const rootPackage = FileUtils.readObjectSync(
-        path.join(c.paths.project.dir, '/../../', 'package.json')
+        path.join(c.paths.project.dir, 'package.json')
     );
     const v = {
         version: rootPackage.version
     };
-    const pkgFolder = path.join(c.paths.project.dir, '/../');
+    const pkgFolder = path.join(c.paths.project.dir, 'packages');
     _updateJson(c, c.paths.project.package, v);
 
     VERSIONED_PACKAGES.forEach((pkgName) => {
@@ -125,17 +128,17 @@ export const updateVersions = async (c) => {
         updateDeps(pkgConfig.pkgFile, 'dependencies', packageNamesAll, packageConfigs);
         updateDeps(pkgConfig.pkgFile, 'devDependencies', packageNamesAll, packageConfigs);
         updateDeps(pkgConfig.pkgFile, 'optionalDependencies', packageNamesAll, packageConfigs);
-        updateDeps(pkgConfig.pkgFile, 'peerDependencies', packageNamesAll, packageConfigs);
+        updateDeps(pkgConfig.pkgFile, 'peerDependencies', packageNamesAll, packageConfigs, '^');
     });
 
 
     FileUtils.copyFileSync(
-        path.join(c.paths.project.dir, '/../../README.md'),
+        path.join(c.paths.project.dir, 'README.md'),
         path.join(pkgFolder, 'renative/README.md')
     );
 
     FileUtils.copyFileSync(
-        path.join(c.paths.project.dir, '/../../README.md'),
+        path.join(c.paths.project.dir, 'README.md'),
         path.join(pkgFolder, 'rnv/README.md')
     );
 
