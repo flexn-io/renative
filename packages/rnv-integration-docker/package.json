@@ -2,37 +2,34 @@
     "name": "@rnv/integration-docker",
     "version": "0.1.0-alpha.1",
     "description": "Gives RNV the possibility to deploy web apps as a Docker image published to dockerhub",
-    "main": "dist/index.js",
-    "scripts": {
-        "build": "babel src --out-dir dist",
-        "build:clean": "rm -rf dist || true",
-        "build:dev": "yarn build --retain-lines",
-        "watch": "nodemon --watch src --exec yarn build:dev",
-        "prepublishOnly": "yarn build"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/renative-org/renative.git"
-    },
     "keywords": [
-        "rnv",
+        "docker",
         "renative",
-        "docker"
+        "rnv"
     ],
+    "homepage": "https://github.com/renative-org/renative#readme",
+    "bugs": {
+        "url": "https://github.com/renative-org/renative/issues"
+    },
+    "license": "ISC",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [
         "Mihai Blaga <https://github.com/mihaiblaga89>"
     ],
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/renative-org/renative/issues"
+    "main": "dist/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/renative-org/renative.git"
     },
-    "publishConfig": {
-        "access": "public"
+    "scripts": {
+        "build": "babel src --out-dir dist",
+        "build:clean": "rm -rf dist || true",
+        "build:dev": "yarn build --retain-lines",
+        "prepublishOnly": "yarn build",
+        "watch": "nodemon --watch src --exec yarn build:dev"
     },
-    "homepage": "https://github.com/renative-org/renative#readme",
-    "peerDependencies": {
-        "rnv": "~0.31.2"
+    "dependencies": {
+        "get-installed-path": "^4.0.8"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -42,7 +39,10 @@
         "@babel/plugin-proposal-optional-chaining": "7.8.3",
         "@babel/preset-env": "7.8.7"
     },
-    "dependencies": {
-        "get-installed-path": "^4.0.8"
+    "peerDependencies": {
+        "rnv": "^0.34.0-alpha.1"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }

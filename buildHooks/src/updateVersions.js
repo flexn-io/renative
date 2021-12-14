@@ -24,20 +24,26 @@ const VERSIONED_PACKAGES = [
 
 const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer = '') => {
     const { pkgFile } = pkgConfig;
-    packageNamesAll.forEach((v) => {
-        const currVer = pkgFile?.[depKey]?.[v];
-        if (currVer) {
-            const newVer = `${semVer}${packageConfigs[v].pkgFile?.version}`;
 
-            if (currVer !== newVer) {
-                console.log('Found linked dependency to update:', v, currVer, newVer);
+    if (pkgFile) {
+        let hasChanges = false;
+        packageNamesAll.forEach((v) => {
+            const currVer = pkgFile?.[depKey]?.[v];
+            if (currVer) {
+                const newVer = `${semVer}${packageConfigs[v].pkgFile?.version}`;
 
-                pkgFile[depKey][v] = newVer;
+                if (currVer !== newVer) {
+                    console.log('Found linked dependency to update:', v, currVer, newVer);
+                    hasChanges = true;
+                    pkgFile[depKey][v] = newVer;
+                }
             }
+        });
+        if (hasChanges) {
+            const output = Doctor.fixPackageObject(pkgFile);
+            FileUtils.writeFileSync(pkgConfig.pkgPath, output, 4, true);
         }
-    });
-    const output = Doctor.fixPackageObject(pkgFile);
-    FileUtils.writeFileSync(pkgConfig.pkgPath, output, 4, true);
+    }
 };
 
 export const updateVersions = async (c) => {
@@ -125,10 +131,10 @@ export const updateVersions = async (c) => {
 
     packageNamesAll.forEach((pkgName) => {
         const pkgConfig = packageConfigs[pkgName];
-        updateDeps(pkgConfig.pkgFile, 'dependencies', packageNamesAll, packageConfigs);
-        updateDeps(pkgConfig.pkgFile, 'devDependencies', packageNamesAll, packageConfigs);
-        updateDeps(pkgConfig.pkgFile, 'optionalDependencies', packageNamesAll, packageConfigs);
-        updateDeps(pkgConfig.pkgFile, 'peerDependencies', packageNamesAll, packageConfigs, '^');
+        updateDeps(pkgConfig, 'dependencies', packageNamesAll, packageConfigs);
+        updateDeps(pkgConfig, 'devDependencies', packageNamesAll, packageConfigs);
+        updateDeps(pkgConfig, 'optionalDependencies', packageNamesAll, packageConfigs);
+        updateDeps(pkgConfig, 'peerDependencies', packageNamesAll, packageConfigs, '^');
     });
 
 
