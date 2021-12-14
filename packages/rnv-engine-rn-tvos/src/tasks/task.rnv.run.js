@@ -1,8 +1,8 @@
 import { Common, Constants, Logger, PlatformManager, TaskManager } from 'rnv';
+import { packageAndroid, runAndroid } from '@rnv/sdk-android';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
-import { SDKAndroid, SDKXcode } from '../sdks';
+import { SDKXcode } from '../sdks';
 
-const { packageAndroid, runAndroid } = SDKAndroid;
 
 const {
     TVOS,

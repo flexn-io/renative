@@ -24,6 +24,9 @@
         "prepublishOnly": "yarn build",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
+    "dependencies": {
+        "@rnv/sdk-android": "0.1.0"
+    },
     "devDependencies": {
         "@babel/cli": "7.8.3",
         "@babel/core": "7.8.3",
@@ -38,6 +41,5 @@
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "gitHead": "2f915145306f72bba3dd6466d7e878dcbb0dead4"
+    }
 }

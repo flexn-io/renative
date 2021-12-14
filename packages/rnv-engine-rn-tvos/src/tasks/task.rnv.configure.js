@@ -1,8 +1,9 @@
 import {
     Constants, Logger, PlatformManager, TaskManager, NPMUtils, TemplateManager
 } from 'rnv';
+import { configureGradleProject } from '@rnv/sdk-android';
 import { configureMetroConfigs } from '../commonEngine';
-import { SDKAndroid, SDKXcode } from '../sdks';
+import { SDKXcode } from '../sdks';
 
 const { jetifyIfRequired } = NPMUtils;
 
@@ -17,7 +18,7 @@ const {
     PARAMS
 } = Constants;
 const { configureXcodeProject } = SDKXcode;
-const { configureGradleProject } = SDKAndroid;
+
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
 
