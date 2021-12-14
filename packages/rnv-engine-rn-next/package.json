@@ -55,5 +55,17 @@
     "private": false,
     "publishConfig": {
         "access": "public"
+    },
+    "workspaces": {
+        "nohoist": [
+            "html-webpack-plugin",
+            "html-webpack-harddisk-plugin",
+            "webpack",
+            "mini-css-extract-plugin",
+            "@zeit/next-css",
+            "@expo/next-adapter",
+            "@expo/webpack-config",
+            "@expo/**"
+        ]
     }
 }

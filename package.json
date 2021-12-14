@@ -81,6 +81,8 @@
   "devDependencies": {
     "babel-eslint": "8.2.6",
     "babel-jest": "24.9.0",
+    "@babel/runtime": "7.8.3",
+    "babel-plugin-module-resolver": "3.2.0",
     "babel-plugin-polyfill-corejs2": "0.2.2",
     "lerna": "4.0.0",
     "eslint": "6.2.2",
@@ -113,16 +115,6 @@
   "workspaces": {
     "packages": [
       "packages/*"
-    ],
-    "nohoist": [
-      "**/html-webpack-plugin",
-      "**/html-webpack-harddisk-plugin",
-      "**/webpack",
-      "**/mini-css-extract-plugin",
-      "**/@zeit/next-css",
-      "**/@expo/next-adapter",
-      "**/@expo/webpack-config",
-      "**/@expo/**"
     ]
   }
 }

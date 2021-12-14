@@ -80,7 +80,7 @@ export const configureEngines = async (c) => {
     const { engines } = c.files.project.config;
     const { devDependencies } = c.files.project.package;
     let needsPackageUpdate = false;
-    if (engines && !c.runtime.skipPackageUpdate && !c.program.skipDependencyCheck) {
+    if (engines && !c.runtime.skipPackageUpdate && !c.program.skipDependencyCheck && !c.program.skipRnvCheck) {
         Object.keys(engines).forEach((k) => {
             const engVer = c.buildConfig.engineTemplates?.[k]?.version;
             if (engVer) {

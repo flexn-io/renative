@@ -21,7 +21,7 @@ export const parseGradleWrapperSync = (c) => {
         c,
         platform,
         'gradleWrapperVersion',
-        '6.7.1'
+        '6.9.1'
     );
     const injects = [
         {
