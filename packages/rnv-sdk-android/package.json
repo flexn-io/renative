@@ -38,6 +38,10 @@
     "lint-staged": "8.1.0",
     "husky": "4.2.5"
   },
+  "dependencies": {
+    "shelljs": "0.8.4",
+    "inquirer": "8.2.0"
+  },
   "peerDependencies": {
     "rnv": "^0.34.0-alpha.1"
   },

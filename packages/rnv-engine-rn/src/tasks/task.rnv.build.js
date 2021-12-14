@@ -1,5 +1,8 @@
 import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
-import { SDKAndroid, SDKXcode } from '../sdks';
+import {
+    buildAndroid,
+} from '@rnv/sdk-android';
+import { SDKXcode } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
@@ -14,9 +17,7 @@ const {
     PARAMS
 } = Constants;
 const { buildXcodeProject } = SDKXcode;
-const {
-    buildAndroid,
-} = SDKAndroid;
+
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvBuild = async (c, parentTask, originTask) => {

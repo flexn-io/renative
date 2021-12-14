@@ -1,6 +1,6 @@
 import { TaskManager, Constants, Logger, PlatformManager, SDKManager } from 'rnv';
 
-import { runAndroidLog } from '../sdks/sdk-android';
+import { runAndroidLog } from '@rnv/sdk-android';
 
 import { runAppleLog } from '../sdks/sdk-xcode';
 

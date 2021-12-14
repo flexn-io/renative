@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import runner from './index';
+// import runner from './index';
 
-runner.foo()
+// runner.foo()
