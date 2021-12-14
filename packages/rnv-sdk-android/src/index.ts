@@ -701,7 +701,7 @@ export const runAndroidLog = async (c: any) => {
     const filter = c.program.filter || '';
     const child = execa.command(`${c.cli[CLI_ANDROID_ADB]} logcat`);
     // use event hooks to provide a callback to execute when data are available:
-    child.stdout?.on('data', (data) => {
+    child.stdout?.on('data', (data: any) => {
         const d = data.toString().split('\n');
         d.forEach((v: any) => {
             if (v.includes(' E ') && v.includes(filter)) {
@@ -714,8 +714,8 @@ export const runAndroidLog = async (c: any) => {
         });
     });
     return child
-        .then(res => res.stdout)
-        .catch(err => Promise.reject(`Error: ${err}`));
+        .then((res: any) => res.stdout)
+        .catch((err: any) => Promise.reject(`Error: ${err}`));
 };
 
 export default {};

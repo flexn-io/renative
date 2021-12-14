@@ -1,6 +1,6 @@
 import { TaskManager, Constants, Logger, PlatformManager, Common } from 'rnv';
+import { runXcodeProject } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
-import { SDKXcode } from '../sdks';
 
 const { getConfigProp } = Common;
 const { logErrorPlatform } = PlatformManager;
@@ -11,7 +11,8 @@ const {
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
-const { runXcodeProject } = SDKXcode;
+
+
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvRun = async (c, parentTask, originTask) => {

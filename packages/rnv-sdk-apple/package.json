@@ -1,10 +1,10 @@
 {
-  "name": "@rnv/sdk-android",
+  "name": "@rnv/sdk-apple",
   "version": "0.1.0",
-  "description": "ReNative Android SDK",
+  "description": "ReNative Apple SDK",
   "main": "dist/index.js",
   "bin": {
-    "sdk-android": "./dist/cli.js"
+    "sdk-apple": "./dist/cli.js"
   },
   "scripts": {
     "bootstrap": "yarn && yarn build && npm link",
@@ -17,15 +17,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/renative-org/sdk-android.git"
+    "url": "git+https://github.com/renative-org/sdk-apple.git"
   },
   "keywords": [],
   "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/renative-org/sdk-android/issues"
+    "url": "https://github.com/renative-org/sdk-apple/issues"
   },
-  "homepage": "https://github.com/renative-org/sdk-android#readme",
+  "homepage": "https://github.com/renative-org/sdk-apple#readme",
   "devDependencies": {
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.7",
@@ -40,8 +40,7 @@
   },
   "dependencies": {
     "shelljs": "0.8.4",
-    "inquirer": "8.2.0",
-    "execa": "2.0.4"
+    "inquirer": "8.2.0"
   },
   "peerDependencies": {
     "rnv": "^0.34.0-alpha.1"

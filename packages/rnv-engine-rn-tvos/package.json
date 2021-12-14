@@ -25,7 +25,8 @@
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
-        "@rnv/sdk-android": "0.1.0"
+        "@rnv/sdk-android": "0.1.0",
+        "@rnv/sdk-apple": "0.1.0"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",

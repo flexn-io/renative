@@ -2,7 +2,7 @@ import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
 import {
     buildAndroid,
 } from '@rnv/sdk-android';
-import { SDKXcode } from '../sdks';
+import { buildXcodeProject } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
@@ -16,7 +16,6 @@ const {
     TASK_BUILD, TASK_PACKAGE, TASK_EXPORT,
     PARAMS
 } = Constants;
-const { buildXcodeProject } = SDKXcode;
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
