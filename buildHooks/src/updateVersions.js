@@ -1,5 +1,8 @@
 import path from 'path';
 import { Doctor, FileUtils } from 'rnv';
+import fs from 'fs';
+
+const { fsExistsSync, readObjectSync } = FileUtils;
 
 const merge = require('deepmerge');
 
@@ -18,6 +21,21 @@ const VERSIONED_PACKAGES = [
     'rnv-engine-rn-windows',
     'renative',
 ];
+
+const updateDeps = (pkgFile, depKey, packageNamesAll, packageConfigs) => {
+    packageNamesAll.forEach((v) => {
+        const currVer = pkgFile?.[depKey]?.[v];
+        if (currVer) {
+            const newVer = packageConfigs[v].pkgFile?.version;
+
+            if (currVer !== newVer) {
+                console.log('Found linked dependency to update:', v, currVer, newVer);
+
+                pkgFile[depKey][v] = newVer;
+            }
+        }
+    });
+};
 
 export const updateVersions = async (c) => {
     const rootPackage = FileUtils.readObjectSync(
@@ -66,6 +84,51 @@ export const updateVersions = async (c) => {
         }
     );
 
+
+    const pkgDirPath = path.join(c.paths.project.dir, 'packages');
+    const dirs = fs.readdirSync(pkgDirPath);
+
+    const packageNamesAll = [];
+    const packageConfigs = {};
+
+    dirs.forEach((dir) => {
+        let pkgName;
+        let rnvPath;
+        let _pkgPath;
+        let rnvFile;
+        let pkgFile;
+        const dirPath = path.join(pkgDirPath, dir);
+        if (fs.statSync(dirPath).isDirectory()) {
+            _pkgPath = path.join(dirPath, 'package.json');
+            if (fsExistsSync(_pkgPath)) {
+                pkgFile = readObjectSync(_pkgPath);
+                pkgName = pkgFile.name;
+            }
+            const _rnvPath = path.join(dirPath, 'renative.json');
+            if (fsExistsSync(_rnvPath)) {
+                rnvPath = _rnvPath;
+                rnvFile = readObjectSync(rnvPath);
+            }
+        }
+        packageConfigs[pkgName] = {
+            pkgName,
+            rnvPath,
+            pkgPath: _pkgPath,
+            pkgFile,
+            rnvFile
+        };
+        packageNamesAll.push(pkgName);
+    });
+
+    packageNamesAll.forEach((pkgName) => {
+        const pkgConfig = packageConfigs[pkgName];
+        updateDeps(pkgConfig.pkgFile, 'dependencies', packageNamesAll, packageConfigs);
+        updateDeps(pkgConfig.pkgFile, 'devDependencies', packageNamesAll, packageConfigs);
+        updateDeps(pkgConfig.pkgFile, 'optionalDependencies', packageNamesAll, packageConfigs);
+        updateDeps(pkgConfig.pkgFile, 'peerDependencies', packageNamesAll, packageConfigs);
+    });
+
+
     FileUtils.copyFileSync(
         path.join(c.paths.project.dir, '/../../README.md'),
         path.join(pkgFolder, 'renative/README.md')
@@ -75,6 +138,7 @@ export const updateVersions = async (c) => {
         path.join(c.paths.project.dir, '/../../README.md'),
         path.join(pkgFolder, 'rnv/README.md')
     );
+
 
     // const packagesDir = path.join(c.paths.project.dir, '..');
     //

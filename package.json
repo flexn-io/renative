@@ -78,6 +78,10 @@
     "deploy:alpha:soft": "npm run test && npm run deploy-prepare && npm run git-commit-tag && npx lerna publish from-package --dist-tag alpha --yes",
     "deploy:prod": "npm run deploy-all && npx lerna publish from-package --yes && git push origin HEAD"
   },
+  "dependencies": {
+    "simple-git": "2.20.1",
+    "deepmerge": "3.2.0"
+  },
   "devDependencies": {
     "babel-eslint": "8.2.6",
     "babel-jest": "24.9.0",
@@ -94,7 +98,8 @@
     "eslint-plugin-react": "7.10.0",
     "eslint-plugin-react-hooks": "2.5.0",
     "husky": "4.2.5",
-    "jsdoc-to-markdown": "6.0.1"
+    "jsdoc-to-markdown": "6.0.1",
+    "rnv": "0.34.0-alpha.1"
   },
   "engines": {
     "node": ">=6.0.0",
