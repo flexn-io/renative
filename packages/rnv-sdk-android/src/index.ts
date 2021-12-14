@@ -718,4 +718,9 @@ export const runAndroidLog = async (c: any) => {
         .catch((err: any) => Promise.reject(`Error: ${err}`));
 };
 
-export default {};
+export default {
+    hello: () => {
+        console.log('Hello SDK Android');
+    }
+};
+

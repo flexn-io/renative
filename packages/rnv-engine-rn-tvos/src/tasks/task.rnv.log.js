@@ -1,7 +1,7 @@
 import { TaskManager, Constants, Logger, PlatformManager, SDKManager } from 'rnv';
 
-import { runAppleLog } from '../sdks/sdk-xcode';
-import { runAndroidLog } from '../sdks/sdk-android';
+import { runAppleLog } from '@rnv/sdk-apple';
+import { runAndroidLog } from '@rnv/sdk-android';
 
 const { checkAndConfigureSdks } = SDKManager;
 

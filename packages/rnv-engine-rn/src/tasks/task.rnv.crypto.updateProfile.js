@@ -1,6 +1,6 @@
 import { TaskManager, Constants, Logger } from 'rnv';
 
-import { updateProfile } from '../sdks/sdk-xcode/fastlane';
+import { updateProfile } from '@rnv/sdk-apple';
 
 const { executeTask, shouldSkipTask } = TaskManager;
 const { logTask } = Logger;

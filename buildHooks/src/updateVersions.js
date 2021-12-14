@@ -19,6 +19,8 @@ const VERSIONED_PACKAGES = [
     'rnv-engine-lightning',
     'rnv-engine-rn-electron',
     'rnv-engine-rn-windows',
+    'rnv-sdk-apple',
+    'rnv-sdk-android',
     'renative',
 ];
 
