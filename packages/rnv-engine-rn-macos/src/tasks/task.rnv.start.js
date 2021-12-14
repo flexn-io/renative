@@ -1,3 +1,4 @@
+import path from 'path';
 import { TaskManager, EngineManager, Constants, Logger, PlatformManager, Exec, Common, Resolver } from 'rnv';
 import { isBundlerActive } from '../commonEngine';
 
@@ -42,16 +43,19 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case MACOS: {
-            let startCmd = `node ${doResolve(
-                'react-native'
-            )}/local-cli/cli.js start --port ${
-                c.runtime.port
-            } --config=metro.config.rnm.js`;
+            const args = [
+                path.join(doResolve('react-native'), 'local-cli', 'cli.js'),
+                'start',
+                '--port',
+                c.runtime.port,
+                '--config=metro.config.rnm.js',
+                '--no-interactive'
+            ];
 
             if (c.program.resetHard) {
-                startCmd += ' --reset-cache';
+                args.push('--reset-cache');
             } else if (c.program.reset) {
-                startCmd += ' --reset-cache';
+                args.push('--reset-cache');
             }
             if (c.program.resetHard || c.program.reset) {
                 logInfo(
@@ -66,6 +70,13 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
 Dev server running at: ${url}
 
 `);
+            const commonComandProps = {
+                rawCommand: {
+                    args,
+                },
+                stdio: 'inherit',
+                silent: true,
+            };
             if (!parentTask) {
                 const isRunning = await isBundlerActive(c);
                 let resetCompleted = false;
@@ -75,15 +86,24 @@ Dev server running at: ${url}
 
 
                 if (!isRunning || (isRunning && resetCompleted)) {
-                    return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c), RCT_NO_LAUNCH_PACKAGER: 1 } });
+                    return executeAsync('node', {
+                        ...commonComandProps,
+                        env: { ...generateEnvVars(c), RCT_NO_LAUNCH_PACKAGER: 1 }
+                    });
                 }
                 if (resetCompleted) {
-                    return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
+                    return executeAsync('node', {
+                        ...commonComandProps,
+                        env: generateEnvVars(c)
+                    });
                 }
 
                 return true;
             }
-            executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
+            executeAsync('node', {
+                ...commonComandProps,
+                env: generateEnvVars(c)
+            });
             return true;
         }
         default:

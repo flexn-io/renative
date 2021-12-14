@@ -5,6 +5,13 @@ import { generateMockConfig } from '../../../jest-preset-rnv/mocks';
 
 jest.mock('fs');
 
+jest.mock('path', () => ({
+    join: (...args) => Object.values(args).join('/'),
+    default: {
+        dirname: '/mockPath'
+    }
+}));
+
 jest.mock('axios', () => ({
     get: () => true
 }));
@@ -34,7 +41,7 @@ jest.mock('rnv', () => {
     };
     return {
         EngineManager: {
-
+            generateEnvVars: () => {}
         },
         Common: {
             getConfigProp: (c, platform, key) => configPropMocks[key],

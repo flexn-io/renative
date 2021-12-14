@@ -162,7 +162,7 @@ export const runXcodeProject = async (c) => {
     const runScheme = getConfigProp(c, c.platform, 'runScheme');
     const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
-    let p;
+    const p = [];
 
     if (!scheme) {
         return Promise.reject(
@@ -191,10 +191,12 @@ export const runXcodeProject = async (c) => {
                 )} udid: ${chalk().white(devicesArr[0].udid)}`
             );
             if (devicesArr[0].udid) {
-                p = `--udid ${devicesArr[0].udid}`;
+                p.push('--udid');
+                p.push(devicesArr[0].udid);
                 c.runtime.targetUDID = devicesArr[0].udid;
             } else {
-                p = `--device ${devicesArr[0].name}`;
+                p.push('--device');
+                p.push(devicesArr[0].name);
             }
         } else if (devicesArr.length > 1) {
             const run = (selectedDevice) => {
@@ -207,9 +209,11 @@ export const runXcodeProject = async (c) => {
                 );
                 c.runtime.targetUDID = selectedDevice.udid;
                 if (selectedDevice.udid) {
-                    p = `--udid ${selectedDevice.udid}`;
+                    p.push('--udid');
+                    p.push(selectedDevice.udid);
                 } else {
-                    p = `--device ${selectedDevice.name}`;
+                    p.push('--device');
+                    p.push(selectedDevice.name);
                 }
 
                 logDebug(`RN params: ${p}`);
@@ -257,7 +261,8 @@ export const runXcodeProject = async (c) => {
             return Promise.reject(`No ${c.platform} devices connected!`);
         }
     } else if (device) {
-        p = `--device ${device}`;
+        p.push('--device');
+        p.push(device);
     } else if (c.runtime.target === true) {
         const devices = devicesArr.map(v => ({
             name: `${v.name} | ${v.icon} | v: ${chalk().green(
@@ -276,7 +281,8 @@ export const runXcodeProject = async (c) => {
         });
         c.runtime.target = sim.name;
         if (c.runtime.target) {
-            p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
+            p.push('--simulator');
+            p.push(c.runtime.target);
         }
     } else if (c.runtime.target) {
         // check if the default sim is available
@@ -333,7 +339,8 @@ export const runXcodeProject = async (c) => {
 
         const target = c.runtime.target.replace(/(\s+)/g, '\\$1');
 
-        p = `--simulator ${target}`;
+        p.push('--simulator');
+        p.push(target);
     }
 
     if (c.platform === MACOS) {
@@ -350,7 +357,7 @@ export const runXcodeProject = async (c) => {
             'allowProvisioningUpdates',
             true
         );
-        if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
+        if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
         return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p);
     }
     // return Promise.reject('Missing options for react-native command!');
@@ -364,15 +371,29 @@ const _packageOrRun = (c, bundleAssets, bundleIsDev, appPath, scheme, runScheme,
     return _checkLockAndExec(c, appPath, scheme, runScheme, p);
 };
 
-const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
+const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = []) => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
-    const cmd = `node ${doResolve(
-        'react-native'
-    )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+    const args = [
+        path.join(doResolve('react-native'), 'local-cli', 'cli.js'),
+        'run-ios',
+        '--project-path',
+        appPath,
+        '--scheme',
+        scheme,
+        '--configuration',
+        runScheme,
+        ...p
+    ];
+
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
-        return executeAsync(c, cmd);
+        return executeAsync('node ', {
+            rawCommand: {
+                args
+            },
+            env: generateEnvVars(c)
+        });
     } catch (e) {
         if (e && e.includes) {
             const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
@@ -382,7 +403,11 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
                     type: 'confirm',
                     name: 'confirm'
                 });
-                return executeAsync(c, cmd);
+                return executeAsync('node', {
+                    rawCommand: {
+                        args
+                    },
+                });
             }
             const isDeviceNotRegistered = e.includes(
                 "doesn't include the currently selected device"
@@ -783,6 +808,7 @@ const exportXcodeProject = async (c) => {
 
 export const packageBundleForXcode = (c, isDev = false) => {
     logTask('packageBundleForXcode');
+    const appFolder = getAppFolder(c);
     // const { maxErrorLength } = c.program;
     const args = [
         'bundle',
@@ -791,25 +817,34 @@ export const packageBundleForXcode = (c, isDev = false) => {
         '--dev',
         isDev,
         '--assets-dest',
-        `platformBuilds/${c.runtime.appId}_${c.platform}`,
+        appFolder,
         '--entry-file',
         `${c.buildConfig.platforms[c.platform].entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c, c.platform)}/main.jsbundle`
+        `${appFolder}/main.jsbundle`,
+        '--config=metro.config.js'
     ];
 
     if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
         args.push('--sourcemap-output');
-        args.push(`${getAppFolder(c, c.platform)}/main.jsbundle.map`);
+        args.push(`${appFolder}/main.jsbundle.map`);
     }
 
     if (c.program.info) {
         args.push('--verbose');
     }
 
-    return executeAsync(c, `node ${doResolve(
-        'react-native'
-    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
+    return executeAsync('node', {
+        rawCommand: {
+            args: [
+                path.join(doResolve(
+                    'react-native'
+                ), 'local-cli', 'cli.js'),
+                ...args,
+            ]
+        },
+        env: generateEnvVars(c)
+    });
 };
 
 // Resolve or reject will not be called so this will keep running

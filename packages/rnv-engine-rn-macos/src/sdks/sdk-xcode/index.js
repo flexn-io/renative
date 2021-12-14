@@ -179,13 +179,25 @@ export const runXcodeProject = async (c) => {
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme) => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
-    const cmd = `node ${doResolve(
-        'react-native-macos'
-    )}/local-cli/cli.js run-macos --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme}`;
+    const args = [
+        path.join(doResolve('react-native-macos'), 'local-cli', 'cli.js'),
+        'run-macos',
+        '--project-path',
+        appPath,
+        '--scheme',
+        scheme,
+        '--configuration',
+        runScheme,
+    ];
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
-        return executeAsync(c, cmd);
+        return executeAsync('node', {
+            rawCommand: {
+                args
+            },
+            env: generateEnvVars(c)
+        });
     } catch (e) {
         if (e && e.includes) {
             const isDevelopmentTeamMissing = e.includes(
@@ -542,6 +554,7 @@ const exportXcodeProject = async (c) => {
 
 export const packageBundleForXcode = (c, isDev = false) => {
     logTask('packageBundleForXcode');
+    const appFolder = getAppFolder(c);
     // const { maxErrorLength } = c.program;
     const args = [
         'bundle',
@@ -550,25 +563,34 @@ export const packageBundleForXcode = (c, isDev = false) => {
         '--dev',
         isDev,
         '--assets-dest',
-        `platformBuilds/${c.runtime.appId}_${c.platform}`,
+        appFolder,
         '--entry-file',
         `${c.buildConfig.platforms[c.platform].entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c, c.platform)}/main.jsbundle`
+        `${appFolder}/main.jsbundle`,
+        '--config=metro.config.rnm.js'
     ];
 
     if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
         args.push('--sourcemap-output');
-        args.push(`${getAppFolder(c, c.platform)}/main.jsbundle.map`);
+        args.push(`${appFolder}/main.jsbundle.map`);
     }
 
     if (c.program.info) {
         args.push('--verbose');
     }
 
-    return executeAsync(c, `node ${doResolve(
-        'react-native'
-    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.rnm.js`, { env: { ...generateEnvVars(c) } });
+    return executeAsync('node', {
+        rawCommand: {
+            args: [
+                path.join(doResolve(
+                    'react-native'
+                ), 'local-cli', 'cli.js'),
+                ...args,
+            ]
+        },
+        env: generateEnvVars(c)
+    });
 };
 
 // Resolve or reject will not be called so this will keep running

@@ -312,9 +312,18 @@ const packageBundleForWindows = (c, isDev = false) => {
         args.push(`${dir}\\index.windows.bundle.map`);
     }
 
-    return executeAsync(c, `node ${doResolve(
-        'react-native', true, { forceForwardPaths: false }
-    )}\\local-cli\\cli.js ${args.join(' ')} --config=metro.config.rnwin.js`, { env: { ...generateEnvVars(c) } });
+    return executeAsync('node', {
+        rawCommand: {
+            args: [
+                path.join(doResolve(
+                    'react-native', true, { forceForwardPaths: false }
+                ), 'local-cli', 'cli.js'),
+                ...args,
+                '--config=metro.rnwin.config.js',
+            ]
+        },
+        env: generateEnvVars(c)
+    });
 };
 
 const setSingleBuildProcessForWindows = (c) => {

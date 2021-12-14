@@ -355,11 +355,26 @@ export const runXcodeProject = async (c) => {
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
-    const cmd = `node ${doResolve('react-native-tvos')}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+    const args = [
+        path.join(doResolve('react-native-tvos'), 'local-cli', 'cli.js'),
+        'run-ios',
+        '--project-path',
+        appPath,
+        '--scheme',
+        scheme,
+        '--configuration',
+        runScheme,
+        p
+    ];
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
-        return executeAsync(c, cmd);
+        return executeAsync('node', {
+            rawCommand: {
+                args
+            },
+            env: generateEnvVars(c)
+        });
     } catch (e) {
         if (e && e.includes) {
             const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
@@ -369,7 +384,12 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
                     type: 'confirm',
                     name: 'confirm'
                 });
-                return executeAsync(c, cmd);
+                return executeAsync('node', {
+                    rawCommand: {
+                        args
+                    },
+                    env: generateEnvVars(c)
+                });
             }
             const isDeviceNotRegistered = e.includes(
                 "doesn't include the currently selected device"
@@ -769,7 +789,8 @@ export const packageBundleForXcode = (c, isDev = false) => {
         '--entry-file',
         `${c.buildConfig.platforms[c.platform].entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c, c.platform)}/main.jsbundle`
+        `${getAppFolder(c, c.platform)}/main.jsbundle`,
+        '--config=metro.config.rnt.js'
     ];
 
     if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
@@ -781,9 +802,17 @@ export const packageBundleForXcode = (c, isDev = false) => {
         args.push('--verbose');
     }
 
-    return executeAsync(c, `node ${doResolve(
-        'react-native-tvos'
-    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.rnt.js`, { env: { ...generateEnvVars(c) } });
+    return executeAsync('node', {
+        rawCommand: {
+            args: [
+                path.join(doResolve(
+                    'react-native'
+                ), 'local-cli', 'cli.js'),
+                ...args,
+            ]
+        },
+        env: generateEnvVars(c)
+    });
 };
 
 // Resolve or reject will not be called so this will keep running

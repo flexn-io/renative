@@ -58,7 +58,7 @@ const {
     fsWriteFileSync,
     fsChmodSync
 } = FileUtils;
-const { executeAsync, execCLI } = Exec;
+const { executeAsync, execCLI, doResolve } = Exec;
 const {
     getAppFolder,
     getConfigProp,
@@ -99,7 +99,7 @@ const _getEntryOutputName = (c) => {
     return outputFile;
 };
 
-export const packageAndroid = async (c) => {
+export const packageAndroid = async (c, isDev = false) => {
     logTask('packageAndroid');
     const { platform } = c;
 
@@ -113,7 +113,9 @@ export const packageAndroid = async (c) => {
     const outputFile = _getEntryOutputName(c);
 
     const appFolder = getAppFolder(c);
-    let reactNative = 'react-native';
+    let reactNative = path.join(doResolve(
+        'react-native'
+    ), 'local-cli', 'cli.js');
 
     if (isSystemWin) {
         reactNative = path.normalize(
@@ -124,20 +126,43 @@ export const packageAndroid = async (c) => {
     logInfo('ANDROID PACKAGE STARTING...');
 
     try {
-        let cmd = `${reactNative} bundle --platform android --dev false --assets-dest ${
-            appFolder
-        }/app/src/main/res --entry-file ${
-        c.buildConfig.platforms[c.platform]?.entryFile
-        }.js --bundle-output ${appFolder}/app/src/main/assets/${
-            outputFile
-        }.bundle --config=metro.config.js`;
+        const args = [
+            'bundle',
+            '--platform',
+            'android',
+            '--dev',
+            isDev,
+            '--assets-dest',
+            path.join(appFolder, 'app', 'src', 'main', 'res'),
+            '--entry-file',
+            `${c.buildConfig.platforms[c.platform].entryFile}.js`,
+            '--bundle-output',
+            path.join(appFolder, 'app', 'src', 'main', 'assets', `${
+                outputFile
+            }.bundle`)
+        ];
 
         if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
-            cmd += ` --sourcemap-output ${appFolder}/app/src/main/assets/${
+            args.push('--sourcemap-output');
+            args.push(path.join(appFolder, 'app', 'src', 'main', 'assets', `${
                 outputFile
-            }.bundle.map`;
+            }.bundle.map`));
         }
-        await executeAsync(c, cmd, { env: { ...generateEnvVars(c) } });
+
+        if (c.program.info) {
+            args.push('--verbose');
+        }
+
+        await executeAsync('node', {
+            rawCommand: {
+                args: [
+                    reactNative,
+                    ...args,
+                    '--config=metro.config.js',
+                ]
+            },
+            env: generateEnvVars(c)
+        });
 
         logInfo('ANDROID PACKAGE FINISHED');
         return true;
