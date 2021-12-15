@@ -1,6 +1,6 @@
 import open from 'better-opn';
 import { Constants, Logger, PlatformManager, TaskManager, Common } from 'rnv';
-import { runWebpackServer } from '../sdks/sdk-webpack/webpackUtils';
+import { runWebpackServer } from '@rnv/sdk-webpack';
 
 
 const { logErrorPlatform } = PlatformManager;

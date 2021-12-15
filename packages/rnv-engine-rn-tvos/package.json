@@ -24,6 +24,10 @@
         "prepublishOnly": "yarn build",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
+    "dependencies": {
+        "@rnv/sdk-android": "0.34.0-alpha.1",
+        "@rnv/sdk-apple": "0.34.0-alpha.1"
+    },
     "devDependencies": {
         "@babel/cli": "7.8.3",
         "@babel/core": "7.8.3",
@@ -33,11 +37,10 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.33"
+        "rnv": "^0.34.0-alpha.1"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "gitHead": "2f915145306f72bba3dd6466d7e878dcbb0dead4"
+    }
 }

@@ -1,0 +1,60 @@
+{
+    "name": "@rnv/sdk-webpack",
+    "version": "0.34.0-alpha.1",
+    "description": "ReNative Webpack SDK",
+    "keywords": [],
+    "homepage": "https://github.com/renative-org/sdk-webpack#readme",
+    "bugs": {
+        "url": "https://github.com/renative-org/sdk-webpack/issues"
+    },
+    "license": "MIT",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "main": "dist/index.js",
+    "bin": {
+        "sdk-webpack": "./dist/cli.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/renative-org/sdk-webpack.git"
+    },
+    "scripts": {
+        "bootstrap": "yarn && yarn build && npm link",
+        "build": "npx tsc --outDir dist",
+        "lint": "eslint . --ext .ts",
+        "test": "jest --coverage",
+        "test:watch": "jest --watch",
+        "watch": "tsc --watch",
+        "watch:all": "yarn watch & yarn test:watch"
+    },
+    "dependencies": {        
+        "better-opn": "1.0.0",
+        "axios": "0.21.2",
+        "ip": "1.1.5",
+        "command-exists": "1.2.9"
+    },
+    "devDependencies": {
+        "@types/jest": "^27.0.2",
+        "@types/node": "^16.11.7",
+        "@typescript-eslint/eslint-plugin": "^5.4.0",
+        "@typescript-eslint/parser": "^5.4.0",
+        "eslint": "^8.2.0",
+        "husky": "4.2.5",
+        "jest": "^27.3.1",
+        "lint-staged": "8.1.0",
+        "ts-jest": "^27.0.7",
+        "typescript": "^4.5.2"
+    },
+    "peerDependencies": {
+        "rnv": "^0.34.0-alpha.1"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn lint && yarn test"
+        }
+    },
+    "lint-staged": {
+        "*.ts": [
+            "eslint"
+        ]
+    }
+}

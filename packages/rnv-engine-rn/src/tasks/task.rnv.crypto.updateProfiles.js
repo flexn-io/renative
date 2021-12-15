@@ -1,5 +1,5 @@
 import { TaskManager, Constants, Logger, ConfigManager } from 'rnv';
-import { updateProfile } from '../sdks/sdk-xcode/fastlane';
+import { updateProfile } from '@rnv/sdk-apple';
 
 const { listAppConfigsFoldersSync } = ConfigManager;
 

@@ -40,7 +40,7 @@
     "peerDependencies": {
         "@react-native-community/cli": "5.0.1",
         "react-native": "0.63.4",
-        "rnv": "^0.33"
+        "rnv": "^0.34.0-alpha.1"
     },
     "private": false,
     "publishConfig": {

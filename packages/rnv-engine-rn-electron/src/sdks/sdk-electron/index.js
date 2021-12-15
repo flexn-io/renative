@@ -1,7 +1,7 @@
 import { spawn } from 'child_process';
 import path from 'path';
 import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver } from 'rnv';
-import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '../sdk-webpack/webpackUtils';
+import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '@rnv/sdk-webpack';
 
 const { createPlatformBuild, isPlatformActive } = PlatformManager;
 const { executeAsync } = Exec;

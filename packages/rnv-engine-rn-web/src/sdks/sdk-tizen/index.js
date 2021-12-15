@@ -1,7 +1,7 @@
 import path from 'path';
 import semver from 'semver';
 import { Exec, FileUtils, Common, Logger, Constants, SDKManager, PlatformManager, ProjectManager } from 'rnv';
-import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '../sdk-webpack/webpackUtils';
+import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '@rnv/sdk-webpack';
 
 const { execCLI } = Exec;
 const {

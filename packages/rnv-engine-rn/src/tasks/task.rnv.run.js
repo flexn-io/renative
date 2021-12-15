@@ -1,6 +1,7 @@
 import { TaskManager, Constants, Logger, PlatformManager, Common } from 'rnv';
+import { packageAndroid, runAndroid } from '@rnv/sdk-android';
+import { runXcodeProject } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
-import { SDKAndroid, SDKXcode } from '../sdks';
 
 const { getConfigProp } = Common;
 const { logErrorPlatform } = PlatformManager;
@@ -16,8 +17,8 @@ const {
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
-const { runXcodeProject } = SDKXcode;
-const { packageAndroid, runAndroid } = SDKAndroid;
+
+
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvRun = async (c, parentTask, originTask) => {

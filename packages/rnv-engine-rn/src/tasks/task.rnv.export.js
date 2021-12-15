@@ -1,5 +1,5 @@
 import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
-import { SDKXcode } from '../sdks';
+import { exportXcodeProject } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
@@ -13,7 +13,8 @@ const {
     TASK_BUILD, TASK_EXPORT,
     PARAMS
 } = Constants;
-const { exportXcodeProject } = SDKXcode;
+
+
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 

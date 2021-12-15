@@ -63,3 +63,5 @@ coverage
 .binlog
 packages/app/app.json
 packages/**/*.binlog
+
+dist

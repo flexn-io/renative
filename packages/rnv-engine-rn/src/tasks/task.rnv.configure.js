@@ -1,6 +1,7 @@
 import { TaskManager, Constants, Logger, PlatformManager, NPMUtils, TemplateManager } from 'rnv';
+import { configureGradleProject } from '@rnv/sdk-android';
+import { configureXcodeProject } from '@rnv/sdk-apple';
 import { configureMetroConfigs } from '../commonEngine';
-import { SDKAndroid, SDKXcode } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
@@ -16,8 +17,8 @@ const {
     TASK_CONFIGURE,
     PARAMS
 } = Constants;
-const { configureXcodeProject } = SDKXcode;
-const { configureGradleProject } = SDKAndroid;
+
+
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
 

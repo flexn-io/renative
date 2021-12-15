@@ -1,5 +1,6 @@
 import { TaskManager, Constants, Logger, PlatformManager, Common } from 'rnv';
-import { SDKAndroid, SDKXcode } from '../sdks';
+import { packageAndroid } from '@rnv/sdk-android';
+import { packageBundleForXcode } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
@@ -12,8 +13,8 @@ const {
     PARAMS
 } = Constants;
 const { getConfigProp } = Common;
-const { packageBundleForXcode } = SDKXcode;
-const { packageAndroid } = SDKAndroid;
+
+
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {

@@ -50,22 +50,10 @@
     },
     "peerDependencies": {
         "next": ">=12.0.7",
-        "rnv": "^0.33"
+        "rnv": "^0.34.0-alpha.1"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "workspaces": {
-        "nohoist": [
-            "html-webpack-plugin",
-            "html-webpack-harddisk-plugin",
-            "webpack",
-            "mini-css-extract-plugin",
-            "@zeit/next-css",
-            "@expo/next-adapter",
-            "@expo/webpack-config",
-            "@expo/**"
-        ]
     }
 }

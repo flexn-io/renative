@@ -1,6 +1,6 @@
 import path from 'path';
 import { PlatformManager, FileUtils, Common, Logger, ProjectManager, SDKManager } from 'rnv';
-import { buildCoreWebpackProject, configureCoreWebProject } from '../sdk-webpack/webpackUtils';
+import { buildCoreWebpackProject, configureCoreWebProject } from '@rnv/sdk-webpack';
 
 const {
     getPlatformProjectDir,
