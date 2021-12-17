@@ -10,6 +10,7 @@
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "main": "dist/index.js",
+    "private": false,
     "bin": {
         "sdk-apple": "./dist/cli.js"
     },
