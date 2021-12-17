@@ -27,7 +27,7 @@
     },
     "dependencies": {
         "@babel/preset-react": "7.16.0",
-        "@rnv/sdk-webpack": "0.34.0-alpha.1",
+        "@rnv/sdk-webpack": "0.34.0-alpha.2",
         "babel-loader": "8.0.5",
         "electron": "11.5.0",
         "electron-builder": "22.13.1",
