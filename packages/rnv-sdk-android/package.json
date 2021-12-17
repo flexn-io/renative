@@ -44,6 +44,9 @@
         "ts-jest": "^27.0.7",
         "typescript": "^4.5.2"
     },
+    "publishConfig": {
+        "access": "public"
+    },
     "peerDependencies": {
         "rnv": "^0.34.0-alpha.2"
     },
