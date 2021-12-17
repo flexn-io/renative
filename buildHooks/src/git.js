@@ -10,7 +10,7 @@ export const gitCommit = async (c) => {
         // eslint-disable-next-line prefer-destructuring
         version = c.files.project.package.version;
     }
-    const baseDir = path.join(c.paths.project.dir, '../..');
+    const baseDir = path.join(c.paths.project.dir);
     Logger.logHook(`gitCommitAndTagVersion v${version}`);
     const git = simpleGit({ baseDir });
     Logger.logHook('adding files');
@@ -26,7 +26,7 @@ export const gitTag = async (c) => {
         // eslint-disable-next-line prefer-destructuring
         version = c.files.project.package.version;
     }
-    const baseDir = path.join(c.paths.project.dir, '../..');
+    const baseDir = path.join(c.paths.project.dir);
     Logger.logHook(`gitTagAndPush v${version}`);
     const git = simpleGit({ baseDir });
     await git.addTag(version);

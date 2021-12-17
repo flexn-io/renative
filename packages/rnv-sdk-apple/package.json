@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-apple",
-    "version": "0.34.0-alpha.1",
+    "version": "0.34.0-alpha.2",
     "description": "ReNative Apple SDK",
     "keywords": [],
     "homepage": "https://github.com/renative-org/sdk-apple#readme",
@@ -43,7 +43,7 @@
         "typescript": "^4.5.2"
     },
     "peerDependencies": {
-        "rnv": "^0.34.0-alpha.1"
+        "rnv": "^0.34.0-alpha.2"
     },
     "husky": {
         "hooks": {

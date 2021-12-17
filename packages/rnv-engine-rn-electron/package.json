@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-electron",
-    "version": "0.34.0-alpha.1",
+    "version": "0.34.0-alpha.2",
     "description": "ReNative Engine to build electron based platforms with react native support.",
     "keywords": [
         "electron",
@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "@babel/preset-react": "7.16.0",
+        "@rnv/sdk-webpack": "0.34.0-alpha.1",
         "babel-loader": "8.0.5",
         "electron": "11.5.0",
         "electron-builder": "22.13.1",
@@ -38,8 +39,7 @@
         "webpack-cli": "3.1.2",
         "webpack-dev-server": "3.2.1",
         "webpack-merge": "4.1.4",
-        "write-json-webpack-plugin": "1.1.0",
-        "@rnv/sdk-webpack": "0.34.0-alpha.1"
+        "write-json-webpack-plugin": "1.1.0"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -50,7 +50,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.34.0-alpha.1"
+        "rnv": "^0.34.0-alpha.2"
     },
     "private": false,
     "publishConfig": {
