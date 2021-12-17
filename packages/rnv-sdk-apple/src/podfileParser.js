@@ -79,6 +79,14 @@ export const parsePodFile = async (c, platform) => {
                     c.pluginConfigiOS.podPostInstall += `${v}\n`;
                 });
             }
+            const podfileSources = podfile?.sources;
+            if (podfileSources && podfileSources.length) {
+                podfileSources.forEach((v) => {
+                    if (!c.pluginConfigiOS.podfileSources.includes(v)) {
+                        c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
+                    }
+                });
+            }
         }
     });
 
@@ -87,7 +95,6 @@ export const parsePodFile = async (c, platform) => {
     const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
 
     // SOURCES
-    c.pluginConfigiOS.podfileSources = '';
     const podfileObj = getFlavouredProp(
         c,
         c.buildConfig?.platforms?.[platform],
@@ -96,7 +103,9 @@ export const parsePodFile = async (c, platform) => {
     const podfileSources = podfileObj?.sources;
     if (podfileSources && podfileSources.length) {
         podfileSources.forEach((v) => {
-            c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
+            if (!c.pluginConfigiOS.podfileSources.includes(v)) {
+                c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
+            }
         });
     }
 

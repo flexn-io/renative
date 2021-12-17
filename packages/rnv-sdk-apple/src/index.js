@@ -844,6 +844,7 @@ const runAppleLog = c => new Promise(() => {
 
 const configureXcodeProject = async (c) => {
     logTask('configureXcodeProject');
+
     const { device } = c.program;
     const { platform } = c;
     const bundlerIp = device ? getIP() : 'localhost';
@@ -885,7 +886,7 @@ const configureXcodeProject = async (c) => {
                 willPresent: []
             }
         },
-        podfileSources: []
+        podfileSources: ''
     };
 
     // FONTS

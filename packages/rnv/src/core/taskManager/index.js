@@ -214,7 +214,7 @@ export const findSuitableTask = async (c, specificTask) => {
 
         logInfo(`Current Engine: ${chalk().bold.white(
             c.runtime.engine.config.id
-        )}`);
+        )} path: ${chalk().grey(c.runtime.engine.rootPath)}`);
         const customTask = CUSTOM_TASKS[task];
         if (customTask) return customTask;
     } else {
