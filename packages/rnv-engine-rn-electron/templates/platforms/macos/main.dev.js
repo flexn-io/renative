@@ -70,3 +70,4 @@ if (isMacos) {
     app.dock.setIcon(image);
 }
 
+{{PLUGIN_INJECT_MAIN_PROCESS}}

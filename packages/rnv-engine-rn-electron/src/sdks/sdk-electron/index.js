@@ -133,7 +133,8 @@ const configureProject = c => new Promise((resolve, reject) => {
         browserWindow = merge(browserWindow, browserWindowExt);
     }
     const browserWindowStr = JSON.stringify(browserWindow, null, 2);
-
+    const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
+    const mainInjection = electronConfigExt?.mainInjection || '';
 
     if (bundleAssets) {
         const injects = [
@@ -144,6 +145,10 @@ const configureProject = c => new Promise((resolve, reject) => {
             {
                 pattern: '{{PLUGIN_INJECT_ICON_LOCATION}}',
                 override: browserWindow.icon
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_MAIN_PROCESS}}',
+                override: mainInjection
             }
         ];
 
@@ -167,6 +172,10 @@ const configureProject = c => new Promise((resolve, reject) => {
             {
                 pattern: '{{PLUGIN_INJECT_ICON_LOCATION}}',
                 override: browserWindow.icon
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_MAIN_PROCESS}}',
+                override: mainInjection
             }
         ];
 
@@ -216,9 +225,8 @@ const configureProject = c => new Promise((resolve, reject) => {
         macConfig
     );
 
-    const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
-
     if (electronConfigExt) {
+        delete electronConfigExt.mainInjection;
         electronConfig = merge(electronConfig, electronConfigExt);
     }
     writeFileSync(electronConfigPath, electronConfig);
