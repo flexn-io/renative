@@ -59,3 +59,5 @@ if (isMacos) {
     const image = nativeImage.createFromPath("{{PLUGIN_INJECT_ICON_LOCATION}}");
     app.dock.setIcon(image);
 }
+
+{{PLUGIN_INJECT_MAIN_PROCESS}}

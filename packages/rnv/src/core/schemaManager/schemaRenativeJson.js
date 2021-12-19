@@ -92,6 +92,7 @@ const engineRnElectronConfig = {
                     type: 'distribution',
                     hardenedRuntime: false,
                 },
+                mainInjection: 'console.log("Hello from main.js!");',
             },
         ],
     },
