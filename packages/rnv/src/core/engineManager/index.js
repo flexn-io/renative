@@ -16,6 +16,11 @@ export const registerEngine = async (c, engine, platform, engConfig) => {
     logTask(`registerEngine:${engine.config.id}`);
     c.runtime.enginesById[engine.config.id] = engine;
     engine.initializeRuntimeConfig(c);
+
+    if (engine.runtimeExtraProps) {
+        c.runtime.runtimeExtraProps = engine.runtimeExtraProps;
+    }
+
     c.runtime.enginesByIndex.push(engine);
     if (engConfig?.packageName) {
         engine.rootPath = _resolvePkgPath(c, engConfig.packageName);

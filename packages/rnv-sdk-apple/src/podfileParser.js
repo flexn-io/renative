@@ -160,7 +160,7 @@ export const parsePodFile = async (c, platform) => {
         },
         {
             pattern: '{{PATH_REACT_NATIVE}}',
-            override: doResolve('react-native')
+            override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native')
         },
         {
             pattern: '{{PLUGIN_STATIC_POD_DEFINITION}}',

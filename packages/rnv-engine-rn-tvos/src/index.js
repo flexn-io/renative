@@ -36,6 +36,10 @@ export default {
         taskRnvLog
     ]),
     config: CNF,
+    runtimeExtraProps: {
+        reactNativePackageName: 'react-native-tvos',
+        reactNativeMetroConfigName: 'metro.config.rnt.js'
+    },
     projectDirName: '',
     ejectPlatform: null,
     platforms: {

@@ -113,7 +113,7 @@ export const packageAndroid = async (c: any) => {
     const outputFile = _getEntryOutputName(c);
 
     const appFolder = getAppFolder(c);
-    let reactNative = 'react-native';
+    let reactNative = c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native';
 
     if (isSystemWin) {
         reactNative = path.normalize(

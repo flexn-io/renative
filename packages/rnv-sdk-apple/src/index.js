@@ -368,7 +368,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
     const schemeFolderName = getConfigProp(c, c.platform, 'scheme', 'RNVApp');
     const cmd = `node ${doResolve(
-        'react-native'
+        c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
     )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
     try {
         // Inherit full logs
@@ -810,8 +810,8 @@ export const packageBundleForXcode = (c, isDev = false) => {
     }
 
     return executeAsync(c, `node ${doResolve(
-        'react-native'
-    )}/local-cli/cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
+        c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
+    )}/local-cli/cli.js ${args.join(' ')} --config=${c.runtime.runtimeExtraProps?.reactNativeMetroConfigName || 'metro.config.js'}`, { env: { ...generateEnvVars(c) } });
 };
 
 // Resolve or reject will not be called so this will keep running
