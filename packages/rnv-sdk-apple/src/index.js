@@ -366,6 +366,7 @@ const _packageOrRun = (c, bundleAssets, bundleIsDev, appPath, scheme, runScheme,
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
+    const schemeFolderName = getConfigProp(c, c.platform, 'scheme', 'RNVApp');
     const cmd = `node ${doResolve(
         'react-native'
     )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
@@ -465,7 +466,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
 ${chalk().green('SUGGESTION:')}
 
 ${chalk().yellow('STEP 1:')}
-Open xcode workspace at: ${chalk().white(`${appPath}/RNVApp.xcworkspace`)}
+Open xcode workspace at: ${chalk().white(`${appPath}/${schemeFolderName}.xcworkspace`)}
 
 ${chalk().yellow('STEP 2:')}
 ${chalk().white('Run app and observe any extra errors')}
@@ -481,6 +482,7 @@ and we will try to help!
 
 const _handleProvisioningIssues = async (c, e, msg) => {
     const provisioningStyle = getConfigProp(c, c.platform, 'provisioningStyle');
+    const schemeFolderName = getConfigProp(c, c.platform, 'scheme', 'RNVApp');
     // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
     const isProvAutomatic = provisioningStyle === 'Automatic';
     const proAutoText = isProvAutomatic
@@ -490,7 +492,7 @@ const _handleProvisioningIssues = async (c, e, msg) => {
         } , platform: ${c.platform}, scheme: ${c.runtime.scheme}`;
     const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
     const workspacePath = chalk().white(
-        `${getAppFolder(c, c.platform)}/RNVApp.xcworkspace`
+        `${getAppFolder(c, c.platform)}/${schemeFolderName}.xcworkspace`
     );
     logError(e);
     logWarning(`${msg}. To fix try:
@@ -849,8 +851,10 @@ const configureXcodeProject = async (c) => {
     const { platform } = c;
     const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c);
-    c.runtime.platformBuildsProjectPath = `${appFolder}/RNVApp.xcworkspace`;
     const appFolderName = getAppFolderName(c, platform);
+    const schemeFolderName = getConfigProp(c, platform, 'scheme', 'RNVApp');
+    c.runtime.platformBuildsProjectPath = `${appFolder}/${schemeFolderName}.xcworkspace`;
+
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     // INJECTORS
     c.pluginConfigiOS = {
@@ -955,7 +959,7 @@ const configureXcodeProject = async (c) => {
         );
     }
 
-    await copyAssetsFolder(c, platform, 'RNVApp');
+    await copyAssetsFolder(c, platform, schemeFolderName);
     await copyAppleAssets(c, platform, appFolderName);
     await parseAppDelegate(
         c,

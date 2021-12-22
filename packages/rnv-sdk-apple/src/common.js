@@ -7,5 +7,9 @@ export const getAppFolderName = (c, platform) => {
     if (projectFolder) {
         return projectFolder;
     }
+    const schemeFolder = getConfigProp(c, platform, 'scheme');
+    if (schemeFolder) {
+        return schemeFolder;
+    }
     return 'RNVApp';
 };
