@@ -2,7 +2,7 @@ import inquirer from 'inquirer';
 import lSet from 'lodash.set';
 import path from 'path';
 import semver from 'semver';
-import { RENATIVE_CONFIG_NAME, CURRENT_DIR, PARAMS } from '../../core/constants';
+import { RENATIVE_CONFIG_NAME, CURRENT_DIR, PARAMS, RENATIVE_CONFIG_TEMPLATE_NAME } from '../../core/constants';
 import { getTemplateOptions } from '../../core/templateManager';
 import {
     mkdirSync, writeFileSync, cleanFolder, fsExistsSync, readObjectSync, removeDirs,
@@ -387,7 +387,7 @@ export const taskRnvNew = async (c) => {
             c.paths.project.dir,
             'node_modules',
             selectedInputTemplate,
-            'renative.template.json'
+            RENATIVE_CONFIG_TEMPLATE_NAME
         )
     );
 

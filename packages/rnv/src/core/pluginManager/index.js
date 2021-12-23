@@ -413,7 +413,6 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
         );
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
-
             if (plugins) {
                 let totalIncludedPlugins = 0;
                 Object.keys(plugins).forEach((key) => {
