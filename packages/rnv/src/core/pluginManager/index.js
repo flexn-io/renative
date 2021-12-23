@@ -414,7 +414,7 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
             if (plugins) {
-                let totalIncludedPlugins = 0;
+                // let totalIncludedPlugins = 0;
                 Object.keys(plugins).forEach((key) => {
                     if (
                         (includedPlugins.includes('*')
@@ -422,10 +422,11 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
                         && !excludedPlugins.includes(key)
                     ) {
                         const plugin = getMergedPlugin(c, key);
+
                         if (plugin) {
                             const pluginPlat = plugin[platform];
                             if (ignorePlatformObjectCheck) {
-                                totalIncludedPlugins++;
+                                // totalIncludedPlugins++;
                                 pluginCallback(plugin, pluginPlat, key);
                             } else if (pluginPlat) {
                                 if (
@@ -437,7 +438,7 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
                                         logWarning(plugin.deprecated);
                                     }
                                     if (pluginCallback) {
-                                        totalIncludedPlugins++;
+                                        // totalIncludedPlugins++;
                                         pluginCallback(plugin, pluginPlat, key);
                                     }
                                 } else {
@@ -449,11 +450,12 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
                         }
                     }
                 });
-                if (totalIncludedPlugins === 0) {
-                    logWarning(
-                        `Found plugins in your app but non are included. are you sure you added ${chalk().white('includedPlugins')} in your renative.json config?`
-                    );
-                }
+                // Not valid warning as web based plugins might not need web definition object to work
+                // if (totalIncludedPlugins === 0) {
+                //     logWarning(
+                //         `Found plugins in your app but non are included. are you sure you added ${chalk().white('includedPlugins')} in your renative.json config?`
+                //     );
+                // }
             } else {
                 logError(
                     `You have no plugins defined in ${chalk().white(

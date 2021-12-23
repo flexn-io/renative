@@ -36,7 +36,7 @@ import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 
 export const checkIfTemplateConfigured = async (c) => {
     logTask('checkIfTemplateConfigured');
-    if (c.program.skipDependencyCheck) return true;
+    if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return true;
     if (!c.buildConfig.templates) {
         logWarning(
             `Your ${chalk().white(
