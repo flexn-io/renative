@@ -175,6 +175,7 @@ export const loadEnginePluginDeps = async (c, engineConfigs) => {
 
 export const loadEnginePackageDeps = async (c, engineConfigs) => {
     logTask('loadEnginePackageDeps');
+    if (c.program.skipDependencyCheck) return 0;
     // Check engine dependencies
     const addedDeps = [];
     engineConfigs.forEach((ecf) => {

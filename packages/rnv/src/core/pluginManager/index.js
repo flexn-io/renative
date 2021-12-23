@@ -523,7 +523,7 @@ const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'roo
         Object.keys(customPluginTemplates).forEach((k) => {
             const val = customPluginTemplates[k];
             if (val.npm) {
-                const npmDep = c.files.project.package?.dependencies[val.npm]
+                const npmDep = c.files.project.package?.dependencies?.[val.npm]
                   || c.files.project.package?.devDependencies[val.npm];
 
                 if (npmDep) {
