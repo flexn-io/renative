@@ -346,6 +346,9 @@ export const configureTemplateFiles = async (c) => {
 
 export const configureEntryPoint = async (c, platform) => {
     logTask('configureEntryPoint');
+
+    if (c.files.project.config.isTemplate) return true;
+
     const entryFile = getConfigProp(c, platform, 'entryFile');
 
     try {
@@ -419,6 +422,7 @@ export const getTemplateOptions = (c, isGlobalScope) => {
 };
 
 export const getInstalledTemplateOptions = (c) => {
+    if (c.files.project.config.isTemplate) return [];
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
     }
@@ -433,6 +437,8 @@ export const applyTemplate = async (c, selectedTemplate) => {
     logTask(
         'applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`
     );
+    if (c.files.project.config.isTemplate) return true;
+
     c.runtime.selectedTemplate = selectedTemplate;
 
     if (!c.buildConfig.currentTemplate) {
