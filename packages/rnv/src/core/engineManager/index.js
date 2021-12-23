@@ -199,10 +199,17 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
                     const deps = c.files.project.package.dependencies || {};
                     Object.keys(npm.dependencies).forEach((k) => {
                         if (!deps[k]) {
-                            logInfo(`Engine ${ecf.key} requires npm dependency ${
-                                k} for platform ${platform}. ADDING...DONE`);
-                            deps[k] = npm?.dependencies[k];
-                            addedDeps.push(k);
+                            if (c.files.project.config.isTemplate) {
+                                if (!c.files.project.package.devDependencies[k]) {
+                                    logWarning(`Engine ${ecf.key} requires npm dependency ${
+                                        k} for platform ${platform}. which in template project should be placed in devDependencies`);
+                                }
+                            } else {
+                                logInfo(`Engine ${ecf.key} requires npm dependency ${
+                                    k} for platform ${platform}. ADDING...DONE`);
+                                deps[k] = npm?.dependencies[k];
+                                addedDeps.push(k);
+                            }
                         }
                     });
                     c.files.project.package.dependencies = deps;
