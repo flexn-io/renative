@@ -16,6 +16,11 @@ export const registerEngine = async (c, engine, platform, engConfig) => {
     logTask(`registerEngine:${engine.config.id}`);
     c.runtime.enginesById[engine.config.id] = engine;
     engine.initializeRuntimeConfig(c);
+
+    if (engine.runtimeExtraProps) {
+        c.runtime.runtimeExtraProps = engine.runtimeExtraProps;
+    }
+
     c.runtime.enginesByIndex.push(engine);
     if (engConfig?.packageName) {
         engine.rootPath = _resolvePkgPath(c, engConfig.packageName);
@@ -170,6 +175,7 @@ export const loadEnginePluginDeps = async (c, engineConfigs) => {
 
 export const loadEnginePackageDeps = async (c, engineConfigs) => {
     logTask('loadEnginePackageDeps');
+    if (c.program.skipDependencyCheck) return 0;
     // Check engine dependencies
     const addedDeps = [];
     engineConfigs.forEach((ecf) => {
@@ -193,10 +199,17 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
                     const deps = c.files.project.package.dependencies || {};
                     Object.keys(npm.dependencies).forEach((k) => {
                         if (!deps[k]) {
-                            logInfo(`Engine ${ecf.key} requires npm dependency ${
-                                k} for platform ${platform}. ADDING...DONE`);
-                            deps[k] = npm?.dependencies[k];
-                            addedDeps.push(k);
+                            if (c.files.project.config.isTemplate) {
+                                if (!c.files.project.package.devDependencies[k]) {
+                                    logWarning(`Engine ${ecf.key} requires npm dependency ${
+                                        k} for platform ${platform}. which in template project should be placed in devDependencies`);
+                                }
+                            } else {
+                                logInfo(`Engine ${ecf.key} requires npm dependency ${
+                                    k} for platform ${platform}. ADDING...DONE`);
+                                deps[k] = npm?.dependencies[k];
+                                addedDeps.push(k);
+                            }
                         }
                     });
                     c.files.project.package.dependencies = deps;

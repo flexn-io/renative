@@ -43,6 +43,7 @@ import {
     logWarning,
     logDebug
 } from '../systemManager/logger';
+import { doResolve } from '../systemManager/resolve';
 // import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
@@ -240,20 +241,44 @@ export const generateBuildConfig = (c) => {
     }
 };
 
+const loadFileExtended = (c, fileObj, pathObj, key,) => {
+    loadFile(fileObj, pathObj, key);
+    if (fileObj.config?.extendsTemplate) {
+        const currTemplate = c.files.project.config.currentTemplate || fileObj.config.currentTemplate;
+        if (currTemplate) {
+            const extendsPath = path.join(doResolve(currTemplate), fileObj.config.extendsTemplate);
+            if (fsExistsSync(extendsPath)) {
+                const extendsFile = readObjectSync(extendsPath);
+
+                fileObj.config = mergeObjects(
+                    c,
+                    extendsFile,
+                    fileObj.config,
+                    false,
+                    true
+                );
+            } else {
+                logWarning(`You are trying to extend config file with ${extendsPath} does not exists. SKIPPING.`);
+            }
+        }
+    }
+};
+
 const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
     let result = false;
     let extendAppId;
-    if (loadFile(fileObj, pathObj, 'config', true)) {
+    if (loadFileExtended(c, fileObj, pathObj, 'config', true)) {
         extendAppId = fileObj.config.extend || extendAppId;
         result = true;
     }
 
-    if (loadFile(fileObj, pathObj, 'configLocal')) {
+
+    if (loadFileExtended(c, fileObj, pathObj, 'configLocal')) {
         extendAppId = fileObj.configLocal.extend || extendAppId;
         result = true;
     }
 
-    if (loadFile(fileObj, pathObj, 'configPrivate')) {
+    if (loadFileExtended(c, fileObj, pathObj, 'configPrivate')) {
         extendAppId = fileObj.configPrivate.extend || extendAppId;
         result = true;
     }
@@ -287,9 +312,9 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         pathObj.configsPrivate.push(pathObj1.configPrivate);
         pathObj.configsLocal.push(pathObj1.configLocal);
         // FILE1: appConfigs/base
-        loadFile(fileObj1, pathObj1, 'config');
-        loadFile(fileObj1, pathObj1, 'configPrivate');
-        loadFile(fileObj1, pathObj1, 'configLocal');
+        loadFileExtended(c, fileObj1, pathObj1, 'config');
+        loadFileExtended(c, fileObj1, pathObj1, 'configPrivate');
+        loadFileExtended(c, fileObj1, pathObj1, 'configLocal');
         if (fileObj1.config) fileObj.configs.push(fileObj1.config);
         if (fileObj1.configPrivate) fileObj.configsPrivate.push(fileObj1.configPrivate);
         if (fileObj1.configLocal) fileObj.configsLocal.push(fileObj1.configLocal);
@@ -313,9 +338,9 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
                 pathObj.configsLocal.push(pathObj2.configLocal);
                 pathObj.configsPrivate.push(pathObj2.configPrivate);
                 // FILE2: appConfigs/<extendConfig>
-                loadFile(fileObj2, pathObj2, 'config');
-                loadFile(fileObj2, pathObj2, 'configPrivate');
-                loadFile(fileObj2, pathObj2, 'configLocal');
+                loadFileExtended(c, fileObj2, pathObj2, 'config');
+                loadFileExtended(c, fileObj2, pathObj2, 'configPrivate');
+                loadFileExtended(c, fileObj2, pathObj2, 'configLocal');
 
                 if (fileObj2.config) fileObj.configs.push(fileObj2.config);
                 if (fileObj2.configLocal) fileObj.configsLocal.push(fileObj2.configLocal);
@@ -333,14 +358,13 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         pathObj.configsLocal.push(path.join(path3, RENATIVE_CONFIG_LOCAL_NAME));
         pathObj.configsPrivate.push(path.join(path3, RENATIVE_CONFIG_PRIVATE_NAME));
         // FILE3: appConfigs/<appId>
-        loadFile(fileObj, pathObj, 'config');
-        loadFile(fileObj, pathObj, 'configPrivate');
-        loadFile(fileObj, pathObj, 'configLocal');
+        loadFileExtended(c, fileObj, pathObj, 'config');
+        loadFileExtended(c, fileObj, pathObj, 'configPrivate');
+        loadFileExtended(c, fileObj, pathObj, 'configLocal');
         if (fileObj.config) fileObj.configs.push(fileObj.config);
         if (fileObj.configPrivate) fileObj.configsPrivate.push(fileObj.configPrivate);
         if (fileObj.configLocal) fileObj.configsLocal.push(fileObj.configLocal);
     }
-
 
     generateBuildConfig(c);
     return result;

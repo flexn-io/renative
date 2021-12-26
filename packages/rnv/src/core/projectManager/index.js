@@ -7,7 +7,7 @@ import {
     getPlatformBuildDir,
     getPlatformProjectDir, getTimestampPathsConfig
 } from '../common';
-import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME } from '../constants';
+import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { getEngineRunnerByPlatform } from '../engineManager';
 import { isPlatformActive } from '../platformManager';
 import { copyTemplatePluginsSync } from '../pluginManager';
@@ -46,7 +46,7 @@ export const checkAndBootstrapIfRequired = async (c) => {
         const templatePath = path.join(c.paths.project.dir, 'node_modules', templateDir);
 
         c.paths.template.dir = templatePath;
-        c.paths.template.configTemplate = path.join(templatePath, 'renative.template.json');
+        c.paths.template.configTemplate = path.join(templatePath, RENATIVE_CONFIG_TEMPLATE_NAME);
 
         const templateObj = readObjectSync(c.paths.template.configTemplate);
         const appConfigPath = path.join(c.paths.project.appConfigsDir, c.program.appConfigID, 'renative.json');

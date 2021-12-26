@@ -510,7 +510,7 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
         },
         {
             pattern: '{{PATH_REACT_NATIVE}}',
-            override: doResolve('react-native', true, { forceForwardPaths: true })
+            override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, { forceForwardPaths: true })
         },
         {
             pattern: '{{PATH_HERMES_ENGINE}}',

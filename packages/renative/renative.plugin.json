@@ -1,0 +1,5 @@
+{
+    "plugins": {
+        "react-native-vector-icons": "source:rnv"
+    }
+}

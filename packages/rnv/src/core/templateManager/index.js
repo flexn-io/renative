@@ -36,7 +36,7 @@ import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 
 export const checkIfTemplateConfigured = async (c) => {
     logTask('checkIfTemplateConfigured');
-    if (c.program.skipDependencyCheck) return true;
+    if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return true;
     if (!c.buildConfig.templates) {
         logWarning(
             `Your ${chalk().white(
@@ -121,6 +121,17 @@ const _applyTemplate = async (c) => {
         c.paths.template.dir,
         RENATIVE_CONFIG_TEMPLATE_NAME
     );
+
+    c.paths.template.config = path.join(
+        c.paths.template.dir,
+        RENATIVE_CONFIG_NAME
+    );
+
+    console.log('AHKAHJA', c.paths.template.config);
+
+    if (fsExistsSync(c.paths.template.config)) {
+        c.files.template.config = readObjectSync(c.paths.template.config);
+    }
 
     if (!fsExistsSync(c.paths.template.configTemplate)) {
         logWarning(
@@ -346,6 +357,9 @@ export const configureTemplateFiles = async (c) => {
 
 export const configureEntryPoint = async (c, platform) => {
     logTask('configureEntryPoint');
+
+    if (c.files.project.config.isTemplate) return true;
+
     const entryFile = getConfigProp(c, platform, 'entryFile');
 
     try {
@@ -419,6 +433,7 @@ export const getTemplateOptions = (c, isGlobalScope) => {
 };
 
 export const getInstalledTemplateOptions = (c) => {
+    if (c.files.project.config.isTemplate) return [];
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
     }
@@ -426,13 +441,15 @@ export const getInstalledTemplateOptions = (c) => {
     return [];
 };
 
-export const isTemplateInstalled = c => doResolve(c.buildConfig.currentTemplate);
+export const isTemplateInstalled = c => (c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : false);
 
 
 export const applyTemplate = async (c, selectedTemplate) => {
     logTask(
         'applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`
     );
+    if (c.files.project.config.isTemplate) return true;
+
     c.runtime.selectedTemplate = selectedTemplate;
 
     if (!c.buildConfig.currentTemplate) {
