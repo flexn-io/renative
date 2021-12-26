@@ -127,11 +127,9 @@ const _applyTemplate = async (c) => {
         RENATIVE_CONFIG_NAME
     );
 
-    console.log('AHKAHJA', c.paths.template.config);
-
-    if (fsExistsSync(c.paths.template.config)) {
-        c.files.template.config = readObjectSync(c.paths.template.config);
-    }
+    // if (fsExistsSync(c.paths.template.config)) {
+    //     c.files.template.config = readObjectSync(c.paths.template.config);
+    // }
 
     if (!fsExistsSync(c.paths.template.configTemplate)) {
         logWarning(

@@ -257,6 +257,7 @@ const loadFileExtended = (c, fileObj, pathObj, key,) => {
                     false,
                     true
                 );
+                fileObj.config.isTemplate = false;
             } else {
                 logWarning(`You are trying to extend config file with ${extendsPath} does not exists. SKIPPING.`);
             }
