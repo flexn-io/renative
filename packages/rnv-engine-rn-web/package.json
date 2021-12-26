@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "0.34.0-alpha.2",
+    "version": "0.34.0-alpha.4",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"
@@ -48,7 +48,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.34.0-alpha.2"
+        "rnv": "^0.34.0-alpha.4"
     },
     "private": false,
     "publishConfig": {

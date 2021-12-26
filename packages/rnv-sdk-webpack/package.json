@@ -10,7 +10,6 @@
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "main": "dist/index.js",
-    "private": false,
     "bin": {
         "sdk-webpack": "./dist/cli.js"
     },
@@ -45,11 +44,12 @@
         "ts-jest": "^27.0.7",
         "typescript": "^4.5.2"
     },
+    "peerDependencies": {
+        "rnv": "^0.34.0-alpha.4"
+    },
+    "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "peerDependencies": {
-        "rnv": "^0.34.0-alpha.2"
     },
     "husky": {
         "hooks": {
