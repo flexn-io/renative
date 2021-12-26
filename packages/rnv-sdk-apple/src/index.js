@@ -158,23 +158,11 @@ export const runXcodeProject = async (c) => {
 
     const appPath = getAppFolder(c, c.platform);
     const { device } = c.program;
-    const scheme = getConfigProp(c, c.platform, 'scheme');
+    const appFolderName = getAppFolderName(c, c.platform);
     const runScheme = getConfigProp(c, c.platform, 'runScheme');
     const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
     let p;
-
-    if (!scheme) {
-        return Promise.reject(
-            `Missing scheme in platforms.${chalk().yellow(
-                c.platform
-            )} in your ${chalk().white(
-                c.paths.appConfig.config
-            )}! Check example config for more info:  ${chalk().grey(
-                'https://github.com/renative-org/renative/blob/master/appConfigs/helloworld/renative.json'
-            )} `
-        );
-    }
 
     let devicesArr;
     if (device === true) {
@@ -219,9 +207,9 @@ export const runXcodeProject = async (c) => {
                     return packageBundleForXcode(
                         c,
                         bundleIsDev
-                    ).then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
+                    ).then(() => _checkLockAndExec(c, appPath, appFolderName, runScheme, p));
                 }
-                return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+                return _checkLockAndExec(c, appPath, appFolderName, runScheme, p);
             };
 
             if (c.runtime.target !== true) {
@@ -351,7 +339,7 @@ export const runXcodeProject = async (c) => {
             true
         );
         if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
-        return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p);
+        return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, appFolderName, runScheme, p);
     }
     // return Promise.reject('Missing options for react-native command!');
 };
@@ -366,7 +354,8 @@ const _packageOrRun = (c, bundleAssets, bundleIsDev, appPath, scheme, runScheme,
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
-    const schemeFolderName = getConfigProp(c, c.platform, 'scheme', 'RNVApp');
+    const appFolderName = getAppFolderName(c, c.platform);
+
     const cmd = `node ${doResolve(
         c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
     )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
@@ -466,7 +455,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
 ${chalk().green('SUGGESTION:')}
 
 ${chalk().yellow('STEP 1:')}
-Open xcode workspace at: ${chalk().white(`${appPath}/${schemeFolderName}.xcworkspace`)}
+Open xcode workspace at: ${chalk().white(`${appPath}/${appFolderName}.xcworkspace`)}
 
 ${chalk().yellow('STEP 2:')}
 ${chalk().white('Run app and observe any extra errors')}
@@ -482,8 +471,7 @@ and we will try to help!
 
 const _handleProvisioningIssues = async (c, e, msg) => {
     const provisioningStyle = getConfigProp(c, c.platform, 'provisioningStyle');
-    const schemeFolderName = getConfigProp(c, c.platform, 'scheme', 'RNVApp');
-    // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
+    const appFolderName = getAppFolderName(c, c.platform); // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
     const isProvAutomatic = provisioningStyle === 'Automatic';
     const proAutoText = isProvAutomatic
         ? ''
@@ -492,7 +480,7 @@ const _handleProvisioningIssues = async (c, e, msg) => {
         } , platform: ${c.platform}, scheme: ${c.runtime.scheme}`;
     const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
     const workspacePath = chalk().white(
-        `${getAppFolder(c, c.platform)}/${schemeFolderName}.xcworkspace`
+        `${getAppFolder(c, c.platform)}/${appFolderName}.xcworkspace`
     );
     logError(e);
     logWarning(`${msg}. To fix try:
@@ -599,9 +587,8 @@ export const buildXcodeProject = async (c) => {
             logError(`platform ${c.platform} not supported`);
     }
 
-    const scheme = getConfigProp(c, platform, 'scheme');
     const appPath = getAppFolder(c);
-    const buildPath = path.join(appPath, `build/${scheme}`);
+    const buildPath = path.join(appPath, `build/${appFolderName}`);
     const allowProvisioningUpdates = getConfigProp(
         c,
         platform,
@@ -621,7 +608,7 @@ export const buildXcodeProject = async (c) => {
     }
     if (!ps.includes('-scheme')) {
         p.push('-scheme');
-        p.push(scheme);
+        p.push(appFolderName);
     }
     if (!ps.includes('-configuration')) {
         p.push('-configuration');
@@ -667,7 +654,7 @@ const archiveXcodeProject = (c) => {
     logTask('archiveXcodeProject');
     const { platform } = c;
 
-    const appFolderName = getAppFolderName(c, platform);
+    const appFolderName = getAppFolderName(c, c.platform);
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
@@ -683,7 +670,6 @@ const archiveXcodeProject = (c) => {
     const appPath = getAppFolder(c);
     const exportPath = path.join(appPath, 'release');
 
-    const scheme = getConfigProp(c, platform, 'scheme');
     const allowProvisioningUpdates = getConfigProp(
         c,
         platform,
@@ -691,7 +677,7 @@ const archiveXcodeProject = (c) => {
         true
     );
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
-    const exportPathArchive = `${exportPath}/${scheme}.xcarchive`;
+    const exportPathArchive = `${exportPath}/${appFolderName}.xcarchive`;
     let ps = '';
     if (c.program.xcodebuildArchiveArgs) {
         ps = c.program.xcodebuildArchiveArgs;
@@ -704,7 +690,7 @@ const archiveXcodeProject = (c) => {
     }
     if (!ps.includes('-scheme')) {
         p.push('-scheme');
-        p.push(scheme);
+        p.push(appFolderName);
     }
     if (!ps.includes('-sdk') && sdkArr.length) {
         p.push('-sdk');
@@ -746,7 +732,7 @@ const exportXcodeProject = async (c) => {
     const appPath = getAppFolder(c);
     const exportPath = path.join(appPath, 'release');
 
-    const scheme = getConfigProp(c, platform, 'scheme');
+    const appFolderName = getAppFolderName(c, c.platform);
     const allowProvisioningUpdates = getConfigProp(
         c,
         platform,
@@ -762,7 +748,7 @@ const exportXcodeProject = async (c) => {
     const p = ['-exportArchive'];
 
     if (!ps.includes('-archivePath')) {
-        p.push(`-archivePath ${exportPath}/${scheme}.xcarchive`);
+        p.push(`-archivePath ${exportPath}/${appFolderName}.xcarchive`);
     }
     if (!ps.includes('-exportOptionsPlist')) {
         p.push(`-exportOptionsPlist ${appPath}/exportOptions.plist`);
@@ -852,8 +838,7 @@ const configureXcodeProject = async (c) => {
     const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c);
     const appFolderName = getAppFolderName(c, platform);
-    const schemeFolderName = getConfigProp(c, platform, 'scheme', 'RNVApp');
-    c.runtime.platformBuildsProjectPath = `${appFolder}/${schemeFolderName}.xcworkspace`;
+    c.runtime.platformBuildsProjectPath = `${appFolder}/${appFolderName}.xcworkspace`;
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     // INJECTORS
@@ -959,7 +944,7 @@ const configureXcodeProject = async (c) => {
         );
     }
 
-    await copyAssetsFolder(c, platform, schemeFolderName);
+    await copyAssetsFolder(c, platform, appFolderName);
     await copyAppleAssets(c, platform, appFolderName);
     await parseAppDelegate(
         c,

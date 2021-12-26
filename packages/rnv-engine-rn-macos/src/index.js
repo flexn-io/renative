@@ -25,6 +25,11 @@ export default {
         // taskRnvLog,
     ]),
     config: CNF,
+    runtimeExtraProps: {
+        reactNativePackageName: 'react-native',
+        reactNativeMetroConfigName: 'metro.config.rnm.js',
+        xcodeProjectNameFolder: 'RNVAppMACOS'
+    },
     projectDirName: '',
     serverDirName: 'server',
     ejectPlatform: null,

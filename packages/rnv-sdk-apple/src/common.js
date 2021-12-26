@@ -3,13 +3,19 @@ import { Common } from 'rnv';
 const { getConfigProp } = Common;
 
 export const getAppFolderName = (c, platform) => {
-    const projectFolder = getConfigProp(c, platform, 'projectFolder');
+    // NOTE: DEPRECATED
+    let projectFolder = getConfigProp(c, platform, 'projectFolder');
     if (projectFolder) {
         return projectFolder;
     }
-    const schemeFolder = getConfigProp(c, platform, 'scheme');
-    if (schemeFolder) {
-        return schemeFolder;
+    // NOTE: DEPRECATED
+    projectFolder = getConfigProp(c, platform, 'scheme');
+    if (projectFolder) {
+        return projectFolder;
+    }
+    projectFolder = c.runtime.runtimeExtraProps?.xcodeProjectNameFolder;
+    if (projectFolder) {
+        return projectFolder;
     }
     return 'RNVApp';
 };

@@ -13,7 +13,6 @@
     "platforms": {
         "ios": {
             "entryFile": "index.ios",
-            "scheme": "RNVApp",
             "teamID": "",
             "permissions": ["*"],
             "buildSchemes": {
@@ -31,7 +30,6 @@
         "tvos": {
             "entryFile": "index.tvos",
             "teamID": "",
-            "scheme": "RNVAppTVOS",
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
@@ -49,7 +47,6 @@
             "teamID": "",
             "provisioningStyle": "Automatic",
             "permissions": ["*"],
-            "scheme": "RNVApp",
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",

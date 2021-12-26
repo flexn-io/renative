@@ -26,7 +26,6 @@
     "platforms": {
         "ios": {
             "entryFile": "index.ios",
-            "scheme": "RNVApp",
             "teamID": "",
             "provisioningStyle": "Automatic",
             "systemCapabilities": {
@@ -81,7 +80,6 @@
             "provisioningStyle": "Automatic",
             "entitlements": {},
             "permissions": ["*"],
-            "scheme": "RNVAppTVOS",
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
@@ -104,7 +102,6 @@
             "teamID": "",
             "provisioningStyle": "Automatic",
             "permissions": ["*"],
-            "scheme": "RNVApp",
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
