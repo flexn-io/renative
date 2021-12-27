@@ -21,15 +21,18 @@ const VERSIONED_PACKAGES = [
     'rnv-engine-rn-windows',
     'rnv-sdk-apple',
     'rnv-sdk-android',
+    'rnv-sdk-webpack',
+    'app',
     'renative',
 ];
 
 const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer = '') => {
-    const { pkgFile } = pkgConfig;
+    const { pkgFile, rnvFile } = pkgConfig;
 
-    if (pkgFile) {
-        let hasChanges = false;
-        packageNamesAll.forEach((v) => {
+
+    packageNamesAll.forEach((v) => {
+        if (pkgFile) {
+            let hasChanges = false;
             const currVer = pkgFile?.[depKey]?.[v];
             if (currVer) {
                 const newVer = `${semVer}${packageConfigs[v].pkgFile?.version}`;
@@ -40,12 +43,28 @@ const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer =
                     pkgFile[depKey][v] = newVer;
                 }
             }
-        });
-        if (hasChanges) {
-            const output = Doctor.fixPackageObject(pkgFile);
-            FileUtils.writeFileSync(pkgConfig.pkgPath, output, 4, true);
+            if (hasChanges) {
+                const output = Doctor.fixPackageObject(pkgFile);
+                FileUtils.writeFileSync(pkgConfig.pkgPath, output, 4, true);
+            }
         }
-    }
+        if (rnvFile) {
+            let hasRnvChanges = false;
+            const templateVer = rnvFile?.templates?.[v]?.version;
+            if (templateVer) {
+                const newVer = `${semVer}${packageConfigs[v].pkgFile?.version}`;
+                if (templateVer !== newVer) {
+                    console.log('Found linked plugin dependency to update:', v, templateVer, newVer);
+                    hasRnvChanges = true;
+                    rnvFile.templates[v].version = newVer;
+                }
+            }
+            if (hasRnvChanges) {
+                const output = Doctor.fixPackageObject(rnvFile);
+                FileUtils.writeFileSync(pkgConfig.rnvPath, output, 4, true);
+            }
+        }
+    });
 };
 
 export const updateVersions = async (c) => {
@@ -102,13 +121,13 @@ export const updateVersions = async (c) => {
     const packageNamesAll = [];
     const packageConfigs = {};
 
-    dirs.forEach((dir) => {
+    const parsePackages = (dirPath) => {
         let pkgName;
         let rnvPath;
         let _pkgPath;
         let rnvFile;
         let pkgFile;
-        const dirPath = path.join(pkgDirPath, dir);
+
         if (fs.statSync(dirPath).isDirectory()) {
             _pkgPath = path.join(dirPath, 'package.json');
             if (fsExistsSync(_pkgPath)) {
@@ -129,6 +148,12 @@ export const updateVersions = async (c) => {
             rnvFile
         };
         packageNamesAll.push(pkgName);
+    };
+
+    parsePackages(c.paths.project.dir);
+
+    dirs.forEach((dir) => {
+        parsePackages(path.join(pkgDirPath, dir));
     });
 
     packageNamesAll.forEach((pkgName) => {

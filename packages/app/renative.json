@@ -1,4 +1,14 @@
 {
+    "engines": {
+        "@rnv/engine-lightning": "source:rnv",
+        "@rnv/engine-rn": "source:rnv",
+        "@rnv/engine-rn-electron": "source:rnv",
+        "@rnv/engine-rn-macos": "source:rnv",
+        "@rnv/engine-rn-next": "source:rnv",
+        "@rnv/engine-rn-tvos": "source:rnv",
+        "@rnv/engine-rn-web": "source:rnv",
+        "@rnv/engine-rn-windows": "source:rnv"
+    },
     "env": {
         "SOME_ENV_VAR": "xxxx"
     },
@@ -15,16 +25,6 @@
     "plugins": {
         "@noriginmedia/react-spatial-navigation": "source:rnv",
         "next": "source:rnv"
-    },
-    "engines": {
-        "@rnv/engine-rn": "source:rnv",
-        "@rnv/engine-rn-tvos": "source:rnv",
-        "@rnv/engine-rn-web": "source:rnv",
-        "@rnv/engine-rn-next": "source:rnv",
-        "@rnv/engine-rn-electron": "source:rnv",
-        "@rnv/engine-lightning": "source:rnv",
-        "@rnv/engine-rn-macos": "source:rnv",
-        "@rnv/engine-rn-windows": "source:rnv"
     },
     "integrations": {
         "@rnv/integration-vercel": "source:rnv",
@@ -85,19 +85,19 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "0.34.0-alpha.2",
+            "version": "^0.34.0-alpha.4",
             "webpack": {
                 "moduleAliases": true
             }
         },
         "renative-template-blank": {
-            "version": "0.34.0-alpha.2",
+            "version": "^0.34.0-alpha.4",
             "webpack": {
                 "moduleAliases": true
             }
         },
         "renative-template-kitchen-sink": {
-            "version": "0.34.0-alpha.2",
+            "version": "^0.34.0-alpha.4",
             "webpack": {
                 "moduleAliases": true
             }
