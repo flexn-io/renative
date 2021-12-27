@@ -23,7 +23,7 @@
             "version": "npm:react-native-tvos@0.63.4-0"
         },
         "renative": {
-            "version": "0.34.0-alpha.4",
+            "version": "0.34.0-alpha.5",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
