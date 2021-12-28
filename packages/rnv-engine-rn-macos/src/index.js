@@ -28,7 +28,7 @@ export default {
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',
         reactNativeMetroConfigName: 'metro.config.rnm.js',
-        xcodeProjectNameFolder: 'RNVAppMACOS'
+        xcodeProjectName: 'RNVAppMACOS'
     },
     projectDirName: '',
     serverDirName: 'server',

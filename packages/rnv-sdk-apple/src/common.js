@@ -13,7 +13,7 @@ export const getAppFolderName = (c, platform) => {
     if (projectFolder) {
         return projectFolder;
     }
-    projectFolder = c.runtime.runtimeExtraProps?.xcodeProjectNameFolder;
+    projectFolder = c.runtime.runtimeExtraProps?.xcodeProjectName;
     if (projectFolder) {
         return projectFolder;
     }
