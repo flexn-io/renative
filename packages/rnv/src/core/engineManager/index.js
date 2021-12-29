@@ -150,6 +150,7 @@ export const registerAllPlatformEngines = async (c) => {
 
 export const loadEnginePluginDeps = async (c, engineConfigs) => {
     logTask('loadEnginePluginDeps');
+    if (c.files.project.config.isTemplate) return 0;
     // Check engine dependencies
     const addedPlugins = [];
     engineConfigs.forEach((ecf) => {
@@ -175,7 +176,7 @@ export const loadEnginePluginDeps = async (c, engineConfigs) => {
 
 export const loadEnginePackageDeps = async (c, engineConfigs) => {
     logTask('loadEnginePackageDeps');
-    if (c.program.skipDependencyCheck) return 0;
+    if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return 0;
     // Check engine dependencies
     const addedDeps = [];
     engineConfigs.forEach((ecf) => {

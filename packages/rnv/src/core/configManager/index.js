@@ -424,7 +424,7 @@ export const generateLocalConfig = (c, resetAppId) => {
 const _generatePlatformTemplatePaths = (c) => {
     logTask('_generatePlatformTemplatePaths');
     if (!c.buildConfig.paths) {
-        logWarning(`You're missing paths object in your ${chalk().white(c.paths.project.config)}`);
+        logWarning(`You're missing paths object in your ${chalk().red(c.paths.project.config)}`);
         c.buildConfig.paths = {};
     }
     if (c.files.config?.platformTemplatesDirs) {
@@ -442,32 +442,37 @@ const _generatePlatformTemplatePaths = (c) => {
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
     const result = {};
 
-    c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
-        const engine = c.runtime.enginesByPlatform[platform];
-        if (engine) {
-            const originalPath = engine.originalTemplatePlatformsDir;
+    if (c.buildConfig.defaults) {
+        c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
+            const engine = c.runtime.enginesByPlatform[platform];
+            if (engine) {
+                const originalPath = engine.originalTemplatePlatformsDir;
 
-            if (originalPath) {
-                if (!pt[platform]) {
-                    result[platform] = getRealPath(
-                        c,
-                        originalPath,
-                        'platformTemplatesDir',
-                        originalPath
-                    );
+                if (originalPath) {
+                    if (!pt[platform]) {
+                        result[platform] = getRealPath(
+                            c,
+                            originalPath,
+                            'platformTemplatesDir',
+                            originalPath
+                        );
+                    } else {
+                        result[platform] = getRealPath(
+                            c,
+                            pt[platform],
+                            'platformTemplatesDir',
+                            originalPath
+                        );
+                    }
                 } else {
-                    result[platform] = getRealPath(
-                        c,
-                        pt[platform],
-                        'platformTemplatesDir',
-                        originalPath
-                    );
+                    logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
                 }
-            } else {
-                logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
             }
-        }
-    });
+        });
+    } else {
+        logWarning(`Your renative.json is missing property: ${chalk().red('defaults.supportedPlatforms')} `);
+    }
+
 
     return result;
 };
@@ -605,6 +610,9 @@ export const parseRenativeConfigs = async (c) => {
     }
 
     // LOAD WORKSPACE /[PROJECT_NAME]/RENATIVE.*.JSON
+    if (!c.files.project.config.projectName) {
+        return Promise.reject('Your renative.json is missing required property: projectName ');
+    }
     _generateConfigPaths(
         c.paths.workspace.project,
         path.join(c.paths.workspace.dir, c.files.project.config.projectName)

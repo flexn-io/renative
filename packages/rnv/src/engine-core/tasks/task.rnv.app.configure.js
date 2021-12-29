@@ -187,7 +187,9 @@ export const taskRnvAppConfigure = async (c) => {
         const hasAppConfig = await _findAndSwitchAppConfigDir(c);
         if (!hasAppConfig) {
             // await executeTask(c, TASK_APP_CREATE, TASK_APP_CONFIGURE);
-            return Promise.reject('No app configs found for this project');
+            // return Promise.reject('No app configs found for this project');
+            logWarning('No app configs found for this project');
+            return true;
         }
     } else if (c.program.appConfigID) {
         const aid = await matchAppConfigID(c, c.program.appConfigID);
@@ -196,7 +198,9 @@ export const taskRnvAppConfigure = async (c) => {
             const hasAppConfig = await _findAndSwitchAppConfigDir(c);
             if (!hasAppConfig) {
                 // await executeTask(c, TASK_APP_CREATE, TASK_APP_CONFIGURE);
-                return Promise.reject('No app configs found for this project');
+                // return Promise.reject('No app configs found for this project');
+                logWarning('No app configs found for this project');
+                return true;
             }
         }
         _setAppId(c, aid);

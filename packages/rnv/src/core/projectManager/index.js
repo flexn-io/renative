@@ -28,7 +28,6 @@ import { executeAsync } from '../systemManager/exec';
 
 import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../systemManager/logger';
 
-
 import { configureTemplateFiles, configureEntryPoint } from '../templateManager';
 import { parseRenativeConfigs } from '../configManager';
 
@@ -212,7 +211,7 @@ export const checkAndCreateBabelConfig = async (c) => {
 };
 
 
-export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
+export const copyRuntimeAssets = c => new Promise((resolve) => {
     logTask('copyRuntimeAssets');
 
     const destPath = path.join(c.paths.project.assets.dir, 'runtime');
@@ -223,7 +222,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
             const sourcePath = path.join(v, 'assets/runtime');
             copyFolderContentsRecursiveSync(sourcePath, destPath);
         });
-    } else {
+    } else if (c.paths.appConfig.dir) {
         const sourcePath = path.join(
             c.paths.appConfig.dir,
             'assets/runtime'
@@ -233,14 +232,14 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 
     if (!c.buildConfig?.common) {
         logDebug('BUILD_CONFIG', c.buildConfig);
-        reject(
+        logWarning(
             `Your ${chalk().white(
                 c.paths.appConfig.config
-            )} is missconfigured. (Maybe you have older version?). Missing ${chalk().white(
+            )} is misconfigured. (Maybe you have older version?). Missing ${chalk().white(
                 '{ common: {} }'
             )} object at root`
         );
-
+        resolve();
         return;
     }
 
