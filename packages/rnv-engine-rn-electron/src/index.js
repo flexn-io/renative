@@ -32,7 +32,7 @@ export default {
         macos: {
             defaultPort: 8086,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'macos.desktop', 'desktop', 'macos', 'desktop.web', 'electron', 'web'
             ], CNF)
 
@@ -40,7 +40,7 @@ export default {
         windows: {
             defaultPort: 8092,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'windows.desktop', 'desktop', 'windows', 'desktop.web', 'electron', 'web'
             ], CNF)
 
@@ -48,7 +48,7 @@ export default {
         linux: {
             defaultPort: 8100,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'linux.desktop', 'desktop', 'linux', 'desktop.web', 'electron', 'web'
             ], CNF)
 

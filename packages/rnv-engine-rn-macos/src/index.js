@@ -36,7 +36,7 @@ export default {
     platforms: {
         macos: {
             defaultPort: 8086,
-            extenstions: generateEngineExtensions(
+            extensions: generateEngineExtensions(
                 ['macos.desktop', 'desktop', 'macos', 'desktop.native', 'native'],
                 CNF
             ),

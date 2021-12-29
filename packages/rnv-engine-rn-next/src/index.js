@@ -32,7 +32,7 @@ export default {
         web: {
             defaultPort: 8080,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'web.browser', 'browser', 'server.next', 'server.web', 'next', 'browser.web', 'web'
             ], CNF)
 
@@ -40,7 +40,7 @@ export default {
         chromecast: {
             defaultPort: 8095,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'chromecast.tv', 'web.tv', 'tv', 'chromecast', 'tv.web', 'web'
             ], CNF)
 

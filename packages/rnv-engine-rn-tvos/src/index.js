@@ -46,19 +46,19 @@ export default {
     platforms: {
         tvos: {
             defaultPort: 8089,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'tvos.tv', 'tv', 'tvos', 'tv.native', 'native'
             ], CNF)
         },
         androidtv: {
             defaultPort: 8084,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'androidtv.tv', 'tv', 'androidtv', 'android', 'tv.native', 'native'
             ], CNF)
         },
         firetv: {
             defaultPort: 8098,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'firetv.tv', 'androidtv.tv', 'tv', 'firetv', 'androidtv', 'android', 'tv.native', 'native'
             ], CNF)
         },

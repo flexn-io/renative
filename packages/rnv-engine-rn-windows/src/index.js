@@ -31,14 +31,14 @@ export default {
     platforms: {
         windows: {
             defaultPort: 8092,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'windows.desktop', 'windows', 'win', 'desktop'
             ], CNF)
         },
         xbox: {
             defaultPort: 8099,
             // What works on windows will work on xbox, but it needs to be scaled as for TVs
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'xbox', 'windows', 'win', 'tv', 'desktop'
             ], CNF)
         }

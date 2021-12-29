@@ -112,7 +112,7 @@ export const configureEngines = async (c) => {
 
 export const registerMissingPlatformEngines = async (c, taskInstance) => {
     logTask('registerMissingPlatformEngines');
-    if (!taskInstance || (!taskInstance.isGlobalScope && taskInstance?.platforms?.length === 0)) {
+    if (!taskInstance || (!taskInstance.isGlobalScope && taskInstance?.platforms?.length === 0) || c.program.platform === 'all') {
         const registerEngineList = [];
         c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
             registerEngineList.push(
@@ -445,9 +445,9 @@ export const getPlatformExtensions = (c, excludeServer = false, addDotPrefix = f
     const { platforms } = engine;
 
     if (addDotPrefix) {
-        output = platforms[c.platform].extenstions.map(v => `.${v}`).filter(ext => !excludeServer || !ext.includes('server.'));
+        output = platforms[c.platform].extensions.map(v => `.${v}`).filter(ext => !excludeServer || !ext.includes('server.'));
     } else {
-        output = platforms[c.platform].extenstions.filter(ext => !excludeServer || !ext.includes('server.'));
+        output = platforms[c.platform].extensions.filter(ext => !excludeServer || !ext.includes('server.'));
     }
     return output;
 };

@@ -45,37 +45,37 @@ export default {
     platforms: {
         ios: {
             defaultPort: 8082,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'ios.mobile', 'mobile', 'ios', 'mobile.native', 'native'
             ], CNF)
         },
         android: {
             defaultPort: 8083,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'android.mobile', 'mobile', 'android', 'mobile.native', 'native'
             ], CNF)
         },
         androidtv: {
             defaultPort: 8084,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'androidtv.tv', 'tv', 'androidtv', 'android', 'tv.native', 'native'
             ], CNF)
         },
         firetv: {
             defaultPort: 8098,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'firetv.tv', 'androidtv.tv', 'tv', 'firetv', 'androidtv', 'android', 'tv.native', 'native'
             ], CNF)
         },
         androidwear: {
             defaultPort: 8084,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'androidwear.watch', 'watch', 'androidwear', 'android', 'watch.native', 'native'
             ], CNF)
         },
         macos: {
             defaultPort: 8086,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'macos.desktop', 'desktop', 'macos', 'ios', 'desktop.native', 'native'
             ], CNF)
         }

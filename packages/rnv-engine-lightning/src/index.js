@@ -32,7 +32,7 @@ export default {
         tizen: {
             defaultPort: 8087,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'lng', 'tizen.tv', 'web.tv', 'tv', 'tizen', 'tv.web', 'web'
             ], CNF)
 
@@ -40,7 +40,7 @@ export default {
         webos: {
             defaultPort: 8088,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'lng', 'webos.tv', 'web.tv', 'tv', 'webos', 'tv.web', 'web'
             ], CNF)
 

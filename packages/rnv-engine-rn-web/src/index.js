@@ -48,7 +48,7 @@ export default {
         web: {
             defaultPort: 8080,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'web.browser', 'browser', 'browser.web', 'web'
             ], CNF)
 
@@ -56,7 +56,7 @@ export default {
         chromecast: {
             defaultPort: 8095,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'chromecast.tv', 'web.tv', 'tv', 'chromecast', 'tv.web', 'web'
             ], CNF)
 
@@ -64,7 +64,7 @@ export default {
         tizen: {
             defaultPort: 8087,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'tizen.tv', 'web.tv', 'tv', 'tizen', 'tv.web', 'web'
             ], CNF)
 
@@ -72,7 +72,7 @@ export default {
         webtv: {
             defaultPort: 8096,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'webtv.tv', 'web.tv', 'tv', 'webtv', 'tv.web', 'web'
             ], CNF)
 
@@ -80,7 +80,7 @@ export default {
         tizenmobile: {
             defaultPort: 8091,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'tizenmobile.mobile', 'mobile', 'tizenmobile', 'mobile.web', 'native'
             ], CNF)
 
@@ -88,7 +88,7 @@ export default {
         tizenwatch: {
             defaultPort: 8090,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'tizenwatch.watch', 'web.watch', 'watch', 'tizenwatch', 'watch.web', 'web'
             ], CNF)
 
@@ -96,7 +96,7 @@ export default {
         webos: {
             defaultPort: 8088,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'webos.tv', 'web.tv', 'tv', 'webos', 'tv.web', 'web'
             ], CNF)
 
@@ -104,7 +104,7 @@ export default {
         firefoxos: {
             defaultPort: 8094,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'firefoxos.mobile', 'mobile', 'firefoxos', 'mobile.web', 'native'
             ], CNF)
 
@@ -112,7 +112,7 @@ export default {
         firefoxtv: {
             defaultPort: 8097,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'firefoxtv.tv', 'web.tv', 'tv', 'firefoxtv', 'tv.web', 'web'
             ], CNF)
 
@@ -120,7 +120,7 @@ export default {
         kaios: {
             defaultPort: 8093,
             isWebHosted: true,
-            extenstions: generateEngineExtensions([
+            extensions: generateEngineExtensions([
                 'kaios.mobile', 'mobile', 'kaios', 'mobile.web', 'native'
             ], CNF)
 
