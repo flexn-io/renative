@@ -30,7 +30,9 @@
         "axios": "0.21.2",
         "better-opn": "1.0.0",
         "command-exists": "1.2.9",
-        "ip": "1.1.5"
+        "ip": "1.1.5",
+        "file-loader": "1.1.11",
+        "cross-env": "5.2.0"
     },
     "devDependencies": {
         "@types/jest": "^27.0.2",

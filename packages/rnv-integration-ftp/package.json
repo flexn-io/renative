@@ -28,7 +28,10 @@
         "prepublishOnly": "npm run build",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
-    "dependencies": {},
+    "dependencies": {    
+        "ftp-deploy": "2.3.3",
+        "dotenv": "8.1.0"
+    },
     "devDependencies": {
         "@babel/cli": "7.6.0",
         "@babel/core": "7.6.0",

@@ -28,7 +28,9 @@
     },
     "dependencies": {
         "inquirer": "8.2.0",
-        "shelljs": "0.8.4"
+        "shelljs": "0.8.4",
+        "compare-versions": "3.6.0",
+        "ios-mobileprovision-finder": "1.0.11"
     },
     "devDependencies": {
         "@types/jest": "^27.0.2",
