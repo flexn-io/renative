@@ -28,9 +28,9 @@
         "prepublishOnly": "npm run build",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
-    "dependencies": {    
-        "ftp-deploy": "2.3.3",
-        "dotenv": "8.1.0"
+    "dependencies": {
+        "dotenv": "8.1.0",
+        "ftp-deploy": "2.3.3"
     },
     "devDependencies": {
         "@babel/cli": "7.6.0",
@@ -41,7 +41,7 @@
         "@babel/preset-env": "7.6.0"
     },
     "peerDependencies": {
-        "rnv": "^0.34.0-alpha.5"
+        "rnv": "^0.34.0-alpha.6"
     },
     "publishConfig": {
         "access": "public"

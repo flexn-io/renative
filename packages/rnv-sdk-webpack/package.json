@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-webpack",
-    "version": "0.34.0-alpha.5",
+    "version": "0.34.0-alpha.6",
     "description": "ReNative Webpack SDK",
     "keywords": [],
     "homepage": "https://github.com/renative-org/renative#readme",
@@ -30,9 +30,9 @@
         "axios": "0.21.2",
         "better-opn": "1.0.0",
         "command-exists": "1.2.9",
-        "ip": "1.1.5",
+        "cross-env": "5.2.0",
         "file-loader": "1.1.11",
-        "cross-env": "5.2.0"
+        "ip": "1.1.5"
     },
     "devDependencies": {
         "@types/jest": "^27.0.2",
@@ -47,7 +47,7 @@
         "typescript": "^4.5.2"
     },
     "peerDependencies": {
-        "rnv": "^0.34.0-alpha.5"
+        "rnv": "^0.34.0-alpha.6"
     },
     "private": false,
     "publishConfig": {

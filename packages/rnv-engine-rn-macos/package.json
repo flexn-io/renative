@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-macos",
-    "version": "0.34.0-alpha.5",
+    "version": "0.34.0-alpha.6",
     "description": "ReNative Engine to build react-native macOS platform.",
     "keywords": [
         "react-native-macos"
@@ -25,7 +25,7 @@
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
-        "@rnv/sdk-apple": "0.34.0-alpha.5"
+        "@rnv/sdk-apple": "0.34.0-alpha.6"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -36,7 +36,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.34.0-alpha.5"
+        "rnv": "^0.34.0-alpha.6"
     },
     "private": false,
     "publishConfig": {

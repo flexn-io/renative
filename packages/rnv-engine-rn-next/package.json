@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "0.34.0-alpha.5",
+    "version": "0.34.0-alpha.6",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",
@@ -29,6 +29,7 @@
         "@expo/next-adapter": "3.1.12",
         "@zeit/next-css": "1.0.1",
         "ally.js": "1.4.1",
+        "better-opn": "1.0.0",
         "next-fonts": "1.5.1",
         "next-images": "1.8.4",
         "next-optimized-images": "2.6.2",
@@ -38,8 +39,7 @@
         "webpack-cli": "4.9.1",
         "webpack-dev-server": "4.6.0",
         "webpack-merge": "4.1.4",
-        "write-json-webpack-plugin": "1.1.0",
-        "better-opn": "1.0.0"
+        "write-json-webpack-plugin": "1.1.0"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -51,7 +51,7 @@
     },
     "peerDependencies": {
         "next": ">=12.0.7",
-        "rnv": "^0.34.0-alpha.5"
+        "rnv": "^0.34.0-alpha.6"
     },
     "private": false,
     "publishConfig": {
