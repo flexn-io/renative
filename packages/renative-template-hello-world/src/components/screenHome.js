@@ -8,7 +8,7 @@ import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { hasWebFocusableUI, ICON_LOGO, CONFIG, ROUTES, ThemeContext } from '../config';
 import packageJson from '../../package.json';
 
-const FocusableView = withFocusable()(View);
+const FocusableView = hasWebFocusableUI ? withFocusable()(View) : View;
 
 const ScreenHome = (props) => {
     const navigate = useNavigate(props);
