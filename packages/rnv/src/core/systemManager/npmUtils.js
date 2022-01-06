@@ -4,7 +4,7 @@ import inquirer from 'inquirer';
 import { executeAsync, commandExistsSync } from './exec';
 import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync, fsWriteFileSync, loadFile, readObjectSync } from './fileutils';
 import { logTask, logWarning, logError, logInfo, logDebug } from './logger';
-import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR } from '../constants';
+import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { doResolve } from './resolve';
 
 import { inquirerPrompt } from '../../cli/prompt';
@@ -54,7 +54,11 @@ export const checkAndCreateProjectPackage = async (c) => {
         }
         const rnvVersion = c.files.rnv.package.version;
 
-        const pkgJson = {};
+        c.paths.template.configTemplate = path.join(c.paths.project.dir, 'node_modules', templateName, RENATIVE_CONFIG_TEMPLATE_NAME);
+
+        const templateObj = readObjectSync(c.paths.template.configTemplate);
+
+        const pkgJson = templateObj?.templateConfig?.packageTemplate || {};
         pkgJson.name = packageName;
         pkgJson.version = version;
         pkgJson.dependencies = {
