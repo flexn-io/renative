@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-windows",
-    "version": "0.34.0-alpha.6",
+    "version": "0.34.0-alpha.7",
     "description": "ReNative Engine to build for Windows platform with react native support.",
     "keywords": [
         "react-native",
@@ -41,7 +41,7 @@
     "peerDependencies": {
         "@react-native-community/cli": "5.0.1",
         "react-native": "0.63.4",
-        "rnv": "^0.34.0-alpha.6"
+        "rnv": "^0.34.0-alpha.7"
     },
     "private": false,
     "publishConfig": {
