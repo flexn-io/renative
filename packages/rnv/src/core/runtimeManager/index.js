@@ -29,6 +29,7 @@ export const configureRuntimeDefaults = async (c) => {
     // title
     c.runtime.currentEngine = c.runtime.enginesByPlatform?.[c.platform];
     c.runtime.currentPlatform = c.runtime.currentEngine?.platforms?.[c.platform];
+    const defaultHost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
 
     c.runtime.port = c.program.port
   || c.buildConfig?.defaults?.ports?.[c.platform]
@@ -38,7 +39,7 @@ export const configureRuntimeDefaults = async (c) => {
       || c.buildConfig?.defaultTargets?.[c.platform];
     } else c.runtime.target = c.program.target;
     c.runtime.scheme = c.program.scheme || 'debug';
-    c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
+    c.runtime.localhost = c.program.ip || defaultHost;
     c.runtime.timestamp = c.runtime.timestamp || Date.now();
     c.configPropsInjects = c.configPropsInjects || [];
     c.systemPropsInjects = c.systemPropsInjects || [];

@@ -468,6 +468,11 @@ export const PARAM_KEYS = {
         isRequired: true,
         description: 'name of source appConfig folder to copy from'
     },
+    ip: {
+        value: 'value',
+        isRequired: true,
+        description: 'Custom IP override'
+    },
     packageManager: {
         value: 'value',
         isRequired: true,
