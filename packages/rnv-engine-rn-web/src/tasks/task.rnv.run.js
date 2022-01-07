@@ -38,7 +38,7 @@ const _configureHostedIfRequired = async (c) => {
     if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir(c), 'index.html'))) {
         logDebug('Running hosted build');
         const { rnv } = c.paths;
-        const ipAddress = c.program.ip || ip.address();
+        const ipAddress = c.program.hostIp || ip.address();
         writeCleanFile(
             path.join(rnv.dir, 'coreTemplateFiles', 'appShell', 'index.html'),
             path.join(getPlatformProjectDir(c), 'index.html'),

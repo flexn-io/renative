@@ -468,7 +468,7 @@ export const PARAM_KEYS = {
         isRequired: true,
         description: 'name of source appConfig folder to copy from'
     },
-    ip: {
+    hostIp: {
         value: 'value',
         isRequired: true,
         description: 'Custom IP override'
