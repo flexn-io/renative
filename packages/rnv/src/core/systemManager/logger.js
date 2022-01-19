@@ -304,6 +304,8 @@ const _sanitizePaths = (msg) => {
 const TASK_COUNTER = {};
 
 export const logTask = (task, customChalk) => {
+    // console.log('KAKAKAKAAK', JSON.stringify(_c?.files?.project?.config_original || {}).length);
+
     if (!TASK_COUNTER[task]) TASK_COUNTER[task] = 0;
     TASK_COUNTER[task] += 1;
     const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);

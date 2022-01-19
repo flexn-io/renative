@@ -47,7 +47,7 @@ const _checkAndConfigureCrypto = async (c) => {
                 'Where would you like your secrets to be residing? (path relative to root, without leading or trailing slash. Ex. `myPrivateConfig/encrypt`)',
             default: 'secrets'
         });
-        c.files.project.config.crypto = {
+        c.files.project.config_original.crypto = {
             encrypt: {
                 dest: `PROJECT_HOME/${location}/privateConfigs.enc`
             },
@@ -55,7 +55,7 @@ const _checkAndConfigureCrypto = async (c) => {
                 source: `PROJECT_HOME/${location}/privateConfigs.enc`
             }
         };
-        writeFileSync(c.paths.project.config, c.files.project.config);
+        writeFileSync(c.paths.project.config, c.files.project.config_original);
     }
 
     // check if src folder actually exists

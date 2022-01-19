@@ -41,15 +41,15 @@ export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
 
     if (selectedPlatforms.length) {
         selectedPlatforms.forEach((platform) => {
-            if (c.files.project.config.paths.platformTemplatesDirs?.[platform]) {
-                delete c.files.project.config.paths.platformTemplatesDirs[platform];
+            if (c.files.project.config_original.paths?.platformTemplatesDirs?.[platform]) {
+                delete c.files.project.config_original.paths.platformTemplatesDirs[platform];
             }
 
-            if (!Object.keys(c.files.project.config.paths.platformTemplatesDirs).length) {
-                delete c.files.project.config.paths.platformTemplatesDirs; // also cleanup the empty object
+            if (!Object.keys(c.files.project.config_original.paths?.platformTemplatesDirs || {}).length) {
+                delete c.files.project.config_original.paths.platformTemplatesDirs; // also cleanup the empty object
             }
 
-            writeFileSync(c.paths.project.config, c.files.project.config);
+            writeFileSync(c.paths.project.config, c.files.project.config_original);
         });
     }
 

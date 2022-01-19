@@ -272,7 +272,8 @@ export const runXcodeProject = async (c) => {
         if (!desiredSim) {
             const { sim } = await inquirer.prompt({
                 name: 'sim',
-                message: `We couldn't find ${c.runtime.target} as a device supported by the current version of your Xcode. Please select another sim`,
+                message: `We couldn't find ${c.runtime.target
+                } as a device supported by the current version of your Xcode. Please select another sim`,
                 type: 'list',
                 choices: devicesArr.filter(d => !d.isDevice).map(v => ({
                     name: `${v.name} | ${v.icon} | v: ${chalk().green(
@@ -295,7 +296,8 @@ export const runXcodeProject = async (c) => {
                 type: 'list',
                 name: 'chosenAction',
                 choices: [actionLocalUpdate, actionGlobalUpdate, actionNoUpdate],
-                warningMessage: `Your default target for platform ${c.platform} is set to ${c.runtime.target}. This seems to not be supported by Xcode anymore`
+                warningMessage: `Your default target for platform ${c.platform
+                } is set to ${c.runtime.target}. This seems to not be supported by Xcode anymore`
             });
 
             c.runtime.target = sim.name;

@@ -243,6 +243,10 @@ export const generateBuildConfig = (c) => {
 
 const loadFileExtended = (c, fileObj, pathObj, key,) => {
     loadFile(fileObj, pathObj, key);
+    if (fileObj[key]) {
+        fileObj[`${key}_original`] = { ...fileObj[key] };
+    }
+
     if (fileObj.config?.extendsTemplate) {
         const currTemplate = c.files.project.config.currentTemplate || fileObj.config.currentTemplate;
         if (currTemplate) {
@@ -257,7 +261,9 @@ const loadFileExtended = (c, fileObj, pathObj, key,) => {
                     false,
                     true
                 );
-                fileObj.config.isTemplate = false;
+                // CLEAN props which should not be inherited
+                delete fileObj.config.isTemplate;
+                delete fileObj.config.tasks;
             } else {
                 logWarning(`You are trying to extend config file with ${extendsPath} does not exists. SKIPPING.`);
             }

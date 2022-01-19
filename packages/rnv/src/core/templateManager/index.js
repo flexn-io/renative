@@ -1,6 +1,5 @@
 import path from 'path';
 import inquirer from 'inquirer';
-
 import {
     RENATIVE_CONFIG_NAME,
     RENATIVE_CONFIG_TEMPLATE_NAME,
@@ -14,7 +13,9 @@ import {
     mergeObjects,
     readObjectSync,
     fsExistsSync,
-    fsLstatSync
+    fsLstatSync,
+    fsUnlinkSync,
+    removeDirSync
 } from '../systemManager/fileutils';
 import {
     chalk,
@@ -212,21 +213,31 @@ const _configureAppConfigs = async (c) => {
                 );
                 const appConfig = readObjectSync(appConfigPath);
                 if (appConfig) {
-                    appConfig.common = appConfig.common || {};
-                    if (!c.runtime.isWrapper) {
-                        appConfig.common.title = c.files.project.config?.defaults?.title;
-                        appConfig.common.id = c.files.project.config?.defaults?.id;
-                    }
+                    if (appConfig.skipBootstrapCopy) {
+                        fsUnlinkSync(appConfigPath);
+                        if (v !== 'base') {
+                            removeDirSync(path.join(
+                                c.paths.project.appConfigsDir,
+                                v
+                            ));
+                        }
+                    } else {
+                        appConfig.common = appConfig.common || {};
+                        if (!c.runtime.isWrapper) {
+                            appConfig.common.title = c.files.project.config?.defaults?.title;
+                            appConfig.common.id = c.files.project.config?.defaults?.id;
+                        }
 
-                    if (supPlats) {
-                        Object.keys(appConfig.platforms).forEach((pk) => {
-                            if (!supPlats.includes(pk)) {
-                                delete appConfig.platforms[pk];
-                            }
-                        });
-                    }
+                        if (supPlats) {
+                            Object.keys(appConfig.platforms).forEach((pk) => {
+                                if (!supPlats.includes(pk)) {
+                                    delete appConfig.platforms[pk];
+                                }
+                            });
+                        }
 
-                    _writeObjectSync(c, appConfigPath, appConfig);
+                        _writeObjectSync(c, appConfigPath, appConfig);
+                    }
                 }
             });
         } catch (e) {
@@ -266,15 +277,16 @@ const _configureRenativeConfig = async (c) => {
             logInfo(
                 `Your ${
                     c.paths.project.config
-                } need to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
+                } needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
             );
             const mergedObj = mergeObjects(
                 c,
-                c.files.project.config,
+                c.files.project.config_original,
                 templateConfig,
                 false,
                 true
             );
+            // console.log('BDDDB', c.files.project.config_original, templateConfig);
             // Do not override supportedPlatforms
             mergedObj.defaults.supportedPlatforms = c.files.project.config.defaults.supportedPlatforms;
             // Do not override engines

@@ -502,6 +502,7 @@ export const taskRnvNew = async (c) => {
     };
 
     const config = {
+        platforms: {},
         ...renativeTemplateConfig,
         ...renativeTemplateConfigExt,
         projectName: data.projectName,
@@ -544,6 +545,9 @@ export const taskRnvNew = async (c) => {
     });
 
     delete config.templateConfig;
+    if (!config.platforms) {
+        config.platforms = {};
+    }
 
     writeFileSync(c.paths.project.config, config);
 
