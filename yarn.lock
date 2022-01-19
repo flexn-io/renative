@@ -9719,21 +9719,6 @@ execa@1.0.0, execa@^1.0.0:
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
 
-execa@2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/execa/-/execa-2.0.4.tgz#2f5cc589c81db316628627004ea4e37b93391d8e"
-  integrity sha512-VcQfhuGD51vQUQtKIq2fjGDLDbL6N1DTQVpYzxZ7LPIXw3HqTuIz6uxRmpV1qf8i31LHf2kjiaGI+GdHwRgbnQ==
-  dependencies:
-    cross-spawn "^6.0.5"
-    get-stream "^5.0.0"
-    is-stream "^2.0.0"
-    merge-stream "^2.0.0"
-    npm-run-path "^3.0.0"
-    onetime "^5.1.0"
-    p-finally "^2.0.0"
-    signal-exit "^3.0.2"
-    strip-final-newline "^2.0.0"
-
 execa@5.1.1, execa@^5.0.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/execa/-/execa-5.1.1.tgz#f80ad9cbf4298f7bd1d4c9555c21e93741c411dd"
@@ -16374,13 +16359,6 @@ npm-run-path@^2.0.0:
   dependencies:
     path-key "^2.0.0"
 
-npm-run-path@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-3.1.0.tgz#7f91be317f6a466efed3c9f2980ad8a4ee8b0fa5"
-  integrity sha512-Dbl4A/VfiVGLgQv29URL9xshU8XDY1GeLy+fsaZ1AA8JDSfjvr5P5+pzRbWqRSBxk6/DW7MIh8lTM/PaGnP2kg==
-  dependencies:
-    path-key "^3.0.0"
-
 npm-run-path@^4.0.0, npm-run-path@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-4.0.1.tgz#b7ecd1e5ed53da8e37a55e1c2269e0b97ed748ea"
@@ -16790,11 +16768,6 @@ p-finally@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-finally/-/p-finally-1.0.0.tgz#3fbcfb15b899a44123b34b6dcc18b724336a2cae"
   integrity sha1-P7z7FbiZpEEjs0ttzBi3JDNqLK4=
-
-p-finally@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/p-finally/-/p-finally-2.0.1.tgz#bd6fcaa9c559a096b680806f4d657b3f0f240561"
-  integrity sha512-vpm09aKwq6H9phqRQzecoDpD8TmVyGw70qmWlyq5onxY7tqyTTFVvxMykxQSQKILBSFlbXpypIw2T1Ml7+DDtw==
 
 p-is-promise@^2.0.0:
   version "2.1.0"
@@ -19303,62 +19276,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
-
-rnv@0.34.0:
-  version "0.34.0"
-  resolved "https://registry.yarnpkg.com/rnv/-/rnv-0.34.0.tgz#7da7a735c313f206b7263bb20e8b717831b4d550"
-  integrity sha512-mtwbgurUPni8I8ppC1B05a7U5p5ekaVGQJ3mGwJhgOW1RNmGfnxSJGCxzmv8s4eJXN3hCbcSZnvoYq4ltRcjXQ==
-  dependencies:
-    "@babel/cli" "7.8.3"
-    "@babel/core" "7.8.3"
-    "@babel/helper-builder-react-jsx" "7.14.5"
-    "@babel/plugin-proposal-class-properties" "7.8.3"
-    "@babel/plugin-proposal-decorators" "7.8.3"
-    "@babel/plugin-proposal-nullish-coalescing-operator" "7.8.3"
-    "@babel/plugin-proposal-optional-chaining" "7.8.3"
-    "@babel/plugin-transform-runtime" "7.8.3"
-    "@babel/preset-env" "7.8.7"
-    "@babel/runtime" "7.8.3"
-    "@sentry/integrations" "6.14.3"
-    "@sentry/node" "6.14.3"
-    ajv "7.0.0-beta.0"
-    axios "0.21.2"
-    babel-eslint "8.2.6"
-    babel-loader "8.0.5"
-    babel-plugin-module-resolver "3.2.0"
-    babel-plugin-react-native-web "0.17.5"
-    babel-plugin-transform-decorators-legacy "1.3.4"
-    babel-plugin-transform-imports "1.4.1"
-    babel-plugin-transform-object-rest-spread "6.26.0"
-    babel-plugin-transform-runtime "6.23.0"
-    babel-polyfill "6.26.0"
-    chalk "4.1.0"
-    color-string "1.5.3"
-    commander "^3.0.1"
-    console-table-printer "1.1.10"
-    deepmerge "3.2.0"
-    detect-port "1.3.0"
-    esbuild "^0.12.1"
-    execa "2.0.4"
-    get-installed-path "4.0.8"
-    inquirer "8.2.0"
-    iocane "4.0.0"
-    ip "1.1.5"
-    kill-port "1.6.1"
-    lodash.get "4.4.2"
-    lodash.set "4.3.2"
-    ncp "2.0.0"
-    netcat "1.4.0"
-    node-fetch "2.6.1"
-    node-machine-id "^1.1.12"
-    resolve "^1.0.0"
-    shelljs "0.8.4"
-    source-map-loader "0.2.4"
-    source-map-support "0.5.13"
-    strip-ansi "5.2.0"
-    svg2js "0.0.4-alpha1"
-    tar "4.4.19"
-    xml2js "0.4.23"
 
 roarr@^2.15.3:
   version "2.15.4"
