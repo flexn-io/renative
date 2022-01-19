@@ -29,7 +29,7 @@
     "dependencies": {
         "execa": "5.1.1",
         "inquirer": "8.2.0",
-        "shelljs": "0.8.4"
+        "shelljs": "0.8.5"
     },
     "devDependencies": {
         "@types/jest": "^27.0.2",

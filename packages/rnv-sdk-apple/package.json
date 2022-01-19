@@ -27,7 +27,7 @@
         "compare-versions": "3.6.0",
         "inquirer": "8.2.0",
         "ios-mobileprovision-finder": "1.0.11",
-        "shelljs": "0.8.4"
+        "shelljs": "0.8.5"
     },
     "devDependencies": {
         "@types/jest": "^27.0.2",
