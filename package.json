@@ -87,6 +87,7 @@
         "babel-jest": "24.9.0",
         "babel-plugin-module-resolver": "3.2.0",
         "babel-plugin-polyfill-corejs2": "0.2.2",
+        "@babel/plugin-transform-runtime": "7.8.3",
         "eslint": "6.2.2",
         "eslint-plugin-detox": "1.0.0",
         "eslint-plugin-import": "2.20.1",
@@ -98,7 +99,14 @@
         "husky": "4.2.5",
         "jsdoc-to-markdown": "6.0.1",
         "lerna": "4.0.0",
-        "rnv": "0.34.0"
+        "rnv": "0.34.0",
+        "pretty-quick": "1.11.0",
+        "eslint-config-airbnb": "17.0.0",
+        "eslint-plugin-prettier": "3.0.1",
+        "jest": "26.4.2",
+        "lint-staged": "8.1.0",
+        "nodemon": "1.18.10",
+        "prettier": "1.17.1"
     },
     "engines": {
         "node": ">=6.0.0",
