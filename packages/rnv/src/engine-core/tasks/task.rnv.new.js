@@ -507,12 +507,12 @@ export const taskRnvNew = async (c) => {
         ...renativeTemplateConfigExt,
         projectName: data.projectName,
         workspaceID: data.optionWorkspaces.selectedOption,
-        paths: {
-            appConfigsDir: './appConfigs',
-            entryDir: './',
-            platformAssetsDir: './platformAssets',
-            platformBuildsDir: './platformBuilds',
-        },
+        // paths: {
+        //     appConfigsDir: './appConfigs',
+        //     entryDir: './',
+        //     platformAssetsDir: './platformAssets',
+        //     platformBuildsDir: './platformBuilds',
+        // },
         defaults: {
             title: data.appTitle,
             id: data.appID,

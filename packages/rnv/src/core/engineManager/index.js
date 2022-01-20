@@ -3,7 +3,7 @@ import path from 'path';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../systemManager/fileutils';
 import { checkAndCreateProjectPackage, installPackageDependencies } from '../systemManager/npmUtils';
 import { IS_LINKED, RNV_HOME_DIR, TVOS, ANDROID_TV, FIRE_TV } from '../constants';
-import { logDebug, logTask, chalk, logInfo, logWarning } from '../systemManager/logger';
+import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../systemManager/logger';
 import { getAppFolder, getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
@@ -82,7 +82,8 @@ export const generateEngineTasks = (taskArr) => {
 export const configureEngines = async (c) => {
     logTask('configureEngines');
     if (c.runtime.isWrapper) return true;
-    const { engines } = c.files.project.config;
+    // const { engines } = c.files.project.config;
+    const engines = _getFilteredEngines(c);
     const { devDependencies } = c.files.project.package;
     let needsPackageUpdate = false;
     if (engines && !c.runtime.skipPackageUpdate && !c.program.skipDependencyCheck && !c.program.skipRnvCheck) {
@@ -242,85 +243,123 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
     return addedDeps.length;
 };
 
+const ENGINE_ID_MAP = {
+    'engine-lightning': '@rnv/engine-lightning',
+    'engine-rn': '@rnv/engine-rn',
+    'engine-rn-electron': '@rnv/engine-rn-electron',
+    'engine-rn-macos': '@rnv/engine-rn-macos',
+    'engine-rn-next': '@rnv/engine-rn-next',
+    'engine-rn-tvos': '@rnv/engine-rn-tvos',
+    'engine-rn-web': '@rnv/engine-rn-web',
+    'engine-rn-windows': '@rnv/engine-rn-windows'
+};
+
+const _getFilteredEngines = (c) => {
+    const engines = c.buildConfig?.engines;
+    if (!engines) {
+        logError('Engine configs missing in your renative.json. FIXING...DONE');
+        return {};
+    }
+    const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
+    const supportedPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
+
+    const filteredEngines = {};
+    supportedPlatforms.forEach((v) => {
+        const platforms = c.files.project.config.platforms || {};
+        const engineKey = platforms[v]?.engine || rnvPlatforms[v]?.engine;
+
+        const engKey = ENGINE_ID_MAP[engineKey] || engineKey;
+        if (engineKey) {
+            if (engines[engKey]) {
+                filteredEngines[engKey] = engines[engKey];
+            } else {
+                logWarning(`Platform ${v} requires engine ${engKey} which is not available in engines list`);
+            }
+        } else {
+            logWarning(`Platform ${v} has no engine configured`);
+        }
+    });
+    return filteredEngines;
+};
+
 export const loadEngines = async (c, failOnMissingDeps) => {
     logTask('loadEngines');
-    const engines = c.buildConfig?.engines;
-    // c.runtime.engineConfigs = {};
+    const filteredEngines = _getFilteredEngines(c);
     const enginesToInstall = [];
     const readyEngines = [];
     const engineConfigs = [];
-    if (engines) {
-        Object.keys(engines).forEach((k) => {
-            const engineRootPath = doResolve(k);
-            const configPath = engineRootPath ? path.join(engineRootPath, 'renative.engine.json') : null;
-            if (!configPath || !fsExistsSync(configPath)) {
-                const engVer = getScopedVersion(c, k, engines[k], 'engineTemplates');
-                if (engVer) {
-                    enginesToInstall.push({
-                        key: k,
-                        version: engVer,
-                        engineRootPath
-                    });
-                }
-            } else {
-                readyEngines.push(k);
-                engineConfigs.push({
+    // if (filteredEngines) {
+    Object.keys(filteredEngines).forEach((k) => {
+        const engineRootPath = doResolve(k);
+        const configPath = engineRootPath ? path.join(engineRootPath, 'renative.engine.json') : null;
+        if (!configPath || !fsExistsSync(configPath)) {
+            const engVer = getScopedVersion(c, k, filteredEngines[k], 'engineTemplates');
+            if (engVer) {
+                enginesToInstall.push({
                     key: k,
-                    engineRootPath,
-                    configPath
+                    version: engVer,
+                    engineRootPath
                 });
             }
-        });
+        } else {
+            readyEngines.push(k);
+            engineConfigs.push({
+                key: k,
+                engineRootPath,
+                configPath
+            });
+        }
+    });
 
 
-        if (enginesToInstall.length) {
-            if (failOnMissingDeps) {
-                return Promise.reject(`Failed to load some engines:
+    if (enginesToInstall.length) {
+        if (failOnMissingDeps) {
+            return Promise.reject(`Failed to load some engines:
 ${enginesToInstall.map(v => `> ${v.key}@${v.version} path: ${v.engineRootPath}`).join('\n')}`);
-            }
-            logInfo(`Some engines not installed in your project:
+        }
+        logInfo(`Some engines not installed in your project:
 ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
  ADDING TO PACKAGE.JSON...DONE`);
 
-            await checkAndCreateProjectPackage(c);
-            enginesToInstall.forEach((v) => {
-                c.files.project.package.devDependencies[v.key] = v.version;
-                writeFileSync(c.paths.project.package, c.files.project.package);
-            });
-            await installPackageDependencies(c);
-            return loadEngines(c, true);
-        }
-        if (!c.runtime.isWrapper) {
-            const plugDepsCount = await loadEnginePluginDeps(c, engineConfigs);
-            const pkgDepsCount = await loadEnginePackageDeps(c, engineConfigs);
-
-            if (plugDepsCount + pkgDepsCount > 0) {
-                c.runtime._skipPluginScopeWarnings = true;
-                await configurePlugins(c, true); // TODO: This is too early as scoped plugin have not been installed
-                c.runtime._skipPluginScopeWarnings = false;
-                await installPackageDependencies(c);
-            }
-        }
-
-
-        // All engines ready to be registered
-        _registerPlatformEngine(c, c.platform);
-    } else if (c.files.project.config_original) {
-        logInfo('Engine configs missing in your renative.json. FIXING...DONE');
-        c.files.project.config_original.engines = {
-            '@rnv/engine-rn': 'source:rnv',
-            '@rnv/engine-rn-web': 'source:rnv',
-            '@rnv/engine-rn-next': 'source:rnv',
-            '@rnv/engine-rn-electron': 'source:rnv',
-            '@rnv/engine-lightning': 'source:rnv',
-            '@rnv/engine-rn-macos': 'source:rnv',
-        };
-        // TODO: use parseRenativeConfigs instead
-        c.buildConfig.engines = c.files.project.config_original.engines;
-
-        writeFileSync(c.paths.project.config, c.files.project.config_original);
-        return loadEngines(c);
+        await checkAndCreateProjectPackage(c);
+        enginesToInstall.forEach((v) => {
+            c.files.project.package.devDependencies[v.key] = v.version;
+            writeFileSync(c.paths.project.package, c.files.project.package);
+        });
+        await installPackageDependencies(c);
+        return loadEngines(c, true);
     }
+    if (!c.runtime.isWrapper) {
+        const plugDepsCount = await loadEnginePluginDeps(c, engineConfigs);
+        const pkgDepsCount = await loadEnginePackageDeps(c, engineConfigs);
+
+        if (plugDepsCount + pkgDepsCount > 0) {
+            c.runtime._skipPluginScopeWarnings = true;
+            await configurePlugins(c, true); // TODO: This is too early as scoped plugin have not been installed
+            c.runtime._skipPluginScopeWarnings = false;
+            await installPackageDependencies(c);
+        }
+    }
+
+
+    // All engines ready to be registered
+    _registerPlatformEngine(c, c.platform);
+    // } else if (c.files.project.config_original) {
+    //     logError('Engine configs missing in your renative.json. FIXING...DONE');
+    // c.files.project.config_original.engines = {
+    //     '@rnv/engine-rn': 'source:rnv',
+    //     '@rnv/engine-rn-web': 'source:rnv',
+    //     '@rnv/engine-rn-next': 'source:rnv',
+    //     '@rnv/engine-rn-electron': 'source:rnv',
+    //     '@rnv/engine-lightning': 'source:rnv',
+    //     '@rnv/engine-rn-macos': 'source:rnv',
+    // };
+    // // TODO: use parseRenativeConfigs instead
+    // c.buildConfig.engines = c.files.project.config_original.engines;
+
+    // writeFileSync(c.paths.project.config, c.files.project.config_original);
+    // return loadEngines(c);
+    // }
     return true;
 };
 

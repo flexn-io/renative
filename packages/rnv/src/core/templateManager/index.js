@@ -288,9 +288,9 @@ const _configureRenativeConfig = async (c) => {
                 true
             );
             // Do not override supportedPlatforms
-            mergedObj.defaults.supportedPlatforms = c.files.project.config.defaults.supportedPlatforms;
+            mergedObj.defaults.supportedPlatforms = c.files.project.config_original.defaults.supportedPlatforms;
             // Do not override engines
-            mergedObj.engines = c.files.project.config.engines;
+            mergedObj.engines = c.files.project.config_original.engines;
             // Set current template
             mergedObj.currentTemplate = c.runtime.currentTemplate;
             if (mergedObj.isNew) {
