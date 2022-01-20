@@ -17,9 +17,9 @@ export const configureFilesystem = (_getConfigProp, _doResolve, _isSystemWin) =>
 };
 
 export const fsWriteFileSync = (dest, data, encoding) => {
-    if (dest && dest.includes('renative.json')) {
-        console.log('FS_WRITE', dest, data.length);
-    }
+    // if (dest && dest.includes('renative.json')) {
+    //     console.log('FS_WRITE', dest, data.length);
+    // }
     fs.writeFileSync(dest, data, encoding);
 };
 

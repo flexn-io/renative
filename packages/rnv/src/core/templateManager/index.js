@@ -287,7 +287,6 @@ const _configureRenativeConfig = async (c) => {
                 false,
                 true
             );
-            // console.log('BDDDB', c.files.project.config_original, templateConfig);
             // Do not override supportedPlatforms
             mergedObj.defaults.supportedPlatforms = c.files.project.config.defaults.supportedPlatforms;
             // Do not override engines
