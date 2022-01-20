@@ -30,7 +30,8 @@ import { getConfigProp } from '../common';
 import {
     listAppConfigsFoldersSync,
     generateBuildConfig,
-    generateLocalConfig
+    generateLocalConfig,
+    loadFileExtended
 } from '../configManager';
 import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
@@ -281,8 +282,8 @@ const _configureRenativeConfig = async (c) => {
             );
             const mergedObj = mergeObjects(
                 c,
-                c.files.project.config_original,
                 templateConfig,
+                c.files.project.config_original,
                 false,
                 true
             );
@@ -296,10 +297,12 @@ const _configureRenativeConfig = async (c) => {
             if (mergedObj.isNew) {
                 c.runtime.isFirstRunAfterNew = true;
             }
-            mergedObj.isNew = null;
+            // mergedObj.isNew = null;
             delete mergedObj.isNew;
-            c.files.project.config = mergedObj;
+            delete mergedObj.templateConfig;
+            // c.files.project.config = mergedObj;
             _writeObjectSync(c, c.paths.project.config, mergedObj);
+            loadFileExtended(c, c.files.project, c.paths.project, 'config');
         }
     } else {
         // if (templateConfig.plugins.renative) {
