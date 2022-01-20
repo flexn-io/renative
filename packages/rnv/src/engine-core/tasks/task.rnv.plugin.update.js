@@ -30,10 +30,10 @@ export const taskRnvPluginUpdate = async (c, parentTask, originTask) => {
         const { plugins } = c.buildConfig;
         Object.keys(plugins).forEach((key) => {
             // c.buildConfig.plugins[key] = o.json[key];
-            c.files.project.config.plugins[key] = o.json[key];
+            c.files.project.config_original.plugins[key] = o.json[key];
         });
 
-        writeFileSync(c.paths.project.config, c.files.project.config);
+        writeFileSync(c.paths.project.config, c.files.project.config_original);
 
         logSuccess('Plugins updated successfully!');
     }

@@ -36,12 +36,14 @@ export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
             // engine.ejectPlatform(c, platform, destDir);
             ejectPlatform(c, platform);
 
-            c.files.project.config.paths
-                .platformTemplatesDirs = c.files.project.config.paths.platformTemplatesDirs || {};
-            c.files.project.config.paths.platformTemplatesDirs[
+            c.files.project.config_original.paths = c.files.project.config_original.paths || {};
+
+            c.files.project.config_original.paths
+                .platformTemplatesDirs = c.files.project.config_original.paths.platformTemplatesDirs || {};
+            c.files.project.config_original.paths.platformTemplatesDirs[
                 platform
             ] = `./${'platformTemplates'}`;
-            writeFileSync(c.paths.project.config, c.files.project.config);
+            writeFileSync(c.paths.project.config, c.files.project.config_original);
         });
 
         logSuccess(

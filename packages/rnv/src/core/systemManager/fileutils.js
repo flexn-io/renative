@@ -17,7 +17,9 @@ export const configureFilesystem = (_getConfigProp, _doResolve, _isSystemWin) =>
 };
 
 export const fsWriteFileSync = (dest, data, encoding) => {
-    // console.log('FS_WRITE', dest);
+    // if (dest && dest.includes('renative.json')) {
+    //     console.log('FS_WRITE', dest, data.length);
+    // }
     fs.writeFileSync(dest, data, encoding);
 };
 
@@ -739,6 +741,9 @@ export const loadFile = (fileObj, pathObj, key) => {
         //     if (!valid) {
         //         logWarning(`Invalid schema in ${pathObj[key]}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}`);
         //     }
+        // }
+        // if (pathObj[key].includes?.('renative.json')) {
+        //     console.log(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
         // }
         return fileObj[key];
     } catch (e) {

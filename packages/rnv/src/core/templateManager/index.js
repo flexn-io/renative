@@ -1,6 +1,5 @@
 import path from 'path';
 import inquirer from 'inquirer';
-
 import {
     RENATIVE_CONFIG_NAME,
     RENATIVE_CONFIG_TEMPLATE_NAME,
@@ -14,7 +13,9 @@ import {
     mergeObjects,
     readObjectSync,
     fsExistsSync,
-    fsLstatSync
+    fsLstatSync,
+    fsUnlinkSync,
+    removeDirSync
 } from '../systemManager/fileutils';
 import {
     chalk,
@@ -29,7 +30,8 @@ import { getConfigProp } from '../common';
 import {
     listAppConfigsFoldersSync,
     generateBuildConfig,
-    generateLocalConfig
+    generateLocalConfig,
+    loadFileExtended
 } from '../configManager';
 import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
@@ -212,21 +214,31 @@ const _configureAppConfigs = async (c) => {
                 );
                 const appConfig = readObjectSync(appConfigPath);
                 if (appConfig) {
-                    appConfig.common = appConfig.common || {};
-                    if (!c.runtime.isWrapper) {
-                        appConfig.common.title = c.files.project.config?.defaults?.title;
-                        appConfig.common.id = c.files.project.config?.defaults?.id;
-                    }
+                    if (appConfig.skipBootstrapCopy) {
+                        fsUnlinkSync(appConfigPath);
+                        if (v !== 'base') {
+                            removeDirSync(path.join(
+                                c.paths.project.appConfigsDir,
+                                v
+                            ));
+                        }
+                    } else {
+                        appConfig.common = appConfig.common || {};
+                        if (!c.runtime.isWrapper) {
+                            appConfig.common.title = c.files.project.config?.defaults?.title;
+                            appConfig.common.id = c.files.project.config?.defaults?.id;
+                        }
 
-                    if (supPlats) {
-                        Object.keys(appConfig.platforms).forEach((pk) => {
-                            if (!supPlats.includes(pk)) {
-                                delete appConfig.platforms[pk];
-                            }
-                        });
-                    }
+                        if (supPlats) {
+                            Object.keys(appConfig.platforms).forEach((pk) => {
+                                if (!supPlats.includes(pk)) {
+                                    delete appConfig.platforms[pk];
+                                }
+                            });
+                        }
 
-                    _writeObjectSync(c, appConfigPath, appConfig);
+                        _writeObjectSync(c, appConfigPath, appConfig);
+                    }
                 }
             });
         } catch (e) {
@@ -266,12 +278,12 @@ const _configureRenativeConfig = async (c) => {
             logInfo(
                 `Your ${
                     c.paths.project.config
-                } need to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
+                } needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
             );
             const mergedObj = mergeObjects(
                 c,
-                c.files.project.config,
                 templateConfig,
+                c.files.project.config_original,
                 false,
                 true
             );
@@ -284,10 +296,12 @@ const _configureRenativeConfig = async (c) => {
             if (mergedObj.isNew) {
                 c.runtime.isFirstRunAfterNew = true;
             }
-            mergedObj.isNew = null;
+            // mergedObj.isNew = null;
             delete mergedObj.isNew;
-            c.files.project.config = mergedObj;
+            delete mergedObj.templateConfig;
+            // c.files.project.config = mergedObj;
             _writeObjectSync(c, c.paths.project.config, mergedObj);
+            loadFileExtended(c, c.files.project, c.paths.project, 'config');
         }
     } else {
         // if (templateConfig.plugins.renative) {

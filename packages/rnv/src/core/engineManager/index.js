@@ -151,6 +151,7 @@ export const registerAllPlatformEngines = async (c) => {
 export const loadEnginePluginDeps = async (c, engineConfigs) => {
     logTask('loadEnginePluginDeps');
     if (c.files.project.config.isTemplate) return 0;
+
     // Check engine dependencies
     const addedPlugins = [];
     engineConfigs.forEach((ecf) => {
@@ -304,9 +305,9 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
 
         // All engines ready to be registered
         _registerPlatformEngine(c, c.platform);
-    } else if (c.files.project.config) {
+    } else if (c.files.project.config_original) {
         logInfo('Engine configs missing in your renative.json. FIXING...DONE');
-        c.files.project.config.engines = {
+        c.files.project.config_original.engines = {
             '@rnv/engine-rn': 'source:rnv',
             '@rnv/engine-rn-web': 'source:rnv',
             '@rnv/engine-rn-next': 'source:rnv',
@@ -315,9 +316,9 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
             '@rnv/engine-rn-macos': 'source:rnv',
         };
         // TODO: use parseRenativeConfigs instead
-        c.buildConfig.engines = c.files.project.config.engines;
+        c.buildConfig.engines = c.files.project.config_original.engines;
 
-        writeFileSync(c.paths.project.config, c.files.project.config);
+        writeFileSync(c.paths.project.config, c.files.project.config_original);
         return loadEngines(c);
     }
     return true;
