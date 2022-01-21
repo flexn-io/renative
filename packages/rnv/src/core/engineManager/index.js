@@ -284,6 +284,8 @@ const _getFilteredEngines = (c) => {
 
 export const loadEngines = async (c, failOnMissingDeps) => {
     logTask('loadEngines');
+    if (!fsExistsSync(c.paths.project.config)) return true;
+
     const filteredEngines = _getFilteredEngines(c);
     const enginesToInstall = [];
     const readyEngines = [];
