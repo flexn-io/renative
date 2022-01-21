@@ -6,9 +6,9 @@ buildscript {
     ext.kotlin_version = '{{INJECT_KOTLIN_VERSION}}'
     ext.kotlinVersion = "$kotlin_version"
     repositories {
-        google()
-        jcenter()
         mavenCentral()
+        google()
+        gradlePluginPortal()
         {{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}
     }
     dependencies {
@@ -25,10 +25,10 @@ plugins {
 
 allprojects {
     repositories {
-        google()
-        jcenter()
+        maven { url "https://www.jitpack.io" }
         mavenCentral()
-        maven { url "https://jitpack.io" }
+        google()
+        gradlePluginPortal()
         {{INJECT_REACT_NATIVE_ENGINE}}
         {{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}
     }

@@ -5,9 +5,9 @@ import groovy.json.JsonSlurper
 buildscript {
     ext.kotlin_version = '{{INJECT_KOTLIN_VERSION}}'
     repositories {
-        google()
-        jcenter()
         mavenCentral()
+        google()
+        gradlePluginPortal()
         {{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}
     }
     dependencies {
@@ -24,10 +24,10 @@ plugins {
 
 allprojects {
     repositories {
-        google()
-        jcenter()
+        maven { url "https://www.jitpack.io" }
         mavenCentral()
-        maven { url "https://jitpack.io" }
+        google()
+        gradlePluginPortal()
         {{INJECT_REACT_NATIVE_ENGINE}}
         {{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}
     }
