@@ -201,7 +201,7 @@ const _configureAppConfigs = async (c) => {
             c.paths.project.appConfigsDir
         );
 
-        const appConfigIds = listAppConfigsFoldersSync(c, true);
+        const appConfigIds = listAppConfigsFoldersSync(c, false);
 
         // Update App Title to match package.json
         try {
@@ -222,7 +222,7 @@ const _configureAppConfigs = async (c) => {
                                 v
                             ));
                         }
-                    } else {
+                    } else if (!appConfig.hidden) {
                         appConfig.common = appConfig.common || {};
                         if (!c.runtime.isWrapper) {
                             appConfig.common.title = c.files.project.config?.defaults?.title;
