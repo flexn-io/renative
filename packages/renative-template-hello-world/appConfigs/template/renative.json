@@ -1,6 +1,7 @@
 {
     "extend": "base",
-    "id": "helloworld",
+    "id": "template",
+    "skipBootstrapCopy": true,
     "common": {
         "id": "renative.helloworld",
         "title": "ReNative",

@@ -244,11 +244,17 @@ export const loadFileExtended = (c, fileObj, pathObj, key) => {
     if (fileObj[key]) {
         fileObj[`${key}_original`] = { ...fileObj[key] };
     }
-
-    if (fileObj[key]?.extendsTemplate) {
+    const extendsTemplate = fileObj[key]?.extendsTemplate;
+    if (extendsTemplate) {
         const currTemplate = c.files.project[key].currentTemplate || fileObj[key].currentTemplate;
         if (currTemplate) {
-            const extendsPath = path.join(doResolve(currTemplate), fileObj[key].extendsTemplate);
+            let extendsPath;
+            if (extendsTemplate.startsWith(currTemplate)) {
+                extendsPath = path.join(doResolve(currTemplate), extendsTemplate.replace(currTemplate, ''));
+            } else {
+                extendsPath = path.join(doResolve(currTemplate), extendsTemplate);
+            }
+
             if (fsExistsSync(extendsPath)) {
                 const extendsFile = readObjectSync(extendsPath);
 
