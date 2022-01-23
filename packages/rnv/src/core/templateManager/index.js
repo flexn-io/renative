@@ -30,7 +30,6 @@ import { getConfigProp } from '../common';
 import {
     listAppConfigsFoldersSync,
     generateBuildConfig,
-    generateLocalConfig,
     loadFileExtended
 } from '../configManager';
 import { doResolve } from '../systemManager/resolve';
@@ -224,10 +223,9 @@ const _configureAppConfigs = async (c) => {
                         }
                     } else if (!appConfig.hidden) {
                         appConfig.common = appConfig.common || {};
-                        if (!c.runtime.isWrapper) {
-                            appConfig.common.title = c.files.project.config?.defaults?.title;
-                            appConfig.common.id = c.files.project.config?.defaults?.id;
-                        }
+                        appConfig.common.title = c.files.project.config?.defaults?.title;
+                        appConfig.common.id = c.files.project.config?.defaults?.id;
+
 
                         if (supPlats) {
                             Object.keys(appConfig.platforms).forEach((pk) => {
@@ -269,62 +267,40 @@ const _configureRenativeConfig = async (c) => {
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
     logDebug('configureProject:check renative.json');
 
-    if (!c.runtime.isWrapper) {
-        if (
-            c.runtime.selectedTemplate
+    if (
+        c.runtime.selectedTemplate
             || c.runtime.requiresForcedTemplateApply
             || c.files.project.config.isNew
-        ) {
-            logInfo(
-                `Your ${
-                    c.paths.project.config
-                } needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
-            );
-            const mergedObj = mergeObjects(
-                c,
-                templateConfig,
-                c.files.project.config_original,
-                false,
-                true
-            );
+    ) {
+        logInfo(
+            `Your ${
+                c.paths.project.config
+            } needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
+        );
+        const mergedObj = mergeObjects(
+            c,
+            templateConfig,
+            c.files.project.config_original,
+            false,
+            true
+        );
             // Do not override supportedPlatforms
-            mergedObj.defaults.supportedPlatforms = c.files.project.config_original.defaults.supportedPlatforms;
-            // Do not override engines
-            mergedObj.engines = c.files.project.config_original.engines;
-            // Set current template
-            mergedObj.currentTemplate = c.runtime.currentTemplate;
-            if (mergedObj.isNew) {
-                c.runtime.isFirstRunAfterNew = true;
-            }
-            // mergedObj.isNew = null;
-            delete mergedObj.isNew;
-            delete mergedObj.templateConfig;
-            // c.files.project.config = mergedObj;
-            _writeObjectSync(c, c.paths.project.config, mergedObj);
-            loadFileExtended(c, c.files.project, c.paths.project, 'config');
+        mergedObj.defaults.supportedPlatforms = c.files.project.config_original.defaults.supportedPlatforms;
+        // Do not override engines
+        mergedObj.engines = c.files.project.config_original.engines;
+        // Set current template
+        mergedObj.currentTemplate = c.runtime.currentTemplate;
+        if (mergedObj.isNew) {
+            c.runtime.isFirstRunAfterNew = true;
         }
-    } else {
-        // if (templateConfig.plugins.renative) {
-        //     templateConfig.plugins.renative = getLocalRenativePlugin();
-        // }
-        templateConfig.plugins.renative = {
-            webpack: {
-                modulePaths: [
-                    {
-                        projectPath: '../../packages/renative'
-                    }
-                ],
-                moduleAliases: {
-                    renative: {
-                        projectPath: '../../packages/renative'
-                    }
-                }
-            }
-        };
-        c.files.project.configLocal = templateConfig;
-        generateLocalConfig(c);
-        // _writeObjectSync(c, c.paths.project.configLocal, templateConfig);
+        // mergedObj.isNew = null;
+        delete mergedObj.isNew;
+        delete mergedObj.templateConfig;
+        // c.files.project.config = mergedObj;
+        _writeObjectSync(c, c.paths.project.config, mergedObj);
+        loadFileExtended(c, c.files.project, c.paths.project, 'config');
     }
+
     return true;
 };
 

@@ -119,9 +119,6 @@ export const schemaRoot = {
                 timestamp: {
                     type: 'integer',
                 },
-                isWrapper: {
-                    type: 'boolean',
-                },
                 forceBundleAssets: {
                     type: 'boolean',
                 },

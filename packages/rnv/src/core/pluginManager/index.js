@@ -222,25 +222,19 @@ export const configurePlugins = async (c) => {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
                     }
                 } else if (dependencies[k] !== plugin.version) {
-                    if (k === 'renative' && c.runtime.isWrapper) {
-                        logWarning(
-                            "You're in ReNative wrapper mode. plugin renative will stay as local dep!"
-                        );
-                    } else {
-                        logWarning(
-                            `Version mismatch of dependency ${chalk().white(
-                                k
-                            )} between:
+                    logWarning(
+                        `Version mismatch of dependency ${chalk().white(
+                            k
+                        )} between:
 ${chalk().white(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
 ${chalk().white(c.paths.project.builds.config)}: v(${chalk().green(
     plugin.version
 )}).
 package.json will be overriden`
-                        );
+                    );
 
-                        hasPackageChanged = true;
-                        newDeps[k] = plugin.version;
-                    }
+                    hasPackageChanged = true;
+                    newDeps[k] = plugin.version;
                 }
             }
         } else if (devDependencies && devDependencies[k]) {

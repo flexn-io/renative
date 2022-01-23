@@ -81,7 +81,6 @@ export const generateEngineTasks = (taskArr) => {
 
 export const configureEngines = async (c) => {
     logTask('configureEngines');
-    if (c.runtime.isWrapper) return true;
     // const { engines } = c.files.project.config;
     const engines = _getFilteredEngines(c);
     const { devDependencies } = c.files.project.package;
@@ -331,16 +330,14 @@ ${enginesToInstall.map(v => `> ${v.key}@${v.version}`).join('\n')}
         await installPackageDependencies(c);
         return loadEngines(c, true);
     }
-    if (!c.runtime.isWrapper) {
-        const plugDepsCount = await loadEnginePluginDeps(c, engineConfigs);
-        const pkgDepsCount = await loadEnginePackageDeps(c, engineConfigs);
+    const plugDepsCount = await loadEnginePluginDeps(c, engineConfigs);
+    const pkgDepsCount = await loadEnginePackageDeps(c, engineConfigs);
 
-        if (plugDepsCount + pkgDepsCount > 0) {
-            c.runtime._skipPluginScopeWarnings = true;
-            await configurePlugins(c, true); // TODO: This is too early as scoped plugin have not been installed
-            c.runtime._skipPluginScopeWarnings = false;
-            await installPackageDependencies(c);
-        }
+    if (plugDepsCount + pkgDepsCount > 0) {
+        c.runtime._skipPluginScopeWarnings = true;
+        await configurePlugins(c, true); // TODO: This is too early as scoped plugin have not been installed
+        c.runtime._skipPluginScopeWarnings = false;
+        await installPackageDependencies(c);
     }
 
 
@@ -475,7 +472,7 @@ export const generateEnvVars = (c, moduleConfig, nextConfig) => {
         RNV_PROJECT_ROOT: c.paths.project.dir,
         RNV_APP_BUILD_DIR: getAppFolder(c),
         RNV_IS_MONOREPO: isMonorepo,
-        RNV_MONO_ROOT: (c.runtime.isWrapper || isMonorepo) ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir,
+        RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir,
         RNV_ENGINE: c.runtime.engine.config.id,
         RNV_IS_NATIVE_TV: [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform)
     });

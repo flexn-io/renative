@@ -17,10 +17,6 @@ export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_ADD, originTask);
 
-    if (c.runtime.isWrapper) {
-        return Promise.reject('Adding plugins in wrapper project is not supported.');
-    }
-
     const selPluginKey = c.program.rawArgs[4];
 
     const o = getPluginList(c);

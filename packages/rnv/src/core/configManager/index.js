@@ -640,7 +640,6 @@ export const parseRenativeConfigs = async (c) => {
         'projectConfig'
     );
 
-    c.runtime.isWrapper = c.buildConfig.isWrapper;
     c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
 
 
