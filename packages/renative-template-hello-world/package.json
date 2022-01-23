@@ -50,6 +50,20 @@
     "scripts": {
         "bootstrap": "cd ../.. && yarn bootstrap"
     },
+    "files": [
+        "appConfigs/base/assets/runtime",
+        "appConfigs/base/fonts",
+        "appConfigs/base/renative.json",
+        "appConfigs/app",
+        "buildHooks",
+        "index.js",
+        "next.config.js",
+        "renative.json",
+        "renative.template.json",
+        "src",
+        "static",
+        "tsconfig.json"
+    ],
     "dependencies": {},
     "devDependencies": {
         "@babel/runtime": "7.8.3",

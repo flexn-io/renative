@@ -53,6 +53,12 @@
     "bin": {
         "rnv": "./bin/index.js"
     },
+    "files": [
+        "dist",
+        "bin",
+        "coreTemplateFiles",
+        "pluginTemplates"
+    ],
     "repository": {
         "type": "git",
         "url": "git://github.com/renative-org/renative.git"

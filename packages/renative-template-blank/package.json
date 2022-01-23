@@ -46,6 +46,17 @@
         "type": "git",
         "url": "git://github.com/renative-org/renative.git"
     },
+     "files": [
+        "appConfigs",
+        "buildHooks",
+        "index.js",
+        "next.config.js",
+        "renative.json",
+        "renative.template.json",
+        "src",
+        "static",
+        "tsconfig.json"
+    ],
     "scripts": {},
     "devDependencies": {
         "@rnv/engine-rn": "0.35.0-alpha.6",

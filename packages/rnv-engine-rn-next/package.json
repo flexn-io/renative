@@ -18,6 +18,12 @@
         "type": "git",
         "url": "git://github.com/renative-org/renative.git"
     },
+    "files": [
+        "dist",
+        "templates",
+        "supportFiles",
+        "renative.engine.json"
+    ],
     "scripts": {
         "build": "babel src -d dist --source-maps",
         "build:clean": "rm -rf dist || true",
