@@ -22,10 +22,6 @@
         "platformAssetsDir": "./platformAssets",
         "platformBuildsDir": "./platformBuilds"
     },
-    "plugins": {
-        "@noriginmedia/react-spatial-navigation": "source:rnv",
-        "next": "source:rnv"
-    },
     "integrations": {
         "@rnv/integration-vercel": "source:rnv",
         "@rnv/integration-docker": "source:rnv"
@@ -89,12 +85,6 @@
             "webpack": {
                 "moduleAliases": true
             }
-        },
-        "renative-template-blank": {
-            "version": "^0.35.0-alpha.4",
-            "webpack": {
-                "moduleAliases": true
-            }
         }
     },
     "platforms": {
@@ -142,14 +132,33 @@
             }
         }
     },
-    "currentTemplate": "renative-template-hello-world",
-    "crypto": {
-        "optional": true,
-        "encrypt": {
-            "dest": "PROJECT_HOME/ci/privateConfigs.enc"
-        },
-        "decrypt": {
-            "source": "PROJECT_HOME/ci/privateConfigs.enc"
+    "plugins": {
+        "react-native-web-image-loader": "source:rnv",
+        "react-native-gesture-handler": "source:rnv",
+        "react-native-reanimated": "source:rnv",
+        "react-native-vector-icons": "source:rnv",
+        "@reach/router": "1.3.4",
+        "hash-source": "1.0.4",
+        "@react-navigation": "source:rnv",
+        "@react-navigation/core": "5.12.3",
+        "@react-navigation/drawer": "5.9.0",
+        "@react-navigation/bottom-tabs": "5.1.1",
+        "@react-navigation/material-bottom-tabs": "5.1.1",
+        "@react-navigation/native": "5.7.3",
+        "@react-navigation/stack": "5.9.0",
+        "@react-navigation/routers": "5.1.0",
+        "@react-navigation/material-top-tabs": "5.1.1",
+        "@react-navigation/web": "1.0.0-alpha.9",
+        "@react-native-community/masked-view": "source:rnv",
+        "@react-native-community/viewpager": "source:rnv",
+        "react-native-safe-area-context": "source:rnv",
+        "react-native-safe-area-view": "source:rnv",
+        "react-native-screens": "source:rnv",
+        "react-native-tab-view": "source:rnv",
+        "react-native-google-cast": {
+            "props": {
+                "applicationID": "CC1AD845"
+            }
         }
     }
 }

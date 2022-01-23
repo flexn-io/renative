@@ -61,7 +61,6 @@ coverage
 
 # RN Windows Engine
 .binlog
-packages/app/app.json
 packages/**/*.binlog
 
 dist
