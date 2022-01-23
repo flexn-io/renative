@@ -202,6 +202,7 @@
         "@react-native-community/masked-view": "source:rnv",
         "@react-native-community/viewpager": "source:rnv",
         "react-native-safe-area-context": "source:rnv",
+        "@noriginmedia/react-spatial-navigation": "source:rnv",
         "react-native-safe-area-view": "source:rnv",
         "react-native-screens": "source:rnv",
         "react-native-tab-view": "source:rnv",
