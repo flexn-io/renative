@@ -327,7 +327,12 @@ export const runXcodeProject = async (c) => {
     }
 
     if (c.platform === MACOS) {
-        await buildXcodeProject(c, c.platform);
+        try {
+            await buildXcodeProject(c, c.platform);
+        } catch (e) {
+            await _handleMissingTeam(c, e);
+        }
+
         return executeAsync(c, `open ${path.join(appPath, 'build/RNVApp/Build/Products/Debug-maccatalyst/RNVApp.app')}`);
     }
     await launchAppleSimulator(c, c.runtime.target);
@@ -403,33 +408,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
                     // return runXcodeProject(c);
                 }
             }
-            const isDevelopmentTeamMissing = e.includes(
-                'requires a development team. Select a development team'
-            );
-            if (isDevelopmentTeamMissing) {
-                const loc = `./appConfigs/${
-                    c.runtime.appId
-                }/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
-                logError(e);
-                logWarning(`You need specify the development team if you want to run app on ${
-                    c.platform
-                } device. this can be set manually in ${chalk().white(loc)}
-  You can find correct teamID in the URL of your apple developer account: ${chalk().white(
-        'https://developer.apple.com/account/#/overview/YOUR-TEAM-ID'
-    )}`);
-                const { confirm } = await inquirer.prompt({
-                    name: 'confirm',
-                    message: `Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.config})`,
-                    type: 'input'
-                });
-                if (confirm) {
-                    await _setDevelopmentTeam(c, confirm);
-                    return Promise.reject('Updated. Re-run your last command');
-                    // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
-                    // await configureXcodeProject(c, c.platform);
-                    // return runXcodeProject(c);
-                }
-            }
+            await _handleMissingTeam(c, e);
             const isAutomaticSigningDisabled = e.includes(
                 'Automatic signing is disabled and unable to generate a profile'
             );
@@ -468,6 +447,37 @@ ${chalk().white('https://github.com/renative-org/renative/issues')}
 and we will try to help!
 
 `);
+    }
+};
+
+const _handleMissingTeam = async (c, e) => {
+    const isDevelopmentTeamMissing = e.includes(
+        'requires a development team. Select a development team'
+    );
+    if (isDevelopmentTeamMissing) {
+        const loc = `./appConfigs/${
+            c.runtime.appId
+        }/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
+        logError(e);
+        logWarning(`You need specify the development team if you want to run app on ${
+            c.platform
+        } device. this can be set manually in ${chalk().white(loc)}
+  You can find correct teamID in the URL of your apple developer account: ${chalk().white(
+        'https://developer.apple.com/account/#/overview/YOUR-TEAM-ID'
+    )}
+Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.config})`);
+        const { confirm } = await inquirer.prompt({
+            name: 'confirm',
+            message: 'Apple Team ID',
+            type: 'input'
+        });
+        if (confirm) {
+            await _setDevelopmentTeam(c, confirm);
+            return Promise.reject('Updated. Re-run your last command');
+            // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
+            // await configureXcodeProject(c, c.platform);
+            // return runXcodeProject(c);
+        }
     }
 };
 

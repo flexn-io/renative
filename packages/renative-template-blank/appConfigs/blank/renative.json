@@ -13,7 +13,6 @@
     "platforms": {
         "ios": {
             "entryFile": "index",
-            "teamID": "",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -29,7 +28,6 @@
         },
         "tvos": {
             "entryFile": "index",
-            "teamID": "",
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
@@ -44,7 +42,6 @@
         },
          "macos": {
             "entryFile": "index",
-            "teamID": "",
             "provisioningStyle": "Automatic",
             "permissions": ["*"],
             "buildSchemes": {
