@@ -21,7 +21,10 @@
         "backgroundColor": "#111111",
         "runtime": {
             "welcomeMessage": "Hello ReNative!"
-        }
+        },
+        "fontSources": [
+            "{{resolvePackage(react-native-vector-icons)}}/Fonts"
+        ]
     },
     "platforms": {
         "ios": {

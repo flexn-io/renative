@@ -22,6 +22,7 @@ import {
     fsExistsSync,
     fsReaddirSync,
     fsReadFileSync,
+    resolvePackage,
 } from '../systemManager/fileutils';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { executeAsync } from '../systemManager/exec';
@@ -362,7 +363,22 @@ export const parseFonts = (c, callback) => {
                 if (callback) callback(font, c.paths.appConfig.fontsDir);
             });
         }
+        const fontSources = getConfigProp(c, c.platform, 'fontSources', ['./appConfigs/base/fonts']).map(v => _resolvePackage(c, v));
+        fontSources.forEach((fontSourceDir) => {
+            if (fsExistsSync(fontSourceDir)) {
+                fsReaddirSync(fontSourceDir).forEach((font) => {
+                    if (callback) callback(font, fontSourceDir);
+                });
+            }
+        });
     }
+};
+
+const _resolvePackage = (c, v) => {
+    if (v?.startsWith?.('./')) {
+        return path.join(c.paths.project.dir, v);
+    }
+    return resolvePackage(v);
 };
 
 export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
