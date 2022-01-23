@@ -4,11 +4,12 @@ import {
     getScaledValue, isFactorMobile, isFactorDesktop, isPlatformWindows, isPlatformMacos,
     isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker, isWebBased, StyleSheet, isPlatformWeb
 } from 'renative';
-import '../platformAssets/runtime/fontManager'; // eslint-disable-line import/extensions, import/no-unresolved
+import '../platformAssets/runtime/fontManager';
 import React, { useState, createContext } from 'react';
 
-import CONFIG from '../platformAssets/renative.runtime.json'; // eslint-disable-line import/no-unresolved
-import ICON_LOGO from '../platformAssets/runtime/logo.png'; // eslint-disable-line import/no-unresolved
+import { LogBox } from 'react-native';
+import CONFIG from '../platformAssets/renative.runtime.json';
+import ICON_LOGO from '../platformAssets/runtime/logo.png';
 
 if (isFactorBrowser) registerServiceWorker();
 
@@ -19,8 +20,7 @@ export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isWebBased && isFactorTv;
 
 // Disable yellow warnings UI
-console.disableYellowBox = true; // eslint-disable-line no-console
-
+LogBox.ignoreAllLogs(true);
 
 const staticTheme = {
     primaryFontFamily: 'Inter-Light',

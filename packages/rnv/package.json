@@ -61,7 +61,6 @@
         "build": "babel src -d dist --source-maps",
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
-        "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git",
         "prepare": "yarn build",
         "prepublishOnly": "yarn build",
         "test": "jest -c __tests__/jest.config.unit.js",

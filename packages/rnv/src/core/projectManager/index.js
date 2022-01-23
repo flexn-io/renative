@@ -577,7 +577,7 @@ const SYNCED_TEMPLATES = [
 export const versionCheck = async (c) => {
     logTask('versionCheck');
 
-    if (c.runtime.isWrapper || c.runtime.versionCheckCompleted || c.files.project?.config?.skipAutoUpdate) {
+    if (c.runtime.versionCheckCompleted || c.files.project?.config?.skipAutoUpdate) {
         return true;
     }
     c.runtime.rnvVersionRunner = c.files.rnv?.package?.version;

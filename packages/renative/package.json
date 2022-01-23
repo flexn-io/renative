@@ -48,13 +48,18 @@
         "David Rielo <https://github.com/davidrielo>",
         "Sander Looijenga <https://github.com/sanderlooijenga>"
     ],
-    "main": "src/index.js",
+    "main": "dist/index.js",
     "repository": {
         "type": "git",
         "url": "git://github.com/renative-org/renative.git"
     },
     "scripts": {
-        "kooo": "echo bitch"
+        "build": "babel src -d dist --source-maps",
+        "build:clean": "rm -rf dist || true",
+        "build:dev": "yarn build --retain-lines",
+        "prepare": "yarn build",
+        "prepublishOnly": "yarn build",
+        "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
         "@noriginmedia/react-spatial-navigation": "2.12.1",

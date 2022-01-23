@@ -1761,9 +1761,6 @@ IN: 1.0.23 OUT: 100230000
         'ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name of the folder',
             examples: ['helloworld', 'someapp'],
         },
-        isWrapper: {
-            type: 'boolean',
-        },
         isMonorepo: {
             type: 'boolean',
         },

@@ -17,9 +17,6 @@ test/examples/*.js
 **/supportFiles
 **/coreTemplateFiles
 packages/rnv/tests
-packages/app/e2e-cypress
-packages/app/src
-packages/app/e2e
 jest.config.*.js
 **/templates
 docs/

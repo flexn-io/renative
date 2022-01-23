@@ -47,6 +47,20 @@
         "url": "git://github.com/renative-org/renative.git"
     },
     "scripts": {},
+    "devDependencies": {
+        "react": "17.0.2",
+        "react-art": "17.0.2",
+        "react-dom": "17.0.2",
+        "react-native": "0.63.4",
+        "renative": "0.35.0-alpha.4",
+        "rnv": "0.35.0-alpha.4",
+        "@rnv/engine-rn": "0.35.0-alpha.4",
+        "@rnv/engine-rn-next": "0.35.0-alpha.4",
+        "@rnv/engine-rn-tvos": "0.35.0-alpha.4",
+        "@rnv/engine-rn-web": "0.35.0-alpha.4",
+        "@rnv/engine-rn-electron": "0.35.0-alpha.4",
+        "@rnv/engine-rn-windows": "0.35.0-alpha.4"
+    },
     "private": false,
     "publishConfig": {
         "access": "public"

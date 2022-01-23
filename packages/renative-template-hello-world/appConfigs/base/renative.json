@@ -1,5 +1,6 @@
 {
     "id": "base",
+    "skipBootstrapCopy": true,
     "hidden": true,
     "common": {
         "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
@@ -29,7 +30,6 @@
     "platforms": {
         "ios": {
             "entryFile": "index",
-            "teamID": "",
             "provisioningStyle": "Automatic",
             "systemCapabilities": {
                 "com.apple.AccessWiFi": false,
@@ -79,7 +79,6 @@
         },
         "tvos": {
             "entryFile": "index",
-            "teamID": "",
             "provisioningStyle": "Automatic",
             "entitlements": {},
             "permissions": ["*"],
@@ -102,7 +101,6 @@
         },
         "macos": {
             "entryFile": "index",
-            "teamID": "",
             "provisioningStyle": "Automatic",
             "permissions": ["*"],
             "buildSchemes": {

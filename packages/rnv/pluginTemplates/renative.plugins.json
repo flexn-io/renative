@@ -25,14 +25,8 @@
         "renative": {
             "version": "0.35.0-alpha.4",
             "webpack": {
-                "modulePaths": [
-                    "node_modules/renative"
-                ],
-                "moduleAliases": {
-                    "renative": {
-                        "projectPath": "node_modules/renative"
-                    }
-                }
+                "modulePaths": true,
+                "moduleAliases": true
             }
         },
         "@react-native-community/push-notification-ios": {
