@@ -13,8 +13,9 @@ import taskRnvCryptoUpdateProfiles from './tasks/task.rnv.crypto.updateProfiles'
 import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfiles';
 import taskRnvLog from './tasks/task.rnv.log';
 import CNF from '../renative.engine.json';
+import { createEngineAlias } from './adapter';
 
-export { withRNV, createEngineAlias } from './adapter';
+export { withRNV } from './adapter';
 
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
@@ -35,10 +36,11 @@ export default {
         taskRnvCryptoInstallProfiles,
         taskRnvLog
     ]),
+    getAliases: createEngineAlias,
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',
-        reactNativeMetroConfigName: 'metro.config.rnt.js',
+        reactNativeMetroConfigName: 'metro.config.js',
         xcodeProjectName: 'RNVAppTVOS'
     },
     projectDirName: '',

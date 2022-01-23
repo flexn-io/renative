@@ -318,7 +318,7 @@ export async function copyProjectTemplateAndReplace(
     // Do not override metro inside the project if one already exists
     if (!fs.existsSync(path.join(
         c.paths.project.dir,
-        'metro.config.rnwin.js'
+        'metro.config.js'
     ))) {
         commonMappings.push(
             {
@@ -326,7 +326,7 @@ export async function copyProjectTemplateAndReplace(
                     RNWTemplatePath,
                     'metro.config.js'
                 ),
-                to: 'metro.config.rnwin.js'
+                to: 'metro.config.js'
             }
         );
     }

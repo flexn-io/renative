@@ -314,7 +314,7 @@ const packageBundleForWindows = (c, isDev = false) => {
 
     return executeAsync(c, `node ${doResolve(
         'react-native', true, { forceForwardPaths: false }
-    )}\\local-cli\\cli.js ${args.join(' ')} --config=metro.config.rnwin.js`, { env: { ...generateEnvVars(c) } });
+    )}\\local-cli\\cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
 };
 
 const setSingleBuildProcessForWindows = (c) => {

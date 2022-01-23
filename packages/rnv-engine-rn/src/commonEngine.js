@@ -48,7 +48,7 @@ export const configureMetroConfigs = async (c) => {
 
     const cfPath = path.join(c.paths.project.dir, 'configs', `metro.config.${c.platform}.js`);
     if (fsExistsSync(cfPath)) {
-        logWarning(`${chalk().white(cfPath)} is DEPRECATED. use withRnvMetro(config) directly in /.metro.config.js`);
+        logWarning(`${chalk().white(cfPath)} is DEPRECATED. use withRNVMetro(config) directly in /.metro.config.js`);
     }
 
 

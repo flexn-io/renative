@@ -1,15 +1,3 @@
-const { createEngineAlias } = require('@rnv/engine-rn-tvos');
+const { withRNVBabel } = require('rnv');
 
-module.exports = {
-    retainLines: true,
-    presets: ['module:metro-react-native-babel-preset'],
-    plugins: [
-        [
-            require.resolve('babel-plugin-module-resolver'),
-            {
-                root: ['..'],
-                alias: { ...createEngineAlias() }
-            },
-        ],
-    ],
-};
+module.exports = withRNVBabel({});
