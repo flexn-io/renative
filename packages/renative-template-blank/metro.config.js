@@ -1,10 +1,5 @@
-const path = require('path');
 const { withRNVMetro } = require('rnv');
 
-const defaultConfig = {
-    watchFolders: [
-        path.resolve(__dirname, '../renative')
-    ],
-};
+const defaultConfig = {};
 
 module.exports = withRNVMetro(defaultConfig);

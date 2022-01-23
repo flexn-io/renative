@@ -9,9 +9,6 @@
         "@rnv/engine-rn-web": "source:rnv",
         "@rnv/engine-rn-windows": "source:rnv"
     },
-    "env": {
-        "SOME_ENV_VAR": "xxxx"
-    },
     "isTemplate": true,
     "projectName": "renative",
     "enableHookRebuild": false,
@@ -139,6 +136,7 @@
         "react-native-vector-icons": "source:rnv",
         "@reach/router": "1.3.4",
         "hash-source": "1.0.4",
+        "renative": "source:rnv",
         "@react-navigation": "source:rnv",
         "@react-navigation/core": "5.12.3",
         "@react-navigation/drawer": "5.9.0",
