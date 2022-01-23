@@ -10,7 +10,6 @@ const VERSIONED_PACKAGES = [
     'rnv',
     'renative-template-hello-world',
     'renative-template-blank',
-    'renative-template-kitchen-sink',
     'rnv-engine-rn',
     'rnv-engine-rn-tvos',
     'rnv-engine-rn-macos',
