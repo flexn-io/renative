@@ -61,12 +61,11 @@ export const checkAndCreateProjectPackage = async (c) => {
         const pkgJson = templateObj?.templateConfig?.packageTemplate || {};
         pkgJson.name = packageName;
         pkgJson.version = version;
-        pkgJson.dependencies = {
-            renative: rnvVersion
-        };
-        pkgJson.devDependencies = {
-            rnv: rnvVersion
-        };
+        pkgJson.dependencies = pkgJson.dependencies || {};
+        pkgJson.dependencies.renative = rnvVersion;
+        pkgJson.devDependencies = pkgJson.devDependencies || {};
+        pkgJson.devDependencies.rnv = rnvVersion;
+
         pkgJson.devDependencies[templateName] = c.files.project.config?.templates[templateName]?.version;
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
         fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);
