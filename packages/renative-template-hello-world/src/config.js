@@ -7,8 +7,8 @@ import {
 import '../platformAssets/runtime/fontManager'; // eslint-disable-line import/extensions, import/no-unresolved
 import React, { useState, createContext } from 'react';
 
-export CONFIG from '../platformAssets/renative.runtime.json'; // eslint-disable-line import/no-unresolved
-export ICON_LOGO from '../platformAssets/runtime/logo.png'; // eslint-disable-line import/no-unresolved
+import CONFIG from '../platformAssets/renative.runtime.json'; // eslint-disable-line import/no-unresolved
+import ICON_LOGO from '../platformAssets/runtime/logo.png'; // eslint-disable-line import/no-unresolved
 
 if (isFactorBrowser) registerServiceWorker();
 
@@ -238,5 +238,10 @@ export function ThemeProvider({ children }) {
 }
 
 export const themeStyles = themes.dark.styles;
+
+export {
+    CONFIG,
+    ICON_LOGO
+};
 
 export default staticThemes.dark;

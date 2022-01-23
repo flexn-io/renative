@@ -50,7 +50,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "next": ">=12.0.7",
+        "next": ">=12.0.8",
         "rnv": "^0.35.0-alpha.4"
     },
     "private": false,

@@ -53,7 +53,7 @@
         "@react-navigation/stack": "5.9.0",
         "@react-navigation/web": "1.0.0-alpha.9",
         "hash-source": "1.0.4",
-        "next": "12.0.7",
+        "next": "12.0.8",
         "raf": "3.4.1",
         "react": "17.0.2",
         "react-art": "17.0.2",

@@ -100,10 +100,9 @@
         "eslint-plugin-react-hooks": "2.5.0",
         "husky": "4.2.5",
         "jest": "26.4.2",
-        "jsdoc-to-markdown": "6.0.1",
         "lerna": "4.0.0",
         "lint-staged": "8.1.0",
-        "nodemon": "1.18.10",
+        "nodemon": "2.0.15",
         "prettier": "1.17.1",
         "pretty-quick": "1.11.0",
         "rnv": "0.35.0-alpha.4"
