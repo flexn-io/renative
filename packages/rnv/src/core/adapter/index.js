@@ -18,3 +18,13 @@ export const withRNVBabel = cnf => (api) => {
         ...cnf
     };
 };
+
+
+export const withRNVMetro = (cnf) => {
+    const engine = require(process.env.RNV_ENGINE_PATH); // eslint-disable-line import/no-dynamic-require, global-require
+    if (engine.withRNV) {
+        return engine.withRNV(cnf);
+    }
+
+    return cnf;
+};

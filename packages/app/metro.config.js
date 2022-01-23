@@ -1,5 +1,5 @@
 const path = require('path');
-const { withRNV } = require('@rnv/engine-rn');
+const { withRNVMetro } = require('rnv');
 
 const defaultConfig = {
     watchFolders: [
@@ -7,4 +7,4 @@ const defaultConfig = {
     ],
 };
 
-module.exports = withRNV(defaultConfig);
+module.exports = withRNVMetro(defaultConfig);

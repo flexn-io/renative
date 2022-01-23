@@ -3,7 +3,7 @@ import * as Common from './core/common';
 import * as Utils from './core/systemManager/utils';
 import * as Prompt from './cli/prompt';
 import * as Constants from './core/constants';
-import { withRNVBabel } from './core/adapter';
+import { withRNVBabel, withRNVMetro } from './core/adapter';
 import CLI from './cli';
 
 import 'source-map-support/register';
@@ -82,6 +82,7 @@ export {
     Resolver,
     Utils,
     withRNVBabel,
+    withRNVMetro,
     run,
     CLI
 };

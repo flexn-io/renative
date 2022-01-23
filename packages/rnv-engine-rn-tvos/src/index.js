@@ -40,7 +40,7 @@ export default {
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',
-        reactNativeMetroConfigName: 'metro.config.rnt.js',
+        reactNativeMetroConfigName: 'metro.config.js',
         xcodeProjectName: 'RNVAppTVOS'
     },
     projectDirName: '',
