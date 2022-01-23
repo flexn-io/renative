@@ -41,7 +41,7 @@
         "@babel/preset-env": "7.6.0"
     },
     "peerDependencies": {
-        "rnv": "^0.35.0-alpha.5"
+        "rnv": "^0.35.0-alpha.6"
     },
     "publishConfig": {
         "access": "public"
