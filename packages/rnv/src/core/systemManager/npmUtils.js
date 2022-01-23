@@ -78,7 +78,7 @@ export const checkAndCreateProjectPackage = async (c) => {
 
 export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
-export const listAndSelectNpmVersion = async (c, npmPackage, rnvTemplates) => {
+export const listAndSelectNpmVersion = async (c, npmPackage) => {
     const templateVersionsStr = await executeAsync(
         c,
         `npm view ${npmPackage} versions`
@@ -100,7 +100,7 @@ export const listAndSelectNpmVersion = async (c, npmPackage, rnvTemplates) => {
         });
     });
 
-    const { rnvVersion } = c;
+    versionArr.reverse();
     const validVersions = versionArr.map(v => ({ name: v, value: v }));
 
     let recommendedVersion;
@@ -115,31 +115,21 @@ export const listAndSelectNpmVersion = async (c, npmPackage, rnvTemplates) => {
         if (matchArr.length) {
             matchStr = ` (HEAD: ${matchArr.join(', ')})`;
             item.name = `${item.value}${matchStr}`;
-        }
-        if (rnvTemplates?.includes && rnvTemplates.includes(npmPackage)) {
-            if (item.value === rnvVersion) {
-                item.name = `${item.name} <= RECOMMENDED`;
+            if (matchArr[0] === 'latest') {
                 recommendedVersion = item;
             }
         }
     });
-    if (!recommendedVersion) recommendedVersion = validVersions[0];
-
-
-    validVersions.sort((a, b) => {
-        if (a.name > b.name) return 1;
-
-        return (b.name > a.name) ? -1 : 0;
-    }).reverse();
-
-    validVersions.unshift(validVersions.splice(validVersions.indexOf(recommendedVersion), 1)[0]);
-
+    if (!recommendedVersion) {
+        recommendedVersion = validVersions[0];
+    }
 
     const { inputTemplateVersion } = await inquirer.prompt({
         name: 'inputTemplateVersion',
         type: 'list',
         message: `What ${npmPackage} version to use?`,
-        default: recommendedVersion.name,
+        default: recommendedVersion.value,
+        loop: false,
         choices: validVersions
     });
 
