@@ -11,5 +11,7 @@
     },
     "platforms": {
       
-    }
+    },
+    "plugins": {},
+    "extendsTemplate": "renative.json"
 }

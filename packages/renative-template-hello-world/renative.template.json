@@ -9,30 +9,9 @@
 
         }
     },
-    "defaults": {
-        "supportedPlatforms": [
-            "ios",
-            "android",
-            "androidtv",
-            "firetv",
-            "androidwear",
-            "web",
-            "webtv",
-            "tizen",
-            "tvos",
-            "webos",
-            "macos",
-            "windows",
-            "tizenwatch",
-            "tizenmobile",
-            "kaios",
-            "firefoxos",
-            "firefoxtv",
-            "chromecast",
-            "xbox"
-        ]
-    },
     "platforms": {
       
-    }
+    },
+    "plugins": {},
+    "extendsTemplate": "renative.json"
 }

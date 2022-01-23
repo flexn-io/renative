@@ -1,0 +1,4 @@
+buildHooks/dist
+.env
+.npmrc
+docs/

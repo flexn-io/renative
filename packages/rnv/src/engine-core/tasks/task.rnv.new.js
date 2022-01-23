@@ -391,11 +391,28 @@ export const taskRnvNew = async (c) => {
         )
     );
 
+    const renativeConfig = readObjectSync(
+        path.join(
+            c.paths.project.dir,
+            'node_modules',
+            selectedInputTemplate,
+            RENATIVE_CONFIG_NAME
+        )
+    );
+
     // ==================================================
     // INPUT: Supported Platforms
     // ==================================================
 
-    const supportedPlatforms = renativeTemplateConfig?.defaults?.supportedPlatforms || [];
+    const supportedPlatforms = renativeTemplateConfig?.defaults?.supportedPlatforms
+    || renativeConfig?.defaults?.supportedPlatforms
+    || [];
+
+    if (supportedPlatforms.length === 0) {
+        logError(`Template ${
+            selectedInputTemplate
+        } does not seem to export any default platforms to support. contact the author.`);
+    }
 
     let inputSupportedPlatforms;
     if (platform && platform !== '') {
@@ -534,15 +551,18 @@ export const taskRnvNew = async (c) => {
         }
     });
 
-    // Remove unused engines based on selected platforms
-    supPlats.forEach((k) => {
-        const selectedEngineId = config.platforms[k]?.engine
+    if (renativeTemplateConfig.engines) {
+        // Remove unused engines based on selected platforms
+        supPlats.forEach((k) => {
+            const selectedEngineId = config.platforms[k]?.engine
       || c.files.rnv.projectTemplates.config.platforms[k]?.engine;
-        if (selectedEngineId) {
-            const selectedEngine = findEngineKeyById(c, selectedEngineId);
-            config.engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
-        }
-    });
+            if (selectedEngineId) {
+                const selectedEngine = findEngineKeyById(c, selectedEngineId);
+                config.engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
+            }
+        });
+    }
+
 
     delete config.templateConfig;
     if (!config.platforms) {
