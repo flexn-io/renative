@@ -30,23 +30,23 @@
     },
     "defaults": {
         "ports": {
-            "ios":8082,
-            "android":8083,
-            "androidtv":8084,
-            "firetv":8098,
-            "tvos":8085,
-            "macos":8086,
-            "web":8080,
-            "tizen":8087,
-            "webos":8088,
-            "androidwear":8089,
-            "tizenwatch":8090,
-            "tizenmobile":8091,
-            "windows":8092,
-            "xbox":8099,
-            "kaios":8093,
-            "firefoxos":8094,
-            "firefoxtv":8014
+            "ios": 8082,
+            "android": 8083,
+            "androidtv": 8084,
+            "firetv": 8098,
+            "tvos": 8085,
+            "macos": 8086,
+            "web": 8080,
+            "tizen": 8087,
+            "webos": 8088,
+            "androidwear": 8089,
+            "tizenwatch": 8090,
+            "tizenmobile": 8091,
+            "windows": 8092,
+            "xbox": 8099,
+            "kaios": 8093,
+            "firefoxos": 8094,
+            "firefoxtv": 8014
         },
         "supportedPlatforms": [
             "ios",
@@ -78,7 +78,7 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "^0.35.0-alpha.4",
+            "version": "^0.35.0-alpha.5",
             "webpack": {
                 "moduleAliases": true
             }
@@ -91,12 +91,12 @@
             },
             "AndroidManifest": {
                 "children": [
-                {
-                    "tag": "application",
-                    "android:name": ".MainApplication",
-                    "android:usesCleartextTraffic": true,
-                    "tools:targetApi": 28
-                }
+                    {
+                        "tag": "application",
+                        "android:name": ".MainApplication",
+                        "android:usesCleartextTraffic": true,
+                        "tools:targetApi": 28
+                    }
                 ]
             },
             "mainActivity": {
@@ -112,12 +112,12 @@
             },
             "AndroidManifest": {
                 "children": [
-                {
-                    "tag": "application",
-                    "android:name": ".MainApplication",
-                    "android:usesCleartextTraffic": true,
-                    "tools:targetApi": 28
-                }
+                    {
+                        "tag": "application",
+                        "android:name": ".MainApplication",
+                        "android:usesCleartextTraffic": true,
+                        "tools:targetApi": 28
+                    }
                 ]
             },
             "engine": "engine-rn-tvos",
@@ -131,12 +131,12 @@
             },
             "AndroidManifest": {
                 "children": [
-                {
-                    "tag": "application",
-                    "android:name": ".MainApplication",
-                    "android:usesCleartextTraffic": true,
-                    "tools:targetApi": 28
-                }
+                    {
+                        "tag": "application",
+                        "android:name": ".MainApplication",
+                        "android:usesCleartextTraffic": true,
+                        "tools:targetApi": 28
+                    }
                 ]
             },
             "includedPermissions": [
@@ -152,12 +152,12 @@
             },
             "AndroidManifest": {
                 "children": [
-                {
-                    "tag": "application",
-                    "android:name": ".MainApplication",
-                    "android:usesCleartextTraffic": true,
-                    "tools:targetApi": 28
-                }
+                    {
+                        "tag": "application",
+                        "android:name": ".MainApplication",
+                        "android:usesCleartextTraffic": true,
+                        "tools:targetApi": 28
+                    }
                 ]
             },
             "engine": "engine-rn-tvos",

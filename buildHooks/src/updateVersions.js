@@ -21,7 +21,6 @@ const VERSIONED_PACKAGES = [
     'rnv-sdk-apple',
     'rnv-sdk-android',
     'rnv-sdk-webpack',
-    'app',
     'renative',
 ];
 
