@@ -7,6 +7,7 @@ import {
 import '../platformAssets/runtime/fontManager';
 import React, { useState, createContext } from 'react';
 
+import { LogBox } from 'react-native';
 import CONFIG from '../platformAssets/renative.runtime.json';
 import ICON_LOGO from '../platformAssets/runtime/logo.png';
 
@@ -19,8 +20,7 @@ export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isWebBased && isFactorTv;
 
 // Disable yellow warnings UI
-console.disableYellowBox = true; // eslint-disable-line no-console
-
+LogBox.ignoreAllLogs(true);
 
 const staticTheme = {
     primaryFontFamily: 'Inter-Light',

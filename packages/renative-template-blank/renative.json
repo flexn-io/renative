@@ -1,0 +1,204 @@
+{
+    "engines": {
+        "@rnv/engine-lightning": "source:rnv",
+        "@rnv/engine-rn": "source:rnv",
+        "@rnv/engine-rn-electron": "source:rnv",
+        "@rnv/engine-rn-macos": "source:rnv",
+        "@rnv/engine-rn-next": "source:rnv",
+        "@rnv/engine-rn-tvos": "source:rnv",
+        "@rnv/engine-rn-web": "source:rnv",
+        "@rnv/engine-rn-windows": "source:rnv"
+    },
+    "isTemplate": true,
+    "projectName": "renative",
+    "enableHookRebuild": false,
+    "workspaceID": "rnv",
+    "isMonorepo": true,
+    "paths": {
+        "appConfigsDir": "./appConfigs",
+        "platformAssetsDir": "./platformAssets",
+        "platformBuildsDir": "./platformBuilds"
+    },
+    "integrations": {
+        "@rnv/integration-vercel": "source:rnv",
+        "@rnv/integration-docker": "source:rnv"
+    },
+    "tasks": {
+        "install": {
+            "script": "yarn bootstrap"
+        }
+    },
+    "defaults": {
+        "ports": {
+            "ios":8082,
+            "android":8083,
+            "androidtv":8084,
+            "firetv":8098,
+            "tvos":8085,
+            "macos":8086,
+            "web":8080,
+            "tizen":8087,
+            "webos":8088,
+            "androidwear":8089,
+            "tizenwatch":8090,
+            "tizenmobile":8091,
+            "windows":8092,
+            "xbox":8099,
+            "kaios":8093,
+            "firefoxos":8094,
+            "firefoxtv":8014
+        },
+        "supportedPlatforms": [
+            "ios",
+            "android",
+            "androidtv",
+            "firetv",
+            "androidwear",
+            "web",
+            "webtv",
+            "tizen",
+            "tvos",
+            "webos",
+            "macos",
+            "windows",
+            "tizenwatch",
+            "tizenmobile",
+            "kaios",
+            "firefoxos",
+            "firefoxtv",
+            "chromecast",
+            "xbox"
+        ],
+        "schemes": {
+            "run": "debug",
+            "build": "release",
+            "export": "release"
+        },
+        "targets": {}
+    },
+    "templates": {
+        "renative-template-hello-world": {
+            "version": "^0.35.0-alpha.4",
+            "webpack": {
+                "moduleAliases": true
+            }
+        }
+    },
+    "platforms": {
+        "android": {
+            "gradle.properties": {
+                "android.useDeprecatedNdk": true
+            },
+            "AndroidManifest": {
+                "children": [
+                {
+                    "tag": "application",
+                    "android:name": ".MainApplication",
+                    "android:usesCleartextTraffic": true,
+                    "tools:targetApi": 28
+                }
+                ]
+            },
+            "mainActivity": {
+                "onCreate": "super.onCreate(null)"
+            },
+            "includedPermissions": [
+                "INTERNET"
+            ]
+        },
+        "androidtv": {
+            "gradle.properties": {
+                "android.useDeprecatedNdk": true
+            },
+            "AndroidManifest": {
+                "children": [
+                {
+                    "tag": "application",
+                    "android:name": ".MainApplication",
+                    "android:usesCleartextTraffic": true,
+                    "tools:targetApi": 28
+                }
+                ]
+            },
+            "engine": "engine-rn-tvos",
+            "includedPermissions": [
+                "INTERNET"
+            ]
+        },
+        "androidwear": {
+            "gradle.properties": {
+                "android.useDeprecatedNdk": true
+            },
+            "AndroidManifest": {
+                "children": [
+                {
+                    "tag": "application",
+                    "android:name": ".MainApplication",
+                    "android:usesCleartextTraffic": true,
+                    "tools:targetApi": 28
+                }
+                ]
+            },
+            "includedPermissions": [
+                "INTERNET"
+            ],
+            "mainActivity": {
+                "onCreate": "super.onCreate(null)"
+            }
+        },
+        "firetv": {
+            "gradle.properties": {
+                "android.useDeprecatedNdk": true
+            },
+            "AndroidManifest": {
+                "children": [
+                {
+                    "tag": "application",
+                    "android:name": ".MainApplication",
+                    "android:usesCleartextTraffic": true,
+                    "tools:targetApi": 28
+                }
+                ]
+            },
+            "engine": "engine-rn-tvos",
+            "includedPermissions": [
+                "INTERNET"
+            ]
+        },
+        "web": {
+            "engine": "engine-rn-next"
+        },
+        "tvos": {
+            "engine": "engine-rn-tvos"
+        },
+        "macos": {
+            "engine": "engine-rn"
+        },
+        "windows": {
+            "engine": "engine-rn-electron"
+        },
+        "xbox": {
+            "engine": "engine-rn-windows"
+        }
+    },
+    "plugins": {
+        "react-native-web-image-loader": "source:rnv",
+        "react-native-gesture-handler": "source:rnv",
+        "react-native-reanimated": "source:rnv",
+        "hash-source": "1.0.4",
+        "renative": "source:rnv"
+    },
+    "permissions": {
+        "ios": {},
+        "android": {
+            "INTERNET": {
+                "key": "android.permission.INTERNET",
+                "security": "normal"
+            },
+            "SYSTEM_ALERT_WINDOW": {
+                "key": "android.permission.SYSTEM_ALERT_WINDOW",
+                "security": "signature"
+            }
+        }
+    }
+}
