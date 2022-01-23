@@ -30,23 +30,23 @@
     },
     "defaults": {
         "ports": {
-            "ios": 8182,
-            "android": 8183,
-            "androidtv": 8184,
-            "firetv": 8198,
-            "tvos": 8185,
-            "macos": 8186,
-            "web": 8180,
-            "tizen": 8187,
-            "webos": 8188,
-            "androidwear": 8189,
-            "tizenwatch": 8190,
-            "tizenmobile": 8191,
-            "windows": 8192,
-            "xbox": 8199,
-            "kaios": 8193,
-            "firefoxos": 8194,
-            "firefoxtv": 8114
+            "ios":8082,
+            "android":8083,
+            "androidtv":8084,
+            "firetv":8098,
+            "tvos":8085,
+            "macos":8086,
+            "web":8080,
+            "tizen":8087,
+            "webos":8088,
+            "androidwear":8089,
+            "tizenwatch":8090,
+            "tizenmobile":8091,
+            "windows":8092,
+            "xbox":8099,
+            "kaios":8093,
+            "firefoxos":8094,
+            "firefoxtv":8014
         },
         "supportedPlatforms": [
             "ios",
@@ -85,6 +85,86 @@
         }
     },
     "platforms": {
+        "android": {
+            "gradle.properties": {
+                "android.useDeprecatedNdk": true
+            },
+            "AndroidManifest": {
+                "children": [
+                {
+                    "tag": "application",
+                    "android:name": ".MainApplication",
+                    "android:usesCleartextTraffic": true,
+                    "tools:targetApi": 28
+                }
+                ]
+            },
+            "mainActivity": {
+                "onCreate": "super.onCreate(null)"
+            },
+            "includedPermissions": [
+                "INTERNET"
+            ]
+        },
+        "androidtv": {
+            "gradle.properties": {
+                "android.useDeprecatedNdk": true
+            },
+            "AndroidManifest": {
+                "children": [
+                {
+                    "tag": "application",
+                    "android:name": ".MainApplication",
+                    "android:usesCleartextTraffic": true,
+                    "tools:targetApi": 28
+                }
+                ]
+            },
+            "engine": "engine-rn-tvos",
+            "includedPermissions": [
+                "INTERNET"
+            ]
+        },
+        "androidwear": {
+            "gradle.properties": {
+                "android.useDeprecatedNdk": true
+            },
+            "AndroidManifest": {
+                "children": [
+                {
+                    "tag": "application",
+                    "android:name": ".MainApplication",
+                    "android:usesCleartextTraffic": true,
+                    "tools:targetApi": 28
+                }
+                ]
+            },
+            "includedPermissions": [
+                "INTERNET"
+            ],
+            "mainActivity": {
+                "onCreate": "super.onCreate(null)"
+            }
+        },
+        "firetv": {
+            "gradle.properties": {
+                "android.useDeprecatedNdk": true
+            },
+            "AndroidManifest": {
+                "children": [
+                {
+                    "tag": "application",
+                    "android:name": ".MainApplication",
+                    "android:usesCleartextTraffic": true,
+                    "tools:targetApi": 28
+                }
+                ]
+            },
+            "engine": "engine-rn-tvos",
+            "includedPermissions": [
+                "INTERNET"
+            ]
+        },
         "web": {
             "engine": "engine-rn-next"
         },
@@ -99,34 +179,6 @@
         },
         "xbox": {
             "engine": "engine-rn-windows"
-        },
-        "android": {
-            "mainActivity": {
-                "onCreate": "super.onCreate(null)"
-            },
-            "includedPermissions": [
-                "INTERNET"
-            ]
-        },
-        "androidtv": {
-            "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
-        },
-        "firetv": {
-            "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
-        },
-        "androidwear": {
-            "includedPermissions": [
-                "INTERNET"
-            ],
-            "mainActivity": {
-                "onCreate": "super.onCreate(null)"
-            }
         }
     },
     "plugins": {
@@ -156,6 +208,19 @@
         "react-native-google-cast": {
             "props": {
                 "applicationID": "CC1AD845"
+            }
+        }
+    },
+    "permissions": {
+        "ios": {},
+        "android": {
+            "INTERNET": {
+                "key": "android.permission.INTERNET",
+                "security": "normal"
+            },
+            "SYSTEM_ALERT_WINDOW": {
+                "key": "android.permission.SYSTEM_ALERT_WINDOW",
+                "security": "signature"
             }
         }
     }
