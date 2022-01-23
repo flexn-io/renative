@@ -49,16 +49,16 @@
         "David Rielo <https://github.com/davidrielo>",
         "Sander Looijenga <https://github.com/sanderlooijenga>"
     ],
+    "files": [
+        "bin",
+        "coreTemplateFiles",
+        "dist",
+        "pluginTemplates"
+    ],
     "main": "dist/index.js",
     "bin": {
         "rnv": "./bin/index.js"
     },
-    "files": [
-        "dist",
-        "bin",
-        "coreTemplateFiles",
-        "pluginTemplates"
-    ],
     "repository": {
         "type": "git",
         "url": "git://github.com/renative-org/renative.git"

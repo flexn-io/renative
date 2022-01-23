@@ -42,11 +42,7 @@
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/renative-org/renative.git"
-    },
-     "files": [
+    "files": [
         "appConfigs",
         "buildHooks",
         "index.js",
@@ -57,6 +53,10 @@
         "static",
         "tsconfig.json"
     ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/renative-org/renative.git"
+    },
     "scripts": {},
     "devDependencies": {
         "@rnv/engine-rn": "0.35.0-alpha.6",

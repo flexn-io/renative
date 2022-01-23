@@ -12,16 +12,16 @@
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
+    "files": [
+        "dist",
+        "renative.engine.json",
+        "templates"
+    ],
     "main": "dist/index.js",
     "repository": {
         "type": "git",
         "url": "git://github.com/renative-org/renative.git"
     },
-    "files": [
-        "dist",
-        "templates",
-        "renative.engine.json"
-    ],
     "scripts": {
         "build": "babel src -d dist --source-maps",
         "build:clean": "rm -rf dist || true",
