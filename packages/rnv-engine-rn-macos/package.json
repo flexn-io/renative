@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-macos",
-    "version": "0.35.0-alpha.7",
+    "version": "0.35.0-alpha.8",
     "description": "ReNative Engine to build react-native macOS platform.",
     "keywords": [
         "react-native-macos"
@@ -12,17 +12,17 @@
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
-    "main": "dist/index.js",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/renative-org/renative.git"
-    },
     "files": [
         "dist",
         "renative.engine.json",
         "supportFiles",
         "templates"
     ],
+    "main": "dist/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/renative-org/renative.git"
+    },
     "scripts": {
         "build": "babel src -d dist --source-maps",
         "build:clean": "rm -rf dist || true",
@@ -31,7 +31,7 @@
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
-        "@rnv/sdk-apple": "0.35.0-alpha.7"
+        "@rnv/sdk-apple": "0.35.0-alpha.8"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -42,7 +42,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.35.0-alpha.7"
+        "rnv": "^0.35.0-alpha.8"
     },
     "private": false,
     "publishConfig": {

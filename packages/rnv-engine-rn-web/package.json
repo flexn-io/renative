@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "0.35.0-alpha.7",
+    "version": "0.35.0-alpha.8",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"
@@ -12,17 +12,17 @@
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
-    "main": "dist/index.js",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/renative-org/renative.git"
-    },
     "files": [
         "dist",
         "renative.engine.json",
         "supportFiles",
         "templates"
     ],
+    "main": "dist/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/renative-org/renative.git"
+    },
     "scripts": {
         "build": "babel src -d dist --source-maps",
         "build:clean": "rm -rf dist || true",
@@ -33,7 +33,7 @@
     },
     "dependencies": {
         "@babel/preset-react": "7.16.0",
-        "@rnv/sdk-webpack": "0.35.0-alpha.7",
+        "@rnv/sdk-webpack": "0.35.0-alpha.8",
         "babel-loader": "8.0.5",
         "better-opn": "1.0.0",
         "html-webpack-harddisk-plugin": "1.0.2",
@@ -55,7 +55,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.35.0-alpha.7"
+        "rnv": "^0.35.0-alpha.8"
     },
     "private": false,
     "publishConfig": {
