@@ -379,11 +379,6 @@ export const configureEntryPoint = async (c, platform) => {
             c.paths.template.dir,
             `${entryFile}.js`
         );
-        const backupSource = path.join(
-            c.paths.rnv.projectTemplate.dir,
-            'entry',
-            `${entryFile}.js`
-        );
         const dest = path.join(c.paths.project.dir, `${entryFile}.js`);
         if (!fsExistsSync(dest)) {
             if (!entryFile) {
@@ -395,12 +390,11 @@ export const configureEntryPoint = async (c, platform) => {
                     )}.`
                 );
             } else if (!fsExistsSync(source)) {
-                logInfo(
+                logWarning(
                     `Missing entry file ${chalk().white(
                         `${entryFile}.js`
-                    )}. COPYING from RNV...DONE`
+                    )}. Not available in your current template. You need to create one manually`
                 );
-                copyFileSync(backupSource, dest);
             } else {
                 logInfo(
                     `Missing entry file ${chalk().white(

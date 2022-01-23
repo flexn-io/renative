@@ -12,7 +12,7 @@
     },
     "platforms": {
         "ios": {
-            "entryFile": "index.ios",
+            "entryFile": "index",
             "teamID": "",
             "permissions": ["*"],
             "buildSchemes": {
@@ -28,7 +28,7 @@
             }
         },
         "tvos": {
-            "entryFile": "index.tvos",
+            "entryFile": "index",
             "teamID": "",
             "buildSchemes": {
                 "debug": {
@@ -43,7 +43,7 @@
             }
         },
          "macos": {
-            "entryFile": "index.macos",
+            "entryFile": "index",
             "teamID": "",
             "provisioningStyle": "Automatic",
             "permissions": ["*"],
@@ -62,7 +62,7 @@
             }
         },
         "android": {
-            "entryFile": "index.android",
+            "entryFile": "index",
             "reactNativeEngine": "hermes",
             "permissions": ["*"],
             "buildSchemes": {
@@ -78,7 +78,7 @@
             }
         },
         "androidtv": {
-            "entryFile": "index.androidtv",
+            "entryFile": "index",
             "reactNativeEngine": "hermes",
             "permissions": ["*"],
             "buildSchemes": {
@@ -94,7 +94,7 @@
             }
         },
         "firetv": {
-            "entryFile": "index.firetv",
+            "entryFile": "index",
             "reactNativeEngine": "hermes",
             "permissions": ["*"],
             "buildSchemes": {
@@ -110,7 +110,7 @@
             }
         },
         "androidwear": {
-            "entryFile": "index.androidwear",
+            "entryFile": "index",
             "reactNativeEngine": "hermes",
             "permissions": ["*"],
             "buildSchemes": {
@@ -129,25 +129,25 @@
             "appName": "ReNativeTV",
             "package": "NkVRhWHJST",
             "id": "NkVRhWHJST.ReNativeTV",
-            "entryFile": "index.tizen",
+            "entryFile": "index",
             "certificateProfile": "RNVanillaCert"
         },
         "tizenwatch": {
             "appName": "ReNativeWatch",
             "package": "cHIP2fIRQZ",
             "id": "cHIP2fIRQZ.ReNativeWatch",
-            "entryFile": "index.tizenwatch",
+            "entryFile": "index",
             "certificateProfile": "RNVanillaCert"
         },
         "tizenmobile": {
             "appName": "RenativeMobile",
             "package": "PauodvCU2r",
             "id": "PauodvCU2r.ReNativeMobile",
-            "entryFile": "index.tizenwatch",
+            "entryFile": "index",
             "certificateProfile": "RNVanillaCert"
         },
         "web": {
-            "entryFile": "index.web",
+            "entryFile": "index",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false,
@@ -160,7 +160,7 @@
             }
         },
         "webtv": {
-            "entryFile": "index.webtv",
+            "entryFile": "index",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false,
@@ -173,10 +173,10 @@
             }
         },
         "webos": {
-            "entryFile": "index.webos"
+            "entryFile": "index"
         },
         "windows": {
-            "entryFile": "index.windows",
+            "entryFile": "index",
             "language": "cpp",
             "buildSchemes": {
                 "debug": {
@@ -191,7 +191,7 @@
             }
         },
         "xbox": {
-            "entryFile": "index.xbox",
+            "entryFile": "index",
             "language": "cpp",
             "arch": "x64",
             "buildSchemes": {
@@ -207,7 +207,7 @@
             }
         },
         "kaios": {
-            "entryFile": "index.kaios",
+            "entryFile": "index",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -219,7 +219,7 @@
             }
         },
         "firefoxos": {
-            "entryFile": "index.firefoxos",
+            "entryFile": "index",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -231,7 +231,7 @@
             }
         },
         "firefoxtv": {
-            "entryFile": "index.firefoxtv",
+            "entryFile": "index",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -243,7 +243,7 @@
             }
         },
         "chromecast": {
-            "entryFile": "index.chromecast",
+            "entryFile": "index",
             "webpackConfig": {
                 "customScripts": [
                     "www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js",

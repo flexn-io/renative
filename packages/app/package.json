@@ -96,7 +96,6 @@
         "metro": "0.59.0",
         "renative-template-blank": "^0.35.0-alpha.4",
         "renative-template-hello-world": "^0.35.0-alpha.4",
-        "renative-template-kitchen-sink": "^0.35.0-alpha.4",
         "rnv": "0.35.0-alpha.4",
         "ttab": "^0.7.2",
         "wait-on": "5.0.1",

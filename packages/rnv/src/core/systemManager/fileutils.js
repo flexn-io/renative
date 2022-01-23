@@ -578,7 +578,7 @@ export const sanitizeDynamicRefs = (c, obj) => {
     return obj;
 };
 
-const fixResolve = (text) => {
+export const resolvePackage = (text) => {
     if (typeof text !== 'string') return text;
     const regEx = /{{resolvePackage\(([\s\S]*?)\)}}/g;
     const matches = text.match(regEx);
@@ -612,7 +612,7 @@ export const sanitizeDynamicProps = (obj, propConfig) => {
         Object.keys(obj).forEach((key) => {
             const val = obj[key];
             // Some values are passed as keys so have to validate keys as well
-            const newKey = fixResolve(key);
+            const newKey = resolvePackage(key);
             delete obj[key];
             obj[newKey] = val;
             if (val) {
@@ -624,7 +624,7 @@ export const sanitizeDynamicProps = (obj, propConfig) => {
             }
         });
     } else if (typeof obj === 'string') {
-        return fixResolve(obj);
+        return resolvePackage(obj);
     }
 
     return obj;
@@ -643,21 +643,21 @@ const _bindStringVals = (obj, _val, newKey, propConfig) => {
     if (val.includes(BIND_FILES)) {
         const key = val.replace(BIND_FILES, '').replace('}}', '');
         const nVal = key.split('.').reduce((o, i) => o?.[i], propConfig.files);
-        obj[newKey] = fixResolve(nVal);
+        obj[newKey] = resolvePackage(nVal);
     } else if (val.includes(BIND_PROPS)) {
         Object.keys(props).forEach((pk) => {
             val = val.replace(`${BIND_PROPS}${pk}}}`, props?.[pk]);
-            obj[newKey] = fixResolve(val);
+            obj[newKey] = resolvePackage(val);
         });
     } else if (val.includes(BIND_CONFIG_PROPS)) {
         Object.keys(configProps).forEach((pk2) => {
             val = val.replace(`${BIND_CONFIG_PROPS}${pk2}}}`, configProps[pk2]);
-            obj[newKey] = fixResolve(val);
+            obj[newKey] = resolvePackage(val);
         });
     } else if (val.includes(BIND_RUNTIME_PROPS)) {
         Object.keys(runtimeProps).forEach((pk3) => {
             val = val.replace(`${BIND_RUNTIME_PROPS}${pk3}}}`, runtimeProps[pk3]);
-            obj[newKey] = fixResolve(val);
+            obj[newKey] = resolvePackage(val);
         });
     } else if (val.includes(BIND_ENV)) {
         const key = val.replace(BIND_ENV, '').replace('}}', '');
@@ -790,5 +790,6 @@ export default {
     mergeObjects,
     updateConfigFile,
     replaceHomeFolder,
-    getDirectories
+    getDirectories,
+    resolvePackage
 };

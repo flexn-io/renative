@@ -523,10 +523,6 @@ export const RNV_PACKAGES = [
         folderName: 'renative-template-blank'
     },
     {
-        packageName: 'renative-template-kitchen-sink',
-        folderName: 'renative-template-kitchen-sink'
-    },
-    {
         packageName: 'rnv',
         folderName: 'rnv'
     },
