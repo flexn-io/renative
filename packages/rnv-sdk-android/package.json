@@ -11,6 +11,7 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "files": [
         "dist",
+        "supportFiles",
         "types.d.ts"
     ],
     "main": "dist/index.js",

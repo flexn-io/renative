@@ -7,13 +7,10 @@ import merge from 'deepmerge';
 import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from './logger';
 
-let getConfigProp;
-let doResolve;
-let isSystemWin;
 export const configureFilesystem = (_getConfigProp, _doResolve, _isSystemWin) => {
-    getConfigProp = _getConfigProp;
-    doResolve = _doResolve;
-    isSystemWin = _isSystemWin;
+    global.getConfigProp = _getConfigProp;
+    global.doResolve = _doResolve;
+    global.isSystemWin = _isSystemWin;
 };
 
 export const fsWriteFileSync = (dest, data, encoding) => {
@@ -133,7 +130,7 @@ export const writeCleanFile = (source, destination, overrides, timestampPathsCon
                 if (occurences) {
                     occurences.forEach((occ) => {
                         const val = occ.replace('{{configProps.', '').replace('}}', '');
-                        const configVal = getConfigProp(c, c.platform, val, '');
+                        const configVal = global.getConfigProp(c, c.platform, val, '');
                         pFileClean = pFileClean.replace(occ, configVal);
                     });
                 }
@@ -588,7 +585,7 @@ export const resolvePackage = (text) => {
             const val = match.replace('{{resolvePackage(', '').replace(')}}', '');
             // TODO: Figure out WIN vs LINUX treatment here
             // forceForwardPaths is required for WIN Android to work correctly
-            newText = newText.replace(match, doResolve(val, false, { forceForwardPaths: true }));
+            newText = newText.replace(match, global.doResolve(val, false, { forceForwardPaths: true }));
         });
     }
     return newText;
@@ -701,7 +698,7 @@ export const updateConfigFile = async (update, globalConfigPath) => {
 };
 
 export const replaceHomeFolder = (p) => {
-    if (isSystemWin) return p.replace('~', process.env.USERPROFILE);
+    if (global.isSystemWin) return p.replace('~', process.env.USERPROFILE);
     return p.replace('~', process.env.HOME);
 };
 

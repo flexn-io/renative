@@ -72,7 +72,7 @@ export const parseEntitlementsPlist = (c, platform) => new Promise((resolve) => 
         pluginsEntitlementsObj = readObjectSync(
             path.join(
                 __dirname,
-                '../src/supportFiles/entitlements.json'
+                '../supportFiles/entitlements.json'
             )
         );
     }
@@ -94,7 +94,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
     let plistObj = readObjectSync(
         path.join(
             __dirname,
-            `../src/supportFiles/info.plist.${platform}.json`
+            `../supportFiles/info.plist.${platform}.json`
         )
     );
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);

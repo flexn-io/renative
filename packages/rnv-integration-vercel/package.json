@@ -25,7 +25,8 @@
         "build": "babel src --out-dir dist",
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
-        "prepublishOnly": "npm run build",
+        "prepublishOnly": "yarn build:clean && yarn build:prod",
+        "build:prod": "babel src -d dist",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {

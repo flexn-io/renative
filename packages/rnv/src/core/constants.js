@@ -470,6 +470,9 @@ export const PARAM_KEYS = {
         isRequired: true,
         description: 'Custom IP override'
     },
+    unlinked: {
+        description: 'Force engines to be loaded from node_modules rather than locally'
+    },
     packageManager: {
         value: 'value',
         isRequired: true,

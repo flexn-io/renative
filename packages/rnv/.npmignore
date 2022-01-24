@@ -54,3 +54,5 @@ Dockerfile
 coverage/
 
 **/__tests__/
+
+*.map

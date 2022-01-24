@@ -19,10 +19,6 @@
         "platformAssetsDir": "./platformAssets",
         "platformBuildsDir": "./platformBuilds"
     },
-    "integrations": {
-        "@rnv/integration-vercel": "source:rnv",
-        "@rnv/integration-docker": "source:rnv"
-    },
     "tasks": {
         "install": {
             "script": "yarn bootstrap"
