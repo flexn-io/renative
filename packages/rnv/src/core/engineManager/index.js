@@ -292,7 +292,6 @@ export const loadEngines = async (c, failOnMissingDeps) => {
     // if (filteredEngines) {
     Object.keys(filteredEngines).forEach((k) => {
         const engineRootPath = doResolve(k);
-        console.log('MAAAAAAAA', k, engineRootPath);
         const configPath = engineRootPath ? path.join(engineRootPath, 'renative.engine.json') : null;
         if (!configPath || !fsExistsSync(configPath)) {
             const engVer = getScopedVersion(c, k, filteredEngines[k], 'engineTemplates');
@@ -436,19 +435,6 @@ const _registerPlatformEngine = (c, platform) => {
     if (selectedEngineConfig) {
         const existingEngine = c.runtime.enginesById[selectedEngineConfig.id];
         if (!existingEngine) {
-            // if (IS_LINKED) {
-            //     // In the instances of running linked rnv instead of installed one load local packages
-            //     const pth = require.resolve(selectedEngineConfig.packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
-            //     registerEngine(c, require(
-            //         pth
-            //     )?.default, platform, selectedEngineConfig);
-            // } else {
-            //     registerEngine(c, require(
-            //         _resolvePkgPath(c, selectedEngineConfig.packageName)
-            //     )?.default,
-            //     platform, selectedEngineConfig);
-            // }
-            console.log('MAMAMAMAAAA', _resolvePkgPath(c, selectedEngineConfig.packageName));
             registerEngine(c, require(
                 _resolvePkgPath(c, selectedEngineConfig.packageName)
             )?.default,

@@ -25,8 +25,8 @@
         "build": "babel src --out-dir dist",
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
-        "prepublishOnly": "yarn build:clean && yarn build:prod",
         "build:prod": "babel src -d dist",
+        "prepublishOnly": "yarn build:clean && yarn build:prod",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
@@ -42,7 +42,7 @@
         "@babel/preset-env": "7.6.0"
     },
     "peerDependencies": {
-        "rnv": "^0.35.0-alpha.8"
+        "rnv": "^0.35.0-alpha.9"
     },
     "publishConfig": {
         "access": "public"

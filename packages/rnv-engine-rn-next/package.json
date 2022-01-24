@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "0.35.0-alpha.8",
+    "version": "0.35.0-alpha.9",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",
@@ -28,8 +28,8 @@
         "build": "babel src -d dist --source-maps",
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
-        "prepublishOnly": "yarn build:clean && yarn build:prod",
         "build:prod": "babel src -d dist",
+        "prepublishOnly": "yarn build:clean && yarn build:prod",
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
@@ -58,7 +58,7 @@
     },
     "peerDependencies": {
         "next": ">=12.0.8",
-        "rnv": "^0.35.0-alpha.8"
+        "rnv": "^0.35.0-alpha.9"
     },
     "private": false,
     "publishConfig": {
