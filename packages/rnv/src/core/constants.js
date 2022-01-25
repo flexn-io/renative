@@ -473,6 +473,9 @@ export const PARAM_KEYS = {
     unlinked: {
         description: 'Force engines to be loaded from node_modules rather than locally'
     },
+    yes: {
+        description: 'Default all prompts to yes'
+    },
     packageManager: {
         value: 'value',
         isRequired: true,

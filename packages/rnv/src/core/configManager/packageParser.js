@@ -8,6 +8,7 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { getEngineRunnerByPlatform } from '../engineManager';
 import { writeRenativeConfigFile } from './index';
 import { overrideTemplatePlugins } from '../pluginManager';
+import { configureFonts } from '../projectManager';
 
 
 const injectProjectDependency = async (c,
@@ -26,6 +27,7 @@ const injectProjectDependency = async (c,
     if (!skipInstall) {
         await installPackageDependencies(c);
         await overrideTemplatePlugins(c);
+        await configureFonts(c);
     }
     return true;
 };
@@ -146,6 +148,7 @@ export const injectPlatformDependencies = async (c) => {
             } engine. ADDING...DONE`);
             await installPackageDependencies(c);
             await overrideTemplatePlugins(c);
+            await configureFonts(c);
         }
     }
 

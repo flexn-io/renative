@@ -7,7 +7,7 @@ import { fsExistsSync, fsMkdirSync } from '../../core/systemManager/fileutils';
 import { checkCrypto } from '../../core/systemManager/crypto';
 import { checkAndMigrateProject } from '../../core/projectManager/migrator';
 import { TASK_INSTALL, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, TASK_APP_CONFIGURE, TASK_WORKSPACE_CONFIGURE, PARAMS } from '../../core/constants';
-import { checkAndCreateBabelConfig, copyRuntimeAssets, cleanPlaformAssets, checkAndCreateGitignore, versionCheck } from '../../core/projectManager';
+import { checkAndCreateBabelConfig, copyRuntimeAssets, cleanPlaformAssets, checkAndCreateGitignore, versionCheck, configureFonts } from '../../core/projectManager';
 import { configureEngines } from '../../core/engineManager';
 import { executeTask, initializeTask, findSuitableTask } from '../../core/taskManager';
 
@@ -83,6 +83,7 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         // await configureEntryPoints(c);
         await generateRuntimeConfig(c);
         await overrideTemplatePlugins(c);
+        await configureFonts(c);
     }
 
     return true;

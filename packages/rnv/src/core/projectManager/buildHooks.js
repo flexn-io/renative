@@ -47,12 +47,20 @@ export const buildHooks = async (c) => {
             c.runtime.skipBuildHooks = true;
             return;
         }
-        const { confirm } = await inquirer.prompt({
-            type: 'confirm',
-            name: 'confirm',
-            message: 'Build hooks not configured in this project. Configure?'
-        });
-        if (confirm) {
+
+        let confirmed;
+        if (c.program.yes) {
+            confirmed = true;
+        } else {
+            const { confirm } = await inquirer.prompt({
+                type: 'confirm',
+                name: 'confirm',
+                message: 'Build hooks not configured in this project. Configure?'
+            });
+            confirmed = confirm;
+        }
+
+        if (confirmed) {
             copyFolderContentsRecursiveSync(
                 path.join(c.paths.rnv.dir, 'coreTemplateFiles/buildHooks/src'),
                 c.paths.buildHooks.dir

@@ -212,39 +212,7 @@ export const checkAndCreateBabelConfig = async (c) => {
 };
 
 
-export const copyRuntimeAssets = c => new Promise((resolve) => {
-    logTask('copyRuntimeAssets');
-
-    const destPath = path.join(c.paths.project.assets.dir, 'runtime');
-
-    // FOLDER MERGERS FROM APP CONFIG + EXTEND
-    if (c.paths.appConfig.dirs) {
-        c.paths.appConfig.dirs.forEach((v) => {
-            const sourcePath = path.join(v, 'assets/runtime');
-            copyFolderContentsRecursiveSync(sourcePath, destPath);
-        });
-    } else if (c.paths.appConfig.dir) {
-        const sourcePath = path.join(
-            c.paths.appConfig.dir,
-            'assets/runtime'
-        );
-        copyFolderContentsRecursiveSync(sourcePath, destPath);
-    }
-
-    if (!c.buildConfig?.common) {
-        logDebug('BUILD_CONFIG', c.buildConfig);
-        logWarning(
-            `Your ${chalk().white(
-                c.paths.appConfig.config
-            )} is misconfigured. (Maybe you have older version?). Missing ${chalk().white(
-                '{ common: {} }'
-            )} object at root`
-        );
-        resolve();
-        return;
-    }
-
-
+export const configureFonts = async (c) => {
     // FONTS
     let fontsObj = 'export default [';
 
@@ -334,8 +302,44 @@ export const copyRuntimeAssets = c => new Promise((resolve) => {
         )
     );
 
-    resolve();
-});
+    return true;
+};
+
+
+export const copyRuntimeAssets = async (c) => {
+    logTask('copyRuntimeAssets');
+
+    const destPath = path.join(c.paths.project.assets.dir, 'runtime');
+
+    // FOLDER MERGERS FROM APP CONFIG + EXTEND
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            const sourcePath = path.join(v, 'assets/runtime');
+            copyFolderContentsRecursiveSync(sourcePath, destPath);
+        });
+    } else if (c.paths.appConfig.dir) {
+        const sourcePath = path.join(
+            c.paths.appConfig.dir,
+            'assets/runtime'
+        );
+        copyFolderContentsRecursiveSync(sourcePath, destPath);
+    }
+
+    if (!c.buildConfig?.common) {
+        logDebug('BUILD_CONFIG', c.buildConfig);
+        logWarning(
+            `Your ${chalk().white(
+                c.paths.appConfig.config
+            )} is misconfigured. (Maybe you have older version?). Missing ${chalk().white(
+                '{ common: {} }'
+            )} object at root`
+        );
+
+        return true;
+    }
+
+    return true;
+};
 
 export const parseFonts = (c, callback) => {
     logTask('parseFonts');
@@ -363,7 +367,7 @@ export const parseFonts = (c, callback) => {
                 if (callback) callback(font, c.paths.appConfig.fontsDir);
             });
         }
-        const fontSources = getConfigProp(c, c.platform, 'fontSources', ['./appConfigs/base/fonts']).map(v => _resolvePackage(c, v));
+        const fontSources = getConfigProp(c, c.platform, 'fontSources', []).map(v => _resolvePackage(c, v));
         fontSources.forEach((fontSourceDir) => {
             if (fsExistsSync(fontSourceDir)) {
                 fsReaddirSync(fontSourceDir).forEach((font) => {

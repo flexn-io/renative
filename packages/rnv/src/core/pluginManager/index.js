@@ -5,6 +5,7 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { getAppFolder, getBuildsFolder, getConfigProp } from '../common';
 import { writeRenativeConfigFile } from '../configManager';
 import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
+import { configureFonts } from '../projectManager';
 import {
     copyFolderContentsRecursiveSync, fsExistsSync,
     fsLstatSync,
@@ -694,6 +695,7 @@ export const installPackageDependenciesAndPlugins = async (c) => {
 
     await installPackageDependencies(c);
     await overrideTemplatePlugins(c);
+    await configureFonts(c);
     await _checkForPluginDependencies(c);
 };
 
