@@ -440,7 +440,7 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
 const generateDefaultAssets = async (c, platform, sourcePath) => {
     logTask('generateDefaultAssets');
     let confirmAssets = true;
-    if (c.program.ci !== true) {
+    if (c.program.ci !== true && c.program.yes !== true) {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
             message: `It seems you don't have assets configured in ${chalk().white(
