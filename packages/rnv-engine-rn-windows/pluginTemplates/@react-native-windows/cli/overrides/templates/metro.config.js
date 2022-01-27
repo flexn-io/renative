@@ -1,5 +1,3 @@
-const { withRNV } = require('@rnv/engine-rn-windows');
+const { withRNVMetro } = require('rnv');
 
-const defaultConfig = {};
-
-module.exports = withRNV(defaultConfig);
+module.exports = withRNVMetro({});

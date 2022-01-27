@@ -1,7 +1,5 @@
-const { withRNV } = require('@rnv/engine-rn-next');
+const { withRNVMetro } = require('rnv');
 
-const config = {
+module.exports = withRNVMetro({
     compress: false
-};
-
-module.exports = withRNV(config);
+});
