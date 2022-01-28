@@ -1,4 +1,4 @@
-import { logTask, logInitTask, logExitTask, chalk, logRaw, logError, logInfo, logWarning } from '../systemManager/logger';
+import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../systemManager/logger';
 import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
@@ -197,7 +197,7 @@ export const findSuitableTask = async (c, specificTask) => {
                 return findSuitableTask(c);
             }
 
-            logError(`could not find suitable task for ${chalk().white(c.command)}`);
+            logInfo(`could not find suitable task for ${chalk().white(c.command)}. GETTING OPTIONS...`);
             c.command = null;
             c.subCommand = null;
             return findSuitableTask(c);
