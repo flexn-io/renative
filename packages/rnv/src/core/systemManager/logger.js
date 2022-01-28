@@ -197,6 +197,11 @@ export const logSummary = (header = 'SUMMARY') => {
             _highlightColor(cnf().runtime?.engine?.config?.id)
         }`, 1);
     }
+    if (cnf().runtime?.activeTemplate) {
+        str += printIntoBox(`Template: ${
+            _highlightColor(cnf().runtime?.activeTemplate)
+        }`, 1);
+    }
     if (cnf().buildConfig?._meta?.currentAppConfigId) {
         str += printIntoBox(
             `App Config (-c): ${_highlightColor(

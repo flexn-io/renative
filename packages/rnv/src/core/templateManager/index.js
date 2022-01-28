@@ -163,6 +163,11 @@ const _applyTemplate = async (c) => {
         c.runtime.requiresForcedTemplateApply = true;
     }
 
+    if (c.buildConfig.currentTemplate) {
+        c.runtime.activeTemplate = `${
+            c.buildConfig.currentTemplate}@${c.buildConfig.templates?.[c.buildConfig.currentTemplate]?.version}`;
+    }
+
     return true;
 };
 
