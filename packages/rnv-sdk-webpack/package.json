@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-webpack",
-    "version": "0.35.0-alpha.11",
+    "version": "0.35.0-alpha.12",
     "description": "ReNative Webpack SDK",
     "keywords": [],
     "homepage": "https://github.com/renative-org/renative#readme",
@@ -48,7 +48,7 @@
         "typescript": "^4.5.2"
     },
     "peerDependencies": {
-        "rnv": "^0.35.0-alpha.11"
+        "rnv": "^0.35.0-alpha.12"
     },
     "private": false,
     "publishConfig": {
