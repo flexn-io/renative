@@ -4,6 +4,8 @@ import Config from '../core/configManager/config';
 
 export const inquirerPrompt = async (params) => {
     const c = Config.getConfig();
+    if (c.program?.yes) return true;
+
     const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program?.ci) {
         if (Array.isArray(params.choices) && typeof params.default !== 'undefined' && params.choices.includes(params.default)) {

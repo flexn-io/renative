@@ -1,14 +1,14 @@
 import path from 'path';
 import axios from 'axios';
 import ora from 'ora';
-import { TaskManager, Constants, Logger, Common, FileUtils } from 'rnv';
+import { TaskManager, Constants, Logger, Common, FileUtils, Prompt } from 'rnv';
 
+const { inquirerPrompt } = Prompt;
 const { getConfigProp, confirmActiveBundler } = Common;
 const { chalk, logTask, logInfo, logWarning } = Logger;
 const { fsExistsSync, copyFileSync } = FileUtils;
 const { TASK_START, RN_CLI_CONFIG_NAME } = Constants;
 const { executeTask } = TaskManager;
-
 
 let keepRNVRunning = false;
 
@@ -46,9 +46,30 @@ export const waitForBundlerIfRequired = async (c) => {
 export const configureMetroConfigs = async (c) => {
     logTask('configureMetroConfigs');
 
-    const cfPath = path.join(c.paths.project.dir, 'configs', `metro.config.${c.platform}.js`);
+    const metroSnippet = `
+const { withRNVMetro } = require('rnv');
+module.exports = withRNVMetro({});  
+`;
+
+    let cfPath = path.join(c.paths.project.dir, 'configs', `metro.config.${c.platform}.js`);
+    if (!fsExistsSync(cfPath)) {
+        cfPath = path.join(c.paths.project.dir, `metro.config.${c.platform}.js`);
+    }
     if (fsExistsSync(cfPath)) {
-        logWarning(`${chalk().white(cfPath)} is DEPRECATED. use withRNVMetro(config) directly in /.metro.config.js`);
+        logWarning(`${
+            chalk().white(cfPath)} is DEPRECATED. You can add following snippet:
+${chalk().white(metroSnippet)}
+to your ${chalk().white('/.metro.config.js')} instead and delete deprecated file
+`);
+        const confirm = await inquirerPrompt({
+            name: 'selectedScheme',
+            type: 'confirm',
+            message: 'Are you sure you want to continue?',
+        });
+
+        if (!confirm) {
+            return Promise.reject('Cancelled by user');
+        }
     }
 
 
