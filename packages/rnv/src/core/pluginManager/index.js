@@ -209,13 +209,17 @@ export const configurePlugins = async (c) => {
         const plugin = getMergedPlugin(c, k);
 
         if (!plugin) {
-            logWarning(
-                `Plugin with name ${chalk().white(
-                    k
-                )} does not exists in ReNative source:rnv scope. you need to define it manually here: ${chalk().white(
-                    c.paths.project.builds.config
-                )}`
-            );
+            if (c.buildConfig?.plugins?.[k] === null) {
+                // Skip Warning as this is intentional "plugin":null
+            } else {
+                logWarning(
+                    `Plugin with name ${chalk().white(
+                        k
+                    )} does not exists in ReNative source:rnv scope. you need to define it manually here: ${chalk().white(
+                        c.paths.project.builds.config
+                    )}`
+                );
+            }
         } else if (dependencies && dependencies[k]) {
             if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
                 if (!plugin.version) {
@@ -349,6 +353,10 @@ export const resolvePluginDependants = async (c) => {
 const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
     // IMPORTANT: Do not cache this valuse as they need to be refreshed every
     // round in case new plugin has been installed and c.buildConfig generated
+    if (keyScope === null) {
+        return true;
+    }
+
     const { pluginTemplates } = c.buildConfig;
     const plugin = getMergedPlugin(c, key);
 
@@ -356,7 +364,6 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
 
     if (!plugin) {
         const depPlugin = pluginTemplates[scope]?.[key];
-
         if (depPlugin) {
             // console.log('INSTALL PLUGIN???', key, depPlugin.source);
             const { confirm } = await inquirerPrompt({
