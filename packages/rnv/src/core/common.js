@@ -309,7 +309,9 @@ export const _getConfigProp = (c, platform, key, defaultVal, sourceObj) => {
     scheme = scheme || {};
     const resultCli = CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
     const resultScheme = scheme[baseKey];
-    const resultCommon = getFlavouredProp(c, sourceObj.common, baseKey);
+    const resultCommonRoot = getFlavouredProp(c, sourceObj.common, baseKey);
+    const resultCommonScheme = getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, baseKey);
+    const resultCommon = resultCommonScheme || resultCommonRoot;
 
     let result = _getValueOrMergedObject(
         resultCli,

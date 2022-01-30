@@ -39,7 +39,7 @@ const {
     parseFonts
 } = ProjectManager;
 
-const { IOS, MACOS } = Constants;
+const { IOS, MACOS, TVOS } = Constants;
 const {
     chalk,
     logInfo,
@@ -327,13 +327,20 @@ export const runXcodeProject = async (c) => {
     }
 
     if (c.platform === MACOS) {
+        if (bundleAssets) {
+            await packageBundleForXcode(c, bundleIsDev);
+        }
+
         try {
             await buildXcodeProject(c, c.platform);
         } catch (e) {
             await _handleMissingTeam(c, e);
         }
 
-        return executeAsync(c, `open ${path.join(appPath, 'build/RNVApp/Build/Products/Debug-maccatalyst/RNVApp.app')}`);
+
+        return executeAsync(c, `open ${
+            path.join(appPath, `build/RNVApp/Build/Products/${
+                runScheme}-maccatalyst/RNVApp.app`)}`);
     }
     await launchAppleSimulator(c, c.runtime.target);
 
@@ -588,6 +595,14 @@ export const buildXcodeProject = async (c) => {
                 destinationPlatform = 'iOS';
             } else {
                 destinationPlatform = 'iOS Simulator';
+            }
+            break;
+        }
+        case TVOS: {
+            if (c.program.device) {
+                destinationPlatform = 'tvOS';
+            } else {
+                destinationPlatform = 'tvOS Simulator';
             }
             break;
         }
