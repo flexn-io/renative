@@ -321,7 +321,7 @@ package.json will be overriden`
     });
 
     // c.runtime.skipPackageUpdate only reflects rnv version mismatch. should not prevent updating other deps
-    if (hasPackageChanged /*! c.runtime.skipPackageUpdate */) {
+    if (hasPackageChanged /*! c.runtime.skipPackageUpdate */ && !c.program.skipDependencyCheck) {
         _updatePackage(c, { dependencies: newDeps, devDependencies: newDevDeps });
     }
 

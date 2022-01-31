@@ -33,7 +33,8 @@
         "command-exists": "1.2.9",
         "cross-env": "5.2.0",
         "file-loader": "1.1.11",
-        "ip": "1.1.5"
+        "ip": "1.1.5",
+        "webpack-dev-server": "4.6.0"
     },
     "devDependencies": {
         "@types/jest": "^27.0.2",

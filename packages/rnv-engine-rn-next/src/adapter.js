@@ -10,7 +10,8 @@ export const withRNV = (config, opts) => {
     const cnf = {
         ...config,
         images: {
-            disableStaticImages: true
+            disableStaticImages: true,
+            ...(config?.images || {})
         },
         // webpack5: false,
         distDir: process.env.NEXT_DIST_DIR,
@@ -19,6 +20,10 @@ export const withRNV = (config, opts) => {
             const rootPath = process.env.RNV_PROJECT_ROOT || process.cwd();
             if (process.env.RNV_EXTENSIONS) {
                 cfg.resolve.extensions = process.env.RNV_EXTENSIONS.split(',').map(e => `.${e}`).filter(ext => isServer || !ext.includes('server.'));
+            }
+            // https://github.com/martpie/next-transpile-modules#i-have-trouble-with-duplicated-dependencies-or-the-invalid-hook-call-error-in-react
+            if (isServer) {
+                cfg.externals = ['react', ...cfg.externals];
             }
 
             cfg.resolve.modules.unshift(path.resolve(rootPath));
