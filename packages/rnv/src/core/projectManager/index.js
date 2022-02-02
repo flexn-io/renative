@@ -41,6 +41,7 @@ export const checkAndBootstrapIfRequired = async (c) => {
             cwd: c.paths.project.dir
         });
 
+
         const templateArr = template.split('@').filter(v => v !== '');
         const templateDir = template.startsWith('@') ? `@${templateArr[0]}` : templateArr[0];
         const templatePath = path.join(c.paths.project.dir, 'node_modules', templateDir);
@@ -55,6 +56,7 @@ export const checkAndBootstrapIfRequired = async (c) => {
         const engineTemplates = c.files.rnv.projectTemplates?.config?.engineTemplates;
         const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
         const activeEngineKeys = [];
+
 
         supportedPlatforms.forEach((supPlat) => {
             Object.keys(engineTemplates).forEach((eKey) => {
@@ -160,6 +162,10 @@ export const checkAndBootstrapIfRequired = async (c) => {
         }
 
         await installPackageDependencies(c);
+
+        if (c.program.npxMode) {
+            return;
+        }
 
         await parseRenativeConfigs(c);
 

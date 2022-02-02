@@ -476,6 +476,9 @@ export const PARAM_KEYS = {
     yes: {
         description: 'Default all prompts to yes'
     },
+    npxMode: {
+        description: 'Ensures you can use local npx rnv version after the command is done'
+    },
     packageManager: {
         value: 'value',
         isRequired: true,
