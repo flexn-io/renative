@@ -62,7 +62,8 @@ const { executeAsync, execCLI } = Exec;
 const {
     getAppFolder,
     getConfigProp,
-    getAppId
+    getAppId,
+    getEntryFile
 } = Common;
 const { isPlatformActive, createPlatformBuild } = PlatformManager;
 const { generateEnvVars } = EngineManager;
@@ -86,18 +87,7 @@ const {
     CLI_ANDROID_ADB
 } = Constants;
 
-const _getEntryOutputName = (c: any) => {
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
-    const { entryFile } = c.buildConfig.platforms[c.platform];
-    // TODO Android PROD Crashes if not using this hardcoded one
-    let outputFile;
-    if (c.platform === ANDROID_WEAR) {
-        outputFile = entryFile;
-    } else {
-        outputFile = 'index.android';
-    }
-    return outputFile;
-};
+
 
 export const packageAndroid = async (c: any) => {
     logTask('packageAndroid');
@@ -110,7 +100,7 @@ export const packageAndroid = async (c: any) => {
         return true;
     }
 
-    const outputFile = _getEntryOutputName(c);
+    const outputFile = getEntryFile(c, platform);
 
     const appFolder = getAppFolder(c);
     let reactNative = c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native';
@@ -589,7 +579,7 @@ export const configureProject = async (c: any) => {
         return true;
     }
 
-    const outputFile = _getEntryOutputName(c);
+    const outputFile = getEntryFile(c, platform);
 
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(
