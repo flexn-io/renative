@@ -4,6 +4,7 @@ import { Text, View, ScrollView } from 'react-native';
 import { Button, usePop } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { ThemeContext, hasWebFocusableUI } from '../config';
+import { testProps } from '../utils';
 
 const ScreenModal = (props) => {
     const pop = usePop(props);
@@ -37,9 +38,10 @@ const ScreenModal = (props) => {
                     onPress={() => {
                         pop();
                     }}
+                    {...testProps('template-hello-world-modal-screen-close-button')}
                 />
             </View>
-            <ScrollView contentContainerStyle={theme.styles.container}>
+            <ScrollView contentContainerStyle={theme.styles.container} {...testProps('template-hello-world-modal-screen-text-container')}>
                 <Text style={theme.styles.textH2}>This is my Modal!</Text>
             </ScrollView>
         </View>

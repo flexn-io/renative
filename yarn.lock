@@ -4173,6 +4173,113 @@
     history "^4.7.2"
     query-string "^6.2.0"
 
+"@rnv/engine-rn-electron@0.35.0-alpha.15":
+  version "0.35.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn-electron/-/engine-rn-electron-0.35.0-alpha.15.tgz#df79e5d7ae0230dc6bf7f375776d5996686e7264"
+  integrity sha512-Hykj7LJggnAJf3bEFhI7DHq5UeHBmi24wKKpsN8xlhCgV4y9TK8Ncnd3TorNur8FM6bxnmuTG4/1H5dbzqpAjg==
+  dependencies:
+    "@babel/preset-react" "7.16.0"
+    "@rnv/sdk-webpack" "0.35.0-alpha.15"
+    babel-loader "8.0.5"
+    better-opn "1.0.0"
+    electron "11.5.0"
+    electron-builder "22.13.1"
+    electron-notarize "1.0.0"
+    html-webpack-harddisk-plugin "1.0.2"
+    html-webpack-plugin "4.5.1"
+    webpack "4.44.2"
+    webpack-bundle-analyzer "3.5.1"
+    webpack-cli "3.1.2"
+    webpack-merge "4.1.4"
+
+"@rnv/engine-rn-next@0.35.0-alpha.15":
+  version "0.35.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn-next/-/engine-rn-next-0.35.0-alpha.15.tgz#35c421ac4e34f9a981cb483fd5f72518a7e7a573"
+  integrity sha512-hG/I2+gZ6+C3BBDYNq9Xp6q3h5IQX5jAtcVBFxCy18A6k6WgEAt3s5DBh38AlHkaWYdswdZmBTNvuUdBcObIkA==
+  dependencies:
+    "@expo/next-adapter" "3.1.12"
+    "@zeit/next-css" "1.0.1"
+    ally.js "1.4.1"
+    better-opn "1.0.0"
+    next-fonts "1.5.1"
+    next-images "1.8.4"
+    next-optimized-images "2.6.2"
+    next-transpile-modules "9.0.0"
+    webpack "5.65.0"
+    webpack-merge "4.1.4"
+
+"@rnv/engine-rn-tvos@0.35.0-alpha.15":
+  version "0.35.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn-tvos/-/engine-rn-tvos-0.35.0-alpha.15.tgz#90d41e61e87d673cdba9e368922737324323974b"
+  integrity sha512-Xc30an24PX/CX9OOaJa3F+FosI1LUYFXaAOldLdQP3pTJDX+tTAOts59dJi8pswGtLq9IbjTWyRJQmkATCLh4Q==
+  dependencies:
+    "@rnv/sdk-android" "0.35.0-alpha.15"
+    "@rnv/sdk-apple" "0.35.0-alpha.15"
+
+"@rnv/engine-rn-web@0.35.0-alpha.15":
+  version "0.35.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn-web/-/engine-rn-web-0.35.0-alpha.15.tgz#3350311ca40e83feeea36c115a71198c2cfeb6d1"
+  integrity sha512-+omO88LbqjLgBUQ/MCJcIFUhaaYmwcdyMNEhZ4bM9m9NGSF7a+ZBl4mme4rjiPhW/k8tqxGqMiWRycy4xNBfag==
+  dependencies:
+    "@babel/preset-react" "7.16.0"
+    "@rnv/sdk-webpack" "0.35.0-alpha.15"
+    babel-loader "8.0.5"
+    better-opn "1.0.0"
+    html-webpack-harddisk-plugin "1.0.2"
+    html-webpack-plugin "4.5.1"
+    mini-css-extract-plugin "0.8.0"
+    webpack "4.44.2"
+    webpack-bundle-analyzer "3.5.1"
+    webpack-cli "3.1.2"
+    webpack-merge "4.1.4"
+
+"@rnv/engine-rn-windows@0.35.0-alpha.15":
+  version "0.35.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn-windows/-/engine-rn-windows-0.35.0-alpha.15.tgz#f18a67f5ed89debc49c26e6dde52a1bb82c60485"
+  integrity sha512-/pruAwIM14oRy1USiHUSRocB9oGJmUW1QNsxF9Lnjs9ARlAqmoXwbvUo1GsEr91xhcHdzbdrOeRSwoZj86v7tw==
+  dependencies:
+    react-native-windows "0.63.36"
+
+"@rnv/engine-rn@0.35.0-alpha.15":
+  version "0.35.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@rnv/engine-rn/-/engine-rn-0.35.0-alpha.15.tgz#be75f75c5199d524899adc5fc3d87d590915333a"
+  integrity sha512-dCCWzgwh/E3Mp3qbyTjp8z8y0lyuGyoUSXVMZ7mDML23aJzSFgNKSYjpzPHeaPvFfXiM0J3chXqZ9f5fp3yh3A==
+  dependencies:
+    "@rnv/sdk-android" "0.35.0-alpha.15"
+    "@rnv/sdk-apple" "0.35.0-alpha.15"
+
+"@rnv/sdk-android@0.35.0-alpha.15":
+  version "0.35.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@rnv/sdk-android/-/sdk-android-0.35.0-alpha.15.tgz#2c896f9c4c8fc2ecbd3034fd7514978930ec0082"
+  integrity sha512-XMaLxvdNy9e/PVtxSzRleH2APQ9rx8BPObsbbINVSLGyuSkDB7GEdW1vK/BrOvugrFrMAPVfwSp3B3wwxjJxlw==
+  dependencies:
+    execa "5.1.1"
+    inquirer "8.2.0"
+    shelljs "0.8.5"
+
+"@rnv/sdk-apple@0.35.0-alpha.15":
+  version "0.35.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@rnv/sdk-apple/-/sdk-apple-0.35.0-alpha.15.tgz#ac79ec36b205ee4bd4dbf7af6194dacf273984aa"
+  integrity sha512-3I48755nNGcMHWhudLGOetCfWzitWkv6a3ofcZ/Ek1OdQZ9oGJayZIACfgeIFArwe5fAmirC3pMVI7hejOn6Ug==
+  dependencies:
+    compare-versions "3.6.0"
+    inquirer "8.2.0"
+    ios-mobileprovision-finder "1.0.11"
+    shelljs "0.8.5"
+
+"@rnv/sdk-webpack@0.35.0-alpha.15":
+  version "0.35.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@rnv/sdk-webpack/-/sdk-webpack-0.35.0-alpha.15.tgz#c2b9762d528ca65e0bd4ad97f0796fc308e2fc46"
+  integrity sha512-GRRTA6z4TQFwAes19Pu7xpz8XeD4arVKfYxi6bA6mTT23AeI5sCWsjez3y1R708Ext0eBGlwpiB+vwX4LPXi6g==
+  dependencies:
+    axios "0.21.2"
+    better-opn "1.0.0"
+    command-exists "1.2.9"
+    cross-env "5.2.0"
+    file-loader "1.1.11"
+    ip "1.1.5"
+    webpack-dev-server "4.6.0"
+
 "@rollup/plugin-alias@^3.1.1":
   version "3.1.9"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-alias/-/plugin-alias-3.1.9.tgz#a5d267548fe48441f34be8323fb64d1d4a1b3fdf"

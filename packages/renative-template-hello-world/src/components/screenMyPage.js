@@ -3,13 +3,14 @@ import React, { useContext } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { ThemeContext, hasWebFocusableUI } from '../config';
+import { testProps } from '../utils';
 
 const ScreenMyPage = () => {
     const { theme } = useContext(ThemeContext);
 
     return (
         <View style={theme.styles.screen}>
-            <ScrollView contentContainerStyle={theme.styles.container}>
+            <ScrollView contentContainerStyle={theme.styles.container} {...testProps('template-hello-world-my-page-text-container')}>
                 <Text style={theme.styles.textH2}>This is my Page!</Text>
             </ScrollView>
         </View>

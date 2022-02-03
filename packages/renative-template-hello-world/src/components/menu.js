@@ -6,6 +6,7 @@ import { View } from 'react-native';
 import { Icon, Button, useNavigate, useOpenDrawer } from 'renative';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { ThemeContext, hasWebFocusableUI, ROUTES } from '../config';
+import { testProps } from '../utils';
 
 if (hasWebFocusableUI) {
     initNavigation({
@@ -28,6 +29,7 @@ export const DrawerButton = (props) => {
             onPress={() => {
                 openDrawer('Drawer');
             }}
+            {...testProps('template-hello-world-menu-drawer-icon')}
         />
     );
 };
@@ -61,6 +63,7 @@ const Menu = (props) => {
                 onEnterPress={() => {
                     navigate(ROUTES.HOME, '/');
                 }}
+                {...testProps('template-hello-world-menu-home-button')}
             />
             <Button
                 title="My Page"
@@ -77,6 +80,7 @@ const Menu = (props) => {
                 onEnterPress={() => {
                     navigate(ROUTES.MY_PAGE, '/[slug]');
                 }}
+                {...testProps('template-hello-world-menu-my-page-button')}
             />
             <Button
                 // to={ROUTES.MODAL}
@@ -94,6 +98,7 @@ const Menu = (props) => {
                 onEnterPress={() => {
                     navigate(ROUTES.MODAL, '/[slug]');
                 }}
+                {...testProps('template-hello-world-menu-my-modal-button')}
             />
         </View>
     );

@@ -6,6 +6,7 @@ import { Text, Image, View, ScrollView, PixelRatio } from 'react-native';
 import { Api, Button, useNavigate, useOpenURL } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { hasWebFocusableUI, ICON_LOGO, CONFIG, ROUTES, ThemeContext } from '../config';
+import { testProps } from '../utils';
 import packageJson from '../../package.json';
 
 const FocusableView = hasWebFocusableUI ? withFocusable()(View) : View;
@@ -62,7 +63,7 @@ const ScreenHome = (props) => {
                     onEnterPress={toggle}
                     onBecameFocused={handleFocus}
                     onArrowPress={handleUp}
-                    testID="try-me-button"
+                    {...testProps('template-hello-world-try-my-button')}
                 />
                 <Button
                     style={theme.styles.button}
@@ -76,6 +77,7 @@ const ScreenHome = (props) => {
                         navigate(ROUTES.MY_PAGE, '/[slug]', { replace: false });
                     }}
                     onBecameFocused={handleFocus}
+                    {...testProps('template-hello-world-now-try-my-button')}
                 />
                 <Text style={[theme.styles.textH3, { marginTop: 20 }]}>
                     Explore more
@@ -92,6 +94,7 @@ const ScreenHome = (props) => {
                         onPress={() => {
                             openURL('https://github.com/renative-org/renative');
                         }}
+                        {...testProps('template-hello-world-github-button')}
                     />
                     <Button
                         iconFont="fontAwesome"
@@ -104,6 +107,7 @@ const ScreenHome = (props) => {
                         onPress={() => {
                             openURL('https://renative.org');
                         }}
+                        {...testProps('template-hello-world-renative-button')}
                     />
                     <Button
                         iconFont="fontAwesome"
@@ -116,6 +120,7 @@ const ScreenHome = (props) => {
                         onPress={() => {
                             openURL('https://twitter.com/renative');
                         }}
+                        {...testProps('template-hello-world-twitter-button')}
                     />
 
                 </FocusableView>
