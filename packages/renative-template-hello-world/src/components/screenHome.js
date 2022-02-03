@@ -40,11 +40,11 @@ const ScreenHome = (props) => {
                 ref={scrollRef}
                 contentContainerStyle={theme.styles.container}
             >
-                <Image style={theme.styles.image} source={ICON_LOGO} />
-                <Text style={theme.styles.textH2}>
+                <Image style={theme.styles.image} source={ICON_LOGO} {...testProps('template-hello-world-home-screen-renative-icon')}/>
+                <Text style={theme.styles.textH2} {...testProps('template-hello-world-home-screen-welcome-message')}>
                     {CONFIG.welcomeMessage}
                 </Text>
-                <Text style={theme.styles.textH2}>v {packageJson.version}</Text>
+                <Text style={theme.styles.textH2} {...testProps('template-hello-world-home-screen-version-number')}>v {packageJson.version}</Text>
                 <Text style={theme.styles.textH3}>
                     {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
                 </Text>
