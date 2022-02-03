@@ -13,18 +13,18 @@ const capabilities = {
         {
             platformName: 'iOS',
             deviceName: 'iPhone 8',
-            platformVersion: '14.4',
+            platformVersion: '15.0',
             automationName: 'XCUITest',
-            bundleId: 'myapp',
+            bundleId: 'renative.helloworld.debug',
         },
     ],
     tvos: [
         {
             platformName: 'tvOS',
-            deviceName: 'Apple TV 4K',
-            platformVersion: '14.3',
+            deviceName: 'Apple TV',
+            platformVersion: '15.0',
             automationName: 'XCUITest',
-            bundleId: 'myapp',
+            bundleId: 'renative.helloworld.debug',
         },
     ],
     android: [
@@ -34,7 +34,7 @@ const capabilities = {
             platformVersion: '10',
             automationName: 'UiAutomator2',
             appPackage: 'renative.helloworld.debug',
-            appActivity: 'renative.helloworld.MainActivity',
+            appActivity: 'renative.helloworld.debug.MainActivity',
         },
     ],
     androidtv: [
@@ -44,14 +44,14 @@ const capabilities = {
             platformVersion: '10',
             automationName: 'UiAutomator2',
             appPackage: 'renative.helloworld.debug',
-            appActivity: 'renative.helloworld.MainActivity',
+            appActivity: 'renative.helloworld.debug.MainActivity',
         },
     ],
     macos: [
         {
             platformName: 'Mac',
             automationName: 'Mac2',
-            bundleId: 'myapp',
+            bundleId: 'renative.helloworld.debug',
         },
     ],
     web: [
