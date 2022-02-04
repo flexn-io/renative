@@ -16,6 +16,9 @@ const run = async (c) => {
     await checkAndMigrateProject(c);
     await updateRenativeConfigs(c);
     await checkAndBootstrapIfRequired(c);
+    if (c.program.npxMode) {
+        return;
+    }
     await loadIntegrations(c);
     const result = await loadEngines(c);
     // If false make sure we reload configs as it's freshly installed
