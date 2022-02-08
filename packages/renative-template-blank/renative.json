@@ -78,7 +78,7 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "^0.35.0-alpha.15",
+            "version": "^0.35.0-RC.1",
             "webpack": {
                 "moduleAliases": true
             }
