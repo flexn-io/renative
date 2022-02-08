@@ -7,9 +7,11 @@ import {
 import '../platformAssets/runtime/fontManager';
 import React, { useState, createContext } from 'react';
 
-import { LogBox } from 'react-native';
+// import { LogBox } from 'react-native';
+// import JSTimers from 'react-native/Libraries/Core/Timers/JSTimers';
 import CONFIG from '../platformAssets/renative.runtime.json';
 import ICON_LOGO from '../platformAssets/runtime/logo.png';
+
 
 if (isFactorBrowser) registerServiceWorker();
 
@@ -19,8 +21,12 @@ export const hasFullScreenMenu = hasMobileWebUI;
 export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isWebBased && isFactorTv;
 
-// Disable yellow warnings UI
-LogBox.ignoreAllLogs(true);
+// Disable yellow warnings UI - console.disableYellowBox replacement with setImmediate workaround
+// if (!global.setImmediate) {
+//     global.setImmediate = JSTimers.setImmediate;
+// }
+// LogBox.ignoreAllLogs(true);
+console.disableYellowBox = true; // eslint-disable-line
 
 const staticTheme = {
     primaryFontFamily: 'Inter-Light',
