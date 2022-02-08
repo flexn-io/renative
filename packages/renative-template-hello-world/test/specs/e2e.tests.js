@@ -6,7 +6,6 @@ describe('Test template', () => {
     });
 
     // TESTS ARE WORKING ON THESE PLATFORMS: web, iOS, Android
-    
     it('--> check if elements exist in Home screen', async () => {
         await FlexnRunner.expectToBeExistingById('template-hello-world-home-screen-renative-icon');
         await FlexnRunner.expectToBeExistingById('template-hello-world-home-screen-welcome-message');
@@ -36,7 +35,7 @@ describe('Test template', () => {
         } if (process.env.PLATFORM === 'ios') {
             await FlexnRunner.clickById('header-back');
         } if (process.env.PLATFORM === 'android') {
-            await driver.back();
+            await FlexnRunner.pressButtonBack(1);
         } else {
             await FlexnRunner.pressButtonLeft(1);
             await FlexnRunner.pressButtonSelect(1);

@@ -6,7 +6,7 @@ import { Text, Image, View, ScrollView, PixelRatio } from 'react-native';
 import { Api, Button, useNavigate, useOpenURL } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { hasWebFocusableUI, ICON_LOGO, CONFIG, ROUTES, ThemeContext } from '../config';
-import { testProps } from '../utils';
+import { testProps } from '../utils/index.ts';
 import packageJson from '../../package.json';
 
 const FocusableView = hasWebFocusableUI ? withFocusable()(View) : View;
@@ -40,7 +40,7 @@ const ScreenHome = (props) => {
                 ref={scrollRef}
                 contentContainerStyle={theme.styles.container}
             >
-                <Image style={theme.styles.image} source={ICON_LOGO} {...testProps('template-hello-world-home-screen-renative-icon')}/>
+                <Image style={theme.styles.image} source={ICON_LOGO} {...testProps('template-hello-world-home-screen-renative-icon')} />
                 <Text style={theme.styles.textH2} {...testProps('template-hello-world-home-screen-welcome-message')}>
                     {CONFIG.welcomeMessage}
                 </Text>

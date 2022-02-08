@@ -4,7 +4,7 @@ import { Text, View, ScrollView } from 'react-native';
 import { Button, usePop } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { ThemeContext, hasWebFocusableUI } from '../config';
-import { testProps } from '../utils';
+import { testProps } from '../utils/index.ts';
 
 const ScreenModal = (props) => {
     const pop = usePop(props);
