@@ -211,7 +211,9 @@ export const findSuitableTask = async (c, specificTask) => {
             await _selectPlatform(c, suitableEngines, task);
             c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS);
         }
-
+        if (c.runtime.engine.runtimeExtraProps) {
+            c.runtime.runtimeExtraProps = c.runtime.engine.runtimeExtraProps;
+        }
         logInfo(`Current Engine: ${chalk().bold.white(
             c.runtime.engine.config.id
         )} path: ${chalk().grey(c.runtime.engine.rootPath)}`);
