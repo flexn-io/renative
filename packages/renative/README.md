@@ -44,7 +44,7 @@ Visit <a aria-label="ReNative learn" href="https://renative.org/docs/overview/qu
 
 ## Documentation
 
-Visit <a aria-label="ReNative learn" href="https://renative.org/docs">https://renative.org/docs</a> to view full documentation.
+Visit <a aria-label="ReNative learn" href="https://renative.org/docs/overview/introduction">https://renative.org/docs</a> to view full documentation.
 
 Documentation source code can be found at https://github.com/renative-org/renative-docs
 
