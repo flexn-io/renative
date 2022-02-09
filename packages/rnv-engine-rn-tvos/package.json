@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-tvos",
-    "version": "0.35.0",
+    "version": "0.35.1",
     "description": "ReNative Engine to build react-native tvos platform.",
     "keywords": [
         "react-native"
@@ -32,8 +32,8 @@
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
-        "@rnv/sdk-android": "0.35.0",
-        "@rnv/sdk-apple": "0.35.0"
+        "@rnv/sdk-android": "0.35.1",
+        "@rnv/sdk-apple": "0.35.1"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -44,7 +44,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.35.0"
+        "rnv": "^0.35.1"
     },
     "private": false,
     "publishConfig": {
