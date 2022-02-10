@@ -366,17 +366,18 @@ const _packageOrRun = (c, bundleAssets, bundleIsDev, appPath, scheme, runScheme,
     return _checkLockAndExec(c, appPath, scheme, runScheme, p);
 };
 
-const _getReactNativeCli = () => {
-    const cli = doResolve('@react-native-community/cli');
-    return cli;
-};
+// const _getReactNativeCli = () => {
+//     const cli = doResolve('@react-native-community/cli');
+//     return path.join(cli, 'build/bin.js');
+// };
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
     const appFolderName = getAppFolderName(c, c.platform);
 
-    const cmd = `node ${
-        _getReactNativeCli()} run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+    const cmd = `node ${doResolve(
+        c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
+    )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
