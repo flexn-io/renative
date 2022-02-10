@@ -2989,7 +2989,7 @@
             "no-npm": true
         },
         "@react-native-community/cli": {
-            "version": "4.14.0"
+            "version": "5.0.1"
         },
         "recyclerlistview": {
             "version": "3.0.0",
