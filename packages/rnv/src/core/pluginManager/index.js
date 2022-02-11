@@ -373,8 +373,8 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
                     chalk().white(scope)} required by ${chalk().red(parentKey)} is not installed`
             });
             if (confirm) {
-                c.files.project.config.plugins[key] = `source:${scope}`;
-                writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
+                c.files.project.config_original.plugins[key] = `source:${scope}`;
+                writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
                 logSuccess(`Plugin ${key} sucessfully installed`);
                 c._requiresNpmInstall = true;
             }
@@ -753,11 +753,11 @@ const _checkForPluginDependencies = async (c) => {
         }
 
         if (install) {
-            c.files.project.config.plugins = {
-                ...c.files.project.config.plugins,
+            c.files.project.config_original.plugins = {
+                ...c.files.project.config_original.plugins,
                 ...toAdd
             };
-            writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
+            writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
             await configurePlugins(c);
             await installPackageDependenciesAndPlugins(c);
         }
