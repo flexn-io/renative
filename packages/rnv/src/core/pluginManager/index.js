@@ -3,7 +3,7 @@ import merge from 'deepmerge';
 import path from 'path';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getAppFolder, getBuildsFolder, getConfigProp } from '../common';
-import { writeRenativeConfigFile } from '../configManager';
+import { parseRenativeConfigs, writeRenativeConfigFile } from '../configManager';
 import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import { configureFonts } from '../projectManager';
 import {
@@ -758,6 +758,8 @@ const _checkForPluginDependencies = async (c) => {
                 ...toAdd
             };
             writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
+            // Need to reload merged files
+            await parseRenativeConfigs(c);
             await configurePlugins(c);
             await installPackageDependenciesAndPlugins(c);
         }
