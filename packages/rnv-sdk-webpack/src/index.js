@@ -5,6 +5,7 @@ import axios from 'axios';
 import ip from 'ip';
 import commandExists from 'command-exists';
 import { Common, Logger, EngineManager, Resolver, FileUtils, PluginManager, Constants, Exec, PlatformManager, ProjectManager } from 'rnv';
+import { runServer } from './scripts/run';
 
 const { isPlatformActive } = PlatformManager;
 const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
@@ -319,11 +320,9 @@ const _runWebDevServer = async (c, enableRemoteDebugger) => {
     // } --host ${devServerHost}`;
     const command = `npx cross-env PLATFORM=${c.platform} ${
         debugObj.debugVariables
-    } ${wps} -d --devtool source-map --config ${
+    } ${wps} -d --devtool cheap-module-source-map --config ${
         wpConfig
-    }  --inline --hot --colors --content-base ${
-        wpPublic
-    } --history-api-fallback --port ${c.runtime.port} --mode=${
+    } --hot --color --history-api-fallback --port ${c.runtime.port} --mode=${
         environment
     } --host ${devServerHost}`;
 
@@ -546,4 +545,10 @@ export const exportWeb = () => {
     // DEPRECATED: custom deployers moved to external packages
     // return selectWebToolAndExport(c, platform);
     return true;
+};
+
+
+export const runWebpackServer2 = async (c, enableRemoteDebugger) => {
+    console.log('BOOYA');
+    await runServer();
 };
