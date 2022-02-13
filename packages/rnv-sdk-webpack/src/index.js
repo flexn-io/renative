@@ -180,7 +180,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
         '_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`
     );
     if (!c.runtime.shouldOpenBrowser) return resolve();
-    const wait = waitForHost(c)
+    const wait = waitForHost(c, '')
         .then(() => {
             open(`http://${devServerHost}:${port}/`);
         })
