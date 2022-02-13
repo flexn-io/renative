@@ -33,25 +33,16 @@
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
-        "@babel/preset-react": "7.16.0",
         "@rnv/sdk-webpack": "0.35.2-alpha.1",
-        "babel-loader": "8.0.5",
-        "better-opn": "1.0.0",
-        "html-webpack-harddisk-plugin": "1.0.2",
-        "html-webpack-plugin": "4.5.1",
-        "mini-css-extract-plugin": "0.8.0",
-        "webpack": "4.44.2",
-        "webpack-bundle-analyzer": "3.5.1",
-        "webpack-cli": "3.1.2",
-        "webpack-merge": "4.1.4"
+        "better-opn": "1.0.0"
     },
     "devDependencies": {
-        "@babel/cli": "7.8.3",
-        "@babel/core": "7.8.3",
-        "@babel/node": "7.8.3",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
-        "@babel/plugin-proposal-optional-chaining": "7.8.3",
-        "@babel/preset-env": "7.8.7"
+        "@babel/cli": "^7.16.0",
+        "@babel/core": "^7.16.0",
+        "@babel/node": "^7.16.0",
+        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.0",
+        "@babel/plugin-proposal-optional-chaining": "^7.16.0",
+        "@babel/preset-env": "^7.16.0"    
     },
     "peerDependencies": {
         "rnv": "^0.35.2-alpha.1"

@@ -432,14 +432,14 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
             const sourcePath = path.join(v, `assets/${platform}`);
-            copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, null, tsPathsConfig);
+            copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
         });
     } else {
         const sourcePath = path.join(
             c.paths.appConfig.dir,
             `assets/${platform}`
         );
-        copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, null, tsPathsConfig);
+        copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
     }
 };
 
