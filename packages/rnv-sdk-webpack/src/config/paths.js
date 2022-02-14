@@ -1,3 +1,4 @@
+/* eslint-disable import/no-dynamic-require */
 
 
 const path = require('path');
@@ -41,7 +42,7 @@ const moduleFileExtensions = [
 
 // Resolve file paths in the same order as webpack
 const resolveModule = (resolveFn, filePath) => {
-    const extension = moduleFileExtensions.find(extension => fs.existsSync(resolveFn(`${filePath}.${extension}`)));
+    const extension = moduleFileExtensions.find(ext => fs.existsSync(resolveFn(`${filePath}.${ext}`)));
 
     if (extension) {
         return resolveFn(`${filePath}.${extension}`);

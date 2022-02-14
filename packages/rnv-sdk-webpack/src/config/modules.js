@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 
 
 const fs = require('fs');
@@ -111,6 +113,7 @@ function getModules() {
         const ts = require(resolve.sync('typescript', {
             basedir: paths.appNodeModules,
         }));
+        // eslint-disable-next-line prefer-destructuring
         config = ts.readConfigFile(paths.appTsConfig, ts.sys.readFile).config;
     // Otherwise we'll check if there is jsconfig.json
     // for non TS projects.

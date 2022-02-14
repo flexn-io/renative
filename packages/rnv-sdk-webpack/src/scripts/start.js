@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 
 
 // Do this as the first thing so that any code reading it knows the right env.
@@ -18,10 +20,8 @@ const fs = require('fs');
 const chalk = require('react-dev-utils/chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const clearConsole = require('react-dev-utils/clearConsole');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const {
-    choosePort,
     createCompiler,
     prepareProxy,
     prepareUrls,
@@ -34,7 +34,7 @@ const createDevServerConfig = require('../config/webpackDevServer.config');
 const getClientEnvironment = require('../config/env');
 
 
-export default async () => new Promise((resolve) => {
+export default async () => new Promise(() => {
     const react = require(require.resolve('react', { paths: [paths.appPath] }));
 
     const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
