@@ -34,7 +34,7 @@ const createDevServerConfig = require('../config/webpackDevServer.config');
 const getClientEnvironment = require('../config/env');
 
 
-export const runServer = async () => new Promise((resolve) => {
+export default async () => new Promise((resolve) => {
     const react = require(require.resolve('react', { paths: [paths.appPath] }));
 
     const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));

@@ -1,6 +1,9 @@
 
 
 // Do this as the first thing so that any code reading it knows the right env.
+
+import { Logger } from 'rnv';
+
 process.env.BABEL_ENV = 'production';
 process.env.NODE_ENV = 'production';
 
@@ -14,6 +17,11 @@ process.on('unhandledRejection', (err) => {
 // Ensure environment variables are read.
 require('../config/env');
 
+const {
+    logWarning,
+    logSuccess,
+    logError,
+} = Logger;
 const path = require('path');
 const chalk = require('react-dev-utils/chalk');
 const fs = require('fs-extra');
@@ -24,6 +32,11 @@ const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const printHostingInstructions = require('react-dev-utils/printHostingInstructions');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
+// We require that you explicitly set browsers and do not fall back to
+// browserslist defaults.
+const { checkBrowsers } = require('react-dev-utils/browsersHelper');
+const paths = require('../config/paths');
+const configFactory = require('../config/webpack.config');
 
 const { measureFileSizesBeforeBuild } = FileSizeReporter;
 const { printFileSizesAfterBuild } = FileSizeReporter;
@@ -46,17 +59,11 @@ const writeStatsJson = argv.indexOf('--stats') !== -1;
 // Generate configuration
 const config = configFactory('production');
 
-// We require that you explicitly set browsers and do not fall back to
-// browserslist defaults.
-const { checkBrowsers } = require('react-dev-utils/browsersHelper');
-const paths = require('../config/paths');
-const configFactory = require('../config/webpack.config');
 
-checkBrowsers(paths.appPath, isInteractive)
-    .then(() =>
+export default async () => checkBrowsers(paths.appPath, isInteractive)
     // First, read the current file sizes in build directory.
     // This lets us display how much they changed later.
-        measureFileSizesBeforeBuild(paths.appBuild))
+    .then(() => measureFileSizesBeforeBuild(paths.appBuild))
     .then((previousFileSizes) => {
     // Remove all content but keep the directory so that
     // if you're in it, you don't end up in Trash
@@ -69,7 +76,7 @@ checkBrowsers(paths.appPath, isInteractive)
     .then(
         ({ stats, previousFileSizes, warnings }) => {
             if (warnings.length) {
-                console.log(chalk.yellow('Compiled with warnings.\n'));
+                logWarning('Compiled with warnings.\n');
                 console.log(warnings.join('\n\n'));
                 console.log(
                     `\nSearch for the ${
@@ -82,7 +89,7 @@ checkBrowsers(paths.appPath, isInteractive)
                     } to the line before.\n`
                 );
             } else {
-                console.log(chalk.green('Compiled successfully.\n'));
+                logSuccess('Compiled successfully.\n');
             }
 
             console.log('File sizes after gzip:\n');
@@ -110,14 +117,13 @@ checkBrowsers(paths.appPath, isInteractive)
         (err) => {
             const tscCompileOnError = process.env.TSC_COMPILE_ON_ERROR === 'true';
             if (tscCompileOnError) {
-                console.log(
-                    chalk.yellow(
-                        'Compiled with the following type errors (you may want to check these before deploying your app):\n'
-                    )
+                logWarning(
+                    'Compiled with the following type errors (you may want to check these before deploying your app):\n'
                 );
+
                 printBuildError(err);
             } else {
-                console.log(chalk.red('Failed to compile.\n'));
+                logError('Failed to compile.\n');
                 printBuildError(err);
                 process.exit(1);
             }
@@ -132,8 +138,6 @@ checkBrowsers(paths.appPath, isInteractive)
 
 // Create the production build and print the deployment instructions.
 function build(previousFileSizes) {
-    console.log('Creating an optimized production build...');
-
     const compiler = webpack(config);
     return new Promise((resolve, reject) => {
         compiler.run((err, stats) => {
@@ -180,12 +184,11 @@ function build(previousFileSizes) {
                     w => !/Failed to parse source map/.test(w)
                 );
                 if (filteredWarnings.length) {
-                    console.log(
-                        chalk.yellow(
-                            '\nTreating warnings as errors because process.env.CI = true.\n'
+                    logWarning(
+                        '\nTreating warnings as errors because process.env.CI = true.\n'
                 + 'Most CI servers set it automatically.\n'
-                        )
                     );
+
                     return reject(new Error(filteredWarnings.join('\n\n')));
                 }
             }
