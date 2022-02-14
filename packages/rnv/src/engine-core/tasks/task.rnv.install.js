@@ -8,6 +8,8 @@ export const taskRnvInstall = async (c, parentTask) => {
 
     if (c.program.only && !!parentTask) return true;
 
+    if (c.program.skipDependencyCheck) return true;
+
     // Check node_modules
     // c.runtime.skipPackageUpdate only reflects rnv version mismatch. should not prevent updating other deps
     if (!areNodeModulesInstalled() || c._requiresNpmInstall /* && !c.runtime.skipPackageUpdate */) {

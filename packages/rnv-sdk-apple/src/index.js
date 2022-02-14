@@ -366,6 +366,11 @@ const _packageOrRun = (c, bundleAssets, bundleIsDev, appPath, scheme, runScheme,
     return _checkLockAndExec(c, appPath, scheme, runScheme, p);
 };
 
+// const _getReactNativeCli = () => {
+//     const cli = doResolve('@react-native-community/cli');
+//     return path.join(cli, 'build/bin.js');
+// };
+
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
     const appFolderName = getAppFolderName(c, c.platform);

@@ -3425,7 +3425,7 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-types/-/cli-types-4.10.1.tgz#d68a2dcd1649d3b3774823c64e5e9ce55bfbe1c9"
   integrity sha512-ael2f1onoPF3vF7YqHGWy7NnafzGu+yp88BbFbP0ydoCP2xGSUzmZVw0zakPTC040Id+JQ9WeFczujMkDy6jYQ==
 
-"@react-native-community/cli@4.14.0", "@react-native-community/cli@^4.10.0":
+"@react-native-community/cli@^4.10.0":
   version "4.14.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-4.14.0.tgz#bb106a98341bfa2db36060091ff90bfe82ea4f55"
   integrity sha512-EYJKBuxFxAu/iwNUfwDq41FjORpvSh1wvQ3qsHjzcR5uaGlWEOJrd3uNJDuKBAS0TVvbEesLF9NEXipjyRVr4Q==

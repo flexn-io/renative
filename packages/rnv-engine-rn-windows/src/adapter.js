@@ -1,6 +1,36 @@
 const fs = require('fs');
 const path = require('path');
-const blacklist = require('metro-config/src/defaults/blacklist');
+
+const sharedBlacklist = [
+    /node_modules\/react\/dist\/.*/,
+    /website\/node_modules\/.*/,
+    /heapCapture\/bundle\.js/,
+    /.*\/__tests__\/.*/
+];
+
+function escapeRegExp(pattern) {
+    if (Object.prototype.toString.call(pattern) === '[object RegExp]') {
+        return pattern.source.replace(/\//g, path.sep);
+    } if (typeof pattern === 'string') {
+        // eslint-disable-next-line
+        const escaped = pattern.replace(/[\-\[\]\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&'); // convert the '/' into an escaped local file separator
+
+        return escaped.replace(/\//g, `\\${path.sep}`);
+    }
+    throw new Error(`Unexpected blacklist pattern: ${pattern}`);
+}
+
+function blacklist(additionalBlacklist) {
+    return new RegExp(
+        `(${
+            (additionalBlacklist || [])
+                .concat(sharedBlacklist)
+                .map(escapeRegExp)
+                .join('|')
+        })$`
+    );
+}
+
 
 export const withRNV = (config) => {
     const rnwPath = fs.realpathSync(
