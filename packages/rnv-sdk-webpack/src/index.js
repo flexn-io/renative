@@ -1,10 +1,10 @@
 
-import path from 'path';
-import open from 'better-opn';
 import axios from 'axios';
-import ip from 'ip';
+import open from 'better-opn';
 import commandExists from 'command-exists';
-import { Common, Logger, EngineManager, Resolver, FileUtils, PluginManager, Constants, Exec, PlatformManager, ProjectManager } from 'rnv';
+import ip from 'ip';
+import path from 'path';
+import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, PluginManager, ProjectManager, Resolver } from 'rnv';
 // import { runServer } from './scripts/start';
 
 const { isPlatformActive } = PlatformManager;
@@ -263,11 +263,6 @@ Debugger running at: ${debugUrl}`);
     return true;
 };
 
-
-const WEBPACK_DEV_SERVER = `${path.join(__dirname, '../../../node_modules/webpack-dev-server')}/bin/webpack-dev-server.js`;
-const WEBPACK = `${path.join(__dirname, '../../../node_modules/webpack')}/bin/webpack.js`;
-
-
 export const _runWebDevServer = async (c, enableRemoteDebugger) => {
     logTask('_runWebDevServer');
     const env = { ...generateEnvVars(c, getModuleConfigs(c)) };
@@ -280,84 +275,45 @@ export const _runWebDevServer = async (c, enableRemoteDebugger) => {
     process.env.RNV_EXTERNAL_PATHS = [
         path.join(c.paths.project.assets.dir)
     ];
-    const start = require('./scripts/start');
-    await start.runServer();
+
+    // const debugObj = { lineBreaks: '\n\n\n', debugVariables: '', remoteDebuggerActive: false };
+    // let debugOrder = [_runRemoteDebuggerChii, _runRemoteDebuggerWeinre];
+    // if (debug === 'weinre') debugOrder = [_runRemoteDebuggerWeinre, _runRemoteDebuggerChii];
+    // if ((debug || enableRemoteDebugger) && debug !== 'false') {
+    //     await debugOrder[0](c, debugObj);
+    //     if (!debugObj.remoteDebuggerActive) {
+    //         await debugOrder[1](c, debugObj);
+    //     }
+    // }
+
+    const start = require('./scripts/start').default;
+    await start();
 };
 
-const _runWebDevServer2 = async (c, enableRemoteDebugger) => {
-    logTask('_runWebDevServer');
-    const { debug } = c.program;
+export const buildCoreWebpackProject = async (c) => {
+    const { debug, debugIp } = c.program;
+    logTask('buildCoreWebpackProject');
+    const env = { ...generateEnvVars(c, getModuleConfigs(c)) };
+    Object.keys(env).forEach((v) => {
+        process.env[v] = env[v];
+    });
+    process.env.PUBLIC_URL = '/';
+    process.env.RNV_ENTRY_FILE = 'index';
+    process.env.PORT = c.runtime.port;
+    process.env.RNV_EXTERNAL_PATHS = [
+        path.join(c.paths.project.assets.dir)
+    ];
 
-    const environment = getConfigProp(c, c.platform, 'environment', 'production');
-    const configName = environment === 'production' ? 'prod' : 'dev';
-
-    const appFolder = getPlatformBuildDir(c);
-    const wpPublic = getPlatformServerDir(c);
-    const wpConfig = path.join(appFolder, `webpack.config.${configName}.js`);
-    const debugObj = { lineBreaks: '\n\n\n', debugVariables: '', remoteDebuggerActive: false };
-    let debugOrder = [_runRemoteDebuggerChii, _runRemoteDebuggerWeinre];
-    if (debug === 'weinre') debugOrder = [_runRemoteDebuggerWeinre, _runRemoteDebuggerChii];
-    if ((debug || enableRemoteDebugger) && debug !== 'false') {
-        await debugOrder[0](c, debugObj);
-        if (!debugObj.remoteDebuggerActive) {
-            await debugOrder[1](c, debugObj);
-        }
+    if (debug) {
+        logInfo(
+            `Starting a remote debugger build with ip ${debugIp
+                    || ip.address()}. If this IP is not correct, you can always override it with --debugIp`
+        );
+        // debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
     }
 
-    const devServerHost = getDevServerHost(c);
-
-    const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
-    logRaw(`${debugObj.lineBreaks}Dev server running at: ${url}\n\n`);
-
-    const WPS_ALTERNATIVE = `${doResolve('webpack-dev-server')}/bin/webpack-dev-server.js`;
-    const WPS_ALTERNATIVE2 = path.join(RNV_NODE_MODULES_DIR, 'webpack-dev-server/bin/webpack-dev-server.js');
-
-    let wps = 'webpack-dev-server';
-    if (fsExistsSync(WEBPACK_DEV_SERVER)) {
-        wps = WEBPACK_DEV_SERVER;
-    } else if (fsExistsSync(WPS_ALTERNATIVE)) {
-        wps = WPS_ALTERNATIVE;
-    } else if (fsExistsSync(WPS_ALTERNATIVE2)) {
-        wps = WPS_ALTERNATIVE2;
-    } else {
-        logWarning(`cannot find installed webpack-dev-server. looked in following locations:
-    ${chalk().white(WEBPACK_DEV_SERVER)},
-    ${chalk().white(WPS_ALTERNATIVE)}
-    will try to use globally installed one`);
-    }
-
-
-    // const command = `npx cross-env PLATFORM=${c.platform} ${
-    //     debugObj.debugVariables
-    // } webpack serve --devtool eval --config ${
-    //     wpConfig
-    // }  --progress --hot --color --static ${
-    //     wpPublic
-    // } --history-api-fallback --port ${c.runtime.port} --mode=${
-    //     environment
-    // } --host ${devServerHost}`;
-    const command = `npx cross-env PLATFORM=${c.platform} ${
-        debugObj.debugVariables
-    } ${wps} -d --devtool cheap-module-source-map --config ${
-        wpConfig
-    } --hot --color --history-api-fallback --port ${c.runtime.port} --mode=${
-        environment
-    } --host ${devServerHost}`;
-
-    try {
-        await executeAsync(c, command, {
-            stdio: 'inherit',
-            silent: true,
-            // env: {
-            //     RNV_EXTENSIONS: getPlatformExtensions(c)
-            // }
-        });
-
-        logDebug('_runWebDevServer: running');
-    } catch (e) {
-        logDebug(e);
-        return true;
-    }
+    const build = require('./scripts/build').default;
+    await build();
 };
 
 
@@ -380,8 +336,8 @@ export const runWebpackServer = async (c, enableRemoteDebugger) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
     if (bundleAssets) {
-        await buildCoreWebpackProject(c);
         logSuccess('bundleAssets set to true. webpack dev server will not run');
+        await buildCoreWebpackProject(c);
         return true;
     }
 
@@ -457,55 +413,6 @@ export const waitForWebpack = async (c, suffix = 'assets/bundle.js') => {
         }, CHECK_INTEVAL);
     });
 };
-
-export const buildCoreWebpackProject = async (c) => {
-    const { debug, debugIp } = c.program;
-    const { platform } = c;
-    logTask('buildCoreWebpackProject');
-
-    let debugVariables = '';
-
-    if (debug) {
-        logInfo(
-            `Starting a remote debugger build with ip ${debugIp
-                    || ip.address()}. If this IP is not correct, you can always override it with --debugIp`
-        );
-        debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
-    }
-
-    const environment = getConfigProp(c, c.platform, 'environment', 'production');
-    const configName = environment === 'production' ? 'prod' : 'dev';
-
-    const WP_ALTERNATIVE = `${doResolve('webpack')}/bin/webpack.js`;
-
-    let wp = 'webpack';
-    if (fsExistsSync(WEBPACK)) {
-        wp = WEBPACK;
-    } else if (fsExistsSync(WP_ALTERNATIVE)) {
-        wp = WP_ALTERNATIVE;
-    } else {
-        logWarning(`cannot find installed webpack. looked in following locations:
-${chalk().white(WEBPACK)},
-${chalk().white(WP_ALTERNATIVE)}
-will try to use globally installed one`);
-    }
-
-
-    await executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=${environment} ${
-        debugVariables
-    } node ${wp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.${configName}.js`, {
-        // env: {
-        //     RNV_EXTENSIONS: getPlatformExtensions(c)
-        // }
-    });
-    logSuccess(
-        `Your Build is located in ${chalk().cyan(
-            getPlatformProjectDir(c)
-        )} .`
-    );
-    return true;
-};
-
 
 export const buildWeb = async c => buildCoreWebpackProject(c);
 

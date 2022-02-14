@@ -1,3 +1,4 @@
+/* eslint-disable import/no-dynamic-require */
 
 
 const path = require('path');
@@ -25,8 +26,6 @@ const publicUrlOrPath = getPublicUrlOrPath(
     process.env.PUBLIC_URL
 );
 
-const buildPath = process.env.BUILD_PATH || 'build';
-
 const moduleFileExtensions = [
     'web.mjs',
     'mjs',
@@ -43,7 +42,7 @@ const moduleFileExtensions = [
 
 // Resolve file paths in the same order as webpack
 const resolveModule = (resolveFn, filePath) => {
-    const extension = moduleFileExtensions.find(extension => fs.existsSync(resolveFn(`${filePath}.${extension}`)));
+    const extension = moduleFileExtensions.find(ext => fs.existsSync(resolveFn(`${filePath}.${ext}`)));
 
     if (extension) {
         return resolveFn(`${filePath}.${extension}`);
@@ -56,7 +55,7 @@ const resolveModule = (resolveFn, filePath) => {
 module.exports = {
     dotenv: resolveApp('.env'),
     appPath: resolveApp('.'),
-    appBuild: resolveApp(buildPath),
+    appBuild: resolveApp('build', true),
     appPublic: resolveApp('public', true),
     appHtml: resolveApp('public/index.html', true),
     appIndexJs: resolveModule(resolveApp, process.env.RNV_ENTRY_FILE || 'src/index'),
