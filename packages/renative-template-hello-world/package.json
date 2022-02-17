@@ -69,7 +69,10 @@
         "e2e:ios": "PLATFORM=ios npx wdio wdio.conf.js",
         "e2e:macos": "PLATFORM=macos ENGINE=macos npx wdio wdio.conf.js",
         "e2e:tvos": "PLATFORM=tvos npx wdio wdio.conf.js",
-        "e2e:web": "PLATFORM=web npx wdio wdio.conf.js"
+        "e2e:web": "PLATFORM=web npx wdio wdio.conf.js",
+        "report": "yarn report:generate && yarn report:open",
+        "report:generate": "npx allure generate --clean reporting/allure-results -o reporting/allure-report",
+        "report:open": "npx allure open reporting/allure-report"
     },
     "dependencies": {},
     "devDependencies": {
