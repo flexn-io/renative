@@ -1,13 +1,12 @@
+import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
 import path from 'path';
+import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, SDKManager } from 'rnv';
 import semver from 'semver';
-import { Exec, FileUtils, Common, Logger, Constants, PlatformManager, ProjectManager, SDKManager } from 'rnv';
-import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '@rnv/sdk-webpack';
 
 const { writeCleanFile } = FileUtils;
 const { execCLI } = Exec;
 const {
     getPlatformProjectDir,
-    getTemplateProjectDir,
     getPlatformBuildDir,
     getAppVersion,
     getAppTitle,
@@ -75,14 +74,16 @@ export const runWebOS = async (c) => {
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );
-            waitForHost(c)
-                .then(() => runWebosSimOrDevice(c))
+            waitForHost(c, '')
+                .then(() => {
+                    runWebosSimOrDevice(c);
+                })
                 .catch(logError);
             await runWebpackServer(c, isWeinreEnabled);
         } else {
             const resetCompleted = await confirmActiveBundler(c);
             if (resetCompleted) {
-                waitForHost(c)
+                waitForHost(c, '')
                     .then(() => runWebosSimOrDevice(c))
                     .catch(logError);
                 await runWebpackServer(c, isWeinreEnabled);
@@ -163,9 +164,11 @@ const _configureProject = async (c) => {
 
     addSystemInjects(c, injects);
 
+    const file = path.join(getPlatformProjectDir(c), configFile);
+
     writeCleanFile(
-        path.join(getTemplateProjectDir(c), configFile),
-        path.join(getPlatformProjectDir(c), configFile),
+        file,
+        file,
         injects, null, c
     );
 
