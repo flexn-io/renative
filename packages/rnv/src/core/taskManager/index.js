@@ -218,8 +218,8 @@ export const findSuitableTask = async (c, specificTask) => {
             c.runtime.engine.config.id
         )} path: ${chalk().grey(c.runtime.engine.rootPath)}`);
         const customTask = CUSTOM_TASKS[task];
-        c.runtime.availablePlatforms = customTask.platforms;
         if (customTask) {
+            c.runtime.availablePlatforms = customTask.platforms;
             _populateExtraParameters(c, customTask);
             return customTask;
         }
