@@ -36,3 +36,5 @@ metro.config.local.js
 
 appConfigs/base/assets
 !appConfigs/base/assets/runtime
+
+reporting

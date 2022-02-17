@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 let customCapabilities = {};
-if (fs.existsSync(path.join(__dirname, './wdio.capabilities.js'))) {
+if (fs.existsSync(path.join(__dirname, '../../../wdio.capabilities.js'))) {
     // eslint-disable-next-line global-require
-    const { capabilities } = require('../../wdio.capabilities');
+    const { capabilities } = require('../../../wdio.capabilities');
     customCapabilities = capabilities;
 }
 
@@ -15,7 +15,8 @@ const capabilities = {
             deviceName: 'iPhone 8',
             platformVersion: '15.0',
             automationName: 'XCUITest',
-            bundleId: 'renative.helloworld.debug',
+            bundleId: 'renative.helloworld.test',
+            app: 'platformBuilds/app_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app'
         },
     ],
     tvos: [
@@ -24,7 +25,8 @@ const capabilities = {
             deviceName: 'Apple TV',
             platformVersion: '15.0',
             automationName: 'XCUITest',
-            bundleId: 'renative.helloworld.debug',
+            bundleId: 'renative.helloworld.test',
+            app: 'platformBuilds/app_tvos/build/RNVAppTVOS/Build/Products/Release-appletvsimulator/RNVAppTVOS.app'
         },
     ],
     android: [
@@ -33,8 +35,9 @@ const capabilities = {
             avd: 'Pixel_4_API_29',
             platformVersion: '10',
             automationName: 'UiAutomator2',
-            appPackage: 'renative.helloworld.debug',
-            appActivity: 'renative.helloworld.debug.MainActivity',
+            appPackage: 'renative.helloworld.test',
+            appActivity: 'renative.helloworld.test.MainActivity',
+            app: 'platformBuilds/app_android/app/build/outputs/apk/release/app-release.apk'
         },
     ],
     androidtv: [
@@ -43,15 +46,16 @@ const capabilities = {
             avd: 'Android_TV_1080p_API_29',
             platformVersion: '10',
             automationName: 'UiAutomator2',
-            appPackage: 'renative.helloworld.debug',
-            appActivity: 'renative.helloworld.debug.MainActivity',
+            appPackage: 'renative.helloworld.test',
+            appActivity: 'renative.helloworld.test.MainActivity',
+            app: 'platformBuilds/app_androidtv/app/build/outputs/apk/release/app-release.apk'
         },
     ],
     macos: [
         {
             platformName: 'Mac',
             automationName: 'Mac2',
-            bundleId: 'renative.helloworld.debug',
+            bundleId: 'renative.helloworld.test',
         },
     ],
     web: [
@@ -93,7 +97,7 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
-    specs: ['./test/specs/test.js'],
+    specs: ['./test/specs/e2e.js'],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -183,19 +187,19 @@ exports.config = {
                 {
                     args: {
                         ...(process.env.PLATFORM === 'ios' && {
-                            port: 3000,
-                        }),
-                        ...(process.env.PLATFORM === 'tvos' && {
                             port: 3001,
                         }),
-                        ...(process.env.PLATFORM === 'android' && {
+                        ...(process.env.PLATFORM === 'tvos' && {
                             port: 3002,
                         }),
-                        ...(process.env.PLATFORM === 'androidtv' && {
+                        ...(process.env.PLATFORM === 'android' && {
                             port: 3003,
                         }),
-                        ...(process.env.PLATFORM === 'macos' && {
+                        ...(process.env.PLATFORM === 'androidtv' && {
                             port: 3004,
+                        }),
+                        ...(process.env.PLATFORM === 'macos' && {
+                            port: 3005,
                         }),
                     },
                 },
