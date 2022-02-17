@@ -218,13 +218,38 @@ export const findSuitableTask = async (c, specificTask) => {
             c.runtime.engine.config.id
         )} path: ${chalk().grey(c.runtime.engine.rootPath)}`);
         const customTask = CUSTOM_TASKS[task];
-        if (customTask) return customTask;
+        c.runtime.availablePlatforms = customTask.platforms;
+        if (customTask) {
+            _populateExtraParameters(c, customTask);
+            return customTask;
+        }
     } else {
         task = specificTask;
         c.runtime.engine = getEngineRunner(c, task);
     }
     c.runtime.availablePlatforms = Object.keys(c.runtime.engine.platforms || []);
     return getEngineTask(task, c.runtime.engine.tasks);
+};
+
+const _populateExtraParameters = (c, task) => {
+    if (task.params) {
+        task.params.forEach((param) => {
+            let cmd = '';
+            if (param.shortcut) {
+                cmd += `-${param.shortcut}, `;
+            }
+            cmd += `--${param.key}`;
+            if (param.value) {
+                if (param.isRequired) {
+                    cmd += ` <${param.value}>`;
+                } else {
+                    cmd += ` [${param.value}]`;
+                }
+            }
+            c.program.option(cmd, param.description);
+        });
+        c.program.parse(process.argv);
+    }
 };
 
 const _selectPlatform = async (c, suitableEngines, task) => {
