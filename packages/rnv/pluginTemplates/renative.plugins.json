@@ -23,7 +23,7 @@
             "version": "npm:react-native-tvos@0.63.4-0"
         },
         "renative": {
-            "version": "0.36.0-feat-int.1",
+            "version": "0.36.0-feat-int.2",
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
