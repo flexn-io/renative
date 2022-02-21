@@ -157,7 +157,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         addSystemInjects(c, injects);
 
         writeCleanFile(
-            path.join(platformBuildDir, 'main.prod.js'),
+            path.join(platformProjectDir, 'main.prod.js'),
             path.join(platformProjectDir, 'main.js'),
             injects, null, c
         );
@@ -184,7 +184,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         addSystemInjects(c, injects);
 
         writeCleanFile(
-            path.join(platformBuildDir, 'main.dev.js'),
+            path.join(platformProjectDir, 'main.dev.js'),
             path.join(platformProjectDir, 'main.js'),
             injects, null, c
         );
@@ -218,11 +218,11 @@ const configureProject = c => new Promise((resolve, reject) => {
         {
             appId,
             directories: {
-                app: platformProjectDir,
+                app: path.join(platformBuildDir, 'build'),
                 buildResources: path.join(platformProjectDir, 'resources'),
-                output: path.join(platformBuildDir, 'build/release')
+                output: path.join(platformBuildDir, 'export')
             },
-            files: ['!build/release']
+            files: ['!export/*']
         },
         macConfig
     );
@@ -247,7 +247,7 @@ const exportElectron = async (c) => {
     logTask('exportElectron');
 
     const platformBuildDir = getPlatformBuildDir(c);
-    const buildPath = path.join(platformBuildDir, 'build');
+    const buildPath = path.join(platformBuildDir, 'build', 'release');
 
     if (fsExistsSync(buildPath)) {
         logInfo(`exportElectron: removing old build ${buildPath}`);
@@ -264,7 +264,7 @@ const exportElectron = async (c) => {
 
     logSuccess(
         `Your Exported App is located in ${chalk().cyan(
-            path.join(platformBuildDir, 'build/release')
+            path.join(platformBuildDir, 'export')
         )} .`
     );
 };
