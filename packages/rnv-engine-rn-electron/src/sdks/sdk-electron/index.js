@@ -1,7 +1,9 @@
+import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
 import { spawn } from 'child_process';
 import path from 'path';
-import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver } from 'rnv';
-import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '@rnv/sdk-webpack';
+import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver } from 'rnv';
+
+const { getEngineRunnerByPlatform } = EngineManager;
 
 const { createPlatformBuild, isPlatformActive } = PlatformManager;
 const { executeAsync } = Exec;
@@ -82,8 +84,8 @@ const configureProject = c => new Promise((resolve, reject) => {
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const platformProjectDir = getPlatformProjectDir(c);
+    const engine = getEngineRunnerByPlatform(c, c.platform);
     const platformBuildDir = getPlatformBuildDir(c);
-    const templateFolder = getTemplateProjectDir(c);
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
     const packagePath = path.join(platformProjectDir, 'package.json');
@@ -107,7 +109,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         return;
     }
 
-    const pkgJson = path.join(templateFolder, 'package.json');
+    const pkgJson = path.join(engine.originalTemplateAssetsDir, platform, 'package.json');
     const packageJson = readObjectSync(pkgJson);
 
     packageJson.name = `${c.runtime.appId}-${platform}`;
@@ -289,7 +291,7 @@ export const runElectron = async (c) => {
                     port
                 )} is not running. Starting it up for you...`
             );
-            waitForHost(c)
+            waitForHost(c, '')
                 .then(() => _runElectronSimulator(c))
                 .catch(logError);
             // await _runElectronSimulator(c);
@@ -297,7 +299,7 @@ export const runElectron = async (c) => {
         } else {
             const resetCompleted = await confirmActiveBundler(c);
             if (resetCompleted) {
-                waitForHost(c)
+                waitForHost(c, '')
                     .then(() => _runElectronSimulator(c))
                     .catch(logError);
                 // await _runElectronSimulator(c);
