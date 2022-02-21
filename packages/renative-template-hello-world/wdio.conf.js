@@ -16,7 +16,7 @@ const capabilities = {
             platformVersion: '15.0',
             automationName: 'XCUITest',
             bundleId: 'renative.helloworld.test',
-            app: 'platformBuilds/app_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app'
+            app: 'platformBuilds/template_ios/build/RNVApp/Build/Products/Release-iphonesimulator/RNVApp.app'
         },
     ],
     tvos: [
@@ -26,7 +26,7 @@ const capabilities = {
             platformVersion: '15.0',
             automationName: 'XCUITest',
             bundleId: 'renative.helloworld.test',
-            app: 'platformBuilds/app_tvos/build/RNVAppTVOS/Build/Products/Release-appletvsimulator/RNVAppTVOS.app'
+            app: 'platformBuilds/template_tvos/build/RNVAppTVOS/Build/Products/Release-appletvsimulator/RNVAppTVOS.app'
         },
     ],
     android: [
@@ -37,7 +37,7 @@ const capabilities = {
             automationName: 'UiAutomator2',
             appPackage: 'renative.helloworld.test',
             appActivity: 'renative.helloworld.test.MainActivity',
-            app: 'platformBuilds/app_android/app/build/outputs/apk/release/app-release.apk'
+            app: 'platformBuilds/template_android/app/build/outputs/apk/release/app-release.apk'
         },
     ],
     androidtv: [
@@ -48,7 +48,7 @@ const capabilities = {
             automationName: 'UiAutomator2',
             appPackage: 'renative.helloworld.test',
             appActivity: 'renative.helloworld.test.MainActivity',
-            app: 'platformBuilds/app_androidtv/app/build/outputs/apk/release/app-release.apk'
+            app: 'platformBuilds/template_androidtv/app/build/outputs/apk/release/app-release.apk'
         },
     ],
     macos: [
