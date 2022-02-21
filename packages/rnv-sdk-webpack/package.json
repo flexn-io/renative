@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-webpack",
-    "version": "0.35.3",
+    "version": "0.35.4-feat-web.0",
     "description": "ReNative Webpack SDK",
     "keywords": [],
     "homepage": "https://github.com/renative-org/renative#readme",
@@ -28,25 +28,23 @@
         "watch:all": "yarn watch & yarn test:watch"
     },
     "dependencies": {
-        "axios": "0.21.2",
-        "better-opn": "1.0.0",
-        "command-exists": "1.2.9",
-        "cross-env": "5.2.0",
-        "ip": "1.1.5",
-        "webpack-cli": "4.9.2",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
         "@svgr/webpack": "^5.5.0",
         "@testing-library/jest-dom": "^5.16.2",
         "@testing-library/react": "^12.1.2",
         "@testing-library/user-event": "^13.5.0",
+        "axios": "0.21.2",
         "babel-jest": "^27.4.2",
         "babel-loader": "^8.2.3",
         "babel-plugin-named-asset-import": "^0.3.8",
         "babel-preset-react-app": "^10.0.1",
+        "better-opn": "1.0.0",
         "bfj": "^7.0.2",
         "browserslist": "^4.18.1",
         "camelcase": "^6.2.1",
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
+        "command-exists": "1.2.9",
+        "cross-env": "5.2.0",
         "css-loader": "^6.5.1",
         "css-minimizer-webpack-plugin": "^3.2.0",
         "dotenv": "^10.0.0",
@@ -58,6 +56,7 @@
         "fs-extra": "^10.0.0",
         "html-webpack-plugin": "^5.5.0",
         "identity-obj-proxy": "^3.0.0",
+        "ip": "1.1.5",
         "jest": "^27.4.3",
         "jest-resolve": "^27.4.2",
         "jest-watch-typeahead": "^1.0.0",
@@ -83,6 +82,7 @@
         "terser-webpack-plugin": "^5.2.5",
         "web-vitals": "^2.1.4",
         "webpack": "^5.64.4",
+        "webpack-cli": "4.9.2",
         "webpack-dev-server": "^4.6.0",
         "webpack-manifest-plugin": "^4.0.2",
         "workbox-webpack-plugin": "^6.4.1"
@@ -100,7 +100,7 @@
         "typescript": "^4.5.2"
     },
     "peerDependencies": {
-        "rnv": "^0.35.3"
+        "rnv": "^0.35.4-feat-web.0"
     },
     "private": false,
     "publishConfig": {
