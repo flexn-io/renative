@@ -53,23 +53,6 @@ const _generateWebpackConfigs = (c) => {
 
     // let { modulePaths, moduleAliases } = getModuleConfigs(c);
 
-    // const modulePath = path.join(appFolder, 'modules.json');
-    // let externalModulePaths = [];
-    // let localModulePaths = [];
-    // if (fsExistsSync(modulePath)) {
-    //     const modules = readObjectSync(modulePath);
-    //     externalModulePaths = modules.externalPaths;
-    //     localModulePaths = modules.localPaths;
-    //     if (modules.aliases) {
-    //         moduleAliases = { ...modules.aliases, ...moduleAliases };
-    //     }
-    // }
-
-    // modulePaths = modulePaths
-    //     .concat(externalModulePaths.map(v => doResolvePath(v, true, {}, c.paths.project.nodeModulesDir)))
-    //     .concat(localModulePaths.map(v => path.join(c.paths.project.dir, v)))
-    //     .filter(Boolean);
-
     // // const env = getConfigProp(c, platform, 'environment');
     // const extendConfig = getConfigProp(c, platform, 'webpackConfig', {});
     // const entryFile = getConfigProp(c, platform, 'entryFile', 'index.web');

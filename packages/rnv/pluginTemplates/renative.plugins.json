@@ -706,7 +706,10 @@
             "version": "0.11.1"
         },
         "react-native-modal": {
-            "version": "7.0.0"
+            "version": "7.0.0",
+            "webpack": {
+                "modulePaths": true
+            }
         },
         "react-native-onfido-sdk": {
             "version": "0.0.7"
@@ -1258,6 +1261,9 @@
             },
             "firetv": {
                 "package": "com.swmansion.rnscreens.RNScreensPackage"
+            },
+            "webpack":{
+                "modulePaths": true
             }
         },
         "iOSPhotoEditor": {
