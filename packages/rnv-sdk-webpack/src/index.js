@@ -252,8 +252,9 @@ export const _runWebDevServer = async (c, enableRemoteDebugger) => {
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
     });
-    process.env.PUBLIC_URL = '/';
-    process.env.RNV_ENTRY_FILE = 'index';
+
+    process.env.PUBLIC_URL = getConfigProp(c, c.platform, 'publicUrl', '.');
+    process.env.RNV_ENTRY_FILE = getConfigProp(c, c.platform, 'entryFile');
     process.env.PORT = c.runtime.port;
     process.env.RNV_EXTERNAL_PATHS = [
         path.join(c.paths.project.assets.dir)
@@ -280,8 +281,9 @@ export const buildCoreWebpackProject = async (c) => {
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
     });
-    process.env.PUBLIC_URL = '/';
-    process.env.RNV_ENTRY_FILE = 'index';
+
+    process.env.PUBLIC_URL = getConfigProp(c, c.platform, 'publicUrl', '.');
+    process.env.RNV_ENTRY_FILE = getConfigProp(c, c.platform, 'entryFile');
     process.env.PORT = c.runtime.port;
     process.env.RNV_EXTERNAL_PATHS = [
         path.join(c.paths.project.assets.dir)
