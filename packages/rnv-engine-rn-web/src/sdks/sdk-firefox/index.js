@@ -1,6 +1,6 @@
-import path from 'path';
-import { PlatformManager, FileUtils, Common, Logger, ProjectManager, SDKManager } from 'rnv';
 import { buildCoreWebpackProject, configureCoreWebProject } from '@rnv/sdk-webpack';
+import path from 'path';
+import { Common, FileUtils, Logger, PlatformManager, ProjectManager, SDKManager } from 'rnv';
 
 const {
     getPlatformProjectDir,
@@ -38,10 +38,8 @@ const _configureProject = c => new Promise((resolve) => {
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const appFolder = getPlatformProjectDir(c);
-    const templateFolder = getTemplateProjectDir(c, platform);
 
-    const manifestFilePath = path.join(templateFolder, 'manifest.webapp');
-    const manifestFilePath2 = path.join(appFolder, 'manifest.webapp');
+    const manifestFilePath = path.join(appFolder, 'manifest.webapp');
     const manifestFile = JSON.parse(fsReadFileSync(manifestFilePath));
 
     manifestFile.name = `${getAppTitle(c, platform)}`;
@@ -49,7 +47,7 @@ const _configureProject = c => new Promise((resolve) => {
     manifestFile.developer = getAppAuthor(c, platform);
 
     fsWriteFileSync(
-        manifestFilePath2,
+        manifestFilePath,
         JSON.stringify(manifestFile, null, 2)
     );
 
