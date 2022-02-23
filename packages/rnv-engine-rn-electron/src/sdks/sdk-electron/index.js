@@ -17,7 +17,6 @@ const {
 } = FileUtils;
 const {
     getPlatformProjectDir,
-    getTemplateProjectDir,
     getPlatformBuildDir,
     getAppVersion,
     getAppTitle,
@@ -315,8 +314,14 @@ const _runElectronSimulator = async (c) => {
     logTask(`_runElectronSimulator:${c.platform}`);
     // const appFolder = getAppFolder(c, c.platform);
     const elc = `${doResolve('electron')}/cli.js`;
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
+    let platformProjectDir = getPlatformProjectDir(c);
 
-    const child = spawn('node', [elc, path.join(getPlatformProjectDir(c), '/main.js')], {
+    if (bundleAssets) {
+        platformProjectDir = path.join(getPlatformBuildDir(c), 'build');
+    }
+
+    const child = spawn('node', [elc, path.join(platformProjectDir, '/main.js')], {
         detached: true,
         env: process.env,
         stdio: 'inherit'
