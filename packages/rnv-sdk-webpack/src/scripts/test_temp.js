@@ -1,4 +1,4 @@
-
+// renamed as _temp, because this is unused for now and scripts think this is a test file.
 
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'test';
