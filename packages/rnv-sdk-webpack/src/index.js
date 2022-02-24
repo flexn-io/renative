@@ -1,139 +1,36 @@
+/* eslint-disable global-require */
 
 import axios from 'axios';
 import open from 'better-opn';
 import commandExists from 'command-exists';
 import path from 'path';
-import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, PluginManager, ProjectManager, Resolver } from 'rnv';
+import { Common, Constants, EngineManager, Exec, Logger, PlatformManager, PluginManager, ProjectManager } from 'rnv';
 // import { runServer } from './scripts/start';
 
 const { isPlatformActive } = PlatformManager;
 const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
 const {
-    getPlatformBuildDir,
-    getAppVersion,
     checkPortInUse,
     getConfigProp,
-    getTemplateProjectDir,
-    getAppTitle,
-    sanitizeColor,
     confirmActiveBundler,
-    getTimestampPathsConfig,
-    addSystemInjects,
     getPlatformProjectDir,
-    getPlatformServerDir,
     getDevServerHost,
     waitForHost
 } = Common;
-const { doResolve, doResolvePath } = Resolver;
 const {
     chalk,
     logTask,
     logInfo,
-    logDebug,
     logWarning,
     logSuccess,
     logRaw,
     logError,
     logSummary
 } = Logger;
-const { fsExistsSync, readObjectSync, writeCleanFile, fsWriteFileSync, mkdirSync } = FileUtils;
-const { getPlatformExtensions, generateEnvVars } = EngineManager;
+const { generateEnvVars } = EngineManager;
 const { getModuleConfigs } = PluginManager;
-const { REMOTE_DEBUG_PORT, RNV_NODE_MODULES_DIR } = Constants;
+const { REMOTE_DEBUG_PORT } = Constants;
 const { executeAsync } = Exec;
-
-
-const _generateWebpackConfigs = (c) => {
-    logTask('_generateWebpackConfigs');
-    // const { platform } = c;
-    // const appFolder = getPlatformBuildDir(c);
-    // const appFolderServer = getPlatformServerDir(c);
-    // // const templateFolder = getAppTemplateFolder(c, platform);
-
-    // let { modulePaths, moduleAliases } = getModuleConfigs(c);
-
-    // // const env = getConfigProp(c, platform, 'environment');
-    // const extendConfig = getConfigProp(c, platform, 'webpackConfig', {});
-    // const entryFile = getConfigProp(c, platform, 'entryFile', 'index.web');
-    // const title = getAppTitle(c, platform);
-    // const analyzer = getConfigProp(c, platform, 'analyzer') || c.program.analyzer;
-
-    // if (!fsExistsSync(appFolderServer)) {
-    //     mkdirSync(appFolderServer);
-    // }
-
-    // // copyFileSync(
-    // //     path.join(
-    // //         templateFolder,
-    // //         '_privateConfig',
-    // //         env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'
-    // //     ),
-    // //     path.join(appFolderServer, 'webpack.config.js')
-    // // );
-
-    // // const externalModulesResolved = externalModules.map(v => doResolve(v))
-    // let assetVersion = '';
-    // const versionedAssets = getConfigProp(c, platform, 'versionedAssets', false);
-    // if (versionedAssets) {
-    //     assetVersion = `-${getAppVersion(c, platform)}`;
-    // }
-    // const timestampAssets = getConfigProp(c, platform, 'timestampAssets', false);
-    // if (timestampAssets) {
-    //     assetVersion = `-${c.runtime.timestamp}`;
-    // }
-
-    // const bundleAssets = c.runtime.forceBundleAssets || getConfigProp(c, c.platform, 'bundleAssets', false);
-
-    // const obj = {
-    //     modulePaths,
-    //     moduleAliases,
-    //     analyzer,
-    //     entryFile,
-    //     title,
-    //     assetVersion,
-    //     buildFolder: bundleAssets ? getPlatformProjectDir(c) : getPlatformServerDir(c),
-    //     extensions: getPlatformExtensions(c, true),
-    //     ...extendConfig
-    // };
-
-    // const extendJs = `
-    // module.exports = ${JSON.stringify(obj, null, 2)}`;
-
-    // fsWriteFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
-};
-
-// TODO: Legacy for backward compatibility, will be removed from webpack utils
-const _parseCssSync = (c) => {
-    logTask('_parseCssSync');
-
-    // const templateProjectDir = getTemplateProjectDir(c);
-    // const timestampPathsConfig = getTimestampPathsConfig(c, c.platform);
-    // const backgroundColor = getConfigProp(c, c.platform, 'backgroundColor');
-
-    // const bundleAssets = c.runtime.forceBundleAssets || getConfigProp(c, c.platform, 'bundleAssets', false);
-    // const targetDir = bundleAssets ? getPlatformProjectDir(c) : getPlatformServerDir(c);
-
-    // const injects = [
-    //     {
-    //         pattern: '{{PLUGIN_COLORS_BG}}',
-    //         override: sanitizeColor(
-    //             backgroundColor,
-    //             'backgroundColor'
-    //         ).hex
-    //     }
-    // ];
-
-    // addSystemInjects(c, injects);
-    // const cssPath = path.join(templateProjectDir, 'app.css');
-    // if (fsExistsSync(cssPath)) {
-    //     writeCleanFile(
-    //         cssPath,
-    //         path.join(targetDir, 'app.css'),
-    //         injects,
-    //         timestampPathsConfig, c
-    //     );
-    // }
-};
 
 export const waitForUrl = url => new Promise((resolve, reject) => {
     let attempts = 0;
@@ -301,10 +198,8 @@ export const buildCoreWebpackProject = async (c) => {
 };
 
 
-export const configureCoreWebProject = async (c) => {
+export const configureCoreWebProject = async () => {
     logTask('configureCoreWebProject');
-    _generateWebpackConfigs(c);
-    _parseCssSync(c);
 };
 
 export const runWebpackServer = async (c, enableRemoteDebugger) => {

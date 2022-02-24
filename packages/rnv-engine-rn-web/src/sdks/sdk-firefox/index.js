@@ -4,7 +4,6 @@ import { Common, FileUtils, Logger, PlatformManager, ProjectManager, SDKManager 
 
 const {
     getPlatformProjectDir,
-    getTemplateProjectDir,
     getAppTitle,
     getAppDescription,
     getAppAuthor,
