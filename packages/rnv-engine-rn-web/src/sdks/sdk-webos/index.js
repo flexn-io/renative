@@ -59,6 +59,11 @@ export const runWebOS = async (c) => {
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
+    const env = getConfigProp(c, platform, 'environment');
+    if (env !== 'production') {
+        process.env.RNV_INJECTED_WEBPACK_SCRIPTS = `${process.env.RNV_INJECTED_WEBPACK_SCRIPTS || ''}\n<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV-dev.js"></script>`;
+    }
+
     if (bundleAssets) {
         await buildCoreWebpackProject(c);
         await runWebosSimOrDevice(c);
