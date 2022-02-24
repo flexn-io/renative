@@ -15,8 +15,7 @@ const injectProjectDependency = async (c,
     dependency,
     version,
     type,
-    skipInstall = false
-) => {
+    skipInstall = false) => {
     logTask('injectProjectDependency');
 
     const currentPackage = c.files.project.package;

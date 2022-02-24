@@ -68,7 +68,7 @@
         "react": "17.0.2",
         "react-art": "17.0.2",
         "react-dom": "17.0.2",
-        "react-native": "0.63.4",
+        "react-native": "0.67.2",
         "renative": "0.35.3",
         "rnv": "0.35.3"
     },

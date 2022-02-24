@@ -2,7 +2,7 @@
     "extendsTemplate": "renative-template-hello-world/appConfigs/base/renative.json",
     "id": "app",
     "common": {
-        "id": "myapp",
+        "id": "com.rnv.myapp",
         "title": "Hello ReNative",
         "description": "ReNative App",
         "buildSchemes": {}

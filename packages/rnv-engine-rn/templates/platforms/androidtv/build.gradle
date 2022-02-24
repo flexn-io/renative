@@ -4,10 +4,10 @@ import groovy.json.JsonSlurper
 
 buildscript {
     ext.kotlin_version = '{{INJECT_KOTLIN_VERSION}}'
+    ext.kotlinVersion = "$kotlin_version"
     repositories {
-        mavenCentral()
         google()
-        gradlePluginPortal()
+        mavenCentral()
         {{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}
     }
     dependencies {
@@ -24,11 +24,16 @@ plugins {
 
 allprojects {
     repositories {
-        maven { url "https://www.jitpack.io" }
-        mavenCentral()
-        google()
-        gradlePluginPortal()
         {{INJECT_REACT_NATIVE_ENGINE}}
+        mavenCentral {
+            // We don't want to fetch react-native from Maven Central as there are
+            // older versions over there.
+            content {
+                excludeGroup "com.facebook.react"
+            }
+        }
+        google()
+        maven { url "https://www.jitpack.io" }
         {{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}
     }
 }
@@ -52,3 +57,4 @@ subprojects {
 }
 
 {{INJECT_AFTER_ALL}}
+

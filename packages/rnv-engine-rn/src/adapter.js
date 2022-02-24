@@ -49,6 +49,7 @@ export const withRNV = (config) => {
         transformer: {
             getTransformOptions: async () => ({
                 transform: {
+                    experimentalImportSupport: false,
                     // this defeats the RCTDeviceEventEmitter is not a registered callable module
                     inlineRequires: true,
                 },
