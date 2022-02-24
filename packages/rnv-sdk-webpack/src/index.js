@@ -200,9 +200,7 @@ Debugger running at: ${debugUrl}`);
             logError(e);
         }
         obj.remoteDebuggerActive = true;
-        obj.debugVariables += `DEBUG=true DEBUG_IP=${
-            resolvedDebugIp} DEBUG_CLIENT=chii DEBUG_SCRIPT="http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/target.js"`;
-        obj.lineBreaks = '\n';
+        process.env.DEBUG_SCRIPT = `http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/target.js`;
     } catch (e) {
         logWarning(`You are missing chii. You can install via ${chalk().white('npm i -g chii')}) Trying to use weinre next`);
     }
@@ -236,10 +234,8 @@ Debugger running at: ${debugUrl}`);
             logError(e);
         }
         obj.remoteDebuggerActive = true;
-        obj.debugVariables += `DEBUG=true DEBUG_IP=${
-            resolvedDebugIp} DEBUG_CLIENT=weinre DEBUG_SCRIPT="http://${resolvedDebugIp}:${
-            REMOTE_DEBUG_PORT}/target/target-script-min.js#${c.platform}}`;
-        obj.lineBreaks = '\n';
+        process.env.DEBUG_SCRIPT = `http://${resolvedDebugIp}:${
+            REMOTE_DEBUG_PORT}/target/target-script-min.js#${c.platform}`;
     } catch (e) {
         logWarning(`You are missing weinre. Skipping debug. install via ${chalk().white('npm i -g weinre')}`);
     }
@@ -248,6 +244,7 @@ Debugger running at: ${debugUrl}`);
 
 export const _runWebDevServer = async (c, enableRemoteDebugger) => {
     logTask('_runWebDevServer');
+    const { debug } = c.program;
     const env = { ...generateEnvVars(c, getModuleConfigs(c)) };
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
@@ -260,15 +257,15 @@ export const _runWebDevServer = async (c, enableRemoteDebugger) => {
         path.join(c.paths.project.assets.dir)
     ];
 
-    // const debugObj = { lineBreaks: '\n\n\n', debugVariables: '', remoteDebuggerActive: false };
-    // let debugOrder = [_runRemoteDebuggerChii, _runRemoteDebuggerWeinre];
-    // if (debug === 'weinre') debugOrder = [_runRemoteDebuggerWeinre, _runRemoteDebuggerChii];
-    // if ((debug || enableRemoteDebugger) && debug !== 'false') {
-    //     await debugOrder[0](c, debugObj);
-    //     if (!debugObj.remoteDebuggerActive) {
-    //         await debugOrder[1](c, debugObj);
-    //     }
-    // }
+    const debugObj = { remoteDebuggerActive: false };
+    let debugOrder = [_runRemoteDebuggerChii, _runRemoteDebuggerWeinre];
+    if (debug === 'weinre') debugOrder = [_runRemoteDebuggerWeinre, _runRemoteDebuggerChii];
+    if ((debug || enableRemoteDebugger) && debug !== 'false') {
+        await debugOrder[0](c, debugObj);
+        if (!debugObj.remoteDebuggerActive) {
+            await debugOrder[1](c, debugObj);
+        }
+    }
 
     const start = require('./scripts/start').default;
     await start();
