@@ -126,7 +126,8 @@
         "renative-template-blank": "0.35.4-feat-rn-upgrade.0",
         "renative-template-hello-world": "0.35.4-feat-rn-upgrade.0",
         "rnv": "0.35.4-feat-rn-upgrade.0",
-        "xcode": "2.1.0"
+        "xcode": "2.1.0",
+        "v8-android": "9.93.0"
     },
     "optionalDependencies": {
         "ios-deploy": "1.11.4"
