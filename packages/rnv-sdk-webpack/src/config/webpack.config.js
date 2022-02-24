@@ -569,16 +569,7 @@ module.exports = function (webpackEnv) {
                         inject: true,
                         template: paths.appHtml,
                         templateParameters: {
-                            remoteDebugScript: process.env.DEBUG_SCRIPT ? `<script src="${process.env.DEBUG_SCRIPT}"></script>` : '',
-                            // isWebos: process.env.PLATFORM === 'webos',
-                            // environment: config.environment,
-                            //                         let webosScripts = '';
-                            // if (isWebos) {
-                            //     webosScripts = '<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV.js"></script>';
-                            //     if (environment !== 'production') {
-                            //         webosScripts += '\n<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV-dev.js"></script>';
-                            //     }
-                            // }
+                            injectedScripts: process.env.RNV_INJECTED_WEBPACK_SCRIPTS,
                         },
                     },
                     isEnvProduction

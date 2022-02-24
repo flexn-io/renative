@@ -2,7 +2,6 @@
 import axios from 'axios';
 import open from 'better-opn';
 import commandExists from 'command-exists';
-import ip from 'ip';
 import path from 'path';
 import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, PluginManager, ProjectManager, Resolver } from 'rnv';
 // import { runServer } from './scripts/start';
@@ -179,7 +178,7 @@ const _runRemoteDebuggerChii = async (c, obj) => {
     try {
         await commandExists('chii');
 
-        const resolvedDebugIp = debugIp || ip.address();
+        const resolvedDebugIp = debugIp || getDevServerHost(c);
         logInfo(
             `Starting a remote debugger build with ip ${
                 resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
@@ -200,7 +199,9 @@ Debugger running at: ${debugUrl}`);
             logError(e);
         }
         obj.remoteDebuggerActive = true;
-        process.env.DEBUG_SCRIPT = `http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/target.js`;
+
+        process.env.RNV_INJECTED_WEBPACK_SCRIPTS = `${process.env.RNV_INJECTED_WEBPACK_SCRIPTS || ''}
+        \n<script src="http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/target.js"></script>`;
     } catch (e) {
         logWarning(`You are missing chii. You can install via ${chalk().white('npm i -g chii')}) Trying to use weinre next`);
     }
@@ -213,7 +214,7 @@ const _runRemoteDebuggerWeinre = async (c, obj) => {
     try {
         await commandExists('weinre');
 
-        const resolvedDebugIp = debugIp || ip.address();
+        const resolvedDebugIp = debugIp || getDevServerHost(c);
         logInfo(
             `Starting a remote debugger build with ip ${
                 resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
@@ -234,8 +235,9 @@ Debugger running at: ${debugUrl}`);
             logError(e);
         }
         obj.remoteDebuggerActive = true;
-        process.env.DEBUG_SCRIPT = `http://${resolvedDebugIp}:${
-            REMOTE_DEBUG_PORT}/target/target-script-min.js#${c.platform}`;
+        process.env.RNV_INJECTED_WEBPACK_SCRIPTS = `${process.env.RNV_INJECTED_WEBPACK_SCRIPTS || ''}
+        \n<script src="http://${resolvedDebugIp}:${
+    REMOTE_DEBUG_PORT}/target/target-script-min.js#${c.platform}"></script>`;
     } catch (e) {
         logWarning(`You are missing weinre. Skipping debug. install via ${chalk().white('npm i -g weinre')}`);
     }
@@ -289,9 +291,9 @@ export const buildCoreWebpackProject = async (c) => {
     if (debug) {
         logInfo(
             `Starting a remote debugger build with ip ${debugIp
-                    || ip.address()}. If this IP is not correct, you can always override it with --debugIp`
+                    || getDevServerHost(c)}. If this IP is not correct, you can always override it with --debugIp`
         );
-        // debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
+        // process.env.RNV_INJECTED_WEBPACK_SCRIPTS += `DEBUG_IP=${debugIp || ip.address()}`;
     }
 
     const build = require('./scripts/build').default;
