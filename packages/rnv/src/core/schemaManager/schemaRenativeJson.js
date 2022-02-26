@@ -642,6 +642,13 @@ const platformAndroidProps = {
         default: false,
         examples: [false, true],
     },
+    extraGradleParams: {
+        type: 'string',
+        description: 'Allows passing extra params to gradle command',
+        examples: [
+            'assembleAndroidTest -DtestBuildType=debug'
+        ],
+    },
     minifyEnabled: {
         type: 'boolean',
         description: 'Sets minifyEnabled buildType property in app/build.gradle',
@@ -1571,6 +1578,14 @@ export const schemaRoot = {
         // },
         extend: {
             type: 'string',
+        },
+        extendsTemplate: {
+            type: 'string',
+            description: 'You can extend another renative.json file of currently applied template by providing relative or full package name path',
+            examples: [
+                'renative.json',
+                'renative-template-hello-world/renative.json'
+            ]
         },
         projectTemplates: {
             additionalProperties: true,
