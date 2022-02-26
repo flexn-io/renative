@@ -74,7 +74,7 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "^0.35.4-feat-web.0",
+            "version": "^0.36.0-feat-int.2",
             "webpack": {
                 "moduleAliases": true
             }
