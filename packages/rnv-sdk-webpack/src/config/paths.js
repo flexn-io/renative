@@ -26,7 +26,7 @@ const publicUrlOrPath = getPublicUrlOrPath(
     process.env.PUBLIC_URL
 );
 
-const moduleFileExtensions = process.env.RNV_EXTENSIONS.split(',');
+const moduleFileExtensions = process.env.RNV_EXTENSIONS?.split?.(',') || [];
 
 // Resolve file paths in the same order as webpack
 const resolveModule = (resolveFn, filePath) => {
