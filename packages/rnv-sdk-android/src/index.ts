@@ -502,8 +502,9 @@ export const buildAndroid = async (c: any) => {
 
     shell.cd(`${appFolder}`);
 
+    const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
     // await _checkSigningCerts(c);
-    await executeAsync(c, `${isSystemWin ? 'gradlew.bat' : './gradlew'} assemble${signingConfig} -x bundleReleaseJsAndAssets`);
+    await executeAsync(c, `${isSystemWin ? 'gradlew.bat' : './gradlew'} assemble${signingConfig} -x bundleReleaseJsAndAssets ${extraGradleParams}`);
 
     logSuccess(
         `Your APK is located in ${chalk().cyan(
