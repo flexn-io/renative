@@ -162,7 +162,7 @@
             ]
         },
         "web": {
-            "engine": "engine-rn-next"
+            "engine": "engine-rn-web"
         },
         "tvos": {
             "engine": "engine-rn-tvos"

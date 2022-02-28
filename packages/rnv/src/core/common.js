@@ -122,7 +122,7 @@ export const waitForHost = async (c, suffix = 'assets/bundle.js') => {
                         clearInterval(interval);
                         // spinner.fail('Can\'t connect to webpack. Try restarting it.');
                         return reject(
-                            "Can't connect to host. Try restarting it."
+                            `Can't connect to host ${url}. Try restarting it.`
                         );
                     }
                 })
@@ -132,7 +132,7 @@ export const waitForHost = async (c, suffix = 'assets/bundle.js') => {
                         clearInterval(interval);
                         // spinner.fail('Can\'t connect to webpack. Try restarting it.');
                         return reject(
-                            "Can't connect to host. Try restarting it."
+                            `Can't connect to host ${url}. Try restarting it.`
                         );
                     }
                 });

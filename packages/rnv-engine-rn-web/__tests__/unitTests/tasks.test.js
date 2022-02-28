@@ -9,6 +9,14 @@ jest.mock('axios', () => ({
     get: () => true
 }));
 
+jest.mock('process', () => ({
+    cwd: () => 'mocked value'
+}));
+
+jest.mock('@rnv/sdk-webpack', () => ({
+    runWebpackServer: () => {}
+}));
+
 const configPropMocks = {
     scheme: 'debug',
     bundleAssets: false
@@ -34,7 +42,7 @@ jest.mock('rnv', () => {
     };
     return {
         EngineManager: {
-
+            generateEnvVars: () => ({})
         },
         Common: {
             getConfigProp: (c, platform, key) => configPropMocks[key],
@@ -84,6 +92,11 @@ jest.mock('rnv', () => {
         },
         PluginManager: {
             parsePlugins: () => null,
+            getModuleConfigs: () => ({
+                modulePaths: [],
+                moduleAliases: {},
+                moduleAliasesArray: []
+            })
         },
         ProjectManager: {
             copyAssetsFolder: () => null,

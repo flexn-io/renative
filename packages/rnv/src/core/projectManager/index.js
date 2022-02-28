@@ -23,6 +23,7 @@ import {
     fsReaddirSync,
     fsReadFileSync,
     resolvePackage,
+    removeDirs,
 } from '../systemManager/fileutils';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { executeAsync } from '../systemManager/exec';
@@ -391,6 +392,57 @@ const _resolvePackage = (c, v) => {
     return resolvePackage(v);
 };
 
+const _requiresAssetOverride = async (c) => {
+    const requiredAssets = c.runtime.engine?.platforms?.[c.platform]?.requiredAssets || [];
+
+    const assetsToCopy = [];
+    const assetsDir = path.join(c.paths.project.appConfigBase.dir, 'assets', c.platform);
+
+    requiredAssets.forEach((v) => {
+        const sourcePath = path.join(c.runtime.engine.originalTemplateAssetsDir, c.platform, v);
+
+        const destPath = path.join(assetsDir, v);
+
+
+        if (fsExistsSync(sourcePath)) {
+            if (!fsExistsSync(destPath)) {
+                assetsToCopy.push({
+                    sourcePath,
+                    destPath
+                });
+            }
+        }
+    });
+
+    const actionOverride = 'Override exisitng folder';
+    const actionMerge = 'Merge with existing folder';
+    const actionSkip = 'Skip. Warning: this might fail your build';
+
+
+    if (assetsToCopy.length > 0) {
+        const { chosenAction } = await inquirerPrompt({
+            message: 'What to do next?',
+            type: 'list',
+            name: 'chosenAction',
+            choices: [actionOverride, actionMerge, actionSkip],
+            warningMessage: `Your appConfig/base/assets/${c.platform} existis but engine ${
+                c.runtime.engine.config.id} requires some additional assets:
+${chalk().red(requiredAssets.join(','))}`
+        });
+
+        if (chosenAction === actionOverride) {
+            await removeDirs([assetsDir]);
+        }
+
+        if (chosenAction === actionOverride || chosenAction === actionMerge) {
+            return true;
+        }
+    }
+
+
+    return false;
+};
+
 export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     logTask('copyAssetsFolder');
 
@@ -400,11 +452,13 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     if (c.paths.appConfig.dirs) {
         const hasAssetFolder = c.paths.appConfig.dirs
             .filter(v => fsExistsSync(path.join(v, `assets/${platform}`))).length;
-        if (!hasAssetFolder) {
+        const requireOverride = await _requiresAssetOverride(c);
+        if (!hasAssetFolder || requireOverride) {
             await generateDefaultAssets(
                 c,
                 platform,
-                path.join(c.paths.appConfig.dirs[0], `assets/${platform}`)
+                path.join(c.paths.appConfig.dirs[0], `assets/${platform}`),
+                requireOverride
             );
         }
     } else {
@@ -432,21 +486,21 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
             const sourcePath = path.join(v, `assets/${platform}`);
-            copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, null, tsPathsConfig);
+            copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
         });
     } else {
         const sourcePath = path.join(
             c.paths.appConfig.dir,
             `assets/${platform}`
         );
-        copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, null, tsPathsConfig);
+        copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
     }
 };
 
-const generateDefaultAssets = async (c, platform, sourcePath) => {
+const generateDefaultAssets = async (c, platform, sourcePath, forceTrue) => {
     logTask('generateDefaultAssets');
     let confirmAssets = true;
-    if (c.program.ci !== true && c.program.yes !== true) {
+    if (c.program.ci !== true && c.program.yes !== true && !forceTrue) {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
             message: `It seems you don't have assets configured in ${chalk().white(

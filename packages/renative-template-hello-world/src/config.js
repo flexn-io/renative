@@ -1,17 +1,14 @@
 /* eslint-disable react/prop-types */
 
+import React, { createContext, useState } from 'react';
 import {
-    getScaledValue, isFactorMobile, isFactorDesktop, isPlatformWindows, isPlatformMacos,
-    isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker, isWebBased, StyleSheet, isPlatformWeb
+    getScaledValue, isEngineNative, isFactorBrowser, isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isPlatformWindows, isWebBased, registerServiceWorker, StyleSheet
 } from 'renative';
-import '../platformAssets/runtime/fontManager';
-import React, { useState, createContext } from 'react';
-
 // import { LogBox } from 'react-native';
 // import JSTimers from 'react-native/Libraries/Core/Timers/JSTimers';
 import CONFIG from '../platformAssets/renative.runtime.json';
+import '../platformAssets/runtime/fontManager';
 import ICON_LOGO from '../platformAssets/runtime/logo.png';
-
 
 if (isFactorBrowser) registerServiceWorker();
 
@@ -206,7 +203,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
 
 
 export const ROUTES = {
-    HOME: isPlatformWeb ? '/' : 'home',
+    HOME: '/',
     MY_PAGE: 'my-page',
     MODAL: 'modal'
 };

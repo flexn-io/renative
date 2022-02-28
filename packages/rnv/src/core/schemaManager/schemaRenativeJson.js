@@ -26,6 +26,9 @@ const propWebpackConfig = {
             devServerHost: {
                 type: 'string',
             },
+            publicUrl: {
+                type: 'string',
+            },
             metaTags: {
                 additionalProperties: true,
                 type: 'object',

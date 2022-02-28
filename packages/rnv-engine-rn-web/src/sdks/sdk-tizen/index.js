@@ -1,7 +1,7 @@
+import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
 import path from 'path';
+import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, SDKManager } from 'rnv';
 import semver from 'semver';
-import { Exec, FileUtils, Common, Logger, Constants, SDKManager, PlatformManager, ProjectManager } from 'rnv';
-import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '@rnv/sdk-webpack';
 
 const { execCLI } = Exec;
 const {
@@ -104,7 +104,7 @@ export const runTizen = async (c, target) => {
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );
-            waitForHost(c)
+            waitForHost(c, '')
                 .then(() => _runTizenSimOrDevice(c))
                 .catch(logError);
             await runWebpackServer(c, isWeinreEnabled);
@@ -112,7 +112,7 @@ export const runTizen = async (c, target) => {
             const resetCompleted = await confirmActiveBundler(c);
 
             if (resetCompleted) {
-                waitForHost(c)
+                waitForHost(c, '')
                     .then(() => _runTizenSimOrDevice(c))
                     .catch(logError);
                 await runWebpackServer(c, isWeinreEnabled);
