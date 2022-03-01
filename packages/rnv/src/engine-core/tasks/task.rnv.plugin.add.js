@@ -54,7 +54,7 @@ export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
         const plugin = selectedPlugins[key];
         if (plugin.props) questionPlugins[key] = plugin;
 
-        c.files.project.config.plugins[key] = 'source:rnv';
+        c.files.project.config_original.plugins[key] = 'source:rnv';
 
         // c.buildConfig.plugins[key] = selectedPlugins[key];
     });
@@ -75,13 +75,13 @@ export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
             });
             finalProps[pluginProps[i2]] = propValue;
         }
-        c.files.project.config.plugins[pluginKey] = {};
-        c.files.project.config.plugins[pluginKey].props = finalProps;
+        c.files.project.config_original.plugins[pluginKey] = {};
+        c.files.project.config.config_original[pluginKey].props = finalProps;
     }
 
     const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
 
-    writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
+    writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
 
     await resolvePluginDependants(c);
 

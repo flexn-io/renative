@@ -26,6 +26,9 @@ const propWebpackConfig = {
             devServerHost: {
                 type: 'string',
             },
+            publicUrl: {
+                type: 'string',
+            },
             metaTags: {
                 additionalProperties: true,
                 type: 'object',
@@ -638,6 +641,13 @@ const platformAndroidProps = {
       'If set to true, android project will generate app.aab instead of apk',
         default: false,
         examples: [false, true],
+    },
+    extraGradleParams: {
+        type: 'string',
+        description: 'Allows passing extra params to gradle command',
+        examples: [
+            'assembleAndroidTest -DtestBuildType=debug'
+        ],
     },
     minifyEnabled: {
         type: 'boolean',
@@ -1568,6 +1578,14 @@ export const schemaRoot = {
         // },
         extend: {
             type: 'string',
+        },
+        extendsTemplate: {
+            type: 'string',
+            description: 'You can extend another renative.json file of currently applied template by providing relative or full package name path',
+            examples: [
+                'renative.json',
+                'renative-template-hello-world/renative.json'
+            ]
         },
         projectTemplates: {
             additionalProperties: true,

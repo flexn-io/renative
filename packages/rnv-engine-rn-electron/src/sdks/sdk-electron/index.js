@@ -1,7 +1,9 @@
+import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
 import { spawn } from 'child_process';
 import path from 'path';
-import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver } from 'rnv';
-import { buildCoreWebpackProject, runWebpackServer, configureCoreWebProject } from '@rnv/sdk-webpack';
+import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver } from 'rnv';
+
+const { getEngineRunnerByPlatform } = EngineManager;
 
 const { createPlatformBuild, isPlatformActive } = PlatformManager;
 const { executeAsync } = Exec;
@@ -15,7 +17,6 @@ const {
 } = FileUtils;
 const {
     getPlatformProjectDir,
-    getTemplateProjectDir,
     getPlatformBuildDir,
     getAppVersion,
     getAppTitle,
@@ -82,8 +83,8 @@ const configureProject = c => new Promise((resolve, reject) => {
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const platformProjectDir = getPlatformProjectDir(c);
+    const engine = getEngineRunnerByPlatform(c, c.platform);
     const platformBuildDir = getPlatformBuildDir(c);
-    const templateFolder = getTemplateProjectDir(c);
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
     const packagePath = path.join(platformProjectDir, 'package.json');
@@ -107,7 +108,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         return;
     }
 
-    const pkgJson = path.join(templateFolder, 'package.json');
+    const pkgJson = path.join(engine.originalTemplateAssetsDir, platform, 'package.json');
     const packageJson = readObjectSync(pkgJson);
 
     packageJson.name = `${c.runtime.appId}-${platform}`;
@@ -155,7 +156,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         addSystemInjects(c, injects);
 
         writeCleanFile(
-            path.join(platformBuildDir, 'main.prod.js'),
+            path.join(platformProjectDir, 'main.prod.js'),
             path.join(platformProjectDir, 'main.js'),
             injects, null, c
         );
@@ -182,7 +183,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         addSystemInjects(c, injects);
 
         writeCleanFile(
-            path.join(platformBuildDir, 'main.dev.js'),
+            path.join(platformProjectDir, 'main.dev.js'),
             path.join(platformProjectDir, 'main.js'),
             injects, null, c
         );
@@ -216,11 +217,11 @@ const configureProject = c => new Promise((resolve, reject) => {
         {
             appId,
             directories: {
-                app: platformProjectDir,
+                app: path.join(platformBuildDir, 'build'),
                 buildResources: path.join(platformProjectDir, 'resources'),
-                output: path.join(platformBuildDir, 'build/release')
+                output: path.join(platformBuildDir, 'export')
             },
-            files: ['!build/release']
+            files: ['!export/*']
         },
         macConfig
     );
@@ -245,7 +246,7 @@ const exportElectron = async (c) => {
     logTask('exportElectron');
 
     const platformBuildDir = getPlatformBuildDir(c);
-    const buildPath = path.join(platformBuildDir, 'build');
+    const buildPath = path.join(platformBuildDir, 'build', 'release');
 
     if (fsExistsSync(buildPath)) {
         logInfo(`exportElectron: removing old build ${buildPath}`);
@@ -262,7 +263,7 @@ const exportElectron = async (c) => {
 
     logSuccess(
         `Your Exported App is located in ${chalk().cyan(
-            path.join(platformBuildDir, 'build/release')
+            path.join(platformBuildDir, 'export')
         )} .`
     );
 };
@@ -289,7 +290,7 @@ export const runElectron = async (c) => {
                     port
                 )} is not running. Starting it up for you...`
             );
-            waitForHost(c)
+            waitForHost(c, '')
                 .then(() => _runElectronSimulator(c))
                 .catch(logError);
             // await _runElectronSimulator(c);
@@ -297,7 +298,7 @@ export const runElectron = async (c) => {
         } else {
             const resetCompleted = await confirmActiveBundler(c);
             if (resetCompleted) {
-                waitForHost(c)
+                waitForHost(c, '')
                     .then(() => _runElectronSimulator(c))
                     .catch(logError);
                 // await _runElectronSimulator(c);
@@ -313,8 +314,14 @@ const _runElectronSimulator = async (c) => {
     logTask(`_runElectronSimulator:${c.platform}`);
     // const appFolder = getAppFolder(c, c.platform);
     const elc = `${doResolve('electron')}/cli.js`;
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
+    let platformProjectDir = getPlatformProjectDir(c);
 
-    const child = spawn('node', [elc, path.join(getPlatformProjectDir(c), '/main.js')], {
+    if (bundleAssets) {
+        platformProjectDir = path.join(getPlatformBuildDir(c), 'build');
+    }
+
+    const child = spawn('node', [elc, path.join(platformProjectDir, '/main.js')], {
         detached: true,
         env: process.env,
         stdio: 'inherit'

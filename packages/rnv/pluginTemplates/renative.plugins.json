@@ -23,7 +23,7 @@
             "version": "npm:react-native-tvos@0.63.4-0"
         },
         "renative": {
-            "version": "0.35.0",
+            "version": "0.36.0-canary.1",
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
@@ -706,7 +706,10 @@
             "version": "0.11.1"
         },
         "react-native-modal": {
-            "version": "7.0.0"
+            "version": "7.0.0",
+            "webpack": {
+                "modulePaths": true
+            }
         },
         "react-native-onfido-sdk": {
             "version": "0.0.7"
@@ -1258,6 +1261,9 @@
             },
             "firetv": {
                 "package": "com.swmansion.rnscreens.RNScreensPackage"
+            },
+            "webpack": {
+                "modulePaths": true
             }
         },
         "iOSPhotoEditor": {
@@ -2983,13 +2989,13 @@
             }
         },
         "next": {
-            "version": "12.0.9"
+            "version": "12.1.0"
         },
         "@react-native-community/cli-platform-ios": {
             "no-npm": true
         },
         "@react-native-community/cli": {
-            "version": "4.14.0"
+            "version": "^4.10.0"
         },
         "recyclerlistview": {
             "version": "3.0.0",

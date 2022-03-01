@@ -17,10 +17,6 @@ export const registerEngine = async (c, engine, platform, engConfig) => {
     c.runtime.enginesById[engine.config.id] = engine;
     engine.initializeRuntimeConfig(c);
 
-    if (engine.runtimeExtraProps) {
-        c.runtime.runtimeExtraProps = engine.runtimeExtraProps;
-    }
-
     c.runtime.enginesByIndex.push(engine);
     if (engConfig?.packageName) {
         engine.rootPath = _resolvePkgPath(c, engConfig.packageName);
@@ -158,7 +154,7 @@ export const loadEnginePluginDeps = async (c, engineConfigs) => {
         const engineConfig = readObjectSync(ecf.configPath);
 
         if (engineConfig?.plugins) {
-            const projectPlugins = c.files.project.config.plugins;
+            const projectPlugins = c.files.project.config_original.plugins;
             Object.keys(engineConfig?.plugins).forEach((k) => {
                 if (!projectPlugins[k]) {
                     logInfo(`Engine ${ecf.key} requires plugin ${k}. ADDING...DONE`);
@@ -167,7 +163,7 @@ export const loadEnginePluginDeps = async (c, engineConfigs) => {
                 }
             });
             if (addedPlugins.length > 0) {
-                writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
+                writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
             }
             //
         }

@@ -240,7 +240,7 @@ export const generateBuildConfig = (c) => {
 };
 
 export const loadFileExtended = (c, fileObj, pathObj, key) => {
-    loadFile(fileObj, pathObj, key);
+    const result = loadFile(fileObj, pathObj, key);
     if (fileObj[key]) {
         fileObj[`${key}_original`] = { ...fileObj[key] };
     }
@@ -273,6 +273,7 @@ export const loadFileExtended = (c, fileObj, pathObj, key) => {
             }
         }
     }
+    return result;
 };
 
 const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {

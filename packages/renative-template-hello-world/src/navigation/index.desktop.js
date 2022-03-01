@@ -1,15 +1,15 @@
 /* eslint-disable react/prop-types */
 
+import { NavigationContainer } from '@react-navigation/native';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import React, { useContext } from 'react';
 import { StatusBar, View } from 'react-native';
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 import { CastButton } from 'react-native-google-cast';
 import { isFactorDesktop } from 'renative';
-import ScreenHome from '../components/screenHome';
-import ScreenMyPage from '../components/screenMyPage';
-import ScreenModal from '../components/screenModal';
 import Menu from '../components/menu';
+import ScreenHome from '../components/screenHome';
+import ScreenModal from '../components/screenModal';
+import ScreenMyPage from '../components/screenMyPage';
 import { ThemeContext } from '../config';
 
 const Stack = createStackNavigator();
@@ -58,7 +58,7 @@ const App = () => {
         StatusBar.setBarStyle(theme.static.statusBar);
     }, []);
     return (
-        <View style={{ marginTop: 36, flex: 1 }}>
+        <View style={{ flex: 1 }}>
             <NavigationContainer>
                 <ModalStack.Navigator
                     headerMode="none"

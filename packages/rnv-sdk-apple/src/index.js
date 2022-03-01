@@ -366,6 +366,11 @@ const _packageOrRun = (c, bundleAssets, bundleIsDev, appPath, scheme, runScheme,
     return _checkLockAndExec(c, appPath, scheme, runScheme, p);
 };
 
+// const _getReactNativeCli = () => {
+//     const cli = doResolve('@react-native-community/cli');
+//     return path.join(cli, 'build/bin.js');
+// };
+
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
     const appFolderName = getAppFolderName(c, c.platform);
@@ -661,12 +666,13 @@ export const buildXcodeProject = async (c) => {
 
     logTask('buildXcodeProject', 'STARTING xcodebuild BUILD...');
 
-    if (c.buildConfig.platforms[platform].runScheme === 'Release') {
-        await executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`);
-        logSuccess(
-            `Your Build is located in ${chalk().cyan(buildPath)} .`
-        );
-    }
+    // TODO: check if below code is still required
+    // if (c.buildConfig.platforms[platform].runScheme === 'Release') {
+    //     await executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`);
+    //     logSuccess(
+    //         `Your Build is located in ${chalk().cyan(buildPath)} .`
+    //     );
+    // }
 
     const args = ps !== '' ? [...composeXcodeArgsFromCLI(ps), ...p] : p;
 

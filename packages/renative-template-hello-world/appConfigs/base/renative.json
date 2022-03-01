@@ -10,13 +10,13 @@
         "includedPermissions": ["INTERNET"],
         "buildSchemes": {
             "debug": {
-                "description": "Use for local development"
+                "description": "Hello ReNative - Use for local development"
             },
             "test": {
-                "description": "Use to run automation"
+                "description": "Hello ReNative - Use to run automation"
             },
             "release": {
-                "description": "Use for production deployments"
+                "description": "Hello ReNative - Use for production deployments"
             }
         },
         "backgroundColor": "#111111",
@@ -223,6 +223,8 @@
             "appName": "RNVanillaTV",
             "entryFile": "index",
             "certificateProfile": "RNVanillaCert",
+            "package": "NkVRhWHJST",
+            "id": "NkVRhWHJST.RNVanillaTV",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -237,6 +239,8 @@
             "appName": "RNVanillaWatch",
             "entryFile": "index",
             "certificateProfile": "RNVanillaCert",
+            "package": "cHIP2fIRQZ",
+            "id": "cHIP2fIRQZ.RNVanillaWatch",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -251,6 +255,8 @@
             "appName": "RNVanillaMobile",
             "entryFile": "index",
             "certificateProfile": "RNVanillaCert",
+            "package": "PauodvCU2r",
+            "id": "PauodvCU2r.RNVanillaMobile",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false

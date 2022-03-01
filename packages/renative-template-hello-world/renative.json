@@ -74,7 +74,7 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "^0.35.0",
+            "version": "^0.36.0-canary.1",
             "webpack": {
                 "moduleAliases": true
             }
@@ -162,7 +162,7 @@
             ]
         },
         "web": {
-            "engine": "engine-rn-next"
+            "engine": "engine-rn-web"
         },
         "tvos": {
             "engine": "engine-rn-tvos"

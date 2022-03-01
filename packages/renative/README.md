@@ -40,11 +40,11 @@ rnv new
 
 ## Getting Started
 
-Visit <a aria-label="ReNative learn" href="https://renative.org/docs/overview/quickstart">https://renative.org/learn</a> to get started with ReNative.
+Visit [here](https://renative.org/docs/overview/quickstart) to get started with ReNative.
 
 ## Documentation
 
-Visit <a aria-label="ReNative learn" href="https://renative.org/docs/overview/introduction">https://renative.org/docs</a> to view full documentation.
+Visit [here](https://renative.org/docs/overview/introduction) to view full documentation.
 
 Documentation source code can be found at https://github.com/renative-org/renative-docs
 
