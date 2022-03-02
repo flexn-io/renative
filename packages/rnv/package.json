@@ -98,6 +98,7 @@
         "babel-plugin-transform-imports": "1.4.1",
         "babel-plugin-transform-object-rest-spread": "6.26.0",
         "babel-plugin-transform-runtime": "6.23.0",
+        "babel-preset-expo": "9.0.2",
         "babel-polyfill": "6.26.0",
         "chalk": "4.1.0",
         "color-string": "1.5.3",
