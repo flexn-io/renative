@@ -23,7 +23,7 @@
             "version": "0.66.3-1"
         },
         "renative": {
-            "version": "0.35.4-feat-rn-upgrade.1",
+            "version": "0.35.4-feat-rn-upgrade.2",
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
