@@ -4,13 +4,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import React, { useContext } from 'react';
 import { StatusBar, View } from 'react-native';
-import { CastButton } from 'react-native-google-cast';
 import { isFactorDesktop } from 'renative';
 import Menu from '../components/menu';
 import ScreenHome from '../components/screenHome';
 import ScreenModal from '../components/screenModal';
 import ScreenMyPage from '../components/screenMyPage';
 import { ThemeContext } from '../config';
+import { CastButton } from '../imports/react-native-google-cast';
 
 const Stack = createStackNavigator();
 const ModalStack = createStackNavigator();
