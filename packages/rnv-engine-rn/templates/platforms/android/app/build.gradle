@@ -13,6 +13,7 @@ project.ext.react = [
     inputExcludes: ["platformBuilds/**"],
     root: "../../../",
     cliPath: "node_modules/react-native/cli.js",
+    nodeExecutableAndArgs: ["node", "-—max-old-space-size=8192"]
 ]
 
 apply from: "{{PATH_REACT_NATIVE}}/react.gradle"
