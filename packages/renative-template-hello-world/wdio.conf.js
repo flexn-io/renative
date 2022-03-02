@@ -3,7 +3,7 @@ const path = require('path');
 
 let customCapabilities = {};
 if (fs.existsSync(path.join(__dirname, '../../../wdio.capabilities.js'))) {
-    // eslint-disable-next-line global-require
+    // eslint-disable-next-line global-require, import/no-unresolved
     const { capabilities } = require('../../../wdio.capabilities');
     customCapabilities = capabilities;
 }

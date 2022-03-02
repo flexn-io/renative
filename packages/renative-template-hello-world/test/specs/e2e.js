@@ -7,23 +7,14 @@ describe('Test template', () => {
 
     // TESTS ARE WORKING ON THESE PLATFORMS: web, iOS, Android, WEB, tvOS, macOS
     it('--> check if elements exist in Home screen', async () => {
-        if (process.env.PLATFORM === 'tvos' || process.env.PLATFORM === 'androidtv') {
-            await FlexnRunner.getElementById('template-hello-world-home-screen-renative-icon');
-            await FlexnRunner.getElementById('template-hello-world-home-screen-welcome-message');
-            // await FlexnRunner.getElementByText('Hello ReNative!');
-            await FlexnRunner.getElementById('template-hello-world-home-screen-version-number');
-            await FlexnRunner.getElementById('template-hello-world-github-button');
-            await FlexnRunner.getElementById('template-hello-world-renative-button');
-            await FlexnRunner.getElementById('template-hello-world-twitter-button');
-        } else {
-            await FlexnRunner.expectToBeExistingById('template-hello-world-home-screen-renative-icon');
-            await FlexnRunner.expectToBeExistingById('template-hello-world-home-screen-welcome-message');
-            // await FlexnRunner.expectToBeExistingByText('Hello ReNative!');
-            await FlexnRunner.expectToBeExistingById('template-hello-world-home-screen-version-number');
-            await FlexnRunner.expectToBeExistingById('template-hello-world-github-button');
-            await FlexnRunner.expectToBeExistingById('template-hello-world-renative-button');
-            await FlexnRunner.expectToBeExistingById('template-hello-world-twitter-button');
-        }
+        await FlexnRunner.pressButtonRight(2);
+        await FlexnRunner.pressButtonDown(4);
+        await FlexnRunner.expectToBeExistingById('template-hello-world-home-screen-renative-icon');
+        await FlexnRunner.expectToBeExistingById('template-hello-world-home-screen-welcome-message');
+        await FlexnRunner.expectToBeExistingById('template-hello-world-home-screen-version-number');
+        await FlexnRunner.expectToBeExistingById('template-hello-world-github-button');
+        await FlexnRunner.expectToBeExistingById('template-hello-world-renative-button');
+        await FlexnRunner.expectToBeExistingById('template-hello-world-twitter-button');
     });
 
     it('--> check if modal page opens when "My modal" button is selected', async () => {
@@ -84,7 +75,6 @@ describe('Test template', () => {
             await FlexnRunner.pressButtonDown(1);
             await FlexnRunner.pressButtonSelect(2);
             await FlexnRunner.getElementById('template-hello-world-my-page-text-container');
-            // await FlexnRunner.getElementByText('This is my Page!');
             await FlexnRunner.pressButtonBack(1);
             await FlexnRunner.getElementById('template-hello-world-home-screen-renative-icon');
         }
