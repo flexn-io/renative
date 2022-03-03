@@ -74,7 +74,7 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "^0.36.0-canary.1",
+            "version": "^0.36.0-canary.2",
             "webpack": {
                 "moduleAliases": true
             }
