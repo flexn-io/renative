@@ -66,9 +66,8 @@
                     "bundleAssets": false
                 },
                 "test": {
-                    "runScheme": "Release",
+                    "runScheme": "Debug",
                     "bundleAssets": true,
-                    "bundleIsDev": false,
                     "sdk": "iphonesimulator"
                 },
                 "release": {
@@ -89,9 +88,8 @@
                     "bundleAssets": false
                 },
                 "test": {
-                    "runScheme": "Release",
+                    "runScheme": "Debug",
                     "bundleAssets": true,
-                    "bundleIsDev": false,
                     "sdk": "appletvsimulator"
                 },
                 "release": {
@@ -112,9 +110,9 @@
                     "environment": "development"
                 },
                 "test": {
-                    "runScheme": "Release",
+                    "runScheme": "Debug",
                     "bundleAssets": true,
-                    "bundleIsDev": false
+                    "environment": "development"
                 },
                 "release": {
                     "runScheme": "Release",
@@ -136,9 +134,8 @@
                     "bundleAssets": false
                 },
                 "test": {
-                    "signingConfig": "Release",
-                    "bundleAssets": true,
-                    "bundleIsDev": false
+                    "signingConfig": "Debug",
+                    "bundleAssets": true
                 },
                 "release": {
                     "signingConfig": "Release",
@@ -160,9 +157,8 @@
                     "bundleAssets": false
                 },
                 "test": {
-                    "signingConfig": "Release",
-                    "bundleAssets": true,
-                    "bundleIsDev": false
+                    "signingConfig": "Debug",
+                    "bundleAssets": true
                 },
                 "release": {
                     "signingConfig": "Release",
@@ -184,9 +180,8 @@
                     "bundleAssets": false
                 },
                 "test": {
-                    "signingConfig": "Release",
-                    "bundleAssets": true,
-                    "bundleIsDev": false
+                    "signingConfig": "Debug",
+                    "bundleAssets": true
                 },
                 "release": {
                     "signingConfig": "Release",
@@ -208,9 +203,8 @@
                     "bundleAssets": false
                 },
                 "test": {
-                    "signingConfig": "Release",
-                    "bundleAssets": true,
-                    "bundleIsDev": false
+                    "signingConfig": "Debug",
+                    "bundleAssets": true
                 },
                 "release": {
                     "signingConfig": "Release",
@@ -276,6 +270,10 @@
             },
             "buildSchemes": {
                 "debug": {
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "test": {
                     "bundleAssets": false,
                     "environment": "development"
                 },
