@@ -25,6 +25,17 @@ export const hasWebFocusableUI = isWebBased && isFactorTv;
 // LogBox.ignoreAllLogs(true);
 console.disableYellowBox = true; // eslint-disable-line
 
+if (!global.performance) {
+    global.performance = {};
+}
+
+if (typeof global.performance.now !== 'function') {
+    global.performance.now = function () {
+        const performanceNow = global.nativePerformanceNow || Date.now;
+        return performanceNow();
+    };
+}
+
 const staticTheme = {
     primaryFontFamily: 'Inter-Light',
     iconSize: getScaledValue(20),

@@ -122,6 +122,8 @@
             "reactNativeEngine": "hermes",
             "multipleAPKs": false,
             "minSdkVersion": 24,
+            "targetSdkVersion": 30,
+            "compileSdkVersion": 30,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -145,6 +147,8 @@
             "reactNativeEngine": "hermes",
             "multipleAPKs": false,
             "minSdkVersion": 24,
+            "targetSdkVersion": 30,
+            "compileSdkVersion": 30,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -168,6 +172,8 @@
             "reactNativeEngine": "hermes",
             "multipleAPKs": false,
             "minSdkVersion": 24,
+            "targetSdkVersion": 30,
+            "compileSdkVersion": 30,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
