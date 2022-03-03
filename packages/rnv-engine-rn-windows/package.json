@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-windows",
-    "version": "0.35.4-feat-rn-upgrade.2",
+    "version": "0.36.0-canary.1",
     "description": "ReNative Engine to build for Windows platform with react native support.",
     "keywords": [
         "react-native",
@@ -48,7 +48,7 @@
     "peerDependencies": {
         "@react-native-community/cli": "^4.10.0",
         "react-native": "0.63.4",
-        "rnv": "^0.35.4-feat-rn-upgrade.2"
+        "rnv": "^0.36.0-canary.1"
     },
     "private": false,
     "publishConfig": {

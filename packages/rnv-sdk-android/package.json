@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-android",
-    "version": "0.35.4-feat-rn-upgrade.2",
+    "version": "0.36.0-canary.1",
     "description": "ReNative Android SDK",
     "keywords": [],
     "homepage": "https://github.com/renative-org/renative#readme",
@@ -49,7 +49,7 @@
         "typescript": "^4.5.2"
     },
     "peerDependencies": {
-        "rnv": "^0.35.4-feat-rn-upgrade.2"
+        "rnv": "^0.36.0-canary.1"
     },
     "private": false,
     "publishConfig": {
