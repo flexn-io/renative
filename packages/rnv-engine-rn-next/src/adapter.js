@@ -6,7 +6,7 @@ const path = require('path');
 const nextTranspile = require('next-transpile-modules');
 const withCSS = require('@zeit/next-css');
 
-export const withRNV = (config, opts) => {
+export const withRNVNext = (config, opts) => {
     const cnf = {
         ...config,
         images: {
@@ -83,3 +83,19 @@ export const withRNV = (config, opts) => {
 
     return cnf1;
 };
+
+
+export const withRNVBabel = cnf => ({
+    retainLines: true,
+    // presets: ['module:metro-react-native-babel-preset'],
+    presets: ['module:babel-preset-expo'],
+    plugins: [
+        [
+            require.resolve('babel-plugin-module-resolver'),
+            {
+                root: [process.env.RNV_MONO_ROOT || '.'],
+            },
+        ],
+    ],
+    ...cnf
+});
