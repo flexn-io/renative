@@ -4,7 +4,9 @@
     "coverage",
     "dist",
     "src/__tests__",
-    "jest.config.js"
+    "jest.config.js",
+    "scripts",
+    "config"
   ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */

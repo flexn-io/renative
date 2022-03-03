@@ -111,7 +111,7 @@ export const isPlatformSupported = async (c, isGlobalScope = false) => {
     if (
         !c.platform
         || c.platform === true
-        || !c.runtime.availablePlatforms.includes(c.platform)
+        || !c.runtime.availablePlatforms?.includes?.(c.platform)
     ) {
         const { platform } = await inquirerPrompt({
             name: 'platform',

@@ -103,7 +103,7 @@
         "jest-junit": "10.0.0",
         "jest-transform-stub": "2.0.0",
         "jetifier": "1.6.5",
-        "next": "12.0.9",
+        "next": "12.1.0",
         "raf": "3.4.1",
         "react": "17.0.2",
         "react-art": "17.0.2",
@@ -135,5 +135,17 @@
     "private": false,
     "publishConfig": {
         "access": "public"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
     }
 }

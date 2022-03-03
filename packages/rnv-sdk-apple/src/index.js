@@ -666,12 +666,13 @@ export const buildXcodeProject = async (c) => {
 
     logTask('buildXcodeProject', 'STARTING xcodebuild BUILD...');
 
-    if (c.buildConfig.platforms[platform].runScheme === 'Release') {
-        await executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`);
-        logSuccess(
-            `Your Build is located in ${chalk().cyan(buildPath)} .`
-        );
-    }
+    // TODO: check if below code is still required
+    // if (c.buildConfig.platforms[platform].runScheme === 'Release') {
+    //     await executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`);
+    //     logSuccess(
+    //         `Your Build is located in ${chalk().cyan(buildPath)} .`
+    //     );
+    // }
 
     const args = ps !== '' ? [...composeXcodeArgsFromCLI(ps), ...p] : p;
 

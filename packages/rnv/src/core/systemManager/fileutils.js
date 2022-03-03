@@ -94,7 +94,7 @@ export const copyFileSync = (source, target, skipOverride, timestampPathsConfig)
     }
 };
 
-const SKIP_INJECT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.svg', '.jar', '.zip'];
+const SKIP_INJECT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.svg', '.jar', '.zip', '.ico'];
 export const writeCleanFile = (source, destination, overrides, timestampPathsConfig, c) => {
     // logTask(`writeCleanFile`)
     // console.log('writeCleanFile', destination);

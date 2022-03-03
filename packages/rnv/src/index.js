@@ -36,7 +36,7 @@ global.RNV_ANALYTICS = Analytics;
 
 export const initializeBuilder = async (cmd, subCmd, process, program) => {
     Analytics.initialize();
-    FileUtils.configureFilesystem(Resolver.getConfigProp, Resolver.doResolve, Utils.isSystemWin);
+    FileUtils.configureFilesystem(Common.getConfigProp, Resolver.doResolve, Utils.isSystemWin);
     const c = ConfigManager.createRnvConfig(program, process, cmd, subCmd);
     Logger.logInitialize();
 
