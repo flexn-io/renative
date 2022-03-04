@@ -134,7 +134,6 @@
             "html-webpack-harddisk-plugin",
             "webpack",
             "mini-css-extract-plugin",
-            "@zeit/next-css",
             "@expo/next-adapter",
             "@expo/webpack-config",
             "@expo/**",
@@ -145,6 +144,10 @@
     "resolutions": {
         "@react-native-community/cli": "^6.0.0",
         "@react-native-community/cli-platform-ios": "^6.0.0",
-        "@react-native-community/cli-platform-android": "^6.0.0"
+        "@react-native-community/cli-platform-android": "^6.0.0",
+        "axios": "^0.21.2",
+        "plist": "^3.0.4",
+        "merge": "^2.1.1",
+        "react-dev-utils": "^12.0.0"
     }
 }

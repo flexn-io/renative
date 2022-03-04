@@ -33,10 +33,10 @@
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
-        "react-native-windows": "0.63.36"
+        "react-native-windows": "0.67.3"
     },
     "devDependencies": {
-        "@babel/cli": "7.8.3",
+        "@babel/cli": "7.17.6",
         "@babel/core": "7.8.3",
         "@babel/node": "7.8.3",
         "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",

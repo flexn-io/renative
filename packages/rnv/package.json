@@ -76,7 +76,7 @@
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
-        "@babel/cli": "7.8.3",
+        "@babel/cli": "7.17.6",
         "@babel/core": "7.8.3",
         "@babel/helper-builder-react-jsx": "7.14.5",
         "@babel/plugin-proposal-class-properties": "7.8.3",
@@ -124,7 +124,7 @@
         "shelljs": "0.8.5",
         "source-map-loader": "0.2.4",
         "source-map-support": "0.5.13",
-        "strip-ansi": "5.2.0",
+        "strip-ansi": "7.0.1",
         "svg2js": "0.0.4-alpha1",
         "tar": "4.4.19",
         "xml2js": "0.4.23"

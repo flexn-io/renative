@@ -42,13 +42,11 @@
         "electron-notarize": "1.0.0",
         "html-webpack-harddisk-plugin": "1.0.2",
         "html-webpack-plugin": "4.5.1",
-        "webpack": "4.44.2",
         "webpack-bundle-analyzer": "3.5.1",
-        "webpack-merge": "4.1.4",
         "babel-preset-expo": "9.0.2"
     },
     "devDependencies": {
-        "@babel/cli": "7.8.3",
+        "@babel/cli": "7.17.6",
         "@babel/core": "7.8.3",
         "@babel/node": "7.8.3",
         "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",

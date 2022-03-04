@@ -67,7 +67,7 @@
     "dependencies": {},
     "devDependencies": {
         "@babel/runtime": "7.12.5",
-        "@lightningjs/cli": "2.7.1",
+        "@lightningjs/cli": "2.7.2",
         "@lightningjs/sdk": "4.3.3",
         "@noriginmedia/react-spatial-navigation": "2.12.1",
         "@reach/router": "1.3.4",
@@ -121,7 +121,7 @@
         "react-native-vector-icons": "8.1.0",
         "react-native-web": "0.17.5",
         "react-native-web-image-loader": "0.0.5",
-        "react-native-windows": "0.63.36",
+        "react-native-windows": "0.67.3",
         "renative": "0.36.0-canary.2",
         "renative-template-blank": "0.36.0-canary.2",
         "renative-template-hello-world": "0.36.0-canary.2",
