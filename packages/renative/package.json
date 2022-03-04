@@ -1,6 +1,6 @@
 {
     "name": "renative",
-    "version": "0.36.0-canary.1",
+    "version": "0.36.0-canary.2",
     "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Linux` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -72,7 +72,7 @@
         "history": "^4.9.0",
         "react": "17.0.2",
         "react-dom": "17.0.2",
-        "react-native": "0.63.4"
+        "react-native": "0.67.2"
     },
     "devDependencies": {
         "babel-eslint": "8.2.6",

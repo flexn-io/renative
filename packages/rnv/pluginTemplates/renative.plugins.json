@@ -1,7 +1,7 @@
 {
     "pluginTemplates": {
         "react-native": {
-            "version": "0.63.4",
+            "version": "0.67.2",
             "android": {
                 "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }",
                 "path": "react-native"
@@ -20,10 +20,10 @@
             }
         },
         "react-native-tvos": {
-            "version": "npm:react-native-tvos@0.63.4-0"
+            "version": "0.66.3-1"
         },
         "renative": {
-            "version": "0.36.0-canary.1",
+            "version": "0.36.0-canary.2",
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
@@ -2992,10 +2992,13 @@
             "version": "12.1.0"
         },
         "@react-native-community/cli-platform-ios": {
-            "no-npm": true
+            "version": "^6.0.0"
+        },
+        "@react-native-community/cli-platform-android": {
+            "version": "^6.0.0"
         },
         "@react-native-community/cli": {
-            "version": "^4.10.0"
+            "version": "^6.0.0"
         },
         "recyclerlistview": {
             "version": "3.0.0",
