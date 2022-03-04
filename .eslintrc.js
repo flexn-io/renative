@@ -18,6 +18,7 @@ module.exports = {
     plugins: ['jest', 'detox', 'mocha'],
     rules: {
         'arrow-body-style': ['warn', 'as-needed'],
+        'import/no-cycle': ['warn'],
         camelcase: 'off',
         'class-methods-use-this': 'off',
         'consistent-return': 0,
@@ -88,7 +89,7 @@ module.exports = {
         'max-len': [
             'warn',
             { code: 120, ignoreComments: true, ignoreStrings: true }
-        ], 
+        ],
         'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix']
     }
 };
