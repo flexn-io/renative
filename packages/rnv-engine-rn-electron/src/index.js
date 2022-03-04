@@ -8,6 +8,7 @@ import taskRnvExport from './tasks/task.rnv.export';
 import taskRnvPackage from './tasks/task.rnv.package';
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvStart from './tasks/task.rnv.start';
+import { withRNVBabel } from './adapter';
 
 
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
@@ -56,3 +57,5 @@ export default {
     }
 
 };
+
+export { withRNVBabel };

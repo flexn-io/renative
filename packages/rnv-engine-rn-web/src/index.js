@@ -1,4 +1,5 @@
 import { EngineManager, Config } from 'rnv';
+import { withRNVBabel } from './adapter';
 import CNF from '../renative.engine.json';
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvPackage from './tasks/task.rnv.package';
@@ -148,3 +149,5 @@ export default {
     }
 
 };
+
+export { withRNVBabel };
