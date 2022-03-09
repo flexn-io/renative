@@ -205,7 +205,7 @@ export const logSummary = (header = 'SUMMARY') => {
     if (cnf().buildConfig?._meta?.currentAppConfigId) {
         str += printIntoBox(
             `App Config (-c): ${_highlightColor(
-                    cnf().buildConfig._meta?.currentAppConfigId
+                cnf().buildConfig._meta?.currentAppConfigId
             )}`,
             1
         );

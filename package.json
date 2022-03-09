@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper",
-    "version": "0.36.0-canary.2",
+    "version": "0.36.0-canary.3",
     "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`, `Linux` and `Chromecast` platforms",
     "keywords": [
         "android tv",
@@ -84,20 +84,21 @@
     "devDependencies": {
         "@babel/plugin-transform-runtime": "7.8.3",
         "@babel/runtime": "7.12.5",
-        "babel-eslint": "8.2.6",
+        "@babel/eslint-parser": "7.17.0",
+        "@babel/preset-react": "7.16.7",
         "babel-jest": "26.6.3",
         "babel-plugin-module-resolver": "3.2.0",
         "babel-plugin-polyfill-corejs2": "0.2.2",
         "eslint": "8.10.0",
-        "eslint-config-airbnb": "17.0.0",
+        "eslint-config-airbnb": "19.0.4",
         "eslint-plugin-detox": "1.0.0",
-        "eslint-plugin-import": "2.20.1",
+        "eslint-plugin-import": "2.25.4",
         "eslint-plugin-jest": "23.8.2",
         "eslint-plugin-jsx-a11y": "6.2.3",
         "eslint-plugin-mocha": "6.3.0",
         "eslint-plugin-prettier": "3.0.1",
-        "eslint-plugin-react": "7.10.0",
-        "eslint-plugin-react-hooks": "2.5.0",
+        "eslint-plugin-react": "7.29.3",
+        "eslint-plugin-react-hooks": "4.3.0",
         "husky": "4.2.5",
         "jest": "26.6.3",
         "lerna": "4.0.0",
@@ -105,7 +106,7 @@
         "nodemon": "2.0.15",
         "prettier": "1.17.1",
         "pretty-quick": "1.11.0",
-        "rnv": "0.36.0-canary.2",
+        "rnv": "0.36.0-canary.3",
         "ttab": "^0.7.2"
     },
     "engines": {
