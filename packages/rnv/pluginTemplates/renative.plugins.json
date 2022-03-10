@@ -2904,7 +2904,7 @@
             }
         },
         "@noriginmedia/react-spatial-navigation": {
-            "version": "2.12.1"
+            "version": "2.12.9"
         },
         "react-native-view-shot": {
             "version": "3.1.2",
@@ -3069,7 +3069,7 @@
             "version": "4.3.3"
         },
         "@lightningjs/cli": {
-            "version": "2.7.1"
+            "version": "2.7.2"
         },
         "react-native-carplay": {
             "version": "2.0.0",
@@ -3102,7 +3102,7 @@
             "version": "0.63.12"
         },
         "react-native-windows": {
-            "version": "0.63.36"
+            "version": "0.67.3"
         }
     }
 }

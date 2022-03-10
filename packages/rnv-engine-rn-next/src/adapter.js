@@ -1,10 +1,12 @@
 const { withExpo } = require('@expo/next-adapter');
 const withImages = require('next-images');
-const withOptimizedImages = require('next-optimized-images');
+// DEPRECATED
+// const withOptimizedImages = require('next-optimized-images');
 const withFonts = require('next-fonts');
 const path = require('path');
 const nextTranspile = require('next-transpile-modules');
-const withCSS = require('@zeit/next-css');
+// DEPRECATED
+// const withCSS = require('@zeit/next-css');
 
 export const withRNVNext = (config, opts) => {
     const cnf = {
@@ -70,13 +72,16 @@ export const withRNVNext = (config, opts) => {
     const withTM = nextTranspile(transModules);
     let cnf1;
     if (opts?.enableOptimizedImages) {
-        cnf1 = withExpo(withFonts(withOptimizedImages(withTM(cnf))));
+        // enableOptimizedImages DEPRECATED
+        // cnf1 = withExpo(withFonts(withOptimizedImages(withTM(cnf))));
+        cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
     } else {
         cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
     }
-    if (opts?.enableNextCss) {
-        cnf1 = withCSS(cnf1);
-    }
+    // if (opts?.enableNextCss) {
+    // enableNextCss DEPRECATED
+    //     cnf1 = withCSS(cnf1);
+    // }
     if (process.env.RNV_EXTENSIONS) {
         cnf1.pageExtensions = process.env.RNV_EXTENSIONS.split(',');
     }

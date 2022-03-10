@@ -152,7 +152,7 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
     }
 
     const parentPlugin = _getMergedPlugin(c,
-      c.buildConfig.pluginTemplates?.[scope]?.[pluginKey], pluginKey, scope, scopes, true);
+        c.buildConfig.pluginTemplates?.[scope]?.[pluginKey], pluginKey, scope, scopes, true);
     let currentPlugin = plugin;
     if (typeof plugin === 'string' || plugin instanceof String) {
         currentPlugin = {};

@@ -539,8 +539,8 @@ const _setAutomaticSigning = async (c) => {
     logTask(`_setAutomaticSigning:${c.platform}`);
 
     const scheme = c.files.appConfig?.config?.platforms?.[c.platform]?.buildSchemes?.[
-            c.runtime.scheme
-        ];
+        c.runtime.scheme
+    ];
     if (scheme) {
         scheme.provisioningStyle = 'Automatic';
         writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
