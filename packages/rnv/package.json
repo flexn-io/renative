@@ -128,7 +128,6 @@
         "tar": "4.4.19",
         "xml2js": "0.4.23"
     },
-    "devDependencies": {},
     "engines": {
         "node": ">=6.0.0",
         "npm": ">=4.0.0"

@@ -175,6 +175,9 @@
         },
         "xbox": {
             "engine": "engine-rn-windows"
+        },
+        "ios": {
+            "deploymentTarget": "13.0"
         }
     },
     "plugins": {

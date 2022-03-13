@@ -14,7 +14,7 @@ const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.
 let cmdValue;
 let cmdOption;
 
-program.version(packageJson.version);
+program.version(packageJson.version, '-v, --version', 'output current version');
 
 CONSTANTS.PARAMS.withAll().forEach((param) => {
     let cmd = '';
