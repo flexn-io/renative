@@ -112,6 +112,7 @@
         "kill-port": "1.6.1",
         "lodash.get": "4.4.2",
         "lodash.set": "4.3.2",
+        "lodash.intersection": "4.4.0",
         "ncp": "2.0.0",
         "netcat": "1.4.0",
         "node-fetch": "2.6.7",

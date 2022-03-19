@@ -99,5 +99,4 @@ export default {
     projectDirName: '',
     ejectPlatform: null,
     platforms: null
-
 };
