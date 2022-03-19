@@ -38,7 +38,7 @@ export const checkAndBootstrapIfRequired = async (c) => {
     logTask('checkAndBootstrapIfRequired');
     const { template } = c.program;
     if (!c.paths.project.configExists && template) {
-        await executeAsync(`${isYarnInstalled ? 'yarn' : 'npm'} add ${template}`, {
+        await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${template}`, {
             cwd: c.paths.project.dir
         });
 
