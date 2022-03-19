@@ -162,6 +162,8 @@ const _getInstallScript = (c) => {
     }
 };
 
+export const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
+
 export const installPackageDependencies = async (c, failOnError = false) => {
     c.runtime.forceBuildHookRebuild = true;
     const customScript = _getInstallScript(c);
@@ -174,7 +176,6 @@ export const installPackageDependencies = async (c, failOnError = false) => {
         return true;
     }
 
-    const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
     const yarnLockPath = path.join(c.paths.project.dir, 'yarn.lock');
     const npmLockPath = path.join(c.paths.project.dir, 'package-lock.json');
     let command = 'npm install';
