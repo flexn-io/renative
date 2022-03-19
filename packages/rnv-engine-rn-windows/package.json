@@ -33,7 +33,8 @@
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
-        "react-native-windows": "0.67.3"
+        "react-native-windows": "0.67.3",
+        "xmldom": "0.6.0"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",

@@ -39,7 +39,6 @@
         "@types/node": "^16.11.7",
         "@typescript-eslint/eslint-plugin": "^5.4.0",
         "@typescript-eslint/parser": "^5.4.0",
-        "husky": "4.2.5",
         "jest": "^27.3.1",
         "lint-staged": "12.3.4",
         "ts-jest": "^27.0.7",
