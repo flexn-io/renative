@@ -6,7 +6,7 @@
     "react": "source:rnv",
     "react-art": "source:rnv",
     "react-dom": "source:rnv",
-    "react-native": "0.63.4",
+    "react-native": "source:rnv",
     "react-native-macos": "source:rnv",
     "@react-native-community/cli-platform-ios": "source:rnv",
     "@react-native-community/cli": "source:rnv"

@@ -71,7 +71,7 @@
         "git-commit": "rnv hooks run -x gitCommit -r",
         "git-commit-tag": "rnv hooks run -x gitCommitAndTag -r",
         "git-tag": "rnv hooks run -x gitTag -r",
-        "link:rnv": "cd packages/rnv && (npm unlink rnv || true) && npm link",
+        "link:rnv": "npm r rnv -g && cd packages/rnv && npm link",
         "lint": "npx eslint ./packages",
         "postinstall": "lerna link --force-local && npx jetify",
         "test": "lerna run test --stream",
@@ -79,7 +79,7 @@
     },
     "dependencies": {
         "deepmerge": "3.2.0",
-        "simple-git": "2.20.1"
+        "simple-git": "3.3.0"
     },
     "devDependencies": {
         "@babel/eslint-parser": "7.17.0",
