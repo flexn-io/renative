@@ -12,6 +12,7 @@ import { IOS,
     TASK_WORKSPACE_CONFIGURE,
     TASK_TARGET_LAUNCH,
     PARAMS } from '../../core/constants';
+import { checkSdk } from '../../core/sdkManager/installer';
 
 import { launchTizenSimulator } from '../../core/sdkManager/deviceUtils/tizen';
 import { launchWebOSimulator } from '../../core/sdkManager/deviceUtils/webos';
@@ -28,6 +29,8 @@ export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
 
     const { platform, program } = c;
     const target = program.target || c.files.workspace.config.defaultTargets[platform];
+
+    await checkSdk(c);
 
     switch (platform) {
         case ANDROID:
