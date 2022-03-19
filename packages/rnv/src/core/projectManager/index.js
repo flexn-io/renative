@@ -25,7 +25,7 @@ import {
     resolvePackage,
     removeDirs,
 } from '../systemManager/fileutils';
-import { installPackageDependencies } from '../systemManager/npmUtils';
+import { installPackageDependencies, isYarnInstalled } from '../systemManager/npmUtils';
 import { executeAsync } from '../systemManager/exec';
 
 import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../systemManager/logger';
@@ -38,7 +38,7 @@ export const checkAndBootstrapIfRequired = async (c) => {
     logTask('checkAndBootstrapIfRequired');
     const { template } = c.program;
     if (!c.paths.project.configExists && template) {
-        await executeAsync(`npx yarn add ${template}`, {
+        await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${template}`, {
             cwd: c.paths.project.dir
         });
 

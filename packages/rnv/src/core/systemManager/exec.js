@@ -537,5 +537,6 @@ export default {
     executeAsync,
     execCLI,
     openCommand,
-    executeTelnet
+    executeTelnet,
+    commandExistsSync
 };

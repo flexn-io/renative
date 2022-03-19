@@ -28,7 +28,7 @@ import {
     printIntoBox
 } from '../../core/systemManager/logger';
 import {
-    checkNpxIsInstalled,
+    isYarnInstalled,
     listAndSelectNpmVersion
 } from '../../core/systemManager/npmUtils';
 
@@ -345,10 +345,8 @@ export const taskRnvNew = async (c) => {
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
 
-    await checkNpxIsInstalled();
-
     await executeAsync(
-        `npx yarn add ${selectedInputTemplate}@${inputTemplateVersion}`,
+        `${isYarnInstalled() ? 'yarn' : 'npm'} add ${selectedInputTemplate}@${inputTemplateVersion}`,
         {
             cwd: c.paths.project.dir,
         }
@@ -356,7 +354,7 @@ export const taskRnvNew = async (c) => {
 
     // Check if node_modules folder exists
     if (!fsExistsSync(path.join(c.paths.project.dir, 'node_modules'))) {
-        logError(`npx yarn add ${selectedInputTemplate}@${inputTemplateVersion
+        logError(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${selectedInputTemplate}@${inputTemplateVersion
         } : FAILED. this could happen if you have package.json accidentally created somewhere in parent directory`);
         return;
     }
