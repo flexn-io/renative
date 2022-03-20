@@ -22,7 +22,6 @@ const VERSIONED_PACKAGES = [
     'sdk-android',
     'sdk-webpack',
     'renative',
-    'renative',
 ];
 
 const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer = '') => {

@@ -1,7 +1,14 @@
 {
     "projectTemplates": {
-        "@rnv/template-starter": {},
-        "@rnv/template-blank": {}
+        "@rnv/template-starter": {
+            "description": "Multiplatform starter kit"
+        },
+        "@rnv/template-blank": {
+            "description": "Blank renative template with no UI"
+        },
+        "@flexn/template": {
+            "description": "Advanced multiplatform template using flexn SDK"
+        }
     },
     "engineTemplates": {
         "@rnv/engine-rn": {
