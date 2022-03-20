@@ -87,7 +87,7 @@ export const updateVersions = async (c) => {
         ),
         {
             pluginTemplates: {
-                renative: v
+                '@rnv/renative': v
             }
         }
     );

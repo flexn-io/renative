@@ -1,11 +1,20 @@
 {
     "templateConfig": {
         "includedPaths": [
-          "buildHooks",
-          "src",
-          "index.js"
+            "buildHooks",
+            "src",
+            "index.js",
+            "tsconfig.json"
         ],
         "packageTemplate": {
+            "packageTemplate": {
+                "devDependencies": {
+                    "typescript": "4.5.4",
+                    "@types/react": "17.0.41",
+                    "@types/react-dom": "17.0.11",
+                    "@types/react-native": "0.67.2"
+                }
+            },
             "browserslist": {
                 "production": [
                     ">0.2%",
@@ -20,9 +29,7 @@
             }
         }
     },
-    "platforms": {
-      
-    },
+    "platforms": {},
     "plugins": {},
-    "extendsTemplate": "renative.json"
+    "extendsTemplate": "@rnv/template-starter/renative.json"
 }

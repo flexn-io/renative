@@ -62,7 +62,8 @@ export const checkAndCreateProjectPackage = async (c) => {
         pkgJson.name = packageName;
         pkgJson.version = version;
         pkgJson.dependencies = pkgJson.dependencies || {};
-        pkgJson.dependencies.renative = rnvVersion;
+        // No longer good option to assume same version
+        // pkgJson.dependencies.renative = rnvVersion;
         pkgJson.devDependencies = pkgJson.devDependencies || {};
         pkgJson.devDependencies.rnv = rnvVersion;
 

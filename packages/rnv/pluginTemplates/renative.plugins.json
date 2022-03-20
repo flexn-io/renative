@@ -23,14 +23,14 @@
             "version": "0.66.3-1"
         },
         "renative": {
-            "version": "0.36.0-canary.6",
+            "version": "0.36.0-canary.4",
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
             }
         },
         "@rnv/renative": {
-            "version": "0.36.0-canary.4",
+            "version": "0.36.0-canary.6",
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true

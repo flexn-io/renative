@@ -213,7 +213,8 @@
             "props": {
                 "applicationID": "CC1AD845"
             }
-        }
+        },
+        "@flexn/typescript": "0.1.4"
     },
     "permissions": {
         "ios": {},
