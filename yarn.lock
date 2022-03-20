@@ -20591,7 +20591,7 @@ promzard@^0.3.0:
   dependencies:
     read "1"
 
-prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -20996,13 +20996,6 @@ react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   resolved "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-native-action-button@^2.8.5:
-  version "2.8.5"
-  resolved "https://registry.npmjs.org/react-native-action-button/-/react-native-action-button-2.8.5.tgz"
-  integrity sha512-BvGZpzuGeuFR2Y6j93+vKiSqDhsF87VHvNXFs/qEYKfzT4b1ASAT/GQbgS6gNt4jRJCUnJWYrIwlBzRjesZQmQ==
-  dependencies:
-    prop-types "^15.5.10"
-
 react-native-codegen@^0.0.12:
   version "0.0.12"
   resolved "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.0.12.tgz"
@@ -21041,12 +21034,10 @@ react-native-gesture-handler@1.10.3:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-"react-native-google-cast@github:hosek/react-native-google-cast#sdk4.4.5":
-  version "3.3.0"
-  resolved "git+ssh://git@github.com/hosek/react-native-google-cast.git#0fec1d6853623a42c65681337ffb431f04202178"
-  dependencies:
-    prop-types "^15.6.0"
-    react-native-action-button "^2.8.5"
+react-native-google-cast@4.2.4:
+  version "4.2.4"
+  resolved "https://registry.npmjs.org/react-native-google-cast/-/react-native-google-cast-4.2.4.tgz#4e89c8f088d47049a51166aaab47c18639c61e99"
+  integrity sha512-GAP5kX6Fl5aktkr8FrU2qCxes5INKh+siKgWcBZxxVCzw6jNbN6SToqR1M0Y7ny9iMOC0ykK4KKXXJo05dWVIQ==
 
 react-native-iphone-x-helper@^1.2.1:
   version "1.3.1"

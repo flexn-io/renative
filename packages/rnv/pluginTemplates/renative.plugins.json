@@ -2775,7 +2775,7 @@
             }
         },
         "react-native-google-cast": {
-            "version": "github:hosek/react-native-google-cast#sdk4.4.5",
+            "version": "4.2.4",
             "props": {
                 "applicationID": "CC1AD845"
             },

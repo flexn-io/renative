@@ -23,7 +23,7 @@ const capabilities = {
         {
             platformName: 'tvOS',
             deviceName: 'Apple TV',
-            platformVersion: '15.0',
+            // platformVersion: '15.0',
             automationName: 'XCUITest',
             bundleId: 'renative.helloworld.test',
             app: 'platformBuilds/template_tvos/build/RNVAppTVOS/Build/Products/Debug-appletvsimulator/RNVAppTVOS.app'
