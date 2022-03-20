@@ -34,6 +34,7 @@ rnv-config.local.json
 metro.config.local.js
 
 
+vendor/
 appConfigs/base/assets
 !appConfigs/base/assets/runtime
 

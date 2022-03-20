@@ -33,7 +33,7 @@
     },
     "dependencies": {},
     "devDependencies": {
-        "@babel/cli": "7.8.3",
+        "@babel/cli": "7.17.6",
         "@babel/core": "7.8.3",
         "@babel/node": "7.8.3",
         "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
@@ -41,7 +41,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.36.0-canary.1"
+        "rnv": "^0.36.0-canary.4"
     },
     "private": false,
     "publishConfig": {

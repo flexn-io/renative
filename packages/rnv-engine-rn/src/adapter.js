@@ -30,7 +30,7 @@ function blacklist(additionalBlacklist) {
     );
 }
 
-export const withRNV = (config) => {
+export const withRNVMetro = (config) => {
     const projectPath = process.env.RNV_PROJECT_ROOT || process.cwd();
 
     const watchFolders = [path.resolve(projectPath, 'node_modules')];
@@ -49,6 +49,7 @@ export const withRNV = (config) => {
         transformer: {
             getTransformOptions: async () => ({
                 transform: {
+                    experimentalImportSupport: false,
                     // this defeats the RCTDeviceEventEmitter is not a registered callable module
                     inlineRequires: true,
                 },
@@ -82,3 +83,17 @@ export const withRNV = (config) => {
 
     return cnf;
 };
+
+export const withRNVBabel = cnf => ({
+    retainLines: true,
+    presets: ['module:metro-react-native-babel-preset'],
+    plugins: [
+        [
+            require.resolve('babel-plugin-module-resolver'),
+            {
+                root: [process.env.RNV_MONO_ROOT || '.'],
+            },
+        ],
+    ],
+    ...cnf
+});

@@ -8,7 +8,7 @@ use_frameworks!
 
 target 'RNVApp' do
   pod 'FBLazyVector', :path => "{{PATH_REACT_NATIVE}}/Libraries/FBLazyVector"
-  pod 'FBReactNativeSpec', :path => "{{PATH_REACT_NATIVE}}/Libraries/FBReactNativeSpec"
+  pod 'FBReactNativeSpec', :path => "{{PATH_REACT_NATIVE}}/React/FBReactNativeSpec"
   pod 'RCTRequired', :path => "{{PATH_REACT_NATIVE}}/Libraries/RCTRequired"
   pod 'RCTTypeSafety', :path => "{{PATH_REACT_NATIVE}}/Libraries/TypeSafety"
   pod 'React', :path => '{{PATH_REACT_NATIVE}}/'
@@ -36,7 +36,12 @@ target 'RNVApp' do
 
   pod 'DoubleConversion', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/glog.podspec'
-  pod 'Folly', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/Folly.podspec'
+  pod 'boost', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/boost.podspec'
+  pod 'RCT-Folly', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/RCT-Folly.podspec'
+
+  pod 'React-perflogger', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/reactperflogger'
+  pod 'React-logger', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/logger'
+  pod 'React-runtimeexecutor', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/runtimeexecutor'
 
 {{PLUGIN_PATHS}}
 
@@ -64,7 +69,6 @@ pre_install do |installer|
   end
 end
 
-
 post_install do |installer|
   {{INJECT_POST_INSTALL}}
   installer.pods_project.targets.each do |target|
@@ -75,6 +79,19 @@ post_install do |installer|
             end
         end
     end
+
+    # Apple Silicon builds require a library path tweak for Swift library discovery or "symbol not found" for swift things
+    installer.aggregate_targets.each do |aggregate_target| 
+      aggregate_target.user_project.native_targets.each do |target|
+        target.build_configurations.each do |config|
+          config.build_settings['LIBRARY_SEARCH_PATHS'] = ['$(SDKROOT)/usr/lib/swift', '$(inherited)']
+        end
+      end
+      aggregate_target.user_project.save
+    end
+
+    # https://github.com/reactwg/react-native-releases/discussions/1
+    `sed -i -e 's/defined(TARGET_OS_OSX) || TARGET_OS_OSX/& || TARGET_OS_MACCATALYST/g' Pods/RCT-Folly/folly/portability/Time.h`
 end
 
 {{PLUGIN_PODFILE_INJECT}}

@@ -74,7 +74,7 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "^0.36.0-canary.1",
+            "version": "^0.36.0-canary.4",
             "webpack": {
                 "moduleAliases": true
             }
@@ -175,6 +175,9 @@
         },
         "xbox": {
             "engine": "engine-rn-windows"
+        },
+        "ios": {
+            "deploymentTarget": "13.0"
         }
     },
     "plugins": {

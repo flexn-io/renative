@@ -74,7 +74,7 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "^0.36.0-canary.1",
+            "version": "^0.36.0-canary.4",
             "webpack": {
                 "moduleAliases": true
             }
@@ -91,7 +91,7 @@
                         "tag": "application",
                         "android:name": ".MainApplication",
                         "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 28
+                        "tools:targetApi": 30
                     }
                 ]
             },
@@ -112,7 +112,7 @@
                         "tag": "application",
                         "android:name": ".MainApplication",
                         "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 28
+                        "tools:targetApi": 30
                     }
                 ]
             },
@@ -131,7 +131,7 @@
                         "tag": "application",
                         "android:name": ".MainApplication",
                         "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 28
+                        "tools:targetApi": 30
                     }
                 ]
             },
@@ -152,7 +152,7 @@
                         "tag": "application",
                         "android:name": ".MainApplication",
                         "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 28
+                        "tools:targetApi": 30
                     }
                 ]
             },
@@ -175,6 +175,9 @@
         },
         "xbox": {
             "engine": "engine-rn-windows"
+        },
+        "ios": {
+            "deploymentTarget": "13.0"
         }
     },
     "plugins": {
@@ -196,7 +199,11 @@
         "@react-navigation/material-top-tabs": "5.1.1",
         "@react-navigation/web": "1.0.0-alpha.9",
         "@react-native-community/masked-view": "source:rnv",
-        "@react-native-community/viewpager": "source:rnv",
+        "@react-native-community/viewpager": {
+            "ios": {
+                "enabled": false
+            }
+        },
         "react-native-safe-area-context": "source:rnv",
         "@noriginmedia/react-spatial-navigation": "source:rnv",
         "react-native-safe-area-view": "source:rnv",

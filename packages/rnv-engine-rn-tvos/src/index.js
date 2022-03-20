@@ -13,9 +13,7 @@ import taskRnvCryptoUpdateProfiles from './tasks/task.rnv.crypto.updateProfiles'
 import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfiles';
 import taskRnvLog from './tasks/task.rnv.log';
 import CNF from '../renative.engine.json';
-import { createEngineAlias } from './adapter';
-
-export { withRNV } from './adapter';
+import { createEngineAlias, withRNVMetro, withRNVBabel } from './adapter';
 
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
@@ -66,3 +64,7 @@ export default {
         },
     }
 };
+
+const withRNV = withRNVMetro;
+
+export { withRNVMetro, withRNV, withRNVBabel };

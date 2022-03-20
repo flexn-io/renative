@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-windows",
-    "version": "0.36.0-canary.1",
+    "version": "0.36.0-canary.4",
     "description": "ReNative Engine to build for Windows platform with react native support.",
     "keywords": [
         "react-native",
@@ -33,22 +33,23 @@
         "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
-        "react-native-windows": "0.63.36"
+        "react-native-windows": "0.67.3",
+        "xmldom": "0.6.0"
     },
     "devDependencies": {
-        "@babel/cli": "7.8.3",
+        "@babel/cli": "7.17.6",
         "@babel/core": "7.8.3",
         "@babel/node": "7.8.3",
         "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
         "@babel/plugin-proposal-optional-chaining": "7.8.3",
         "@babel/preset-env": "7.8.7",
-        "@react-native-windows/cli": "0.63.12",
+        "@react-native-windows/cli": "0.67.1",
         "metro": "0.59.0"
     },
     "peerDependencies": {
-        "@react-native-community/cli": "^4.10.0",
-        "react-native": "0.63.4",
-        "rnv": "^0.36.0-canary.1"
+        "@react-native-community/cli": "*",
+        "react-native": "*",
+        "rnv": "^0.36.0-canary.4"
     },
     "private": false,
     "publishConfig": {

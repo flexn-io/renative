@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import merge from 'deepmerge';
 import path from 'path';
+import intersection from 'lodash.intersection';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getAppFolder, getBuildsFolder, getConfigProp } from '../common';
 import { parseRenativeConfigs, writeRenativeConfigFile } from '../configManager';
@@ -36,8 +37,9 @@ export const getPluginList = (c, isUpdate = false) => {
             const p = plugins[k];
 
             let platforms = '';
-            c.runtime.availablePlatforms.forEach((v) => {
-                if (p[v]) platforms += `${v}, `;
+            const pluginPlatforms = intersection(c.runtime.supportedPlatforms.map(pl => pl.platform), Object.keys(p));
+            pluginPlatforms.forEach((v) => {
+                platforms += `${v}, `;
             });
             if (platforms.length) {
                 platforms = platforms.slice(0, platforms.length - 2);
@@ -70,11 +72,11 @@ export const getPluginList = (c, isUpdate = false) => {
             } else if (!isUpdate) {
                 output.plugins.push(k);
                 output.asString += ` [${i}]> ${chalk().bold(k)} (${chalk().grey(
-                    p.version
+                    p['no-npm'] ? 'no-npm' : p.version
                 )}) [${platforms}] - ${installedString}\n`;
                 output.asArray.push({
                     name: `${k} (${chalk().grey(
-                        p.version
+                        p['no-npm'] ? 'no-npm' : p.version
                     )}) [${platforms}] - ${installedString}`,
                     value: k
                 });
@@ -152,7 +154,7 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
     }
 
     const parentPlugin = _getMergedPlugin(c,
-      c.buildConfig.pluginTemplates?.[scope]?.[pluginKey], pluginKey, scope, scopes, true);
+        c.buildConfig.pluginTemplates?.[scope]?.[pluginKey], pluginKey, scope, scopes, true);
     let currentPlugin = plugin;
     if (typeof plugin === 'string' || plugin instanceof String) {
         currentPlugin = {};

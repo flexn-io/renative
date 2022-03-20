@@ -2,7 +2,7 @@
 
 import React, { createContext, useState } from 'react';
 import {
-    getScaledValue, isEngineNative, isFactorBrowser, isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isPlatformWindows, isWebBased, registerServiceWorker, StyleSheet
+    getScaledValue, isEngineNative, isFactorBrowser, isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isWebBased, registerServiceWorker, StyleSheet
 } from 'renative';
 // import { LogBox } from 'react-native';
 // import JSTimers from 'react-native/Libraries/Core/Timers/JSTimers';
@@ -24,6 +24,17 @@ export const hasWebFocusableUI = isWebBased && isFactorTv;
 // }
 // LogBox.ignoreAllLogs(true);
 console.disableYellowBox = true; // eslint-disable-line
+
+if (!global.performance) {
+    global.performance = {};
+}
+
+if (typeof global.performance.now !== 'function') {
+    global.performance.now = function () {
+        const performanceNow = global.nativePerformanceNow || Date.now;
+        return performanceNow();
+    };
+}
 
 const staticTheme = {
     primaryFontFamily: 'Inter-Light',
@@ -176,7 +187,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
     menuContainer: {
         paddingTop: getScaledValue(hasHorizontalMenu ? 20 : 40),
         paddingLeft: getScaledValue(hasHorizontalMenu ? 40 : 40),
-        width: isPlatformWindows ? '100%' : currentTheme.menuWidth,
+        width: currentTheme.menuWidth,
         height: currentTheme.menuHeight,
         backgroundColor: currentTheme.colorBgPrimary,
         alignItems: 'flex-start',

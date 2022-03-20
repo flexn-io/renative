@@ -4,6 +4,7 @@ shaka.js
 **/node_modules
 **/dist
 **/platformAssets
+**/appConfigs
 **/rnv-cli/platformTemplates
 **/platformBuilds
 **/public

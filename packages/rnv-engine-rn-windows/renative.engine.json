@@ -6,9 +6,7 @@
     "react": "source:rnv",
     "react-art": "source:rnv",
     "react-dom": "source:rnv",
-    "react-native": {
-        "version": "0.63.4"
-    },
+    "react-native": "source:rnv",
     "react-native-windows": "source:rnv",
     "@react-native-windows/cli": "source:rnv"
   },

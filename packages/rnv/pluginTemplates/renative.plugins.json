@@ -1,7 +1,7 @@
 {
     "pluginTemplates": {
         "react-native": {
-            "version": "0.63.4",
+            "version": "0.67.2",
             "android": {
                 "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }",
                 "path": "react-native"
@@ -20,10 +20,10 @@
             }
         },
         "react-native-tvos": {
-            "version": "npm:react-native-tvos@0.63.4-0"
+            "version": "0.66.3-1"
         },
         "renative": {
-            "version": "0.36.0-canary.1",
+            "version": "0.36.0-canary.4",
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
@@ -106,7 +106,7 @@
             }
         },
         "react-native-gesture-handler": {
-            "version": "1.4.1",
+            "version": "1.10.3",
             "ios": {
                 "podName": "RNGestureHandler"
             },
@@ -2904,7 +2904,7 @@
             }
         },
         "@noriginmedia/react-spatial-navigation": {
-            "version": "2.12.1"
+            "version": "2.12.9"
         },
         "react-native-view-shot": {
             "version": "3.1.2",
@@ -2992,10 +2992,13 @@
             "version": "12.1.0"
         },
         "@react-native-community/cli-platform-ios": {
-            "no-npm": true
+            "version": "^6.0.0"
+        },
+        "@react-native-community/cli-platform-android": {
+            "version": "^6.0.0"
         },
         "@react-native-community/cli": {
-            "version": "^4.10.0"
+            "version": "^6.0.0"
         },
         "recyclerlistview": {
             "version": "3.0.0",
@@ -3066,7 +3069,7 @@
             "version": "4.3.3"
         },
         "@lightningjs/cli": {
-            "version": "2.7.1"
+            "version": "2.7.2"
         },
         "react-native-carplay": {
             "version": "2.0.0",
@@ -3093,13 +3096,13 @@
             }
         },
         "react-native-macos": {
-            "version": "0.63.37"
+            "version": "0.66.33"
         },
         "@react-native-windows/cli": {
-            "version": "0.63.12"
+            "version": "0.67.1"
         },
         "react-native-windows": {
-            "version": "0.63.36"
+            "version": "0.67.3"
         }
     }
 }

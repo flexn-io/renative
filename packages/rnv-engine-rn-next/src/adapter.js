@@ -1,12 +1,14 @@
 const { withExpo } = require('@expo/next-adapter');
 const withImages = require('next-images');
-const withOptimizedImages = require('next-optimized-images');
+// DEPRECATED
+// const withOptimizedImages = require('next-optimized-images');
 const withFonts = require('next-fonts');
 const path = require('path');
 const nextTranspile = require('next-transpile-modules');
-const withCSS = require('@zeit/next-css');
+// DEPRECATED
+// const withCSS = require('@zeit/next-css');
 
-export const withRNV = (config, opts) => {
+export const withRNVNext = (config, opts) => {
     const cnf = {
         ...config,
         images: {
@@ -70,16 +72,35 @@ export const withRNV = (config, opts) => {
     const withTM = nextTranspile(transModules);
     let cnf1;
     if (opts?.enableOptimizedImages) {
-        cnf1 = withExpo(withFonts(withOptimizedImages(withTM(cnf))));
+        // enableOptimizedImages DEPRECATED
+        // cnf1 = withExpo(withFonts(withOptimizedImages(withTM(cnf))));
+        cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
     } else {
         cnf1 = withExpo(withFonts(withImages(withTM(cnf))));
     }
-    if (opts?.enableNextCss) {
-        cnf1 = withCSS(cnf1);
-    }
+    // if (opts?.enableNextCss) {
+    // enableNextCss DEPRECATED
+    //     cnf1 = withCSS(cnf1);
+    // }
     if (process.env.RNV_EXTENSIONS) {
         cnf1.pageExtensions = process.env.RNV_EXTENSIONS.split(',');
     }
 
     return cnf1;
 };
+
+
+export const withRNVBabel = cnf => ({
+    retainLines: true,
+    // presets: ['module:metro-react-native-babel-preset'],
+    presets: ['module:babel-preset-expo'],
+    plugins: [
+        [
+            require.resolve('babel-plugin-module-resolver'),
+            {
+                root: [process.env.RNV_MONO_ROOT || '.'],
+            },
+        ],
+    ],
+    ...cnf
+});

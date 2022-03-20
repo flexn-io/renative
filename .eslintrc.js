@@ -1,7 +1,5 @@
-const path = require('path');
-
 module.exports = {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
     extends: ['airbnb'],
     env: {
         node: true,
@@ -11,13 +9,38 @@ module.exports = {
         mocha: true
     },
     parserOptions: {
+        requireConfigFile: false,
         ecmaFeatures: {
             experimentalObjectRestSpread: true
+        },
+        babelOptions: {
+            presets: ['@babel/preset-react']
         }
     },
     plugins: ['jest', 'detox', 'mocha'],
     rules: {
+        //= ===========
+        'function-paren-newline': 'off',
+        'arrow-parens': 'off',
+        'no-multiple-empty-lines': 'off',
+        'function-call-argument-newline': 'off',
+        'default-param-last': 'off',
+        'no-promise-executor-return': 'off',
+        'react/destructuring-assignment': 'off',
+        'react/function-component-definition': 'off',
+        'max-classes-per-file': 'off',
+        'import/no-relative-packages': 'off',
+        'import/extensions': 'off',
+        'react/no-unstable-nested-components': 'off',
+        'react/jsx-curly-brace-presence': 'off',
+        'react/jsx-props-no-spreading': 'off',
+        'react/jsx-wrap-multilines': 'off',
+        'prefer-object-spread': 'off',
+        'react/jsx-no-constructed-context-values': 'off',
+        'react/prop-types': 'off',
+        //= ===========
         'arrow-body-style': ['warn', 'as-needed'],
+        'import/no-cycle': ['warn'],
         camelcase: 'off',
         'class-methods-use-this': 'off',
         'consistent-return': 0,
@@ -88,7 +111,7 @@ module.exports = {
         'max-len': [
             'warn',
             { code: 120, ignoreComments: true, ignoreStrings: true }
-        ], 
+        ],
         'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix']
     }
 };
