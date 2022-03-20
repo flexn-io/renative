@@ -10,6 +10,10 @@
             "debug": {
                 "id": "renative.helloworld.debug",
                 "title": "ReNative Debug"
+            },
+            "test": {
+                "id": "renative.helloworld.test",
+                "title": "ReNative Test"
             }
         }
     },

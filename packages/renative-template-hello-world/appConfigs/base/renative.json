@@ -109,6 +109,11 @@
                     "bundleAssets": false,
                     "environment": "development"
                 },
+                "test": {
+                    "runScheme": "Debug",
+                    "bundleAssets": true,
+                    "environment": "development"
+                },
                 "release": {
                     "runScheme": "Release",
                     "bundleAssets": true,
@@ -271,6 +276,10 @@
             },
             "buildSchemes": {
                 "debug": {
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "test": {
                     "bundleAssets": false,
                     "environment": "development"
                 },
