@@ -1,6 +1,6 @@
 # @rnv/template-starter
 
-Hello World Template for <a href="https://www.npmjs.com/package/renative">ReNative</a>
+Starter Template for <a href="https://www.npmjs.com/package/renative">ReNative</a>
 
 This provides the example multi platform app with following functionality demonstrated:
 

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/renative",
-    "version": "0.36.0-canary.4",
+    "version": "0.36.0-canary.5",
     "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Linux` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -48,17 +48,16 @@
         "renative.plugin.json"
     ],
     "main": "lib/index",
-    "types": "lib/index",
     "repository": {
         "type": "git",
         "url": "git://github.com/renative-org/renative.git"
     },
     "scripts": {
-        "watch": "tsc --watch --preserveWatchOutput",
         "build": "yarn clean && yarn compile",
         "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
-        "compile:prod": "tsc -b tsconfig.prod.json"
+        "compile:prod": "tsc -b tsconfig.prod.json",
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {},
     "devDependencies": {},
@@ -70,6 +69,7 @@
     "publishConfig": {
         "access": "public"
     },
+    "types": "lib/index",
     "husky": {
         "hooks": {
             "pre-commit": "pretty-quick --staged"
