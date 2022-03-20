@@ -1,0 +1,16 @@
+{
+    "extends": "@flexn/typescript/tsconfig.app.json",
+    "compilerOptions": {
+        "outDir": "./lib",
+        "rootDir": "."
+    },
+    "include": [
+        "./src/**/*",
+        "./src/**/*.json",
+        "./types.d.ts",
+        "./package.json",
+        "./app.json",
+        "./platformAssets/runtime/fontManager.js",
+        "./platformAssets/runtime/logo.png"
+    ]
+}

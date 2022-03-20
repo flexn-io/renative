@@ -1,1 +1,1 @@
-import './src/entry';
+import './src/entry';// eslint-disable-line

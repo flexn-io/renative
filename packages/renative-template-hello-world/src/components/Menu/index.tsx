@@ -5,7 +5,7 @@ import React, { useEffect, useContext } from 'react';
 import { View } from 'react-native';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { ThemeContext, hasWebFocusableUI, ROUTES } from '../../config';
-import { testProps } from '../../utils/index.ts';
+import { testProps } from '../../utils/index';
 import Button from '../Button';
 import Icon from '../Icon';
 import { useNavigate, useOpenDrawer } from '../../hooks/navigation';
@@ -20,7 +20,7 @@ if (hasWebFocusableUI) {
 
 export const DrawerButton = (props) => {
     const openDrawer = useOpenDrawer(props);
-    const { theme } = useContext(ThemeContext);
+    const { theme }: any = useContext(ThemeContext);
     return (
         <Icon
             iconFont="ionicons"
@@ -39,7 +39,7 @@ export const DrawerButton = (props) => {
 const Menu = (props) => {
     const { setFocus } = props;
     const navigate = useNavigate(props);
-    const { theme } = useContext(ThemeContext);
+    const { theme }: any = useContext(ThemeContext);
 
     if (hasWebFocusableUI) {
         useEffect(() => {

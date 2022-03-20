@@ -6,7 +6,7 @@ import { Text, Image, View, ScrollView, PixelRatio } from 'react-native';
 import { Api } from '@rnv/renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { hasWebFocusableUI, ICON_LOGO, CONFIG, ROUTES, ThemeContext } from '../config';
-import { testProps } from '../utils/index.ts';
+import { testProps } from '../utils';
 import packageJson from '../../package.json';
 import Button from '../components/Button';
 import { useNavigate } from '../hooks/navigation';
@@ -22,7 +22,7 @@ const ScreenHome = (props) => {
     let handleFocus;
     let handleUp;
 
-    const { theme, toggle } = useContext(ThemeContext);
+    const { theme, toggle }: any = useContext(ThemeContext);
 
     if (hasWebFocusableUI) {
         scrollRef = useRef(null);
@@ -53,7 +53,10 @@ const ScreenHome = (props) => {
                     {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
                 </Text>
                 <Text style={theme.styles.textH3}>
-                    {`hermes: ${global.HermesInternal === undefined ? 'no' : 'yes'}`}
+                    {
+                        //@ts-ignore
+                        `hermes: ${global.HermesInternal === undefined ? 'no' : 'yes'}`
+                    }
                 </Text>
                 <Text style={theme.styles.textH3}>
                     {`pixelRatio: ${PixelRatio.get()}, ${PixelRatio.getFontScale()}`}

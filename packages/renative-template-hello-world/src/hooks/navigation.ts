@@ -1,5 +1,5 @@
 export function useNavigate(props) {
-    function navigate(route, opts, params) {
+    function navigate(route, opts, params?) {
         props.navigation.navigate(route, params);
     }
     return navigate;
@@ -13,7 +13,7 @@ export function usePop(props) {
 }
 
 export function useOpenDrawer(props) {
-    function openDrawer() {
+    function openDrawer(_props: any) {
         props.navigation.dispatch({ type: 'OPEN_DRAWER' });
     }
     return openDrawer;

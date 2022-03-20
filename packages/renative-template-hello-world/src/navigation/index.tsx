@@ -18,7 +18,7 @@ const ModalStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const StackNavigator = ({ navigation }) => {
-    const { theme } = useContext(ThemeContext);
+    const { theme }: any = useContext(ThemeContext);
 
     return (
         <Stack.Navigator
@@ -58,7 +58,7 @@ const ModalNavigator = () => (
 );
 
 const App = () => {
-    const { theme } = useContext(ThemeContext);
+    const { theme }: any = useContext(ThemeContext);
     React.useEffect(() => {
         StatusBar.setBarStyle(theme.static.statusBar);
     }, []);

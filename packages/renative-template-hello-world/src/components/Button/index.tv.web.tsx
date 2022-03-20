@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { Link } from '@reach/router';
+import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { getScaledValue } from '@rnv/renative';
 import Icon from '../Icon';
 
@@ -28,14 +29,12 @@ const Button = ({
     iconSize,
     style,
     textStyle,
-    onPress,
-    activeOpacity,
-    testID
-}) => {
+    testID,
+    activeOpacity
+}: any) => {
     const Btn = () => (
-        <TouchableOpacity
+        <View
             style={[styles.button, style, focused ? { opacity: activeOpacity ?? 0.4 } : null]}
-            onPress={onPress}
             testID={testID}
         >
             {iconName ? (
@@ -54,7 +53,7 @@ const Button = ({
                     {title}
                 </Text>
             ) : null}
-        </TouchableOpacity>
+        </View>
     );
     if (to) {
         return (
@@ -73,4 +72,4 @@ const Button = ({
     return <Btn />;
 };
 
-export default Button;
+export default withFocusable()(Button);

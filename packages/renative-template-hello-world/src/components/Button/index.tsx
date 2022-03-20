@@ -29,7 +29,7 @@ const Button = ({
     onPress,
     activeOpacity,
     ...touchableProps
-}) => (
+}: any) => (
     <TouchableOpacity
         style={[styles.button, style]}
         onPress={onPress}

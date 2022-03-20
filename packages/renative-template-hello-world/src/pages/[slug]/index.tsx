@@ -15,7 +15,8 @@ const App = () => {
     const router = useRouter();
     useEffect(() => {
     }, [router.asPath]);
-    const Page = pages[router.query?.slug] || View;
+    const slug: string = router.query?.slug as string
+    const Page = pages[slug] || View;
 
     return (
         <Page router={router} />

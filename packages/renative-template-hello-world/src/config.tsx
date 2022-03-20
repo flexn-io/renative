@@ -3,13 +3,14 @@
 import React, { createContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-    getScaledValue, isEngineNative, isFactorBrowser,
+    getScaledValue, isFactorBrowser,
     isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isWebBased
 } from '@rnv/renative';
 // import { LogBox } from 'react-native';
 // import JSTimers from 'react-native/Libraries/Core/Timers/JSTimers';
 import CONFIG from '../platformAssets/renative.runtime.json';
 import '../platformAssets/runtime/fontManager';
+//@ts-ignore
 import ICON_LOGO from '../platformAssets/runtime/logo.png';
 import registerServiceWorker from './serviceWorker';
 
@@ -20,6 +21,7 @@ export const hasHorizontalMenu = !isFactorMobile && !isFactorDesktop && !hasMobi
 export const hasFullScreenMenu = hasMobileWebUI;
 export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isWebBased && isFactorTv;
+const hasModalPadding: boolean = hasHorizontalMenu || hasFullScreenMenu || isPlatformMacos;
 
 // Disable yellow warnings UI - console.disableYellowBox replacement with setImmediate workaround
 // if (!global.setImmediate) {
@@ -29,6 +31,7 @@ export const hasWebFocusableUI = isWebBased && isFactorTv;
 console.disableYellowBox = true; // eslint-disable-line
 
 if (!global.performance) {
+    //@ts-ignore
     global.performance = {};
 }
 
@@ -158,7 +161,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
         position: 'absolute',
         backgroundColor: currentTheme.colorBgPrimary,
         top: hasHorizontalMenu && isWebBased ? -currentTheme.menuHeight : 0,
-        left: hasHorizontalMenu || hasFullScreenMenu || isEngineNative || isPlatformMacos ? 0 : -currentTheme.menuWidth,
+        left: hasModalPadding ? 0 : -currentTheme.menuWidth,
         right: 0,
         bottom: 0
     },
@@ -233,7 +236,12 @@ const themes = {
     }
 };
 
-export const ThemeContext = createContext(
+
+interface ThemeContextInterface {
+
+}
+
+export const ThemeContext = createContext<ThemeContextInterface | null>(
     themes.dark // default value
 );
 

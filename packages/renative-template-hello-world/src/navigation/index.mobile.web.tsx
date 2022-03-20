@@ -15,12 +15,12 @@ const ModalStack = createStackNavigator();
 
 const styles = StyleSheet.create({
     headerTitle: {
-        color: Theme.color3,
+        color: Theme.colorTextPrimary,
         fontFamily: Theme.primaryFontFamily,
         fontSize: getScaledValue(18)
     },
     header: {
-        backgroundColor: Theme.color1,
+        backgroundColor: Theme.colorBgPrimary,
         borderBottomWidth: 1,
         height: getScaledValue(70)
     }
@@ -30,8 +30,7 @@ const StackNavigator = ({ navigation }) => (
     <Stack.Navigator
         screenOptions={{
             headerTitleStyle: styles.headerTitle,
-            headerStyle: styles.header,
-            headerTintColor: Theme.color3
+            headerStyle: styles.header
         }}
     >
         <Stack.Screen

@@ -3,13 +3,13 @@ import React, { useEffect, useContext } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { ThemeContext, hasWebFocusableUI } from '../config';
-import { testProps } from '../utils/index.ts';
+import { testProps } from '../utils';
 import Button from '../components/Button';
 import { usePop } from '../hooks/navigation';
 
 const ScreenModal = (props) => {
     const pop = usePop(props);
-    const { theme } = useContext(ThemeContext);
+    const { theme }: any = useContext(ThemeContext);
 
     if (hasWebFocusableUI) {
         useEffect(() => {

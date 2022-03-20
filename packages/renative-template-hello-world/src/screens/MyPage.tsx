@@ -3,10 +3,10 @@ import React, { useContext } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { ThemeContext, hasWebFocusableUI } from '../config';
-import { testProps } from '../utils/index.ts';
+import { testProps } from '../utils';
 
 const ScreenMyPage = () => {
-    const { theme } = useContext(ThemeContext);
+    const { theme }: any = useContext(ThemeContext);
 
     return (
         <View style={theme.styles.screen}>

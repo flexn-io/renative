@@ -43,7 +43,7 @@ const IconComponent = ({
     className,
     testID,
     size
-}) => {
+}: any) => {
     const IC = IconMap[iconFont];
     if (onPress) {
         return (
