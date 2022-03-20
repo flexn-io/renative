@@ -188,6 +188,7 @@
         "@reach/router": "1.3.4",
         "hash-source": "1.0.4",
         "renative": "source:rnv",
+        "@rnv/renative": "source:rnv",
         "@react-navigation": "source:rnv",
         "@react-navigation/core": "5.12.3",
         "@react-navigation/drawer": "5.9.0",

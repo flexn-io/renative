@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { View } from 'react-native';
-import Menu from '../components/menu';
+import Menu from '../components/Menu';
 import { themeStyles, ThemeProvider } from '../config';
 
 export default function MyApp({ Component, pageProps }) {

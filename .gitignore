@@ -64,3 +64,4 @@ coverage
 packages/**/*.binlog
 
 dist
+lib

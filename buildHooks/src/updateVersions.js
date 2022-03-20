@@ -22,6 +22,7 @@ const VERSIONED_PACKAGES = [
     'rnv-sdk-android',
     'rnv-sdk-webpack',
     'renative',
+    'rnv-renative',
 ];
 
 const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer = '') => {
@@ -166,6 +167,11 @@ export const updateVersions = async (c) => {
     FileUtils.copyFileSync(
         path.join(c.paths.project.dir, 'README.md'),
         path.join(pkgFolder, 'renative/README.md')
+    );
+
+    FileUtils.copyFileSync(
+        path.join(c.paths.project.dir, 'README.md'),
+        path.join(pkgFolder, 'rnv-renative/README.md')
     );
 
     FileUtils.copyFileSync(

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Api } from 'renative';
+import { Api } from '@rnv/renative';
 
 const App = () => (
     <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>

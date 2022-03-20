@@ -3,7 +3,7 @@ import {
     isPlatformMacos,
     isPlatformTvos,
     isPlatformWeb,
-} from '../../../renative/src/is';
+} from '@rnv/renative';
 
 export function testProps(testId: string | undefined) {
     if (!testId) {

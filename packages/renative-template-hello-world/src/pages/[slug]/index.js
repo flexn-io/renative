@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { View } from 'react-native';
-import ScreenHome from '../../components/screenHome';
-import ScreenMyPage from '../../components/screenMyPage';
-import ScreenModal from '../../components/screenModal';
+import ScreenHome from '../../screens/Home';
+import ScreenModal from '../../screens/Modal';
+import ScreenMyPage from '../../screens/MyPage';
 import { ROUTES } from '../../config';
 
 const pages = {};

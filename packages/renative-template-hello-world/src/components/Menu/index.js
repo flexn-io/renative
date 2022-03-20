@@ -3,10 +3,12 @@
 
 import React, { useEffect, useContext } from 'react';
 import { View } from 'react-native';
-import { Icon, Button, useNavigate, useOpenDrawer } from 'renative';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
-import { ThemeContext, hasWebFocusableUI, ROUTES } from '../config';
-import { testProps } from '../utils/index.ts';
+import { ThemeContext, hasWebFocusableUI, ROUTES } from '../../config';
+import { testProps } from '../../utils/index.ts';
+import Button from '../Button';
+import Icon from '../Icon';
+import { useNavigate, useOpenDrawer } from '../../hooks/navigation';
 
 if (hasWebFocusableUI) {
     initNavigation({

@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { Router, navigate } from '@reach/router';
-
-import ScreenHome from '../components/screenHome';
-import ScreenMyPage from '../components/screenMyPage';
-import ScreenModal from '../components/screenModal';
-import Menu from '../components/menu';
+import Menu from '../components/Menu';
+import ScreenHome from '../screens/Home';
+import ScreenModal from '../screens/Modal';
+import ScreenMyPage from '../screens/MyPage';
 import { themeStyles } from '../config';
 
 const App = () => {

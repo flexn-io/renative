@@ -1,10 +1,11 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useEffect, useContext } from 'react';
 import { Text, View, ScrollView } from 'react-native';
-import { Button, usePop } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { ThemeContext, hasWebFocusableUI } from '../config';
 import { testProps } from '../utils/index.ts';
+import Button from '../components/Button';
+import { usePop } from '../hooks/navigation';
 
 const ScreenModal = (props) => {
     const pop = usePop(props);

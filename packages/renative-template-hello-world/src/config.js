@@ -1,14 +1,17 @@
 /* eslint-disable react/prop-types */
 
 import React, { createContext, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import {
-    getScaledValue, isEngineNative, isFactorBrowser, isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isWebBased, registerServiceWorker, StyleSheet
-} from 'renative';
+    getScaledValue, isEngineNative, isFactorBrowser,
+    isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isWebBased
+} from '@rnv/renative';
 // import { LogBox } from 'react-native';
 // import JSTimers from 'react-native/Libraries/Core/Timers/JSTimers';
 import CONFIG from '../platformAssets/renative.runtime.json';
 import '../platformAssets/runtime/fontManager';
 import ICON_LOGO from '../platformAssets/runtime/logo.png';
+import registerServiceWorker from './serviceWorker';
 
 if (isFactorBrowser) registerServiceWorker();
 

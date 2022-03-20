@@ -134,6 +134,7 @@
         "react-native-web-image-loader": "0.0.5",
         "react-native-windows": "0.67.3",
         "renative": "0.36.0-canary.4",
+        "@rnv/renative": "0.36.0-canary.4",
         "renative-template-blank": "0.36.0-canary.4",
         "renative-template-hello-world": "0.36.0-canary.4",
         "rnv": "0.36.0-canary.4",

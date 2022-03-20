@@ -3,11 +3,15 @@
 
 import React, { useEffect, useRef, useContext } from 'react';
 import { Text, Image, View, ScrollView, PixelRatio } from 'react-native';
-import { Api, Button, useNavigate, useOpenURL } from 'renative';
+import { Api } from '@rnv/renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { hasWebFocusableUI, ICON_LOGO, CONFIG, ROUTES, ThemeContext } from '../config';
 import { testProps } from '../utils/index.ts';
 import packageJson from '../../package.json';
+import Button from '../components/Button';
+import { useNavigate } from '../hooks/navigation';
+import { useOpenURL } from '../hooks/linking';
+
 
 const FocusableView = hasWebFocusableUI ? withFocusable()(View) : View;
 

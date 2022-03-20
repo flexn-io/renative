@@ -3,11 +3,11 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { getScaledValue } from 'renative';
-import ScreenHome from '../components/screenHome';
-import ScreenMyPage from '../components/screenMyPage';
-import ScreenModal from '../components/screenModal';
-import Menu, { DrawerButton } from '../components/menu';
+import { getScaledValue } from '@rnv/renative';
+import Menu, { DrawerButton } from '../components/Menu';
+import ScreenHome from '../screens/Home';
+import ScreenModal from '../screens/Modal';
+import ScreenMyPage from '../screens/MyPage';
 import Theme from '../config';
 
 const Stack = createStackNavigator();

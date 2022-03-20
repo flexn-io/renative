@@ -1,10 +1,10 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import ScreenHome from '../components/screenHome';
-import ScreenMyPage from '../components/screenMyPage';
-import ScreenModal from '../components/screenModal';
-import Menu from '../components/menu';
+import Menu from '../components/Menu';
+import ScreenHome from '../screens/Home';
+import ScreenModal from '../screens/Modal';
+import ScreenMyPage from '../screens/MyPage';
 
 const ModalStack = createStackNavigator();
 const TabStack = createStackNavigator();
