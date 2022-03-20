@@ -11,7 +11,7 @@ rnv new
 
 ...
 
-? What template to use? => '@rnv/template-hello-world'
+? What template to use? => '@rnv/template-starter'
 
 ```
 
@@ -22,4 +22,4 @@ rnv new
 
 ## Screenshots
 
-<img src="https://github.com/renative-org/renative/blob/develop/packages/rnv-template-blank/docs/web.png" width="600px" />
+<img src="https://github.com/renative-org/renative/blob/develop/packages/template-blank/docs/web.png" width="600px" />

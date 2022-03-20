@@ -1,6 +1,6 @@
 {
     "projectTemplates": {
-        "@rnv/template-hello-world": {},
+        "@rnv/template-starter": {},
         "@rnv/template-blank": {}
     },
     "engineTemplates": {

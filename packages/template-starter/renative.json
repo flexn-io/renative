@@ -73,7 +73,7 @@
         "targets": {}
     },
     "templates": {
-        "@rnv/template-hello-world": {
+        "@rnv/template-starter": {
             "version": "^0.36.0-canary.4",
             "webpack": {
                 "moduleAliases": true

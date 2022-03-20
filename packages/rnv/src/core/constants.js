@@ -524,12 +524,12 @@ export const RNV_PACKAGES = [
         skipLinking: true
     },
     {
-        packageName: '@rnv/template-hello-world',
-        folderName: 'rnv-template-hello-world'
+        packageName: '@rnv/template-starter',
+        folderName: 'template-starter'
     },
     {
         packageName: '@rnv/template-blank',
-        folderName: 'rnv-template-blank'
+        folderName: 'template-blank'
     },
     {
         packageName: 'rnv',
@@ -537,47 +537,47 @@ export const RNV_PACKAGES = [
     },
     {
         packageName: '@rnv/engine-lightning',
-        folderName: 'rnv-engine-lightning'
+        folderName: 'engine-lightning'
     },
     {
         packageName: '@rnv/engine-rn',
-        folderName: 'rnv-engine-rn'
+        folderName: 'engine-rn'
     },
     {
         packageName: '@rnv/engine-rn-electron',
-        folderName: 'rnv-engine-rn-electron'
+        folderName: 'engine-rn-electron'
     },
     {
         packageName: '@rnv/engine-rn-windows',
-        folderName: 'rnv-engine-rn-windows'
+        folderName: 'engine-rn-windows'
     },
     {
         packageName: '@rnv/engine-rn-next',
-        folderName: 'rnv-engine-rn-next'
+        folderName: 'engine-rn-next'
     },
     {
         packageName: '@rnv/engine-rn-tvos',
-        folderName: 'rnv-engine-rn-tvos'
+        folderName: 'engine-rn-tvos'
     },
     {
         packageName: '@rnv/engine-rn-web',
-        folderName: 'rnv-engine-rn-web'
+        folderName: 'engine-rn-web'
     },
     {
         packageName: '@rnv/engine-roku',
-        folderName: 'rnv-engine-roku'
+        folderName: 'engine-roku'
     },
     {
         packageName: '@rnv/integration-docker',
-        folderName: 'rnv-integration-docker'
+        folderName: 'integration-docker'
     },
     {
         packageName: '@rnv/integration-ftp',
-        folderName: 'rnv-integration-ftp'
+        folderName: 'integration-ftp'
     },
     {
         packageName: '@rnv/integration-vercel',
-        folderName: 'rnv-integration-vercel'
+        folderName: 'integration-vercel'
     },
 ];
 

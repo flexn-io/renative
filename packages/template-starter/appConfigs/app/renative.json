@@ -1,5 +1,5 @@
 {
-    "extendsTemplate": "@rnv/template-hello-world/appConfigs/base/renative.json",
+    "extendsTemplate": "@rnv/template-starter/appConfigs/base/renative.json",
     "id": "app",
     "common": {
         "id": "com.rnv.myapp",

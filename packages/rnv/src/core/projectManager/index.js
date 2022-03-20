@@ -629,12 +629,12 @@ const SYNCED_DEPS = [
     '@rnv/engine-rn-windows',
     '@rnv/engine-rn-tvos',
     '@rnv/renative',
-    '@rnv/template-hello-world',
+    '@rnv/template-starter',
     '@rnv/template-blank'
 ];
 
 const SYNCED_TEMPLATES = [
-    '@rnv/template-hello-world',
+    '@rnv/template-starter',
     '@rnv/template-blank'
 ];
 

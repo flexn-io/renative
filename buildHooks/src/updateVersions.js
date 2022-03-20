@@ -8,21 +8,21 @@ const merge = require('deepmerge');
 
 const VERSIONED_PACKAGES = [
     'rnv',
-    'rnv-template-hello-world',
-    'rnv-template-blank',
-    'rnv-engine-rn',
-    'rnv-engine-rn-tvos',
-    'rnv-engine-rn-macos',
-    'rnv-engine-rn-next',
-    'rnv-engine-rn-web',
-    'rnv-engine-lightning',
-    'rnv-engine-rn-electron',
-    'rnv-engine-rn-windows',
-    'rnv-sdk-apple',
-    'rnv-sdk-android',
-    'rnv-sdk-webpack',
+    'template-starter',
+    'template-blank',
+    'engine-rn',
+    'engine-rn-tvos',
+    'engine-rn-macos',
+    'engine-rn-next',
+    'engine-rn-web',
+    'engine-lightning',
+    'engine-rn-electron',
+    'engine-rn-windows',
+    'sdk-apple',
+    'sdk-android',
+    'sdk-webpack',
     'renative',
-    'rnv-renative',
+    'renative',
 ];
 
 const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer = '') => {
@@ -171,7 +171,7 @@ export const updateVersions = async (c) => {
 
     FileUtils.copyFileSync(
         path.join(c.paths.project.dir, 'README.md'),
-        path.join(pkgFolder, 'rnv-renative/README.md')
+        path.join(pkgFolder, 'renative/README.md')
     );
 
     FileUtils.copyFileSync(
@@ -183,11 +183,11 @@ export const updateVersions = async (c) => {
     // const packagesDir = path.join(c.paths.project.dir, '..');
     //
     // const engines = [
-    //     'rnv-engine-rn',
-    //     'rnv-engine-rn-web',
-    //     'rnv-engine-rn-next',
-    //     'rnv-engine-rn-electron',
-    //     'rnv-engine-lightning'
+    //     'engine-rn',
+    //     'engine-rn-web',
+    //     'engine-rn-next',
+    //     'engine-rn-electron',
+    //     'engine-lightning'
     // ];
     // engines.forEach((engineDir) => {
     //     const ePath = path.join(packagesDir, engineDir, 'renative.engine.json');

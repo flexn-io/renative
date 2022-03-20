@@ -7,7 +7,7 @@ import { testProps } from '../utils';
 
 const ScreenMyPage = () => (
     <View style={themeStyles.screen}>
-        <ScrollView contentContainerStyle={themeStyles.container} {...testProps('template-hello-world-cast-screen-container')}>
+        <ScrollView contentContainerStyle={themeStyles.container} {...testProps('template-starter-cast-screen-container')}>
             <Image style={themeStyles.image} source={ICON_LOGO} />
             <Text style={themeStyles.textH2}>This is cast Page!</Text>
         </ScrollView>
