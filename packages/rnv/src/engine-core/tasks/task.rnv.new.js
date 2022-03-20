@@ -171,7 +171,7 @@ export const taskRnvNew = async (c) => {
 
     let data = {
         defaultVersion: '0.1.0',
-        defaultTemplate: 'renative-template-hello-world',
+        defaultTemplate: '@rnv/template-hello-world',
         defaultProjectName: 'helloRenative',
         defaultAppTitle: 'Hello Renative',
         defaultWorkspace: 'rnv',

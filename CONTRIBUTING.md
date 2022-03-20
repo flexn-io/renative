@@ -42,7 +42,7 @@ Code-level contributions to ReNative generally come in the form of [pull request
 The process of proposing a change to ReNative SDK can be summarized as follows:
 
 1. Fork the ReNative repository and create your branch from `canary`.
-2. Make the desired changes to ReNative sources. Use the `packages/renative-template-hello-world` and `packages/renative-template-hello-blank` app to test them out.
+2. Make the desired changes to ReNative sources. Use the `packages/rnv-template-hello-world` and `packages/rnv-template-hello-blank` app to test them out.
 3. If you've added code that should be tested, add tests.
 4. If you've changed APIs, update the documentation, which lives in [docs](https://github.com/renative-org/renative-docs).
 5. Ensure the test suite passes, either locally or on CI once you opened a pull request.

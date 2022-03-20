@@ -1,7 +1,7 @@
 {
     "projectTemplates": {
-        "renative-template-hello-world": {},
-        "renative-template-blank": {}
+        "@rnv/template-hello-world": {},
+        "@rnv/template-blank": {}
     },
     "engineTemplates": {
         "@rnv/engine-rn": {

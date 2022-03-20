@@ -524,12 +524,12 @@ export const RNV_PACKAGES = [
         skipLinking: true
     },
     {
-        packageName: 'renative-template-hello-world',
-        folderName: 'renative-template-hello-world'
+        packageName: '@rnv/template-hello-world',
+        folderName: 'rnv-template-hello-world'
     },
     {
-        packageName: 'renative-template-blank',
-        folderName: 'renative-template-blank'
+        packageName: '@rnv/template-blank',
+        folderName: 'rnv-template-blank'
     },
     {
         packageName: 'rnv',

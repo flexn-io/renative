@@ -8,8 +8,8 @@ const merge = require('deepmerge');
 
 const VERSIONED_PACKAGES = [
     'rnv',
-    'renative-template-hello-world',
-    'renative-template-blank',
+    'rnv-template-hello-world',
+    'rnv-template-blank',
     'rnv-engine-rn',
     'rnv-engine-rn-tvos',
     'rnv-engine-rn-macos',
