@@ -1,8 +1,24 @@
 import fs from 'fs';
 
+export const withDefaultRNVBabel = cnf => ({
+    retainLines: true,
+    presets: [['@babel/preset-env', {}]],
+    plugins: [
+        [
+            require.resolve('babel-plugin-module-resolver'),
+            {
+                root: [process.env.RNV_MONO_ROOT || '.'],
+            },
+        ],
+    ],
+    ...cnf
+});
+
 export const withRNVBabel = cnf => (api) => {
     if (!fs.existsSync(process.env.RNV_ENGINE_PATH)) {
-        throw new Error(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}`);
+        console.log(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);// eslint-disable-line no-console
+        api.cache(false);
+        return withDefaultRNVBabel(cnf);
     }
     const engine = require(process.env.RNV_ENGINE_PATH); // eslint-disable-line import/no-dynamic-require, global-require
     api.cache(true);

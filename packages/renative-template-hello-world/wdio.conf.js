@@ -13,7 +13,7 @@ const capabilities = {
         {
             platformName: 'iOS',
             deviceName: 'iPhone 8',
-            platformVersion: '15.0',
+            // platformVersion: '15.2',
             automationName: 'XCUITest',
             bundleId: 'renative.helloworld.test',
             app: 'platformBuilds/template_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app'
