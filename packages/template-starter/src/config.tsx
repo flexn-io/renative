@@ -18,7 +18,7 @@ export const hasHorizontalMenu = !isFactorMobile && !isFactorDesktop && !hasMobi
 export const hasFullScreenMenu = hasMobileWebUI;
 export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isWebBased && isFactorTv;
-const hasModalPadding: boolean = hasHorizontalMenu || hasFullScreenMenu || isPlatformMacos;
+const hasModalPadding: boolean = !(hasHorizontalMenu || hasFullScreenMenu || isPlatformMacos || isWebBased);
 
 // Disable yellow warnings UI - console.disableYellowBox replacement with setImmediate workaround
 // if (!global.setImmediate) {

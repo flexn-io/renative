@@ -108,7 +108,7 @@
             "engine": "engine-rn-web"
         },
         "web": {
-            "engine": "engine-rn-web"
+            "engine": "engine-rn-next"
         },
         "webtv": {
             "engine": "engine-rn-web"
