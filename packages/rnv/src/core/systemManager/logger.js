@@ -1,7 +1,16 @@
 /* eslint-disable no-console */
 import _chalk from 'chalk';
-import stripAnsi from 'strip-ansi';
+import ansiRegex from 'ansi-regex';
 import { isSystemWin } from './utils';
+
+
+function stripAnsi(string) {
+    if (typeof string !== 'string') {
+        throw new TypeError(`Expected a \`string\`, got \`${typeof string}\``);
+    }
+
+    return string.replace(ansiRegex(), '');
+}
 
 const ICN_ROCKET = isSystemWin ? 'RNV' : '🚀';
 const ICN_UNICORN = isSystemWin ? 'unicorn' : '🦄';
