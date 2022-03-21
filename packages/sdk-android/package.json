@@ -25,9 +25,6 @@
     "scripts": {
         "bootstrap": "yarn && yarn build && npm link",
         "lint": "eslint . --ext .ts",
-        "test": "jest --coverage",
-        "test:watch": "jest --watch",
-        "watch:all": "yarn watch & yarn test:watch",
         "build": "yarn clean && yarn compile",
         "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
