@@ -1,39 +1,46 @@
 {
     "projectTemplates": {
-        "renative-template-hello-world": {},
-        "renative-template-blank": {}
+        "@rnv/template-starter": {
+            "description": "Multiplatform starter kit"
+        },
+        "@rnv/template-blank": {
+            "description": "Blank renative template with no UI"
+        },
+        "@flexn/template": {
+            "description": "Advanced multiplatform template using flexn SDK"
+        }
     },
     "engineTemplates": {
         "@rnv/engine-rn": {
-            "version": "0.36.0-canary.4",
+            "version": "0.36.0-canary.8",
             "id": "engine-rn"
         },
         "@rnv/engine-rn-tvos": {
-            "version": "0.36.0-canary.4",
+            "version": "0.36.0-canary.8",
             "id": "engine-rn-tvos"
         },
         "@rnv/engine-rn-web": {
-            "version": "0.36.0-canary.4",
+            "version": "0.36.0-canary.8",
             "id": "engine-rn-web"
         },
         "@rnv/engine-rn-next": {
-            "version": "0.36.0-canary.4",
+            "version": "0.36.0-canary.8",
             "id": "engine-rn-next"
         },
         "@rnv/engine-rn-electron": {
-            "version": "0.36.0-canary.4",
+            "version": "0.36.0-canary.8",
             "id": "engine-rn-electron"
         },
         "@rnv/engine-lightning": {
-            "version": "0.36.0-canary.4",
+            "version": "0.36.0-canary.8",
             "id": "engine-lightning"
         },
         "@rnv/engine-rn-macos": {
-            "version": "0.36.0-canary.4",
+            "version": "0.36.0-canary.8",
             "id": "engine-rn-macos"
         },
         "@rnv/engine-rn-windows": {
-            "version": "0.36.0-canary.4",
+            "version": "0.36.0-canary.8",
             "id": "engine-rn-windows"
         }
     },
@@ -101,7 +108,7 @@
             "engine": "engine-rn-web"
         },
         "web": {
-            "engine": "engine-rn-web"
+            "engine": "engine-rn-next"
         },
         "webtv": {
             "engine": "engine-rn-web"

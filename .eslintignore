@@ -21,3 +21,4 @@ packages/rnv/tests
 jest.config.*.js
 **/templates
 docs/
+**/lib

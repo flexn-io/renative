@@ -1,7 +1,24 @@
 /* eslint-disable no-console */
 import _chalk from 'chalk';
-import stripAnsi from 'strip-ansi';
 import { isSystemWin } from './utils';
+
+function ansiRegex({ onlyFirst = false } = {}) {
+    const pattern = [
+        '[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)',
+        '(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-ntqry=><~]))'
+    ].join('|');
+
+    return new RegExp(pattern, onlyFirst ? undefined : 'g');
+}
+
+
+function stripAnsi(string) {
+    if (typeof string !== 'string') {
+        throw new TypeError(`Expected a \`string\`, got \`${typeof string}\``);
+    }
+
+    return string.replace(ansiRegex(), '');
+}
 
 const ICN_ROCKET = isSystemWin ? 'RNV' : '🚀';
 const ICN_UNICORN = isSystemWin ? 'unicorn' : '🦄';

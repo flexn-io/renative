@@ -628,14 +628,14 @@ const SYNCED_DEPS = [
     '@rnv/engine-rn-macos',
     '@rnv/engine-rn-windows',
     '@rnv/engine-rn-tvos',
-    'renative',
-    'renative-template-hello-world',
-    'renative-template-blank'
+    '@rnv/renative',
+    '@rnv/template-starter',
+    '@rnv/template-blank'
 ];
 
 const SYNCED_TEMPLATES = [
-    'renative-template-hello-world',
-    'renative-template-blank'
+    '@rnv/template-starter',
+    '@rnv/template-blank'
 ];
 
 export const versionCheck = async (c) => {

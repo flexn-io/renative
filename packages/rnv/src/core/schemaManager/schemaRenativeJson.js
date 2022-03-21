@@ -1584,7 +1584,7 @@ export const schemaRoot = {
             description: 'You can extend another renative.json file of currently applied template by providing relative or full package name path',
             examples: [
                 'renative.json',
-                'renative-template-hello-world/renative.json'
+                '@rnv/template-starter/renative.json'
             ]
         },
         projectTemplates: {
@@ -1844,7 +1844,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
                     examples: [
                         {
                             myCustomScope: {
-                                npm: 'some-renative-template-package',
+                                npm: 'some-template-package',
                                 path: './pluginTemplates',
                             },
                         },
@@ -1960,7 +1960,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
         'Stores installed templates info in your project.\n\nNOTE: This prop will be updated by rnv if you run `rnv template install`',
             examples: [
                 {
-                    'renative-template-hello-world': {
+                    '@rnv/template-starter': {
                         version: '0.31.0',
                     },
                 },
@@ -1970,7 +1970,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
             type: 'string',
             description:
         'Currently active template used in this project. this allows you to re-bootstrap whole project by running `rnv template apply`',
-            examples: ['renative-template-hello-world'],
+            examples: ['@rnv/template-starter'],
         },
         crypto: {
             additionalProperties: false,

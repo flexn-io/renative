@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export const withDefaultRNVBabel = cnf => ({
+export const withDefaultRNVBabel = (cnf) => ({
     retainLines: true,
     presets: [['@babel/preset-env', {}]],
     plugins: [

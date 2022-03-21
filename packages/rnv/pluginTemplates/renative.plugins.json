@@ -29,6 +29,13 @@
                 "moduleAliases": true
             }
         },
+        "@rnv/renative": {
+            "version": "0.36.0-canary.8",
+            "webpack": {
+                "modulePaths": true,
+                "moduleAliases": true
+            }
+        },
         "@react-native-community/push-notification-ios": {
             "version": "1.0.2",
             "ios": {

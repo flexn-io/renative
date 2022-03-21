@@ -1,0 +1,55 @@
+{
+    "name": "@rnv/sdk-apple",
+    "version": "0.36.0-canary.8",
+    "description": "ReNative Apple SDK",
+    "keywords": [],
+    "homepage": "https://github.com/renative-org/renative#readme",
+    "bugs": {
+        "url": "https://github.com/renative-org/renative/issues"
+    },
+    "license": "MIT",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "files": [
+        "dist",
+        "supportFiles",
+        "types.d.ts"
+    ],
+    "main": "dist/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/renative-org/renative.git"
+    },
+    "scripts": {
+        "bootstrap": "yarn && yarn build && npm link",
+        "lint": "eslint . --ext .ts",
+        "build": "yarn clean && yarn compile",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.prod.json",
+        "watch": "tsc --watch --preserveWatchOutput"
+    },
+    "dependencies": {
+        "compare-versions": "3.6.0",
+        "inquirer": "8.2.0",
+        "ios-mobileprovision-finder": "1.0.11",
+        "shelljs": "0.8.5"
+    },
+    "devDependencies": {},
+    "peerDependencies": {
+        "rnv": "^0.36.0-canary.8"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn lint && yarn test"
+        }
+    },
+    "lint-staged": {
+        "*.ts": [
+            "eslint"
+        ]
+    }
+}

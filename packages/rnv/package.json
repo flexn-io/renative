@@ -1,6 +1,6 @@
 {
     "name": "rnv",
-    "version": "0.36.0-canary.4",
+    "version": "0.36.0-canary.8",
     "description": "💻 CLI for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`, `Linux",
     "keywords": [
         "android tv",
@@ -64,16 +64,15 @@
         "url": "git://github.com/renative-org/renative.git"
     },
     "scripts": {
-        "build": "babel src -d dist --source-maps",
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
         "build:prod": "babel src -d dist",
         "prepublishOnly": "yarn build:clean && yarn build:prod",
-        "test": "jest -c __tests__/jest.config.unit.js",
-        "test:docker": "./__tests__/scripts/test.sh",
-        "test:integration:linux": "jest -c __tests__/jest.config.int.linux.js",
-        "test:integration:osx": "jest -c __tests__/jest.config.int.osx.js",
-        "watch": "nodemon --watch src --exec yarn build:dev"
+        "build": "yarn clean && yarn compile",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.prod.json",
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
         "@babel/cli": "7.17.6",
@@ -111,8 +110,8 @@
         "ip": "1.1.5",
         "kill-port": "1.6.1",
         "lodash.get": "4.4.2",
-        "lodash.set": "4.3.2",
         "lodash.intersection": "4.4.0",
+        "lodash.set": "4.3.2",
         "ncp": "2.0.0",
         "netcat": "1.4.0",
         "node-fetch": "2.6.7",
@@ -124,10 +123,10 @@
         "shelljs": "0.8.5",
         "source-map-loader": "0.2.4",
         "source-map-support": "0.5.13",
-        "strip-ansi": "5.2.0",
         "svg2js": "0.0.4-alpha1",
         "tar": "4.4.19",
-        "xml2js": "0.4.23"
+        "xml2js": "0.4.23",
+        "tslib": "2.3.1"
     },
     "engines": {
         "node": ">=6.0.0",

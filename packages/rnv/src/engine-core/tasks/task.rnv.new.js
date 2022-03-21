@@ -171,7 +171,7 @@ export const taskRnvNew = async (c) => {
 
     let data = {
         defaultVersion: '0.1.0',
-        defaultTemplate: 'renative-template-hello-world',
+        defaultTemplate: '@rnv/template-starter',
         defaultProjectName: 'helloRenative',
         defaultAppTitle: 'Hello Renative',
         defaultWorkspace: 'rnv',
@@ -300,12 +300,29 @@ export const taskRnvNew = async (c) => {
     await updateRenativeConfigs(c);
     data.optionTemplates = getTemplateOptions(c);
 
+    const options = [];
+
+    Object.keys(data.optionTemplates.valuesAsObject).forEach((k) => {
+        const val = data.optionTemplates.valuesAsObject[k];
+        if (val.description) {
+            val.title = `${k} ${chalk().grey(`- ${val.description}`)}`;
+        } else {
+            val.title = k;
+        }
+
+        val.key = k;
+        options.push(val.title);
+    });
+
+    const getTemplateKey = (val) => data.optionTemplates.valuesAsArray.find(v => v.title === val)?.key;
+
     // ==================================================
     // INPUT: Template
     // ==================================================
     const customTemplate = 'Custom Template ...';
 
-    data.optionTemplates.keysAsArray.push(customTemplate);
+    // data.optionTemplates.keysAsArray.push(customTemplate);
+    options.push(customTemplate);
     let selectedInputTemplate;
     if (projectTemplate && projectTemplate !== '') {
         selectedInputTemplate = projectTemplate;
@@ -315,7 +332,7 @@ export const taskRnvNew = async (c) => {
             type: 'list',
             message: 'What template to use?',
             default: data.defaultTemplate,
-            choices: data.optionTemplates.keysAsArray,
+            choices: options,
         });
 
         if (inputTemplate === customTemplate) {
@@ -326,7 +343,7 @@ export const taskRnvNew = async (c) => {
             });
             selectedInputTemplate = inputTemplateCustom;
         } else {
-            selectedInputTemplate = inputTemplate;
+            selectedInputTemplate = getTemplateKey(inputTemplate);
         }
     }
 
