@@ -25,12 +25,15 @@
         "url": "git://github.com/renative-org/renative.git"
     },
     "scripts": {
-        "build": "babel src -d dist --source-maps",
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
         "build:prod": "babel src -d dist",
         "prepublishOnly": "yarn build:clean && yarn build:prod",
-        "watch": "nodemon --watch src --exec yarn build:dev"
+        "build": "yarn clean && yarn compile",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.prod.json",
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
         "react-native-windows": "0.67.3",

@@ -170,7 +170,7 @@ export const SUPPORTED_PLATFORMS = [
 ];
 
 
-export const SDK_PLATFORMS = {};
+export const SDK_PLATFORMS: any = {};
 SDK_PLATFORMS[ANDROID] = ANDROID_SDK;
 SDK_PLATFORMS[ANDROID_TV] = ANDROID_SDK;
 SDK_PLATFORMS[FIRE_TV] = ANDROID_SDK;
@@ -240,7 +240,7 @@ export const CLI_PROPS = [
     'provisionProfileSpecifier'
 ];
 
-export const PARAM_KEYS = {
+export const PARAM_KEYS: any = {
     info: {
         shortcut: 'i',
         value: 'value',
@@ -497,14 +497,14 @@ Object.keys(PARAM_KEYS).forEach((k) => {
 
 
 export const PARAMS = {
-    withBase: arr => [PARAM_KEYS.info, PARAM_KEYS.ci, PARAM_KEYS.mono,
-        PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
-    withConfigure: arr => [PARAM_KEYS.reset, PARAM_KEYS.resetHard, PARAM_KEYS.engine, PARAM_KEYS.resetAssets,
-        PARAM_KEYS.appConfigID, PARAM_KEYS.scheme, PARAM_KEYS.platform].concat(arr || []),
-    withRun: arr => [PARAM_KEYS.target, PARAM_KEYS.device, PARAM_KEYS.hosted,
-        PARAM_KEYS.port, PARAM_KEYS.debug, PARAM_KEYS.debugIp, PARAM_KEYS.skipTargetCheck,
-        PARAM_KEYS.host].concat(arr || []),
-    withAll: arr => Object.values(PARAM_KEYS).concat(arr || []),
+    withBase: (arr: any) => [PARAM_KEYS.info, PARAM_KEYS.ci, PARAM_KEYS.mono,
+    PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
+    withConfigure: (arr: any) => [PARAM_KEYS.reset, PARAM_KEYS.resetHard, PARAM_KEYS.engine, PARAM_KEYS.resetAssets,
+    PARAM_KEYS.appConfigID, PARAM_KEYS.scheme, PARAM_KEYS.platform].concat(arr || []),
+    withRun: (arr: any) => [PARAM_KEYS.target, PARAM_KEYS.device, PARAM_KEYS.hosted,
+    PARAM_KEYS.port, PARAM_KEYS.debug, PARAM_KEYS.debugIp, PARAM_KEYS.skipTargetCheck,
+    PARAM_KEYS.host].concat(arr || []),
+    withAll: (arr: any) => Object.values(PARAM_KEYS).concat(arr || []),
     all: Object.keys(PARAM_KEYS)
 };
 

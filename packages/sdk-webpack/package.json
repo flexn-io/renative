@@ -20,12 +20,15 @@
     },
     "scripts": {
         "bootstrap": "yarn && yarn build && npm link",
-        "build": "npx tsc --outDir dist",
         "lint": "eslint . --ext .ts",
         "test": "jest --coverage",
         "test:watch": "jest --watch",
-        "watch": "tsc --watch",
-        "watch:all": "yarn watch & yarn test:watch"
+        "watch:all": "yarn watch & yarn test:watch",
+        "build": "yarn clean && yarn compile",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.prod.json",
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
