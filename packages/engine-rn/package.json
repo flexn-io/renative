@@ -27,7 +27,7 @@
         "build:dev": "yarn build --retain-lines",
         "build:prod": "babel src -d dist",
         "prepublishOnly": "yarn build:clean && yarn build:prod",
-        "test": "jest -c __tests__/jest.config.js",
+        "test": "jest",
         "build": "yarn clean && yarn compile",
         "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",

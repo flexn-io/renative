@@ -68,7 +68,7 @@
         "build:dev": "yarn build --retain-lines",
         "build:prod": "babel src -d dist",
         "prepublishOnly": "yarn build:clean && yarn build:prod",
-        "test": "jest -c __tests__/jest.config.unit.js",
+        "test": "jest",
         "test:docker": "./__tests__/scripts/test.sh",
         "test:integration:linux": "jest -c __tests__/jest.config.int.linux.js",
         "test:integration:osx": "jest -c __tests__/jest.config.int.osx.js",

@@ -37,16 +37,7 @@
         "ios-mobileprovision-finder": "1.0.11",
         "shelljs": "0.8.5"
     },
-    "devDependencies": {
-        "@types/jest": "^27.0.2",
-        "@types/node": "^16.11.7",
-        "@typescript-eslint/eslint-plugin": "^5.4.0",
-        "@typescript-eslint/parser": "^5.4.0",
-        "jest": "^27.3.1",
-        "lint-staged": "12.3.4",
-        "ts-jest": "^27.0.7",
-        "typescript": "^4.5.2"
-    },
+    "devDependencies": {},
     "peerDependencies": {
         "rnv": "^0.36.0-canary.8"
     },
