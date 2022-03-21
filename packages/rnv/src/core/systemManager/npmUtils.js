@@ -218,7 +218,7 @@ export const installPackageDependencies = async (c, failOnError = false) => {
     } catch (e) {
         if (failOnError) {
             logError(e);
-            return false;
+            throw e;
         }
         logWarning(
             `${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`
@@ -228,7 +228,7 @@ export const installPackageDependencies = async (c, failOnError = false) => {
             await installPackageDependencies(c, true);
         } catch (npmErr) {
             logError(npmErr);
-            return false;
+            throw npmErr;
         }
     }
     try {
