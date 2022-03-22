@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-tvos",
-    "version": "0.36.0-canary.8",
+    "version": "0.36.0-canary.9",
     "description": "ReNative Engine to build react-native tvos platform.",
     "keywords": [
         "react-native"
@@ -24,19 +24,19 @@
         "url": "git://github.com/renative-org/renative.git"
     },
     "scripts": {
+        "build": "yarn clean && yarn compile",
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
         "build:prod": "babel src -d dist",
-        "prepublishOnly": "yarn build:clean && yarn build:prod",
-        "build": "yarn clean && yarn compile",
         "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.prod.json",
+        "prepublishOnly": "yarn build:clean && yarn build:prod",
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-android": "0.36.0-canary.8",
-        "@rnv/sdk-apple": "0.36.0-canary.8"
+        "@rnv/sdk-android": "0.36.0-canary.9",
+        "@rnv/sdk-apple": "0.36.0-canary.9"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",
@@ -47,7 +47,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.36.0-canary.8"
+        "rnv": "^0.36.0-canary.9"
     },
     "private": false,
     "publishConfig": {

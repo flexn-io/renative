@@ -1,6 +1,6 @@
 {
     "name": "rnv",
-    "version": "0.36.0-canary.8",
+    "version": "0.36.0-canary.9",
     "description": "💻 CLI for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`, `Linux",
     "keywords": [
         "android tv",
@@ -64,14 +64,14 @@
         "url": "git://github.com/renative-org/renative.git"
     },
     "scripts": {
+        "build": "yarn clean && yarn compile",
         "build:clean": "rm -rf dist || true",
         "build:dev": "yarn build --retain-lines",
         "build:prod": "babel src -d dist",
-        "prepublishOnly": "yarn build:clean && yarn build:prod",
-        "build": "yarn clean && yarn compile",
         "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.prod.json",
+        "prepublishOnly": "yarn build:clean && yarn build:prod",
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
@@ -125,8 +125,8 @@
         "source-map-support": "0.5.13",
         "svg2js": "0.0.4-alpha1",
         "tar": "4.4.19",
-        "xml2js": "0.4.23",
-        "tslib": "2.3.1"
+        "tslib": "2.3.1",
+        "xml2js": "0.4.23"
     },
     "engines": {
         "node": ">=6.0.0",
