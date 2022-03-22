@@ -23,7 +23,7 @@
         "build": "yarn clean && yarn compile",
         "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
-        "compile:prod": "tsc -b tsconfig.prod.json",
+        "compile:prod": "tsc -b tsconfig.json",
         "lint": "eslint . --ext .ts",
         "watch": "tsc --watch --preserveWatchOutput"
     },
@@ -80,7 +80,6 @@
         "webpack-manifest-plugin": "^4.0.2",
         "workbox-webpack-plugin": "^6.4.1"
     },
-    "devDependencies": {},
     "peerDependencies": {
         "rnv": "^0.36.0-canary.11"
     },
@@ -97,5 +96,6 @@
         "*.ts": [
             "eslint"
         ]
-    }
+    },
+    "gitHead": "7a6ebce2eebc853517823b6dcca4d88cce6f2fe0"
 }

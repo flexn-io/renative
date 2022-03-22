@@ -56,11 +56,9 @@
         "build": "yarn clean && yarn compile",
         "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
-        "compile:prod": "tsc -b tsconfig.prod.json",
+        "compile:prod": "tsc -b tsconfig.json",
         "watch": "tsc --watch --preserveWatchOutput"
     },
-    "dependencies": {},
-    "devDependencies": {},
     "engines": {
         "node": ">=6.0.0",
         "npm": ">=4.0.0"
@@ -74,5 +72,6 @@
         "hooks": {
             "pre-commit": "pretty-quick --staged"
         }
-    }
+    },
+    "gitHead": "7a6ebce2eebc853517823b6dcca4d88cce6f2fe0"
 }

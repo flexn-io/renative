@@ -74,7 +74,6 @@
         "report:generate": "npx allure generate --clean reporting/allure-results -o reporting/allure-report",
         "report:open": "npx allure open reporting/allure-report"
     },
-    "dependencies": {},
     "devDependencies": {
         "@babel/runtime": "7.12.5",
         "@flexn/graybox": "0.9.0",
@@ -157,5 +156,6 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    }
+    },
+    "gitHead": "7a6ebce2eebc853517823b6dcca4d88cce6f2fe0"
 }
