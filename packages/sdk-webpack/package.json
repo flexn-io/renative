@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-webpack",
-    "version": "0.36.0-canary.9",
+    "version": "0.36.0-canary.10",
     "description": "ReNative Webpack SDK",
     "keywords": [],
     "homepage": "https://github.com/renative-org/renative#readme",
@@ -82,7 +82,7 @@
     },
     "devDependencies": {},
     "peerDependencies": {
-        "rnv": "^0.36.0-canary.9"
+        "rnv": "^0.36.0-canary.10"
     },
     "private": false,
     "publishConfig": {

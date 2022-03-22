@@ -26,7 +26,8 @@ jest.mock('../../src/core/systemManager/logger.js', () => {
         logError: jest.fn(),
         logWarning: jest.fn(),
         logSuccess: jest.fn(),
-        chalk: () => _chalkMono
+        chalk: () => _chalkMono,
+        stripAnsi: (v: any) => (v)
     };
 });
 
