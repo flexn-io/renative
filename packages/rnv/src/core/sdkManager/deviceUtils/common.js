@@ -1,4 +1,4 @@
-import ora from 'ora';
+import ora from '../../../cli/ora';
 import { execCLI } from '../../systemManager/exec';
 
 export const waitForEmulator = async (c, cli, command, callback) => {

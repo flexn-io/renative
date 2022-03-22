@@ -5,8 +5,8 @@
 import path from 'path';
 import { access, accessSync, constants } from 'fs';
 import execa from 'execa';
-import ora from 'ora';
 import NClient from 'netcat/client';
+import ora from '../../cli/ora';
 import Config from '../configManager/config';
 
 import { chalk, logDebug, logRaw, logError } from './logger';

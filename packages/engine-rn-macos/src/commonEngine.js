@@ -1,7 +1,6 @@
 import path from 'path';
 import axios from 'axios';
-import ora from 'ora';
-import { TaskManager, Constants, Logger, Common, FileUtils } from 'rnv';
+import { TaskManager, Constants, Logger, Common, FileUtils, Spinner } from 'rnv';
 
 const { getConfigProp, confirmActiveBundler } = Common;
 const { chalk, logTask, logInfo, logWarning } = Logger;
@@ -100,7 +99,7 @@ export const isBundlerActive = async (c) => {
 const poll = (fn, timeout = 10000, interval = 1000) => {
     const endTime = Number(new Date()) + timeout;
 
-    const spinner = ora('Waiting for bundler to finish...').start();
+    const spinner = Spinner('Waiting for bundler to finish...').start();
     const checkCondition = async (resolve, reject) => {
         try {
             const result = await fn();

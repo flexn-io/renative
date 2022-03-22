@@ -12,7 +12,7 @@ function ansiRegex({ onlyFirst = false } = {}) {
 }
 
 
-function stripAnsi(string) {
+export function stripAnsi(string) {
     if (typeof string !== 'string') {
         throw new TypeError(`Expected a \`string\`, got \`${typeof string}\``);
     }

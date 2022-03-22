@@ -18225,7 +18225,7 @@ options@>=0.0.5:
   resolved "https://registry.npmjs.org/options/-/options-0.0.6.tgz"
   integrity sha1-7CLTEoBrtT5zF3Pnza788cZDEo8=
 
-ora@3.4.0, ora@^3.4.0:
+ora@^3.4.0:
   version "3.4.0"
   resolved "https://registry.npmjs.org/ora/-/ora-3.4.0.tgz"
   integrity sha512-eNwHudNbO1folBP3JsZ19v9azXWtQZjICdr3Q0TDPIaeBQ3mXLrh54wM+er0+hSp+dWKf+Z8KM58CYzEyIYxYg==

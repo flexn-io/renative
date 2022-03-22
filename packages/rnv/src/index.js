@@ -3,6 +3,7 @@ import * as Common from './core/common';
 import * as Utils from './core/systemManager/utils';
 import * as Prompt from './cli/prompt';
 import * as Constants from './core/constants';
+import Spinner from './cli/ora';
 import { withRNVBabel, withRNVMetro } from './core/adapter';
 import CLI from './cli';
 
@@ -84,7 +85,8 @@ export {
     withRNVBabel,
     withRNVMetro,
     run,
-    CLI
+    CLI,
+    Spinner
 };
 
 export default { run, Config };
