@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
-const xmldom_1 = require('xmldom');
+const xmldom_1 = require('@xmldom/xmldom');
 const xpath = require('xpath');
 
 const msbuildSelect = xpath.useNamespaces({

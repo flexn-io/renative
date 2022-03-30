@@ -5859,6 +5859,11 @@
   resolved "https://registry.npmjs.org/@webpack-cli/serve/-/serve-1.6.1.tgz"
   integrity sha512-gNGTiTrjEVQ0OcVnzsRSqTxaBSr+dmTfm+qJsCDluky8uhdLWep7Gcr62QsAKHTMxjCS/8nEITsmFAhfIx+QSw==
 
+"@xmldom/xmldom@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.0.tgz#d179fd964cdac9fb2cdcd34b6febcc47f5cd4315"
+  integrity sha512-imgPU2uvItdwBSO/q/k/pntmrYm/bjiD3Xs6O2daALR1lBjif7JVxS1RYAwTcYxZUPHeBAoiKUcGpyCD9+MRRg==
+
 "@xmldom/xmldom@^0.7.5", "@xmldom/xmldom@~0.7.0":
   version "0.7.5"
   resolved "https://registry.npmjs.org/@xmldom/xmldom/-/xmldom-0.7.5.tgz"
@@ -25053,7 +25058,7 @@ xmldoc@^1.1.2:
   dependencies:
     sax "^1.2.1"
 
-xmldom@0.6.0, xmldom@^0.x:
+xmldom@^0.x:
   version "0.6.0"
   resolved "https://registry.npmjs.org/xmldom/-/xmldom-0.6.0.tgz#43a96ecb8beece991cef382c08397d82d4d0c46f"
   integrity sha512-iAcin401y58LckRZ0TkI4k0VSM1Qg0KGSc3i8rU+xrxe19A/BN1zHyVSJY7uoutVlaTSzYyk/v5AmkewAP7jtg==
