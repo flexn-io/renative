@@ -110,17 +110,23 @@ export const createEngineAlias = (customAlias) => {
     return alias;
 };
 
-export const withRNVBabel = cnf => ({
-    retainLines: true,
-    presets: ['module:metro-react-native-babel-preset'],
-    plugins: [
-        [
-            require.resolve('babel-plugin-module-resolver'),
-            {
-                root: [process.env.RNV_MONO_ROOT || '.'],
-                alias: createEngineAlias({})
-            },
+export const withRNVBabel = (cnf) => {
+    const plugins = cnf?.plugins || [];
+
+    return {
+        retainLines: true,
+        presets: ['module:metro-react-native-babel-preset'],
+        ...cnf,
+        plugins: [
+            [
+                require.resolve('babel-plugin-module-resolver'),
+                {
+                    root: [process.env.RNV_MONO_ROOT || '.'],
+                    alias: createEngineAlias({})
+                },
+            ],
+            ...plugins
         ],
-    ],
-    ...cnf
-});
+
+    };
+};

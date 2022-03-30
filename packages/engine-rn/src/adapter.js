@@ -84,16 +84,22 @@ export const withRNVMetro = (config) => {
     return cnf;
 };
 
-export const withRNVBabel = cnf => ({
-    retainLines: true,
-    presets: ['module:metro-react-native-babel-preset'],
-    plugins: [
-        [
-            require.resolve('babel-plugin-module-resolver'),
-            {
-                root: [process.env.RNV_MONO_ROOT || '.'],
-            },
+export const withRNVBabel = cnf => {
+    const plugins = cnf?.plugins || [];
+
+    return {
+        retainLines: true,
+        presets: ['module:metro-react-native-babel-preset'],
+        ...cnf,
+        plugins: [
+            [
+                require.resolve('babel-plugin-module-resolver'),
+                {
+                    root: [process.env.RNV_MONO_ROOT || '.'],
+                },
+            ],
+            ...plugins
         ],
-    ],
-    ...cnf
-});
+
+    };
+};
