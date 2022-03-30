@@ -35,7 +35,25 @@ metro.config.local.js
 
 
 vendor/
-appConfigs/base/assets
-!appConfigs/base/assets/runtime
+appConfigs/base/assets/ios
+appConfigs/base/assets/android
+appConfigs/base/assets/web
+appConfigs/base/assets/androidtv
+appConfigs/base/assets/tvos
+appConfigs/base/assets/webos
+appConfigs/base/assets/tizen
+appConfigs/base/assets/tizenwatch
+appConfigs/base/assets/tizenwear
+appConfigs/base/assets/kaios
+appConfigs/base/assets/firefoxos
+appConfigs/base/assets/firefoxtv
+appConfigs/base/assets/firetv
+appConfigs/base/assets/androidwear
+appConfigs/base/assets/xbox
+appConfigs/base/assets/linux
+appConfigs/base/assets/macos
+
+# Does not work
+# !appConfigs/base/assets/runtime
 
 reporting
