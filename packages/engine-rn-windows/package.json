@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-windows",
-    "version": "0.36.0-canary.12",
+    "version": "0.36.0-canary.13",
     "description": "ReNative Engine to build for Windows platform with react native support.",
     "keywords": [
         "react-native",
@@ -33,8 +33,8 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "react-native-windows": "0.67.3",
-        "@xmldom/xmldom": "0.7.0"
+        "@xmldom/xmldom": "0.7.0",
+        "react-native-windows": "0.67.3"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",
@@ -49,7 +49,7 @@
     "peerDependencies": {
         "@react-native-community/cli": "*",
         "react-native": "*",
-        "rnv": "^0.36.0-canary.12"
+        "rnv": "^0.36.0-canary.13"
     },
     "private": false,
     "publishConfig": {
