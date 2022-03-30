@@ -25,7 +25,9 @@ export const withRNVNext = (config, opts) => {
             }
             // https://github.com/martpie/next-transpile-modules#i-have-trouble-with-duplicated-dependencies-or-the-invalid-hook-call-error-in-react
             if (isServer) {
-                cfg.externals = ['react', ...cfg.externals];
+                // TODO: This breaks non monorepo SSR
+                // cfg.externals = ['react', ...cfg.externals];
+                cfg.externals = [...cfg.externals];
             }
 
             cfg.resolve.modules.unshift(path.resolve(rootPath));
@@ -90,17 +92,21 @@ export const withRNVNext = (config, opts) => {
 };
 
 
-export const withRNVBabel = cnf => ({
-    retainLines: true,
-    // presets: ['module:metro-react-native-babel-preset'],
-    presets: ['module:babel-preset-expo'],
-    plugins: [
-        [
-            require.resolve('babel-plugin-module-resolver'),
-            {
-                root: [process.env.RNV_MONO_ROOT || '.'],
-            },
+export const withRNVBabel = (cnf) => {
+    const plugins = cnf?.plugins || [];
+
+    return {
+        retainLines: true,
+        presets: ['module:babel-preset-expo'],
+        ...cnf,
+        plugins: [
+            [
+                require.resolve('babel-plugin-module-resolver'),
+                {
+                    root: [process.env.RNV_MONO_ROOT || '.'],
+                },
+            ],
+            ...plugins,
         ],
-    ],
-    ...cnf
-});
+    };
+};
