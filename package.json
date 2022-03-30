@@ -160,8 +160,10 @@
         "@react-native-community/cli-platform-ios": "^6.0.0",
         "@react-native-community/cli-platform-android": "^6.0.0",
         "axios": "^0.21.2",
-        "plist": "^3.0.4",
+        "plist": "^3.0.5",
         "merge": "^2.1.1",
-        "react-dev-utils": "^12.0.0"
+        "minimist": "1.2.6",
+        "react-dev-utils": "^12.0.0",
+        "node-forge": "1.3.0"
     }
 }
