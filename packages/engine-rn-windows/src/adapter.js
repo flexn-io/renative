@@ -50,6 +50,7 @@ export const withRNV = (config) => {
         watchFolders.push(...config.watchFolders);
     }
 
+    const exts = process.env.RNV_EXTENSIONS || '';
 
     const cnf = {
         ...config,
@@ -90,10 +91,9 @@ export const withRNV = (config) => {
             }),
         },
         watchFolders,
+        sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
         projectRoot: path.resolve(projectPath)
     };
-
-    cnf.resolver.sourceExts = process.env.RNV_EXTENSIONS.split(',');
 
     return cnf;
 };

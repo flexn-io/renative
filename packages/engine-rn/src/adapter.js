@@ -44,6 +44,8 @@ export const withRNVMetro = (config) => {
         watchFolders.push(...config.watchFolders);
     }
 
+    const exts = process.env.RNV_EXTENSIONS || '';
+
     const cnf = {
         ...config,
         transformer: {
@@ -73,13 +75,12 @@ export const withRNVMetro = (config) => {
                 /metro.config.local.*/,
             ]),
             ...config?.resolver || {},
+            sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
             extraNodeModules: config?.resolver?.extraNodeModules
         },
         watchFolders,
         projectRoot: path.resolve(projectPath)
     };
-    const exts = process.env.RNV_EXTENSIONS || '';
-    cnf.resolver.sourceExts = exts.split(',');
 
     return cnf;
 };
