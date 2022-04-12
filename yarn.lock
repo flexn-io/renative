@@ -21865,10 +21865,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3, signal-exit@^3.0.7:
   resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.7.tgz"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
-simple-git@3.3.0:
-  version "3.3.0"
-  resolved "https://registry.npmjs.org/simple-git/-/simple-git-3.3.0.tgz#91692d576f851be691124781b79872b246d2f92c"
-  integrity sha512-K9qcbbZwPHhk7MLi0k0ekvSFXJIrRoXgHhqMXAFM75qS68vdHTcuzmul1ilKI02F/4lXshVgBoDll2t++JK0PQ==
+simple-git@3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/simple-git/-/simple-git-3.5.0.tgz#3c3538f4d7a1b3c8f3904412b12740bdcad9c8b1"
+  integrity sha512-fZsaq5nzdxQRhMNs6ESGLpMUHoL5GRP+boWPhq9pMYMKwOGZV2jHOxi8AbFFA2Y/6u4kR99HoULizSbpzaODkA==
   dependencies:
     "@kwsites/file-exists" "^1.1.1"
     "@kwsites/promise-deferred" "^1.1.1"

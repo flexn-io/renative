@@ -86,7 +86,7 @@
     },
     "dependencies": {
         "deepmerge": "3.2.0",
-        "simple-git": "3.3.0"
+        "simple-git": "3.5.0"
     },
     "devDependencies": {
         "@babel/eslint-parser": "7.17.0",
