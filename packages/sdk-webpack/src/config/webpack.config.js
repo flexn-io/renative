@@ -328,7 +328,7 @@ module.exports = function (webpackEnv) {
                     babelRuntimeEntry,
                     babelRuntimeEntryHelpers,
                     babelRuntimeRegenerator,
-                    ...process.env.RNV_EXTERNAL_PATHS
+                    ...process.env.RNV_EXTERNAL_PATHS.split(',')
                 ]),
             ],
         },

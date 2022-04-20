@@ -153,8 +153,8 @@ export const _runWebDevServer = async (c, enableRemoteDebugger) => {
     process.env.RNV_ENTRY_FILE = getConfigProp(c, c.platform, 'entryFile');
     process.env.PORT = c.runtime.port;
     process.env.RNV_EXTERNAL_PATHS = [
-        path.join(c.paths.project.assets.dir)
-    ];
+        `${path.join(c.paths.project.assets.dir)}/*`
+    ].join(',');
 
     const debugObj = { remoteDebuggerActive: false };
     let debugOrder = [_runRemoteDebuggerChii, _runRemoteDebuggerWeinre];
@@ -182,8 +182,8 @@ export const buildCoreWebpackProject = async (c) => {
     process.env.RNV_ENTRY_FILE = getConfigProp(c, c.platform, 'entryFile');
     process.env.PORT = c.runtime.port;
     process.env.RNV_EXTERNAL_PATHS = [
-        path.join(c.paths.project.assets.dir)
-    ];
+        `${path.join(c.paths.project.assets.dir)}/*`
+    ].join(',');
 
     if (debug) {
         logInfo(
