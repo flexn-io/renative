@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import {
     getScaledValue,
     isEngineRnElectron,
-    isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isWebBased
+    isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isPlatformWeb, isWebBased
 } from '@rnv/renative';
 // import { LogBox } from 'react-native';
 // import JSTimers from 'react-native/Libraries/Core/Timers/JSTimers';
@@ -218,7 +218,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
 
 
 export const ROUTES = {
-    HOME: '/',
+    HOME: isPlatformWeb ? '/' : 'home',
     MY_PAGE: 'my-page',
     MODAL: 'modal'
 };
