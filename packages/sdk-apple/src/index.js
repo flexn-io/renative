@@ -557,18 +557,21 @@ const _setAutomaticSigning = async (c) => {
 const _setDevelopmentTeam = async (c, teamID) => {
     logTask(`_setDevelopmentTeam:${teamID}`);
 
-    const plat = c.files.appConfig?.config?.platforms?.[c.platform];
-    if (plat) {
-        plat.teamID = teamID;
-        writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
-        logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
-    } else {
+    try {
+        // initialize if it doesn't exist, assume everything is set up, if it throws yell
+        if (!c.files.appConfig.config_original.platforms[c.platform]) {
+            c.files.appConfig.config_original.platforms[c.platform] = {};
+        }
+        c.files.appConfig.config_original.platforms[c.platform].teamID = teamID;
+    } catch (e) {
         return Promise.reject(
             `Failed to update ${c.paths.appConfig?.config}."platforms": { "${
                 c.platform
             }" ... Object is null. Try update file manually`
         );
     }
+    writeFileSync(c.paths.appConfig.config, c.files.appConfig.config_original);
+    logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
 };
 
 const composeXcodeArgsFromCLI = (string) => {
