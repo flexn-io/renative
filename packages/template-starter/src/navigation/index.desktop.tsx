@@ -4,12 +4,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import React, { useContext } from 'react';
 import { StatusBar, View } from 'react-native';
-import { isFactorDesktop } from '@rnv/renative';
+import { isFactorDesktop, isPlatformMacos } from '@rnv/renative';
 import Menu from '../components/Menu';
 import ScreenHome from '../screens/Home';
 import ScreenModal from '../screens/Modal';
 import ScreenMyPage from '../screens/MyPage';
-import { ThemeContext } from '../config';
+import { ThemeContext, themeStyles } from '../config';
 import { CastButton } from '../components/CastButton';
 
 const Stack = createStackNavigator();
@@ -58,7 +58,7 @@ const App = () => {
         StatusBar.setBarStyle(theme.static.statusBar);
     }, []);
     return (
-        <View style={{ flex: 1 }}>
+        <View style={themeStyles.app}>
             <NavigationContainer>
                 <ModalStack.Navigator
                     headerMode="none"

@@ -19,7 +19,7 @@ export const hasHorizontalMenu = !isFactorMobile && !isFactorDesktop && !hasMobi
 export const hasFullScreenMenu = hasMobileWebUI;
 export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isWebBased && isFactorTv;
-const hasModalPadding: boolean = (isPlatformMacos && !isWebBased) ? true : false;
+const isNativeMacos: boolean = (isPlatformMacos && !isWebBased) ? true : false;
 
 // Disable yellow warnings UI - console.disableYellowBox replacement with setImmediate workaround
 // if (!global.setImmediate) {
@@ -72,7 +72,7 @@ const staticThemes = {
 
 const createStyleSheet = currentTheme => StyleSheet.create({
     app: {
-        flexDirection: isFactorDesktop ? 'row' : 'column', position: 'absolute', top: 0, right: 0, left: 0, bottom: 0
+        flexDirection: isFactorDesktop ? 'row' : 'column', top: isNativeMacos ? 35 : 0, right: 0, left: 0, bottom: 0, flex: 1
     },
     appContainer: {
         position: 'absolute',
@@ -159,7 +159,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
         position: 'absolute',
         backgroundColor: currentTheme.colorBgPrimary,
         top: hasHorizontalMenu && isWebBased ? -currentTheme.menuHeight : 0,
-        left: hasModalPadding ? -currentTheme.menuWidth : 0,
+        left: 0,
         right: 0,
         bottom: 0
     },
