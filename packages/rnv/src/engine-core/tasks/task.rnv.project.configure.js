@@ -1,4 +1,4 @@
-import { configurePlugins, overrideTemplatePlugins, resolvePluginDependants } from '../../core/pluginManager';
+import { checkForPluginDependencies, configurePlugins, overrideTemplatePlugins, resolvePluginDependants } from '../../core/pluginManager';
 import { chalk, logTask, logInfo } from '../../core/systemManager/logger';
 import { checkIsRenativeProject, generateRuntimeConfig } from '../../core/configManager';
 import { updateRenativeConfigs, configureRuntimeDefaults } from '../../core/runtimeManager';
@@ -84,6 +84,8 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         await generateRuntimeConfig(c);
         await overrideTemplatePlugins(c);
         await configureFonts(c);
+        // NOTE: this is needed to ensure missing rnv plugin sub-deps are caught
+        await checkForPluginDependencies(c);
     }
 
     return true;

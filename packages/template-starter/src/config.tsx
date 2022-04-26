@@ -3,8 +3,9 @@
 import React, { createContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
-    getScaledValue, isFactorBrowser,
-    isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isWebBased
+    getScaledValue,
+    isEngineRnElectron,
+    isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isPlatformWeb, isWebBased
 } from '@rnv/renative';
 // import { LogBox } from 'react-native';
 // import JSTimers from 'react-native/Libraries/Core/Timers/JSTimers';
@@ -18,7 +19,7 @@ export const hasHorizontalMenu = !isFactorMobile && !isFactorDesktop && !hasMobi
 export const hasFullScreenMenu = hasMobileWebUI;
 export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isWebBased && isFactorTv;
-const hasModalPadding: boolean = !(hasHorizontalMenu || hasFullScreenMenu || isPlatformMacos || isWebBased);
+const hasModalPadding: boolean = (isPlatformMacos && !isWebBased) ? true : false;
 
 // Disable yellow warnings UI - console.disableYellowBox replacement with setImmediate workaround
 // if (!global.setImmediate) {
@@ -158,7 +159,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
         position: 'absolute',
         backgroundColor: currentTheme.colorBgPrimary,
         top: hasHorizontalMenu && isWebBased ? -currentTheme.menuHeight : 0,
-        left: hasModalPadding ? 0 : -currentTheme.menuWidth,
+        left: hasModalPadding ? -currentTheme.menuWidth : 0,
         right: 0,
         bottom: 0
     },
@@ -217,7 +218,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
 
 
 export const ROUTES = {
-    HOME: '/',
+    HOME: isPlatformWeb ? '/' : 'home',
     MY_PAGE: 'my-page',
     MODAL: 'modal'
 };

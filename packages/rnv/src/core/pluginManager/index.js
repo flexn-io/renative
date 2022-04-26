@@ -705,7 +705,7 @@ export const installPackageDependenciesAndPlugins = async (c) => {
     await installPackageDependencies(c);
     await overrideTemplatePlugins(c);
     await configureFonts(c);
-    await _checkForPluginDependencies(c);
+    await checkForPluginDependencies(c);
 };
 
 const _getPluginConfiguration = (c, pluginName) => {
@@ -722,7 +722,7 @@ const _getPluginConfiguration = (c, pluginName) => {
     return null;
 };
 
-const _checkForPluginDependencies = async (c) => {
+export const checkForPluginDependencies = async (c) => {
     const toAdd = {};
     Object.keys(c.buildConfig.plugins).forEach((pluginName) => {
         const renativePluginConfig = _getPluginConfiguration(c, pluginName);
