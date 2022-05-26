@@ -139,6 +139,7 @@ export const taskRnvNew = async (c) => {
         projectTemplate,
         templateVersion,
         platform,
+        gitEnabled
     } = c.program;
 
     if (fsExistsSync(c.paths.project.config)) {
@@ -281,6 +282,8 @@ export const taskRnvNew = async (c) => {
     let inputWorkspace;
     if (workspace && workspace !== '') {
         inputWorkspace = workspace;
+    } else if (ci) {
+        inputWorkspace = data.defaultWorkspace;
     } else {
         const answer = await inquirer.prompt([
             {
@@ -463,15 +466,19 @@ export const taskRnvNew = async (c) => {
         }
     });
 
+    let isGitEnabled = gitEnabled;
     // ==================================================
     // INPUT: Git Enabled
     // ==================================================
+    if (isGitEnabled === undefined) {
+        const response = await inquirer.prompt({
+            name: 'gitEnabled',
+            type: 'confirm',
+            message: 'Do you want to set-up git in your new project?',
+        });
 
-    const { gitEnabled } = await inquirer.prompt({
-        name: 'gitEnabled',
-        type: 'confirm',
-        message: 'Do you want to set-up git in your new project?',
-    });
+        isGitEnabled = response.gitEnabled;
+    }
 
     // ==================================================
     // INPUT: Confirm Overview
@@ -485,7 +492,7 @@ export const taskRnvNew = async (c) => {
         inputTemplate: selectedInputTemplate,
         inputSupportedPlatforms,
         inputWorkspace,
-        gitEnabled,
+        gitEnabled: isGitEnabled,
     };
     data.optionPlatforms.selectedOptions = inputSupportedPlatforms;
 
