@@ -476,6 +476,10 @@ export const PARAM_KEYS: any = {
     yes: {
         description: 'Default all prompts to yes'
     },
+    gitEnabled: {
+        description: 'Enable git in your newly created project',
+        value: 'value',
+    },
     npxMode: {
         description: 'Ensures you can use local npx rnv version after the command is done'
     },
@@ -498,12 +502,12 @@ Object.keys(PARAM_KEYS).forEach((k) => {
 
 export const PARAMS = {
     withBase: (arr: any) => [PARAM_KEYS.info, PARAM_KEYS.ci, PARAM_KEYS.mono,
-    PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
+        PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
     withConfigure: (arr: any) => [PARAM_KEYS.reset, PARAM_KEYS.resetHard, PARAM_KEYS.engine, PARAM_KEYS.resetAssets,
-    PARAM_KEYS.appConfigID, PARAM_KEYS.scheme, PARAM_KEYS.platform].concat(arr || []),
+        PARAM_KEYS.appConfigID, PARAM_KEYS.scheme, PARAM_KEYS.platform].concat(arr || []),
     withRun: (arr: any) => [PARAM_KEYS.target, PARAM_KEYS.device, PARAM_KEYS.hosted,
-    PARAM_KEYS.port, PARAM_KEYS.debug, PARAM_KEYS.debugIp, PARAM_KEYS.skipTargetCheck,
-    PARAM_KEYS.host].concat(arr || []),
+        PARAM_KEYS.port, PARAM_KEYS.debug, PARAM_KEYS.debugIp, PARAM_KEYS.skipTargetCheck,
+        PARAM_KEYS.host].concat(arr || []),
     withAll: (arr: any) => Object.values(PARAM_KEYS).concat(arr || []),
     all: Object.keys(PARAM_KEYS)
 };
