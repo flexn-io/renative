@@ -26,7 +26,7 @@ export default {
         taskRnvDebug,
     ]),
     config: CNF,
-    projectDirName: 'public',
+    projectDirName: '',
     serverDirName: '',
     ejectPlatform: null,
     platforms: {
