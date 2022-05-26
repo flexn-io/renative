@@ -477,7 +477,8 @@ export const PARAM_KEYS: any = {
         description: 'Default all prompts to yes'
     },
     gitEnabled: {
-        description: 'Enable git in your newly created project'
+        description: 'Enable git in your newly created project',
+        value: 'value',
     },
     npxMode: {
         description: 'Ensures you can use local npx rnv version after the command is done'

@@ -466,11 +466,11 @@ export const taskRnvNew = async (c) => {
         }
     });
 
-    let isGitEnabled = gitEnabled;
+    let isGitEnabled = gitEnabled === 'true' || gitEnabled === true;
     // ==================================================
     // INPUT: Git Enabled
     // ==================================================
-    if (isGitEnabled === undefined) {
+    if (gitEnabled === undefined && !ci) {
         const response = await inquirer.prompt({
             name: 'gitEnabled',
             type: 'confirm',
