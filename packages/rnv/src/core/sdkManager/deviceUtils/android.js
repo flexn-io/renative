@@ -1,6 +1,7 @@
 import path from 'path';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
+import os from 'os';
 import { fsExistsSync, fsReaddirSync, fsLstatSync, fsReadFileSync } from '../../systemManager/fileutils';
 import { execCLI, executeTelnet } from '../../systemManager/exec';
 import { waitForEmulator } from './common';
@@ -601,18 +602,21 @@ export const askForNewEmulator = async (c, platform) => {
         )}) for you?`
     });
 
+    const sdk = os.arch() === 'arm64' ? '30' : '28'; // go 30 if Apple Silicon
+    const arch = os.arch() === 'arm64' ? 'arm64-v8a' : 'x86';
+
     if (confirm) {
         switch (platform) {
             case 'android':
-                return _createEmulator(c, '28', 'google_apis', emuName).then(
+                return _createEmulator(c, sdk, 'google_apis', emuName, arch).then(
                     () => launchAndroidSimulator(c, emuName, true)
                 );
             case 'androidtv':
-                return _createEmulator(c, '28', 'android-tv', emuName).then(
+                return _createEmulator(c, sdk, 'android-tv', emuName, arch).then(
                     () => launchAndroidSimulator(c, emuName, true)
                 );
             case 'androidwear':
-                return _createEmulator(c, '28', 'android-wear', emuName).then(
+                return _createEmulator(c, sdk, 'android-wear', emuName, arch).then(
                     () => launchAndroidSimulator(c, emuName, true)
                 );
             default:
@@ -624,13 +628,14 @@ export const askForNewEmulator = async (c, platform) => {
     return Promise.reject('Action canceled!');
 };
 
-const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
+const _createEmulator = (c, apiVersion, emuPlatform, emuName, arch = 'x86') => {
     logTask('_createEmulator');
+
 
     return execCLI(
         c,
         CLI_ANDROID_SDKMANAGER,
-        `"system-images;android-${apiVersion};${emuPlatform};x86"`
+        `"system-images;android-${apiVersion};${emuPlatform};${arch}"`
     )
         .then(() => execCLI(
             c,
