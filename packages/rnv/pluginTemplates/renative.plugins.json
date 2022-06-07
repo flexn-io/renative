@@ -2546,13 +2546,13 @@
             }
         },
         "react": {
-            "version": "17.0.2"
+            "version": "18.1.0"
         },
         "react-dom": {
-            "version": "17.0.2"
+            "version": "18.1.0"
         },
         "react-art": {
-            "version": "17.0.2"
+            "version": "18.1.0"
         },
         "react-hot-loader": {
             "version": "4.3.12"

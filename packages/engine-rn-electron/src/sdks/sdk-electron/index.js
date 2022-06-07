@@ -49,7 +49,7 @@ const {
 } = Constants;
 
 
-export const configureElectronProject = async (c) => {
+export const configureElectronProject = async (c, exitOnFail) => {
     logTask('configureElectronProject');
 
     const { platform } = c;
@@ -71,12 +71,12 @@ export const configureElectronProject = async (c) => {
 
     await configureCoreWebProject(c);
 
-    await configureProject(c);
+    await configureProject(c, exitOnFail);
     return copyBuildsFolder(c, platform);
 };
 const merge = require('deepmerge');
 
-const configureProject = c => new Promise((resolve, reject) => {
+const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
     logTask('configureProject');
     const { platform } = c;
 
@@ -87,7 +87,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     const platformBuildDir = getPlatformBuildDir(c);
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
-    const packagePath = path.join(platformProjectDir, 'package.json');
+    const packagePath = path.join(platformBuildDir, 'package.json');
     // If path does not exist for png, try iconset
     const pngIconPath = path.join(
         c.paths.appConfig.dir,
@@ -95,20 +95,27 @@ const configureProject = c => new Promise((resolve, reject) => {
     );
     const appId = getAppId(c, platform);
 
+    console.log('AJLKAJLKAJLKA', packagePath);
+
     if (!fsExistsSync(packagePath)) {
-        logWarning(
-            `Your ${chalk().white(
-                platform
-            )} platformBuild is misconfigured!. let's repair it.`
-        );
-        createPlatformBuild(c, platform)
-            .then(() => configureElectronProject(c, platform))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
+        if (exitOnFail) {
+            logWarning(
+                `Your ${chalk().white(
+                    platform
+                )} platformBuild is misconfigured!. let's repair it.`
+            );
+            createPlatformBuild(c, platform)
+                .then(() => configureElectronProject(c, true))
+                .then(() => resolve(c))
+                .catch(e => reject(e));
+            return;
+        }
+        reject(`${packagePath} does not exist!`);
         return;
     }
-
-    const pkgJson = path.join(engine.originalTemplateAssetsDir, platform, 'package.json');
+    console.log('SKSLKS:LSLKS:', engine);
+    const pkgJson = path.join(engine.originalTemplatePlatformsDir, platform, 'package.json');
+    console.log('AMAMAMAAM', pkgJson);
     const packageJson = readObjectSync(pkgJson);
 
     packageJson.name = `${c.runtime.appId}-${platform}`;

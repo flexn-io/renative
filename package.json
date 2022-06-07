@@ -159,6 +159,7 @@
         "@react-native-community/cli": "^6.0.0",
         "@react-native-community/cli-platform-ios": "^6.0.0",
         "@react-native-community/cli-platform-android": "^6.0.0",
+        "@types/react": "18.0.11",
         "axios": "^0.21.2",
         "plist": "^3.0.5",
         "merge": "^2.1.1",
