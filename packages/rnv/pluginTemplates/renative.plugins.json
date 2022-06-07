@@ -2996,7 +2996,7 @@
             }
         },
         "next": {
-            "version": "12.1.0"
+            "version": "12.1.6"
         },
         "@react-native-community/cli-platform-ios": {
             "version": "^6.0.0"

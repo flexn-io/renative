@@ -1,6 +1,6 @@
 import path from 'path';
 import open from 'better-opn';
-import { Exec, FileUtils, Common, Logger, Constants, EngineManager, PluginManager } from 'rnv';
+import { Exec, FileUtils, Common, Logger, Constants, EngineManager, PluginManager, ProjectManager } from 'rnv';
 
 const { executeAsync } = Exec;
 const {
@@ -11,13 +11,15 @@ const {
     getDevServerHost,
     waitForHost
 } = Common;
-const { fsExistsSync, writeCleanFile } = FileUtils;
+const { fsExistsSync, writeCleanFile, copyFolderContentsRecursiveSync } = FileUtils;
 const {
     chalk, logTask, logInfo, logWarning,
     logRaw, logSummary, logSuccess
 } = Logger;
 const { NEXT_CONFIG_NAME } = Constants;
 const { generateEnvVars } = EngineManager;
+const { copyAssetsFolder } = ProjectManager;
+
 const { parsePlugins, getModuleConfigs } = PluginManager;
 
 export const configureNextIfRequired = async (c) => {
@@ -28,6 +30,25 @@ export const configureNextIfRequired = async (c) => {
     // const _appFile = path.join(pagesDir, '_app.js');
     const supportFilesDir = path.join(platformTemplatesDirs[c.platform], '../../supportFiles');
     const configFile = path.join(dir, NEXT_CONFIG_NAME);
+
+    await copyAssetsFolder(c, c.platform);
+
+    const destPath = path.join(c.paths.project.dir, 'public');
+
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            const sourcePath = path.join(v, `assets/${c.platform}`);
+            copyFolderContentsRecursiveSync(sourcePath, destPath);
+        });
+    } else {
+        const sourcePath = path.join(
+            c.paths.appConfig.dir,
+            `assets/${c.platform}`
+        );
+        copyFolderContentsRecursiveSync(sourcePath, destPath);
+    }
+
+
 
     // add config
     if (!fsExistsSync(configFile)) {
