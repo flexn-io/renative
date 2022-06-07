@@ -95,8 +95,6 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
     );
     const appId = getAppId(c, platform);
 
-    console.log('AJLKAJLKAJLKA', packagePath);
-
     if (!fsExistsSync(packagePath)) {
         if (exitOnFail) {
             logWarning(
@@ -113,9 +111,7 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
         reject(`${packagePath} does not exist!`);
         return;
     }
-    console.log('SKSLKS:LSLKS:', engine);
     const pkgJson = path.join(engine.originalTemplatePlatformsDir, platform, 'package.json');
-    console.log('AMAMAMAAM', pkgJson);
     const packageJson = readObjectSync(pkgJson);
 
     packageJson.name = `${c.runtime.appId}-${platform}`;
