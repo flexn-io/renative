@@ -55,6 +55,7 @@ export const configureElectronProject = async (c, exitOnFail) => {
     const { platform } = c;
 
     c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
+    c.runtime.webpackTarget = 'electron-main';
 
     // If path does not exist for png, try iconset
     const iconsetPath = path.join(
@@ -127,7 +128,7 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
     let browserWindow = {
         width: 1200,
         height: 800,
-        webPreferences: { nodeIntegration: true, enableRemoteModule: true },
+        webPreferences: { nodeIntegration: true, enableRemoteModule: true, contextIsolation: false },
         icon: (platform === MACOS || platform === LINUX) && !fsExistsSync(pngIconPath)
             ? path.join(platformProjectDir, 'resources', 'icon.icns')
             : path.join(platformProjectDir, 'resources', 'icon.png')

@@ -186,7 +186,7 @@ module.exports = function (webpackEnv) {
     };
 
     return {
-        target: ['browserslist'],
+        target: [process.env.WEBPACK_TARGET || 'electron-main'], // browserslist | electron-main ...
         mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
         // Stop compilation early in production
         bail: isEnvProduction,
