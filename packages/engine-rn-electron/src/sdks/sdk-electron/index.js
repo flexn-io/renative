@@ -13,7 +13,8 @@ const {
     writeFileSync,
     readObjectSync,
     removeDirs,
-    writeCleanFile
+    writeCleanFile,
+    copyFileSync
 } = FileUtils;
 const {
     getPlatformProjectDir,
@@ -124,6 +125,7 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
     packageJson.main = './main.js';
 
     writeFileSync(packagePath, packageJson);
+
 
     let browserWindow = {
         width: 1200,
@@ -243,6 +245,22 @@ const buildElectron = async (c) => {
     logTask('buildElectron');
 
     await buildCoreWebpackProject(c);
+    // Webpack 5 deletes build folder but does not copy package json
+
+    const platformBuildDir = getPlatformBuildDir(c);
+
+    const packagePathSrc = path.join(platformBuildDir, 'package.json');
+    const packagePathDest = path.join(platformBuildDir, 'build', 'package.json');
+    copyFileSync(packagePathSrc, packagePathDest);
+
+    const mainPathSrc = path.join(platformBuildDir, 'main.js');
+    const mainPathDest = path.join(platformBuildDir, 'build', 'main.js');
+    copyFileSync(mainPathSrc, mainPathDest);
+
+    const menuPathSrc = path.join(platformBuildDir, 'contextMenu.js');
+    const menuPathDest = path.join(platformBuildDir, 'build', 'contextMenu.js');
+    copyFileSync(menuPathSrc, menuPathDest);
+
     return true;
 };
 
@@ -257,9 +275,20 @@ const exportElectron = async (c) => {
         await removeDirs([buildPath]);
     }
 
+    const execPath = path.join('node_modules', '.bin', 'electron-builder');
+    let electronBuilderPath = path.join(c.paths.project.dir, execPath);
+    if (!fsExistsSync(electronBuilderPath)) {
+        electronBuilderPath = path.join(c.paths.project.dir, '../../', execPath);
+    }
+    if (!fsExistsSync(electronBuilderPath)) {
+        electronBuilderPath = path.join(c.paths.project.dir, '../../../', execPath);
+    }
+    if (!fsExistsSync(electronBuilderPath)) {
+        electronBuilderPath = 'npx electron-builder';
+    }
     await executeAsync(
         c,
-        `npx electron-builder --config ${path.join(
+        `${electronBuilderPath} --config ${path.join(
             platformBuildDir,
             'electronConfig.json'
         )} --${c.platform}`
