@@ -76,7 +76,7 @@
     },
     "devDependencies": {
         "@babel/runtime": "7.12.5",
-        "@flexn/graybox": "0.9.0",
+        "@flexn/graybox": "0.15.3-alpha.0",
         "@lightningjs/cli": "2.7.2",
         "@lightningjs/sdk": "4.3.3",
         "@noriginmedia/react-spatial-navigation": "2.12.9",
