@@ -249,6 +249,9 @@ const buildElectron = async (c) => {
 
     const platformBuildDir = getPlatformBuildDir(c);
 
+    // workaround: electron-builder fails export in npx mode due to trying install node_modules. we trick it not to do that
+    mkdirSync(path.join(platformBuildDir, 'build', 'node_modules'));
+
     const packagePathSrc = path.join(platformBuildDir, 'package.json');
     const packagePathDest = path.join(platformBuildDir, 'build', 'package.json');
     copyFileSync(packagePathSrc, packagePathDest);
