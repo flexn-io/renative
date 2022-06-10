@@ -13,7 +13,8 @@ const {
     writeFileSync,
     readObjectSync,
     removeDirs,
-    writeCleanFile
+    writeCleanFile,
+    copyFileSync
 } = FileUtils;
 const {
     getPlatformProjectDir,
@@ -49,12 +50,13 @@ const {
 } = Constants;
 
 
-export const configureElectronProject = async (c) => {
+export const configureElectronProject = async (c, exitOnFail) => {
     logTask('configureElectronProject');
 
     const { platform } = c;
 
     c.runtime.platformBuildsProjectPath = `${getPlatformProjectDir(c)}`;
+    c.runtime.webpackTarget = 'electron-main';
 
     // If path does not exist for png, try iconset
     const iconsetPath = path.join(
@@ -71,12 +73,12 @@ export const configureElectronProject = async (c) => {
 
     await configureCoreWebProject(c);
 
-    await configureProject(c);
+    await configureProject(c, exitOnFail);
     return copyBuildsFolder(c, platform);
 };
 const merge = require('deepmerge');
 
-const configureProject = c => new Promise((resolve, reject) => {
+const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
     logTask('configureProject');
     const { platform } = c;
 
@@ -87,7 +89,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     const platformBuildDir = getPlatformBuildDir(c);
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
-    const packagePath = path.join(platformProjectDir, 'package.json');
+    const packagePath = path.join(platformBuildDir, 'package.json');
     // If path does not exist for png, try iconset
     const pngIconPath = path.join(
         c.paths.appConfig.dir,
@@ -96,19 +98,22 @@ const configureProject = c => new Promise((resolve, reject) => {
     const appId = getAppId(c, platform);
 
     if (!fsExistsSync(packagePath)) {
-        logWarning(
-            `Your ${chalk().white(
-                platform
-            )} platformBuild is misconfigured!. let's repair it.`
-        );
-        createPlatformBuild(c, platform)
-            .then(() => configureElectronProject(c, platform))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
+        if (exitOnFail) {
+            logWarning(
+                `Your ${chalk().white(
+                    platform
+                )} platformBuild is misconfigured!. let's repair it.`
+            );
+            createPlatformBuild(c, platform)
+                .then(() => configureElectronProject(c, true))
+                .then(() => resolve(c))
+                .catch(e => reject(e));
+            return;
+        }
+        reject(`${packagePath} does not exist!`);
         return;
     }
-
-    const pkgJson = path.join(engine.originalTemplateAssetsDir, platform, 'package.json');
+    const pkgJson = path.join(engine.originalTemplatePlatformsDir, platform, 'package.json');
     const packageJson = readObjectSync(pkgJson);
 
     packageJson.name = `${c.runtime.appId}-${platform}`;
@@ -121,10 +126,11 @@ const configureProject = c => new Promise((resolve, reject) => {
 
     writeFileSync(packagePath, packageJson);
 
+
     let browserWindow = {
         width: 1200,
         height: 800,
-        webPreferences: { nodeIntegration: true, enableRemoteModule: true },
+        webPreferences: { nodeIntegration: true, enableRemoteModule: true, contextIsolation: false },
         icon: (platform === MACOS || platform === LINUX) && !fsExistsSync(pngIconPath)
             ? path.join(platformProjectDir, 'resources', 'icon.icns')
             : path.join(platformProjectDir, 'resources', 'icon.png')
@@ -239,6 +245,25 @@ const buildElectron = async (c) => {
     logTask('buildElectron');
 
     await buildCoreWebpackProject(c);
+    // Webpack 5 deletes build folder but does not copy package json
+
+    const platformBuildDir = getPlatformBuildDir(c);
+
+    // workaround: electron-builder fails export in npx mode due to trying install node_modules. we trick it not to do that
+    mkdirSync(path.join(platformBuildDir, 'build', 'node_modules'));
+
+    const packagePathSrc = path.join(platformBuildDir, 'package.json');
+    const packagePathDest = path.join(platformBuildDir, 'build', 'package.json');
+    copyFileSync(packagePathSrc, packagePathDest);
+
+    const mainPathSrc = path.join(platformBuildDir, 'main.js');
+    const mainPathDest = path.join(platformBuildDir, 'build', 'main.js');
+    copyFileSync(mainPathSrc, mainPathDest);
+
+    const menuPathSrc = path.join(platformBuildDir, 'contextMenu.js');
+    const menuPathDest = path.join(platformBuildDir, 'build', 'contextMenu.js');
+    copyFileSync(menuPathSrc, menuPathDest);
+
     return true;
 };
 
@@ -253,9 +278,20 @@ const exportElectron = async (c) => {
         await removeDirs([buildPath]);
     }
 
+    const execPath = path.join('node_modules', '.bin', 'electron-builder');
+    let electronBuilderPath = path.join(c.paths.project.dir, execPath);
+    if (!fsExistsSync(electronBuilderPath)) {
+        electronBuilderPath = path.join(c.paths.project.dir, '../../', execPath);
+    }
+    if (!fsExistsSync(electronBuilderPath)) {
+        electronBuilderPath = path.join(c.paths.project.dir, '../../../', execPath);
+    }
+    if (!fsExistsSync(electronBuilderPath)) {
+        electronBuilderPath = 'npx electron-builder';
+    }
     await executeAsync(
         c,
-        `npx electron-builder --config ${path.join(
+        `${electronBuilderPath} --config ${path.join(
             platformBuildDir,
             'electronConfig.json'
         )} --${c.platform}`

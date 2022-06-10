@@ -30,7 +30,7 @@
             }
         },
         "@rnv/renative": {
-            "version": "0.36.0-canary.14",
+            "version": "0.36.0-canary.18",
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
@@ -2546,13 +2546,13 @@
             }
         },
         "react": {
-            "version": "17.0.2"
+            "version": "18.1.0"
         },
         "react-dom": {
-            "version": "17.0.2"
+            "version": "18.1.0"
         },
         "react-art": {
-            "version": "17.0.2"
+            "version": "18.1.0"
         },
         "react-hot-loader": {
             "version": "4.3.12"
@@ -2996,7 +2996,7 @@
             }
         },
         "next": {
-            "version": "12.1.0"
+            "version": "12.1.6"
         },
         "@react-native-community/cli-platform-ios": {
             "version": "^6.0.0"

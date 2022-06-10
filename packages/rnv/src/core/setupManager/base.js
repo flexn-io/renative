@@ -1,5 +1,6 @@
 import shell from 'shelljs';
 import inquirer from 'inquirer';
+import osNode from 'os';
 
 import { commandExistsSync } from '../systemManager/exec';
 import { TASK_WORKSPACE_CONFIGURE } from '../constants';
@@ -19,7 +20,9 @@ class BasePlatformSetup {
         this.globalConfigPath = paths.workspace.config;
         this.availableDownloader = null;
         this.androidSdkLocation = replaceHomeFolder('~/Android');
-        this.sdksToInstall = '"build-tools;28.0.3" "emulator" "extras;android;m2repository" "extras;google;m2repository" "patcher;v4" "platform-tools" "platforms;android-28" "sources;android-28" "system-images;android-28;google_apis_playstore;x86" "tools"';
+        const sdksToInstallX86 = '"build-tools;28.0.3" "emulator" "extras;android;m2repository" "extras;google;m2repository" "patcher;v4" "platform-tools" "platforms;android-28" "sources;android-28" "system-images;android-28;google_apis_playstore;x86" "tools"';
+        const sdksToInstallAppleSilicon = '"build-tools;30.0.3" "emulator" "extras;android;m2repository" "extras;google;m2repository" "patcher;v4" "platform-tools" "platforms;android-30" "sources;android-30" "system-images;android-30;google_apis_playstore;arm64-v8a" "tools"';
+        this.sdksToInstall = osNode.arch() === 'arm64' ? sdksToInstallAppleSilicon : sdksToInstallX86;
     }
 
     checkPrereqs() {

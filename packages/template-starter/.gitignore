@@ -53,6 +53,8 @@ appConfigs/base/assets/xbox
 appConfigs/base/assets/linux
 appConfigs/base/assets/macos
 
+public/
+
 # Does not work
 # !appConfigs/base/assets/runtime
 
