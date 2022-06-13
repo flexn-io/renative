@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-webpack",
-    "version": "0.36.0-canary.18",
+    "version": "0.36.0",
     "description": "ReNative Webpack SDK",
     "keywords": [],
     "homepage": "https://github.com/renative-org/renative#readme",
@@ -81,7 +81,7 @@
         "workbox-webpack-plugin": "^6.4.1"
     },
     "peerDependencies": {
-        "rnv": "^0.36.0-canary.18"
+        "rnv": "^0.36.0"
     },
     "private": false,
     "publishConfig": {
