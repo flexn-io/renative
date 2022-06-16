@@ -70,7 +70,7 @@ const ScreenHome = (props) => {
                     onEnterPress={toggle}
                     onBecameFocused={handleFocus}
                     onArrowPress={handleUp}
-                    {...testProps('template-starter-try-my-button')}
+                    {...testProps('template-starter-home-screen-try-my-button')}
                 />
                 <Button
                     style={theme.styles.button}
@@ -84,7 +84,7 @@ const ScreenHome = (props) => {
                         navigate(ROUTES.MY_PAGE, '/[slug]', { replace: false });
                     }}
                     onBecameFocused={handleFocus}
-                    {...testProps('template-starter-now-try-my-button')}
+                    {...testProps('template-starter-home-screen-now-try-my-button')}
                 />
                 <Text style={[theme.styles.textH3, { marginTop: 20 }]}>
                     Explore more
@@ -101,7 +101,7 @@ const ScreenHome = (props) => {
                         onPress={() => {
                             openURL('https://github.com/renative-org/renative');
                         }}
-                        {...testProps('template-starter-github-button')}
+                        {...testProps('template-starter-home-screen-github-button')}
                     />
                     <Button
                         iconFont="fontAwesome"
@@ -114,7 +114,7 @@ const ScreenHome = (props) => {
                         onPress={() => {
                             openURL('https://renative.org');
                         }}
-                        {...testProps('template-starter-renative-button')}
+                        {...testProps('template-starter-home-screen-renative-button')}
                     />
                     <Button
                         iconFont="fontAwesome"
@@ -127,7 +127,7 @@ const ScreenHome = (props) => {
                         onPress={() => {
                             openURL('https://twitter.com/renative');
                         }}
-                        {...testProps('template-starter-twitter-button')}
+                        {...testProps('template-starter-home-screen-twitter-button')}
                     />
 
                 </FocusableView>

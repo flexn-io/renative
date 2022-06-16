@@ -9,8 +9,8 @@ describe('Test Template Starter', () => {
         await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-icon');
         await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-welcome-message');
         await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-version-number');
-        await FlexnRunner.expectToBeDisplayedById('template-starter-try-my-button');
-        await FlexnRunner.expectToBeDisplayedById('template-starter-now-try-my-button');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-try-my-button');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-now-try-my-button');
     });
 
     it('--> check if My Page opens when "My Page" button is selected', async () => {
@@ -26,7 +26,7 @@ describe('Test Template Starter', () => {
         // should be 1 click, 2 are needed for TV's due to bug
         await FlexnRunner.pressButtonRight(2);
         await FlexnRunner.pressButtonSelect(1);
-        await FlexnRunner.expectToBeDisplayedById('template-starter-my-page-text-container');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-my-page-screen-text-container');
         if (process.env.PLATFORM === 'ios' || process.env.PLATFORM === 'macos') {
             await FlexnRunner.clickById('header-back');
         } else if (process.env.PLATFORM === 'android') {
@@ -62,7 +62,7 @@ describe('Test Template Starter', () => {
     // skipping because after clicking "Now Try Me!" TV's have no focus
     it.skip('--> check if My Page opens when "Now Try Me!" button is selected', async () => {
         await FlexnRunner.waitForDisplayedById('template-starter-home-screen-renative-icon');
-        await FlexnRunner.clickById('template-starter-now-try-my-button');
+        await FlexnRunner.clickById('template-starter-home-screen-now-try-my-button');
         await FlexnRunner.pressButtonRight(2);
         // should be 2 clicks, 3 are needed for ATV due to bug
         if (process.env.PLATFORM === 'androidtv') {
@@ -71,7 +71,7 @@ describe('Test Template Starter', () => {
             await FlexnRunner.pressButtonDown(2);
         }
         await FlexnRunner.pressButtonSelect(1);
-        await FlexnRunner.expectToBeDisplayedById('template-starter-my-page-text-container');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-my-page-screen-text-container');
         if (process.env.PLATFORM === 'ios' || process.env.PLATFORM === 'macos') {
             await FlexnRunner.clickById('header-back');
         } else if (process.env.PLATFORM === 'android') {

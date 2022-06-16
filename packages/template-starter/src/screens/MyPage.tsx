@@ -10,7 +10,7 @@ const ScreenMyPage = () => {
 
     return (
         <View style={theme.styles.screen}>
-            <ScrollView contentContainerStyle={theme.styles.container} {...testProps('template-starter-my-page-text-container')}>
+            <ScrollView contentContainerStyle={theme.styles.container} {...testProps('template-starter-my-page-screen-text-container')}>
                 <Text style={theme.styles.textH2}>This is my Page!</Text>
             </ScrollView>
         </View>
