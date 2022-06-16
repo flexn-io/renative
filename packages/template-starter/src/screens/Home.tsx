@@ -114,7 +114,7 @@ const ScreenHome = (props) => {
                         onPress={() => {
                             openURL('https://renative.org');
                         }}
-                        {...testProps('template-starter-home-screen-renative-button')}
+                        {...testProps('template-starter-home-screen-chrome-button')}
                     />
                     <Button
                         iconFont="fontAwesome"
