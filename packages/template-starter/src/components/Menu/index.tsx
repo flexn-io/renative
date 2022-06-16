@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 
 import React, { useEffect, useContext } from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
 import { ThemeContext, hasWebFocusableUI, ROUTES } from '../../config';
 import { testProps } from '../../utils/index';
@@ -22,17 +22,20 @@ export const DrawerButton = (props) => {
     const openDrawer = useOpenDrawer(props);
     const { theme }: any = useContext(ThemeContext);
     return (
-        <Icon
-            iconFont="ionicons"
-            iconName="md-menu"
-            iconColor={theme.static.colorTextPrimary}
-            size={theme.static.buttonSize}
-            style={theme.styles.menuIcon}
-            onPress={() => {
-                openDrawer('Drawer');
-            }}
-            {...testProps('template-starter-menu-drawer-icon')}
-        />
+        <TouchableOpacity
+            {...testProps('template-starter-menu-drawer-button')}
+        >
+            <Icon
+                iconFont="ionicons"
+                iconName="md-menu"
+                iconColor={theme.static.colorTextPrimary}
+                size={theme.static.buttonSize}
+                style={theme.styles.menuIcon}
+                onPress={() => {
+                    openDrawer('Drawer');
+                }}
+            />
+        </TouchableOpacity>
     );
 };
 

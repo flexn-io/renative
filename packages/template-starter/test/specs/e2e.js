@@ -15,12 +15,8 @@ describe('Test Template Starter', () => {
 
     it('--> check if My Page opens when "My Page" button is selected', async () => {
         await FlexnRunner.waitForDisplayedById('template-starter-home-screen-renative-icon');
-        if (process.env.PLATFORM === 'android') {
-            // eslint-disable-next-line no-undef
-            const drawerButton = await $('/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.TextView');
-            await drawerButton.click();
-        } else if (process.env.PLATFORM === 'ios') {
-            await FlexnRunner.clickById('template-starter-menu-drawer-icon');
+        if (process.env.PLATFORM === 'android' || process.env.PLATFORM === 'ios') {
+            await FlexnRunner.clickById('template-starter-menu-drawer-button');
         }
         await FlexnRunner.clickById('template-starter-menu-my-page-button');
         // should be 1 click, 2 are needed for TV's due to bug
@@ -41,12 +37,8 @@ describe('Test Template Starter', () => {
 
     it('--> check if My Modal opens when "My Modal" button is selected', async () => {
         await FlexnRunner.waitForDisplayedById('template-starter-home-screen-renative-icon');
-        if (process.env.PLATFORM === 'android') {
-            // eslint-disable-next-line no-undef
-            const drawerButton = await $('/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]/android.view.ViewGroup[2]/android.view.ViewGroup[1]/android.view.ViewGroup/android.widget.TextView');
-            await drawerButton.click();
-        } else if (process.env.PLATFORM === 'ios') {
-            await FlexnRunner.clickById('template-starter-menu-drawer-icon');
+        if (process.env.PLATFORM === 'android' || process.env.PLATFORM === 'ios') {
+            await FlexnRunner.clickById('template-starter-menu-drawer-button');
         }
         await FlexnRunner.clickById('template-starter-menu-my-modal-button');
         await FlexnRunner.pressButtonRight(2);
