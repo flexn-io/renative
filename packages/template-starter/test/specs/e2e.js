@@ -6,7 +6,7 @@ describe('Test Template Starter', () => {
     });
 
     it('--> check if elements are displayed in Home Page', async () => {
-        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-icon');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-image');
         await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-welcome-message');
         await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-version-number');
         await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-try-my-button');
@@ -14,7 +14,7 @@ describe('Test Template Starter', () => {
     });
 
     it('--> check if My Page opens when "My Page" button is selected', async () => {
-        await FlexnRunner.waitForDisplayedById('template-starter-home-screen-renative-icon');
+        await FlexnRunner.waitForDisplayedById('template-starter-home-screen-renative-image');
         if (process.env.PLATFORM === 'android' || process.env.PLATFORM === 'ios') {
             await FlexnRunner.clickById('template-starter-menu-drawer-button');
         }
@@ -32,11 +32,11 @@ describe('Test Template Starter', () => {
         }
         await FlexnRunner.pressButtonLeft(1);
         await FlexnRunner.pressButtonSelect(1);
-        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-icon');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-image');
     });
 
     it('--> check if My Modal opens when "My Modal" button is selected', async () => {
-        await FlexnRunner.waitForDisplayedById('template-starter-home-screen-renative-icon');
+        await FlexnRunner.waitForDisplayedById('template-starter-home-screen-renative-image');
         if (process.env.PLATFORM === 'android' || process.env.PLATFORM === 'ios') {
             await FlexnRunner.clickById('template-starter-menu-drawer-button');
         }
@@ -48,12 +48,12 @@ describe('Test Template Starter', () => {
         // below line should be removed, needed for TV's due to bug
         await FlexnRunner.pressButtonRight(1);
         await FlexnRunner.pressButtonSelect(1);
-        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-icon');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-image');
     });
 
     // skipping because after clicking "Now Try Me!" TV's have no focus
     it.skip('--> check if My Page opens when "Now Try Me!" button is selected', async () => {
-        await FlexnRunner.waitForDisplayedById('template-starter-home-screen-renative-icon');
+        await FlexnRunner.waitForDisplayedById('template-starter-home-screen-renative-image');
         await FlexnRunner.clickById('template-starter-home-screen-now-try-my-button');
         await FlexnRunner.pressButtonRight(2);
         // should be 2 clicks, 3 are needed for ATV due to bug
@@ -73,6 +73,6 @@ describe('Test Template Starter', () => {
         }
         await FlexnRunner.pressButtonLeft(1);
         await FlexnRunner.pressButtonSelect(1);
-        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-icon');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-image');
     });
 });

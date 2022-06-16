@@ -44,7 +44,7 @@ const ScreenHome = (props) => {
                 ref={scrollRef}
                 contentContainerStyle={theme.styles.container}
             >
-                <Image style={theme.styles.image} source={ICON_LOGO} {...testProps('template-starter-home-screen-renative-icon')} />
+                <Image style={theme.styles.image} source={ICON_LOGO} {...testProps('template-starter-home-screen-renative-image')} />
                 <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-welcome-message')}>
                     {CONFIG.welcomeMessage}
                 </Text>
