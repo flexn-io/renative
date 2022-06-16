@@ -7,8 +7,8 @@ describe('Test Template Starter', () => {
 
     it('--> check if elements are displayed in Home Page', async () => {
         await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-image');
-        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-welcome-message');
-        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-version-number');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-welcome-message-text');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-version-number-text');
         await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-try-my-button');
         await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-now-try-my-button');
     });
@@ -22,7 +22,7 @@ describe('Test Template Starter', () => {
         // should be 1 click, 2 are needed for TV's due to bug
         await FlexnRunner.pressButtonRight(2);
         await FlexnRunner.pressButtonSelect(1);
-        await FlexnRunner.expectToBeDisplayedById('template-starter-my-page-screen-text-container');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-my-page-screen-container');
         if (process.env.PLATFORM === 'ios' || process.env.PLATFORM === 'macos') {
             await FlexnRunner.clickById('header-back');
         } else if (process.env.PLATFORM === 'android') {
@@ -43,7 +43,7 @@ describe('Test Template Starter', () => {
         await FlexnRunner.clickById('template-starter-menu-my-modal-button');
         await FlexnRunner.pressButtonRight(2);
         await FlexnRunner.pressButtonSelect(1);
-        await FlexnRunner.expectToBeDisplayedById('template-starter-modal-screen-text-container');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-modal-screen-container');
         await FlexnRunner.clickById('template-starter-modal-screen-close-button');
         // below line should be removed, needed for TV's due to bug
         await FlexnRunner.pressButtonRight(1);
@@ -63,7 +63,7 @@ describe('Test Template Starter', () => {
             await FlexnRunner.pressButtonDown(2);
         }
         await FlexnRunner.pressButtonSelect(1);
-        await FlexnRunner.expectToBeDisplayedById('template-starter-my-page-screen-text-container');
+        await FlexnRunner.expectToBeDisplayedById('template-starter-my-page-screen-container');
         if (process.env.PLATFORM === 'ios' || process.env.PLATFORM === 'macos') {
             await FlexnRunner.clickById('header-back');
         } else if (process.env.PLATFORM === 'android') {

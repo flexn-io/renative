@@ -45,10 +45,10 @@ const ScreenHome = (props) => {
                 contentContainerStyle={theme.styles.container}
             >
                 <Image style={theme.styles.image} source={ICON_LOGO} {...testProps('template-starter-home-screen-renative-image')} />
-                <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-welcome-message')}>
+                <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-welcome-message-text')}>
                     {CONFIG.welcomeMessage}
                 </Text>
-                <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-version-number')}>v {packageJson.version}</Text>
+                <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-version-number-text')}>v {packageJson.version}</Text>
                 <Text style={theme.styles.textH3}>
                     {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
                 </Text>
