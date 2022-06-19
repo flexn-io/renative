@@ -1,19 +1,19 @@
-import { useNavigate as _useNavigate } from "react-router-dom";
-
+import { useRouter } from 'next/router'
 
 export function useNavigate() {
-    const _navigate = _useNavigate()
+    const router = useRouter()
+
     function navigate(route) {
-        _navigate(route);
+        router.push(route)
     }
     return navigate;
 }
 
 export function usePop() {
-    const _navigate = _useNavigate()
+    const router = useRouter()
 
     function pop() {
-        _navigate(-1)
+        router.back()
     }
     return pop;
 }

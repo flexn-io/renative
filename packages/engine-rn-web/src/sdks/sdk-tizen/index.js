@@ -165,7 +165,7 @@ export const configureTizenProject = async (c) => {
         return;
     }
 
-    if (!_isGlobalConfigured) {
+    if (!_isGlobalConfigured && !c.program.hosted) {
         _isGlobalConfigured = true;
         await configureTizenGlobal(c);
     }

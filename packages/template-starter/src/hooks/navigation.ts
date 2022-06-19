@@ -1,20 +1,22 @@
-export function useNavigate(props) {
-    function navigate(route, opts, params?) {
-        props.navigation.navigate(route, params);
+// import { useNavigation } from '@react-navigation/native';
+
+export function useNavigate(navigation) {
+    function navigate(route, params?) {
+        navigation.navigate(route, params);
     }
     return navigate;
 }
 
-export function usePop(props) {
+export function usePop(navigation) {
     function pop() {
-        props.navigation.pop();
+        navigation.pop();
     }
     return pop;
 }
 
-export function useOpenDrawer(props) {
+export function useOpenDrawer(navigation) {
     function openDrawer(_props: any) {
-        props.navigation.dispatch({ type: 'OPEN_DRAWER' });
+        navigation.dispatch({ type: 'OPEN_DRAWER' });
     }
     return openDrawer;
 }

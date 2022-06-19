@@ -185,7 +185,6 @@
         "react-native-gesture-handler": "source:rnv",
         "react-native-reanimated": "source:rnv",
         "react-native-vector-icons": "source:rnv",
-        "@reach/router": "1.3.4",
         "hash-source": "1.0.4",
         "@rnv/renative": "source:rnv",
         "@react-navigation": "source:rnv",

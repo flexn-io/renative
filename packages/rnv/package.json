@@ -132,6 +132,5 @@
     "publishConfig": {
         "access": "public"
     },
-    "title": "ReNative CLI",
-    "gitHead": "7a6ebce2eebc853517823b6dcca4d88cce6f2fe0"
+    "title": "ReNative CLI"
 }

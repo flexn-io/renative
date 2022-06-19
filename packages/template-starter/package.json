@@ -80,7 +80,7 @@
         "@lightningjs/cli": "2.7.2",
         "@lightningjs/sdk": "4.3.3",
         "@noriginmedia/react-spatial-navigation": "2.12.9",
-        "@reach/router": "1.3.4",
+        "react-router-dom": "6.3.0",
         "@react-native-community/cli": "^6.0.0",
         "@react-native-community/cli-platform-android": "^6.0.0",
         "@react-native-community/cli-platform-ios": "^6.0.0",
@@ -131,7 +131,7 @@
         "react-native-tab-view": "2.13.0",
         "react-native-tvos": "0.66.3-1",
         "react-native-vector-icons": "8.1.0",
-        "react-native-web": "0.17.5",
+        "react-native-web": "0.18.0",
         "react-native-web-image-loader": "0.0.5",
         "react-native-windows": "0.67.3",
         "rnv": "0.36.0",
@@ -156,6 +156,5 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    },
-    "gitHead": "7a6ebce2eebc853517823b6dcca4d88cce6f2fe0"
+    }
 }

@@ -87,6 +87,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
         paddingVertical: getScaledValue(50),
         minHeight: getScaledValue(300),
         alignSelf: 'stretch',
+        flex: 1,
         width: '100%'
     },
     modalContainer: isWebBased ? {
@@ -148,15 +149,11 @@ const createStyleSheet = currentTheme => StyleSheet.create({
         fontSize: getScaledValue(20),
     },
     screen: {
-        position: 'absolute',
         backgroundColor: currentTheme.colorBgPrimary,
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0
+        flex: 1
     },
     screenModal: {
-        position: 'absolute',
+        flex: 1,
         backgroundColor: currentTheme.colorBgPrimary,
         top: hasHorizontalMenu && isWebBased ? -currentTheme.menuHeight : 0,
         left: 0,
@@ -218,7 +215,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
 
 
 export const ROUTES = {
-    HOME: isPlatformWeb ? '/' : 'home',
+    HOME: isWebBased ? '/' : 'home',
     MY_PAGE: 'my-page',
     MODAL: 'modal'
 };

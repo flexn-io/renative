@@ -67,7 +67,7 @@ const ScreenHome = (props) => {
                     title="Try Me!"
                     className="focusable"
                     onPress={toggle}
-                    onEnterPress={toggle}
+                    // onEnterPress={toggle}
                     onBecameFocused={handleFocus}
                     onArrowPress={handleUp}
                     {...testProps('template-starter-try-my-button')}
@@ -78,10 +78,10 @@ const ScreenHome = (props) => {
                     title="Now Try Me!"
                     className="focusable"
                     onPress={() => {
-                        navigate(ROUTES.MY_PAGE, '/[slug]', { replace: false });
+                        navigate(ROUTES.MY_PAGE);
                     }}
                     onEnterPress={() => {
-                        navigate(ROUTES.MY_PAGE, '/[slug]', { replace: false });
+                        navigate(ROUTES.MY_PAGE);
                     }}
                     onBecameFocused={handleFocus}
                     {...testProps('template-starter-now-try-my-button')}
