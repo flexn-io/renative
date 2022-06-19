@@ -1,3 +1,6 @@
+/*
+This code activates if you run starter with rn-web engine (-p web -e engine-rn-web | -p tizen | -p webos...) 
+*/
 import { useNavigate as _useNavigate } from "react-router-dom";
 
 

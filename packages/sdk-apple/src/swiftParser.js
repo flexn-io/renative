@@ -33,7 +33,8 @@ export const parseAppDelegate = (
     if (forceBundle) {
         bundle = forceBundle;
     } else if (isBundled) {
-        bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
+        bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${
+            entryFile}", fallbackResource: nil)`;
     } else {
         bundle = `URL(string: "http://${ip}:${newPort}/${entryFile}.bundle?platform=ios")`;
     }

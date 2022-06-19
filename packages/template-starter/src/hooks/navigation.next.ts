@@ -1,3 +1,6 @@
+/*
+This code activates by default with engine-rn-next (-p web)
+*/
 import { useRouter } from 'next/router'
 
 export function useNavigate() {

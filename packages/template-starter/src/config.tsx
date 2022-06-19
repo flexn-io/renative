@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 import React, { createContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
@@ -7,8 +5,6 @@ import {
     isEngineRnElectron,
     isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isPlatformWeb, isWebBased
 } from '@rnv/renative';
-// import { LogBox } from 'react-native';
-// import JSTimers from 'react-native/Libraries/Core/Timers/JSTimers';
 import CONFIG from '../platformAssets/renative.runtime.json';
 import '../platformAssets/runtime/fontManager';
 //@ts-ignore
@@ -21,11 +17,6 @@ export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isWebBased && isFactorTv;
 const isNativeMacos: boolean = (isPlatformMacos && !isWebBased) ? true : false;
 
-// Disable yellow warnings UI - console.disableYellowBox replacement with setImmediate workaround
-// if (!global.setImmediate) {
-//     global.setImmediate = JSTimers.setImmediate;
-// }
-// LogBox.ignoreAllLogs(true);
 console.disableYellowBox = true; // eslint-disable-line
 
 if (!global.performance) {

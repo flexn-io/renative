@@ -72,7 +72,8 @@
         "e2e:web": "PLATFORM=web npx wdio wdio.conf.js",
         "report": "yarn report:generate && yarn report:open",
         "report:generate": "npx allure generate --clean reporting/allure-results -o reporting/allure-report",
-        "report:open": "npx allure open reporting/allure-report"
+        "report:open": "npx allure open reporting/allure-report",
+        "tsc": "tsc --noEmit --composite false"
     },
     "devDependencies": {
         "@babel/runtime": "7.12.5",

@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 import { NavigationContainer } from '@react-navigation/native';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import React, { useContext } from 'react';

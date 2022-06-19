@@ -78,7 +78,7 @@
         "git-commit-tag": "rnv hooks run -x gitCommitAndTag -r",
         "git-tag": "rnv hooks run -x gitTag -r",
         "link:rnv": "npm r rnv -g && cd packages/rnv && npm link",
-        "lint": "npx eslint ./packages",
+        "lint": "npx eslint ./packages && npx lerna run --parallel tsc",
         "postinstall": "npx lerna link --force-local && npx jetify",
         "prepare": "husky install",
         "test": "jest",
