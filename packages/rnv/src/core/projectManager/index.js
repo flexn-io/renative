@@ -408,11 +408,14 @@ const _requiresAssetOverride = async (c) => {
             if (!fsExistsSync(destPath)) {
                 assetsToCopy.push({
                     sourcePath,
-                    destPath
+                    destPath,
+                    value: v
                 });
             }
         }
     });
+
+
 
     const actionOverride = 'Override exisitng folder';
     const actionMerge = 'Merge with existing folder';
@@ -420,12 +423,18 @@ const _requiresAssetOverride = async (c) => {
 
 
     if (assetsToCopy.length > 0) {
+        if (!fsExistsSync(assetsDir)) {
+            logInfo(`Required assets: ${chalk().white(JSON.stringify(assetsToCopy.map(v => v.value)))
+            } will be copied to ${chalk().white('appConfigs/assets')} folder`);
+            return true;
+        }
+
         const { chosenAction } = await inquirerPrompt({
             message: 'What to do next?',
             type: 'list',
             name: 'chosenAction',
             choices: [actionOverride, actionMerge, actionSkip],
-            warningMessage: `Your appConfig/base/assets/${c.platform} existis but engine ${
+            warningMessage: `Your appConfig/base/assets/${c.platform} exists but engine ${
                 c.runtime.engine.config.id} requires some additional assets:
 ${chalk().red(requiredAssets.join(','))}`
         });
