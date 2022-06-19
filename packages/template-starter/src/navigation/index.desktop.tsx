@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import React, { useContext } from 'react';
 import { StatusBar, View } from 'react-native';
-import { isFactorDesktop, isPlatformMacos } from '@rnv/renative';
+import { isFactorDesktop } from '@rnv/renative';
 import Menu from '../components/Menu';
 import ScreenHome from '../screens/Home';
 import ScreenModal from '../screens/Modal';

@@ -2,8 +2,7 @@ import React, { createContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
     getScaledValue,
-    isEngineRnElectron,
-    isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isPlatformWeb, isWebBased
+    isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isWebBased
 } from '@rnv/renative';
 import CONFIG from '../platformAssets/renative.runtime.json';
 import '../platformAssets/runtime/fontManager';
