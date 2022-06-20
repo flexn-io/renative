@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useContext } from 'react';
+import React, { useEffect, useRef, useContext, useState } from 'react';
 import { Text, Image, View, ScrollView, PixelRatio } from 'react-native';
 import { Api } from '@rnv/renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
@@ -15,11 +15,18 @@ const FocusableView = hasWebFocusableUI ? withFocusable()(View) : View;
 const ScreenHome = (props) => {
     const navigate = useNavigate(props);
     const openURL = useOpenURL();
+    const [pixelRatio, setPixelRatio] = useState(1);
+    const [fontScale, setFontScale] = useState(1)
     let scrollRef;
     let handleFocus;
     let handleUp;
 
     const { theme, toggle }: any = useContext(ThemeContext);
+
+    useEffect(() => {
+        setPixelRatio(PixelRatio.get())
+        setFontScale(PixelRatio.getFontScale())
+    }, []);
 
     if (hasWebFocusableUI) {
         scrollRef = useRef(null);
@@ -56,7 +63,7 @@ const ScreenHome = (props) => {
                     }
                 </Text>
                 <Text style={theme.styles.textH3}>
-                    {`pixelRatio: ${PixelRatio.get()}, ${PixelRatio.getFontScale()}`}
+                    {`pixelRatio: ${pixelRatio}, ${fontScale}`}
                 </Text>
                 <Button
                     style={theme.styles.button}
@@ -64,7 +71,7 @@ const ScreenHome = (props) => {
                     title="Try Me!"
                     className="focusable"
                     onPress={toggle}
-                    // onEnterPress={toggle}
+                    onEnterPress={toggle}
                     onBecameFocused={handleFocus}
                     onArrowPress={handleUp}
                     {...testProps('template-starter-try-my-button')}
@@ -74,12 +81,8 @@ const ScreenHome = (props) => {
                     textStyle={theme.styles.buttonText}
                     title="Now Try Me!"
                     className="focusable"
-                    onPress={() => {
-                        navigate(ROUTES.MY_PAGE);
-                    }}
-                    onEnterPress={() => {
-                        navigate(ROUTES.MY_PAGE);
-                    }}
+                    onPress={() => { navigate(ROUTES.MY_PAGE); }}
+                    onEnterPress={() => { navigate(ROUTES.MY_PAGE); }}
                     onBecameFocused={handleFocus}
                     {...testProps('template-starter-now-try-my-button')}
                 />

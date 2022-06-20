@@ -213,6 +213,7 @@
                 "applicationID": "CC1AD845"
             }
         },
+        "react-router-dom": "6.3.0",
         "@flexn/typescript": "0.1.4"
     },
     "permissions": {

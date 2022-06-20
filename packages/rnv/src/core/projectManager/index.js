@@ -416,7 +416,6 @@ const _requiresAssetOverride = async (c) => {
     });
 
 
-
     const actionOverride = 'Override exisitng folder';
     const actionMerge = 'Merge with existing folder';
     const actionSkip = 'Skip. Warning: this might fail your build';
