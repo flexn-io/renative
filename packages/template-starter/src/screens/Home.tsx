@@ -12,8 +12,8 @@ import { useOpenURL } from '../hooks/linking';
 
 const FocusableView = hasWebFocusableUI ? withFocusable()(View) : View;
 
-const ScreenHome = (props) => {
-    const navigate = useNavigate(props);
+const ScreenHome = ({ navigation, setFocus }) => {
+    const navigate = useNavigate(navigation);
     const openURL = useOpenURL();
     const [pixelRatio, setPixelRatio] = useState(1);
     const [fontScale, setFontScale] = useState(1)
@@ -30,7 +30,6 @@ const ScreenHome = (props) => {
 
     if (hasWebFocusableUI) {
         scrollRef = useRef(null);
-        const { setFocus } = props;
         handleFocus = ({ y }) => {
             scrollRef.current.scrollTo({ y });
         };
