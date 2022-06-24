@@ -271,7 +271,6 @@ export const copyFolderContentsRecursiveSync = (source, target, convertSvg = tru
                     copyFolderRecursiveSync(curSource, targetFolder, convertSvg,
                         skipOverride, injectObject, timestampPathsConfig, c);
                 } else if (injectObject !== null) {
-                    // console.log('BAAA', targetFolder);
                     copyFileWithInjectSync(curSource, targetFolder, skipOverride,
                         injectObject, timestampPathsConfig, c);
                 } else if (path.extname(curSource) === '.svg' && convertSvg === true) {
@@ -605,7 +604,6 @@ export const sanitizeDynamicProps = (obj, propConfig) => {
             }
         });
     } else if (typeof obj === 'object') {
-        // console.log('KAKAK', obj?.['build.gradle']);
         Object.keys(obj).forEach((key) => {
             const val = obj[key];
             // Some values are passed as keys so have to validate keys as well

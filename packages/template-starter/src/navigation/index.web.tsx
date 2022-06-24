@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import { Router, navigate } from '@reach/router';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Menu from '../components/Menu';
 import ScreenHome from '../screens/Home';
 import ScreenModal from '../screens/Modal';
@@ -15,14 +15,16 @@ const App = () => {
 
     return (
         <View style={themeStyles.app}>
-            <Menu focusKey="menu" navigate={navigate} />
-            <View style={themeStyles.appContainer}>
-                <Router>
-                    <ScreenHome path="/" />
-                    <ScreenMyPage path="my-page" />
-                    <ScreenModal path="modal" />
-                </Router>
-            </View>
+
+            <BrowserRouter>
+                <Menu />
+                <Routes>
+                    <Route element={<ScreenHome />} path="/" />
+                    <Route element={<ScreenMyPage />} path="my-page" />
+                    <Route element={<ScreenModal />} path="modal" />
+                </Routes>
+            </BrowserRouter>
+
         </View>
     );
 };

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-tvos",
-    "version": "0.36.0",
+    "version": "0.36.1-canary.2",
     "description": "ReNative Engine to build react-native tvos platform.",
     "keywords": [
         "react-native"
@@ -32,8 +32,8 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-android": "0.36.0",
-        "@rnv/sdk-apple": "0.36.0"
+        "@rnv/sdk-android": "0.36.1-canary.2",
+        "@rnv/sdk-apple": "0.36.1-canary.2"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",
@@ -44,11 +44,10 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.36.0"
+        "rnv": "^0.36.1-canary.2"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "gitHead": "7a6ebce2eebc853517823b6dcca4d88cce6f2fe0"
+    }
 }

@@ -1,33 +1,29 @@
-export function useNavigate(props) {
-    function navigate(route, pathname, opts, params) {
-        // Reach Router
-        if (props?.navigate) props.navigate(route, opts);
-        // React Navigation
-        else if (props?.navigation) props.navigation.navigate(route, params);
-        // Next Router
-        else if (props.router) {
-            props.router.push(pathname, route);
-        }
+/*
+This code activates if you run starter with rn-web engine (-p web -e engine-rn-web | -p tizen | -p webos...) 
+*/
+import { useNavigate as _useNavigate } from "react-router-dom";
+
+
+export function useNavigate() {
+    const _navigate = _useNavigate()
+    function navigate(route) {
+        _navigate(route);
     }
     return navigate;
 }
 
-export function usePop(props) {
+export function usePop() {
+    const _navigate = _useNavigate()
+
     function pop() {
-        // Reach Router
-        if (props?.navigate) props.navigate('../', { replace: false });
-        // React Navigation
-        else if (props?.navigation) props.navigation.pop();
-        // Next Router
-        else if (props.router) props.router.back();
+        _navigate(-1)
     }
     return pop;
 }
 
-export function useOpenDrawer(props) {
-    function openDrawer(drawerName) {
-        if (props?.navigate) props.navigate(drawerName || 'Drawer');
-        else if (props?.navigation) props.navigation.dispatch({ type: 'OPEN_DRAWER' });
+export function useOpenDrawer() {
+    function openDrawer() {
+
     }
     return openDrawer;
 }

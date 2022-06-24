@@ -74,7 +74,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^0.36.0",
+            "version": "^0.36.1-canary.2",
             "webpack": {
                 "moduleAliases": true
             }

@@ -1009,9 +1009,3 @@ export {
     archiveXcodeProject,
     runAppleLog
 };
-
-export default {
-    hello: () => {
-        console.log('Hello SDK Apple');
-    }
-};

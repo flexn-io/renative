@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/prop-types */
+
 
 import React, { useEffect, useContext } from 'react';
 import { View } from 'react-native';
@@ -18,8 +17,8 @@ if (hasWebFocusableUI) {
     });
 }
 
-export const DrawerButton = (props) => {
-    const openDrawer = useOpenDrawer(props);
+export const DrawerButton = ({ navigation }) => {
+    const openDrawer = useOpenDrawer(navigation);
     const { theme }: any = useContext(ThemeContext);
     return (
         <Icon
@@ -36,9 +35,8 @@ export const DrawerButton = (props) => {
     );
 };
 
-const Menu = (props) => {
-    const { setFocus } = props;
-    const navigate = useNavigate(props);
+const Menu = ({ setFocus, navigation }) => {
+    const navigate = useNavigate(navigation);
     const { theme }: any = useContext(ThemeContext);
 
     if (hasWebFocusableUI) {
@@ -50,7 +48,8 @@ const Menu = (props) => {
     return (
         <View style={theme.styles.menuContainer}>
             <Button
-                // to={ROUTES.HOME}
+                onPress={() => { navigate(ROUTES.HOME); }}
+                onEnterPress={() => { navigate(ROUTES.HOME); }}
                 title="Home"
                 iconFont="ionicons"
                 className="focusable"
@@ -59,15 +58,11 @@ const Menu = (props) => {
                 iconSize={theme.static.iconSize}
                 style={theme.styles.menuButton}
                 textStyle={theme.styles.menuButtonText}
-                onPress={() => {
-                    navigate(ROUTES.HOME, '/');
-                }}
-                onEnterPress={() => {
-                    navigate(ROUTES.HOME, '/');
-                }}
                 {...testProps('template-starter-menu-home-button')}
             />
             <Button
+                onPress={() => { navigate(ROUTES.MY_PAGE); }}
+                onEnterPress={() => { navigate(ROUTES.MY_PAGE); }}
                 title="My Page"
                 iconFont="ionicons"
                 iconName="md-rocket"
@@ -76,16 +71,11 @@ const Menu = (props) => {
                 iconSize={theme.static.iconSize}
                 style={theme.styles.menuButton}
                 textStyle={theme.styles.menuButtonText}
-                onPress={() => {
-                    navigate(ROUTES.MY_PAGE, '/[slug]');
-                }}
-                onEnterPress={() => {
-                    navigate(ROUTES.MY_PAGE, '/[slug]');
-                }}
                 {...testProps('template-starter-menu-my-page-button')}
             />
             <Button
-                // to={ROUTES.MODAL}
+                onPress={() => { navigate(ROUTES.MODAL); }}
+                onEnterPress={() => { navigate(ROUTES.MODAL); }}
                 title="My Modal"
                 iconFont="ionicons"
                 className="focusable"
@@ -94,12 +84,6 @@ const Menu = (props) => {
                 iconSize={theme.static.iconSize}
                 style={theme.styles.menuButton}
                 textStyle={theme.styles.menuButtonText}
-                onPress={() => {
-                    navigate(ROUTES.MODAL, '/[slug]');
-                }}
-                onEnterPress={() => {
-                    navigate(ROUTES.MODAL, '/[slug]');
-                }}
                 {...testProps('template-starter-menu-my-modal-button')}
             />
         </View>

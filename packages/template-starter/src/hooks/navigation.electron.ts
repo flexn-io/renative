@@ -1,5 +1,5 @@
 /*
-This code activates if you run starter with engine-rn (-p ios|android|tvos|androidtv|firetv) 
+This code activates if you run starter with rn-electron engine (-p macos -e engine-rn-electron) 
 */
 export function useNavigate(navigation) {
     function navigate(route, params?) {

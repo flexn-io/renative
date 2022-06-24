@@ -1,9 +1,7 @@
-/* eslint-disable react/prop-types */
-
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Link } from '@reach/router';
 import { getScaledValue } from '@rnv/renative';
+
 import Icon from '../Icon';
 
 const styles = StyleSheet.create({
@@ -31,46 +29,29 @@ const Button = ({
     onPress,
     activeOpacity,
     testID
-}: any) => {
-    const Btn = () => (
-        <TouchableOpacity
-            style={[styles.button, style, focused ? { opacity: activeOpacity ?? 0.4 } : null]}
-            onPress={onPress}
-            testID={testID}
-        >
-            {iconName ? (
-                <Icon
-                    iconFont={iconFont}
-                    iconName={iconName}
-                    iconColor={iconColor}
-                    size={iconSize}
-                    style={[styles.icon, {
-                        marginRight: title ? getScaledValue(20) : 0
-                    }]}
-                />
-            ) : null}
-            {title ? (
-                <Text style={textStyle}>
-                    {title}
-                </Text>
-            ) : null}
-        </TouchableOpacity>
-    );
-    if (to) {
-        return (
-            <Link
-                to={to}
-                getProps={({ isCurrent }) => ({
-                    style: {
-                        color: isCurrent ? 'white' : 'transparent'
-                    }
-                })}
-            >
-                <Btn />
-            </Link>
-        );
-    }
-    return <Btn />;
-};
+}: any) => (
+    <TouchableOpacity
+        style={[styles.button, style, focused ? { opacity: activeOpacity ?? 0.4 } : null]}
+        onPress={onPress}
+        testID={testID}
+    >
+        {iconName ? (
+            <Icon
+                iconFont={iconFont}
+                iconName={iconName}
+                iconColor={iconColor}
+                size={iconSize}
+                style={[styles.icon, {
+                    marginRight: title ? getScaledValue(20) : 0
+                }]}
+            />
+        ) : null}
+        {title ? (
+            <Text style={textStyle}>
+                {title}
+            </Text>
+        ) : null}
+    </TouchableOpacity>
+);
 
 export default Button;
