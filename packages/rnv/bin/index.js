@@ -25,6 +25,8 @@ CONSTANTS.PARAMS.withAll().forEach((param) => {
     if (param.value) {
         if (param.isRequired) {
             cmd += ` <${param.value}>`;
+        } else if (param.variadic) {
+            cmd += ` [${param.value}...]`;
         } else {
             cmd += ` [${param.value}]`;
         }

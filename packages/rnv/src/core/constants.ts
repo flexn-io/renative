@@ -492,6 +492,15 @@ export const PARAM_KEYS: any = {
             '--packageManager yarn',
             '--packageManager npm'
         ]
+    },
+    answer: {
+        value: 'value',
+        variadic: true,
+        description: 'Pass in answers to prompts',
+        examples: [
+            '--answer question=response --answer question2=response2',
+            '--answer question=\'{"some": "json"}\''
+        ]
     }
 };
 
