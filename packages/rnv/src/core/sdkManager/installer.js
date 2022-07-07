@@ -37,7 +37,8 @@ import {
     logTask,
     logWarning,
     logSuccess,
-    logError
+    logError,
+    logInfo
 } from '../systemManager/logger';
 import PlatformSetup from '../setupManager';
 import { generateBuildConfig } from '../configManager';
@@ -240,6 +241,11 @@ const _findFolderWithFile = (dir, fileToFind) => {
 
 const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) => {
     logTask('_attemptAutoFix');
+
+    if (c.program.hosted) {
+        logInfo('HOSTED Mode. Skipping SDK checks');
+        return true;
+    }
 
     let locations = SDK_LOCATIONS[sdkPlatform];
 

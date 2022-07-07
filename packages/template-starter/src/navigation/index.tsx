@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';

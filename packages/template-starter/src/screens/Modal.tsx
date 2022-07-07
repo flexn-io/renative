@@ -7,13 +7,12 @@ import { testProps } from '../utils';
 import Button from '../components/Button';
 import { usePop } from '../hooks/navigation';
 
-const ScreenModal = (props) => {
-    const pop = usePop(props);
+const ScreenModal = ({ navigation, setFocus }) => {
+    const pop = usePop(navigation);
     const { theme }: any = useContext(ThemeContext);
 
     if (hasWebFocusableUI) {
         useEffect(() => {
-            const { setFocus } = props;
             setFocus('close');
 
             return function cleanup() {
@@ -32,13 +31,8 @@ const ScreenModal = (props) => {
                     iconColor={theme.static.colorBrand}
                     iconSize={theme.static.buttonSize}
                     style={theme.styles.icon}
-                    // to="/"
-                    onEnterPress={() => {
-                        pop();
-                    }}
-                    onPress={() => {
-                        pop();
-                    }}
+                    onEnterPress={() => { pop(); }}
+                    onPress={() => { pop(); }}
                     {...testProps('template-starter-modal-screen-close-button')}
                 />
             </View>

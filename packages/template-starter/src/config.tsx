@@ -1,14 +1,9 @@
-/* eslint-disable react/prop-types */
-
 import React, { createContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {
     getScaledValue,
-    isEngineRnElectron,
-    isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isPlatformWeb, isWebBased
+    isFactorDesktop, isFactorMobile, isFactorTv, isPlatformMacos, isWebBased
 } from '@rnv/renative';
-// import { LogBox } from 'react-native';
-// import JSTimers from 'react-native/Libraries/Core/Timers/JSTimers';
 import CONFIG from '../platformAssets/renative.runtime.json';
 import '../platformAssets/runtime/fontManager';
 //@ts-ignore
@@ -21,11 +16,6 @@ export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isWebBased && isFactorTv;
 const isNativeMacos: boolean = (isPlatformMacos && !isWebBased) ? true : false;
 
-// Disable yellow warnings UI - console.disableYellowBox replacement with setImmediate workaround
-// if (!global.setImmediate) {
-//     global.setImmediate = JSTimers.setImmediate;
-// }
-// LogBox.ignoreAllLogs(true);
 console.disableYellowBox = true; // eslint-disable-line
 
 if (!global.performance) {
@@ -87,6 +77,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
         paddingVertical: getScaledValue(50),
         minHeight: getScaledValue(300),
         alignSelf: 'stretch',
+        flex: 1,
         width: '100%'
     },
     modalContainer: isWebBased ? {
@@ -148,15 +139,11 @@ const createStyleSheet = currentTheme => StyleSheet.create({
         fontSize: getScaledValue(20),
     },
     screen: {
-        position: 'absolute',
         backgroundColor: currentTheme.colorBgPrimary,
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0
+        flex: 1
     },
     screenModal: {
-        position: 'absolute',
+        flex: 1,
         backgroundColor: currentTheme.colorBgPrimary,
         top: hasHorizontalMenu && isWebBased ? -currentTheme.menuHeight : 0,
         left: 0,
@@ -218,7 +205,7 @@ const createStyleSheet = currentTheme => StyleSheet.create({
 
 
 export const ROUTES = {
-    HOME: isPlatformWeb ? '/' : 'home',
+    HOME: isWebBased ? '/' : 'home',
     MY_PAGE: 'my-page',
     MODAL: 'modal'
 };

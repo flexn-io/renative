@@ -46,6 +46,7 @@ module.exports = {
         'react/jsx-no-constructed-context-values': 'off',
         'react/prop-types': 'off',
         //= ===========
+        'no-unused-vars': ['error'],
         'arrow-body-style': ['warn', 'as-needed'],
         'import/no-cycle': ['warn'],
         camelcase: 'off',
@@ -104,12 +105,10 @@ module.exports = {
         'import/no-extraneous-dependencies': 'off',
         'import/no-duplicates': 'error',
         'import/no-named-as-default': 'off',
-
         'jsx-a11y/no-static-element-interactions': 'off',
         'jsx-a11y/no-noninteractive-tabindex': 'off',
         'jsx-a11y/media-has-caption': 'off',
         'jsx-a11y/mouse-events-have-key-events': 'off',
-
         'comma-dangle': ['error', 'only-multiline'],
         'no-underscore-dangle': 'off',
         'mocha/no-exclusive-tests': 'error',

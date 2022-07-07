@@ -428,7 +428,8 @@ export const getInstalledTemplateOptions = (c) => {
     return [];
 };
 
-export const isTemplateInstalled = c => (c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : false);
+export const isTemplateInstalled = c => (c.buildConfig.currentTemplate
+    ? doResolve(c.buildConfig.currentTemplate) : false);
 
 
 export const applyTemplate = async (c, selectedTemplate) => {

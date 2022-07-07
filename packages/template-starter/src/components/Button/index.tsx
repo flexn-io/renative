@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { getScaledValue } from '@rnv/renative';
@@ -18,6 +16,7 @@ const styles = StyleSheet.create({
 });
 
 const Button = ({
+    route,
     title,
     iconFont,
     iconName,
@@ -58,7 +57,7 @@ const Button = ({
                 {title}
             </Text>
         ) : null}
-    </TouchableOpacity>
-);
+    </TouchableOpacity>)
+
 
 export default Button;
