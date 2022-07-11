@@ -6,7 +6,7 @@ import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/
 import { getConfigProp } from '../common';
 
 export const executePipe = async (c, key) => {
-    logHook('executePipe', `('${key}')`);
+    logHook('executePipe', c?.program?.json ? key : `('${key}')`);
 
     await buildHooks(c);
 

@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { logInfo } from '../systemManager/logger';
 
 export const withDefaultRNVBabel = (cnf) => ({
     retainLines: true,
@@ -16,7 +17,7 @@ export const withDefaultRNVBabel = (cnf) => ({
 
 export const withRNVBabel = cnf => (api) => {
     if (!fs.existsSync(process.env.RNV_ENGINE_PATH)) {
-        console.log(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);// eslint-disable-line no-console
+        logInfo(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);
         api.cache(false);
         return withDefaultRNVBabel(cnf);
     }
