@@ -7,7 +7,7 @@ import { getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
 
 export const executePipe = async (c, key) => {
-    logHook('executePipe', `('${key}')`);
+    logHook('executePipe', c?.program?.json ? key : `('${key}')`);
 
     await buildHooks(c);
 

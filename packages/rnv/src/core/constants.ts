@@ -483,6 +483,9 @@ export const PARAM_KEYS: any = {
     npxMode: {
         description: 'Ensures you can use local npx rnv version after the command is done'
     },
+    json: {
+        description: 'Outputs the result as json'
+    },
     packageManager: {
         value: 'value',
         isRequired: true,

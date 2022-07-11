@@ -20,6 +20,7 @@ process.on('unhandledRejection', (err) => {
 require('../config/env');
 
 const {
+    logInfo,
     logWarning,
     logSuccess,
     logError,
@@ -79,13 +80,13 @@ export default async () => checkBrowsers(paths.appPath, isInteractive)
         ({ stats, previousFileSizes, warnings }) => {
             if (warnings.length) {
                 logWarning('Compiled with warnings.\n');
-                console.log(warnings.join('\n\n'));
-                console.log(
+                logInfo(warnings.join('\n\n'));
+                logInfo(
                     `\nSearch for the ${
                         chalk.underline(chalk.yellow('keywords'))
                     } to learn more about each warning.`
                 );
-                console.log(
+                logInfo(
                     `To ignore, add ${
                         chalk.cyan('// eslint-disable-next-line')
                     } to the line before.\n`
@@ -94,7 +95,7 @@ export default async () => checkBrowsers(paths.appPath, isInteractive)
                 logSuccess('Compiled successfully.\n');
             }
 
-            console.log('File sizes after gzip:\n');
+            logInfo('File sizes after gzip:\n');
             printFileSizesAfterBuild(
                 stats,
                 previousFileSizes,
@@ -102,7 +103,6 @@ export default async () => checkBrowsers(paths.appPath, isInteractive)
                 WARN_AFTER_BUNDLE_GZIP_SIZE,
                 WARN_AFTER_CHUNK_GZIP_SIZE
             );
-            console.log();
 
             const appPackage = require(paths.appPackageJson);
             const publicUrl = paths.publicUrlOrPath;
@@ -133,7 +133,7 @@ export default async () => checkBrowsers(paths.appPath, isInteractive)
     )
     .catch((err) => {
         if (err && err.message) {
-            console.log(err.message);
+            logError(err.message);
         }
         process.exit(1);
     });
