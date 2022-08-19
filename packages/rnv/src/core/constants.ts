@@ -439,6 +439,11 @@ export const PARAM_KEYS: any = {
     analyzer: {
         description: 'Enable real-time bundle analyzer'
     },
+    xcodebuildArgs: {
+        value: 'value',
+        isRequired: true,
+        description: 'pass down custom xcodebuild arguments'
+    },
     xcodebuildArchiveArgs: {
         value: 'value',
         isRequired: true,

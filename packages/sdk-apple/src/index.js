@@ -653,7 +653,8 @@ export const buildXcodeProject = async (c) => {
         p.push('-derivedDataPath');
         p.push(buildPath);
     }
-    if (!ps.includes('-destination')) {
+    // -arch / -sdk params are not compatible with -destination
+    if (!ps.includes('-destination') && !ps.includes('-arch')) {
         p.push('-destination');
         if (platform === MACOS) {
             p.push(`platform=${destinationPlatform}`);
