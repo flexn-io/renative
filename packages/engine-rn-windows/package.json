@@ -34,7 +34,7 @@
     },
     "dependencies": {
         "@xmldom/xmldom": "0.7.0",
-        "react-native-windows": "0.67.3"
+        "react-native-windows": "0.69.4"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",

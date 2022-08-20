@@ -3,9 +3,10 @@ const program = require('commander');
 const fs = require('fs');
 const path = require('path');
 
-global.fetch = require('node-fetch');
+// global.fetch = require('node-fetch');
+// global.fetch = await import('node-fetch');
 
-global.Headers = global.fetch.Headers;
+// global.Headers = global.fetch.Headers;
 
 const cli = require('../dist/index.js');
 const CONSTANTS = require('../dist/core/constants.js');
