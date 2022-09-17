@@ -170,6 +170,10 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
         });
     }
     const mergedObj = mergeObjects(c, parentPlugin, currentPlugin, true, true);
+    if (c._renativePluginCache[pluginKey]) {
+        mergedObj.config = c._renativePluginCache[pluginKey];
+    }
+
     // IMPORTANT: only final top level merge should be sanitized
     const obj = skipSanitize ? mergedObj : sanitizeDynamicProps(mergedObj, {
         files: c.files,
@@ -726,6 +730,10 @@ export const checkForPluginDependencies = async (c) => {
     const toAdd = {};
     Object.keys(c.buildConfig.plugins).forEach((pluginName) => {
         const renativePluginConfig = _getPluginConfiguration(c, pluginName);
+
+        if (renativePluginConfig) {
+            c._renativePluginCache[pluginName] = renativePluginConfig;
+        }
 
         if (renativePluginConfig?.plugins) {
             // we have dependencies for this plugin
