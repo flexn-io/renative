@@ -19,8 +19,12 @@ describe('Test Template Starter', () => {
             await FlexnRunner.clickById('template-starter-menu-drawer-button');
         }
         await FlexnRunner.clickById('template-starter-menu-my-page-button');
-        // should be 1 click, 2 are needed for TV's due to bug
-        await FlexnRunner.pressButtonRight(2);
+        // should be 1 click, 2 are needed for ATV due to bug
+        if (process.env.PLATFORM === 'androidtv') {
+            await FlexnRunner.pressButtonRight(2);
+        } else {
+            await FlexnRunner.pressButtonRight(1);
+        }
         await FlexnRunner.pressButtonSelect(1);
         await FlexnRunner.expectToBeDisplayedById('template-starter-my-page-screen-container');
         if (process.env.PLATFORM === 'ios' || process.env.PLATFORM === 'macos') {
