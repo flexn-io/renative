@@ -226,7 +226,8 @@ export const configureFonts = async (c) => {
     const duplicateFontCheck = [];
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf') || font.includes('.woff')) {
-            const key = font.split('.')[0];
+            const keOriginal = font.split('.')[0];
+            const keyNormalised = keOriginal.replace(/__/g, ' ');
             const includedFonts = getConfigProp(
                 c,
                 c.platform,
@@ -235,7 +236,8 @@ export const configureFonts = async (c) => {
             if (includedFonts) {
                 if (
                     includedFonts.includes('*')
-                        || includedFonts.includes(key)
+                        || includedFonts.includes(keOriginal)
+                        || includedFonts.includes(keyNormalised)
                 ) {
                     if (font && !duplicateFontCheck.includes(font)) {
                         duplicateFontCheck.push(font);
@@ -246,7 +248,7 @@ export const configureFonts = async (c) => {
                             // const fontDest = path.join(fontFolder, font);
                             // copyFileSync(fontSource, fontDest);
                             fontsObj += `{
-                              fontFamily: '${key}',
+                              fontFamily: '${keyNormalised}',
                               file: require('${fontSource}'),
                           },`;
                         } else {
