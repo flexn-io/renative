@@ -3,9 +3,11 @@ import net from 'net';
 import shell from 'shelljs';
 import inquirer from 'inquirer';
 import execa from 'execa';
-import { FileUtils, Exec, Utils, Logger, Constants, EngineManager,
+import {
+    FileUtils, Exec, Utils, Logger, Constants, EngineManager,
     PluginManager, ProjectManager, Common,
-    PlatformManager, Prompt, SDKManager, RuntimeManager } from 'rnv';
+    PlatformManager, Prompt, SDKManager, RuntimeManager
+} from 'rnv';
 import {
     parseAndroidManifestSync,
     injectPluginManifestSync
@@ -114,18 +116,14 @@ export const packageAndroid = async (c: any) => {
     logInfo('ANDROID PACKAGE STARTING...');
 
     try {
-        let cmd = `${reactNative} bundle --platform android --dev false --assets-dest ${
-            path.join(appFolder, 'app', 'src', 'main', 'res')
-        } --entry-file ${
-        c.buildConfig.platforms[c.platform]?.entryFile
-        }.js --bundle-output ${path.join(appFolder, 'app', 'src', 'main', 'assets', `${
-            outputFile
-        }.bundle`)} --config=metro.config.js`;
+        let cmd = `${reactNative} bundle --platform android --dev false --assets-dest ${path.join(appFolder, 'app', 'src', 'main', 'res')
+            } --entry-file ${c.buildConfig.platforms[c.platform]?.entryFile
+            }.js --bundle-output ${path.join(appFolder, 'app', 'src', 'main', 'assets', `${outputFile
+                }.bundle`)} --config=metro.config.js`;
 
         if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
-            cmd += ` --sourcemap-output ${path.join(appFolder, 'app', 'src', 'main', 'assets', `${
-                outputFile
-            }.bundle.map`)}`;
+            cmd += ` --sourcemap-output ${path.join(appFolder, 'app', 'src', 'main', 'assets', `${outputFile
+                }.bundle.map`)}`;
         }
         await executeAsync(c, cmd, { env: { ...generateEnvVars(c) } });
 
@@ -261,11 +259,10 @@ const _checkSigningCerts = async (c: any) => {
     const isRelease = signingConfig === 'Release';
 
     if (isRelease && !c.pluginConfigAndroid?.store?.storeFile) {
-        const msg = `You're attempting to ${
-            c.command
-        } app in release mode but you have't configured your ${chalk().white(
-            c.paths.workspace.appConfig.configPrivate
-        )} for ${chalk().white(c.platform)} platform yet.`;
+        const msg = `You're attempting to ${c.command
+            } app in release mode but you have't configured your ${chalk().white(
+                c.paths.workspace.appConfig.configPrivate
+            )} for ${chalk().white(c.platform)} platform yet.`;
         if (c.program.ci === true) {
             return Promise.reject(msg);
         }
@@ -350,11 +347,9 @@ const _checkSigningCerts = async (c: any) => {
                 if (confirmNewKeystore) {
                     const keystorePath = path.join(c.paths.workspace.appConfig.dir, 'release.keystore');
                     mkdirSync(c.paths.workspace.appConfig.dir);
-                    const keytoolCmd = `keytool -genkey -v -keystore ${
-                        keystorePath
-                    } -alias ${keyAlias} -keypass ${keyPassword} -storepass ${
-                        storePassword
-                    } -keyalg RSA -keysize 2048 -validity 10000`;
+                    const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath
+                        } -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword
+                        } -keyalg RSA -keysize 2048 -validity 10000`;
                     await executeAsync(c, keytoolCmd, {
                         env: process.env,
                         shell: true,
@@ -412,8 +407,7 @@ const _runGradleApp = async (c: any, platform: any, device: any) => {
 
     await executeAsync(
         c,
-        `${isSystemWin ? 'gradlew.bat' : './gradlew'} ${
-            outputAab && c.runtime.task !== 'run' ? 'bundle' : 'assemble'
+        `${isSystemWin ? 'gradlew.bat' : './gradlew'} ${outputAab && c.runtime.task !== 'run' ? 'bundle' : 'assemble'
         }${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`,
         // { interactive: true }
     );
@@ -526,7 +520,7 @@ export const configureAndroidProperties = async (c: any) => {
 
 
     const addNDK = c.buildConfig?.sdks?.ANDROID_NDK
-            && !c.buildConfig.sdks.ANDROID_NDK.includes('<USER>');
+        && !c.buildConfig.sdks.ANDROID_NDK.includes('<USER>');
     let ndkString = `ndk.dir=${getRealPath(
         c,
         c.buildConfig?.sdks?.ANDROID_NDK
@@ -641,11 +635,12 @@ export const configureProject = async (c: any) => {
     parseFonts(c, (font: any, dir: any) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
+
             const { includedFonts } = c.buildConfig.common;
             if (includedFonts) {
                 if (
                     includedFonts.includes('*')
-                        || includedFonts.includes(key)
+                    || includedFonts.includes(key)
                 ) {
                     if (font) {
                         const fontSource = path.join(dir, font);
@@ -655,7 +650,8 @@ export const configureProject = async (c: any) => {
                                 'app/src/main/assets/fonts'
                             );
                             mkdirSync(fontFolder);
-                            const fontDest = path.join(fontFolder, font);
+                            const fontNormalised = font.replace(/__/g, ' ');
+                            const fontDest = path.join(fontFolder, fontNormalised);
                             copyFileSync(fontSource, fontDest);
                         } else {
                             logWarning(

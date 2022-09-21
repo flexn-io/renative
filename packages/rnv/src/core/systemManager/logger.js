@@ -96,6 +96,7 @@ let _isMono = false;
 let _defaultColor;
 let _highlightColor;
 let _analytics;
+let _jsonOnly;
 
 const cnf = () => {
     if (!_c) {
@@ -110,6 +111,7 @@ const _configureLogger = (c, analytics) => {
     if (!global.timeStart) global.timeStart = new Date();
     _currentProcess = c.process;
     _isInfoEnabled = !!c.program.info;
+    _jsonOnly = !!c.program.json;
     _infoFilter = c.program.info?.split?.(',');
     _isMono = c.program.mono;
     _analytics = analytics;
@@ -132,6 +134,14 @@ export const logAndSave = (msg, skipLog) => {
 };
 
 const PRIVATE_PARAMS = ['-k', '--key'];
+
+const _printJson = (obj) => {
+    // sanitize
+    if (obj.task) {
+        obj.task = obj.task.trim().replace('[', '').replace(']', '');
+    }
+    console.log(JSON.stringify(obj));
+};
 
 export const getCurrentCommand = (excludeDollar = false) => {
     const argArr = cnf().process.argv.slice(2);
@@ -329,6 +339,11 @@ export const logTask = (task, customChalk) => {
     if (!TASK_COUNTER[task]) TASK_COUNTER[task] = 0;
     TASK_COUNTER[task] += 1;
     const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
+
+    if (_jsonOnly) {
+        return _printJson({ type: 'task', task: stripAnsi(_getCurrentTask()), message: stripAnsi(_sanitizePaths(typeof customChalk === 'string' ? customChalk : task)) });
+    }
+
     let msg = '';
     if (typeof customChalk === 'string') {
         msg = `${currentChalk.green(`[ task ]${
@@ -344,6 +359,9 @@ export const logTask = (task, customChalk) => {
 
 
 export const logInitTask = (task, customChalk) => {
+    if (_jsonOnly) {
+        return _printJson({ type: 'taskInit', task: stripAnsi(_getCurrentTask()), message: stripAnsi(_sanitizePaths(typeof customChalk === 'string' ? customChalk : task)) });
+    }
     let msg = '';
     if (typeof customChalk === 'string') {
         msg = `${currentChalk.rgb(183, 84, 117)(`[ task ] ${task}`)} ${currentChalk.grey(customChalk)}`;
@@ -357,6 +375,9 @@ export const logInitTask = (task, customChalk) => {
 };
 
 export const logExitTask = (task, customChalk) => {
+    if (_jsonOnly) {
+        return _printJson({ type: 'taskExit', task: stripAnsi(_getCurrentTask()), message: stripAnsi(_sanitizePaths(typeof customChalk === 'string' ? customChalk : task)) });
+    }
     let msg = '';
     if (typeof customChalk === 'string') {
         msg = `${currentChalk.rgb(183, 84, 117)(`[ task ] ${task}`)} ${currentChalk.grey(customChalk)}`;
@@ -370,20 +391,34 @@ export const logExitTask = (task, customChalk) => {
 };
 
 export const logHook = (hook = '', msg = '') => {
+    if (_jsonOnly) {
+        const payload = { type: 'hook', hook, message: stripAnsi(_sanitizePaths(msg)) };
+        if (_getCurrentTask()) payload.task = stripAnsi(_getCurrentTask());
+        return _printJson(payload);
+    }
     console.log(`${currentChalk.rgb(127, 255, 212)(`[ hook ]${_getCurrentTask()} ${
         hook}`)} ${currentChalk.grey(_sanitizePaths(msg))}`);
 };
 
 export const logWarning = (msg) => {
+    if (_jsonOnly) {
+        return _printJson({ type: 'log', level: 'warning', task: stripAnsi(_getCurrentTask()), message: stripAnsi(_sanitizePaths(msg)) });
+    }
     logAndSave(currentChalk.yellow(`[ warn ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
 export const logInfo = (msg) => {
+    if (_jsonOnly) {
+        return _printJson({ type: 'log', level: 'info', task: stripAnsi(_getCurrentTask()), message: stripAnsi(_sanitizePaths(msg)) });
+    }
     console.log(currentChalk.cyan(`[ info ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
 export const logDebug = (...args) => {
     if (_isInfoEnabled) {
+        if (_jsonOnly) {
+            return _printJson({ type: 'log', level: 'debug', task: stripAnsi(_getCurrentTask()), message: stripAnsi(_sanitizePaths(...args)) });
+        }
         if (_infoFilter) {
             const firstArg = args[0];
 
@@ -399,11 +434,15 @@ export const logDebug = (...args) => {
 export const isInfoEnabled = () => _isInfoEnabled;
 
 export const logComplete = (isEnd = false) => {
+    if (_jsonOnly) return;
     console.log(currentChalk.bold.white(`\n ${RNV} - Done! ${ICN_ROCKET}`));
     if (isEnd) logEnd(0);
 };
 
 export const logSuccess = (msg) => {
+    if (_jsonOnly) {
+        return _printJson({ type: 'success', task: stripAnsi(_getCurrentTask()), message: stripAnsi(_sanitizePaths(msg)) });
+    }
     logAndSave(currentChalk.magenta(`[ success ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
@@ -422,7 +461,9 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
         _analytics.captureException(e, { extra });
     }
 
-    if (e && e.message) {
+    if (_jsonOnly) {
+        _printJson({ type: 'log', level: 'error', task: stripAnsi(_getCurrentTask()), message: stripAnsi(_sanitizePaths(e?.message || e)) });
+    } else if (e && e.message) {
         logAndSave(
             currentChalk.red(`[ error ]${_getCurrentTask()} ${e.message}\n${e.stack}`),
             isEnd
@@ -430,12 +471,16 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
     } else {
         logAndSave(currentChalk.red(`[ error ]${_getCurrentTask()} ${e}`), isEnd);
     }
+
     cnf().runtime.keepSessionActive = false;
     if (isEnd) logEnd(1);
 };
 
 export const logEnd = (code) => {
-    logSummary();
+    if (!_jsonOnly) {
+        logSummary();
+    }
+
     if (_currentProcess && !!_analytics) {
         _analytics.teardown().then(() => {
             _currentProcess.exit(code);
@@ -444,13 +489,16 @@ export const logEnd = (code) => {
 };
 
 export const logInitialize = () => {
-    logWelcome();
+    cnf();
+    if (!_jsonOnly) logWelcome();
 };
 
 export const logAppInfo = (c) => {
-    logInfo(`Current App Config: ${currentChalk.bold.white(
-        c.runtime.appId
-    )}`);
+    if (!_jsonOnly) {
+        logInfo(`Current App Config: ${currentChalk.bold.white(
+            c.runtime.appId
+        )}`);
+    }
 };
 
 export const printIntoBox = (str) => {
@@ -469,11 +517,12 @@ export const printIntoBox = (str) => {
         output += _defaultColor('\n');
     }
 
-
     return output;
 };
 
 export const printArrIntoBox = (arr, prefix = '') => {
+    if (_jsonOnly) return arr;
+
     let output = '';
     let stringArr = '';
     let i = 0;

@@ -3,7 +3,6 @@
 import axios from 'axios';
 import open from 'better-opn';
 import commandExists from 'command-exists';
-import path from 'path';
 import { Common, Constants, EngineManager, Exec, Logger, PlatformManager, PluginManager, ProjectManager } from 'rnv';
 // import { runServer } from './scripts/start';
 
@@ -156,7 +155,8 @@ export const _runWebDevServer = async (c, enableRemoteDebugger) => {
         process.env.WEBPACK_TARGET = c.runtime.webpackTarget;
     }
     process.env.RNV_EXTERNAL_PATHS = [
-        `${path.join(c.paths.project.assets.dir)}/*`
+        c.paths.project.assets.dir,
+        c.paths.project.dir,
     ].join(',');
 
     const debugObj = { remoteDebuggerActive: false };
@@ -188,7 +188,8 @@ export const buildCoreWebpackProject = async (c) => {
         process.env.WEBPACK_TARGET = c.runtime.webpackTarget;
     }
     process.env.RNV_EXTERNAL_PATHS = [
-        `${path.join(c.paths.project.assets.dir)}/*`
+        c.paths.project.assets.dir,
+        c.paths.project.dir,
     ].join(',');
 
     if (debug) {

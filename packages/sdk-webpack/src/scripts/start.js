@@ -28,6 +28,7 @@ const {
 } = require('react-dev-utils/WebpackDevServerUtils');
 // const openBrowser = require('react-dev-utils/openBrowser');
 const semver = require('semver');
+const { Logger } = require('rnv');
 const paths = require('../config/paths');
 const configFactory = require('../config/webpack.config');
 const createDevServerConfig = require('../config/webpackDevServer.config');
@@ -52,20 +53,18 @@ export default async () => new Promise(() => {
     const HOST = process.env.HOST || '0.0.0.0';
 
     if (process.env.HOST) {
-        console.log(
-            chalk.cyan(
-                `Attempting to bind to HOST environment variable: ${chalk.yellow(
-                    chalk.bold(process.env.HOST)
-                )}`
-            )
+        Logger.logInfo(
+            `Attempting to bind to HOST environment variable: ${chalk.yellow(
+                chalk.bold(process.env.HOST)
+            )}`
         );
-        console.log(
+        Logger.logInfo(
             'If this was unintentional, check that you haven\'t mistakenly set it in your shell.'
         );
-        console.log(
+        Logger.logInfo(
             `Learn more here: ${chalk.yellow('https://cra.link/advanced-config')}`
         );
-        console.log();
+        Logger.logInfo();
     }
 
     const config = configFactory('development');

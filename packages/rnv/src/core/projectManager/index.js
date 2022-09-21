@@ -10,7 +10,7 @@ import {
 import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { getEngineRunnerByPlatform } from '../engineManager';
 import { isPlatformActive } from '../platformManager';
-import { copyTemplatePluginsSync } from '../pluginManager';
+import { copyTemplatePluginsSync, parsePlugins } from '../pluginManager';
 import {
     cleanFolder,
     copyFolderContentsRecursiveSync,
@@ -226,7 +226,8 @@ export const configureFonts = async (c) => {
     const duplicateFontCheck = [];
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf') || font.includes('.woff')) {
-            const key = font.split('.')[0];
+            const keOriginal = font.split('.')[0];
+            const keyNormalised = keOriginal.replace(/__/g, ' ');
             const includedFonts = getConfigProp(
                 c,
                 c.platform,
@@ -235,7 +236,8 @@ export const configureFonts = async (c) => {
             if (includedFonts) {
                 if (
                     includedFonts.includes('*')
-                        || includedFonts.includes(key)
+                        || includedFonts.includes(keOriginal)
+                        || includedFonts.includes(keyNormalised)
                 ) {
                     if (font && !duplicateFontCheck.includes(font)) {
                         duplicateFontCheck.push(font);
@@ -246,7 +248,7 @@ export const configureFonts = async (c) => {
                             // const fontDest = path.join(fontFolder, font);
                             // copyFileSync(fontSource, fontDest);
                             fontsObj += `{
-                              fontFamily: '${key}',
+                              fontFamily: '${keyNormalised}',
                               file: require('${fontSource}'),
                           },`;
                         } else {
@@ -374,15 +376,25 @@ export const parseFonts = (c, callback) => {
                 if (callback) callback(font, c.paths.appConfig.fontsDir);
             });
         }
-        const fontSources = getConfigProp(c, c.platform, 'fontSources', []).map(v => _resolvePackage(c, v));
-        fontSources.forEach((fontSourceDir) => {
-            if (fsExistsSync(fontSourceDir)) {
-                fsReaddirSync(fontSourceDir).forEach((font) => {
-                    if (callback) callback(font, fontSourceDir);
-                });
+        _parseFontSources(c, getConfigProp(c, c.platform, 'fontSources', []), callback);
+        // PLUGIN FONTS
+        parsePlugins(c, c.platform, (plugin) => {
+            if (plugin.config?.fontSources) {
+                _parseFontSources(c, plugin.config?.fontSources, callback);
             }
-        });
+        }, true);
     }
+};
+
+const _parseFontSources = (c, fontSourcesArr, callback) => {
+    const fontSources = fontSourcesArr.map(v => _resolvePackage(c, v));
+    fontSources.forEach((fontSourceDir) => {
+        if (fsExistsSync(fontSourceDir)) {
+            fsReaddirSync(fontSourceDir).forEach((font) => {
+                if (callback) callback(font, fontSourceDir);
+            });
+        }
+    });
 };
 
 const _resolvePackage = (c, v) => {

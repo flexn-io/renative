@@ -1,6 +1,6 @@
 {
     "name": "@rnv/renative",
-    "version": "0.36.1",
+    "version": "0.37.0-canary.2",
     "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Linux` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -72,5 +72,6 @@
         "hooks": {
             "pre-commit": "pretty-quick --staged"
         }
-    }
+    },
+    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
 }

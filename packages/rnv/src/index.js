@@ -36,6 +36,12 @@ import Config from './core/configManager/config';
 global.RNV_ANALYTICS = Analytics;
 
 export const initializeBuilder = async (cmd, subCmd, process, program) => {
+    // set mono and ci if json is enabled
+    if (program.json) {
+        program.mono = true;
+        program.ci = true;
+    }
+
     Analytics.initialize();
     FileUtils.configureFilesystem(Common.getConfigProp, Resolver.doResolve, Utils.isSystemWin);
     const c = ConfigManager.createRnvConfig(program, process, cmd, subCmd);

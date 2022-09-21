@@ -83,9 +83,9 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         // await configureEntryPoints(c);
         await generateRuntimeConfig(c);
         await overrideTemplatePlugins(c);
-        await configureFonts(c);
         // NOTE: this is needed to ensure missing rnv plugin sub-deps are caught
         await checkForPluginDependencies(c);
+        await configureFonts(c);
     }
 
     return true;

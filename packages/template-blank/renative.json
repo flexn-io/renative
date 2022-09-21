@@ -74,7 +74,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^0.36.1",
+            "version": "^0.37.0-canary.2",
             "webpack": {
                 "moduleAliases": true
             }
@@ -177,7 +177,7 @@
             "engine": "engine-rn-windows"
         },
         "ios": {
-            "deploymentTarget": "13.0"
+            "deploymentTarget": "14.0"
         }
     },
     "plugins": {

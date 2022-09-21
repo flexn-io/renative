@@ -697,6 +697,7 @@ export const parseRenativeConfigs = async (c) => {
 
 export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } = {}) => {
     const c = {
+        _renativePluginCache: {},
         cli: {},
         api: {
             fsExistsSync,
