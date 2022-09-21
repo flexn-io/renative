@@ -36,7 +36,7 @@ const ScreenModal = ({ navigation, setFocus }) => {
                     {...testProps('template-starter-modal-screen-close-button')}
                 />
             </View>
-            <ScrollView contentContainerStyle={theme.styles.container} {...testProps('template-starter-modal-screen-text-container')}>
+            <ScrollView contentContainerStyle={theme.styles.container} {...testProps('template-starter-modal-screen-container')}>
                 <Text style={theme.styles.textH2}>This is my Modal!</Text>
             </ScrollView>
         </View>
