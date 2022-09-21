@@ -6,7 +6,8 @@ const {
     isObject,
     isArray,
     isBool,
-    isString
+    isString,
+    isNumber
 } = ObjectUtils;
 const {
     getAppFolder,
@@ -207,7 +208,10 @@ const _parseObject = (obj, level) => {
         output += `${space}</dict>\n`;
     } else if (isString(obj)) {
         output += `${space}<string>${obj}</string>\n`;
+    } else if(isNumber(obj) && Number.isInteger(obj)){
+        output += `${space}<integer>${obj}</integer>\n`;
     }
+
 
     return output;
 };
