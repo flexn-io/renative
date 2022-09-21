@@ -177,7 +177,7 @@
             "engine": "engine-rn-windows"
         },
         "ios": {
-            "deploymentTarget": "13.0"
+            "deploymentTarget": "14.0"
         }
     },
     "plugins": {

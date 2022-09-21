@@ -117,7 +117,7 @@
         "rimraf": "2.6.2",
         "semver": "5.5.0",
         "shelljs": "0.8.5",
-        "source-map-loader": "0.2.4",
+        "source-map-loader": "4.0.0",
         "source-map-support": "0.5.13",
         "svg2js": "0.0.4-alpha1",
         "tar": "4.4.19",
