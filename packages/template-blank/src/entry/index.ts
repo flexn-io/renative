@@ -1,9 +1,5 @@
+import "react-native/Libraries/Core/InitializeCore"; //https://github.com/renative-org/renative/issues/876
 import { AppRegistry } from 'react-native';
-import JSTimers from 'react-native/Libraries/Core/Timers/JSTimers';
 import App from '../app';
-
-if (!global.setImmediate) {
-    global.setImmediate = JSTimers.setImmediate;
-}
 
 AppRegistry.registerComponent('App', () => App);
