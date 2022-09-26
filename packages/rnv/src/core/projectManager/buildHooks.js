@@ -4,7 +4,6 @@ import { build } from 'esbuild';
 import { logDebug, logHook, logInfo } from '../systemManager/logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
-import { doResolve } from '../systemManager/resolve';
 
 export const executePipe = async (c, key) => {
     logHook('executePipe', c?.program?.json ? key : `('${key}')`);
@@ -32,9 +31,8 @@ export const buildHooks = async (c) => {
     logDebug('buildHooks');
 
     const enableHookRebuild = getConfigProp(c, c.platform, 'enableHookRebuild');
-    let iReallyNeedWebhooksBuilt = false;
 
-    let shouldBuildHook = c.program.reset || c.program.resetHard || c.program.resetAssets
+    const shouldBuildHook = c.program.reset || c.program.resetHard || c.program.resetAssets
     || c.program.hooks || !fsExistsSync(c.paths.buildHooks.dist.dir) || enableHookRebuild === true
     || c.runtime.forceBuildHookRebuild;
 
@@ -68,7 +66,6 @@ export const buildHooks = async (c) => {
             if (templatePath && fsExistsSync(`${templatePath}/buildHooks/src/index.js`)) {
                 buildHooksSource = path.join(templatePath, 'buildHooks/src');
                 shouldBuildHook = true;
-                iReallyNeedWebhooksBuilt = true;
             } else {
                 buildHooksSource = path.join(c.paths.rnv.dir, 'coreTemplateFiles/buildHooks/src');
             }
@@ -83,7 +80,7 @@ export const buildHooks = async (c) => {
         }
     }
 
-    if ((!c.runtime.isFirstRunAfterNew && !c.files.project.config?.isNew) || iReallyNeedWebhooksBuilt) {
+    if (!c.runtime.isFirstRunAfterNew && !c.files.project.config?.isNew) {
         if (shouldBuildHook && !c.isBuildHooksReady) {
             try {
                 logHook('buildHooks', 'Build hooks not complied. BUILDING...');
