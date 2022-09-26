@@ -47,11 +47,11 @@ const ScreenHome = ({ navigation, setFocus }) => {
                 ref={scrollRef}
                 contentContainerStyle={theme.styles.container}
             >
-                <Image style={theme.styles.image} source={ICON_LOGO} {...testProps('template-starter-home-screen-renative-icon')} />
-                <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-welcome-message')}>
+                <Image style={theme.styles.image} source={ICON_LOGO} {...testProps('template-starter-home-screen-renative-image')} />
+                <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-welcome-message-text')}>
                     {CONFIG.welcomeMessage}
                 </Text>
-                <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-version-number')}>v {packageJson.version}</Text>
+                <Text style={theme.styles.textH2} {...testProps('template-starter-home-screen-version-number-text')}>v {packageJson.version}</Text>
                 <Text style={theme.styles.textH3}>
                     {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
                 </Text>
@@ -73,7 +73,7 @@ const ScreenHome = ({ navigation, setFocus }) => {
                     onEnterPress={toggle}
                     onBecameFocused={handleFocus}
                     onArrowPress={handleUp}
-                    {...testProps('template-starter-try-my-button')}
+                    {...testProps('template-starter-home-screen-try-my-button')}
                 />
                 <Button
                     style={theme.styles.button}
@@ -83,7 +83,7 @@ const ScreenHome = ({ navigation, setFocus }) => {
                     onPress={() => { navigate(ROUTES.MY_PAGE); }}
                     onEnterPress={() => { navigate(ROUTES.MY_PAGE); }}
                     onBecameFocused={handleFocus}
-                    {...testProps('template-starter-now-try-my-button')}
+                    {...testProps('template-starter-home-screen-now-try-my-button')}
                 />
                 <Text style={[theme.styles.textH3, { marginTop: 20 }]}>
                     Explore more
@@ -100,7 +100,7 @@ const ScreenHome = ({ navigation, setFocus }) => {
                         onPress={() => {
                             openURL('https://github.com/renative-org/renative');
                         }}
-                        {...testProps('template-starter-github-button')}
+                        {...testProps('template-starter-home-screen-github-button')}
                     />
                     <Button
                         iconFont="fontAwesome"
@@ -113,7 +113,7 @@ const ScreenHome = ({ navigation, setFocus }) => {
                         onPress={() => {
                             openURL('https://renative.org');
                         }}
-                        {...testProps('template-starter-renative-button')}
+                        {...testProps('template-starter-home-screen-chrome-button')}
                     />
                     <Button
                         iconFont="fontAwesome"
@@ -126,7 +126,7 @@ const ScreenHome = ({ navigation, setFocus }) => {
                         onPress={() => {
                             openURL('https://twitter.com/renative');
                         }}
-                        {...testProps('template-starter-twitter-button')}
+                        {...testProps('template-starter-home-screen-twitter-button')}
                     />
 
                 </FocusableView>

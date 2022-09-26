@@ -41,7 +41,7 @@ describe('Bootstrapping the CLI', () => {
 
     it('should create C variable correctly', async () => {
         const cKeys = Object.keys(c).sort();
-        const expectKeys = ['api', 'buildConfig', 'cli', 'command', 'configPropsInjects', 'files', 'paths', 'platform', 'process', 'program', 'runtime', 'subCommand'];
+        const expectKeys = ['_renativePluginCache', 'api', 'buildConfig', 'cli', 'command', 'configPropsInjects', 'files', 'paths', 'platform', 'process', 'program', 'runtime', 'subCommand'];
         expect(cKeys).toEqual(expectKeys);
     });
 

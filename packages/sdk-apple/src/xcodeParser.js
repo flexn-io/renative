@@ -32,7 +32,7 @@ export const parseXcodeProject = async (c) => {
         c,
         platform,
         'deploymentTarget',
-        '10.0'
+        '14.0'
     );
     c.runtime.xcodeProj.provisionProfileSpecifier = getConfigProp(
         c,
