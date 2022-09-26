@@ -4,6 +4,7 @@ import { build } from 'esbuild';
 import { logDebug, logHook, logInfo } from '../systemManager/logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
+import { doResolve } from '../systemManager/resolve';
 
 export const executePipe = async (c, key) => {
     logHook('executePipe', c?.program?.json ? key : `('${key}')`);
