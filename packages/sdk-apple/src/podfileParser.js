@@ -103,7 +103,7 @@ export const parsePodFile = async (c, platform) => {
     // POST INSTALL
     if (podfileObj?.post_install) {
         podfileObj?.post_install.forEach(function (v) {
-            c.pluginConfigiOS.podPostInstall += "".concat(v);
+            c.pluginConfigiOS.podPostInstall += "".concat(`${v}\n`);
         });
     }
     // SOURCES
