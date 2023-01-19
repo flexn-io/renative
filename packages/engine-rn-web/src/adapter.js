@@ -3,7 +3,12 @@ export const withRNVBabel = (cnf) => {
 
     return {
         retainLines: true,
-        presets: ['module:babel-preset-expo'],
+        presets: [
+            [
+                'module:metro-react-native-babel-preset',
+                { useTransformReactJSXExperimental: true }
+            ],
+        ],
         ...cnf,
         plugins: [
             [
@@ -12,6 +17,12 @@ export const withRNVBabel = (cnf) => {
                     root: [process.env.RNV_MONO_ROOT || '.'],
                 },
             ],
+            // [
+            //     '@babel/plugin-transform-react-jsx',
+            //     {
+            //         runtime: 'automatic',
+            //     },
+            // ],
             ...plugins
         ],
 

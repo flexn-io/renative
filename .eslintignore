@@ -15,6 +15,7 @@ test/examples/*.js
 **/projectTemplate
 **/projectTemplates
 **/pluginTemplates
+**/nodeModuleOverrides
 **/supportFiles
 **/coreTemplateFiles
 packages/rnv/tests

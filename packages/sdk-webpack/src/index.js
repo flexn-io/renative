@@ -2,8 +2,10 @@
 
 import axios from 'axios';
 import open from 'better-opn';
+import path from 'path';
 import commandExists from 'command-exists';
-import { Common, Constants, EngineManager, Exec, Logger, PlatformManager, PluginManager, ProjectManager } from 'rnv';
+import { Common, Constants, EngineManager, Exec, Logger, PlatformManager, PluginManager, ProjectManager, FileUtils } from 'rnv';
+// import { fsExistsSync, fsWriteFileSync } from 'rnv/dist/core/systemManager/fileutils';
 // import { runServer } from './scripts/start';
 
 const { isPlatformActive } = PlatformManager;
@@ -30,6 +32,7 @@ const { generateEnvVars } = EngineManager;
 const { getModuleConfigs } = PluginManager;
 const { REMOTE_DEBUG_PORT } = Constants;
 const { executeAsync } = Exec;
+const { copyFileSync, fsExistsSync } = FileUtils;
 
 export const waitForUrl = url => new Promise((resolve, reject) => {
     let attempts = 0;
@@ -147,6 +150,16 @@ export const _runWebDevServer = async (c, enableRemoteDebugger) => {
     Object.keys(env).forEach((v) => {
         process.env[v] = env[v];
     });
+
+    try {
+        const reactDevUtilsPath = require.resolve('react-dev-utils/clearConsole');
+        if (fsExistsSync(reactDevUtilsPath)) {
+            copyFileSync(path.join(__dirname, '../nodeModuleOverrides/react-dev-utils/clearConsole.js'), reactDevUtilsPath);
+        }
+    } catch (e) {
+        // Do nothing
+        logError(e);
+    }
 
     process.env.PUBLIC_URL = getConfigProp(c, c.platform, 'publicUrl', '.');
     process.env.RNV_ENTRY_FILE = getConfigProp(c, c.platform, 'entryFile');
