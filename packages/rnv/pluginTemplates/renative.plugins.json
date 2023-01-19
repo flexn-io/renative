@@ -30,7 +30,7 @@
             }
         },
         "@rnv/renative": {
-            "version": "0.37.0-canary.3",
+            "version": "0.37.0-canary.4",
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
