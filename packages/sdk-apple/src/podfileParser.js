@@ -121,15 +121,18 @@ export const parsePodFile = async (c, platform) => {
 
     // STATIC POD INJECT VERSION
     c.pluginConfigiOS.staticPodDefinition = 'Pod::BuildType.static_library';
-    try {
-        const podVersion = await executeAsync(c, 'pod --version');
-        const isPodOld = compareVersions(podVersion, '1.9') < 0;
-        if (isPodOld) {
-            c.pluginConfigiOS.staticPodDefinition = 'Pod::Target::BuildType.static_library';
+    if (!c.runtime._skipNativeDepResolutions) {
+        try {
+            const podVersion = await executeAsync(c, 'pod --version');
+            const isPodOld = compareVersions(podVersion, '1.9') < 0;
+            if (isPodOld) {
+                c.pluginConfigiOS.staticPodDefinition = 'Pod::Target::BuildType.static_library';
+            }
+        } catch (e) {
+            // Ignore
         }
-    } catch (e) {
-        // Ignore
     }
+
 
     const injects = [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },

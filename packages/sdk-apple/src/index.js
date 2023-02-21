@@ -97,6 +97,8 @@ const updatePodsChecksum = (c) => {
 const runCocoaPods = async (c) => {
     logTask('runCocoaPods', `forceUpdate:${!!c.program.updatePods}`);
 
+    if (c.runtime._skipNativeDepResolutions) return;
+
     const appFolder = getAppFolder(c);
 
     if (!fsExistsSync(appFolder)) {
@@ -867,6 +869,11 @@ const runAppleLog = c => new Promise(() => {
     });
 });
 
+const ejectXcodeProject = async (c) => {
+    c.runtime._skipNativeDepResolutions = true;
+    await configureXcodeProject(c);
+};
+
 const configureXcodeProject = async (c) => {
     logTask('configureXcodeProject');
 
@@ -1006,6 +1013,7 @@ export {
     runCocoaPods,
     copyAppleAssets,
     configureXcodeProject,
+    ejectXcodeProject,
     exportXcodeProject,
     archiveXcodeProject,
     runAppleLog
