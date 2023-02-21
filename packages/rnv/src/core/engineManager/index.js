@@ -154,7 +154,9 @@ export const loadEnginePluginDeps = async (c, engineConfigs) => {
         const engineConfig = readObjectSync(ecf.configPath);
 
         if (engineConfig?.plugins) {
-            const projectPlugins = c.files.project.config_original.plugins;
+            const projectPlugins = c.files.project.config.plugins;
+            // Comparing original config causes engine think that template is not extended with additional deps
+            // const projectPlugins = c.files.project.config_original.plugins;
             Object.keys(engineConfig?.plugins).forEach((k) => {
                 if (!projectPlugins[k]) {
                     logInfo(`Engine ${ecf.key} requires plugin ${k}. ADDING...DONE`);
