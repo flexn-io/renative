@@ -5,7 +5,7 @@ import { isBuildSchemeSupported } from '../../core/configManager/schemeParser';
 import { isPlatformSupported, cleanPlatformBuild, createPlatformBuild } from '../../core/platformManager';
 import { injectPlatformDependencies } from '../../core/configManager/packageParser';
 import { configureRuntimeDefaults } from '../../core/runtimeManager';
-import { executeTask } from '../../core/taskManager';
+import { executeTask, shouldSkipTask } from '../../core/taskManager';
 import { PARAMS, TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../../core/constants';
 
 import { checkSdk } from '../../core/sdkManager/installer';
@@ -14,6 +14,8 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformConfigure', '');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONFIGURE, originTask);
+
+    if (shouldSkipTask(c, TASK_PLATFORM_CONFIGURE, originTask)) return true;
 
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
@@ -43,7 +45,7 @@ export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
 export default {
     description: '',
     fn: taskRnvPlatformConfigure,
-    task: 'platform configure',
+    task: TASK_PLATFORM_CONFIGURE,
     params: PARAMS.withBase(),
     platforms: [],
 };

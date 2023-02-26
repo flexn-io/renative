@@ -13,6 +13,7 @@ import { parsePodFile } from './podfileParser';
 import { parseAppDelegate } from './swiftParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
+import { ejectXcodeProject } from './ejector';
 
 const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
@@ -818,7 +819,7 @@ export const packageBundleForXcode = (c, isDev = false) => {
         '--dev',
         isDev,
         '--assets-dest',
-        `platformBuilds/${c.runtime.appId}_${c.platform}`,
+        `platformBuilds/${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`,
         '--entry-file',
         `${c.buildConfig.platforms[c.platform].entryFile}.js`,
         '--bundle-output',
@@ -868,11 +869,6 @@ const runAppleLog = c => new Promise(() => {
         }
     });
 });
-
-const ejectXcodeProject = async (c) => {
-    c.runtime._skipNativeDepResolutions = true;
-    await configureXcodeProject(c);
-};
 
 const configureXcodeProject = async (c) => {
     logTask('configureXcodeProject');

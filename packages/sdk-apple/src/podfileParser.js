@@ -95,18 +95,43 @@ export const parsePodFile = async (c, platform) => {
     const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
 
     // SOURCES
-    const podfileObj = getFlavouredProp(
-        c,
-        c.buildConfig?.platforms?.[platform],
-        'Podfile'
-    );
-    const podfileSources = podfileObj?.sources;
-    if (podfileSources && podfileSources.length) {
-        podfileSources.forEach((v) => {
-            if (!c.pluginConfigiOS.podfileSources.includes(v)) {
-                c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
-            }
-        });
+    // const podfileObj = getFlavouredProp(
+    //     c,
+    //     c.buildConfig?.platforms?.[platform],
+    //     'Podfile'
+    // );
+    // const podfileSources = podfileObj?.sources;
+    // if (podfileSources && podfileSources.length) {
+    //     podfileSources.forEach((v) => {
+    //         if (!c.pluginConfigiOS.podfileSources.includes(v)) {
+    //             c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
+    //         }
+    //     });
+    // }
+
+    const podfile = getConfigProp(c, c.platform, 'Podfile');
+    if (podfile) {
+        const { injectLines, post_install } = podfile;
+        // INJECT LINES
+        if (injectLines) {
+            injectLines.forEach((v) => {
+                c.pluginConfigiOS.podfileInject += `${v}\n`;
+            });
+        }
+
+        if (post_install) {
+            post_install.forEach((v) => {
+                c.pluginConfigiOS.podPostInstall += `${v}\n`;
+            });
+        }
+        const podfileSources = podfile?.sources;
+        if (podfileSources && podfileSources.length) {
+            podfileSources.forEach((v) => {
+                if (!c.pluginConfigiOS.podfileSources.includes(v)) {
+                    c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
+                }
+            });
+        }
     }
 
 

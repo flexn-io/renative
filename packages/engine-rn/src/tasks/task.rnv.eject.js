@@ -1,7 +1,6 @@
-import { TaskManager, Constants, Logger, PlatformManager, NPMUtils, TemplateManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, NPMUtils } from 'rnv';
 import { configureGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
-import { configureMetroConfigs } from '../commonEngine';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
@@ -13,33 +12,28 @@ const {
     ANDROID_TV,
     FIRE_TV,
     ANDROID_WEAR,
-    TASK_PLATFORM_CONFIGURE,
-    TASK_CONFIGURE,
+    TASK_PACKAGE,
     PARAMS
 } = Constants;
 
+const TASK_EJECT = 'eject';
 
-const { executeTask, shouldSkipTask } = TaskManager;
-const { configureEntryPoint } = TemplateManager;
+const { shouldSkipTask, executeOrSkipTask } = TaskManager;
 
 export const taskRnvEject = async (c, parentTask, originTask) => {
     logTask('taskRnvEject');
+    const { platform } = c;
 
-    await configureMetroConfigs(c);
+    c.runtime._platformBuildsSuffix = '_eject';
+    c.runtime._skipNativeDepResolutions = true;
 
-    await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
-    if (shouldSkipTask(c, TASK_CONFIGURE, originTask)) return true;
+    await executeOrSkipTask(c, TASK_PACKAGE, TASK_EJECT, originTask);
 
-    await configureEntryPoint(c, c.platform);
+    if (shouldSkipTask(c, TASK_EJECT, originTask)) return true;
 
-    if (c.program.only && !!parentTask) {
-        return true;
-    }
-
-    switch (c.platform) {
+    switch (platform) {
         case IOS:
         case MACOS:
-            console.log('BOOOO');
             await ejectXcodeProject(c);
             return true;
         case ANDROID:
