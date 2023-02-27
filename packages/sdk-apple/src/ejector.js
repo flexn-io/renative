@@ -1,5 +1,6 @@
 import path from 'path';
 import { Common, FileUtils, Resolver, PluginManager, ProjectManager } from 'rnv';
+// import { logWarning } from 'rnv/dist/core/systemManager/logger';
 import { getAppFolderName } from './common';
 
 const {
@@ -8,7 +9,7 @@ const {
     fsWriteFileSync,
     fsReadFileSync,
     copyFolderContentsRecursiveSync,
-    cleanEmptyFoldersRecursively,
+    // cleanEmptyFoldersRecursively,
     fsMkdirSync
 } = FileUtils;
 const {
@@ -21,7 +22,10 @@ const {
     parseFonts
 } = ProjectManager;
 
-const { parsePlugins, sanitizePluginPath, includesPluginPath } = PluginManager;
+const {
+    parsePlugins,
+    // sanitizePluginPath, includesPluginPath
+} = PluginManager;
 
 export const ejectXcodeProject = async (c) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
@@ -78,11 +82,9 @@ export const ejectXcodeProject = async (c) => {
         const podfileAsString = fsReadFileSync(podfilePath).toString();
 
         const pathRnMatch = `${path.join(rootMonoProjectPath, 'node_modules', 'react-native')}/`;
-        // eslint-disable-next-line no-template-curly-in-string
         const pathRnReplace = './rn_static/node_modules/react-native/';
 
         const pathNmMatch = `${path.join(rootMonoProjectPath, 'node_modules')}/`;
-        // eslint-disable-next-line no-template-curly-in-string
         const pathNmReplace = './rn_modules/';
 
         const podfileSanitised = podfileAsString
@@ -93,24 +95,21 @@ export const ejectXcodeProject = async (c) => {
     }
 
     parsePlugins(c, c.platform, (_plugin, pluginPlat, key) => {
-        let podPath;
-        if (includesPluginPath(pluginPlat.path)) {
-            podPath = sanitizePluginPath(pluginPlat.path, key);
-        } else {
-            podPath = doResolvePath(pluginPlat.path ?? key);
-        }
-        const extensionsFilter = ['.h', '.m', '.podspec'];
+        const podPath = doResolvePath(key);
+        const extensionsFilter = ['.h', '.m', '.podspec', '.rb'];
         // const excludeFolders = ['node_modules', 'android'];
 
         const destPath = path.join(appFolder, 'rn_modules', key);
-        // source, target, convertSvg = true, skipPaths, skipOverride, injectObject = null, timestampPathsConfig = null, c, extFilter = null
         copyFolderContentsRecursiveSync(
             podPath, destPath, false, null, false, null, null, c, extensionsFilter);
-
-        cleanEmptyFoldersRecursively(destPath);
-
         copyFileSync(path.join(podPath, 'package.json'), path.join(destPath, 'package.json'));
     });
+
+    // try {
+    //     cleanEmptyFoldersRecursively(path.join(appFolder, 'rn_modules'));
+    // } catch (e) {
+    //     logWarning(e);
+    // }
 
     //= ==========
     // Fonts
@@ -127,7 +126,6 @@ export const ejectXcodeProject = async (c) => {
                 const fontSource = path.join(dir, font);
                 if (fsExistsSync(fontSource)) {
                     const pathNmMatch = `${path.join(rootMonoProjectPath, 'node_modules')}`;
-                    // eslint-disable-next-line no-template-curly-in-string
                     const pathNmReplace = path.join(appFolder, 'rn_modules');
                     const destDir = dir.replace(pathNmMatch, pathNmReplace);
 
