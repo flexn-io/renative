@@ -4,6 +4,7 @@ import { build } from 'esbuild';
 import { logDebug, logHook, logInfo } from '../systemManager/logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
+import { doResolve } from '../systemManager/resolve';
 
 export const executePipe = async (c, key) => {
     logHook('executePipe', c?.program?.json ? key : `('${key}')`);
@@ -37,10 +38,9 @@ export const buildHooks = async (c) => {
     || c.runtime.forceBuildHookRebuild;
 
     if ((!fsExistsSync(c.paths.buildHooks.index) && c.program.ci) || c.runtime.skipBuildHooks) {
-        logInfo('No buld hooks found and in --ci mode. SKIPPING');
+        logInfo('No build hooks found and in --ci mode. SKIPPING');
         return true;
     }
-
 
     if (!fsExistsSync(c.paths.buildHooks.index)) {
         if (c.program.ci) {
@@ -61,8 +61,18 @@ export const buildHooks = async (c) => {
         }
 
         if (confirmed) {
+            const templatePath = c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : null;
+            let buildHooksSource;
+            // if there is a template and has buildhooks folder, use that instead of the default
+            if (templatePath && fsExistsSync(`${templatePath}/buildHooks/src/index.js`)) {
+                buildHooksSource = path.join(templatePath, 'buildHooks/src');
+                shouldBuildHook = true;
+            } else {
+                buildHooksSource = path.join(c.paths.rnv.dir, 'coreTemplateFiles/buildHooks/src');
+            }
+
             copyFolderContentsRecursiveSync(
-                path.join(c.paths.rnv.dir, 'coreTemplateFiles/buildHooks/src'),
+                buildHooksSource,
                 c.paths.buildHooks.dir
             );
         } else {
