@@ -94,12 +94,19 @@ export const parsePodFile = async (c, platform) => {
     const ignoreWarnings = getConfigProp(c, platform, 'ignoreWarnings');
     const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
 
-    // SOURCES
+    
     const podfileObj = getFlavouredProp(
         c,
         c.buildConfig?.platforms?.[platform],
         'Podfile'
     );
+    // POST INSTALL
+    if (podfileObj?.post_install) {
+        podfileObj?.post_install.forEach(function (v) {
+            c.pluginConfigiOS.podPostInstall += "".concat(`${v}\n`);
+        });
+    }
+    // SOURCES
     const podfileSources = podfileObj?.sources;
     if (podfileSources && podfileSources.length) {
         podfileSources.forEach((v) => {
