@@ -89,43 +89,66 @@ const _prepareProjectOverview = (c, data) => {
     data.confirmString = str;
 };
 
-const interactiveQuestion = async (results, bootstrapQuestions, key = '') => {
+const interactiveQuestion = async (results, bootstrapQuestions, providedAnswers) => {
     if (bootstrapQuestions?.length) {
         for (let i = 0; i < bootstrapQuestions.length; i++) {
             const q = bootstrapQuestions[i];
+            const qKey = q.configProp.key;
+            // inquirer will nest them if they look like an object
+            const qKeyClean = qKey.replace('.', '__');
+
             const choicesObj = {};
             if (q.options) {
                 q.options.forEach((opt) => {
                     choicesObj[opt.title] = opt;
                 });
             }
-            const qKey = `${key}q${i}`;
-            // inquirerObj[qKey] = { ...q, choicesObj };
-            const inqQuestion = {
-                name: qKey,
-                type: q.type,
-                message: q.title,
-                choices: Object.keys(choicesObj),
-            };
-            // eslint-disable-next-line no-await-in-loop
-            const result = await inquirer.prompt(inqQuestion);
-            const val = q.type === 'list' ? choicesObj[result[qKey]]?.value : result[qKey];
-            results[qKey] = {
-                answer: result[qKey],
-                configProp: q.configProp,
-                value: val,
-            };
-            if (choicesObj[result[qKey]]?.bootstrapQuestions) {
+
+            // answer already passed into the command line
+            const answer = providedAnswers[qKey.replace('__', '.')];
+            if (answer) {
+                let value;
+                if (typeof answer === 'string' && q.type === 'list') {
+                    value = choicesObj[answer]?.value;
+                } else {
+                    value = answer;
+                }
+
+                results[qKey] = {
+                    answer,
+                    configProp: q.configProp,
+                    value,
+                };
+            } else {
+                const inqQuestion = {
+                    name: qKeyClean,
+                    type: q.type,
+                    message: q.title,
+                    choices: Object.keys(choicesObj),
+                };
+                // eslint-disable-next-line no-await-in-loop
+                const result = await inquirer.prompt(inqQuestion);
+                const val = q.type === 'list' ? choicesObj[result[qKeyClean]]?.value : result[qKeyClean];
+                results[qKey] = {
+                    answer: result[qKeyClean],
+                    configProp: q.configProp,
+                    value: val,
+                };
+            }
+
+            if (choicesObj[results[qKey].answer]?.bootstrapQuestions) {
                 // eslint-disable-next-line no-await-in-loop
                 await interactiveQuestion(
                     results,
-                    choicesObj[result[qKey]].bootstrapQuestions,
-                    qKey
+                    choicesObj[results[qKey].answer].bootstrapQuestions,
+                    providedAnswers
                 );
             }
         }
     }
 };
+
+
 
 export const taskRnvNew = async (c) => {
     logTask('taskRnvNew');
@@ -454,12 +477,31 @@ export const taskRnvNew = async (c) => {
     const renativeTemplateConfigExt = {};
     const bootstrapQuestions = renativeTemplateConfig?.templateConfig?.bootstrapQuestions;
     const results = {};
-    await interactiveQuestion(results, bootstrapQuestions);
+    const providedAnswers = {};
 
-    Object.keys(results).forEach((k) => {
-        const objValue = results[k].value;
+    if (c.program.answer) {
+        c.program.answer.forEach(a => {
+            const key = a.split('=')[0];
+            let value;
 
-        const targetKey = results[k].configProp.key;
+            try {
+                value = JSON.parse(a.split('=')[1]);
+            } catch (e) {
+                value = a.split('=')[1];
+            }
+
+            providedAnswers[key] = value;
+        });
+    }
+
+    await interactiveQuestion(results, bootstrapQuestions, providedAnswers);
+
+    console.log('asnwer', JSON.stringify(results, null, 2));
+
+    Object.keys(results).forEach((targetKey) => {
+        const objValue = results[targetKey].value;
+
+        console.log('setting', targetKey, objValue);
 
         if (targetKey) {
             lSet(renativeTemplateConfigExt, targetKey, objValue);
@@ -624,3 +666,4 @@ export default {
     platforms: [],
     isGlobalScope: true,
 };
+

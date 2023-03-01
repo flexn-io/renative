@@ -510,6 +510,15 @@ export const PARAM_KEYS: any = {
             '--skipTasks deploy'
         ]
     },
+    answer: {
+        value: 'value',
+        variadic: true,
+        description: 'Pass in answers to prompts',
+        examples: [
+            '--answer question=response --answer question2=response2',
+            '--answer question=\'{"some": "json"}\''
+        ]
+    }
 };
 
 Object.keys(PARAM_KEYS).forEach((k) => {
