@@ -30,7 +30,7 @@
             }
         },
         "@rnv/renative": {
-            "version": "0.37.0-canary.5",
+            "version": "0.37.0-feat-eject.1",
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
