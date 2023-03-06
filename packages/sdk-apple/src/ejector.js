@@ -96,7 +96,7 @@ export const ejectXcodeProject = async (c) => {
 
     parsePlugins(c, c.platform, (_plugin, pluginPlat, key) => {
         const podPath = doResolvePath(key);
-        const extensionsFilter = ['.h', '.m', '.swift', '.podspec', '.rb'];
+        const extensionsFilter = ['.h', '.m', '.swift', '.c', '.podspec', '.rb'];
         // const excludeFolders = ['node_modules', 'android'];
 
         const destPath = path.join(appFolder, 'rn_modules', key);
