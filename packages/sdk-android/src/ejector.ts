@@ -138,11 +138,10 @@ export const ejectGradleProject = async (c: any) => {
 
     parsePlugins(c, c.platform, (_plugin: any, pluginPlat: any, key: string) => {
         const pluginPath = doResolvePath(key);
-        const extensionsFilter = ['.java', '.gradle'];
+        const extensionsFilter = ['.java', '.gradle', '.properties', '.xml'];
         // const excludeFolders = ['node_modules', 'android'];
 
         if(pluginPlat.afterEvaluate) {
-
             pluginPlat.afterEvaluate.forEach((v: any) => {
                 afterEvaluateFix.push({
                     match: v.replace('{{PLUGIN_ROOT}}', pluginPath),
@@ -153,14 +152,11 @@ export const ejectGradleProject = async (c: any) => {
             // afterEvaluateFix = afterEvaluateFix.concat()
         }
         
-
         const destPath = path.join(appFolder, 'node_modules', key);
         copyFolderContentsRecursiveSync(
             pluginPath, destPath, false, null, false, null, null, c, extensionsFilter);
         copyFileSync(path.join(pluginPath, 'package.json'), path.join(destPath, 'package.json'));
     });
-
-    console.log('SLSLSSL', afterEvaluateFix);
 
     //= ==========
     // app/build.gradle
