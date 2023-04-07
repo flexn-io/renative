@@ -49,11 +49,11 @@ export const ejectGradleProject = async (c: any) => {
 
         const pathRnMatch = `${path.join(rootMonoProjectPath, 'node_modules', 'react-native')}/`;
         // eslint-disable-next-line no-template-curly-in-string
-        const pathRnReplace = '../../node_modules/react-native/';
+        const pathRnReplace = '../node_modules/react-native/';
 
         const pathNmMatch = `${path.join(rootMonoProjectPath, 'node_modules')}/`;
         // eslint-disable-next-line no-template-curly-in-string
-        const pathNmReplace = '../../node_modules/';
+        const pathNmReplace = '../node_modules/';
 
         const sanitised = setGradleAsString
             .replaceAll(pathRnMatch, pathRnReplace)
@@ -102,11 +102,11 @@ export const ejectGradleProject = async (c: any) => {
 
         const pathRnMatch = `${path.join(rootMonoProjectPath, 'node_modules', 'react-native')}/`;
         // eslint-disable-next-line no-template-curly-in-string
-        const pathRnReplace = '../../node_modules/react-native/';
+        const pathRnReplace = '../node_modules/react-native/';
 
         const pathNmMatch = `${path.join(rootMonoProjectPath, 'node_modules')}/`;
         // eslint-disable-next-line no-template-curly-in-string
-        const pathNmReplace = '../../node_modules/';
+        const pathNmReplace = '../node_modules/';
 
 
         const match1 = '\"${project.rootDir}/../../../../node_modules/react-native-v8/dist\"';
