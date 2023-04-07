@@ -1,5 +1,5 @@
 import path from 'path';
-import { Common, FileUtils, Resolver, PluginManager, ProjectManager } from 'rnv';
+import { Common, FileUtils, PluginManager, ProjectManager, Resolver } from 'rnv';
 // import { logWarning } from 'rnv/dist/core/systemManager/logger';
 import { getAppFolderName } from './common';
 
@@ -96,7 +96,7 @@ export const ejectXcodeProject = async (c) => {
 
     parsePlugins(c, c.platform, (_plugin, pluginPlat, key) => {
         const podPath = doResolvePath(key);
-        const extensionsFilter = ['.h', '.m', '.podspec', '.rb'];
+        const extensionsFilter = ['.h', '.m', '.swift', '.c', '.podspec', '.rb', '.mm'];
         // const excludeFolders = ['node_modules', 'android'];
 
         const destPath = path.join(appFolder, 'rn_modules', key);
