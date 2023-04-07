@@ -24,6 +24,18 @@ export const taskRnvEject = async (c, parentTask, originTask) => {
     const { platform } = c;
 
     c.runtime._platformBuildsSuffix = '_eject';
+
+    switch (platform) {
+        case ANDROID:
+        case ANDROID_TV:
+        case FIRE_TV:
+        case ANDROID_WEAR:
+            c.runtime._platformBuildsSuffix = '_eject/android';
+            break;
+        default:
+            // Do nothing
+    }
+
     c.runtime._skipNativeDepResolutions = true;
 
     await executeOrSkipTask(c, TASK_PACKAGE, TASK_EJECT, originTask);
