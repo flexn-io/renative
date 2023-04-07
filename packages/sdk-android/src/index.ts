@@ -34,6 +34,7 @@ import {
     injectPluginXmlValuesSync,
     parseValuesColorsSync
 } from './xmlValuesParser';
+import { ejectGradleProject } from './ejector';
 
 const {
     resetAdb,
@@ -710,4 +711,10 @@ export default {
         console.log('Hello SDK Android');
     }
 };
+
+
+
+export {
+    ejectGradleProject
+}
 

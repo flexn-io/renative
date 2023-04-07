@@ -1,10 +1,9 @@
-import { TaskManager, Constants, Logger, PlatformManager, NPMUtils } from 'rnv';
-import { configureGradleProject } from '@rnv/sdk-android';
+import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const { jetifyIfRequired } = NPMUtils;
 const {
     IOS,
     MACOS,
@@ -40,8 +39,7 @@ export const taskRnvEject = async (c, parentTask, originTask) => {
         case ANDROID_TV:
         case FIRE_TV:
         case ANDROID_WEAR:
-            await configureGradleProject(c);
-            await jetifyIfRequired(c);
+            await ejectGradleProject(c);
             return true;
         default:
             await logErrorPlatform(c);

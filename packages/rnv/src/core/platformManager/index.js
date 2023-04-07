@@ -73,7 +73,6 @@ export const createPlatformBuild = (c, platform) => new Promise((resolve, reject
 
 
     const pPath = getAppFolder(c);
-    console.log('MAOAOAOAL', pPath);
     const ptPath = path.join(
         c.paths.project.platformTemplatesDirs[platform],
         `${platform}`
