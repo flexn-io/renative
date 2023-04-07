@@ -94,6 +94,10 @@ export const ejectXcodeProject = async (c) => {
         fsWriteFileSync(podfilePath, podfileSanitised);
     }
 
+    //= ==========
+    // Plugins
+    //= ==========
+
     parsePlugins(c, c.platform, (_plugin, pluginPlat, key) => {
         const podPath = doResolvePath(key);
         const extensionsFilter = ['.h', '.m', '.swift', '.c', '.podspec', '.rb', '.mm'];
