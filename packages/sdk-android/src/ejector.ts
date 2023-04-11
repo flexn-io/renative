@@ -138,7 +138,7 @@ export const ejectGradleProject = async (c: any) => {
 
     parsePlugins(c, c.platform, (_plugin: any, pluginPlat: any, key: string) => {
         const pluginPath = doResolvePath(key);
-        const extensionsFilter = ['.java', '.gradle', 'gradle.properties', '.xml', '.png', 'eventtusicons', 'emojioneandroid'];
+        const extensionsFilter = ['.java', '.gradle', 'gradle.properties', '.xml', '.png', 'eventtusicons', 'emojioneandroid', '.jar', '.kt'];
         // const excludeFolders = ['node_modules', 'android'];
 
         if(pluginPlat.afterEvaluate) {
