@@ -248,7 +248,7 @@ export const copyFolderRecursiveSync = (
             } else if (injectObject !== null) {
                 copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject, timestampPathsConfig, c);
             } else if (extFilter?.length > 0) {
-                if (extFilter.includes(path.extname(curSource))) {
+                if (extFilter.includes(path.extname(curSource)) || extFilter.includes(path.basename(curSource))) {
                     copyFileSync(curSource, targetFolder, skipOverride, timestampPathsConfig);
                 }
             } else {
@@ -288,7 +288,7 @@ export const copyFolderContentsRecursiveSync = (source, target, convertSvg = tru
                     );
                     saveAsJs(curSource, jsDest);
                 } else if (extFilter?.length > 0) {
-                    if (extFilter.includes(path.extname(curSource))) {
+                    if (extFilter.includes(path.extname(curSource)) || extFilter.includes(path.basename(curSource))) {
                         copyFileSync(curSource, targetFolder, skipOverride, timestampPathsConfig);
                     }
                 } else {
