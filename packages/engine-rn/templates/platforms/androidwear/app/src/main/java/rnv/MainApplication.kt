@@ -31,6 +31,8 @@ class MainApplication : Application(), ReactApplication {
 
         //See src/common.js for the actual code
         override fun getJSBundleFile(): String? = {{GET_JS_BUNDLE_FILE}}
+
+        {{RN_HOST_METHODS}}
     }
 
 {{PLUGIN_METHODS}}

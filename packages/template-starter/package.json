@@ -136,7 +136,7 @@
         "react-native-windows": "0.69.4",
         "react-router-dom": "6.3.0",
         "rnv": "0.37.0-feat-eject.5",
-        "v8-android": "9.93.0",
+        "v8-android": "10.100.1",
         "xcode": "2.1.0"
     },
     "optionalDependencies": {

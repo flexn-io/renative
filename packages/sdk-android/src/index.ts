@@ -594,6 +594,7 @@ export const configureProject = async (c: any) => {
         pluginActivityMethods: '',
         pluginApplicationImports: '',
         pluginApplicationMethods: '',
+        reactNativeHostMethods: '',
         pluginApplicationCreateMethods: '',
         pluginApplicationDebugServer: '',
         applyPlugin: '',
