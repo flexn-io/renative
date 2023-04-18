@@ -30,7 +30,7 @@
             }
         },
         "@rnv/renative": {
-            "version": "0.37.0-feat-eject.6",
+            "version": "0.37.0-feat-eject.7",
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
