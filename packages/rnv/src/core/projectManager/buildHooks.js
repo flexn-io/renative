@@ -33,7 +33,7 @@ export const buildHooks = async (c) => {
 
     const enableHookRebuild = getConfigProp(c, c.platform, 'enableHookRebuild');
 
-    const shouldBuildHook = c.program.reset || c.program.resetHard || c.program.resetAssets
+    let shouldBuildHook = c.program.reset || c.program.resetHard || c.program.resetAssets
     || c.program.hooks || !fsExistsSync(c.paths.buildHooks.dist.dir) || enableHookRebuild === true
     || c.runtime.forceBuildHookRebuild;
 

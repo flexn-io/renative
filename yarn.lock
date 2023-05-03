@@ -2025,10 +2025,10 @@
     webpack "4.43.0"
     webpack-manifest-plugin "~2.2.0"
 
-"@flexn/graybox@0.15.3-alpha.0":
-  version "0.15.3-alpha.0"
-  resolved "https://registry.npmjs.org/@flexn/graybox/-/graybox-0.15.3-alpha.0.tgz#c9ad430aea3258e7d77a12976bd63625a1b1d635"
-  integrity sha512-u7WVjS0i7jBdNl7nhd7sL9OeU3I/gGh+DwfUIez66+XxtYlIbClcvcy4N9nLN8rL7p7kJRfIVd2y8GkD2g6Pdw==
+"@flexn/graybox@0.20.0-alpha.19":
+  version "0.20.0-alpha.19"
+  resolved "https://registry.yarnpkg.com/@flexn/graybox/-/graybox-0.20.0-alpha.19.tgz#6e9a6986d839afb74c7fe45994bb478c59201a3d"
+  integrity sha512-J2Iq5CTgAWyia2Tmumbpe8Ebk+XGKSUxr2caVixuQtjl1EB7/k2n2/3m+cw1a8rhS3+uQF2JhSgtlA/hAQHZjA==
   dependencies:
     "@wdio/allure-reporter" "7.19.5"
     "@wdio/appium-service" "7.19.5"

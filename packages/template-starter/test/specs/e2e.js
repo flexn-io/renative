@@ -50,13 +50,12 @@ describe('Test Template Starter', () => {
         await FlexnRunner.expectToBeDisplayedById('template-starter-modal-screen-container');
         await FlexnRunner.clickById('template-starter-modal-screen-close-button');
         // below line should be removed, needed for TV's due to bug
-        await FlexnRunner.pressButtonRight(1);
+        await FlexnRunner.pressButtonRight(2);
         await FlexnRunner.pressButtonSelect(1);
         await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-image');
     });
 
-    // skipping because after clicking "Now Try Me!" TV's have no focus
-    it.skip('--> check if My Page opens when "Now Try Me!" button is selected', async () => {
+    it('--> check if My Page opens when "Now Try Me!" button is selected', async () => {
         await FlexnRunner.waitForDisplayedById('template-starter-home-screen-renative-image');
         await FlexnRunner.clickById('template-starter-home-screen-now-try-my-button');
         await FlexnRunner.pressButtonRight(2);
@@ -75,7 +74,8 @@ describe('Test Template Starter', () => {
         } else {
             await FlexnRunner.clickById('template-starter-menu-home-button');
         }
-        await FlexnRunner.pressButtonLeft(1);
+        // should be 1 click, 3 are needed for TV's due to bug
+        await FlexnRunner.pressButtonLeft(3);
         await FlexnRunner.pressButtonSelect(1);
         await FlexnRunner.expectToBeDisplayedById('template-starter-home-screen-renative-image');
     });
