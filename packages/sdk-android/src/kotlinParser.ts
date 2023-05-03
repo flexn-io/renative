@@ -53,6 +53,10 @@ export const parseMainApplicationSync = (c: any) => {
             override: c.pluginConfigAndroid.pluginApplicationMethods
         },
         {
+            pattern: '{{RN_HOST_METHODS}}',
+            override: c.pluginConfigAndroid.reactNativeHostMethods
+        },
+        {
             pattern: '{{PLUGIN_ON_CREATE}}',
             override: c.pluginConfigAndroid.pluginApplicationCreateMethods
         },
