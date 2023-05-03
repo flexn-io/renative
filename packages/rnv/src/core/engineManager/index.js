@@ -63,7 +63,7 @@ export const generateEngineExtensions = (exts, config) => {
     exts.forEach((ext) => {
         extArr = extArr.concat(registerEngineExtension(ext, engineExtension));
     });
-    extArr = extArr.concat(registerEngineExtension(null, null, ['mjs', 'json', 'wasm']));
+    extArr = extArr.concat(registerEngineExtension(null, null, ['mjs', 'json', 'cjs', 'wasm']));
     return extArr;
 };
 
