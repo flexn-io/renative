@@ -26,7 +26,7 @@ describe('Test Template Starter', () => {
             await FlexnRunner.pressButtonRight(1);
         }
         await FlexnRunner.pressButtonSelect(1);
-        await FlexnRunner.expectToBeDisplayedById('template-starter-my-page-screen-container');
+        await FlexnRunner.expectToBeDisplayedByText('This is my Page!');
         if (process.env.PLATFORM === 'ios' || process.env.PLATFORM === 'macos') {
             await FlexnRunner.clickById('header-back');
         } else if (process.env.PLATFORM === 'android') {
@@ -47,7 +47,7 @@ describe('Test Template Starter', () => {
         await FlexnRunner.clickById('template-starter-menu-my-modal-button');
         await FlexnRunner.pressButtonRight(2);
         await FlexnRunner.pressButtonSelect(1);
-        await FlexnRunner.expectToBeDisplayedById('template-starter-modal-screen-container');
+        await FlexnRunner.expectToBeDisplayedByText('This is my Modal!');
         await FlexnRunner.clickById('template-starter-modal-screen-close-button');
         // below line should be removed, needed for TV's due to bug
         await FlexnRunner.pressButtonRight(2);
@@ -66,7 +66,7 @@ describe('Test Template Starter', () => {
             await FlexnRunner.pressButtonDown(2);
         }
         await FlexnRunner.pressButtonSelect(1);
-        await FlexnRunner.expectToBeDisplayedById('template-starter-my-page-screen-container');
+        await FlexnRunner.expectToBeDisplayedByText('This is my Page!');
         if (process.env.PLATFORM === 'ios' || process.env.PLATFORM === 'macos') {
             await FlexnRunner.clickById('header-back');
         } else if (process.env.PLATFORM === 'android') {
