@@ -11,7 +11,8 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "files": [
         "dist",
-        "types.d.ts"
+        "types.d.ts",
+        "nodeModuleOverrides"
     ],
     "main": "dist/index.js",
     "repository": {
