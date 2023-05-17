@@ -99,6 +99,7 @@ function getClientEnvironment(publicUrl) {
             env[key] = JSON.stringify(raw[key]);
             return env;
         }, {}),
+        __DEV__: process.env.NODE_ENV !== 'production' || true,
     };
 
     return { raw, stringified };

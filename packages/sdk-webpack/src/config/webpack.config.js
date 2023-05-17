@@ -724,9 +724,6 @@ module.exports = function (webpackEnv) {
                 infrastructure: 'silent',
             },
         }),
-            new webpack.DefinePlugin({
-                __DEV__: process.env,
-            }),
         //     !disableESLintPlugin
         // && new ESLintPlugin({
         //     // Plugin options
