@@ -327,6 +327,11 @@ const _msToTime = (seconds) => {
 const _getCurrentTask = () => (cnf()._currentTask ? currentChalk.grey(` [${cnf()._currentTask}]`) : '');
 
 const _sanitizePaths = (msg) => {
+    // let dir
+    // const config = cnf().files?.project?.config;
+    // if(config && config.isMonorepo) {
+    //     if()
+    // }
     if (msg?.replace && cnf().paths?.project?.dir) {
         return msg.replace(new RegExp(cnf().paths.project.dir, 'g'), '.');
     }
