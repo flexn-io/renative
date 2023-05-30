@@ -9,6 +9,7 @@ import { getEngineRunnerByPlatform } from '../engineManager';
 import { writeRenativeConfigFile } from './index';
 import { overrideTemplatePlugins } from '../pluginManager';
 import { configureFonts } from '../projectManager';
+import { getConfigProp } from '../common';
 
 
 const injectProjectDependency = async (c,
@@ -141,13 +142,20 @@ export const injectPlatformDependencies = async (c) => {
         const installed = await Promise.all(promises);
 
         if (installed.some(i => i === true)) {
-            // do npm i only if something new is added
-            logInfo(`Found extra npm dependencies required by ${
-                chalk().white(engine.config.id)
-            } engine. ADDING...DONE`);
-            await installPackageDependencies(c);
-            await overrideTemplatePlugins(c);
-            await configureFonts(c);
+            const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
+            if (isMonorepo) {
+                logInfo(`Found extra npm dependencies required by ${
+                    chalk().white(engine.config.id)
+                } engine. project marked as monorepo. SKIPPING`);
+            } else {
+                // do npm i only if something new is added
+                logInfo(`Found extra npm dependencies required by ${
+                    chalk().white(engine.config.id)
+                } engine. ADDING...DONE`);
+                await installPackageDependencies(c);
+                await overrideTemplatePlugins(c);
+                await configureFonts(c);
+            }
         }
     }
 
