@@ -187,10 +187,16 @@ export const loadEnginePackageDeps = async (c, engineConfigs) => {
                     const deps = c.files.project.package.devDependencies || {};
                     Object.keys(npm.devDependencies).forEach((k) => {
                         if (!deps[k]) {
-                            logInfo(`Engine ${ecf.key} requires npm devDependency ${
-                                k} for platform ${platform}. ADDING...DONE`);
-                            deps[k] = npm?.devDependencies[k];
-                            addedDeps.push(k);
+                            const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
+                            if (isMonorepo) {
+                                logInfo(`Engine ${ecf.key} requires npm devDependency ${
+                                    k} for platform ${platform}. project marked as monorepo. SKIPPING`);
+                            } else {
+                                logInfo(`Engine ${ecf.key} requires npm devDependency ${
+                                    k} for platform ${platform}. ADDING...DONE`);
+                                deps[k] = npm?.devDependencies[k];
+                                addedDeps.push(k);
+                            }
                         }
                     });
                     c.files.project.package.devDependencies = deps;
