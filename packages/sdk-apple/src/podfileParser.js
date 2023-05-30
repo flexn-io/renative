@@ -216,7 +216,7 @@ const _injectPod = (_podName, pluginPlat, plugin, _key) => {
         pluginInject += `  pod '${podName}', :path => '${podPath}'\n`;
         const podspecPath = `${podPath}/${podName}.podspec`;
         // Xcode 12 Migration
-        overrideFileContents(podspecPath, REACT_CORE_OVERRIDES);
+        overrideFileContents(podspecPath, REACT_CORE_OVERRIDES, 'REACT_CORE_OVERRIDES');
     } else if (pluginPlat.git) {
         const commit = pluginPlat.commit
             ? `, :commit => '${pluginPlat.commit}'`

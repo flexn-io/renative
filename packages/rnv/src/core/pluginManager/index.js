@@ -611,8 +611,10 @@ const _overridePlugin = (c, pluginsPath, dir) => {
     }
 
     if (flavourSource && fsExistsSync(flavourSource)) {
+        logInfo(`${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(flavourSource.split('node_modules').pop())}`);
         copyFolderContentsRecursiveSync(flavourSource, dest, false);
     } else if (fsExistsSync(source)) {
+        logInfo(`${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(source.split('node_modules').pop())}`);
         copyFolderContentsRecursiveSync(source, dest, false);
         // fsReaddirSync(pp).forEach((dir) => {
         //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
