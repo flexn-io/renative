@@ -21,9 +21,6 @@
             "npm": {
                 "devDependencies": {
                     "xcode": "2.1.0"
-                },
-                "optionalDependencies": {
-                    "ios-deploy": "1.11.4"
                 }
             }
         }
