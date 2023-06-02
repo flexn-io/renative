@@ -39,7 +39,7 @@
         "@babel/preset-env": "7.6.0"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-canary.11"
+        "rnv": "^0.37.0-iosdeploy.0"
     },
     "publishConfig": {
         "access": "public"
