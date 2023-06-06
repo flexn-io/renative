@@ -153,7 +153,7 @@ class BasePlatformSetup {
     async installTizenSdk() {
         // to be overwritten
         logError(
-            'Install webos sdk not supported yet. Follow https://developer.tizen.org/development/tizen-studio/download to install it manually'
+            'Install tizen sdk not supported yet. Follow https://developer.tizen.org/development/tizen-studio/download to install it manually'
         );
         return true;
     }

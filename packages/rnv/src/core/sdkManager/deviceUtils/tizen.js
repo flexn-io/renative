@@ -248,7 +248,8 @@ export const runTizenSimOrDevice = async (c, buildCoreWebpackProject) => {
     }
 
     const tDir = getPlatformProjectDir(c);
-    const tBuild = path.join(tDir, 'build');
+    const tBuild = path.join(tDir, 'build-tizen');
+    const tWebpackBuild = path.join(tDir, 'build');
     const tOut = path.join(tDir, 'output');
     const tId = platformConfig.id;
     const wgt = `${platformConfig.appName}.wgt`;
@@ -304,7 +305,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
         if (!isLightningEngine && buildCoreWebpackProject) { // lightning engine handles the build and packaging
             !isHosted && (await buildCoreWebpackProject(c));
-            await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
+            await execCLI(c, CLI_TIZEN, `build-web -- ${tWebpackBuild} -out ${tBuild}`);
             await execCLI(
                 c,
                 CLI_TIZEN,

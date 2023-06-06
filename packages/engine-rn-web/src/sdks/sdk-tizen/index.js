@@ -69,9 +69,9 @@ const _runTizenSimOrDevice = async (c) => {
 };
 
 export const runTizen = async (c, target) => {
-    logTask('runTizen', `target:${target}`);
+    logTask('runTizen', `target:${target} hosted:${!!isHosted} debug:${!!debug}`);
     const { platform } = c;
-    const { hosted } = c.program;
+    const { hosted, debug } = c.program;
 
 
     const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
@@ -84,17 +84,17 @@ export const runTizen = async (c, target) => {
         }
     }
 
-    logTask('runTizen', `target:${target} hosted:${!!isHosted}`);
     if (isHosted) return;
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
     if (bundleAssets) {
-        await buildCoreWebpackProject(c);
-        await _runTizenSimOrDevice(c);
+        // await buildCoreWebpackProject(c);
+        console.log('START!!!')
+        await _runTizenSimOrDevice(c, true);
     } else {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
-        const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
+        const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted && debug;
 
         if (!isPortActive) {
             logInfo(
@@ -192,7 +192,7 @@ const _configureProject = c => new Promise((resolve) => {
 
     addSystemInjects(c, injects);
 
-    const file = path.join(getPlatformProjectDir(c), configFile);
+    const file = path.join(getPlatformProjectDir(c), 'public', configFile);
     writeCleanFile(
         file,
         file,

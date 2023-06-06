@@ -33,6 +33,7 @@ const _configureHostedIfRequired = async (c) => {
     logTask('_configureHostedIfRequired');
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+    console.log('BUNDLE ASSETS', bundleAssets);
     const hostedShellHeaders = getConfigProp(c, c.platform, 'hostedShellHeaders', '');
 
     if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir(c), 'index.html'))) {
@@ -41,7 +42,7 @@ const _configureHostedIfRequired = async (c) => {
         const ipAddress = c.program.hostIp || ip.address();
         writeCleanFile(
             path.join(rnv.dir, 'coreTemplateFiles', 'appShell', 'index.html'),
-            path.join(getPlatformProjectDir(c), 'index.html'),
+            path.join(getPlatformProjectDir(c), 'public', 'index.html'),
             [
                 {
                     pattern: '{{DEV_SERVER}}',
