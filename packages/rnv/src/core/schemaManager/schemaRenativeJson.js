@@ -383,7 +383,7 @@ const commonProps = {
       'Array of paths to location of external Fonts',
         examples: [['{{resolvePackage(react-native-vector-icons)}}/Fonts']],
     },
-    assetsSources: {
+    assetSources: {
         type: 'array',
         items: { type: 'string' },
         description:
