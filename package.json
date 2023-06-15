@@ -58,10 +58,10 @@
         "url": "git://github.com/renative-org/renative.git"
     },
     "scripts": {
-        "bootstrap": "yarn run link:rnv && npx lerna bootstrap && yarn build",
+        "bootstrap": "yarn run link:rnv && yarn build",
         "bootstrap-clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
-        "build": "npx lerna run --parallel --concurrency 1 build",
-        "build:clean": "npx lerna run --parallel --concurrency 1 build:clean",
+        "build": "npx lerna run --concurrency 1 build",
+        "build:clean": "npx lerna run --concurrency 1 build:clean",
         "deploy-all": "yarn build && yarn test && yarn deploy-prepare && npm run git-commit-tag",
         "deploy-prepare": "rnv hooks run -x prePublish -r",
         "deploy:canary": "yarn deploy-all && npx lerna publish from-package --dist-tag canary --yes && git push origin HEAD",
@@ -79,11 +79,11 @@
         "git-tag": "rnv hooks run -x gitTag -r",
         "link:rnv": "npm r rnv -g && cd packages/rnv && npm link",
         "lint": "npx eslint ./packages",
-        "postinstall": "npx lerna link --force-local && npx jetify",
+        "postinstall": "npx jetify",
         "prepare": "husky install",
         "test": "jest",
-        "tsc": "lerna run --parallel tsc",
-        "watch": "npx lerna run --parallel --concurrency 2 watch"
+        "tsc": "lerna run tsc",
+        "watch": "npx lerna run --concurrency 2 watch"
     },
     "dependencies": {
         "deepmerge": "3.2.0",
@@ -114,7 +114,7 @@
         "eslint-plugin-react-hooks": "4.3.0",
         "husky": "^7.0.0",
         "jest": "27.5.1",
-        "lerna": "5.4.2",
+        "lerna": "7.0.2",
         "lint-staged": "12.3.4",
         "prettier": "1.17.1",
         "pretty-quick": "1.11.0",
