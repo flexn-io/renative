@@ -468,6 +468,33 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
 
     if (!isPlatformActive(c, platform)) return;
 
+
+    const tsPathsConfig = getTimestampPathsConfig(c, platform);
+
+    const assetSources = getConfigProp(c, c.platform, 'assetSources', []);
+
+    const validAssetSources = [];
+    assetSources.forEach(v => {
+        const assetsPath = path.join(_resolvePackage(c, v), platform);
+        if (fsExistsSync(assetsPath)) {
+            validAssetSources.push(assetsPath);
+        }
+    });
+
+    const destPath = path.join(
+        getPlatformProjectDir(c, platform),
+        subPath || ''
+    );
+
+    // FOLDER MERGERS FROM EXTERNAL SOURCES
+    if (validAssetSources.length > 0) {
+        logInfo(`Found custom assetSources at ${chalk().white(validAssetSources.join('/n'))}. Will be used to generate assets.`);
+        validAssetSources.forEach((sourcePath) => {
+            copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
+        });
+        return;
+    }
+
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
         const hasAssetFolder = c.paths.appConfig.dirs
@@ -494,13 +521,6 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     if (customFn) {
         return customFn(c, platform);
     }
-
-    const destPath = path.join(
-        getPlatformProjectDir(c, platform),
-        subPath || ''
-    );
-
-    const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
