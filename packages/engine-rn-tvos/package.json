@@ -33,8 +33,7 @@
     },
     "dependencies": {
         "@rnv/sdk-android": "0.37.0-canary.11",
-        "@rnv/sdk-apple": "0.37.0-canary.11",
-        "metro-cache": "0.66.2"
+        "@rnv/sdk-apple": "0.37.0-canary.11"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",
@@ -45,7 +44,8 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-canary.11"
+        "rnv": "^0.37.0-canary.11",
+        "metro-cache": "^0.66.2"
     },
     "private": false,
     "publishConfig": {
