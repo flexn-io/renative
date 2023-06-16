@@ -34,6 +34,7 @@ import {
     injectPluginXmlValuesSync,
     parseValuesColorsSync
 } from './xmlValuesParser';
+import { ejectGradleProject } from './ejector';
 
 const {
     resetAdb,
@@ -593,6 +594,7 @@ export const configureProject = async (c: any) => {
         pluginActivityMethods: '',
         pluginApplicationImports: '',
         pluginApplicationMethods: '',
+        reactNativeHostMethods: '',
         pluginApplicationCreateMethods: '',
         pluginApplicationDebugServer: '',
         applyPlugin: '',
@@ -710,4 +712,10 @@ export default {
         console.log('Hello SDK Android');
     }
 };
+
+
+
+export {
+    ejectGradleProject
+}
 

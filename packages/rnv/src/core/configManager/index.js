@@ -142,7 +142,7 @@ export const generateBuildConfig = (c) => {
     if (c.files.rnv.pluginTemplates.configs) {
         Object.keys(c.files.rnv.pluginTemplates.configs).forEach((v) => {
             const plgs = c.files.rnv.pluginTemplates.configs[v];
-            pluginTemplates[v] = plgs.pluginTemplates;
+            pluginTemplates[v] = plgs;
         });
     }
 

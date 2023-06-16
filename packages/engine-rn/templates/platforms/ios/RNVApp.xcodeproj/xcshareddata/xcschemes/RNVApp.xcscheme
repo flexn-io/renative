@@ -26,13 +26,23 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "200132EF1F6BF9CF00450340"
+            BuildableName = "RNVApp.app"
+            BlueprintName = "RNVApp"
+            ReferencedContainer = "container:RNVApp.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "200133061F6BF9D000450340"
+               BlueprintIdentifier = "209A4B2329ABDAAA002A9A11"
                BuildableName = "RNVAppTests.xctest"
                BlueprintName = "RNVAppTests"
                ReferencedContainer = "container:RNVApp.xcodeproj">
@@ -49,22 +59,11 @@
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "200132EF1F6BF9CF00450340"
-            BuildableName = "RNVApp.app"
-            BlueprintName = "RNVApp"
-            ReferencedContainer = "container:RNVApp.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
-      selectedDebuggerIdentifier = "{{PLUGIN_DEBUGGER_ID}}"
-      selectedLauncherIdentifier = "{{PLUGIN_LAUNCHER_ID}}"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -81,11 +80,6 @@
             ReferencedContainer = "container:RNVApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <AdditionalOptions>
-      </AdditionalOptions>
-      <CommandLineArguments>
-         {{INJECT_COMMAND_LINE_ARGUMENTS}}
-      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

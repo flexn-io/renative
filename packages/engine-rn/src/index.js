@@ -14,6 +14,7 @@ import taskRnvCryptoUpdateProfile from './tasks/task.rnv.crypto.updateProfile';
 import taskRnvCryptoUpdateProfiles from './tasks/task.rnv.crypto.updateProfiles';
 import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfiles';
 import taskRnvLog from './tasks/task.rnv.log';
+import taskRnvEject from './tasks/task.rnv.eject';
 
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
@@ -28,6 +29,7 @@ export default {
         taskRnvExport,
         taskRnvDeploy,
         taskRnvDebug,
+        taskRnvEject,
         taskRnvCryptoInstallCerts,
         taskRnvCryptoUpdateProfile,
         taskRnvCryptoUpdateProfiles,

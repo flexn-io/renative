@@ -94,26 +94,30 @@ export const parsePodFile = async (c, platform) => {
     const ignoreWarnings = getConfigProp(c, platform, 'ignoreWarnings');
     const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
 
-
-    const podfileObj = getFlavouredProp(
-        c,
-        c.buildConfig?.platforms?.[platform],
-        'Podfile'
-    );
-    // POST INSTALL
-    if (podfileObj?.post_install) {
-        podfileObj?.post_install.forEach((v) => {
-            c.pluginConfigiOS.podPostInstall += ''.concat(`${v}\n`);
-        });
-    }
-    // SOURCES
-    const podfileSources = podfileObj?.sources;
-    if (podfileSources && podfileSources.length) {
-        podfileSources.forEach((v) => {
-            if (!c.pluginConfigiOS.podfileSources.includes(v)) {
-                c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
-            }
-        });
+    const podfile = getConfigProp(c, c.platform, 'Podfile');
+    if (podfile) {
+        const { injectLines, post_install } = podfile;
+        // INJECT LINES
+        if (injectLines) {
+            injectLines.forEach((v) => {
+                c.pluginConfigiOS.podfileInject += `${v}\n`;
+            });
+        }
+        // POST INSTALL
+        if (post_install) {
+            post_install.forEach((v) => {
+                c.pluginConfigiOS.podPostInstall += `${v}\n`;
+            });
+        }
+        // SOURCES
+        const podfileSources = podfile?.sources;
+        if (podfileSources && podfileSources.length) {
+            podfileSources.forEach((v) => {
+                if (!c.pluginConfigiOS.podfileSources.includes(v)) {
+                    c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
+                }
+            });
+        }
     }
 
 
@@ -128,15 +132,18 @@ export const parsePodFile = async (c, platform) => {
 
     // STATIC POD INJECT VERSION
     c.pluginConfigiOS.staticPodDefinition = 'Pod::BuildType.static_library';
-    try {
-        const podVersion = await executeAsync(c, 'pod --version');
-        const isPodOld = compareVersions(podVersion, '1.9') < 0;
-        if (isPodOld) {
-            c.pluginConfigiOS.staticPodDefinition = 'Pod::Target::BuildType.static_library';
+    if (!c.runtime._skipNativeDepResolutions) {
+        try {
+            const podVersion = await executeAsync(c, 'pod --version');
+            const isPodOld = compareVersions(podVersion, '1.9') < 0;
+            if (isPodOld) {
+                c.pluginConfigiOS.staticPodDefinition = 'Pod::Target::BuildType.static_library';
+            }
+        } catch (e) {
+            // Ignore
         }
-    } catch (e) {
-        // Ignore
     }
+
 
     const injects = [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
@@ -209,7 +216,7 @@ const _injectPod = (_podName, pluginPlat, plugin, _key) => {
         pluginInject += `  pod '${podName}', :path => '${podPath}'\n`;
         const podspecPath = `${podPath}/${podName}.podspec`;
         // Xcode 12 Migration
-        overrideFileContents(podspecPath, REACT_CORE_OVERRIDES);
+        overrideFileContents(podspecPath, REACT_CORE_OVERRIDES, 'REACT_CORE_OVERRIDES');
     } else if (pluginPlat.git) {
         const commit = pluginPlat.commit
             ? `, :commit => '${pluginPlat.commit}'`

@@ -74,7 +74,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^0.37.0-canary.5",
+            "version": "^0.37.0-canary.12",
             "webpack": {
                 "moduleAliases": true
             }
@@ -208,11 +208,6 @@
         "react-native-safe-area-view": "source:rnv",
         "react-native-screens": "source:rnv",
         "react-native-tab-view": "source:rnv",
-        "react-native-google-cast": {
-            "props": {
-                "applicationID": "CC1AD845"
-            }
-        },
         "react-router-dom": "6.3.0",
         "@flexn/typescript": "0.1.4"
     },

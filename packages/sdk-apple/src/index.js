@@ -13,6 +13,7 @@ import { parsePodFile } from './podfileParser';
 import { parseAppDelegate } from './swiftParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
+import { ejectXcodeProject } from './ejector';
 
 const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
@@ -96,6 +97,8 @@ const updatePodsChecksum = (c) => {
 
 const runCocoaPods = async (c) => {
     logTask('runCocoaPods', `forceUpdate:${!!c.program.updatePods}`);
+
+    if (c.runtime._skipNativeDepResolutions) return;
 
     const appFolder = getAppFolder(c);
 
@@ -816,7 +819,7 @@ export const packageBundleForXcode = (c, isDev = false) => {
         '--dev',
         isDev,
         '--assets-dest',
-        `platformBuilds/${c.runtime.appId}_${c.platform}`,
+        `platformBuilds/${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`,
         '--entry-file',
         `${c.buildConfig.platforms[c.platform].entryFile}.js`,
         '--bundle-output',
@@ -1006,6 +1009,7 @@ export {
     runCocoaPods,
     copyAppleAssets,
     configureXcodeProject,
+    ejectXcodeProject,
     exportXcodeProject,
     archiveXcodeProject,
     runAppleLog

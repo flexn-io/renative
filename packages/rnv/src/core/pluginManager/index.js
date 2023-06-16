@@ -145,16 +145,21 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
             version: npmVersion
         };
     }
-    if (scope !== '' && !!scope && !c.buildConfig.pluginTemplates?.[scope] && !c.runtime._skipPluginScopeWarnings) {
+    if (scope !== '' && !!scope && !c.buildConfig.pluginTemplates?.[scope]?.pluginTemplates && !c.runtime._skipPluginScopeWarnings) {
         logWarning(
             `Plugin ${pluginKey} is not recognized plugin in ${scope} scope`
         );
     } else if (scope) {
-        scopes.push(scope);
+        const skipRnvOverrides = c.buildConfig.pluginTemplates?.[parentScope]?.disableRnvDefaultOverrides;
+        if (skipRnvOverrides && scope === 'rnv') {
+            // Merges down to RNV defaults will be skipped
+        } else {
+            scopes.push(scope);
+        }
     }
 
     const parentPlugin = _getMergedPlugin(c,
-        c.buildConfig.pluginTemplates?.[scope]?.[pluginKey], pluginKey, scope, scopes, true);
+        c.buildConfig.pluginTemplates?.[scope]?.pluginTemplates?.[pluginKey], pluginKey, scope, scopes, true);
     let currentPlugin = plugin;
     if (typeof plugin === 'string' || plugin instanceof String) {
         currentPlugin = {};
@@ -369,7 +374,7 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
     const { scope } = _getPluginScope(keyScope);
 
     if (!plugin) {
-        const depPlugin = pluginTemplates[scope]?.[key];
+        const depPlugin = pluginTemplates[scope]?.pluginTemplates?.[key];
         if (depPlugin) {
             // console.log('INSTALL PLUGIN???', key, depPlugin.source);
             const { confirm } = await inquirerPrompt({
@@ -573,20 +578,22 @@ const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'roo
     return missingDeps;
 };
 
-const getCleanRegExString = str => str
-    .replace(/\(/g, '\\(')
-    .replace(/\)/g, '\\)')
-    .replace(/\^/g, '\\^')
-    .replace(/\?/g, '\\?')
-    .replace(/\|/g, '\\|')
-    .replace(/\*/g, '\\*')
-    .replace(/\|/g, '\\|')
-    .replace(/\[/g, '\\[')
-    .replace(/\]/g, '\\]')
-    .replace(/\{/g, '\\{')
-    .replace(/\}/g, '\\}')
-    .replace(/\+/g, '\\+')
-    .replace(/ /g, ' {1,}');
+// const getCleanRegExString = str => str
+//     .replace(/\(/g, '\\(')
+//     .replace(/\)/g, '\\)')
+//     .replace(/\^/g, '\\^')
+//     .replace(/\?/g, '\\?')
+//     .replace(/\|/g, '\\|')
+//     .replace(/\*/g, '\\*')
+//     .replace(/\|/g, '\\|')
+//     .replace(/\[/g, '\\[')
+//     .replace(/\]/g, '\\]')
+//     .replace(/\{/g, '\\{')
+//     .replace(/\}/g, '\\}')
+//     .replace(/\+/g, '\\+')
+//     .replace(/ /g, ' {1,}');
+// Alternative Regex seem more accurate
+const getCleanRegExString = str => str.replace(/[-\\.,_*+?^$[\](){}!=|`]/ig, '\\$&');
 
 const _overridePlugin = (c, pluginsPath, dir) => {
     const source = path.resolve(pluginsPath, dir, 'overrides');
@@ -604,8 +611,10 @@ const _overridePlugin = (c, pluginsPath, dir) => {
     }
 
     if (flavourSource && fsExistsSync(flavourSource)) {
+        logInfo(`${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(flavourSource.split('node_modules').pop())}`);
         copyFolderContentsRecursiveSync(flavourSource, dest, false);
     } else if (fsExistsSync(source)) {
+        logInfo(`${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(source.split('node_modules').pop())}`);
         copyFolderContentsRecursiveSync(source, dest, false);
         // fsReaddirSync(pp).forEach((dir) => {
         //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
@@ -632,7 +641,6 @@ const _overridePlugin = (c, pluginsPath, dir) => {
             pluginVersions.push(prevVersion);
         });
         pluginVersions.reverse();
-
 
         for (let i = 0; i < pluginVersions.length; i++) {
             overridePath = path.resolve(pluginsPath, dir, `overrides@${pluginVersions[i]}.json`);
@@ -673,28 +681,28 @@ export const overrideFileContents = (dest, override, overridePath = '') => {
             const regEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
             const count = (fileToFix.match(regEx) || []).length;
 
-            const overrided = override[fk];
-            const regEx2 = new RegExp(getCleanRegExString(overrided), 'g');
-            const count2 = (fileToFix.match(regEx2) || []).length;
             if (!count) {
+                const overrided = override[fk];
+                const regEx2 = new RegExp(getCleanRegExString(overrided), 'g');
+                const count2 = (fileToFix.match(regEx2) || []).length;
+
                 if (!count2) {
                     failTerms.push(fk);
                 } else {
                     foundRegEx = true;
+                    logInfo(`${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(overridePath.split('node_modules').pop())}`);
                 }
             } else {
                 foundRegEx = true;
                 fileToFix = fileToFix.replace(regEx, override[fk]);
+                logSuccess(`${chalk().white(dest.split('node_modules').pop())} requires override by: ${chalk().white(overridePath.split('node_modules').pop())}. FIXING...DONE`);
             }
         });
         if (!foundRegEx) {
             failTerms.forEach((term) => {
-                if (!fileToFix.includes(override[term])) {
-                    logWarning(`No Match found in ${chalk().red(
-                        dest
-                    )} for expression: ${chalk().red(term)}.
-Consider update or removal of ${chalk().white(overridePath)}`);
-                }
+                logWarning(`No Match found in ${chalk().red(
+                    dest.split('node_modules').pop()
+                )} for expression: ${chalk().gray(term)}. source: ${chalk().white(overridePath.split('node_modules').pop())}`);
             });
         }
         fsWriteFileSync(dest, fileToFix);

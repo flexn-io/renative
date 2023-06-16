@@ -33,7 +33,7 @@ export const parseMainApplicationSync = (c: any) => {
         c.pluginConfigAndroid.pluginApplicationDebugServer
             += '    var mPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)\n';
         c.pluginConfigAndroid.pluginApplicationDebugServer
-        += `    mPreferences?.edit().putString("debug_http_host", "${bundlerIp}:${c.runtime.port}").apply()\n`;
+        += `    mPreferences?.edit()?.putString("debug_http_host", "${bundlerIp}:${c.runtime.port}")?.apply()\n`;
     }
 
     const injects = [
@@ -51,6 +51,10 @@ export const parseMainApplicationSync = (c: any) => {
         {
             pattern: '{{PLUGIN_METHODS}}',
             override: c.pluginConfigAndroid.pluginApplicationMethods
+        },
+        {
+            pattern: '{{RN_HOST_METHODS}}',
+            override: c.pluginConfigAndroid.reactNativeHostMethods
         },
         {
             pattern: '{{PLUGIN_ON_CREATE}}',

@@ -235,9 +235,9 @@ export const getTemplateProjectDir = (c) => {
 // DEPRECATED
 export const getAppFolder = (c, isRelativePath) => {
     if (isRelativePath) {
-        return `platformBuilds/${c.runtime.appId}_${c.platform}`;
+        return `platformBuilds/${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`;
     }
-    return path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
+    return path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`);
 };
 
 // DEPRECATED

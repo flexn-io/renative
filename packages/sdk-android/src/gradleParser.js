@@ -1,5 +1,5 @@
 import path from 'path';
-import { FileUtils, Logger, Resolver, Common, PluginManager, Utils } from 'rnv';
+import { Common, FileUtils, Logger, PluginManager, Resolver, Utils } from 'rnv';
 
 const {
     getAppFolder,
@@ -130,14 +130,25 @@ hermesCommand: "{{PATH_HERMES_ENGINE}}/%OS-BIN%/hermes",
     `;
 };
 
-const setReactNativeEngineV8 = (c, engine) => {
+const setReactNativeEngineV8 = (c) => {
     c.pluginConfigAndroid.injectReactNativeEngine = `
-maven { url("${doResolve('react-native-v8', true, { forceForwardPaths: true })}/dist") }
-maven { url("${doResolve(engine, true, { forceForwardPaths: true })}/dist") }
-`;
+  maven { url "${doResolve('react-native', true, { forceForwardPaths: true })}/android" }
+  maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
+  `;
 
-    c.pluginConfigAndroid.appBuildGradleImplementations
-+= `    implementation 'org.chromium:${engine}:+'\n`;
+    c.pluginConfigAndroid.pluginApplicationImports += `import com.facebook.react.bridge.JavaScriptExecutorFactory
+    import com.facebook.react.modules.systeminfo.AndroidInfoHelpers
+    import io.csie.kudo.reactnative.v8.executor.V8ExecutorFactory`;
+
+    c.pluginConfigAndroid.reactNativeHostMethods
++= `override fun getJavaScriptExecutorFactory(): JavaScriptExecutorFactory {
+            return V8ExecutorFactory(
+                applicationContext,
+                packageName,
+                AndroidInfoHelpers.getFriendlyDeviceName(),
+                getUseDeveloperSupport()
+            )
+        }`;
 
     c.pluginConfigAndroid.injectHermes = '    enableHermes: false,';
 

@@ -165,6 +165,8 @@ export const getAndroidTargets = async (
         'getAndroidTargets',
         `skipDevices:${!!skipDevices} skipAvds:${!!skipAvds} deviceOnly:${!!deviceOnly}`
     );
+    // Temp workaround for race conditions receiving devices with offline status
+    await new Promise(r => setTimeout(r, 1000));
 
     try {
         let devicesResult;

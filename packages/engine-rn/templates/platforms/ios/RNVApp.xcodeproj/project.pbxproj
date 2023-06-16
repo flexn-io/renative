@@ -12,6 +12,7 @@
 		200132FC1F6BF9CF00450340 /* RNVApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 200132FA1F6BF9CF00450340 /* RNVApp.xcdatamodeld */; };
 		200132FE1F6BF9CF00450340 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 200132FD1F6BF9CF00450340 /* Assets.xcassets */; };
 		207BDA4024AB543F00F32013 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 207BDA3F24AB543F00F32013 /* LaunchScreen.storyboard */; };
+		209A4B2729ABDAAA002A9A11 /* RNVAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209A4B2629ABDAAA002A9A11 /* RNVAppTests.swift */; };
 		20A3B6EF2252512D0084A50B /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 207888241FCD3A000015651F /* assets */; };
 		20C4C37A1FE53E0A00D9721E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C4C3791FE53E0A00D9721E /* GLKit.framework */; };
 		20C4C37C1FE53E1A00D9721E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C4C37B1FE53E1A00D9721E /* ImageIO.framework */; };
@@ -19,6 +20,16 @@
 		20CB0E7D21C695460010854F /* images in Resources */ = {isa = PBXBuildFile; fileRef = 20CB0E7B21C695460010854F /* images */; };
 		20DEE9D7225238DF00AA9637 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 20DEE9D6225238DF00AA9637 /* main.jsbundle */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		209A4B2829ABDAAA002A9A11 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 200132E81F6BF9CF00450340 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 200132EF1F6BF9CF00450340;
+			remoteInfo = RNVApp;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		202C7E712190E14100449711 /* Embed Frameworks */ = {
@@ -44,6 +55,8 @@
 		2034B5411FB5CB98001A5872 /* RNVApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RNVApp.entitlements; sourceTree = "<group>"; };
 		207888241FCD3A000015651F /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		207BDA3F24AB543F00F32013 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		209A4B2429ABDAAA002A9A11 /* RNVAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNVAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		209A4B2629ABDAAA002A9A11 /* RNVAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNVAppTests.swift; sourceTree = "<group>"; };
 		20C4C3791FE53E0A00D9721E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		20C4C37B1FE53E1A00D9721E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		20C4C37D1FE53E4A00D9721E /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -71,6 +84,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		209A4B2129ABDAAA002A9A11 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -80,6 +100,7 @@
 				2030C437224AE567002469E4 /* Resources */,
 				207888241FCD3A000015651F /* assets */,
 				200132F21F6BF9CF00450340 /* RNVApp */,
+				209A4B2529ABDAAA002A9A11 /* RNVAppTests */,
 				200132F11F6BF9CF00450340 /* Products */,
 				C00B3C9569C8A0FC45A2BE5B /* Pods */,
 				217F01A475BAA0089C91D383 /* Frameworks */,
@@ -90,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				200132F01F6BF9CF00450340 /* RNVApp.app */,
+				209A4B2429ABDAAA002A9A11 /* RNVAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -115,6 +137,14 @@
 			children = (
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		209A4B2529ABDAAA002A9A11 /* RNVAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				209A4B2629ABDAAA002A9A11 /* RNVAppTests.swift */,
+			);
+			path = RNVAppTests;
 			sourceTree = "<group>";
 		};
 		217F01A475BAA0089C91D383 /* Frameworks */ = {
@@ -166,13 +196,31 @@
 			productReference = 200132F01F6BF9CF00450340 /* RNVApp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		209A4B2329ABDAAA002A9A11 /* RNVAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 209A4B2C29ABDAAA002A9A11 /* Build configuration list for PBXNativeTarget "RNVAppTests" */;
+			buildPhases = (
+				209A4B2029ABDAAA002A9A11 /* Sources */,
+				209A4B2129ABDAAA002A9A11 /* Frameworks */,
+				209A4B2229ABDAAA002A9A11 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				209A4B2929ABDAAA002A9A11 /* PBXTargetDependency */,
+			);
+			name = RNVAppTests;
+			productName = RNVAppTests;
+			productReference = 209A4B2429ABDAAA002A9A11 /* RNVAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		200132E81F6BF9CF00450340 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0900;
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 0900;
 				TargetAttributes = {
 					200132EF1F6BF9CF00450340 = {
@@ -190,6 +238,11 @@
 							};
 						};
 					};
+					209A4B2329ABDAAA002A9A11 = {
+						CreatedOnToolsVersion = 14.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 200132EF1F6BF9CF00450340;
+					};
 				};
 			};
 			buildConfigurationList = 200132EB1F6BF9CF00450340 /* Build configuration list for PBXProject "RNVApp" */;
@@ -206,6 +259,7 @@
 			projectRoot = "";
 			targets = (
 				200132EF1F6BF9CF00450340 /* RNVApp */,
+				209A4B2329ABDAAA002A9A11 /* RNVAppTests */,
 			);
 		};
 /* End PBXProject section */
@@ -220,6 +274,13 @@
 				20DEE9D7225238DF00AA9637 /* main.jsbundle in Resources */,
 				207BDA4024AB543F00F32013 /* LaunchScreen.storyboard in Resources */,
 				20CB0E7D21C695460010854F /* images in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		209A4B2229ABDAAA002A9A11 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,7 +343,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		209A4B2029ABDAAA002A9A11 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				209A4B2729ABDAAA002A9A11 /* RNVAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		209A4B2929ABDAAA002A9A11 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 200132EF1F6BF9CF00450340 /* RNVApp */;
+			targetProxy = 209A4B2829ABDAAA002A9A11 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		200133191F6BF9D000450340 /* Debug */ = {
@@ -453,6 +530,55 @@
 			};
 			name = Release;
 		};
+		209A4B2A29ABDAAA002A9A11 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "INJECT-BUNDLE-IDENTIFIER.RNVAppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNVApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RNVApp";
+			};
+			name = Debug;
+		};
+		209A4B2B29ABDAAA002A9A11 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "INJECT-BUNDLE-IDENTIFIER.RNVAppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNVApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RNVApp";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -470,6 +596,15 @@
 			buildConfigurations = (
 				2001331C1F6BF9D000450340 /* Debug */,
 				2001331D1F6BF9D000450340 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		209A4B2C29ABDAAA002A9A11 /* Build configuration list for PBXNativeTarget "RNVAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				209A4B2A29ABDAAA002A9A11 /* Debug */,
+				209A4B2B29ABDAAA002A9A11 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

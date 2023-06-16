@@ -7,7 +7,7 @@ import {
     writeFileSync
 } from '../systemManager/fileutils';
 import { checkAndConfigureSdks } from '../sdkManager/installer';
-import { getTimestampPathsConfig, getPlatformBuildDir } from '../common';
+import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
 import { SUPPORTED_PLATFORMS } from '../constants';
 
 
@@ -57,10 +57,7 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve) => {
             }
         });
     } else if (isPlatformSupportedSync(c, platform)) {
-        const pPath = path.join(
-            c.paths.project.builds.dir,
-            `${c.runtime.appId}_${platform}`
-        );
+        const pPath = getAppFolder(c);
         cleanTasks.push(cleanFolder(pPath));
     }
 
@@ -74,10 +71,8 @@ export const createPlatformBuild = (c, platform) => new Promise((resolve, reject
 
     if (!isPlatformSupportedSync(c, platform, null, reject)) return;
 
-    const pPath = path.join(
-        c.paths.project.builds.dir,
-        `${c.runtime.appId}_${platform}`
-    );
+
+    const pPath = getAppFolder(c);
     const ptPath = path.join(
         c.paths.project.platformTemplatesDirs[platform],
         `${platform}`

@@ -328,6 +328,12 @@ export const shouldSkipTask = (c, task, originTask) => {
     c.runtime.platform = c.platform;
     if (!tasks) return;
 
+    if (c.program.skipTasks?.split) {
+        const skipTaskArr = c.program.skipTasks.split(',');
+        if (skipTaskArr.includes(task)) return true;
+    }
+
+
     if (Array.isArray(tasks)) {
         for (let k = 0; k < tasks.length; k++) {
             const t = tasks[k];

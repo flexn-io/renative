@@ -1,3 +1,3 @@
 export const CastButton = () => {
-    // not supported
+    return null; //not supported in web
 };

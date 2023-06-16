@@ -501,6 +501,15 @@ export const PARAM_KEYS: any = {
             '--packageManager npm'
         ]
     },
+    skipTasks: {
+        value: 'value',
+        isRequired: true,
+        description: 'List tasks which you want to skip during rnv execution',
+        examples: [
+            '--skipTasks "configure,export"',
+            '--skipTasks deploy'
+        ]
+    },
     answer: {
         value: 'value',
         variadic: true,

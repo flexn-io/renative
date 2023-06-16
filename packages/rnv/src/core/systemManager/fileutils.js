@@ -213,7 +213,8 @@ export const copyFolderRecursiveSync = (
     skipOverride,
     injectObject = null,
     timestampPathsConfig = null,
-    c
+    c,
+    extFilter = null
 ) => {
     logDebug('copyFolderRecursiveSync', source, target);
     if (!fs.existsSync(source)) return;
@@ -231,7 +232,7 @@ export const copyFolderRecursiveSync = (
             const curSource = path.join(source, file);
             if (fs.lstatSync(curSource).isDirectory()) {
                 copyFolderRecursiveSync(curSource, targetFolder,
-                    convertSvg, skipOverride, injectObject, timestampPathsConfig, c);
+                    convertSvg, skipOverride, injectObject, timestampPathsConfig, c, extFilter);
             } else if (
                 path.extname(curSource) === '.svg'
                 && convertSvg === true
@@ -246,6 +247,10 @@ export const copyFolderRecursiveSync = (
                 saveAsJs(curSource, jsDest);
             } else if (injectObject !== null) {
                 copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject, timestampPathsConfig, c);
+            } else if (extFilter?.length > 0) {
+                if (extFilter.includes(path.extname(curSource)) || extFilter.includes(path.basename(curSource))) {
+                    copyFileSync(curSource, targetFolder, skipOverride, timestampPathsConfig);
+                }
             } else {
                 copyFileSync(curSource, targetFolder, skipOverride, timestampPathsConfig);
             }
@@ -254,7 +259,7 @@ export const copyFolderRecursiveSync = (
 };
 
 export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true,
-    skipPaths, skipOverride, injectObject = null, timestampPathsConfig = null, c) => {
+    skipPaths, skipOverride, injectObject = null, timestampPathsConfig = null, c, extFilter = null) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
     if (!fs.existsSync(source)) return;
     let files = [];
@@ -269,7 +274,7 @@ export const copyFolderContentsRecursiveSync = (source, target, convertSvg = tru
             if (!skipPaths || (skipPaths && !skipPaths.includes(curSource))) {
                 if (fs.lstatSync(curSource).isDirectory()) {
                     copyFolderRecursiveSync(curSource, targetFolder, convertSvg,
-                        skipOverride, injectObject, timestampPathsConfig, c);
+                        skipOverride, injectObject, timestampPathsConfig, c, extFilter);
                 } else if (injectObject !== null) {
                     copyFileWithInjectSync(curSource, targetFolder, skipOverride,
                         injectObject, timestampPathsConfig, c);
@@ -282,6 +287,10 @@ export const copyFolderContentsRecursiveSync = (source, target, convertSvg = tru
                         `file ${curSource} is svg and convertSvg is set to true. converting to ${jsDest}`
                     );
                     saveAsJs(curSource, jsDest);
+                } else if (extFilter?.length > 0) {
+                    if (extFilter.includes(path.extname(curSource)) || extFilter.includes(path.basename(curSource))) {
+                        copyFileSync(curSource, targetFolder, skipOverride, timestampPathsConfig);
+                    }
                 } else {
                     copyFileSync(curSource, targetFolder, skipOverride, timestampPathsConfig);
                 }
@@ -764,6 +773,28 @@ export const getDirectories = source => fs.readdirSync(source, { withFileTypes: 
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name);
 
+export const cleanEmptyFoldersRecursively = (folder) => {
+    const isDir = fsStatSync(folder).isDirectory();
+    if (!isDir) {
+        return;
+    }
+    let files = fsReaddirSync(folder);
+    if (files.length > 0) {
+        files.forEach((file) => {
+            const fullPath = path.join(folder, file);
+            cleanEmptyFoldersRecursively(fullPath);
+        });
+
+        // re-evaluate files; after deleting subfolder
+        // we may have parent folder empty now
+        files = fsReaddirSync(folder);
+    }
+
+    if (files.length === 0) {
+        fs.rmdirSync(folder);
+    }
+};
+
 export default {
     sanitizeDynamicRefs,
     getFileListSync,
@@ -786,5 +817,6 @@ export default {
     updateConfigFile,
     replaceHomeFolder,
     getDirectories,
-    resolvePackage
+    resolvePackage,
+    cleanEmptyFoldersRecursively
 };
