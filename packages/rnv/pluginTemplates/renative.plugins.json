@@ -157,21 +157,27 @@
             }
         },
         "react-native-video": {
-            "version": "5.0.2",
+            "version": "5.2.1",
+            "android": {
+                "package": "com.brentvatne.react.ReactVideoPackage",
+                "path": "{{PLUGIN_ROOT}}/android-exoplayer"
+            },
+            "androidtv": {
+                "package": "com.brentvatne.react.ReactVideoPackage",
+                "path": "{{PLUGIN_ROOT}}/android-exoplayer"
+            },
+            "firetv": {
+                "package": "com.brentvatne.react.ReactVideoPackage",
+                "path": "{{PLUGIN_ROOT}}/android-exoplayer"
+            },
             "ios": {
+                "podName": "react-native-video"
+            },
+            "macos": {
                 "podName": "react-native-video"
             },
             "tvos": {
                 "podName": "react-native-video"
-            },
-            "android": {
-                "package": "com.brentvatne.react.ReactVideoPackage"
-            },
-            "androidtv": {
-                "package": "com.brentvatne.react.ReactVideoPackage"
-            },
-            "firetv": {
-                "package": "com.brentvatne.react.ReactVideoPackage"
             },
             "webpack": {
                 "modulePaths": true
