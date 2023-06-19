@@ -9,6 +9,7 @@ import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
 import { writeRenativeConfigFile } from '../configManager';
 import { configurePlugins } from '../pluginManager';
+import { inquirerPrompt } from '../../cli/prompt';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -149,7 +150,9 @@ export const loadEnginePluginDeps = async (c, engineConfigs) => {
     if (c.files.project.config.isTemplate) return 0;
 
     // Check engine dependencies
-    const addedPlugins = [];
+    const addedPlugins = {};
+    let hasAddedPlugins = false;
+    const originalProjectPlugins = c.files.project.config_original.plugins || {};
     engineConfigs.forEach((ecf) => {
         const engineConfig = readObjectSync(ecf.configPath);
 
@@ -157,19 +160,34 @@ export const loadEnginePluginDeps = async (c, engineConfigs) => {
             const projectPlugins = c.files.project.config.plugins;
             // Comparing original config causes engine think that template is not extended with additional deps
             // const projectPlugins = c.files.project.config_original.plugins;
+
             Object.keys(engineConfig?.plugins).forEach((k) => {
                 if (!projectPlugins[k]) {
-                    logInfo(`Engine ${ecf.key} requires plugin ${k}. ADDING...DONE`);
-                    projectPlugins[k] = engineConfig?.plugins[k];
-                    addedPlugins.push(k);
+                    hasAddedPlugins = true;
+                    originalProjectPlugins[k] = engineConfig?.plugins[k];
+                    addedPlugins[k] = addedPlugins[k] || [];
+                    addedPlugins[k].push(k);
                 }
             });
-            if (addedPlugins.length > 0) {
-                writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
-            }
-            //
         }
     });
+    if (hasAddedPlugins) {
+        const engines = Object.keys(addedPlugins);
+        const allPlugins = Object.keys(originalProjectPlugins);
+        logInfo(`Engines: ${chalk().yellow(engines.join(','))} require plugins ${chalk().white(allPlugins.join(','))} to be added to ${chalk().white(c.paths.project.config)}`);
+        const confirm = await inquirerPrompt({
+            name: 'selectedScheme',
+            type: 'confirm',
+            message: `Continue?.
+If you don't want to use this dependency make sure you remove platform which requires this engine from supportedPlatforms`,
+        });
+        if (confirm) {
+            logInfo(`Adding ${allPlugins.join(',')}. ...DONE`);
+            // Prepare original file to be decorated (as addon plugins as we can't edit template itself)
+            c.files.project.config_original.plugins = originalProjectPlugins;
+            writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
+        }
+    }
     return addedPlugins.length;
 };
 

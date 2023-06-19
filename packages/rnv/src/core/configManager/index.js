@@ -246,7 +246,14 @@ export const loadFileExtended = (c, fileObj, pathObj, key) => {
     }
     const extendsTemplate = fileObj[key]?.extendsTemplate;
     if (extendsTemplate) {
-        const currTemplate = c.files.project[key].currentTemplate || fileObj[key].currentTemplate;
+        let currTemplate = c.files.project[key].currentTemplate || fileObj[key].currentTemplate;
+        if (!currTemplate) {
+            if (extendsTemplate.startsWith('@')) {
+                currTemplate = extendsTemplate.split('/').slice(0, 2).join('/');
+            } else {
+                currTemplate = extendsTemplate.split('/').slice(0, 1);
+            }
+        }
         if (currTemplate) {
             let extendsPath;
             if (extendsTemplate.startsWith(currTemplate)) {
