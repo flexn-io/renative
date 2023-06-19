@@ -1,0 +1,27 @@
+// Override rn to 0.20.0 in order to have never okhttp
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile ('com.facebook.react:react-native:+') {
+        exclude group: 'com.facebook.fresco', module: 'imagepipeline-okhttp'
+        exclude group: 'com.squareup.okhttp', module: 'okhttp'
+        exclude group: 'com.squareup.okhttp', module: 'okhttp-ws'
+    }
+}

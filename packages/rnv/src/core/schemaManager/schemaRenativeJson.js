@@ -376,6 +376,26 @@ const commonProps = {
       'If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy',
         examples: [true, false],
     },
+    fontSources: {
+        type: 'array',
+        items: { type: 'string' },
+        description:
+      'Array of paths to location of external Fonts',
+        examples: [['{{resolvePackage(react-native-vector-icons)}}/Fonts']],
+    },
+    assetSources: {
+        type: 'array',
+        items: { type: 'string' },
+        description:
+      'Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project',
+        examples: [['{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets']],
+    },
+    portOffset: {
+        type: 'number',
+        description:
+      'Offset each port default value by increment',
+        examples: [1, 10, 500],
+    },
     ...propExt,
 };
 
