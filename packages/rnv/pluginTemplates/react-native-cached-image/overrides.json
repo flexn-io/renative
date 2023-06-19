@@ -1,0 +1,7 @@
+{
+    "overrides": {
+        "utils/fsUtils.js": {
+            "require('rn-fetch-blob').default": "require('react-native-blob-util').default"
+        }
+    }
+}
