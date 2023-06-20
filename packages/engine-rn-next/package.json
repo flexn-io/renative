@@ -39,7 +39,7 @@
         "next-fonts": "1.5.1",
         "next-images": "1.8.4",
         "next-transpile-modules": "9.0.0",
-        "webpack": "5.65.0"
+        "webpack": "5.76.0"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",
