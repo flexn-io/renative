@@ -91,7 +91,9 @@
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true,
-                "nextTranspileModules": ["@flexn/recyclerlistview"]
+                "nextTranspileModules": [
+                    "@flexn/recyclerlistview"
+                ]
             }
         },
         "@flexn/sdk": {
@@ -134,7 +136,9 @@
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true,
-                "nextTranspileModules": ["@flexn/shopify-flash-list"]
+                "nextTranspileModules": [
+                    "@flexn/shopify-flash-list"
+                ]
             },
             "version": "1.4.8"
         },
@@ -468,7 +472,6 @@
                         "didFailToRegisterForRemoteNotificationsWithError": [
                             "RNCPushNotificationIOS.didFailToRegisterForRemoteNotificationsWithError(error)"
                         ],
-                        "didReceive": null,
                         "didReceive": [
                             "RNCPushNotificationIOS.didReceive(notification)"
                         ],
@@ -891,7 +894,7 @@
             "version": "^1.8.1"
         },
         "@rnv/renative": {
-            "version": "0.37.0-canary.7",
+            "version": "0.37.0-rc.1",
             "webpack": {
                 "moduleAliases": true,
                 "modulePaths": true
