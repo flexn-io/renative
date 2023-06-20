@@ -31,9 +31,14 @@ export const configureRuntimeDefaults = async (c) => {
     c.runtime.currentPlatform = c.runtime.currentEngine?.platforms?.[c.platform];
     const defaultHost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
 
-    c.runtime.port = c.program.port
+    const portString = c.program.port
   || c.buildConfig?.defaults?.ports?.[c.platform]
   || c.runtime.currentPlatform?.defaultPort; //  PLATFORMS[c.platform]?.defaultPort;
+
+    const portOffset = c.buildConfig?.defaults?.portOffset || 0;
+
+    c.runtime.port = (Number(portString) + portOffset).toString();
+
     if (c.program.target !== true) {
         c.runtime.target = c.program.target
       || c.buildConfig?.defaultTargets?.[c.platform];

@@ -1,0 +1,7 @@
+{
+    "overrides": {
+        "DISABLE-dist/reactnative/core/RecyclerListView.js": {
+            "var debounce_1 = require(\"lodash-es/debounce\");": "import debounce from 'lodash-es/debounce';var debounce_1 = { default: debounce};"
+        }
+    }
+}

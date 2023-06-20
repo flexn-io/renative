@@ -3,11 +3,12 @@ import path from 'path';
 import inquirer from 'inquirer';
 import { executeAsync, commandExistsSync } from './exec';
 import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync, fsWriteFileSync, loadFile, readObjectSync } from './fileutils';
-import { logTask, logWarning, logError, logInfo, logDebug } from './logger';
+import { logTask, logWarning, logError, logInfo, logDebug, logSuccess } from './logger';
 import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { doResolve } from './resolve';
 
 import { inquirerPrompt } from '../../cli/prompt';
+import { getConfigProp } from '../common';
 
 const packageJsonIsValid = (c) => {
     if (!fsExistsSync(c.paths.project.package)) return false;
@@ -175,6 +176,12 @@ export const installPackageDependencies = async (c, failOnError = false) => {
         await executeAsync(customScript);
         c._requiresNpmInstall = false;
         return true;
+    }
+
+    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
+    if (isMonorepo) {
+        logSuccess('This project is marked as part of monorepo and it has no custom install tasks. Run your usual monorepo bootstrap procedure and re-run command again.');
+        return Promise.reject('Cancelled');
     }
 
     const yarnLockPath = path.join(c.paths.project.dir, 'yarn.lock');
