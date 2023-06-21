@@ -169,6 +169,9 @@ export const logToSummary = (v, sanitizePaths) => {
 };
 
 export const logRaw = (...args) => {
+    if (_jsonOnly) {
+        return _printJson({ type: 'rawLog', task: stripAnsi(_getCurrentTask()), message: stripAnsi(_sanitizePaths(JSON.stringify(args))) });
+    }
     console.log.apply(null, args);
 };
 
