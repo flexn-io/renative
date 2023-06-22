@@ -74,16 +74,29 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^0.37.0-rc.1",
-            "webpack": {
-                "moduleAliases": true
-            }
+            "version": "0.37.0-rc.1"
         }
     },
     "platforms": {
         "android": {
+            "minSdkVersion": 26,
+            "targetSdkVersion": 33,
+            "compileSdkVersion": 33,
+            "buildToolsVersion": "30.0.0",
+            "gradleBuildToolsVersion": "4.2.2",
+            "gradleWrapperVersion": "6.7.1",
+            "kotlinVersion": "1.7.10",
+            "reactNativeEngine": "hermes",
+            "enableAndroidX": true,
             "gradle.properties": {
-                "android.useDeprecatedNdk": true
+                "android.useDeprecatedNdk": true,
+                "android.enableJetifier": true,
+                "android.useAndroidX": true,
+                "android.debug.obsoleteApi": true,
+                "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
+                "org.gradle.daemon": true,
+                "org.gradle.parallel": true,
+                "org.gradle.configureondemand": true
             },
             "AndroidManifest": {
                 "children": [
@@ -103,8 +116,24 @@
             ]
         },
         "androidtv": {
+            "minSdkVersion": 26,
+            "targetSdkVersion": 33,
+            "compileSdkVersion": 33,
+            "buildToolsVersion": "30.0.0",
+            "gradleBuildToolsVersion": "4.2.2",
+            "gradleWrapperVersion": "6.7.1",
+            "kotlinVersion": "1.7.10",
+            "reactNativeEngine": "hermes",
+            "enableAndroidX": true,
             "gradle.properties": {
-                "android.useDeprecatedNdk": true
+                "android.useDeprecatedNdk": true,
+                "android.enableJetifier": true,
+                "android.useAndroidX": true,
+                "android.debug.obsoleteApi": true,
+                "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
+                "org.gradle.daemon": true,
+                "org.gradle.parallel": true,
+                "org.gradle.configureondemand": true
             },
             "AndroidManifest": {
                 "children": [
@@ -122,8 +151,24 @@
             ]
         },
         "androidwear": {
+            "minSdkVersion": 26,
+            "targetSdkVersion": 33,
+            "compileSdkVersion": 33,
+            "buildToolsVersion": "30.0.0",
+            "gradleBuildToolsVersion": "4.2.2",
+            "gradleWrapperVersion": "6.7.1",
+            "kotlinVersion": "1.7.10",
+            "reactNativeEngine": "hermes",
+            "enableAndroidX": true,
             "gradle.properties": {
-                "android.useDeprecatedNdk": true
+                "android.useDeprecatedNdk": true,
+                "android.enableJetifier": true,
+                "android.useAndroidX": true,
+                "android.debug.obsoleteApi": true,
+                "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
+                "org.gradle.daemon": true,
+                "org.gradle.parallel": true,
+                "org.gradle.configureondemand": true
             },
             "AndroidManifest": {
                 "children": [
@@ -143,8 +188,24 @@
             }
         },
         "firetv": {
+            "minSdkVersion": 26,
+            "targetSdkVersion": 33,
+            "compileSdkVersion": 33,
+            "buildToolsVersion": "30.0.0",
+            "gradleBuildToolsVersion": "4.2.2",
+            "gradleWrapperVersion": "6.7.1",
+            "kotlinVersion": "1.7.10",
+            "reactNativeEngine": "hermes",
+            "enableAndroidX": true,
             "gradle.properties": {
-                "android.useDeprecatedNdk": true
+                "android.useDeprecatedNdk": true,
+                "android.enableJetifier": true,
+                "android.useAndroidX": true,
+                "android.debug.obsoleteApi": true,
+                "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
+                "org.gradle.daemon": true,
+                "org.gradle.parallel": true,
+                "org.gradle.configureondemand": true
             },
             "AndroidManifest": {
                 "children": [
@@ -177,6 +238,7 @@
             "engine": "engine-rn-windows"
         },
         "ios": {
+            "engine": "engine-rn",
             "deploymentTarget": "14.0"
         }
     },
@@ -185,31 +247,24 @@
         "react-native-gesture-handler": "source:rnv",
         "react-native-reanimated": "source:rnv",
         "react-native-vector-icons": "source:rnv",
-        "hash-source": "1.0.4",
         "@rnv/renative": "source:rnv",
         "@react-navigation": "source:rnv",
-        "@react-navigation/core": "5.12.3",
-        "@react-navigation/drawer": "5.9.0",
-        "@react-navigation/bottom-tabs": "5.1.1",
-        "@react-navigation/material-bottom-tabs": "5.1.1",
-        "@react-navigation/native": "5.7.3",
-        "@react-navigation/stack": "5.9.0",
-        "@react-navigation/routers": "5.1.0",
-        "@react-navigation/material-top-tabs": "5.1.1",
-        "@react-navigation/web": "1.0.0-alpha.9",
+        "@react-navigation/core": "source:rnv",
+        "@react-navigation/drawer": "source:rnv",
+        "@react-navigation/bottom-tabs": "source:rnv",
+        "@react-navigation/material-bottom-tabs": "source:rnv",
+        "@react-navigation/native": "source:rnv",
+        "@react-navigation/stack": "source:rnv",
+        "@react-navigation/routers": "source:rnv",
+        "@react-navigation/material-top-tabs": "source:rnv",
+        "@react-navigation/web": "source:rnv",
         "@react-native-community/masked-view": "source:rnv",
-        "@react-native-community/viewpager": {
-            "ios": {
-                "enabled": false
-            }
-        },
         "react-native-safe-area-context": "source:rnv",
         "@noriginmedia/react-spatial-navigation": "source:rnv",
         "react-native-safe-area-view": "source:rnv",
         "react-native-screens": "source:rnv",
         "react-native-tab-view": "source:rnv",
-        "react-router-dom": "6.3.0",
-        "@flexn/typescript": "0.1.4"
+        "react-router-dom": "source:rnv"
     },
     "permissions": {
         "ios": {},
