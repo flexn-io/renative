@@ -4,10 +4,12 @@ import groovy.json.JsonSlurper
 
 buildscript {
     ext.kotlin_version = '{{INJECT_KOTLIN_VERSION}}'
+    ext.kotlinVersion = "$kotlin_version"
     repositories {
         mavenCentral()
         google()
         gradlePluginPortal()
+        maven { url "https://www.jitpack.io" }
         {{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}
     }
     dependencies {
@@ -24,6 +26,25 @@ plugins {
 
 allprojects {
     repositories {
+        all { ArtifactRepository repo ->
+            if(repo instanceof MavenArtifactRepository){
+                def url = repo.url.toString()
+                if (url.startsWith('https://repo1.maven.org/maven2') || url.startsWith('https://jcenter.bintray.com/')) {
+                    project.logger.lifecycle "Repository ${repo.url}"
+                    remove repo
+                }
+            }
+        }
+        exclusiveContent {
+           filter {
+               includeGroup "com.facebook.react"
+           }
+           forRepository {
+               maven {
+                   url "{{PATH_REACT_NATIVE}}/android"
+               }
+           }
+        }
         maven { url "https://www.jitpack.io" }
         mavenCentral()
         google()
@@ -47,6 +68,24 @@ subprojects {
                 compileSdkVersion {{COMPILE_SDK_VERSION}}
                 buildToolsVersion '{{BUILD_TOOLS_VERSION}}'
             }
+        }
+        // Detox fix which will not allow having minSdkVersion lower than 21
+        if ((project.plugins.hasPlugin('android') || project.plugins.hasPlugin('android-library'))) {
+            android {
+                defaultConfig {
+                    minSdkVersion {{MIN_SDK_VERSION}}
+                }
+            }
+        }
+    }
+}
+
+configure(subprojects) {
+    configurations.all {
+        resolutionStrategy {
+            force 'org.jetbrains.kotlin:kotlin-stdlib:{{INJECT_KOTLIN_VERSION}}'
+            force 'com.google.android.gms:play-services-basement:18.2.0'
+            force 'com.google.code.gson:gson:2.10.1'
         }
     }
 }

@@ -71,6 +71,10 @@ export const parseBuildGradleSync = (c) => {
                 c.pluginConfigAndroid.buildGradlePlugins
         },
         {
+            pattern: '{{MIN_SDK_VERSION}}',
+            override: c.pluginConfigAndroid.minSdkVersion
+        },
+        {
             pattern: '{{INJECT_AFTER_ALL}}',
             override:
                 c.pluginConfigAndroid.buildGradleAfterAll
@@ -87,6 +91,10 @@ export const parseBuildGradleSync = (c) => {
         {
             pattern: '{{INJECT_REACT_NATIVE_ENGINE}}',
             override: c.pluginConfigAndroid.injectReactNativeEngine
+        },
+        {
+            pattern: '{{PATH_REACT_NATIVE}}',
+            override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, { forceForwardPaths: true })
         }
     ];
     addSystemInjects(c, injects);
@@ -526,7 +534,12 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
         {
             pattern: '{{PATH_HERMES_ENGINE}}',
             override: doResolve('hermes-engine', true, { forceForwardPaths: true })
-        }
+        },
+        {
+            pattern: '{{INJECT_KOTLIN_VERSION}}',
+            override:
+                c.pluginConfigAndroid.kotlinVersion
+        },
     ];
 
     addSystemInjects(c, injects);
