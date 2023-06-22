@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper",
-    "version": "0.37.0-rc.1",
+    "version": "0.37.0-rc.2",
     "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`, `Linux` and `Chromecast` platforms",
     "keywords": [
         "android tv",
@@ -118,7 +118,7 @@
         "lint-staged": "12.3.4",
         "prettier": "1.17.1",
         "pretty-quick": "1.11.0",
-        "rnv": "0.37.0-rc.1",
+        "rnv": "0.37.0-rc.2",
         "ts-jest": "^27.0.7",
         "ttab": "^0.7.2",
         "typescript": "4.5.4"
