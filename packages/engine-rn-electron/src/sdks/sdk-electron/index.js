@@ -142,6 +142,7 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
     const browserWindowStr = JSON.stringify(browserWindow, null, 2);
     const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
     const mainInjection = electronConfigExt?.mainInjection || '';
+    const mainHeadInjection = electronConfigExt?.mainHeadInjection || '';
 
     if (bundleAssets) {
         const injects = [
@@ -156,6 +157,10 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
             {
                 pattern: '{{PLUGIN_INJECT_MAIN_PROCESS}}',
                 override: mainInjection
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_MAIN_HEAD}}',
+                override: mainHeadInjection
             }
         ];
 
@@ -183,6 +188,10 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
             {
                 pattern: '{{PLUGIN_INJECT_MAIN_PROCESS}}',
                 override: mainInjection
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_MAIN_HEAD}}',
+                override: mainHeadInjection
             }
         ];
 
@@ -234,6 +243,7 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
 
     if (electronConfigExt) {
         delete electronConfigExt.mainInjection;
+        delete electronConfigExt.mainHeadInjection;
         electronConfig = merge(electronConfig, electronConfigExt);
     }
     writeFileSync(electronConfigPath, electronConfig);
