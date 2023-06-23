@@ -1,6 +1,9 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, nativeImage } = require('electron');
 const { initContextMenu } = require('./contextMenu')
+
+{{PLUGIN_INJECT_MAIN_HEAD}}
+
 if(initContextMenu) initContextMenu(createWindow)
 
 // Keep a global reference of the window object, if you don't, the window will
