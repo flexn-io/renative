@@ -127,6 +127,10 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
     // check if project includes @electron/remote
     const remoteVersion = c.files.project.package.dependencies['@electron/remote'];
     if (remoteVersion) {
+        if (!packageJson.dependencies) {
+            // guard against overrides of package.json that don't include dependencies
+            packageJson.dependencies = {};
+        }
         // inject @electron/remote version to packageJson, otherwise runtime will fail
         packageJson.dependencies['@electron/remote'] = remoteVersion;
     }
