@@ -9,7 +9,6 @@ const merge = require('deepmerge');
 const VERSIONED_PACKAGES = [
     'rnv',
     'template-starter',
-    'template-blank',
     'engine-rn',
     'engine-rn-tvos',
     'engine-rn-macos',

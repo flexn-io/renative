@@ -1,8 +1,7 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import ScreenHome from '../screens/Home';
+import App from '../app';
 
 const Page = () => (
-    <ScreenHome router={useRouter()} />
+    <App />
 );
 export default Page;

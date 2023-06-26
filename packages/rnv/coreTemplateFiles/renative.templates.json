@@ -1,46 +1,43 @@
 {
     "projectTemplates": {
         "@rnv/template-starter": {
-            "description": "Multiplatform starter kit"
+            "description": "Multiplatform 'hello world' template"
         },
-        "@rnv/template-blank": {
-            "description": "Blank renative template with no UI"
-        },
-        "@flexn/template": {
-            "description": "Advanced multiplatform template using flexn SDK"
+        "@flexn/create-template-starter": {
+            "description": "Advanced multiplatform template using flexn Create SDK"
         }
     },
     "engineTemplates": {
         "@rnv/engine-rn": {
-            "version": "0.37.0-canary.13",
+            "version": "0.37.0-rc.5",
             "id": "engine-rn"
         },
         "@rnv/engine-rn-tvos": {
-            "version": "0.37.0-canary.13",
+            "version": "0.37.0-rc.5",
             "id": "engine-rn-tvos"
         },
         "@rnv/engine-rn-web": {
-            "version": "0.37.0-canary.13",
+            "version": "0.37.0-rc.5",
             "id": "engine-rn-web"
         },
         "@rnv/engine-rn-next": {
-            "version": "0.37.0-canary.13",
+            "version": "0.37.0-rc.5",
             "id": "engine-rn-next"
         },
         "@rnv/engine-rn-electron": {
-            "version": "0.37.0-canary.13",
+            "version": "0.37.0-rc.5",
             "id": "engine-rn-electron"
         },
         "@rnv/engine-lightning": {
-            "version": "0.37.0-canary.13",
+            "version": "0.37.0-rc.5",
             "id": "engine-lightning"
         },
         "@rnv/engine-rn-macos": {
-            "version": "0.37.0-canary.13",
+            "version": "0.37.0-rc.5",
             "id": "engine-rn-macos"
         },
         "@rnv/engine-rn-windows": {
-            "version": "0.37.0-canary.13",
+            "version": "0.37.0-rc.5",
             "id": "engine-rn-windows"
         }
     },

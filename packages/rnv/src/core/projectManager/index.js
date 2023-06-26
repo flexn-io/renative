@@ -468,14 +468,19 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
 
     if (!isPlatformActive(c, platform)) return;
 
+    const assetFolderPlatform = getConfigProp(c, platform, 'assetFolderPlatform', platform);
+
+    if (assetFolderPlatform !== platform) {
+        logInfo(`Found custom assetFolderPlatform: ${chalk().green(assetFolderPlatform)}. Will use it instead of deafult ${platform}`);
+    }
 
     const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
-    const assetSources = getConfigProp(c, c.platform, 'assetSources', []);
+    const assetSources = getConfigProp(c, platform, 'assetSources', []);
 
     const validAssetSources = [];
     assetSources.forEach(v => {
-        const assetsPath = path.join(_resolvePackage(c, v), platform);
+        const assetsPath = path.join(_resolvePackage(c, v), assetFolderPlatform);
         if (fsExistsSync(assetsPath)) {
             validAssetSources.push(assetsPath);
         }
@@ -498,20 +503,20 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
         const hasAssetFolder = c.paths.appConfig.dirs
-            .filter(v => fsExistsSync(path.join(v, `assets/${platform}`))).length;
+            .filter(v => fsExistsSync(path.join(v, `assets/${assetFolderPlatform}`))).length;
         const requireOverride = await _requiresAssetOverride(c);
         if (!hasAssetFolder || requireOverride) {
             await generateDefaultAssets(
                 c,
                 platform,
-                path.join(c.paths.appConfig.dirs[0], `assets/${platform}`),
+                path.join(c.paths.appConfig.dirs[0], `assets/${assetFolderPlatform}`),
                 requireOverride
             );
         }
     } else {
         const sourcePath = path.join(
             c.paths.appConfig.dir,
-            `assets/${platform}`
+            `assets/${assetFolderPlatform}`
         );
         if (!fsExistsSync(sourcePath)) {
             await generateDefaultAssets(c, platform, sourcePath);
@@ -525,13 +530,13 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
-            const sourcePath = path.join(v, `assets/${platform}`);
+            const sourcePath = path.join(v, `assets/${assetFolderPlatform}`);
             copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
         });
     } else {
         const sourcePath = path.join(
             c.paths.appConfig.dir,
-            `assets/${platform}`
+            `assets/${assetFolderPlatform}`
         );
         copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
     }
@@ -670,12 +675,10 @@ const SYNCED_DEPS = [
     '@rnv/engine-rn-tvos',
     '@rnv/renative',
     '@rnv/template-starter',
-    '@rnv/template-blank'
 ];
 
 const SYNCED_TEMPLATES = [
-    '@rnv/template-starter',
-    '@rnv/template-blank'
+    '@rnv/template-starter'
 ];
 
 export const versionCheck = async (c) => {

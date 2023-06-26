@@ -124,8 +124,19 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
     packageJson.license = `${getAppLicense(c, platform)}`;
     packageJson.main = './main.js';
 
-    writeFileSync(packagePath, packageJson);
+    // check if project includes @electron/remote
+    const remoteVersion = c.files.project.package.dependencies['@electron/remote'];
+    if (remoteVersion) {
+        if (!packageJson.dependencies) {
+            // guard against overrides of package.json that don't include dependencies
+            packageJson.dependencies = {};
+        }
+        // inject @electron/remote version to packageJson, otherwise runtime will fail
+        logInfo(`Found @electron/remote@${remoteVersion} dependency. adding to generated electron package.json`);
+        packageJson.dependencies['@electron/remote'] = remoteVersion;
+    }
 
+    writeFileSync(packagePath, packageJson);
 
     let browserWindow = {
         width: 1200,
@@ -142,6 +153,7 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
     const browserWindowStr = JSON.stringify(browserWindow, null, 2);
     const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
     const mainInjection = electronConfigExt?.mainInjection || '';
+    const mainHeadInjection = electronConfigExt?.mainHeadInjection || '';
 
     if (bundleAssets) {
         const injects = [
@@ -156,6 +168,10 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
             {
                 pattern: '{{PLUGIN_INJECT_MAIN_PROCESS}}',
                 override: mainInjection
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_MAIN_HEAD}}',
+                override: mainHeadInjection
             }
         ];
 
@@ -183,6 +199,10 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
             {
                 pattern: '{{PLUGIN_INJECT_MAIN_PROCESS}}',
                 override: mainInjection
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_MAIN_HEAD}}',
+                override: mainHeadInjection
             }
         ];
 
@@ -234,6 +254,7 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
 
     if (electronConfigExt) {
         delete electronConfigExt.mainInjection;
+        delete electronConfigExt.mainHeadInjection;
         electronConfig = merge(electronConfig, electronConfigExt);
     }
     writeFileSync(electronConfigPath, electronConfig);
