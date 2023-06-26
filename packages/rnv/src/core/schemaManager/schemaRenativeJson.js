@@ -96,6 +96,7 @@ const engineRnElectronConfig = {
                     hardenedRuntime: false,
                 },
                 mainInjection: 'console.log("Hello from main.js!");',
+                mainHeadInjection: 'console.log("Hello from main.js!");',
             },
         ],
     },
