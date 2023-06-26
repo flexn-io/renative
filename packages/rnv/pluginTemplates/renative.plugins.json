@@ -894,7 +894,7 @@
             "version": "^1.8.1"
         },
         "@rnv/renative": {
-            "version": "0.37.0-rc.4",
+            "version": "0.37.0-rc.5",
             "webpack": {
                 "moduleAliases": true,
                 "modulePaths": true
