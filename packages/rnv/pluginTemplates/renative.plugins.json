@@ -569,7 +569,7 @@
                             "children": [
                                 {
                                     "android:name": "com.google.firebase.messaging.default_notification_icon",
-                                    "android:resource": "@drawable/ic_stat_ic_notification",
+                                    "android:resource": "@mipmap/ic_launcher",
                                     "tag": "meta-data"
                                 }
                             ],
@@ -2276,7 +2276,7 @@
                             "children": [
                                 {
                                     "android:name": "com.google.firebase.messaging.default_notification_icon",
-                                    "android:resource": "@drawable/ic_stat_ic_notification",
+                                    "android:resource": "@mipmap/ic_launcher",
                                     "tag": "meta-data"
                                 },
                                 {
@@ -2408,7 +2408,7 @@
                             "children": [
                                 {
                                     "android:name": "com.google.firebase.messaging.default_notification_icon",
-                                    "android:resource": "@drawable/ic_stat_ic_notification",
+                                    "android:resource": "@mipmap/ic_launcher",
                                     "tag": "meta-data"
                                 },
                                 {

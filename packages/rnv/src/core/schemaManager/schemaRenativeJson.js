@@ -391,6 +391,12 @@ const commonProps = {
       'Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project',
         examples: [['{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets']],
     },
+    assetFolderPlatform: {
+        type: 'string',
+        description:
+      'Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets',
+        examples: ['android'],
+    },
     portOffset: {
         type: 'number',
         description:
