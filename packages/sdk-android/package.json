@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-android",
-    "version": "0.37.0-rc.3",
+    "version": "0.37.0-rc.4",
     "description": "ReNative Android SDK",
     "keywords": [],
     "homepage": "https://github.com/renative-org/renative#readme",
@@ -37,7 +37,7 @@
         "shelljs": "0.8.5"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-rc.3"
+        "rnv": "^0.37.0-rc.4"
     },
     "private": false,
     "publishConfig": {
