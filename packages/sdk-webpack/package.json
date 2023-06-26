@@ -3,9 +3,9 @@
     "version": "0.37.0-rc.5",
     "description": "ReNative Webpack SDK",
     "keywords": [],
-    "homepage": "https://github.com/renative-org/renative#readme",
+    "homepage": "https://github.com/flexn-io/renative#readme",
     "bugs": {
-        "url": "https://github.com/renative-org/renative/issues"
+        "url": "https://github.com/flexn-io/renative/issues"
     },
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
@@ -17,7 +17,7 @@
     "main": "dist/index.js",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/renative-org/renative.git"
+        "url": "git+https://github.com/flexn-io/renative.git"
     },
     "scripts": {
         "bootstrap": "yarn && yarn build && npm link",

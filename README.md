@@ -12,10 +12,10 @@
   <a aria-label="NPM version" href="https://www.npmjs.com/package/renative">
     <img alt="" src="https://img.shields.io/npm/v/renative.svg?style=for-the-badge&labelColor=000000">
   </a>
-  <a aria-label="License" href="https://github.com/renative-org/renative/blob/main/license.md">
+  <a aria-label="License" href="https://github.com/flexn-io/renative/blob/main/license.md">
     <img alt="" src="https://img.shields.io/npm/l/renative.svg?style=for-the-badge&labelColor=000000">
   </a>
-  <a aria-label="Join the community on GitHub" href="https://github.com/renative-org/renative/discussions">
+  <a aria-label="Join the community on GitHub" href="https://github.com/flexn-io/renative/discussions">
     <img alt="" src="https://img.shields.io/badge/Join%20the%20community-blueviolet.svg?style=for-the-badge&logo=ReNative&labelColor=000000&logoWidth=20">
   </a>
 </p>
@@ -46,11 +46,11 @@ Visit [here](https://renative.org/docs/overview/quickstart) to get started with 
 
 Visit [here](https://renative.org/docs/overview/introduction) to view full documentation.
 
-Documentation source code can be found at https://github.com/renative-org/renative-docs
+Documentation source code can be found at https://github.com/flexn-io/renative-docs
 
 ## Community
 
-ReNative community can be found on <a aria-label="ReNative Discussions" href="https://github.com/renative-org/renative/discussions">Github Discussions</a>.
+ReNative community can be found on <a aria-label="ReNative Discussions" href="https://github.com/flexn-io/renative/discussions">Github Discussions</a>.
 
 ## Core Maintainers
 
@@ -61,7 +61,7 @@ ReNative community can be found on <a aria-label="ReNative Discussions" href="ht
 
 Thanks to all contributors [[Contribute]](CONTRIBUTING.md).
 
-<a href="https://github.com/renative-org/renative/graphs/contributors"><img src="https://opencollective.com/renative/contributors.svg?width=890" /></a>
+<a href="https://github.com/flexn-io/renative/graphs/contributors"><img src="https://opencollective.com/renative/contributors.svg?width=890" /></a>
 
 ## Backers
 
