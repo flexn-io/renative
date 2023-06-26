@@ -124,8 +124,18 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
     packageJson.license = `${getAppLicense(c, platform)}`;
     packageJson.main = './main.js';
 
-    writeFileSync(packagePath, packageJson);
+    // check if project includes @electron/remote
+    const remoteVersion = c.files.project.package.dependencies['@electron/remote'];
+    if (remoteVersion) {
+        if (!packageJson.dependencies) {
+            // guard against overrides of package.json that don't include dependencies
+            packageJson.dependencies = {};
+        }
+        // inject @electron/remote version to packageJson, otherwise runtime will fail
+        packageJson.dependencies['@electron/remote'] = remoteVersion;
+    }
 
+    writeFileSync(packagePath, packageJson);
 
     let browserWindow = {
         width: 1200,
