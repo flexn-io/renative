@@ -558,10 +558,6 @@ export const RNV_PACKAGES = [
         folderName: 'template-starter'
     },
     {
-        packageName: '@rnv/template-blank',
-        folderName: 'template-blank'
-    },
-    {
         packageName: 'rnv',
         folderName: 'rnv'
     },

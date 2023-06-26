@@ -226,10 +226,11 @@
             "engine": "engine-rn-next"
         },
         "tvos": {
-            "engine": "engine-rn-tvos"
+            "engine": "engine-rn-tvos",
+            "deploymentTarget": "14.0"
         },
         "macos": {
-            "engine": "engine-rn"
+            "engine": "engine-rn-electron"
         },
         "windows": {
             "engine": "engine-rn-electron"
@@ -243,28 +244,7 @@
         }
     },
     "plugins": {
-        "react-native-web-image-loader": "source:rnv",
-        "react-native-gesture-handler": "source:rnv",
-        "react-native-reanimated": "source:rnv",
-        "react-native-vector-icons": "source:rnv",
-        "@rnv/renative": "source:rnv",
-        "@react-navigation": "source:rnv",
-        "@react-navigation/core": "source:rnv",
-        "@react-navigation/drawer": "source:rnv",
-        "@react-navigation/bottom-tabs": "source:rnv",
-        "@react-navigation/material-bottom-tabs": "source:rnv",
-        "@react-navigation/native": "source:rnv",
-        "@react-navigation/stack": "source:rnv",
-        "@react-navigation/routers": "source:rnv",
-        "@react-navigation/material-top-tabs": "source:rnv",
-        "@react-navigation/web": "source:rnv",
-        "@react-native-community/masked-view": "source:rnv",
-        "react-native-safe-area-context": "source:rnv",
-        "@noriginmedia/react-spatial-navigation": "source:rnv",
-        "react-native-safe-area-view": "source:rnv",
-        "react-native-screens": "source:rnv",
-        "react-native-tab-view": "source:rnv",
-        "react-router-dom": "source:rnv"
+        "@rnv/renative": "source:rnv"
     },
     "permissions": {
         "ios": {},
