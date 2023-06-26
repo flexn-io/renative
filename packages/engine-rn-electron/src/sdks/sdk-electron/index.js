@@ -132,6 +132,7 @@ const configureProject = (c, exitOnFail) => new Promise((resolve, reject) => {
             packageJson.dependencies = {};
         }
         // inject @electron/remote version to packageJson, otherwise runtime will fail
+        logInfo(`Found @electron/remote@${remoteVersion} dependency. adding to generated electron package.json`);
         packageJson.dependencies['@electron/remote'] = remoteVersion;
     }
 
