@@ -675,12 +675,10 @@ const SYNCED_DEPS = [
     '@rnv/engine-rn-tvos',
     '@rnv/renative',
     '@rnv/template-starter',
-    '@rnv/template-blank'
 ];
 
 const SYNCED_TEMPLATES = [
-    '@rnv/template-starter',
-    '@rnv/template-blank'
+    '@rnv/template-starter'
 ];
 
 export const versionCheck = async (c) => {
