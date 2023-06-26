@@ -40,8 +40,11 @@ const AppThemed = () => {
         <Text style={theme.styles.textH3}>
             {`pixelRatio: ${pixelRatio}, ${fontScale}`}
         </Text>
-        <TouchableOpacity onPress={toggle} {...testProps('template-starter-home-screen-try-my-button')}>
-            <Text style={theme.styles.textH3}>
+        <TouchableOpacity 
+            onPress={toggle} 
+            style={theme.styles.button}
+            {...testProps('template-starter-home-screen-try-my-button')}>
+            <Text style={theme.styles.buttonText}>
                 Try me!
             </Text>
         </TouchableOpacity>

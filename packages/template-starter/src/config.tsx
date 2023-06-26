@@ -9,12 +9,7 @@ import {
 } from '@rnv/renative';
 import CONFIG from '../platformAssets/renative.runtime.json';
 import '../platformAssets/runtime/fontManager';
-//@ts-ignore
 import ICON_LOGO from '../platformAssets/runtime/logo.png';
-
-import {
-    
-} from '@rnv/renative';
 
 export function testProps(testId: string | undefined) {
     if (!testId) {
@@ -26,9 +21,6 @@ export function testProps(testId: string | undefined) {
     }
     return { accessibilityLabel: testId, accessible: true };
 }
-
-
-
 
 console.disableYellowBox = true; // eslint-disable-line
 
@@ -57,16 +49,12 @@ const staticThemes = {
         colorBgPrimary: '#000000',
         colorTextPrimary: '#FFFFFF',
         colorTextSecondary: '#AAAAAA',
-        colorBorder: '#111111',
-        statusBar: 'light-content',
         ...staticTheme
     },
     light: {
         colorBgPrimary: '#FFFFFF',
         colorTextPrimary: '#000000',
         colorTextSecondary: '#333333',
-        colorBorder: '#EEEEEE',
-        statusBar: 'dark-content',
         ...staticTheme
     }
 
@@ -79,8 +67,12 @@ const createStyleSheet = currentTheme => StyleSheet.create({
         paddingVertical: getScaledValue(50),
         minHeight: getScaledValue(300),
         alignSelf: 'stretch',
-        flex: 1,
-        width: '100%'
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        backgroundColor: currentTheme.colorBgPrimary
     },
     textH2: {
         fontFamily: currentTheme.primaryFontFamily,
@@ -106,6 +98,17 @@ const createStyleSheet = currentTheme => StyleSheet.create({
         width: getScaledValue(93),
         height: getScaledValue(90)
     },
+    button: {
+        margin: 10,
+        padding: 10,
+        backgroundColor: currentTheme.colorBrand,
+        borderRadius: 10
+    },
+    buttonText: {
+        fontFamily: currentTheme.primaryFontFamily,
+        fontSize: getScaledValue(15),
+        color: currentTheme.colorLight,
+    }
 });
 
 
