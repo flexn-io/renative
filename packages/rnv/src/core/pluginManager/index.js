@@ -699,11 +699,15 @@ export const overrideFileContents = (dest, override, overridePath = '') => {
             }
         });
         if (!foundRegEx) {
-            failTerms.forEach((term) => {
-                logWarning(`No Match found in ${chalk().red(
-                    dest.split('node_modules').pop()
-                )} for expression: ${chalk().gray(term)}. source: ${chalk().white(overridePath.split('node_modules').pop())}`);
-            });
+            if (overridePath !== 'REACT_CORE_OVERRIDES') {
+                // We only warn against user defined overrides.
+                failTerms.forEach((term) => {
+                    logWarning(`No Match found in ${chalk().red(
+                        dest.split('node_modules').pop()
+                    )} for expression: ${chalk().gray(term)}. source: ${chalk().white(overridePath.split('node_modules').pop())}`);
+                });
+            }
+            return;
         }
         fsWriteFileSync(dest, fileToFix);
     } else {
