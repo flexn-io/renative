@@ -3,16 +3,9 @@ import { SDKNext } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    WEB,
-    CHROMECAST,
-    TASK_EXPORT,
-    TASK_DEPLOY,
-    PARAMS
-} = Constants;
+const { WEB, CHROMECAST, TASK_EXPORT, TASK_DEPLOY, PARAMS } = Constants;
 const { deployWebNext } = SDKNext;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
-
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);
@@ -37,8 +30,5 @@ export default {
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        WEB,
-        CHROMECAST,
-    ],
+    platforms: [WEB, CHROMECAST],
 };

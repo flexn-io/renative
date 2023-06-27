@@ -10,11 +10,10 @@ import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvStart from './tasks/task.rnv.start';
 import { withRNVBabel } from './adapter';
 
-
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
 export default {
-    initializeRuntimeConfig: c => Config.initializeConfig(c),
+    initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
         taskRnvPackage,
@@ -33,29 +32,28 @@ export default {
         macos: {
             defaultPort: 8086,
             isWebHosted: true,
-            extensions: generateEngineExtensions([
-                'macos.desktop', 'desktop', 'macos', 'desktop.web', 'electron', 'web'
-            ], CNF)
-
+            extensions: generateEngineExtensions(
+                ['macos.desktop', 'desktop', 'macos', 'desktop.web', 'electron', 'web'],
+                CNF
+            ),
         },
         windows: {
             defaultPort: 8092,
             isWebHosted: true,
-            extensions: generateEngineExtensions([
-                'windows.desktop', 'desktop', 'windows', 'desktop.web', 'electron', 'web'
-            ], CNF)
-
+            extensions: generateEngineExtensions(
+                ['windows.desktop', 'desktop', 'windows', 'desktop.web', 'electron', 'web'],
+                CNF
+            ),
         },
         linux: {
             defaultPort: 8100,
             isWebHosted: true,
-            extensions: generateEngineExtensions([
-                'linux.desktop', 'desktop', 'linux', 'desktop.web', 'electron', 'web'
-            ], CNF)
-
-        }
-    }
-
+            extensions: generateEngineExtensions(
+                ['linux.desktop', 'desktop', 'linux', 'desktop.web', 'electron', 'web'],
+                CNF
+            ),
+        },
+    },
 };
 
 export { withRNVBabel };

@@ -3,13 +3,7 @@ import { SDKWindows } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    WINDOWS,
-    XBOX,
-    TASK_PACKAGE,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
+const { WINDOWS, XBOX, TASK_PACKAGE, TASK_CONFIGURE, PARAMS } = Constants;
 const { getConfigProp } = Common;
 const { packageBundleForWindows } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
@@ -43,8 +37,5 @@ export default {
     fn: taskRnvPackage,
     task: 'package',
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        WINDOWS,
-        XBOX
-    ],
+    platforms: [WINDOWS, XBOX],
 };

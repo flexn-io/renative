@@ -3,12 +3,7 @@ import { SDKNext } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    WEB,
-    CHROMECAST,
-    TASK_BUILD, TASK_EXPORT,
-    PARAMS
-} = Constants;
+const { WEB, CHROMECAST, TASK_BUILD, TASK_EXPORT, PARAMS } = Constants;
 const { exportWebNext } = SDKNext;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
@@ -34,8 +29,5 @@ export default {
     fn: taskRnvExport,
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        WEB,
-        CHROMECAST,
-    ],
+    platforms: [WEB, CHROMECAST],
 };

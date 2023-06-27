@@ -3,13 +3,7 @@ import { SDKLightning } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    TIZEN,
-    WEBOS,
-    TASK_BUILD,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
+const { TIZEN, WEBOS, TASK_BUILD, TASK_CONFIGURE, PARAMS } = Constants;
 const { buildLightningProject } = SDKLightning;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
@@ -37,8 +31,5 @@ export default {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        TIZEN,
-        WEBOS,
-    ],
+    platforms: [TIZEN, WEBOS],
 };

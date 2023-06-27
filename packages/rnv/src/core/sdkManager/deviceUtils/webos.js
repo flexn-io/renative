@@ -5,13 +5,7 @@ import { executeAsync, execCLI, openCommand } from '../../systemManager/exec';
 import { getPlatformProjectDir, getPlatformBuildDir } from '../../common';
 
 import { waitForEmulator } from './common';
-import {
-    chalk,
-    logToSummary,
-    logTask,
-    logInfo,
-
-} from '../../systemManager/logger';
+import { chalk, logToSummary, logTask, logInfo } from '../../systemManager/logger';
 
 import {
     CLI_WEBOS_ARES_PACKAGE,
@@ -19,17 +13,16 @@ import {
     CLI_WEBOS_ARES_DEVICE_INFO,
     CLI_WEBOS_ARES_LAUNCH,
     CLI_WEBOS_ARES_NOVACOM,
-    CLI_WEBOS_ARES_SETUP_DEVICE
+    CLI_WEBOS_ARES_SETUP_DEVICE,
 } from '../../constants';
 import { isSystemWin, isUrlLocalhost } from '../../systemManager/utils';
 
 export const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');
 
-    const availableEmulatorVersions = getDirectories(path.join(
-        getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK),
-        'Emulator'
-    ));
+    const availableEmulatorVersions = getDirectories(
+        path.join(getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK), 'Emulator')
+    );
 
     const ePath = path.join(
         getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK),
@@ -41,7 +34,9 @@ export const launchWebOSimulator = (c) => {
     if (!fsExistsSync(ePath)) {
         return Promise.reject(`Can't find emulator at path: ${ePath}`);
     }
-    if (isSystemWin) { return executeAsync(c, ePath, { detached: true, stdio: 'ignore' }); }
+    if (isSystemWin) {
+        return executeAsync(c, ePath, { detached: true, stdio: 'ignore' });
+    }
     return executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
 };
 
@@ -55,22 +50,20 @@ const parseDevices = (c, devicesResponse) => {
     const linesArray = devicesResponse
         .split('\n')
         .slice(2)
-        .map(line => line.trim())
-        .filter(line => line !== '');
+        .map((line) => line.trim())
+        .filter((line) => line !== '');
     return Promise.all(
         linesArray.map(async (line) => {
             const [name, device, connection, profile] = line
                 .split(' ')
-                .map(word => word.trim())
-                .filter(word => word !== '');
+                .map((word) => word.trim())
+                .filter((word) => word !== '');
             let deviceInfo = '';
             try {
-                deviceInfo = await execCLI(
-                    c,
-                    CLI_WEBOS_ARES_DEVICE_INFO,
-                    `-d ${name}`,
-                    { silent: true, timeout: 10000 }
-                );
+                deviceInfo = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${name}`, {
+                    silent: true,
+                    timeout: 10000,
+                });
             } catch (e) {
                 deviceInfo = e;
             }
@@ -81,7 +74,7 @@ const parseDevices = (c, devicesResponse) => {
                 connection,
                 profile,
                 isDevice: !isUrlLocalhost(device),
-                active: !deviceInfo.includes('ERR!')
+                active: !deviceInfo.includes('ERR!'),
             };
         })
     );
@@ -89,19 +82,11 @@ const parseDevices = (c, devicesResponse) => {
 
 const installAndLaunchApp = async (c, target, appPath, tId) => {
     try {
-        await execCLI(
-            c,
-            CLI_WEBOS_ARES_INSTALL,
-            `--device ${target} ${appPath}`
-        );
+        await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
     } catch (e) {
         // installing it again if it fails. For some reason webosCLI says that it can't connect to
         // the device from time to time. Running it again works.
-        await execCLI(
-            c,
-            CLI_WEBOS_ARES_INSTALL,
-            `--device ${target} ${appPath}`
-        );
+        await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
     }
     // const { hosted } = c.program;
     // const { platform } = c;
@@ -115,19 +100,18 @@ const installAndLaunchApp = async (c, target, appPath, tId) => {
     return toReturn;
 };
 
-const buildDeviceChoices = devices => devices.map(device => ({
-    key: device.name,
-    name: `${device.name} - ${device.device}`,
-    value: device.name
-}));
+const buildDeviceChoices = (devices) =>
+    devices.map((device) => ({
+        key: device.name,
+        name: `${device.name} - ${device.device}`,
+        value: device.name,
+    }));
 
 export const listWebOSTargets = async (c) => {
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
 
-    const deviceArray = devices.map(
-        (device, i) => ` [${i + 1}]> ${chalk().bold(device.name)} | ${device.device}`
-    );
+    const deviceArray = devices.map((device, i) => ` [${i + 1}]> ${chalk().bold(device.name)} | ${device.device}`);
 
     logToSummary(`WebOS Targets:\n${deviceArray.join('\n')}`);
 
@@ -137,15 +121,10 @@ export const listWebOSTargets = async (c) => {
 const waitForEmulatorToBeReady = async (c) => {
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
-    const emulator = devices.filter(d => !d.isDevice)[0];
+    const emulator = devices.filter((d) => !d.isDevice)[0];
     if (!emulator) throw new Error('No WebOS emulator configured');
 
-    return waitForEmulator(
-        c,
-        CLI_WEBOS_ARES_DEVICE_INFO,
-        `-d ${emulator.name}`,
-        res => res.includes('modelName')
-    );
+    return waitForEmulator(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${emulator.name}`, (res) => res.includes('modelName'));
 };
 
 export const runWebosSimOrDevice = async (c) => {
@@ -161,7 +140,6 @@ export const runWebosSimOrDevice = async (c) => {
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
-
     // Start the fun
     // await buildWeb(c);
     await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
@@ -169,11 +147,11 @@ export const runWebosSimOrDevice = async (c) => {
     // List all devices
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
-    const activeDevices = devices.filter(d => d.active);
+    const activeDevices = devices.filter((d) => d.active);
 
     if (device) {
         // Running on a device
-        const actualDevices = devices.filter(d => d.isDevice);
+        const actualDevices = devices.filter((d) => d.isDevice);
 
         if (!actualDevices.length) {
             // No device configured. Asking to configure
@@ -181,10 +159,9 @@ export const runWebosSimOrDevice = async (c) => {
                 {
                     type: 'confirm',
                     name: 'setupDevice',
-                    message:
-                      'You want to deploy on a device but have none configured. Do you want to configure one?',
-                    default: false
-                }
+                    message: 'You want to deploy on a device but have none configured. Do you want to configure one?',
+                    default: false,
+                },
             ]);
 
             if (response.setupDevice) {
@@ -193,29 +170,20 @@ export const runWebosSimOrDevice = async (c) => {
                     'Please follow the instructions from http://webostv.developer.lge.com/develop/app-test/#installDevModeApp on how to setup the TV and the connection with the PC. Then follow the onscreen prompts\n'
                 );
                 await execCLI(c, CLI_WEBOS_ARES_SETUP_DEVICE, '', {
-                    interactive: true
+                    interactive: true,
                 });
 
-                const newDeviceResponse = await execCLI(
-                    c,
-                    CLI_WEBOS_ARES_DEVICE_INFO,
-                    '-D'
-                );
+                const newDeviceResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
                 const dev = await parseDevices(c, newDeviceResponse);
-                const actualDev = dev.filter(d => d.isDevice);
+                const actualDev = dev.filter((d) => d.isDevice);
 
                 if (actualDev.length > 0) {
                     const newDevice = actualDev[0];
                     // Oh boy, oh boy, I did it! I have a TV connected!
-                    logInfo(
-                        "Please enter the `Passphrase` from the TV's Developer Mode app"
-                    );
-                    await execCLI(
-                        c,
-                        CLI_WEBOS_ARES_NOVACOM,
-                        `--device ${newDevice.name} --getkey`,
-                        { stdio: 'inherit' }
-                    );
+                    logInfo("Please enter the `Passphrase` from the TV's Developer Mode app");
+                    await execCLI(c, CLI_WEBOS_ARES_NOVACOM, `--device ${newDevice.name} --getkey`, {
+                        stdio: 'inherit',
+                    });
                     return installAndLaunchApp(c, newDevice.name, appPath, tId);
                 }
                 // Yes, I said I would but I didn't
@@ -239,16 +207,11 @@ export const runWebosSimOrDevice = async (c) => {
                     name: 'chosenDevice',
                     type: 'list',
                     message: 'What device would you like to start the app?',
-                    choices
-                }
+                    choices,
+                },
             ]);
             if (response.chosenDevice) {
-                return installAndLaunchApp(
-                    c,
-                    response.chosenDevice,
-                    appPath,
-                    tId
-                );
+                return installAndLaunchApp(c, response.chosenDevice, appPath, tId);
             }
         } else {
             await launchWebOSimulator(c);

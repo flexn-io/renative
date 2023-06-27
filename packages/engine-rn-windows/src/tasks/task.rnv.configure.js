@@ -3,17 +3,11 @@ import { SDKWindows } from '../sdks';
 
 const { logErrorPlatform, copySharedPlatforms } = PlatformManager;
 const { logTask } = Logger;
-const {
-    WINDOWS,
-    XBOX,
-    TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE,
-    PARAMS
-} = Constants;
+const { WINDOWS, XBOX, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS } = Constants;
 
 const { configureWindowsProject } = SDKWindows;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
-
 
 export const taskRnvConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
@@ -42,8 +36,5 @@ export default {
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        WINDOWS,
-        XBOX
-    ],
+    platforms: [WINDOWS, XBOX],
 };

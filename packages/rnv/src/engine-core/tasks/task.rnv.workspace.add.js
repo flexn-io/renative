@@ -15,7 +15,7 @@ export const taskRnvWorkspaceAdd = async (c, parentTask, originTask) => {
         name: 'workspace',
         type: 'input',
         message: 'absolute path to new workspace',
-        validate: i => !!i || 'No path provided'
+        validate: (i) => !!i || 'No path provided',
     });
 
     const workspacePath = path.join(workspace);
@@ -24,20 +24,17 @@ export const taskRnvWorkspaceAdd = async (c, parentTask, originTask) => {
         const { confirm } = await inquirerPrompt({
             name: 'confirm',
             type: 'confirm',
-            message: `Folder ${workspacePath} already exists are you sure you want to override it?`
+            message: `Folder ${workspacePath} already exists are you sure you want to override it?`,
         });
         if (!confirm) return;
     }
 
-    let workspaceID = workspacePath
-        .split('/')
-        .pop()
-        .replace(/@|\./g, '');
+    let workspaceID = workspacePath.split('/').pop().replace(/@|\./g, '');
 
     const { workspaceIDInput } = await inquirerPrompt({
         name: 'workspaceIDInput',
         type: 'input',
-        message: `ID of the workspace (${workspaceID})`
+        message: `ID of the workspace (${workspaceID})`,
     });
 
     workspaceID = workspaceIDInput || workspaceID;
@@ -50,5 +47,5 @@ export default {
     task: TASK_WORKSPACE_ADD,
     params: PARAMS.withBase(),
     platforms: [],
-    isGlobalScope: true
+    isGlobalScope: true,
 };

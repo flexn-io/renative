@@ -2,13 +2,9 @@
     "id": "engine-roku",
     "engineExtension": "rk",
     "overview": "ReNative Roku Engine",
-    "plugins": {
-
-    },
+    "plugins": {},
     "npm": {
-        "devDependencies": {
-          
-        }
+        "devDependencies": {}
     },
     "platforms": {
         "roku": {}

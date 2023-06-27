@@ -3,21 +3,21 @@ import { getAppVersionCode } from '../../src/core/common';
 
 jest.mock('../../src/core/systemManager/logger.js', () => {
     const _chalkCols = {
-        white: v => v,
-        green: v => v,
-        red: v => v,
-        yellow: v => v,
-        default: v => v,
-        gray: v => v,
-        grey: v => v,
-        blue: v => v,
-        cyan: v => v,
-        magenta: v => v
+        white: (v) => v,
+        green: (v) => v,
+        red: (v) => v,
+        yellow: (v) => v,
+        default: (v) => v,
+        gray: (v) => v,
+        grey: (v) => v,
+        blue: (v) => v,
+        cyan: (v) => v,
+        magenta: (v) => v,
     };
-    _chalkCols.rgb = () => v => v;
+    _chalkCols.rgb = () => (v) => v;
     _chalkCols.bold = _chalkCols;
     const _chalkMono = {
-        ..._chalkCols
+        ..._chalkCols,
     };
     return {
         logToSummary: jest.fn(),
@@ -27,7 +27,7 @@ jest.mock('../../src/core/systemManager/logger.js', () => {
         logError: jest.fn(),
         logWarning: jest.fn(),
         logSuccess: jest.fn(),
-        chalk: () => _chalkMono
+        chalk: () => _chalkMono,
     };
 });
 
@@ -41,7 +41,21 @@ describe('Bootstrapping the CLI', () => {
 
     it('should create C variable correctly', async () => {
         const cKeys = Object.keys(c).sort();
-        const expectKeys = ['_renativePluginCache', 'api', 'buildConfig', 'cli', 'command', 'configPropsInjects', 'files', 'paths', 'platform', 'process', 'program', 'runtime', 'subCommand'];
+        const expectKeys = [
+            '_renativePluginCache',
+            'api',
+            'buildConfig',
+            'cli',
+            'command',
+            'configPropsInjects',
+            'files',
+            'paths',
+            'platform',
+            'process',
+            'program',
+            'runtime',
+            'subCommand',
+        ];
         expect(cKeys).toEqual(expectKeys);
     });
 

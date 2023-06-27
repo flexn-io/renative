@@ -35,11 +35,10 @@ CONSTANTS.PARAMS.withAll().forEach((param) => {
     program.option(cmd, param.description);
 });
 
-program.arguments('<cmd> [option]')
-    .action((cmd, option) => {
-        cmdValue = cmd;
-        cmdOption = option;
-    });
+program.arguments('<cmd> [option]').action((cmd, option) => {
+    cmdValue = cmd;
+    cmdOption = option;
+});
 
 program.parse(process.argv);
 

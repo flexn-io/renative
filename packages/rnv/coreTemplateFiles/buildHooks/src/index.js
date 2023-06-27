@@ -1,9 +1,9 @@
-import { Logger } from 'rnv'
+import { Logger } from 'rnv';
 
 const hooks = {
     hello: async (c) => {
-        Logger.logHook('Hello build hook!')
-    }
+        Logger.logHook('Hello build hook!');
+    },
 };
 
 const pipes = {};

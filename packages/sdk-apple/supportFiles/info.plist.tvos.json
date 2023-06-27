@@ -15,9 +15,7 @@
         "NSAllowsArbitraryLoads": true
     },
     "UIAppFonts": [],
-    "UIBackgroundModes": [
-        "remote-notification"
-    ],
+    "UIBackgroundModes": ["remote-notification"],
     "UIRequiresFullScreen": true,
     "UILaunchStoryboardName": "LaunchScreen",
     "UIUserInterfaceStyle": "Automatic",

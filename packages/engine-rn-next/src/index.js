@@ -10,11 +10,10 @@ import taskRnvExport from './tasks/task.rnv.export';
 import taskRnvDeploy from './tasks/task.rnv.deploy';
 import taskRnvDebug from './tasks/task.rnv.debug';
 
-
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
 export default {
-    initializeRuntimeConfig: c => Config.initializeConfig(c),
+    initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
         taskRnvPackage,
@@ -32,21 +31,17 @@ export default {
         web: {
             defaultPort: 8080,
             isWebHosted: true,
-            extensions: generateEngineExtensions([
-                'web.browser', 'browser', 'server.next', 'server.web', 'next', 'browser.web', 'web'
-            ], CNF)
-
+            extensions: generateEngineExtensions(
+                ['web.browser', 'browser', 'server.next', 'server.web', 'next', 'browser.web', 'web'],
+                CNF
+            ),
         },
         chromecast: {
             defaultPort: 8095,
             isWebHosted: true,
-            extensions: generateEngineExtensions([
-                'chromecast.tv', 'web.tv', 'tv', 'chromecast', 'tv.web', 'web'
-            ], CNF)
-
-        }
-    }
-
+            extensions: generateEngineExtensions(['chromecast.tv', 'web.tv', 'tv', 'chromecast', 'tv.web', 'web'], CNF),
+        },
+    },
 };
 
 // Backward compatibility

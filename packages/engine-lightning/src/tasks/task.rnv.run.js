@@ -3,13 +3,7 @@ import { SDKLightning } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask, logRaw } = Logger;
-const {
-    TIZEN,
-    WEBOS,
-    TASK_RUN,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
+const { TIZEN, WEBOS, TASK_RUN, TASK_CONFIGURE, PARAMS } = Constants;
 const { runLightningProject } = SDKLightning;
 const { executeOrSkipTask } = TaskManager;
 
@@ -43,12 +37,10 @@ const Task = {
     fnHelp: taskRnvRunHelp,
     task: 'run',
     dependencies: {
-        before: TASK_CONFIGURE
+        before: TASK_CONFIGURE,
     },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [
-        TIZEN, WEBOS
-    ],
+    platforms: [TIZEN, WEBOS],
 };
 
 export default Task;

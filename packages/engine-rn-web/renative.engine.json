@@ -11,9 +11,7 @@
         "@react-native-community/cli": "source:rnv"
     },
     "npm": {
-        "devDependencies": {
-
-        }
+        "devDependencies": {}
     },
     "platforms": {
         "tizen": {

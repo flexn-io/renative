@@ -5,7 +5,7 @@ import { themeStyles } from '../config';
 export default function Page() {
     return (
         <View style={themeStyles.container}>
-                <Text style={themeStyles.textH2}>This is custom 404!</Text>
+            <Text style={themeStyles.textH2}>This is custom 404!</Text>
         </View>
     );
 }

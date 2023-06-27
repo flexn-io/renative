@@ -28,9 +28,5 @@ export default {
     fn: taskRnvDebug,
     task: 'debug',
     params: PARAMS.withBase(),
-    platforms: [
-        WEB,
-        WEBTV,
-        TIZEN
-    ],
+    platforms: [WEB, WEBTV, TIZEN],
 };

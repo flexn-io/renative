@@ -5,7 +5,6 @@ import { Logger, Common } from 'rnv';
 const { getConfigProp } = Common;
 const { chalk, logWarning } = Logger;
 
-
 export const parseProvisioningProfiles = async (c) => {
     // PROJECT
     const teamID = getConfigProp(c, c.platform, 'teamID');
@@ -16,11 +15,15 @@ export const parseProvisioningProfiles = async (c) => {
         const result = provision.select(provisionProfiles, {
             AppId: id,
             TeamIdentifier: teamID,
-            Certificates: certificates.valid
+            Certificates: certificates.valid,
         });
         return result;
     } catch (e) {
-        logWarning(`You have no provisioning files available. Check your ${chalk().white(path.join(c.paths.home.dir, 'Library/MobileDevice/Provisioning Profiles'))} folder`);
+        logWarning(
+            `You have no provisioning files available. Check your ${chalk().white(
+                path.join(c.paths.home.dir, 'Library/MobileDevice/Provisioning Profiles')
+            )} folder`
+        );
     }
 
     return null;

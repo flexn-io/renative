@@ -3,18 +3,9 @@ import { SDKElectron } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    MACOS,
-    WINDOWS,
-    LINUX,
-    TASK_BUILD, TASK_EXPORT,
-    PARAMS
-} = Constants;
-const {
-    exportElectron
-} = SDKElectron;
+const { MACOS, WINDOWS, LINUX, TASK_BUILD, TASK_EXPORT, PARAMS } = Constants;
+const { exportElectron } = SDKElectron;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
-
 
 export const taskRnvExport = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);
@@ -39,9 +30,5 @@ export default {
     fn: taskRnvExport,
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        MACOS,
-        WINDOWS,
-        LINUX
-    ],
+    platforms: [MACOS, WINDOWS, LINUX],
 };

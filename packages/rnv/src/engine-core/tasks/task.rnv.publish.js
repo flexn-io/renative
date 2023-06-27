@@ -6,14 +6,12 @@ import { writeFileSync } from '../../core/systemManager/fileutils';
 import { executeTask } from '../../core/taskManager';
 import { TASK_PUBLISH, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
-
 const includesPre = (version) => {
     if (version.includes('alpha')) return 'alpha';
     if (version.includes('beta')) return 'beta';
     if (version.includes('rc')) return 'rc';
     return false;
 };
-
 
 /*
  *
@@ -35,10 +33,7 @@ export const taskRnvPublish = async (c, parentTask, originTask) => {
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PUBLISH, originTask);
 
     // make sure release-it is installed
-    await Config.checkRequiredPackage(c,
-        'release-it',
-        '12.4.3',
-        'devDependencies');
+    await Config.checkRequiredPackage(c, 'release-it', '12.4.3', 'devDependencies');
     // make sure required object is present in package.json
     const pkgJson = c.files.project.package;
     const existingPath = c.paths.project.package;
@@ -48,15 +43,15 @@ export const taskRnvPublish = async (c, parentTask, originTask) => {
             git: {
                 // eslint-disable-next-line no-template-curly-in-string
                 tagName: 'v${version}',
-                requireCleanWorkingDir: false
+                requireCleanWorkingDir: false,
             },
             npm: {
-                publish: false
+                publish: false,
             },
             hooks: {
                 // eslint-disable-next-line no-template-curly-in-string
-                'before:git': 'npx rnv pkg version ${version}'
-            }
+                'before:git': 'npx rnv pkg version ${version}',
+            },
         };
         writeFileSync(existingPath, pkgJson);
     }
@@ -106,30 +101,26 @@ export const taskRnvPublish = async (c, parentTask, originTask) => {
         await executeAsync('npx rnv pkg publish', execCommonOpts);
         if (!skipRootPublish) {
             if (!rootPublishCommand) {
-                throw new Error(
-                    "You don't have a rootPublishCommand specified in package.json"
-                );
+                throw new Error("You don't have a rootPublishCommand specified in package.json");
             }
             return executeAsync(rootPublishCommand, execCommonOpts);
         }
     };
 
-    const releaseIt = () => executeAsync(
-        `npx release-it ${args.join(' ')} ${prereleaseMark}`,
-        execCommonOpts
-    )
-        .catch((e) => {
-            if (e.includes('SIGINT')) return Promise.resolve();
-            if (e.includes('--no-git.requireUpstream')) {
-                return Promise.reject(
-                    new Error(
-                        'Seems like you have no upstream configured for current branch. Run `git push -u <origin> <your_branch>` to fix it then try again.'
-                    )
-                );
-            }
-            return Promise.reject(e);
-        })
-        .then(rootPublishIfNecessary);
+    const releaseIt = () =>
+        executeAsync(`npx release-it ${args.join(' ')} ${prereleaseMark}`, execCommonOpts)
+            .catch((e) => {
+                if (e.includes('SIGINT')) return Promise.resolve();
+                if (e.includes('--no-git.requireUpstream')) {
+                    return Promise.reject(
+                        new Error(
+                            'Seems like you have no upstream configured for current branch. Run `git push -u <origin> <your_branch>` to fix it then try again.'
+                        )
+                    );
+                }
+                return Promise.reject(e);
+            })
+            .then(rootPublishIfNecessary);
 
     // we have a ci flag, checking if the project is configured for ci releases to do a bumpless deploy
     if (ci) {

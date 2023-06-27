@@ -7,22 +7,19 @@ const { chalk, logTask } = Logger;
 const { IOS, TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE, PARAMS } = Constants;
 const { executeTask, shouldSkipTask } = TaskManager;
 
-
-const _updateProfile = (c, v) => new Promise((resolve, reject) => {
-    logTask(`_updateProfile:${v}`, chalk().grey);
-    updateProfile(c, v)
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+const _updateProfile = (c, v) =>
+    new Promise((resolve, reject) => {
+        logTask(`_updateProfile:${v}`, chalk().grey);
+        updateProfile(c, v)
+            .then(() => resolve())
+            .catch((e) => reject(e));
+    });
 
 const _updateProfiles = (c) => {
     logTask('_updateProfiles', chalk().grey);
     const acList = listAppConfigsFoldersSync(c, true);
 
-    return acList.reduce(
-        (previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)),
-        Promise.resolve()
-    );
+    return acList.reduce((previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)), Promise.resolve());
 };
 
 export const taskRnvCryptoUpdateProfiles = async (c, parentTask, originTask) => {
@@ -39,9 +36,7 @@ export const taskRnvCryptoUpdateProfiles = async (c, parentTask, originTask) => 
         default:
             return true;
     }
-    return Promise.reject(
-        `updateProfiles: Platform ${c.platform} not supported`
-    );
+    return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
 };
 
 export default {

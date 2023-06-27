@@ -1,6 +1,3 @@
-/* eslint-disable import/no-dynamic-require */
-
-
 const path = require('path');
 const fs = require('fs');
 const getPublicUrlOrPath = require('react-dev-utils/getPublicUrlOrPath');
@@ -9,10 +6,8 @@ const getPublicUrlOrPath = require('react-dev-utils/getPublicUrlOrPath');
 // https://github.com/facebook/create-react-app/issues/637
 const appDirectory = fs.realpathSync(process.cwd());
 const appBuildDirectory = process.env.RNV_APP_BUILD_DIR || fs.realpathSync(process.cwd());
-const resolveApp = (relativePath, isGenerated) => (!isGenerated
-    ? path.resolve(appDirectory, relativePath)
-    : path.resolve(appBuildDirectory, relativePath));
-
+const resolveApp = (relativePath, isGenerated) =>
+    !isGenerated ? path.resolve(appDirectory, relativePath) : path.resolve(appBuildDirectory, relativePath);
 
 // We use `PUBLIC_URL` environment variable or "homepage" field to infer
 // "public path" at which the app is served.
@@ -30,7 +25,7 @@ const moduleFileExtensions = process.env.RNV_EXTENSIONS?.split?.(',') || [];
 
 // Resolve file paths in the same order as webpack
 const resolveModule = (resolveFn, filePath) => {
-    const extension = moduleFileExtensions.find(ext => fs.existsSync(resolveFn(`${filePath}.${ext}`)));
+    const extension = moduleFileExtensions.find((ext) => fs.existsSync(resolveFn(`${filePath}.${ext}`)));
 
     if (extension) {
         return resolveFn(`${filePath}.${extension}`);
@@ -60,6 +55,5 @@ module.exports = {
     swSrc: resolveModule(resolveApp, 'src/service-worker'),
     publicUrlOrPath,
 };
-
 
 module.exports.moduleFileExtensions = moduleFileExtensions;

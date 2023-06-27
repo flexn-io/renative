@@ -3,20 +3,12 @@ import { packageAndroid, runAndroid } from '@rnv/sdk-android';
 import { runXcodeProject } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
 
-const {
-    TVOS,
-    TASK_RUN,
-    ANDROID_TV,
-    FIRE_TV,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
+const { TVOS, TASK_RUN, ANDROID_TV, FIRE_TV, TASK_CONFIGURE, PARAMS } = Constants;
 
 const { getConfigProp } = Common;
 const { logTask, logSummary, logRaw } = Logger;
 const { logErrorPlatform } = PlatformManager;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
-
 
 export const taskRnvRun = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -73,7 +65,7 @@ const Task = {
     fnHelp: taskRnvRunHelp,
     task: TASK_RUN,
     dependencies: {
-        before: TASK_CONFIGURE
+        before: TASK_CONFIGURE,
     },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
     platforms: [TVOS, ANDROID_TV, FIRE_TV],

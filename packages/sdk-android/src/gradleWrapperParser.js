@@ -1,15 +1,9 @@
 import path from 'path';
 import { FileUtils, Logger, Common } from 'rnv';
 
-const {
-    getAppFolder,
-    getBuildFilePath,
-    getConfigProp,
-    addSystemInjects
-} = Common;
+const { getAppFolder, getBuildFilePath, getConfigProp, addSystemInjects } = Common;
 const { writeCleanFile } = FileUtils;
 const { logTask } = Logger;
-
 
 export const parseGradleWrapperSync = (c) => {
     logTask('parseGradleWrapperSync');
@@ -17,23 +11,20 @@ export const parseGradleWrapperSync = (c) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
 
-    c.pluginConfigAndroid.gradleWrapperVersion = getConfigProp(
-        c,
-        platform,
-        'gradleWrapperVersion',
-        '6.9.1'
-    );
+    c.pluginConfigAndroid.gradleWrapperVersion = getConfigProp(c, platform, 'gradleWrapperVersion', '6.9.1');
     const injects = [
         {
             pattern: '{{INJECT_GRADLE_WRAPPER_VERSION}}',
-            override: c.pluginConfigAndroid.gradleWrapperVersion
-        }
+            override: c.pluginConfigAndroid.gradleWrapperVersion,
+        },
     ];
     addSystemInjects(c, injects);
 
     writeCleanFile(
         getBuildFilePath(c, platform, 'gradle/wrapper/gradle-wrapper.properties'),
         path.join(appFolder, 'gradle/wrapper/gradle-wrapper.properties'),
-        injects, null, c
+        injects,
+        null,
+        c
     );
 };

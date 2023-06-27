@@ -1,9 +1,7 @@
 import path from 'path';
 import { logInfo, logTask, logSuccess } from '../../core/systemManager/logger';
 import { PARAMS, RNV_PACKAGES } from '../../core/constants';
-import {
-    fsExistsSync, fsRenameSync, fsUnlinkSync, fsLstatSync
-} from '../../core/systemManager/fileutils';
+import { fsExistsSync, fsRenameSync, fsUnlinkSync, fsLstatSync } from '../../core/systemManager/fileutils';
 
 const _unlinkPackage = (c, key) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);
@@ -21,7 +19,6 @@ const _unlinkPackage = (c, key) => {
         }
     }
 };
-
 
 export const taskRnvUnlink = async (c) => {
     logTask('taskRnvUnlink');
@@ -42,5 +39,5 @@ export default {
     params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
-    isGlobalScope: true
+    isGlobalScope: true,
 };

@@ -19,7 +19,7 @@ const {
     TASK_START,
     TASK_CONFIGURE,
     REMOTE_DEBUGGER_ENABLED_PLATFORMS,
-    PARAMS
+    PARAMS,
 } = Constants;
 
 const { executeTask, shouldSkipTask } = TaskManager;
@@ -56,10 +56,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
             return runWebpackServer(c, isWeinreEnabled);
         default:
             if (hosted) {
-                return logError(
-                    'This platform does not support hosted mode',
-                    true
-                );
+                return logError('This platform does not support hosted mode', true);
             }
             return logErrorPlatform(c);
     }
@@ -70,16 +67,5 @@ export default {
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        WEB,
-        WEBTV,
-        TIZEN,
-        WEBOS,
-        TIZEN_MOBILE,
-        TIZEN_WATCH,
-        KAIOS,
-        FIREFOX_OS,
-        FIREFOX_TV,
-        CHROMECAST,
-    ],
+    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV, CHROMECAST],
 };

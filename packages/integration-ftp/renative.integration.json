@@ -1,4 +1,4 @@
 {
-  "id": "ftp",
-  "npmPackage": "@rnv/integration-ftp"
+    "id": "ftp",
+    "npmPackage": "@rnv/integration-ftp"
 }

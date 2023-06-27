@@ -30,35 +30,28 @@ import {
     fsLstatSync,
     fsWriteFileSync,
     loadFile,
-    formatBytes
+    formatBytes,
 } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
 import { getWorkspaceDirPath } from '../projectManager/workspace';
-import {
-    chalk,
-    logError,
-    logTask,
-    logWarning,
-    logDebug
-} from '../systemManager/logger';
+import { chalk, logError, logTask, logWarning, logDebug } from '../systemManager/logger';
 import { doResolve } from '../systemManager/resolve';
 // import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
 
-export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
-    if (!c.paths.project.configExists) {
-        return reject(
-            `This directory is not ReNative project. Project config ${chalk().white(
-                c.paths.project.config
-            )} is missing!. You can create new project with ${chalk().white(
-                'rnv new'
-            )}`
-        );
-    }
+export const checkIsRenativeProject = (c) =>
+    new Promise((resolve, reject) => {
+        if (!c.paths.project.configExists) {
+            return reject(
+                `This directory is not ReNative project. Project config ${chalk().white(
+                    c.paths.project.config
+                )} is missing!. You can create new project with ${chalk().white('rnv new')}`
+            );
+        }
 
-    return resolve();
-});
+        return resolve();
+    });
 
 const _generateConfigPaths = (pathObj, dir, configName) => {
     pathObj.dir = dir;
@@ -68,14 +61,12 @@ const _generateConfigPaths = (pathObj, dir, configName) => {
     pathObj.appConfigsDir = path.join(dir, '..');
 };
 
-
 const _arrayMergeOverride = (destinationArray, sourceArray) => sourceArray;
 
 const getEnginesPluginDelta = (c) => {
     logDebug('getEnginesPluginDelta');
 
     if (!c.buildConfig) return;
-
 
     const enginePlugins = {};
     const missingEnginePlugins = {};
@@ -125,9 +116,9 @@ export const generateBuildConfig = (c) => {
         c.paths.project.configLocal,
         ...c.paths.appConfig.configs,
         ...c.paths.appConfig.configsPrivate,
-        ...c.paths.appConfig.configsLocal
+        ...c.paths.appConfig.configsLocal,
     ];
-    const cleanPaths = mergeOrder.filter(v => v);
+    const cleanPaths = mergeOrder.filter((v) => v);
     const existsPaths = cleanPaths.filter((v) => {
         const exists = fsExistsSync(v);
         if (exists) {
@@ -167,7 +158,7 @@ export const generateBuildConfig = (c) => {
         c.files.project.configLocal,
         ...c.files.appConfig.configs,
         ...c.files.appConfig.configsPrivate,
-        ...c.files.appConfig.configsLocal
+        ...c.files.appConfig.configsLocal,
     ];
 
     // mergeFiles.forEach((mergeFile, i) => {
@@ -178,22 +169,18 @@ export const generateBuildConfig = (c) => {
         {
             _meta: {
                 generated: new Date().getTime(),
-                mergedConfigs: existsPaths
-            }
-        }
+                mergedConfigs: existsPaths,
+            },
+        },
     ];
-    const existsFiles = mergeFiles.filter(v => v);
+    const existsFiles = mergeFiles.filter((v) => v);
 
     logDebug(
-        `generateBuildConfig:mergeOrder.length:${
-            mergeOrder.length
-        },cleanPaths.length:${cleanPaths.length},existsPaths.length:${
-            existsPaths.length
-        },existsFiles.length:${existsFiles.length}`
+        `generateBuildConfig:mergeOrder.length:${mergeOrder.length},cleanPaths.length:${cleanPaths.length},existsPaths.length:${existsPaths.length},existsFiles.length:${existsFiles.length}`
     );
 
     let out = merge.all([...meta, ...existsFiles], {
-        arrayMerge: _arrayMergeOverride
+        arrayMerge: _arrayMergeOverride,
     });
     out = merge({}, out);
     out.pluginTemplates = pluginTemplates;
@@ -203,23 +190,16 @@ export const generateBuildConfig = (c) => {
         files: c.files,
         runtimeProps: c.runtime,
         props: c.buildConfig._refs,
-        configProps: c.configPropsInjects
+        configProps: c.configPropsInjects,
     };
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, propConfig);
 
     logDebug('BUILD_CONFIG', Object.keys(c.buildConfig));
 
     if (c.runtime.appId) {
-        c.paths.project.builds.config = path.join(
-            c.paths.project.builds.dir,
-            `${c.runtime.appId}_${c.platform}.json`
-        );
+        c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
 
-        logDebug(
-            `generateBuildConfig: will sanitize file at: ${
-                c.paths.project.builds.config
-            }`
-        );
+        logDebug(`generateBuildConfig: will sanitize file at: ${c.paths.project.builds.config}`);
 
         if (c.paths.project.builds.dir) {
             if (!fsExistsSync(c.paths.project.builds.dir)) {
@@ -265,13 +245,7 @@ export const loadFileExtended = (c, fileObj, pathObj, key) => {
             if (fsExistsSync(extendsPath)) {
                 const extendsFile = readObjectSync(extendsPath);
 
-                fileObj[key] = mergeObjects(
-                    c,
-                    extendsFile,
-                    fileObj[key],
-                    false,
-                    true
-                );
+                fileObj[key] = mergeObjects(c, extendsFile, fileObj[key], false, true);
                 // CLEAN props which should not be inherited
                 delete fileObj[key].isTemplate;
                 delete fileObj[key].tasks;
@@ -291,7 +265,6 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         result = true;
     }
 
-
     if (loadFileExtended(c, fileObj, pathObj, 'configLocal')) {
         extendAppId = fileObj.configLocal.extend || extendAppId;
         result = true;
@@ -301,7 +274,6 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         extendAppId = fileObj.configPrivate.extend || extendAppId;
         result = true;
     }
-
 
     if (parseAppConfigs) {
         pathObj.dirs = [];
@@ -315,7 +287,6 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         fileObj.configsLocal = [];
         fileObj.configsPrivate = [];
         const fileObj1 = {};
-
 
         // PATH1: appConfigs/base
         const path1 = path.join(pathObj.appConfigsDir, 'base');
@@ -337,7 +308,6 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         if (fileObj1.config) fileObj.configs.push(fileObj1.config);
         if (fileObj1.configPrivate) fileObj.configsPrivate.push(fileObj1.configPrivate);
         if (fileObj1.configLocal) fileObj.configsLocal.push(fileObj1.configLocal);
-
 
         if (fsExistsSync(pathObj.appConfigsDir)) {
             const appConfigsDirNames = fsReaddirSync(pathObj.appConfigsDir);
@@ -367,7 +337,6 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
             }
         }
 
-
         // PATH2: appConfigs/<appId>
         const path3 = pathObj.dir;
         pathObj.dirs.push(path3);
@@ -396,29 +365,16 @@ export const generateRuntimeConfig = async (c) => {
     //     runtime: c.buildConfig.runtime
     // };
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.runtime || {});
-    c.assetConfig = mergeObjects(
-        c,
-        c.assetConfig,
-        c.buildConfig.common?.runtime || {}
-    );
-    c.assetConfig = mergeObjects(
-        c,
-        c.assetConfig,
-        c.buildConfig.platforms?.[c.platform]?.runtime || {}
-    );
-    c.assetConfig = mergeObjects(
-        c,
-        c.assetConfig,
-        getConfigProp(c, c.platform, 'runtime') || {}
-    );
-
+    c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.common?.runtime || {});
+    c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.platforms?.[c.platform]?.runtime || {});
+    c.assetConfig = mergeObjects(c, c.assetConfig, getConfigProp(c, c.platform, 'runtime') || {});
 
     if (fsExistsSync(c.paths.project.assets.dir)) {
         const sanitizedConfig = sanitizeDynamicProps(c.assetConfig, {
             files: c.files,
             runtimeProps: c.runtime,
             props: {},
-            configProps: c.configPropsInjects
+            configProps: c.configPropsInjects,
         });
         writeFileSync(c.paths.project.assets.config, sanitizedConfig);
         c.files.project.assets.config = sanitizedConfig;
@@ -446,16 +402,25 @@ const _generatePlatformTemplatePaths = (c) => {
         c.buildConfig.paths = {};
     }
     if (c.files.config?.platformTemplatesDirs) {
-        logWarning(`DEPRECATED: platformTemplatesDirs in ${
-            chalk().white(c.paths.project.config)} has been moved to engine config`);
+        logWarning(
+            `DEPRECATED: platformTemplatesDirs in ${chalk().white(
+                c.paths.project.config
+            )} has been moved to engine config`
+        );
     }
     if (c.files.config?.paths?.platformTemplatesDir) {
-        logWarning(`DEPRECATED: paths.platformTemplatesDir in ${
-            chalk().white(c.paths.project.config)} has been moved to engine config`);
+        logWarning(
+            `DEPRECATED: paths.platformTemplatesDir in ${chalk().white(
+                c.paths.project.config
+            )} has been moved to engine config`
+        );
     }
     if (c.files.config?.platformTemplatesDir) {
-        logWarning(`DEPRECATED: platformTemplatesDir in ${
-            chalk().white(c.paths.project.config)} has been moved to engine config`);
+        logWarning(
+            `DEPRECATED: platformTemplatesDir in ${chalk().white(
+                c.paths.project.config
+            )} has been moved to engine config`
+        );
     }
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
     const result = {};
@@ -468,19 +433,9 @@ const _generatePlatformTemplatePaths = (c) => {
 
                 if (originalPath) {
                     if (!pt[platform]) {
-                        result[platform] = getRealPath(
-                            c,
-                            originalPath,
-                            'platformTemplatesDir',
-                            originalPath
-                        );
+                        result[platform] = getRealPath(c, originalPath, 'platformTemplatesDir', originalPath);
                     } else {
-                        result[platform] = getRealPath(
-                            c,
-                            pt[platform],
-                            'platformTemplatesDir',
-                            originalPath
-                        );
+                        result[platform] = getRealPath(c, pt[platform], 'platformTemplatesDir', originalPath);
                     }
                 } else {
                     logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
@@ -491,10 +446,8 @@ const _generatePlatformTemplatePaths = (c) => {
         logWarning(`Your renative.json is missing property: ${chalk().red('defaults.supportedPlatforms')} `);
     }
 
-
     return result;
 };
-
 
 export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs, appConfigsDirPath) => {
     logTask('listAppConfigsFoldersSync', `ignoreHiddenConfigs:${!!ignoreHiddenConfigs}`);
@@ -507,10 +460,7 @@ export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs, appConfigsDirP
     const appConfigsDirs = [];
     fsReaddirSync(dirPath).forEach((dir) => {
         const appConfigDir = path.join(dirPath, dir);
-        if (
-            !IGNORE_FOLDERS.includes(dir)
-            && fsLstatSync(appConfigDir).isDirectory()
-        ) {
+        if (!IGNORE_FOLDERS.includes(dir) && fsLstatSync(appConfigDir).isDirectory()) {
             if (ignoreHiddenConfigs) {
                 const appConfig = path.join(appConfigDir, RENATIVE_CONFIG_NAME);
                 if (fsExistsSync(appConfig)) {
@@ -535,9 +485,7 @@ const _loadWorkspacesSync = (c) => {
     // CHECK WORKSPACES
     if (fsExistsSync(c.paths.rnv.configWorkspaces)) {
         logDebug(`${c.paths.rnv.configWorkspaces} file exists!`);
-        c.files.rnv.configWorkspaces = readObjectSync(
-            c.paths.rnv.configWorkspaces
-        );
+        c.files.rnv.configWorkspaces = readObjectSync(c.paths.rnv.configWorkspaces);
 
         if (!c.files.rnv.configWorkspaces) c.files.rnv.configWorkspaces = {};
 
@@ -545,39 +493,26 @@ const _loadWorkspacesSync = (c) => {
             c.files.rnv.configWorkspaces.workspaces = {};
         }
         if (Object.keys(c.files.rnv.configWorkspaces.workspaces).length === 0) {
-            logWarning(
-                `No workspace found in ${
-                    c.paths.rnv.configWorkspaces
-                }. Creating default rnv one for you`
-            );
+            logWarning(`No workspace found in ${c.paths.rnv.configWorkspaces}. Creating default rnv one for you`);
             c.files.rnv.configWorkspaces.workspaces = {
                 rnv: {
-                    path: c.paths.workspace.dir
-                }
+                    path: c.paths.workspace.dir,
+                },
             };
-            writeFileSync(
-                c.paths.rnv.configWorkspaces,
-                c.files.rnv.configWorkspaces
-            );
+            writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
         }
     } else {
-        logWarning(
-            `Cannot find ${c.paths.rnv.configWorkspaces}. creating one..`
-        );
+        logWarning(`Cannot find ${c.paths.rnv.configWorkspaces}. creating one..`);
         c.files.rnv.configWorkspaces = {
             workspaces: {
                 rnv: {
-                    path: c.paths.workspace.dir
-                }
-            }
+                    path: c.paths.workspace.dir,
+                },
+            },
         };
-        writeFileSync(
-            c.paths.rnv.configWorkspaces,
-            c.files.rnv.configWorkspaces
-        );
+        writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
     }
 };
-
 
 export const parseRenativeConfigs = async (c) => {
     logTask('parseRenativeConfigs');
@@ -588,26 +523,16 @@ export const parseRenativeConfigs = async (c) => {
     _loadConfigFiles(c, c.files.project, c.paths.project);
 
     if (c.runtime.appId) {
-        c.paths.project.builds.config = path.join(
-            c.paths.project.builds.dir,
-            `${c.runtime.appId}_${c.platform}.json`
-        );
+        c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
     } else {
-        c.paths.project.builds.config = path.join(
-            c.paths.project.builds.dir,
-            `<TBC>_${c.platform}.json`
-        );
+        c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `<TBC>_${c.platform}.json`);
     }
-
 
     // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
     loadFile(c.files.project.builds, c.paths.project.builds, 'config');
 
     // LOAD WORKSPACE /RENATIVE.*.JSON
-    _generateConfigPaths(
-        c.paths.workspace,
-        getRealPath(c, await getWorkspaceDirPath(c))
-    );
+    _generateConfigPaths(c.paths.workspace, getRealPath(c, await getWorkspaceDirPath(c)));
     _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
 
     // LOAD DEFAULT WORKSPACE
@@ -615,9 +540,7 @@ export const parseRenativeConfigs = async (c) => {
     _loadConfigFiles(c, c.files.defaultWorkspace, c.paths.defaultWorkspace);
 
     // LOAD PROJECT TEMPLATES
-    c.files.rnv.projectTemplates.config = readObjectSync(
-        c.paths.rnv.projectTemplates.config
-    );
+    c.files.rnv.projectTemplates.config = readObjectSync(c.paths.rnv.projectTemplates.config);
 
     // // LOAD PLUGIN TEMPLATES
     // await loadPluginTemplates(c);
@@ -637,19 +560,11 @@ export const parseRenativeConfigs = async (c) => {
     );
     _loadConfigFiles(c, c.files.workspace.project, c.paths.workspace.project);
 
-    c.paths.workspace.project.appConfigBase.dir = path.join(
-        c.paths.workspace.project.dir,
-        'appConfigs',
-        'base'
-    );
+    c.paths.workspace.project.appConfigBase.dir = path.join(c.paths.workspace.project.dir, 'appConfigs', 'base');
 
-    c.paths.workspace.project.appConfigBase.dir_LEGACY = path.join(
-        c.paths.workspace.project.dir,
-        'projectConfig'
-    );
+    c.paths.workspace.project.appConfigBase.dir_LEGACY = path.join(c.paths.workspace.project.dir, 'projectConfig');
 
     c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
-
 
     if (c.runtime.appId) {
         if (!c.files.appConfig.config) {
@@ -657,44 +572,25 @@ export const parseRenativeConfigs = async (c) => {
             //     c.paths.appConfig,
             //     path.join(c.paths.project.appConfigsDir, c.runtime.appId)
             // );
-            _generateConfigPaths(
-                c.paths.appConfig,
-                c.runtime.appConfigDir
-            );
-            _loadConfigFiles(
-                c,
-                c.files.appConfig,
-                c.paths.appConfig,
-                true
-            );
+            _generateConfigPaths(c.paths.appConfig, c.runtime.appConfigDir);
+            _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, true);
         }
 
-        const workspaceAppConfigsDir = getRealPath(
-            c,
-            c.buildConfig.workspaceAppConfigsDir
-        );
-        c.paths.workspace.project.appConfigsDir = workspaceAppConfigsDir
-          || path.join(c.paths.workspace.project.dir, 'appConfigs');
+        const workspaceAppConfigsDir = getRealPath(c, c.buildConfig.workspaceAppConfigsDir);
+        c.paths.workspace.project.appConfigsDir =
+            workspaceAppConfigsDir || path.join(c.paths.workspace.project.dir, 'appConfigs');
 
         _generateConfigPaths(
             c.paths.workspace.appConfig,
             path.join(c.paths.workspace.project.appConfigsDir, c.runtime.appId)
         );
 
-        _loadConfigFiles(
-            c,
-            c.files.workspace.appConfig,
-            c.paths.workspace.appConfig,
-            true
-        );
+        _loadConfigFiles(c, c.files.workspace.appConfig, c.paths.workspace.appConfig, true);
 
         loadFile(c.files.project.assets, c.paths.project.assets, 'config');
 
         // LOAD WORKSPACE /RENATIVE.*.JSON
-        _generateConfigPaths(
-            c.paths.workspace,
-            getRealPath(c, await getWorkspaceDirPath(c))
-        );
+        _generateConfigPaths(c.paths.workspace, getRealPath(c, await getWorkspaceDirPath(c)));
         _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
 
         generateLocalConfig(c);
@@ -711,25 +607,25 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
             fsReadFileSync,
             fsReaddirSync,
             fsWriteFileSync,
-            path
+            path,
         },
         configPropsInjects: {},
         runtime: {
             enginesByPlatform: {},
             enginesByIndex: [],
-            enginesById: {}
+            enginesById: {},
         },
         paths: {
             rnv: {
                 pluginTemplates: {
-                    configs: {}
+                    configs: {},
                 },
                 platformTemplates: {},
                 projectTemplates: {},
                 platformTemplate: {},
                 plugins: {},
                 engines: {},
-                projectTemplate: {}
+                projectTemplate: {},
             },
             workspace: {
                 project: {
@@ -738,13 +634,13 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
                     assets: {},
                     platformTemplates: {},
                     appConfigsDirs: [],
-                    appConfigsDirNames: []
+                    appConfigsDirNames: [],
                 },
                 appConfig: {
                     configs: [],
                     configsPrivate: [],
-                    configsLocal: []
-                }
+                    configsLocal: [],
+                },
             },
             defaultWorkspace: {
                 project: {
@@ -753,13 +649,13 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
                     assets: {},
                     platformTemplates: {},
                     appConfigsDirs: [],
-                    appConfigsDirNames: []
+                    appConfigsDirNames: [],
                 },
                 appConfig: {
                     configs: [],
                     configsPrivate: [],
-                    configsLocal: []
-                }
+                    configsLocal: [],
+                },
             },
             project: {
                 appConfigBase: {},
@@ -767,24 +663,24 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
                 assets: {},
                 platformTemplates: {},
                 appConfigsDirs: [],
-                appConfigsDirNames: []
+                appConfigsDirNames: [],
             },
             appConfig: {
                 configs: [],
                 configsPrivate: [],
-                configsLocal: []
+                configsLocal: [],
             },
             // EXTRA
             GLOBAL_RNV_DIR: '',
             buildHooks: {
-                dist: {}
+                dist: {},
             },
             home: {},
             template: {
                 appConfigBase: {},
                 builds: {},
                 assets: {},
-                platformTemplates: {}
+                platformTemplates: {},
             },
         },
         files: {
@@ -795,46 +691,46 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
                 platformTemplate: {},
                 plugins: {},
                 engines: {},
-                projectTemplate: {}
+                projectTemplate: {},
             },
             workspace: {
                 project: {
                     appConfigBase: {},
                     builds: {},
                     assets: {},
-                    platformTemplates: {}
+                    platformTemplates: {},
                 },
                 appConfig: {
                     configs: [],
                     configsPrivate: [],
-                    configsLocal: []
-                }
+                    configsLocal: [],
+                },
             },
             defaultWorkspace: {
                 project: {
                     appConfigBase: {},
                     builds: {},
                     assets: {},
-                    platformTemplates: {}
+                    platformTemplates: {},
                 },
                 appConfig: {
                     configs: [],
                     configsPrivate: [],
-                    configsLocal: []
-                }
+                    configsLocal: [],
+                },
             },
             project: {
                 appConfigBase: {},
                 builds: {},
                 assets: {},
-                platformTemplates: {}
+                platformTemplates: {},
             },
             appConfig: {
                 configs: [],
                 configsPrivate: [],
-                configsLocal: []
-            }
-        }
+                configsLocal: [],
+            },
+        },
     };
 
     global.RNV_CONFIG = c;
@@ -847,48 +743,22 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
 
     c.paths.rnv.dir = RNV_HOME_DIR;
 
-    c.paths.rnv.engines.dir = path.join(
-        c.paths.rnv.dir,
-        'engineTemplates'
-    );
-    c.paths.rnv.pluginTemplates.dir = path.join(
-        c.paths.rnv.dir,
-        'pluginTemplates'
-    );
+    c.paths.rnv.engines.dir = path.join(c.paths.rnv.dir, 'engineTemplates');
+    c.paths.rnv.pluginTemplates.dir = path.join(c.paths.rnv.dir, 'pluginTemplates');
 
-    c.paths.rnv.pluginTemplates.config = path.join(
-        c.paths.rnv.pluginTemplates.dir,
-        RENATIVE_CONFIG_PLUGINS_NAME
-    );
-    c.paths.rnv.projectTemplates.dir = path.join(
-        c.paths.rnv.dir,
-        'coreTemplateFiles'
-    );
-    c.paths.rnv.projectTemplates.config = path.join(
-        c.paths.rnv.projectTemplates.dir,
-        RENATIVE_CONFIG_TEMPLATES_NAME
-    );
+    c.paths.rnv.pluginTemplates.config = path.join(c.paths.rnv.pluginTemplates.dir, RENATIVE_CONFIG_PLUGINS_NAME);
+    c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'coreTemplateFiles');
+    c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.projectTemplates.dir, RENATIVE_CONFIG_TEMPLATES_NAME);
     c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
 
-    c.paths.rnv.projectTemplate.dir = path.join(
-        c.paths.rnv.dir,
-        'coreTemplateFiles'
-    );
-    c.files.rnv.package = JSON.parse(
-        fsReadFileSync(c.paths.rnv.package).toString()
-    );
+    c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'coreTemplateFiles');
+    c.files.rnv.package = JSON.parse(fsReadFileSync(c.paths.rnv.package).toString());
 
     c.platform = c.program.platform;
     c.paths.home.dir = USER_HOME_DIR;
     c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
-    c.paths.GLOBAL_RNV_CONFIG = path.join(
-        c.paths.GLOBAL_RNV_DIR,
-        RENATIVE_CONFIG_NAME
-    );
-    c.paths.rnv.configWorkspaces = path.join(
-        c.paths.GLOBAL_RNV_DIR,
-        RENATIVE_CONFIG_WORKSPACES_NAME
-    );
+    c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_NAME);
+    c.paths.rnv.configWorkspaces = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_WORKSPACES_NAME);
 
     if (!fsExistsSync(c.paths.GLOBAL_RNV_DIR)) {
         mkdirSync(c.paths.GLOBAL_RNV_DIR);
@@ -897,69 +767,27 @@ export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } =
     _generateConfigPaths(c.paths.project, projectRoot || CURRENT_DIR, c.program.configName);
 
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
-    c.paths.buildHooks.dist.dir = path.join(
-        c.paths.project.dir,
-        'buildHooks/dist'
-    );
+    c.paths.buildHooks.dist.dir = path.join(c.paths.project.dir, 'buildHooks/dist');
     c.paths.buildHooks.index = path.join(c.paths.buildHooks.dir, 'index.js');
-    c.paths.buildHooks.dist.index = path.join(
-        c.paths.buildHooks.dist.dir,
-        'index.js'
-    );
-    c.paths.project.nodeModulesDir = path.join(
-        c.paths.project.dir,
-        'node_modules'
-    );
+    c.paths.buildHooks.dist.index = path.join(c.paths.buildHooks.dist.dir, 'index.js');
+    c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
     c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
-    c.paths.project.appConfigsDir = path.join(
-        c.paths.project.dir,
-        'appConfigs'
-    );
+    c.paths.project.appConfigsDir = path.join(c.paths.project.dir, 'appConfigs');
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
-    c.paths.project.rnCliConfig = path.join(
-        c.paths.project.dir,
-        RN_CLI_CONFIG_NAME
-    );
-    c.paths.project.babelConfig = path.join(
-        c.paths.project.dir,
-        RN_BABEL_CONFIG_NAME
-    );
+    c.paths.project.rnCliConfig = path.join(c.paths.project.dir, RN_CLI_CONFIG_NAME);
+    c.paths.project.babelConfig = path.join(c.paths.project.dir, RN_BABEL_CONFIG_NAME);
     // c.paths.project.npmLinkPolyfill = path.join(
     //     c.paths.project.dir,
     //     'npm_link_polyfill.json'
     // );
-    c.paths.project.appConfigBase.dir = path.join(
-        c.paths.project.dir,
-        'appConfigs',
-        'base'
-    );
-    c.paths.project.appConfigBase.pluginsDir = path.join(
-        c.paths.project.appConfigBase.dir,
-        'plugins'
-    );
-    c.paths.project.appConfigBase.fontsDir = path.join(
-        c.paths.project.appConfigBase.dir,
-        'fonts'
-    );
-    c.paths.project.appConfigBase.fontsDirs = [
-        c.paths.project.appConfigBase.fontsDir
-    ];
-    c.paths.project.assets.dir = path.join(
-        c.paths.project.dir,
-        'platformAssets'
-    );
-    c.paths.project.assets.runtimeDir = path.join(
-        c.paths.project.assets.dir,
-        'runtime'
-    );
-    c.paths.project.assets.config = path.join(
-        c.paths.project.assets.dir,
-        RENATIVE_CONFIG_RUNTIME_NAME
-    );
-    c.paths.project.builds.dir = path.join(
-        c.paths.project.dir,
-        'platformBuilds'
-    );
+    c.paths.project.appConfigBase.dir = path.join(c.paths.project.dir, 'appConfigs', 'base');
+    c.paths.project.appConfigBase.pluginsDir = path.join(c.paths.project.appConfigBase.dir, 'plugins');
+    c.paths.project.appConfigBase.fontsDir = path.join(c.paths.project.appConfigBase.dir, 'fonts');
+    c.paths.project.appConfigBase.fontsDirs = [c.paths.project.appConfigBase.fontsDir];
+    c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
+    c.paths.project.assets.runtimeDir = path.join(c.paths.project.assets.dir, 'runtime');
+    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_RUNTIME_NAME);
+    c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
 
     _generateConfigPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
 

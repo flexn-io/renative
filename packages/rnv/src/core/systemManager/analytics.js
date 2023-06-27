@@ -27,7 +27,7 @@ class Redash {
         const defaultProps = {
             fingerprint: machineIdSync(),
             os: os.platform(),
-            rnvVersion: pkg.version
+            rnvVersion: pkg.version,
         };
         return axios
             .post(
@@ -35,8 +35,8 @@ class Redash {
                 { ...e, ...defaultProps },
                 {
                     headers: {
-                        'x-api-key': REDASH_KEY
-                    }
+                        'x-api-key': REDASH_KEY,
+                    },
                 }
             )
             .catch(() => true);
@@ -56,49 +56,30 @@ class Analytics {
             this.errorFixer = require('@sentry/node');
 
             this.errorFixer.init({
-                dsn:
-                    SENTRY_ENDPOINT,
+                dsn: SENTRY_ENDPOINT,
                 release: `rnv@${pkg.version}`,
                 integrations: [
                     new RewriteFrames({
                         root: '/',
                         iteratee: (frame) => {
                             if (
-                                frame.filename.includes(
-                                    `rnv${path.sep}dist${path.sep}`
-                                )
-                                || frame.filename.includes(
-                                    `rnv${path.sep}src${path.sep}`
-                                )
+                                frame.filename.includes(`rnv${path.sep}dist${path.sep}`) ||
+                                frame.filename.includes(`rnv${path.sep}src${path.sep}`)
                             ) {
-                                if (
-                                    frame.filename.includes(
-                                        `rnv${path.sep}dist${path.sep}`
-                                    )
-                                ) {
-                                    frame.filename = frame.filename.split(
-                                        `rnv${path.sep}dist${path.sep}`
-                                    )[1];
+                                if (frame.filename.includes(`rnv${path.sep}dist${path.sep}`)) {
+                                    frame.filename = frame.filename.split(`rnv${path.sep}dist${path.sep}`)[1];
                                 } else {
-                                    frame.filename = frame.filename.split(
-                                        `rnv${path.sep}src${path.sep}`
-                                    )[1];
+                                    frame.filename = frame.filename.split(`rnv${path.sep}src${path.sep}`)[1];
                                 }
-                            } else if (
-                                frame.filename.includes(
-                                    `${path.sep}node_modules${path.sep}`
-                                )
-                            ) {
+                            } else if (frame.filename.includes(`${path.sep}node_modules${path.sep}`)) {
                                 frame.filename = `node_modules/${
-                                    frame.filename.split(
-                                        `${path.sep}node_modules${path.sep}`
-                                    )[1]
+                                    frame.filename.split(`${path.sep}node_modules${path.sep}`)[1]
                                 }`;
                             }
                             return frame;
-                        }
-                    })
-                ]
+                        },
+                    }),
+                ],
             });
 
             // EVENT HANDLING
@@ -115,9 +96,7 @@ class Analytics {
                 if (e instanceof Error) {
                     this.errorFixer.captureException(e);
                 } else {
-                    this.errorFixer.captureException(
-                        new Error(sanitizeError(e))
-                    );
+                    this.errorFixer.captureException(new Error(sanitizeError(e)));
                 }
             });
         }

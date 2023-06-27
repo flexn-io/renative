@@ -10,7 +10,7 @@ import { isSystemWin } from '../../core/systemManager/utils';
 function clearWindowsCacheFiles() {
     const opts = {
         detached: false,
-        stdio: 'ignore'
+        stdio: 'ignore',
     };
 
     // TODO using executeAsync for these scripts returns an error, so this is just a temporary workaround
@@ -38,16 +38,13 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
     const skipQuestion = c.program.ci ? true : skipQuestionParam;
     const pathsToRemove = [];
     const localFiles = [];
-    const immediateNodeModuleDir = path.join(
-        c.paths.project.dir,
-        'node_modules'
-    );
-
+    const immediateNodeModuleDir = path.join(c.paths.project.dir, 'node_modules');
 
     const pkgLock = path.join(c.paths.project.dir, 'package-lock.json');
 
-
-    if (fsExistsSync(immediateNodeModuleDir)) { pathsToRemove.push(immediateNodeModuleDir); }
+    if (fsExistsSync(immediateNodeModuleDir)) {
+        pathsToRemove.push(immediateNodeModuleDir);
+    }
     if (fsExistsSync(pkgLock)) pathsToRemove.push(pkgLock);
 
     const yarnLock = path.join(c.paths.project.dir, 'yarn.lock');
@@ -89,9 +86,12 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
     }
 
     const buildDirs = [];
-    if (fsExistsSync(c.paths.project.builds.dir)) { buildDirs.push(c.paths.project.builds.dir); }
-    if (fsExistsSync(c.paths.project.assets.dir)) { buildDirs.push(c.paths.project.assets.dir); }
-
+    if (fsExistsSync(c.paths.project.builds.dir)) {
+        buildDirs.push(c.paths.project.builds.dir);
+    }
+    if (fsExistsSync(c.paths.project.assets.dir)) {
+        buildDirs.push(c.paths.project.assets.dir);
+    }
 
     const local1 = path.join(c.paths.project.dir, '.DS_Store');
     if (fsExistsSync(local1)) localFiles.push(local1);
@@ -104,9 +104,8 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
         modules: false,
         builds: false,
         cache: false,
-        nothingToClean: !skipQuestion
+        nothingToClean: !skipQuestion,
     };
-
 
     if (pathsToRemove.length) {
         if (!skipQuestion) {
@@ -115,7 +114,7 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
                 type: 'confirm',
                 message: `Do you want to remove node_module related files/folders? \n${chalk().red(
                     pathsToRemove.join('\n')
-                )}`
+                )}`,
             });
             answers.modules = confirm;
             if (confirm) answers.nothingToClean = false;
@@ -131,7 +130,7 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
                 type: 'confirm',
                 message: `Do you want to clean your platformBuilds and platformAssets? \n${chalk().red(
                     buildDirs.join('\n')
-                )}`
+                )}`,
             });
             answers.builds = confirmBuilds;
             if (confirmBuilds) answers.nothingToClean = false;
@@ -145,9 +144,7 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
             const { confirmLocals } = await inquirer.prompt({
                 name: 'confirmLocals',
                 type: 'confirm',
-                message: `Do you want to clean local files? \n${chalk().red(
-                    localFiles.join('\n')
-                )}`
+                message: `Do you want to clean local files? \n${chalk().red(localFiles.join('\n'))}`,
             });
             answers.locals = confirmLocals;
             if (confirmLocals) answers.nothingToClean = false;
@@ -160,7 +157,7 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
         const { confirmCache } = await inquirer.prompt({
             name: 'confirmCache',
             type: 'confirm',
-            message: 'Do you want to clean your npm/bundler cache?'
+            message: 'Do you want to clean your npm/bundler cache?',
         });
         answers.cache = confirmCache;
         if (confirmCache) answers.nothingToClean = false;
@@ -192,10 +189,7 @@ export const taskRnvClean = async (c, skipQuestionParam = false) => {
                 logDebug('watchman not installed. skipping');
             }
 
-            await executeAsync(
-                c,
-                'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*'
-            );
+            await executeAsync(c, 'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*');
         }
     }
     return true;
@@ -207,5 +201,5 @@ export default {
     task: 'clean',
     params: PARAMS.withBase(),
     platforms: [],
-    isGlobalScope: true
+    isGlobalScope: true,
 };

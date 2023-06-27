@@ -28,18 +28,11 @@ import {
     TIZEN_SDK,
     WEBOS_SDK,
     ANDROID_NDK,
-    USER_HOME_DIR
+    USER_HOME_DIR,
 } from '../constants';
 import { isSystemWin } from '../systemManager/utils';
 import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync, fsLstatSync } from '../systemManager/fileutils';
-import {
-    chalk,
-    logTask,
-    logWarning,
-    logSuccess,
-    logError,
-    logInfo
-} from '../systemManager/logger';
+import { chalk, logTask, logWarning, logSuccess, logError, logInfo } from '../systemManager/logger';
 import PlatformSetup from '../setupManager';
 import { generateBuildConfig } from '../configManager';
 
@@ -49,7 +42,7 @@ const SDK_LOCATIONS = {
         path.join(USER_HOME_DIR, 'Library/Android/sdk'),
         path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk'),
         path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk'),
-        path.join('Program Files (x86)/Android/android-sdk')
+        path.join('Program Files (x86)/Android/android-sdk'),
     ],
     'android-ndk': [
         path.join('/usr/local/android-sdk/ndk'),
@@ -61,23 +54,18 @@ const SDK_LOCATIONS = {
         path.join(USER_HOME_DIR, 'Library/Android/sdk/ndk-bundle'),
         path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk/ndk-bundle'),
         path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk/ndk-bundle'),
-        path.join('Program Files (x86)/Android/android-sdk/ndk-bundle')
+        path.join('Program Files (x86)/Android/android-sdk/ndk-bundle'),
     ],
     tizen: [
         path.join('usr/local/tizen-studio'),
         path.join(USER_HOME_DIR, 'tizen-studio'),
-        path.join('C:\\tizen-studio')
+        path.join('C:\\tizen-studio'),
     ],
-    webos: [
-        path.join('/opt/webOS_TV_SDK'),
-        path.join('C:\\webOS_TV_SDK')
-    ]
+    webos: [path.join('/opt/webOS_TV_SDK'), path.join('C:\\webOS_TV_SDK')],
 };
 
 const _logSdkWarning = (c) => {
-    logWarning(
-        `Your ${c.paths.workspace.config} is missing SDK configuration object`
-    );
+    logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
 };
 
 export const checkAndConfigureAndroidSdks = async (c) => {
@@ -92,10 +80,7 @@ export const checkAndConfigureAndroidSdks = async (c) => {
     );
 
     if (!fsExistsSync(sdkManagerPath)) {
-        sdkManagerPath = getRealPath(
-            c,
-            path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`)
-        );
+        sdkManagerPath = getRealPath(c, path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`));
     }
 
     let avdManagerPath = getRealPath(
@@ -104,20 +89,11 @@ export const checkAndConfigureAndroidSdks = async (c) => {
     );
 
     if (!fsExistsSync(avdManagerPath)) {
-        avdManagerPath = getRealPath(
-            c,
-            path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`)
-        );
+        avdManagerPath = getRealPath(c, path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`));
     }
 
-    c.cli[CLI_ANDROID_EMULATOR] = getRealPath(
-        c,
-        path.join(sdk, `emulator/emulator${isSystemWin ? '.exe' : ''}`)
-    );
-    c.cli[CLI_ANDROID_ADB] = getRealPath(
-        c,
-        path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`)
-    );
+    c.cli[CLI_ANDROID_EMULATOR] = getRealPath(c, path.join(sdk, `emulator/emulator${isSystemWin ? '.exe' : ''}`));
+    c.cli[CLI_ANDROID_ADB] = getRealPath(c, path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`));
     c.cli[CLI_ANDROID_AVDMANAGER] = avdManagerPath;
     c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
 };
@@ -128,19 +104,10 @@ export const checkAndConfigureTizenSdks = async (c) => {
     if (sdk) {
         c.cli[CLI_TIZEN_EMULATOR] = getRealPath(
             c,
-            path.join(
-                sdk,
-                `tools/emulator/bin/em-cli${isSystemWin ? '.bat' : ''}`
-            )
+            path.join(sdk, `tools/emulator/bin/em-cli${isSystemWin ? '.bat' : ''}`)
         );
-        c.cli[CLI_TIZEN] = getRealPath(
-            c,
-            path.join(sdk, `tools/ide/bin/tizen${isSystemWin ? '.bat' : ''}`)
-        );
-        c.cli[CLI_SDB_TIZEN] = getRealPath(
-            c,
-            path.join(sdk, `tools/sdb${isSystemWin ? '.exe' : ''}`)
-        );
+        c.cli[CLI_TIZEN] = getRealPath(c, path.join(sdk, `tools/ide/bin/tizen${isSystemWin ? '.bat' : ''}`));
+        c.cli[CLI_SDB_TIZEN] = getRealPath(c, path.join(sdk, `tools/sdb${isSystemWin ? '.exe' : ''}`));
     } else {
         _logSdkWarning(c);
     }
@@ -150,10 +117,7 @@ export const checkAndConfigureWebosSdks = async (c) => {
     logTask(`checkAndConfigureWebosSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.WEBOS_SDK;
     if (sdk) {
-        c.cli[CLI_WEBOS_ARES] = getRealPath(
-            c,
-            path.join(sdk, `CLI/bin/ares${isSystemWin ? '.cmd' : ''}`)
-        );
+        c.cli[CLI_WEBOS_ARES] = getRealPath(c, path.join(sdk, `CLI/bin/ares${isSystemWin ? '.cmd' : ''}`));
         c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(
             c,
             path.join(sdk, `CLI/bin/ares-package${isSystemWin ? '.cmd' : ''}`)
@@ -168,17 +132,11 @@ export const checkAndConfigureWebosSdks = async (c) => {
         );
         c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = getRealPath(
             c,
-            path.join(
-                sdk,
-                `CLI/bin/ares-setup-device${isSystemWin ? '.cmd' : ''}`
-            )
+            path.join(sdk, `CLI/bin/ares-setup-device${isSystemWin ? '.cmd' : ''}`)
         );
         c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = getRealPath(
             c,
-            path.join(
-                sdk,
-                `CLI/bin/ares-device-info${isSystemWin ? '.cmd' : ''}`
-            )
+            path.join(sdk, `CLI/bin/ares-device-info${isSystemWin ? '.cmd' : ''}`)
         );
         c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(
             c,
@@ -209,7 +167,7 @@ export const checkAndConfigureSdks = async (c) => {
     }
 };
 
-const _getCurrentSdkPath = c => c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]];
+const _getCurrentSdkPath = (c) => c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]];
 
 const _isSdkInstalled = (c) => {
     logTask('_isSdkInstalled');
@@ -260,7 +218,7 @@ const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) =
         locations.push(ANDROID_NDK_HOME);
     }
 
-    let result = locations.find(v => fsExistsSync(v));
+    let result = locations.find((v) => fsExistsSync(v));
 
     if (result && traverseUntilFoundFile) {
         const subResult = _findFolderWithFile(result, traverseUntilFoundFile);
@@ -272,17 +230,13 @@ const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) =
     }
 
     if (result) {
-        logSuccess(
-            `Found existing ${c.platform} SDK location at ${chalk().white(
-                result
-            )}`
-        );
+        logSuccess(`Found existing ${c.platform} SDK location at ${chalk().white(result)}`);
         let confirmSdk = true;
         if (!c.program.ci) {
             const { confirm } = await inquirer.prompt({
                 type: 'confirm',
                 name: 'confirm',
-                message: 'Do you want to use it?'
+                message: 'Do you want to use it?',
             });
             confirmSdk = confirm;
         }
@@ -291,10 +245,7 @@ const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) =
             try {
                 if (!c.files.workspace.config.sdks) c.files.workspace.config.sdks = {};
                 c.files.workspace.config.sdks[sdkKey] = result;
-                writeFileSync(
-                    c.paths.workspace.config,
-                    c.files.workspace.config
-                );
+                writeFileSync(c.paths.workspace.config, c.files.workspace.config);
                 generateBuildConfig(c);
                 await checkAndConfigureSdks(c);
             } catch (e) {
@@ -317,9 +268,7 @@ export const checkSdk = async (c) => {
     logTask('checkSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
-            `${
-                c.platform
-            } requires SDK to be installed. Your SDK path in ${chalk().white(
+            `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().white(
                 c.paths.workspace.config
             )} does not exist: ${chalk().white(_getCurrentSdkPath(c))}`
         );

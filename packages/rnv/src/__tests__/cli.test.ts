@@ -3,22 +3,22 @@
 // import cli from '../../src/cli';
 
 jest.mock('../../src/core/systemManager/logger.js', () => {
-    const _chalkCols = {
-        white: v => v,
-        green: v => v,
-        red: v => v,
-        yellow: v => v,
-        default: v => v,
-        gray: v => v,
-        grey: v => v,
-        blue: v => v,
-        cyan: v => v,
-        magenta: v => v
+    const _chalkCols: any = {
+        white: (v) => v,
+        green: (v) => v,
+        red: (v) => v,
+        yellow: (v) => v,
+        default: (v) => v,
+        gray: (v) => v,
+        grey: (v) => v,
+        blue: (v) => v,
+        cyan: (v) => v,
+        magenta: (v) => v,
+        rgb: () => (v) => v,
     };
-    _chalkCols.rgb = () => v => v;
     _chalkCols.bold = _chalkCols;
     const _chalkMono = {
-        ..._chalkCols
+        ..._chalkCols,
     };
     return {
         logToSummary: jest.fn(),
@@ -29,14 +29,14 @@ jest.mock('../../src/core/systemManager/logger.js', () => {
         logWarning: jest.fn(),
         logSuccess: jest.fn(),
         logInitTask: jest.fn(),
-        chalk: () => _chalkMono
+        chalk: () => _chalkMono,
     };
 });
 
 jest.mock('../../src/core/taskManager/index.js', () => ({
     initializeTask: jest.fn(),
     findSuitableTask: () => {
-
+        //Do nothing
     },
 }));
 
@@ -165,7 +165,6 @@ describe('Testing rnv configure', () => {
     itShouldResolve('configure');
 });
 
-
 // ###############################################
 // HELPERS
 // ###############################################
@@ -173,7 +172,6 @@ describe('Testing rnv configure', () => {
 // const shouldReject = async (cmd, reject) => {
 //     await expect(cli(getConfig(cmd), null, true)).rejects.toThrow(reject);
 // };
-
 
 const shouldResolve = async () => {
     // await cli(getConfig(cmd));

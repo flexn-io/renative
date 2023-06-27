@@ -3,9 +3,15 @@ import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
-import { getEngineRunner, getEngineTask, getRegisteredEngines, hasEngineTask, getEngineSubTasks, registerAllPlatformEngines } from '../engineManager';
+import {
+    getEngineRunner,
+    getEngineTask,
+    getRegisteredEngines,
+    hasEngineTask,
+    getEngineSubTasks,
+    registerAllPlatformEngines,
+} from '../engineManager';
 import { TASK_CONFIGURE_SOFT } from '../constants';
-
 
 let executedTasks = {};
 
@@ -24,7 +30,7 @@ export const initializeTask = async (c, task) => {
 
     Analytics.captureEvent({
         type: `${task}Project`,
-        platform: c.platform
+        platform: c.platform,
     });
 
     await executeTask(c, task, null, task, true);
@@ -48,7 +54,7 @@ const _getTaskObj = (taskInstance) => {
     return {
         key,
         taskInstance,
-        hasMultipleSubTasks
+        hasMultipleSubTasks,
     };
 };
 
@@ -77,14 +83,14 @@ export const findSuitableTask = async (c, specificTask) => {
             let filteredTasks;
             let addendum = '';
             if (!c.paths.project.configExists) {
-                filteredTasks = taskInstances.filter(v => v.taskInstance.isGlobalScope);
-                tasks = filteredTasks.map(v => _getTaskOption(v)).sort();
-                tasksCommands = filteredTasks.map(v => v.taskInstance.task.split(' ')[0]).sort();
+                filteredTasks = taskInstances.filter((v) => v.taskInstance.isGlobalScope);
+                tasks = filteredTasks.map((v) => _getTaskOption(v)).sort();
+                tasksCommands = filteredTasks.map((v) => v.taskInstance.task.split(' ')[0]).sort();
                 addendum = ' (Not a ReNative project. options will be limited)';
             } else {
-                tasks = taskInstances.map(v => _getTaskOption(v)).sort();
-                tasksCommands = taskInstances.map(v => v.taskInstance.task.split(' ')[0]).sort();
-                defaultCmd = tasks.find(v => v.startsWith('run'));
+                tasks = taskInstances.map((v) => _getTaskOption(v)).sort();
+                tasksCommands = taskInstances.map((v) => v.taskInstance.task.split(' ')[0]).sort();
+                defaultCmd = tasks.find((v) => v.startsWith('run'));
             }
 
             const { command } = await inquirerPrompt({
@@ -94,22 +100,25 @@ export const findSuitableTask = async (c, specificTask) => {
                 message: `Pick a command${addendum}`,
                 choices: tasks,
                 pageSize: 15,
-                logMessage: 'Welcome to the brave new world...'
+                logMessage: 'Welcome to the brave new world...',
             });
             c.command = tasksCommands[tasks.indexOf(command)];
         }
         task = c.command;
         if (c.subCommand) task += ` ${c.subCommand}`;
 
-        let suitableEngines = REGISTERED_ENGINES
-            .filter(engine => hasEngineTask(task, engine.tasks, c.paths.project.configExists));
+        let suitableEngines = REGISTERED_ENGINES.filter((engine) =>
+            hasEngineTask(task, engine.tasks, c.paths.project.configExists)
+        );
 
-        const autocompleteEngines = REGISTERED_ENGINES
-            .filter(engine => getEngineSubTasks(task, engine.tasks, true).length);
+        const autocompleteEngines = REGISTERED_ENGINES.filter(
+            (engine) => getEngineSubTasks(task, engine.tasks, true).length
+        );
 
         const isAutoComplete = !suitableEngines.length && !!c.command && !autocompleteEngines.length;
-        const message = isAutoComplete ? `Autocomplete action for "${
-            c.command}"` : `Pick a subCommand for ${c.command}`;
+        const message = isAutoComplete
+            ? `Autocomplete action for "${c.command}"`
+            : `Pick a subCommand for ${c.command}`;
 
         if (!suitableEngines.length) {
             // Get all supported tasks
@@ -122,7 +131,7 @@ export const findSuitableTask = async (c, specificTask) => {
 
                         supportedSubtasksArr.push({
                             desc: taskInstance.description?.toLowerCase?.(),
-                            taskKey
+                            taskKey,
                         });
                     }
                 });
@@ -134,7 +143,7 @@ export const findSuitableTask = async (c, specificTask) => {
 
                     supportedSubtasksArr.push({
                         desc: taskInstance.description?.toLowerCase?.(),
-                        taskKey
+                        taskKey,
                     });
                 }
             });
@@ -155,7 +164,7 @@ export const findSuitableTask = async (c, specificTask) => {
                 const desc = v.desc ? `(${v.desc})` : '';
                 const key = `${v.taskKey} ${chalk().grey(desc)}`;
                 supportedSubtasks[key] = {
-                    taskKey: v.taskKey
+                    taskKey: v.taskKey,
                 };
             });
 
@@ -181,9 +190,9 @@ export const findSuitableTask = async (c, specificTask) => {
                     task = `${c.command} ${c.subCommand}`;
                 }
 
-
-                suitableEngines = REGISTERED_ENGINES
-                    .filter(engine => hasEngineTask(task, engine.tasks, c.paths.project.configExists));
+                suitableEngines = REGISTERED_ENGINES.filter((engine) =>
+                    hasEngineTask(task, engine.tasks, c.paths.project.configExists)
+                );
             }
         }
 
@@ -214,9 +223,11 @@ export const findSuitableTask = async (c, specificTask) => {
         if (c.runtime.engine.runtimeExtraProps) {
             c.runtime.runtimeExtraProps = c.runtime.engine.runtimeExtraProps;
         }
-        logInfo(`Current Engine: ${chalk().bold.white(
-            c.runtime.engine.config.id
-        )} path: ${chalk().grey(c.runtime.engine.rootPath)}`);
+        logInfo(
+            `Current Engine: ${chalk().bold.white(c.runtime.engine.config.id)} path: ${chalk().grey(
+                c.runtime.engine.rootPath
+            )}`
+        );
         const customTask = CUSTOM_TASKS[task];
         if (customTask) {
             c.runtime.availablePlatforms = customTask.platforms;
@@ -272,7 +283,6 @@ const _selectPlatform = async (c, suitableEngines, task) => {
     }
 };
 
-
 const _executePipe = async (c, task, phase) => executePipe(c, `${task.split(' ').join(':')}:${phase}`);
 
 const TASK_LIMIT = 20;
@@ -291,11 +301,7 @@ but issue migh not be necessarily with this task
 
 To avoid that test your task code against parentTask and avoid executing same task X from within task X`);
     }
-    await executeEngineTask(
-        c, task, parentTask, originTask,
-        getEngineRunner(c, task, CUSTOM_TASKS).tasks,
-        isFirstTask
-    );
+    await executeEngineTask(c, task, parentTask, originTask, getEngineRunner(c, task, CUSTOM_TASKS).tasks, isFirstTask);
     // await getEngineRunner(c, task, CUSTOM_TASKS).executeTask(c, task, parentTask, originTask, isFirstTask);
     executedTasks[task]++;
 
@@ -312,12 +318,7 @@ export const executeOrSkipTask = async (c, task, parentTask, originTask) => {
     return executeTask(c, TASK_CONFIGURE_SOFT, parentTask, originTask);
 };
 
-const ACCEPTED_CONDITIONS = [
-    'platform',
-    'target',
-    'appId',
-    'scheme'
-];
+const ACCEPTED_CONDITIONS = ['platform', 'target', 'appId', 'scheme'];
 
 const _logSkip = (task) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
@@ -333,7 +334,6 @@ export const shouldSkipTask = (c, task, originTask) => {
         if (skipTaskArr.includes(task)) return true;
     }
 
-
     if (Array.isArray(tasks)) {
         for (let k = 0; k < tasks.length; k++) {
             const t = tasks[k];
@@ -348,7 +348,11 @@ export const shouldSkipTask = (c, task, originTask) => {
                                 conditionsToMatch--;
                             }
                         } else {
-                            logWarning(`Condition ${con} not valid. only following keys are valid: ${ACCEPTED_CONDITIONS.join(',')} SKIPPING...`);
+                            logWarning(
+                                `Condition ${con} not valid. only following keys are valid: ${ACCEPTED_CONDITIONS.join(
+                                    ','
+                                )} SKIPPING...`
+                            );
                         }
                     });
                     if (conditionsToMatch === 0) {
@@ -393,10 +397,12 @@ Description: ${t.description}
 
 Options:
 
-${t.params.map((v) => {
+${t.params
+    .map((v) => {
         const option = v.shortcut ? `\`-${v.shortcut}\`, ` : '';
         return `${option}\`--${v.key}\` - ${v.description}`;
-    }).join('\n')}
+    })
+    .join('\n')}
 
   `);
         if (t.fnHelp) {

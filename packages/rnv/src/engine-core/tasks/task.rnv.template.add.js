@@ -19,7 +19,7 @@ export const _addTemplate = (c, template) => {
 
     if (!c.files.project.config.templates[template]) {
         c.files.project.config.templates[template] = {
-            version: 'latest'
+            version: 'latest',
         };
     }
 
@@ -37,7 +37,7 @@ export const taskRnvTemplateAdd = async (c, parentTask, originTask) => {
         type: 'list',
         message: 'Pick which template to install',
         name: 'template',
-        choices: opts.keysAsArray
+        choices: opts.keysAsArray,
     });
 
     _addTemplate(c, template);

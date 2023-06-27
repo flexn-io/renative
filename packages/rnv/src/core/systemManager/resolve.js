@@ -95,13 +95,12 @@ const _getPackagePathParts = (aPath) => {
  * We support path linking using 'file:' protocol (not part of official node resolution alg.)
  */
 const _doResolveFSPath = (aPath, options) => {
-    const fileRelPath = `${
-        options.basedir ? `${options.basedir}/`.replace(/.*\/+$/, '/') : ''
-    }${aPath.replace('file:', '')}`;
+    const fileRelPath = `${options.basedir ? `${options.basedir}/`.replace(/.*\/+$/, '/') : ''}${aPath.replace(
+        'file:',
+        ''
+    )}`;
     if (!fs.existsSync(fileRelPath)) {
-        throw new Error(
-            `Explicit filepath ${aPath} does not resolve to dir or file`
-        );
+        throw new Error(`Explicit filepath ${aPath} does not resolve to dir or file`);
     }
     return fileRelPath;
 };
@@ -120,12 +119,10 @@ const _doResolveExternalPackage = (aPath, options) => {
                     return pkg;
                 },
                 ...options,
-                extensions: ['.js', '.json'].concat(options.extensions ?? [])
+                extensions: ['.js', '.json'].concat(options.extensions ?? []),
             })
             .replace(/(\\|\/)package.json$/, '');
-        return options.keepSuffix ?? false
-            ? `${resolvedPath}/${packageSuffix}`
-            : resolvedPath;
+        return options.keepSuffix ?? false ? `${resolvedPath}/${packageSuffix}` : resolvedPath;
     } catch (e) {
         return null;
     }

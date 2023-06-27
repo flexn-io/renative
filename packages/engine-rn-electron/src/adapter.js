@@ -2,12 +2,7 @@ export const withRNVBabel = (cnf) => {
     const plugins = cnf?.plugins || [];
     return {
         retainLines: true,
-        presets: [
-            [
-                'module:metro-react-native-babel-preset',
-                { useTransformReactJSXExperimental: true }
-            ],
-        ],
+        presets: [['module:metro-react-native-babel-preset', { useTransformReactJSXExperimental: true }]],
         ...cnf,
         plugins: [
             [
@@ -23,8 +18,7 @@ export const withRNVBabel = (cnf) => {
                     runtime: 'automatic',
                 },
             ],
-            ...plugins
+            ...plugins,
         ],
-
     };
 };

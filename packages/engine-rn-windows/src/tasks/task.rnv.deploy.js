@@ -3,13 +3,7 @@ import { SDKWindows } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    WINDOWS,
-    XBOX,
-    TASK_EXPORT,
-    TASK_DEPLOY,
-    PARAMS
-} = Constants;
+const { WINDOWS, XBOX, TASK_EXPORT, TASK_DEPLOY, PARAMS } = Constants;
 // TODO Implement export windows app (currently it only seems to be available through VS Studio itself...)
 const { ruWindowsProject } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
@@ -37,8 +31,5 @@ export default {
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        WINDOWS,
-        XBOX
-    ],
+    platforms: [WINDOWS, XBOX],
 };

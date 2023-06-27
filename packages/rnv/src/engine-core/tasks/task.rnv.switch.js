@@ -4,7 +4,6 @@ import { generateRuntimeConfig } from '../../core/configManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_SWITCH, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
-
 export const taskRnvSwitch = async (c, parentTask, originTask) => {
     logTask('taskRnvSwitch');
 

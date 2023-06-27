@@ -1,6 +1,7 @@
 import { isPlatformSupported } from '../../core/platformManager';
 import { chalk, logTask } from '../../core/systemManager/logger';
-import { IOS,
+import {
+    IOS,
     ANDROID,
     TVOS,
     TIZEN,
@@ -11,7 +12,8 @@ import { IOS,
     KAIOS,
     TASK_WORKSPACE_CONFIGURE,
     TASK_TARGET_LAUNCH,
-    PARAMS } from '../../core/constants';
+    PARAMS,
+} from '../../core/constants';
 import { checkSdk } from '../../core/sdkManager/installer';
 
 import { launchTizenSimulator } from '../../core/sdkManager/deviceUtils/tizen';
@@ -62,5 +64,5 @@ export default {
     task: 'target launch',
     params: PARAMS.withBase(),
     platforms: [],
-    isGlobalScope: true
+    isGlobalScope: true,
 };

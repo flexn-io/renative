@@ -7,26 +7,26 @@ let createWindow;
 
 const template = [
     // { role: 'appMenu' }
-    ...[{
-        label: app.name,
-        submenu: [
-            { role: 'about' },
-            { type: 'separator' },
-            { role: 'services' },
-            { type: 'separator' },
-            { role: 'hide' },
-            { role: 'hideothers' },
-            { role: 'unhide' },
-            { type: 'separator' },
-            { role: 'quit' }
-        ]
-    }],
+    ...[
+        {
+            label: app.name,
+            submenu: [
+                { role: 'about' },
+                { type: 'separator' },
+                { role: 'services' },
+                { type: 'separator' },
+                { role: 'hide' },
+                { role: 'hideothers' },
+                { role: 'unhide' },
+                { type: 'separator' },
+                { role: 'quit' },
+            ],
+        },
+    ],
     // { role: 'fileMenu' }
     {
         label: 'File',
-        submenu: [
-            { role: 'close' }
-        ]
+        submenu: [{ role: 'close' }],
     },
     // { role: 'editMenu' }
     {
@@ -45,13 +45,10 @@ const template = [
                 { type: 'separator' },
                 {
                     label: 'Speech',
-                    submenu: [
-                        { role: 'startspeaking' },
-                        { role: 'stopspeaking' }
-                    ]
-                }
-            ]
-        ]
+                    submenu: [{ role: 'startspeaking' }, { role: 'stopspeaking' }],
+                },
+            ],
+        ],
     },
     // { role: 'viewMenu' }
     {
@@ -65,8 +62,8 @@ const template = [
             { role: 'zoomin' },
             { role: 'zoomout' },
             { type: 'separator' },
-            { role: 'togglefullscreen' }
-        ]
+            { role: 'togglefullscreen' },
+        ],
     },
     // { role: 'windowMenu' }
     {
@@ -82,10 +79,10 @@ const template = [
                     label: app.name,
                     click: async () => {
                         if (!mainWindow) createWindow();
-                    }
-                }
-            ]
-        ]
+                    },
+                },
+            ],
+        ],
     },
     {
         role: 'help',
@@ -95,10 +92,10 @@ const template = [
                 click: async () => {
                     const { shell } = require('electron');
                     await shell.openExternal('https://renative.org');
-                }
-            }
-        ]
-    }
+                },
+            },
+        ],
+    },
 ];
 
 exports.initContextMenu = function (createWindowHandler) {

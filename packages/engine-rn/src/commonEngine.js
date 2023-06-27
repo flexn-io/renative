@@ -38,7 +38,10 @@ export const waitForBundlerIfRequired = async (c) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
     // return a new promise that does...nothing, just to keep RNV running while the bundler is running
-    if (keepRNVRunning) return new Promise(() => {});
+    if (keepRNVRunning)
+        return new Promise(() => {
+            //Do nothing
+        });
     return true;
 };
 
@@ -55,8 +58,7 @@ module.exports = withRNVMetro({});
         cfPath = path.join(c.paths.project.dir, `metro.config.${c.platform}.js`);
     }
     if (fsExistsSync(cfPath)) {
-        logWarning(`${
-            chalk().white(cfPath)} is DEPRECATED. You can add following snippet:
+        logWarning(`${chalk().white(cfPath)} is DEPRECATED. You can add following snippet:
 ${chalk().white(metroSnippet)}
 to your ${chalk().white('/.metro.config.js')} instead and delete deprecated file
 `);
@@ -71,18 +73,10 @@ to your ${chalk().white('/.metro.config.js')} instead and delete deprecated file
         }
     }
 
-
     // Check rn-cli-config
     if (!fsExistsSync(c.paths.project.rnCliConfig)) {
-        logInfo(
-            `Your rn-cli config file ${chalk().white(
-                c.paths.project.rnCliConfig
-            )} is missing! INSTALLING...DONE`
-        );
-        copyFileSync(
-            path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME),
-            c.paths.project.rnCliConfig
-        );
+        logInfo(`Your rn-cli config file ${chalk().white(c.paths.project.rnCliConfig)} is missing! INSTALLING...DONE`);
+        copyFileSync(path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME), c.paths.project.rnCliConfig);
     }
 };
 
@@ -90,11 +84,7 @@ const _isBundlerRunning = async (c) => {
     logTask('_isBundlerRunning');
     try {
         const { data } = await axios.get(
-            `http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(
-                c,
-                c.platform,
-                'entryFile'
-            )}.js`
+            `http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(c, c.platform, 'entryFile')}.js`
         );
         if (data.includes('import')) {
             logTask('_isBundlerRunning', '(YES)');
@@ -143,4 +133,4 @@ const poll = (fn, timeout = 10000, interval = 1000) => {
     return new Promise(checkCondition);
 };
 
-export const waitForBundler = async c => poll(() => _isBundlerRunning(c));
+export const waitForBundler = async (c) => poll(() => _isBundlerRunning(c));

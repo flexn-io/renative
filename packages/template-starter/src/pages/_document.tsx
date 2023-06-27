@@ -7,10 +7,7 @@ class MyDocument extends Document {
         return (
             <Html lang="en">
                 <Head>
-                    <meta
-                        name="description"
-                        content={CONFIG.welcomeMessage}
-                    />
+                    <meta name="description" content={CONFIG.welcomeMessage} />
                     <link rel="shortcut icon" href="/favicon.ico" />
                 </Head>
                 <body>

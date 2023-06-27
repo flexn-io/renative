@@ -3,13 +3,7 @@ import { SDKWindows } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    WINDOWS,
-    XBOX,
-    TASK_BUILD,
-    TASK_PACKAGE,
-    PARAMS
-} = Constants;
+const { WINDOWS, XBOX, TASK_BUILD, TASK_PACKAGE, PARAMS } = Constants;
 const { ruWindowsProject } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
@@ -35,8 +29,5 @@ export default {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        WINDOWS,
-        XBOX
-    ],
+    platforms: [WINDOWS, XBOX],
 };

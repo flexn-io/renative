@@ -51,7 +51,12 @@ const _execute = (c, command, opts = {}) => {
 
     const mergedOpts = { ...defaultOpts, ...opts };
 
-    const env = opts.env && c.program.info ? Object.keys(opts.env).map(k => `${k}=${opts.env[k]}`).join(' ') : null;
+    const env =
+        opts.env && c.program.info
+            ? Object.keys(opts.env)
+                  .map((k) => `${k}=${opts.env[k]}`)
+                  .join(' ')
+            : null;
 
     let cleanCommand = command;
     let interval;
@@ -65,11 +70,7 @@ const _execute = (c, command, opts = {}) => {
     let logMessage = cleanCommand;
     const { privateParams } = mergedOpts;
     if (privateParams && Array.isArray(privateParams)) {
-        logMessage = replaceOverridesInString(
-            command,
-            privateParams,
-            privateMask
-        );
+        logMessage = replaceOverridesInString(command, privateParams, privateMask);
     }
 
     logMessage = `${env ? `${env} ` : ''}${logMessage}`;
@@ -97,15 +98,9 @@ const _execute = (c, command, opts = {}) => {
     const MAX_OUTPUT_LENGTH = 200;
 
     const printLastLine = (buffer) => {
-        const text = Buffer.from(buffer)
-            .toString()
-            .trim();
+        const text = Buffer.from(buffer).toString().trim();
         const lastLine = text.split('\n').pop();
-        spinner.text = replaceOverridesInString(
-            lastLine.substring(0, MAX_OUTPUT_LENGTH),
-            privateParams,
-            privateMask
-        );
+        spinner.text = replaceOverridesInString(lastLine.substring(0, MAX_OUTPUT_LENGTH), privateParams, privateMask);
         if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...\n';
     };
 
@@ -122,9 +117,7 @@ const _execute = (c, command, opts = {}) => {
             }
 
             !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
-            logDebug(
-                replaceOverridesInString(res.all, privateParams, privateMask)
-            );
+            logDebug(replaceOverridesInString(res.all, privateParams, privateMask));
             interval && clearInterval(interval);
             // logDebug(res);
             return res.stdout;
@@ -134,10 +127,10 @@ const _execute = (c, command, opts = {}) => {
                 spinner && child.stdout.off('data', printLastLine);
             }
 
-            if (!silent && !mono && !ignoreErrors) { spinner.fail(`FAILED: ${logMessage}`); } // parseErrorMessage will return false if nothing is found, default to previous implementation
-            logDebug(
-                replaceOverridesInString(err.all, privateParams, privateMask)
-            );
+            if (!silent && !mono && !ignoreErrors) {
+                spinner.fail(`FAILED: ${logMessage}`);
+            } // parseErrorMessage will return false if nothing is found, default to previous implementation
+            logDebug(replaceOverridesInString(err.all, privateParams, privateMask));
             interval && clearInterval(interval);
             // logDebug(err);
             if (ignoreErrors && !silent && !mono) {
@@ -165,15 +158,9 @@ const _execute = (c, command, opts = {}) => {
                 errMessage += `${err.stack}\n\n`;
             }
 
-            errMessage = replaceOverridesInString(
-                errMessage,
-                privateParams,
-                privateMask
-            );
+            errMessage = replaceOverridesInString(errMessage, privateParams, privateMask);
 
-            return Promise.reject(
-                `COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`
-            ); // parseErrorMessage will return false if nothing is found, default to previous implementation
+            return Promise.reject(`COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
         });
 };
 
@@ -190,17 +177,19 @@ const _execute = (c, command, opts = {}) => {
  */
 const execCLI = (c, cli, command, opts = {}) => {
     if (!c.program) {
-        return Promise.reject(
-            'You need to pass c object as first parameter to execCLI()'
-        );
+        return Promise.reject('You need to pass c object as first parameter to execCLI()');
     }
     const p = c.cli[cli];
     if (!fsExistsSync(p)) {
-        logDebug(`execCLI error: ${cli} | ${command}`, '\nCLI Config:\n', c.cli, '\nSDK Config:\n', c.buildConfig?.sdks);
+        logDebug(
+            `execCLI error: ${cli} | ${command}`,
+            '\nCLI Config:\n',
+            c.cli,
+            '\nSDK Config:\n',
+            c.buildConfig?.sdks
+        );
         return Promise.reject(
-            `Location of your cli ${chalk().white(
-                p
-            )} does not exists. check your ${chalk().white(
+            `Location of your cli ${chalk().white(p)} does not exists. check your ${chalk().white(
                 c.paths.workspace.config
             )} file if your ${chalk().white('sdks')} paths are correct`
         );
@@ -229,7 +218,9 @@ const executeAsync = async (_c, _cmd, _opts) => {
         c = Config.getConfig();
     }
     opts = opts || {};
-    if (cmd.includes('npm') && process.platform === 'win32') { cmd.replace('npm', 'npm.cmd'); }
+    if (cmd.includes('npm') && process.platform === 'win32') {
+        cmd.replace('npm', 'npm.cmd');
+    }
     // let cmdArr;
     // if (typeof cmd === 'string') {
     //     cmdArr = cmd.split('&&');
@@ -264,26 +255,24 @@ const executeAsync = async (_c, _cmd, _opts) => {
  * @returns {Promise}
  *
  */
-const executeTelnet = (c, port, command) => new Promise((resolve) => {
-    logDebug(`execTelnet: ${port} ${command}`);
-    try {
-        let output = '';
-        const nc2 = new NClient();
-        nc2.addr(c.runtime.localhost)
-            .port(parseInt(port, 10))
-            .connect()
-            .send(`${command}\n`);
-        nc2.on('data', (data) => {
-            const resp = Buffer.from(data).toString();
-            output += resp;
-            if (output.includes('OK')) nc2.close();
-        });
-        nc2.on('close', () => resolve(output));
-    } catch (e) {
-        logError(e);
-        resolve();
-    }
-});
+const executeTelnet = (c, port, command) =>
+    new Promise((resolve) => {
+        logDebug(`execTelnet: ${port} ${command}`);
+        try {
+            let output = '';
+            const nc2 = new NClient();
+            nc2.addr(c.runtime.localhost).port(parseInt(port, 10)).connect().send(`${command}\n`);
+            nc2.on('data', (data) => {
+                const resp = Buffer.from(data).toString();
+                output += resp;
+                if (output.includes('OK')) nc2.close();
+            });
+            nc2.on('close', () => resolve(output));
+        } catch (e) {
+            logError(e);
+            resolve();
+        }
+    });
 
 // Legacy error parser
 // export const parseErrorMessage = (text, maxErrorLength = 800) => {
@@ -303,7 +292,6 @@ const executeTelnet = (c, port, command) => new Promise((resolve) => {
 //
 //     return extractError(text);
 // };
-
 
 export const parseErrorMessage = (text, maxErrorLength = 800) => {
     if (!text) return '';
@@ -325,27 +313,27 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
         if (v === '') return false;
         // Cleaner iOS reporting
         if (
-            v.includes('-Werror')
-            || v.includes('following modules are linked manually')
-            || v.includes('warn ')
-            || v.includes('note: ')
-            || v.includes('warning: ')
-            || v.includes('Could not find the following native modules')
-            || v.includes('⚠️')
-            || v.includes('/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain')
+            v.includes('-Werror') ||
+            v.includes('following modules are linked manually') ||
+            v.includes('warn ') ||
+            v.includes('note: ') ||
+            v.includes('warning: ') ||
+            v.includes('Could not find the following native modules') ||
+            v.includes('⚠️') ||
+            v.includes('/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain')
         ) {
             return false;
         }
         // Cleaner Android reporting
         if (
-            v.includes('[DEBUG]')
-            || v.includes('[INFO]')
-            || v.includes('[LIFECYCLE]')
-            || v.includes('[WARN]')
-            || v.includes(':+HeapDumpOnOutOfMemoryError')
-            || v.includes('.errors.')
-            || v.includes('-exception-')
-            || v.includes('error_prone_annotations')
+            v.includes('[DEBUG]') ||
+            v.includes('[INFO]') ||
+            v.includes('[LIFECYCLE]') ||
+            v.includes('[WARN]') ||
+            v.includes(':+HeapDumpOnOutOfMemoryError') ||
+            v.includes('.errors.') ||
+            v.includes('-exception-') ||
+            v.includes('error_prone_annotations')
         ) {
             return false;
         }
@@ -411,8 +399,7 @@ const commandExistsUnix = (commandName, cleanedCommandName, callback) => {
     fileNotExists(commandName, (isFile) => {
         if (!isFile) {
             exec(
-                `command -v ${cleanedCommandName} 2>/dev/null`
-                    + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`,
+                `command -v ${cleanedCommandName} 2>/dev/null` + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`,
                 (error, stdout) => {
                     callback(null, !!stdout);
                 }
@@ -442,8 +429,7 @@ const commandExistsUnixSync = (commandName, cleanedCommandName) => {
     if (fileNotExistsSync(commandName)) {
         try {
             const stdout = execSync(
-                `command -v ${cleanedCommandName} 2>/dev/null`
-                    + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`
+                `command -v ${cleanedCommandName} 2>/dev/null` + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`
             );
             return !!stdout;
         } catch (error) {
@@ -516,27 +502,15 @@ const commandExistsSync = (commandName) => {
     return commandExistsUnixSync(commandName, cleanedCommandName);
 };
 
-
 // eslint-disable-next-line no-nested-ternary
-const openCommand = process.platform === 'darwin'
-    ? 'open'
-    : process.platform === 'win32'
-        ? 'start'
-        : 'xdg-open';
+const openCommand = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
 
-export {
-    executeAsync,
-    execCLI,
-    commandExists,
-    commandExistsSync,
-    openCommand,
-    executeTelnet
-};
+export { executeAsync, execCLI, commandExists, commandExistsSync, openCommand, executeTelnet };
 
 export default {
     executeAsync,
     execCLI,
     openCommand,
     executeTelnet,
-    commandExistsSync
+    commandExistsSync,
 };

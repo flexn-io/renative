@@ -55,7 +55,7 @@ class Docker {
 
         writeCleanFile(dockerFile, copiedDockerFile, [
             { pattern: '{{BUILD_FOLDER}}', override: outputDir },
-            { pattern: '{{DOCKER_ADDITIONAL_COMMANDS}}', override: additionalCommands }
+            { pattern: '{{DOCKER_ADDITIONAL_COMMANDS}}', override: additionalCommands },
         ]);
 
         writeCleanFile(nginxConfFile, copiedNginxConfFile);
@@ -72,7 +72,12 @@ class Docker {
 
     async saveImage() {
         const { c } = this;
-        const { runtime, files, platform, program: { scheme = 'debug' } } = c;
+        const {
+            runtime,
+            files,
+            platform,
+            program: { scheme = 'debug' },
+        } = c;
 
         const imageName = runtime.appId.toLowerCase();
         const appVersion = files.project.package.version;
@@ -82,10 +87,18 @@ class Docker {
 
         logTask('docker:Dockerfile:build');
         await executeAsync(`docker save -o ${dockerSaveFile} ${imageName}:${appVersion}`);
-        logSuccess(`${imageName}_${appVersion}.tar file has been saved in ${
-            chalk.white(dockerDestination)}. You can import it on another machine by running ${
-            chalk.white(`'docker load -i ${imageName}_${appVersion}.tar'`)}`);
-        logSuccess(`You can also test it locally by running the following command: ${chalk.white(`'docker run -d --rm -p 8081:80 -p 8443:443 ${imageName}:${appVersion}'`)} and then opening ${chalk.white('http://localhost:8081')}`);
+        logSuccess(
+            `${imageName}_${appVersion}.tar file has been saved in ${chalk.white(
+                dockerDestination
+            )}. You can import it on another machine by running ${chalk.white(
+                `'docker load -i ${imageName}_${appVersion}.tar'`
+            )}`
+        );
+        logSuccess(
+            `You can also test it locally by running the following command: ${chalk.white(
+                `'docker run -d --rm -p 8081:80 -p 8443:443 ${imageName}:${appVersion}'`
+            )} and then opening ${chalk.white('http://localhost:8081')}`
+        );
 
         const deployOptions = getConfigProp(c, platform, 'deploy');
         const zipImage = deployOptions?.docker?.zipImage;
@@ -94,8 +107,9 @@ class Docker {
             logTask('docker:zipImage');
             if (commandExistsSync('zip')) {
                 const pth = `${dockerDestination}${path.sep}`;
-                await executeAsync(`zip -j ${pth}web_${imageName}_${scheme}_${
-                    appVersion}.zip ${pth}${imageName}_${appVersion}.tar ${pth}docker-compose.yml`);
+                await executeAsync(
+                    `zip -j ${pth}web_${imageName}_${scheme}_${appVersion}.zip ${pth}${imageName}_${appVersion}.tar ${pth}docker-compose.yml`
+                );
             }
         }
     }
@@ -117,7 +131,8 @@ class Docker {
         if (!DOCKERHUB_PASS || !DOCKERHUB_USER) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
-                message: 'It seems you don\'t have the DOCKERHUB_USER and DOCKERHUB_PASS environment variables set. Do you want to enter them here?'
+                message:
+                    "It seems you don't have the DOCKERHUB_USER and DOCKERHUB_PASS environment variables set. Do you want to enter them here?",
             });
 
             if (confirm) {
@@ -125,18 +140,20 @@ class Docker {
                     name: 'user',
                     type: 'input',
                     message: 'DockerHub username',
-                    validate: i => !!i || 'No username provided'
+                    validate: (i) => !!i || 'No username provided',
                 });
                 DOCKERHUB_USER = user;
                 const { pass } = await inquirerPrompt({
                     name: 'pass',
                     type: 'password',
                     message: 'DockerHub password',
-                    validate: i => !!i || 'No password provided'
+                    validate: (i) => !!i || 'No password provided',
                 });
                 DOCKERHUB_PASS = pass;
             } else {
-                return logInfo('You chose to not publish the image on DockerHub. The Dockerfile is located in the root folder');
+                return logInfo(
+                    'You chose to not publish the image on DockerHub. The Dockerfile is located in the root folder'
+                );
             }
         }
 
@@ -145,8 +162,9 @@ class Docker {
         const appVersion = files.project.package.version;
 
         logTask('docker:Dockerfile:login');
-        await executeAsync(`echo "${DOCKERHUB_PASS}" | docker login -u "${
-            DOCKERHUB_USER}" --password-stdin`, { interactive: true });
+        await executeAsync(`echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USER}" --password-stdin`, {
+            interactive: true,
+        });
         logTask('docker:Dockerfile:push');
         // tagging for versioning
         await executeAsync(`docker tag ${imageName}:${appVersion} ${imageTag}:${appVersion}`);

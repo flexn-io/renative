@@ -7,7 +7,7 @@ import {
     isPlatformTvos,
     isPlatformTizen,
     isPlatformWebos,
-    isPlatformXbox
+    isPlatformXbox,
 } from '../is';
 
 import isWebBased from './isWebBased';
@@ -29,5 +29,5 @@ export default {
     formFactor: factor,
     factor,
     engine,
-    isWebBased
+    isWebBased,
 };

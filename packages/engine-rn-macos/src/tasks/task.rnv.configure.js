@@ -4,13 +4,7 @@ import { configureMetroConfigs } from '../commonEngine';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    MACOS,
-    TASK_PLATFORM_CONFIGURE,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
-
+const { MACOS, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS } = Constants;
 
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
@@ -44,7 +38,5 @@ export default {
     fn: taskRnvConfigure,
     task: 'configure',
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        MACOS
-    ],
+    platforms: [MACOS],
 };

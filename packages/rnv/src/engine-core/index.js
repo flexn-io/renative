@@ -43,7 +43,9 @@ import taskRnvLink from './tasks/task.rnv.link';
 import taskRnvUnlink from './tasks/task.rnv.unlink';
 
 export default {
-    initializeRuntimeConfig: () => {},
+    initializeRuntimeConfig: () => {
+        //Do nothing
+    },
     tasks: generateEngineTasks([
         taskRnvCryptoDecrypt,
         taskRnvCryptoEncrypt,
@@ -85,18 +87,16 @@ export default {
         taskRnvTargetList,
         taskRnvTargetLaunch,
         taskRnvLink,
-        taskRnvUnlink
+        taskRnvUnlink,
     ]),
     config: {
         title: 'Engine Core',
         id: 'engine-core',
         platforms: {},
-        npm: {}
+        npm: {},
     },
-    package: {
-
-    },
+    package: {},
     projectDirName: '',
     ejectPlatform: null,
-    platforms: null
+    platforms: null,
 };

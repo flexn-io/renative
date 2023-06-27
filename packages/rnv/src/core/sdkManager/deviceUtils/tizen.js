@@ -2,23 +2,17 @@ import inquirer from 'inquirer';
 import net from 'net';
 import path from 'path';
 import { getConfigProp, getPlatformProjectDir } from '../../common';
-import {
-    CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, RENATIVE_CONFIG_NAME
-} from '../../constants';
+import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, RENATIVE_CONFIG_NAME } from '../../constants';
 import { execCLI } from '../../systemManager/exec';
 import { fsRenameSync } from '../../systemManager/fileutils';
-import {
-    chalk, logDebug, logError, logInfo, logTask, logToSummary, logWarning
-} from '../../systemManager/logger';
+import { chalk, logDebug, logError, logInfo, logTask, logToSummary, logWarning } from '../../systemManager/logger';
 import { waitForEmulator } from './common';
-
 
 const xml2js = require('xml2js');
 
 const parser = new xml2js.Parser();
 
 export const DEFAULT_CERTIFICATE_NAME = 'tizen_author';
-
 
 const formatXMLObject = (obj) => {
     const platArr = obj['model-config']?.platform;
@@ -28,7 +22,7 @@ const formatXMLObject = (obj) => {
             ...platKeyArr.reduce((acc, cur) => {
                 acc[cur.$.name] = cur._;
                 return acc;
-            }, {})
+            }, {}),
         };
     }
     logWarning('Invalid object received from shell cat /etc/config/model-config.xml');
@@ -37,13 +31,12 @@ const formatXMLObject = (obj) => {
 
 export const DEFAULT_SECURITY_PROFILE_NAME = 'RNVanillaCert';
 
-
 export const launchTizenSimulator = (c, name) => {
     logTask(`launchTizenSimulator:${name}`);
 
     if (name) {
         return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`, {
-            detached: true
+            detached: true,
         });
     }
     return Promise.reject('No simulator -t target name specified!');
@@ -51,7 +44,7 @@ export const launchTizenSimulator = (c, name) => {
 
 export const listTizenTargets = async (c) => {
     const targets = await execCLI(c, CLI_TIZEN_EMULATOR, 'list-vm', {
-        detached: true
+        detached: true,
     });
     const targetArr = targets.split('\n');
     let targetStr = '';
@@ -61,47 +54,48 @@ export const listTizenTargets = async (c) => {
     logToSummary(`Tizen Targets:\n${targetStr}`);
 };
 
-export const createDevelopTizenCertificate = c => new Promise((resolve) => {
-    logTask('createDevelopTizenCertificate');
+export const createDevelopTizenCertificate = (c) =>
+    new Promise((resolve) => {
+        logTask('createDevelopTizenCertificate');
 
-    const certDirPath = c.paths.workspace.dir;
-    const certFilename = DEFAULT_CERTIFICATE_NAME;
-    const certPassword = '1234';
+        const certDirPath = c.paths.workspace.dir;
+        const certFilename = DEFAULT_CERTIFICATE_NAME;
+        const certPassword = '1234';
 
-    execCLI(
-        c,
-        CLI_TIZEN,
-        `certificate -- ${certDirPath} -a rnv -f ${certFilename} -p ${certPassword}`,
-        // { privateParams: [certPassword] },
-    )
-        .then(() => addDevelopTizenCertificate(c, {
-            profileName: DEFAULT_SECURITY_PROFILE_NAME,
-            certPath: path.join(certDirPath, `${certFilename}.p12`),
-            certPassword,
-        }))
-        .then(() => resolve())
-        .catch((e) => {
-            logError(e);
-            resolve();
-        });
-});
+        execCLI(
+            c,
+            CLI_TIZEN,
+            `certificate -- ${certDirPath} -a rnv -f ${certFilename} -p ${certPassword}`
+            // { privateParams: [certPassword] },
+        )
+            .then(() =>
+                addDevelopTizenCertificate(c, {
+                    profileName: DEFAULT_SECURITY_PROFILE_NAME,
+                    certPath: path.join(certDirPath, `${certFilename}.p12`),
+                    certPassword,
+                })
+            )
+            .then(() => resolve())
+            .catch((e) => {
+                logError(e);
+                resolve();
+            });
+    });
 
-export const addDevelopTizenCertificate = (c, secureProfileConfig) => new Promise((resolve) => {
-    logTask('addDevelopTizenCertificate');
+export const addDevelopTizenCertificate = (c, secureProfileConfig) =>
+    new Promise((resolve) => {
+        logTask('addDevelopTizenCertificate');
 
-    const { profileName, certPath, certPassword } = secureProfileConfig || {};
-    execCLI(
-        c,
-        CLI_TIZEN,
-        `security-profiles add -n ${profileName} -a ${certPath} -p ${certPassword}`,
-        { privateParams: [certPassword] },
-    )
-        .then(() => resolve())
-        .catch((e) => {
-            logError(e);
-            resolve();
-        });
-});
+        const { profileName, certPath, certPassword } = secureProfileConfig || {};
+        execCLI(c, CLI_TIZEN, `security-profiles add -n ${profileName} -a ${certPath} -p ${certPassword}`, {
+            privateParams: [certPassword],
+        })
+            .then(() => resolve())
+            .catch((e) => {
+                logError(e);
+                resolve();
+            });
+    });
 
 const _getDeviceID = async (c, target) => {
     const { device } = c.program;
@@ -109,11 +103,7 @@ const _getDeviceID = async (c, target) => {
     if (device) {
         let connectResponse;
         try {
-            connectResponse = await execCLI(
-                c,
-                CLI_SDB_TIZEN,
-                `connect ${target}`
-            );
+            connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
         } catch (e) {
             connectResponse = e;
         }
@@ -133,7 +123,7 @@ const _getDeviceID = async (c, target) => {
     const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     if (devicesList.includes(target)) {
         const lines = devicesList.trim().split(/\r?\n/);
-        const devices = lines.filter(line => line.includes(target));
+        const devices = lines.filter((line) => line.includes(target));
 
         if (devices.length > 1) {
             // @todo handle more than one
@@ -151,7 +141,7 @@ const _getRunningDevices = async (c) => {
     const lines = devicesList
         .trim()
         .split(/\r?\n/)
-        .filter(line => !line.includes('List of devices'));
+        .filter((line) => !line.includes('List of devices'));
     const devices = [];
 
     await Promise.all(
@@ -179,15 +169,15 @@ const _getRunningDevices = async (c) => {
                 }
 
                 if (
-                    (platform === 'tizenmobile' && deviceType === 'mobile')
-                    || (platform === 'tizenwatch' && deviceType === 'wearable')
-                    || (platform === 'tizen' && !deviceType)
+                    (platform === 'tizenmobile' && deviceType === 'mobile') ||
+                    (platform === 'tizenwatch' && deviceType === 'wearable') ||
+                    (platform === 'tizen' && !deviceType)
                 ) {
                     devices.push({
                         name,
                         type: words[1].trim(),
                         id: words[2].trim(),
-                        deviceType
+                        deviceType,
                     });
                 }
             }
@@ -197,19 +187,19 @@ const _getRunningDevices = async (c) => {
     return devices;
 };
 
-const _waitForEmulatorToBeReady = (c, target) => waitForEmulator(c, CLI_SDB_TIZEN, 'devices', (res) => {
-    const lines = res.trim().split(/\r?\n/);
-    const devices = lines.filter(
-        line => line.includes(target) && line.includes('device')
-    );
-    return devices.length > 0;
-});
+const _waitForEmulatorToBeReady = (c, target) =>
+    waitForEmulator(c, CLI_SDB_TIZEN, 'devices', (res) => {
+        const lines = res.trim().split(/\r?\n/);
+        const devices = lines.filter((line) => line.includes(target) && line.includes('device'));
+        return devices.length > 0;
+    });
 
-const _composeDevicesString = devices => devices.map(device => ({
-    key: device.id,
-    name: device.name,
-    value: device.id
-}));
+const _composeDevicesString = (devices) =>
+    devices.map((device) => ({
+        key: device.id,
+        name: device.name,
+        value: device.id,
+    }));
 
 // const startHostedServerIfRequired = (c) => {
 //     if (Config.isWebHostEnabled) {
@@ -232,18 +222,12 @@ export const runTizenSimOrDevice = async (c, buildCoreWebpackProject) => {
 
     if (!platformConfig) {
         throw new Error(
-            `runTizen: ${chalk().grey(
-                platform
-            )} not defined in your ${chalk().white(c.paths.appConfig.config)}`
+            `runTizen: ${chalk().grey(platform)} not defined in your ${chalk().white(c.paths.appConfig.config)}`
         );
     }
     if (!platformConfig.appName) {
         throw new Error(
-            `runTizen: ${chalk().grey(
-                platform
-            )}.appName not defined in your ${chalk().white(
-                c.paths.appConfig.config
-            )}`
+            `runTizen: ${chalk().grey(platform)}.appName not defined in your ${chalk().white(c.paths.appConfig.config)}`
         );
     }
 
@@ -263,10 +247,8 @@ export const runTizenSimOrDevice = async (c, buildCoreWebpackProject) => {
             {
                 name: 'startEmulator',
                 type: 'confirm',
-                message: `Could not find or connect to the specified target (${
-                    target
-                }). Would you like to start an emulator?`
-            }
+                message: `Could not find or connect to the specified target (${target}). Would you like to start an emulator?`,
+            },
         ]);
 
         if (startEmulator) {
@@ -279,11 +261,7 @@ export const runTizenSimOrDevice = async (c, buildCoreWebpackProject) => {
             } catch (e) {
                 logDebug(`askForEmulator:ERRROR: ${e}`);
                 try {
-                    await execCLI(
-                        c,
-                        CLI_TIZEN_EMULATOR,
-                        `create -n ${defaultTarget} -p tv-samsung-5.0-x86`
-                    );
+                    await execCLI(c, CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`);
                     await launchTizenSimulator(c, defaultTarget);
                     deviceID = defaultTarget;
                     await _waitForEmulatorToBeReady(c, defaultTarget);
@@ -302,26 +280,16 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
     const continueLaunching = async () => {
         let hasDevice = false;
 
-        if (!isLightningEngine && buildCoreWebpackProject) { // lightning engine handles the build and packaging
+        if (!isLightningEngine && buildCoreWebpackProject) {
+            // lightning engine handles the build and packaging
             !isHosted && (await buildCoreWebpackProject(c));
             await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
-            await execCLI(
-                c,
-                CLI_TIZEN,
-                `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`
-            );
+            await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
         }
 
         try {
-            const packageID = platform === 'tizenwatch' || platform === 'tizenmobile'
-                ? tId.split('.')[0]
-                : tId;
-            await execCLI(
-                c,
-                CLI_TIZEN,
-                `uninstall -p ${packageID} -t ${deviceID}`,
-                { ignoreErrors: true }
-            );
+            const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
+            await execCLI(c, CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, { ignoreErrors: true });
             hasDevice = true;
         } catch (e) {
             if (e && e.includes && e.includes('No device matching')) {
@@ -331,19 +299,16 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         }
         try {
             if (wgtClean !== wgt) {
-                logInfo(`Your app name contains characters like spaces, changing output from "${
-                    wgt}" to "${wgtClean}"`);
+                logInfo(
+                    `Your app name contains characters like spaces, changing output from "${wgt}" to "${wgtClean}"`
+                );
                 fsRenameSync(path.join(tOut, wgt), path.join(tOut, wgtClean));
             }
         } catch (err) {
             logError(err);
         }
         try {
-            await execCLI(
-                c,
-                CLI_TIZEN,
-                `install -- ${tOut} -n ${wgtClean} -t ${deviceID}`
-            );
+            await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${wgtClean} -t ${deviceID}`);
             hasDevice = true;
         } catch (err) {
             logError(err);
@@ -364,22 +329,11 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         //     await waitForHost(c);
         // }
 
-        if (
-            platform !== 'tizenwatch'
-          && platform !== 'tizenmobile'
-          && hasDevice
-        ) {
+        if (platform !== 'tizenwatch' && platform !== 'tizenmobile' && hasDevice) {
             await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`);
-        } else if (
-            (platform === 'tizenwatch' || platform === 'tizenmobile')
-          && hasDevice
-        ) {
+        } else if ((platform === 'tizenwatch' || platform === 'tizenmobile') && hasDevice) {
             const packageID = tId.split('.');
-            await execCLI(
-                c,
-                CLI_TIZEN,
-                `run -p ${packageID[0]} -t ${deviceID}`
-            );
+            await execCLI(c, CLI_TIZEN, `run -p ${packageID[0]} -t ${deviceID}`);
         }
         return toReturn;
     };
@@ -398,9 +352,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         }
 
         if (devices.length > 0) {
-            const targetDevice = devices.find(
-                device => device.id === target || device.name === target
-            );
+            const targetDevice = devices.find((device) => device.id === target || device.name === target);
             if (targetDevice) {
                 deviceID = targetDevice.id;
                 return continueLaunching();
@@ -427,8 +379,8 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
                     name: 'chosenEmulator',
                     type: 'list',
                     message: 'On what emulator would you like to run the app?',
-                    choices
-                }
+                    choices,
+                },
             ]);
             deviceID = chosenEmulator;
             return continueLaunching();

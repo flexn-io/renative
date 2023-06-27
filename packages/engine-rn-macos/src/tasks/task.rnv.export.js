@@ -3,15 +3,9 @@ import { exportXcodeProject } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    MACOS,
-    TASK_BUILD, TASK_EXPORT,
-    PARAMS
-} = Constants;
-
+const { MACOS, TASK_BUILD, TASK_EXPORT, PARAMS } = Constants;
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
-
 
 export const taskRnvExport = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);

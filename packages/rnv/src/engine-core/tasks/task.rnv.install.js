@@ -14,13 +14,9 @@ export const taskRnvInstall = async (c, parentTask) => {
     // c.runtime.skipPackageUpdate only reflects rnv version mismatch. should not prevent updating other deps
     if (!areNodeModulesInstalled() || c._requiresNpmInstall /* && !c.runtime.skipPackageUpdate */) {
         if (!areNodeModulesInstalled()) {
-            logInfo(
-                'node_modules folder is missing. INSTALLING...'
-            );
+            logInfo('node_modules folder is missing. INSTALLING...');
         } else {
-            logInfo(
-                'node_modules folder is out of date. INSTALLING...'
-            );
+            logInfo('node_modules folder is out of date. INSTALLING...');
         }
         c._requiresNpmInstall = false;
         await installPackageDependenciesAndPlugins(c);

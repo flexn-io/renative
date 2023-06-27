@@ -27,11 +27,7 @@ const checkForDuplicates = (arr) => {
         if (v) {
             Object.keys(v).forEach((k) => {
                 if (dupCheck[k]) {
-                    logWarning(
-                        `Key ${chalk().white(
-                            k
-                        )} is duplicated in your package.json`
-                    );
+                    logWarning(`Key ${chalk().white(k)} is duplicated in your package.json`);
                 }
                 dupCheck[k] = true;
             });
@@ -39,13 +35,14 @@ const checkForDuplicates = (arr) => {
     });
 };
 
-const fixPackageJson = (c, pkgPath) => new Promise((resolve) => {
-    const pth = pkgPath || c.paths.project.package;
-    const pp = readObjectSync(pth);
-    const output = fixPackageObject(pp);
-    writeFileSync(pth, output, 4);
-    resolve();
-});
+const fixPackageJson = (c, pkgPath) =>
+    new Promise((resolve) => {
+        const pth = pkgPath || c.paths.project.package;
+        const pp = readObjectSync(pth);
+        const output = fixPackageObject(pp);
+        writeFileSync(pth, output, 4);
+        resolve();
+    });
 
 const fixPackageObject = (pp) => {
     const output = {};
@@ -71,5 +68,5 @@ const fixPackageObject = (pp) => {
 export { fixPackageJson, fixPackageObject };
 export default {
     fixPackageJson,
-    fixPackageObject
+    fixPackageObject,
 };

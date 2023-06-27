@@ -26,7 +26,5 @@ export default {
     fn: taskRnvDockerExport,
     task: 'docker export',
     params: PARAMS.withBase(),
-    platforms: [
-        WEB
-    ],
+    platforms: [WEB],
 };

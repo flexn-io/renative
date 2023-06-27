@@ -69,7 +69,7 @@ export const ICONS = {
     DESKTOP: '🖥️ ',
     BROWSER: '🌐',
     VOICE: '📢',
-    SERVICE: '☁️'
+    SERVICE: '☁️',
 };
 
 export const REMOTE_DEBUG_PORT = 8079;
@@ -144,7 +144,7 @@ export const PACKAGE_JSON_FILEDS = [
     'os',
     'cpu',
     'private',
-    'publishConfig'
+    'publishConfig',
 ];
 // DEPRECATED
 export const SUPPORTED_PLATFORMS = [
@@ -166,9 +166,8 @@ export const SUPPORTED_PLATFORMS = [
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    CHROMECAST
+    CHROMECAST,
 ];
-
 
 export const SDK_PLATFORMS: any = {};
 SDK_PLATFORMS[ANDROID] = ANDROID_SDK;
@@ -234,36 +233,32 @@ export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
 export const TASK_CONFIGURE_SOFT = 'configureSoft';
 export const TASK_KILL = 'kill';
 
-export const CLI_PROPS = [
-    'provisioningStyle',
-    'codeSignIdentity',
-    'provisionProfileSpecifier'
-];
+export const CLI_PROPS = ['provisioningStyle', 'codeSignIdentity', 'provisionProfileSpecifier'];
 
 export const PARAM_KEYS: any = {
     info: {
         shortcut: 'i',
         value: 'value',
-        description: 'Show full debug Info'
+        description: 'Show full debug Info',
     },
     updatePods: {
         shortcut: 'u',
-        description: 'Force update dependencies (iOS only)'
+        description: 'Force update dependencies (iOS only)',
     },
     platform: {
         shortcut: 'p',
         value: 'value',
-        description: 'select specific Platform'
+        description: 'select specific Platform',
     },
     appConfigID: {
         shortcut: 'c',
         value: 'value',
-        description: 'select specific app Config id'
+        description: 'select specific app Config id',
     },
     target: {
         shortcut: 't',
         value: 'value',
-        description: 'select specific Target device/simulator'
+        description: 'select specific Target device/simulator',
     },
     projectName: {
         value: 'value',
@@ -297,75 +292,75 @@ export const PARAM_KEYS: any = {
         shortcut: 'T',
         value: 'value',
         isRequired: true,
-        description: 'select specific template'
+        description: 'select specific template',
     },
     device: {
         shortcut: 'd',
         value: 'value',
-        description: 'select connected Device'
+        description: 'select connected Device',
     },
     scheme: {
         shortcut: 's',
         value: 'value',
-        description: 'select build Scheme'
+        description: 'select build Scheme',
     },
     filter: {
         shortcut: 'f',
         value: 'value',
         isRequired: true,
-        description: 'Filter value'
+        description: 'Filter value',
     },
     list: {
         shortcut: 'l',
-        description: 'return List of items related to command'
+        description: 'return List of items related to command',
     },
     only: {
         shortcut: 'o',
-        description: 'run Only top command (Skip dependencies)'
+        description: 'run Only top command (Skip dependencies)',
     },
     reset: {
         shortcut: 'r',
-        description: 'also perform reset of platform build'
+        description: 'also perform reset of platform build',
     },
     resetHard: {
         shortcut: 'R',
-        description: 'also perform reset of platform platform and platform assets'
+        description: 'also perform reset of platform platform and platform assets',
     },
     resetAssets: {
         shortcut: 'a',
-        description: 'also perform reset of platform assets'
+        description: 'also perform reset of platform assets',
     },
     key: {
         shortcut: 'k',
         value: 'value',
         isRequired: true,
-        description: 'Pass the key/password'
+        description: 'Pass the key/password',
     },
     blueprint: {
         shortcut: 'b',
         value: 'value',
-        description: 'Blueprint for targets'
+        description: 'Blueprint for targets',
     },
     help: {
         shortcut: 'h',
-        description: 'Displays help info for particular command'
+        description: 'Displays help info for particular command',
     },
     host: {
         shortcut: 'H',
         value: 'value',
         isRequired: true,
-        description: 'custom Host ip'
+        description: 'custom Host ip',
     },
     exeMethod: {
         shortcut: 'x',
         value: 'value',
-        description: 'eXecutable method in buildHooks'
+        description: 'eXecutable method in buildHooks',
     },
     port: {
         shortcut: 'P',
         value: 'value',
         isRequired: true,
-        description: 'custom Port'
+        description: 'custom Port',
     },
     debug: {
         shortcut: 'D',
@@ -375,240 +370,255 @@ export const PARAM_KEYS: any = {
             '--debug weinre //run remote debug with weinre as preference',
             '--debug chii //run remote debug with chii as preference',
             '--debug false //force disable remote debug',
-            '--debug //run remote debug with default preference (chii)'
-        ]
+            '--debug //run remote debug with default preference (chii)',
+        ],
     },
     global: {
         shortcut: 'G',
-        description: 'Flag for setting a config value for all RNV projects'
+        description: 'Flag for setting a config value for all RNV projects',
     },
     engine: {
         shortcut: 'e',
         value: 'value',
         isRequired: true,
-        description: 'engine to be used (next)'
+        description: 'engine to be used (next)',
     },
     debugIp: {
         value: 'value',
         isRequired: true,
-        description: '(optional) overwrite the ip to which the remote debugger will connect'
+        description: '(optional) overwrite the ip to which the remote debugger will connect',
     },
     ci: {
-        description: 'CI/CD flag so it wont ask questions'
+        description: 'CI/CD flag so it wont ask questions',
     },
     mono: {
-        description: 'Monochrome console output without chalk'
+        description: 'Monochrome console output without chalk',
     },
     skipNotifications: {
-        description: 'Skip sending any integrated notifications'
+        description: 'Skip sending any integrated notifications',
     },
     keychain: {
         value: 'value',
         isRequired: true,
-        description: 'Name of the keychain'
+        description: 'Name of the keychain',
     },
     provisioningStyle: {
         value: 'value',
         isRequired: true,
-        description: 'Set provisioningStyle <Automatic | Manual>'
+        description: 'Set provisioningStyle <Automatic | Manual>',
     },
     codeSignIdentity: {
         value: 'value',
         isRequired: true,
-        description: 'Set codeSignIdentity ie <iPhone Distribution>'
+        description: 'Set codeSignIdentity ie <iPhone Distribution>',
     },
     provisionProfileSpecifier: {
         value: 'value',
         isRequired: true,
-        description: 'Name of provisionProfile'
+        description: 'Name of provisionProfile',
     },
     hosted: {
-        description: 'Run in a hosted environment (skip budleAssets)'
+        description: 'Run in a hosted environment (skip budleAssets)',
     },
     hooks: {
-        description: 'Force rebuild hooks'
+        description: 'Force rebuild hooks',
     },
     maxErrorLength: {
         value: 'number',
         isRequired: true,
-        description: 'Specify how many characters each error should display. Default 200'
+        description: 'Specify how many characters each error should display. Default 200',
     },
     skipTargetCheck: {
-        description: 'Skip Android target check, just display the raw adb devices to choose from'
+        description: 'Skip Android target check, just display the raw adb devices to choose from',
     },
     analyzer: {
-        description: 'Enable real-time bundle analyzer'
+        description: 'Enable real-time bundle analyzer',
     },
     xcodebuildArgs: {
         value: 'value',
         isRequired: true,
-        description: 'pass down custom xcodebuild arguments'
+        description: 'pass down custom xcodebuild arguments',
     },
     xcodebuildArchiveArgs: {
         value: 'value',
         isRequired: true,
-        description: 'pass down custom xcodebuild arguments'
+        description: 'pass down custom xcodebuild arguments',
     },
     xcodebuildExportArgs: {
         value: 'value',
         isRequired: true,
-        description: 'pass down custom xcodebuild arguments'
+        description: 'pass down custom xcodebuild arguments',
     },
     skipDependencyCheck: {
-        description: 'Skips auto update of npm dependencies if mismatch found'
+        description: 'Skips auto update of npm dependencies if mismatch found',
     },
     skipRnvCheck: {
-        description: 'Skips auto update of rnv dependencies if mismatch found'
+        description: 'Skips auto update of rnv dependencies if mismatch found',
     },
     configName: {
         value: 'value',
         isRequired: true,
-        description: 'Use custom name for ./renative.json. (applies only at root level)'
+        description: 'Use custom name for ./renative.json. (applies only at root level)',
     },
     sourceAppConfigID: {
         value: 'value',
         isRequired: true,
-        description: 'name of source appConfig folder to copy from'
+        description: 'name of source appConfig folder to copy from',
     },
     hostIp: {
         value: 'value',
         isRequired: true,
-        description: 'Custom IP override'
+        description: 'Custom IP override',
     },
     unlinked: {
-        description: 'Force engines to be loaded from node_modules rather than locally'
+        description: 'Force engines to be loaded from node_modules rather than locally',
     },
     yes: {
-        description: 'Default all prompts to yes'
+        description: 'Default all prompts to yes',
     },
     gitEnabled: {
         description: 'Enable git in your newly created project',
         value: 'value',
     },
     npxMode: {
-        description: 'Ensures you can use local npx rnv version after the command is done'
+        description: 'Ensures you can use local npx rnv version after the command is done',
     },
     json: {
-        description: 'Outputs the result as json'
+        description: 'Outputs the result as json',
     },
     packageManager: {
         value: 'value',
         isRequired: true,
         options: ['yarn', 'npm'],
         description: 'Set specific package manager to use',
-        examples: [
-            '--packageManager yarn',
-            '--packageManager npm'
-        ]
+        examples: ['--packageManager yarn', '--packageManager npm'],
     },
     skipTasks: {
         value: 'value',
         isRequired: true,
         description: 'List tasks which you want to skip during rnv execution',
-        examples: [
-            '--skipTasks "configure,export"',
-            '--skipTasks deploy'
-        ]
+        examples: ['--skipTasks "configure,export"', '--skipTasks deploy'],
     },
     answer: {
         value: 'value',
         variadic: true,
         description: 'Pass in answers to prompts',
-        examples: [
-            '--answer question=response --answer question2=response2',
-            '--answer question=\'{"some": "json"}\''
-        ]
-    }
+        examples: ['--answer question=response --answer question2=response2', '--answer question=\'{"some": "json"}\''],
+    },
 };
 
 Object.keys(PARAM_KEYS).forEach((k) => {
     PARAM_KEYS[k].key = k;
 });
 
-
 export const PARAMS = {
-    withBase: (arr: any) => [PARAM_KEYS.info, PARAM_KEYS.ci, PARAM_KEYS.mono,
-        PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
-    withConfigure: (arr: any) => [PARAM_KEYS.reset, PARAM_KEYS.resetHard, PARAM_KEYS.engine, PARAM_KEYS.resetAssets,
-        PARAM_KEYS.appConfigID, PARAM_KEYS.scheme, PARAM_KEYS.platform].concat(arr || []),
-    withRun: (arr: any) => [PARAM_KEYS.target, PARAM_KEYS.device, PARAM_KEYS.hosted,
-        PARAM_KEYS.port, PARAM_KEYS.debug, PARAM_KEYS.debugIp, PARAM_KEYS.skipTargetCheck,
-        PARAM_KEYS.host].concat(arr || []),
+    withBase: (arr: any) =>
+        [PARAM_KEYS.info, PARAM_KEYS.ci, PARAM_KEYS.mono, PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
+    withConfigure: (arr: any) =>
+        [
+            PARAM_KEYS.reset,
+            PARAM_KEYS.resetHard,
+            PARAM_KEYS.engine,
+            PARAM_KEYS.resetAssets,
+            PARAM_KEYS.appConfigID,
+            PARAM_KEYS.scheme,
+            PARAM_KEYS.platform,
+        ].concat(arr || []),
+    withRun: (arr: any) =>
+        [
+            PARAM_KEYS.target,
+            PARAM_KEYS.device,
+            PARAM_KEYS.hosted,
+            PARAM_KEYS.port,
+            PARAM_KEYS.debug,
+            PARAM_KEYS.debugIp,
+            PARAM_KEYS.skipTargetCheck,
+            PARAM_KEYS.host,
+        ].concat(arr || []),
     withAll: (arr: any) => Object.values(PARAM_KEYS).concat(arr || []),
-    all: Object.keys(PARAM_KEYS)
+    all: Object.keys(PARAM_KEYS),
 };
-
 
 export const configSchema = {
     analytics: {
         values: ['true', 'false'],
         key: 'enableAnalytics',
-        default: true
-    }
+        default: true,
+    },
 };
 
 export const RNV_PACKAGES = [
     {
         packageName: 'renative',
         folderName: 'renative',
-        skipLinking: true
+        skipLinking: true,
     },
     {
         packageName: '@rnv/template-starter',
-        folderName: 'template-starter'
+        folderName: 'template-starter',
     },
     {
         packageName: 'rnv',
-        folderName: 'rnv'
+        folderName: 'rnv',
     },
     {
         packageName: '@rnv/engine-lightning',
-        folderName: 'engine-lightning'
+        folderName: 'engine-lightning',
     },
     {
         packageName: '@rnv/engine-rn',
-        folderName: 'engine-rn'
+        folderName: 'engine-rn',
     },
     {
         packageName: '@rnv/engine-rn-electron',
-        folderName: 'engine-rn-electron'
+        folderName: 'engine-rn-electron',
     },
     {
         packageName: '@rnv/engine-rn-windows',
-        folderName: 'engine-rn-windows'
+        folderName: 'engine-rn-windows',
     },
     {
         packageName: '@rnv/engine-rn-next',
-        folderName: 'engine-rn-next'
+        folderName: 'engine-rn-next',
     },
     {
         packageName: '@rnv/engine-rn-tvos',
-        folderName: 'engine-rn-tvos'
+        folderName: 'engine-rn-tvos',
     },
     {
         packageName: '@rnv/engine-rn-web',
-        folderName: 'engine-rn-web'
+        folderName: 'engine-rn-web',
     },
     {
         packageName: '@rnv/engine-roku',
-        folderName: 'engine-roku'
+        folderName: 'engine-roku',
     },
     {
         packageName: '@rnv/integration-docker',
-        folderName: 'integration-docker'
+        folderName: 'integration-docker',
     },
     {
         packageName: '@rnv/integration-ftp',
-        folderName: 'integration-ftp'
+        folderName: 'integration-ftp',
     },
     {
         packageName: '@rnv/integration-vercel',
-        folderName: 'integration-vercel'
+        folderName: 'integration-vercel',
     },
 ];
 
-export const INJECTABLE_CONFIG_PROPS = ['id', 'title', 'entryFile', 'backgroundColor', 'scheme',
-    'teamID', 'provisioningStyle', 'bundleAssets', 'multipleAPKs', 'pagesDir'];
+export const INJECTABLE_CONFIG_PROPS = [
+    'id',
+    'title',
+    'entryFile',
+    'backgroundColor',
+    'scheme',
+    'teamID',
+    'provisioningStyle',
+    'bundleAssets',
+    'multipleAPKs',
+    'pagesDir',
+];
 export const INJECTABLE_RUNTIME_PROPS = ['appId', 'scheme', 'timestamp', 'localhost', 'target', 'port'];
 
 export const REDASH_URL = 'https://analytics.prod.api.flexn.io/rnv';

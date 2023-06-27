@@ -2,21 +2,21 @@ import { sanitizeDynamicProps } from '../../src/core/systemManager/fileutils';
 
 jest.mock('../../src/core/systemManager/logger.js', () => {
     const _chalkCols = {
-        white: v => v,
-        green: v => v,
-        red: v => v,
-        yellow: v => v,
-        default: v => v,
-        gray: v => v,
-        grey: v => v,
-        blue: v => v,
-        cyan: v => v,
-        magenta: v => v
+        white: (v) => v,
+        green: (v) => v,
+        red: (v) => v,
+        yellow: (v) => v,
+        default: (v) => v,
+        gray: (v) => v,
+        grey: (v) => v,
+        blue: (v) => v,
+        cyan: (v) => v,
+        magenta: (v) => v,
     };
-    _chalkCols.rgb = () => v => v;
+    _chalkCols.rgb = () => (v) => v;
     _chalkCols.bold = _chalkCols;
     const _chalkMono = {
-        ..._chalkCols
+        ..._chalkCols,
     };
     return {
         logToSummary: jest.fn(),
@@ -26,7 +26,7 @@ jest.mock('../../src/core/systemManager/logger.js', () => {
         logError: jest.fn(),
         logWarning: jest.fn(),
         logSuccess: jest.fn(),
-        chalk: () => _chalkMono
+        chalk: () => _chalkMono,
     };
 });
 
@@ -34,16 +34,16 @@ describe('sanitizeDynamicProps', () => {
     it('sanitize {{props.XXX}}', async () => {
         const buildConfig = {
             common: {
-                foo: '{{props.FOO}}'
-            }
+                foo: '{{props.FOO}}',
+            },
         };
         const propConfig = {
             files: {},
             runtimeProps: {},
             props: {
-                FOO: 'bar'
+                FOO: 'bar',
             },
-            configProps: {}
+            configProps: {},
         };
         const result = sanitizeDynamicProps(buildConfig, propConfig);
         expect(result.common.foo).toEqual('bar');
@@ -52,17 +52,16 @@ describe('sanitizeDynamicProps', () => {
     it('sanitize {{configProps.XXX}}', async () => {
         const buildConfig = {
             common: {
-                foo: '{{configProps.FOO}}'
-            }
+                foo: '{{configProps.FOO}}',
+            },
         };
         const propConfig = {
             files: {},
             runtimeProps: {},
-            props: {
-            },
+            props: {},
             configProps: {
-                FOO: 'bar'
-            }
+                FOO: 'bar',
+            },
         };
         const result = sanitizeDynamicProps(buildConfig, propConfig);
         expect(result.common.foo).toEqual('bar');
@@ -71,24 +70,22 @@ describe('sanitizeDynamicProps', () => {
     it('sanitize {{files.XXX}}', async () => {
         const buildConfig = {
             common: {
-                foo: '{{files.project.config.common.foo}}'
-            }
+                foo: '{{files.project.config.common.foo}}',
+            },
         };
         const propConfig = {
             files: {
                 project: {
                     config: {
                         common: {
-                            foo: 'bar'
-                        }
-                    }
-                }
+                            foo: 'bar',
+                        },
+                    },
+                },
             },
             runtimeProps: {},
-            props: {
-            },
-            configProps: {
-            }
+            props: {},
+            configProps: {},
         };
         const result = sanitizeDynamicProps(buildConfig, propConfig);
         expect(result.common.foo).toEqual('bar');
@@ -97,19 +94,16 @@ describe('sanitizeDynamicProps', () => {
     it('sanitize {{runtimeProps.XXX}}', async () => {
         const buildConfig = {
             common: {
-                foo: '{{runtimeProps.foo}}'
-            }
+                foo: '{{runtimeProps.foo}}',
+            },
         };
         const propConfig = {
-            files: {
-            },
+            files: {},
             runtimeProps: {
-                foo: 'bar'
+                foo: 'bar',
             },
-            props: {
-            },
-            configProps: {
-            }
+            props: {},
+            configProps: {},
         };
         const result = sanitizeDynamicProps(buildConfig, propConfig);
         expect(result.common.foo).toEqual('bar');
@@ -118,19 +112,15 @@ describe('sanitizeDynamicProps', () => {
     it('sanitize {{env.XXX}}', async () => {
         const buildConfig = {
             common: {
-                foo: '{{env.foo}}'
-            }
+                foo: '{{env.foo}}',
+            },
         };
         process.env.foo = 'bar';
         const propConfig = {
-            files: {
-            },
-            runtimeProps: {
-            },
-            props: {
-            },
-            configProps: {
-            }
+            files: {},
+            runtimeProps: {},
+            props: {},
+            configProps: {},
         };
         const result = sanitizeDynamicProps(buildConfig, propConfig);
         expect(result.common.foo).toEqual('bar');

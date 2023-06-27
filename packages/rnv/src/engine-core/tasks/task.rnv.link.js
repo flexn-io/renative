@@ -1,9 +1,7 @@
 import path from 'path';
 import { logInfo, logTask, logSuccess } from '../../core/systemManager/logger';
 import { PARAMS, RNV_PACKAGES } from '../../core/constants';
-import {
-    fsExistsSync, fsRenameSync, fsSymlinkSync
-} from '../../core/systemManager/fileutils';
+import { fsExistsSync, fsRenameSync, fsSymlinkSync } from '../../core/systemManager/fileutils';
 
 const _linkPackage = (c, key, folder) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);
@@ -38,5 +36,5 @@ export default {
     params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
-    isGlobalScope: true
+    isGlobalScope: true,
 };

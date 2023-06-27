@@ -1,5 +1,3 @@
-
-
 export const schemaRoot = {
     $id: 'http://renative.org/schemas/runtimeObject.json',
     type: 'object',
@@ -50,7 +48,7 @@ export const schemaRoot = {
                     additionalProperties: true,
                     type: 'object',
                 },
-            }
+            },
         },
         paths: {
             additionalProperties: false,
@@ -95,7 +93,7 @@ export const schemaRoot = {
                     additionalProperties: true,
                     type: 'object',
                 },
-            }
+            },
         },
         runtime: {
             additionalProperties: false,
@@ -145,14 +143,14 @@ export const schemaRoot = {
                 enginesById: {
                     // TODO: specify object structure
                     additionalProperties: true,
-                    type: 'object'
+                    type: 'object',
                 },
                 enginesByPlatform: {
                     // TODO: specify object structure
                     additionalProperties: true,
-                    type: 'object'
-                }
-            }
+                    type: 'object',
+                },
+            },
         },
         isBuildHooksReady: {
             type: 'boolean',
@@ -195,8 +193,7 @@ export const schemaRoot = {
         systemPropsInjects: {
             type: 'array',
         },
-        _currentTask: {
-        },
+        _currentTask: {},
         buildHooks: {
             additionalProperties: true,
             type: 'object',
@@ -236,8 +233,8 @@ export const schemaRoot = {
         template: {
             additionalProperties: true,
             type: 'object',
-        }
-    }
+        },
+    },
 };
 
 export const SCHEMAS_RUNTIME_OBJECT = [schemaRoot];

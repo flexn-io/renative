@@ -4,13 +4,7 @@ import { SDKNext } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask, logError } = Logger;
-const {
-    WEB,
-    CHROMECAST,
-    TASK_START,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
+const { WEB, CHROMECAST, TASK_START, TASK_CONFIGURE, PARAMS } = Constants;
 const { runWebNext } = SDKNext;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { waitForHost } = Common;
@@ -35,10 +29,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
     if (shouldSkipTask(c, TASK_START, originTask)) return true;
 
     if (hosted) {
-        return logError(
-            'This platform does not support hosted mode',
-            true
-        );
+        return logError('This platform does not support hosted mode', true);
     }
     switch (platform) {
         case WEB:
@@ -55,8 +46,5 @@ export default {
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        WEB,
-        CHROMECAST,
-    ],
+    platforms: [WEB, CHROMECAST],
 };

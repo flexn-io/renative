@@ -8,7 +8,11 @@ export const inquirerPrompt = async (params) => {
 
     const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program?.ci) {
-        if (Array.isArray(params.choices) && typeof params.default !== 'undefined' && params.choices.includes(params.default)) {
+        if (
+            Array.isArray(params.choices) &&
+            typeof params.default !== 'undefined' &&
+            params.choices.includes(params.default)
+        ) {
             logDebug(`defaulting to choice '${params.default}' for prompt '${params.name}'`);
             return Promise.resolve({ [params.name]: params.default });
         }
@@ -28,17 +32,12 @@ export const pressAnyKeyToContinue = () => {
     const params = {
         type: 'input',
         name: 'confirm',
-        message: 'Press any key to continue'
+        message: 'Press any key to continue',
     };
     return inquirer.prompt(params);
 };
 
-export const generateOptions = (
-    inputData,
-    isMultiChoice = false,
-    mapping,
-    renderMethod
-) => {
+export const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod) => {
     logDebug('generateOptions', isMultiChoice);
     let asString = '';
     const valuesAsObject = {};
@@ -104,4 +103,5 @@ const _sort = (a, b) => {
     return com;
 };
 
-const _generateOptionString = (i, obj, mapping, defaultVal) => ` [${chalk().bold.grey(i + 1)}]> ${chalk().bold.grey(mapping ? '' : defaultVal)} \n`;
+const _generateOptionString = (i, obj, mapping, defaultVal) =>
+    ` [${chalk().bold.grey(i + 1)}]> ${chalk().bold.grey(mapping ? '' : defaultVal)} \n`;

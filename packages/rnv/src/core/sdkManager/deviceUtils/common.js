@@ -13,7 +13,7 @@ export const waitForEmulator = async (c, cli, command, callback) => {
             execCLI(c, cli, command, {
                 silent: true,
                 timeout: 10000,
-                maxErrorLength
+                maxErrorLength,
             })
                 .then((resp) => {
                     if (callback(resp)) {
@@ -24,24 +24,16 @@ export const waitForEmulator = async (c, cli, command, callback) => {
                     attempts++;
                     if (attempts === maxAttempts) {
                         clearInterval(interval);
-                        spinner.fail(
-                            "Can't connect to the running emulator. Try restarting it."
-                        );
-                        return reject(
-                            "Can't connect to the running emulator. Try restarting it."
-                        );
+                        spinner.fail("Can't connect to the running emulator. Try restarting it.");
+                        return reject("Can't connect to the running emulator. Try restarting it.");
                     }
                 })
                 .catch(() => {
                     attempts++;
                     if (attempts > maxAttempts) {
                         clearInterval(interval);
-                        spinner.fail(
-                            "Can't connect to the running emulator. Try restarting it."
-                        );
-                        return reject(
-                            "Can't connect to the running emulator. Try restarting it."
-                        );
+                        spinner.fail("Can't connect to the running emulator. Try restarting it.");
+                        return reject("Can't connect to the running emulator. Try restarting it.");
                     }
                 });
         }, CHECK_INTEVAL);
