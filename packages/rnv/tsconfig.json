@@ -4,6 +4,7 @@
         "outDir": "./dist",
         "rootDir": "./src",
         "allowJs": true,
+        "resolveJsonModule": false
     },
     "include": [
         "./src/**/*",

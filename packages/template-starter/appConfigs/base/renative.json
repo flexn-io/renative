@@ -31,6 +31,9 @@
         },
         "fontSources": [
             "{{resolvePackage(react-native-vector-icons)}}/Fonts"
+        ],
+        "assetSources": [
+            "{{resolvePackage(@flexn/assets-renative-outline)}}/assets"
         ]
     },
     "platforms": {

@@ -8,10 +8,10 @@
         ],
         "packageTemplate": {
             "devDependencies": {
-                "typescript": "4.5.4",
-                "@types/react": "18.0.11",
-                "@types/react-dom": "18.0.5",
-                "@types/react-native": "0.67.2"
+                "typescript": "4.9.5",
+                "@types/react": "18.2.6",
+                "@types/react-dom": "~18.2.4",
+                "@types/react-native": "~0.67.2"
             },
             "browserslist": {
                 "production": [

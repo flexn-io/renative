@@ -76,6 +76,7 @@
         "tsc": "tsc --noEmit --composite false"
     },
     "devDependencies": {
+        "@flexn/assets-renative-outline": "0.2.0",
         "@flexn/graybox": "0.21.2-alpha.16",
         "@lightningjs/cli": "2.8.0",
         "@lightningjs/sdk": "4.8.3",
