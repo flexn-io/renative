@@ -1,4 +1,3 @@
-/* eslint-disable global-require, import/no-dynamic-require */
 import path from 'path';
 import { fsExistsSync } from '../systemManager/fileutils';
 // import { getScopedVersion } from '../systemManager/utils';
@@ -34,4 +33,6 @@ export const loadIntegrations = async (c) => {
     }
 };
 
-export const registerIntegration = () => {};
+export const registerIntegration = () => {
+    //Do nothing
+};

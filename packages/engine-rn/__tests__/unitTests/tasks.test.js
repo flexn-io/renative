@@ -107,9 +107,13 @@ jest.mock('rnv', () => {
     };
 });
 
-beforeEach(() => {});
+beforeEach(() => {
+    //Do nothing
+});
 
-afterEach(() => {});
+afterEach(() => {
+    //Do nothing
+});
 
 const originTask = {};
 const c = generateMockConfig({});

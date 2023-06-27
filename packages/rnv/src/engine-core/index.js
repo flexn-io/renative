@@ -43,7 +43,9 @@ import taskRnvLink from './tasks/task.rnv.link';
 import taskRnvUnlink from './tasks/task.rnv.unlink';
 
 export default {
-    initializeRuntimeConfig: () => {},
+    initializeRuntimeConfig: () => {
+        //Do nothing
+    },
     tasks: generateEngineTasks([
         taskRnvCryptoDecrypt,
         taskRnvCryptoEncrypt,

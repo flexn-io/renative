@@ -1,7 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-syntax */
-
 /**
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -12,7 +8,7 @@ import path from 'path';
 import mustache from 'mustache';
 import { Logger } from 'rnv';
 
-const { logInfo, logWarning } = Logger;
+const { logInfo } = Logger;
 
 const defaultOptions = {
     overwrite: false,

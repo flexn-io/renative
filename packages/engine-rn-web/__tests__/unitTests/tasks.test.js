@@ -14,7 +14,9 @@ jest.mock('process', () => ({
 }));
 
 jest.mock('@rnv/sdk-webpack', () => ({
-    runWebpackServer: () => {},
+    runWebpackServer: () => {
+        //Do nothing
+    },
 }));
 
 const configPropMocks = {
@@ -130,9 +132,13 @@ jest.mock('rnv', () => {
     };
 });
 
-beforeEach(() => {});
+beforeEach(() => {
+    //Do nothing
+});
 
-afterEach(() => {});
+afterEach(() => {
+    //Do nothing
+});
 
 const originTask = {};
 const c = generateMockConfig({ platform: 'web' });

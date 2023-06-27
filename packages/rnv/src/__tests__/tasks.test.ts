@@ -45,7 +45,7 @@ jest.mock('../../src/core/systemManager/utils.js', () => ({
 }));
 
 jest.mock('../../src/core/systemManager/logger.js', () => {
-    const _chalkCols = {
+    const _chalkCols: any = {
         white: (v) => v,
         green: (v) => v,
         red: (v) => v,
@@ -56,8 +56,8 @@ jest.mock('../../src/core/systemManager/logger.js', () => {
         blue: (v) => v,
         cyan: (v) => v,
         magenta: (v) => v,
+        rgb: () => (v) => v,
     };
-    _chalkCols.rgb = () => (v) => v;
     _chalkCols.bold = _chalkCols;
     const _chalkMono = {
         ..._chalkCols,
@@ -97,9 +97,13 @@ const c = generateMockConfig({
 // const parentTask = null;
 const originTask = {};
 
-beforeEach(() => {});
+beforeEach(() => {
+    //Do nothing
+});
 
-afterEach(() => {});
+afterEach(() => {
+    //Do nothing
+});
 
 test('Execute task.rnv.platform.list', async () => {
     const taskManager = require('../../src/core/taskManager/index.js');

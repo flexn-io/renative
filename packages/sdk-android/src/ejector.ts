@@ -1,5 +1,5 @@
 import path from 'path';
-import { Common, FileUtils, PluginManager, ProjectManager, Resolver } from 'rnv';
+import { Common, FileUtils, PluginManager, Resolver } from 'rnv';
 // import { logWarning } from 'rnv/dist/core/systemManager/logger';
 
 const {
@@ -9,12 +9,10 @@ const {
     fsReadFileSync,
     copyFolderContentsRecursiveSync,
     // cleanEmptyFoldersRecursively,
-    fsMkdirSync,
+    // fsMkdirSync,
 } = FileUtils;
 const { getAppFolder, getConfigProp } = Common;
 const { doResolvePath } = Resolver;
-
-const { parseFonts } = ProjectManager;
 
 const {
     parsePlugins,
@@ -26,7 +24,7 @@ export const ejectGradleProject = async (c: any) => {
     const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
 
     const rootMonoProjectPath = isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir;
-    const rootProjectPath = c.paths.project.dir;
+    // const rootProjectPath = c.paths.project.dir;
 
     const appFolder = path.join(getAppFolder(c), '..');
 
@@ -47,9 +45,7 @@ export const ejectGradleProject = async (c: any) => {
         const pathNmReplace = '../node_modules/';
 
         const packagesPathMatch = new RegExp(
-            `${path
-                .join(rootMonoProjectPath, 'packages')
-                .replace(/[\/\\^$*+?.()|[\]{}]/g, '\\$&')}\/.+?\/node_modules\/`,
+            `${path.join(rootMonoProjectPath, 'packages').replace(/[/\\^$*+?.()|[\]{}]/g, '\\$&')}/.+?/node_modules/`,
             'g'
         );
 
@@ -178,9 +174,7 @@ export const ejectGradleProject = async (c: any) => {
         const replace2 = '';
 
         const packagesPathMatch = new RegExp(
-            `${path
-                .join(rootMonoProjectPath, 'packages')
-                .replace(/[\/\\^$*+?.()|[\]{}]/g, '\\$&')}\/.+?\/node_modules\/`,
+            `${path.join(rootMonoProjectPath, 'packages').replace(/[/\\^$*+?.()|[\]{}]/g, '\\$&')}/.+?/node_modules/`,
             'g'
         );
 

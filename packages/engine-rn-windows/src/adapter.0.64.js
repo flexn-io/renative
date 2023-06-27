@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-// eslint-disable-next-line import/no-unresolved
 
 const sharedBlacklist = [
     /node_modules\/react\/dist\/.*/,

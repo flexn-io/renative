@@ -1,4 +1,3 @@
-/* eslint-disable global-require, import/no-dynamic-require, valid-typeof */
 import { writeFileSync, fsExistsSync } from '../systemManager/fileutils';
 import { logWarning } from '../systemManager/logger';
 import { configSchema } from '../constants';

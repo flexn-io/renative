@@ -38,7 +38,10 @@ export const waitForBundlerIfRequired = async (c) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
     // return a new promise that does...nothing, just to keep RNV running while the bundler is running
-    if (keepRNVRunning) return new Promise(() => {});
+    if (keepRNVRunning)
+        return new Promise(() => {
+            //Do nothing
+        });
     return true;
 };
 

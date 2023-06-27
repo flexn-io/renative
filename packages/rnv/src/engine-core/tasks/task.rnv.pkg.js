@@ -1,4 +1,3 @@
-/* eslint-disable global-require, import/no-dynamic-require */
 import path from 'path';
 import semver from 'semver';
 

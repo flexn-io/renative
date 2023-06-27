@@ -73,7 +73,6 @@ export const parseXcodeProject = async (c) => {
 const _parseXcodeProject = (c, platform) =>
     new Promise((resolve) => {
         logTask('_parseXcodeProject');
-        // eslint-disable-next-line global-require, import/no-dynamic-require
         const xcode = require(doResolve('xcode'));
         // const xcode = require(`${c.paths.project.nodeModulesDir}/xcode`);
         const appFolder = getAppFolder(c);

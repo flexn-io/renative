@@ -19,7 +19,6 @@ export function testProps(testId: string | undefined) {
 console.disableYellowBox = true; // eslint-disable-line
 
 if (!global.performance) {
-    //@ts-ignore
     global.performance = {};
 }
 
@@ -116,9 +115,11 @@ const themes = {
     },
 };
 
-interface ThemeContextInterface {}
+// interface ThemeContextInterface {
+//     //Do nothing
+// }
 
-export const ThemeContext = createContext<ThemeContextInterface | null>(
+export const ThemeContext = createContext<any | null>(
     themes.dark // default value
 );
 

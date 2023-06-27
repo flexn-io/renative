@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-syntax */
 /**
  * Copyright (c) Microsoft Corporation.
  * Licensed under the MIT License.
@@ -9,7 +6,6 @@
 // DEPS
 import { Common, FileUtils, Logger, ProjectManager } from 'rnv';
 
-const chalk = require('chalk');
 const path = require('path');
 const username = require('username');
 const uuid = require('uuid');
@@ -17,7 +13,7 @@ const childProcess = require('child_process');
 const fs = require('fs');
 const os = require('os');
 // eslint-disable-next-line no-unused-vars
-const _ = require('lodash');
+// const _ = require('lodash');
 const findUp = require('find-up');
 const generator_common_1 = require('./generator-common');
 const configUtils_1 = require('./config/configUtils');

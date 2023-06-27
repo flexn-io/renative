@@ -24,7 +24,6 @@ export const executePipe = async (c, key) => {
     }
 };
 
-/* eslint-disable import/no-dynamic-require, global-require */
 export const buildHooks = async (c) => {
     logDebug('buildHooks');
 

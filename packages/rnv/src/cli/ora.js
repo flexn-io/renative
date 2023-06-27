@@ -417,7 +417,7 @@ class StdinDiscarder {
     constructor() {
         this.#mutedStream.pipe(process.stdout);
 
-        const self = this;
+        const self = this; //eslint-disable-line
         this.#ourEmit = (event, data, ...args) => {
             const { stdin } = process;
             if (self.#requests > 0 || stdin.emit === self.#ourEmit) {

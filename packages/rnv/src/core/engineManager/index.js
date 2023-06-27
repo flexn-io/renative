@@ -1,4 +1,3 @@
-/* eslint-disable import/no-dynamic-require, global-require */
 import path from 'path';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../systemManager/fileutils';
 import { checkAndCreateProjectPackage, installPackageDependencies } from '../systemManager/npmUtils';

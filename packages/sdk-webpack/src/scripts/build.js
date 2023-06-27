@@ -1,5 +1,4 @@
 /* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
 
 // Do this as the first thing so that any code reading it knows the right env.
 

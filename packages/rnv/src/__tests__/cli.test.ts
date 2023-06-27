@@ -3,7 +3,7 @@
 // import cli from '../../src/cli';
 
 jest.mock('../../src/core/systemManager/logger.js', () => {
-    const _chalkCols = {
+    const _chalkCols: any = {
         white: (v) => v,
         green: (v) => v,
         red: (v) => v,
@@ -14,8 +14,8 @@ jest.mock('../../src/core/systemManager/logger.js', () => {
         blue: (v) => v,
         cyan: (v) => v,
         magenta: (v) => v,
+        rgb: () => (v) => v,
     };
-    _chalkCols.rgb = () => (v) => v;
     _chalkCols.bold = _chalkCols;
     const _chalkMono = {
         ..._chalkCols,
@@ -35,7 +35,9 @@ jest.mock('../../src/core/systemManager/logger.js', () => {
 
 jest.mock('../../src/core/taskManager/index.js', () => ({
     initializeTask: jest.fn(),
-    findSuitableTask: () => {},
+    findSuitableTask: () => {
+        //Do nothing
+    },
 }));
 
 const itShouldResolve = (cmd) => {
