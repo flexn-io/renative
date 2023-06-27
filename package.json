@@ -63,6 +63,8 @@
         "build": "lerna run build",
         "watch-alt": "npx lerna run compile & npx lerna watch -- lerna run compile",
         "watch": "npx lerna exec yarn watch --parallel",
+        "prettier-write-all": "npx prettier '**/*.{js,jsx,ts,tsx,mjs,cjs,json,md}' --write --config .prettierrc.js",
+        "prettier-write-json": "npx prettier '**/{package.json,renative.plugins.json,renative.json}' --write --config .prettierrc.js",
         "build:clean": "npx lerna run --parallel --concurrency 1 build:clean",
         "deploy-all": "yarn build && yarn test && yarn deploy-prepare && npm run git-commit-tag",
         "deploy-prepare": "rnv hooks run -x prePublish -r",
