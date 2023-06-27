@@ -10,7 +10,6 @@ import {
     getTimestampPathsConfig,
 } from '../common';
 import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
-import { getEngineRunnerByPlatform } from '../engineManager';
 import { isPlatformActive } from '../platformManager';
 import { copyTemplatePluginsSync, parsePlugins } from '../pluginManager';
 import {
@@ -25,7 +24,6 @@ import {
     fsReaddirSync,
     fsReadFileSync,
     resolvePackage,
-    removeDirs,
 } from '../systemManager/fileutils';
 import { installPackageDependencies, isYarnInstalled } from '../systemManager/npmUtils';
 import { executeAsync } from '../systemManager/exec';
@@ -367,64 +365,64 @@ const _resolvePackage = (c, v) => {
     return resolvePackage(v);
 };
 
-const _requiresAssetOverride = async (c) => {
-    const requiredAssets = c.runtime.engine?.platforms?.[c.platform]?.requiredAssets || [];
+// const _requiresAssetOverride = async (c) => {
+//     const requiredAssets = c.runtime.engine?.platforms?.[c.platform]?.requiredAssets || [];
 
-    const assetsToCopy = [];
-    const assetsDir = path.join(c.paths.project.appConfigBase.dir, 'assets', c.platform);
+//     const assetsToCopy = [];
+//     const assetsDir = path.join(c.paths.project.appConfigBase.dir, 'assets', c.platform);
 
-    requiredAssets.forEach((v) => {
-        const sourcePath = path.join(c.runtime.engine.originalTemplateAssetsDir, c.platform, v);
+//     requiredAssets.forEach((v) => {
+//         const sourcePath = path.join(c.runtime.engine.originalTemplateAssetsDir, c.platform, v);
 
-        const destPath = path.join(assetsDir, v);
+//         const destPath = path.join(assetsDir, v);
 
-        if (fsExistsSync(sourcePath)) {
-            if (!fsExistsSync(destPath)) {
-                assetsToCopy.push({
-                    sourcePath,
-                    destPath,
-                    value: v,
-                });
-            }
-        }
-    });
+//         if (fsExistsSync(sourcePath)) {
+//             if (!fsExistsSync(destPath)) {
+//                 assetsToCopy.push({
+//                     sourcePath,
+//                     destPath,
+//                     value: v,
+//                 });
+//             }
+//         }
+//     });
 
-    const actionOverride = 'Override exisitng folder';
-    const actionMerge = 'Merge with existing folder';
-    const actionSkip = 'Skip. Warning: this might fail your build';
+//     const actionOverride = 'Override exisitng folder';
+//     const actionMerge = 'Merge with existing folder';
+//     const actionSkip = 'Skip. Warning: this might fail your build';
 
-    if (assetsToCopy.length > 0) {
-        if (!fsExistsSync(assetsDir)) {
-            logInfo(
-                `Required assets: ${chalk().white(
-                    JSON.stringify(assetsToCopy.map((v) => v.value))
-                )} will be copied to ${chalk().white('appConfigs/assets')} folder`
-            );
-            return true;
-        }
+//     if (assetsToCopy.length > 0) {
+//         if (!fsExistsSync(assetsDir)) {
+//             logInfo(
+//                 `Required assets: ${chalk().white(
+//                     JSON.stringify(assetsToCopy.map((v) => v.value))
+//                 )} will be copied to ${chalk().white('appConfigs/assets')} folder`
+//             );
+//             return true;
+//         }
 
-        const { chosenAction } = await inquirerPrompt({
-            message: 'What to do next?',
-            type: 'list',
-            name: 'chosenAction',
-            choices: [actionOverride, actionMerge, actionSkip],
-            warningMessage: `Your appConfig/base/assets/${c.platform} exists but engine ${
-                c.runtime.engine.config.id
-            } requires some additional assets:
-${chalk().red(requiredAssets.join(','))}`,
-        });
+//         const { chosenAction } = await inquirerPrompt({
+//             message: 'What to do next?',
+//             type: 'list',
+//             name: 'chosenAction',
+//             choices: [actionOverride, actionMerge, actionSkip],
+//             warningMessage: `Your appConfig/base/assets/${c.platform} exists but engine ${
+//                 c.runtime.engine.config.id
+//             } requires some additional assets:
+// ${chalk().red(requiredAssets.join(','))}`,
+//         });
 
-        if (chosenAction === actionOverride) {
-            await removeDirs([assetsDir]);
-        }
+//         if (chosenAction === actionOverride) {
+//             await removeDirs([assetsDir]);
+//         }
 
-        if (chosenAction === actionOverride || chosenAction === actionMerge) {
-            return true;
-        }
-    }
+//         if (chosenAction === actionOverride || chosenAction === actionMerge) {
+//             return true;
+//         }
+//     }
 
-    return false;
-};
+//     return false;
+// };
 
 export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     logTask('copyAssetsFolder');
@@ -473,19 +471,21 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
         const hasAssetFolder = c.paths.appConfig.dirs.filter((v) =>
             fsExistsSync(path.join(v, `assets/${assetFolderPlatform}`))
         ).length;
-        const requireOverride = await _requiresAssetOverride(c);
-        if (!hasAssetFolder || requireOverride) {
-            await generateDefaultAssets(
-                c,
-                platform,
-                path.join(c.paths.appConfig.dirs[0], `assets/${assetFolderPlatform}`),
-                requireOverride
-            );
+        // const requireOverride = await _requiresAssetOverride(c);
+        if (!hasAssetFolder) {
+            logWarning(`Your app is missing assets at ${chalk().red(c.paths.appConfig.dirs.join(','))}.`);
+            // await generateDefaultAssets(
+            //     c,
+            //     platform,
+            //     path.join(c.paths.appConfig.dirs[0], `assets/${assetFolderPlatform}`)
+            //     // requireOverride
+            // );
         }
     } else {
         const sourcePath = path.join(c.paths.appConfig.dir, `assets/${assetFolderPlatform}`);
         if (!fsExistsSync(sourcePath)) {
-            await generateDefaultAssets(c, platform, sourcePath);
+            logWarning(`Your app is missing assets at ${chalk().red(sourcePath)}.`);
+            // await generateDefaultAssets(c, platform, sourcePath);
         }
     }
 
@@ -505,29 +505,30 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     }
 };
 
-const generateDefaultAssets = async (c, platform, sourcePath, forceTrue) => {
-    logTask('generateDefaultAssets');
-    let confirmAssets = true;
-    if (c.program.ci !== true && c.program.yes !== true && !forceTrue) {
-        const { confirm } = await inquirerPrompt({
-            type: 'confirm',
-            message: `It seems you don't have assets configured in ${chalk().white(
-                sourcePath
-            )} do you want generate default ones?`,
-        });
-        confirmAssets = confirm;
-    }
+//NOTE: Default assets have been removed from engines
+// const generateDefaultAssets = async (c, platform, sourcePath, forceTrue) => {
+//     logTask('generateDefaultAssets');
+// let confirmAssets = true;
+// if (c.program.ci !== true && c.program.yes !== true && !forceTrue) {
+//     const { confirm } = await inquirerPrompt({
+//         type: 'confirm',
+//         message: `It seems you don't have assets configured in ${chalk().white(
+//             sourcePath
+//         )} do you want generate default ones?`,
+//     });
+//     confirmAssets = confirm;
+// }
 
-    if (confirmAssets) {
-        const engine = getEngineRunnerByPlatform(c, c.platform);
-        if (fsExistsSync(path.join(engine.originalTemplateAssetsDir, platform))) {
-            copyFolderContentsRecursiveSync(path.join(engine.originalTemplateAssetsDir, platform), sourcePath);
-        } else {
-            logWarning('Currently used engine does not have default assets, creating an empty folder');
-            mkdirSync(sourcePath);
-        }
-    }
-};
+// if (confirmAssets) {
+//     const engine = getEngineRunnerByPlatform(c, c.platform);
+//     if (fsExistsSync(path.join(engine.originalTemplateAssetsDir, platform))) {
+//         copyFolderContentsRecursiveSync(path.join(engine.originalTemplateAssetsDir, platform), sourcePath);
+//     } else {
+//         logWarning('Currently used engine does not have default assets, creating an empty folder');
+//         mkdirSync(sourcePath);
+//     }
+// }
+// };
 
 export const copyBuildsFolder = (c, platform) =>
     new Promise((resolve) => {

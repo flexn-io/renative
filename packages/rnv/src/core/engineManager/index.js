@@ -21,7 +21,6 @@ export const registerEngine = async (c, engine, platform, engConfig) => {
     if (engConfig?.packageName) {
         engine.rootPath = _resolvePkgPath(c, engConfig.packageName);
         engine.originalTemplatePlatformsDir = path.join(engine.rootPath, 'templates/platforms');
-        engine.originalTemplateAssetsDir = path.join(engine.rootPath, 'templates/assets');
         engine.originalTemplatePlatformProjectDir = path.join(
             engine.originalTemplatePlatformsDir,
             engine.projectDirName
