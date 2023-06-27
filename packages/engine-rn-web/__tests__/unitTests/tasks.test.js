@@ -6,43 +6,43 @@ import { generateMockConfig } from '../../../jest-preset-rnv/mocks';
 jest.mock('fs');
 
 jest.mock('axios', () => ({
-    get: () => true
+    get: () => true,
 }));
 
 jest.mock('process', () => ({
-    cwd: () => 'mocked value'
+    cwd: () => 'mocked value',
 }));
 
 jest.mock('@rnv/sdk-webpack', () => ({
-    runWebpackServer: () => {}
+    runWebpackServer: () => {},
 }));
 
 const configPropMocks = {
     scheme: 'debug',
-    bundleAssets: false
+    bundleAssets: false,
 };
 
 jest.mock('rnv', () => {
     const _chalkCols = {
-        white: v => v,
-        green: v => v,
-        red: v => v,
-        yellow: v => v,
-        default: v => v,
-        gray: v => v,
-        grey: v => v,
-        blue: v => v,
-        cyan: v => v,
-        magenta: v => v
+        white: (v) => v,
+        green: (v) => v,
+        red: (v) => v,
+        yellow: (v) => v,
+        default: (v) => v,
+        gray: (v) => v,
+        grey: (v) => v,
+        blue: (v) => v,
+        cyan: (v) => v,
+        magenta: (v) => v,
     };
-    _chalkCols.rgb = () => v => v;
+    _chalkCols.rgb = () => (v) => v;
     _chalkCols.bold = _chalkCols;
     const _chalkMono = {
-        ..._chalkCols
+        ..._chalkCols,
     };
     return {
         EngineManager: {
-            generateEnvVars: () => ({})
+            generateEnvVars: () => ({}),
         },
         Common: {
             getConfigProp: (c, platform, key) => configPropMocks[key],
@@ -52,7 +52,7 @@ jest.mock('rnv', () => {
             checkPortInUse: () => false,
             waitForHost: async () => null,
             getPlatformBuildDir: () => '',
-            getPlatformServerDir: () => ''
+            getPlatformServerDir: () => '',
         },
         Logger: {
             logToSummary: jest.fn(),
@@ -64,7 +64,7 @@ jest.mock('rnv', () => {
             logSuccess: jest.fn(),
             logSummary: jest.fn(),
             logRaw: jest.fn(),
-            chalk: () => _chalkMono
+            chalk: () => _chalkMono,
         },
         FileUtils: {
             fsExistsSync: () => null,
@@ -74,15 +74,15 @@ jest.mock('rnv', () => {
             PARAMS: {
                 withBase: () => [],
                 withRun: () => [],
-                withConfigure: () => []
+                withConfigure: () => [],
             },
             WEB: 'web',
-            RNV_NODE_MODULES_DIR: ''
+            RNV_NODE_MODULES_DIR: '',
         },
         TaskManager: {
             executeTask: () => null,
             executeOrSkipTask: () => null,
-            shouldSkipTask: () => false
+            shouldSkipTask: () => false,
         },
         Exec: {
             executeAsync: () => null,
@@ -95,8 +95,8 @@ jest.mock('rnv', () => {
             getModuleConfigs: () => ({
                 modulePaths: [],
                 moduleAliases: {},
-                moduleAliasesArray: []
-            })
+                moduleAliasesArray: [],
+            }),
         },
         ProjectManager: {
             copyAssetsFolder: () => null,
@@ -115,38 +115,24 @@ jest.mock('rnv', () => {
         },
         PlatformManager: {
             isPlatformActive: () => null,
-            logErrorPlatform: () => null
+            logErrorPlatform: () => null,
         },
         RuntimeManager: {
-            updateRenativeConfigs: () => null
+            updateRenativeConfigs: () => null,
         },
         SDKManager: {
-            Apple: {
-
-            },
-            Android: {
-
-            },
-            Webos: {
-
-            },
-            Tizen: {
-
-            },
-            Kaios: {
-
-            }
-        }
+            Apple: {},
+            Android: {},
+            Webos: {},
+            Tizen: {},
+            Kaios: {},
+        },
     };
 });
 
+beforeEach(() => {});
 
-beforeEach(() => {
-});
-
-afterEach(() => {
-
-});
+afterEach(() => {});
 
 const originTask = {};
 const c = generateMockConfig({ platform: 'web' });

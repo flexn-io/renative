@@ -7,7 +7,7 @@ export default (_c) => {
     let c = _c;
     if (!c) c = Config.getConfig();
     const {
-        process: { platform }
+        process: { platform },
     } = c;
     if (platform === 'linux') return new LinuxPlatformSetup(c);
     if (platform === 'win32') return new WindowsPlatformSetup(c);

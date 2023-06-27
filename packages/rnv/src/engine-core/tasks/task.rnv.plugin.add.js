@@ -2,14 +2,9 @@ import inquirer from 'inquirer';
 import ora from '../../cli/ora';
 import { writeRenativeConfigFile } from '../../core/configManager';
 import { TASK_INSTALL, TASK_PLUGIN_ADD, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
-import {
-    chalk,
-    logSuccess,
-    logTask
-} from '../../core/systemManager/logger';
+import { chalk, logSuccess, logTask } from '../../core/systemManager/logger';
 import { getPluginList, resolvePluginDependants } from '../../core/pluginManager';
 import { executeTask } from '../../core/taskManager';
-
 
 /* eslint-disable no-await-in-loop */
 export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
@@ -31,20 +26,14 @@ export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
             type: 'rawlist',
             message: 'Select the plugins you want to add',
             choices: o.asArray,
-            pageSize: 50
+            pageSize: 50,
         });
 
         selectedPlugins[plugin] = o.allPlugins[plugin];
-        installMessage.push(
-            `${chalk().white(plugin)} v(${chalk().green(
-                o.allPlugins[plugin].version
-            )})`
-        );
+        installMessage.push(`${chalk().white(plugin)} v(${chalk().green(o.allPlugins[plugin].version)})`);
     } else {
         selectedPlugins[selPluginKey] = selPlugin;
-        installMessage.push(
-            `${chalk().white(selPluginKey)} v(${chalk().green(selPlugin.version)})`
-        );
+        installMessage.push(`${chalk().white(selPluginKey)} v(${chalk().green(selPlugin.version)})`);
     }
 
     const questionPlugins = {};
@@ -69,9 +58,7 @@ export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
             const { propValue } = await inquirer.prompt({
                 name: 'propValue',
                 type: 'input',
-                message: `${pluginKey}: Add value for ${
-                    pluginProps[i2]
-                } (You can do this later in ./renative.json file)`
+                message: `${pluginKey}: Add value for ${pluginProps[i2]} (You can do this later in ./renative.json file)`,
             });
             finalProps[pluginProps[i2]] = propValue;
         }

@@ -1,22 +1,24 @@
 import path from 'path';
 import { TASK_APP_CREATE, PARAMS } from '../../core/constants';
-import {
-    logInfo,
-    logTask,
-} from '../../core/systemManager/logger';
+import { logInfo, logTask } from '../../core/systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
 import { configureRuntimeDefaults } from '../../core/runtimeManager';
-import { copyFolderContentsRecursive, fsExistsSync, fsLstatSync, fsReaddirSync, readObjectSync, writeFileSync } from '../../core/systemManager/fileutils';
+import {
+    copyFolderContentsRecursive,
+    fsExistsSync,
+    fsLstatSync,
+    fsReaddirSync,
+    readObjectSync,
+    writeFileSync,
+} from '../../core/systemManager/fileutils';
 import { doResolve } from '../../core/systemManager/resolve';
 
 export const taskRnvAppCreate = async (c) => {
     logTask('taskRnvAppCreate');
 
-
     await configureRuntimeDefaults(c);
 
     let sourcePath;
-
 
     if (c.program.sourceAppConfigID) {
         const sourceAppConfigDirPath = path.join(c.paths.project.appConfigsDir, c.program.sourceAppConfigID);
@@ -50,7 +52,7 @@ export const taskRnvAppCreate = async (c) => {
                     const key = `project>${v}`;
                     appConfigChoices.push(key);
                     appConfigChoicesObj[key] = {
-                        path: pth
+                        path: pth,
                     };
                 }
             }
@@ -68,7 +70,7 @@ export const taskRnvAppCreate = async (c) => {
                         const key = `template>${v}`;
                         appConfigChoices.push(key);
                         appConfigChoicesObj[key] = {
-                            path: pth
+                            path: pth,
                         };
                     }
                 }
@@ -81,7 +83,6 @@ export const taskRnvAppCreate = async (c) => {
             choices: appConfigChoices,
             message: 'Which App config to use as copy source?',
         });
-
 
         sourcePath = appConfigChoicesObj[sourceAppConfig].path;
     }
@@ -101,7 +102,6 @@ export const taskRnvAppCreate = async (c) => {
         destPath = path.join(c.paths.project.appConfigsDir, appConfigId);
     }
 
-
     logInfo('Copying new app config...');
     await copyFolderContentsRecursive(sourcePath, destPath);
     logInfo('Copying new app config...DONE');
@@ -111,7 +111,6 @@ export const taskRnvAppCreate = async (c) => {
 
     confObj.id = appConfigId;
     confObj.common = confObj.common || {};
-
 
     let appConfigTitle;
     if (c.program.title) {
@@ -144,7 +143,6 @@ export const taskRnvAppCreate = async (c) => {
         bundleId = confId;
     }
     confObj.common.id = bundleId || confObj.common.id;
-
 
     writeFileSync(confObjPath, confObj);
 

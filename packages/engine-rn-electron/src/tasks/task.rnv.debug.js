@@ -19,9 +19,5 @@ export default {
     fn: taskRnvDebug,
     task: 'debug',
     params: PARAMS.withBase(),
-    platforms: [
-        MACOS,
-        WINDOWS,
-        LINUX
-    ],
+    platforms: [MACOS, WINDOWS, LINUX],
 };

@@ -4,8 +4,8 @@ Thank you for your interest in contributing to ReNative! From commenting on and 
 
 The [Open Source Guides](https://opensource.guide/) website has a collection of resources for individuals, communities, and companies who want to learn how to run and contribute to an open source project. Contributors and people new to open source alike will find the following guides especially useful:
 
-- [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
-- [Building Welcoming Communities](https://opensource.guide/building-community/)
+-   [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
+-   [Building Welcoming Communities](https://opensource.guide/building-community/)
 
 ### [Code of Conduct](CODE_OF_CONDUCT.md)
 
@@ -50,8 +50,8 @@ The process of proposing a change to ReNative SDK can be summarized as follows:
 7. Push the changes to your fork.
 8. Create a pull request to the ReNative repository.
 9. Review and address comments on your pull request.
-   1. A bot may comment with suggestions. Generally we ask you to resolve these first before a maintainer will review your code.
-   2. If changes are requested and addressed, please [request review](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/requesting-a-pull-request-review) to notify reviewers to take another look.
+    1. A bot may comment with suggestions. Generally we ask you to resolve these first before a maintainer will review your code.
+    2. If changes are requested and addressed, please [request review](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/requesting-a-pull-request-review) to notify reviewers to take another look.
 
 If all goes well, your pull request will be merged. If it is not merged, maintainers will do their best to explain the reason why.
 
@@ -81,6 +81,6 @@ Contributions to ReNative are not limited to GitHub. You can help others by shar
 
 As you work on ReNative, it is natural that sooner or later you may require help. People interested in contributing may take advantage of the following:
 
-- **Twitter**. The ReNative team has its own account at [@ReNative](https://twitter.com/ReNative). If you feel stuck, or need help contributing, please do not hesitate to reach out.
-- **Proposals Repository**. If you are considering working on a feature large in scope, consider [creating a proposal first](https://github.com/flexn-io/renative/discussions). The community can help you figure out the right approach, and we'd be happy to help.
-- **ReNative Community Slack**. While we try to hold most discussions in public, sometimes it can be beneficial to have conversations in real time with other contributors. People who have demonstrated a commitment to moving ReNative forward through sustained contributions to the project may eventually be invited to join the ReNative Community Slack.
+-   **Twitter**. The ReNative team has its own account at [@ReNative](https://twitter.com/ReNative). If you feel stuck, or need help contributing, please do not hesitate to reach out.
+-   **Proposals Repository**. If you are considering working on a feature large in scope, consider [creating a proposal first](https://github.com/flexn-io/renative/discussions). The community can help you figure out the right approach, and we'd be happy to help.
+-   **ReNative Community Slack**. While we try to hold most discussions in public, sometimes it can be beneficial to have conversations in real time with other contributors. People who have demonstrated a commitment to moving ReNative forward through sustained contributions to the project may eventually be invited to join the ReNative Community Slack.

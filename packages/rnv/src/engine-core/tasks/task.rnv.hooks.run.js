@@ -5,7 +5,6 @@ import { executeTask } from '../../core/taskManager';
 import { fsExistsSync } from '../../core/systemManager/fileutils';
 import { TASK_HOOKS_RUN, TASK_PROJECT_CONFIGURE, PARAMS, PARAM_KEYS } from '../../core/constants';
 
-
 export const taskRnvHooksRun = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksRun');
 
@@ -14,7 +13,6 @@ export const taskRnvHooksRun = async (c, parentTask, originTask) => {
     } else {
         logInfo('Your are running your buildHook outside of renative project');
     }
-
 
     await buildHooks(c);
 
@@ -37,12 +35,11 @@ export const taskRnvHooksRun = async (c, parentTask, originTask) => {
             name: 'selectedHook',
             type: 'list',
             message: 'Pick an available hook:',
-            choices: hooksList
+            choices: hooksList,
         });
         hookName = selectedHook;
     }
     await c.buildHooks[hookName](c);
-
 
     return true;
 };
@@ -56,5 +53,5 @@ export default {
     skipAppConfig: true,
     skipPlatforms: true,
     forceBuildHookRebuild: true,
-    isGlobalScope: true
+    isGlobalScope: true,
 };

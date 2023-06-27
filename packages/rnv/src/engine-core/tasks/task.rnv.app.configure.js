@@ -3,21 +3,8 @@ import inquirer from 'inquirer';
 import { listAppConfigsFoldersSync } from '../../core/configManager';
 import { updateRenativeConfigs } from '../../core/runtimeManager';
 import { TASK_APP_CONFIGURE, PARAMS } from '../../core/constants';
-import {
-    writeFileSync,
-    fsExistsSync,
-    fsReadFileSync,
-    fsRenameSync,
-} from '../../core/systemManager/fileutils';
-import {
-    chalk,
-    logError,
-    logTask,
-    logWarning,
-    logDebug,
-    logInfo,
-    logAppInfo,
-} from '../../core/systemManager/logger';
+import { writeFileSync, fsExistsSync, fsReadFileSync, fsRenameSync } from '../../core/systemManager/fileutils';
+import { chalk, logError, logTask, logWarning, logDebug, logInfo, logAppInfo } from '../../core/systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
 
 const _loadAppConfigIDfromDir = (dirName, appConfigsDir) => {
@@ -37,14 +24,10 @@ const _loadAppConfigIDfromDir = (dirName, appConfigsDir) => {
 const _askUserAboutConfigs = async (c, dir, id, basePath) => {
     logTask('_askUserAboutConfigs');
     logWarning(
-        `AppConfig error - It seems you have a mismatch between appConfig folder name (${
-            dir
-        }) and the id defined in renative.json (${id}). They must match.`
+        `AppConfig error - It seems you have a mismatch between appConfig folder name (${dir}) and the id defined in renative.json (${id}). They must match.`
     );
     if (c.program.ci === true) {
-        throw new Error(
-            'You cannot continue if you set --ci flag. please fix above error first'
-        );
+        throw new Error('You cannot continue if you set --ci flag. please fix above error first');
     }
     const { choice } = await inquirer.prompt({
         type: 'list',
@@ -57,14 +40,14 @@ const _askUserAboutConfigs = async (c, dir, id, basePath) => {
             // },
             {
                 name: `Keep folder name (${dir}) and rename the ID from renative.json (${id} -> ${dir})`,
-                value: 'keepFolder'
+                value: 'keepFolder',
             },
             new inquirer.Separator(),
             {
                 name: "I'll do it manually",
-                value: 'manually'
-            }
-        ]
+                value: 'manually',
+            },
+        ],
     });
 
     if (choice === 'manually') {
@@ -103,14 +86,8 @@ const matchAppConfigID = async (c, appConfigID) => {
         let conf = _loadAppConfigIDfromDir(appConfigID, appConfigsDirs[acIndex]);
         const { dir, id } = conf;
         if (id !== dir) {
-            conf = await _askUserAboutConfigs(
-                c,
-                conf.dir,
-                conf.id,
-                path.join(appConfigsDirs[acIndex], '..')
-            );
+            conf = await _askUserAboutConfigs(c, conf.dir, conf.id, path.join(appConfigsDirs[acIndex], '..'));
         }
-
 
         return conf.id;
     }
@@ -123,11 +100,7 @@ const _findAndSwitchAppConfigDir = async (c) => {
     if (appConfigsDirNames.length) {
         if (appConfigsDirNames.length === 1) {
             // we have only one, skip the question
-            logInfo(
-                `Found only one app config available. Will use ${chalk().white(
-                    appConfigsDirNames[0]
-                )}`
-            );
+            logInfo(`Found only one app config available. Will use ${chalk().white(appConfigsDirNames[0])}`);
             _setAppId(c, appConfigsDirNames[0]);
             return true;
         }
@@ -138,7 +111,7 @@ const _findAndSwitchAppConfigDir = async (c) => {
             message: 'Which one would you like to pick?',
             choices: appConfigsDirNames,
             pageSize: 50,
-            logMessage: 'ReNative found multiple existing appConfigs'
+            logMessage: 'ReNative found multiple existing appConfigs',
         });
 
         if (conf) {
@@ -177,7 +150,6 @@ export const taskRnvAppConfigure = async (c) => {
         });
     }
 
-
     // Reset appId if appConfig no longer exists but renative.local.json still has reference to it
     if (!c.paths.project.appConfigsDirNames.includes(c.runtime.appId)) {
         c.runtime.appId = null;
@@ -207,8 +179,8 @@ export const taskRnvAppConfigure = async (c) => {
     }
 
     // Generate true path to appConfig (ensure external appConfigsDirs are included)
-    c.runtime.appConfigDir = c.paths.project.appConfigsDirs[
-        c.paths.project.appConfigsDirNames.indexOf(c.runtime.appId)];
+    c.runtime.appConfigDir =
+        c.paths.project.appConfigsDirs[c.paths.project.appConfigsDirNames.indexOf(c.runtime.appId)];
 
     await updateRenativeConfigs(c);
     logAppInfo(c);

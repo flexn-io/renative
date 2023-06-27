@@ -1,4 +1,4 @@
 {
-  "id": "docker",
-  "npmPackage": "@rnv/integration-docker"
+    "id": "docker",
+    "npmPackage": "@rnv/integration-docker"
 }

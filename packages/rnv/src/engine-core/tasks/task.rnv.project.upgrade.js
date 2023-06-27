@@ -24,12 +24,9 @@ export const taskRnvProjectUpgrade = async (c, parentTask, originTask) => {
         if (fsExistsSync(c.paths.project.package) && fsExistsSync(packagesPath)) {
             const selectedVersion = await listAndSelectNpmVersion(c, 'rnv');
 
-            upgradedPaths.push(...upgradeDependencies(
-                c.files.project.package,
-                c.paths.project.package,
-                null, null,
-                selectedVersion
-            ));
+            upgradedPaths.push(
+                ...upgradeDependencies(c.files.project.package, c.paths.project.package, null, null, selectedVersion)
+            );
 
             const dirs = fs.readdirSync(packagesPath);
 
@@ -47,20 +44,13 @@ export const taskRnvProjectUpgrade = async (c, parentTask, originTask) => {
                     if (fsExistsSync(rnvPath)) {
                         rnvFile = readObjectSync(rnvPath);
                     }
-                    upgradedPaths.push(...upgradeDependencies(
-                        pkgFile,
-                        pkgPath,
-                        rnvFile,
-                        rnvPath,
-                        selectedVersion
-                    ));
+                    upgradedPaths.push(...upgradeDependencies(pkgFile, pkgPath, rnvFile, rnvPath, selectedVersion));
                 }
             });
         }
     }
 
     logToSummary(`Upgraded following files:\n${upgradedPaths.join('\n')}`, true);
-
 
     return true;
 };
@@ -73,5 +63,5 @@ export default {
     platforms: [],
     skipAppConfig: true,
     skipPlatforms: true,
-    isGlobalScope: true
+    isGlobalScope: true,
 };

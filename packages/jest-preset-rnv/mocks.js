@@ -4,45 +4,41 @@ const merge = require('deepmerge');
 const DEFAULT_C = {
     runtime: {
         appId: 'testapp',
-        availablePlatforms: [
-            'ios', 'web'
-        ],
+        availablePlatforms: ['ios', 'web'],
         supportedPlatforms: [
             {
                 engine: 'engine-rn',
                 platform: 'ios',
                 isConnected: true,
                 port: '0000',
-                isValid: true
-            }
+                isValid: true,
+            },
         ],
-        target: ''
+        target: '',
     },
     platform: 'ios',
     program: {
-        ci: false
+        ci: false,
     },
     buildConfig: {
         platforms: {
-            ios: {
-
-            }
+            ios: {},
         },
         defaults: {
-            supportedPlatforms: ['ios']
-        }
+            supportedPlatforms: ['ios'],
+        },
     },
     paths: {
         rnv: {
             pluginTemplates: {
-                configs: {}
+                configs: {},
             },
             platformTemplates: {},
             projectTemplates: {},
             platformTemplate: {},
             plugins: {},
             engines: {},
-            projectTemplate: {}
+            projectTemplate: {},
         },
         workspace: {
             project: {
@@ -51,13 +47,13 @@ const DEFAULT_C = {
                 assets: {},
                 platformTemplates: {},
                 appConfigsDirs: [],
-                appConfigsDirNames: []
+                appConfigsDirNames: [],
             },
             appConfig: {
                 configs: [],
                 configsPrivate: [],
-                configsLocal: []
-            }
+                configsLocal: [],
+            },
         },
         defaultWorkspace: {
             project: {
@@ -66,47 +62,47 @@ const DEFAULT_C = {
                 assets: {},
                 platformTemplates: {},
                 appConfigsDirs: [],
-                appConfigsDirNames: []
+                appConfigsDirNames: [],
             },
             appConfig: {
                 configs: [],
                 configsPrivate: [],
-                configsLocal: []
-            }
+                configsLocal: [],
+            },
         },
         project: {
             appConfigBase: {},
             dir: '',
             builds: {
-                dir: ''
+                dir: '',
             },
             platformTemplatesDirs: {
-                ios: ''
+                ios: '',
             },
             assets: {
-                dir: ''
+                dir: '',
             },
             platformTemplates: {},
             appConfigsDirs: [],
             appConfigsDirNames: [],
-            configExists: true
+            configExists: true,
         },
         appConfig: {
             configs: [],
             configsPrivate: [],
-            configsLocal: []
+            configsLocal: [],
         },
         // EXTRA
         GLOBAL_RNV_DIR: '',
         buildHooks: {
-            dist: {}
+            dist: {},
         },
         home: {},
         template: {
             appConfigBase: {},
             builds: {},
             assets: {},
-            platformTemplates: {}
+            platformTemplates: {},
         },
     },
     files: {
@@ -117,46 +113,46 @@ const DEFAULT_C = {
             platformTemplate: {},
             plugins: {},
             engines: {},
-            projectTemplate: {}
+            projectTemplate: {},
         },
         workspace: {
             project: {
                 appConfigBase: {},
                 builds: {},
                 assets: {},
-                platformTemplates: {}
+                platformTemplates: {},
             },
             appConfig: {
                 configs: [],
                 configsPrivate: [],
-                configsLocal: []
-            }
+                configsLocal: [],
+            },
         },
         defaultWorkspace: {
             project: {
                 appConfigBase: {},
                 builds: {},
                 assets: {},
-                platformTemplates: {}
+                platformTemplates: {},
             },
             appConfig: {
                 configs: [],
                 configsPrivate: [],
-                configsLocal: []
-            }
+                configsLocal: [],
+            },
         },
         project: {
             appConfigBase: {},
             builds: {},
             assets: {},
-            platformTemplates: {}
+            platformTemplates: {},
         },
         appConfig: {
             configs: [],
             configsPrivate: [],
-            configsLocal: []
-        }
-    }
+            configsLocal: [],
+        },
+    },
 };
 
 module.exports = {

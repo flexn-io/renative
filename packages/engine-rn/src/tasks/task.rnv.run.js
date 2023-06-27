@@ -6,18 +6,7 @@ import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngin
 const { getConfigProp } = Common;
 const { logErrorPlatform } = PlatformManager;
 const { logTask, logSummary, logRaw } = Logger;
-const {
-    IOS,
-    MACOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    TASK_RUN,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
-
+const { IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_RUN, TASK_CONFIGURE, PARAMS } = Constants;
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
@@ -78,17 +67,10 @@ const Task = {
     fnHelp: taskRnvRunHelp,
     task: TASK_RUN,
     dependencies: {
-        before: TASK_CONFIGURE
+        before: TASK_CONFIGURE,
     },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [
-        IOS,
-        MACOS,
-        ANDROID,
-        ANDROID_TV,
-        FIRE_TV,
-        ANDROID_WEAR,
-    ],
+    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };
 
 export default Task;

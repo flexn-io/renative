@@ -35,7 +35,6 @@ export const taskRnvHelp = (c) => {
     });
     const cmdsString = commands.join(', ');
 
-
     logToSummary(`
 ${chalk().bold.white('COMMANDS:')}
 
@@ -53,5 +52,5 @@ export default {
     task: 'help',
     params: PARAMS.withBase(),
     platforms: [],
-    isGlobalScope: true
+    isGlobalScope: true,
 };

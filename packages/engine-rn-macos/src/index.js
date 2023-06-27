@@ -13,7 +13,7 @@ import taskRnvDeploy from './tasks/task.rnv.deploy';
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
 export default {
-    initializeRuntimeConfig: c => Config.initializeConfig(c),
+    initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
         taskRnvPackage,
@@ -28,7 +28,7 @@ export default {
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',
         reactNativeMetroConfigName: 'metro.config.js',
-        xcodeProjectName: 'RNVAppMACOS'
+        xcodeProjectName: 'RNVAppMACOS',
     },
     projectDirName: '',
     serverDirName: 'server',

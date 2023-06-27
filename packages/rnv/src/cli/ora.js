@@ -71,7 +71,10 @@ class Ora {
 
         this.#initialInterval = this.#options.interval;
         this.#stream = this.#options.stream;
-        this.#isEnabled = typeof this.#options.isEnabled === 'boolean' ? this.#options.isEnabled : isInteractive({ stream: this.#stream });
+        this.#isEnabled =
+            typeof this.#options.isEnabled === 'boolean'
+                ? this.#options.isEnabled
+                : isInteractive({ stream: this.#stream });
         this.#isSilent = typeof this.#options.isSilent === 'boolean' ? this.#options.isSilent : false;
 
         // Set *after* `this.#stream`.
@@ -146,8 +149,9 @@ class Ora {
         } else if (spinner !== 'default' && cliSpinners[spinner]) {
             this.#spinner = cliSpinners[spinner];
         } else {
-            throw new Error(`There is no built-in spinner named '${
-                spinner}'. See https://github.com/sindresorhus/cli-spinners/blob/main/spinners.json for a full list.`);
+            throw new Error(
+                `There is no built-in spinner named '${spinner}'. See https://github.com/sindresorhus/cli-spinners/blob/main/spinners.json for a full list.`
+            );
         }
     }
 
@@ -234,7 +238,8 @@ class Ora {
         }
 
         this.#frameIndex = ++this.#frameIndex % frames.length;
-        const fullPrefixText = (typeof this.#prefixText === 'string' && this.#prefixText !== '') ? `${this.#prefixText} ` : '';
+        const fullPrefixText =
+            typeof this.#prefixText === 'string' && this.#prefixText !== '' ? `${this.#prefixText} ` : '';
         const fullText = typeof this.text === 'string' ? ` ${this.text}` : '';
 
         return fullPrefixText + frame + fullText;
@@ -357,7 +362,7 @@ class Ora {
 
         const prefixText = options.prefixText || this.#prefixText;
         const text = options.text || this.text;
-        const fullText = (typeof text === 'string') ? ` ${text}` : '';
+        const fullText = typeof text === 'string' ? ` ${text}` : '';
 
         this.stop();
         this.#stream.write(`${this.getFullPrefixText(prefixText, ' ')}${options.symbol || ' '}${fullText}\n`);
@@ -378,9 +383,8 @@ export async function oraPromise(action, options) {
         throw new TypeError('Parameter `action` must be a Function or a Promise');
     }
 
-    const { successText, failText } = typeof options === 'object'
-        ? options
-        : { successText: undefined, failText: undefined };
+    const { successText, failText } =
+        typeof options === 'object' ? options : { successText: undefined, failText: undefined };
 
     const spinner = ora(options).start();
 
@@ -388,20 +392,12 @@ export async function oraPromise(action, options) {
         const promise = actionIsFunction ? action(spinner) : action;
         const result = await promise;
         const opt1 = typeof successText === 'string' ? successText : successText(result);
-        spinner.succeed(
-            successText === undefined
-                ? undefined
-                : opt1,
-        );
+        spinner.succeed(successText === undefined ? undefined : opt1);
 
         return result;
     } catch (error) {
         const opt2 = typeof failText === 'string' ? failText : failText(error);
-        spinner.fail(
-            failText === undefined
-                ? undefined
-                : opt2,
-        );
+        spinner.fail(failText === undefined ? undefined : opt2);
 
         throw error;
     }
@@ -425,7 +421,8 @@ class StdinDiscarder {
         this.#ourEmit = (event, data, ...args) => {
             const { stdin } = process;
             if (self.#requests > 0 || stdin.emit === self.#ourEmit) {
-                if (event === 'keypress') { // Fixes readline behavior
+                if (event === 'keypress') {
+                    // Fixes readline behavior
                     return;
                 }
 

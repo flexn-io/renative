@@ -10,17 +10,16 @@ import {
     fsExistsSync,
     fsReaddirSync,
     fsLstatSync,
-    writeFileSync
+    writeFileSync,
 } from '../../core/systemManager/fileutils';
 import { PARAMS, TASK_PKG, TASK_PROJECT_CONFIGURE } from '../../core/constants';
 import { logError, logTask } from '../../core/systemManager/logger';
 import { executeTask } from '../../core/taskManager';
 
-
 const bumpVersions = (version) => {
     const {
         project: { dir },
-        rnv: { pluginTemplates }
+        rnv: { pluginTemplates },
     } = Config.getConfig().paths;
     // check for packages to bump
     const packagesDir = path.join(dir, 'packages');
@@ -29,10 +28,7 @@ const bumpVersions = (version) => {
         packages.forEach((name) => {
             const pkgPath = path.join(packagesDir, name);
             const pkgJsonPath = path.join(pkgPath, 'package.json');
-            if (
-                fsLstatSync(pkgPath).isDirectory()
-                && fsExistsSync(pkgJsonPath)
-            ) {
+            if (fsLstatSync(pkgPath).isDirectory() && fsExistsSync(pkgJsonPath)) {
                 // we found a packaaaage, fist-bumpin' it
                 const existingPkgJson = require(pkgJsonPath);
                 existingPkgJson.version = version;
@@ -42,16 +38,13 @@ const bumpVersions = (version) => {
         // check if it's our turf and do some extra magic
         const renativePkgPath = path.join(packagesDir, 'renative');
         if (fsExistsSync(renativePkgPath)) {
-            copyFileSync(
-                path.join(dir, 'README.md'),
-                path.join(renativePkgPath, 'README.md')
-            );
+            copyFileSync(path.join(dir, 'README.md'), path.join(renativePkgPath, 'README.md'));
             updateObjectSync(pluginTemplates.config, {
                 pluginTemplates: {
                     renative: {
-                        version
-                    }
-                }
+                        version,
+                    },
+                },
             });
         }
     }
@@ -59,7 +52,7 @@ const bumpVersions = (version) => {
 
 const publishAll = () => {
     const {
-        project: { dir }
+        project: { dir },
     } = Config.getConfig().paths;
     const packagesDir = path.join(dir, 'packages');
     if (fsExistsSync(packagesDir)) {
@@ -88,13 +81,11 @@ export const taskRnvPkg = async (c, parentTask, originTask) => {
     switch (firstArg) {
         case 'version':
             // sets the given version to all of the packages, if there are any
-            if (!secondArg) { return logError('No version specified', false, true); }
+            if (!secondArg) {
+                return logError('No version specified', false, true);
+            }
             if (!semver.valid(secondArg)) {
-                return logError(
-                    `Invalid version specified ${secondArg}`,
-                    false,
-                    true
-                );
+                return logError(`Invalid version specified ${secondArg}`, false, true);
             }
             return bumpVersions(secondArg);
         case 'publish':

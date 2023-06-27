@@ -6,40 +6,38 @@ import { generateMockConfig } from '../../../jest-preset-rnv/mocks';
 jest.mock('fs');
 
 jest.mock('axios', () => ({
-    get: () => true
+    get: () => true,
 }));
 
 const configPropMocks = {
     scheme: 'debug',
-    bundleAssets: false
+    bundleAssets: false,
 };
 
 jest.mock('rnv', () => {
     const _chalkCols = {
-        white: v => v,
-        green: v => v,
-        red: v => v,
-        yellow: v => v,
-        default: v => v,
-        gray: v => v,
-        grey: v => v,
-        blue: v => v,
-        cyan: v => v,
-        magenta: v => v
+        white: (v) => v,
+        green: (v) => v,
+        red: (v) => v,
+        yellow: (v) => v,
+        default: (v) => v,
+        gray: (v) => v,
+        grey: (v) => v,
+        blue: (v) => v,
+        cyan: (v) => v,
+        magenta: (v) => v,
     };
-    _chalkCols.rgb = () => v => v;
+    _chalkCols.rgb = () => (v) => v;
     _chalkCols.bold = _chalkCols;
     const _chalkMono = {
-        ..._chalkCols
+        ..._chalkCols,
     };
     return {
-        EngineManager: {
-
-        },
+        EngineManager: {},
         Common: {
             getConfigProp: (c, platform, key) => configPropMocks[key],
             confirmActiveBundler: () => null,
-            getAppFolder: () => null
+            getAppFolder: () => null,
         },
         Logger: {
             logToSummary: jest.fn(),
@@ -50,7 +48,7 @@ jest.mock('rnv', () => {
             logWarning: jest.fn(),
             logSuccess: jest.fn(),
             logSummary: jest.fn(),
-            chalk: () => _chalkMono
+            chalk: () => _chalkMono,
         },
         FileUtils: {
             fsExistsSync: () => null,
@@ -60,14 +58,14 @@ jest.mock('rnv', () => {
             PARAMS: {
                 withBase: () => [],
                 withRun: () => [],
-                withConfigure: () => []
+                withConfigure: () => [],
             },
-            IOS: 'ios'
+            IOS: 'ios',
         },
         TaskManager: {
             executeTask: () => null,
             executeOrSkipTask: () => null,
-            shouldSkipTask: () => false
+            shouldSkipTask: () => false,
         },
         Exec: {
             executeAsync: () => null,
@@ -95,29 +93,23 @@ jest.mock('rnv', () => {
         },
         PlatformManager: {
             isPlatformActive: () => null,
-            logErrorPlatform: () => null
+            logErrorPlatform: () => null,
         },
         RuntimeManager: {
-            updateRenativeConfigs: () => null
+            updateRenativeConfigs: () => null,
         },
         SDKManager: {
             Apple: {
-                launchAppleSimulator: () => null
+                launchAppleSimulator: () => null,
             },
-            Android: {
-
-            }
-        }
+            Android: {},
+        },
     };
 });
 
+beforeEach(() => {});
 
-beforeEach(() => {
-});
-
-afterEach(() => {
-
-});
+afterEach(() => {});
 
 const originTask = {};
 const c = generateMockConfig({});

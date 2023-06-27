@@ -12,19 +12,15 @@ import { copyProjectTemplateAndReplace } from './copyTemplate';
 // eslint-disable-next-line global-require
 const cli = require('@react-native-windows/cli');
 // eslint-disable-next-line global-require
-const runWindows = require(
-    '@react-native-windows/cli/lib-commonjs/runWindows/runWindows'
-).runWindowsCommand.func;
+const runWindows = require('@react-native-windows/cli/lib-commonjs/runWindows/runWindows').runWindowsCommand.func;
 // const msBuildTools = require(
 //     '@react-native-windows/cli/lib-commonjs/runWindows/utils/msbuildtools'
 // ).default;
 const {
-    runPowerShellScriptFunction
+    runPowerShellScriptFunction,
     // commandWithProgress,
     // newSpinner,
-} = require(
-    '@react-native-windows/cli/lib-commonjs/runWindows/utils/commandWithProgress'
-);
+} = require('@react-native-windows/cli/lib-commonjs/runWindows/utils/commandWithProgress');
 
 const { logTask, logWarning, logDebug, logError } = Logger;
 const { getAppFolder, getConfigProp } = Common;
@@ -93,7 +89,7 @@ const defaultOptions = {
     // Additional options/args passed to react native's cli's metro server start function
     additionalMetroOptions: {},
     // UWP App can be packaged into .appx or .msix
-    packageExtension: 'appx'
+    packageExtension: 'appx',
 };
 
 const getOptions = (c, injectedOptions = {}) => {
@@ -118,7 +114,12 @@ const getOptions = (c, injectedOptions = {}) => {
     const proj = getConfigProp(c, c.platform, 'proj', c.paths.project.dir);
     const appPath = getConfigProp(c, c.platform, 'appPath', getAppFolder(c));
     const msbuildprops = getConfigProp(c, c.platform, 'msbuildprops', defaultOptions.msbuildprops);
-    const buildLogDirectory = getConfigProp(c, c.platform, 'buildLogDirectory', path.join(getAppFolder(c), 'BuildLogs'));
+    const buildLogDirectory = getConfigProp(
+        c,
+        c.platform,
+        'buildLogDirectory',
+        path.join(getAppFolder(c), 'BuildLogs')
+    );
     const info = getConfigProp(c, c.platform, 'info', defaultOptions.info);
     const directDebugging = getConfigProp(c, c.platform, 'directDebugging', defaultOptions.directDebugging);
     const telemetry = getConfigProp(c, c.platform, 'telemetry', defaultOptions.telemetry);
@@ -127,7 +128,12 @@ const getOptions = (c, injectedOptions = {}) => {
     // Aditional ReNative property configurations
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
     const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
-    const additionalMetroOptions = getConfigProp(c, c.platform, 'additionalMetroOptions', defaultOptions.additionalMetroOptions);
+    const additionalMetroOptions = getConfigProp(
+        c,
+        c.platform,
+        'additionalMetroOptions',
+        defaultOptions.additionalMetroOptions
+    );
 
     // TODO Default options, need to configure this via renative.json
     const options = {
@@ -165,10 +171,10 @@ const getOptions = (c, injectedOptions = {}) => {
             // ENV variables must not be removed as metro will fail without them
             env: {
                 NODE_ENV: env || 'development',
-                ...generateEnvVars(c)
-            }
+                ...generateEnvVars(c),
+            },
         },
-        ...injectedOptions
+        ...injectedOptions,
     };
 
     return options;
@@ -193,13 +199,13 @@ export const ruWindowsProject = async (c, injectedOptions) => {
             projectFile: `${c.runtime.appId}\\${c.runtime.appId}.vcxproj`,
             projectLang: options.language,
             // TODO Validate if this is ok
-            projectGuid: c.runtime.appId
+            projectGuid: c.runtime.appId,
         },
-        folder: c.paths.project.dir
+        folder: c.paths.project.dir,
     };
 
     const projectConfig = {
-        windows: cnfg
+        windows: cnfg,
     };
 
     const config = {
@@ -208,14 +214,15 @@ export const ruWindowsProject = async (c, injectedOptions) => {
         platforms: {
             windows: {
                 linkConfig: () => null,
-                projectConfig: () => cli.projectConfig(c.paths.project.dir, {
-                    project: projectConfig,
-                }),
+                projectConfig: () =>
+                    cli.projectConfig(c.paths.project.dir, {
+                        project: projectConfig,
+                    }),
                 dependencyConfig: cli.dependencyConfig,
                 npmPackageName: 'react-native-windows',
             },
         },
-        project: projectConfig
+        project: projectConfig,
     };
 
     // This needs to be set before the first run to make sure there is just
@@ -226,10 +233,7 @@ export const ruWindowsProject = async (c, injectedOptions) => {
     // For release bundle needs to be created
     if (options.bundleAssets || options.release) {
         logDebug('Assets will be bundled');
-        await packageBundleForWindows(
-            c,
-            options.bundleIsDev
-        );
+        await packageBundleForWindows(c, options.bundleIsDev);
     }
 
     await runWindows(args, config, options);
@@ -242,7 +246,7 @@ const copyWindowsTemplateProject = async (c, injectedOptions = {}) => {
 
     const opts = {
         ...options,
-        ...injectedOptions
+        ...injectedOptions,
     };
 
     await copyProjectTemplateAndReplace(c, opts);
@@ -259,7 +263,7 @@ function clearWindowsTemporaryFiles(c) {
     const opts = {
         cwd: c.paths.project.dir,
         detached: false,
-        stdio: logging ? 'inherit' : 'ignore'
+        stdio: logging ? 'inherit' : 'ignore',
     };
 
     // TODO This should be part of rnv clean and rnv run -r and not part of the SDK
@@ -277,7 +281,7 @@ function clearWindowsTemporaryFiles(c) {
     // TODO Arbitrary 3s delay before continuing to make sure all files were removed is not ideal
     // But without it bundler executes at the same time deletion occurs and therefore bundler
     // fails to initiate
-    return new Promise(resolve => setTimeout(() => resolve(true), 4000));
+    return new Promise((resolve) => setTimeout(() => resolve(true), 4000));
 }
 
 const packageBundleForWindows = (c, isDev = false) => {
@@ -294,7 +298,7 @@ const packageBundleForWindows = (c, isDev = false) => {
         '--entry-file',
         `${c.buildConfig.platforms[c.platform].entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c, c.platform).replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`
+        `${getAppFolder(c, c.platform).replace(/\//g, '\\')}\\${c.runtime.appId}\\Bundle\\index.windows.bundle`,
     ];
 
     if (c.program.info) {
@@ -312,9 +316,13 @@ const packageBundleForWindows = (c, isDev = false) => {
         args.push(`${dir}\\index.windows.bundle.map`);
     }
 
-    return executeAsync(c, `node ${doResolve(
-        'react-native', true, { forceForwardPaths: false }
-    )}\\local-cli\\cli.js ${args.join(' ')} --config=metro.config.js`, { env: { ...generateEnvVars(c) } });
+    return executeAsync(
+        c,
+        `node ${doResolve('react-native', true, { forceForwardPaths: false })}\\local-cli\\cli.js ${args.join(
+            ' '
+        )} --config=metro.config.js`,
+        { env: { ...generateEnvVars(c) } }
+    );
 };
 
 const setSingleBuildProcessForWindows = (c) => {
@@ -325,7 +333,7 @@ const setSingleBuildProcessForWindows = (c) => {
         const opts = {
             cwd: c.paths.project.dir,
             detached: false,
-            stdio: logging ? 'inherit' : 'ignore'
+            stdio: logging ? 'inherit' : 'ignore',
         };
 
         // TODO This should be part of rnv clean and rnv run -r and not part of the SDK
@@ -346,9 +354,13 @@ const pushd = (pathArg) => {
 // Copied from @react-native-windows/cli/overrides/lib-commonjs/runWindows/utils/deploy.js
 const getWindowsStoreAppUtils = (c) => {
     const appFolder = getAppFolder(c);
-    const RNWinPath = path.join(path.dirname(require.resolve('@react-native-windows/cli/package.json', {
-        paths: [c.paths.project.dir],
-    })));
+    const RNWinPath = path.join(
+        path.dirname(
+            require.resolve('@react-native-windows/cli/package.json', {
+                paths: [c.paths.project.dir],
+            })
+        )
+    );
     logWarning('RN Win Path', RNWinPath);
     const popd = pushd(appFolder);
     const windowsStoreAppUtilsPath = path.join(RNWinPath, 'powershell', 'WindowsStoreAppUtils.ps1');
@@ -360,7 +372,6 @@ const getWindowsStoreAppUtils = (c) => {
     return windowsStoreAppUtilsPath;
 };
 
-
 function getAppPackage(c, injectedOptions) {
     const options = getOptions(c, injectedOptions);
     const appFolder = getAppFolder(c, c.platform);
@@ -370,7 +381,7 @@ function getAppPackage(c, injectedOptions) {
     const newGlob = `${rootGlob}/*_${options.arch === 'x86' ? '{Win32,x86}' : options.arch}_Test`;
     const result = glob.sync(newGlob);
     if (result.length > 1 && c.runtime.appId) {
-        const newFilteredGlobs = result.filter(x => x.includes(c.runtime.appId));
+        const newFilteredGlobs = result.filter((x) => x.includes(c.runtime.appId));
         if (newFilteredGlobs.length >= 1) {
             logWarning(`More than one app package found: ${result}`);
         }
@@ -388,7 +399,12 @@ const signWindowsApp = async (c, script, windowsStoreAppUtils) => {
     try {
         const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
         // TODO Installs the app instead of just saving a certificate
-        await runPowerShellScriptFunction('Saving certificate in the local certificate store', windowsStoreAppUtils, `Install-App "${script}" -Force`, logging);
+        await runPowerShellScriptFunction(
+            'Saving certificate in the local certificate store',
+            windowsStoreAppUtils,
+            `Install-App "${script}" -Force`,
+            logging
+        );
     } catch (err) {
         logError(err);
     }
@@ -396,8 +412,18 @@ const signWindowsApp = async (c, script, windowsStoreAppUtils) => {
 
 const installWindowsApp = async (c, script, windowsStoreAppUtils) => {
     const logging = getConfigProp(c, c.platform, 'logging', defaultOptions.logging);
-    await runPowerShellScriptFunction('Removing old version of the app', windowsStoreAppUtils, `Uninstall-App ${c.runtime.appId}`, logging);
-    await runPowerShellScriptFunction('Installing new version of the app', windowsStoreAppUtils, `Install-App "${script}" -Force`, logging);
+    await runPowerShellScriptFunction(
+        'Removing old version of the app',
+        windowsStoreAppUtils,
+        `Uninstall-App ${c.runtime.appId}`,
+        logging
+    );
+    await runPowerShellScriptFunction(
+        'Installing new version of the app',
+        windowsStoreAppUtils,
+        `Install-App "${script}" -Force`,
+        logging
+    );
 };
 
 const packageWindowsApp = async (c, injectedOptions) => {
@@ -425,12 +451,20 @@ const packageWindowsApp = async (c, injectedOptions) => {
         // await commandWithProgress(newSpinner(signTaskDescription), signTaskDescription,
         //     `C:\\Program Files (x86)\\Windows Kits\\10\\bin\\${sdks[0]}\\${arch}\\SignTool.exe`,
         //     ['sign', '/v', '/fd', 'sha256', '/a', '/f', `${appFolder}/${c.runtime.appId}/${c.runtime.appId}_TemporaryKey.pfx`, '/p', 'password', `${appFolder}/${c.runtime.appId}.${packageExtension}`], logging);
-        const RNWinPowershellPath = path.join(path.dirname(require.resolve('@react-native-windows/cli/package.json', {
-            paths: [c.paths.project.dir],
-        })), 'powershell');
+        const RNWinPowershellPath = path.join(
+            path.dirname(
+                require.resolve('@react-native-windows/cli/package.json', {
+                    paths: [c.paths.project.dir],
+                })
+            ),
+            'powershell'
+        );
 
         // TODO Sign-AppDevPackage cannot be executed
-        copyFileSync(path.join(RNWinPowershellPath, 'Sign-AppDevPackage.ps1'), path.join(appFolder, 'AppPackages', c.runtime.appId, `${c.runtime.appId}_1.0.0.0_Win32_Test`));
+        copyFileSync(
+            path.join(RNWinPowershellPath, 'Sign-AppDevPackage.ps1'),
+            path.join(appFolder, 'AppPackages', c.runtime.appId, `${c.runtime.appId}_1.0.0.0_Win32_Test`)
+        );
         const script = glob.sync(path.join(c.paths.project.dir, appPackage, 'Add-AppDevPackage.ps1'))[0];
         // await signWindowsApp(c, script, windowsStoreAppUtils);
         await installWindowsApp(c, script, windowsStoreAppUtils);
@@ -445,5 +479,5 @@ export {
     clearWindowsTemporaryFiles,
     packageWindowsApp,
     installWindowsApp,
-    signWindowsApp
+    signWindowsApp,
 };

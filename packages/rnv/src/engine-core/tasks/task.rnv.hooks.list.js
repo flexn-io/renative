@@ -4,7 +4,6 @@ import { buildHooks } from '../../core/projectManager/buildHooks';
 import { executeTask } from '../../core/taskManager';
 import { TASK_HOOKS_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
-
 export const taskRnvHooksList = async (c, parentTask, originTask) => {
     logTask('taskRnvHooksList');
 
@@ -33,5 +32,5 @@ export default {
     platforms: [],
     skipAppConfig: true,
     skipPlatforms: true,
-    forceBuildHookRebuild: true
+    forceBuildHookRebuild: true,
 };

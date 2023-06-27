@@ -16,7 +16,10 @@ const _checkPrereqs = (c) => {
     }
 
     if (!commandExistsSync('terraform')) {
-        logError('Terraform not found. Please install it then continue (https://learn.hashicorp.com/tutorials/terraform/install-cli)', true);
+        logError(
+            'Terraform not found. Please install it then continue (https://learn.hashicorp.com/tutorials/terraform/install-cli)',
+            true
+        );
     }
 };
 
@@ -28,11 +31,15 @@ export const taskRnvTerraformStatus = async (c) => {
 
     const backendFolder = path.resolve(c.paths.project.dir, 'backend');
 
-    const lines = (await executeAsync(c, 'terraform plan --json', {
-        cwd: backendFolder,
-    })).split('\n').map(JSON.parse);
+    const lines = (
+        await executeAsync(c, 'terraform plan --json', {
+            cwd: backendFolder,
+        })
+    )
+        .split('\n')
+        .map(JSON.parse);
 
-    const changeSummary = lines.filter(line => line.type === 'change_summary');
+    const changeSummary = lines.filter((line) => line.type === 'change_summary');
 
     if (!changeSummary) {
         return logError('Could not get change summary from terraform plan', true);

@@ -3,19 +3,12 @@ import { Exec, Logger, PluginManager, FileUtils, Resolver, Common } from 'rnv';
 
 import compareVersions from 'compare-versions';
 
-const {
-    getAppFolder,
-    getAppTemplateFolder,
-    getConfigProp,
-    getFlavouredProp,
-    addSystemInjects
-} = Common;
+const { getAppFolder, getAppTemplateFolder, getConfigProp, getFlavouredProp, addSystemInjects } = Common;
 const { logTask, logWarning } = Logger;
 const { parsePlugins, sanitizePluginPath, overrideFileContents, includesPluginPath } = PluginManager;
 const { doResolve, doResolvePath } = Resolver;
 const { executeAsync } = Exec;
 const { writeCleanFile } = FileUtils;
-
 
 export const parsePodFile = async (c, platform) => {
     logTask('parsePodFile');
@@ -52,16 +45,17 @@ export const parsePodFile = async (c, platform) => {
         if (staticPods?.forEach) {
             staticPods.forEach((sPod) => {
                 if (sPod.startsWith('::startsWith::')) {
-                    c.pluginConfigiOS.staticPodExtraConditions += ` || pod.name.start_with?('${sPod.replace('::startsWith::', '')}')`;
+                    c.pluginConfigiOS.staticPodExtraConditions += ` || pod.name.start_with?('${sPod.replace(
+                        '::startsWith::',
+                        ''
+                    )}')`;
                 }
             });
         }
 
         const reactSubSpecs = getFlavouredProp(c, pluginPlat, 'reactSubSpecs');
         if (reactSubSpecs) {
-            logWarning(
-                'reactSubSpecs prop is deprecated. You can safely remove it'
-            );
+            logWarning('reactSubSpecs prop is deprecated. You can safely remove it');
         }
 
         const podfile = getFlavouredProp(c, pluginPlat, 'Podfile');
@@ -120,14 +114,8 @@ export const parsePodFile = async (c, platform) => {
         }
     }
 
-
     // DEPLOYMENT TARGET
-    const deploymentTarget = getConfigProp(
-        c,
-        platform,
-        'deploymentTarget',
-        '11.0'
-    );
+    const deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '11.0');
     c.pluginConfigiOS.deploymentTarget = deploymentTarget;
 
     // STATIC POD INJECT VERSION
@@ -144,46 +132,45 @@ export const parsePodFile = async (c, platform) => {
         }
     }
 
-
     const injects = [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
         {
             pattern: '{{PLUGIN_PODFILE_INJECT}}',
-            override: c.pluginConfigiOS.podfileInject
+            override: c.pluginConfigiOS.podfileInject,
         },
         {
             pattern: '{{INJECT_POST_INSTALL}}',
-            override: c.pluginConfigiOS.podPostInstall
+            override: c.pluginConfigiOS.podPostInstall,
         },
         {
             pattern: '{{PLUGIN_PODFILE_SOURCES}}',
-            override: c.pluginConfigiOS.podfileSources
+            override: c.pluginConfigiOS.podfileSources,
         },
         {
             pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}',
-            override: c.pluginConfigiOS.deploymentTarget
+            override: c.pluginConfigiOS.deploymentTarget,
         },
         {
             pattern: '{{PLUGIN_STATIC_FRAMEWORKS}}',
-            override: c.pluginConfigiOS.staticFrameworks.join(',')
+            override: c.pluginConfigiOS.staticFrameworks.join(','),
         },
         {
             pattern: '{{PATH_JSC_ANDROID}}',
-            override: doResolve('jsc-android')
+            override: doResolve('jsc-android'),
         },
         {
             pattern: '{{PATH_REACT_NATIVE}}',
-            override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native')
+            override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'),
         },
         {
             pattern: '{{PLUGIN_STATIC_POD_DEFINITION}}',
-            override: c.pluginConfigiOS.staticPodDefinition
+            override: c.pluginConfigiOS.staticPodDefinition,
         },
         {
             pattern: '{{PLUGIN_STATIC_POD_EXTRA_CONDITIONS}}',
-            override: c.pluginConfigiOS.staticPodExtraConditions
-        }
+            override: c.pluginConfigiOS.staticPodExtraConditions,
+        },
     ];
 
     addSystemInjects(c, injects);
@@ -191,14 +178,16 @@ export const parsePodFile = async (c, platform) => {
     writeCleanFile(
         path.join(getAppTemplateFolder(c, platform), 'Podfile'),
         path.join(appFolder, 'Podfile'),
-        injects, null, c
+        injects,
+        null,
+        c
     );
     return true;
 };
 
 const REACT_CORE_OVERRIDES = {
     "s.dependency 'React'": "s.dependency 'React-Core'",
-    's.dependency "React"': 's.dependency "React-Core"'
+    's.dependency "React"': 's.dependency "React-Core"',
 };
 
 const _injectPod = (_podName, pluginPlat, plugin, _key) => {
@@ -218,12 +207,8 @@ const _injectPod = (_podName, pluginPlat, plugin, _key) => {
         // Xcode 12 Migration
         overrideFileContents(podspecPath, REACT_CORE_OVERRIDES, 'REACT_CORE_OVERRIDES');
     } else if (pluginPlat.git) {
-        const commit = pluginPlat.commit
-            ? `, :commit => '${pluginPlat.commit}'`
-            : '';
-        pluginInject += `  pod '${podName}', :git => '${
-            pluginPlat.git
-        }'${commit}\n`;
+        const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
+        pluginInject += `  pod '${podName}', :git => '${pluginPlat.git}'${commit}\n`;
     } else if (pluginPlat.version) {
         pluginInject += `  pod '${podName}', '${pluginPlat.version}'\n`;
     } else {

@@ -15,8 +15,9 @@ const {
     FIREFOX_OS,
     FIREFOX_TV,
     CHROMECAST,
-    TASK_BUILD, TASK_PACKAGE,
-    PARAMS
+    TASK_BUILD,
+    TASK_PACKAGE,
+    PARAMS,
 } = Constants;
 
 const { buildTizenProject } = SDKTizen;
@@ -65,16 +66,5 @@ export default {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        WEB,
-        WEBTV,
-        TIZEN,
-        WEBOS,
-        TIZEN_MOBILE,
-        TIZEN_WATCH,
-        KAIOS,
-        FIREFOX_OS,
-        FIREFOX_TV,
-        CHROMECAST,
-    ],
+    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV, CHROMECAST],
 };

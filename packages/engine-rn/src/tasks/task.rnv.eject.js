@@ -4,16 +4,7 @@ import { ejectXcodeProject } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    IOS,
-    MACOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    TASK_PACKAGE,
-    PARAMS
-} = Constants;
+const { IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_PACKAGE, PARAMS } = Constants;
 
 const TASK_EJECT = 'eject';
 
@@ -33,7 +24,7 @@ export const taskRnvEject = async (c, parentTask, originTask) => {
             c.runtime._platformBuildsSuffix = '_eject/android';
             break;
         default:
-            // Do nothing
+        // Do nothing
     }
 
     c.runtime._skipNativeDepResolutions = true;
@@ -64,12 +55,5 @@ export default {
     fn: taskRnvEject,
     task: 'eject',
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        IOS,
-        MACOS,
-        ANDROID,
-        ANDROID_TV,
-        FIRE_TV,
-        ANDROID_WEAR,
-    ],
+    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };

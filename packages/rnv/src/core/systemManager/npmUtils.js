@@ -2,7 +2,15 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import { executeAsync, commandExistsSync } from './exec';
-import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync, fsWriteFileSync, loadFile, readObjectSync } from './fileutils';
+import {
+    fsExistsSync,
+    invalidatePodsChecksum,
+    removeDirs,
+    writeFileSync,
+    fsWriteFileSync,
+    loadFile,
+    readObjectSync,
+} from './fileutils';
 import { logTask, logWarning, logError, logInfo, logDebug, logSuccess } from './logger';
 import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { doResolve } from './resolve';
@@ -42,12 +50,9 @@ export const checkAndCreateProjectPackage = async (c) => {
     logTask('checkAndCreateProjectPackage');
 
     if (!packageJsonIsValid(c)) {
-        logInfo(
-            `Your ${c.paths.project.package} is missing. CREATING...DONE`
-        );
+        logInfo(`Your ${c.paths.project.package} is missing. CREATING...DONE`);
 
-        const packageName = c.files.project.config.projectName
-                || c.paths.project.dir.split('/').pop();
+        const packageName = c.files.project.config.projectName || c.paths.project.dir.split('/').pop();
         const version = c.files.project.config.defaults?.package?.version || '0.1.0';
         const templateName = c.files.project.config?.currentTemplate;
         if (!templateName) {
@@ -55,7 +60,12 @@ export const checkAndCreateProjectPackage = async (c) => {
         }
         const rnvVersion = c.files.rnv.package.version;
 
-        c.paths.template.configTemplate = path.join(c.paths.project.dir, 'node_modules', templateName, RENATIVE_CONFIG_TEMPLATE_NAME);
+        c.paths.template.configTemplate = path.join(
+            c.paths.project.dir,
+            'node_modules',
+            templateName,
+            RENATIVE_CONFIG_TEMPLATE_NAME
+        );
 
         const templateObj = readObjectSync(c.paths.template.configTemplate);
 
@@ -81,29 +91,21 @@ export const checkAndCreateProjectPackage = async (c) => {
 export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
 export const listAndSelectNpmVersion = async (c, npmPackage) => {
-    const templateVersionsStr = await executeAsync(
-        c,
-        `npm view ${npmPackage} versions`
-    );
-    const versionArr = templateVersionsStr
-        .replace(/\r?\n|\r|\s|'|\[|\]/g, '')
-        .split(',');
+    const templateVersionsStr = await executeAsync(c, `npm view ${npmPackage} versions`);
+    const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',');
 
-    const templateTagsStr = await executeAsync(
-        c,
-        `npm dist-tag ls ${npmPackage}`
-    );
+    const templateTagsStr = await executeAsync(c, `npm dist-tag ls ${npmPackage}`);
     const tagArr = [];
     templateTagsStr.split('\n').forEach((tString) => {
         const tArr = tString.split(': ');
         tagArr.push({
             name: tArr[0],
-            version: tArr[1]
+            version: tArr[1],
         });
     });
 
     versionArr.reverse();
-    const validVersions = versionArr.map(v => ({ name: v, value: v }));
+    const validVersions = versionArr.map((v) => ({ name: v, value: v }));
 
     let recommendedVersion;
     validVersions.forEach((item) => {
@@ -132,7 +134,7 @@ export const listAndSelectNpmVersion = async (c, npmPackage) => {
         message: `What ${npmPackage} version to use?`,
         default: recommendedVersion.value,
         loop: false,
-        choices: validVersions
+        choices: validVersions,
     });
 
     return inputTemplateVersion;
@@ -143,9 +145,7 @@ export const checkIfProjectAndNodeModulesExists = async (c) => {
 
     if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
         c._requiresNpmInstall = false;
-        logInfo(
-            'node_modules folder is missing. INSTALLING...'
-        );
+        logInfo('node_modules folder is missing. INSTALLING...');
         await installPackageDependencies(c);
     }
 };
@@ -180,7 +180,9 @@ export const installPackageDependencies = async (c, failOnError = false) => {
 
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
     if (isMonorepo) {
-        logSuccess('This project is marked as part of monorepo and it has no custom install tasks. Run your usual monorepo bootstrap procedure and re-run command again.');
+        logSuccess(
+            'This project is marked as part of monorepo and it has no custom install tasks. Run your usual monorepo bootstrap procedure and re-run command again.'
+        );
         return Promise.reject('Cancelled');
     }
 
@@ -188,22 +190,26 @@ export const installPackageDependencies = async (c, failOnError = false) => {
     const npmLockPath = path.join(c.paths.project.dir, 'package-lock.json');
     let command = 'npm install';
 
-
     const yarnLockExists = fsExistsSync(yarnLockPath);
     const packageLockExists = fsExistsSync(npmLockPath);
 
     if (yarnLockExists || packageLockExists) {
         // a lock file exists, defaulting to whichever is present
-        if (yarnLockExists && !isYarnInstalled()) throw new Error('You have a yarn.lock file but you don\'t have yarn installed. Install it or delete yarn.lock');
+        if (yarnLockExists && !isYarnInstalled())
+            throw new Error(
+                "You have a yarn.lock file but you don't have yarn installed. Install it or delete yarn.lock"
+            );
         command = yarnLockExists ? 'yarn' : 'npm install';
     } else if (c.program.packageManager) {
         // no lock file check cli option
         if (['yarn', 'npm'].includes(c.program.packageManager)) {
             command = c.program.packageManager === 'yarn' ? 'yarn' : 'npm install';
-            if (command === 'yarn' && !isYarnInstalled()) throw new Error('You specified yarn as packageManager but it\'s not installed');
+            if (command === 'yarn' && !isYarnInstalled())
+                throw new Error("You specified yarn as packageManager but it's not installed");
         } else {
-            throw new Error(`Unsupported package manager ${
-                c.program.packageManager}. Only yarn and npm are supported at the moment.`);
+            throw new Error(
+                `Unsupported package manager ${c.program.packageManager}. Only yarn and npm are supported at the moment.`
+            );
         }
     } else {
         // no cli option either, asking
@@ -212,7 +218,7 @@ export const installPackageDependencies = async (c, failOnError = false) => {
             name: 'packageManager',
             message: 'What package manager would you like to use?',
             choices: ['yarn', 'npm'],
-            default: 'npm'
+            default: 'npm',
         });
         if (packageManager === 'yarn') command = 'yarn';
     }
@@ -241,10 +247,11 @@ export const installPackageDependencies = async (c, failOnError = false) => {
     try {
         const plats = c.files.project.config?.defaults?.supportedPlatforms;
         if (
-            Array.isArray(plats) && (plats.includes(ANDROID)
-            || plats.includes(ANDROID_TV)
-            || plats.includes(FIRE_TV)
-            || plats.includes(ANDROID_WEAR))
+            Array.isArray(plats) &&
+            (plats.includes(ANDROID) ||
+                plats.includes(ANDROID_TV) ||
+                plats.includes(FIRE_TV) ||
+                plats.includes(ANDROID_WEAR))
         ) {
             if (!c.files.project.configLocal) {
                 c.files.project.configLocal = {};
@@ -275,33 +282,34 @@ export const jetifyIfRequired = async (c) => {
     return true;
 };
 
-export const cleanNodeModules = () => new Promise((resolve, reject) => {
-    logTask('cleanNodeModules');
-    const dirs = [
-        'react-native-safe-area-view/.git',
-        '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
-        'react-navigation/node_modules/react-native-safe-area-view/.git',
-        'react-native-safe-area-view/.git',
-        '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
-        'react-navigation/node_modules/react-native-safe-area-view/.git'
-    ].reduce((acc, dir) => {
-        const [_all, aPackage, aPath] = dir.match(/([^/]+)\/(.*)/);
-        logDebug(`Cleaning: ${_all}`);
-        const resolved = doResolve(aPackage, false);
-        if (resolved) {
-            acc.push(`${resolved}/${aPath}`);
-        }
-        return acc;
-    }, []);
-    removeDirs(dirs)
-        .then(() => resolve())
-        .catch(e => reject(e));
-    // removeDirs([
-    //     path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
-    //     path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-    //     path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
-    //     path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
-    //     path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-    //     path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
-    // ]).then(() => resolve()).catch(e => reject(e));
-});
+export const cleanNodeModules = () =>
+    new Promise((resolve, reject) => {
+        logTask('cleanNodeModules');
+        const dirs = [
+            'react-native-safe-area-view/.git',
+            '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
+            'react-navigation/node_modules/react-native-safe-area-view/.git',
+            'react-native-safe-area-view/.git',
+            '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
+            'react-navigation/node_modules/react-native-safe-area-view/.git',
+        ].reduce((acc, dir) => {
+            const [_all, aPackage, aPath] = dir.match(/([^/]+)\/(.*)/);
+            logDebug(`Cleaning: ${_all}`);
+            const resolved = doResolve(aPackage, false);
+            if (resolved) {
+                acc.push(`${resolved}/${aPath}`);
+            }
+            return acc;
+        }, []);
+        removeDirs(dirs)
+            .then(() => resolve())
+            .catch((e) => reject(e));
+        // removeDirs([
+        //     path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
+        //     path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        //     path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
+        //     path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
+        //     path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        //     path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
+        // ]).then(() => resolve()).catch(e => reject(e));
+    });

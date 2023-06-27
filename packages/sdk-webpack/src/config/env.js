@@ -1,6 +1,5 @@
 /* eslint-disable global-require */
 
-
 const fs = require('fs');
 const path = require('path');
 const paths = require('./paths');
@@ -10,9 +9,7 @@ delete require.cache[require.resolve('./paths')];
 
 const { NODE_ENV } = process.env;
 if (!NODE_ENV) {
-    throw new Error(
-        'The NODE_ENV environment variable is required but was not specified.'
-    );
+    throw new Error('The NODE_ENV environment variable is required but was not specified.');
 }
 
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
@@ -53,8 +50,8 @@ dotenvFiles.forEach((dotenvFile) => {
 const appDirectory = fs.realpathSync(process.cwd());
 process.env.NODE_PATH = (process.env.NODE_PATH || '')
     .split(path.delimiter)
-    .filter(folder => folder && !path.isAbsolute(folder))
-    .map(folder => path.resolve(appDirectory, folder))
+    .filter((folder) => folder && !path.isAbsolute(folder))
+    .map((folder) => path.resolve(appDirectory, folder))
     .join(path.delimiter);
 
 // Grab NODE_ENV and REACT_APP_* environment variables and prepare them to be
@@ -65,7 +62,7 @@ const DEBUG = /^DEBUG_/i;
 
 function getClientEnvironment(publicUrl) {
     const raw = Object.keys(process.env)
-        .filter(key => REACT_APP.test(key) || RNV.test(key) || DEBUG.test(key))
+        .filter((key) => REACT_APP.test(key) || RNV.test(key) || DEBUG.test(key))
         .reduce(
             (env, key) => {
                 env[key] = process.env[key];

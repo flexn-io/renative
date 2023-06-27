@@ -26,12 +26,12 @@ export const loadIntegrations = async (c) => {
                     });
                 }
             } catch (err) {
-                logWarning(`You have integration ${integration} defined, but it wasn't found in package.json. ERR: ${err}`);
+                logWarning(
+                    `You have integration ${integration} defined, but it wasn't found in package.json. ERR: ${err}`
+                );
             }
         });
     }
 };
 
-export const registerIntegration = () => {
-
-};
+export const registerIntegration = () => {};

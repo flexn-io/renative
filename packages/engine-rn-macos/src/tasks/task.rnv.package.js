@@ -3,12 +3,7 @@ import { packageBundleForXcode } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    MACOS,
-    TASK_PACKAGE,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
+const { MACOS, TASK_PACKAGE, TASK_CONFIGURE, PARAMS } = Constants;
 const { getConfigProp } = Common;
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;

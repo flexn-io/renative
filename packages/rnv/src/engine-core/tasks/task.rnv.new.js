@@ -5,7 +5,12 @@ import semver from 'semver';
 import { RENATIVE_CONFIG_NAME, CURRENT_DIR, PARAMS, RENATIVE_CONFIG_TEMPLATE_NAME } from '../../core/constants';
 import { getTemplateOptions } from '../../core/templateManager';
 import {
-    mkdirSync, writeFileSync, cleanFolder, fsExistsSync, readObjectSync, removeDirs,
+    mkdirSync,
+    writeFileSync,
+    cleanFolder,
+    fsExistsSync,
+    readObjectSync,
+    removeDirs,
 } from '../../core/systemManager/fileutils';
 import { checkAndCreateGitignore } from '../../core/projectManager';
 import { getWorkspaceOptions } from '../../core/projectManager/workspace';
@@ -25,37 +30,23 @@ import {
     printArrIntoBox,
     printBoxEnd,
     printBoxStart,
-    printIntoBox
+    printIntoBox,
 } from '../../core/systemManager/logger';
-import {
-    isYarnInstalled,
-    listAndSelectNpmVersion
-} from '../../core/systemManager/npmUtils';
-
+import { isYarnInstalled, listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
 
 const highlight = chalk().green;
 
 const _prepareProjectOverview = (c, data) => {
     data.appTitle = data.inputAppTitle || data.defaultAppTitle;
     data.teamID = '';
-    data.appID = data.inputAppID
-        ? data.inputAppID.replace(/\s+/g, '-').toLowerCase()
-        : data.appID;
+    data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
     data.version = data.inputVersion || data.defaultVersion;
-    const tempString = `${data.optionTemplates.selectedOption}@${
-        data.optionTemplates.selectedVersion
-    }`;
+    const tempString = `${data.optionTemplates.selectedOption}@${data.optionTemplates.selectedVersion}`;
 
     let str = printBoxStart('🚀  ReNative Project Generator');
     str += printIntoBox('');
-    str += printIntoBox(
-        `Project Name (folder): ${highlight(data.projectName)}`,
-        1
-    );
-    str += printIntoBox(
-        `Workspace: ${highlight(data.optionWorkspaces.selectedOption)}`,
-        1
-    );
+    str += printIntoBox(`Project Name (folder): ${highlight(data.projectName)}`, 1);
+    str += printIntoBox(`Workspace: ${highlight(data.optionWorkspaces.selectedOption)}`, 1);
     str += printIntoBox(`Project Title: ${highlight(data.appTitle)}`, 1);
     str += printIntoBox(`Project Version: ${highlight(data.version)}`, 1);
     str += printIntoBox(`App ID: ${highlight(data.appID)}`, 1);
@@ -68,8 +59,7 @@ const _prepareProjectOverview = (c, data) => {
     str += printIntoBox('Project Structure:');
     str += printIntoBox('');
     str += printIntoBox(data.projectName);
-    str += chalk()
-        .gray(`│   ├── appConfigs            # Application flavour configuration files/assets │
+    str += chalk().gray(`│   ├── appConfigs            # Application flavour configuration files/assets │
 │   │   └── [APP_ID]          # Example application flavour                    │
 │   │       ├── assets        # Platform assets injected to ./platformAssets   │
 │   │       ├── builds        # Platform files injected to ./platformBuilds    │
@@ -148,8 +138,6 @@ const interactiveQuestion = async (results, bootstrapQuestions, providedAnswers)
     }
 };
 
-
-
 export const taskRnvNew = async (c) => {
     logTask('taskRnvNew');
     const {
@@ -162,7 +150,7 @@ export const taskRnvNew = async (c) => {
         projectTemplate,
         templateVersion,
         platform,
-        gitEnabled
+        gitEnabled,
     } = c.program;
 
     if (fsExistsSync(c.paths.project.config)) {
@@ -179,9 +167,7 @@ export const taskRnvNew = async (c) => {
 
     if (fsExistsSync(c.paths.project.nodeModulesDir)) {
         logWarning(
-            `Found node_modules directory at your location. If you continue it will be deleted: ${
-                c.paths.project.nodeModulesDir
-            }`
+            `Found node_modules directory at your location. If you continue it will be deleted: ${c.paths.project.nodeModulesDir}`
         );
         const { confirmDeleteNodeModules } = await inquirer.prompt({
             name: 'confirmDeleteNodeModules',
@@ -216,26 +202,20 @@ export const taskRnvNew = async (c) => {
         const inputProjectNameObj = await inquirer.prompt({
             name: 'inputProjectName',
             type: 'input',
-            validate: value => !!value,
-            message:
-        "What's your project Name? (no spaces, folder based on ID will be created in this directory)",
+            validate: (value) => !!value,
+            message: "What's your project Name? (no spaces, folder based on ID will be created in this directory)",
         });
         inputProjectName = inputProjectNameObj?.inputProjectName;
     }
 
     data.projectName = inputProjectName;
-    c.paths.project.dir = path.join(
-        CURRENT_DIR,
-        data.projectName.replace(/(\s+)/g, '_')
-    );
+    c.paths.project.dir = path.join(CURRENT_DIR, data.projectName.replace(/(\s+)/g, '_'));
 
     if (fsExistsSync(c.paths.project.dir)) {
         const { confirm } = await inquirer.prompt({
             type: 'confirm',
             name: 'confirm',
-            message: `Folder ${
-                c.paths.project.dir
-            } already exists. RNV will override it. Continue?`,
+            message: `Folder ${c.paths.project.dir} already exists. RNV will override it. Continue?`,
         });
 
         if (!confirm) {
@@ -252,14 +232,7 @@ export const taskRnvNew = async (c) => {
     let inputAppTitle;
     let inputAppID;
     let inputVersion;
-    if (
-        title
-    && title !== ''
-    && id
-    && id !== ''
-    && appVersion
-    && appVersion !== ''
-    ) {
+    if (title && title !== '' && id && id !== '' && appVersion && appVersion !== '') {
         inputAppTitle = title;
         inputAppID = id;
         inputVersion = appVersion;
@@ -269,28 +242,27 @@ export const taskRnvNew = async (c) => {
                 name: 'inputAppTitle',
                 type: 'input',
                 default: data.defaultAppTitle,
-                validate: val => !!val || 'Please enter a title',
+                validate: (val) => !!val || 'Please enter a title',
                 message: "What's your project Title?",
             },
             {
                 name: 'inputAppID',
                 type: 'input',
                 default: () => {
-                    data.appID = `com.mycompany.${inputProjectName
-                        .replace(/\s+/g, '')
-                        .toLowerCase()}`;
+                    data.appID = `com.mycompany.${inputProjectName.replace(/\s+/g, '').toLowerCase()}`;
                     return data.appID;
                 },
-                validate: appId => !!appId.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/)
-          || 'Please enter a valid appID (com.test.app)',
+                validate: (appId) =>
+                    !!appId.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/) || 'Please enter a valid appID (com.test.app)',
                 message: "What's your App ID?",
             },
             {
                 name: 'inputVersion',
                 type: 'input',
                 default: data.defaultVersion,
-                validate: v => !!semver.valid(semver.coerce(v))
-          || 'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
+                validate: (v) =>
+                    !!semver.valid(semver.coerce(v)) ||
+                    'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
                 message: "What's your Version?",
             },
         ]);
@@ -340,7 +312,7 @@ export const taskRnvNew = async (c) => {
         options.push(val.title);
     });
 
-    const getTemplateKey = (val) => data.optionTemplates.valuesAsArray.find(v => v.title === val)?.key;
+    const getTemplateKey = (val) => data.optionTemplates.valuesAsArray.find((v) => v.title === val)?.key;
 
     // ==================================================
     // INPUT: Template
@@ -388,17 +360,17 @@ export const taskRnvNew = async (c) => {
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
 
-    await executeAsync(
-        `${isYarnInstalled() ? 'yarn' : 'npm'} add ${selectedInputTemplate}@${inputTemplateVersion}`,
-        {
-            cwd: c.paths.project.dir,
-        }
-    );
+    await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${selectedInputTemplate}@${inputTemplateVersion}`, {
+        cwd: c.paths.project.dir,
+    });
 
     // Check if node_modules folder exists
     if (!fsExistsSync(path.join(c.paths.project.dir, 'node_modules'))) {
-        logError(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${selectedInputTemplate}@${inputTemplateVersion
-        } : FAILED. this could happen if you have package.json accidentally created somewhere in parent directory`);
+        logError(
+            `${
+                isYarnInstalled() ? 'yarn' : 'npm'
+            } add ${selectedInputTemplate}@${inputTemplateVersion} : FAILED. this could happen if you have package.json accidentally created somewhere in parent directory`
+        );
         return;
     }
 
@@ -406,9 +378,9 @@ export const taskRnvNew = async (c) => {
         const { confirmAddTemplate } = await inquirer.prompt({
             name: 'confirmAddTemplate',
             type: 'confirm',
-            message: `Would you like to add ${chalk().white(
-                selectedInputTemplate
-            )} to your ${c.runtime.selectedWorkspace} workspace template list?`,
+            message: `Would you like to add ${chalk().white(selectedInputTemplate)} to your ${
+                c.runtime.selectedWorkspace
+            } workspace template list?`,
         });
 
         if (confirmAddTemplate) {
@@ -424,35 +396,24 @@ export const taskRnvNew = async (c) => {
     }
 
     const renativeTemplateConfig = readObjectSync(
-        path.join(
-            c.paths.project.dir,
-            'node_modules',
-            selectedInputTemplate,
-            RENATIVE_CONFIG_TEMPLATE_NAME
-        )
+        path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, RENATIVE_CONFIG_TEMPLATE_NAME)
     );
 
     const renativeConfig = readObjectSync(
-        path.join(
-            c.paths.project.dir,
-            'node_modules',
-            selectedInputTemplate,
-            RENATIVE_CONFIG_NAME
-        )
+        path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, RENATIVE_CONFIG_NAME)
     );
 
     // ==================================================
     // INPUT: Supported Platforms
     // ==================================================
 
-    const supportedPlatforms = renativeTemplateConfig?.defaults?.supportedPlatforms
-    || renativeConfig?.defaults?.supportedPlatforms
-    || [];
+    const supportedPlatforms =
+        renativeTemplateConfig?.defaults?.supportedPlatforms || renativeConfig?.defaults?.supportedPlatforms || [];
 
     if (supportedPlatforms.length === 0) {
-        logError(`Template ${
-            selectedInputTemplate
-        } does not seem to export any default platforms to support. contact the author.`);
+        logError(
+            `Template ${selectedInputTemplate} does not seem to export any default platforms to support. contact the author.`
+        );
     }
 
     let inputSupportedPlatforms;
@@ -464,7 +425,7 @@ export const taskRnvNew = async (c) => {
             type: 'checkbox',
             pageSize: 20,
             message: 'What platforms would you like to use?',
-            validate: val => !!val.length || 'Please select at least a platform',
+            validate: (val) => !!val.length || 'Please select at least a platform',
             default: supportedPlatforms,
             choices: supportedPlatforms,
         });
@@ -480,7 +441,7 @@ export const taskRnvNew = async (c) => {
     const providedAnswers = {};
 
     if (c.program.answer) {
-        c.program.answer.forEach(a => {
+        c.program.answer.forEach((a) => {
             const key = a.split('=')[0];
             let value;
 
@@ -572,9 +533,7 @@ export const taskRnvNew = async (c) => {
     const templates = {};
 
     logTask(
-        `_generateProject:${data.optionTemplates.selectedOption}:${
-            data.optionTemplates.selectedVersion
-        }`,
+        `_generateProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
         chalk().grey
     );
 
@@ -618,15 +577,14 @@ export const taskRnvNew = async (c) => {
     if (renativeTemplateConfig.engines) {
         // Remove unused engines based on selected platforms
         supPlats.forEach((k) => {
-            const selectedEngineId = config.platforms[k]?.engine
-      || c.files.rnv.projectTemplates.config.platforms[k]?.engine;
+            const selectedEngineId =
+                config.platforms[k]?.engine || c.files.rnv.projectTemplates.config.platforms[k]?.engine;
             if (selectedEngineId) {
                 const selectedEngine = findEngineKeyById(c, selectedEngineId);
                 config.engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
             }
         });
     }
-
 
     delete config.templateConfig;
     if (!config.platforms) {
@@ -640,9 +598,9 @@ export const taskRnvNew = async (c) => {
         await configureGit(c);
     }
     logSuccess(
-        `Your project is ready! navigate to project ${chalk().white(
-            `cd ${data.projectName}`
-        )} and run ${chalk().white('rnv run')} to see magic happen!`
+        `Your project is ready! navigate to project ${chalk().white(`cd ${data.projectName}`)} and run ${chalk().white(
+            'rnv run'
+        )} to see magic happen!`
     );
 };
 
@@ -666,4 +624,3 @@ export default {
     platforms: [],
     isGlobalScope: true,
 };
-

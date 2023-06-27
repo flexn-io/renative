@@ -1,7 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 
-
 const fs = require('fs');
 const path = require('path');
 const chalk = require('react-dev-utils/chalk');
@@ -45,8 +44,8 @@ function getAdditionalModulePaths(options = {}) {
     // Otherwise, throw an error.
     throw new Error(
         chalk.red.bold(
-            "Your project's `baseUrl` can only be set to `src` or `node_modules`."
-        + ' Create React App does not support other values at this time.'
+            "Your project's `baseUrl` can only be set to `src` or `node_modules`." +
+                ' Create React App does not support other values at this time.'
         )
     );
 }
@@ -115,8 +114,8 @@ function getModules() {
         }));
         // eslint-disable-next-line prefer-destructuring
         config = ts.readConfigFile(paths.appTsConfig, ts.sys.readFile).config;
-    // Otherwise we'll check if there is jsconfig.json
-    // for non TS projects.
+        // Otherwise we'll check if there is jsconfig.json
+        // for non TS projects.
     } else if (hasJsConfig) {
         config = require(paths.appJsConfig);
     }

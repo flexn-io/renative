@@ -17,9 +17,10 @@ const {
     FIREFOX_OS,
     FIREFOX_TV,
     CHROMECAST,
-    TASK_RUN, TASK_START,
+    TASK_RUN,
+    TASK_START,
     TASK_CONFIGURE,
-    PARAMS
+    PARAMS,
 } = Constants;
 
 const { getConfigProp, getPlatformProjectDir, existBuildsOverrideForTargetPathSync } = Common;
@@ -45,13 +46,15 @@ const _configureHostedIfRequired = async (c) => {
             [
                 {
                     pattern: '{{DEV_SERVER}}',
-                    override: `http://${ipAddress}:${c.runtime.port}`
+                    override: `http://${ipAddress}:${c.runtime.port}`,
                 },
                 {
                     pattern: '{{APPSHELL_HTML_HEADER}}',
-                    override: String(hostedShellHeaders || '')
+                    override: String(hostedShellHeaders || ''),
                 },
-            ], null, c
+            ],
+            null,
+            c
         );
     }
 };
@@ -109,16 +112,5 @@ export default {
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [
-        WEB,
-        WEBTV,
-        TIZEN,
-        WEBOS,
-        TIZEN_MOBILE,
-        TIZEN_WATCH,
-        KAIOS,
-        FIREFOX_OS,
-        FIREFOX_TV,
-        CHROMECAST,
-    ],
+    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV, CHROMECAST],
 };

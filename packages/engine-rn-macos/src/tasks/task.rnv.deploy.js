@@ -1,12 +1,7 @@
 import { TaskManager, Constants, Logger } from 'rnv';
 
 const { logTask } = Logger;
-const {
-    TASK_EXPORT,
-    TASK_DEPLOY,
-    MACOS,
-    PARAMS
-} = Constants;
+const { TASK_EXPORT, TASK_DEPLOY, MACOS, PARAMS } = Constants;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {

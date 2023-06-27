@@ -16,7 +16,10 @@ const _checkPrereqs = (c) => {
     }
 
     if (!commandExistsSync('terraform')) {
-        logError('Terraform not found. Please install it then continue (https://learn.hashicorp.com/tutorials/terraform/install-cli)', true);
+        logError(
+            'Terraform not found. Please install it then continue (https://learn.hashicorp.com/tutorials/terraform/install-cli)',
+            true
+        );
     }
 };
 

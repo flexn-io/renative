@@ -38,13 +38,12 @@ export const taskRnvKill = async (c, parentTask, originTask) => {
         }
     });
 
-
     if (usedPorts.length) {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
             message: 'Processes attached to the ports will be killed. Continue?',
             warningMessage: `Found active ports:
-${usedPorts.map(v => chalk().white(`> ${v.port} (${v.platform})`)).join('\n')}`
+${usedPorts.map((v) => chalk().white(`> ${v.port} (${v.platform})`)).join('\n')}`,
         });
         if (confirm) {
             const killPromise = [];
@@ -64,5 +63,5 @@ export default {
     task: TASK_KILL,
     params: PARAMS.withBase(),
     platforms: [],
-    isGlobalScope: true
+    isGlobalScope: true,
 };

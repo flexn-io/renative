@@ -4,10 +4,7 @@ import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectMan
 import semver from 'semver';
 
 const { execCLI } = Exec;
-const {
-    CLI_TIZEN,
-    REMOTE_DEBUGGER_ENABLED_PLATFORMS
-} = Constants;
+const { CLI_TIZEN, REMOTE_DEBUGGER_ENABLED_PLATFORMS } = Constants;
 const {
     getPlatformProjectDir,
     // getTemplateProjectDir,
@@ -16,47 +13,36 @@ const {
     checkPortInUse,
     confirmActiveBundler,
     addSystemInjects,
-    waitForHost
+    waitForHost,
 } = Common;
-const {
-    chalk,
-    logTask,
-    logDebug,
-    logError,
-    logSuccess,
-    logWarning,
-    logInfo
-} = Logger;
+const { chalk, logTask, logDebug, logError, logSuccess, logWarning, logInfo } = Logger;
 const { isPlatformActive } = PlatformManager;
 const { writeCleanFile, fsExistsSync } = FileUtils;
 
 const { copyAssetsFolder, copyBuildsFolder } = ProjectManager;
 
-const {
-    runTizenSimOrDevice, createDevelopTizenCertificate,
-    DEFAULT_CERTIFICATE_NAME, DEFAULT_SECURITY_PROFILE_NAME
-} = SDKManager.Tizen;
+const { runTizenSimOrDevice, createDevelopTizenCertificate, DEFAULT_CERTIFICATE_NAME, DEFAULT_SECURITY_PROFILE_NAME } =
+    SDKManager.Tizen;
 
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
 
-export const configureTizenGlobal = c => new Promise((resolve, reject) => {
-    logTask('configureTizenGlobal');
-    // Check Tizen Cert
-    // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
-    const tizenAuthorCert = path.join(c.paths.workspace.dir, DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION);
-    if (fsExistsSync(tizenAuthorCert)) {
-        logDebug(`${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file exists!`);
-        resolve();
-    } else {
-        logWarning(
-            `${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file missing! Creating one for you...`
-        );
-        createDevelopTizenCertificate(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
-    }
-    // }
-});
+export const configureTizenGlobal = (c) =>
+    new Promise((resolve, reject) => {
+        logTask('configureTizenGlobal');
+        // Check Tizen Cert
+        // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
+        const tizenAuthorCert = path.join(c.paths.workspace.dir, DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION);
+        if (fsExistsSync(tizenAuthorCert)) {
+            logDebug(`${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file exists!`);
+            resolve();
+        } else {
+            logWarning(`${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file missing! Creating one for you...`);
+            createDevelopTizenCertificate(c)
+                .then(() => resolve())
+                .catch((e) => reject(e));
+        }
+        // }
+    });
 
 const _runTizenSimOrDevice = async (c) => {
     try {
@@ -72,7 +58,6 @@ export const runTizen = async (c, target) => {
     logTask('runTizen', `target:${target}`);
     const { platform } = c;
     const { hosted } = c.program;
-
 
     const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
 
@@ -98,9 +83,7 @@ export const runTizen = async (c, target) => {
 
         if (!isPortActive) {
             logInfo(
-                `Your ${chalk().white(
-                    platform
-                )} devServer at port ${chalk().white(
+                `Your ${chalk().white(platform)} devServer at port ${chalk().white(
                     c.runtime.port
                 )} is not running. Starting it up for you...`
             );
@@ -138,15 +121,9 @@ export const buildTizenProject = async (c) => {
         const certProfile = platformConfig.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
         await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
-        await execCLI(
-            c,
-            CLI_TIZEN,
-            `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`
-        );
+        await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
 
-        logSuccess(
-            `Your WGT package is located in ${chalk().cyan(tOut)} .`
-        );
+        logSuccess(`Your WGT package is located in ${chalk().cyan(tOut)} .`);
     }
 
     return true;
@@ -176,28 +153,25 @@ export const configureTizenProject = async (c) => {
     return copyBuildsFolder(c, platform);
 };
 
-const _configureProject = c => new Promise((resolve) => {
-    logTask('_configureProject');
-    const { platform } = c;
+const _configureProject = (c) =>
+    new Promise((resolve) => {
+        logTask('_configureProject');
+        const { platform } = c;
 
-    const configFile = 'config.xml';
-    const p = c.buildConfig.platforms[platform];
+        const configFile = 'config.xml';
+        const p = c.buildConfig.platforms[platform];
 
-    const injects = [
-        { pattern: '{{PACKAGE}}', override: p.package },
-        { pattern: '{{ID}}', override: p.id },
-        { pattern: '{{APP_NAME}}', override: p.appName },
-        { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) }
-    ];
+        const injects = [
+            { pattern: '{{PACKAGE}}', override: p.package },
+            { pattern: '{{ID}}', override: p.id },
+            { pattern: '{{APP_NAME}}', override: p.appName },
+            { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) },
+        ];
 
-    addSystemInjects(c, injects);
+        addSystemInjects(c, injects);
 
-    const file = path.join(getPlatformProjectDir(c), configFile);
-    writeCleanFile(
-        file,
-        file,
-        injects, null, c
-    );
+        const file = path.join(getPlatformProjectDir(c), configFile);
+        writeCleanFile(file, file, injects, null, c);
 
-    resolve();
-});
+        resolve();
+    });

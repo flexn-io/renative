@@ -4,17 +4,16 @@ Starter Template for <a href="https://www.npmjs.com/package/renative">ReNative</
 
 This provides the example multi platform app with following functionality demonstrated:
 
-- Navigation
-  - Drawer
-  - Top
-  - Side
-  - Modals
-  - Pages
-- Images
-- Vector Icons
-- Buttons with interactions
-- State changes
-
+-   Navigation
+    -   Drawer
+    -   Top
+    -   Side
+    -   Modals
+    -   Pages
+-   Images
+-   Vector Icons
+-   Buttons with interactions
+-   State changes
 
 ## 🚀 Quick Start
 

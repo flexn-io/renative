@@ -1,4 +1,4 @@
 {
-  "id": "vercel",
-  "npmPackage": "@rnv/integration-vercel"
+    "id": "vercel",
+    "npmPackage": "@rnv/integration-vercel"
 }

@@ -47,7 +47,6 @@ export const initializeBuilder = async (cmd, subCmd, process, program) => {
     const c = ConfigManager.createRnvConfig(program, process, cmd, subCmd);
     Logger.logInitialize();
 
-
     global.fetch = await import('node-fetch');
     global.Headers = global.fetch.Headers;
 
@@ -56,10 +55,10 @@ export const initializeBuilder = async (cmd, subCmd, process, program) => {
 
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)
-        .then(c => Config.initializeConfig(c))
-        .then(c => CLI(c))
+        .then((c) => Config.initializeConfig(c))
+        .then((c) => CLI(c))
         .then(() => Logger.logComplete(!Config.getConfig().runtime.keepSessionActive))
-        .catch(e => Logger.logError(e, true));
+        .catch((e) => Logger.logError(e, true));
 };
 
 export const { doResolve } = Resolver;
@@ -96,7 +95,7 @@ export {
     withRNVMetro,
     run,
     CLI,
-    Spinner
+    Spinner,
 };
 
 export default { run, Config };

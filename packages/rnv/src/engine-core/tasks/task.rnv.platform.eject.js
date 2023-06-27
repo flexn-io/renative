@@ -16,17 +16,15 @@ export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
         logInfo(`Preparing to eject engine platforms to local ${chalk().white('./platformTemplates')}`);
         const { ejectedPlatforms } = await inquirer.prompt({
             name: 'ejectedPlatforms',
-            message:
-              'Select platforms you would like to eject (use SPACE key)',
+            message: 'Select platforms you would like to eject (use SPACE key)',
             type: 'checkbox',
-            choices: generatePlatformChoices(c).map(choice => ({
+            choices: generatePlatformChoices(c).map((choice) => ({
                 ...choice,
-                disabled: !choice.isConnected
-            }))
+                disabled: !choice.isConnected,
+            })),
         });
         selectedPlatforms = ejectedPlatforms;
     }
-
 
     if (selectedPlatforms.length) {
         selectedPlatforms.forEach((platform) => {
@@ -38,18 +36,14 @@ export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
 
             c.files.project.config_original.paths = c.files.project.config_original.paths || {};
 
-            c.files.project.config_original.paths
-                .platformTemplatesDirs = c.files.project.config_original.paths.platformTemplatesDirs || {};
-            c.files.project.config_original.paths.platformTemplatesDirs[
-                platform
-            ] = `./${'platformTemplates'}`;
+            c.files.project.config_original.paths.platformTemplatesDirs =
+                c.files.project.config_original.paths.platformTemplatesDirs || {};
+            c.files.project.config_original.paths.platformTemplatesDirs[platform] = `./${'platformTemplates'}`;
             writeFileSync(c.paths.project.config, c.files.project.config_original);
         });
 
         logSuccess(
-            `${chalk().white(
-                selectedPlatforms.join(',')
-            )} platform templates are located in ${chalk().white(
+            `${chalk().white(selectedPlatforms.join(','))} platform templates are located in ${chalk().white(
                 c.files.project.config.paths.platformTemplatesDirs[selectedPlatforms[0]]
             )} now. You can edit them directly!`
         );

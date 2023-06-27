@@ -11,7 +11,7 @@ export const taskRnvConfig = (c) => {
     const [, key, value] = getCliArguments(c); // first arg is config so it's useless
     if (key === 'list') {
         const rows = [];
-        Object.keys(configSchema).forEach(k => rows.push(Config.listConfigValue(k)));
+        Object.keys(configSchema).forEach((k) => rows.push(Config.listConfigValue(k)));
 
         printTable([].concat(...rows));
         return true;
@@ -31,7 +31,9 @@ export const taskRnvConfig = (c) => {
     if (!value) {
         // list the value
         printTable(Config.listConfigValue(key));
-    } else if (Config.setConfigValue(key, value)) { printTable(Config.listConfigValue(key)); }
+    } else if (Config.setConfigValue(key, value)) {
+        printTable(Config.listConfigValue(key));
+    }
 
     return true;
 };

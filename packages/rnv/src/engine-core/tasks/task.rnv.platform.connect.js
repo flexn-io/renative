@@ -2,14 +2,10 @@ import path from 'path';
 import inquirer from 'inquirer';
 
 import { chalk, logTask, logSuccess, logToSummary } from '../../core/systemManager/logger';
-import {
-    writeFileSync,
-    removeDirs
-} from '../../core/systemManager/fileutils';
+import { writeFileSync, removeDirs } from '../../core/systemManager/fileutils';
 import { generatePlatformChoices } from '../../core/platformManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, PARAMS } from '../../core/constants';
-
 
 export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformConnect');
@@ -28,16 +24,15 @@ export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
         const { connectedPlatforms } = await inquirer.prompt({
             name: 'connectedPlatforms',
             message:
-              'This will point platformTemplates folders from your local project to ReNative managed one. Select platforms you would like to connect',
+                'This will point platformTemplates folders from your local project to ReNative managed one. Select platforms you would like to connect',
             type: 'checkbox',
-            choices: generatePlatformChoices(c).map(choice => ({
+            choices: generatePlatformChoices(c).map((choice) => ({
                 ...choice,
-                disabled: choice.isConnected
-            }))
+                disabled: choice.isConnected,
+            })),
         });
         selectedPlatforms = connectedPlatforms;
     }
-
 
     if (selectedPlatforms.length) {
         selectedPlatforms.forEach((platform) => {
@@ -56,19 +51,13 @@ export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
     const { deletePlatformFolder } = await inquirer.prompt({
         name: 'deletePlatformFolder',
         type: 'confirm',
-        message:
-            'Would you also like to delete the previously used platform folder?'
+        message: 'Would you also like to delete the previously used platform folder?',
     });
 
     if (deletePlatformFolder) {
         const pathsToRemove = [];
         selectedPlatforms.forEach((platform) => {
-            pathsToRemove.push(
-                path.join(
-                    c.paths.project.platformTemplatesDirs[platform],
-                    platform
-                )
-            );
+            pathsToRemove.push(path.join(c.paths.project.platformTemplatesDirs[platform], platform));
         });
 
         // TODO: Remove shared folders as well

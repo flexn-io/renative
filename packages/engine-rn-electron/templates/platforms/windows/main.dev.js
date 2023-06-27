@@ -23,7 +23,7 @@ const loadDevServer = () => {
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({{PLUGIN_INJECT_BROWSER_WINDOW}});
+    mainWindow = new BrowserWindow({{PLUGIN_INJECT_BROWSER_WINDOW}}); 
 
     // and load the index.html of the app.
     loadDevServer();

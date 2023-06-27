@@ -14,13 +14,10 @@ export const executePipe = async (c, key) => {
     const pipe = c.buildPipes ? c.buildPipes[key] : null;
 
     if (Array.isArray(pipe)) {
-        await pipe.reduce(
-            (accumulatorPromise, next) => {
-                logHook(`buildHook.${next?.name}`, '(EXECUTING)');
-                return accumulatorPromise.then(() => next(c));
-            },
-            Promise.resolve()
-        );
+        await pipe.reduce((accumulatorPromise, next) => {
+            logHook(`buildHook.${next?.name}`, '(EXECUTING)');
+            return accumulatorPromise.then(() => next(c));
+        }, Promise.resolve());
     } else if (pipe) {
         logHook(`buildHook.${pipe?.name}`, '(EXECUTING)');
         await pipe(c);
@@ -33,9 +30,14 @@ export const buildHooks = async (c) => {
 
     const enableHookRebuild = getConfigProp(c, c.platform, 'enableHookRebuild');
 
-    let shouldBuildHook = c.program.reset || c.program.resetHard || c.program.resetAssets
-    || c.program.hooks || !fsExistsSync(c.paths.buildHooks.dist.dir) || enableHookRebuild === true
-    || c.runtime.forceBuildHookRebuild;
+    let shouldBuildHook =
+        c.program.reset ||
+        c.program.resetHard ||
+        c.program.resetAssets ||
+        c.program.hooks ||
+        !fsExistsSync(c.paths.buildHooks.dist.dir) ||
+        enableHookRebuild === true ||
+        c.runtime.forceBuildHookRebuild;
 
     if ((!fsExistsSync(c.paths.buildHooks.index) && c.program.ci) || c.runtime.skipBuildHooks) {
         logInfo('No build hooks found and in --ci mode. SKIPPING');
@@ -55,7 +57,7 @@ export const buildHooks = async (c) => {
             const { confirm } = await inquirer.prompt({
                 type: 'confirm',
                 name: 'confirm',
-                message: 'Build hooks not configured in this project. Configure?'
+                message: 'Build hooks not configured in this project. Configure?',
             });
             confirmed = confirm;
         }
@@ -71,10 +73,7 @@ export const buildHooks = async (c) => {
                 buildHooksSource = path.join(c.paths.rnv.dir, 'coreTemplateFiles/buildHooks/src');
             }
 
-            copyFolderContentsRecursiveSync(
-                buildHooksSource,
-                c.paths.buildHooks.dir
-            );
+            copyFolderContentsRecursiveSync(buildHooksSource, c.paths.buildHooks.dir);
         } else {
             c.runtime.skipBuildHooks = true;
             return;
@@ -89,8 +88,10 @@ export const buildHooks = async (c) => {
                     entryPoints: [`${c.paths.buildHooks.dir}/index.js`],
                     bundle: true,
                     platform: 'node',
-                    external: [...Object.keys(c.files.project.package.dependencies || {}),
-                        ...Object.keys(c.files.project.package.devDependencies || {})], // exclude everything that's present in node_modules
+                    external: [
+                        ...Object.keys(c.files.project.package.dependencies || {}),
+                        ...Object.keys(c.files.project.package.devDependencies || {}),
+                    ], // exclude everything that's present in node_modules
                     outfile: `${c.paths.buildHooks.dist.dir}/index.js`,
                 });
             } catch (e) {

@@ -6,13 +6,14 @@ const sharedBlacklist = [
     /node_modules\/react\/dist\/.*/,
     /website\/node_modules\/.*/,
     /heapCapture\/bundle\.js/,
-    /.*\/__tests__\/.*/
+    /.*\/__tests__\/.*/,
 ];
 
 function escapeRegExp(pattern) {
     if (Object.prototype.toString.call(pattern) === '[object RegExp]') {
         return pattern.source.replace(/\//g, path.sep);
-    } if (typeof pattern === 'string') {
+    }
+    if (typeof pattern === 'string') {
         // eslint-disable-next-line
         const escaped = pattern.replace(/[\-\[\]\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&'); // convert the '/' into an escaped local file separator
 
@@ -22,20 +23,11 @@ function escapeRegExp(pattern) {
 }
 
 function exclusionList(additionalBlacklist) {
-    return new RegExp(
-        `(${
-            (additionalBlacklist || [])
-                .concat(sharedBlacklist)
-                .map(escapeRegExp)
-                .join('|')
-        })$`
-    );
+    return new RegExp(`(${(additionalBlacklist || []).concat(sharedBlacklist).map(escapeRegExp).join('|')})$`);
 }
 
 export const withRNV = (config) => {
-    const rnwPath = fs.realpathSync(
-        path.resolve(require.resolve('react-native-windows/package.json'), '..'),
-    );
+    const rnwPath = fs.realpathSync(path.resolve(require.resolve('react-native-windows/package.json'), '..'));
 
     const projectPath = process.env.RNV_PROJECT_ROOT || process.cwd();
 
@@ -50,16 +42,13 @@ export const withRNV = (config) => {
         watchFolders.push(...config.watchFolders);
     }
 
-
     const cnf = {
         ...config,
         resolver: {
             blockList: exclusionList([
                 // This stops "react-native run-windows" from causing the metro server to crash if its already running
                 // TODO. Project name should be dynamically injected here somehow
-                new RegExp(
-                    `${process.env.RNV_APP_BUILD_DIR.replace(/[/\\]/g, '/')}.*`,
-                ),
+                new RegExp(`${process.env.RNV_APP_BUILD_DIR.replace(/[/\\]/g, '/')}.*`),
                 // This prevents "react-native run-windows" from hitting: EBUSY: resource busy or locked, open msbuild.ProjectImports.zip
                 /.*\.ProjectImports\.zip/,
                 /platformBuilds\/.*/,
@@ -90,7 +79,7 @@ export const withRNV = (config) => {
             }),
         },
         watchFolders,
-        projectRoot: path.resolve(projectPath)
+        projectRoot: path.resolve(projectPath),
     };
 
     cnf.resolver.sourceExts = process.env.RNV_EXTENSIONS.split(',');

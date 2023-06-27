@@ -5,15 +5,9 @@ import {
     mkdirSync,
     fsWriteFileSync,
     fsExistsSync,
-    fsReadFileSync
+    fsReadFileSync,
 } from '../../core/systemManager/fileutils';
-import {
-    chalk,
-    logTask,
-    logWarning,
-    logDebug,
-    logInfo
-} from '../../core/systemManager/logger';
+import { chalk, logTask, logWarning, logDebug, logInfo } from '../../core/systemManager/logger';
 
 export const taskRnvWorkspaceConfigure = async (c) => {
     logTask('taskRnvWorkspaceConfigure');
@@ -22,48 +16,29 @@ export const taskRnvWorkspaceConfigure = async (c) => {
     if (fsExistsSync(c.paths.workspace.dir)) {
         logDebug(`${c.paths.workspace.dir} folder exists!`);
     } else {
-        logInfo(
-            `${c.paths.workspace.dir} folder missing! Creating one for you...`
-        );
+        logInfo(`${c.paths.workspace.dir} folder missing! Creating one for you...`);
         mkdirSync(c.paths.workspace.dir);
     }
 
     // Check globalConfig
     if (fsExistsSync(c.paths.workspace.config)) {
-        logDebug(
-            `${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME} file exists!`
-        );
+        logDebug(`${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME} file exists!`);
     } else {
-        const oldGlobalConfigPath = path.join(
-            c.paths.workspace.dir,
-            'config.json'
-        );
+        const oldGlobalConfigPath = path.join(c.paths.workspace.dir, 'config.json');
         if (fsExistsSync(oldGlobalConfigPath)) {
-            logWarning(
-                'Found old version of your config. will copy it to new renative.json config'
-            );
+            logWarning('Found old version of your config. will copy it to new renative.json config');
             copyFileSync(oldGlobalConfigPath, c.paths.workspace.config);
         } else {
-            logInfo(
-                `${
-                    c.paths.workspace.dir
-                }/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`
-            );
+            logInfo(`${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`);
             copyFileSync(
-                path.join(
-                    c.paths.rnv.dir,
-                    'coreTemplateFiles',
-                    'global-config-template.json'
-                ),
+                path.join(c.paths.rnv.dir, 'coreTemplateFiles', 'global-config-template.json'),
                 c.paths.workspace.config
             );
         }
     }
 
     if (fsExistsSync(c.paths.workspace.config)) {
-        c.files.workspace.config = JSON.parse(
-            fsReadFileSync(c.paths.workspace.config).toString()
-        );
+        c.files.workspace.config = JSON.parse(fsReadFileSync(c.paths.workspace.config).toString());
 
         if (c.files.workspace.config?.appConfigsPath) {
             if (!fsExistsSync(c.files.workspace.config.appConfigsPath)) {
@@ -91,21 +66,14 @@ export const taskRnvWorkspaceConfigure = async (c) => {
             );
             const defaultConfig = JSON.parse(
                 fsReadFileSync(
-                    path.join(
-                        c.paths.rnv.dir,
-                        'coreTemplateFiles',
-                        'global-config-template.json'
-                    )
+                    path.join(c.paths.rnv.dir, 'coreTemplateFiles', 'global-config-template.json')
                 ).toString()
             );
             const newConfig = {
                 ...c.files.workspace.config,
-                defaultTargets: defaultConfig.defaultTargets
+                defaultTargets: defaultConfig.defaultTargets,
             };
-            fsWriteFileSync(
-                c.paths.workspace.config,
-                JSON.stringify(newConfig, null, 2)
-            );
+            fsWriteFileSync(c.paths.workspace.config, JSON.stringify(newConfig, null, 2));
         }
     }
 
@@ -119,5 +87,5 @@ export default {
     params: PARAMS.withBase(),
     platforms: [],
     skipPlatforms: true,
-    isGlobalScope: true
+    isGlobalScope: true,
 };

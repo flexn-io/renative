@@ -1,11 +1,6 @@
 {
     "templateConfig": {
-        "includedPaths": [
-            "buildHooks",
-            "src",
-            "index.js",
-            "tsconfig.json"
-        ],
+        "includedPaths": ["buildHooks", "src", "index.js", "tsconfig.json"],
         "packageTemplate": {
             "devDependencies": {
                 "typescript": "4.9.5",
@@ -14,16 +9,8 @@
                 "@types/react-native": "~0.67.2"
             },
             "browserslist": {
-                "production": [
-                    ">0.2%",
-                    "not dead",
-                    "not op_mini all"
-                ],
-                "development": [
-                    "last 1 chrome version",
-                    "last 1 firefox version",
-                    "last 1 safari version"
-                ]
+                "production": [">0.2%", "not dead", "not op_mini all"],
+                "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
             }
         }
     },

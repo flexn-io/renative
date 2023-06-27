@@ -12,10 +12,10 @@ export const withDefaultRNVBabel = (cnf) => ({
             },
         ],
     ],
-    ...cnf
+    ...cnf,
 });
 
-export const withRNVBabel = cnf => (api) => {
+export const withRNVBabel = (cnf) => (api) => {
     if (!fs.existsSync(process.env.RNV_ENGINE_PATH)) {
         logInfo(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);
         api.cache(false);

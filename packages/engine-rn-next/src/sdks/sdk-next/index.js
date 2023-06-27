@@ -3,19 +3,10 @@ import open from 'better-opn';
 import { Exec, FileUtils, Common, Logger, Constants, EngineManager, PluginManager, ProjectManager } from 'rnv';
 
 const { executeAsync } = Exec;
-const {
-    checkPortInUse,
-    getConfigProp,
-    confirmActiveBundler,
-    getPlatformBuildDir,
-    getDevServerHost,
-    waitForHost
-} = Common;
+const { checkPortInUse, getConfigProp, confirmActiveBundler, getPlatformBuildDir, getDevServerHost, waitForHost } =
+    Common;
 const { fsExistsSync, writeCleanFile, copyFolderContentsRecursiveSync } = FileUtils;
-const {
-    chalk, logTask, logInfo, logWarning,
-    logRaw, logSummary, logSuccess
-} = Logger;
+const { chalk, logTask, logInfo, logWarning, logRaw, logSummary, logSuccess } = Logger;
 const { NEXT_CONFIG_NAME } = Constants;
 const { generateEnvVars } = EngineManager;
 const { copyAssetsFolder } = ProjectManager;
@@ -41,14 +32,9 @@ export const configureNextIfRequired = async (c) => {
             copyFolderContentsRecursiveSync(sourcePath, destPath);
         });
     } else {
-        const sourcePath = path.join(
-            c.paths.appConfig.dir,
-            `assets/${c.platform}`
-        );
+        const sourcePath = path.join(c.paths.appConfig.dir, `assets/${c.platform}`);
         copyFolderContentsRecursiveSync(sourcePath, destPath);
     }
-
-
 
     // add config
     if (!fsExistsSync(configFile)) {
@@ -68,8 +54,7 @@ export const runWebNext = async (c) => {
 
     if (!isPortActive) {
         logInfo(
-            `Your ${chalk().white(platform)} devServerHost ${
-                chalk().white(devServerHost)} at port ${chalk().white(
+            `Your ${chalk().white(platform)} devServerHost ${chalk().white(devServerHost)} at port ${chalk().white(
                 port
             )} is not running. Starting it up for you...`
         );
@@ -94,21 +79,20 @@ export const runWebNext = async (c) => {
     }
 };
 
-const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
-    logTask(
-        '_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`
-    );
-    if (!c.runtime.shouldOpenBrowser) return resolve();
-    const wait = waitForHost(c, '')
-        .then(() => {
-            open(`http://${devServerHost}:${port}/`);
-        })
-        .catch((e) => {
-            logWarning(e);
-        });
-    if (alreadyStarted) return wait; // if it's already started, return the promise so it rnv will wait, otherwise it will exit before opening the browser
-    return resolve();
-});
+const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) =>
+    new Promise((resolve) => {
+        logTask('_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`);
+        if (!c.runtime.shouldOpenBrowser) return resolve();
+        const wait = waitForHost(c, '')
+            .then(() => {
+                open(`http://${devServerHost}:${port}/`);
+            })
+            .catch((e) => {
+                logWarning(e);
+            });
+        if (alreadyStarted) return wait; // if it's already started, return the promise so it rnv will wait, otherwise it will exit before opening the browser
+        return resolve();
+    });
 
 const getOutputDir = (c) => {
     const distDir = getConfigProp(c, c.platform, 'outputDir');
@@ -126,9 +110,11 @@ const _checkPagesDir = async (c) => {
     if (pagesDir) {
         const pagesDirPath = path.join(c.paths.project.dir, pagesDir);
         if (!fsExistsSync(pagesDirPath)) {
-            logWarning(`You configured custom ${c.platform}pagesDir: ${
-                chalk().white(pagesDir)
-            } in your renative.json but it is missing at ${chalk().red(pagesDirPath)}`);
+            logWarning(
+                `You configured custom ${c.platform}pagesDir: ${chalk().white(
+                    pagesDir
+                )} in your renative.json but it is missing at ${chalk().red(pagesDirPath)}`
+            );
         }
         return { NEXT_PAGES_DIR: pagesDir, NEXT_DIST_DIR: distDir };
     }
@@ -137,9 +123,9 @@ const _checkPagesDir = async (c) => {
 
     const fallbackPagesDirPath = path.join(c.paths.project.dir, fallbackPagesDir);
     if (!fsExistsSync(fallbackPagesDirPath)) {
-        logWarning(`Folder ${
-            chalk().white(fallbackPagesDir)
-        } is missing. make sure your entry code is located there in order for next to work correctly!
+        logWarning(`Folder ${chalk().white(
+            fallbackPagesDir
+        )} is missing. make sure your entry code is located there in order for next to work correctly!
 Alternatively you can configure custom entry folder via ${c.platform}.pagesDir in renative.json`);
     }
     return { NEXT_PAGES_DIR: 'src/app', NEXT_DIST_DIR: distDir };
@@ -148,21 +134,26 @@ Alternatively you can configure custom entry folder via ${c.platform}.pagesDir i
 export const getTranspileModules = (c) => {
     const transModules = getConfigProp(c, c.platform, 'webpackConfig', {}).nextTranspileModules || [];
 
-    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
-        const webpackConfig = plugin.webpack || plugin.webpackConfig;
-        if (webpackConfig) {
-            transModules.push(key);
-            if (webpackConfig.nextTranspileModules?.length) {
-                webpackConfig.nextTranspileModules.forEach((module) => {
-                    if (module.startsWith('.')) {
-                        transModules.push(path.join(c.paths.project.dir, module));
-                    } else {
-                        transModules.push(module);
-                    }
-                });
+    parsePlugins(
+        c,
+        c.platform,
+        (plugin, pluginPlat, key) => {
+            const webpackConfig = plugin.webpack || plugin.webpackConfig;
+            if (webpackConfig) {
+                transModules.push(key);
+                if (webpackConfig.nextTranspileModules?.length) {
+                    webpackConfig.nextTranspileModules.forEach((module) => {
+                        if (module.startsWith('.')) {
+                            transModules.push(path.join(c.paths.project.dir, module));
+                        } else {
+                            transModules.push(module);
+                        }
+                    });
+                }
             }
-        }
-    }, true);
+        },
+        true
+    );
     return transModules;
 };
 
@@ -177,12 +168,10 @@ export const buildWebNext = async (c) => {
         env: {
             NODE_ENV: env || 'development',
             ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c))
-        }
+            ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c)),
+        },
     });
-    logSuccess(
-        `Your build is located in ${chalk().cyan(getOutputDir(c))} .`
-    );
+    logSuccess(`Your build is located in ${chalk().cyan(getOutputDir(c))} .`);
     return true;
 };
 
@@ -200,17 +189,15 @@ Dev server running at: ${url}
 
 `);
 
-
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
-    return executeAsync(c, `npx next ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`,
-        {
-            env: {
-                NODE_ENV: env || 'development',
-                ...envExt,
-                ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c))
-            },
-            interactive: true
-        });
+    return executeAsync(c, `npx next ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {
+        env: {
+            NODE_ENV: env || 'development',
+            ...envExt,
+            ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c)),
+        },
+        interactive: true,
+    });
 };
 
 export const deployWebNext = () => {
@@ -237,12 +224,10 @@ export const exportWebNext = async (c) => {
         env: {
             NODE_ENV: env || 'development',
             ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c))
-        }
+            ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c)),
+        },
     });
-    logSuccess(
-        `Your export is located in ${chalk().cyan(exportDir)} .`
-    );
+    logSuccess(`Your export is located in ${chalk().cyan(exportDir)} .`);
 
     // DEPRECATED: custom deployers moved to external packages
     // await selectWebToolAndExport(c, platform);

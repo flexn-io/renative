@@ -15,19 +15,11 @@
         "NSAllowsArbitraryLoads": true
     },
     "UIAppFonts": [],
-    "UIBackgroundModes": [
-        "remote-notification"
-    ],
-    "UIRequiredDeviceCapabilities": [
-        "armv7"
-    ],
+    "UIBackgroundModes": ["remote-notification"],
+    "UIRequiredDeviceCapabilities": ["armv7"],
     "UILaunchStoryboardName": "LaunchScreen",
     "UIRequiresFullScreen": true,
-    "UISupportedInterfaceOrientations": [
-        "UIInterfaceOrientationPortrait"
-    ],
-    "UISupportedInterfaceOrientations~ipad": [
-        "UIInterfaceOrientationPortrait"
-    ],
+    "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait"],
+    "UISupportedInterfaceOrientations~ipad": ["UIInterfaceOrientationPortrait"],
     "UIViewControllerBasedStatusBarAppearance": false
 }

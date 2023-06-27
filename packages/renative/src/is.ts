@@ -1,11 +1,7 @@
 import engine from './Api/engine';
 import factor from './Api/factor';
 import platform from './Api/platform';
-import {
-    Platform,
-    FormFactor,
-    Engine
-} from './Constants';
+import { Platform, FormFactor, Engine } from './Constants';
 
 // PLATFORM
 export const isPlatformAndroid = platform === Platform.android;
@@ -65,4 +61,3 @@ export const isFirefoxos = () => platform === Platform.firefoxos;
 export const isFirefoxtv = () => platform === Platform.firefoxtv;
 export const isKaios = () => platform === Platform.kaios;
 export const isWebtv = () => platform === Platform.webtv;
-

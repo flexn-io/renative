@@ -2,12 +2,7 @@ import path from 'path';
 import { FileUtils, Logger, Common } from 'rnv';
 import { getAppFolderName } from './common';
 
-const {
-    getAppFolder,
-    getAppTemplateFolder,
-    addSystemInjects,
-    getConfigProp
-} = Common;
+const { getAppFolder, getAppTemplateFolder, addSystemInjects, getConfigProp } = Common;
 const { logTask } = Logger;
 const { writeCleanFile } = FileUtils;
 // const xml2js = require('xml2js');
@@ -35,9 +30,7 @@ export const parseXcscheme = async (c, platform) => {
     const appFolderName = getAppFolderName(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
 
-    const debuggerId = poisxSpawn
-        ? ''
-        : 'Xcode.DebuggerFoundation.Debugger.LLDB';
+    const debuggerId = poisxSpawn ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
     const launcherId = poisxSpawn
         ? 'Xcode.IDEFoundation.Launcher.PosixSpawn'
         : 'Xcode.DebuggerFoundation.Launcher.LLDB';
@@ -59,16 +52,12 @@ export const parseXcscheme = async (c, platform) => {
     const injects = [
         { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
         { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId },
-        { pattern: '{{INJECT_COMMAND_LINE_ARGUMENTS}}', override: _commandLineArguments }
+        { pattern: '{{INJECT_COMMAND_LINE_ARGUMENTS}}', override: _commandLineArguments },
     ];
 
     addSystemInjects(c, injects);
 
-    writeCleanFile(
-        path.join(appTemplateFolder, schemePath),
-        path.join(appFolder, schemePath),
-        injects, null, c
-    );
+    writeCleanFile(path.join(appTemplateFolder, schemePath), path.join(appFolder, schemePath), injects, null, c);
 
     // const parseObj = await parser.parseStringPromise(path.join(appFolder, schemePath));
 };

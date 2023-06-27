@@ -4,14 +4,7 @@ import { buildXcodeProject } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    TVOS,
-    ANDROID_TV,
-    FIRE_TV,
-    TASK_BUILD, TASK_PACKAGE, TASK_EXPORT,
-    PARAMS
-} = Constants;
-
+const { TVOS, ANDROID_TV, FIRE_TV, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, PARAMS } = Constants;
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 

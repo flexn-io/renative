@@ -1,15 +1,9 @@
 import inquirer from 'inquirer';
-import {
-    writeFileSync
-} from '../../core/systemManager/fileutils';
-import {
-    logSuccess,
-    logTask,
-} from '../../core/systemManager/logger';
+import { writeFileSync } from '../../core/systemManager/fileutils';
+import { logSuccess, logTask } from '../../core/systemManager/logger';
 import { getPluginList } from '../../core/pluginManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_PLUGIN_UPDATE, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
-
 
 export const taskRnvPluginUpdate = async (c, parentTask, originTask) => {
     logTask('taskRnvPluginUpdate');
@@ -23,7 +17,7 @@ export const taskRnvPluginUpdate = async (c, parentTask, originTask) => {
     const { confirm } = await inquirer.prompt({
         name: 'confirm',
         type: 'confirm',
-        message: 'Above installed plugins will be updated with RNV'
+        message: 'Above installed plugins will be updated with RNV',
     });
 
     if (confirm) {

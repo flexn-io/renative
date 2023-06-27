@@ -10,17 +10,12 @@ const {
     fsReadFileSync,
     copyFolderContentsRecursiveSync,
     // cleanEmptyFoldersRecursively,
-    fsMkdirSync
+    fsMkdirSync,
 } = FileUtils;
-const {
-    getAppFolder,
-    getConfigProp,
-} = Common;
+const { getAppFolder, getConfigProp } = Common;
 const { doResolvePath } = Resolver;
 
-const {
-    parseFonts
-} = ProjectManager;
+const { parseFonts } = ProjectManager;
 
 const {
     parsePlugins,
@@ -37,14 +32,10 @@ export const ejectXcodeProject = async (c) => {
     const appFolder = getAppFolder(c);
     const appFolderName = getAppFolderName(c, c.platform);
 
-
     //= ==========
     // xcodeproj
     //= ==========
-    const xcodeProjPath = path.join(
-        appFolder,
-        `${appFolderName}.xcodeproj/project.pbxproj`
-    );
+    const xcodeProjPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
 
     if (fsExistsSync(xcodeProjPath)) {
         const projAsString = fsReadFileSync(xcodeProjPath).toString();
@@ -73,10 +64,7 @@ export const ejectXcodeProject = async (c) => {
     // Podfile
     //= ==========
 
-    const podfilePath = path.join(
-        appFolder,
-        'Podfile'
-    );
+    const podfilePath = path.join(appFolder, 'Podfile');
 
     if (podfilePath) {
         const podfileAsString = fsReadFileSync(podfilePath).toString();
@@ -104,8 +92,7 @@ export const ejectXcodeProject = async (c) => {
         // const excludeFolders = ['node_modules', 'android'];
 
         const destPath = path.join(appFolder, 'rn_modules', key);
-        copyFolderContentsRecursiveSync(
-            podPath, destPath, false, null, false, null, null, c, extensionsFilter);
+        copyFolderContentsRecursiveSync(podPath, destPath, false, null, false, null, null, c, extensionsFilter);
         copyFileSync(path.join(podPath, 'package.json'), path.join(destPath, 'package.json'));
     });
 
@@ -123,10 +110,7 @@ export const ejectXcodeProject = async (c) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
             const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
-            if (
-                includedFonts
-                && (includedFonts.includes('*') || includedFonts.includes(key))
-            ) {
+            if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
                 const fontSource = path.join(dir, font);
                 if (fsExistsSync(fontSource)) {
                     const pathNmMatch = `${path.join(rootMonoProjectPath, 'node_modules')}`;

@@ -2,12 +2,7 @@ import { buildCoreWebpackProject, configureCoreWebProject } from '@rnv/sdk-webpa
 import path from 'path';
 import { Common, FileUtils, Logger, PlatformManager, ProjectManager, SDKManager } from 'rnv';
 
-const {
-    getPlatformProjectDir,
-    getAppTitle,
-    getAppDescription,
-    getAppAuthor,
-} = Common;
+const { getPlatformProjectDir, getAppTitle, getAppDescription, getAppAuthor } = Common;
 const { fsWriteFileSync, fsReadFileSync } = FileUtils;
 const { logTask } = Logger;
 const { isPlatformActive } = PlatformManager;
@@ -30,28 +25,26 @@ export const configureKaiOSProject = async (c) => {
     return copyBuildsFolder(c, platform);
 };
 
-const _configureProject = c => new Promise((resolve) => {
-    logTask('configureProject');
-    const { platform } = c;
+const _configureProject = (c) =>
+    new Promise((resolve) => {
+        logTask('configureProject');
+        const { platform } = c;
 
-    if (!isPlatformActive(c, platform, resolve)) return;
+        if (!isPlatformActive(c, platform, resolve)) return;
 
-    const appFolder = getPlatformProjectDir(c);
+        const appFolder = getPlatformProjectDir(c);
 
-    const manifestFilePath = path.join(appFolder, 'manifest.webapp');
-    const manifestFile = JSON.parse(fsReadFileSync(manifestFilePath));
+        const manifestFilePath = path.join(appFolder, 'manifest.webapp');
+        const manifestFile = JSON.parse(fsReadFileSync(manifestFilePath));
 
-    manifestFile.name = `${getAppTitle(c, platform)}`;
-    manifestFile.description = `${getAppDescription(c, platform)}`;
-    manifestFile.developer = getAppAuthor(c, platform);
+        manifestFile.name = `${getAppTitle(c, platform)}`;
+        manifestFile.description = `${getAppDescription(c, platform)}`;
+        manifestFile.developer = getAppAuthor(c, platform);
 
-    fsWriteFileSync(
-        manifestFilePath,
-        JSON.stringify(manifestFile, null, 2)
-    );
+        fsWriteFileSync(manifestFilePath, JSON.stringify(manifestFile, null, 2));
 
-    resolve();
-});
+        resolve();
+    });
 
 export const runFirefoxProject = async (c) => {
     logTask('runFirefoxProject');

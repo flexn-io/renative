@@ -10,11 +10,10 @@ import taskRnvPackage from './tasks/task.rnv.package';
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvStart from './tasks/task.rnv.start';
 
-
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
 export default {
-    initializeRuntimeConfig: c => Config.initializeConfig(c),
+    initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
         taskRnvPackage,
@@ -31,18 +30,14 @@ export default {
     platforms: {
         windows: {
             defaultPort: 8092,
-            extensions: generateEngineExtensions([
-                'windows.desktop', 'windows', 'win', 'desktop'
-            ], CNF)
+            extensions: generateEngineExtensions(['windows.desktop', 'windows', 'win', 'desktop'], CNF),
         },
         xbox: {
             defaultPort: 8099,
             // What works on windows will work on xbox, but it needs to be scaled as for TVs
-            extensions: generateEngineExtensions([
-                'xbox', 'windows', 'win', 'tv', 'desktop'
-            ], CNF)
-        }
-    }
+            extensions: generateEngineExtensions(['xbox', 'windows', 'win', 'tv', 'desktop'], CNF),
+        },
+    },
 };
 
 export { withRNV };

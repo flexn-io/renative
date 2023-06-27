@@ -17,11 +17,7 @@ export const isBuildSchemeSupported = async (c) => {
     const buildSchemes = merge(baseBuildSchemes, platformBuildSchemes);
 
     if (!buildSchemes) {
-        logWarning(
-            `Your appConfig for platform ${
-                c.platform
-            } has no buildSchemes. Will continue with defaults`
-        );
+        logWarning(`Your appConfig for platform ${c.platform} has no buildSchemes. Will continue with defaults`);
         return false;
     }
 
@@ -46,14 +42,12 @@ export const isBuildSchemeSupported = async (c) => {
             type: 'list',
             message: 'Pick one of available buildSchemes',
             choices: schemeOptions,
-            logMessage: 'You need to specify scheme'
+            logMessage: 'You need to specify scheme',
         });
 
         c.program.scheme = schemeVals[selectedScheme];
         c.runtime.scheme = c.program.scheme;
     }
-    logInfo(`Current Build Scheme: ${chalk().bold.white(
-        c.runtime.scheme
-    )}`);
+    logInfo(`Current Build Scheme: ${chalk().bold.white(c.runtime.scheme)}`);
     return true;
 };

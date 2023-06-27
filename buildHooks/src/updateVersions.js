@@ -26,7 +26,6 @@ const VERSIONED_PACKAGES = [
 const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer = '') => {
     const { pkgFile, rnvFile } = pkgConfig;
 
-
     packageNamesAll.forEach((v) => {
         if (pkgFile) {
             let hasChanges = false;
@@ -65,11 +64,9 @@ const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer =
 };
 
 export const updateVersions = async (c) => {
-    const rootPackage = FileUtils.readObjectSync(
-        path.join(c.paths.project.dir, 'package.json')
-    );
+    const rootPackage = FileUtils.readObjectSync(path.join(c.paths.project.dir, 'package.json'));
     const v = {
-        version: rootPackage.version
+        version: rootPackage.version,
     };
     const pkgFolder = path.join(c.paths.project.dir, 'packages');
     _updateJson(c, c.paths.project.package, v);
@@ -78,39 +75,24 @@ export const updateVersions = async (c) => {
         _updateJson(c, path.join(pkgFolder, pkgName, 'package.json'), v);
     });
 
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'rnv/pluginTemplates/renative.plugins.json'
-        ),
-        {
-            pluginTemplates: {
-                '@rnv/renative': v
-            }
-        }
-    );
+    _updateJson(c, path.join(pkgFolder, 'rnv/pluginTemplates/renative.plugins.json'), {
+        pluginTemplates: {
+            '@rnv/renative': v,
+        },
+    });
 
-    _updateJson(
-        c,
-        path.join(
-            pkgFolder,
-            'rnv/coreTemplateFiles/renative.templates.json'
-        ),
-        {
-            engineTemplates: {
-                '@rnv/engine-rn': v,
-                '@rnv/engine-rn-tvos': v,
-                '@rnv/engine-rn-web': v,
-                '@rnv/engine-rn-next': v,
-                '@rnv/engine-rn-electron': v,
-                '@rnv/engine-lightning': v,
-                '@rnv/engine-rn-macos': v,
-                '@rnv/engine-rn-windows': v
-            },
-        }
-    );
-
+    _updateJson(c, path.join(pkgFolder, 'rnv/coreTemplateFiles/renative.templates.json'), {
+        engineTemplates: {
+            '@rnv/engine-rn': v,
+            '@rnv/engine-rn-tvos': v,
+            '@rnv/engine-rn-web': v,
+            '@rnv/engine-rn-next': v,
+            '@rnv/engine-rn-electron': v,
+            '@rnv/engine-lightning': v,
+            '@rnv/engine-rn-macos': v,
+            '@rnv/engine-rn-windows': v,
+        },
+    });
 
     const pkgDirPath = path.join(c.paths.project.dir, 'packages');
     const dirs = fs.readdirSync(pkgDirPath);
@@ -142,7 +124,7 @@ export const updateVersions = async (c) => {
             rnvPath,
             pkgPath: _pkgPath,
             pkgFile,
-            rnvFile
+            rnvFile,
         };
         packageNamesAll.push(pkgName);
     };
@@ -161,22 +143,11 @@ export const updateVersions = async (c) => {
         updateDeps(pkgConfig, 'peerDependencies', packageNamesAll, packageConfigs, '^');
     });
 
+    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
 
-    FileUtils.copyFileSync(
-        path.join(c.paths.project.dir, 'README.md'),
-        path.join(pkgFolder, 'renative/README.md')
-    );
+    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
 
-    FileUtils.copyFileSync(
-        path.join(c.paths.project.dir, 'README.md'),
-        path.join(pkgFolder, 'renative/README.md')
-    );
-
-    FileUtils.copyFileSync(
-        path.join(c.paths.project.dir, 'README.md'),
-        path.join(pkgFolder, 'rnv/README.md')
-    );
-
+    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'rnv/README.md'));
 
     // const packagesDir = path.join(c.paths.project.dir, '..');
     //
@@ -202,14 +173,11 @@ export const updateVersions = async (c) => {
     return true;
 };
 
-
 const _updateJson = (c, pPath, updateObj) => {
     const pObj = FileUtils.readObjectSync(pPath);
 
     if (!pObj) {
-        throw new Error(
-            `_updateJson called with unresolveable package.json path '${pPath}'`
-        );
+        throw new Error(`_updateJson called with unresolveable package.json path '${pPath}'`);
     }
 
     let obj;

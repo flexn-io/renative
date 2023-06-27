@@ -1,12 +1,6 @@
 import { executeAsync, commandExistsSync } from '../../core/systemManager/exec';
 import { getAppFolder, getCliArguments } from '../../core/common';
-import { IOS,
-    TVOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    PARAMS } from '../../core/constants';
+import { IOS, TVOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, PARAMS } from '../../core/constants';
 import PlatformSetup from '../../core/setupManager';
 
 export const taskRnvFastlane = async (c) => {
@@ -26,7 +20,7 @@ export const taskRnvFastlane = async (c) => {
     return executeAsync(c, `fastlane ${fastlaneArgs.join(' ')}`, {
         interactive: true,
         env: process.env,
-        cwd: appFolder
+        cwd: appFolder,
     });
 };
 
@@ -35,12 +29,5 @@ export default {
     fn: taskRnvFastlane,
     task: 'fastlane',
     params: PARAMS.withBase(),
-    platforms: [
-        IOS,
-        TVOS,
-        ANDROID,
-        ANDROID_TV,
-        FIRE_TV,
-        ANDROID_WEAR,
-    ],
+    platforms: [IOS, TVOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };

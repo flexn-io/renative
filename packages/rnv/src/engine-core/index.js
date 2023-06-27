@@ -85,18 +85,16 @@ export default {
         taskRnvTargetList,
         taskRnvTargetLaunch,
         taskRnvLink,
-        taskRnvUnlink
+        taskRnvUnlink,
     ]),
     config: {
         title: 'Engine Core',
         id: 'engine-core',
         platforms: {},
-        npm: {}
+        npm: {},
     },
-    package: {
-
-    },
+    package: {},
     projectDirName: '',
     ejectPlatform: null,
-    platforms: null
+    platforms: null,
 };

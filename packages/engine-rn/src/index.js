@@ -19,7 +19,7 @@ import taskRnvEject from './tasks/task.rnv.eject';
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
 export default {
-    initializeRuntimeConfig: c => Config.initializeConfig(c),
+    initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
         taskRnvPackage,
@@ -34,55 +34,57 @@ export default {
         taskRnvCryptoUpdateProfile,
         taskRnvCryptoUpdateProfiles,
         taskRnvCryptoInstallProfiles,
-        taskRnvLog
+        taskRnvLog,
     ]),
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native',
         reactNativeMetroConfigName: 'metro.config.js',
-        xcodeProjectName: 'RNVApp'
+        xcodeProjectName: 'RNVApp',
     },
     projectDirName: '',
     ejectPlatform: null,
     platforms: {
         ios: {
             defaultPort: 8082,
-            extensions: generateEngineExtensions([
-                'ios.mobile', 'mobile', 'ios', 'mobile.native', 'native'
-            ], CNF)
+            extensions: generateEngineExtensions(['ios.mobile', 'mobile', 'ios', 'mobile.native', 'native'], CNF),
         },
         android: {
             defaultPort: 8083,
-            extensions: generateEngineExtensions([
-                'android.mobile', 'mobile', 'android', 'mobile.native', 'native'
-            ], CNF)
+            extensions: generateEngineExtensions(
+                ['android.mobile', 'mobile', 'android', 'mobile.native', 'native'],
+                CNF
+            ),
         },
         androidtv: {
             defaultPort: 8084,
-            extensions: generateEngineExtensions([
-                'androidtv.tv', 'tv', 'androidtv', 'android', 'tv.native', 'native'
-            ], CNF)
+            extensions: generateEngineExtensions(
+                ['androidtv.tv', 'tv', 'androidtv', 'android', 'tv.native', 'native'],
+                CNF
+            ),
         },
         firetv: {
             defaultPort: 8098,
-            extensions: generateEngineExtensions([
-                'firetv.tv', 'androidtv.tv', 'tv', 'firetv', 'androidtv', 'android', 'tv.native', 'native'
-            ], CNF)
+            extensions: generateEngineExtensions(
+                ['firetv.tv', 'androidtv.tv', 'tv', 'firetv', 'androidtv', 'android', 'tv.native', 'native'],
+                CNF
+            ),
         },
         androidwear: {
             defaultPort: 8084,
-            extensions: generateEngineExtensions([
-                'androidwear.watch', 'watch', 'androidwear', 'android', 'watch.native', 'native'
-            ], CNF)
+            extensions: generateEngineExtensions(
+                ['androidwear.watch', 'watch', 'androidwear', 'android', 'watch.native', 'native'],
+                CNF
+            ),
         },
         macos: {
             defaultPort: 8086,
-            extensions: generateEngineExtensions([
-                'macos.desktop', 'desktop', 'macos', 'ios', 'desktop.native', 'native'
-            ], CNF)
-        }
-    }
-
+            extensions: generateEngineExtensions(
+                ['macos.desktop', 'desktop', 'macos', 'ios', 'desktop.native', 'native'],
+                CNF
+            ),
+        },
+    },
 };
 
 // Backward compatibility

@@ -36,7 +36,6 @@ export const isUrlLocalhost = (value) => {
     return false;
 };
 
-
 export const getScopedVersion = (c, key, val, sourceObjKey) => {
     if (typeof val === 'string') {
         if (val.startsWith('source:')) {

@@ -54,8 +54,8 @@ ReNative community can be found on <a aria-label="ReNative Discussions" href="ht
 
 ## Core Maintainers
 
-- Pavel Jacko ([@pavjacko](https://twitter.com/pavjacko)) - https://github.com/pavjacko
-- Mihai Blaga ([@blaga_mihai](https://twitter.com/blaga_mihai)) - https://github.com/mihaiblaga89
+-   Pavel Jacko ([@pavjacko](https://twitter.com/pavjacko)) - https://github.com/pavjacko
+-   Mihai Blaga ([@blaga_mihai](https://twitter.com/blaga_mihai)) - https://github.com/mihaiblaga89
 
 ## Contributors
 

@@ -3,7 +3,7 @@ export const IS_WEAR_UNDER_SIZE = 1000; // width + height
 
 export enum PlatformGroup {
     smarttv = 'smarttv',
-    electron = 'electron'
+    electron = 'electron',
 }
 
 export enum FormFactor {
@@ -12,7 +12,7 @@ export enum FormFactor {
     desktop = 'desktop',
     watch = 'watch',
     tv = 'tv',
-    browser = 'browser'
+    browser = 'browser',
 }
 
 export enum Engine {
@@ -25,7 +25,6 @@ export enum Engine {
     rn_web = 'engine-rn-web',
     rn_windows = 'rengine-rn-windows',
     rn = 'engine-rn',
-
 }
 
 export enum Platform {

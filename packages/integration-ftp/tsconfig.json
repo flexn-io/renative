@@ -6,10 +6,5 @@
         "allowJs": true,
         "resolveJsonModule": false
     },
-    "include": [
-        "./src/**/*",
-        "./src/**/*.json",
-        "./types.d.ts",
-        "./package.json"
-    ]
+    "include": ["./src/**/*", "./src/**/*.json", "./types.d.ts", "./package.json"]
 }

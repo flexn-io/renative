@@ -26,7 +26,5 @@ export default {
     fn: taskRnvDockerDeploy,
     task: 'docker deploy',
     params: PARAMS.withBase(),
-    platforms: [
-        WEB
-    ],
+    platforms: [WEB],
 };

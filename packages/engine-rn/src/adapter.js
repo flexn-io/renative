@@ -4,13 +4,14 @@ const sharedBlacklist = [
     /node_modules\/react\/dist\/.*/,
     /website\/node_modules\/.*/,
     /heapCapture\/bundle\.js/,
-    /.*\/__tests__\/.*/
+    /.*\/__tests__\/.*/,
 ];
 
 function escapeRegExp(pattern) {
     if (Object.prototype.toString.call(pattern) === '[object RegExp]') {
         return pattern.source.replace(/\//g, path.sep);
-    } if (typeof pattern === 'string') {
+    }
+    if (typeof pattern === 'string') {
         // eslint-disable-next-line
         const escaped = pattern.replace(/[\-\[\]\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&'); // convert the '/' into an escaped local file separator
 
@@ -20,14 +21,7 @@ function escapeRegExp(pattern) {
 }
 
 function blacklist(additionalBlacklist) {
-    return new RegExp(
-        `(${
-            (additionalBlacklist || [])
-                .concat(sharedBlacklist)
-                .map(escapeRegExp)
-                .join('|')
-        })$`
-    );
+    return new RegExp(`(${(additionalBlacklist || []).concat(sharedBlacklist).map(escapeRegExp).join('|')})$`);
 }
 
 export const withRNVMetro = (config) => {
@@ -56,7 +50,7 @@ export const withRNVMetro = (config) => {
                     inlineRequires: true,
                 },
             }),
-            ...config?.transformer || {},
+            ...(config?.transformer || {}),
         },
         resolver: {
             blacklistRE: blacklist([
@@ -68,20 +62,20 @@ export const withRNVMetro = (config) => {
                 /renative.local.*/,
                 /metro.config.local.*/,
                 /.expo\/.*/,
-                /.rollup.cache\/.*/
+                /.rollup.cache\/.*/,
             ]),
-            ...config?.resolver || {},
+            ...(config?.resolver || {}),
             sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
-            extraNodeModules: config?.resolver?.extraNodeModules
+            extraNodeModules: config?.resolver?.extraNodeModules,
         },
         watchFolders,
-        projectRoot: path.resolve(projectPath)
+        projectRoot: path.resolve(projectPath),
     };
 
     return cnf;
 };
 
-export const withRNVBabel = cnf => {
+export const withRNVBabel = (cnf) => {
     const plugins = cnf?.plugins || [];
 
     return {
@@ -95,8 +89,7 @@ export const withRNVBabel = cnf => {
                     root: [process.env.RNV_MONO_ROOT || '.'],
                 },
             ],
-            ...plugins
+            ...plugins,
         ],
-
     };
 };

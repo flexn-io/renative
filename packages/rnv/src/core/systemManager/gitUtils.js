@@ -14,9 +14,7 @@ export const configureGit = async (c) => {
             await executeAsync('git add -A', { cwd: projectPath });
             await executeAsync('git commit -m "Initial"', { cwd: projectPath });
         } else {
-            logWarning(
-                "We tried to create a git repo inside your project but you don't seem to have git installed"
-            );
+            logWarning("We tried to create a git repo inside your project but you don't seem to have git installed");
         }
     }
 };

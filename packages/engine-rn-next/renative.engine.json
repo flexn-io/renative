@@ -11,12 +11,9 @@
         "next": "source:rnv"
     },
     "npm": {
-        "devDependencies": {
-
-        }
+        "devDependencies": {}
     },
     "platforms": {
-        "web": {
-        }
+        "web": {}
     }
 }

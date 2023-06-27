@@ -22,13 +22,7 @@ const msbuildSelect = xpath.useNamespaces({
 function findFiles(folder, filenamePattern) {
     const files = glob.sync(path.join('**', filenamePattern), {
         cwd: folder,
-        ignore: [
-            'node_modules/**',
-            '**/Debug/**',
-            '**/Release/**',
-            '**/Generated Files/**',
-            '**/packages/**',
-        ],
+        ignore: ['node_modules/**', '**/Debug/**', '**/Release/**', '**/Generated Files/**', '**/packages/**'],
     });
     return files;
 }

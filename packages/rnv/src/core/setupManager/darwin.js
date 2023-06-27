@@ -11,11 +11,11 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         const c = Config.getConfig();
         if (commandExistsSync('brew')) {
             return executeAsync(c, 'brew cask install fastlane', {
-                interactive: true
+                interactive: true,
             });
         }
         return executeAsync(c, 'sudo gem install fastlane -NV', {
-            interactive: true
+            interactive: true,
         });
     }
 
