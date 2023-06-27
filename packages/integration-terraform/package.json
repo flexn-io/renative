@@ -39,7 +39,7 @@
         "@babel/preset-env": "7.6.0"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-feat-eject.10"
+        "rnv": "^0.37.0-feat-eject.11"
     },
     "publishConfig": {
         "access": "public"

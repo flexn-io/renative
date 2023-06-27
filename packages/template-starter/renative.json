@@ -74,7 +74,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^0.37.0-feat-eject.10",
+            "version": "^0.37.0-feat-eject.11",
             "webpack": {
                 "moduleAliases": true
             }
