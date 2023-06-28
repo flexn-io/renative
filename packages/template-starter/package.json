@@ -1,6 +1,6 @@
 {
     "name": "@rnv/template-starter",
-    "version": "0.37.0-rc.5",
+    "version": "0.37.0-rc.6",
     "description": "🚧 Starter Template for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`, `Linux",
     "keywords": [
         "android tv",
@@ -63,7 +63,6 @@
     },
     "scripts": {
         "bootstrap": "cd ../.. && yarn bootstrap",
-        "watch": "tsc --watch --preserveWatchOutput --noEmit --allowJs",
         "e2e:all": "yarn e2e:ios ; yarn e2e:tvos ; yarn e2e:android ; yarn e2e:androidtv ; yarn e2e:macos ; yarn e2e:web",
         "e2e:android": "PLATFORM=android JAVA_HOME=$(/usr/libexec/java_home) npx wdio wdio.conf.cjs",
         "e2e:androidtv": "PLATFORM=androidtv JAVA_HOME=$(/usr/libexec/java_home) npx wdio wdio.conf.cjs",
@@ -74,7 +73,8 @@
         "report": "yarn report:generate && yarn report:open",
         "report:generate": "npx allure generate --clean reporting/allure-results -o reporting/allure-report",
         "report:open": "npx allure open reporting/allure-report",
-        "tsc": "tsc --noEmit --composite false"
+        "tsc": "tsc --noEmit --composite false",
+        "watch": "tsc --watch --preserveWatchOutput --noEmit --allowJs"
     },
     "devDependencies": {
         "@flexn/assets-renative-outline": "0.2.0",
@@ -85,14 +85,14 @@
         "@react-native-community/cli-platform-android": "^6.0.0",
         "@react-native-community/cli-platform-ios": "^6.0.0",
         "@react-native-windows/cli": "0.67.1",
-        "@rnv/engine-lightning": "0.37.0-rc.5",
-        "@rnv/engine-rn": "0.37.0-rc.5",
-        "@rnv/engine-rn-electron": "0.37.0-rc.5",
-        "@rnv/engine-rn-next": "0.37.0-rc.5",
-        "@rnv/engine-rn-tvos": "0.37.0-rc.5",
-        "@rnv/engine-rn-web": "0.37.0-rc.5",
-        "@rnv/engine-rn-windows": "0.37.0-rc.5",
-        "@rnv/renative": "0.37.0-rc.5",
+        "@rnv/engine-lightning": "0.37.0-rc.6",
+        "@rnv/engine-rn": "0.37.0-rc.6",
+        "@rnv/engine-rn-electron": "0.37.0-rc.6",
+        "@rnv/engine-rn-next": "0.37.0-rc.6",
+        "@rnv/engine-rn-tvos": "0.37.0-rc.6",
+        "@rnv/engine-rn-web": "0.37.0-rc.6",
+        "@rnv/engine-rn-windows": "0.37.0-rc.6",
+        "@rnv/renative": "0.37.0-rc.6",
         "@types/react": "18.0.11",
         "@types/react-dom": "18.0.5",
         "@types/react-native": "0.67.2",
@@ -109,7 +109,7 @@
         "react-native-tvos": "0.66.3-1",
         "react-native-web": "0.18.0",
         "react-native-windows": "0.69.4",
-        "rnv": "0.37.0-rc.5",
+        "rnv": "0.37.0-rc.6",
         "xcode": "2.1.0"
     },
     "private": false,
