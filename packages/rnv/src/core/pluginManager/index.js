@@ -467,9 +467,9 @@ export const loadPluginTemplates = async (c) => {
             return Promise.reject(`RNV Cannot find package: ${chalk().white(flexnPluginsPath)}`);
         }
     }
-    const flexnPluginTemplatesPath = path.join(flexnPluginsPath, 'pluginTemplates/renative.plugins.json');
+    const flexnPluginTemplatesPath = path.join(flexnPluginsPath, 'pluginTemplates');
 
-    const flexnPluginTemplates = readObjectSync(flexnPluginTemplatesPath);
+    const flexnPluginTemplates = readObjectSync(path.join(flexnPluginTemplatesPath, 'renative.plugins.json'));
     const rnvPluginTemplates = readObjectSync(c.paths.rnv.pluginTemplates.config);
 
     c.files.rnv.pluginTemplates.config = merge(flexnPluginTemplates, rnvPluginTemplates);
@@ -478,7 +478,7 @@ export const loadPluginTemplates = async (c) => {
         rnv: c.files.rnv.pluginTemplates.config,
     };
 
-    c.paths.rnv.pluginTemplates.dirs = { rnv: c.paths.rnv.pluginTemplates.dir };
+    c.paths.rnv.pluginTemplates.dirs = { rnv: flexnPluginTemplatesPath };
 
     const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
     const missingDeps = _parsePluginTemplateDependencies(c, customPluginTemplates);
