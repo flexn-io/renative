@@ -147,7 +147,7 @@
             "@expo/webpack-config",
             "@expo/**",
             "execa",
-            "@flexn/plugins"
+            "**/@flexn/plugins"
         ]
     },
     "resolutions": {
