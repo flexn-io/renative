@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-electron",
-    "version": "0.37.0-rc.6",
+    "version": "0.37.0-rc.7",
     "description": "ReNative Engine to build electron based platforms with react native support.",
     "keywords": [
         "electron",
@@ -34,7 +34,7 @@
     },
     "dependencies": {
         "@babel/preset-react": "7.16.0",
-        "@rnv/sdk-webpack": "0.37.0-rc.6",
+        "@rnv/sdk-webpack": "0.37.0-rc.7",
         "babel-loader": "8.0.5",
         "babel-preset-expo": "9.0.2",
         "better-opn": "1.0.0",
@@ -54,7 +54,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-rc.6"
+        "rnv": "^0.37.0-rc.7"
     },
     "private": false,
     "publishConfig": {
