@@ -3,11 +3,9 @@
         "@rnv/engine-lightning": "source:rnv",
         "@rnv/engine-rn": "source:rnv",
         "@rnv/engine-rn-electron": "source:rnv",
-        "@rnv/engine-rn-macos": "source:rnv",
         "@rnv/engine-rn-next": "source:rnv",
         "@rnv/engine-rn-tvos": "source:rnv",
-        "@rnv/engine-rn-web": "source:rnv",
-        "@rnv/engine-rn-windows": "source:rnv"
+        "@rnv/engine-rn-web": "source:rnv"
     },
     "isTemplate": true,
     "projectName": "renative",
@@ -62,8 +60,7 @@
             "kaios",
             "firefoxos",
             "firefoxtv",
-            "chromecast",
-            "xbox"
+            "chromecast"
         ],
         "schemes": {
             "run": "debug",
@@ -111,9 +108,7 @@
             "mainActivity": {
                 "onCreate": "super.onCreate(null)"
             },
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "androidtv": {
             "minSdkVersion": 26,
@@ -146,9 +141,7 @@
                 ]
             },
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "androidwear": {
             "minSdkVersion": 26,
@@ -180,9 +173,7 @@
                     }
                 ]
             },
-            "includedPermissions": [
-                "INTERNET"
-            ],
+            "includedPermissions": ["INTERNET"],
             "mainActivity": {
                 "onCreate": "super.onCreate(null)"
             }
@@ -218,9 +209,7 @@
                 ]
             },
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -234,9 +223,6 @@
         },
         "windows": {
             "engine": "engine-rn-electron"
-        },
-        "xbox": {
-            "engine": "engine-rn-windows"
         },
         "ios": {
             "engine": "engine-rn",
