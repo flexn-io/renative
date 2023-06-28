@@ -461,10 +461,14 @@ export const loadPluginTemplates = async (c) => {
     //This comes from project dependency
     let flexnPluginsPath = doResolve('@flexn/plugins');
     if (!fsExistsSync(flexnPluginsPath)) {
-        //This comes from rnv built-in dependency
+        //This comes from rnv built-in dependency (installed via npm)
         flexnPluginsPath = path.resolve(__dirname, '../../../node_modules/@flexn/plugins');
         if (!fsExistsSync(flexnPluginsPath)) {
-            return Promise.reject(`RNV Cannot find package: ${chalk().white(flexnPluginsPath)}`);
+            //This comes from rnv built-in dependency (installed via yarn might install it one level up)
+            flexnPluginsPath = path.resolve(__dirname, '../../../../node_modules/@flexn/plugins');
+            if (!fsExistsSync(flexnPluginsPath)) {
+                return Promise.reject(`RNV Cannot find package: ${chalk().white(flexnPluginsPath)}`);
+            }
         }
     }
     const flexnPluginTemplatesPath = path.join(flexnPluginsPath, 'pluginTemplates');
