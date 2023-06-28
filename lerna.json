@@ -4,11 +4,7 @@
     "useWorkspaces": true,
     "command": {
         "bootstrap": {
-            "npmClientArgs": [
-                "--no-package-lock",
-                "--unsafe-perm=true",
-                "--no-optional"
-            ]
+            "npmClientArgs": ["--no-package-lock", "--unsafe-perm=true", "--no-optional"]
         }
     }
 }

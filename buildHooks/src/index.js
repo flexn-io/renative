@@ -12,10 +12,9 @@ const hooks = {
         await gitCommit(c);
         await gitTag(c);
         return true;
-    }
+    },
 };
 
 const pipes = {};
-
 
 export { pipes, hooks };

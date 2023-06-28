@@ -1,14 +1,7 @@
 import { Constants, Logger, TaskManager } from 'rnv';
 
 const { logTask } = Logger;
-const {
-    MACOS,
-    WINDOWS,
-    LINUX,
-    TASK_EXPORT,
-    TASK_DEPLOY,
-    PARAMS
-} = Constants;
+const { MACOS, WINDOWS, LINUX, TASK_EXPORT, TASK_DEPLOY, PARAMS } = Constants;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {
@@ -27,9 +20,5 @@ export default {
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        MACOS,
-        WINDOWS,
-        LINUX
-    ],
+    platforms: [MACOS, WINDOWS, LINUX],
 };

@@ -15,9 +15,8 @@ const {
     CHROMECAST,
     TASK_BUILD,
     TASK_EXPORT,
-    PARAMS
+    PARAMS,
 } = Constants;
-
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
@@ -43,15 +42,5 @@ export default {
     fn: taskRnvExport,
     task: TASK_EXPORT,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        WEB,
-        TIZEN,
-        WEBOS,
-        TIZEN_MOBILE,
-        TIZEN_WATCH,
-        KAIOS,
-        FIREFOX_OS,
-        FIREFOX_TV,
-        CHROMECAST,
-    ],
+    platforms: [WEB, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV, CHROMECAST],
 };

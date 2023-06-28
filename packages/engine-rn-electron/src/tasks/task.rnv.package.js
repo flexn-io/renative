@@ -1,9 +1,7 @@
 import { Constants, Logger, TaskManager } from 'rnv';
 
 const { logTask } = Logger;
-const {
-    MACOS, WINDOWS, LINUX, TASK_PACKAGE, TASK_CONFIGURE, PARAMS
-} = Constants;
+const { MACOS, WINDOWS, LINUX, TASK_PACKAGE, TASK_CONFIGURE, PARAMS } = Constants;
 const { executeOrSkipTask } = TaskManager;
 
 export const taskRnvPackage = async (c, parentTask, originTask) => {
@@ -20,9 +18,5 @@ export default {
     fn: taskRnvPackage,
     task: TASK_PACKAGE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        MACOS,
-        WINDOWS,
-        LINUX
-    ],
+    platforms: [MACOS, WINDOWS, LINUX],
 };

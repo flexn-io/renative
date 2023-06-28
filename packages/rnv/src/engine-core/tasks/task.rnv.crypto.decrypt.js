@@ -1,11 +1,6 @@
 import path from 'path';
 import tar from 'tar';
-import {
-    chalk,
-    logWarning,
-    logTask,
-    logSuccess,
-} from '../../core/systemManager/logger';
+import { chalk, logWarning, logTask, logSuccess } from '../../core/systemManager/logger';
 import {
     getRealPath,
     removeFilesSync,
@@ -13,43 +8,28 @@ import {
     fsWriteFileSync,
     cleanFolder,
     fsExistsSync,
-    fsReadFileSync
+    fsReadFileSync,
 } from '../../core/systemManager/fileutils';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../../core/systemManager/crypto';
 import { executeTask } from '../../core/taskManager';
 import { TASK_CRYPTO_DECRYPT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
-
 const iocane = require('iocane');
 
-const _unzipAndCopy = async (
-    c,
-    shouldCleanFolder,
-    destTemp,
-    wsPath,
-    ts,
-    destFolder
-) => {
+const _unzipAndCopy = async (c, shouldCleanFolder, destTemp, wsPath, ts, destFolder) => {
     if (shouldCleanFolder) {
         await cleanFolder(wsPath);
     }
 
     await tar.x({
         file: destTemp,
-        cwd: c.paths.workspace.dir
+        cwd: c.paths.workspace.dir,
     });
 
     removeFilesSync([destTemp]);
     if (fsExistsSync(ts)) {
-        copyFileSync(
-            ts,
-            path.join(
-                c.paths.workspace.dir,
-                c.files.project.package.name,
-                'timestamp'
-            )
-        );
+        copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
     }
     logSuccess(`Files succesfully extracted into ${destFolder}`);
 };
@@ -67,33 +47,20 @@ export const taskRnvCryptoDecrypt = async (c, parentTask, originTask) => {
     if (!crypto.isOptional && sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
         const ts = `${source}.timestamp`;
-        const destFolder = path.join(
-            c.paths.workspace.dir,
-            c.files.project.package.name
-        );
-        const destTemp = `${path.join(
-            c.paths.workspace.dir,
-            c.files.project.package.name.replace('/', '-')
-        )}.tgz`;
+        const destFolder = path.join(c.paths.workspace.dir, c.files.project.package.name);
+        const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
         let shouldCleanFolder = false;
-        const wsPath = path.join(
-            c.paths.workspace.dir,
-            c.files.project.package.name
-        );
+        const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
         const isCryptoReset = c.command === 'crypto' && c.program.reset === true;
 
         if (c.program.ci !== true && !isCryptoReset) {
-            const options = [
-                'Yes - override (recommended)',
-                'Yes - merge',
-                'Skip'
-            ];
+            const options = ['Yes - override (recommended)', 'Yes - merge', 'Skip'];
             const { option } = await inquirerPrompt({
                 name: 'option',
                 type: 'list',
                 choices: options,
-                message: `How to decrypt to ${chalk().white(destFolder)} ?`
+                message: `How to decrypt to ${chalk().white(destFolder)} ?`,
             });
             if (option === options[0]) {
                 shouldCleanFolder = true;
@@ -109,42 +76,29 @@ export const taskRnvCryptoDecrypt = async (c, parentTask, originTask) => {
                 type: 'confirm',
                 message: `Found existing decrypted file at ${chalk().white(
                     destTemp
-                )}. want to use it and skip decrypt ?`
+                )}. want to use it and skip decrypt ?`,
             });
             if (confirm) {
-                await _unzipAndCopy(
-                    c,
-                    shouldCleanFolder,
-                    destTemp,
-                    wsPath,
-                    ts,
-                    destFolder
-                );
+                await _unzipAndCopy(c, shouldCleanFolder, destTemp, wsPath, ts, destFolder);
                 return true;
             }
         }
 
         const key = c.program.key || c.process.env[envVar];
         if (!key) {
-            return Promise.reject(`encrypt: You must pass ${chalk().white(
-                '--key'
-            )} or have env var defined:
+            return Promise.reject(`encrypt: You must pass ${chalk().white('--key')} or have env var defined:
 
 ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
 
 `);
         }
         if (!fsExistsSync(source)) {
-            return Promise.reject(
-                `Can't decrypt. ${chalk().white(source)} is missing!`
-            );
+            return Promise.reject(`Can't decrypt. ${chalk().white(source)} is missing!`);
         }
 
         let data;
         try {
-            data = await iocane.createSession()
-                .use('cbc')
-                .decrypt(fsReadFileSync(source), key);
+            data = await iocane.createSession().use('cbc').decrypt(fsReadFileSync(source), key);
         } catch (e) {
             if (e?.message?.includes) {
                 if (e.message.includes('Signature mismatch')) {
@@ -163,13 +117,14 @@ ${e}
 
       ${chalk().yellow('IF ALL HOPE IS LOST:')}
       Raise new issue and copy this SUMMARY box output at:
-      ${chalk().white('https://github.com/renative-org/renative/issues')}
+      ${chalk().white('https://github.com/flexn-io/renative/issues')}
       and we will try to help!
 
       `;
 
                     return Promise.reject(err);
-                } if (e.message.includes('Authentication failed')) {
+                }
+                if (e.message.includes('Authentication failed')) {
                     return Promise.reject(`It seems like you provided invalid decryption key.
 
 ${e.stack}
@@ -185,7 +140,7 @@ run crypto decrypt again
 
 ${chalk().yellow('IF ALL HOPE IS LOST:')}
 Raise new issue and copy this SUMMARY box output at:
-${chalk().white('https://github.com/renative-org/renative/issues')}
+${chalk().white('https://github.com/flexn-io/renative/issues')}
 and we will try to help!
 
 `);
@@ -194,7 +149,6 @@ and we will try to help!
 
             return Promise.reject(e);
         }
-
 
         fsWriteFileSync(destTemp, data);
 
@@ -223,20 +177,9 @@ and we will try to help!
         //     )}`);
         //         }
 
-        await _unzipAndCopy(
-            c,
-            shouldCleanFolder,
-            destTemp,
-            wsPath,
-            ts,
-            destFolder
-        );
+        await _unzipAndCopy(c, shouldCleanFolder, destTemp, wsPath, ts, destFolder);
     } else {
-        logWarning(
-            `You don't have {{ crypto.encrypt.dest }} specificed in ${chalk().white(
-                c.paths.appConfigBase
-            )}`
-        );
+        logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk().white(c.paths.appConfigBase)}`);
         return true;
     }
 };

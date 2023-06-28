@@ -18,7 +18,7 @@ import { createEngineAlias, withRNVMetro, withRNVBabel } from './adapter';
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
 export default {
-    initializeRuntimeConfig: c => Config.initializeConfig(c),
+    initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
         taskRnvPackage,
@@ -32,37 +32,37 @@ export default {
         taskRnvCryptoUpdateProfile,
         taskRnvCryptoUpdateProfiles,
         taskRnvCryptoInstallProfiles,
-        taskRnvLog
+        taskRnvLog,
     ]),
     getAliases: createEngineAlias,
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',
         reactNativeMetroConfigName: 'metro.config.js',
-        xcodeProjectName: 'RNVAppTVOS'
+        xcodeProjectName: 'RNVAppTVOS',
     },
     projectDirName: '',
     ejectPlatform: null,
     platforms: {
         tvos: {
             defaultPort: 8089,
-            extensions: generateEngineExtensions([
-                'tvos.tv', 'tv', 'tvos', 'tv.native', 'native'
-            ], CNF)
+            extensions: generateEngineExtensions(['tvos.tv', 'tv', 'tvos', 'tv.native', 'native'], CNF),
         },
         androidtv: {
             defaultPort: 8084,
-            extensions: generateEngineExtensions([
-                'androidtv.tv', 'tv', 'androidtv', 'android', 'tv.native', 'native'
-            ], CNF)
+            extensions: generateEngineExtensions(
+                ['androidtv.tv', 'tv', 'androidtv', 'android', 'tv.native', 'native'],
+                CNF
+            ),
         },
         firetv: {
             defaultPort: 8098,
-            extensions: generateEngineExtensions([
-                'firetv.tv', 'androidtv.tv', 'tv', 'firetv', 'androidtv', 'android', 'tv.native', 'native'
-            ], CNF)
+            extensions: generateEngineExtensions(
+                ['firetv.tv', 'androidtv.tv', 'tv', 'firetv', 'androidtv', 'android', 'tv.native', 'native'],
+                CNF
+            ),
         },
-    }
+    },
 };
 
 const withRNV = withRNVMetro;

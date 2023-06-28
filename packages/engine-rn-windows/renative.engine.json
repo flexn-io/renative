@@ -1,25 +1,25 @@
 {
-  "id": "engine-rn-windows",
-  "engineExtension": "rnwin",
-  "overview": "React native based engine with react-native-windows cli tool",
-  "plugins": {
-    "react": "source:rnv",
-    "react-art": "source:rnv",
-    "react-dom": "source:rnv",
-    "react-native": "source:rnv",
-    "react-native-windows": "source:rnv",
-    "@react-native-windows/cli": "source:rnv"
-  },
-  "platforms": {
-    "windows": {
-      "npm": {
-        "dependencies": {}
-      }
+    "id": "engine-rn-windows",
+    "engineExtension": "rnwin",
+    "overview": "React native based engine with react-native-windows cli tool",
+    "plugins": {
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "react-native-windows": "source:rnv",
+        "@react-native-windows/cli": "source:rnv"
     },
-    "xbox": {
-      "npm": {
-        "dependencies": {}
-      }
+    "platforms": {
+        "windows": {
+            "npm": {
+                "dependencies": {}
+            }
+        },
+        "xbox": {
+            "npm": {
+                "dependencies": {}
+            }
+        }
     }
-  }
 }

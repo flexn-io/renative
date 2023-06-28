@@ -3,14 +3,7 @@ import { SDKElectron } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    MACOS,
-    WINDOWS,
-    LINUX,
-    TASK_RUN,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
+const { MACOS, WINDOWS, LINUX, TASK_RUN, TASK_CONFIGURE, PARAMS } = Constants;
 const { runElectron } = SDKElectron;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
@@ -40,9 +33,5 @@ export default {
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [
-        MACOS,
-        WINDOWS,
-        LINUX
-    ],
+    platforms: [MACOS, WINDOWS, LINUX],
 };

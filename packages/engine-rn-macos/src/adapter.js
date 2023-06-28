@@ -4,13 +4,14 @@ const sharedBlacklist = [
     /node_modules\/react\/dist\/.*/,
     /website\/node_modules\/.*/,
     /heapCapture\/bundle\.js/,
-    /.*\/__tests__\/.*/
+    /.*\/__tests__\/.*/,
 ];
 
 function escapeRegExp(pattern) {
     if (Object.prototype.toString.call(pattern) === '[object RegExp]') {
         return pattern.source.replace(/\//g, path.sep);
-    } if (typeof pattern === 'string') {
+    }
+    if (typeof pattern === 'string') {
         // eslint-disable-next-line
         const escaped = pattern.replace(/[\-\[\]\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&'); // convert the '/' into an escaped local file separator
 
@@ -20,16 +21,8 @@ function escapeRegExp(pattern) {
 }
 
 function blacklist(additionalBlacklist) {
-    return new RegExp(
-        `(${
-            (additionalBlacklist || [])
-                .concat(sharedBlacklist)
-                .map(escapeRegExp)
-                .join('|')
-        })$`
-    );
+    return new RegExp(`(${(additionalBlacklist || []).concat(sharedBlacklist).map(escapeRegExp).join('|')})$`);
 }
-
 
 export const withRNV = (config) => {
     const projectPath = process.env.RNV_PROJECT_ROOT || process.cwd();
@@ -73,12 +66,12 @@ export const withRNV = (config) => {
                 /renative.local.*/,
                 /metro.config.local.*/,
             ]),
-            ...config?.resolver || {},
+            ...(config?.resolver || {}),
             sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
-            extraNodeModules: config?.resolver?.extraNodeModules
+            extraNodeModules: config?.resolver?.extraNodeModules,
         },
         watchFolders,
-        projectRoot: path.resolve(projectPath)
+        projectRoot: path.resolve(projectPath),
     };
 
     return cnf;

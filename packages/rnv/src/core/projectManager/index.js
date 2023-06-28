@@ -1,14 +1,15 @@
 import path from 'path';
 import { inquirerPrompt } from '../../cli/prompt';
 import {
-    getAppFolder, getBuildsFolder,
+    getAppFolder,
+    getBuildsFolder,
     getConfigProp,
     // getAppSubFolder,
     getPlatformBuildDir,
-    getPlatformProjectDir, getTimestampPathsConfig
+    getPlatformProjectDir,
+    getTimestampPathsConfig,
 } from '../common';
 import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
-import { getEngineRunnerByPlatform } from '../engineManager';
 import { isPlatformActive } from '../platformManager';
 import { copyTemplatePluginsSync, parsePlugins } from '../pluginManager';
 import {
@@ -23,7 +24,6 @@ import {
     fsReaddirSync,
     fsReadFileSync,
     resolvePackage,
-    removeDirs,
 } from '../systemManager/fileutils';
 import { installPackageDependencies, isYarnInstalled } from '../systemManager/npmUtils';
 import { executeAsync } from '../systemManager/exec';
@@ -33,17 +33,15 @@ import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from
 import { configureTemplateFiles, configureEntryPoint } from '../templateManager';
 import { parseRenativeConfigs } from '../configManager';
 
-
 export const checkAndBootstrapIfRequired = async (c) => {
     logTask('checkAndBootstrapIfRequired');
     const { template } = c.program;
     if (!c.paths.project.configExists && template) {
         await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${template}`, {
-            cwd: c.paths.project.dir
+            cwd: c.paths.project.dir,
         });
 
-
-        const templateArr = template.split('@').filter(v => v !== '');
+        const templateArr = template.split('@').filter((v) => v !== '');
         const templateDir = template.startsWith('@') ? `@${templateArr[0]}` : templateArr[0];
         const templatePath = path.join(c.paths.project.dir, 'node_modules', templateDir);
 
@@ -58,7 +56,6 @@ export const checkAndBootstrapIfRequired = async (c) => {
         const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
         const activeEngineKeys = [];
 
-
         supportedPlatforms.forEach((supPlat) => {
             Object.keys(engineTemplates).forEach((eKey) => {
                 if (engineTemplates[eKey].id === rnvPlatforms[supPlat]?.engine) {
@@ -68,7 +65,7 @@ export const checkAndBootstrapIfRequired = async (c) => {
         });
 
         const config = {
-            ...templateObj
+            ...templateObj,
         };
 
         // Clean unused engines
@@ -78,21 +75,20 @@ export const checkAndBootstrapIfRequired = async (c) => {
             }
         });
 
-
         if (config.templateConfig.packageTemplate) {
             const pkgJson = config.templateConfig.packageTemplate;
             if (!pkgJson.devDependencies) pkgJson.devDependencies = {};
             if (!pkgJson.dependencies) pkgJson.dependencies = {};
             c.files.project.package = pkgJson;
 
-
             const installPromises = [];
             Object.keys(pkgJson.devDependencies).forEach((devDepKey) => {
                 if (activeEngineKeys.includes(devDepKey)) {
-                    installPromises.push(executeAsync(`npx yarn add ${
-                        devDepKey}@${pkgJson.devDependencies[devDepKey]}`, {
-                        cwd: c.paths.project.dir
-                    }));
+                    installPromises.push(
+                        executeAsync(`npx yarn add ${devDepKey}@${pkgJson.devDependencies[devDepKey]}`, {
+                            cwd: c.paths.project.dir,
+                        })
+                    );
                 }
             });
 
@@ -102,7 +98,12 @@ export const checkAndBootstrapIfRequired = async (c) => {
                 logInfo('Installed engines DONE');
 
                 activeEngineKeys.forEach((aek) => {
-                    const engineConfigPath = path.join(c.paths.project.dir, 'node_modules', aek, 'renative.engine.json');
+                    const engineConfigPath = path.join(
+                        c.paths.project.dir,
+                        'node_modules',
+                        aek,
+                        'renative.engine.json'
+                    );
                     const eConfig = readObjectSync(engineConfigPath);
                     if (eConfig.platforms) {
                         supportedPlatforms.forEach((supPlat) => {
@@ -125,8 +126,8 @@ export const checkAndBootstrapIfRequired = async (c) => {
                                         pkgJson.devDependencies = pkgJson.devDependencies || {};
                                         if (!pkgJson.devDependencies[engPlatDevDepKey]) {
                                             logInfo(`Installing active engine dependency ${engPlatDevDepKey}`);
-                                            pkgJson.devDependencies[
-                                                engPlatDevDepKey] = engPlatDevDeps[engPlatDevDepKey];
+                                            pkgJson.devDependencies[engPlatDevDepKey] =
+                                                engPlatDevDeps[engPlatDevDepKey];
                                         }
                                     });
                                 }
@@ -137,8 +138,8 @@ export const checkAndBootstrapIfRequired = async (c) => {
                                         pkgJson.optionalDependencies = pkgJson.optionalDependencies || {};
                                         if (!pkgJson.optionalDependencies[engPlatOptDepKey]) {
                                             logInfo(`Installing active engine dependency ${engPlatOptDepKey}`);
-                                            pkgJson.optionalDependencies[
-                                                engPlatOptDepKey] = engPlatOptDeps[engPlatOptDepKey];
+                                            pkgJson.optionalDependencies[engPlatOptDepKey] =
+                                                engPlatOptDeps[engPlatOptDepKey];
                                         }
                                     });
                                 }
@@ -156,10 +157,7 @@ export const checkAndBootstrapIfRequired = async (c) => {
 
         const appConfigsPath = path.join(templatePath, 'appConfigs');
         if (fsExistsSync(appConfigsPath)) {
-            copyFolderContentsRecursiveSync(
-                appConfigsPath,
-                path.join(c.paths.project.appConfigsDir)
-            );
+            copyFolderContentsRecursiveSync(appConfigsPath, path.join(c.paths.project.appConfigsDir));
         }
 
         await installPackageDependencies(c);
@@ -179,19 +177,13 @@ export const checkAndBootstrapIfRequired = async (c) => {
     return true;
 };
 
-
 export const checkAndCreateGitignore = async (c) => {
     logTask('checkAndCreateGitignore');
     const ignrPath = path.join(c.paths.project.dir, '.gitignore');
     if (!fsExistsSync(ignrPath)) {
-        logInfo(
-            'Your .gitignore is missing. CREATING...DONE'
-        );
+        logInfo('Your .gitignore is missing. CREATING...DONE');
 
-        copyFileSync(
-            path.join(c.paths.rnv.dir, 'coreTemplateFiles/gitignore-template'),
-            ignrPath
-        );
+        copyFileSync(path.join(c.paths.rnv.dir, 'coreTemplateFiles/gitignore-template'), ignrPath);
     }
     return true;
 };
@@ -204,20 +196,12 @@ export const checkAndCreateBabelConfig = async (c) => {
     // Check babel-config
     logDebug('configureProject:check babel config');
     if (!fsExistsSync(c.paths.project.babelConfig)) {
-        logInfo(
-            `Your babel config file ${chalk().white(
-                c.paths.project.babelConfig
-            )} is missing! CREATING...DONE`
-        );
-        copyFileSync(
-            path.join(c.paths.rnv.projectTemplate.dir, RN_BABEL_CONFIG_NAME),
-            c.paths.project.babelConfig
-        );
+        logInfo(`Your babel config file ${chalk().white(c.paths.project.babelConfig)} is missing! CREATING...DONE`);
+        copyFileSync(path.join(c.paths.rnv.projectTemplate.dir, RN_BABEL_CONFIG_NAME), c.paths.project.babelConfig);
     }
 
     return true;
 };
-
 
 export const configureFonts = async (c) => {
     // FONTS
@@ -228,16 +212,12 @@ export const configureFonts = async (c) => {
         if (font.includes('.ttf') || font.includes('.otf') || font.includes('.woff')) {
             const keOriginal = font.split('.')[0];
             const keyNormalised = keOriginal.replace(/__/g, ' ');
-            const includedFonts = getConfigProp(
-                c,
-                c.platform,
-                'includedFonts'
-            );
+            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
             if (includedFonts) {
                 if (
-                    includedFonts.includes('*')
-                        || includedFonts.includes(keOriginal)
-                        || includedFonts.includes(keyNormalised)
+                    includedFonts.includes('*') ||
+                    includedFonts.includes(keOriginal) ||
+                    includedFonts.includes(keyNormalised)
                 ) {
                     if (font && !duplicateFontCheck.includes(font)) {
                         duplicateFontCheck.push(font);
@@ -252,11 +232,7 @@ export const configureFonts = async (c) => {
                               file: require('${fontSource}'),
                           },`;
                         } else {
-                            logWarning(
-                                `Font ${chalk().white(
-                                    fontSource
-                                )} doesn't exist! Skipping.`
-                            );
+                            logWarning(`Font ${chalk().white(fontSource)} doesn't exist! Skipping.`);
                         }
                     }
                 }
@@ -268,11 +244,7 @@ export const configureFonts = async (c) => {
     if (!fsExistsSync(c.paths.project.assets.runtimeDir)) {
         mkdirSync(c.paths.project.assets.runtimeDir);
     }
-    const fontJsPath = path.join(
-        c.paths.project.assets.dir,
-        'runtime',
-        'fonts.web.js'
-    );
+    const fontJsPath = path.join(c.paths.project.assets.dir, 'runtime', 'fonts.web.js');
     if (fsExistsSync(fontJsPath)) {
         const existingFileContents = fsReadFileSync(fontJsPath).toString();
 
@@ -288,32 +260,19 @@ export const configureFonts = async (c) => {
     const coreTemplateFiles = path.resolve(c.paths.rnv.dir, 'coreTemplateFiles');
     copyFileSync(
         path.resolve(coreTemplateFiles, 'fontManager.js'),
-        path.resolve(
-            c.paths.project.assets.dir,
-            'runtime',
-            'fontManager.js'
-        )
+        path.resolve(c.paths.project.assets.dir, 'runtime', 'fontManager.js')
     );
     copyFileSync(
         path.resolve(coreTemplateFiles, 'fontManager.js'),
-        path.resolve(
-            c.paths.project.assets.dir,
-            'runtime',
-            'fontManager.server.web.js'
-        )
+        path.resolve(c.paths.project.assets.dir, 'runtime', 'fontManager.server.web.js')
     );
     copyFileSync(
         path.resolve(coreTemplateFiles, 'fontManager.web.js'),
-        path.resolve(
-            c.paths.project.assets.dir,
-            'runtime',
-            'fontManager.web.js'
-        )
+        path.resolve(c.paths.project.assets.dir, 'runtime', 'fontManager.web.js')
     );
 
     return true;
 };
-
 
 export const copyRuntimeAssets = async (c) => {
     logTask('copyRuntimeAssets');
@@ -327,10 +286,7 @@ export const copyRuntimeAssets = async (c) => {
             copyFolderContentsRecursiveSync(sourcePath, destPath);
         });
     } else if (c.paths.appConfig.dir) {
-        const sourcePath = path.join(
-            c.paths.appConfig.dir,
-            'assets/runtime'
-        );
+        const sourcePath = path.join(c.paths.appConfig.dir, 'assets/runtime');
         copyFolderContentsRecursiveSync(sourcePath, destPath);
     }
 
@@ -356,11 +312,11 @@ export const parseFonts = (c, callback) => {
     if (c.buildConfig) {
         // FONTS - PROJECT CONFIG
         if (fsExistsSync(c.paths.project.appConfigBase.fontsDir)) {
-            fsReaddirSync(c.paths.project.appConfigBase.fontsDir).forEach(
-                (font) => {
-                    if (callback) { callback(font, c.paths.project.appConfigBase.fontsDir); }
+            fsReaddirSync(c.paths.project.appConfigBase.fontsDir).forEach((font) => {
+                if (callback) {
+                    callback(font, c.paths.project.appConfigBase.fontsDir);
                 }
-            );
+            });
         }
         // FONTS - APP CONFIG
         if (c.paths.appConfig.fontsDirs) {
@@ -378,16 +334,21 @@ export const parseFonts = (c, callback) => {
         }
         _parseFontSources(c, getConfigProp(c, c.platform, 'fontSources', []), callback);
         // PLUGIN FONTS
-        parsePlugins(c, c.platform, (plugin) => {
-            if (plugin.config?.fontSources) {
-                _parseFontSources(c, plugin.config?.fontSources, callback);
-            }
-        }, true);
+        parsePlugins(
+            c,
+            c.platform,
+            (plugin) => {
+                if (plugin.config?.fontSources) {
+                    _parseFontSources(c, plugin.config?.fontSources, callback);
+                }
+            },
+            true
+        );
     }
 };
 
 const _parseFontSources = (c, fontSourcesArr, callback) => {
-    const fontSources = fontSourcesArr.map(v => _resolvePackage(c, v));
+    const fontSources = fontSourcesArr.map((v) => _resolvePackage(c, v));
     fontSources.forEach((fontSourceDir) => {
         if (fsExistsSync(fontSourceDir)) {
             fsReaddirSync(fontSourceDir).forEach((font) => {
@@ -404,64 +365,64 @@ const _resolvePackage = (c, v) => {
     return resolvePackage(v);
 };
 
-const _requiresAssetOverride = async (c) => {
-    const requiredAssets = c.runtime.engine?.platforms?.[c.platform]?.requiredAssets || [];
+// const _requiresAssetOverride = async (c) => {
+//     const requiredAssets = c.runtime.engine?.platforms?.[c.platform]?.requiredAssets || [];
 
-    const assetsToCopy = [];
-    const assetsDir = path.join(c.paths.project.appConfigBase.dir, 'assets', c.platform);
+//     const assetsToCopy = [];
+//     const assetsDir = path.join(c.paths.project.appConfigBase.dir, 'assets', c.platform);
 
-    requiredAssets.forEach((v) => {
-        const sourcePath = path.join(c.runtime.engine.originalTemplateAssetsDir, c.platform, v);
+//     requiredAssets.forEach((v) => {
+//         const sourcePath = path.join(c.runtime.engine.originalTemplateAssetsDir, c.platform, v);
 
-        const destPath = path.join(assetsDir, v);
+//         const destPath = path.join(assetsDir, v);
 
+//         if (fsExistsSync(sourcePath)) {
+//             if (!fsExistsSync(destPath)) {
+//                 assetsToCopy.push({
+//                     sourcePath,
+//                     destPath,
+//                     value: v,
+//                 });
+//             }
+//         }
+//     });
 
-        if (fsExistsSync(sourcePath)) {
-            if (!fsExistsSync(destPath)) {
-                assetsToCopy.push({
-                    sourcePath,
-                    destPath,
-                    value: v
-                });
-            }
-        }
-    });
+//     const actionOverride = 'Override exisitng folder';
+//     const actionMerge = 'Merge with existing folder';
+//     const actionSkip = 'Skip. Warning: this might fail your build';
 
+//     if (assetsToCopy.length > 0) {
+//         if (!fsExistsSync(assetsDir)) {
+//             logInfo(
+//                 `Required assets: ${chalk().white(
+//                     JSON.stringify(assetsToCopy.map((v) => v.value))
+//                 )} will be copied to ${chalk().white('appConfigs/assets')} folder`
+//             );
+//             return true;
+//         }
 
-    const actionOverride = 'Override exisitng folder';
-    const actionMerge = 'Merge with existing folder';
-    const actionSkip = 'Skip. Warning: this might fail your build';
+//         const { chosenAction } = await inquirerPrompt({
+//             message: 'What to do next?',
+//             type: 'list',
+//             name: 'chosenAction',
+//             choices: [actionOverride, actionMerge, actionSkip],
+//             warningMessage: `Your appConfig/base/assets/${c.platform} exists but engine ${
+//                 c.runtime.engine.config.id
+//             } requires some additional assets:
+// ${chalk().red(requiredAssets.join(','))}`,
+//         });
 
+//         if (chosenAction === actionOverride) {
+//             await removeDirs([assetsDir]);
+//         }
 
-    if (assetsToCopy.length > 0) {
-        if (!fsExistsSync(assetsDir)) {
-            logInfo(`Required assets: ${chalk().white(JSON.stringify(assetsToCopy.map(v => v.value)))
-            } will be copied to ${chalk().white('appConfigs/assets')} folder`);
-            return true;
-        }
+//         if (chosenAction === actionOverride || chosenAction === actionMerge) {
+//             return true;
+//         }
+//     }
 
-        const { chosenAction } = await inquirerPrompt({
-            message: 'What to do next?',
-            type: 'list',
-            name: 'chosenAction',
-            choices: [actionOverride, actionMerge, actionSkip],
-            warningMessage: `Your appConfig/base/assets/${c.platform} exists but engine ${
-                c.runtime.engine.config.id} requires some additional assets:
-${chalk().red(requiredAssets.join(','))}`
-        });
-
-        if (chosenAction === actionOverride) {
-            await removeDirs([assetsDir]);
-        }
-
-        if (chosenAction === actionOverride || chosenAction === actionMerge) {
-            return true;
-        }
-    }
-
-
-    return false;
-};
+//     return false;
+// };
 
 export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     logTask('copyAssetsFolder');
@@ -471,7 +432,11 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     const assetFolderPlatform = getConfigProp(c, platform, 'assetFolderPlatform', platform);
 
     if (assetFolderPlatform !== platform) {
-        logInfo(`Found custom assetFolderPlatform: ${chalk().green(assetFolderPlatform)}. Will use it instead of deafult ${platform}`);
+        logInfo(
+            `Found custom assetFolderPlatform: ${chalk().green(
+                assetFolderPlatform
+            )}. Will use it instead of deafult ${platform}`
+        );
     }
 
     const tsPathsConfig = getTimestampPathsConfig(c, platform);
@@ -479,21 +444,22 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
     const assetSources = getConfigProp(c, platform, 'assetSources', []);
 
     const validAssetSources = [];
-    assetSources.forEach(v => {
+    assetSources.forEach((v) => {
         const assetsPath = path.join(_resolvePackage(c, v), assetFolderPlatform);
         if (fsExistsSync(assetsPath)) {
             validAssetSources.push(assetsPath);
         }
     });
 
-    const destPath = path.join(
-        getPlatformProjectDir(c, platform),
-        subPath || ''
-    );
+    const destPath = path.join(getPlatformProjectDir(c, platform), subPath || '');
 
     // FOLDER MERGERS FROM EXTERNAL SOURCES
     if (validAssetSources.length > 0) {
-        logInfo(`Found custom assetSources at ${chalk().white(validAssetSources.join('/n'))}. Will be used to generate assets.`);
+        logInfo(
+            `Found custom assetSources at ${chalk().white(
+                validAssetSources.join('/n')
+            )}. Will be used to generate assets.`
+        );
         validAssetSources.forEach((sourcePath) => {
             copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
         });
@@ -502,24 +468,24 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
-        const hasAssetFolder = c.paths.appConfig.dirs
-            .filter(v => fsExistsSync(path.join(v, `assets/${assetFolderPlatform}`))).length;
-        const requireOverride = await _requiresAssetOverride(c);
-        if (!hasAssetFolder || requireOverride) {
-            await generateDefaultAssets(
-                c,
-                platform,
-                path.join(c.paths.appConfig.dirs[0], `assets/${assetFolderPlatform}`),
-                requireOverride
-            );
+        const hasAssetFolder = c.paths.appConfig.dirs.filter((v) =>
+            fsExistsSync(path.join(v, `assets/${assetFolderPlatform}`))
+        ).length;
+        // const requireOverride = await _requiresAssetOverride(c);
+        if (!hasAssetFolder) {
+            logWarning(`Your app is missing assets at ${chalk().red(c.paths.appConfig.dirs.join(','))}.`);
+            // await generateDefaultAssets(
+            //     c,
+            //     platform,
+            //     path.join(c.paths.appConfig.dirs[0], `assets/${assetFolderPlatform}`)
+            //     // requireOverride
+            // );
         }
     } else {
-        const sourcePath = path.join(
-            c.paths.appConfig.dir,
-            `assets/${assetFolderPlatform}`
-        );
+        const sourcePath = path.join(c.paths.appConfig.dir, `assets/${assetFolderPlatform}`);
         if (!fsExistsSync(sourcePath)) {
-            await generateDefaultAssets(c, platform, sourcePath);
+            logWarning(`Your app is missing assets at ${chalk().red(sourcePath)}.`);
+            // await generateDefaultAssets(c, platform, sourcePath);
         }
     }
 
@@ -534,134 +500,106 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
             copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
         });
     } else {
-        const sourcePath = path.join(
-            c.paths.appConfig.dir,
-            `assets/${assetFolderPlatform}`
-        );
+        const sourcePath = path.join(c.paths.appConfig.dir, `assets/${assetFolderPlatform}`);
         copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
     }
 };
 
-const generateDefaultAssets = async (c, platform, sourcePath, forceTrue) => {
-    logTask('generateDefaultAssets');
-    let confirmAssets = true;
-    if (c.program.ci !== true && c.program.yes !== true && !forceTrue) {
-        const { confirm } = await inquirerPrompt({
-            type: 'confirm',
-            message: `It seems you don't have assets configured in ${chalk().white(
-                sourcePath
-            )} do you want generate default ones?`
+//NOTE: Default assets have been removed from engines
+// const generateDefaultAssets = async (c, platform, sourcePath, forceTrue) => {
+//     logTask('generateDefaultAssets');
+// let confirmAssets = true;
+// if (c.program.ci !== true && c.program.yes !== true && !forceTrue) {
+//     const { confirm } = await inquirerPrompt({
+//         type: 'confirm',
+//         message: `It seems you don't have assets configured in ${chalk().white(
+//             sourcePath
+//         )} do you want generate default ones?`,
+//     });
+//     confirmAssets = confirm;
+// }
+
+// if (confirmAssets) {
+//     const engine = getEngineRunnerByPlatform(c, c.platform);
+//     if (fsExistsSync(path.join(engine.originalTemplateAssetsDir, platform))) {
+//         copyFolderContentsRecursiveSync(path.join(engine.originalTemplateAssetsDir, platform), sourcePath);
+//     } else {
+//         logWarning('Currently used engine does not have default assets, creating an empty folder');
+//         mkdirSync(sourcePath);
+//     }
+// }
+// };
+
+export const copyBuildsFolder = (c, platform) =>
+    new Promise((resolve) => {
+        logTask('copyBuildsFolder');
+        if (!isPlatformActive(c, platform, resolve)) return;
+
+        const destPath = path.join(getAppFolder(c));
+        const tsPathsConfig = getTimestampPathsConfig(c, platform);
+
+        const configPropsInjects = [];
+        INJECTABLE_CONFIG_PROPS.forEach((v) => {
+            configPropsInjects.push({
+                pattern: `{{configProps.${v}}}`,
+                override: getConfigProp(c, c.platform, v),
+            });
         });
-        confirmAssets = confirm;
-    }
+        c.configPropsInjects = configPropsInjects;
+        const allInjects = [...c.configPropsInjects, ...c.systemPropsInjects, ...c.runtimePropsInjects];
 
-    if (confirmAssets) {
-        const engine = getEngineRunnerByPlatform(c, c.platform);
-        if (fsExistsSync(path.join(engine.originalTemplateAssetsDir, platform))) {
-            copyFolderContentsRecursiveSync(
-                path.join(engine.originalTemplateAssetsDir, platform),
-                sourcePath
-            );
-        } else {
-            logWarning('Currently used engine does not have default assets, creating an empty folder');
-            mkdirSync(sourcePath);
-        }
-    }
-};
+        // FOLDER MERGERS PROJECT CONFIG
+        const sourcePath1 = getBuildsFolder(c, platform, c.paths.project.appConfigBase.dir);
+        copyFolderContentsRecursiveSync(sourcePath1, destPath, true, false, false, allInjects, tsPathsConfig);
 
-export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
-    logTask('copyBuildsFolder');
-    if (!isPlatformActive(c, platform, resolve)) return;
+        // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
+        const sourcePath1secLegacy = getBuildsFolder(c, platform, c.paths.workspace.project.appConfigBase.dir_LEGACY);
+        copyFolderContentsRecursiveSync(sourcePath1secLegacy, destPath, true, false, false, allInjects, tsPathsConfig);
 
-    const destPath = path.join(getAppFolder(c));
-    const tsPathsConfig = getTimestampPathsConfig(c, platform);
+        // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
+        const sourcePath1sec = getBuildsFolder(c, platform, c.paths.workspace.project.appConfigBase.dir);
+        copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, false, false, allInjects, tsPathsConfig);
 
-    const configPropsInjects = [];
-    INJECTABLE_CONFIG_PROPS.forEach((v) => {
-        configPropsInjects.push({
-            pattern: `{{configProps.${v}}}`,
-            override: getConfigProp(c, c.platform, v)
-        });
-    });
-    c.configPropsInjects = configPropsInjects;
-    const allInjects = [...c.configPropsInjects, ...c.systemPropsInjects, ...c.runtimePropsInjects];
-
-    // FOLDER MERGERS PROJECT CONFIG
-    const sourcePath1 = getBuildsFolder(
-        c,
-        platform,
-        c.paths.project.appConfigBase.dir
-    );
-    copyFolderContentsRecursiveSync(sourcePath1, destPath, true, false, false, allInjects, tsPathsConfig);
-
-    // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
-    const sourcePath1secLegacy = getBuildsFolder(
-        c,
-        platform,
-        c.paths.workspace.project.appConfigBase.dir_LEGACY
-    );
-    copyFolderContentsRecursiveSync(sourcePath1secLegacy, destPath, true,
-        false, false, allInjects, tsPathsConfig);
-
-    // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
-    const sourcePath1sec = getBuildsFolder(
-        c,
-        platform,
-        c.paths.workspace.project.appConfigBase.dir
-    );
-    copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, false, false, allInjects, tsPathsConfig);
-
-    if (fsExistsSync(sourcePath1secLegacy)) {
-        logWarning(`Path: ${chalk().red(sourcePath1secLegacy)} is DEPRECATED.
+        if (fsExistsSync(sourcePath1secLegacy)) {
+            logWarning(`Path: ${chalk().red(sourcePath1secLegacy)} is DEPRECATED.
 Move your files to: ${chalk().white(sourcePath1sec)} instead`);
-    }
-
-    // DEPRECATED SHARED
-    if (c.runtime.currentPlatform?.isWebHosted) {
-        const sourcePathShared = path.join(
-            c.paths.project.appConfigBase.dir,
-            'builds/_shared'
-        );
-        if (fsExistsSync(sourcePathShared)) {
-            logWarning('Folder builds/_shared is DEPRECATED. use builds/<PLATFORM> instead ');
         }
-        copyFolderContentsRecursiveSync(
-            sourcePathShared,
-            getPlatformBuildDir(c),
-            true, false, false, allInjects
-        );
-    }
 
-    // FOLDER MERGERS FROM APP CONFIG + EXTEND
-    if (c.paths.appConfig.dirs) {
-        c.paths.appConfig.dirs.forEach((v) => {
-            const sourceV = getBuildsFolder(c, platform, v);
+        // DEPRECATED SHARED
+        if (c.runtime.currentPlatform?.isWebHosted) {
+            const sourcePathShared = path.join(c.paths.project.appConfigBase.dir, 'builds/_shared');
+            if (fsExistsSync(sourcePathShared)) {
+                logWarning('Folder builds/_shared is DEPRECATED. use builds/<PLATFORM> instead ');
+            }
+            copyFolderContentsRecursiveSync(sourcePathShared, getPlatformBuildDir(c), true, false, false, allInjects);
+        }
+
+        // FOLDER MERGERS FROM APP CONFIG + EXTEND
+        if (c.paths.appConfig.dirs) {
+            c.paths.appConfig.dirs.forEach((v) => {
+                const sourceV = getBuildsFolder(c, platform, v);
+                copyFolderContentsRecursiveSync(sourceV, destPath, true, false, false, allInjects, tsPathsConfig);
+            });
+        } else {
             copyFolderContentsRecursiveSync(
-                sourceV,
+                getBuildsFolder(c, platform, c.paths.appConfig.dir),
                 destPath,
-                true, false, false, allInjects, tsPathsConfig
+                true,
+                false,
+                false,
+                allInjects,
+                tsPathsConfig
             );
-        });
-    } else {
-        copyFolderContentsRecursiveSync(
-            getBuildsFolder(c, platform, c.paths.appConfig.dir),
-            destPath,
-            true, false, false, allInjects, tsPathsConfig
-        );
-    }
+        }
 
-    // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
-    const sourcePath0sec = getBuildsFolder(
-        c,
-        platform,
-        c.paths.workspace.appConfig.dir
-    );
-    copyFolderContentsRecursiveSync(sourcePath0sec, destPath, true, false, false, allInjects, tsPathsConfig);
+        // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
+        const sourcePath0sec = getBuildsFolder(c, platform, c.paths.workspace.appConfig.dir);
+        copyFolderContentsRecursiveSync(sourcePath0sec, destPath, true, false, false, allInjects, tsPathsConfig);
 
-    copyTemplatePluginsSync(c);
+        copyTemplatePluginsSync(c);
 
-    resolve();
-});
+        resolve();
+    });
 
 const SYNCED_DEPS = [
     'rnv',
@@ -677,9 +615,7 @@ const SYNCED_DEPS = [
     '@rnv/template-starter',
 ];
 
-const SYNCED_TEMPLATES = [
-    '@rnv/template-starter'
-];
+const SYNCED_TEMPLATES = ['@rnv/template-starter'];
 
 export const versionCheck = async (c) => {
     logTask('versionCheck');
@@ -690,19 +626,15 @@ export const versionCheck = async (c) => {
     c.runtime.rnvVersionRunner = c.files.rnv?.package?.version;
     c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv;
     logTask(
-        `versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${
-            c.runtime.rnvVersionProject
-        }`,
+        `versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${c.runtime.rnvVersionProject}`,
         chalk().grey
     );
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
-        if ((c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) && !c.program.skipRnvCheck) {
+        if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject && !c.program.skipRnvCheck) {
             const recCmd = chalk().white(`$ npx ${getCurrentCommand(true)}`);
             const actionNoUpdate = 'Continue and skip updating package.json';
             const actionWithUpdate = 'Continue and update package.json';
-            const actionUpgrade = `Upgrade project to ${
-                c.runtime.rnvVersionRunner
-            }`;
+            const actionUpgrade = `Upgrade project to ${c.runtime.rnvVersionRunner}`;
 
             const { chosenAction } = await inquirerPrompt({
                 message: 'What to do next?',
@@ -714,9 +646,7 @@ export const versionCheck = async (c) => {
                 )} against project built with rnv v${chalk().red(
                     c.runtime.rnvVersionProject
                 )}. This might result in unexpected behaviour!
-It is recommended that you run your rnv command with npx prefix: ${
-    recCmd
-} . or manually update your devDependencies.rnv version in your package.json.`
+It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json.`,
             });
 
             c.runtime.versionCheckCompleted = true;

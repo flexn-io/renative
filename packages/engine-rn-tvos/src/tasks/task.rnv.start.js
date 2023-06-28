@@ -7,18 +7,8 @@ const { logErrorPlatform } = PlatformManager;
 const { generateEnvVars } = EngineManager;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { chalk, logTask, logError, logRaw, logInfo } = Logger;
-const {
-    IOS,
-    TVOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    TASK_START,
-    TASK_CONFIGURE_SOFT,
-    PARAMS
-} = Constants;
+const { IOS, TVOS, ANDROID, ANDROID_TV, FIRE_TV, TASK_START, TASK_CONFIGURE_SOFT, PARAMS } = Constants;
 const { executeAsync } = Exec;
-
 
 const BUNDLER_PLATFORMS = {};
 
@@ -33,10 +23,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
     logTask('taskRnvStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
 
     if (hosted) {
-        return logError(
-            'This platform does not support hosted mode',
-            true
-        );
+        return logError('This platform does not support hosted mode', true);
     }
     // Disable reset for other commands (ie. cleaning platforms)
     c.runtime.disableReset = true;
@@ -50,9 +37,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
         case ANDROID_TV:
         case FIRE_TV:
         case TVOS: {
-            let startCmd = `node ${doResolve(
-                'react-native-tvos'
-            )}/local-cli/cli.js start --port ${
+            let startCmd = `node ${doResolve('react-native-tvos')}/local-cli/cli.js start --port ${
                 c.runtime.port
             } --config=metro.config.js`;
 
@@ -67,8 +52,11 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
                 );
             }
             // logSummary('BUNDLER STARTED');
-            const url = chalk().cyan(`http://${c.runtime.localhost}:${c.runtime.port}/${
-                getEntryFile(c, c.platform)}.bundle?platform=${BUNDLER_PLATFORMS[platform]}`);
+            const url = chalk().cyan(
+                `http://${c.runtime.localhost}:${c.runtime.port}/${getEntryFile(c, c.platform)}.bundle?platform=${
+                    BUNDLER_PLATFORMS[platform]
+                }`
+            );
             logRaw(`
 
 Dev server running at: ${url}
@@ -81,12 +69,19 @@ Dev server running at: ${url}
                     resetCompleted = await confirmActiveBundler(c);
                 }
 
-
                 if (!isRunning || (isRunning && resetCompleted)) {
-                    return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c), RCT_NO_LAUNCH_PACKAGER: 1 } });
+                    return executeAsync(c, startCmd, {
+                        stdio: 'inherit',
+                        silent: true,
+                        env: { ...generateEnvVars(c), RCT_NO_LAUNCH_PACKAGER: 1 },
+                    });
                 }
                 if (resetCompleted) {
-                    return executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
+                    return executeAsync(c, startCmd, {
+                        stdio: 'inherit',
+                        silent: true,
+                        env: { ...generateEnvVars(c) },
+                    });
                 }
 
                 return true;
@@ -95,7 +90,6 @@ Dev server running at: ${url}
             return true;
         }
         default:
-
             return logErrorPlatform(c);
     }
 };

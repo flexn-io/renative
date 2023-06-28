@@ -2,11 +2,7 @@ import { Constants, Logger, PlatformManager } from 'rnv';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    WEB,
-    CHROMECAST,
-    PARAMS
-} = Constants;
+const { WEB, CHROMECAST, PARAMS } = Constants;
 
 export const taskRnvDebug = async (c, parentTask) => {
     logTask('taskRnvDebug', `parent:${parentTask}`);
@@ -23,8 +19,5 @@ export default {
     fn: taskRnvDebug,
     task: 'debug',
     params: PARAMS.withBase(),
-    platforms: [
-        WEB,
-        CHROMECAST,
-    ],
+    platforms: [WEB, CHROMECAST],
 };

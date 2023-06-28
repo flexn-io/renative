@@ -1,4 +1,5 @@
-const SENSITIVE = '> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!\n\n';
+const SENSITIVE =
+    '> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!\n\n';
 
 // ==================================================
 //  PROPS
@@ -9,7 +10,7 @@ const propExt = {
         additionalProperties: true,
         type: 'object',
         description:
-      'Object ysed to extend your renative with custom props. This allows renative json schema to be validated',
+            'Object ysed to extend your renative with custom props. This allows renative json schema to be validated',
         examples: [
             {
                 myCustomRenativeProp: 'foo',
@@ -39,8 +40,7 @@ const propWebpackConfig = {
             extend: {
                 additionalProperties: true,
                 type: 'object',
-                description:
-          'Allows you to directly extend/override webpack config of your current platform',
+                description: 'Allows you to directly extend/override webpack config of your current platform',
                 examples: [
                     {
                         devtool: 'source-map',
@@ -80,8 +80,7 @@ const engineRnElectronConfig = {
     electronConfig: {
         additionalProperties: true,
         type: 'object',
-        description:
-      'Allows you to configure electron app as per https://www.electron.build/',
+        description: 'Allows you to configure electron app as per https://www.electron.build/',
         examples: [
             {
                 mac: {
@@ -139,121 +138,121 @@ const engineRnElectronConfig = {
 const engineRNWindowsConfig = {
     language: {
         type: 'string',
-        description: 'Specify generated project language: cpp for C++ or cs for C#'
+        description: 'Specify generated project language: cpp for C++ or cs for C#',
     },
     experimentalNuGetDependency: {
-        type: 'boolean'
+        type: 'boolean',
     },
     useWinUI3: {
-        type: 'boolean'
+        type: 'boolean',
     },
     nuGetTestVersion: {
-        type: 'string'
+        type: 'string',
     },
     reactNativeEngine: {
-        type: 'string'
+        type: 'string',
     },
     nuGetTestFeed: {
-        type: 'string'
+        type: 'string',
     },
     overwrite: {
         type: 'boolean',
-        description: 'Whether to attempt to override the existing builds files when running a build once more'
+        description: 'Whether to attempt to override the existing builds files when running a build once more',
     },
     release: {
         type: 'boolean',
-        description: 'Enables full packaging of the app for release'
+        description: 'Enables full packaging of the app for release',
     },
     root: {
         type: 'string',
-        description: 'Project root folder location (not the app itself, which is in platformBuilds)'
+        description: 'Project root folder location (not the app itself, which is in platformBuilds)',
     },
     arch: {
         type: 'string',
         description: 'Specification of targeted architecture',
-        examples: ['x86', 'x64', 'ARM', 'ARM64']
+        examples: ['x86', 'x64', 'ARM', 'ARM64'],
     },
     singleproc: {
         type: 'boolean',
-        description: 'Opt out of multi-proc builds (only available in 0.64 and newer versions of react-native-windows)'
+        description: 'Opt out of multi-proc builds (only available in 0.64 and newer versions of react-native-windows)',
     },
     emulator: {
-        type: 'boolean'
+        type: 'boolean',
     },
     device: {
-        type: 'boolean'
+        type: 'boolean',
     },
     target: {
-        type: 'string'
+        type: 'string',
     },
     remoteDebugging: {
-        type: 'boolean'
+        type: 'boolean',
     },
     logging: {
         type: 'boolean',
-        description: 'Logging all the build proccesses to console'
+        description: 'Logging all the build proccesses to console',
     },
     packager: {
-        type: 'boolean'
+        type: 'boolean',
     },
     bundle: {
-        type: 'boolean'
+        type: 'boolean',
     },
     launch: {
         type: 'boolean',
-        description: 'Launches the application once the build process is finished'
+        description: 'Launches the application once the build process is finished',
     },
     autolink: {
         type: 'boolean',
-        description: 'Launches the application once the build process is finished'
+        description: 'Launches the application once the build process is finished',
     },
     build: {
         type: 'boolean',
-        description: 'Builds the application before launching it'
+        description: 'Builds the application before launching it',
     },
     deploy: {
-        type: 'boolean'
+        type: 'boolean',
     },
     sln: {
         type: 'string',
-        description: 'Location of Visual Studio solution .sln file (wraps multiple projects)'
+        description: 'Location of Visual Studio solution .sln file (wraps multiple projects)',
     },
     proj: {
         type: 'string',
-        description: 'Root project directory for your React Native Windows project (not Visual Studio project)'
+        description: 'Root project directory for your React Native Windows project (not Visual Studio project)',
     },
     appPath: {
         type: 'string',
-        description: 'Full path to windows plaform build directory'
+        description: 'Full path to windows plaform build directory',
     },
     msbuildprops: {
         type: 'string',
-        description: 'Comma separated props to pass to msbuild, eg: prop1=value1,prop2=value2'
+        description: 'Comma separated props to pass to msbuild, eg: prop1=value1,prop2=value2',
     },
     buildLogDirectory: {
         type: 'string',
-        description: 'Full path to directory where builds logs should be stored, default - project path'
+        description: 'Full path to directory where builds logs should be stored, default - project path',
     },
     info: {
         type: 'boolean',
-        description: 'Print information about the build machine to console'
+        description: 'Print information about the build machine to console',
     },
     directDebugging: {
-        type: 'boolean'
+        type: 'boolean',
     },
     telemetry: {
         type: 'boolean',
-        description: 'Send analytics data of @react-native-windows/cli usage to Microsoft'
+        description: 'Send analytics data of @react-native-windows/cli usage to Microsoft',
     },
     devPort: {
-        type: 'string'
+        type: 'string',
     },
     additionalMetroOptions: {
         type: 'object',
     },
     packageExtension: {
-        type: 'string'
-    }
+        type: 'string',
+    },
 };
 
 // ==================================================
@@ -265,7 +264,7 @@ const commonRuntimeProps = {
         additionalProperties: true,
         type: 'object',
         description:
-      'This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code',
+            'This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code',
         examples: [
             {
                 someRuntimeProperty: 'foo',
@@ -280,21 +279,20 @@ const commonProps = {
         type: 'array',
         items: { type: 'string' },
         description:
-      'Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins',
+            'Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins',
         examples: [['*'], ['react-native-google-cast', 'react-navigation-tabs']],
     },
     includedPlugins: {
         type: 'array',
         items: { type: 'string' },
         description:
-      'Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins',
+            'Defines an array of all included plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: includedPlugins is evaluated before excludedPlugins',
         examples: [['*'], ['react-native-google-cast', 'react-navigation-tabs']],
     },
     includedPermissions: {
         type: 'array',
         items: { type: 'string' },
-        description:
-      'Allows you to include specific permissions by their KEY defined in `permissions` object',
+        description: 'Allows you to include specific permissions by their KEY defined in `permissions` object',
         examples: [
             ['*'],
             [
@@ -327,13 +325,13 @@ const commonProps = {
     title: {
         type: 'string',
         description:
-      'Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website',
+            'Title of your app will be used to create title of the binary. ie App title of installed app iOS/Android app or Tab title of the website',
         examples: ['Awesome App'],
     },
     description: {
         type: 'string',
         description:
-      'General description of your app. This prop will be injected to actual projects where description field is applicable',
+            'General description of your app. This prop will be injected to actual projects where description field is applicable',
         examples: ['This app does awesome things'],
     },
     author: {
@@ -344,13 +342,12 @@ const commonProps = {
         type: 'array',
         items: { type: 'string' },
         description:
-      'Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all',
+            'Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all',
         examples: [['*'], ['TimeBurner', 'Entypo']],
     },
     backgroundColor: {
         type: 'string',
-        description:
-      'Defines root view backgroundColor for all platforms in HEX format',
+        description: 'Defines root view backgroundColor for all platforms in HEX format',
         examples: ['#FFFFFF', '#222222'],
     },
     splashScreen: {
@@ -368,39 +365,37 @@ const commonProps = {
     timestampAssets: {
         type: 'boolean',
         description:
-      'If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy',
+            'If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy',
         examples: [true, false],
     },
     versionedAssets: {
         type: 'boolean',
         description:
-      'If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy',
+            'If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version. This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy',
         examples: [true, false],
     },
     fontSources: {
         type: 'array',
         items: { type: 'string' },
-        description:
-      'Array of paths to location of external Fonts',
+        description: 'Array of paths to location of external Fonts',
         examples: [['{{resolvePackage(react-native-vector-icons)}}/Fonts']],
     },
     assetSources: {
         type: 'array',
         items: { type: 'string' },
         description:
-      'Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project',
+            'Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project',
         examples: [['{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets']],
     },
     assetFolderPlatform: {
         type: 'string',
         description:
-      'Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets',
+            'Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets',
         examples: ['android'],
     },
     portOffset: {
         type: 'number',
-        description:
-      'Offset each port default value by increment',
+        description: 'Offset each port default value by increment',
         examples: [1, 10, 500],
     },
     ...propExt,
@@ -417,12 +412,11 @@ const platformCommonProps = {
     bundleAssets: {
         type: 'boolean',
         description:
-      'If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds',
+            'If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds',
     },
     enableSourceMaps: {
         type: 'boolean',
-        description:
-      'If set to `true` dedicated source map file will be generated alongside of compiled js bundle',
+        description: 'If set to `true` dedicated source map file will be generated alongside of compiled js bundle',
     },
     bundleIsDev: {
         type: 'boolean',
@@ -483,8 +477,8 @@ const commonIosProps = {
             },
             didDisconnectCarInterfaceController: {
                 type: 'array',
-            }
-        }
+            },
+        },
     },
     appDelegateMethods: {
         additionalProperties: true,
@@ -494,7 +488,7 @@ const commonIosProps = {
         type: 'array',
     },
     appDelegateExtensions: {
-        type: 'array'
+        type: 'array',
     },
 };
 
@@ -502,8 +496,7 @@ const commonAndroidProps = {
     'gradle.properties': {
         additionalProperties: true,
         type: 'object',
-        description:
-      'Overrides values in `gradle.properties` file of generated android based project',
+        description: 'Overrides values in `gradle.properties` file of generated android based project',
         examples: [
             {
                 'gradle.properties': {
@@ -519,8 +512,7 @@ const commonAndroidProps = {
     'build.gradle': {
         additionalProperties: true,
         type: 'object',
-        description:
-      'Overrides values in `build.gradle` file of generated android based project',
+        description: 'Overrides values in `build.gradle` file of generated android based project',
         examples: [
             {
                 allprojects: {
@@ -534,8 +526,7 @@ const commonAndroidProps = {
     'app/build.gradle': {
         additionalProperties: true,
         type: 'object',
-        description:
-      'Overrides values in `app/build.gradle` file of generated android based project',
+        description: 'Overrides values in `app/build.gradle` file of generated android based project',
         examples: [
             {
                 apply: ["plugin: 'io.fabric'"],
@@ -561,8 +552,7 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
                         children: [
                             {
                                 tag: 'activity',
-                                'android:name':
-                  'com.ahmedadeltito.photoeditor.PhotoEditorActivity',
+                                'android:name': 'com.ahmedadeltito.photoeditor.PhotoEditorActivity',
                             },
                         ],
                     },
@@ -632,23 +622,14 @@ const platformAndroidProps = {
     reactNativeEngine: {
         type: 'string',
         default: 'default',
-        description:
-      'Allows you to define specific native render engine to be used',
+        description: 'Allows you to define specific native render engine to be used',
         examples: [true, false],
     },
     signingConfig: {
         type: 'string',
         default: 'Debug',
-        description:
-      'Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`',
-        examples: [
-            'default',
-            'v8-android',
-            'v8-android-nointl',
-            'v8-android-jit',
-            'v8-android-jit-nointl',
-            'hermes',
-        ],
+        description: 'Equivalent to running `./gradlew/assembleDebug` or `./gradlew/assembleRelease`',
+        examples: ['default', 'v8-android', 'v8-android-nointl', 'v8-android-jit', 'v8-android-jit-nointl', 'hermes'],
     },
     minSdkVersion: {
         type: 'integer',
@@ -659,22 +640,19 @@ const platformAndroidProps = {
         type: 'boolean',
         default: false,
         description:
-      'If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"',
+            'If set to `true`, apk will be split into multiple ones for each architecture: "armeabi-v7a", "x86", "arm64-v8a", "x86_64"',
         examples: [true, false],
     },
     aab: {
         type: 'boolean',
-        description:
-      'If set to true, android project will generate app.aab instead of apk',
+        description: 'If set to true, android project will generate app.aab instead of apk',
         default: false,
         examples: [false, true],
     },
     extraGradleParams: {
         type: 'string',
         description: 'Allows passing extra params to gradle command',
-        examples: [
-            'assembleAndroidTest -DtestBuildType=debug'
-        ],
+        examples: ['assembleAndroidTest -DtestBuildType=debug'],
     },
     minifyEnabled: {
         type: 'boolean',
@@ -684,27 +662,25 @@ const platformAndroidProps = {
     },
     targetSdkVersion: {
         type: 'integer',
-        description:
-      'Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` ',
+        description: 'Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` ',
         examples: [28, 29],
     },
     compileSdkVersion: {
         type: 'integer',
-        description:
-      'Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` ',
+        description: 'Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` ',
         examples: [28, 29],
     },
     gradleBuildToolsVersion: {
         type: 'integer',
         description:
-      "Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`",
+            "Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`",
         default: '3.3.1',
         examples: ['3.3.1', '4.1.0'],
     },
     gradleWrapperVersion: {
         type: 'integer',
         description:
-      'Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`',
+            'Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`',
         default: '5.5',
         examples: ['5.5', '6.7.1'],
     },
@@ -715,13 +691,9 @@ const platformAndroidProps = {
         properties: {
             onCreate: {
                 type: 'string',
-                description:
-          'Overrides super.onCreate method handler of MainActivity.kt',
+                description: 'Overrides super.onCreate method handler of MainActivity.kt',
                 default: 'super.onCreate(savedInstanceState)',
-                examples: [
-                    'super.onCreate(null)',
-                    'super.onCreate(savedInstanceState)',
-                ],
+                examples: ['super.onCreate(null)', 'super.onCreate(savedInstanceState)'],
             },
         },
     },
@@ -758,8 +730,7 @@ const platformIosProps = {
     },
     excludedArchs: {
         type: 'array',
-        description:
-      'Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`',
+        description: 'Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`',
         default: null,
         examples: [['arm64']],
     },
@@ -913,13 +884,13 @@ const platformWebProps = {
     outputDir: {
         type: 'string',
         description:
-      'Custom output directory used by nextjs equivalent to "npx next build" with custom outputDir. Use relative paths',
+            'Custom output directory used by nextjs equivalent to "npx next build" with custom outputDir. Use relative paths',
         examples: ['.next', 'custom/location'],
     },
     exportDir: {
         type: 'string',
         description:
-      'Custom export directory used by nextjs equivalent to "npx next export --outdir <exportDir>". Use relative paths',
+            'Custom export directory used by nextjs equivalent to "npx next export --outdir <exportDir>". Use relative paths',
         examples: ['output', 'custom/location'],
     },
     environment: {
@@ -969,7 +940,7 @@ const platformMacosProps = {
 };
 
 const platformLinuxProps = {
-    ...engineRnElectronConfig
+    ...engineRnElectronConfig,
 };
 
 const platformWindowsProps = {
@@ -985,7 +956,7 @@ const platformChromecastProps = {
 // BUILD SCHEME PROPS
 // ==================================================
 
-const generateBuildSchemeProps = obj => ({
+const generateBuildSchemeProps = (obj) => ({
     buildSchemes: {
         additionalProperties: {
             type: 'object',
@@ -997,7 +968,7 @@ const generateBuildSchemeProps = obj => ({
                 description: {
                     type: 'string',
                     description:
-            'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`',
+                        'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`',
                     examples: ['This is some build scheme'],
                 },
                 ...platformCommonProps,
@@ -1039,8 +1010,7 @@ const pluginIosProps = {
     },
     staticPods: {
         type: 'array',
-        description:
-      'Allows to define extra logic to cover multiple pods subspecs which need to be marked as static',
+        description: 'Allows to define extra logic to cover multiple pods subspecs which need to be marked as static',
         examples: [['::startsWith::Permission-']],
     },
 };
@@ -1056,7 +1026,7 @@ const commonPluginPlatformProps = {
     path: {
         type: 'string',
         description:
-      'Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.',
+            'Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.',
         examples: ['node_modules/react-native-video/android-exoplayer'],
     },
 };
@@ -1075,7 +1045,7 @@ const pluginProps = {
     source: {
         type: 'string',
         description:
-      'Will define custom scope for your plugin config to extend from.\n\nNOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}',
+            'Will define custom scope for your plugin config to extend from.\n\nNOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}',
         examples: ['rnv', 'myCustomScope'],
     },
     'no-npm': {
@@ -1084,7 +1054,7 @@ const pluginProps = {
     skipMerge: {
         type: 'boolean',
         description:
-      'Will not attempt to merge with existing plugin configuration (ie. coming form renative pluginTemplates)\n\nNOTE: if set to `true` you need to configure your plugin object fully',
+            'Will not attempt to merge with existing plugin configuration (ie. coming form renative pluginTemplates)\n\nNOTE: if set to `true` you need to configure your plugin object fully',
         examples: [true, false],
     },
     npm: {
@@ -1103,8 +1073,7 @@ const pluginProps = {
     webpackConfig: {
         additionalProperties: false,
         type: 'object',
-        description:
-      'Allows you to configure webpack bahaviour per each individual plugin',
+        description: 'Allows you to configure webpack bahaviour per each individual plugin',
         properties: {
             modulePaths: {
                 type: ['boolean', 'object'],
@@ -1380,8 +1349,7 @@ export const schemaRoot = {
         common: {
             additionalProperties: false,
             type: 'object',
-            description:
-        'Common config props used as default props for all available buildSchemes',
+            description: 'Common config props used as default props for all available buildSchemes',
             examples: [
                 {
                     author: {
@@ -1516,7 +1484,7 @@ export const schemaRoot = {
             additionalProperties: true,
             type: 'object',
             description:
-        'List of SDK locations used by RNV. This property is usually located in your `WORKSPACE/renative.json`',
+                'List of SDK locations used by RNV. This property is usually located in your `WORKSPACE/renative.json`',
             examples: [
                 {
                     ANDROID_SDK: '/Users/paveljacko/Library/Android/sdk',
@@ -1552,7 +1520,7 @@ export const schemaRoot = {
         plugins: {
             type: 'object',
             description:
-        'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config',
+                'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config',
             examples: [
                 {
                     renative: 'source:rnv',
@@ -1597,7 +1565,7 @@ export const schemaRoot = {
         projectName: {
             type: 'string',
             description:
-        'Name of the project which will be used in workspace as folder name. this will also be used as part of the KEY in crypto env var generator',
+                'Name of the project which will be used in workspace as folder name. this will also be used as part of the KEY in crypto env var generator',
             examples: ['my-project', 'myProject'],
         },
         // name: {
@@ -1608,17 +1576,15 @@ export const schemaRoot = {
         },
         extendsTemplate: {
             type: 'string',
-            description: 'You can extend another renative.json file of currently applied template by providing relative or full package name path',
-            examples: [
-                'renative.json',
-                '@rnv/template-starter/renative.json'
-            ]
+            description:
+                'You can extend another renative.json file of currently applied template by providing relative or full package name path',
+            examples: ['renative.json', '@rnv/template-starter/renative.json'],
         },
         projectTemplates: {
             additionalProperties: true,
             type: 'object',
             description:
-        'Custom list of renative templates (NPM package names) which will be displayed during `rnv new` project bootstrap. This prop usually resides in workspace config.',
+                'Custom list of renative templates (NPM package names) which will be displayed during `rnv new` project bootstrap. This prop usually resides in workspace config.',
             examples: [
                 {
                     'my-custom-template': {},
@@ -1629,7 +1595,7 @@ export const schemaRoot = {
             additionalProperties: false,
             type: 'object',
             description:
-        'Permission definititions which can be used by app configs via `includedPermissions` and `excludedPermissions` to customize permissions for each app',
+                'Permission definititions which can be used by app configs via `includedPermissions` and `excludedPermissions` to customize permissions for each app',
             examples: [
                 {
                     ios: {},
@@ -1694,8 +1660,7 @@ export const schemaRoot = {
                                 desc: 'Get contacts list',
                             },
                             NSFaceIDUsageDescription: {
-                                desc:
-                  'Requires FaceID access to allows you quick and secure access.',
+                                desc: 'Requires FaceID access to allows you quick and secure access.',
                             },
                             NSLocationAlwaysUsageDescription: {
                                 desc: 'Geolocation tags for photos',
@@ -1714,19 +1679,13 @@ export const schemaRoot = {
         workspaceID: {
             type: 'string',
             description:
-        'Workspace ID your project belongs to. This will mach same folder name in the root of your user directory. ie `~/` on macOS',
+                'Workspace ID your project belongs to. This will mach same folder name in the root of your user directory. ie `~/` on macOS',
             examples: ['rnv', 'myCustomWorkspace'],
         },
         version: {
             type: 'string',
             description: 'Semver style version of your app.',
-            examples: [
-                '0.1.0',
-                '1.0.0',
-                '1.0.0-alpha.1',
-                '1.0.0-RC.7',
-                '1.0.0-feature-x.0',
-            ],
+            examples: ['0.1.0', '1.0.0', '1.0.0-alpha.1', '1.0.0-RC.7', '1.0.0-feature-x.0'],
         },
         versionCode: {
             description: 'Manual verride of generated version code',
@@ -1802,8 +1761,7 @@ IN: 1.0.23 OUT: 100230000
         },
         id: {
             type: 'string',
-            description:
-        'ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name of the folder',
+            description: 'ID of the app in `./appConfigs/[APP_ID]/renative.json`. MUST match APP_ID name of the folder',
             examples: ['helloworld', 'someapp'],
         },
         isMonorepo: {
@@ -1812,7 +1770,7 @@ IN: 1.0.23 OUT: 100230000
         monoRepo: {
             type: 'string',
             description: 'Define custom path to monorepo root where starting point is project directory',
-            example: '../../..'
+            example: '../../..',
         },
         enableAnalytics: {
             type: 'boolean',
@@ -1831,14 +1789,12 @@ IN: 1.0.23 OUT: 100230000
                 },
                 platformAssetsDir: {
                     type: 'string',
-                    description:
-            'Custom path to platformAssets folder. defaults to `./platformAssets`',
+                    description: 'Custom path to platformAssets folder. defaults to `./platformAssets`',
                     examples: ['./platformAssets'],
                 },
                 platformBuildsDir: {
                     type: 'string',
-                    description:
-            'Custom path to platformBuilds folder. defaults to `./platformBuilds`',
+                    description: 'Custom path to platformBuilds folder. defaults to `./platformBuilds`',
                     examples: ['./platformBuilds'],
                 },
                 pluginTemplates: {
@@ -1883,7 +1839,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
             additionalProperties: true,
             type: 'object',
             description:
-        'Allows to override specific task within renative toolchain. (currently only `install` supported). this is useful if you want to change specific behaviour of built-in task. ie install task triggers yarn/npm install by default. but that might not be desirable installation trigger',
+                'Allows to override specific task within renative toolchain. (currently only `install` supported). this is useful if you want to change specific behaviour of built-in task. ie install task triggers yarn/npm install by default. but that might not be desirable installation trigger',
             examples: [
                 {
                     install: {
@@ -1895,16 +1851,8 @@ To skip file overrides coming from source plugin you need to detach it from the 
         pipes: {
             type: 'array',
             description:
-        'To avoid rnv building `buildHooks/src` every time you can specify which specific pipes should trigger recompile of buildHooks',
-            examples: [
-                [
-                    'configure:after',
-                    'start:before',
-                    'deploy:after',
-                    'export:before',
-                    'export:after',
-                ],
-            ],
+                'To avoid rnv building `buildHooks/src` every time you can specify which specific pipes should trigger recompile of buildHooks',
+            examples: [['configure:after', 'start:before', 'deploy:after', 'export:before', 'export:after']],
         },
         defaults: {
             additionalProperties: false,
@@ -1913,24 +1861,13 @@ To skip file overrides coming from source plugin you need to detach it from the 
             properties: {
                 supportedPlatforms: {
                     type: 'array',
-                    description:
-            'Array list of all supported platforms in current project',
-                    examples: [
-                        [
-                            'ios',
-                            'android',
-                            'androidtv',
-                            'web',
-                            'macos',
-                            'tvos',
-                            'androidwear',
-                        ],
-                    ],
+                    description: 'Array list of all supported platforms in current project',
+                    examples: [['ios', 'android', 'androidtv', 'web', 'macos', 'tvos', 'androidwear']],
                 },
                 schemes: {
                     type: 'object',
                     description:
-            'List of default schemes for each platform. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`',
+                        'List of default schemes for each platform. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`',
                     examples: [
                         {
                             ios: 'myCustomScheme',
@@ -1951,7 +1888,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
                 ports: {
                     type: 'object',
                     description:
-            'Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts',
+                        'Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts',
                     examples: [
                         {
                             ios: 8182,
@@ -1970,7 +1907,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
                             firefoxos: 8194,
                             firefoxtv: 8114,
                             webtv: 8195,
-                            linux: 8200
+                            linux: 8200,
                         },
                     ],
                 },
@@ -1984,7 +1921,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
             additionalProperties: true,
             type: 'object',
             description:
-        'Stores installed templates info in your project.\n\nNOTE: This prop will be updated by rnv if you run `rnv template install`',
+                'Stores installed templates info in your project.\n\nNOTE: This prop will be updated by rnv if you run `rnv template install`',
             examples: [
                 {
                     '@rnv/template-starter': {
@@ -1996,14 +1933,13 @@ To skip file overrides coming from source plugin you need to detach it from the 
         currentTemplate: {
             type: 'string',
             description:
-        'Currently active template used in this project. this allows you to re-bootstrap whole project by running `rnv template apply`',
+                'Currently active template used in this project. this allows you to re-bootstrap whole project by running `rnv template apply`',
             examples: ['@rnv/template-starter'],
         },
         crypto: {
             additionalProperties: false,
             type: 'object',
-            description:
-        'This prop enables automatic encrypt and decrypt of sensitive information in your project',
+            description: 'This prop enables automatic encrypt and decrypt of sensitive information in your project',
             properties: {
                 encrypt: {
                     additionalProperties: false,
@@ -2012,7 +1948,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
                         dest: {
                             type: 'string',
                             description:
-                'Location of encrypted file in your project used as destination of encryption from your workspace',
+                                'Location of encrypted file in your project used as destination of encryption from your workspace',
                             examples: ['PROJECT_HOME/ci/privateConfigs.enc'],
                         },
                     },
@@ -2024,7 +1960,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
                         source: {
                             type: 'string',
                             description:
-                'Location of encrypted file in your project used as source of decryption into your workspace',
+                                'Location of encrypted file in your project used as source of decryption into your workspace',
                             examples: ['PROJECT_HOME/ci/privateConfigs.enc'],
                         },
                     },
@@ -2046,7 +1982,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
             additionalProperties: true,
             type: 'object',
             description:
-        'Special object which contains private info. this object should be used only in `renative.private.json` files and never commited to your repository. Private files usually reside in your workspace and are subject to crypto encryption if enabled. RNV will warn you if it finds private key in your regular `renative.json` file',
+                'Special object which contains private info. this object should be used only in `renative.private.json` files and never commited to your repository. Private files usually reside in your workspace and are subject to crypto encryption if enabled. RNV will warn you if it finds private key in your regular `renative.json` file',
             examples: [
                 {
                     myPrivateKy: '6568347563858739',
@@ -2056,29 +1992,19 @@ To skip file overrides coming from source plugin you need to detach it from the 
         hidden: {
             type: 'boolean',
             description:
-        'If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`',
+                'If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`',
             examples: [true, false],
         },
         templateConfig: {
-            description:
-        'Used in `renative.template.json` allows you to define template behaviour.',
+            description: 'Used in `renative.template.json` allows you to define template behaviour.',
             type: 'object',
             additionalProperties: false,
             properties: {
                 includedPaths: {
                     type: 'array',
                     items: { type: 'string' },
-                    description:
-            'Defines list of all file/dir paths you want to include in template',
-                    examples: [
-                        [
-                            'next.config.js',
-                            'babel.config.js',
-                            'appConfigs',
-                            'public',
-                            'src',
-                        ],
-                    ],
+                    description: 'Defines list of all file/dir paths you want to include in template',
+                    examples: [['next.config.js', 'babel.config.js', 'appConfigs', 'public', 'src']],
                 },
                 bootstrapQuestions: {
                     type: 'array',
@@ -2116,7 +2042,7 @@ To skip file overrides coming from source plugin you need to detach it from the 
         enableHookRebuild: {
             type: 'boolean',
             description:
-        'If set to true in `./renative.json` build hooks will be compiled at each rnv command run. If set to `false` (default) rebuild will be triggered only if `dist` folder is missing, `-r` has been passed or you run `rnv hooks run` directly making your rnv commands faster',
+                'If set to true in `./renative.json` build hooks will be compiled at each rnv command run. If set to `false` (default) rebuild will be triggered only if `dist` folder is missing, `-r` has been passed or you run `rnv hooks run` directly making your rnv commands faster',
             examples: [true, false],
         },
         ...propExt,

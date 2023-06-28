@@ -1,16 +1,7 @@
 import path from 'path';
-import {
-    chalk,
-    logWarning,
-    logTask,
-    logDebug,
-} from './logger';
+import { chalk, logWarning, logTask, logDebug } from './logger';
 import { isSystemWin } from './utils';
-import {
-    getRealPath,
-    fsExistsSync,
-    fsReadFileSync
-} from './fileutils';
+import { getRealPath, fsExistsSync, fsReadFileSync } from './fileutils';
 import { TASK_CRYPTO_DECRYPT } from '../constants';
 import { executeTask } from '../taskManager';
 
@@ -22,19 +13,12 @@ export const getEnvExportCmd = (envVar, key) => {
 };
 
 export const getEnvVar = (c) => {
-    const p1 = c.paths.workspace.dir
-        .split('/')
-        .pop()
-        .replace('.', '');
-    const p2 = c.files.project.package.name
-        .replace('@', '')
-        .replace('/', '_')
-        .replace(/-/g, '_');
+    const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');
+    const p2 = c.files.project.package.name.replace('@', '').replace('/', '_').replace(/-/g, '_');
     const envVar = `CRYPTO_${p1}_${p2}`.toUpperCase();
     logDebug('encrypt looking for env var:', envVar);
     return envVar;
 };
-
 
 export const checkCrypto = async (c, parentTask, originTask) => {
     logTask('checkCrypto');
@@ -48,30 +32,19 @@ export const checkCrypto = async (c, parentTask, originTask) => {
         if (sourceRaw && destRaw) {
             const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
             const tsProjectPath = `${source}.timestamp`;
-            const wsPath = path.join(
-                c.paths.workspace.dir,
-                c.files.project.package.name
-            );
+            const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
             const tsWorkspacePath = path.join(wsPath, 'timestamp');
             if (!fsExistsSync(source)) {
-                logWarning(
-                    "This project uses encrypted files but you don't have them installed"
-                );
+                logWarning("This project uses encrypted files but you don't have them installed");
             } else {
                 let tsWorkspace = 0;
                 let tsProject = 0;
                 if (fsExistsSync(tsWorkspacePath)) {
-                    tsWorkspace = parseInt(
-                        fsReadFileSync(tsWorkspacePath).toString(),
-                        10
-                    );
+                    tsWorkspace = parseInt(fsReadFileSync(tsWorkspacePath).toString(), 10);
                 }
 
                 if (fsExistsSync(tsProjectPath)) {
-                    tsProject = parseInt(
-                        fsReadFileSync(tsProjectPath).toString(),
-                        10
-                    );
+                    tsProject = parseInt(fsReadFileSync(tsProjectPath).toString(), 10);
                 }
 
                 if (tsProject > tsWorkspace) {
@@ -84,9 +57,7 @@ you should run decrypt`);
                 }
 
                 if (tsProject < tsWorkspace) {
-                    logWarning(
-                        `Your ${tsWorkspacePath} is newer than your project one.`
-                    );
+                    logWarning(`Your ${tsWorkspacePath} is newer than your project one.`);
                 }
             }
         }

@@ -8,13 +8,7 @@ const { checkAndConfigureSdks } = SDKManager;
 const { logErrorPlatform } = PlatformManager;
 
 const { logTask } = Logger;
-const {
-    PARAMS,
-    TVOS,
-    ANDROID_TV,
-    FIRE_TV,
-    TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE
-} = Constants;
+const { PARAMS, TVOS, ANDROID_TV, FIRE_TV, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE } = Constants;
 const { executeTask } = TaskManager;
 
 export const taskRnvLog = async (c, parentTask, originTask) => {
@@ -42,5 +36,5 @@ export default {
     task: 'log',
     params: PARAMS.withBase(),
     platforms: [TVOS, ANDROID_TV, FIRE_TV],
-    isGlobalScope: true
+    isGlobalScope: true,
 };

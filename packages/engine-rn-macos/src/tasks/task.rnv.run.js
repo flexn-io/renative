@@ -5,13 +5,7 @@ import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngin
 const { getConfigProp } = Common;
 const { logErrorPlatform } = PlatformManager;
 const { logTask, logSummary, logRaw } = Logger;
-const {
-    MACOS,
-    TASK_RUN,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
-
+const { MACOS, TASK_RUN, TASK_CONFIGURE, PARAMS } = Constants;
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
@@ -56,12 +50,10 @@ const Task = {
     fnHelp: taskRnvRunHelp,
     task: TASK_RUN,
     dependencies: {
-        before: TASK_CONFIGURE
+        before: TASK_CONFIGURE,
     },
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [
-        MACOS
-    ],
+    platforms: [MACOS],
 };
 
 export default Task;

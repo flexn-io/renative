@@ -2,21 +2,21 @@ import { executeAsync, commandExistsSync, commandExists } from '../../src/core/s
 
 jest.mock('../../src/core/systemManager/logger.js', () => {
     const _chalkCols = {
-        white: v => v,
-        green: v => v,
-        red: v => v,
-        yellow: v => v,
-        default: v => v,
-        gray: v => v,
-        grey: v => v,
-        blue: v => v,
-        cyan: v => v,
-        magenta: v => v
+        white: (v) => v,
+        green: (v) => v,
+        red: (v) => v,
+        yellow: (v) => v,
+        default: (v) => v,
+        gray: (v) => v,
+        grey: (v) => v,
+        blue: (v) => v,
+        cyan: (v) => v,
+        magenta: (v) => v,
     };
-    _chalkCols.rgb = () => v => v;
+    _chalkCols.rgb = () => (v) => v;
     _chalkCols.bold = _chalkCols;
     const _chalkMono = {
-        ..._chalkCols
+        ..._chalkCols,
     };
     return {
         logToSummary: jest.fn(),
@@ -27,24 +27,26 @@ jest.mock('../../src/core/systemManager/logger.js', () => {
         logWarning: jest.fn(),
         logSuccess: jest.fn(),
         chalk: () => _chalkMono,
-        stripAnsi: (v: any) => (v)
+        stripAnsi: (v: any) => v,
     };
 });
 
 describe('Testing exec functions', () => {
     it('should execute command', async () => {
         expect.assertions(1);
-        await expect(executeAsync({ program: {} }, 'node -v').then(data => typeof data)).resolves.toBe('string');
+        await expect(executeAsync({ program: {} }, 'node -v').then((data) => typeof data)).resolves.toBe('string');
     });
 
     it('should execute array command', async () => {
         expect.assertions(1);
-        await expect(executeAsync({ program: {} }, ['node', '-v']).then(data => typeof data)).resolves.toBe('string');
+        await expect(executeAsync({ program: {} }, ['node', '-v']).then((data) => typeof data)).resolves.toBe('string');
     });
 
     it('should execute command with privateParams', async () => {
         expect.assertions(1);
-        await expect(executeAsync({ program: {} }, 'node -v 1234', { privateParams: ['1234'] }).then(data => typeof data)).resolves.toBe('string');
+        await expect(
+            executeAsync({ program: {} }, 'node -v 1234', { privateParams: ['1234'] }).then((data) => typeof data)
+        ).resolves.toBe('string');
     });
 
     it('should execute with error', async () => {

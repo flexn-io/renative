@@ -1,9 +1,5 @@
 import { generateOptions } from '../../cli/prompt';
-import {
-    chalk,
-    logTask,
-    logToSummary,
-} from '../../core/systemManager/logger';
+import { chalk, logTask, logToSummary } from '../../core/systemManager/logger';
 import { executeTask } from '../../core/taskManager';
 import { TASK_WORKSPACE_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
@@ -20,9 +16,7 @@ export const taskRnvWorkspaceList = async (c, parentTask, originTask) => {
         null,
         (i, obj, mapping, defaultVal) => {
             const isConnected = '';
-            return ` [${chalk().grey(i + 1)}]> ${chalk().bold(
-                defaultVal
-            )}${isConnected} \n`;
+            return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)}${isConnected} \n`;
         }
     );
 
@@ -35,5 +29,5 @@ export default {
     task: TASK_WORKSPACE_LIST,
     params: PARAMS.withBase(),
     platforms: [],
-    isGlobalScope: true
+    isGlobalScope: true,
 };

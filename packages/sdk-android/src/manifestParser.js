@@ -8,7 +8,7 @@ const {
     getConfigProp,
     getFlavouredProp,
     addSystemInjects,
-    getConfigPropArray
+    getConfigPropArray,
 } = Common;
 const { logTask, logError, logWarning, logDebug } = Logger;
 const { readObjectSync, writeCleanFile } = FileUtils;
@@ -26,16 +26,15 @@ const _findChildNode = (tag, name, node) => {
     for (let i = 0; i < node.children.length; i++) {
         const ch = node.children[i];
         if (ch.tag === tag) {
-            if (
-                ch['android:name'] === name
-                || PROHIBITED_DUPLICATE_TAGS.includes(tag)
-            ) { return ch; }
+            if (ch['android:name'] === name || PROHIBITED_DUPLICATE_TAGS.includes(tag)) {
+                return ch;
+            }
         }
     }
     return null;
 };
 
-const _convertToXML = manifestObj => _parseNode(manifestObj, 0);
+const _convertToXML = (manifestObj) => _parseNode(manifestObj, 0);
 
 const _parseNode = (n, level) => {
     let output = '';
@@ -60,9 +59,7 @@ const _parseNode = (n, level) => {
         output += `${space}<${n.tag}${endLine}`;
         Object.keys(n).forEach((k) => {
             if (!SYSTEM_TAGS.includes(k)) {
-                output += `${isSingleLine ? '' : `${space}  `}${k}="${
-                    n[k]
-                }"${endLine}`;
+                output += `${isSingleLine ? '' : `${space}  `}${k}="${n[k]}"${endLine}`;
             }
         });
     } else {
@@ -113,15 +110,11 @@ const _mergeNodeChildren = (node, nodeChildrenExt = []) => {
         if (v.tag) {
             const childNode = _findChildNode(v.tag, nameExt, node);
             if (childNode) {
-                logDebug(
-                    `_mergeNodeChildren: FOUND EXISTING NODE TO MERGE ${nameExt} ${v.tag}`
-                );
+                logDebug(`_mergeNodeChildren: FOUND EXISTING NODE TO MERGE ${nameExt} ${v.tag}`);
                 _mergeNodeParameters(childNode, v);
                 _mergeNodeChildren(childNode, v.children);
             } else {
-                logDebug(
-                    `_mergeNodeChildren: NO android:name found. adding to children ${nameExt} ${v.tag}`
-                );
+                logDebug(`_mergeNodeChildren: NO android:name found. adding to children ${nameExt} ${v.tag}`);
                 node.children.push(v);
             }
         }
@@ -137,7 +130,7 @@ const _mergeFeatures = (c, baseManifestFile, configKey, value) => {
             featuresObj.push({
                 tag: 'uses-feature',
                 'android:name': key,
-                'android:required': value
+                'android:required': value,
             });
         });
         _mergeNodeChildren(baseManifestFile, featuresObj);
@@ -149,10 +142,7 @@ export const parseAndroidManifestSync = (c) => {
     const { platform } = c;
 
     try {
-        const baseManifestFilePath = path.join(
-            __dirname,
-            `../supportFiles/AndroidManifest_${platform}.json`
-        );
+        const baseManifestFilePath = path.join(__dirname, `../supportFiles/AndroidManifest_${platform}.json`);
         const baseManifestFile = readObjectSync(baseManifestFilePath);
         baseManifestFile.package = getAppId(c, platform);
 
@@ -168,11 +158,7 @@ export const parseAndroidManifestSync = (c) => {
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins(c, platform, (plugin, pluginPlat) => {
-            const androidManifestPlugin = getFlavouredProp(
-                c,
-                pluginPlat,
-                'AndroidManifest'
-            );
+            const androidManifestPlugin = getFlavouredProp(c, pluginPlat, 'AndroidManifest');
             if (androidManifestPlugin) {
                 _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
                 if (androidManifestPlugin.children) {
@@ -185,26 +171,17 @@ export const parseAndroidManifestSync = (c) => {
         const configPermissions = c.buildConfig?.permissions;
 
         const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
-        const excludedPermissions = getConfigProp(
-            c,
-            platform,
-            'excludedPermissions'
-        );
+        const excludedPermissions = getConfigProp(c, platform, 'excludedPermissions');
         if (includedPermissions?.forEach && configPermissions) {
             const platPerm = configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
             if (includedPermissions[0] === '*') {
                 Object.keys(pc).forEach((k) => {
-                    if (
-                        !(
-                            excludedPermissions
-                          && excludedPermissions.includes(k)
-                        )
-                    ) {
+                    if (!(excludedPermissions && excludedPermissions.includes(k))) {
                         const key = pc[k].key || k;
                         baseManifestFile.children.push({
                             tag: 'uses-permission',
-                            'android:name': key
+                            'android:name': key,
                         });
                     }
                 });
@@ -214,7 +191,7 @@ export const parseAndroidManifestSync = (c) => {
                         const key = pc[v].key || v;
                         baseManifestFile.children.push({
                             tag: 'uses-permission',
-                            'android:name': key
+                            'android:name': key,
                         });
                     }
                 });
@@ -227,14 +204,11 @@ export const parseAndroidManifestSync = (c) => {
         _mergeFeatures(c, baseManifestFile, 'includedFeatures', true);
         _mergeFeatures(c, baseManifestFile, 'excludedFeatures', false);
 
-
         const manifestXml = _convertToXML(baseManifestFile);
         // get correct source of manifest
         const manifestFile = 'app/src/main/AndroidManifest.xml';
 
-        const injects = [
-            { pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml }
-        ];
+        const injects = [{ pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml }];
 
         addSystemInjects(c, injects);
 
@@ -243,7 +217,9 @@ export const parseAndroidManifestSync = (c) => {
         writeCleanFile(
             getBuildFilePath(c, platform, manifestFile),
             path.join(appFolder, manifestFile),
-            injects, null, c
+            injects,
+            null,
+            c
         );
 
         return;

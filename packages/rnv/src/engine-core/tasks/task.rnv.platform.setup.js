@@ -4,7 +4,6 @@ import { updateProjectPlatforms } from '../../core/platformManager';
 import { logTask } from '../../core/systemManager/logger';
 import { executeTask } from '../../core/taskManager';
 
-
 export const taskRnvPlatformSetup = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformSetup');
 
@@ -17,9 +16,9 @@ export const taskRnvPlatformSetup = async (c, parentTask, originTask) => {
         type: 'checkbox',
         pageSize: 20,
         message: 'What platforms would you like to use?',
-        validate: val => !!val.length || 'Please select at least a platform',
+        validate: (val) => !!val.length || 'Please select at least a platform',
         default: currentPlatforms,
-        choices: c.runtime.availablePlatforms
+        choices: c.runtime.availablePlatforms,
     });
 
     updateProjectPlatforms(c, inputSupportedPlatforms);

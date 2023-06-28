@@ -1,21 +1,13 @@
 import path from 'path';
 import { Common, FileUtils, Logger, PluginManager, Resolver, Utils } from 'rnv';
 
-const {
-    getAppFolder,
-    getAppVersion,
-    getAppVersionCode,
-    getAppId,
-    getBuildFilePath,
-    getConfigProp,
-    addSystemInjects
-} = Common;
+const { getAppFolder, getAppVersion, getAppVersionCode, getAppId, getBuildFilePath, getConfigProp, addSystemInjects } =
+    Common;
 const { fsExistsSync, writeCleanFile, fsWriteFileSync } = FileUtils;
 const { doResolve, doResolvePath } = Resolver;
 const { chalk, logTask, logWarning, logDebug } = Logger;
 const { sanitizePluginPath, includesPluginPath } = PluginManager;
 const { isSystemWin } = Utils;
-
 
 export const parseBuildGradleSync = (c) => {
     const appFolder = getAppFolder(c);
@@ -31,78 +23,75 @@ export const parseBuildGradleSync = (c) => {
     const injects = [
         {
             pattern: '{{COMPILE_SDK_VERSION}}',
-            override: c.pluginConfigAndroid.compileSdkVersion
+            override: c.pluginConfigAndroid.compileSdkVersion,
         },
         {
             pattern: '{{INJECT_BUILD_TOOLS_VERSION}}',
-            override: c.pluginConfigAndroid.gradleBuildToolsVersion
+            override: c.pluginConfigAndroid.gradleBuildToolsVersion,
         },
         {
             pattern: '{{SUPPORT_LIB_VERSION}}',
-            override: c.pluginConfigAndroid.supportLibVersion
+            override: c.pluginConfigAndroid.supportLibVersion,
         },
         {
             pattern: '{{BUILD_TOOLS_VERSION}}',
-            override: c.pluginConfigAndroid.buildToolsVersion
+            override: c.pluginConfigAndroid.buildToolsVersion,
         },
         {
             pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}',
-            override:
-                c.pluginConfigAndroid.buildGradleAllProjectsRepositories
+            override: c.pluginConfigAndroid.buildGradleAllProjectsRepositories,
         },
         {
             pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}',
-            override:
-                c.pluginConfigAndroid.buildGradleBuildScriptRepositories
+            override: c.pluginConfigAndroid.buildGradleBuildScriptRepositories,
         },
         {
             pattern: '{{INJECT_KOTLIN_VERSION}}',
-            override:
-                c.pluginConfigAndroid.kotlinVersion
+            override: c.pluginConfigAndroid.kotlinVersion,
         },
         {
             pattern: '{{INJECT_GOOGLE_SERVICES_VERSION}}',
-            override:
-                c.pluginConfigAndroid.googleServicesVersion
+            override: c.pluginConfigAndroid.googleServicesVersion,
         },
         {
             pattern: '{{INJECT_PLUGINS}}',
-            override:
-                c.pluginConfigAndroid.buildGradlePlugins
+            override: c.pluginConfigAndroid.buildGradlePlugins,
         },
         {
             pattern: '{{MIN_SDK_VERSION}}',
-            override: c.pluginConfigAndroid.minSdkVersion
+            override: c.pluginConfigAndroid.minSdkVersion,
         },
         {
             pattern: '{{INJECT_AFTER_ALL}}',
-            override:
-                c.pluginConfigAndroid.buildGradleAfterAll
+            override: c.pluginConfigAndroid.buildGradleAfterAll,
         },
         {
             pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}',
-            override:
-                c.pluginConfigAndroid.buildGradleBuildScriptDependencies
+            override: c.pluginConfigAndroid.buildGradleBuildScriptDependencies,
         },
         {
             pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}',
-            override: dexOptions
+            override: dexOptions,
         },
         {
             pattern: '{{INJECT_REACT_NATIVE_ENGINE}}',
-            override: c.pluginConfigAndroid.injectReactNativeEngine
+            override: c.pluginConfigAndroid.injectReactNativeEngine,
         },
         {
             pattern: '{{PATH_REACT_NATIVE}}',
-            override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, { forceForwardPaths: true })
-        }
+            override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
+                forceForwardPaths: true,
+            }),
+        },
     ];
     addSystemInjects(c, injects);
 
     writeCleanFile(
         getBuildFilePath(c, platform, 'build.gradle'),
         path.join(appFolder, 'build.gradle'),
-        injects, null, c
+        injects,
+        null,
+        c
     );
 };
 
@@ -112,8 +101,7 @@ maven { url "${doResolve('react-native', true, { forceForwardPaths: true })}/and
 maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
 `;
 
-    c.pluginConfigAndroid.appBuildGradleImplementations
-+= "    implementation 'org.webkit:android-jsc:+'\n";
+    c.pluginConfigAndroid.appBuildGradleImplementations += "    implementation 'org.webkit:android-jsc:+'\n";
 
     c.pluginConfigAndroid.injectHermes = '    enableHermes: false,';
 };
@@ -124,14 +112,16 @@ const setReactNativeEngineHermes = (c) => {
   maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
   `;
 
-
     c.pluginConfigAndroid.appBuildGradleImplementations += `    debugImplementation files("${doResolve(
-        'hermes-engine', true, { forceForwardPaths: true }
+        'hermes-engine',
+        true,
+        { forceForwardPaths: true }
     )}/android/hermes-debug.aar")\n`;
     c.pluginConfigAndroid.appBuildGradleImplementations += `    releaseImplementation files("${doResolve(
-        'hermes-engine', true, { forceForwardPaths: true }
+        'hermes-engine',
+        true,
+        { forceForwardPaths: true }
     )}/android/hermes-release.aar")\n`;
-
 
     c.pluginConfigAndroid.injectHermes = `    enableHermes: true,
 hermesCommand: "{{PATH_HERMES_ENGINE}}/%OS-BIN%/hermes",
@@ -148,8 +138,7 @@ const setReactNativeEngineV8 = (c) => {
     import com.facebook.react.modules.systeminfo.AndroidInfoHelpers
     import io.csie.kudo.reactnative.v8.executor.V8ExecutorFactory`;
 
-    c.pluginConfigAndroid.reactNativeHostMethods
-+= `override fun getJavaScriptExecutorFactory(): JavaScriptExecutorFactory {
+    c.pluginConfigAndroid.reactNativeHostMethods += `override fun getJavaScriptExecutorFactory(): JavaScriptExecutorFactory {
             return V8ExecutorFactory(
                 applicationContext,
                 packageName,
@@ -170,54 +159,14 @@ export const parseAppBuildGradleSync = (c) => {
     const { platform } = c;
 
     // ANDROID PROPS
-    c.pluginConfigAndroid.minSdkVersion = getConfigProp(
-        c,
-        platform,
-        'minSdkVersion',
-        24
-    );
-    c.pluginConfigAndroid.targetSdkVersion = getConfigProp(
-        c,
-        platform,
-        'targetSdkVersion',
-        28
-    );
-    c.pluginConfigAndroid.compileSdkVersion = getConfigProp(
-        c,
-        platform,
-        'compileSdkVersion',
-        28
-    );
-    c.pluginConfigAndroid.gradleBuildToolsVersion = getConfigProp(
-        c,
-        platform,
-        'gradleBuildToolsVersion',
-        '4.2.2'
-    );
-    c.pluginConfigAndroid.supportLibVersion = getConfigProp(
-        c,
-        platform,
-        'supportLibVersion',
-        '28.0.0'
-    );
-    c.pluginConfigAndroid.buildToolsVersion = getConfigProp(
-        c,
-        platform,
-        'buildToolsVersion',
-        '28.0.0'
-    );
-    c.pluginConfigAndroid.kotlinVersion = getConfigProp(
-        c,
-        platform,
-        'kotlinVersion',
-        '1.4.20'
-    );
-    c.pluginConfigAndroid.googleServicesVersion = getConfigProp(
-        c,
-        platform,
-        'googleServicesVersion',
-        '4.2.0'
-    );
+    c.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 24);
+    c.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
+    c.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 28);
+    c.pluginConfigAndroid.gradleBuildToolsVersion = getConfigProp(c, platform, 'gradleBuildToolsVersion', '4.2.2');
+    c.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion', '28.0.0');
+    c.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '28.0.0');
+    c.pluginConfigAndroid.kotlinVersion = getConfigProp(c, platform, 'kotlinVersion', '1.4.20');
+    c.pluginConfigAndroid.googleServicesVersion = getConfigProp(c, platform, 'googleServicesVersion', '4.2.0');
 
     // REACT NATIVE ENGINE
     const enableHermes = getConfigProp(c, platform, 'enableHermes');
@@ -258,7 +207,6 @@ export const parseAppBuildGradleSync = (c) => {
         }
     }
 
-
     // SIGNING CONFIGS
     const debugSigning = `
     debug {
@@ -278,7 +226,6 @@ export const parseAppBuildGradleSync = (c) => {
 Your ${chalk().red(platform)} object needs to be located under ${chalk().green('platforms')} object.`);
     }
 
-
     const storeFile = getConfigProp(c, c.platform, 'storeFile') || obj?.storeFile;
     const keyAlias = getConfigProp(c, c.platform, 'keyAlias') || obj?.keyAlias;
     const storePassword = getConfigProp(c, c.platform, 'storePassword') || obj?.storePassword;
@@ -289,7 +236,7 @@ Your ${chalk().red(platform)} object needs to be located under ${chalk().green('
         storeFile,
         keyAlias,
         storePassword,
-        keyPassword
+        keyPassword,
     };
 
     if (!!storeFile && !!keyAlias && !!storePassword && !!keyPassword) {
@@ -297,15 +244,9 @@ Your ${chalk().red(platform)} object needs to be located under ${chalk().green('
         let keystorePathFull = keystorePath;
         if (keystorePath) {
             if (keystorePath.startsWith('.')) {
-                keystorePathFull = path.join(
-                    c.paths.workspace.appConfig.dir,
-                    keystorePath
-                );
+                keystorePathFull = path.join(c.paths.workspace.appConfig.dir, keystorePath);
             } else if (!fsExistsSync(keystorePath)) {
-                keystorePathFull = path.join(
-                    c.paths.workspace.appConfig.dir,
-                    keystorePath
-                );
+                keystorePathFull = path.join(c.paths.workspace.appConfig.dir, keystorePath);
             }
             if (isSystemWin) {
                 keystorePathFull = keystorePathFull.replace(/\\/g, '/');
@@ -346,11 +287,12 @@ Your ${chalk().red(platform)} object needs to be located under ${chalk().green('
         if (!keyAlias) missingKeys.push('keyAlias');
         if (!storePassword) missingKeys.push('storePassword');
         if (!keyPassword) missingKeys.push('keyPassword');
-        logWarning(`You defined store file ${chalk().white(storeFile)}, but you are missing following keys: ${chalk().red(missingKeys.join(', '))}
+        logWarning(`You defined store file ${chalk().white(
+            storeFile
+        )}, but you are missing following keys: ${chalk().red(missingKeys.join(', '))}
 Check your private files at:
 ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     }
-
 
     // BUILD_TYPES
     const pluginConfig = c.buildConfig ?? {};
@@ -371,12 +313,7 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     }`;
 
     // MULTI APK
-    const versionCodeOffset = getConfigProp(
-        c,
-        platform,
-        'versionCodeOffset',
-        0
-    );
+    const versionCodeOffset = getConfigProp(c, platform, 'versionCodeOffset', 0);
     const isMultiApk = getConfigProp(c, platform, 'multipleAPKs', false) === true;
     c.pluginConfigAndroid.multiAPKs = '';
     if (isMultiApk) {
@@ -389,9 +326,7 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
         variant.outputs.each { output ->
           def bavc = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
           if (bavc != null) {
-            output.versionCodeOverride = ${multiSet} + ${
-    versionCodeOffset
-}
+            output.versionCodeOverride = ${multiSet} + ${versionCodeOffset}
           }
         }
       }`;
@@ -437,12 +372,7 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     targetCompatibility 1.8`;
 
     // TODO This is temporary ANDROIDX support. whole gradle parser will be refactored in the near future
-    let enableAndroidX = getConfigProp(
-        c,
-        platform,
-        'enableAndroidX',
-        'androidx.appcompat:appcompat:1.1.0'
-    );
+    let enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', 'androidx.appcompat:appcompat:1.1.0');
     if (enableAndroidX === true) {
         enableAndroidX = 'androidx.appcompat:appcompat:1.1.0';
     }
@@ -450,95 +380,96 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     if (enableAndroidX !== false) {
         c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation "${enableAndroidX}"\n`;
     } else {
-        c.pluginConfigAndroid.appBuildGradleImplementations
-            += "    implementation 'com.android.support:appcompat-v7:27.0.2'\n";
+        c.pluginConfigAndroid.appBuildGradleImplementations +=
+            "    implementation 'com.android.support:appcompat-v7:27.0.2'\n";
     }
 
-    c.pluginConfigAndroid.appBuildGradleImplementations
-        += '    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02"\n';
+    c.pluginConfigAndroid.appBuildGradleImplementations +=
+        '    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02"\n';
 
     const injects = [
         {
             pattern: '{{PLUGIN_APPLY}}',
-            override: c.pluginConfigAndroid.applyPlugin
+            override: c.pluginConfigAndroid.applyPlugin,
         },
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         {
             pattern: '{{VERSION_CODE}}',
-            override: getAppVersionCode(c, platform)
+            override: getAppVersionCode(c, platform),
         },
         {
             pattern: '{{VERSION_NAME}}',
-            override: getAppVersion(c, platform)
+            override: getAppVersion(c, platform),
         },
         {
             pattern: '{{PLUGIN_IMPLEMENTATIONS}}',
-            override: c.pluginConfigAndroid.appBuildGradleImplementations
+            override: c.pluginConfigAndroid.appBuildGradleImplementations,
         },
         {
             pattern: '{{PLUGIN_AFTER_EVALUATE}}',
-            override: c.pluginConfigAndroid.appBuildGradleAfterEvaluate
+            override: c.pluginConfigAndroid.appBuildGradleAfterEvaluate,
         },
         {
             pattern: '{{PLUGIN_SIGNING_CONFIGS}}',
-            override: c.pluginConfigAndroid.appBuildGradleSigningConfigs
+            override: c.pluginConfigAndroid.appBuildGradleSigningConfigs,
         },
         {
             pattern: '{{PLUGIN_SPLITS}}',
-            override: c.pluginConfigAndroid.splits
+            override: c.pluginConfigAndroid.splits,
         },
         {
             pattern: '{{PLUGIN_ANDROID_DEFAULT_CONFIG}}',
-            override: c.pluginConfigAndroid.defaultConfig
+            override: c.pluginConfigAndroid.defaultConfig,
         },
         {
             pattern: '{{PLUGIN_PACKAGING_OPTIONS}}',
-            override: c.pluginConfigAndroid.packagingOptions
+            override: c.pluginConfigAndroid.packagingOptions,
         },
         {
             pattern: '{{PLUGIN_BUILD_TYPES}}',
-            override: c.pluginConfigAndroid.buildTypes
+            override: c.pluginConfigAndroid.buildTypes,
         },
         {
             pattern: '{{PLUGIN_MULTI_APKS}}',
-            override: c.pluginConfigAndroid.multiAPKs
+            override: c.pluginConfigAndroid.multiAPKs,
         },
         {
             pattern: '{{MIN_SDK_VERSION}}',
-            override: c.pluginConfigAndroid.minSdkVersion
+            override: c.pluginConfigAndroid.minSdkVersion,
         },
         {
             pattern: '{{TARGET_SDK_VERSION}}',
-            override: c.pluginConfigAndroid.targetSdkVersion
+            override: c.pluginConfigAndroid.targetSdkVersion,
         },
         {
             pattern: '{{COMPILE_SDK_VERSION}}',
-            override: c.pluginConfigAndroid.compileSdkVersion
+            override: c.pluginConfigAndroid.compileSdkVersion,
         },
         {
             pattern: '{{PLUGIN_COMPILE_OPTIONS}}',
-            override: c.pluginConfigAndroid.compileOptions
+            override: c.pluginConfigAndroid.compileOptions,
         },
         {
             pattern: '{{PLUGIN_LOCAL_PROPERTIES}}',
-            override: c.pluginConfigAndroid.localProperties
+            override: c.pluginConfigAndroid.localProperties,
         },
         {
             pattern: '{{INJECT_HERMES}}',
-            override: c.pluginConfigAndroid.injectHermes
+            override: c.pluginConfigAndroid.injectHermes,
         },
         {
             pattern: '{{PATH_REACT_NATIVE}}',
-            override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, { forceForwardPaths: true })
+            override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
+                forceForwardPaths: true,
+            }),
         },
         {
             pattern: '{{PATH_HERMES_ENGINE}}',
-            override: doResolve('hermes-engine', true, { forceForwardPaths: true })
+            override: doResolve('hermes-engine', true, { forceForwardPaths: true }),
         },
         {
             pattern: '{{INJECT_KOTLIN_VERSION}}',
-            override:
-                c.pluginConfigAndroid.kotlinVersion
+            override: c.pluginConfigAndroid.kotlinVersion,
         },
     ];
 
@@ -547,7 +478,9 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     writeCleanFile(
         getBuildFilePath(c, platform, 'app/build.gradle'),
         path.join(appFolder, 'app/build.gradle'),
-        injects, null, c
+        injects,
+        null,
+        c
     );
 };
 
@@ -557,12 +490,12 @@ export const parseSettingsGradleSync = (c) => {
     const injects = [
         {
             pattern: '{{PLUGIN_INCLUDES}}',
-            override: c.pluginConfigAndroid.pluginIncludes
+            override: c.pluginConfigAndroid.pluginIncludes,
         },
         {
             pattern: '{{PLUGIN_PATHS}}',
-            override: c.pluginConfigAndroid.pluginPaths
-        }
+            override: c.pluginConfigAndroid.pluginPaths,
+        },
     ];
 
     addSystemInjects(c, injects);
@@ -570,7 +503,9 @@ export const parseSettingsGradleSync = (c) => {
     writeCleanFile(
         getBuildFilePath(c, platform, 'settings.gradle'),
         path.join(appFolder, 'settings.gradle'),
-        injects, null, c
+        injects,
+        null,
+        c
     );
 };
 
@@ -584,12 +519,7 @@ export const parseGradlePropertiesSync = (c) => {
     const gradleProps = pluginConfigAndroid['gradle.properties'];
 
     if (gradleProps) {
-        const enableAndroidX = getConfigProp(
-            c,
-            platform,
-            'enableAndroidX',
-            true
-        );
+        const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
         if (enableAndroidX === true) {
             gradleProps['android.useAndroidX'] = true;
             gradleProps['android.enableJetifier'] = true;
@@ -602,12 +532,11 @@ export const parseGradlePropertiesSync = (c) => {
 
     const gradleProperties = 'gradle.properties';
 
-
     const injects = [
         {
             pattern: '{{PLUGIN_GRADLE_PROPERTIES}}',
-            override: pluginGradleProperties
-        }
+            override: pluginGradleProperties,
+        },
     ];
 
     addSystemInjects(c, injects);
@@ -615,7 +544,9 @@ export const parseGradlePropertiesSync = (c) => {
     writeCleanFile(
         getBuildFilePath(c, platform, gradleProperties),
         path.join(appFolder, gradleProperties),
-        injects, null, c
+        injects,
+        null,
+        c
     );
 };
 
@@ -657,17 +588,13 @@ export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
         if (!plugin.skipLinking && !skipPathResolutions) {
             c.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
             // }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-            c.pluginConfigAndroid.pluginPaths += `project(':${
-                plugin.projectName
-            }').projectDir = new File('${pathAbsolute}')\n`;
+            c.pluginConfigAndroid.pluginPaths += `project(':${plugin.projectName}').projectDir = new File('${pathAbsolute}')\n`;
         }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
                 c.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
             } else {
-                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${
-                    plugin.projectName
-                }')\n`;
+                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${plugin.projectName}')\n`;
             }
         }
     } else {
@@ -784,25 +711,27 @@ export const parseAndroidConfigObject = (c, obj, key) => {
 };
 
 const _fixAndroidLegacy = (c, modulePath) => {
-    const buildGradle = path.join(
-        c.paths.project.dir,
-        modulePath,
-        'build.gradle'
-    );
+    const buildGradle = path.join(c.paths.project.dir, modulePath, 'build.gradle');
 
     if (fsExistsSync(buildGradle)) {
         logDebug('FIX:', buildGradle);
-        writeCleanFile(buildGradle, buildGradle, [
-            { pattern: " compile '", override: "  implementation '" },
-            { pattern: ' compile "', override: '  implementation "' },
-            { pattern: ' testCompile "', override: '  testImplementation "' },
-            { pattern: " provided '", override: "  compileOnly '" },
-            { pattern: ' provided "', override: '  compileOnly "' },
-            {
-                pattern: ' compile fileTree',
-                override: '  implementation fileTree'
-            }
-        ], null, c);
+        writeCleanFile(
+            buildGradle,
+            buildGradle,
+            [
+                { pattern: " compile '", override: "  implementation '" },
+                { pattern: ' compile "', override: '  implementation "' },
+                { pattern: ' testCompile "', override: '  testImplementation "' },
+                { pattern: " provided '", override: "  compileOnly '" },
+                { pattern: ' provided "', override: '  compileOnly "' },
+                {
+                    pattern: ' compile fileTree',
+                    override: '  implementation fileTree',
+                },
+            ],
+            null,
+            c
+        );
     }
 };
 

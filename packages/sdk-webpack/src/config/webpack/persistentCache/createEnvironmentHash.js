@@ -1,5 +1,3 @@
-
-
 const { createHash } = require('crypto');
 
 module.exports = (env) => {

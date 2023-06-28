@@ -1,6 +1,4 @@
-import {
-    Constants, Logger, PlatformManager, TaskManager, NPMUtils, TemplateManager
-} from 'rnv';
+import { Constants, Logger, PlatformManager, TaskManager, NPMUtils, TemplateManager } from 'rnv';
 import { configureGradleProject } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 import { configureMetroConfigs } from '../commonEngine';
@@ -9,15 +7,7 @@ const { jetifyIfRequired } = NPMUtils;
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    TVOS,
-    ANDROID_TV,
-    FIRE_TV,
-    TASK_PLATFORM_CONFIGURE,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
-
+const { TVOS, ANDROID_TV, FIRE_TV, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS } = Constants;
 
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;

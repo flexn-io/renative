@@ -2,7 +2,6 @@ import Ajv from 'ajv';
 import { SCHEMAS_RENATIVE_JSON } from './schemaRenativeJson';
 import { SCHEMAS_RUNTIME_OBJECT } from './schemaRuntimeObject';
 
-
 const ajvRenativeJson = new Ajv({ schemas: SCHEMAS_RENATIVE_JSON, allErrors: true, allowUnionTypes: true });
 const ajvRuntimeObject = new Ajv({ schemas: SCHEMAS_RUNTIME_OBJECT, allErrors: true, allowUnionTypes: true });
 

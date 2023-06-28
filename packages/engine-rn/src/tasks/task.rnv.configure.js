@@ -6,18 +6,8 @@ import { configureMetroConfigs } from '../commonEngine';
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const { jetifyIfRequired } = NPMUtils;
-const {
-    IOS,
-    MACOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    TASK_PLATFORM_CONFIGURE,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
-
+const { IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS } =
+    Constants;
 
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
@@ -59,12 +49,5 @@ export default {
     fn: taskRnvConfigure,
     task: 'configure',
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        IOS,
-        MACOS,
-        ANDROID,
-        ANDROID_TV,
-        FIRE_TV,
-        ANDROID_WEAR,
-    ],
+    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };

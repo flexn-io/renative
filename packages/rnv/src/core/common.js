@@ -8,20 +8,14 @@ import path from 'path';
 import { inquirerPrompt } from '../cli/prompt';
 import { CLI_PROPS } from './constants';
 import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
-import {
-    chalk, logDebug, logError, logSuccess, logTask,
-    logWarning
-} from './systemManager/logger';
+import { chalk, logDebug, logError, logSuccess, logTask, logWarning } from './systemManager/logger';
 import { getValidLocalhost } from './systemManager/utils';
 
 export const getTimestampPathsConfig = (c, platform) => {
     let timestampBuildFiles;
-    const pPath = path.join(
-        c.paths.project.builds.dir,
-        `${c.runtime.appId}_${platform}`
-    );
+    const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
     if (platform === 'web') {
-        timestampBuildFiles = getConfigProp(c, platform, 'timestampBuildFiles', []).map((v => path.join(pPath, v)));
+        timestampBuildFiles = getConfigProp(c, platform, 'timestampBuildFiles', []).map((v) => path.join(pPath, v));
     }
     if (timestampBuildFiles?.length) {
         return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
@@ -42,7 +36,7 @@ export const getCliArguments = (c) => {
     }
     if (rawArgs.length === 3) missingArg = undefined;
     argsCopy[2] = missingArg;
-    return argsCopy.filter(arg => !!arg);
+    return argsCopy.filter((arg) => !!arg);
 };
 
 export const addSystemInjects = (c, injects) => {
@@ -56,13 +50,11 @@ export const addSystemInjects = (c, injects) => {
 
 export const sanitizeColor = (val, key) => {
     if (!val) {
-        logWarning(
-            `You are missing ${chalk().white(key)} in your renative config. will use default #FFFFFF instead`
-        );
+        logWarning(`You are missing ${chalk().white(key)} in your renative config. will use default #FFFFFF instead`);
         return {
             rgb: [255, 255, 255, 1],
             rgbDecimal: [1, 1, 1, 1],
-            hex: '#FFFFFF'
+            hex: '#FFFFFF',
         };
     }
 
@@ -71,8 +63,8 @@ export const sanitizeColor = (val, key) => {
 
     return {
         rgb,
-        rgbDecimal: rgb.map(v => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
-        hex
+        rgbDecimal: rgb.map((v) => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
+        hex,
     };
 };
 
@@ -121,9 +113,7 @@ export const waitForHost = async (c, suffix = 'assets/bundle.js') => {
                     if (attempts === maxAttempts) {
                         clearInterval(interval);
                         // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                        return reject(
-                            `Can't connect to host ${url}. Try restarting it.`
-                        );
+                        return reject(`Can't connect to host ${url}. Try restarting it.`);
                     }
                 })
                 .catch(() => {
@@ -131,9 +121,7 @@ export const waitForHost = async (c, suffix = 'assets/bundle.js') => {
                     if (attempts > maxAttempts) {
                         clearInterval(interval);
                         // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                        return reject(
-                            `Can't connect to host ${url}. Try restarting it.`
-                        );
+                        return reject(`Can't connect to host ${url}. Try restarting it.`);
                     }
                 });
         }, CHECK_INTEVAL);
@@ -175,9 +163,7 @@ export const confirmActiveBundler = async (c) => {
         name: 'selectedOption',
         type: 'list',
         choices,
-        warningMessage: `Another ${c.platform} server at port ${
-            chalk().white(c.runtime.port)
-        } already running`
+        warningMessage: `Another ${c.platform} server at port ${chalk().white(c.runtime.port)} already running`,
     });
 
     if (choices[0] === selectedOption) {
@@ -220,9 +206,7 @@ export const getPlatformServerDir = (c) => {
     return path.join(getAppFolder(c), c.runtime.engine.serverDirName || '');
 };
 
-export const getTemplateDir = c => path.join(
-    c.paths.project.platformTemplatesDirs[c.platform], `${c.platform}`
-);
+export const getTemplateDir = (c) => path.join(c.paths.project.platformTemplatesDirs[c.platform], `${c.platform}`);
 
 export const getTemplateProjectDir = (c) => {
     if (!c.runtime.engine) {
@@ -237,37 +221,31 @@ export const getAppFolder = (c, isRelativePath) => {
     if (isRelativePath) {
         return `platformBuilds/${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`;
     }
-    return path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`);
+    return path.join(
+        c.paths.project.builds.dir,
+        `${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`
+    );
 };
 
 // DEPRECATED
-export const getAppTemplateFolder = (c, platform) => path.join(
-    c.paths.project.platformTemplatesDirs[platform], `${platform}`
-);
+export const getAppTemplateFolder = (c, platform) =>
+    path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
-const _getValueOrMergedObject = (
-    resultCli,
-    resultScheme,
-    resultPlatforms,
-    resultCommon
-) => {
+const _getValueOrMergedObject = (resultCli, resultScheme, resultPlatforms, resultCommon) => {
     if (resultCli !== undefined) {
         return resultCli;
     }
     if (resultScheme !== undefined) {
-        if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') { return resultScheme; }
-        const val = Object.assign(
-            resultCommon || {},
-            resultPlatforms || {},
-            resultScheme
-        );
+        if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') {
+            return resultScheme;
+        }
+        const val = Object.assign(resultCommon || {}, resultPlatforms || {}, resultScheme);
         return val;
     }
     if (resultPlatforms !== undefined) {
-        if (
-            Array.isArray(resultPlatforms)
-            || typeof resultPlatforms !== 'object'
-        ) { return resultPlatforms; }
+        if (Array.isArray(resultPlatforms) || typeof resultPlatforms !== 'object') {
+            return resultPlatforms;
+        }
         return Object.assign(resultCommon || {}, resultPlatforms);
     }
     if (resultPlatforms === null) return null;
@@ -299,11 +277,7 @@ export const _getConfigProp = (c, platform, key, defaultVal, sourceObj) => {
     let scheme;
     if (p) {
         scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
-        resultPlatforms = getFlavouredProp(
-            c,
-            sourceObj.platforms[platform],
-            baseKey
-        );
+        resultPlatforms = getFlavouredProp(c, sourceObj.platforms[platform], baseKey);
     }
 
     scheme = scheme || {};
@@ -313,12 +287,7 @@ export const _getConfigProp = (c, platform, key, defaultVal, sourceObj) => {
     const resultCommonScheme = getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, baseKey);
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
-    let result = _getValueOrMergedObject(
-        resultCli,
-        resultScheme,
-        resultPlatforms,
-        resultCommon
-    );
+    let result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
     if (result === undefined || result === null) {
         result = getFlavouredProp(c, sourceObj, baseKey);
     }
@@ -329,7 +298,6 @@ export const _getConfigProp = (c, platform, key, defaultVal, sourceObj) => {
     }
     return result;
 };
-
 
 export const getConfigPropArray = (c, platform, key) => {
     const result = [];
@@ -352,7 +320,7 @@ export const getConfigPropArray = (c, platform, key) => {
         c.files.project.configLocal,
         ...c.files.appConfig.configs,
         ...c.files.appConfig.configsPrivate,
-        ...c.files.appConfig.configsLocal
+        ...c.files.appConfig.configsLocal,
     ];
     configArr.forEach((config) => {
         const val = _getConfigProp(c, platform, key, null, config);
@@ -361,10 +329,8 @@ export const getConfigPropArray = (c, platform, key) => {
         }
     });
 
-
     return result;
 };
-
 
 export const getAppId = (c, platform) => {
     const id = getConfigProp(c, platform, 'id');
@@ -382,8 +348,8 @@ export const getEntryFile = (c, platform) => c.buildConfig.platforms?.[platform]
 
 export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
 
-export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'description')
-    || c.files.project.package?.description;
+export const getAppDescription = (c, platform) =>
+    getConfigProp(c, platform, 'description') || c.files.project.package?.description;
 
 export const getAppVersion = (c, platform) => {
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
@@ -395,20 +361,24 @@ export const getAppVersion = (c, platform) => {
     if (!versionFormat) return version;
     const versionCodeArr = versionFormat.split('.');
     const dotLength = versionCodeArr.length;
-    const isNumArr = versionCodeArr.map(v => !Number.isNaN(Number(v)));
+    const isNumArr = versionCodeArr.map((v) => !Number.isNaN(Number(v)));
 
     const verArr = [];
     let i = 0;
-    version.split('.').map(v => v.split('-').map(v2 => v2.split('+').forEach((v3) => {
-        const isNum = !Number.isNaN(Number(v3));
-        if (isNumArr[i] && isNum) {
-            verArr.push(v3);
-        } else if (!isNumArr[i]) {
-            verArr.push(v3);
-        }
+    version.split('.').map((v) =>
+        v.split('-').map((v2) =>
+            v2.split('+').forEach((v3) => {
+                const isNum = !Number.isNaN(Number(v3));
+                if (isNumArr[i] && isNum) {
+                    verArr.push(v3);
+                } else if (!isNumArr[i]) {
+                    verArr.push(v3);
+                }
 
-        i++;
-    })));
+                i++;
+            })
+        )
+    );
     if (verArr.length > dotLength) {
         verArr.length = dotLength;
     }
@@ -427,30 +397,33 @@ export const getAppVersionCode = (c, platform) => {
         return '0';
     }
     const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat', '00.00.00');
-    const vFormatArr = versionCodeFormat.split('.').map(v => v.length);
+    const vFormatArr = versionCodeFormat.split('.').map((v) => v.length);
     const versionCodeMaxCount = vFormatArr.length;
     const verArr = [];
 
+    version.split('.').map((v) =>
+        v.split('-').map((v2) =>
+            v2.split('+').forEach((v3) => {
+                const asNumber = Number(v3);
+                if (!Number.isNaN(asNumber)) {
+                    let val = v3;
+                    const maxDigits = vFormatArr[verArr.length] || 2;
 
-    version.split('.').map(v => v.split('-').map(v2 => v2.split('+').forEach((v3) => {
-        const asNumber = Number(v3);
-        if (!Number.isNaN(asNumber)) {
-            let val = v3;
-            const maxDigits = vFormatArr[verArr.length] || 2;
-
-            if (v3.length > maxDigits) {
-                val = v3.substr(0, maxDigits);
-            } else if (v3.length < maxDigits) {
-                let toAdd = maxDigits - v3.length;
-                val = v3;
-                while (toAdd > 0) {
-                    val = `0${val}`;
-                    toAdd--;
+                    if (v3.length > maxDigits) {
+                        val = v3.substr(0, maxDigits);
+                    } else if (v3.length < maxDigits) {
+                        let toAdd = maxDigits - v3.length;
+                        val = v3;
+                        while (toAdd > 0) {
+                            val = `0${val}`;
+                            toAdd--;
+                        }
+                    }
+                    verArr.push(val);
                 }
-            }
-            verArr.push(val);
-        }
-    })));
+            })
+        )
+    );
     let verCountDiff = verArr.length - versionCodeMaxCount;
     if (verCountDiff < 0) {
         while (verCountDiff < 0) {
@@ -491,7 +464,11 @@ export const getBuildsFolder = (c, platform, customPath) => {
     //     logWarning(`Path ${chalk().white(pp)} does not exist! creating one for you..`);
     // }
     if (!pp) {
-        logWarning(`getBuildsFolder: Path ${chalk().white('c.paths.appConfig.dir')} not defined! can't return path. You might not be in renative project`);
+        logWarning(
+            `getBuildsFolder: Path ${chalk().white(
+                'c.paths.appConfig.dir'
+            )} not defined! can't return path. You might not be in renative project`
+        );
         return null;
     }
     const p = path.join(pp, `builds/${platform}@${c.runtime.scheme}`);
@@ -501,20 +478,21 @@ export const getBuildsFolder = (c, platform, customPath) => {
 
 export const getIP = () => ip.address();
 
-export const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
-    if (port === undefined || port === null) {
-        resolve(false);
-        return;
-    }
-    detectPort(port, (err, availablePort) => {
-        if (err) {
-            reject(err);
+export const checkPortInUse = (c, platform, port) =>
+    new Promise((resolve, reject) => {
+        if (port === undefined || port === null) {
+            resolve(false);
             return;
         }
-        const result = parseInt(port, 10) !== parseInt(availablePort, 10);
-        resolve(result);
+        detectPort(port, (err, availablePort) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            const result = parseInt(port, 10) !== parseInt(availablePort, 10);
+            resolve(result);
+        });
     });
-});
 
 export const getFlavouredProp = (c, obj, key) => {
     if (!key || !obj) return null;
@@ -527,10 +505,7 @@ export const getBuildFilePath = (c, platform, filePath) => {
     // P1 => platformTemplates
     let sp = path.join(getAppTemplateFolder(c, platform), filePath);
     // P2 => appConfigs/base + @buildSchemes
-    const sp2 = path.join(
-        getBuildsFolder(c, platform, c.paths.project.appConfigBase.dir),
-        filePath
-    );
+    const sp2 = path.join(getBuildsFolder(c, platform, c.paths.project.appConfigBase.dir), filePath);
     if (fsExistsSync(sp2)) sp = sp2;
     // P3 => appConfigs + @buildSchemes
     const sp3 = path.join(getBuildsFolder(c, platform), filePath);
@@ -557,33 +532,23 @@ export default {
     getIP,
     checkPortInUse,
     logTask: (val) => {
-        logError(
-            'DEPRECATED: Common.logTask() has been removed. use Logger.logTask() instead'
-        );
+        logError('DEPRECATED: Common.logTask() has been removed. use Logger.logTask() instead');
         logTask(val);
     },
     logWarning: (val) => {
-        logError(
-            'DEPRECATED: Common.logWarning() has been removed. use Logger.logWarning() instead'
-        );
+        logError('DEPRECATED: Common.logWarning() has been removed. use Logger.logWarning() instead');
         logWarning(val);
     },
     logError: (val) => {
-        logError(
-            'DEPRECATED: Common.logError() has been removed. use Logger.logError() instead'
-        );
+        logError('DEPRECATED: Common.logError() has been removed. use Logger.logError() instead');
         logError(val);
     },
     logSuccess: (val) => {
-        logError(
-            'DEPRECATED: Common.logError() has been removed. use Logger.logError() instead'
-        );
+        logError('DEPRECATED: Common.logError() has been removed. use Logger.logError() instead');
         logSuccess(val);
     },
     logDebug: (val) => {
-        logError(
-            'DEPRECATED: Common.logDebug() has been removed. use Logger.logDebug() instead'
-        );
+        logError('DEPRECATED: Common.logDebug() has been removed. use Logger.logDebug() instead');
         logDebug(val);
-    }
+    },
 };

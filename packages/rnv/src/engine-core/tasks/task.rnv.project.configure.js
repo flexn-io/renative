@@ -1,16 +1,39 @@
-import { checkForPluginDependencies, configurePlugins, overrideTemplatePlugins, resolvePluginDependants } from '../../core/pluginManager';
+import {
+    checkForPluginDependencies,
+    configurePlugins,
+    overrideTemplatePlugins,
+    resolvePluginDependants,
+} from '../../core/pluginManager';
 import { chalk, logTask, logInfo } from '../../core/systemManager/logger';
 import { checkIsRenativeProject, generateRuntimeConfig } from '../../core/configManager';
 import { updateRenativeConfigs, configureRuntimeDefaults } from '../../core/runtimeManager';
-import { applyTemplate, checkIfTemplateConfigured, configureTemplateFiles, isTemplateInstalled } from '../../core/templateManager';
+import {
+    applyTemplate,
+    checkIfTemplateConfigured,
+    configureTemplateFiles,
+    isTemplateInstalled,
+} from '../../core/templateManager';
 import { fsExistsSync, fsMkdirSync } from '../../core/systemManager/fileutils';
 import { checkCrypto } from '../../core/systemManager/crypto';
 import { checkAndMigrateProject } from '../../core/projectManager/migrator';
-import { TASK_INSTALL, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, TASK_APP_CONFIGURE, TASK_WORKSPACE_CONFIGURE, PARAMS } from '../../core/constants';
-import { checkAndCreateBabelConfig, copyRuntimeAssets, cleanPlaformAssets, checkAndCreateGitignore, versionCheck, configureFonts } from '../../core/projectManager';
+import {
+    TASK_INSTALL,
+    TASK_PROJECT_CONFIGURE,
+    TASK_TEMPLATE_APPLY,
+    TASK_APP_CONFIGURE,
+    TASK_WORKSPACE_CONFIGURE,
+    PARAMS,
+} from '../../core/constants';
+import {
+    checkAndCreateBabelConfig,
+    copyRuntimeAssets,
+    cleanPlaformAssets,
+    checkAndCreateGitignore,
+    versionCheck,
+    configureFonts,
+} from '../../core/projectManager';
 import { configureEngines } from '../../core/engineManager';
 import { executeTask, initializeTask, findSuitableTask } from '../../core/taskManager';
-
 
 export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
     logTask('taskRnvProjectConfigure');
@@ -61,12 +84,16 @@ export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
         if (!c.runtime.disableReset) {
             if (c.program.resetHard) {
                 logInfo(
-                    `You passed ${chalk().white('-R, --resetHard')} argument. "${chalk().white('./platformAssets')}" will be cleaned up first`
+                    `You passed ${chalk().white('-R, --resetHard')} argument. "${chalk().white(
+                        './platformAssets'
+                    )}" will be cleaned up first`
                 );
                 await cleanPlaformAssets(c);
             } else if (c.program.resetAssets) {
                 logInfo(
-                    `You passed ${chalk().white('-a, --resetAssets')} argument. "${chalk().white('./platformAssets')}" will be cleaned up first`
+                    `You passed ${chalk().white('-a, --resetAssets')} argument. "${chalk().white(
+                        './platformAssets'
+                    )}" will be cleaned up first`
                 );
                 await cleanPlaformAssets(c);
             }

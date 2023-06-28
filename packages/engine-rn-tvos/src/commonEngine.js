@@ -8,7 +8,6 @@ const { fsExistsSync, copyFileSync } = FileUtils;
 const { TASK_START, RN_CLI_CONFIG_NAME } = Constants;
 const { executeTask } = TaskManager;
 
-
 let keepRNVRunning = false;
 
 export const startBundlerIfRequired = async (c, parentTask, originTask) => {
@@ -38,7 +37,10 @@ export const waitForBundlerIfRequired = async (c) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
     // return a new promise that does...nothing, just to keep RNV running while the bundler is running
-    if (keepRNVRunning) return new Promise(() => {});
+    if (keepRNVRunning)
+        return new Promise(() => {
+            //Do nothing
+        });
     return true;
 };
 
@@ -50,18 +52,10 @@ export const configureMetroConfigs = async (c) => {
         logWarning(`${chalk().white(cfPath)} is DEPRECATED. use withRNVMetro(config) directly in /.metro.config.js`);
     }
 
-
     // Check rn-cli-config
     if (!fsExistsSync(c.paths.project.rnCliConfig)) {
-        logInfo(
-            `Your rn-cli config file ${chalk().white(
-                c.paths.project.rnCliConfig
-            )} is missing! INSTALLING...DONE`
-        );
-        copyFileSync(
-            path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME),
-            c.paths.project.rnCliConfig
-        );
+        logInfo(`Your rn-cli config file ${chalk().white(c.paths.project.rnCliConfig)} is missing! INSTALLING...DONE`);
+        copyFileSync(path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME), c.paths.project.rnCliConfig);
     }
 };
 
@@ -69,11 +63,7 @@ const _isBundlerRunning = async (c) => {
     logTask('_isBundlerRunning');
     try {
         const { data } = await axios.get(
-            `http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(
-                c,
-                c.platform,
-                'entryFile'
-            )}.js`
+            `http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(c, c.platform, 'entryFile')}.js`
         );
         if (data.includes('import')) {
             logTask('_isBundlerRunning', '(YES)');
@@ -122,4 +112,4 @@ const poll = (fn, timeout = 10000, interval = 1000) => {
     return new Promise(checkCondition);
 };
 
-export const waitForBundler = async c => poll(() => _isBundlerRunning(c));
+export const waitForBundler = async (c) => poll(() => _isBundlerRunning(c));

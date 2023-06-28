@@ -3,9 +3,7 @@ import { SDKElectron } from '../sdks';
 
 const { logErrorPlatform, copySharedPlatforms } = PlatformManager;
 const { logTask } = Logger;
-const {
-    MACOS, WINDOWS, LINUX, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS
-} = Constants;
+const { MACOS, WINDOWS, LINUX, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS } = Constants;
 const { configureElectronProject } = SDKElectron;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
@@ -40,9 +38,5 @@ export default {
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        MACOS,
-        WINDOWS,
-        LINUX
-    ],
+    platforms: [MACOS, WINDOWS, LINUX],
 };

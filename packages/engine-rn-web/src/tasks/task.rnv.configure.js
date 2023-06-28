@@ -15,8 +15,9 @@ const {
     FIREFOX_OS,
     FIREFOX_TV,
     CHROMECAST,
-    TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE,
-    PARAMS
+    TASK_PLATFORM_CONFIGURE,
+    TASK_CONFIGURE,
+    PARAMS,
 } = Constants;
 
 const { configureTizenProject } = SDKTizen;
@@ -64,16 +65,5 @@ export default {
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        WEB,
-        WEBTV,
-        TIZEN,
-        WEBOS,
-        TIZEN_MOBILE,
-        TIZEN_WATCH,
-        KAIOS,
-        FIREFOX_OS,
-        FIREFOX_TV,
-        CHROMECAST,
-    ],
+    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV, CHROMECAST],
 };

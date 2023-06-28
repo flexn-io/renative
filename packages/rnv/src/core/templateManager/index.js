@@ -1,9 +1,6 @@
 import path from 'path';
 import inquirer from 'inquirer';
-import {
-    RENATIVE_CONFIG_NAME,
-    RENATIVE_CONFIG_TEMPLATE_NAME,
-} from '../constants';
+import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import {
     copyFolderContentsRecursiveSync,
     copyFileSync,
@@ -15,23 +12,12 @@ import {
     fsExistsSync,
     fsLstatSync,
     fsUnlinkSync,
-    removeDirSync
+    removeDirSync,
 } from '../systemManager/fileutils';
-import {
-    chalk,
-    logError,
-    logInfo,
-    logWarning,
-    logTask,
-    logDebug
-} from '../systemManager/logger';
+import { chalk, logError, logInfo, logWarning, logTask, logDebug } from '../systemManager/logger';
 import { generateOptions } from '../../cli/prompt';
 import { getConfigProp } from '../common';
-import {
-    listAppConfigsFoldersSync,
-    generateBuildConfig,
-    loadFileExtended
-} from '../configManager';
+import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from '../configManager';
 import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 
@@ -40,9 +26,7 @@ export const checkIfTemplateConfigured = async (c) => {
     if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return true;
     if (!c.buildConfig.templates) {
         logWarning(
-            `Your ${chalk().white(
-                c.paths.project.config
-            )} does not contain ${chalk().white(
+            `Your ${chalk().white(c.paths.project.config)} does not contain ${chalk().white(
                 'templates'
             )} object. ReNative will skip template generation`
         );
@@ -50,25 +34,16 @@ export const checkIfTemplateConfigured = async (c) => {
     }
     Object.keys(c.buildConfig.templates).forEach((k) => {
         const obj = c.buildConfig.templates[k];
-        if (
-            !doResolve(k.version, false, { basedir: '../' })
-              && !doResolve(k, false)
-        ) {
+        if (!doResolve(k.version, false, { basedir: '../' }) && !doResolve(k, false)) {
             logInfo(
-                `Your ${chalk().white(
-                    `${k}@${obj.version}`
-                )} template is missing in renative.json. CONFIGURING...DONE`
+                `Your ${chalk().white(`${k}@${obj.version}`)} template is missing in renative.json. CONFIGURING...DONE`
             );
             c._requiresNpmInstall = true;
             c.runtime.requiresBootstrap = true;
         }
         if (c.files.project.package.devDependencies) {
             if (c.files.project.package.devDependencies[k] !== obj.version) {
-                logInfo(
-                    `Updating template ${chalk().white(
-                        `${k}`
-                    )} => ${chalk().green(obj.version)}. ...DONE`
-                );
+                logInfo(`Updating template ${chalk().white(`${k}`)} => ${chalk().green(obj.version)}. ...DONE`);
             }
 
             c.files.project.package.devDependencies[k] = obj.version;
@@ -85,11 +60,11 @@ const _cleanProjectTemplateSync = (c) => {
     const dirsToRemove = [
         path.join(c.paths.project.appConfigBase.dir),
         path.join(c.paths.project.srcDir),
-        path.join(c.paths.project.appConfigsDir)
+        path.join(c.paths.project.appConfigsDir),
     ];
 
-    const filesToRemove = c.buildConfig.defaults.supportedPlatforms.map(
-        p => path.join(c.paths.project.dir, `index.${p}.js`)
+    const filesToRemove = c.buildConfig.defaults.supportedPlatforms.map((p) =>
+        path.join(c.paths.project.dir, `index.${p}.js`)
     );
 
     removeDirsSync(dirsToRemove);
@@ -118,15 +93,9 @@ const _applyTemplate = async (c) => {
         // c.paths.template.dir = path.join(c.paths.project.nodeModulesDir, c.buildConfig.currentTemplate);
     }
 
-    c.paths.template.configTemplate = path.join(
-        c.paths.template.dir,
-        RENATIVE_CONFIG_TEMPLATE_NAME
-    );
+    c.paths.template.configTemplate = path.join(c.paths.template.dir, RENATIVE_CONFIG_TEMPLATE_NAME);
 
-    c.paths.template.config = path.join(
-        c.paths.template.dir,
-        RENATIVE_CONFIG_NAME
-    );
+    c.paths.template.config = path.join(c.paths.template.dir, RENATIVE_CONFIG_NAME);
 
     // if (fsExistsSync(c.paths.template.config)) {
     //     c.files.template.config = readObjectSync(c.paths.template.config);
@@ -134,59 +103,42 @@ const _applyTemplate = async (c) => {
 
     if (!fsExistsSync(c.paths.template.configTemplate)) {
         logWarning(
-            `Template file ${chalk().white(
-                c.paths.template.configTemplate
-            )} does not exist. check your ${chalk().white(
+            `Template file ${chalk().white(c.paths.template.configTemplate)} does not exist. check your ${chalk().white(
                 c.paths.template.dir
             )}. skipping`
         );
         return true;
     }
 
-    logDebug(
-        `_applyTemplate:${c.runtime.selectedTemplate}:${c.paths.template.dir}`
-    );
+    logDebug(`_applyTemplate:${c.runtime.selectedTemplate}:${c.paths.template.dir}`);
 
-    c.paths.template.appConfigsDir = path.join(
-        c.paths.template.dir,
-        'appConfigs'
-    );
-    c.paths.template.appConfigBase.dir = path.join(
-        c.paths.template.appConfigsDir,
-        'base'
-    );
+    c.paths.template.appConfigsDir = path.join(c.paths.template.dir, 'appConfigs');
+    c.paths.template.appConfigBase.dir = path.join(c.paths.template.appConfigsDir, 'base');
     c.runtime.currentTemplate = c.files.project.config.currentTemplate;
     if (!c.runtime.currentTemplate) {
-        c.runtime.currentTemplate = Object.keys(
-            c.files.project.config.templates
-        )[0];
+        c.runtime.currentTemplate = Object.keys(c.files.project.config.templates)[0];
         c.runtime.requiresForcedTemplateApply = true;
     }
 
     if (c.buildConfig.currentTemplate) {
-        c.runtime.activeTemplate = `${
-            c.buildConfig.currentTemplate}@${c.buildConfig.templates?.[c.buildConfig.currentTemplate]?.version}`;
+        c.runtime.activeTemplate = `${c.buildConfig.currentTemplate}@${
+            c.buildConfig.templates?.[c.buildConfig.currentTemplate]?.version
+        }`;
     }
 
     return true;
 };
 
-const _configureSrc = c => new Promise((resolve) => {
-    // Check src
-    logDebug('configureProject:check src');
-    if (!fsExistsSync(c.paths.project.srcDir)) {
-        logInfo(
-            `Your src folder ${chalk().white(
-                c.paths.project.srcDir
-            )} is missing! CREATING...DONE`
-        );
-        copyFolderContentsRecursiveSync(
-            path.join(c.paths.template.dir, 'src'),
-            c.paths.project.srcDir
-        );
-    }
-    resolve();
-});
+const _configureSrc = (c) =>
+    new Promise((resolve) => {
+        // Check src
+        logDebug('configureProject:check src');
+        if (!fsExistsSync(c.paths.project.srcDir)) {
+            logInfo(`Your src folder ${chalk().white(c.paths.project.srcDir)} is missing! CREATING...DONE`);
+            copyFolderContentsRecursiveSync(path.join(c.paths.template.dir, 'src'), c.paths.project.srcDir);
+        }
+        resolve();
+    });
 
 const _configureAppConfigs = async (c) => {
     // Check appConfigs
@@ -200,10 +152,7 @@ const _configureAppConfigs = async (c) => {
         );
 
         // TODO: GET CORRECT PROJECT TEMPLATE
-        copyFolderContentsRecursiveSync(
-            c.paths.template.appConfigsDir,
-            c.paths.project.appConfigsDir
-        );
+        copyFolderContentsRecursiveSync(c.paths.template.appConfigsDir, c.paths.project.appConfigsDir);
 
         const appConfigIds = listAppConfigsFoldersSync(c, false);
 
@@ -211,26 +160,18 @@ const _configureAppConfigs = async (c) => {
         try {
             const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
             appConfigIds.forEach((v) => {
-                const appConfigPath = path.join(
-                    c.paths.project.appConfigsDir,
-                    v,
-                    RENATIVE_CONFIG_NAME
-                );
+                const appConfigPath = path.join(c.paths.project.appConfigsDir, v, RENATIVE_CONFIG_NAME);
                 const appConfig = readObjectSync(appConfigPath);
                 if (appConfig) {
                     if (appConfig.skipBootstrapCopy) {
                         fsUnlinkSync(appConfigPath);
                         if (v !== 'base') {
-                            removeDirSync(path.join(
-                                c.paths.project.appConfigsDir,
-                                v
-                            ));
+                            removeDirSync(path.join(c.paths.project.appConfigsDir, v));
                         }
                     } else if (!appConfig.hidden) {
                         appConfig.common = appConfig.common || {};
                         appConfig.common.title = c.files.project.config?.defaults?.title;
                         appConfig.common.id = c.files.project.config?.defaults?.id;
-
 
                         if (supPlats) {
                             Object.keys(appConfig.platforms).forEach((pk) => {
@@ -250,46 +191,32 @@ const _configureAppConfigs = async (c) => {
     }
 };
 
-const _configureProjectConfig = c => new Promise((resolve) => {
-    // Check projectConfigs
-    logDebug('configureProject:check projectConfigs');
-    if (!fsExistsSync(c.paths.project.appConfigBase.dir)) {
-        logInfo(
-            `Your projectConfig folder ${chalk().white(
-                c.paths.project.appConfigBase.dir
-            )} is missing! CREATING...DONE`
-        );
-        copyFolderContentsRecursiveSync(
-            c.paths.template.appConfigBase.dir,
-            c.paths.project.appConfigBase.dir
-        );
-    }
-    resolve();
-});
+const _configureProjectConfig = (c) =>
+    new Promise((resolve) => {
+        // Check projectConfigs
+        logDebug('configureProject:check projectConfigs');
+        if (!fsExistsSync(c.paths.project.appConfigBase.dir)) {
+            logInfo(
+                `Your projectConfig folder ${chalk().white(
+                    c.paths.project.appConfigBase.dir
+                )} is missing! CREATING...DONE`
+            );
+            copyFolderContentsRecursiveSync(c.paths.template.appConfigBase.dir, c.paths.project.appConfigBase.dir);
+        }
+        resolve();
+    });
 
 const _configureRenativeConfig = async (c) => {
     // renative.json
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
     logDebug('configureProject:check renative.json');
 
-    if (
-        c.runtime.selectedTemplate
-            || c.runtime.requiresForcedTemplateApply
-            || c.files.project.config.isNew
-    ) {
+    if (c.runtime.selectedTemplate || c.runtime.requiresForcedTemplateApply || c.files.project.config.isNew) {
         logInfo(
-            `Your ${
-                c.paths.project.config
-            } needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
+            `Your ${c.paths.project.config} needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
         );
-        const mergedObj = mergeObjects(
-            c,
-            templateConfig,
-            c.files.project.config_original,
-            false,
-            true
-        );
-            // Do not override supportedPlatforms
+        const mergedObj = mergeObjects(c, templateConfig, c.files.project.config_original, false, true);
+        // Do not override supportedPlatforms
         mergedObj.defaults.supportedPlatforms = c.files.project.config_original.defaults.supportedPlatforms;
         // Do not override engines
         mergedObj.engines = c.files.project.config_original.engines;
@@ -314,7 +241,6 @@ export const configureTemplateFiles = async (c) => {
 
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
 
-
     const includedPaths = templateConfig?.templateConfig?.includedPaths;
     if (includedPaths) {
         includedPaths.forEach((name) => {
@@ -323,21 +249,10 @@ export const configureTemplateFiles = async (c) => {
             if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
                 try {
                     if (fsLstatSync(sourcePath).isDirectory()) {
-                        logInfo(
-                            `Missing directory ${chalk().white(
-                                `${destPath}.js`
-                            )}. COPYING from TEMPATE...DONE`
-                        );
-                        copyFolderContentsRecursiveSync(
-                            sourcePath,
-                            destPath
-                        );
+                        logInfo(`Missing directory ${chalk().white(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
+                        copyFolderContentsRecursiveSync(sourcePath, destPath);
                     } else {
-                        logInfo(
-                            `Missing file ${chalk().white(
-                                `${destPath}.js`
-                            )}. COPYING from TEMPATE...DONE`
-                        );
+                        logInfo(`Missing file ${chalk().white(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
                         copyFileSync(sourcePath, destPath);
                     }
                 } catch (e) {
@@ -356,17 +271,12 @@ export const configureEntryPoint = async (c, platform) => {
     const entryFile = getConfigProp(c, platform, 'entryFile');
 
     try {
-        const source = path.join(
-            c.paths.template.dir,
-            `${entryFile}.js`
-        );
+        const source = path.join(c.paths.template.dir, `${entryFile}.js`);
         const dest = path.join(c.paths.project.dir, `${entryFile}.js`);
         if (!fsExistsSync(dest)) {
             if (!entryFile) {
                 logWarning(
-                    `Missing entryFile key for ${chalk().white(
-                        c.platform
-                    )} platform in your ${chalk().white(
+                    `Missing entryFile key for ${chalk().white(c.platform)} platform in your ${chalk().white(
                         c.paths.appConfig.config
                     )}.`
                 );
@@ -377,11 +287,7 @@ export const configureEntryPoint = async (c, platform) => {
                     )}. Not available in your current template. You need to create one manually`
                 );
             } else {
-                logInfo(
-                    `Missing entry file ${chalk().white(
-                        `${entryFile}.js`
-                    )}. COPYING from TEMPATE...DONE`
-                );
+                logInfo(`Missing entry file ${chalk().white(`${entryFile}.js`)}. COPYING from TEMPATE...DONE`);
                 copyFileSync(source, dest);
             }
         }
@@ -405,18 +311,11 @@ export const getTemplateOptions = (c, isGlobalScope) => {
         defaultProjectTemplates = c.buildConfig.projectTemplates || {};
     }
 
-    return generateOptions(
-        defaultProjectTemplates,
-        false,
-        null,
-        (i, obj, mapping, defaultVal) => {
-            const exists = c.buildConfig.templates?.[defaultVal];
-            const installed = exists ? chalk().yellow(' (installed)') : '';
-            return ` [${chalk().grey(i + 1)}]> ${chalk().bold(
-                defaultVal
-            )}${installed} \n`;
-        }
-    );
+    return generateOptions(defaultProjectTemplates, false, null, (i, obj, mapping, defaultVal) => {
+        const exists = c.buildConfig.templates?.[defaultVal];
+        const installed = exists ? chalk().yellow(' (installed)') : '';
+        return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)}${installed} \n`;
+    });
 };
 
 export const getInstalledTemplateOptions = (c) => {
@@ -428,14 +327,11 @@ export const getInstalledTemplateOptions = (c) => {
     return [];
 };
 
-export const isTemplateInstalled = c => (c.buildConfig.currentTemplate
-    ? doResolve(c.buildConfig.currentTemplate) : false);
-
+export const isTemplateInstalled = (c) =>
+    c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : false;
 
 export const applyTemplate = async (c, selectedTemplate) => {
-    logTask(
-        'applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`
-    );
+    logTask('applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`);
     if (c.files.project.config.isTemplate) return true;
 
     c.runtime.selectedTemplate = selectedTemplate;
@@ -448,7 +344,7 @@ export const applyTemplate = async (c, selectedTemplate) => {
             type: 'list',
             name: 'template',
             message: 'Pick which template to apply',
-            choices: opts.keysAsArray
+            choices: opts.keysAsArray,
         });
 
         c.buildConfig.currentTemplate = template;

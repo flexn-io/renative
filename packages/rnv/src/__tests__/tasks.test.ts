@@ -8,11 +8,10 @@ import taskRnvClean from '../../src/engine-core/tasks/task.rnv.clean';
 // import taskRnvPlatformSetup from '../../src/engine-core/tasks/task.rnv.platform.setup';
 import { generateMockConfig } from '../../../jest-preset-rnv/mocks';
 
-
 jest.mock('fs');
 
 jest.mock('inquirer', () => ({
-    prompt: () => true
+    prompt: () => true,
 }));
 
 jest.mock('../../src/core/engineManager/index.js', () => ({
@@ -24,44 +23,44 @@ jest.mock('../../src/core/engineManager/index.js', () => ({
     //     }
     // }),
     getEngineRunnerByPlatform: () => ({
-        getOriginalPlatformTemplatesDir: () => 'sometemptdir'
-    })
+        getOriginalPlatformTemplatesDir: () => 'sometemptdir',
+    }),
 }));
 
 jest.mock('child_process', () => ({
-    spawn: jest.fn()
+    spawn: jest.fn(),
 }));
 
 jest.mock('../../src/core/taskManager/index.js', () => ({
     executeTask: jest.fn(),
-    shouldSkipTask: () => false
+    shouldSkipTask: () => false,
 }));
 
 jest.mock('../../src/core/configManager/config.js', () => ({
-    getConfig: () => null
+    getConfig: () => null,
 }));
 
 jest.mock('../../src/core/systemManager/utils.js', () => ({
-    isSystemWin: false
+    isSystemWin: false,
 }));
 
 jest.mock('../../src/core/systemManager/logger.js', () => {
-    const _chalkCols = {
-        white: v => v,
-        green: v => v,
-        red: v => v,
-        yellow: v => v,
-        default: v => v,
-        gray: v => v,
-        grey: v => v,
-        blue: v => v,
-        cyan: v => v,
-        magenta: v => v
+    const _chalkCols: any = {
+        white: (v) => v,
+        green: (v) => v,
+        red: (v) => v,
+        yellow: (v) => v,
+        default: (v) => v,
+        gray: (v) => v,
+        grey: (v) => v,
+        blue: (v) => v,
+        cyan: (v) => v,
+        magenta: (v) => v,
+        rgb: () => (v) => v,
     };
-    _chalkCols.rgb = () => v => v;
     _chalkCols.bold = _chalkCols;
     const _chalkMono = {
-        ..._chalkCols
+        ..._chalkCols,
     };
     return {
         logToSummary: jest.fn(),
@@ -71,7 +70,7 @@ jest.mock('../../src/core/systemManager/logger.js', () => {
         logError: jest.fn(),
         logWarning: jest.fn(),
         logSuccess: jest.fn(),
-        chalk: () => _chalkMono
+        chalk: () => _chalkMono,
     };
 });
 
@@ -80,29 +79,30 @@ jest.mock('../../src/core/systemManager/fileutils.js', () => ({
     fsExistsSync: () => true,
     fsReaddirSync: () => [],
     getRealPath: () => '',
-    copyFolderContentsRecursiveSync: jest.fn()
+    copyFolderContentsRecursiveSync: jest.fn(),
 }));
 
 jest.mock('../../src/core/systemManager/exec.js', () => ({
-    executeAsync: jest.fn()
+    executeAsync: jest.fn(),
 }));
 
 const c = generateMockConfig({
     buildConfig: {
         sdks: {
-            ANDROID_SDK: ''
-        }
-    }
+            ANDROID_SDK: '',
+        },
+    },
 });
 
 // const parentTask = null;
 const originTask = {};
 
 beforeEach(() => {
+    //Do nothing
 });
 
 afterEach(() => {
-
+    //Do nothing
 });
 
 test('Execute task.rnv.platform.list', async () => {
@@ -131,7 +131,10 @@ test('Execute task.rnv.clean', async () => {
     await expect(taskRnvClean.fn(configure, true)).resolves.toEqual(true);
     expect(fileUtils.removeDirs).toHaveBeenCalledTimes(3);
     expect(systemManager.executeAsync).toHaveBeenCalledWith(configure, 'watchman watch-del-all');
-    expect(systemManager.executeAsync).toHaveBeenCalledWith(configure, 'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*');
+    expect(systemManager.executeAsync).toHaveBeenCalledWith(
+        configure,
+        'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*'
+    );
 });
 
 // TODO Mocking isSystemWin to true does not work. Need to figure out how to have different values for each test

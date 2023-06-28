@@ -14,12 +14,11 @@ const configTargets = [
     'workspace.project.config',
     'workspace.appConfig.configs',
     'project.config',
-    'appConfig.configs'
+    'appConfig.configs',
 ];
 
 export const taskRnvDoctor = async (c, parentTask, originTask) => {
     logTask('taskRnvDoctor');
-
 
     await configureRuntimeDefaults(c);
     await executeTask(c, TASK_APP_CONFIGURE, parentTask, originTask);
@@ -49,13 +48,20 @@ export const taskRnvDoctor = async (c, parentTask, originTask) => {
             if (!valid) {
                 hasErrors = true;
                 // console.log('ERROR', ajv.errors);
-                errMsg += chalk().yellow(`\nInvalid schema in ${
-                    // cPath}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}\n`);
-                    cPath}. ISSUES:\n\n`);
+                errMsg += chalk().yellow(
+                    `\nInvalid schema in ${
+                        // cPath}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}\n`);
+                        cPath
+                    }. ISSUES:\n\n`
+                );
                 ajv.errors.forEach((err) => {
-                    errMsg += chalk().yellow(`${
-                        chalk().grey(err.dataPath === '' ? '/' : err.dataPath)}: ${err.message} ${
-                        Object.keys(err.params).map(k => `=> ${chalk().red(err.params[k])}`).join('\n')}\n`);
+                    errMsg += chalk().yellow(
+                        `${chalk().grey(err.dataPath === '' ? '/' : err.dataPath)}: ${err.message} ${Object.keys(
+                            err.params
+                        )
+                            .map((k) => `=> ${chalk().red(err.params[k])}`)
+                            .join('\n')}\n`
+                    );
                 });
             }
         }
@@ -79,5 +85,5 @@ export default {
     task: TASK_DOCTOR,
     params: PARAMS.withBase(),
     platforms: [],
-    isGlobalScope: true
+    isGlobalScope: true,
 };

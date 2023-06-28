@@ -1,21 +1,11 @@
 import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
-import {
-    buildAndroid,
-} from '@rnv/sdk-android';
+import { buildAndroid } from '@rnv/sdk-android';
 import { buildXcodeProject } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    IOS,
-    MACOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    TASK_BUILD, TASK_PACKAGE, TASK_EXPORT,
-    PARAMS
-} = Constants;
+const { IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, PARAMS } =
+    Constants;
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
@@ -50,11 +40,5 @@ export default {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        IOS,
-        ANDROID,
-        ANDROID_TV,
-        ANDROID_WEAR,
-        MACOS
-    ],
+    platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, MACOS],
 };

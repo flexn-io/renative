@@ -4,17 +4,13 @@ import { chalk, logToSummary, logTask, logWarning, logDebug } from '../../system
 import { IOS, TVOS } from '../../constants';
 import { executeAsync } from '../../systemManager/exec';
 
-export const getAppleDevices = async (
-    c,
-    ignoreDevices,
-    ignoreSimulators
-) => {
+export const getAppleDevices = async (c, ignoreDevices, ignoreSimulators) => {
     const { platform } = c;
 
     logTask('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators${ignoreSimulators}`);
 
     const {
-        program: { skipTargetCheck }
+        program: { skipTargetCheck },
     } = c;
 
     let devicesAndSims;
@@ -35,7 +31,7 @@ export const getAppleDevices = async (
             if (device.isAvailable) {
                 availableSims.push({
                     ...device,
-                    version: runtime.split('.').pop()
+                    version: runtime.split('.').pop(),
                 });
             }
         });
@@ -45,30 +41,19 @@ export const getAppleDevices = async (
     if (isXcode13) {
         parseFunction = _parseNewIOSDevicesList;
     }
-    const devicesArr = parseFunction(
-        devicesAndSims,
-        platform,
-        ignoreDevices,
-        ignoreSimulators
-    );
+    const devicesArr = parseFunction(devicesAndSims, platform, ignoreDevices, ignoreSimulators);
 
-    const simulatorsArr = _parseIOSDevicesList(
-        availableSims,
-        platform,
-        ignoreDevices,
-        ignoreSimulators
-    );
+    const simulatorsArr = _parseIOSDevicesList(availableSims, platform, ignoreDevices, ignoreSimulators);
     let allDevices = [...devicesArr, ...simulatorsArr];
 
     if (!skipTargetCheck) {
         // filter watches
-        allDevices = allDevices.filter(d => !d.version?.includes('watchOS'));
+        allDevices = allDevices.filter((d) => !d.version?.includes('watchOS'));
         // filter other platforms
         allDevices = allDevices.filter((d) => {
-            if (
-                platform === IOS
-                && (d.icon?.includes('Phone') || d.icon?.includes('Tablet'))
-            ) { return true; }
+            if (platform === IOS && (d.icon?.includes('Phone') || d.icon?.includes('Tablet'))) {
+                return true;
+            }
             if (platform === TVOS && d.icon?.includes('TV')) return true;
             return false;
         });
@@ -76,33 +61,21 @@ export const getAppleDevices = async (
     return allDevices;
 };
 
-const _parseNewIOSDevicesList = (
-    rawDevices,
-    platform,
-    ignoreDevices = false,
-) => {
+const _parseNewIOSDevicesList = (rawDevices, platform, ignoreDevices = false) => {
     const devices = [];
     if (ignoreDevices) return devices;
     const decideIcon = (device) => {
         const { name, isDevice } = device;
         switch (platform) {
             case IOS:
-                if (
-                    name.includes('iPhone')
-                    || name.includes('iPad')
-                    || name.includes('iPod')
-                ) {
+                if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod')) {
                     let icon = 'Phone 📱';
                     if (name.includes('iPad')) icon = 'Tablet 💊';
                     return icon;
                 }
                 return null;
             case TVOS:
-                if (
-                    name.includes('TV')
-                    && !name.includes('iPhone')
-                    && !name.includes('iPad')
-                ) {
+                if (name.includes('TV') && !name.includes('iPhone') && !name.includes('iPad')) {
                     return 'TV 📺';
                 }
                 return null;
@@ -123,40 +96,27 @@ const _parseNewIOSDevicesList = (
             udid,
             name,
             icon,
-            isDevice: true
+            isDevice: true,
         });
     });
 
     return devices;
 };
 
-const _parseIOSDevicesList = (
-    rawDevices,
-    platform,
-    ignoreDevices = false,
-    ignoreSimulators = false
-) => {
+const _parseIOSDevicesList = (rawDevices, platform, ignoreDevices = false, ignoreSimulators = false) => {
     const devices = [];
     const decideIcon = (device) => {
         const { name, isDevice } = device;
         switch (platform) {
             case IOS:
-                if (
-                    name.includes('iPhone')
-                    || name.includes('iPad')
-                    || name.includes('iPod')
-                ) {
+                if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod')) {
                     let icon = 'Phone 📱';
                     if (name.includes('iPad')) icon = 'Tablet 💊';
                     return icon;
                 }
                 return null;
             case TVOS:
-                if (
-                    name.includes('TV')
-                    && !name.includes('iPhone')
-                    && !name.includes('iPad')
-                ) {
+                if (name.includes('TV') && !name.includes('iPhone') && !name.includes('iPad')) {
                     return 'TV 📺';
                 }
                 return null;
@@ -199,7 +159,7 @@ const _parseIOSDevicesList = (
                 name,
                 udid,
                 isDevice: false,
-                version
+                version,
             };
             devices.push({ ...device, icon: decideIcon(device) });
         });
@@ -224,23 +184,19 @@ export const launchAppleSimulator = async (c, target) => {
         return selectedDevice.name;
     }
 
-    logWarning(
-        `Your specified simulator target ${chalk().white(target)} doesn't exists`
-    );
-    const devices = devicesArr.map(v => ({
-        name: `${v.name} | ${v.icon} | v: ${chalk().green(
-            v.version
-        )} | udid: ${chalk().grey(v.udid)}${
+    logWarning(`Your specified simulator target ${chalk().white(target)} doesn't exists`);
+    const devices = devicesArr.map((v) => ({
+        name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
             v.isDevice ? chalk().red(' (device)') : ''
         }`,
-        value: v
+        value: v,
     }));
 
     const { sim } = await inquirer.prompt({
         name: 'sim',
         message: 'Select the simulator you want to launch',
         type: 'list',
-        choices: devices
+        choices: devices,
     });
 
     if (sim) {
@@ -252,11 +208,7 @@ export const launchAppleSimulator = async (c, target) => {
 
 const _launchSimulator = async (selectedDevice) => {
     try {
-        child_process.spawnSync('xcrun', [
-            'simctl',
-            'boot',
-            selectedDevice.udid
-        ]);
+        child_process.spawnSync('xcrun', ['simctl', 'boot', selectedDevice.udid]);
     } catch (e) {
         // instruments always fail with 255 because it expects more arguments,
         // but we want it to only launch the simulator
@@ -271,11 +223,9 @@ export const listAppleDevices = async (c) => {
     const devicesArr = await getAppleDevices(c);
     let devicesString = '';
     devicesArr.forEach((v, i) => {
-        devicesString += ` [${i + 1}]> ${chalk().bold(v.name)} | ${
-            v.icon
-        } | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
-            v.isDevice ? chalk().red(' (device)') : ''
-        }\n`;
+        devicesString += ` [${i + 1}]> ${chalk().bold(v.name)} | ${v.icon} | v: ${chalk().green(
+            v.version
+        )} | udid: ${chalk().grey(v.udid)}${v.isDevice ? chalk().red(' (device)') : ''}\n`;
     });
 
     logToSummary(`${platform} Targets:\n\n${devicesString}`);

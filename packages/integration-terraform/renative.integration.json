@@ -1,4 +1,4 @@
 {
-  "id": "terraform",
-  "npmPackage": "@rnv/integration-terraform"
+    "id": "terraform",
+    "npmPackage": "@rnv/integration-terraform"
 }

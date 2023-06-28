@@ -8,5 +8,5 @@ export default {
     task: 'status',
     params: PARAMS.withBase(),
     platforms: [],
-    isGlobalScope: true
+    isGlobalScope: true,
 };

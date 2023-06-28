@@ -12,16 +12,16 @@ export const withDefaultRNVBabel = (cnf) => ({
             },
         ],
     ],
-    ...cnf
+    ...cnf,
 });
 
-export const withRNVBabel = cnf => (api) => {
+export const withRNVBabel = (cnf) => (api) => {
     if (!fs.existsSync(process.env.RNV_ENGINE_PATH)) {
         logInfo(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);
         api.cache(false);
         return withDefaultRNVBabel(cnf);
     }
-    const engine = require(process.env.RNV_ENGINE_PATH); // eslint-disable-line import/no-dynamic-require, global-require
+    const engine = require(process.env.RNV_ENGINE_PATH);
     api.cache(true);
     if (engine.withRNVBabel) {
         return engine.withRNVBabel(cnf);
@@ -31,7 +31,7 @@ export const withRNVBabel = cnf => (api) => {
 };
 
 export const withRNVMetro = (cnf) => {
-    const engine = require(process.env.RNV_ENGINE_PATH); // eslint-disable-line import/no-dynamic-require, global-require
+    const engine = require(process.env.RNV_ENGINE_PATH);
     if (engine.withRNV) {
         return engine.withRNV(cnf);
     }

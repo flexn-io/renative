@@ -20,8 +20,10 @@ class BasePlatformSetup {
         this.globalConfigPath = paths.workspace.config;
         this.availableDownloader = null;
         this.androidSdkLocation = replaceHomeFolder('~/Android');
-        const sdksToInstallX86 = '"build-tools;28.0.3" "emulator" "extras;android;m2repository" "extras;google;m2repository" "patcher;v4" "platform-tools" "platforms;android-28" "sources;android-28" "system-images;android-28;google_apis_playstore;x86" "tools"';
-        const sdksToInstallAppleSilicon = '"build-tools;30.0.3" "emulator" "extras;android;m2repository" "extras;google;m2repository" "patcher;v4" "platform-tools" "platforms;android-30" "sources;android-30" "system-images;android-30;google_apis_playstore;arm64-v8a" "tools"';
+        const sdksToInstallX86 =
+            '"build-tools;28.0.3" "emulator" "extras;android;m2repository" "extras;google;m2repository" "patcher;v4" "platform-tools" "platforms;android-28" "sources;android-28" "system-images;android-28;google_apis_playstore;x86" "tools"';
+        const sdksToInstallAppleSilicon =
+            '"build-tools;30.0.3" "emulator" "extras;android;m2repository" "extras;google;m2repository" "patcher;v4" "platform-tools" "platforms;android-30" "sources;android-30" "system-images;android-30;google_apis_playstore;arm64-v8a" "tools"';
         this.sdksToInstall = osNode.arch() === 'arm64' ? sdksToInstallAppleSilicon : sdksToInstallX86;
     }
 
@@ -43,26 +45,17 @@ class BasePlatformSetup {
     async postInstall(sdk) {
         if (sdk === 'android') {
             const { location } = setupConfig.android;
-            await updateConfigFile(
-                { androidSdk: location },
-                this.globalConfigPath
-            );
+            await updateConfigFile({ androidSdk: location }, this.globalConfigPath);
             await executeTask(this.c, TASK_WORKSPACE_CONFIGURE); // trigger the configure to update the paths for clis
         }
 
         if (sdk === 'tizen') {
-            await updateConfigFile(
-                { tizenSdk: this.tizenSdkPath },
-                this.globalConfigPath
-            );
+            await updateConfigFile({ tizenSdk: this.tizenSdkPath }, this.globalConfigPath);
             await executeTask(this.c, TASK_WORKSPACE_CONFIGURE); // trigger the configure to update the paths for clis
         }
 
         if (sdk === 'webos') {
-            await updateConfigFile(
-                { webosSdk: this.webosSdkPath },
-                this.globalConfigPath
-            );
+            await updateConfigFile({ webosSdk: this.webosSdkPath }, this.globalConfigPath);
             await executeTask(this.c, TASK_WORKSPACE_CONFIGURE); // trigger the configure to update the paths for clis
         }
     }
@@ -70,9 +63,7 @@ class BasePlatformSetup {
     async downloadSdk(sdk) {
         const downloader = this.availableDownloader;
         if (!downloader) throw new Error('Wget or cURL not installed!');
-        logDebug(
-            `Downloading ${sdk} SDK to ${setupConfig[sdk].downloadLocation} using ${downloader}`
-        );
+        logDebug(`Downloading ${sdk} SDK to ${setupConfig[sdk].downloadLocation} using ${downloader}`);
         // remove the file if existing first
         await shell.rm(setupConfig[sdk].downloadLocation);
 
@@ -95,25 +86,19 @@ class BasePlatformSetup {
     }
 
     async unzipSdk(sdk) {
-        logDebug(
-            `Unzipping from ${setupConfig[sdk].downloadLocation} to ${setupConfig[sdk].location}`
-        );
-        if (!commandExistsSync('unzip')) { throw new Error('unzip is not installed'); }
-        await shell.exec(
-            `unzip -qq -o ${setupConfig[sdk].downloadLocation} -d ${setupConfig[sdk].location}`
-        );
+        logDebug(`Unzipping from ${setupConfig[sdk].downloadLocation} to ${setupConfig[sdk].location}`);
+        if (!commandExistsSync('unzip')) {
+            throw new Error('unzip is not installed');
+        }
+        await shell.exec(`unzip -qq -o ${setupConfig[sdk].downloadLocation} -d ${setupConfig[sdk].location}`);
     }
 
     async installSdksAndEmulator() {
         logTask('installSdksAndEmulator');
         logDebug('Accepting licenses');
-        await shell.exec(
-            `yes | ${setupConfig.android.location}/tools/bin/sdkmanager --licenses > /dev/null`
-        );
+        await shell.exec(`yes | ${setupConfig.android.location}/tools/bin/sdkmanager --licenses > /dev/null`);
         logDebug('Installing SDKs', this.sdksToInstall);
-        await shell.exec(
-            `${setupConfig.android.location}/tools/bin/sdkmanager ${this.sdksToInstall} > /dev/null`
-        );
+        await shell.exec(`${setupConfig.android.location}/tools/bin/sdkmanager ${this.sdksToInstall} > /dev/null`);
         logSuccess(`SDK succefully installed at: ${setupConfig.android.location}`);
     }
 
@@ -182,7 +167,9 @@ class BasePlatformSetup {
 
     async installAws() {
         // to be overwritten
-        logError('Install aws not supported yet. Follow https://docs.aws.amazon.com/cli/latest/userguide/install-macos.html to install it manually (version 1 required)');
+        logError(
+            'Install aws not supported yet. Follow https://docs.aws.amazon.com/cli/latest/userguide/install-macos.html to install it manually (version 1 required)'
+        );
         return true;
     }
 
@@ -193,8 +180,8 @@ class BasePlatformSetup {
                 {
                     name: 'sdkInstall',
                     type: 'confirm',
-                    message: `Do you want to install ${sdk} SDK?`
-                }
+                    message: `Do you want to install ${sdk} SDK?`,
+                },
             ]);
             // eslint-disable-next-line prefer-destructuring
             sdkInstall = response.sdkInstall;
@@ -203,9 +190,7 @@ class BasePlatformSetup {
         if (this.c.program.ci || sdkInstall) {
             await this.installSdk(sdk, ['fastlane', 'docker'].includes(sdk)); // no prereqs needed for fastlane
         } else {
-            throw new Error(
-                `You can't run the project on this platform without ${sdk} sdk installed`
-            );
+            throw new Error(`You can't run the project on this platform without ${sdk} sdk installed`);
         }
     }
 }

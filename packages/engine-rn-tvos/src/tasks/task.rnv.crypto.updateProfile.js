@@ -6,7 +6,6 @@ const { executeTask, shouldSkipTask } = TaskManager;
 const { logTask } = Logger;
 const { TASK_CRYPTO_UPDATE_PROFILE, TASK_PROJECT_CONFIGURE, TVOS, PARAMS } = Constants;
 
-
 export const taskRnvCryptoUpdateProfile = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoUpdateProfile');
 

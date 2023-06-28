@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 import merge from 'deepmerge';
 import path from 'path';
 import intersection from 'lodash.intersection';
@@ -8,25 +7,25 @@ import { parseRenativeConfigs, writeRenativeConfigFile } from '../configManager'
 import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import { configureFonts } from '../projectManager';
 import {
-    copyFolderContentsRecursiveSync, fsExistsSync,
+    copyFolderContentsRecursiveSync,
+    fsExistsSync,
     fsLstatSync,
-    fsReadFileSync, fsWriteFileSync, mergeObjects, readObjectSync, sanitizeDynamicProps
+    fsReadFileSync,
+    fsWriteFileSync,
+    mergeObjects,
+    readObjectSync,
+    sanitizeDynamicProps,
 } from '../systemManager/fileutils';
-import {
-    chalk, logDebug, logError, logInfo, logSuccess,
-    logTask,
-    logWarning
-} from '../systemManager/logger';
+import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../systemManager/logger';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { doResolve, doResolvePath } from '../systemManager/resolve';
-
 
 export const getPluginList = (c, isUpdate = false) => {
     const output = {
         asString: '',
         asArray: [],
         plugins: [],
-        allPlugins: {} // this is used by taskRnvPluginAdd
+        allPlugins: {}, // this is used by taskRnvPluginAdd
     };
 
     let i = 1;
@@ -37,35 +36,30 @@ export const getPluginList = (c, isUpdate = false) => {
             const p = plugins[k];
 
             let platforms = '';
-            const pluginPlatforms = intersection(c.runtime.supportedPlatforms.map(pl => pl.platform), Object.keys(p));
+            const pluginPlatforms = intersection(
+                c.runtime.supportedPlatforms.map((pl) => pl.platform),
+                Object.keys(p)
+            );
             pluginPlatforms.forEach((v) => {
                 platforms += `${v}, `;
             });
             if (platforms.length) {
                 platforms = platforms.slice(0, platforms.length - 2);
             }
-            const installedPlugin = c.buildConfig
-                && c.buildConfig.plugins
-                && c.buildConfig.plugins[k];
-            const installedString = installedPlugin
-                ? chalk().yellow('installed')
-                : chalk().green('not installed');
+            const installedPlugin = c.buildConfig && c.buildConfig.plugins && c.buildConfig.plugins[k];
+            const installedString = installedPlugin ? chalk().yellow('installed') : chalk().green('not installed');
             if (isUpdate && installedPlugin) {
                 output.plugins.push(k);
                 let versionString;
                 if (installedPlugin.version !== p.version) {
-                    versionString = `(${chalk().yellow(
-                        installedPlugin.version
-                    )}) => (${chalk().green(p.version)})`;
+                    versionString = `(${chalk().yellow(installedPlugin.version)}) => (${chalk().green(p.version)})`;
                 } else {
                     versionString = `(${chalk().green(installedPlugin.version)})`;
                 }
-                output.asString += ` [${i}]> ${chalk().bold(
-                    k
-                )} ${versionString}\n`;
+                output.asString += ` [${i}]> ${chalk().bold(k)} ${versionString}\n`;
                 output.asArray.push({
                     name: `${k} ${versionString}`,
-                    value: k
+                    value: k,
                 });
                 output.allPlugins[k] = p; // this is used by taskRnvPluginAdd
                 i++;
@@ -78,7 +72,7 @@ export const getPluginList = (c, isUpdate = false) => {
                     name: `${k} (${chalk().grey(
                         p['no-npm'] ? 'no-npm' : p.version
                     )}) [${platforms}] - ${installedString}`,
-                    value: k
+                    value: k,
                 });
                 output.allPlugins[k] = p; // this is used by taskRnvPluginAdd
 
@@ -101,14 +95,14 @@ export const getPluginList = (c, isUpdate = false) => {
     return output;
 };
 
-
 const _getPluginScope = (plugin) => {
     if (typeof plugin === 'string' || plugin instanceof String) {
         if (plugin.startsWith('source:')) {
             return { scope: plugin.split(':').pop() };
         }
         return { npmVersion: plugin };
-    } if (plugin?.source) {
+    }
+    if (plugin?.source) {
         return { scope: plugin?.source };
     }
     return { scope: 'rnv' };
@@ -142,13 +136,16 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
 
     if (npmVersion) {
         return {
-            version: npmVersion
+            version: npmVersion,
         };
     }
-    if (scope !== '' && !!scope && !c.buildConfig.pluginTemplates?.[scope]?.pluginTemplates && !c.runtime._skipPluginScopeWarnings) {
-        logWarning(
-            `Plugin ${pluginKey} is not recognized plugin in ${scope} scope`
-        );
+    if (
+        scope !== '' &&
+        !!scope &&
+        !c.buildConfig.pluginTemplates?.[scope]?.pluginTemplates &&
+        !c.runtime._skipPluginScopeWarnings
+    ) {
+        logWarning(`Plugin ${pluginKey} is not recognized plugin in ${scope} scope`);
     } else if (scope) {
         const skipRnvOverrides = c.buildConfig.pluginTemplates?.[parentScope]?.disableRnvDefaultOverrides;
         if (skipRnvOverrides && scope === 'rnv') {
@@ -158,8 +155,14 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
         }
     }
 
-    const parentPlugin = _getMergedPlugin(c,
-        c.buildConfig.pluginTemplates?.[scope]?.pluginTemplates?.[pluginKey], pluginKey, scope, scopes, true);
+    const parentPlugin = _getMergedPlugin(
+        c,
+        c.buildConfig.pluginTemplates?.[scope]?.pluginTemplates?.[pluginKey],
+        pluginKey,
+        scope,
+        scopes,
+        true
+    );
     let currentPlugin = plugin;
     if (typeof plugin === 'string' || plugin instanceof String) {
         currentPlugin = {};
@@ -180,20 +183,24 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
     }
 
     // IMPORTANT: only final top level merge should be sanitized
-    const obj = skipSanitize ? mergedObj : sanitizeDynamicProps(mergedObj, {
-        files: c.files,
-        runtimeProps: c.runtime,
-        props: c.buildConfig?._refs,
-        configProps: c.configPropsInjects
-    });
+    const obj = skipSanitize
+        ? mergedObj
+        : sanitizeDynamicProps(mergedObj, {
+              files: c.files,
+              runtimeProps: c.runtime,
+              props: c.buildConfig?._refs,
+              configProps: c.configPropsInjects,
+          });
 
     // IMPORTANT: only final top level merge should be sanitized
-    const mergedPlugin = skipSanitize ? obj : sanitizeDynamicProps(obj, {
-        files: c.files,
-        runtimeProps: c.runtime,
-        props: obj.props,
-        configProps: c.configPropsInjects
-    });
+    const mergedPlugin = skipSanitize
+        ? obj
+        : sanitizeDynamicProps(obj, {
+              files: c.files,
+              runtimeProps: c.runtime,
+              props: obj.props,
+              configProps: c.configPropsInjects,
+          });
 
     return mergedPlugin;
 };
@@ -239,13 +246,9 @@ export const configurePlugins = async (c) => {
                     }
                 } else if (dependencies[k] !== plugin.version) {
                     logWarning(
-                        `Version mismatch of dependency ${chalk().white(
-                            k
-                        )} between:
+                        `Version mismatch of dependency ${chalk().white(k)} between:
 ${chalk().white(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
-${chalk().white(c.paths.project.builds.config)}: v(${chalk().green(
-    plugin.version
-)}).
+${chalk().white(c.paths.project.builds.config)}: v(${chalk().green(plugin.version)}).
 package.json will be overriden`
                     );
 
@@ -254,33 +257,22 @@ package.json will be overriden`
                 }
             }
         } else if (devDependencies && devDependencies[k]) {
-            if (
-                plugin['no-active'] !== true
-                    && plugin['no-npm'] !== true
-
-            ) {
+            if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
                     }
                 } else if (devDependencies[k] !== plugin.version) {
                     logWarning(
-                        `Version mismatch of devDependency ${chalk().white(
-                            k
-                        )} between package.json: v(${chalk().red(
+                        `Version mismatch of devDependency ${chalk().white(k)} between package.json: v(${chalk().red(
                             devDependencies[k]
-                        )}) and plugins.json: v(${chalk().red(
-                            plugin.version
-                        )}). package.json will be overriden`
+                        )}) and plugins.json: v(${chalk().red(plugin.version)}). package.json will be overriden`
                     );
                     hasPackageChanged = true;
                     newDevDeps[k] = plugin.version;
                 }
             }
-        } else if (
-            plugin['no-active'] !== true
-                && plugin['no-npm'] !== true
-        ) {
+        } else if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
             // Dependency does not exists
             if (plugin.version) {
                 logInfo(
@@ -306,23 +298,15 @@ package.json will be overriden`
    |- ${npmKey}@${chalk().red(npmDep)}`);
                 } else if (!dependencies[npmKey]) {
                     logInfo(
-                        `Plugin ${chalk().white(
-                            k
-                        )} requires npm dependency ${chalk().white(
-                            npmKey
-                        )}. INSTALLING...DONE`
+                        `Plugin ${chalk().white(k)} requires npm dependency ${chalk().white(npmKey)}. INSTALLING...DONE`
                     );
                     newDeps[npmKey] = npmDep;
                     hasPackageChanged = true;
                 } else if (dependencies[npmKey] !== npmDep) {
                     logWarning(
-                        `Plugin ${chalk().white(
-                            k
-                        )} npm dependency ${chalk().white(npmKey)} mismatch (${chalk().red(
+                        `Plugin ${chalk().white(k)} npm dependency ${chalk().white(npmKey)} mismatch (${chalk().red(
                             dependencies[npmKey]
-                        )}) => (${chalk().green(
-                            npmDep
-                        )}) .updating npm dependency in your package.json`
+                        )}) => (${chalk().green(npmDep)}) .updating npm dependency in your package.json`
                     );
                     newDeps[npmKey] = npmDep;
                     hasPackageChanged = true;
@@ -380,8 +364,9 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${key}?`,
-                warningMessage: `Plugin ${chalk().white(key)} source:${
-                    chalk().white(scope)} required by ${chalk().red(parentKey)} is not installed`
+                warningMessage: `Plugin ${chalk().white(key)} source:${chalk().white(scope)} required by ${chalk().red(
+                    parentKey
+                )} is not installed`,
             });
             if (confirm) {
                 c.files.project.config_original.plugins[key] = `source:${scope}`;
@@ -390,8 +375,9 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
                 c._requiresNpmInstall = true;
             }
         } else {
-            logWarning(`Plugin ${chalk().white(parentKey)} requires ${
-                chalk().red(key)} which is not available in your system`);
+            logWarning(
+                `Plugin ${chalk().white(parentKey)} requires ${chalk().red(key)} which is not available in your system`
+            );
         }
     } else {
         // All good
@@ -412,27 +398,16 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
 export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCheck) => {
     logTask('parsePlugins');
     if (c.buildConfig) {
-        const includedPlugins = getConfigProp(
-            c,
-            platform,
-            'includedPlugins',
-            []
-        );
-        const excludedPlugins = getConfigProp(
-            c,
-            platform,
-            'excludedPlugins',
-            []
-        );
+        const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
+        const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
             if (plugins) {
                 // let totalIncludedPlugins = 0;
                 Object.keys(plugins).forEach((key) => {
                     if (
-                        (includedPlugins.includes('*')
-                            || includedPlugins.includes(key))
-                        && !excludedPlugins.includes(key)
+                        (includedPlugins.includes('*') || includedPlugins.includes(key)) &&
+                        !excludedPlugins.includes(key)
                     ) {
                         const plugin = getMergedPlugin(c, key);
 
@@ -443,9 +418,9 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
                                 pluginCallback(plugin, pluginPlat, key);
                             } else if (pluginPlat) {
                                 if (
-                                    plugin['no-active'] !== true
-                                    && plugin.enabled !== false
-                                    && pluginPlat.enabled !== false
+                                    plugin['no-active'] !== true &&
+                                    plugin.enabled !== false &&
+                                    pluginPlat.enabled !== false
                                 ) {
                                     if (plugin.deprecated) {
                                         logWarning(plugin.deprecated);
@@ -455,9 +430,7 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
                                         pluginCallback(plugin, pluginPlat, key);
                                     }
                                 } else {
-                                    logWarning(
-                                        `Plugin ${key} is marked disabled. skipping.`
-                                    );
+                                    logWarning(`Plugin ${key} is marked disabled. skipping.`);
                                 }
                             }
                         }
@@ -470,19 +443,13 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
                 //     );
                 // }
             } else {
-                logError(
-                    `You have no plugins defined in ${chalk().white(
-                        c.paths.project.builds.config
-                    )}`
-                );
+                logError(`You have no plugins defined in ${chalk().white(c.paths.project.builds.config)}`);
             }
         } else {
             logWarning(
                 `You haven't included any ${chalk().white(
                     '{ common: { includedPlugins: [] }}'
-                )} in your ${chalk().white(
-                    c.paths.appConfig.config
-                )}. Your app might not work correctly`
+                )} in your ${chalk().white(c.paths.appConfig.config)}. Your app might not work correctly`
             );
         }
     }
@@ -490,12 +457,20 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
 
 export const loadPluginTemplates = async (c) => {
     logTask('loadPluginTemplates');
-    c.files.rnv.pluginTemplates.config = readObjectSync(
-        c.paths.rnv.pluginTemplates.config
-    );
+
+    const flexnPluginsPath = doResolve('@flexn/plugins');
+    if (!fsExistsSync(flexnPluginsPath)) {
+        return Promise.reject(`RNV Cannot find installed package: ${chalk().white('@flexn/plugins')}`);
+    }
+    const flexnPluginTemplatesPath = path.join(flexnPluginsPath, 'pluginTemplates/renative.plugins.json');
+
+    const flexnPluginTemplates = readObjectSync(flexnPluginTemplatesPath);
+    const rnvPluginTemplates = readObjectSync(c.paths.rnv.pluginTemplates.config);
+
+    c.files.rnv.pluginTemplates.config = merge(flexnPluginTemplates, rnvPluginTemplates);
 
     c.files.rnv.pluginTemplates.configs = {
-        rnv: c.files.rnv.pluginTemplates.config
+        rnv: c.files.rnv.pluginTemplates.config,
     };
 
     c.paths.rnv.pluginTemplates.dirs = { rnv: c.paths.rnv.pluginTemplates.dir };
@@ -537,34 +512,28 @@ const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'roo
         Object.keys(customPluginTemplates).forEach((k) => {
             const val = customPluginTemplates[k];
             if (val.npm) {
-                const npmDep = c.files.project.package?.dependencies?.[val.npm]
-                  || c.files.project.package?.devDependencies[val.npm];
+                const npmDep =
+                    c.files.project.package?.dependencies?.[val.npm] ||
+                    c.files.project.package?.devDependencies[val.npm];
 
                 if (npmDep) {
                     let ptPath;
                     if (npmDep.startsWith('file:')) {
-                        ptPath = path.join(
-                            c.paths.project.dir,
-                            npmDep.replace('file:', ''),
-                            val.path || ''
-                        );
+                        ptPath = path.join(c.paths.project.dir, npmDep.replace('file:', ''), val.path || '');
                     } else {
                         // ptPath = path.join(c.paths.project.nodeModulesDir, val.npm, val.path || '');
                         ptPath = `${doResolve(val.npm)}/${val.path}`;
                     }
 
-                    const ptConfig = path.join(
-                        ptPath,
-                        RENATIVE_CONFIG_PLUGINS_NAME
-                    );
+                    const ptConfig = path.join(ptPath, RENATIVE_CONFIG_PLUGINS_NAME);
                     c.paths.rnv.pluginTemplates.dirs[k] = ptPath;
                     if (fsExistsSync(ptConfig)) {
-                        c.files.rnv.pluginTemplates.configs[k] = readObjectSync(
-                            ptConfig
-                        );
-                        _parsePluginTemplateDependencies(c,
+                        c.files.rnv.pluginTemplates.configs[k] = readObjectSync(ptConfig);
+                        _parsePluginTemplateDependencies(
+                            c,
                             c.files.rnv.pluginTemplates.configs[k].pluginTemplateDependencies,
-                            k);
+                            k
+                        );
                     } else {
                         logWarning(`Plugin scope ${val.npm} is not installed yet.`);
                     }
@@ -593,7 +562,7 @@ const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'roo
 //     .replace(/\+/g, '\\+')
 //     .replace(/ /g, ' {1,}');
 // Alternative Regex seem more accurate
-const getCleanRegExString = str => str.replace(/[-\\.,_*+?^$[\](){}!=|`]/ig, '\\$&');
+const getCleanRegExString = (str) => str.replace(/[-\\.,_*+?^$[\](){}!=|`]/gi, '\\$&');
 
 const _overridePlugin = (c, pluginsPath, dir) => {
     const source = path.resolve(pluginsPath, dir, 'overrides');
@@ -603,27 +572,29 @@ const _overridePlugin = (c, pluginsPath, dir) => {
     const plugin = getMergedPlugin(c, dir);
     let flavourSource;
     if (plugin) {
-        flavourSource = path.resolve(
-            pluginsPath,
-            dir,
-            `overrides@${plugin.version}`
-        );
+        flavourSource = path.resolve(pluginsPath, dir, `overrides@${plugin.version}`);
     }
 
     if (flavourSource && fsExistsSync(flavourSource)) {
-        logInfo(`${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(flavourSource.split('node_modules').pop())}`);
+        logInfo(
+            `${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(
+                flavourSource.split('node_modules').pop()
+            )}`
+        );
         copyFolderContentsRecursiveSync(flavourSource, dest, false);
     } else if (fsExistsSync(source)) {
-        logInfo(`${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(source.split('node_modules').pop())}`);
+        logInfo(
+            `${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(
+                source.split('node_modules').pop()
+            )}`
+        );
         copyFolderContentsRecursiveSync(source, dest, false);
         // fsReaddirSync(pp).forEach((dir) => {
         //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
         // });
     } else {
         logDebug(
-            `Your plugin configuration has no override path ${chalk().white(
-                source
-            )}. skipping folder override action`
+            `Your plugin configuration has no override path ${chalk().white(source)}. skipping folder override action`
         );
     }
 
@@ -661,9 +632,7 @@ const _overridePlugin = (c, pluginsPath, dir) => {
             const override = overrides[k];
             if (fsExistsSync(ovDir)) {
                 if (fsLstatSync(ovDir).isDirectory()) {
-                    logWarning(
-                        'overrides.json: Directories not supported yet. specify path to actual file'
-                    );
+                    logWarning('overrides.json: Directories not supported yet. specify path to actual file');
                 } else {
                     overrideFileContents(ovDir, override, overridePath);
                 }
@@ -690,20 +659,36 @@ export const overrideFileContents = (dest, override, overridePath = '') => {
                     failTerms.push(fk);
                 } else {
                     foundRegEx = true;
-                    logInfo(`${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(overridePath.split('node_modules').pop())}`);
+                    logInfo(
+                        `${chalk().white(dest.split('node_modules').pop())} overriden by: ${chalk().white(
+                            overridePath.split('node_modules').pop()
+                        )}`
+                    );
                 }
             } else {
                 foundRegEx = true;
                 fileToFix = fileToFix.replace(regEx, override[fk]);
-                logSuccess(`${chalk().white(dest.split('node_modules').pop())} requires override by: ${chalk().white(overridePath.split('node_modules').pop())}. FIXING...DONE`);
+                logSuccess(
+                    `${chalk().white(dest.split('node_modules').pop())} requires override by: ${chalk().white(
+                        overridePath.split('node_modules').pop()
+                    )}. FIXING...DONE`
+                );
             }
         });
         if (!foundRegEx) {
-            failTerms.forEach((term) => {
-                logWarning(`No Match found in ${chalk().red(
-                    dest.split('node_modules').pop()
-                )} for expression: ${chalk().gray(term)}. source: ${chalk().white(overridePath.split('node_modules').pop())}`);
-            });
+            if (overridePath !== 'REACT_CORE_OVERRIDES') {
+                // We only warn against user defined overrides.
+                failTerms.forEach((term) => {
+                    logWarning(
+                        `No Match found in ${chalk().red(
+                            dest.split('node_modules').pop()
+                        )} for expression: ${chalk().gray(term)}. source: ${chalk().white(
+                            overridePath.split('node_modules').pop()
+                        )}`
+                    );
+                });
+            }
+            return;
         }
         fsWriteFileSync(dest, fileToFix);
     } else {
@@ -762,7 +747,9 @@ export const checkForPluginDependencies = async (c) => {
             const answer = await inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${Object.keys(toAdd).join(', ')}?`,
-                warningMessage: `One or more dependencies are not installed: ${chalk().white(Object.keys(toAdd).join(', '))}`
+                warningMessage: `One or more dependencies are not installed: ${chalk().white(
+                    Object.keys(toAdd).join(', ')
+                )}`,
             });
             install = answer.confirm;
         } else {
@@ -773,7 +760,7 @@ export const checkForPluginDependencies = async (c) => {
         if (install) {
             c.files.project.config_original.plugins = {
                 ...c.files.project.config_original.plugins,
-                ...toAdd
+                ...toAdd,
             };
             writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
             // Need to reload merged files
@@ -790,25 +777,30 @@ export const overrideTemplatePlugins = async (c) => {
     const rnvPluginsDirs = c.paths.rnv.pluginTemplates.dirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
     const appBasePluginDir = c.paths.project.appConfigBase.pluginsDir;
-    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
-        if (plugin?._scopes?.length) {
-            plugin._scopes.forEach((pluginScope) => {
-                const pluginOverridePath = rnvPluginsDirs[pluginScope];
-                if (pluginOverridePath) {
-                    _overridePlugin(c, pluginOverridePath, key);
-                }
-            });
-        }
-
-        if (appBasePluginDir) {
-            _overridePlugin(c, appBasePluginDir, key);
-        }
-        if (appPluginDirs) {
-            for (let k = 0; k < appPluginDirs.length; k++) {
-                _overridePlugin(c, appPluginDirs[k], key);
+    parsePlugins(
+        c,
+        c.platform,
+        (plugin, pluginPlat, key) => {
+            if (plugin?._scopes?.length) {
+                plugin._scopes.forEach((pluginScope) => {
+                    const pluginOverridePath = rnvPluginsDirs[pluginScope];
+                    if (pluginOverridePath) {
+                        _overridePlugin(c, pluginOverridePath, key);
+                    }
+                });
             }
-        }
-    }, true);
+
+            if (appBasePluginDir) {
+                _overridePlugin(c, appBasePluginDir, key);
+            }
+            if (appPluginDirs) {
+                for (let k = 0; k < appPluginDirs.length; k++) {
+                    _overridePlugin(c, appPluginDirs[k], key);
+                }
+            }
+        },
+        true
+    );
     return true;
 };
 
@@ -818,23 +810,18 @@ export const copyTemplatePluginsSync = (c) => {
 
     logTask('copyTemplatePluginsSync', `(${destPath})`);
 
-
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         const objectInject = [...c.configPropsInjects];
         if (plugin.props) {
             Object.keys(plugin.props).forEach((v) => {
                 objectInject.push({
                     pattern: `{{props.${v}}}`,
-                    override: plugin.props[v]
+                    override: plugin.props[v],
                 });
             });
         }
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
-        const sourcePathRnvPlugin = getBuildsFolder(
-            c,
-            platform,
-            path.join(c.paths.rnv.pluginTemplates.dir, key)
-        );
+        const sourcePathRnvPlugin = getBuildsFolder(c, platform, path.join(c.paths.rnv.pluginTemplates.dir, key));
         copyFolderContentsRecursiveSync(sourcePathRnvPlugin, destPath, true, false, false, objectInject);
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
@@ -849,10 +836,7 @@ export const copyTemplatePluginsSync = (c) => {
         const sourcePath3secLegacy = getBuildsFolder(
             c,
             platform,
-            path.join(
-                c.paths.workspace.project.appConfigBase.dir_LEGACY,
-                `plugins/${key}`
-            )
+            path.join(c.paths.workspace.project.appConfigBase.dir_LEGACY, `plugins/${key}`)
         );
         copyFolderContentsRecursiveSync(sourcePath3secLegacy, destPath, true, false, false, objectInject);
 
@@ -860,10 +844,7 @@ export const copyTemplatePluginsSync = (c) => {
         const sourcePath3sec = getBuildsFolder(
             c,
             platform,
-            path.join(
-                c.paths.workspace.project.appConfigBase.dir,
-                `plugins/${key}`
-            )
+            path.join(c.paths.workspace.project.appConfigBase.dir, `plugins/${key}`)
         );
         copyFolderContentsRecursiveSync(sourcePath3sec, destPath, true, false, false, objectInject);
 
@@ -873,11 +854,7 @@ export const copyTemplatePluginsSync = (c) => {
         }
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN
-        const sourcePath2 = getBuildsFolder(
-            c,
-            platform,
-            path.join(c.paths.appConfig.dir, `plugins/${key}`)
-        );
+        const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfig.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2, destPath, true, false, false, objectInject);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
@@ -893,11 +870,7 @@ export const copyTemplatePluginsSync = (c) => {
             if (pathKey !== 'rnv') {
                 const pluginTemplatePath = c.paths.rnv.pluginTemplates.dirs[pathKey];
 
-                const sourcePath4sec = getBuildsFolder(
-                    c,
-                    platform,
-                    path.join(pluginTemplatePath, key)
-                );
+                const sourcePath4sec = getBuildsFolder(c, platform, path.join(pluginTemplatePath, key));
                 copyFolderContentsRecursiveSync(sourcePath4sec, destPath, true, false, false, objectInject);
             }
         });
@@ -911,7 +884,7 @@ export const sanitizePluginPath = (str, name, mandatory, options) => {
             newStr = str.replace('{{PLUGIN_ROOT}}', doResolve(name, mandatory, options));
         }
     } catch (e) {
-    // Ignore
+        // Ignore
     }
     return newStr;
 };
@@ -929,12 +902,11 @@ export const getLocalRenativePlugin = () => ({
         modulePaths: [],
         moduleAliases: {
             renative: {
-                projectPath: 'packages/renative'
-            }
-        }
-    }
+                projectPath: 'packages/renative',
+            },
+        },
+    },
 });
-
 
 export const getModuleConfigs = (c, primaryKey) => {
     let modulePaths = [];
@@ -943,47 +915,52 @@ export const getModuleConfigs = (c, primaryKey) => {
     const doNotResolveModulePaths = [];
 
     // PLUGINS
-    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
-        const webpackConfig = plugin[primaryKey] || plugin.webpack || plugin.webpackConfig;
+    parsePlugins(
+        c,
+        c.platform,
+        (plugin, pluginPlat, key) => {
+            const webpackConfig = plugin[primaryKey] || plugin.webpack || plugin.webpackConfig;
 
-        if (webpackConfig) {
-            if (webpackConfig.modulePaths) {
-                if (webpackConfig.modulePaths === false) {
-                    // ignore
-                } else if (webpackConfig.modulePaths === true) {
-                    modulePaths.push(`node_modules/${key}`);
-                } else {
-                    webpackConfig.modulePaths.forEach((v) => {
-                        if (typeof v === 'string') {
-                            modulePaths.push(v);
-                        } else if (includesPluginPath(v.projectPath)) {
-                            doNotResolveModulePaths.push(sanitizePluginPath(v.projectPath, key));
-                        } else if (v?.projectPath) {
-                            doNotResolveModulePaths.push(path.join(c.paths.project.dir, v.projectPath));
-                        }
-                    });
+            if (webpackConfig) {
+                if (webpackConfig.modulePaths) {
+                    if (webpackConfig.modulePaths === false) {
+                        // ignore
+                    } else if (webpackConfig.modulePaths === true) {
+                        modulePaths.push(`node_modules/${key}`);
+                    } else {
+                        webpackConfig.modulePaths.forEach((v) => {
+                            if (typeof v === 'string') {
+                                modulePaths.push(v);
+                            } else if (includesPluginPath(v.projectPath)) {
+                                doNotResolveModulePaths.push(sanitizePluginPath(v.projectPath, key));
+                            } else if (v?.projectPath) {
+                                doNotResolveModulePaths.push(path.join(c.paths.project.dir, v.projectPath));
+                            }
+                        });
+                    }
+                }
+                if (webpackConfig.moduleAliases) {
+                    if (webpackConfig.moduleAliases === true) {
+                        moduleAliases[key] = doResolvePath(key, true, {}, c.paths.project.nodeModulesDir);
+                    } else {
+                        Object.keys(webpackConfig.moduleAliases).forEach((aKey) => {
+                            const mAlias = webpackConfig.moduleAliases[aKey];
+                            if (typeof mAlias === 'string') {
+                                moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
+                            } else if (mAlias.path) {
+                                moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
+                            } else if (includesPluginPath(mAlias.projectPath)) {
+                                moduleAliases[key] = sanitizePluginPath(mAlias.projectPath, key);
+                            } else if (mAlias.projectPath) {
+                                moduleAliases[key] = path.join(c.paths.project.dir, mAlias.projectPath);
+                            }
+                        });
+                    }
                 }
             }
-            if (webpackConfig.moduleAliases) {
-                if (webpackConfig.moduleAliases === true) {
-                    moduleAliases[key] = doResolvePath(key, true, {}, c.paths.project.nodeModulesDir);
-                } else {
-                    Object.keys(webpackConfig.moduleAliases).forEach((aKey) => {
-                        const mAlias = webpackConfig.moduleAliases[aKey];
-                        if (typeof mAlias === 'string') {
-                            moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
-                        } else if (mAlias.path) {
-                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
-                        } else if (includesPluginPath(mAlias.projectPath)) {
-                            moduleAliases[key] = sanitizePluginPath(mAlias.projectPath, key);
-                        } else if (mAlias.projectPath) {
-                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.projectPath);
-                        }
-                    });
-                }
-            }
-        }
-    }, true);
+        },
+        true
+    );
 
     const moduleAliasesArray = [];
     Object.keys(moduleAliases).forEach((key) => {
@@ -991,11 +968,10 @@ export const getModuleConfigs = (c, primaryKey) => {
     });
 
     modulePaths = modulePaths
-        .map(v => doResolvePath(v, true, {}, c.paths.project.dir))
+        .map((v) => doResolvePath(v, true, {}, c.paths.project.dir))
         .concat(doNotResolveModulePaths)
         .concat([c.paths.project.assets.dir])
         .filter(Boolean);
-
 
     return { modulePaths, moduleAliases, moduleAliasesArray };
 };

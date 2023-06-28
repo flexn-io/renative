@@ -1,14 +1,7 @@
 import { TaskManager, Constants, Logger } from 'rnv';
 
 const { logTask } = Logger;
-const {
-    TASK_EXPORT,
-    TASK_DEPLOY,
-    ANDROID_TV,
-    FIRE_TV,
-    TVOS,
-    PARAMS
-} = Constants;
+const { TASK_EXPORT, TASK_DEPLOY, ANDROID_TV, FIRE_TV, TVOS, PARAMS } = Constants;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {

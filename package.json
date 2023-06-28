@@ -1,6 +1,6 @@
 {
-    "name": "renative-wrapper",
-    "version": "0.37.0-rc.5",
+    "name": "@flexn/renative-monorepo",
+    "version": "0.37.0-rc.6",
     "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`, `Linux` and `Chromecast` platforms",
     "keywords": [
         "android tv",
@@ -38,9 +38,9 @@
         "webos",
         "windows"
     ],
-    "homepage": "https://github.com/renative-org/renative#readme",
+    "homepage": "https://github.com/flexn-io/renative#readme",
     "bugs": {
-        "url": "https://github.com/renative-org/renative/issues"
+        "url": "https://github.com/flexn-io/renative/issues"
     },
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
@@ -55,12 +55,12 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git://github.com/renative-org/renative.git"
+        "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
         "bootstrap": "yarn run link:rnv && npx lerna bootstrap && yarn build",
         "bootstrap-clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
-        "build": "npx lerna run --parallel --concurrency 1 build",
+        "build": "lerna run build",
         "build:clean": "npx lerna run --parallel --concurrency 1 build:clean",
         "deploy-all": "yarn build && yarn test && yarn deploy-prepare && npm run git-commit-tag",
         "deploy-prepare": "rnv hooks run -x prePublish -r",
@@ -81,44 +81,39 @@
         "lint": "npx eslint ./packages",
         "postinstall": "npx lerna link --force-local && npx jetify",
         "prepare": "husky install",
+        "prettier-write-all": "npx prettier '**/*.{js,jsx,ts,tsx,mjs,cjs,json,md}' --write --config .prettierrc.js",
+        "prettier-write-json": "npx prettier '**/{package.json,renative.plugins.json,renative.json}' --write --config .prettierrc.js",
         "test": "jest",
         "tsc": "lerna run --parallel tsc",
-        "watch": "npx lerna run --parallel --concurrency 2 watch"
-    },
-    "dependencies": {
-        "deepmerge": "3.2.0",
-        "simple-git": "3.12.0"
+        "watch": "npx lerna exec yarn watch --parallel",
+        "watch-alt": "npx lerna run compile & npx lerna watch -- lerna run compile"
     },
     "devDependencies": {
         "@babel/eslint-parser": "7.17.0",
         "@babel/plugin-transform-runtime": "7.8.3",
         "@babel/preset-react": "7.16.7",
         "@babel/runtime": "7.12.5",
-        "@flexn/typescript": "0.1.4",
-        "@types/jest": "^27.0.2",
-        "@types/node": "^16.11.7",
+        "@flexn/eslint-config": "0.1.5",
+        "@flexn/prettier-config": "0.1.4",
+        "@flexn/typescript": "0.3.0",
+        "@types/jest": "~27.0.2",
+        "@types/node": "~16.11.7",
         "@typescript-eslint/eslint-plugin": "^5.4.0",
         "@typescript-eslint/parser": "^5.4.0",
         "babel-jest": "26.6.3",
         "babel-plugin-module-resolver": "3.2.0",
         "babel-plugin-polyfill-corejs2": "0.2.2",
-        "eslint": "8.10.0",
-        "eslint-config-airbnb": "19.0.4",
-        "eslint-plugin-detox": "1.0.0",
-        "eslint-plugin-import": "2.25.4",
-        "eslint-plugin-jest": "23.8.2",
-        "eslint-plugin-jsx-a11y": "6.2.3",
-        "eslint-plugin-mocha": "6.3.0",
-        "eslint-plugin-prettier": "3.0.1",
-        "eslint-plugin-react": "7.29.3",
-        "eslint-plugin-react-hooks": "4.3.0",
+        "deepmerge": "3.2.0",
+        "eslint": "8.40.0",
+        "eslint-config-prettier": "8.8.0",
         "husky": "^7.0.0",
         "jest": "27.5.1",
-        "lerna": "5.4.2",
+        "lerna": "6.6.2",
         "lint-staged": "12.3.4",
-        "prettier": "1.17.1",
+        "prettier": "2.3.1",
         "pretty-quick": "1.11.0",
-        "rnv": "0.37.0-rc.5",
+        "rnv": "0.37.0-rc.6",
+        "simple-git": "3.12.0",
         "ts-jest": "^27.0.7",
         "ttab": "^0.7.2",
         "typescript": "4.9.5"
@@ -151,7 +146,6 @@
             "@expo/next-adapter",
             "@expo/webpack-config",
             "@expo/**",
-            "reantive-app",
             "execa"
         ]
     },

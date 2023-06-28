@@ -2,7 +2,8 @@ import { isPlatformSupported } from '../../core/platformManager';
 import { chalk, logTask } from '../../core/systemManager/logger';
 
 import { checkSdk } from '../../core/sdkManager/installer';
-import { IOS,
+import {
+    IOS,
     ANDROID,
     TVOS,
     TIZEN,
@@ -10,17 +11,17 @@ import { IOS,
     ANDROID_TV,
     FIRE_TV,
     ANDROID_WEAR,
-    TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH,
-    PARAMS } from '../../core/constants';
+    TASK_WORKSPACE_CONFIGURE,
+    TASK_TARGET_LAUNCH,
+    PARAMS,
+} from '../../core/constants';
 
 import { listTizenTargets } from '../../core/sdkManager/deviceUtils/tizen';
 import { listWebOSTargets } from '../../core/sdkManager/deviceUtils/webos';
 import { listAndroidTargets } from '../../core/sdkManager/deviceUtils/android';
 import { listAppleDevices } from '../../core/sdkManager/deviceUtils/apple';
 
-
 import { executeTask } from '../../core/taskManager';
-
 
 export const taskRnvTargetList = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetList');
@@ -47,9 +48,7 @@ export const taskRnvTargetList = async (c, parentTask, originTask) => {
             return listWebOSTargets(c);
         default:
             return Promise.reject(
-                `"target list" command does not support ${chalk().white.bold(
-                    platform
-                )} platform yet. Working on it!`
+                `"target list" command does not support ${chalk().white.bold(platform)} platform yet. Working on it!`
             );
     }
 };
@@ -60,5 +59,5 @@ export default {
     task: 'target list',
     params: PARAMS.withBase(),
     platforms: [],
-    isGlobalScope: true
+    isGlobalScope: true,
 };

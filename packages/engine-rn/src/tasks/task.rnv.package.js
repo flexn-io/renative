@@ -4,19 +4,8 @@ import { packageBundleForXcode } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
-const {
-    IOS,
-    MACOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    TASK_PACKAGE,
-    TASK_CONFIGURE,
-    PARAMS
-} = Constants;
+const { IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_PACKAGE, TASK_CONFIGURE, PARAMS } = Constants;
 const { getConfigProp } = Common;
-
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
@@ -54,12 +43,5 @@ export default {
     fn: taskRnvPackage,
     task: 'package',
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        IOS,
-        MACOS,
-        ANDROID,
-        ANDROID_TV,
-        FIRE_TV,
-        ANDROID_WEAR,
-    ],
+    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };

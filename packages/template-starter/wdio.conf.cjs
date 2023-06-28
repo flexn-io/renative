@@ -16,7 +16,7 @@ const capabilities = {
             platformVersion: '15.5',
             automationName: 'XCUITest',
             bundleId: 'renative.helloworld.test',
-            app: 'platformBuilds/template_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app'
+            app: 'platformBuilds/template_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app',
         },
     ],
     tvos: [
@@ -26,7 +26,7 @@ const capabilities = {
             platformVersion: '15.4',
             automationName: 'XCUITest',
             bundleId: 'renative.helloworld.test',
-            app: 'platformBuilds/template_tvos/build/RNVAppTVOS/Build/Products/Debug-appletvsimulator/RNVAppTVOS.app'
+            app: 'platformBuilds/template_tvos/build/RNVAppTVOS/Build/Products/Debug-appletvsimulator/RNVAppTVOS.app',
         },
     ],
     android: [
@@ -37,7 +37,7 @@ const capabilities = {
             automationName: 'UiAutomator2',
             appPackage: 'renative.helloworld.test',
             appActivity: 'renative.helloworld.test.MainActivity',
-            app: 'platformBuilds/template_android/app/build/outputs/apk/debug/app-debug.apk'
+            app: 'platformBuilds/template_android/app/build/outputs/apk/debug/app-debug.apk',
         },
     ],
     androidtv: [
@@ -48,7 +48,7 @@ const capabilities = {
             automationName: 'UiAutomator2',
             appPackage: 'renative.helloworld.test',
             appActivity: 'renative.helloworld.test.MainActivity',
-            app: 'platformBuilds/template_androidtv/app/build/outputs/apk/debug/app-debug.apk'
+            app: 'platformBuilds/template_androidtv/app/build/outputs/apk/debug/app-debug.apk',
         },
     ],
     macos: [
@@ -176,11 +176,11 @@ exports.config = {
     ...(process.env.PLATFORM === 'web' && {
         services: ['selenium-standalone'],
     }),
-    ...((process.env.PLATFORM === 'ios'
-        || process.env.PLATFORM === 'tvos'
-        || process.env.PLATFORM === 'android'
-        || process.env.PLATFORM === 'androidtv'
-        || process.env.PLATFORM === 'macos') && {
+    ...((process.env.PLATFORM === 'ios' ||
+        process.env.PLATFORM === 'tvos' ||
+        process.env.PLATFORM === 'android' ||
+        process.env.PLATFORM === 'androidtv' ||
+        process.env.PLATFORM === 'macos') && {
         services: [
             [
                 'appium',

@@ -2,13 +2,7 @@ import { Constants, Logger, PlatformManager, TaskManager } from 'rnv';
 import { SDKElectron } from '../sdks';
 
 const { logTask } = Logger;
-const {
-    MACOS,
-    WINDOWS,
-    LINUX,
-    TASK_BUILD, TASK_PACKAGE,
-    PARAMS
-} = Constants;
+const { MACOS, WINDOWS, LINUX, TASK_BUILD, TASK_PACKAGE, PARAMS } = Constants;
 const { logErrorPlatform } = PlatformManager;
 const { buildElectron } = SDKElectron;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
@@ -37,9 +31,5 @@ export default {
     fn: taskRnvBuild,
     task: TASK_BUILD,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        MACOS,
-        WINDOWS,
-        LINUX
-    ],
+    platforms: [MACOS, WINDOWS, LINUX],
 };

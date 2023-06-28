@@ -23,20 +23,14 @@ export const replaceHomeFolder = (p) => {
 export default {
     android: {
         sdkUrl: `https://dl.google.com/android/repository/sdk-tools-${androidPlatform}-4333796.zip`,
-        downloadLocation: replaceHomeFolder(
-            `~/sdk-tools-${androidPlatform}-4333796.zip`
-        ),
-        location: replaceHomeFolder('~/Android')
+        downloadLocation: replaceHomeFolder(`~/sdk-tools-${androidPlatform}-4333796.zip`),
+        location: replaceHomeFolder('~/Android'),
     },
     tizen: {
-        sdkUrl: `http://download.tizen.org/sdk/Installer/tizen-studio_3.3/web-ide_Tizen_Studio_3.3_${
-            tizenPlatform
-        }-64.${tizenExtension}`,
-        downloadLocation: replaceHomeFolder(
-            `~/web-ide_Tizen_Studio_3.3_${tizenPlatform}-64.${tizenExtension}`
-        )
+        sdkUrl: `http://download.tizen.org/sdk/Installer/tizen-studio_3.3/web-ide_Tizen_Studio_3.3_${tizenPlatform}-64.${tizenExtension}`,
+        downloadLocation: replaceHomeFolder(`~/web-ide_Tizen_Studio_3.3_${tizenPlatform}-64.${tizenExtension}`),
     },
     webos: {
-        downloadLink: 'http://webostv.developer.lge.com/sdk/installation/#'
-    }
+        downloadLink: 'http://webostv.developer.lge.com/sdk/installation/#',
+    },
 };

@@ -1,4 +1,3 @@
-/* eslint-disable global-require, import/no-dynamic-require */
 import path from 'path';
 import { fsExistsSync } from '../systemManager/fileutils';
 // import { getScopedVersion } from '../systemManager/utils';
@@ -26,12 +25,14 @@ export const loadIntegrations = async (c) => {
                     });
                 }
             } catch (err) {
-                logWarning(`You have integration ${integration} defined, but it wasn't found in package.json. ERR: ${err}`);
+                logWarning(
+                    `You have integration ${integration} defined, but it wasn't found in package.json. ERR: ${err}`
+                );
             }
         });
     }
 };
 
 export const registerIntegration = () => {
-
+    //Do nothing
 };

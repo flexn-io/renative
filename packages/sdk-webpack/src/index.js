@@ -4,73 +4,67 @@ import axios from 'axios';
 import open from 'better-opn';
 import path from 'path';
 import commandExists from 'command-exists';
-import { Common, Constants, EngineManager, Exec, Logger, PlatformManager, PluginManager, ProjectManager, FileUtils } from 'rnv';
+import {
+    Common,
+    Constants,
+    EngineManager,
+    Exec,
+    Logger,
+    PlatformManager,
+    PluginManager,
+    ProjectManager,
+    FileUtils,
+} from 'rnv';
 // import { fsExistsSync, fsWriteFileSync } from 'rnv/dist/core/systemManager/fileutils';
 // import { runServer } from './scripts/start';
 
 const { isPlatformActive } = PlatformManager;
 const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
-const {
-    checkPortInUse,
-    getConfigProp,
-    confirmActiveBundler,
-    getPlatformProjectDir,
-    getDevServerHost,
-    waitForHost
-} = Common;
-const {
-    chalk,
-    logTask,
-    logInfo,
-    logWarning,
-    logSuccess,
-    logRaw,
-    logError,
-    logSummary
-} = Logger;
+const { checkPortInUse, getConfigProp, confirmActiveBundler, getPlatformProjectDir, getDevServerHost, waitForHost } =
+    Common;
+const { chalk, logTask, logInfo, logWarning, logSuccess, logRaw, logError, logSummary } = Logger;
 const { generateEnvVars } = EngineManager;
 const { getModuleConfigs } = PluginManager;
 const { REMOTE_DEBUG_PORT } = Constants;
 const { executeAsync } = Exec;
 const { copyFileSync, fsExistsSync } = FileUtils;
 
-export const waitForUrl = url => new Promise((resolve, reject) => {
-    let attempts = 0;
-    const maxAttempts = 10;
-    const CHECK_INTEVAL = 2000;
-    const interval = setInterval(() => {
-        axios.get(url)
-            .then(() => {
-                resolve(true);
-            })
-            .catch(() => {
-                attempts++;
-                if (attempts > maxAttempts) {
-                    clearInterval(interval);
-                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                    return reject(
-                        "Can't connect to webpack. Try restarting it."
-                    );
-                }
-            });
-    }, CHECK_INTEVAL);
-});
+export const waitForUrl = (url) =>
+    new Promise((resolve, reject) => {
+        let attempts = 0;
+        const maxAttempts = 10;
+        const CHECK_INTEVAL = 2000;
+        const interval = setInterval(() => {
+            axios
+                .get(url)
+                .then(() => {
+                    resolve(true);
+                })
+                .catch(() => {
+                    attempts++;
+                    if (attempts > maxAttempts) {
+                        clearInterval(interval);
+                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                        return reject("Can't connect to webpack. Try restarting it.");
+                    }
+                });
+        }, CHECK_INTEVAL);
+    });
 
-const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
-    logTask(
-        '_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`
-    );
-    if (!c.runtime.shouldOpenBrowser) return resolve();
-    const wait = waitForHost(c, '')
-        .then(() => {
-            open(`http://${devServerHost}:${port}/`);
-        })
-        .catch((e) => {
-            logWarning(e);
-        });
-    if (alreadyStarted) return wait; // if it's already started, return the promise so it rnv will wait, otherwise it will exit before opening the browser
-    return resolve();
-});
+const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) =>
+    new Promise((resolve) => {
+        logTask('_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`);
+        if (!c.runtime.shouldOpenBrowser) return resolve();
+        const wait = waitForHost(c, '')
+            .then(() => {
+                open(`http://${devServerHost}:${port}/`);
+            })
+            .catch((e) => {
+                logWarning(e);
+            });
+        if (alreadyStarted) return wait; // if it's already started, return the promise so it rnv will wait, otherwise it will exit before opening the browser
+        return resolve();
+    });
 
 const _runRemoteDebuggerChii = async (c, obj) => {
     const { debugIp } = c.program;
@@ -79,8 +73,7 @@ const _runRemoteDebuggerChii = async (c, obj) => {
 
         const resolvedDebugIp = debugIp || getDevServerHost(c);
         logInfo(
-            `Starting a remote debugger build with ip ${
-                resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
+            `Starting a remote debugger build with ip ${resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
         );
 
         const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}`);
@@ -102,7 +95,9 @@ Debugger running at: ${debugUrl}`);
         process.env.RNV_INJECTED_WEBPACK_SCRIPTS = `${process.env.RNV_INJECTED_WEBPACK_SCRIPTS || ''}
         \n<script src="http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/target.js"></script>`;
     } catch (e) {
-        logWarning(`You are missing chii. You can install via ${chalk().white('npm i -g chii')}) Trying to use weinre next`);
+        logWarning(
+            `You are missing chii. You can install via ${chalk().white('npm i -g chii')}) Trying to use weinre next`
+        );
     }
 
     return true;
@@ -115,8 +110,7 @@ const _runRemoteDebuggerWeinre = async (c, obj) => {
 
         const resolvedDebugIp = debugIp || getDevServerHost(c);
         logInfo(
-            `Starting a remote debugger build with ip ${
-                resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
+            `Starting a remote debugger build with ip ${resolvedDebugIp}. If this IP is not correct, you can always override it with --debugIp`
         );
 
         const debugUrl = chalk().cyan(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/client/#${c.platform}`);
@@ -135,8 +129,9 @@ Debugger running at: ${debugUrl}`);
         }
         obj.remoteDebuggerActive = true;
         process.env.RNV_INJECTED_WEBPACK_SCRIPTS = `${process.env.RNV_INJECTED_WEBPACK_SCRIPTS || ''}
-        \n<script src="http://${resolvedDebugIp}:${
-    REMOTE_DEBUG_PORT}/target/target-script-min.js#${c.platform}"></script>`;
+        \n<script src="http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/target/target-script-min.js#${
+            c.platform
+        }"></script>`;
     } catch (e) {
         logWarning(`You are missing weinre. Skipping debug. install via ${chalk().white('npm i -g weinre')}`);
     }
@@ -154,7 +149,10 @@ export const _runWebDevServer = async (c, enableRemoteDebugger) => {
     try {
         const reactDevUtilsPath = require.resolve('react-dev-utils/clearConsole');
         if (fsExistsSync(reactDevUtilsPath)) {
-            copyFileSync(path.join(__dirname, '../nodeModuleOverrides/react-dev-utils/clearConsole.js'), reactDevUtilsPath);
+            copyFileSync(
+                path.join(__dirname, '../nodeModuleOverrides/react-dev-utils/clearConsole.js'),
+                reactDevUtilsPath
+            );
         }
     } catch (e) {
         // Do nothing
@@ -167,10 +165,7 @@ export const _runWebDevServer = async (c, enableRemoteDebugger) => {
     if (c.runtime.webpackTarget) {
         process.env.WEBPACK_TARGET = c.runtime.webpackTarget;
     }
-    process.env.RNV_EXTERNAL_PATHS = [
-        c.paths.project.assets.dir,
-        c.paths.project.dir,
-    ].join(',');
+    process.env.RNV_EXTERNAL_PATHS = [c.paths.project.assets.dir, c.paths.project.dir].join(',');
 
     const debugObj = { remoteDebuggerActive: false };
     let debugOrder = [_runRemoteDebuggerChii, _runRemoteDebuggerWeinre];
@@ -200,15 +195,13 @@ export const buildCoreWebpackProject = async (c) => {
     if (c.runtime.webpackTarget) {
         process.env.WEBPACK_TARGET = c.runtime.webpackTarget;
     }
-    process.env.RNV_EXTERNAL_PATHS = [
-        c.paths.project.assets.dir,
-        c.paths.project.dir,
-    ].join(',');
+    process.env.RNV_EXTERNAL_PATHS = [c.paths.project.assets.dir, c.paths.project.dir].join(',');
 
     if (debug) {
         logInfo(
-            `Starting a remote debugger build with ip ${debugIp
-                    || getDevServerHost(c)}. If this IP is not correct, you can always override it with --debugIp`
+            `Starting a remote debugger build with ip ${
+                debugIp || getDevServerHost(c)
+            }. If this IP is not correct, you can always override it with --debugIp`
         );
         // process.env.RNV_INJECTED_WEBPACK_SCRIPTS += `DEBUG_IP=${debugIp || ip.address()}`;
     }
@@ -216,7 +209,6 @@ export const buildCoreWebpackProject = async (c) => {
     const build = require('./scripts/build').default;
     await build();
 };
-
 
 export const configureCoreWebProject = async () => {
     logTask('configureCoreWebProject');
@@ -242,11 +234,7 @@ export const runWebpackServer = async (c, enableRemoteDebugger) => {
 
     if (!isPortActive) {
         logInfo(
-            `Your ${chalk().white(
-                platform
-            )} devServerHost ${chalk().white(
-                devServerHost
-            )} at port ${chalk().white(
+            `Your ${chalk().white(platform)} devServerHost ${chalk().white(devServerHost)} at port ${chalk().white(
                 port
             )} is not running. Starting it up for you...`
         );
@@ -294,9 +282,7 @@ export const waitForWebpack = async (c, suffix = 'assets/bundle.js') => {
                     if (attempts === maxAttempts) {
                         clearInterval(interval);
                         // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                        return reject(
-                            "Can't connect to webpack. Try restarting it."
-                        );
+                        return reject("Can't connect to webpack. Try restarting it.");
                     }
                 })
                 .catch(() => {
@@ -304,16 +290,14 @@ export const waitForWebpack = async (c, suffix = 'assets/bundle.js') => {
                     if (attempts > maxAttempts) {
                         clearInterval(interval);
                         // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                        return reject(
-                            "Can't connect to webpack. Try restarting it."
-                        );
+                        return reject("Can't connect to webpack. Try restarting it.");
                     }
                 });
         }, CHECK_INTEVAL);
     });
 };
 
-export const buildWeb = async c => buildCoreWebpackProject(c);
+export const buildWeb = async (c) => buildCoreWebpackProject(c);
 
 export const configureWebProject = async (c) => {
     logTask('configureWebProject');

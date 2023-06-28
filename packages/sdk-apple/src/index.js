@@ -2,13 +2,21 @@ import child_process from 'child_process';
 import crypto from 'crypto';
 import inquirer from 'inquirer';
 import path from 'path';
-import { Common, Constants, EngineManager, Exec, FileUtils, Logger, PlatformManager, ProjectManager, Resolver, SDKManager } from 'rnv';
+import {
+    Common,
+    Constants,
+    EngineManager,
+    Exec,
+    FileUtils,
+    Logger,
+    PlatformManager,
+    ProjectManager,
+    Resolver,
+    SDKManager,
+} from 'rnv';
 import { getAppFolderName } from './common';
 import { registerDevice } from './fastlane';
-import {
-    parseEntitlementsPlist, parseExportOptionsPlist,
-    parseInfoPlist
-} from './plistParser';
+import { parseEntitlementsPlist, parseExportOptionsPlist, parseInfoPlist } from './plistParser';
 import { parsePodFile } from './podfileParser';
 import { parseAppDelegate } from './swiftParser';
 import { parseXcodeProject } from './xcodeParser';
@@ -17,54 +25,29 @@ import { ejectXcodeProject } from './ejector';
 
 const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
-const {
-    fsExistsSync,
-    copyFileSync,
-    mkdirSync,
-    writeFileSync,
-    fsWriteFileSync,
-    fsReadFileSync
-} = FileUtils;
+const { fsExistsSync, copyFileSync, mkdirSync, writeFileSync, fsWriteFileSync, fsReadFileSync } = FileUtils;
 const { executeAsync, commandExistsSync } = Exec;
-const {
-    getAppFolder,
-    getConfigProp,
-    getIP,
-} = Common;
+const { getAppFolder, getConfigProp, getIP } = Common;
 const { generateEnvVars } = EngineManager;
 const { doResolve } = Resolver;
 const { isPlatformActive } = PlatformManager;
-const {
-    copyAssetsFolder,
-    copyBuildsFolder,
-    parseFonts
-} = ProjectManager;
+const { copyAssetsFolder, copyBuildsFolder, parseFonts } = ProjectManager;
 
 const { IOS, MACOS, TVOS } = Constants;
-const {
-    chalk,
-    logInfo,
-    logTask,
-    logError,
-    logWarning,
-    logDebug,
-    logSuccess,
-    logRaw
-} = Logger;
+const { chalk, logInfo, logTask, logError, logWarning, logDebug, logSuccess, logRaw } = Logger;
 
-export const generateChecksum = (str, algorithm, encoding) => crypto
-    .createHash(algorithm || 'md5')
-    .update(str, 'utf8')
-    .digest(encoding || 'hex');
+export const generateChecksum = (str, algorithm, encoding) =>
+    crypto
+        .createHash(algorithm || 'md5')
+        .update(str, 'utf8')
+        .digest(encoding || 'hex');
 
 const checkIfPodsIsRequired = async (c) => {
     const appFolder = getAppFolder(c, c.platform);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
     if (!fsExistsSync(podChecksumPath)) return true;
     const podChecksum = fsReadFileSync(podChecksumPath).toString();
-    const podContentChecksum = generateChecksum(
-        fsReadFileSync(path.join(appFolder, 'Podfile')).toString()
-    );
+    const podContentChecksum = generateChecksum(fsReadFileSync(path.join(appFolder, 'Podfile')).toString());
 
     if (podChecksum !== podContentChecksum) {
         logDebug('runCocoaPods:isMandatory');
@@ -80,9 +63,7 @@ const updatePodsChecksum = (c) => {
     logTask('updatePodsChecksum');
     const appFolder = getAppFolder(c, c.platform);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
-    const podContentChecksum = generateChecksum(
-        fsReadFileSync(path.join(appFolder, 'Podfile')).toString()
-    );
+    const podContentChecksum = generateChecksum(fsReadFileSync(path.join(appFolder, 'Podfile')).toString());
     if (fsExistsSync(podChecksumPath)) {
         const existingContent = fsReadFileSync(podChecksumPath).toString();
         if (existingContent !== podContentChecksum) {
@@ -109,32 +90,31 @@ const runCocoaPods = async (c) => {
 
     if (podsRequired) {
         if (!commandExistsSync('pod')) {
-            throw new Error(
-                'Cocoapods not installed. Please run `sudo gem install cocoapods`'
-            );
+            throw new Error('Cocoapods not installed. Please run `sudo gem install cocoapods`');
         }
 
         try {
             await executeAsync(c, 'pod install', {
                 cwd: appFolder,
-                env: process.env
+                env: process.env,
             });
         } catch (e) {
             const s = e?.toString ? e.toString() : '';
-            const isGenericError = s.includes('No provisionProfileSpecifier configured')
-                || s.includes('TypeError:')
-                || s.includes('ReferenceError:')
-                || s.includes('find gem cocoapods');
-            if (isGenericError) { return new Error(`pod install failed with:\n ${s}`); }
-            logWarning(
-                `pod install is not enough! Let's try pod update! Error:\n ${s}`
-            );
+            const isGenericError =
+                s.includes('No provisionProfileSpecifier configured') ||
+                s.includes('TypeError:') ||
+                s.includes('ReferenceError:') ||
+                s.includes('find gem cocoapods');
+            if (isGenericError) {
+                return new Error(`pod install failed with:\n ${s}`);
+            }
+            logWarning(`pod install is not enough! Let's try pod update! Error:\n ${s}`);
             return executeAsync(c, 'pod update', {
                 cwd: appFolder,
-                env: process.env
+                env: process.env,
             })
                 .then(() => updatePodsChecksum(c))
-                .catch(er => Promise.reject(er));
+                .catch((er) => Promise.reject(er));
         }
 
         updatePodsChecksum(c);
@@ -142,19 +122,20 @@ const runCocoaPods = async (c) => {
     }
 };
 
-const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) => {
-    logTask('copyAppleAssets');
-    if (!isPlatformActive(c, platform, resolve)) return;
+const copyAppleAssets = (c, platform, appFolderName) =>
+    new Promise((resolve) => {
+        logTask('copyAppleAssets');
+        if (!isPlatformActive(c, platform, resolve)) return;
 
-    const appFolder = getAppFolder(c);
+        const appFolder = getAppFolder(c);
 
-    // ASSETS
-    fsWriteFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
-    mkdirSync(path.join(appFolder, 'assets'));
-    mkdirSync(path.join(appFolder, `${appFolderName}/images`));
+        // ASSETS
+        fsWriteFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
+        mkdirSync(path.join(appFolder, 'assets'));
+        mkdirSync(path.join(appFolder, `${appFolderName}/images`));
 
-    resolve();
-});
+        resolve();
+    });
 
 export const runXcodeProject = async (c) => {
     logTask('runXcodeProject', `target:${c.runtime.target}`);
@@ -177,9 +158,9 @@ export const runXcodeProject = async (c) => {
     if (device === true) {
         if (devicesArr.length === 1) {
             logSuccess(
-                `Found one device connected! device name: ${chalk().white(
-                    devicesArr[0].name
-                )} udid: ${chalk().white(devicesArr[0].udid)}`
+                `Found one device connected! device name: ${chalk().white(devicesArr[0].name)} udid: ${chalk().white(
+                    devicesArr[0].udid
+                )}`
             );
             if (devicesArr[0].udid) {
                 p = `--udid ${devicesArr[0].udid}`;
@@ -189,13 +170,7 @@ export const runXcodeProject = async (c) => {
             }
         } else if (devicesArr.length > 1) {
             const run = (selectedDevice) => {
-                logDebug(
-                    `Selected device: ${JSON.stringify(
-                        selectedDevice,
-                        null,
-                        3
-                    )}`
-                );
+                logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
                 c.runtime.targetUDID = selectedDevice.udid;
                 if (selectedDevice.udid) {
                     p = `--udid ${selectedDevice.udid}`;
@@ -207,38 +182,33 @@ export const runXcodeProject = async (c) => {
 
                 if (bundleAssets) {
                     logDebug('Assets will be bundled');
-                    return packageBundleForXcode(
-                        c,
-                        bundleIsDev
-                    ).then(() => _checkLockAndExec(c, appPath, appFolderName, runScheme, p));
+                    return packageBundleForXcode(c, bundleIsDev).then(() =>
+                        _checkLockAndExec(c, appPath, appFolderName, runScheme, p)
+                    );
                 }
                 return _checkLockAndExec(c, appPath, appFolderName, runScheme, p);
             };
 
             if (c.runtime.target !== true) {
-                const selectedDevice = devicesArr.find(
-                    d => d.name === c.runtime.target
-                );
+                const selectedDevice = devicesArr.find((d) => d.name === c.runtime.target);
                 if (selectedDevice) {
                     return run(selectedDevice);
                 }
                 logWarning(`Could not find device ${c.runtime.target}`);
             }
 
-            const devices = devicesArr.map(v => ({
-                name: `${v.name} | ${v.icon} | v: ${chalk().green(
-                    v.version
-                )} | udid: ${chalk().grey(v.udid)}${
+            const devices = devicesArr.map((v) => ({
+                name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
                     v.isDevice ? chalk().red(' (device)') : ''
                 }`,
-                value: v
+                value: v,
             }));
 
             const { sim } = await inquirer.prompt({
                 name: 'sim',
                 message: 'Select the device you want to launch on',
                 type: 'list',
-                choices: devices
+                choices: devices,
             });
 
             if (sim) {
@@ -250,20 +220,18 @@ export const runXcodeProject = async (c) => {
     } else if (device) {
         p = `--device ${device}`;
     } else if (c.runtime.target === true) {
-        const devices = devicesArr.map(v => ({
-            name: `${v.name} | ${v.icon} | v: ${chalk().green(
-                v.version
-            )} | udid: ${chalk().grey(v.udid)}${
+        const devices = devicesArr.map((v) => ({
+            name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
                 v.isDevice ? chalk().red(' (device)') : ''
             }`,
-            value: v
+            value: v,
         }));
 
         const { sim } = await inquirer.prompt({
             name: 'sim',
             message: 'Select the device you want to launch on',
             type: 'list',
-            choices: devices
+            choices: devices,
         });
         c.runtime.target = sim.name;
         if (c.runtime.target) {
@@ -271,36 +239,36 @@ export const runXcodeProject = async (c) => {
         }
     } else if (c.runtime.target) {
         // check if the default sim is available
-        const desiredSim = devicesArr.find(d => d.name === c.runtime.target && !d.isDevice);
+        const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
         if (!desiredSim) {
             const { sim } = await inquirer.prompt({
                 name: 'sim',
-                message: `We couldn't find ${c.runtime.target
-                } as a device supported by the current version of your Xcode. Please select another sim`,
+                message: `We couldn't find ${c.runtime.target} as a device supported by the current version of your Xcode. Please select another sim`,
                 type: 'list',
-                choices: devicesArr.filter(d => !d.isDevice).map(v => ({
-                    name: `${v.name} | ${v.icon} | v: ${chalk().green(
-                        v.version
-                    )} | udid: ${chalk().grey(v.udid)}${
-                        v.isDevice ? chalk().red(' (device)') : ''
-                    }`,
-                    value: v
-                }))
+                choices: devicesArr
+                    .filter((d) => !d.isDevice)
+                    .map((v) => ({
+                        name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
+                            v.isDevice ? chalk().red(' (device)') : ''
+                        }`,
+                        value: v,
+                    })),
             });
 
             const localOverridden = !!c.files.project.configLocal?.defaultTargets?.[c.platform];
 
             const actionLocalUpdate = `Update ${chalk().green('project')} default target for platform ${c.platform}`;
-            const actionGlobalUpdate = `Update ${chalk().green('global')}${localOverridden ? ` and ${chalk().green('project')}` : ''} default target for platform ${c.platform}`;
-            const actionNoUpdate = 'Don\'t update';
+            const actionGlobalUpdate = `Update ${chalk().green('global')}${
+                localOverridden ? ` and ${chalk().green('project')}` : ''
+            } default target for platform ${c.platform}`;
+            const actionNoUpdate = "Don't update";
 
             const { chosenAction } = await inquirer.prompt({
                 message: 'What to do next?',
                 type: 'list',
                 name: 'chosenAction',
                 choices: [actionLocalUpdate, actionGlobalUpdate, actionNoUpdate],
-                warningMessage: `Your default target for platform ${c.platform
-                } is set to ${c.runtime.target}. This seems to not be supported by Xcode anymore`
+                warningMessage: `Your default target for platform ${c.platform} is set to ${c.runtime.target}. This seems to not be supported by Xcode anymore`,
             });
 
             c.runtime.target = sim.name;
@@ -340,21 +308,15 @@ export const runXcodeProject = async (c) => {
             await _handleMissingTeam(c, e);
         }
 
-
-        return executeAsync(c, `open ${
-            path.join(appPath, `build/RNVApp/Build/Products/${
-                runScheme}-maccatalyst/RNVApp.app`)}`);
+        return executeAsync(
+            c,
+            `open ${path.join(appPath, `build/RNVApp/Build/Products/${runScheme}-maccatalyst/RNVApp.app`)}`
+        );
     }
     await launchAppleSimulator(c, c.runtime.target);
 
-
     if (p) {
-        const allowProvisioningUpdates = getConfigProp(
-            c,
-            c.platform,
-            'allowProvisioningUpdates',
-            true
-        );
+        const allowProvisioningUpdates = getConfigProp(c, c.platform, 'allowProvisioningUpdates', true);
         if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
         return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, appFolderName, runScheme, p);
     }
@@ -363,8 +325,7 @@ export const runXcodeProject = async (c) => {
 
 const _packageOrRun = (c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p) => {
     if (bundleAssets) {
-        return packageBundleForXcode(c, bundleIsDev)
-            .then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
+        return packageBundleForXcode(c, bundleIsDev).then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
     }
     return _checkLockAndExec(c, appPath, scheme, runScheme, p);
 };
@@ -392,19 +353,15 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
                 await inquirer.prompt({
                     message: 'Unlock your device and press ENTER',
                     type: 'confirm',
-                    name: 'confirm'
+                    name: 'confirm',
                 });
                 return executeAsync(c, cmd);
             }
-            const isDeviceNotRegistered = e.includes(
-                "doesn't include the currently selected device"
-            );
+            const isDeviceNotRegistered = e.includes("doesn't include the currently selected device");
             if (isDeviceNotRegistered) {
                 logError(e);
                 logWarning(
-                    `${c.platform} DEVICE: ${chalk().white(
-                        c.runtime.target
-                    )} with UDID: ${chalk().white(
+                    `${c.platform} DEVICE: ${chalk().white(c.runtime.target)} with UDID: ${chalk().white(
                         c.runtime.targetUDID
                     )} is not included in your provisionong profile in TEAM: ${chalk().white(
                         getConfigProp(c, c.platform, 'teamID')
@@ -413,7 +370,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
                 const { confirm } = await inquirer.prompt({
                     name: 'confirm',
                     message: 'Do you want to register it?',
-                    type: 'confirm'
+                    type: 'confirm',
                 });
                 if (confirm) {
                     await registerDevice(c);
@@ -434,15 +391,9 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
                     "Your iOS App Development provisioning profiles don't match. under manual signing mode"
                 );
             }
-            const isProvisioningMissing = e.includes(
-                'requires a provisioning profile'
-            );
+            const isProvisioningMissing = e.includes('requires a provisioning profile');
             if (isProvisioningMissing) {
-                return _handleProvisioningIssues(
-                    c,
-                    e,
-                    'Your iOS App requires a provisioning profile'
-                );
+                return _handleProvisioningIssues(c, e, 'Your iOS App requires a provisioning profile');
             }
         }
 
@@ -458,7 +409,7 @@ ${chalk().white('Run app and observe any extra errors')}
 
 ${chalk().yellow('IF ALL HOPE IS LOST:')}
 Raise new issue and copy this SUMMARY box output at:
-${chalk().white('https://github.com/renative-org/renative/issues')}
+${chalk().white('https://github.com/flexn-io/renative/issues')}
 and we will try to help!
 
 `);
@@ -466,25 +417,21 @@ and we will try to help!
 };
 
 const _handleMissingTeam = async (c, e) => {
-    const isDevelopmentTeamMissing = e.includes(
-        'requires a development team. Select a development team'
-    );
+    const isDevelopmentTeamMissing = e.includes('requires a development team. Select a development team');
     if (isDevelopmentTeamMissing) {
-        const loc = `./appConfigs/${
-            c.runtime.appId
-        }/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
+        const loc = `./appConfigs/${c.runtime.appId}/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
         logError(e);
         logWarning(`You need specify the development team if you want to run app on ${
             c.platform
         } device. this can be set manually in ${chalk().white(loc)}
   You can find correct teamID in the URL of your apple developer account: ${chalk().white(
-        'https://developer.apple.com/account/#/overview/YOUR-TEAM-ID'
-    )}
+      'https://developer.apple.com/account/#/overview/YOUR-TEAM-ID'
+  )}
 Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.config})`);
         const { confirm } = await inquirer.prompt({
             name: 'confirm',
             message: 'Apple Team ID',
-            type: 'input'
+            type: 'input',
         });
         if (confirm) {
             await _setDevelopmentTeam(c, confirm);
@@ -502,32 +449,26 @@ const _handleProvisioningIssues = async (c, e, msg) => {
     const isProvAutomatic = provisioningStyle === 'Automatic';
     const proAutoText = isProvAutomatic
         ? ''
-        : `${chalk().white('[4]>')} Switch to automatic signing for appId: ${
-            c.runtime.appId
-        } , platform: ${c.platform}, scheme: ${c.runtime.scheme}`;
+        : `${chalk().white('[4]>')} Switch to automatic signing for appId: ${c.runtime.appId} , platform: ${
+              c.platform
+          }, scheme: ${c.runtime.scheme}`;
     const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
-    const workspacePath = chalk().white(
-        `${getAppFolder(c, c.platform)}/${appFolderName}.xcworkspace`
-    );
+    const workspacePath = chalk().white(`${getAppFolder(c, c.platform)}/${appFolderName}.xcworkspace`);
     logError(e);
     logWarning(`${msg}. To fix try:
-${chalk().white(
-        '[1]>'
-    )} Configure your certificates, provisioning profiles correctly manually
+${chalk().white('[1]>')} Configure your certificates, provisioning profiles correctly manually
 ${chalk().white('[2]>')} Try to generate matching profiles with ${chalk().white(
-    fixCommand
-)} (you need correct priviledges in apple developer portal)
+        fixCommand
+    )} (you need correct priviledges in apple developer portal)
 ${chalk().white(
-        '[3]>'
-    )} Open generated project in Xcode: ${
-    workspacePath
-} and debug from there (Sometimes this helps for the first-time builds)
+    '[3]>'
+)} Open generated project in Xcode: ${workspacePath} and debug from there (Sometimes this helps for the first-time builds)
 ${proAutoText}`);
     if (isProvAutomatic) return false;
     const { confirmAuto } = await inquirer.prompt({
         name: 'confirmAuto',
         message: 'Switch to automatic signing?',
-        type: 'confirm'
+        type: 'confirm',
     });
     if (confirmAuto) {
         await _setAutomaticSigning(c);
@@ -541,18 +482,14 @@ ${proAutoText}`);
 const _setAutomaticSigning = async (c) => {
     logTask(`_setAutomaticSigning:${c.platform}`);
 
-    const scheme = c.files.appConfig?.config?.platforms?.[c.platform]?.buildSchemes?.[
-        c.runtime.scheme
-    ];
+    const scheme = c.files.appConfig?.config?.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
     if (scheme) {
         scheme.provisioningStyle = 'Automatic';
         writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
         logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
     } else {
         return Promise.reject(
-            `Failed to update ${c.paths.appConfig?.config}."platforms": { "${
-                c.platform
-            }": { buildSchemes: { "${c.runtime.scheme}" ... Object is null. Try update file manually`
+            `Failed to update ${c.paths.appConfig?.config}."platforms": { "${c.platform}": { buildSchemes: { "${c.runtime.scheme}" ... Object is null. Try update file manually`
         );
     }
 };
@@ -568,9 +505,7 @@ const _setDevelopmentTeam = async (c, teamID) => {
         c.files.appConfig.config_original.platforms[c.platform].teamID = teamID;
     } catch (e) {
         return Promise.reject(
-            `Failed to update ${c.paths.appConfig?.config}."platforms": { "${
-                c.platform
-            }" ... Object is null. Try update file manually`
+            `Failed to update ${c.paths.appConfig?.config}."platforms": { "${c.platform}" ... Object is null. Try update file manually`
         );
     }
     writeFileSync(c.paths.appConfig.config, c.files.appConfig.config_original);
@@ -578,15 +513,9 @@ const _setDevelopmentTeam = async (c, teamID) => {
 };
 
 const composeXcodeArgsFromCLI = (string) => {
-    const spacesReplaced = string.replace(
-        /\s(?=(?:[^'"`]*(['"`])[^'"`]*\1)*[^'"`]*$)/g,
-        '&&&'
-    ); // replaces spaces outside quotes with &&& for easy split
+    const spacesReplaced = string.replace(/\s(?=(?:[^'"`]*(['"`])[^'"`]*\1)*[^'"`]*$)/g, '&&&'); // replaces spaces outside quotes with &&& for easy split
     const keysAndValues = spacesReplaced.split('&&&');
-    const unescapedValues = keysAndValues.map(s => s
-        .replace(/'/g, '')
-        .replace(/"/g, '')
-        .replace(/\\/g, '')); // removes all quotes or backslashes
+    const unescapedValues = keysAndValues.map((s) => s.replace(/'/g, '').replace(/"/g, '').replace(/\\/g, '')); // removes all quotes or backslashes
 
     return unescapedValues;
 };
@@ -627,12 +556,7 @@ export const buildXcodeProject = async (c) => {
 
     const appPath = getAppFolder(c);
     const buildPath = path.join(appPath, `build/${appFolderName}`);
-    const allowProvisioningUpdates = getConfigProp(
-        c,
-        platform,
-        'allowProvisioningUpdates',
-        true
-    );
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
     let ps = '';
     if (c.program.xcodebuildArgs) {
@@ -668,7 +592,9 @@ export const buildXcodeProject = async (c) => {
 
     p.push('build');
 
-    if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) { p.push('-allowProvisioningUpdates'); }
+    if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) {
+        p.push('-allowProvisioningUpdates');
+    }
     if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
 
     logTask('buildXcodeProject', 'STARTING xcodebuild BUILD...');
@@ -710,12 +636,7 @@ const archiveXcodeProject = (c) => {
     const appPath = getAppFolder(c);
     const exportPath = path.join(appPath, 'release');
 
-    const allowProvisioningUpdates = getConfigProp(
-        c,
-        platform,
-        'allowProvisioningUpdates',
-        true
-    );
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
     const exportPathArchive = `${exportPath}/${appFolderName}.xcarchive`;
     let ps = '';
@@ -746,12 +667,13 @@ const archiveXcodeProject = (c) => {
         p.push(exportPathArchive);
     }
 
-    if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) { p.push('-allowProvisioningUpdates'); }
+    if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) {
+        p.push('-allowProvisioningUpdates');
+    }
     if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
     // if (sdk === 'iphonesimulator') p.push('ONLY_ACTIVE_ARCH=NO', "-destination='name=iPhone 7,OS=10.2'");
 
     logTask('archiveXcodeProject', 'STARTING xcodebuild ARCHIVE...');
-
 
     const args = ps !== '' ? [...composeXcodeArgsFromCLI(ps), ...p] : p;
 
@@ -773,12 +695,7 @@ const exportXcodeProject = async (c) => {
     const exportPath = path.join(appPath, 'release');
 
     const appFolderName = getAppFolderName(c, c.platform);
-    const allowProvisioningUpdates = getConfigProp(
-        c,
-        platform,
-        'allowProvisioningUpdates',
-        true
-    );
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
 
     let ps = '';
@@ -797,7 +714,9 @@ const exportXcodeProject = async (c) => {
         p.push(`-exportPath ${exportPath}`);
     }
 
-    if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) { p.push('-allowProvisioningUpdates'); }
+    if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) {
+        p.push('-allowProvisioningUpdates');
+    }
     if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
 
     logDebug('running', p);
@@ -823,7 +742,7 @@ export const packageBundleForXcode = (c, isDev = false) => {
         '--entry-file',
         `${c.buildConfig.platforms[c.platform].entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c, c.platform)}/main.jsbundle`
+        `${getAppFolder(c, c.platform)}/main.jsbundle`,
     ];
 
     if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
@@ -835,40 +754,39 @@ export const packageBundleForXcode = (c, isDev = false) => {
         args.push('--verbose');
     }
 
-    return executeAsync(c, `node ${doResolve(
-        c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
-    )}/local-cli/cli.js ${args.join(' ')} --config=${c.runtime.runtimeExtraProps?.reactNativeMetroConfigName || 'metro.config.js'}`, { env: { ...generateEnvVars(c) } });
+    return executeAsync(
+        c,
+        `node ${doResolve(
+            c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
+        )}/local-cli/cli.js ${args.join(' ')} --config=${
+            c.runtime.runtimeExtraProps?.reactNativeMetroConfigName || 'metro.config.js'
+        }`,
+        { env: { ...generateEnvVars(c) } }
+    );
 };
 
 // Resolve or reject will not be called so this will keep running
-const runAppleLog = c => new Promise(() => {
-    logTask('runAppleLog');
-    const filter = c.program.filter || 'RNV';
-    const child = child_process.execFile(
-        'xcrun',
-        [
-            'simctl',
-            'spawn',
-            'booted',
-            'log',
-            'stream',
-            '--predicate',
-            `eventMessage contains "${filter}"`
-        ],
-        { stdio: 'inherit', customFds: [0, 1, 2] }
-    );
+const runAppleLog = (c) =>
+    new Promise(() => {
+        logTask('runAppleLog');
+        const filter = c.program.filter || 'RNV';
+        const child = child_process.execFile(
+            'xcrun',
+            ['simctl', 'spawn', 'booted', 'log', 'stream', '--predicate', `eventMessage contains "${filter}"`],
+            { stdio: 'inherit', customFds: [0, 1, 2] }
+        );
         // use event hooks to provide a callback to execute when data are available:
-    child.stdout.on('data', (data) => {
-        const d = data.toString();
-        if (d.toLowerCase().includes('error')) {
-            logRaw(chalk().red(d));
-        } else if (d.toLowerCase().includes('success')) {
-            logRaw(chalk().green(d));
-        } else {
-            logRaw(d);
-        }
+        child.stdout.on('data', (data) => {
+            const d = data.toString();
+            if (d.toLowerCase().includes('error')) {
+                logRaw(chalk().red(d));
+            } else if (d.toLowerCase().includes('success')) {
+                logRaw(chalk().green(d));
+            } else {
+                logRaw(d);
+            }
+        });
     });
-});
 
 const configureXcodeProject = async (c) => {
     logTask('configureXcodeProject');
@@ -908,14 +826,13 @@ const configureXcodeProject = async (c) => {
                 didRegisterForRemoteNotificationsWithDeviceToken: [],
                 continue: [],
                 didConnectCarInterfaceController: [],
-                didDisconnectCarInterfaceController: []
-
+                didDisconnectCarInterfaceController: [],
             },
             userNotificationCenter: {
-                willPresent: []
-            }
+                willPresent: [],
+            },
         },
-        podfileSources: ''
+        podfileSources: '',
     };
 
     // FONTS
@@ -941,10 +858,7 @@ const configureXcodeProject = async (c) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
             const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
-            if (
-                includedFonts
-                && (includedFonts.includes('*') || includedFonts.includes(key))
-            ) {
+            if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
                 const fontSource = path.join(dir, font);
                 if (fsExistsSync(fontSource)) {
                     const fontFolder = path.join(appFolder, 'fonts');
@@ -953,8 +867,8 @@ const configureXcodeProject = async (c) => {
                     copyFileSync(fontSource, fontDest);
 
                     if (
-                        !c.pluginConfigiOS.ignoreProjectFonts.includes(font)
-                        && !embeddedFontSourcesCheck.includes(font)
+                        !c.pluginConfigiOS.ignoreProjectFonts.includes(font) &&
+                        !embeddedFontSourcesCheck.includes(font)
                     ) {
                         c.pluginConfigiOS.embeddedFontSources.push(fontSource);
                         embeddedFontSourcesCheck.push(font);
@@ -964,11 +878,7 @@ const configureXcodeProject = async (c) => {
                         c.pluginConfigiOS.embeddedFonts.push(font);
                     }
                 } else {
-                    logWarning(
-                        `Font ${chalk().white(
-                            fontSource
-                        )} doesn't exist! Skipping.`
-                    );
+                    logWarning(`Font ${chalk().white(fontSource)} doesn't exist! Skipping.`);
                 }
             }
         }
@@ -986,14 +896,7 @@ const configureXcodeProject = async (c) => {
 
     await copyAssetsFolder(c, platform, appFolderName);
     await copyAppleAssets(c, platform, appFolderName);
-    await parseAppDelegate(
-        c,
-        platform,
-        appFolder,
-        appFolderName,
-        bundleAssets,
-        bundlerIp
-    );
+    await parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp);
     await parseExportOptionsPlist(c, platform);
     await parseXcscheme(c, platform);
     await parsePodFile(c, platform);
@@ -1012,5 +915,5 @@ export {
     ejectXcodeProject,
     exportXcodeProject,
     archiveXcodeProject,
-    runAppleLog
+    runAppleLog,
 };

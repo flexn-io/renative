@@ -1,17 +1,7 @@
 import { TaskManager, Constants, Logger } from 'rnv';
 
 const { logTask } = Logger;
-const {
-    TASK_EXPORT,
-    TASK_DEPLOY,
-    IOS,
-    MACOS,
-    ANDROID,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    PARAMS
-} = Constants;
+const { TASK_EXPORT, TASK_DEPLOY, IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, PARAMS } = Constants;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvDeploy = async (c, parentTask, originTask) => {
@@ -30,12 +20,5 @@ export default {
     fn: taskRnvDeploy,
     task: TASK_DEPLOY,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [
-        IOS,
-        MACOS,
-        ANDROID,
-        ANDROID_TV,
-        FIRE_TV,
-        ANDROID_WEAR,
-    ],
+    platforms: [IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR],
 };

@@ -9,11 +9,10 @@ import taskRnvRun from './tasks/task.rnv.run';
 // import taskRnvDeploy from './tasks/task.rnv.deploy';
 // import taskRnvDebug from './tasks/task.rnv.debug';
 
-
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
 export default {
-    initializeRuntimeConfig: c => Config.initializeConfig(c),
+    initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
         // taskRnvPackage,
@@ -32,19 +31,12 @@ export default {
         tizen: {
             defaultPort: 8087,
             isWebHosted: true,
-            extensions: generateEngineExtensions([
-                'lng', 'tizen.tv', 'web.tv', 'tv', 'tizen', 'tv.web', 'web'
-            ], CNF)
-
+            extensions: generateEngineExtensions(['lng', 'tizen.tv', 'web.tv', 'tv', 'tizen', 'tv.web', 'web'], CNF),
         },
         webos: {
             defaultPort: 8088,
             isWebHosted: true,
-            extensions: generateEngineExtensions([
-                'lng', 'webos.tv', 'web.tv', 'tv', 'webos', 'tv.web', 'web'
-            ], CNF)
-
-        }
-    }
-
+            extensions: generateEngineExtensions(['lng', 'webos.tv', 'web.tv', 'tv', 'webos', 'tv.web', 'web'], CNF),
+        },
+    },
 };

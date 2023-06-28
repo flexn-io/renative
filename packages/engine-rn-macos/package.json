@@ -1,13 +1,13 @@
 {
     "name": "@rnv/engine-rn-macos",
-    "version": "0.37.0-rc.5",
+    "version": "0.37.0-rc.6",
     "description": "ReNative Engine to build react-native macOS platform.",
     "keywords": [
         "react-native-macos"
     ],
-    "homepage": "https://github.com/renative-org/renative#readme",
+    "homepage": "https://github.com/flexn-io/renative#readme",
     "bugs": {
-        "url": "https://github.com/renative-org/renative/issues"
+        "url": "https://github.com/flexn-io/renative/issues"
     },
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
@@ -21,7 +21,7 @@
     "main": "dist/index.js",
     "repository": {
         "type": "git",
-        "url": "git://github.com/renative-org/renative.git"
+        "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
         "build": "yarn clean && yarn compile",
@@ -29,10 +29,10 @@
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "prepublishOnly": "yarn clean && yarn compile:prod",
-        "watch": "tsc --watch --preserveWatchOutput"
+        "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
-        "@rnv/sdk-apple": "0.37.0-rc.5"
+        "@rnv/sdk-apple": "0.37.0-rc.6"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",
@@ -43,7 +43,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-rc.5"
+        "rnv": "^0.37.0-rc.6"
     },
     "private": false,
     "publishConfig": {

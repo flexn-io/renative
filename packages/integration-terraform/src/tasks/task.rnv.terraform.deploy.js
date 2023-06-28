@@ -18,11 +18,17 @@ const _checkPrereqs = (c) => {
     }
 
     if (!commandExistsSync('terraform')) {
-        logError('Terraform not found. Please install it then continue (https://learn.hashicorp.com/tutorials/terraform/install-cli)', true);
+        logError(
+            'Terraform not found. Please install it then continue (https://learn.hashicorp.com/tutorials/terraform/install-cli)',
+            true
+        );
     }
 
     if (!c.buildConfig.runtime?.backendServiceEnabled) {
-        logError('Backend service is not enabled, nothing to do here. Change renative.json runtime.backendServiceEnabled = true to get started', true);
+        logError(
+            'Backend service is not enabled, nothing to do here. Change renative.json runtime.backendServiceEnabled = true to get started',
+            true
+        );
     }
 };
 
@@ -57,9 +63,7 @@ export const taskRnvTerraformDeploy = async (c) => {
 
     logInfo('Terraform deployment complete');
 
-    const tfStateFile = JSON.parse(
-        FileUtils.fsReadFileSync(tfStateFilePath)
-    );
+    const tfStateFile = JSON.parse(FileUtils.fsReadFileSync(tfStateFilePath));
 
     c.buildConfig.requiredBackendOutputs?.forEach((output) => {
         const value = lGet(tfStateFile, output.fromKey);
