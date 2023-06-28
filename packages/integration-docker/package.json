@@ -27,7 +27,7 @@
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "prepublishOnly": "yarn clean && yarn compile:prod",
-        "watch": "tsc --watch --preserveWatchOutput"
+        "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
         "get-installed-path": "^4.0.8"

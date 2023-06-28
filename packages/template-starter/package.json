@@ -63,6 +63,7 @@
     },
     "scripts": {
         "bootstrap": "cd ../.. && yarn bootstrap",
+        "watch": "tsc --watch --preserveWatchOutput --noEmit --allowJs",
         "e2e:all": "yarn e2e:ios ; yarn e2e:tvos ; yarn e2e:android ; yarn e2e:androidtv ; yarn e2e:macos ; yarn e2e:web",
         "e2e:android": "PLATFORM=android JAVA_HOME=$(/usr/libexec/java_home) npx wdio wdio.conf.cjs",
         "e2e:androidtv": "PLATFORM=androidtv JAVA_HOME=$(/usr/libexec/java_home) npx wdio wdio.conf.cjs",

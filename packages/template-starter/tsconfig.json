@@ -1,8 +1,10 @@
 {
     "extends": "@flexn/typescript/tsconfig.app.json",
     "compilerOptions": {
-        "outDir": "lib",
-        "rootDir": "."
+        "outDir": "./lib",
+        "rootDir": ".",
+        "noImplicitAny": false
+        // "resolveJsonModule": false
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

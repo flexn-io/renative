@@ -29,7 +29,7 @@
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "lint": "eslint . --ext .ts",
-        "watch": "tsc --watch --preserveWatchOutput"
+        "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
         "execa": "5.1.1",

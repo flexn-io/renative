@@ -57,7 +57,7 @@
         "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
-        "watch": "tsc --watch --preserveWatchOutput"
+        "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "engines": {
         "node": ">=6.0.0",

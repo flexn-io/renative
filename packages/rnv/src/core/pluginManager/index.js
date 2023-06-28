@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 import merge from 'deepmerge';
 import path from 'path';
 import intersection from 'lodash.intersection';
@@ -458,7 +457,17 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
 
 export const loadPluginTemplates = async (c) => {
     logTask('loadPluginTemplates');
-    c.files.rnv.pluginTemplates.config = readObjectSync(c.paths.rnv.pluginTemplates.config);
+
+    const flexnPluginsPath = doResolve('@flexn/plugins');
+    if (!fsExistsSync(flexnPluginsPath)) {
+        return Promise.reject(`RNV Cannot find installed package: ${chalk().white('@flexn/plugins')}`);
+    }
+    const flexnPluginTemplatesPath = path.join(flexnPluginsPath, 'pluginTemplates/renative.plugins.json');
+
+    const flexnPluginTemplates = readObjectSync(flexnPluginTemplatesPath);
+    const rnvPluginTemplates = readObjectSync(c.paths.rnv.pluginTemplates.config);
+
+    c.files.rnv.pluginTemplates.config = merge(flexnPluginTemplates, rnvPluginTemplates);
 
     c.files.rnv.pluginTemplates.configs = {
         rnv: c.files.rnv.pluginTemplates.config,

@@ -26,7 +26,7 @@
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "lint": "eslint . --ext .ts",
-        "watch": "tsc --watch --preserveWatchOutput"
+        "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
         "compare-versions": "3.6.0",
