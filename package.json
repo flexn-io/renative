@@ -146,7 +146,8 @@
             "@expo/next-adapter",
             "@expo/webpack-config",
             "@expo/**",
-            "execa"
+            "execa",
+            "@flexn/plugins"
         ]
     },
     "resolutions": {

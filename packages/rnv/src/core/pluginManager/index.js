@@ -458,9 +458,14 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
 export const loadPluginTemplates = async (c) => {
     logTask('loadPluginTemplates');
 
-    const flexnPluginsPath = doResolve('@flexn/plugins');
+    //This comes from project dependency
+    let flexnPluginsPath = doResolve('@flexn/plugins');
     if (!fsExistsSync(flexnPluginsPath)) {
-        return Promise.reject(`RNV Cannot find installed package: ${chalk().white('@flexn/plugins')}`);
+        //This comes from rnv built-in dependency
+        flexnPluginsPath = path.resolve(__dirname, '../../../node_modules/@flexn/plugins');
+        if (!fsExistsSync(flexnPluginsPath)) {
+            return Promise.reject(`RNV Cannot find package: ${chalk().white(flexnPluginsPath)}`);
+        }
     }
     const flexnPluginTemplatesPath = path.join(flexnPluginsPath, 'pluginTemplates/renative.plugins.json');
 
