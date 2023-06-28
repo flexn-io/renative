@@ -19,6 +19,7 @@ export function testProps(testId: string | undefined) {
 console.disableYellowBox = true; // eslint-disable-line
 
 if (!global.performance) {
+    // @ts-expect-error Performance needs to be typed
     global.performance = {};
 }
 

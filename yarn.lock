@@ -2163,6 +2163,11 @@
     wdio-image-comparison-service "5.0.3"
     wdio-native-app-compare-service "2.1.0"
 
+"@flexn/plugins@1.0.8":
+  version "1.0.8"
+  resolved "https://registry.npmjs.org/@flexn/plugins/-/plugins-1.0.8.tgz#12b132156f7cae3fb4651b1d4c05a3dba955d2bf"
+  integrity sha512-PknR5ivQnV08jTALl5k7oEJDd8EuQSndz1dY7JY43QfXvM+QMhxPyaH1yLMqA/iYAc//2BpRIrFHlEgwwK7+QQ==
+
 "@flexn/prettier-config@0.1.4":
   version "0.1.4"
   resolved "https://registry.npmjs.org/@flexn/prettier-config/-/prettier-config-0.1.4.tgz#3af0d5d2b4c9767214b7fdbe9e683615ba7dfac3"
