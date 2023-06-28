@@ -78,7 +78,7 @@
     },
     "devDependencies": {
         "@flexn/assets-renative-outline": "0.2.0",
-        "@flexn/graybox": "0.21.2-alpha.16",
+        "@flexn/graybox": "0.21.1",
         "@lightningjs/cli": "2.8.0",
         "@lightningjs/sdk": "4.8.3",
         "@react-native-community/cli": "^6.0.0",
