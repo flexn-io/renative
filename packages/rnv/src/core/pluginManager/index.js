@@ -458,13 +458,22 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
 export const loadPluginTemplates = async (c) => {
     logTask('loadPluginTemplates');
 
-    const flexnPluginsPath = doResolve('@flexn/plugins');
+    //This comes from project dependency
+    let flexnPluginsPath = doResolve('@flexn/plugins');
     if (!fsExistsSync(flexnPluginsPath)) {
-        return Promise.reject(`RNV Cannot find installed package: ${chalk().white('@flexn/plugins')}`);
+        //This comes from rnv built-in dependency (installed via npm)
+        flexnPluginsPath = path.resolve(__dirname, '../../../node_modules/@flexn/plugins');
+        if (!fsExistsSync(flexnPluginsPath)) {
+            //This comes from rnv built-in dependency (installed via yarn might install it one level up)
+            flexnPluginsPath = path.resolve(__dirname, '../../../../node_modules/@flexn/plugins');
+            if (!fsExistsSync(flexnPluginsPath)) {
+                return Promise.reject(`RNV Cannot find package: ${chalk().white(flexnPluginsPath)}`);
+            }
+        }
     }
-    const flexnPluginTemplatesPath = path.join(flexnPluginsPath, 'pluginTemplates/renative.plugins.json');
+    const flexnPluginTemplatesPath = path.join(flexnPluginsPath, 'pluginTemplates');
 
-    const flexnPluginTemplates = readObjectSync(flexnPluginTemplatesPath);
+    const flexnPluginTemplates = readObjectSync(path.join(flexnPluginTemplatesPath, 'renative.plugins.json'));
     const rnvPluginTemplates = readObjectSync(c.paths.rnv.pluginTemplates.config);
 
     c.files.rnv.pluginTemplates.config = merge(flexnPluginTemplates, rnvPluginTemplates);
@@ -473,7 +482,7 @@ export const loadPluginTemplates = async (c) => {
         rnv: c.files.rnv.pluginTemplates.config,
     };
 
-    c.paths.rnv.pluginTemplates.dirs = { rnv: c.paths.rnv.pluginTemplates.dir };
+    c.paths.rnv.pluginTemplates.dirs = { rnv: flexnPluginTemplatesPath };
 
     const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
     const missingDeps = _parsePluginTemplateDependencies(c, customPluginTemplates);
