@@ -2144,10 +2144,10 @@
   resolved "https://registry.npmjs.org/@flexn/eslint-config/-/eslint-config-0.1.5.tgz#620d312018a0de1e61ac023c6dc2013d987b79e6"
   integrity sha512-l49bXcYNs9CPNfTRgJQWXS+5FSeW+yYuWOLnM5nuGcs0aD7WGhIaV27H0xnaiCU90jZY9uC613Gd45035gFd0w==
 
-"@flexn/graybox@0.21.2-alpha.16":
-  version "0.21.2-alpha.16"
-  resolved "https://registry.yarnpkg.com/@flexn/graybox/-/graybox-0.21.2-alpha.16.tgz#46031fdee7b1042c2ce8f0837d848ea312ee4f3e"
-  integrity sha512-3KSAe9VEsmSOD5G8tB1Jv6fAQUJV92LI89/n9LMmg4j8xtmvbeeRL7oQaPPWSmgyNWpuYDwymdVBa2rLVLz+fQ==
+"@flexn/graybox@0.21.1":
+  version "0.21.1"
+  resolved "https://registry.yarnpkg.com/@flexn/graybox/-/graybox-0.21.1.tgz#c780b3d311e52f8e027a9f2287509fa8bdd2c6d7"
+  integrity sha512-vMr0M3C+S5RNXYR5xuZY0SzYPpMuli5cNzPxiFuyCzKS5+XLEPt3MqJWTcmBUENUs8X/ZlcqgTmvCNszkHCb1w==
   dependencies:
     "@wdio/allure-reporter" "7.19.5"
     "@wdio/appium-service" "7.19.5"
@@ -2158,7 +2158,7 @@
     "@wdio/spec-reporter" "7.19.5"
     allure-commandline "2.17.2"
     appium "1.22.3"
-    chromedriver "87.0.7"
+    chromedriver "102.0.0"
     wdio-chromedriver-service "7.2.2"
     wdio-image-comparison-service "5.0.3"
     wdio-native-app-compare-service "2.1.0"
@@ -4561,7 +4561,7 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@testim/chrome-version@^1.0.7":
+"@testim/chrome-version@^1.1.2":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@testim/chrome-version/-/chrome-version-1.1.3.tgz#fbb68696899d7b8c1b9b891eded9c04fe2cd5529"
   integrity sha512-g697J3WxV/Zytemz8aTuKjTGYtta9+02kva3C1xc7KXB8GdbfE1akGJIsZLyY/FSh2QrnE+fiB7vmWU3XNcb6A==
@@ -7550,7 +7550,7 @@ axe-core@^4.6.2:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.7.2.tgz#040a7342b20765cb18bb50b628394c21bccc17a0"
   integrity sha512-zIURGIS1E1Q4pcrMjp+nnEh+16G56eG/MUllJH8yEvw7asDo7Ac9uhC9KIH5jzpITueEZolfYglnCGIuSBz39g==
 
-axios@0.21.2, axios@^0.20.0, axios@^0.21.1, axios@^0.21.2, axios@^0.x, axios@^1.0.0:
+axios@0.21.2, axios@^0.20.0, axios@^0.21.2, axios@^0.27.2, axios@^0.x, axios@^1.0.0:
   version "0.21.4"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
@@ -8956,17 +8956,16 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@87.0.7:
-  version "87.0.7"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-87.0.7.tgz#74041e02ff7f633e91b98eb707e2476f713dc4ca"
-  integrity sha512-7J7iN2rJuSDsKb9BUUMewJt07PuTlZYd809D10dUCT1rjMD3i2jUw7dum9RxdC1xO3aFwMd8TwZ5NR82T+S+Dg==
+chromedriver@102.0.0:
+  version "102.0.0"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-102.0.0.tgz#02844c39ee33d1e88ac8c48fbe28cb8423e970a4"
+  integrity sha512-xer/0g1Oarkjc2e+4nyoLgZT4kJHYhcj3PcxD1nEoGJQYEllTjprN1uDpSb4BkgMGo0ydfIS1VDkszrr/J9OOg==
   dependencies:
-    "@testim/chrome-version" "^1.0.7"
-    axios "^0.21.1"
+    "@testim/chrome-version" "^1.1.2"
+    axios "^0.27.2"
     del "^6.0.0"
     extract-zip "^2.0.1"
     https-proxy-agent "^5.0.0"
-    mkdirp "^1.0.4"
     proxy-from-env "^1.1.0"
     tcp-port-used "^1.0.1"
 
