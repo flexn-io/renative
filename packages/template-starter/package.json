@@ -67,7 +67,7 @@
         "e2e:android": "PLATFORM=android JAVA_HOME=$(/usr/libexec/java_home) npx wdio wdio.conf.cjs",
         "e2e:androidtv": "PLATFORM=androidtv JAVA_HOME=$(/usr/libexec/java_home) npx wdio wdio.conf.cjs",
         "e2e:ios": "PLATFORM=ios npx wdio wdio.conf.cjs",
-        "e2e:macos": "PLATFORM=macos ENGINE=macos npx wdio wdio.conf.cjs",
+        "e2e:macos": "PLATFORM=macos ENGINE=electron npx wdio wdio.conf.cjs",
         "e2e:tvos": "PLATFORM=tvos npx wdio wdio.conf.cjs",
         "e2e:web": "PLATFORM=web npx wdio wdio.conf.cjs",
         "report": "yarn report:generate && yarn report:open",
@@ -78,7 +78,7 @@
     },
     "devDependencies": {
         "@flexn/assets-renative-outline": "0.2.0",
-        "@flexn/graybox": "0.21.2-alpha.16",
+        "@flexn/graybox": "0.21.1",
         "@lightningjs/cli": "2.8.0",
         "@lightningjs/sdk": "4.8.3",
         "@react-native-community/cli": "^6.0.0",
