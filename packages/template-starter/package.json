@@ -84,7 +84,6 @@
         "@react-native-community/cli": "^6.0.0",
         "@react-native-community/cli-platform-android": "^6.0.0",
         "@react-native-community/cli-platform-ios": "^6.0.0",
-        "@react-native-windows/cli": "0.67.1",
         "@rnv/engine-lightning": "0.37.0-rc.8",
         "@rnv/engine-rn": "0.37.0-rc.8",
         "@rnv/engine-rn-electron": "0.37.0-rc.8",
@@ -107,7 +106,6 @@
         "react-native": "0.67.2",
         "react-native-tvos": "0.66.3-1",
         "react-native-web": "0.18.0",
-        "react-native-windows": "0.69.4",
         "rnv": "0.37.0-rc.8",
         "xcode": "2.1.0"
     },

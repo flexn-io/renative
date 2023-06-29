@@ -5,7 +5,10 @@
         "id": "com.rnv.myapp",
         "title": "Hello ReNative",
         "description": "ReNative App",
-        "buildSchemes": {}
+        "buildSchemes": {},
+        "runtime": {
+            "welcomeMessage": "Hello ReNative!"
+        }
     },
     "platforms": {}
 }
