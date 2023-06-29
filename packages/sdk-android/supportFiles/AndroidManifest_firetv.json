@@ -22,6 +22,7 @@
             "tools:replace": "android:appComponentFactory",
             "android:appComponentFactory": "appComponentFactoryFix",
             "android:supportsRtl": true,
+            "tools:targetApi": 30,
             "android:usesCleartextTraffic": true,
             "android:theme": "@style/AppTheme",
             "children": [

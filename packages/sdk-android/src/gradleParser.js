@@ -125,6 +125,7 @@ const setReactNativeEngineHermes = (c) => {
 
     c.pluginConfigAndroid.injectHermes = `    enableHermes: true,
 hermesCommand: "{{PATH_HERMES_ENGINE}}/%OS-BIN%/hermes",
+deleteDebugFilesForVariant: { false },
     `;
 };
 

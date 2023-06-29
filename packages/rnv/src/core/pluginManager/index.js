@@ -208,7 +208,7 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
 export const configurePlugins = async (c) => {
     logTask('configurePlugins');
 
-    if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return true;
+    if (c.program.skipDependencyCheck) return true;
 
     if (!c.files.project.package.dependencies) {
         c.files.project.package.dependencies = {};
@@ -220,9 +220,11 @@ export const configurePlugins = async (c) => {
         return;
     }
 
+    const { isTemplate } = c.files.project.config;
     const newDeps = {};
     const newDevDeps = {};
     const { dependencies, devDependencies } = c.files.project.package;
+    const ovMsg = isTemplate ? 'This is template. NO ACTION' : 'package.json will be overriden';
     Object.keys(c.buildConfig.plugins).forEach((k) => {
         const plugin = getMergedPlugin(c, k);
 
@@ -249,7 +251,7 @@ export const configurePlugins = async (c) => {
                         `Version mismatch of dependency ${chalk().white(k)} between:
 ${chalk().white(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
 ${chalk().white(c.paths.project.builds.config)}: v(${chalk().green(plugin.version)}).
-package.json will be overriden`
+${ovMsg}`
                     );
 
                     hasPackageChanged = true;
@@ -266,7 +268,7 @@ package.json will be overriden`
                     logWarning(
                         `Version mismatch of devDependency ${chalk().white(k)} between package.json: v(${chalk().red(
                             devDependencies[k]
-                        )}) and plugins.json: v(${chalk().red(plugin.version)}). package.json will be overriden`
+                        )}) and plugins.json: v(${chalk().red(plugin.version)}). ${ovMsg}`
                     );
                     hasPackageChanged = true;
                     newDevDeps[k] = plugin.version;
@@ -276,9 +278,7 @@ package.json will be overriden`
             // Dependency does not exists
             if (plugin.version) {
                 logInfo(
-                    `Missing dependency ${chalk().white(k)} v(${chalk().red(
-                        plugin.version
-                    )}) in package.json. INSTALLING...DONE`
+                    `Missing dependency ${chalk().white(k)} v(${chalk().red(plugin.version)}) in package.json. ${ovMsg}`
                 );
 
                 hasPackageChanged = true;
@@ -297,16 +297,14 @@ package.json will be overriden`
 - ${k} .npm sub dependencies:
    |- ${npmKey}@${chalk().red(npmDep)}`);
                 } else if (!dependencies[npmKey]) {
-                    logInfo(
-                        `Plugin ${chalk().white(k)} requires npm dependency ${chalk().white(npmKey)}. INSTALLING...DONE`
-                    );
+                    logInfo(`Plugin ${chalk().white(k)} requires npm dependency ${chalk().white(npmKey)}. ${ovMsg}`);
                     newDeps[npmKey] = npmDep;
                     hasPackageChanged = true;
                 } else if (dependencies[npmKey] !== npmDep) {
                     logWarning(
                         `Plugin ${chalk().white(k)} npm dependency ${chalk().white(npmKey)} mismatch (${chalk().red(
                             dependencies[npmKey]
-                        )}) => (${chalk().green(npmDep)}) .updating npm dependency in your package.json`
+                        )}) => (${chalk().green(npmDep)}) .${ovMsg}`
                     );
                     newDeps[npmKey] = npmDep;
                     hasPackageChanged = true;
@@ -314,6 +312,9 @@ package.json will be overriden`
             });
         }
     });
+
+    // When in template we want warnings but NOT file overrides
+    if (isTemplate) return true;
 
     // c.runtime.skipPackageUpdate only reflects rnv version mismatch. should not prevent updating other deps
     if (hasPackageChanged /*! c.runtime.skipPackageUpdate */ && !c.program.skipDependencyCheck) {

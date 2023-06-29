@@ -95,28 +95,6 @@
                 "org.gradle.parallel": true,
                 "org.gradle.configureondemand": true
             },
-            "AndroidManifest": {
-                "children": [
-                    {
-                        "tag": "application",
-                        "android:name": ".MainApplication",
-                        "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 28,
-                        "children": [
-                            {
-                                "tag": "activity",
-                                "android:name": ".MainActivity",
-                                "android:exported": true
-                            },
-                            {
-                                "tag": "activity",
-                                "android:name": ".SplashActivity",
-                                "android:exported": true
-                            }
-                        ]
-                    }
-                ]
-            },
             "mainActivity": {
                 "onCreate": "super.onCreate(null)"
             }
@@ -141,16 +119,6 @@
                 "org.gradle.parallel": true,
                 "org.gradle.configureondemand": true
             },
-            "AndroidManifest": {
-                "children": [
-                    {
-                        "tag": "application",
-                        "android:name": ".MainApplication",
-                        "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 30
-                    }
-                ]
-            },
             "engine": "engine-rn-tvos",
             "includedPermissions": ["INTERNET"]
         },
@@ -173,16 +141,6 @@
                 "org.gradle.daemon": true,
                 "org.gradle.parallel": true,
                 "org.gradle.configureondemand": true
-            },
-            "AndroidManifest": {
-                "children": [
-                    {
-                        "tag": "application",
-                        "android:name": ".MainApplication",
-                        "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 30
-                    }
-                ]
             },
             "includedPermissions": ["INTERNET"],
             "mainActivity": {
@@ -208,16 +166,6 @@
                 "org.gradle.daemon": true,
                 "org.gradle.parallel": true,
                 "org.gradle.configureondemand": true
-            },
-            "AndroidManifest": {
-                "children": [
-                    {
-                        "tag": "application",
-                        "android:name": ".MainApplication",
-                        "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 30
-                    }
-                ]
             },
             "engine": "engine-rn-tvos",
             "includedPermissions": ["INTERNET"]
@@ -247,7 +195,8 @@
         "react-dom": "source:rnv",
         "react-native": "source:rnv",
         "@react-native-community/cli-platform-ios": "source:rnv",
-        "@react-native-community/cli": "source:rnv"
+        "@react-native-community/cli": "source:rnv",
+        "react-native-gesture-handler": "source:rnv"
     },
     "permissions": {
         "ios": {},
