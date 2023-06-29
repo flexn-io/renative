@@ -41,7 +41,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-rc.8"
+        "rnv": "^0.37.0-rc.9"
     },
     "private": false,
     "publishConfig": {
