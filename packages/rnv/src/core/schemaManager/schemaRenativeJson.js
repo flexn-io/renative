@@ -1508,8 +1508,8 @@ export const schemaRoot = {
                     android: 'Nexus_5X_API_26',
                     androidtv: 'Android_TV_1080p_API_22',
                     androidwear: 'Android_Wear_Round_API_28',
-                    ios: 'iPhone 8',
-                    tvos: 'Apple TV 4K',
+                    ios: 'iPhone 14',
+                    tvos: 'Apple TV',
                     tizen: 'T-samsung-5.5-x86',
                     tizenwatch: 'W-5.5-circle-x86',
                     tizenmobile: 'M-5.5-x86',
@@ -1880,8 +1880,8 @@ To skip file overrides coming from source plugin you need to detach it from the 
                     description: 'Override of default targets specific to this project',
                     examples: [
                         {
-                            ios: 'iPhone 8',
-                            tvos: 'Apple TV 4K',
+                            ios: 'iPhone 14',
+                            tvos: 'Apple TV',
                         },
                     ],
                 },
