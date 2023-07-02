@@ -3,7 +3,6 @@ const path = require('path');
 
 let customCapabilities = {};
 if (fs.existsSync(path.join(__dirname, '../../../wdio.capabilities.js'))) {
-    // eslint-disable-next-line global-require, import/no-unresolved
     const { capabilities } = require('../../../wdio.capabilities');
     customCapabilities = capabilities;
 }
@@ -12,7 +11,7 @@ const capabilities = {
     ios: [
         {
             platformName: 'iOS',
-            deviceName: 'iPhone 12',
+            deviceName: 'iPhone 14',
             platformVersion: '15.5',
             automationName: 'XCUITest',
             bundleId: 'renative.helloworld.test',
@@ -53,9 +52,11 @@ const capabilities = {
     ],
     macos: [
         {
-            platformName: 'Mac',
-            automationName: 'Mac2',
-            bundleId: 'renative.helloworld.test',
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+                binary: '../../node_modules/electron/dist/Electron.app/Contents/MacOS/Electron',
+                args: ['app=./platformBuilds/template_macos/build'],
+            },
         },
     ],
     web: [
@@ -176,11 +177,13 @@ exports.config = {
     ...(process.env.PLATFORM === 'web' && {
         services: ['selenium-standalone'],
     }),
+    ...(process.env.PLATFORM === 'macos' && {
+        services: ['chromedriver'],
+    }),
     ...((process.env.PLATFORM === 'ios' ||
         process.env.PLATFORM === 'tvos' ||
         process.env.PLATFORM === 'android' ||
-        process.env.PLATFORM === 'androidtv' ||
-        process.env.PLATFORM === 'macos') && {
+        process.env.PLATFORM === 'androidtv') && {
         services: [
             [
                 'appium',
@@ -197,9 +200,6 @@ exports.config = {
                         }),
                         ...(process.env.PLATFORM === 'androidtv' && {
                             port: 3004,
-                        }),
-                        ...(process.env.PLATFORM === 'macos' && {
-                            port: 3005,
                         }),
                     },
                 },

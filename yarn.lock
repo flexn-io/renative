@@ -1910,6 +1910,13 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
+"@egjs/hammerjs@^2.0.17":
+  version "2.0.17"
+  resolved "https://registry.npmjs.org/@egjs/hammerjs/-/hammerjs-2.0.17.tgz#5dc02af75a6a06e4c2db0202cae38c9263895124"
+  integrity sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==
+  dependencies:
+    "@types/hammerjs" "^2.0.36"
+
 "@electron/get@^1.14.1":
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/@electron/get/-/get-1.14.1.tgz#16ba75f02dffb74c23965e72d617adc721d27f40"
@@ -2134,20 +2141,20 @@
     webpack "4.43.0"
     webpack-manifest-plugin "~2.2.0"
 
-"@flexn/assets-renative-outline@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/@flexn/assets-renative-outline/-/assets-renative-outline-0.2.0.tgz#993de5f885d0efb9e4ab1881c3da9c840601eb68"
-  integrity sha512-Ho2HtgCQ0WCIOfMSLr6O5S8rtCy5E/229UOqf6lrGWysQGnn9/UlHa9Eyc5Ilhpcxbnn9ZFa7UivPYNhOJ9t9w==
+"@flexn/assets-renative-outline@0.3.1":
+  version "0.3.1"
+  resolved "https://registry.npmjs.org/@flexn/assets-renative-outline/-/assets-renative-outline-0.3.1.tgz#378ba3605aa96ae16c6345648a39948d60aa0e8c"
+  integrity sha512-4jIC0LRIbO4MKGTBGOGk1GN8AsE+yQYjOdYVnxusZYn9qcymyI79tQ7LRY8EdHWtzMcYYm4MzFfBJhNcYCKh6g==
 
-"@flexn/eslint-config@0.1.5":
-  version "0.1.5"
-  resolved "https://registry.npmjs.org/@flexn/eslint-config/-/eslint-config-0.1.5.tgz#620d312018a0de1e61ac023c6dc2013d987b79e6"
-  integrity sha512-l49bXcYNs9CPNfTRgJQWXS+5FSeW+yYuWOLnM5nuGcs0aD7WGhIaV27H0xnaiCU90jZY9uC613Gd45035gFd0w==
+"@flexn/eslint-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@flexn/eslint-config/-/eslint-config-1.0.0.tgz#3337945b66c371005ba7b77a0fc11e0c43b5c2f8"
+  integrity sha512-hS3K28xC2PGNJZ9+y7BLMAxuYRqrvmjE9tWWtQOyrmFMfHG+I5PODUJR3B7/NrUVPjIkV+m83HX5aoe68XFh6w==
 
-"@flexn/graybox@0.21.2-alpha.16":
-  version "0.21.2-alpha.16"
-  resolved "https://registry.yarnpkg.com/@flexn/graybox/-/graybox-0.21.2-alpha.16.tgz#46031fdee7b1042c2ce8f0837d848ea312ee4f3e"
-  integrity sha512-3KSAe9VEsmSOD5G8tB1Jv6fAQUJV92LI89/n9LMmg4j8xtmvbeeRL7oQaPPWSmgyNWpuYDwymdVBa2rLVLz+fQ==
+"@flexn/graybox@0.21.1":
+  version "0.21.1"
+  resolved "https://registry.yarnpkg.com/@flexn/graybox/-/graybox-0.21.1.tgz#c780b3d311e52f8e027a9f2287509fa8bdd2c6d7"
+  integrity sha512-vMr0M3C+S5RNXYR5xuZY0SzYPpMuli5cNzPxiFuyCzKS5+XLEPt3MqJWTcmBUENUs8X/ZlcqgTmvCNszkHCb1w==
   dependencies:
     "@wdio/allure-reporter" "7.19.5"
     "@wdio/appium-service" "7.19.5"
@@ -2158,25 +2165,25 @@
     "@wdio/spec-reporter" "7.19.5"
     allure-commandline "2.17.2"
     appium "1.22.3"
-    chromedriver "87.0.7"
+    chromedriver "102.0.0"
     wdio-chromedriver-service "7.2.2"
     wdio-image-comparison-service "5.0.3"
     wdio-native-app-compare-service "2.1.0"
 
-"@flexn/plugins@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.npmjs.org/@flexn/plugins/-/plugins-1.0.8.tgz#12b132156f7cae3fb4651b1d4c05a3dba955d2bf"
-  integrity sha512-PknR5ivQnV08jTALl5k7oEJDd8EuQSndz1dY7JY43QfXvM+QMhxPyaH1yLMqA/iYAc//2BpRIrFHlEgwwK7+QQ==
+"@flexn/plugins@1.0.9":
+  version "1.0.9"
+  resolved "https://registry.npmjs.org/@flexn/plugins/-/plugins-1.0.9.tgz#34b0c24b58729cad3efdd2ce0952645c0f23fcb5"
+  integrity sha512-a0a7VCZBdcuyXxWSbA7cY0/ybmxaF6rqMt8p2SNJ1Trkkv2My4XB4sS2o0by1SiMLEs9axCNPOIFcdDsepRJxg==
 
-"@flexn/prettier-config@0.1.4":
-  version "0.1.4"
-  resolved "https://registry.npmjs.org/@flexn/prettier-config/-/prettier-config-0.1.4.tgz#3af0d5d2b4c9767214b7fdbe9e683615ba7dfac3"
-  integrity sha512-2lTwjEu34Ex3SUNEDSJ7ctLm3yU1pK+Ej/yj7+DLgdWdkoiFf7Q1A4q/VeY5eYmHl6QfNzPnc+D6P3FkqzpCBw==
+"@flexn/prettier-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@flexn/prettier-config/-/prettier-config-1.0.0.tgz#f4e4668aa880d9396831cf19f819d5dba386a38d"
+  integrity sha512-aldtHR0tL1dzpgnVozAVI9wagodsAQzzUHlR8iQCodiK8C9wjsKkZ3xt/6csfA0ErivcK+dUL4VVHQQNt1P2IQ==
 
-"@flexn/typescript@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@flexn/typescript/-/typescript-0.3.0.tgz#733c02bdd9d799145737b5d0c7c6a73fba873ec7"
-  integrity sha512-kN6TxCLHaYJBXQBCj7B62UAx7PcO3VrMqI9NF31RGNMlTz2DkLtuNfvNBl6tiXN+rJOKLgm60EvoEQkdwe4sGw==
+"@flexn/typescript-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@flexn/typescript-config/-/typescript-config-1.0.0.tgz#606a5e764f023a98a95d5b32339018948b418963"
+  integrity sha512-8gQXh7/SoZel9df1SwS6eBlfpUlBlri6GBIdsd3GPwekFOMDIAindeQndQnKYSTprjNm3zOw6gFmWmjYGF229Q==
 
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   version "1.1.3"
@@ -4561,7 +4568,7 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@testim/chrome-version@^1.0.7":
+"@testim/chrome-version@^1.1.2":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@testim/chrome-version/-/chrome-version-1.1.3.tgz#fbb68696899d7b8c1b9b891eded9c04fe2cd5529"
   integrity sha512-g697J3WxV/Zytemz8aTuKjTGYtta9+02kva3C1xc7KXB8GdbfE1akGJIsZLyY/FSh2QrnE+fiB7vmWU3XNcb6A==
@@ -4781,6 +4788,11 @@
   integrity sha512-Sig0SNORX9fdW+bQuTEovKj3uHcUL6LQKbCrrqb1X7J6/ReAbhCXRAhc+SMejhLELFj2QcyuxmUooZ4bt5ReSw==
   dependencies:
     "@types/node" "*"
+
+"@types/hammerjs@^2.0.36":
+  version "2.0.41"
+  resolved "https://registry.npmjs.org/@types/hammerjs/-/hammerjs-2.0.41.tgz#f6ecf57d1b12d2befcce00e928a6a097c22980aa"
+  integrity sha512-ewXv/ceBaJprikMcxCmWU1FKyMAQ2X7a9Gtmzw8fcg2kIePI1crERDM818W+XYrxqdBBOdlf2rm137bU+BltCA==
 
 "@types/html-minifier-terser@^5.0.0":
   version "5.1.2"
@@ -7550,7 +7562,7 @@ axe-core@^4.6.2:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.7.2.tgz#040a7342b20765cb18bb50b628394c21bccc17a0"
   integrity sha512-zIURGIS1E1Q4pcrMjp+nnEh+16G56eG/MUllJH8yEvw7asDo7Ac9uhC9KIH5jzpITueEZolfYglnCGIuSBz39g==
 
-axios@0.21.2, axios@^0.20.0, axios@^0.21.1, axios@^0.21.2, axios@^0.x, axios@^1.0.0:
+axios@0.21.2, axios@^0.20.0, axios@^0.21.2, axios@^0.27.2, axios@^0.x, axios@^1.0.0:
   version "0.21.4"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
@@ -8956,17 +8968,16 @@ chrome-trace-event@^1.0.2:
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.3.tgz#1015eced4741e15d06664a957dbbf50d041e26ac"
   integrity sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==
 
-chromedriver@87.0.7:
-  version "87.0.7"
-  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-87.0.7.tgz#74041e02ff7f633e91b98eb707e2476f713dc4ca"
-  integrity sha512-7J7iN2rJuSDsKb9BUUMewJt07PuTlZYd809D10dUCT1rjMD3i2jUw7dum9RxdC1xO3aFwMd8TwZ5NR82T+S+Dg==
+chromedriver@102.0.0:
+  version "102.0.0"
+  resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-102.0.0.tgz#02844c39ee33d1e88ac8c48fbe28cb8423e970a4"
+  integrity sha512-xer/0g1Oarkjc2e+4nyoLgZT4kJHYhcj3PcxD1nEoGJQYEllTjprN1uDpSb4BkgMGo0ydfIS1VDkszrr/J9OOg==
   dependencies:
-    "@testim/chrome-version" "^1.0.7"
-    axios "^0.21.1"
+    "@testim/chrome-version" "^1.1.2"
+    axios "^0.27.2"
     del "^6.0.0"
     extract-zip "^2.0.1"
     https-proxy-agent "^5.0.0"
-    mkdirp "^1.0.4"
     proxy-from-env "^1.1.0"
     tcp-port-used "^1.0.1"
 
@@ -13541,6 +13552,13 @@ hmac-drbg@^1.0.1:
     hash.js "^1.0.3"
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
+
+hoist-non-react-statics@^3.3.0:
+  version "3.3.2"
+  resolved "https://registry.npmjs.org/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
+  integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
+  dependencies:
+    react-is "^16.7.0"
 
 homedir-polyfill@^1.0.1:
   version "1.0.3"
@@ -21383,7 +21401,7 @@ react-error-overlay@^6.0.11:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-is@^16.13.1, react-is@^16.8.4:
+react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.4:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
@@ -21420,6 +21438,17 @@ react-native-codegen@^0.69.1:
     flow-parser "^0.121.0"
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
+
+react-native-gesture-handler@2.9.0:
+  version "2.9.0"
+  resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.9.0.tgz#2f63812e523c646f25b9ad660fc6f75948e51241"
+  integrity sha512-a0BcH3Qb1tgVqUutc6d3VuWQkI1AM3+fJx8dkxzZs9t06qA27QgURYFoklpabuWpsUTzuKRpxleykp25E8m7tg==
+  dependencies:
+    "@egjs/hammerjs" "^2.0.17"
+    hoist-non-react-statics "^3.3.0"
+    invariant "^2.2.4"
+    lodash "^4.17.21"
+    prop-types "^15.7.2"
 
 react-native-gradle-plugin@^0.0.7:
   version "0.0.7"

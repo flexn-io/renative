@@ -3,11 +3,9 @@
         "@rnv/engine-lightning": "source:rnv",
         "@rnv/engine-rn": "source:rnv",
         "@rnv/engine-rn-electron": "source:rnv",
-        "@rnv/engine-rn-macos": "source:rnv",
         "@rnv/engine-rn-next": "source:rnv",
         "@rnv/engine-rn-tvos": "source:rnv",
-        "@rnv/engine-rn-web": "source:rnv",
-        "@rnv/engine-rn-windows": "source:rnv"
+        "@rnv/engine-rn-web": "source:rnv"
     },
     "isTemplate": true,
     "projectName": "renative",
@@ -62,8 +60,7 @@
             "kaios",
             "firefoxos",
             "firefoxtv",
-            "chromecast",
-            "xbox"
+            "chromecast"
         ],
         "schemes": {
             "run": "debug",
@@ -74,7 +71,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^0.37.0-rc.6"
+            "version": "^0.37.0-rc.9"
         }
     },
     "platforms": {
@@ -98,22 +95,9 @@
                 "org.gradle.parallel": true,
                 "org.gradle.configureondemand": true
             },
-            "AndroidManifest": {
-                "children": [
-                    {
-                        "tag": "application",
-                        "android:name": ".MainApplication",
-                        "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 30
-                    }
-                ]
-            },
             "mainActivity": {
                 "onCreate": "super.onCreate(null)"
-            },
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            }
         },
         "androidtv": {
             "minSdkVersion": 26,
@@ -134,16 +118,6 @@
                 "org.gradle.daemon": true,
                 "org.gradle.parallel": true,
                 "org.gradle.configureondemand": true
-            },
-            "AndroidManifest": {
-                "children": [
-                    {
-                        "tag": "application",
-                        "android:name": ".MainApplication",
-                        "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 30
-                    }
-                ]
             },
             "engine": "engine-rn-tvos",
             "includedPermissions": [
@@ -169,16 +143,6 @@
                 "org.gradle.daemon": true,
                 "org.gradle.parallel": true,
                 "org.gradle.configureondemand": true
-            },
-            "AndroidManifest": {
-                "children": [
-                    {
-                        "tag": "application",
-                        "android:name": ".MainApplication",
-                        "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 30
-                    }
-                ]
             },
             "includedPermissions": [
                 "INTERNET"
@@ -207,16 +171,6 @@
                 "org.gradle.parallel": true,
                 "org.gradle.configureondemand": true
             },
-            "AndroidManifest": {
-                "children": [
-                    {
-                        "tag": "application",
-                        "android:name": ".MainApplication",
-                        "android:usesCleartextTraffic": true,
-                        "tools:targetApi": 30
-                    }
-                ]
-            },
             "engine": "engine-rn-tvos",
             "includedPermissions": [
                 "INTERNET"
@@ -235,16 +189,20 @@
         "windows": {
             "engine": "engine-rn-electron"
         },
-        "xbox": {
-            "engine": "engine-rn-windows"
-        },
         "ios": {
             "engine": "engine-rn",
             "deploymentTarget": "14.0"
         }
     },
     "plugins": {
-        "@rnv/renative": "source:rnv"
+        "@rnv/renative": "source:rnv",
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "@react-native-community/cli-platform-ios": "source:rnv",
+        "@react-native-community/cli": "source:rnv",
+        "react-native-gesture-handler": "source:rnv"
     },
     "permissions": {
         "ios": {},
