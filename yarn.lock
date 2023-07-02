@@ -2141,15 +2141,15 @@
     webpack "4.43.0"
     webpack-manifest-plugin "~2.2.0"
 
-"@flexn/assets-renative-outline@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/@flexn/assets-renative-outline/-/assets-renative-outline-0.2.0.tgz#993de5f885d0efb9e4ab1881c3da9c840601eb68"
-  integrity sha512-Ho2HtgCQ0WCIOfMSLr6O5S8rtCy5E/229UOqf6lrGWysQGnn9/UlHa9Eyc5Ilhpcxbnn9ZFa7UivPYNhOJ9t9w==
+"@flexn/assets-renative-outline@0.3.1":
+  version "0.3.1"
+  resolved "https://registry.npmjs.org/@flexn/assets-renative-outline/-/assets-renative-outline-0.3.1.tgz#378ba3605aa96ae16c6345648a39948d60aa0e8c"
+  integrity sha512-4jIC0LRIbO4MKGTBGOGk1GN8AsE+yQYjOdYVnxusZYn9qcymyI79tQ7LRY8EdHWtzMcYYm4MzFfBJhNcYCKh6g==
 
-"@flexn/eslint-config@0.1.5":
-  version "0.1.5"
-  resolved "https://registry.npmjs.org/@flexn/eslint-config/-/eslint-config-0.1.5.tgz#620d312018a0de1e61ac023c6dc2013d987b79e6"
-  integrity sha512-l49bXcYNs9CPNfTRgJQWXS+5FSeW+yYuWOLnM5nuGcs0aD7WGhIaV27H0xnaiCU90jZY9uC613Gd45035gFd0w==
+"@flexn/eslint-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@flexn/eslint-config/-/eslint-config-1.0.0.tgz#3337945b66c371005ba7b77a0fc11e0c43b5c2f8"
+  integrity sha512-hS3K28xC2PGNJZ9+y7BLMAxuYRqrvmjE9tWWtQOyrmFMfHG+I5PODUJR3B7/NrUVPjIkV+m83HX5aoe68XFh6w==
 
 "@flexn/graybox@0.21.1":
   version "0.21.1"
@@ -2170,20 +2170,20 @@
     wdio-image-comparison-service "5.0.3"
     wdio-native-app-compare-service "2.1.0"
 
-"@flexn/plugins@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.npmjs.org/@flexn/plugins/-/plugins-1.0.8.tgz#12b132156f7cae3fb4651b1d4c05a3dba955d2bf"
-  integrity sha512-PknR5ivQnV08jTALl5k7oEJDd8EuQSndz1dY7JY43QfXvM+QMhxPyaH1yLMqA/iYAc//2BpRIrFHlEgwwK7+QQ==
+"@flexn/plugins@1.0.9":
+  version "1.0.9"
+  resolved "https://registry.npmjs.org/@flexn/plugins/-/plugins-1.0.9.tgz#34b0c24b58729cad3efdd2ce0952645c0f23fcb5"
+  integrity sha512-a0a7VCZBdcuyXxWSbA7cY0/ybmxaF6rqMt8p2SNJ1Trkkv2My4XB4sS2o0by1SiMLEs9axCNPOIFcdDsepRJxg==
 
-"@flexn/prettier-config@0.1.4":
-  version "0.1.4"
-  resolved "https://registry.npmjs.org/@flexn/prettier-config/-/prettier-config-0.1.4.tgz#3af0d5d2b4c9767214b7fdbe9e683615ba7dfac3"
-  integrity sha512-2lTwjEu34Ex3SUNEDSJ7ctLm3yU1pK+Ej/yj7+DLgdWdkoiFf7Q1A4q/VeY5eYmHl6QfNzPnc+D6P3FkqzpCBw==
+"@flexn/prettier-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@flexn/prettier-config/-/prettier-config-1.0.0.tgz#f4e4668aa880d9396831cf19f819d5dba386a38d"
+  integrity sha512-aldtHR0tL1dzpgnVozAVI9wagodsAQzzUHlR8iQCodiK8C9wjsKkZ3xt/6csfA0ErivcK+dUL4VVHQQNt1P2IQ==
 
-"@flexn/typescript@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@flexn/typescript/-/typescript-0.3.0.tgz#733c02bdd9d799145737b5d0c7c6a73fba873ec7"
-  integrity sha512-kN6TxCLHaYJBXQBCj7B62UAx7PcO3VrMqI9NF31RGNMlTz2DkLtuNfvNBl6tiXN+rJOKLgm60EvoEQkdwe4sGw==
+"@flexn/typescript-config@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@flexn/typescript-config/-/typescript-config-1.0.0.tgz#606a5e764f023a98a95d5b32339018948b418963"
+  integrity sha512-8gQXh7/SoZel9df1SwS6eBlfpUlBlri6GBIdsd3GPwekFOMDIAindeQndQnKYSTprjNm3zOw6gFmWmjYGF229Q==
 
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   version "1.1.3"
