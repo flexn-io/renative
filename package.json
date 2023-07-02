@@ -69,10 +69,7 @@
         "sanity": "yarn compile && yarn lint && yarn test",
         "prettier-write-all": "npx prettier '**/*.{js,jsx,ts,tsx,mjs,cjs,json,md}' --write --config .prettierrc.js",
         "prettier-write-json": "npx prettier '**/{package.json,renative.plugins.json,renative.json}' --write --config .prettierrc.js",
-        "git-commit": "rnv hooks run -x gitCommit -r",
-        "git-commit-tag": "rnv hooks run -x gitCommitAndTag -r",
-        "git-tag": "rnv hooks run -x gitTag -r",
-        "pre-publish": "yarn build && yarn lint && yarn test && rnv hooks run -x prePublish -r && npm run git-commit-tag",
+        "pre-publish": "yarn build && yarn lint && yarn test && rnv hooks run -x prePublish -r && rnv hooks run -x gitCommitAndTag",
         "deploy:prod": "yarn pre-publish && npx lerna publish from-package && git push origin HEAD",
         "deploy:preview": "yarn pre-publish && npx lerna publish from-package --dist-tag preview && git push origin HEAD",
         "deploy:canary": "yarn pre-publish && npx lerna publish from-package --dist-tag canary && git push origin HEAD",
@@ -84,8 +81,7 @@
         "e2e-template-starter-tvos": "cd packages/template-starter && npx rnv build -p tvos -s test -c template --packageManager yarn && yarn e2e:tvos",
         "e2e-template-starter-web": "cd packages/template-starter && npx rnv start -p web -s test -c template --packageManager yarn & sleep 60 && cd packages/template-starter && yarn e2e:web && kill $(lsof -t -i:8080)",
         "link:rnv": "npm r rnv -g && cd packages/rnv && npm link",
-        "postinstall": "npx lerna link --force-local && npx jetify",
-        "prepare": "husky install"
+        "postinstall": "npx lerna link --force-local && npx jetify"
     },
     "devDependencies": {
         "@babel/eslint-parser": "7.17.0",
