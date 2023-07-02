@@ -1,18 +1,12 @@
-import { updateVersions } from './updateVersions';
-import { gitCommit, gitTag } from './git';
+import { prePublish } from './prePublish';
+
+import { gitCommit, gitTag, gitCommitAndTag } from '@flexn/build-hooks-git';
 
 const hooks = {
-    prePublish: async (c) => {
-        await updateVersions(c);
-        return true;
-    },
+    prePublish,
+    gitCommitAndTag,
     gitCommit,
     gitTag,
-    gitCommitAndTag: async (c) => {
-        await gitCommit(c);
-        await gitTag(c);
-        return true;
-    },
 };
 
 const pipes = {};

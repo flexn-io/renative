@@ -1,6 +1,7 @@
 import path from 'path';
 import { Doctor, FileUtils } from 'rnv';
 import fs from 'fs';
+import { setPackageVersions } from '@flexn/build-hooks-version';
 
 const { fsExistsSync, readObjectSync } = FileUtils;
 
@@ -63,25 +64,21 @@ const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer =
     });
 };
 
-export const updateVersions = async (c) => {
-    const rootPackage = FileUtils.readObjectSync(path.join(c.paths.project.dir, 'package.json'));
+export const prePublish = async (c) => {
     const v = {
-        version: rootPackage.version,
+        version: c.files.project.package.version,
     };
-    const pkgFolder = path.join(c.paths.project.dir, 'packages');
-    _updateJson(c, c.paths.project.package, v);
+    await setPackageVersions(c, v.version, VERSIONED_PACKAGES);
 
-    VERSIONED_PACKAGES.forEach((pkgName) => {
-        _updateJson(c, path.join(pkgFolder, pkgName, 'package.json'), v);
-    });
+    const pkgDirPath = path.join(c.paths.project.dir, 'packages');
 
-    _updateJson(c, path.join(pkgFolder, 'rnv/pluginTemplates/renative.plugins.json'), {
+    _updateJson(c, path.join(pkgDirPath, 'rnv/pluginTemplates/renative.plugins.json'), {
         pluginTemplates: {
             '@rnv/renative': v,
         },
     });
 
-    _updateJson(c, path.join(pkgFolder, 'rnv/coreTemplateFiles/renative.templates.json'), {
+    _updateJson(c, path.join(pkgDirPath, 'rnv/coreTemplateFiles/renative.templates.json'), {
         engineTemplates: {
             '@rnv/engine-rn': v,
             '@rnv/engine-rn-tvos': v,
@@ -94,7 +91,6 @@ export const updateVersions = async (c) => {
         },
     });
 
-    const pkgDirPath = path.join(c.paths.project.dir, 'packages');
     const dirs = fs.readdirSync(pkgDirPath);
 
     const packageNamesAll = [];
@@ -143,32 +139,9 @@ export const updateVersions = async (c) => {
         updateDeps(pkgConfig, 'peerDependencies', packageNamesAll, packageConfigs, '^');
     });
 
-    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
-
-    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
-
-    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'rnv/README.md'));
-
-    // const packagesDir = path.join(c.paths.project.dir, '..');
-    //
-    // const engines = [
-    //     'engine-rn',
-    //     'engine-rn-web',
-    //     'engine-rn-next',
-    //     'engine-rn-electron',
-    //     'engine-lightning'
-    // ];
-    // engines.forEach((engineDir) => {
-    //     const ePath = path.join(packagesDir, engineDir, 'renative.engine.json');
-    //     const engine = FileUtils.readObjectSync(ePath);
-    //     const { id } = engine;
-    //     const npm = engine?.npm?.devDependencies?.[`@rnv/${id}`];
-    //     if (npm) {
-    //         engine.npm.devDependencies[`@rnv/${id}`] = rootPackage.version;
-    //     }
-    //     const output = Doctor.fixPackageObject(engine);
-    //     FileUtils.writeFileSync(ePath, output, 4, true);
-    // });
+    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgDirPath, 'renative/README.md'));
+    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgDirPath, 'renative/README.md'));
+    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgDirPath, 'rnv/README.md'));
 
     return true;
 };

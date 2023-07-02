@@ -2146,6 +2146,20 @@
   resolved "https://registry.npmjs.org/@flexn/assets-renative-outline/-/assets-renative-outline-0.3.1.tgz#378ba3605aa96ae16c6345648a39948d60aa0e8c"
   integrity sha512-4jIC0LRIbO4MKGTBGOGk1GN8AsE+yQYjOdYVnxusZYn9qcymyI79tQ7LRY8EdHWtzMcYYm4MzFfBJhNcYCKh6g==
 
+"@flexn/build-hooks-git@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/@flexn/build-hooks-git/-/build-hooks-git-0.1.0.tgz#a1c3accdfdbb89760a8f2bde00fc59d4c5c23d67"
+  integrity sha512-rTxcJGNN1P85Ajw1/ln3/sPU4f1ZQ86FCNvwC86FoGsSBvCtiJZfyB50u1u9A4xAK9BRdznrxcPmJdtSKn2Ikw==
+  dependencies:
+    simple-git "3.12.0"
+
+"@flexn/build-hooks-version@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/@flexn/build-hooks-version/-/build-hooks-version-0.1.0.tgz#f7f2a23976c6757c71ee96e42c353e3b58c3f766"
+  integrity sha512-pASLleiIJX1juhCvLiZ6dhB7NDka5kmm3rr/F8rN08sIEDAAIkogkwU5acIlM75BqQOZ++OYWlokL1kiwIPPBw==
+  dependencies:
+    deepmerge "3.2.0"
+
 "@flexn/eslint-config@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@flexn/eslint-config/-/eslint-config-1.0.0.tgz#3337945b66c371005ba7b77a0fc11e0c43b5c2f8"
