@@ -605,10 +605,4 @@ export const runAndroidLog = async (c: any) => {
     return child.then((res: any) => res.stdout).catch((err: any) => Promise.reject(`Error: ${err}`));
 };
 
-export default {
-    hello: () => {
-        console.log('Hello SDK Android');
-    },
-};
-
 export { ejectGradleProject };

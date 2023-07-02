@@ -457,12 +457,12 @@ export const taskRnvNew = async (c) => {
 
     await interactiveQuestion(results, bootstrapQuestions, providedAnswers);
 
-    console.log('asnwer', JSON.stringify(results, null, 2));
+    logDebug('asnwer', JSON.stringify(results, null, 2));
 
     Object.keys(results).forEach((targetKey) => {
         const objValue = results[targetKey].value;
 
-        console.log('setting', targetKey, objValue);
+        logDebug('setting', targetKey, objValue);
 
         if (targetKey) {
             lSet(renativeTemplateConfigExt, targetKey, objValue);

@@ -37,12 +37,9 @@ const AppThemed = () => {
             <Text style={theme.styles.textH3}>
                 {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
             </Text>
-            <Text style={theme.styles.textH3}>
-                {
-                    //@ts-ignore
-                    `hermes: ${global.HermesInternal === undefined ? 'no' : 'yes'}`
-                }
-            </Text>
+            <Text style={theme.styles.textH3}>{`hermes: ${
+                typeof HermesInternal === 'object' && HermesInternal !== null ? 'yes' : 'no'
+            }`}</Text>
             <Text style={theme.styles.textH3}>{`pixelRatio: ${pixelRatio}, ${fontScale}`}</Text>
             <TouchableOpacity
                 onPress={toggle}
