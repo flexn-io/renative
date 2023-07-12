@@ -1,7 +1,7 @@
 {
     "pluginTemplates": {
         "@rnv/renative": {
-            "version": "0.37.0-feat-cache.1",
+            "version": "0.37.0-feat-cache.2",
             "webpack": {
                 "moduleAliases": true,
                 "modulePaths": true

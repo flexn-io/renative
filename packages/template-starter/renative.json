@@ -71,7 +71,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^0.37.0-feat-cache.1"
+            "version": "^0.37.0-feat-cache.2"
         }
     },
     "platforms": {

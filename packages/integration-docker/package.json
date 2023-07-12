@@ -41,7 +41,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-feat-cache.1"
+        "rnv": "^0.37.0-feat-cache.2"
     },
     "publishConfig": {
         "access": "public"
