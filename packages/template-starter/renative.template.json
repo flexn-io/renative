@@ -7,11 +7,15 @@
                 "@types/react": "18.2.6",
                 "@types/react-dom": "~18.2.4",
                 "@types/react-native": "~0.67.2",
-                "@flexn/typescript": "0.1.6"
+                "@flexn/typescript": "0.1.6",
+                "@flexn/assets-renative-outline": "^0.3.1"
             },
             "browserslist": {
                 "production": [">0.2%", "not dead", "not op_mini all"],
                 "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+            },
+            "resolutions": {
+                "@babel/traverse": "7.15.0"
             }
         }
     },
