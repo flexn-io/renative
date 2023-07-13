@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "0.37.0-rc.10",
+    "version": "0.37.0-rc.11",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",
@@ -51,7 +51,7 @@
     },
     "peerDependencies": {
         "next": ">=12.0.8",
-        "rnv": "^0.37.0-rc.10"
+        "rnv": "^0.37.0-rc.11"
     },
     "private": false,
     "publishConfig": {

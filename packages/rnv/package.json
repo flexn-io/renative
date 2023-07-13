@@ -1,6 +1,6 @@
 {
     "name": "rnv",
-    "version": "0.37.0-rc.10",
+    "version": "0.37.0-rc.11",
     "description": "💻 CLI for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`, `Linux",
     "keywords": [
         "android tv",
