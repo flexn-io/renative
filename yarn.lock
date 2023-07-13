@@ -2141,10 +2141,10 @@
     webpack "4.43.0"
     webpack-manifest-plugin "~2.2.0"
 
-"@flexn/assets-renative-outline@0.3.1":
-  version "0.3.1"
-  resolved "https://registry.npmjs.org/@flexn/assets-renative-outline/-/assets-renative-outline-0.3.1.tgz#378ba3605aa96ae16c6345648a39948d60aa0e8c"
-  integrity sha512-4jIC0LRIbO4MKGTBGOGk1GN8AsE+yQYjOdYVnxusZYn9qcymyI79tQ7LRY8EdHWtzMcYYm4MzFfBJhNcYCKh6g==
+"@flexn/assets-renative-outline@0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@flexn/assets-renative-outline/-/assets-renative-outline-0.3.2.tgz#484f4a507960685e6031eca7d8f09edd7e3afe44"
+  integrity sha512-uZDQJHXIMmd97Us1Cb2HetDQ2vTKp7vKUzBCGWjBy0hsOSGQuuZ2uz2lcYFkv0upGsJAdw2d+ApnFGNhKM7Zqg==
 
 "@flexn/eslint-config@1.0.0":
   version "1.0.0"
