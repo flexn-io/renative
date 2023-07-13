@@ -195,7 +195,7 @@ If you don't want to use this dependency make sure you remove platform which req
             writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
         }
     }
-    return addedPlugins.length;
+    return Object.keys(addedPlugins).length;
 };
 
 export const loadEnginePackageDeps = async (c, engineConfigs) => {
