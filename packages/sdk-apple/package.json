@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-apple",
-    "version": "0.37.0-rc.12",
+    "version": "0.37.0-rc.13",
     "description": "ReNative Apple SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -35,7 +35,7 @@
         "shelljs": "0.8.5"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-rc.12"
+        "rnv": "^0.37.0-rc.13"
     },
     "private": false,
     "publishConfig": {

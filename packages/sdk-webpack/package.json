@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-webpack",
-    "version": "0.37.0-rc.12",
+    "version": "0.37.0-rc.13",
     "description": "ReNative Webpack SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -82,7 +82,7 @@
         "workbox-webpack-plugin": "6.5.4"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-rc.12"
+        "rnv": "^0.37.0-rc.13"
     },
     "private": false,
     "publishConfig": {

@@ -1,7 +1,7 @@
 {
     "pluginTemplates": {
         "@rnv/renative": {
-            "version": "0.37.0-rc.12",
+            "version": "0.37.0-rc.13",
             "webpack": {
                 "moduleAliases": true,
                 "modulePaths": true
