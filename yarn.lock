@@ -2185,6 +2185,11 @@
   resolved "https://registry.npmjs.org/@flexn/typescript-config/-/typescript-config-1.0.0.tgz#606a5e764f023a98a95d5b32339018948b418963"
   integrity sha512-8gQXh7/SoZel9df1SwS6eBlfpUlBlri6GBIdsd3GPwekFOMDIAindeQndQnKYSTprjNm3zOw6gFmWmjYGF229Q==
 
+"@flexn/typescript@0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@flexn/typescript/-/typescript-0.1.6.tgz#8a24c17793c8b166bd5ec8b2be57fa1124070372"
+  integrity sha512-Lphinxhcbr68lN+OpitzgMBtY3YLELfPuI6XnsI+qeLWqeUZEwr5luRZ+0FlCo93YwpN9rMubTE05aDuWE3fZw==
+
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
