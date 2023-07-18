@@ -39,7 +39,7 @@
         "@babel/preset-env": "7.6.0"
     },
     "peerDependencies": {
-        "rnv": "^0.37.1"
+        "rnv": "^0.37.2-feat-json-output.1"
     },
     "publishConfig": {
         "access": "public"
