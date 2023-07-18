@@ -40,7 +40,7 @@ const _execute = (c, command, opts = {}) => {
         preferLocal: true,
         all: true,
         maxErrorLength: c.program?.maxErrorLength,
-        mono: c.program?.mono,
+        mono: c.program?.mono || c.program?.json,
     };
 
     if (opts.interactive) {

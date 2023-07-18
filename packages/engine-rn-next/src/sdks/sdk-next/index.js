@@ -196,7 +196,7 @@ Dev server running at: ${url}
             ...envExt,
             ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c)),
         },
-        interactive: true,
+        interactive: !c.program?.json,
     });
 };
 

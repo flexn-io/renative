@@ -87,6 +87,7 @@ export const buildHooks = async (c) => {
                     entryPoints: [`${c.paths.buildHooks.dir}/index.js`],
                     bundle: true,
                     platform: 'node',
+                    logLimit: c.program.json ? 0 : 10,
                     external: [
                         ...Object.keys(c.files.project.package.dependencies || {}),
                         ...Object.keys(c.files.project.package.devDependencies || {}),

@@ -172,6 +172,7 @@ export const logRaw = (...args) => {
 };
 
 export const logSummary = (header = 'SUMMARY') => {
+    if (_jsonOnly) return;
     let logContent = printIntoBox(`All good as ${ICN_UNICORN} `);
     if (global._messages && global._messages.length) {
         logContent = '';
