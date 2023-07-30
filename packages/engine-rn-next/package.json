@@ -37,6 +37,7 @@
         "@expo/next-adapter": "4.0.13",
         "ally.js": "1.4.1",
         "better-opn": "1.0.0",
+        "next": "12.1.6",
         "next-fonts": "1.5.1",
         "next-images": "1.8.4",
         "next-transpile-modules": "9.0.0",
@@ -51,7 +52,6 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "next": ">=12.0.8",
         "rnv": "^0.37.2"
     },
     "private": false,
