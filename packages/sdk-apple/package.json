@@ -29,13 +29,19 @@
         "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
+        "@react-native-community/cli": "^6.0.0",
+        "@react-native-community/cli-platform-ios": "^6.0.0",
         "compare-versions": "3.6.0",
         "inquirer": "8.2.0",
         "ios-mobileprovision-finder": "1.0.11",
-        "shelljs": "0.8.5"
+        "shelljs": "0.8.5",
+        "xcode": "2.1.0"
     },
     "peerDependencies": {
         "rnv": "^0.37.1"
+    },
+    "optionalDependencies": {
+        "ios-deploy": "1.11.4"
     },
     "private": false,
     "publishConfig": {
