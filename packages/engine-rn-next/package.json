@@ -40,6 +40,7 @@
         "next-fonts": "1.5.1",
         "next-images": "1.8.4",
         "next-transpile-modules": "9.0.0",
+        "react-native-web": "0.18.0",
         "webpack": "5.76.0"
     },
     "devDependencies": {
