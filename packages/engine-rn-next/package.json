@@ -33,6 +33,7 @@
         "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
+        "@expo/config": "8.1.2",
         "@expo/next-adapter": "4.0.13",
         "ally.js": "1.4.1",
         "better-opn": "1.0.0",
