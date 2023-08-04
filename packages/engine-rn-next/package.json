@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "0.37.1",
+    "version": "0.37.2-feat-security.3",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",
@@ -33,7 +33,8 @@
         "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
-        "@expo/next-adapter": "3.1.12",
+        "@expo/config": "8.1.2",
+        "@expo/next-adapter": "4.0.13",
         "ally.js": "1.4.1",
         "better-opn": "1.0.0",
         "next-fonts": "1.5.1",
@@ -51,7 +52,7 @@
     },
     "peerDependencies": {
         "next": ">=12.0.8",
-        "rnv": "^0.37.1"
+        "rnv": "^0.37.2-feat-security.3"
     },
     "private": false,
     "publishConfig": {
