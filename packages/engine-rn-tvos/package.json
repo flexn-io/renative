@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-tvos",
-    "version": "0.37.2-feat-security.2",
+    "version": "0.37.2-feat-security.3",
     "description": "ReNative Engine to build react-native tvos platform.",
     "keywords": [
         "react-native"
@@ -32,8 +32,8 @@
         "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
-        "@rnv/sdk-android": "0.37.2-feat-security.2",
-        "@rnv/sdk-apple": "0.37.2-feat-security.2"
+        "@rnv/sdk-android": "0.37.2-feat-security.3",
+        "@rnv/sdk-apple": "0.37.2-feat-security.3"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",
@@ -45,7 +45,7 @@
     },
     "peerDependencies": {
         "metro-cache": "^0.66.2",
-        "rnv": "^0.37.2-feat-security.2"
+        "rnv": "^0.37.2-feat-security.3"
     },
     "private": false,
     "publishConfig": {

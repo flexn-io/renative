@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-lightning",
-    "version": "0.37.2-feat-security.2",
+    "version": "0.37.2-feat-security.3",
     "description": "ReNative Engine to build lightning based apps.",
     "keywords": [
         "lightning"
@@ -34,7 +34,7 @@
     "dependencies": {
         "@lightningjs/cli": "2.8.0",
         "@lightningjs/sdk": "4.8.3",
-        "babel-loader": "8.0.5",
+        "babel-loader": "8.3.0",
         "html-webpack-harddisk-plugin": "1.0.2",
         "html-webpack-plugin": "5.5.0"
     },
@@ -47,7 +47,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.37.2-feat-security.2"
+        "rnv": "^0.37.2-feat-security.3"
     },
     "private": false,
     "publishConfig": {
