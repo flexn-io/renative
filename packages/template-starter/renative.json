@@ -71,7 +71,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^0.37.2-feat-security.3"
+            "version": "^0.37.2-rc.1"
         }
     },
     "platforms": {

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-macos",
-    "version": "0.37.2-feat-security.3",
+    "version": "0.37.2-rc.1",
     "description": "ReNative Engine to build react-native macOS platform.",
     "keywords": [
         "react-native-macos"
@@ -32,7 +32,7 @@
         "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
-        "@rnv/sdk-apple": "0.37.2-feat-security.3"
+        "@rnv/sdk-apple": "0.37.2-rc.1"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",
@@ -43,7 +43,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.37.2-feat-security.3"
+        "rnv": "^0.37.2-rc.1"
     },
     "private": false,
     "publishConfig": {
