@@ -41,7 +41,7 @@
         "@babel/preset-env": "7.6.0"
     },
     "peerDependencies": {
-        "rnv": "^0.37.2-feat-security.1"
+        "rnv": "^0.37.2-feat-security.2"
     },
     "publishConfig": {
         "access": "public"
