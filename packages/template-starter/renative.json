@@ -71,7 +71,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^0.37.2-rc.1"
+            "version": "^0.37.2"
         }
     },
     "platforms": {
