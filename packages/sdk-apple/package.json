@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-apple",
-    "version": "0.37.2-feat-dependencies.1",
+    "version": "0.37.2",
     "description": "ReNative Apple SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -38,10 +38,7 @@
         "xcode": "2.1.0"
     },
     "peerDependencies": {
-        "rnv": "^0.37.2-feat-dependencies.1"
-    },
-    "optionalDependencies": {
-        "ios-deploy": "1.11.4"
+        "rnv": "^0.37.2"
     },
     "private": false,
     "publishConfig": {
