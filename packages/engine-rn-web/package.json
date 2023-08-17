@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "0.37.2",
+    "version": "0.37.3-rc.1",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"
@@ -33,15 +33,15 @@
     },
     "dependencies": {
         "@babel/preset-react": "7.16.0",
-        "@rnv/sdk-webpack": "0.37.2",
+        "@rnv/sdk-webpack": "0.37.3-rc.1",
         "babel-loader": "8.3.0",
         "babel-preset-expo": "9.5.0",
         "better-opn": "1.0.0",
         "html-webpack-harddisk-plugin": "1.0.2",
         "html-webpack-plugin": "4.5.1",
         "mini-css-extract-plugin": "0.8.0",
-        "webpack-bundle-analyzer": "3.5.1",
-        "react-native-web": "0.18.0"
+        "react-native-web": "0.18.0",
+        "webpack-bundle-analyzer": "3.5.1"
     },
     "devDependencies": {
         "@babel/cli": "^7.16.0",
@@ -52,7 +52,7 @@
         "@babel/preset-env": "^7.16.0"
     },
     "peerDependencies": {
-        "rnv": "^0.37.2"
+        "rnv": "^0.37.3-rc.1"
     },
     "private": false,
     "publishConfig": {
