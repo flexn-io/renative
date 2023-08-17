@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn",
-    "version": "0.37.3-rc.1",
+    "version": "0.37.3",
     "description": "ReNative Engine to build react-native based platforms.",
     "keywords": [
         "react-native"
@@ -31,8 +31,8 @@
         "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
-        "@rnv/sdk-android": "0.37.3-rc.1",
-        "@rnv/sdk-apple": "0.37.3-rc.1"
+        "@rnv/sdk-android": "0.37.3",
+        "@rnv/sdk-apple": "0.37.3"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",
@@ -43,7 +43,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.37.3-rc.1"
+        "rnv": "^0.37.3"
     },
     "private": false,
     "publishConfig": {

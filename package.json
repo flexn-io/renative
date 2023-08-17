@@ -1,6 +1,6 @@
 {
     "name": "@flexn/renative-monorepo",
-    "version": "0.37.3-rc.1",
+    "version": "0.37.3",
     "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`, `Linux` and `Chromecast` platforms",
     "keywords": [
         "android tv",
@@ -112,7 +112,7 @@
         "lint-staged": "12.3.4",
         "prettier": "2.3.1",
         "pretty-quick": "1.11.0",
-        "rnv": "0.37.3-rc.1",
+        "rnv": "0.37.3",
         "simple-git": "3.12.0",
         "ts-jest": "^27.0.7",
         "ttab": "^0.7.2",
