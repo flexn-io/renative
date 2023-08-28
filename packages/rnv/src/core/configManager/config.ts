@@ -1,13 +1,21 @@
 import { writeFileSync, fsExistsSync } from '../systemManager/fileutils';
 import { logWarning } from '../systemManager/logger';
 import { configSchema } from '../constants';
+import { RnvConfog } from '../../types';
 
 class Config {
+    config: RnvConfog;
+
     constructor() {
-        this.config = {};
+        this.config = {
+            program: {},
+            command: {},
+            paths: {},
+            buildConfig: {},
+        };
     }
 
-    initializeConfig(c) {
+    initializeConfig(c: RnvConfog) {
         this.config = c;
         return c;
     }
@@ -17,7 +25,7 @@ class Config {
     }
 
     // RNV CONFIG
-    getConfigValueSeparate(key, global = false) {
+    getConfigValueSeparate(key: string, global = false) {
         const { paths } = this.config;
 
         if (!global && !fsExistsSync(paths.project.config)) return 'N/A'; // string because there might be a setting where we will use null
@@ -29,7 +37,7 @@ class Config {
         return value;
     }
 
-    getMergedConfigValue(key) {
+    getMergedConfigValue(key: string) {
         let value = this.config.buildConfig?.[configSchema[key].key];
         if (value === undefined && configSchema[key].default) {
             value = configSchema[key].default;
@@ -37,7 +45,7 @@ class Config {
         return value;
     }
 
-    listConfigValue(key) {
+    listConfigValue(key: string) {
         let localVal = this.getConfigValueSeparate(key).toString();
         let globalVal = this.getConfigValueSeparate(key, true).toString();
 
@@ -46,7 +54,7 @@ class Config {
         }
         if (localVal === 'N/A') localVal = globalVal;
 
-        const table = [
+        const table: Array<Record<string, any>> = [
             {
                 Key: key,
                 'Global Value': globalVal,
@@ -60,7 +68,7 @@ class Config {
         return table;
     }
 
-    isConfigValueValid(key, value) {
+    isConfigValueValid(key: string, value: string | boolean) {
         const keySchema = configSchema[key];
         if (!keySchema) {
             logWarning(`Unknown config param ${key}`);
@@ -75,7 +83,7 @@ class Config {
         return true;
     }
 
-    setConfigValue(key, value) {
+    setConfigValue(key: string, value: string | boolean) {
         const {
             program: { global },
             paths,
@@ -86,7 +94,9 @@ class Config {
             const configPath = global ? paths.GLOBAL_RNV_CONFIG : paths.project.config;
             const config = require(configPath);
 
-            if (['true', 'false'].includes(isValid)) isValid = isValid === 'true'; // convert string to bool if it matches a bool value
+            if (typeof isValid === 'string') {
+                if (['true', 'false'].includes(isValid)) isValid = isValid === 'true'; // convert string to bool if it matches a bool value
+            }
 
             config[configSchema[key].key] = isValid;
             writeFileSync(configPath, config);

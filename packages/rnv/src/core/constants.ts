@@ -1,6 +1,7 @@
 // PLATFORM
 import { homedir } from 'os';
 import path from 'path';
+import { RnvConfigSchema } from '../types';
 
 export const USER_HOME_DIR = homedir();
 export const RNV_HOME_DIR = path.join(__dirname, '../..');
@@ -539,7 +540,7 @@ export const PARAMS = {
     all: Object.keys(PARAM_KEYS),
 };
 
-export const configSchema = {
+export const configSchema: RnvConfigSchema = {
     analytics: {
         values: ['true', 'false'],
         key: 'enableAnalytics',

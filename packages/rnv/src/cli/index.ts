@@ -7,13 +7,14 @@ import { loadIntegrations } from '../core/integrationManager';
 import { initializeTask, findSuitableTask } from '../core/taskManager';
 
 import EngineCore from '../engine-core';
+import { RnvConfog } from '../types';
 
 const IGNORE_MISSING_ENGINES_TASKS = ['link', 'unlink'];
 
-const run = async (c) => {
+const run = async (c: RnvConfog) => {
     await registerEngine(c, EngineCore);
     await configureRuntimeDefaults(c);
-    await checkAndMigrateProject(c);
+    await checkAndMigrateProject();
     await updateRenativeConfigs(c);
     await checkAndBootstrapIfRequired(c);
     if (c.program.npxMode) {

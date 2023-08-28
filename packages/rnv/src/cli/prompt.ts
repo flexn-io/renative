@@ -1,8 +1,9 @@
 import inquirer from 'inquirer';
 import { chalk, logWarning, logTask, logDebug } from '../core/systemManager/logger';
 import Config from '../core/configManager/config';
+import { PromptOptions, PromptParams } from './types';
 
-export const inquirerPrompt = async (params) => {
+export const inquirerPrompt = async (params: PromptParams) => {
     const c = Config.getConfig();
     if (c.program?.yes) return true;
 
@@ -25,7 +26,7 @@ export const inquirerPrompt = async (params) => {
     const { type, name } = params;
     if (type === 'confirm' && !name) params.name = 'confirm';
 
-    return inquirer.prompt(params);
+    return inquirer.prompt(params as any);
 };
 
 export const pressAnyKeyToContinue = () => {
@@ -34,20 +35,27 @@ export const pressAnyKeyToContinue = () => {
         name: 'confirm',
         message: 'Press any key to continue',
     };
-    return inquirer.prompt(params);
+    return inquirer.prompt(params as any);
 };
 
-export const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod) => {
+export const generateOptions = (inputData: any, isMultiChoice = false, mapping: any, renderMethod: any) => {
     logDebug('generateOptions', isMultiChoice);
     let asString = '';
-    const valuesAsObject = {};
-    const valuesAsArray = [];
-    const keysAsObject = {};
-    const keysAsArray = [];
-    const optionsAsArray = [];
+    const valuesAsObject: Record<string, any> = {};
+    const valuesAsArray: Array<any> = [];
+    const keysAsObject: Record<string, any> = {};
+    const keysAsArray: Array<any> = [];
+    const optionsAsArray: Array<any> = [];
     const isArray = Array.isArray(inputData);
 
-    const output = {};
+    const output: PromptOptions = {
+        keysAsArray: [],
+        valuesAsArray: [],
+        keysAsObject: {},
+        valuesAsObject: {},
+        asString: '',
+        optionsAsArray: [],
+    };
     const renderer = renderMethod || _generateOptionString;
     if (isArray) {
         inputData.forEach((v, i) => {
@@ -81,7 +89,7 @@ export const generateOptions = (inputData, isMultiChoice = false, mapping, rende
     return output;
 };
 
-const _sort = (a, b) => {
+const _sort = (a: any, b: any) => {
     let aStr = '';
     let bStr = '';
     if (typeof a === 'string') {
@@ -103,5 +111,5 @@ const _sort = (a, b) => {
     return com;
 };
 
-const _generateOptionString = (i, obj, mapping, defaultVal) =>
+const _generateOptionString = (i: number, _obj: any, mapping: any, defaultVal: string) =>
     ` [${chalk().bold.grey(i + 1)}]> ${chalk().bold.grey(mapping ? '' : defaultVal)} \n`;
