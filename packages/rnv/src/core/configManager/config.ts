@@ -2,21 +2,13 @@ import { writeFileSync, fsExistsSync } from '../systemManager/fileutils';
 import { logWarning } from '../systemManager/logger';
 import { configSchema } from '../constants';
 import { RnvConfog } from './types';
+import { generateConfigBase } from './configBase';
 
 class Config {
     config: RnvConfog;
 
     constructor() {
-        this.config = {
-            program: {},
-            command: {},
-            paths: {},
-            buildConfig: {},
-            runtime: {},
-            platform: '',
-            files: {},
-            configPropsInjects: {},
-        };
+        this.config = generateConfigBase();
     }
 
     initializeConfig(c: RnvConfog) {

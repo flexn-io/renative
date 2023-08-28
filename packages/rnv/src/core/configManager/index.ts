@@ -28,7 +28,6 @@ import {
     fsReadFileSync,
     fsReaddirSync,
     fsLstatSync,
-    fsWriteFileSync,
     loadFile,
     formatBytes,
 } from '../systemManager/fileutils';
@@ -37,6 +36,7 @@ import { getWorkspaceDirPath } from '../projectManager/workspace';
 import { chalk, logError, logTask, logWarning, logDebug } from '../systemManager/logger';
 import { doResolve } from '../systemManager/resolve';
 import { RnvConfigFileObj, RnvConfigPathObj, RnvConfog } from './types';
+import { generateConfigBase } from './configBase';
 // import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
@@ -412,27 +412,7 @@ const _generatePlatformTemplatePaths = (c: RnvConfog) => {
         logWarning(`You're missing paths object in your ${chalk().red(c.paths.project.config)}`);
         c.buildConfig.paths = {};
     }
-    if (c.files.config?.platformTemplatesDirs) {
-        logWarning(
-            `DEPRECATED: platformTemplatesDirs in ${chalk().white(
-                c.paths.project.config
-            )} has been moved to engine config`
-        );
-    }
-    if (c.files.config?.paths?.platformTemplatesDir) {
-        logWarning(
-            `DEPRECATED: paths.platformTemplatesDir in ${chalk().white(
-                c.paths.project.config
-            )} has been moved to engine config`
-        );
-    }
-    if (c.files.config?.platformTemplatesDir) {
-        logWarning(
-            `DEPRECATED: platformTemplatesDir in ${chalk().white(
-                c.paths.project.config
-            )} has been moved to engine config`
-        );
-    }
+
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
     const result: Record<string, string> = {};
 
@@ -609,140 +589,8 @@ export const parseRenativeConfigs = async (c: RnvConfog) => {
     }
 };
 
-export const createRnvConfig = (program, process, cmd, subCmd, { projectRoot } = {}) => {
-    const c = {
-        _renativePluginCache: {},
-        cli: {},
-        api: {
-            fsExistsSync,
-            fsReadFileSync,
-            fsReaddirSync,
-            fsWriteFileSync,
-            path,
-        },
-        configPropsInjects: {},
-        runtime: {
-            enginesByPlatform: {},
-            enginesByIndex: [],
-            enginesById: {},
-        },
-        paths: {
-            rnv: {
-                pluginTemplates: {
-                    configs: {},
-                },
-                platformTemplates: {},
-                projectTemplates: {},
-                platformTemplate: {},
-                plugins: {},
-                engines: {},
-                projectTemplate: {},
-            },
-            workspace: {
-                project: {
-                    appConfigBase: {},
-                    builds: {},
-                    assets: {},
-                    platformTemplates: {},
-                    appConfigsDirs: [],
-                    appConfigsDirNames: [],
-                },
-                appConfig: {
-                    configs: [],
-                    configsPrivate: [],
-                    configsLocal: [],
-                },
-            },
-            defaultWorkspace: {
-                project: {
-                    appConfigBase: {},
-                    builds: {},
-                    assets: {},
-                    platformTemplates: {},
-                    appConfigsDirs: [],
-                    appConfigsDirNames: [],
-                },
-                appConfig: {
-                    configs: [],
-                    configsPrivate: [],
-                    configsLocal: [],
-                },
-            },
-            project: {
-                appConfigBase: {},
-                builds: {},
-                assets: {},
-                platformTemplates: {},
-                appConfigsDirs: [],
-                appConfigsDirNames: [],
-            },
-            appConfig: {
-                configs: [],
-                configsPrivate: [],
-                configsLocal: [],
-            },
-            // EXTRA
-            GLOBAL_RNV_DIR: '',
-            buildHooks: {
-                dist: {},
-            },
-            home: {},
-            template: {
-                appConfigBase: {},
-                builds: {},
-                assets: {},
-                platformTemplates: {},
-            },
-        },
-        files: {
-            rnv: {
-                pluginTemplates: {},
-                platformTemplates: {},
-                projectTemplates: {},
-                platformTemplate: {},
-                plugins: {},
-                engines: {},
-                projectTemplate: {},
-            },
-            workspace: {
-                project: {
-                    appConfigBase: {},
-                    builds: {},
-                    assets: {},
-                    platformTemplates: {},
-                },
-                appConfig: {
-                    configs: [],
-                    configsPrivate: [],
-                    configsLocal: [],
-                },
-            },
-            defaultWorkspace: {
-                project: {
-                    appConfigBase: {},
-                    builds: {},
-                    assets: {},
-                    platformTemplates: {},
-                },
-                appConfig: {
-                    configs: [],
-                    configsPrivate: [],
-                    configsLocal: [],
-                },
-            },
-            project: {
-                appConfigBase: {},
-                builds: {},
-                assets: {},
-                platformTemplates: {},
-            },
-            appConfig: {
-                configs: [],
-                configsPrivate: [],
-                configsLocal: [],
-            },
-        },
-    };
+export const createRnvConfig = (program: any, process: any, cmd: string, subCmd: string, { projectRoot } = {}) => {
+    const c: RnvConfog = generateConfigBase();
 
     global.RNV_CONFIG = c;
 
