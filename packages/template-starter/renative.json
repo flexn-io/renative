@@ -71,7 +71,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^0.37.0-rc.9"
+            "version": "^0.37.3"
         }
     },
     "platforms": {
@@ -200,8 +200,6 @@
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
         "react-native": "source:rnv",
-        "@react-native-community/cli-platform-ios": "source:rnv",
-        "@react-native-community/cli": "source:rnv",
         "react-native-gesture-handler": "source:rnv"
     },
     "permissions": {

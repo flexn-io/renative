@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-windows",
-    "version": "0.37.0-rc.9",
+    "version": "0.37.3",
     "description": "ReNative Engine to build for Windows platform with react native support.",
     "keywords": [
         "react-native",
@@ -33,7 +33,7 @@
         "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
-        "@xmldom/xmldom": "0.7.0",
+        "@xmldom/xmldom": "0.7.7",
         "react-native-windows": "0.69.4"
     },
     "devDependencies": {
@@ -44,12 +44,12 @@
         "@babel/plugin-proposal-optional-chaining": "7.8.3",
         "@babel/preset-env": "7.8.7",
         "@react-native-windows/cli": "0.67.1",
-        "metro": "0.59.0"
+        "metro": "0.67.0"
     },
     "peerDependencies": {
         "@react-native-community/cli": "*",
         "react-native": "*",
-        "rnv": "^0.37.0-rc.9"
+        "rnv": "^0.37.3"
     },
     "private": false,
     "publishConfig": {
