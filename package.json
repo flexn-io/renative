@@ -147,7 +147,10 @@
             "@expo/webpack-config",
             "@expo/**",
             "execa",
-            "**/@flexn/plugins"
+            "**/@flexn/plugins",
+            "**/@flexn/graybox",
+            "**/appium-*",
+            "**/@wdio/*"
         ]
     },
     "resolutions": {

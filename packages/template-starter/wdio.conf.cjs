@@ -11,43 +11,51 @@ const capabilities = {
     ios: [
         {
             platformName: 'iOS',
-            deviceName: 'iPhone 14',
-            platformVersion: '15.5',
-            automationName: 'XCUITest',
-            bundleId: 'renative.helloworld.test',
-            app: 'platformBuilds/template_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app',
+            'appium:options': {
+                deviceName: 'iPhone 14',
+                platformVersion: '15.5',
+                automationName: 'XCUITest',
+                bundleId: 'renative.helloworld.test',
+                app: 'platformBuilds/template_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app',
+            },
         },
     ],
     tvos: [
         {
             platformName: 'tvOS',
-            deviceName: 'Apple TV',
-            platformVersion: '15.4',
-            automationName: 'XCUITest',
-            bundleId: 'renative.helloworld.test',
-            app: 'platformBuilds/template_tvos/build/RNVAppTVOS/Build/Products/Debug-appletvsimulator/RNVAppTVOS.app',
+            'appium:options': {
+                deviceName: 'Apple TV',
+                platformVersion: '15.4',
+                automationName: 'XCUITest',
+                bundleId: 'renative.helloworld.test',
+                app: 'platformBuilds/template_tvos/build/RNVAppTVOS/Build/Products/Debug-appletvsimulator/RNVAppTVOS.app',
+            },
         },
     ],
     android: [
         {
             platformName: 'Android',
-            avd: 'Pixel_4_API_29',
-            platformVersion: '10',
-            automationName: 'UiAutomator2',
-            appPackage: 'renative.helloworld.test',
-            appActivity: 'renative.helloworld.test.MainActivity',
-            app: 'platformBuilds/template_android/app/build/outputs/apk/debug/app-debug.apk',
+            'appium:options': {
+                avd: 'Pixel_4_API_29',
+                platformVersion: '10',
+                automationName: 'UiAutomator2',
+                appPackage: 'renative.helloworld.test',
+                appActivity: 'renative.helloworld.test.MainActivity',
+                app: 'platformBuilds/template_android/app/build/outputs/apk/debug/app-debug.apk',
+            },
         },
     ],
     androidtv: [
         {
             platformName: 'Android',
-            avd: 'Android_TV_1080p_API_29',
-            platformVersion: '10',
-            automationName: 'UiAutomator2',
-            appPackage: 'renative.helloworld.test',
-            appActivity: 'renative.helloworld.test.MainActivity',
-            app: 'platformBuilds/template_androidtv/app/build/outputs/apk/debug/app-debug.apk',
+            'appium:options': {
+                avd: 'Android_TV_1080p_API_29',
+                platformVersion: '10',
+                automationName: 'UiAutomator2',
+                appPackage: 'renative.helloworld.test',
+                appActivity: 'renative.helloworld.test.MainActivity',
+                app: 'platformBuilds/template_androidtv/app/build/outputs/apk/debug/app-debug.apk',
+            },
         },
     ],
     macos: [
