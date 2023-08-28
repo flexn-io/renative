@@ -1,7 +1,7 @@
 import { writeFileSync, fsExistsSync } from '../systemManager/fileutils';
 import { logWarning } from '../systemManager/logger';
 import { configSchema } from '../constants';
-import { RnvConfog } from '../../types';
+import { RnvConfog } from './types';
 
 class Config {
     config: RnvConfog;
@@ -12,6 +12,10 @@ class Config {
             command: {},
             paths: {},
             buildConfig: {},
+            runtime: {},
+            platform: '',
+            files: {},
+            configPropsInjects: {},
         };
     }
 

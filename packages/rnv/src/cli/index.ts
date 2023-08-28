@@ -7,7 +7,7 @@ import { loadIntegrations } from '../core/integrationManager';
 import { initializeTask, findSuitableTask } from '../core/taskManager';
 
 import EngineCore from '../engine-core';
-import { RnvConfog } from '../types';
+import { RnvConfog } from '../core/configManager/types';
 
 const IGNORE_MISSING_ENGINES_TASKS = ['link', 'unlink'];
 

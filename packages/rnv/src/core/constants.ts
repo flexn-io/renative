@@ -1,7 +1,7 @@
 // PLATFORM
 import { homedir } from 'os';
 import path from 'path';
-import { RnvConfigSchema } from '../types';
+import { RnvConfigSchema } from './configManager/types';
 
 export const USER_HOME_DIR = homedir();
 export const RNV_HOME_DIR = path.join(__dirname, '../..');

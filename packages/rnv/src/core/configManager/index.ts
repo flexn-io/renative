@@ -36,11 +36,12 @@ import { getConfigProp } from '../common';
 import { getWorkspaceDirPath } from '../projectManager/workspace';
 import { chalk, logError, logTask, logWarning, logDebug } from '../systemManager/logger';
 import { doResolve } from '../systemManager/resolve';
+import { RnvConfigFileObj, RnvConfigPathObj, RnvConfog } from './types';
 // import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
 
-export const checkIsRenativeProject = (c) =>
+export const checkIsRenativeProject = (c: RnvConfog) =>
     new Promise((resolve, reject) => {
         if (!c.paths.project.configExists) {
             return reject(
@@ -50,10 +51,10 @@ export const checkIsRenativeProject = (c) =>
             );
         }
 
-        return resolve();
+        return resolve(true);
     });
 
-const _generateConfigPaths = (pathObj, dir, configName) => {
+const _generateConfigPaths = (pathObj: RnvConfigPathObj, dir: string, configName?: string) => {
     pathObj.dir = dir;
     pathObj.config = path.join(dir, configName || RENATIVE_CONFIG_NAME);
     pathObj.configLocal = path.join(dir, RENATIVE_CONFIG_LOCAL_NAME);
@@ -61,15 +62,15 @@ const _generateConfigPaths = (pathObj, dir, configName) => {
     pathObj.appConfigsDir = path.join(dir, '..');
 };
 
-const _arrayMergeOverride = (destinationArray, sourceArray) => sourceArray;
+const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
-const getEnginesPluginDelta = (c) => {
+const getEnginesPluginDelta = (c: RnvConfog) => {
     logDebug('getEnginesPluginDelta');
 
     if (!c.buildConfig) return;
 
-    const enginePlugins = {};
-    const missingEnginePlugins = {};
+    const enginePlugins: Record<string, any> = {};
+    const missingEnginePlugins: Record<string, any> = {};
 
     const engineConfig = c.runtime.enginesByPlatform[c.platform]?.config;
     if (engineConfig?.plugins) {
@@ -88,13 +89,13 @@ const getEnginesPluginDelta = (c) => {
     return enginePlugins;
 };
 
-export const writeRenativeConfigFile = (c, configPath, configData) => {
+export const writeRenativeConfigFile = (c: RnvConfog, configPath: string, configData: string) => {
     logDebug(`writeRenativeConfigFile:${configPath}`);
     writeFileSync(configPath, configData);
     generateBuildConfig(c);
 };
 
-export const generateBuildConfig = (c) => {
+export const generateBuildConfig = (c: RnvConfog) => {
     logDebug('generateBuildConfig');
 
     const mergeOrder = [
@@ -129,7 +130,7 @@ export const generateBuildConfig = (c) => {
         return exists;
     });
 
-    const pluginTemplates = {};
+    const pluginTemplates: Record<string, any> = {};
     if (c.files.rnv.pluginTemplates.configs) {
         Object.keys(c.files.rnv.pluginTemplates.configs).forEach((v) => {
             const plgs = c.files.rnv.pluginTemplates.configs[v];
@@ -179,7 +180,7 @@ export const generateBuildConfig = (c) => {
         `generateBuildConfig:mergeOrder.length:${mergeOrder.length},cleanPaths.length:${cleanPaths.length},existsPaths.length:${existsPaths.length},existsFiles.length:${existsFiles.length}`
     );
 
-    let out = merge.all([...meta, ...existsFiles], {
+    let out: any = merge.all([...meta, ...existsFiles], {
         arrayMerge: _arrayMergeOverride,
     });
     out = merge({}, out);
@@ -219,7 +220,12 @@ export const generateBuildConfig = (c) => {
     }
 };
 
-export const loadFileExtended = (c, fileObj, pathObj, key) => {
+export const loadFileExtended = (
+    c: RnvConfog,
+    fileObj: Record<string, any>,
+    pathObj: RnvConfigPathObj,
+    key: string
+) => {
     const result = loadFile(fileObj, pathObj, key);
     if (fileObj[key]) {
         fileObj[`${key}_original`] = { ...fileObj[key] };
@@ -257,10 +263,15 @@ export const loadFileExtended = (c, fileObj, pathObj, key) => {
     return result;
 };
 
-const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
+const _loadConfigFiles = (
+    c: RnvConfog,
+    fileObj: RnvConfigFileObj,
+    pathObj: RnvConfigPathObj,
+    parseAppConfigs?: boolean
+) => {
     let result = false;
     let extendAppId;
-    if (loadFileExtended(c, fileObj, pathObj, 'config', true)) {
+    if (loadFileExtended(c, fileObj, pathObj, 'config')) {
         extendAppId = fileObj.config.extend || extendAppId;
         result = true;
     }
@@ -286,11 +297,11 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
         fileObj.configs = [];
         fileObj.configsLocal = [];
         fileObj.configsPrivate = [];
-        const fileObj1 = {};
+        const fileObj1: RnvConfigFileObj = {};
 
         // PATH1: appConfigs/base
         const path1 = path.join(pathObj.appConfigsDir, 'base');
-        const pathObj1 = {
+        const pathObj1: RnvConfigPathObj = {
             config: path.join(path1, RENATIVE_CONFIG_NAME),
             configLocal: path.join(path1, RENATIVE_CONFIG_LOCAL_NAME),
             configPrivate: path.join(path1, RENATIVE_CONFIG_PRIVATE_NAME),
@@ -313,12 +324,12 @@ const _loadConfigFiles = (c, fileObj, pathObj, parseAppConfigs) => {
             const appConfigsDirNames = fsReaddirSync(pathObj.appConfigsDir);
             if (parseAppConfigs && extendAppId && appConfigsDirNames.includes(extendAppId)) {
                 const path2 = path.join(pathObj.appConfigsDir, extendAppId);
-                const pathObj2 = {
+                const pathObj2: RnvConfigPathObj = {
                     config: path.join(path2, RENATIVE_CONFIG_NAME),
                     configLocal: path.join(path2, RENATIVE_CONFIG_LOCAL_NAME),
                     configPrivate: path.join(path2, RENATIVE_CONFIG_PRIVATE_NAME),
                 };
-                const fileObj2 = {};
+                const fileObj2: RnvConfigFileObj = {};
                 // PATH2: appConfigs/<extendConfig>
                 pathObj.dirs.push(path2);
                 pathObj.fontsDirs.push(path.join(path2, 'fonts'));
@@ -382,7 +393,7 @@ export const generateRuntimeConfig = async (c) => {
     return true;
 };
 
-export const generateLocalConfig = (c, resetAppId) => {
+export const generateLocalConfig = (c: RnvConfog, resetAppId?: boolean) => {
     logTask('generateLocalConfig', `resetAppId:${!!resetAppId}`);
     const configLocal = c.files.project.configLocal || {};
     configLocal._meta = configLocal._meta || {};
@@ -395,7 +406,7 @@ export const generateLocalConfig = (c, resetAppId) => {
     writeFileSync(c.paths.project.configLocal, configLocal);
 };
 
-const _generatePlatformTemplatePaths = (c) => {
+const _generatePlatformTemplatePaths = (c: RnvConfog) => {
     logTask('_generatePlatformTemplatePaths');
     if (!c.buildConfig.paths) {
         logWarning(`You're missing paths object in your ${chalk().red(c.paths.project.config)}`);
@@ -423,10 +434,10 @@ const _generatePlatformTemplatePaths = (c) => {
         );
     }
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
-    const result = {};
+    const result: Record<string, string> = {};
 
     if (c.buildConfig.defaults) {
-        c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
+        c.buildConfig.defaults.supportedPlatforms.forEach((platform: string) => {
             const engine = c.runtime.enginesByPlatform[platform];
             if (engine) {
                 const originalPath = engine.originalTemplatePlatformsDir;
@@ -449,7 +460,7 @@ const _generatePlatformTemplatePaths = (c) => {
     return result;
 };
 
-export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs, appConfigsDirPath) => {
+export const listAppConfigsFoldersSync = (c: RnvConfog, ignoreHiddenConfigs, appConfigsDirPath) => {
     logTask('listAppConfigsFoldersSync', `ignoreHiddenConfigs:${!!ignoreHiddenConfigs}`);
 
     if (!c.paths?.project) return [];
@@ -457,7 +468,7 @@ export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs, appConfigsDirP
     const dirPath = appConfigsDirPath || c.paths.project.appConfigsDir;
 
     if (!fsExistsSync(dirPath)) return [];
-    const appConfigsDirs = [];
+    const appConfigsDirs: Array<string> = [];
     fsReaddirSync(dirPath).forEach((dir) => {
         const appConfigDir = path.join(dirPath, dir);
         if (!IGNORE_FOLDERS.includes(dir) && fsLstatSync(appConfigDir).isDirectory()) {
@@ -481,7 +492,7 @@ export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs, appConfigsDirP
     return appConfigsDirs;
 };
 
-const _loadWorkspacesSync = (c) => {
+const _loadWorkspacesSync = (c: RnvConfog) => {
     // CHECK WORKSPACES
     if (fsExistsSync(c.paths.rnv.configWorkspaces)) {
         logDebug(`${c.paths.rnv.configWorkspaces} file exists!`);
@@ -514,7 +525,7 @@ const _loadWorkspacesSync = (c) => {
     }
 };
 
-export const parseRenativeConfigs = async (c) => {
+export const parseRenativeConfigs = async (c: RnvConfog) => {
     logTask('parseRenativeConfigs');
     // LOAD ./package.json
     loadFile(c.files.project, c.paths.project, 'package');
