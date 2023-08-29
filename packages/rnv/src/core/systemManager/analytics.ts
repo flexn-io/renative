@@ -43,7 +43,7 @@ class Redash {
     }
 }
 
-class Analytics {
+export class Analytics {
     constructor() {
         this.errorFixer = null;
         this.knowItAll = null;

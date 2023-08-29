@@ -4,15 +4,16 @@ import { isSystemWin } from './utils';
 import { getRealPath, fsExistsSync, fsReadFileSync } from './fileutils';
 import { TASK_CRYPTO_DECRYPT } from '../constants';
 import { executeTask } from '../taskManager';
+import { RnvConfig } from '../configManager/types';
 
-export const getEnvExportCmd = (envVar, key) => {
+export const getEnvExportCmd = (envVar: string, key: string) => {
     if (isSystemWin) {
         return `${chalk().white(`setx ${envVar} "${key}"`)}`;
     }
     return `${chalk().white(`export ${envVar}="${key}"`)}`;
 };
 
-export const getEnvVar = (c) => {
+export const getEnvVar = (c: RnvConfig) => {
     const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');
     const p2 = c.files.project.package.name.replace('@', '').replace('/', '_').replace(/-/g, '_');
     const envVar = `CRYPTO_${p1}_${p2}`.toUpperCase();
@@ -20,7 +21,7 @@ export const getEnvVar = (c) => {
     return envVar;
 };
 
-export const checkCrypto = async (c, parentTask, originTask) => {
+export const checkCrypto = async (c: RnvConfig, parentTask, originTask) => {
     logTask('checkCrypto');
 
     if (c.program.ci || c.files.project.config?.crypto?.optional) return;

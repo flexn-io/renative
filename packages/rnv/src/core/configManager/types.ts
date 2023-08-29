@@ -6,6 +6,7 @@ export interface RnvConfig {
     platform: string;
     process: any;
     rnvVersion: string;
+    _currentTask?: string;
     //=======
     _renativePluginCache: any;
     cli: any;
@@ -55,8 +56,8 @@ export interface RnvConfig {
             engines: Record<string, any>;
             projectTemplate: Record<string, any>;
             //ADDON
-            dir?: string;
-            package?: string;
+            dir: string;
+            package: string;
             // config: string;
             // configLocal: string;
             // configPrivate: string;

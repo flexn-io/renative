@@ -1,12 +1,13 @@
 import { writeFileSync, readObjectSync } from './fileutils';
 import { PACKAGE_JSON_FILEDS } from '../constants';
 import { chalk, logWarning } from './logger';
+import { RnvConfig } from '../configManager/types';
 
-const getSortedObject = (obj) => {
+const getSortedObject = (obj: any) => {
     if (obj !== null && typeof obj === 'object' && !Array.isArray(obj)) {
         const keys = Object.keys(obj).sort();
-        const newObj = {};
-        const addedKeys = {};
+        const newObj: Record<string, string | boolean> = {};
+        const addedKeys: Record<string, string | boolean> = {};
         keys.forEach((v) => {
             if (!addedKeys[v]) {
                 newObj[v] = obj[v];
@@ -21,8 +22,8 @@ const getSortedObject = (obj) => {
     return obj;
 };
 
-const checkForDuplicates = (arr) => {
-    const dupCheck = {};
+const checkForDuplicates = (arr: Array<any>) => {
+    const dupCheck: Record<string, boolean> = {};
     arr.forEach((v) => {
         if (v) {
             Object.keys(v).forEach((k) => {
@@ -35,8 +36,8 @@ const checkForDuplicates = (arr) => {
     });
 };
 
-const fixPackageJson = (c, pkgPath) =>
-    new Promise((resolve) => {
+const fixPackageJson = (c: RnvConfig, pkgPath: string) =>
+    new Promise<void>((resolve) => {
         const pth = pkgPath || c.paths.project.package;
         const pp = readObjectSync(pth);
         const output = fixPackageObject(pp);
@@ -44,9 +45,9 @@ const fixPackageJson = (c, pkgPath) =>
         resolve();
     });
 
-const fixPackageObject = (pp) => {
-    const output = {};
-    const usedKeys = {};
+const fixPackageObject = (pp: Record<string, string | boolean>) => {
+    const output: Record<string, string | boolean> = {};
+    const usedKeys: Record<string, string | boolean> = {};
 
     PACKAGE_JSON_FILEDS.forEach((v) => {
         if (pp[v] !== null) {

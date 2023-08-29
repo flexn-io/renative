@@ -19,3 +19,13 @@ export type ExecOptions = {
 export type ExecCallback = (isError: boolean) => void;
 
 export type ExecCallback2 = (result: any, isError: boolean) => void;
+
+export type AnalyticsApi = {
+    captureException: (e: string | Error, context: { extra: any }) => void;
+    teardown: () => Promise<void>;
+};
+
+export type OverridesOptions = Array<{
+    pattern: string;
+    override: string;
+}>;

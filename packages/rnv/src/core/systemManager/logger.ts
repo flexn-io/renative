@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import _chalk from 'chalk';
 import { RnvConfig } from '../configManager/types';
+import { AnalyticsApi } from './types';
 import { isSystemWin } from './utils';
 
 function ansiRegex({ onlyFirst = false } = {}) {
@@ -90,7 +91,7 @@ let _c: RnvConfig;
 let _isMono = false;
 let _defaultColor = _chalkCols.white;
 let _highlightColor = _chalkCols.white;
-let _analytics;
+let _analytics: AnalyticsApi;
 let _jsonOnly: boolean;
 
 const cnf = () => {
@@ -123,14 +124,14 @@ const _updateDefaultColors = () => {
 };
 _updateDefaultColors();
 
-export const logAndSave = (msg: string, skipLog: boolean) => {
+export const logAndSave = (msg: string, skipLog?: boolean) => {
     if (global._messages && !global._messages.includes(msg)) global._messages.push(msg);
     if (!skipLog) console.log(`${msg}`);
 };
 
 const PRIVATE_PARAMS = ['-k', '--key'];
 
-const _printJson = (obj) => {
+const _printJson = (obj: PrintJsonPayload) => {
     // sanitize
     if (obj.task) {
         obj.task = obj.task.trim().replace('[', '').replace(']', '');
@@ -224,8 +225,7 @@ export const logSummary = (header = 'SUMMARY') => {
         str += printIntoBox(
             `Bundle assets ($.platforms.${cnf().platform}.bundleAssets): ${_highlightColor(
                 !!cnf().runtime?.bundleAssets
-            )}`,
-            1
+            )}`
         );
     }
     if (cnf().runtime?.target) {
@@ -300,7 +300,7 @@ const _sanitizePaths = (msg: string) => {
 
 const TASK_COUNTER: Record<string, number> = {};
 
-export const logTask = (task: string, customChalk: any) => {
+export const logTask = (task: string, customChalk?: any) => {
     if (!TASK_COUNTER[task]) TASK_COUNTER[task] = 0;
     TASK_COUNTER[task] += 1;
     const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
@@ -327,7 +327,7 @@ export const logTask = (task: string, customChalk: any) => {
     console.log(_sanitizePaths(msg));
 };
 
-export const logInitTask = (task: string, customChalk) => {
+export const logInitTask = (task: string, customChalk: string | ((s: string) => string)) => {
     if (_jsonOnly) {
         return _printJson({
             type: 'taskInit',
@@ -347,7 +347,15 @@ export const logInitTask = (task: string, customChalk) => {
     console.log(msg);
 };
 
-export const logExitTask = (task: string, customChalk) => {
+type PrintJsonPayload = {
+    type: string;
+    task?: string;
+    message: string;
+    hook?: any;
+    level?: string;
+};
+
+export const logExitTask = (task: string, customChalk: (s: string) => string) => {
     if (_jsonOnly) {
         return _printJson({
             type: 'taskExit',
@@ -369,7 +377,7 @@ export const logExitTask = (task: string, customChalk) => {
 
 export const logHook = (hook = '', msg = '') => {
     if (_jsonOnly) {
-        const payload = { type: 'hook', hook, message: stripAnsi(_sanitizePaths(msg)) };
+        const payload: PrintJsonPayload = { type: 'hook', hook, message: stripAnsi(_sanitizePaths(msg)) };
         if (_getCurrentTask()) payload.task = stripAnsi(_getCurrentTask());
         return _printJson(payload);
     }
@@ -404,14 +412,14 @@ export const logInfo = (msg: string) => {
     console.log(currentChalk.cyan(`[ info ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
-export const logDebug = (...args: Array<string>) => {
+export const logDebug = (...args: Array<any>) => {
     if (_isInfoEnabled) {
         if (_jsonOnly) {
             return _printJson({
                 type: 'log',
                 level: 'debug',
                 task: stripAnsi(_getCurrentTask()),
-                message: stripAnsi(_sanitizePaths(...args)),
+                message: stripAnsi(_sanitizePaths(args.join(' '))),
             });
         }
         if (_infoFilter) {
@@ -434,7 +442,7 @@ export const logComplete = (isEnd = false) => {
     if (isEnd) logEnd(0);
 };
 
-export const logSuccess = (msg) => {
+export const logSuccess = (msg: string) => {
     if (_jsonOnly) {
         return _printJson({
             type: 'success',
@@ -445,7 +453,7 @@ export const logSuccess = (msg) => {
     logAndSave(currentChalk.magenta(`[ success ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
-export const logError = (e, isEnd = false, skipAnalytics = false) => {
+export const logError = (e: Error | string, isEnd = false, skipAnalytics = false) => {
     if (!skipAnalytics && !!_analytics) {
         const extra = {
             command: getCurrentCommand(),
@@ -465,9 +473,9 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
             type: 'log',
             level: 'error',
             task: stripAnsi(_getCurrentTask()),
-            message: stripAnsi(_sanitizePaths(e?.message || e)),
+            message: stripAnsi(_sanitizePaths(e instanceof Error ? e.message : e)),
         });
-    } else if (e && e.message) {
+    } else if (e && e instanceof Error && e.message) {
         logAndSave(currentChalk.red(`[ error ]${_getCurrentTask()} ${e.message}\n${e.stack}`), isEnd);
     } else {
         logAndSave(currentChalk.red(`[ error ]${_getCurrentTask()} ${e}`), isEnd);
@@ -529,7 +537,7 @@ export const printArrIntoBox = (arr: Array<string>, prefix = '') => {
         const l = i === 0 ? 60 - _defaultColor(prefix).length : 60;
         if (stringArr.length > l) {
             if (i === 0 && prefix.length) {
-                output += printIntoBox(`${_defaultColor(prefix)}${_defaultColor(stringArr)}`, 2);
+                output += printIntoBox(`${_defaultColor(prefix)}${_defaultColor(stringArr)}`);
             } else {
                 output += printIntoBox(_defaultColor(stringArr));
             }
@@ -541,7 +549,7 @@ export const printArrIntoBox = (arr: Array<string>, prefix = '') => {
         // stringArr[i] += `${c.platformDefaults[v].icon} ${currentChalk.white(v)}, `;
     });
     if (i === 0 && prefix.length) {
-        output += printIntoBox(`${_defaultColor(prefix)}${_defaultColor(stringArr.slice(0, -2))}`, 2);
+        output += printIntoBox(`${_defaultColor(prefix)}${_defaultColor(stringArr.slice(0, -2))}`);
     } else {
         output += printIntoBox(_defaultColor(stringArr.slice(0, -2)));
     }

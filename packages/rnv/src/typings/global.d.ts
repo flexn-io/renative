@@ -11,4 +11,8 @@ declare global {
     var RNV_CONFIG
     //eslint-disable-next-line no-var
     var RNV_ANALYTICS
+    //eslint-disable-next-line no-var
+    var isSystemWin: boolean;
+    //eslint-disable-next-line no-var
+    var doResolve;
 }
