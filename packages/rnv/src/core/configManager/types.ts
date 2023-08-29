@@ -22,6 +22,7 @@ export interface RnvConfig {
         enginesByIndex: Array<string>;
         enginesById: Record<string, any>;
         missingEnginePlugins: Record<string, any>;
+        localhost: string;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;

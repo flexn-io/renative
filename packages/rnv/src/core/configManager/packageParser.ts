@@ -12,7 +12,13 @@ import { configureFonts } from '../projectManager';
 import { getConfigProp } from '../common';
 import { DependencyType, RnvConfig } from './types';
 
-const injectProjectDependency = async (c: RnvConfig, dependency, version, type, skipInstall = false) => {
+const injectProjectDependency = async (
+    c: RnvConfig,
+    dependency: string,
+    version: string,
+    type: DependencyType,
+    skipInstall = false
+) => {
     logTask('injectProjectDependency');
 
     const currentPackage = c.files.project.package;

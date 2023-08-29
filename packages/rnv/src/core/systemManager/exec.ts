@@ -4,7 +4,7 @@
 
 import path from 'path';
 import { access, accessSync, constants } from 'fs';
-import execa from 'execa';
+import execa, { ExecaChildProcess } from 'execa';
 import NClient from 'netcat/client';
 import ora from '../../cli/ora';
 import Config from '../configManager/config';
@@ -12,6 +12,8 @@ import Config from '../configManager/config';
 import { chalk, logDebug, logRaw, logError } from './logger';
 import { fsExistsSync } from './fileutils';
 import { replaceOverridesInString } from './utils';
+import { RnvConfig } from '../configManager/types';
+import { ExecOptions } from './types';
 
 const { exec, execSync } = require('child_process');
 
@@ -33,8 +35,8 @@ const { exec, execSync } = require('child_process');
  * @returns {Promise}
  *
  */
-const _execute = (c, command, opts = {}) => {
-    const defaultOpts = {
+const _execute = (c: RnvConfig, command: string, opts: ExecOptions = {}) => {
+    const defaultOpts: ExecOptions = {
         stdio: 'pipe',
         localDir: path.resolve('./node_modules/.bin'),
         preferLocal: true,
@@ -59,7 +61,7 @@ const _execute = (c, command, opts = {}) => {
             : null;
 
     let cleanCommand = command;
-    let interval;
+    let interval: NodeJS.Timer;
     const intervalTimer = 30000; // 30s
     let timer = intervalTimer;
     const privateMask = '*******';
@@ -87,7 +89,7 @@ const _execute = (c, command, opts = {}) => {
             timer += intervalTimer;
         }, intervalTimer);
     }
-    let child;
+    let child: ExecaChildProcess;
     if (opts.rawCommand) {
         const { args } = opts.rawCommand;
         child = execa(command, args, mergedOpts);
@@ -100,8 +102,10 @@ const _execute = (c, command, opts = {}) => {
     const printLastLine = (buffer) => {
         const text = Buffer.from(buffer).toString().trim();
         const lastLine = text.split('\n').pop();
-        spinner.text = replaceOverridesInString(lastLine.substring(0, MAX_OUTPUT_LENGTH), privateParams, privateMask);
-        if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...\n';
+        spinner.text = replaceOverridesInString(lastLine?.substring(0, MAX_OUTPUT_LENGTH), privateParams, privateMask);
+        if (lastLine?.length === MAX_OUTPUT_LENGTH) {
+            if (spinner !== false) spinner.text += '...\n';
+        }
     };
 
     if (c.program?.info && child?.stdout?.pipe) {
@@ -116,7 +120,7 @@ const _execute = (c, command, opts = {}) => {
                 spinner && child.stdout.off('data', printLastLine);
             }
 
-            !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
+            !silent && !mono && !!spinner && spinner.succeed(`Executing: ${logMessage}`);
             logDebug(replaceOverridesInString(res.all, privateParams, privateMask));
             interval && clearInterval(interval);
             // logDebug(res);
@@ -127,13 +131,13 @@ const _execute = (c, command, opts = {}) => {
                 spinner && child.stdout.off('data', printLastLine);
             }
 
-            if (!silent && !mono && !ignoreErrors) {
+            if (!silent && !mono && !ignoreErrors && !!spinner) {
                 spinner.fail(`FAILED: ${logMessage}`);
             } // parseErrorMessage will return false if nothing is found, default to previous implementation
             logDebug(replaceOverridesInString(err.all, privateParams, privateMask));
             interval && clearInterval(interval);
             // logDebug(err);
-            if (ignoreErrors && !silent && !mono) {
+            if (ignoreErrors && !silent && !mono && !!spinner) {
                 spinner.succeed(`Executing: ${logMessage}`);
                 return true;
             }
@@ -175,7 +179,7 @@ const _execute = (c, command, opts = {}) => {
  * @returns {Promise}
  *
  */
-const execCLI = (c, cli, command, opts = {}) => {
+const execCLI = (c: RnvConfig, cli: string, command: string, opts: ExecOptions = {}) => {
     if (!c.program) {
         return Promise.reject('You need to pass c object as first parameter to execCLI()');
     }
@@ -207,7 +211,7 @@ const execCLI = (c, cli, command, opts = {}) => {
  * @returns {Promise}
  *
  */
-const executeAsync = async (_c, _cmd, _opts) => {
+const executeAsync = async (_c: RnvConfig, _cmd: string, _opts: ExecOptions) => {
     // swap values if c is not specified and get it from it's rightful place, config :)
     let c = _c;
     let cmd = _cmd;
@@ -255,7 +259,7 @@ const executeAsync = async (_c, _cmd, _opts) => {
  * @returns {Promise}
  *
  */
-const executeTelnet = (c, port, command) =>
+const executeTelnet = (c: RnvConfig, port: string, command: string) =>
     new Promise((resolve) => {
         logDebug(`execTelnet: ${port} ${command}`);
         try {
@@ -270,7 +274,7 @@ const executeTelnet = (c, port, command) =>
             nc2.on('close', () => resolve(output));
         } catch (e) {
             logError(e);
-            resolve();
+            resolve(true);
         }
     });
 
@@ -293,7 +297,7 @@ const executeTelnet = (c, port, command) =>
 //     return extractError(text);
 // };
 
-export const parseErrorMessage = (text, maxErrorLength = 800) => {
+export const parseErrorMessage = (text: string, maxErrorLength = 800) => {
     if (!text) return '';
     // Gradle specific
     const gradleFailIndex = text.indexOf('FAILURE: Build failed with an exception.');
@@ -365,13 +369,13 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
 
 const isUsingWindows = process.platform === 'win32';
 
-const fileNotExists = (commandName, callback) => {
+const fileNotExists = (commandName: string, callback) => {
     access(commandName, constants.F_OK, (err) => {
         callback(!err);
     });
 };
 
-const fileNotExistsSync = (commandName) => {
+const fileNotExistsSync = (commandName: string) => {
     try {
         accessSync(commandName, constants.F_OK);
         return false;
@@ -380,13 +384,13 @@ const fileNotExistsSync = (commandName) => {
     }
 };
 
-const localExecutable = (commandName, callback) => {
+const localExecutable = (commandName: string, callback) => {
     access(commandName, constants.F_OK | constants.X_OK, (err) => {
         callback(null, !err);
     });
 };
 
-const localExecutableSync = (commandName) => {
+const localExecutableSync = (commandName: string) => {
     try {
         accessSync(commandName, constants.F_OK | constants.X_OK);
         return true;
@@ -395,8 +399,8 @@ const localExecutableSync = (commandName) => {
     }
 };
 
-const commandExistsUnix = (commandName, cleanedCommandName, callback) => {
-    fileNotExists(commandName, (isFile) => {
+const commandExistsUnix = (commandName: string, cleanedCommandName: string, callback) => {
+    fileNotExists(commandName, (isFile: boolean) => {
         if (!isFile) {
             exec(
                 `command -v ${cleanedCommandName} 2>/dev/null` + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`,
@@ -411,7 +415,7 @@ const commandExistsUnix = (commandName, cleanedCommandName, callback) => {
     });
 };
 
-const commandExistsWindows = (commandName, cleanedCommandName, callback) => {
+const commandExistsWindows = (commandName: string, cleanedCommandName: string, callback) => {
     if (/[\x00-\x1f<>:"|?*]/.test(commandName)) {
         callback(null, false);
         return;
@@ -425,7 +429,7 @@ const commandExistsWindows = (commandName, cleanedCommandName, callback) => {
     });
 };
 
-const commandExistsUnixSync = (commandName, cleanedCommandName) => {
+const commandExistsUnixSync = (commandName: string, cleanedCommandName: string) => {
     if (fileNotExistsSync(commandName)) {
         try {
             const stdout = execSync(
@@ -439,7 +443,7 @@ const commandExistsUnixSync = (commandName, cleanedCommandName) => {
     return localExecutableSync(commandName);
 };
 
-const commandExistsWindowsSync = (commandName, cleanedCommandName) => {
+const commandExistsWindowsSync = (commandName: string, cleanedCommandName: string) => {
     if (/[\x00-\x1f<>:"|?*]/.test(commandName)) {
         return false;
     }
@@ -451,7 +455,7 @@ const commandExistsWindowsSync = (commandName, cleanedCommandName) => {
     }
 };
 
-let cleanInput = (_s) => {
+let cleanInput = (_s: string) => {
     let s = _s;
     if (/[^A-Za-z0-9_/:=-]/.test(s)) {
         s = `'${s.replace(/'/g, "'\\''")}'`;
@@ -474,7 +478,7 @@ if (isUsingWindows) {
     };
 }
 
-const commandExists = (commandName, callback) => {
+const commandExists = (commandName: string, callback) => {
     const cleanedCommandName = cleanInput(commandName);
     if (!callback && typeof Promise !== 'undefined') {
         return new Promise((resolve, reject) => {
@@ -494,7 +498,7 @@ const commandExists = (commandName, callback) => {
     }
 };
 
-const commandExistsSync = (commandName) => {
+const commandExistsSync = (commandName: string) => {
     const cleanedCommandName = cleanInput(commandName);
     if (isUsingWindows) {
         return commandExistsWindowsSync(commandName, cleanedCommandName);
