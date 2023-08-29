@@ -37,7 +37,7 @@ export const generatePlatformChoices = (c: RnvConfig) => {
 };
 
 export const cleanPlatformBuild = (c: RnvConfig, platform: string) =>
-    new Promise((resolve) => {
+    new Promise<void>((resolve) => {
         logTask('cleanPlatformBuild');
 
         const cleanTasks = [];

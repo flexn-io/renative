@@ -14,14 +14,14 @@ export const getEnvExportCmd = (envVar: string, key: string) => {
 };
 
 export const getEnvVar = (c: RnvConfig) => {
-    const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');
+    const p1 = c.paths.workspace.dir.split('/').pop()?.replace?.('.', '');
     const p2 = c.files.project.package.name.replace('@', '').replace('/', '_').replace(/-/g, '_');
     const envVar = `CRYPTO_${p1}_${p2}`.toUpperCase();
     logDebug('encrypt looking for env var:', envVar);
     return envVar;
 };
 
-export const checkCrypto = async (c: RnvConfig, parentTask, originTask) => {
+export const checkCrypto = async (c: RnvConfig, parentTask: string, originTask: string) => {
     logTask('checkCrypto');
 
     if (c.program.ci || c.files.project.config?.crypto?.optional) return;

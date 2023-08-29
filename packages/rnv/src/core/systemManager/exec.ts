@@ -11,7 +11,7 @@ import { chalk, logDebug, logRaw, logError } from './logger';
 import { fsExistsSync } from './fileutils';
 import { replaceOverridesInString } from './utils';
 import { RnvConfig } from '../configManager/types';
-import { ExecCallback, ExecCallback2, ExecOptions, RnvCLI } from './types';
+import { ExecCallback, ExecCallback2, ExecOptions } from './types';
 
 const { exec, execSync } = require('child_process');
 
