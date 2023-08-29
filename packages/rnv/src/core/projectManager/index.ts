@@ -530,7 +530,7 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
 // }
 // };
 
-export const copyBuildsFolder = (c, platform) =>
+export const copyBuildsFolder = (c: RnvConfig, platform: string) =>
     new Promise((resolve) => {
         logTask('copyBuildsFolder');
         if (!isPlatformActive(c, platform, resolve)) return;

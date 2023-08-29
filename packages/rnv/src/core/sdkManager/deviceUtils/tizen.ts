@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import net from 'net';
 import path from 'path';
 import { getConfigProp, getPlatformProjectDir } from '../../common';
+import { RnvConfig } from '../../configManager/types';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, RENATIVE_CONFIG_NAME } from '../../constants';
 import { execCLI } from '../../systemManager/exec';
 import { fsRenameSync } from '../../systemManager/fileutils';
@@ -187,7 +188,7 @@ const _getRunningDevices = async (c) => {
     return devices;
 };
 
-const _waitForEmulatorToBeReady = (c, target) =>
+const _waitForEmulatorToBeReady = (c: RnvConfig, target) =>
     waitForEmulator(c, CLI_SDB_TIZEN, 'devices', (res) => {
         const lines = res.trim().split(/\r?\n/);
         const devices = lines.filter((line) => line.includes(target) && line.includes('device'));

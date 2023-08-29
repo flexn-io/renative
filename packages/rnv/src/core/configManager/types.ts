@@ -7,6 +7,7 @@ export interface RnvConfig {
     process: any;
     rnvVersion: string;
     _currentTask?: string;
+    systemPropsInjects: Array<string>;
     //=======
     _renativePluginCache: any;
     cli: any;
@@ -39,6 +40,7 @@ export interface RnvConfig {
         platformBuildsProjectPath: string;
         availablePlatforms: Array<string>;
         _platformBuildsSuffix?: string;
+        timestamp: number;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;
@@ -149,6 +151,7 @@ export interface RnvConfig {
             configs: Array<string>;
             configsPrivate: Array<string>;
             configsLocal: Array<string>;
+            dir: string;
         };
         // EXTRA
         buildHooks: {
@@ -163,6 +166,7 @@ export interface RnvConfig {
             builds: Record<string, any>;
             assets: Record<string, any>;
             platformTemplates: Record<string, any>;
+            appConfigsDir: string;
         };
     };
     files: {
@@ -270,3 +274,17 @@ export interface RnvConfigFileObj {
     configsLocal: Array<any>;
     configsPrivate: Array<any>;
 }
+
+export type RenativeConfigFile = {
+    common: {
+        buildSchemes: Record<string, RenativeConfigBuildScheme>;
+    };
+    platforms: Record<
+        string,
+        {
+            buildSchemes: Record<string, RenativeConfigBuildScheme>;
+        }
+    >;
+};
+
+export type RenativeConfigBuildScheme = Record<string, any>;

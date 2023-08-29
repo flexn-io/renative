@@ -29,3 +29,9 @@ export type OverridesOptions = Array<{
     pattern: string;
     override: string;
 }>;
+
+export type TimestampPathsConfig = {
+    timestamp: Array<string>;
+};
+
+export type RnvCLI = Record<string, object>;

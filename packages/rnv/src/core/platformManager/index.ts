@@ -59,7 +59,7 @@ export const cleanPlatformBuild = (c: RnvConfig, platform: string) =>
         });
     });
 
-export const createPlatformBuild = (c, platform) =>
+export const createPlatformBuild = (c: RnvConfig, platform: string) =>
     new Promise((resolve, reject) => {
         logTask('createPlatformBuild');
 
@@ -197,7 +197,7 @@ export const copySharedPlatforms = (c) =>
         resolve();
     });
 
-export const ejectPlatform = (c, platform) => {
+export const ejectPlatform = (c: RnvConfig, platform: string) => {
     const engine = c.runtime.enginesByPlatform[platform];
     const destDir = path.join(c.paths.project.dir, 'platformTemplates', platform);
     const sourcePlatformDir = engine.originalTemplatePlatformsDir;

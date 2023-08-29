@@ -20,6 +20,7 @@ import { getConfigProp } from '../common';
 import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from '../configManager';
 import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
+import { RnvConfig } from '../configManager/types';
 
 export const checkIfTemplateConfigured = async (c) => {
     logTask('checkIfTemplateConfigured');
@@ -130,7 +131,7 @@ const _applyTemplate = async (c) => {
 };
 
 const _configureSrc = (c) =>
-    new Promise((resolve) => {
+    new Promise<void>((resolve) => {
         // Check src
         logDebug('configureProject:check src');
         if (!fsExistsSync(c.paths.project.srcDir)) {
@@ -140,7 +141,7 @@ const _configureSrc = (c) =>
         resolve();
     });
 
-const _configureAppConfigs = async (c) => {
+const _configureAppConfigs = async (c: RnvConfig) => {
     // Check appConfigs
     logDebug('configureProject:check appConfigs');
     //
@@ -192,7 +193,7 @@ const _configureAppConfigs = async (c) => {
 };
 
 const _configureProjectConfig = (c) =>
-    new Promise((resolve) => {
+    new Promise<void>((resolve) => {
         // Check projectConfigs
         logDebug('configureProject:check projectConfigs');
         if (!fsExistsSync(c.paths.project.appConfigBase.dir)) {
@@ -243,7 +244,7 @@ export const configureTemplateFiles = async (c) => {
 
     const includedPaths = templateConfig?.templateConfig?.includedPaths;
     if (includedPaths) {
-        includedPaths.forEach((name) => {
+        includedPaths.forEach((name: string) => {
             const sourcePath = path.join(c.paths.template.dir, name);
             const destPath = path.join(c.paths.project.dir, name);
             if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
@@ -263,7 +264,7 @@ export const configureTemplateFiles = async (c) => {
     }
 };
 
-export const configureEntryPoint = async (c, platform) => {
+export const configureEntryPoint = async (c: RnvConfig, platform: string) => {
     logTask('configureEntryPoint');
 
     if (c.files.project.config.isTemplate) return true;

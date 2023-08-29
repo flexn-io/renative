@@ -495,7 +495,7 @@ const _getDeviceProp = (arr, prop) => {
     return '';
 };
 
-export const askForNewEmulator = async (c, platform) => {
+export const askForNewEmulator = async (c: RnvConfig, platform: string) => {
     logTask('askForNewEmulator');
     const emuName = c.files.workspace.config.defaultTargets[platform];
 
@@ -580,7 +580,7 @@ export const checkForActiveEmulator = (c) =>
                                 reject('Could not find any active emulators');
                                 // TODO: Asking for new emulator is worng as it diverts
                                 // user from underlying failure of not being able to connect
-                                // return _askForNewEmulator(c, platform);
+                                // return _askForNewEmulator(c , platform);
                             }
                             running = false;
                         }

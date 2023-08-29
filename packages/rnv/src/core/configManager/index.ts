@@ -440,7 +440,7 @@ const _generatePlatformTemplatePaths = (c: RnvConfig) => {
     return result;
 };
 
-export const listAppConfigsFoldersSync = (c: RnvConfig, ignoreHiddenConfigs, appConfigsDirPath) => {
+export const listAppConfigsFoldersSync = (c: RnvConfig, ignoreHiddenConfigs: boolean, appConfigsDirPath?: string) => {
     logTask('listAppConfigsFoldersSync', `ignoreHiddenConfigs:${!!ignoreHiddenConfigs}`);
 
     if (!c.paths?.project) return [];

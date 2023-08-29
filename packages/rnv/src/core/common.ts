@@ -10,9 +10,9 @@ import { CLI_PROPS } from './constants';
 import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
 import { chalk, logDebug, logError, logSuccess, logTask, logWarning } from './systemManager/logger';
 import { getValidLocalhost } from './systemManager/utils';
-import { RnvConfig } from './configManager/types';
+import { RenativeConfigBuildScheme, RenativeConfigFile, RnvConfig } from './configManager/types';
 
-export const getTimestampPathsConfig = (c, platform) => {
+export const getTimestampPathsConfig = (c: RnvConfig, platform: string) => {
     let timestampBuildFiles;
     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
     if (platform === 'web') {
@@ -24,7 +24,7 @@ export const getTimestampPathsConfig = (c, platform) => {
     return null;
 };
 
-export const getCliArguments = (c) => {
+export const getCliArguments = (c: RnvConfig) => {
     const { args, rawArgs } = c.program;
     const argsCopy = [...args];
     let missingArg = rawArgs[rawArgs.indexOf(argsCopy[1]) + 1];
@@ -40,7 +40,7 @@ export const getCliArguments = (c) => {
     return argsCopy.filter((arg) => !!arg);
 };
 
-export const addSystemInjects = (c, injects) => {
+export const addSystemInjects = (c: RnvConfig, injects: Array<string>) => {
     if (!c.systemPropsInjects) c.systemPropsInjects = [];
     if (injects) {
         injects.forEach((item) => {
@@ -69,7 +69,7 @@ export const sanitizeColor = (val, key) => {
     };
 };
 
-export const getDevServerHost = (c) => {
+export const getDevServerHost = (c: RnvConfig) => {
     let devServerHostOrig = getConfigProp(c, c.platform, 'devServerHost');
     if (!devServerHostOrig) {
         devServerHostOrig = getConfigProp(c, c.platform, 'webpack', {}).devServerHost;
@@ -129,12 +129,12 @@ export const waitForHost = async (c, suffix = 'assets/bundle.js') => {
     });
 };
 
-export const existBuildsOverrideForTargetPathSync = (c, destPath) => {
+export const existBuildsOverrideForTargetPathSync = (c: RnvConfig, destPath: string) => {
     const appFolder = getAppFolder(c);
     const relativePath = path.relative(appFolder, destPath);
     let result = false;
 
-    const pathsToCheck = [];
+    const pathsToCheck: Array<string> = [];
 
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
@@ -183,7 +183,7 @@ export const getPlatformBuildDir = (c: RnvConfig, isRelativePath?: boolean) => {
     return getAppFolder(c, isRelativePath);
 };
 
-export const getPlatformOutputDir = (c) => {
+export const getPlatformOutputDir = (c: RnvConfig) => {
     if (!c.runtime.engine) {
         logError('getPlatformOutputDir not available without specific engine');
         return null;
@@ -191,7 +191,7 @@ export const getPlatformOutputDir = (c) => {
     return path.join(getAppFolder(c), c.runtime.engine.outputDirName || '');
 };
 
-export const getPlatformProjectDir = (c) => {
+export const getPlatformProjectDir = (c: RnvConfig) => {
     if (!c.runtime.engine) {
         logError('getPlatformProjectDir not available without specific engine');
         return null;
@@ -199,7 +199,7 @@ export const getPlatformProjectDir = (c) => {
     return path.join(getAppFolder(c), c.runtime.engine.projectDirName || '');
 };
 
-export const getPlatformServerDir = (c) => {
+export const getPlatformServerDir = (c: RnvConfig) => {
     if (!c.runtime.engine) {
         logError('getPlatformProjectDir not available without specific engine');
         return null;
@@ -207,9 +207,10 @@ export const getPlatformServerDir = (c) => {
     return path.join(getAppFolder(c), c.runtime.engine.serverDirName || '');
 };
 
-export const getTemplateDir = (c) => path.join(c.paths.project.platformTemplatesDirs[c.platform], `${c.platform}`);
+export const getTemplateDir = (c: RnvConfig) =>
+    path.join(c.paths.project.platformTemplatesDirs[c.platform], `${c.platform}`);
 
-export const getTemplateProjectDir = (c) => {
+export const getTemplateProjectDir = (c: RnvConfig) => {
     if (!c.runtime.engine) {
         logError('getTemplateProjectDir not available without specific engine');
         return null;
@@ -253,7 +254,7 @@ const _getValueOrMergedObject = (resultCli, resultScheme, resultPlatforms, resul
     return resultCommon;
 };
 
-export const getConfigProp = (c, platform, key, defaultVal) => {
+export const getConfigProp = (c: RnvConfig, platform: string, key: string, defaultVal?: any) => {
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
         return null;
@@ -261,7 +262,13 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     return _getConfigProp(c, platform, key, defaultVal, c.buildConfig);
 };
 
-export const _getConfigProp = (c, platform, key, defaultVal, sourceObj) => {
+export const _getConfigProp = (
+    c: RnvConfig,
+    platform: string,
+    key: string,
+    defaultVal?: any,
+    sourceObj?: RenativeConfigFile
+) => {
     if (!sourceObj) return null;
 
     if (!key || !key.split) {
@@ -275,15 +282,16 @@ export const _getConfigProp = (c, platform, key, defaultVal, sourceObj) => {
     const subKey = keyArr.join('.');
 
     let resultPlatforms;
-    let scheme;
+    let scheme: RenativeConfigBuildScheme;
     if (p) {
-        scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
+        scheme = p.buildSchemes?.[ps] || {};
         resultPlatforms = getFlavouredProp(c, sourceObj.platforms[platform], baseKey);
+    } else {
+        scheme = {};
     }
 
-    scheme = scheme || {};
-    const resultCli = CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
-    const resultScheme = scheme[baseKey];
+    const resultCli = baseKey && CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
+    const resultScheme = baseKey && scheme[baseKey];
     const resultCommonRoot = getFlavouredProp(c, sourceObj.common, baseKey);
     const resultCommonScheme = getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, baseKey);
     const resultCommon = resultCommonScheme || resultCommonRoot;
@@ -300,8 +308,8 @@ export const _getConfigProp = (c, platform, key, defaultVal, sourceObj) => {
     return result;
 };
 
-export const getConfigPropArray = (c, platform, key) => {
-    const result = [];
+export const getConfigPropArray = (c: RnvConfig, platform: string, key: string) => {
+    const result: Array<string> = [];
     const configArr = [
         c.files.defaultWorkspace.config,
         c.files.rnv.projectTemplates.config,
@@ -333,26 +341,28 @@ export const getConfigPropArray = (c, platform, key) => {
     return result;
 };
 
-export const getAppId = (c, platform) => {
+export const getAppId = (c: RnvConfig, platform: string) => {
     const id = getConfigProp(c, platform, 'id');
     const idSuffix = getConfigProp(c, platform, 'idSuffix');
     return idSuffix ? `${id}${idSuffix}` : id;
 };
 
-export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
+export const getAppTitle = (c: RnvConfig, platform: string) => getConfigProp(c, platform, 'title');
 
-export const getAppAuthor = (c, platform) => getConfigProp(c, platform, 'author') || c.files.project.package?.author;
+export const getAppAuthor = (c: RnvConfig, platform: string) =>
+    getConfigProp(c, platform, 'author') || c.files.project.package?.author;
 
-export const getAppLicense = (c, platform) => getConfigProp(c, platform, 'license') || c.files.project.package?.license;
+export const getAppLicense = (c: RnvConfig, platform: string) =>
+    getConfigProp(c, platform, 'license') || c.files.project.package?.license;
 
-export const getEntryFile = (c, platform) => c.buildConfig.platforms?.[platform]?.entryFile;
+export const getEntryFile = (c: RnvConfig, platform: string) => c.buildConfig.platforms?.[platform]?.entryFile;
 
-export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
+export const getGetJsBundleFile = (c: RnvConfig, platform: string) => getConfigProp(c, platform, 'getJsBundleFile');
 
-export const getAppDescription = (c, platform) =>
+export const getAppDescription = (c: RnvConfig, platform: string) =>
     getConfigProp(c, platform, 'description') || c.files.project.package?.description;
 
-export const getAppVersion = (c, platform) => {
+export const getAppVersion = (c: RnvConfig, platform: string) => {
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
     if (!version) {
         logWarning('You are missing version prop in your config. will default to 0');
@@ -364,9 +374,9 @@ export const getAppVersion = (c, platform) => {
     const dotLength = versionCodeArr.length;
     const isNumArr = versionCodeArr.map((v) => !Number.isNaN(Number(v)));
 
-    const verArr = [];
+    const verArr: Array<string> = [];
     let i = 0;
-    version.split('.').map((v) =>
+    version.split('.').map((v: string) =>
         v.split('-').map((v2) =>
             v2.split('+').forEach((v3) => {
                 const isNum = !Number.isNaN(Number(v3));
@@ -389,7 +399,7 @@ export const getAppVersion = (c, platform) => {
     return output;
 };
 
-export const getAppVersionCode = (c, platform) => {
+export const getAppVersionCode = (c: RnvConfig, platform: string) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
     if (versionCode) return versionCode;
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
@@ -398,7 +408,7 @@ export const getAppVersionCode = (c, platform) => {
         return '0';
     }
     const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat', '00.00.00');
-    const vFormatArr = versionCodeFormat.split('.').map((v) => v.length);
+    const vFormatArr = versionCodeFormat.split('.').map((v: string) => v.length);
     const versionCodeMaxCount = vFormatArr.length;
     const verArr = [];
 
@@ -459,7 +469,7 @@ export const getMonorepoRoot = () => {
     }
 };
 
-export const getBuildsFolder = (c, platform, customPath) => {
+export const getBuildsFolder = (c: RnvConfig, platform: string, customPath: string) => {
     const pp = customPath || c.paths.appConfig.dir;
     // if (!fsExistsSync(pp)) {
     //     logWarning(`Path ${chalk().white(pp)} does not exist! creating one for you..`);
@@ -479,7 +489,7 @@ export const getBuildsFolder = (c, platform, customPath) => {
 
 export const getIP = () => ip.address();
 
-export const checkPortInUse = (c, platform, port) =>
+export const checkPortInUse = (c: RnvConfig, platform: string, port: string) =>
     new Promise((resolve, reject) => {
         if (port === undefined || port === null) {
             resolve(false);
@@ -495,14 +505,14 @@ export const checkPortInUse = (c, platform, port) =>
         });
     });
 
-export const getFlavouredProp = (c, obj, key) => {
+export const getFlavouredProp = (c: RnvConfig, obj: Record<string, any>, key: string) => {
     if (!key || !obj) return null;
     const val1 = obj[`${key}@${c.runtime.scheme}`];
     if (val1) return val1;
     return obj[key];
 };
 
-export const getBuildFilePath = (c, platform, filePath) => {
+export const getBuildFilePath = (c: RnvConfig, platform: string, filePath: string) => {
     // P1 => platformTemplates
     let sp = path.join(getAppTemplateFolder(c, platform), filePath);
     // P2 => appConfigs/base + @buildSchemes
@@ -532,24 +542,4 @@ export default {
     getConfigProp,
     getIP,
     checkPortInUse,
-    logTask: (val) => {
-        logError('DEPRECATED: Common.logTask() has been removed. use Logger.logTask() instead');
-        logTask(val);
-    },
-    logWarning: (val) => {
-        logError('DEPRECATED: Common.logWarning() has been removed. use Logger.logWarning() instead');
-        logWarning(val);
-    },
-    logError: (val) => {
-        logError('DEPRECATED: Common.logError() has been removed. use Logger.logError() instead');
-        logError(val);
-    },
-    logSuccess: (val) => {
-        logError('DEPRECATED: Common.logError() has been removed. use Logger.logError() instead');
-        logSuccess(val);
-    },
-    logDebug: (val) => {
-        logError('DEPRECATED: Common.logDebug() has been removed. use Logger.logDebug() instead');
-        logDebug(val);
-    },
 };

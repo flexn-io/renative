@@ -7,7 +7,7 @@ import merge from 'deepmerge';
 import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from './logger';
 import { RnvConfig } from '../configManager/types';
-import { OverridesOptions } from './types';
+import { OverridesOptions, TimestampPathsConfig } from './types';
 
 export const configureFilesystem = (_getConfigProp: () => string, _doResolve: () => any, _isSystemWin: boolean) => {
     global.getConfigProp = _getConfigProp;
@@ -55,7 +55,7 @@ export const fsReadFile = (arg1: fs.PathLike, arg2) => {
 
 export const fsReaddir = (arg1: fs.PathLike, arg2) => fs.readdir(arg1, arg2);
 
-const _getSanitizedPath = (origPath: fs.PathLike, timestampPathsConfig) => {
+const _getSanitizedPath = (origPath: fs.PathLike, timestampPathsConfig: TimestampPathsConfig) => {
     if (timestampPathsConfig?.paths?.length && timestampPathsConfig?.timestamp) {
         const pths = timestampPathsConfig.paths;
         if (pths.includes(origPath)) {
@@ -69,7 +69,12 @@ const _getSanitizedPath = (origPath: fs.PathLike, timestampPathsConfig) => {
     return origPath;
 };
 
-export const copyFileSync = (source: string, target: string, skipOverride: boolean, timestampPathsConfig) => {
+export const copyFileSync = (
+    source: string,
+    target: string,
+    skipOverride?: boolean,
+    timestampPathsConfig?: TimestampPathsConfig
+) => {
     logDebug('copyFileSync', source);
     let targetFile = target;
     // if target is a directory a new file with the same name will be created

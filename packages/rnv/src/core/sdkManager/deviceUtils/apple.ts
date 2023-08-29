@@ -3,8 +3,10 @@ import child_process from 'child_process';
 import { chalk, logToSummary, logTask, logWarning, logDebug } from '../../systemManager/logger';
 import { IOS, TVOS } from '../../constants';
 import { executeAsync } from '../../systemManager/exec';
+import { AppleDevice } from '../types';
+import { RnvConfig } from '../../configManager/types';
 
-export const getAppleDevices = async (c, ignoreDevices, ignoreSimulators) => {
+export const getAppleDevices = async (c: RnvConfig, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
     const { platform } = c;
 
     logTask('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators${ignoreSimulators}`);
@@ -206,7 +208,7 @@ export const launchAppleSimulator = async (c, target) => {
     return Promise.reject('Action canceled!');
 };
 
-const _launchSimulator = async (selectedDevice) => {
+const _launchSimulator = async (selectedDevice: AppleDevice) => {
     try {
         child_process.spawnSync('xcrun', ['simctl', 'boot', selectedDevice.udid]);
     } catch (e) {
@@ -217,7 +219,7 @@ const _launchSimulator = async (selectedDevice) => {
     return true;
 };
 
-export const listAppleDevices = async (c) => {
+export const listAppleDevices = async (c: RnvConfig) => {
     logTask('listAppleDevices');
     const { platform } = c;
     const devicesArr = await getAppleDevices(c);

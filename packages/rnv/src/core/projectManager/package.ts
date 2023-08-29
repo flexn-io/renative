@@ -13,7 +13,7 @@ import {
 } from '../systemManager/fileutils';
 import { logError } from '../systemManager/logger';
 
-const bumpVersions = (version) => {
+const bumpVersions = (version: string) => {
     const {
         project: { dir },
         rnv: { pluginTemplates },
@@ -34,7 +34,7 @@ const bumpVersions = (version) => {
         });
         // check if it's our turf and do some extra magic
         const renativePkgPath = path.join(packagesDir, 'renative');
-        if (fsExistsSync(renativePkgPath)) {
+        if (pluginTemplates.config && fsExistsSync(renativePkgPath)) {
             copyFileSync(path.join(dir, 'README.md'), path.join(renativePkgPath, 'README.md'));
             updateObjectSync(pluginTemplates.config, {
                 pluginTemplates: {

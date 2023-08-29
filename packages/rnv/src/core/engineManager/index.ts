@@ -421,7 +421,7 @@ const _getMergedEngineConfigs = (c) => {
     return mergedEngineConfigs;
 };
 
-const _getEngineConfigByPlatform = (c, platform) => {
+const _getEngineConfigByPlatform = (c: RnvConfig, platform: string) => {
     const mergedEngineConfigs = _getMergedEngineConfigs(c);
     const engineId = c.program.engine || getConfigProp(c, platform, 'engine');
     let selectedEngineConfig;
@@ -459,7 +459,7 @@ const _resolvePkgPath = (c, packageName) => {
     return pkgPath;
 };
 
-const _registerPlatformEngine = (c, platform) => {
+const _registerPlatformEngine = (c: RnvConfig, platform: string) => {
     // Only register active platform engine to be faster
     if (platform === true || !platform) return;
     const selectedEngineConfig = _getEngineConfigByPlatform(c, platform);
