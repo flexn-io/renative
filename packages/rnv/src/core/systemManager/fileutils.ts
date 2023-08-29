@@ -6,6 +6,7 @@ import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from './logger';
+import { RnvConfig } from '../configManager/types';
 
 export const configureFilesystem = (_getConfigProp, _doResolve, _isSystemWin) => {
     global.getConfigProp = _getConfigProp;
@@ -13,47 +14,47 @@ export const configureFilesystem = (_getConfigProp, _doResolve, _isSystemWin) =>
     global.isSystemWin = _isSystemWin;
 };
 
-export const fsWriteFileSync = (dest, data, encoding) => {
+export const fsWriteFileSync = (dest: string, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {
     //     console.log('FS_WRITE', dest, data.length);
     // }
-    fs.writeFileSync(dest, data, encoding);
+    fs.writeFileSync(dest, data, options);
 };
 
-export const fsCopyFileSync = (source, dest) => {
+export const fsCopyFileSync = (source: string, dest: string) => {
     // console.log('FS_COPY', source);
     fs.copyFileSync(source, dest);
 };
 
-export const fsExistsSync = (dest) => fs.existsSync(dest);
+export const fsExistsSync = (dest: fs.PathLike) => fs.existsSync(dest);
 
-export const fsReaddirSync = (dest) => fs.readdirSync(dest);
+export const fsReaddirSync = (dest: fs.PathLike) => fs.readdirSync(dest);
 
-export const fsLstatSync = (dest) => fs.lstatSync(dest);
+export const fsLstatSync = (dest: fs.PathLike) => fs.lstatSync(dest);
 
-export const fsReadFileSync = (dest) => fs.readFileSync(dest);
+export const fsReadFileSync = (dest: fs.PathLike) => fs.readFileSync(dest);
 
-export const fsChmodSync = (dest, flag) => fs.chmodSync(dest, flag);
+export const fsChmodSync = (dest: fs.PathLike, flag: fs.Mode) => fs.chmodSync(dest, flag);
 
-export const fsRenameSync = (arg1, arg2) => fs.renameSync(arg1, arg2);
+export const fsRenameSync = (arg1: fs.PathLike, arg2: fs.PathLike) => fs.renameSync(arg1, arg2);
 
-export const fsStatSync = (arg1) => fs.statSync(arg1);
+export const fsStatSync = (arg1: fs.PathLike) => fs.statSync(arg1);
 
-export const fsMkdirSync = (arg1) => fs.mkdirSync(arg1);
+export const fsMkdirSync = (arg1: fs.PathLike) => fs.mkdirSync(arg1);
 
-export const fsUnlinkSync = (arg1) => fs.unlinkSync(arg1);
+export const fsUnlinkSync = (arg1: fs.PathLike) => fs.unlinkSync(arg1);
 
-export const fsSymlinkSync = (arg1, arg2) => {
+export const fsSymlinkSync = (arg1: fs.PathLike, arg2: fs.PathLike) => {
     fs.symlinkSync(arg1, arg2);
 };
 
-export const fsReadFile = (arg1, arg2) => {
+export const fsReadFile = (arg1: fs.PathLike, arg2) => {
     fs.readFile(arg1, arg2);
 };
 
-export const fsReaddir = (arg1, arg2) => fs.readdir(arg1, arg2);
+export const fsReaddir = (arg1: fs.PathLike, arg2) => fs.readdir(arg1, arg2);
 
-const _getSanitizedPath = (origPath, timestampPathsConfig) => {
+const _getSanitizedPath = (origPath: fs.PathLike, timestampPathsConfig) => {
     if (timestampPathsConfig?.paths?.length && timestampPathsConfig?.timestamp) {
         const pths = timestampPathsConfig.paths;
         if (pths.includes(origPath)) {
@@ -67,7 +68,7 @@ const _getSanitizedPath = (origPath, timestampPathsConfig) => {
     return origPath;
 };
 
-export const copyFileSync = (source, target, skipOverride, timestampPathsConfig) => {
+export const copyFileSync = (source: string, target: string, skipOverride: boolean, timestampPathsConfig) => {
     logDebug('copyFileSync', source);
     let targetFile = target;
     // if target is a directory a new file with the same name will be created
@@ -431,7 +432,7 @@ export const removeDirSync = (_dir, _rmSelf) => {
     }
 };
 
-export const writeFileSync = (filePath, obj, spaces = 4, addNewLine = true) => {
+export const writeFileSync = (filePath: string, obj, spaces = 4, addNewLine = true) => {
     logDebug('writeFileSync', filePath);
     if (filePath.includes('?') || filePath.includes('undefined')) return;
     let output;
@@ -448,13 +449,13 @@ export const writeFileSync = (filePath, obj, spaces = 4, addNewLine = true) => {
     return output;
 };
 
-export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
+export const writeObjectSync = (filePath: string, obj, spaces, addNewLine = true) => {
     logDebug('writeObjectSync', filePath);
     logWarning('writeObjectSync is DEPRECATED. use writeFileSync instead');
     return writeFileSync(filePath, obj, spaces, addNewLine);
 };
 
-export const readObjectSync = (filePath, sanitize = false, c) => {
+export const readObjectSync = (filePath: string, sanitize?: boolean, c?: RnvConfig) => {
     logDebug(`readObjectSync:${sanitize}:${filePath}`);
     if (!filePath) {
         logDebug('readObjectSync: filePath is undefined');
@@ -466,7 +467,7 @@ export const readObjectSync = (filePath, sanitize = false, c) => {
     }
     let obj;
     try {
-        obj = JSON.parse(fs.readFileSync(filePath));
+        obj = JSON.parse(fs.readFileSync(filePath).toString());
         if (sanitize) {
             logDebug(`readObjectSync: will sanitize file at: ${filePath}`);
             if (c) {
@@ -488,7 +489,7 @@ export const readObjectSync = (filePath, sanitize = false, c) => {
     return obj;
 };
 
-export const updateObjectSync = (filePath, updateObj) => {
+export const updateObjectSync = (filePath: string, updateObj) => {
     let output;
     const obj = readObjectSync(filePath);
     if (obj) {
@@ -500,7 +501,7 @@ export const updateObjectSync = (filePath, updateObj) => {
     return output;
 };
 
-export const getRealPath = (c, p, key = 'undefined', original) => {
+export const getRealPath = (c: RnvConfig, p: string, key = 'undefined', original: string) => {
     if (!p) {
         if (original) {
             logDebug(`Path ${chalk().white(key)} is not defined. using default: ${chalk().white(original)}`);
@@ -522,7 +523,7 @@ export const getRealPath = (c, p, key = 'undefined', original) => {
     return output;
 };
 
-const _refToValue = (c, ref, key) => {
+const _refToValue = (c: RnvConfig, ref, key) => {
     const val = ref.replace('$REF$:', '').split('$...');
 
     const realPath = getRealPath(c, val[0], key);
@@ -574,7 +575,7 @@ export const sanitizeDynamicRefs = (c, obj) => {
     return obj;
 };
 
-export const resolvePackage = (text) => {
+export const resolvePackage = (text: string) => {
     if (typeof text !== 'string') return text;
     const regEx = /{{resolvePackage\(([\s\S]*?)\)}}/g;
     const matches = text.match(regEx);
@@ -590,7 +591,7 @@ export const resolvePackage = (text) => {
     return newText;
 };
 
-export const sanitizeDynamicProps = (obj, propConfig) => {
+export const sanitizeDynamicProps = (obj: any, propConfig) => {
     if (!obj) {
         return obj;
     }
@@ -668,8 +669,8 @@ export const mergeObjects = (c, obj1, obj2, dynamicRefs = true, replaceArrays = 
     return dynamicRefs ? sanitizeDynamicRefs(c, obj) : obj;
 };
 
-export const updateConfigFile = async (update, globalConfigPath) => {
-    const configContents = JSON.parse(fs.readFileSync(globalConfigPath));
+export const updateConfigFile = async (update, globalConfigPath: string) => {
+    const configContents = JSON.parse(fs.readFileSync(globalConfigPath).toString());
 
     if (update.androidSdk) {
         configContents.sdks.ANDROID_SDK = update.androidSdk;

@@ -35,7 +35,7 @@ import { getConfigProp } from '../common';
 import { getWorkspaceDirPath } from '../projectManager/workspace';
 import { chalk, logError, logTask, logWarning, logDebug } from '../systemManager/logger';
 import { doResolve } from '../systemManager/resolve';
-import { RnvConfigFileObj, RnvConfigPathObj, RnvConfig } from './types';
+import { RnvConfigFileObj, RnvConfigPathObj, RnvConfig, RnvFileKey } from './types';
 import { generateConfigBase } from './configBase';
 // import { loadPluginTemplates } from '../pluginManager';
 
@@ -224,7 +224,7 @@ export const loadFileExtended = (
     c: RnvConfig,
     fileObj: Record<string, any>,
     pathObj: RnvConfigPathObj,
-    key: string
+    key: RnvFileKey
 ) => {
     const result = loadFile(fileObj, pathObj, key);
     if (fileObj[key]) {

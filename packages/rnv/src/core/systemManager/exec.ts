@@ -1,6 +1,4 @@
 /* eslint-disable no-control-regex */
-/* eslint-disable no-bitwise */
-/* eslint-disable no-await-in-loop */
 
 import path from 'path';
 import { access, accessSync, constants } from 'fs';
@@ -13,7 +11,7 @@ import { chalk, logDebug, logRaw, logError } from './logger';
 import { fsExistsSync } from './fileutils';
 import { replaceOverridesInString } from './utils';
 import { RnvConfig } from '../configManager/types';
-import { ExecOptions } from './types';
+import { ExecCallback, ExecCallback2, ExecOptions } from './types';
 
 const { exec, execSync } = require('child_process');
 
@@ -56,7 +54,7 @@ const _execute = (c: RnvConfig, command: string, opts: ExecOptions = {}) => {
     const env =
         opts.env && c.program.info
             ? Object.keys(opts.env)
-                  .map((k) => `${k}=${opts.env[k]}`)
+                  .map((k) => `${k}=${opts?.env?.[k]}`)
                   .join(' ')
             : null;
 
@@ -99,10 +97,17 @@ const _execute = (c: RnvConfig, command: string, opts: ExecOptions = {}) => {
 
     const MAX_OUTPUT_LENGTH = 200;
 
-    const printLastLine = (buffer) => {
+    const printLastLine = (buffer: WithImplicitCoercion<ArrayBuffer | SharedArrayBuffer>) => {
         const text = Buffer.from(buffer).toString().trim();
         const lastLine = text.split('\n').pop();
-        spinner.text = replaceOverridesInString(lastLine?.substring(0, MAX_OUTPUT_LENGTH), privateParams, privateMask);
+        if (spinner !== false) {
+            spinner.text = replaceOverridesInString(
+                lastLine?.substring(0, MAX_OUTPUT_LENGTH),
+                privateParams,
+                privateMask
+            );
+        }
+
         if (lastLine?.length === MAX_OUTPUT_LENGTH) {
             if (spinner !== false) spinner.text += '...\n';
         }
@@ -211,17 +216,24 @@ const execCLI = (c: RnvConfig, cli: string, command: string, opts: ExecOptions =
  * @returns {Promise}
  *
  */
-const executeAsync = async (_c: RnvConfig, _cmd: string, _opts: ExecOptions) => {
+const executeAsync = async (_c: RnvConfig | string, _cmd?: string | ExecOptions, _opts?: ExecOptions) => {
     // swap values if c is not specified and get it from it's rightful place, config :)
-    let c = _c;
-    let cmd = _cmd;
-    let opts = _opts;
-    if (typeof c === 'string') {
-        opts = cmd;
-        cmd = c;
+    let c: RnvConfig;
+    let cmd = '';
+    let opts: ExecOptions = {};
+    if (typeof _c === 'string') {
+        cmd = _c;
         c = Config.getConfig();
+    } else {
+        c = _c;
     }
-    opts = opts || {};
+
+    if (typeof _cmd === 'string') {
+        cmd = _cmd;
+    } else if (_cmd) {
+        opts = _cmd;
+    }
+
     if (cmd.includes('npm') && process.platform === 'win32') {
         cmd.replace('npm', 'npm.cmd');
     }
@@ -266,7 +278,7 @@ const executeTelnet = (c: RnvConfig, port: string, command: string) =>
             let output = '';
             const nc2 = new NClient();
             nc2.addr(c.runtime.localhost).port(parseInt(port, 10)).connect().send(`${command}\n`);
-            nc2.on('data', (data) => {
+            nc2.on('data', (data: WithImplicitCoercion<ArrayBuffer | SharedArrayBuffer>) => {
                 const resp = Buffer.from(data).toString();
                 output += resp;
                 if (output.includes('OK')) nc2.close();
@@ -369,7 +381,7 @@ export const parseErrorMessage = (text: string, maxErrorLength = 800) => {
 
 const isUsingWindows = process.platform === 'win32';
 
-const fileNotExists = (commandName: string, callback) => {
+const fileNotExists = (commandName: string, callback: ExecCallback) => {
     access(commandName, constants.F_OK, (err) => {
         callback(!err);
     });
@@ -384,7 +396,7 @@ const fileNotExistsSync = (commandName: string) => {
     }
 };
 
-const localExecutable = (commandName: string, callback) => {
+const localExecutable = (commandName: string, callback: ExecCallback2) => {
     access(commandName, constants.F_OK | constants.X_OK, (err) => {
         callback(null, !err);
     });
@@ -399,12 +411,12 @@ const localExecutableSync = (commandName: string) => {
     }
 };
 
-const commandExistsUnix = (commandName: string, cleanedCommandName: string, callback) => {
+const commandExistsUnix = (commandName: string, cleanedCommandName: string, callback: ExecCallback2) => {
     fileNotExists(commandName, (isFile: boolean) => {
         if (!isFile) {
             exec(
                 `command -v ${cleanedCommandName} 2>/dev/null` + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`,
-                (error, stdout) => {
+                (_error: any, stdout: any) => {
                     callback(null, !!stdout);
                 }
             );
@@ -415,12 +427,12 @@ const commandExistsUnix = (commandName: string, cleanedCommandName: string, call
     });
 };
 
-const commandExistsWindows = (commandName: string, cleanedCommandName: string, callback) => {
+const commandExistsWindows = (commandName: string, cleanedCommandName: string, callback: ExecCallback2) => {
     if (/[\x00-\x1f<>:"|?*]/.test(commandName)) {
         callback(null, false);
         return;
     }
-    exec(`where ${cleanedCommandName}`, (error) => {
+    exec(`where ${cleanedCommandName}`, (error: any) => {
         if (error !== null) {
             callback(null, false);
         } else {
@@ -478,7 +490,7 @@ if (isUsingWindows) {
     };
 }
 
-const commandExists = (commandName: string, callback) => {
+const commandExists = (commandName: string, callback: ExecCallback2) => {
     const cleanedCommandName = cleanInput(commandName);
     if (!callback && typeof Promise !== 'undefined') {
         return new Promise((resolve, reject) => {

@@ -5,6 +5,7 @@ export interface RnvConfig {
     buildConfig: any;
     platform: string;
     process: any;
+    rnvVersion: string;
     //=======
     _renativePluginCache: any;
     cli: any;
@@ -23,6 +24,17 @@ export interface RnvConfig {
         enginesById: Record<string, any>;
         missingEnginePlugins: Record<string, any>;
         localhost: string;
+        scheme: string;
+        bundleAssets: boolean;
+        activeTemplate: string;
+        engine: any;
+        target: string;
+        supportedPlatforms: Array<{
+            platform: string;
+            isConnected: boolean;
+        }>;
+        keepSessionActive: boolean;
+        platformBuildsProjectPath: string;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;
@@ -218,6 +230,8 @@ export interface RnvConfig {
         };
     };
 }
+
+export type RnvFileKey = 'config' | 'configLocal' | 'configPrivate';
 
 export type DependencyType = 'devDependencies' | 'dependencies' | 'peerDependencies';
 
