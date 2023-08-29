@@ -5,8 +5,9 @@ import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync } from '../
 import { checkAndConfigureSdks } from '../sdkManager/installer';
 import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
 import { SUPPORTED_PLATFORMS } from '../constants';
+import { RnvConfig } from '../configManager/types';
 
-export const logErrorPlatform = (c) => {
+export const logErrorPlatform = (c: RnvConfig) => {
     logError(
         `Platform: ${chalk().white(c.platform)} doesn't support command: ${chalk().white(c.command)}`,
         true // kill it if we're not supporting this
@@ -14,7 +15,7 @@ export const logErrorPlatform = (c) => {
     return false;
 };
 
-export const updateProjectPlatforms = (c, platforms) => {
+export const updateProjectPlatforms = (c: RnvConfig, platforms: Array<string>) => {
     const {
         project: { config },
     } = c.paths;
@@ -24,7 +25,7 @@ export const updateProjectPlatforms = (c, platforms) => {
     writeFileSync(config, currentConfig);
 };
 
-export const generatePlatformChoices = (c) => {
+export const generatePlatformChoices = (c: RnvConfig) => {
     const options = c.runtime.supportedPlatforms.map((v) => ({
         name: `${v.platform} - ${
             v.isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')
@@ -35,7 +36,7 @@ export const generatePlatformChoices = (c) => {
     return options;
 };
 
-export const cleanPlatformBuild = (c, platform) =>
+export const cleanPlatformBuild = (c: RnvConfig, platform: string) =>
     new Promise((resolve) => {
         logTask('cleanPlatformBuild');
 
@@ -133,7 +134,12 @@ export const isPlatformSupported = async (c, isGlobalScope = false) => {
     return c.platform;
 };
 
-export const isPlatformSupportedSync = (c, platform, resolve, reject) => {
+export const isPlatformSupportedSync = (
+    c: RnvConfig,
+    platform: string,
+    resolve?: () => void,
+    reject?: (e: string) => void
+) => {
     if (!platform) {
         if (reject) {
             reject(
@@ -162,7 +168,7 @@ export const isPlatformSupportedSync = (c, platform, resolve, reject) => {
     return true;
 };
 
-export const isPlatformActive = (c, platform, resolve) => {
+export const isPlatformActive = (c: RnvConfig, platform: string, resolve: () => void) => {
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(
             `Your appConfigFile is not configured properly! check ${chalk().white(c.paths.appConfig.config)} location.`

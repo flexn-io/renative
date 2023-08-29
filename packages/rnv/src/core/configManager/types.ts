@@ -33,9 +33,12 @@ export interface RnvConfig {
         supportedPlatforms: Array<{
             platform: string;
             isConnected: boolean;
+            engine: any;
         }>;
         keepSessionActive: boolean;
         platformBuildsProjectPath: string;
+        availablePlatforms: Array<string>;
+        _platformBuildsSuffix?: string;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;
@@ -94,7 +97,7 @@ export interface RnvConfig {
             config?: string;
             configLocal?: string;
             configPrivate?: string;
-            dir?: string;
+            dir: string;
         };
         defaultWorkspace: {
             //ADDON
@@ -142,6 +145,7 @@ export interface RnvConfig {
             // configsPrivate: Array<string>;
         };
         appConfig: {
+            config: string;
             configs: Array<string>;
             configsPrivate: Array<string>;
             configsLocal: Array<string>;

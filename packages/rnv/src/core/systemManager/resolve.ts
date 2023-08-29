@@ -17,7 +17,7 @@ import path from 'path';
  * @param {*} mandatory - whether it throws
  * @param {*} options - docs - https://tinyurl.com/r9sfpf7 && {keepSuffix: boolean}
  */
-export const doResolve = (aPath, mandatory = true, options = {}) => {
+export const doResolve = (aPath: string, mandatory = true, options = {}) => {
     options.basedir = options.basedir ?? process.cwd();
     try {
         if (aPath.startsWith('file:')) {
@@ -67,7 +67,7 @@ export const doResolvePath = (aPath, mandatory = true, options = {}, fallbackBas
     }
 };
 
-export const isScopedPackagePath = (aPath) => {
+export const isScopedPackagePath = (aPath: string) => {
     if (aPath.startsWith('@')) {
         if (!aPath.includes('/')) {
             throw new Error(
@@ -78,8 +78,8 @@ export const isScopedPackagePath = (aPath) => {
     }
 };
 
-const _getPackagePathParts = (aPath) => {
-    let parts = [];
+const _getPackagePathParts = (aPath: string) => {
+    let parts: RegExpMatchArray | null;
     if (isScopedPackagePath(aPath)) {
         parts = aPath.match(/^([^/]+\/[^/]+)(?:\/?(.*))/);
     } else {
@@ -94,7 +94,7 @@ const _getPackagePathParts = (aPath) => {
 /**
  * We support path linking using 'file:' protocol (not part of official node resolution alg.)
  */
-const _doResolveFSPath = (aPath, options) => {
+const _doResolveFSPath = (aPath: string, options) => {
     const fileRelPath = `${options.basedir ? `${options.basedir}/`.replace(/.*\/+$/, '/') : ''}${aPath.replace(
         'file:',
         ''
@@ -108,7 +108,7 @@ const _doResolveFSPath = (aPath, options) => {
 /**
  * @see 'LOAD_NODE_MODULES' of node resolution alg. - https://tinyurl.com/pgz6f33
  */
-const _doResolveExternalPackage = (aPath, options) => {
+const _doResolveExternalPackage = (aPath: string, options) => {
     const [packageBase, packageSuffix] = _getPackagePathParts(aPath);
 
     try {

@@ -1,10 +1,11 @@
 import path from 'path';
+import { RnvConfig } from '../configManager/types';
 import { fsExistsSync } from '../systemManager/fileutils';
 // import { getScopedVersion } from '../systemManager/utils';
 import { logTask, logWarning } from '../systemManager/logger';
 import { registerCustomTask } from '../taskManager';
 
-export const loadIntegrations = async (c) => {
+export const loadIntegrations = async (c: RnvConfig) => {
     logTask('loadIntegrations');
     const integrations = c.buildConfig?.integrations;
 
@@ -20,7 +21,7 @@ export const loadIntegrations = async (c) => {
             try {
                 const instance = require(intPath)?.default;
                 if (instance) {
-                    instance.getTasks().forEach((task) => {
+                    instance.getTasks().forEach((task: any) => {
                         registerCustomTask(c, task);
                     });
                 }

@@ -9,7 +9,7 @@ import { chalk, logDebug, logError, logWarning } from './logger';
 import { RnvConfig } from '../configManager/types';
 import { OverridesOptions } from './types';
 
-export const configureFilesystem = (_getConfigProp, _doResolve, _isSystemWin) => {
+export const configureFilesystem = (_getConfigProp: () => string, _doResolve: () => any, _isSystemWin: boolean) => {
     global.getConfigProp = _getConfigProp;
     global.doResolve = _doResolve;
     global.isSystemWin = _isSystemWin;
@@ -96,7 +96,7 @@ export const copyFileSync = (source: string, target: string, skipOverride: boole
 };
 
 const SKIP_INJECT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.svg', '.jar', '.zip', '.ico'];
-export const writeCleanFile = (source, destination, overrides, timestampPathsConfig, c) => {
+export const writeCleanFile = (source: string, destination: string, overrides, timestampPathsConfig, c) => {
     // logTask(`writeCleanFile`)
     // console.log('writeCleanFile', destination);
     if (!fs.existsSync(source)) {
@@ -258,11 +258,11 @@ export const copyFolderContentsRecursiveSync = (
     source: string,
     target: string,
     convertSvg = true,
-    skipPaths: Array<string>,
-    skipOverride: boolean,
+    skipPaths?: Array<string>,
+    skipOverride?: boolean,
     injectObject: object | null = null,
     timestampPathsConfig = null,
-    c: RnvConfig,
+    c?: RnvConfig,
     extFilter: Array<string> | null = null
 ) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
@@ -508,7 +508,7 @@ export const updateObjectSync = (filePath: string, updateObj) => {
     return output;
 };
 
-export const getRealPath = (c: RnvConfig, p: string, key = 'undefined', original: string) => {
+export const getRealPath = (c: RnvConfig, p: string, key = 'undefined', original?: string) => {
     if (!p) {
         if (original) {
             logDebug(`Path ${chalk().white(key)} is not defined. using default: ${chalk().white(original)}`);
@@ -530,7 +530,7 @@ export const getRealPath = (c: RnvConfig, p: string, key = 'undefined', original
     return output;
 };
 
-const _refToValue = (c: RnvConfig, ref, key) => {
+const _refToValue = (c: RnvConfig, ref: string, key: string) => {
     const val = ref.replace('$REF$:', '').split('$...');
 
     const realPath = getRealPath(c, val[0], key);
@@ -552,20 +552,21 @@ const _refToValue = (c: RnvConfig, ref, key) => {
     return ref;
 };
 
-export const arrayMerge = (destinationArray, sourceArray) => {
+export const arrayMerge = (destinationArray: Array<string>, sourceArray: Array<string>) => {
     const jointArray = destinationArray.concat(sourceArray);
     const uniqueArray = jointArray.filter((item, index) => jointArray.indexOf(item) === index);
     return uniqueArray;
 };
 
-const _arrayMergeOverride = (destinationArray, sourceArray) => sourceArray;
+const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
-export const sanitizeDynamicRefs = (c, obj) => {
+export const sanitizeDynamicRefs = (c: RnvConfig, obj: any) => {
     if (!obj) return obj;
     if (Array.isArray(obj)) {
         obj.forEach((v) => {
             sanitizeDynamicRefs(c, v);
         });
+        return obj;
     }
     Object.keys(obj).forEach((key) => {
         const val = obj[key];
@@ -667,7 +668,7 @@ const _bindStringVals = (obj, _val, newKey, propConfig) => {
     }
 };
 
-export const mergeObjects = (c: RnvConfig, obj1, obj2, dynamicRefs = true, replaceArrays = false) => {
+export const mergeObjects = (c: RnvConfig, obj1: any, obj2: any, dynamicRefs = true, replaceArrays = false) => {
     if (!obj2) return obj1;
     if (!obj1) return obj2;
     const obj = merge(obj1, obj2, {
@@ -696,9 +697,9 @@ export const updateConfigFile = async (update, globalConfigPath: string) => {
     fsWriteFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
 };
 
-export const replaceHomeFolder = (p) => {
-    if (global.isSystemWin) return p.replace('~', process.env.USERPROFILE);
-    return p.replace('~', process.env.HOME);
+export const replaceHomeFolder = (p: string) => {
+    if (global.isSystemWin) return p.replace('~', process.env.USERPROFILE || '');
+    return p.replace('~', process.env.HOME || '');
 };
 
 export const getFileListSync = (dir: fs.PathLike) => {
@@ -718,9 +719,11 @@ export const getFileListSync = (dir: fs.PathLike) => {
     return results;
 };
 
-export const loadFile = (fileObj, pathObj, key) => {
+export const loadFile = (fileObj: any, pathObj: Record<string, boolean | string>, key: string) => {
     const pKey = `${key}Exists`;
-    if (!fsExistsSync(pathObj[key])) {
+    const pth = pathObj[key];
+
+    if (typeof pth === 'string' && !fsExistsSync(pth)) {
         pathObj[pKey] = false;
         logDebug(`WARNING: loadFile: Path ${pathObj[key]} does not exists!`);
         logDebug(`FILE_EXISTS: ${key}:false path:${pathObj[key]}`);
@@ -728,19 +731,22 @@ export const loadFile = (fileObj, pathObj, key) => {
     }
     pathObj[pKey] = true;
     try {
-        const fileString = fsReadFileSync(pathObj[key]).toString();
-        fileObj[key] = JSON.parse(fileString);
-        pathObj[pKey] = true;
-        logDebug(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
-        // if (validateRuntimeObjectSchema && fileObj[key]) {
-        //     const valid = ajv.validate(schemaRoot, fileObj[key]);
-        //     if (!valid) {
-        //         logWarning(`Invalid schema in ${pathObj[key]}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}`);
-        //     }
-        // }
-        // if (pathObj[key].includes?.('renative.json')) {
-        //     console.log(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
-        // }
+        if (typeof pth === 'string') {
+            const fileString = fsReadFileSync(pth).toString();
+            fileObj[key] = JSON.parse(fileString);
+            pathObj[pKey] = true;
+            logDebug(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
+            // if (validateRuntimeObjectSchema && fileObj[key]) {
+            //     const valid = ajv.validate(schemaRoot, fileObj[key]);
+            //     if (!valid) {
+            //         logWarning(`Invalid schema in ${pathObj[key]}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}`);
+            //     }
+            // }
+            // if (pathObj[key].includes?.('renative.json')) {
+            //     console.log(`FILE_EXISTS: ${key}:true size:${formatBytes(Buffer.byteLength(fileString, 'utf8'))}`);
+            // }
+        }
+
         return fileObj[key];
     } catch (e) {
         logError(`loadFile: ${pathObj[key]} :: ${e}`, true); // crash if there's an error in the config file
@@ -748,7 +754,7 @@ export const loadFile = (fileObj, pathObj, key) => {
     }
 };
 
-export const formatBytes = (bytes, decimals = 2) => {
+export const formatBytes = (bytes: number, decimals = 2) => {
     if (bytes === 0) return '0 Bytes';
 
     const k = 1024;
@@ -761,13 +767,13 @@ export const formatBytes = (bytes, decimals = 2) => {
 };
 
 // Return all directories within a directory
-export const getDirectories = (source) =>
+export const getDirectories = (source: string) =>
     fs
         .readdirSync(source, { withFileTypes: true })
         .filter((dirent) => dirent.isDirectory())
         .map((dirent) => dirent.name);
 
-export const cleanEmptyFoldersRecursively = (folder) => {
+export const cleanEmptyFoldersRecursively = (folder: string) => {
     const isDir = fsStatSync(folder).isDirectory();
     if (!isDir) {
         return;

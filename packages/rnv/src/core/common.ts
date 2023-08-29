@@ -10,6 +10,7 @@ import { CLI_PROPS } from './constants';
 import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
 import { chalk, logDebug, logError, logSuccess, logTask, logWarning } from './systemManager/logger';
 import { getValidLocalhost } from './systemManager/utils';
+import { RnvConfig } from './configManager/types';
 
 export const getTimestampPathsConfig = (c, platform) => {
     let timestampBuildFiles;
@@ -174,7 +175,7 @@ export const confirmActiveBundler = async (c) => {
     return true;
 };
 
-export const getPlatformBuildDir = (c, isRelativePath) => {
+export const getPlatformBuildDir = (c: RnvConfig, isRelativePath?: boolean) => {
     if (!c.runtime.engine) {
         logError('getPlatformBuildDir not available without specific engine');
         return null;
@@ -217,7 +218,7 @@ export const getTemplateProjectDir = (c) => {
 };
 
 // DEPRECATED
-export const getAppFolder = (c, isRelativePath) => {
+export const getAppFolder = (c: RnvConfig, isRelativePath?: boolean) => {
     if (isRelativePath) {
         return `platformBuilds/${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`;
     }
@@ -228,7 +229,7 @@ export const getAppFolder = (c, isRelativePath) => {
 };
 
 // DEPRECATED
-export const getAppTemplateFolder = (c, platform) =>
+export const getAppTemplateFolder = (c: RnvConfig, platform: string) =>
     path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
 const _getValueOrMergedObject = (resultCli, resultScheme, resultPlatforms, resultCommon) => {

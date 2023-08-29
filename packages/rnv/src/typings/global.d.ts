@@ -15,4 +15,6 @@ declare global {
     var isSystemWin: boolean;
     //eslint-disable-next-line no-var
     var doResolve;
+    //eslint-disable-next-line no-var
+    var getConfigProp
 }

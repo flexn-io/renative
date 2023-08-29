@@ -9,7 +9,7 @@ import pkg from '../../../package.json';
 import { REDASH_KEY, REDASH_URL, SENTRY_ENDPOINT } from '../constants';
 
 // deal with useless duplicate errors on sentry because of different error texts
-const sanitizeError = (err) => {
+const sanitizeError = (err: string) => {
     if (err) {
         if (err.includes('file if your SDK path is correct.')) {
             return err.toLowerCase().split('. check your ')[0];
@@ -23,7 +23,7 @@ const sanitizeError = (err) => {
 };
 
 class Redash {
-    captureEvent(e) {
+    captureEvent(e: any) {
         const defaultProps = {
             fingerprint: machineIdSync(),
             os: os.platform(),
@@ -44,6 +44,9 @@ class Redash {
 }
 
 export class Analytics {
+    errorFixer: any;
+    knowItAll: any;
+
     constructor() {
         this.errorFixer = null;
         this.knowItAll = null;
@@ -61,7 +64,7 @@ export class Analytics {
                 integrations: [
                     new RewriteFrames({
                         root: '/',
-                        iteratee: (frame) => {
+                        iteratee: (frame: any) => {
                             if (
                                 frame.filename.includes(`rnv${path.sep}dist${path.sep}`) ||
                                 frame.filename.includes(`rnv${path.sep}src${path.sep}`)
@@ -87,7 +90,7 @@ export class Analytics {
         }
     }
 
-    captureException(e, context = {}) {
+    captureException(e: any, context = {}) {
         if (Config.isAnalyticsEnabled && this.errorFixer) {
             this.errorFixer.withScope((scope) => {
                 const { extra = {}, tags = {} } = context;
@@ -102,7 +105,7 @@ export class Analytics {
         }
     }
 
-    async captureEvent(e) {
+    async captureEvent(e: any) {
         if (Config.isAnalyticsEnabled && this.knowItAll) {
             return this.knowItAll.captureEvent(e);
         }
@@ -110,7 +113,7 @@ export class Analytics {
     }
 
     teardown() {
-        return new Promise((resolve) => {
+        return new Promise<void>((resolve) => {
             if (Config.isAnalyticsEnabled && this.errorFixer) {
                 const client = this.errorFixer.getCurrentHub().getClient();
                 if (client) {
