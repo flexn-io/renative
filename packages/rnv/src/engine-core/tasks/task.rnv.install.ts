@@ -2,8 +2,9 @@ import { areNodeModulesInstalled } from '../../core/systemManager/npmUtils';
 import { PARAMS } from '../../core/constants';
 import { installPackageDependenciesAndPlugins } from '../../core/pluginManager';
 import { logTask, logInfo } from '../../core/systemManager/logger';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvInstall = async (c, parentTask) => {
+export const taskRnvInstall: RnvTaskFn = async (c, parentTask, _) => {
     logTask('taskRnvInstall', `requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
 
     if (c.program.only && !!parentTask) return true;

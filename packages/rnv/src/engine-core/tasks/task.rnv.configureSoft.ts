@@ -5,8 +5,9 @@ import { configureRuntimeDefaults } from '../../core/runtimeManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_APP_CONFIGURE, TASK_CONFIGURE_SOFT, PARAMS } from '../../core/constants';
 import { checkSdk } from '../../core/sdkManager/installer';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvConfigureSoft = async (c, parentTask, originTask) => {
+export const taskRnvConfigureSoft: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigureSoft');
 
     await configureRuntimeDefaults(c);

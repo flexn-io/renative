@@ -98,7 +98,7 @@ export const addDevelopTizenCertificate = (c: RnvConfig, secureProfileConfig) =>
             });
     });
 
-const _getDeviceID = async (c, target) => {
+const _getDeviceID = async (c: RnvConfig, target) => {
     const { device } = c.program;
 
     if (device) {
@@ -208,7 +208,7 @@ const _composeDevicesString = (devices) =>
 //     }
 // };
 
-export const runTizenSimOrDevice = async (c, buildCoreWebpackProject) => {
+export const runTizenSimOrDevice = async (c: RnvConfig, buildCoreWebpackProject) => {
     const { hosted } = c.program;
     const { target, engine } = c.runtime;
     const { platform } = c;

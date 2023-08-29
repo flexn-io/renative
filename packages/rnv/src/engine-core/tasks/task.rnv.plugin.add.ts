@@ -5,9 +5,10 @@ import { TASK_INSTALL, TASK_PLUGIN_ADD, TASK_PROJECT_CONFIGURE, PARAMS } from '.
 import { chalk, logSuccess, logTask } from '../../core/systemManager/logger';
 import { getPluginList, resolvePluginDependants } from '../../core/pluginManager';
 import { executeTask } from '../../core/taskManager';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
 /* eslint-disable no-await-in-loop */
-export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
+export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPluginAdd');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_ADD, originTask);
@@ -17,7 +18,7 @@ export const taskRnvPluginAdd = async (c, parentTask, originTask) => {
     const o = getPluginList(c);
 
     const selPlugin = selPluginKey && o.allPlugins[selPluginKey];
-    const selectedPlugins = {};
+    const selectedPlugins: Record<string, string> = {};
     const installMessage = [];
 
     if (!selPlugin) {

@@ -10,7 +10,7 @@ import { PARAMS, TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL }
 
 import { checkSdk } from '../../core/sdkManager/installer';
 
-export const taskRnvPlatformConfigure = async (c, parentTask, originTask) => {
+export const taskRnvPlatformConfigure = async (c: RnvConfig, parentTask, originTask) => {
     logTask('taskRnvPlatformConfigure', '');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONFIGURE, originTask);

@@ -6,8 +6,9 @@ import { chalk, logTask, logSuccess } from '../../core/systemManager/logger';
 import { configureRuntimeDefaults } from '../../core/runtimeManager';
 
 import { PARAMS, TASK_KILL, TASK_APP_CONFIGURE } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvKill = async (c, parentTask, originTask) => {
+export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvKill');
 
     const usedPorts = [];

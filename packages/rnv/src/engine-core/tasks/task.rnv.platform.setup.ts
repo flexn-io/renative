@@ -3,8 +3,9 @@ import { TASK_PLATFORM_SETUP, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/
 import { updateProjectPlatforms } from '../../core/platformManager';
 import { logTask } from '../../core/systemManager/logger';
 import { executeTask } from '../../core/taskManager';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvPlatformSetup = async (c, parentTask, originTask) => {
+export const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformSetup');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_SETUP, originTask);

@@ -3,7 +3,7 @@ import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/logger';
 import { writeFileSync, mkdirSync, fsExistsSync } from '../systemManager/fileutils';
 
-export const createWorkspace = async (c, workspaceID, workspacePath) => {
+export const createWorkspace = async (c: RnvConfig, workspaceID, workspacePath) => {
     c.files.rnv.configWorkspaces.workspaces[workspaceID] = {
         path: workspacePath,
     };

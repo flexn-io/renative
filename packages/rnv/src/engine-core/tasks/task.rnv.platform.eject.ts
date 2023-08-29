@@ -4,12 +4,13 @@ import { writeFileSync } from '../../core/systemManager/fileutils';
 import { TASK_PLATFORM_EJECT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 import { generatePlatformChoices, ejectPlatform } from '../../core/platformManager';
 import { executeTask } from '../../core/taskManager';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvPlatformEject = async (c, parentTask, originTask) => {
+export const taskRnvPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformEject');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_EJECT, originTask);
-    let selectedPlatforms;
+    let selectedPlatforms: Array<string>;
     if (c.platform) {
         selectedPlatforms = [c.platform];
     } else {

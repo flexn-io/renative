@@ -41,7 +41,7 @@ export const composeDevicesString = (devices, returnArray) => {
     return `\n${devicesArray.join('')}`;
 };
 
-export const launchAndroidSimulator = async (c, target, isIndependentThread = false) => {
+export const launchAndroidSimulator = async (c: RnvConfig, target, isIndependentThread = false) => {
     logTask('launchAndroidSimulator', `target:${target} independentThread:${!!isIndependentThread}`);
     let newTarget = target;
     if (target === true) {
@@ -124,7 +124,7 @@ const _getDeviceString = (device, i) => {
     return ` [${i + 1}]> ${deviceString}\n`;
 };
 
-export const resetAdb = async (c, ranBefore) => {
+export const resetAdb = async (c: RnvConfig, ranBefore) => {
     try {
         if (!ranBefore) await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
     } catch (e) {
@@ -141,7 +141,7 @@ export const resetAdb = async (c, ranBefore) => {
     }
 };
 
-export const getAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = false) => {
+export const getAndroidTargets = async (c: RnvConfig, skipDevices, skipAvds, deviceOnly = false) => {
     logTask('getAndroidTargets', `skipDevices:${!!skipDevices} skipAvds:${!!skipAvds} deviceOnly:${!!deviceOnly}`);
     // Temp workaround for race conditions receiving devices with offline status
     await new Promise((r) => setTimeout(r, 1000));
@@ -169,7 +169,7 @@ const calculateDeviceDiagonal = (width, height, density) => {
     return Math.sqrt(widthInches * widthInches + heightInches * heightInches);
 };
 
-const getRunningDeviceProp = async (c, udid, prop) => {
+const getRunningDeviceProp = async (c: RnvConfig, udid, prop) => {
     // avoid multiple calls to the same device
     if (currentDeviceProps[udid]) {
         if (!prop) return currentDeviceProps[udid];
@@ -191,7 +191,7 @@ const getRunningDeviceProp = async (c, udid, prop) => {
     return getRunningDeviceProp(c, udid, prop);
 };
 
-const decideIfTVRunning = async (c, device) => {
+const decideIfTVRunning = async (c: RnvConfig, device) => {
     const { udid, model, product } = device;
     const mod = await getRunningDeviceProp(c, udid, 'ro.product.model');
     const name = await getRunningDeviceProp(c, udid, 'ro.product.name');
@@ -217,7 +217,7 @@ const decideIfTVRunning = async (c, device) => {
     return isTV;
 };
 
-const decideIfWearRunning = async (c, device) => {
+const decideIfWearRunning = async (c: RnvConfig, device) => {
     const { udid, model, product } = device;
     const fingerprint = await getRunningDeviceProp(c, udid, 'ro.vendor.build.fingerprint');
     const name = await getRunningDeviceProp(c, udid, 'ro.product.vendor.name');
@@ -353,7 +353,7 @@ const getAvdDetails = (c: RnvConfig, deviceName) => {
     return results;
 };
 
-const getEmulatorName = async (c, words) => {
+const getEmulatorName = async (c: RnvConfig, words) => {
     const emulator = words[0];
     const port = emulator.split('-')[1];
 
@@ -364,7 +364,7 @@ const getEmulatorName = async (c, words) => {
     return emulatorName;
 };
 
-export const connectToWifiDevice = async (c, target) => {
+export const connectToWifiDevice = async (c: RnvConfig, target) => {
     let connect_str = `connect ${target}`;
 
     if (!target.includes(':')) {
@@ -377,7 +377,7 @@ export const connectToWifiDevice = async (c, target) => {
     return false;
 };
 
-const _parseDevicesResult = async (c, devicesString, avdsString, deviceOnly) => {
+const _parseDevicesResult = async (c: RnvConfig, devicesString, avdsString, deviceOnly) => {
     logDebug(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
     const devices = [];
     const { skipTargetCheck } = c.program;

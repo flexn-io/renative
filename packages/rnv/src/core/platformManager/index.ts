@@ -82,7 +82,7 @@ export const createPlatformBuild = (c: RnvConfig, platform: string) =>
         resolve();
     });
 
-export const isPlatformSupported = async (c, isGlobalScope = false) => {
+export const isPlatformSupported = async (c: RnvConfig, isGlobalScope = false) => {
     logTask('isPlatformSupported');
 
     if (c.platform && c.platform !== true && isGlobalScope) {

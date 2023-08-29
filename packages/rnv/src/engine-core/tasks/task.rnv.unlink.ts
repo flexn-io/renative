@@ -2,8 +2,10 @@ import path from 'path';
 import { logInfo, logTask, logSuccess } from '../../core/systemManager/logger';
 import { PARAMS, RNV_PACKAGES } from '../../core/constants';
 import { fsExistsSync, fsRenameSync, fsUnlinkSync, fsLstatSync } from '../../core/systemManager/fileutils';
+import { RnvTaskFn } from '../../core/taskManager/types';
+import { RnvConfig } from '../../core/configManager/types';
 
-const _unlinkPackage = (c: RnvConfig, key) => {
+const _unlinkPackage = (c: RnvConfig, key: string) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);
     const rnvPathUnlinked = path.join(c.paths.project.nodeModulesDir, `${key}_unlinked`);
 
@@ -20,7 +22,7 @@ const _unlinkPackage = (c: RnvConfig, key) => {
     }
 };
 
-export const taskRnvUnlink = async (c: RnvConfig) => {
+export const taskRnvUnlink: RnvTaskFn = async (c) => {
     logTask('taskRnvUnlink');
 
     RNV_PACKAGES.forEach((pkg) => {

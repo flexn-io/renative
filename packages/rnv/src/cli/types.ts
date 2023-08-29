@@ -17,3 +17,5 @@ export type PromptParams = {
     type: string;
     pageSize?: number;
 };
+
+export type PromptRenderFn = (i: number, obj, mapping, defaultVal) => string;

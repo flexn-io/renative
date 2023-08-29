@@ -8,6 +8,8 @@ import {
     validateRenativeJsonSchema,
     // validateRuntimeObjectSchema
 } from '../../core/schemaManager';
+import { RnvConfig } from '../../core/configManager/types';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
 const configTargets = [
     'workspace.config',
@@ -17,7 +19,7 @@ const configTargets = [
     'appConfig.configs',
 ];
 
-export const taskRnvDoctor = async (c, parentTask, originTask) => {
+export const taskRnvDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDoctor');
 
     await configureRuntimeDefaults(c);

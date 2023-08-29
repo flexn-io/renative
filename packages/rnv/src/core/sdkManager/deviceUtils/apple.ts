@@ -170,7 +170,7 @@ const _parseIOSDevicesList = (rawDevices, platform, ignoreDevices = false, ignor
     return devices;
 };
 
-export const launchAppleSimulator = async (c, target) => {
+export const launchAppleSimulator = async (c: RnvConfig, target) => {
     logTask('launchAppleSimulator', `${target}`);
 
     const devicesArr = await getAppleDevices(c, true);

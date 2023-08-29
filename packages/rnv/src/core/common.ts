@@ -90,7 +90,7 @@ export const getDevServerHost = (c: RnvConfig) => {
     return devServerHostFixed;
 };
 
-export const waitForHost = async (c, suffix = 'assets/bundle.js') => {
+export const waitForHost = async (c: RnvConfig, suffix = 'assets/bundle.js') => {
     logTask('waitForHost', `port:${c.runtime.port}`);
     let attempts = 0;
     const maxAttempts = 10;

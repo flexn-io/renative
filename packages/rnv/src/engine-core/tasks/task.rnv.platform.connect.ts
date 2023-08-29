@@ -7,7 +7,7 @@ import { generatePlatformChoices } from '../../core/platformManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, PARAMS } from '../../core/constants';
 
-export const taskRnvPlatformConnect = async (c, parentTask, originTask) => {
+export const taskRnvPlatformConnect = async (c: RnvConfig, parentTask, originTask) => {
     logTask('taskRnvPlatformConnect');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, originTask);

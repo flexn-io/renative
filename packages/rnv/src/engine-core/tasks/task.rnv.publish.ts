@@ -5,8 +5,9 @@ import { logWarning, logTask } from '../../core/systemManager/logger';
 import { writeFileSync } from '../../core/systemManager/fileutils';
 import { executeTask } from '../../core/taskManager';
 import { TASK_PUBLISH, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-const includesPre = (version) => {
+const includesPre = (version: string) => {
     if (version.includes('alpha')) return 'alpha';
     if (version.includes('beta')) return 'beta';
     if (version.includes('rc')) return 'rc';
@@ -27,7 +28,7 @@ const includesPre = (version) => {
  * if you are publishing a beta/alpha/rc. That is done automatically by checking if the second arg is alpha, beta, rc.
  *
  */
-export const taskRnvPublish = async (c, parentTask, originTask) => {
+export const taskRnvPublish: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPublish');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PUBLISH, originTask);

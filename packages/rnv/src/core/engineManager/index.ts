@@ -16,7 +16,7 @@ import { RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './t
 
 const ENGINE_CORE = 'engine-core';
 
-export const registerEngine = async (c, engine, platform, engConfig) => {
+export const registerEngine = async (c: RnvConfig, engine, platform, engConfig) => {
     logTask(`registerEngine:${engine.config.id}`);
     c.runtime.enginesById[engine.config.id] = engine;
     engine.initializeRuntimeConfig(c);
@@ -114,7 +114,7 @@ export const configureEngines = async (c: RnvConfig) => {
     return true;
 };
 
-export const registerMissingPlatformEngines = async (c, taskInstance) => {
+export const registerMissingPlatformEngines = async (c: RnvConfig, taskInstance) => {
     logTask('registerMissingPlatformEngines');
     if (
         !taskInstance ||
@@ -202,7 +202,7 @@ If you don't want to use this dependency make sure you remove platform which req
     return Object.keys(addedPlugins).length;
 };
 
-export const loadEnginePackageDeps = async (c, engineConfigs) => {
+export const loadEnginePackageDeps = async (c: RnvConfig, engineConfigs) => {
     logTask('loadEnginePackageDeps');
     if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return 0;
     // Check engine dependencies

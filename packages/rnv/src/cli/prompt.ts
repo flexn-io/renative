@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import { chalk, logWarning, logTask, logDebug } from '../core/systemManager/logger';
 import Config from '../core/configManager/config';
-import { PromptOptions, PromptParams } from './types';
+import { PromptOptions, PromptParams, PromptRenderFn } from './types';
 
 export const inquirerPrompt = async (params: PromptParams) => {
     const c = Config.getConfig();
@@ -39,7 +39,12 @@ export const pressAnyKeyToContinue = () => {
     return inquirer.prompt(params as any);
 };
 
-export const generateOptions = (inputData: any, isMultiChoice = false, mapping: any, renderMethod: any) => {
+export const generateOptions = (
+    inputData: any,
+    isMultiChoice = false,
+    mapping?: any,
+    renderMethod?: PromptRenderFn
+) => {
     logDebug('generateOptions', isMultiChoice);
     let asString = '';
     const valuesAsObject: Record<string, any> = {};

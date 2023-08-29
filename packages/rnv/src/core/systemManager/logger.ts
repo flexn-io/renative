@@ -557,7 +557,7 @@ export const printArrIntoBox = (arr: Array<string>, prefix = '') => {
     return output;
 };
 
-export const printBoxStart = (str: string, str2: string) => {
+export const printBoxStart = (str: string, str2?: string) => {
     let output = _defaultColor('┌──────────────────────────────────────────────────────────────────────────────┐\n');
     output += printIntoBox(str);
     output += printIntoBox(str2 || '');

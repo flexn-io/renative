@@ -80,7 +80,7 @@ const parseDevices = (c: RnvConfig, devicesResponse) => {
     );
 };
 
-const installAndLaunchApp = async (c, target, appPath, tId) => {
+const installAndLaunchApp = async (c: RnvConfig, target, appPath, tId) => {
     try {
         await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
     } catch (e) {

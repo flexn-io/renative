@@ -5,8 +5,9 @@ import { createWorkspace } from '../../core/projectManager/workspace';
 import { fsExistsSync } from '../../core/systemManager/fileutils';
 import { executeTask } from '../../core/taskManager';
 import { TASK_WORKSPACE_ADD, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvWorkspaceAdd = async (c, parentTask, originTask) => {
+export const taskRnvWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvWorkspaceAdd');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_WORKSPACE_ADD, originTask);
@@ -26,7 +27,7 @@ export const taskRnvWorkspaceAdd = async (c, parentTask, originTask) => {
             type: 'confirm',
             message: `Folder ${workspacePath} already exists are you sure you want to override it?`,
         });
-        if (!confirm) return;
+        if (!confirm) return false;
     }
 
     let workspaceID = workspacePath.split('/').pop().replace(/@|\./g, '');
@@ -39,6 +40,8 @@ export const taskRnvWorkspaceAdd = async (c, parentTask, originTask) => {
 
     workspaceID = workspaceIDInput || workspaceID;
     createWorkspace(c, workspaceID, workspacePath);
+
+    return true;
 };
 
 export default {

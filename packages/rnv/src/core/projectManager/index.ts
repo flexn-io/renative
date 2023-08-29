@@ -424,7 +424,7 @@ const _resolvePackage = (c: RnvConfig, v) => {
 //     return false;
 // };
 
-export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
+export const copyAssetsFolder = async (c: RnvConfig, platform, subPath, customFn) => {
     logTask('copyAssetsFolder');
 
     if (!isPlatformActive(c, platform)) return;
@@ -506,7 +506,7 @@ export const copyAssetsFolder = async (c, platform, subPath, customFn) => {
 };
 
 //NOTE: Default assets have been removed from engines
-// const generateDefaultAssets = async (c, platform, sourcePath, forceTrue) => {
+// const generateDefaultAssets = async (c: RnvConfig, platform, sourcePath, forceTrue) => {
 //     logTask('generateDefaultAssets');
 // let confirmAssets = true;
 // if (c.program.ci !== true && c.program.yes !== true && !forceTrue) {

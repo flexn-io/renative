@@ -14,10 +14,19 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../../core/systemManager/crypto';
 import { executeTask } from '../../core/taskManager';
 import { TASK_CRYPTO_DECRYPT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvConfig } from '../../core/configManager/types';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
 const iocane = require('iocane');
 
-const _unzipAndCopy = async (c, shouldCleanFolder, destTemp, wsPath, ts, destFolder) => {
+const _unzipAndCopy = async (
+    c: RnvConfig,
+    shouldCleanFolder: boolean,
+    destTemp: string,
+    wsPath: string,
+    ts: string,
+    destFolder: string
+) => {
     if (shouldCleanFolder) {
         await cleanFolder(wsPath);
     }
@@ -34,7 +43,7 @@ const _unzipAndCopy = async (c, shouldCleanFolder, destTemp, wsPath, ts, destFol
     logSuccess(`Files succesfully extracted into ${destFolder}`);
 };
 
-export const taskRnvCryptoDecrypt = async (c, parentTask, originTask) => {
+export const taskRnvCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvCryptoDecrypt');
 
     if (!parentTask) {

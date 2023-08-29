@@ -299,12 +299,12 @@ export const configureEntryPoint = async (c: RnvConfig, platform: string) => {
     return true;
 };
 
-const _writeObjectSync = (c: RnvConfig, p, s) => {
+const _writeObjectSync = (c: RnvConfig, p: string, s: string) => {
     writeFileSync(p, s);
     generateBuildConfig(c);
 };
 
-export const getTemplateOptions = (c: RnvConfig, isGlobalScope) => {
+export const getTemplateOptions = (c: RnvConfig, isGlobalScope?: boolean) => {
     let defaultProjectTemplates;
     if (isGlobalScope) {
         defaultProjectTemplates = c.files.rnv.projectTemplates.config.projectTemplates;
@@ -328,10 +328,10 @@ export const getInstalledTemplateOptions = (c) => {
     return [];
 };
 
-export const isTemplateInstalled = (c) =>
+export const isTemplateInstalled = (c: RnvConfig) =>
     c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : false;
 
-export const applyTemplate = async (c, selectedTemplate) => {
+export const applyTemplate = async (c: RnvConfig, selectedTemplate: string) => {
     logTask('applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`);
     if (c.files.project.config.isTemplate) return true;
 

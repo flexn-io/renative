@@ -8,7 +8,7 @@ import { listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
 import { installPackageDependenciesAndPlugins } from '../../core/pluginManager';
 import { fsExistsSync, readObjectSync } from '../../core/systemManager/fileutils';
 
-export const taskRnvProjectUpgrade = async (c, parentTask, originTask) => {
+export const taskRnvProjectUpgrade = async (c: RnvConfig, parentTask, originTask) => {
     logTask('taskRnvProjectUpgrade');
     const upgradedPaths = [];
     if (fsExistsSync(c.paths.project.config)) {

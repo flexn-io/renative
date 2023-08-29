@@ -6,13 +6,15 @@ import { executeTask } from '../../core/taskManager';
 import { TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD, PARAMS } from '../../core/constants';
 
 import { getTemplateOptions } from '../../core/templateManager';
+import { RnvConfig } from '../../core/configManager/types';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-const _writeObjectSync = (c: RnvConfig, p, s) => {
+const _writeObjectSync = (c: RnvConfig, p: string, s: string) => {
     writeFileSync(p, s);
     generateBuildConfig(c);
 };
 
-export const _addTemplate = (c: RnvConfig, template) => {
+export const _addTemplate = (c: RnvConfig, template: string) => {
     logTask('addTemplate');
 
     c.files.project.config.templates = c.files.project.config.templates || {};
@@ -26,7 +28,7 @@ export const _addTemplate = (c: RnvConfig, template) => {
     _writeObjectSync(c, c.paths.project.config, c.files.project.config);
 };
 
-export const taskRnvTemplateAdd = async (c, parentTask, originTask) => {
+export const taskRnvTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTemplateAdd');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD, originTask);
@@ -41,6 +43,8 @@ export const taskRnvTemplateAdd = async (c, parentTask, originTask) => {
     });
 
     _addTemplate(c, template);
+
+    return true;
 };
 
 export default {

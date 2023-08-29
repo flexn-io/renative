@@ -35,7 +35,7 @@ import {
 import { configureEngines } from '../../core/engineManager';
 import { executeTask, initializeTask, findSuitableTask } from '../../core/taskManager';
 
-export const taskRnvProjectConfigure = async (c, parentTask, originTask) => {
+export const taskRnvProjectConfigure = async (c: RnvConfig, parentTask, originTask) => {
     logTask('taskRnvProjectConfigure');
 
     if (c.paths.project.builds.dir && !fsExistsSync(c.paths.project.builds.dir)) {

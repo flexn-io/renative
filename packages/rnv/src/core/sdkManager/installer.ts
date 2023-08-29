@@ -197,7 +197,7 @@ const _findFolderWithFile = (dir, fileToFind) => {
     return foundDir;
 };
 
-const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) => {
+const _attemptAutoFix = async (c: RnvConfig, sdkPlatform, sdkKey, traverseUntilFoundFile) => {
     logTask('_attemptAutoFix');
 
     if (c.program.hosted) {

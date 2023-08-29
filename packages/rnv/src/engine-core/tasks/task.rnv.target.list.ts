@@ -22,8 +22,9 @@ import { listAndroidTargets } from '../../core/sdkManager/deviceUtils/android';
 import { listAppleDevices } from '../../core/sdkManager/deviceUtils/apple';
 
 import { executeTask } from '../../core/taskManager';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvTargetList = async (c, parentTask, originTask) => {
+export const taskRnvTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTargetList');
 
     await isPlatformSupported(c, true);
@@ -38,12 +39,12 @@ export const taskRnvTargetList = async (c, parentTask, originTask) => {
         case ANDROID_TV:
         case FIRE_TV:
         case ANDROID_WEAR:
-            return listAndroidTargets(c, platform);
+            return listAndroidTargets(c);
         case IOS:
         case TVOS:
             return listAppleDevices(c);
         case TIZEN:
-            return listTizenTargets(c, platform);
+            return listTizenTargets(c);
         case WEBOS:
             return listWebOSTargets(c);
         default:

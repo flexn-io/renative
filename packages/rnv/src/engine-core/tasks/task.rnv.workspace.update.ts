@@ -1,8 +1,9 @@
 import { logTask } from '../../core/systemManager/logger';
 import { executeTask } from '../../core/taskManager';
 import { TASK_WORKSPACE_UPDATE, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvWorkspaceUpdate = async (c, parentTask, originTask) => {
+export const taskRnvWorkspaceUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
     // TODO: taskRnvWorkspaceUpdate
     logTask('taskRnvWorkspaceUpdate');
 

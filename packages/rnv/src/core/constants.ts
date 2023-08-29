@@ -2,6 +2,7 @@
 import { homedir } from 'os';
 import path from 'path';
 import { RnvConfigSchema } from './configManager/types';
+import { RnvTaskParameter } from './taskManager/types';
 
 export const USER_HOME_DIR = homedir();
 export const RNV_HOME_DIR = path.join(__dirname, '../..');
@@ -236,7 +237,7 @@ export const TASK_KILL = 'kill';
 
 export const CLI_PROPS = ['provisioningStyle', 'codeSignIdentity', 'provisionProfileSpecifier'];
 
-export const PARAM_KEYS: any = {
+export const PARAM_KEYS: Record<string, RnvTaskParameter> = {
     info: {
         shortcut: 'i',
         value: 'value',
@@ -513,9 +514,9 @@ Object.keys(PARAM_KEYS).forEach((k) => {
 });
 
 export const PARAMS = {
-    withBase: (arr?: any) =>
+    withBase: (arr?: Array<RnvTaskParameter>) =>
         [PARAM_KEYS.info, PARAM_KEYS.ci, PARAM_KEYS.mono, PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
-    withConfigure: (arr?: any) =>
+    withConfigure: (arr?: Array<RnvTaskParameter>) =>
         [
             PARAM_KEYS.reset,
             PARAM_KEYS.resetHard,
@@ -525,7 +526,7 @@ export const PARAMS = {
             PARAM_KEYS.scheme,
             PARAM_KEYS.platform,
         ].concat(arr || []),
-    withRun: (arr?: any) =>
+    withRun: (arr?: Array<RnvTaskParameter>) =>
         [
             PARAM_KEYS.target,
             PARAM_KEYS.device,
@@ -536,7 +537,7 @@ export const PARAMS = {
             PARAM_KEYS.skipTargetCheck,
             PARAM_KEYS.host,
         ].concat(arr || []),
-    withAll: (arr?: any) => Object.values(PARAM_KEYS).concat(arr || []),
+    withAll: (arr?: Array<RnvTaskParameter>) => Object.values(PARAM_KEYS).concat(arr || []),
     all: Object.keys(PARAM_KEYS),
 };
 

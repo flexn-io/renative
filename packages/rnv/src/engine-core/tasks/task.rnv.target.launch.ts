@@ -23,7 +23,7 @@ import { launchAppleSimulator } from '../../core/sdkManager/deviceUtils/apple';
 import { launchKaiOSSimulator } from '../../core/sdkManager/deviceUtils/kaios';
 import { executeTask } from '../../core/taskManager';
 
-export const taskRnvTargetLaunch = async (c, parentTask, originTask) => {
+export const taskRnvTargetLaunch = async (c: RnvConfig, parentTask, originTask) => {
     logTask('taskRnvTargetLaunch');
 
     await isPlatformSupported(c, true);

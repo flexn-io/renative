@@ -15,7 +15,7 @@ import { PARAMS, TASK_PKG, TASK_PROJECT_CONFIGURE } from '../../core/constants';
 import { logError, logTask } from '../../core/systemManager/logger';
 import { executeTask } from '../../core/taskManager';
 
-const bumpVersions = (version) => {
+const bumpVersions = (version: string) => {
     const {
         project: { dir },
         rnv: { pluginTemplates },
@@ -36,7 +36,7 @@ const bumpVersions = (version) => {
         });
         // check if it's our turf and do some extra magic
         const renativePkgPath = path.join(packagesDir, 'renative');
-        if (fsExistsSync(renativePkgPath)) {
+        if (pluginTemplates.config && fsExistsSync(renativePkgPath)) {
             copyFileSync(path.join(dir, 'README.md'), path.join(renativePkgPath, 'README.md'));
             updateObjectSync(pluginTemplates.config, {
                 pluginTemplates: {
@@ -66,7 +66,7 @@ const publishAll = () => {
     return true;
 };
 
-export const taskRnvPkg = async (c, parentTask, originTask) => {
+export const taskRnvPkg = async (c: RnvConfig, parentTask, originTask) => {
     logTask('taskRnvPkg');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PKG, originTask);

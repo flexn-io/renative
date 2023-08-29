@@ -4,8 +4,9 @@ import { buildHooks } from '../../core/projectManager/buildHooks';
 import { executeTask } from '../../core/taskManager';
 import { fsExistsSync } from '../../core/systemManager/fileutils';
 import { TASK_HOOKS_RUN, TASK_PROJECT_CONFIGURE, PARAMS, PARAM_KEYS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvHooksRun = async (c, parentTask, originTask) => {
+export const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvHooksRun');
 
     if (fsExistsSync(c.paths.project.config)) {

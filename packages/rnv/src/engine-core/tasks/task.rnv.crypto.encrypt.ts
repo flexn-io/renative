@@ -16,12 +16,14 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../../core/systemManager/crypto';
 import { executeTask } from '../../core/taskManager';
 import { TASK_CRYPTO_ENCRYPT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvConfig } from '../../core/configManager/types';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
 const iocane = require('iocane');
 
 const readdirAsync = promisify(fsReaddir);
 
-const generateRandomKey = (length) =>
+const generateRandomKey = (length: number) =>
     Array(length)
         .fill('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%^&*')
         .map((x) => x[Math.floor(Math.random() * x.length)])
@@ -115,7 +117,7 @@ ${getEnvExportCmd(envVar, key)}
     }
 };
 
-export const taskRnvCryptoEncrypt = async (c, parentTask, originTask) => {
+export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoEncrypt');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_ENCRYPT, originTask);

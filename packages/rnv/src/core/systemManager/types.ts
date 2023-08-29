@@ -15,6 +15,7 @@ export type ExecOptions = {
     env?: Record<string, string>;
     ignoreErrors?: boolean;
     detached?: boolean;
+    cwd?: string;
 };
 
 export type ExecCallback = (isError: boolean) => void;

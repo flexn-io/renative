@@ -3,8 +3,9 @@ import { generateOptions } from '../../cli/prompt';
 import { buildHooks } from '../../core/projectManager/buildHooks';
 import { executeTask } from '../../core/taskManager';
 import { TASK_HOOKS_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvHooksList = async (c, parentTask, originTask) => {
+export const taskRnvHooksList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvHooksList');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_LIST, originTask);
@@ -19,7 +20,7 @@ export const taskRnvHooksList = async (c, parentTask, originTask) => {
             hooksAsString += `\n${'Pipes:'}\n${pipeOpts.asString}`;
         }
         logToSummary(hooksAsString);
-        return true;
+        return;
     }
     return Promise.reject('Your buildHooks object is empty!');
 };

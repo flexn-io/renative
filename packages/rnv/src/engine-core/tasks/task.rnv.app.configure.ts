@@ -8,7 +8,7 @@ import { chalk, logError, logTask, logWarning, logDebug, logInfo, logAppInfo } f
 import { inquirerPrompt } from '../../cli/prompt';
 import { RnvConfig } from '../../core/configManager/types';
 
-const _loadAppConfigIDfromDir = (dirName, appConfigsDir) => {
+const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
     logDebug(`_loadAppConfigIDfromDir:${dirName}:${appConfigsDir}`, chalk().grey);
     const filePath = path.join(appConfigsDir, 'renative.json');
     if (fsExistsSync(filePath)) {
@@ -22,7 +22,7 @@ const _loadAppConfigIDfromDir = (dirName, appConfigsDir) => {
     return { dir: dirName, id: null };
 };
 
-const _askUserAboutConfigs = async (c, dir, id, basePath) => {
+const _askUserAboutConfigs = async (c: RnvConfig, dir, id, basePath) => {
     logTask('_askUserAboutConfigs');
     logWarning(
         `AppConfig error - It seems you have a mismatch between appConfig folder name (${dir}) and the id defined in renative.json (${id}). They must match.`
@@ -75,7 +75,7 @@ const _askUserAboutConfigs = async (c, dir, id, basePath) => {
 };
 
 /* eslint-disable no-await-in-loop */
-const matchAppConfigID = async (c, appConfigID) => {
+const matchAppConfigID = async (c: RnvConfig, appConfigID) => {
     logTask('matchAppConfigID', `appId:${appConfigID}`);
 
     if (!appConfigID) return false;

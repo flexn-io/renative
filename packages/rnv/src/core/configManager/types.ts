@@ -8,9 +8,11 @@ export interface RnvConfig {
     rnvVersion: string;
     _currentTask?: string;
     systemPropsInjects: Array<string>;
+    _requiresNpmInstall?: boolean;
     //=======
     _renativePluginCache: any;
     cli: any;
+    buildHooks: Record<string, (c: RnvConfig) => Promise<void>>;
     api: {
         fsExistsSync: any;
         fsReadFileSync: any;
@@ -48,6 +50,8 @@ export interface RnvConfig {
         timestamp: number;
         appConfigDir: string;
         hasAllEnginesRegistered: boolean;
+        skipPackageUpdate?: boolean;
+        selectedTemplate?: string;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;
@@ -175,6 +179,7 @@ export interface RnvConfig {
             platformTemplates: Record<string, any>;
             appConfigsDir: string;
         };
+        appConfigBase: string;
     };
     files: {
         rnv: {

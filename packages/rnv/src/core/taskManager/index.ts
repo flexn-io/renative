@@ -25,7 +25,7 @@ export const registerCustomTask = async (_c: RnvConfig, task: RnvTask) => {
     }
 };
 
-export const initializeTask = async (c, task) => {
+export const initializeTask = async (c: RnvConfig, task) => {
     logTask('initializeTask', task);
     c.runtime.task = task;
     executedTasks = {};
@@ -265,7 +265,7 @@ const _populateExtraParameters = (c: RnvConfig, task: RnvTask) => {
     }
 };
 
-const _selectPlatform = async (c, suitableEngines, task) => {
+const _selectPlatform = async (c: RnvConfig, suitableEngines, task) => {
     const supportedPlatforms = {};
     suitableEngines.forEach((engine) => {
         getEngineTask(task, engine.tasks).platforms.forEach((plat) => {
@@ -285,7 +285,7 @@ const _selectPlatform = async (c, suitableEngines, task) => {
     }
 };
 
-const _executePipe = async (c, task, phase) => executePipe(c, `${task.split(' ').join(':')}:${phase}`);
+const _executePipe = async (c: RnvConfig, task, phase) => executePipe(c, `${task.split(' ').join(':')}:${phase}`);
 
 const TASK_LIMIT = 20;
 
@@ -318,7 +318,7 @@ To avoid that test your task code against parentTask and avoid executing same ta
     logExitTask(`${prt}<= ${task}`);
 };
 
-export const executeOrSkipTask = async (c, task, parentTask, originTask) => {
+export const executeOrSkipTask = async (c: RnvConfig, task, parentTask, originTask) => {
     if (!c.program.only) {
         return executeTask(c, task, parentTask, originTask);
     }
@@ -391,7 +391,7 @@ export const shouldSkipTask = (c: RnvConfig, task, originTask) => {
     return false;
 };
 
-export const executeEngineTask = async (c, task, parentTask, originTask, tasks, isFirstTask) => {
+export const executeEngineTask = async (c: RnvConfig, task, parentTask, originTask, tasks, isFirstTask) => {
     const needsHelp = Object.prototype.hasOwnProperty.call(c.program, 'help');
 
     const t = getEngineTask(task, tasks, CUSTOM_TASKS);

@@ -4,7 +4,7 @@ import { buildHooks } from '../../core/projectManager/buildHooks';
 import { executeTask } from '../../core/taskManager';
 import { TASK_HOOKS_PIPES, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
-export const taskRnvHooksPipes = async (c, parentTask, originTask) => {
+export const taskRnvHooksPipes = async (c: RnvConfig, parentTask, originTask) => {
     logTask('taskRnvHooksPipes');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_PIPES, originTask);

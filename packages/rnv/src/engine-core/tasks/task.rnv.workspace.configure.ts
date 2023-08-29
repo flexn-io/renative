@@ -8,8 +8,9 @@ import {
     fsReadFileSync,
 } from '../../core/systemManager/fileutils';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../../core/systemManager/logger';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvWorkspaceConfigure = async (c: RnvConfig) => {
+export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
     logTask('taskRnvWorkspaceConfigure');
 
     // Check globalConfig Dir

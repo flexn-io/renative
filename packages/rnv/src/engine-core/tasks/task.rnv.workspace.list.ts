@@ -2,8 +2,9 @@ import { generateOptions } from '../../cli/prompt';
 import { chalk, logTask, logToSummary } from '../../core/systemManager/logger';
 import { executeTask } from '../../core/taskManager';
 import { TASK_WORKSPACE_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvWorkspaceList = async (c, parentTask, originTask) => {
+export const taskRnvWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvWorkspaceList');
 
     if (c.paths.project.configExists) {

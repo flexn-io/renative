@@ -4,7 +4,7 @@ import { getWorkspaceConnectionString } from '../../core/projectManager/workspac
 import { executeTask } from '../../core/taskManager';
 import { TASK_WORKSPACE_CONNECT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
-export const taskRnvWorkspaceConnect = async (c, parentTask, originTask) => {
+export const taskRnvWorkspaceConnect = async (c: RnvConfig, parentTask, originTask) => {
     logTask('taskRnvWorkspaceConnect');
 
     if (!c.paths.project.configExists) {

@@ -346,7 +346,7 @@ export const resolvePluginDependants = async (c: RnvConfig) => {
     return true;
 };
 
-const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
+const _resolvePluginDependencies = async (c: RnvConfig, key, keyScope, parentKey) => {
     // IMPORTANT: Do not cache this valuse as they need to be refreshed every
     // round in case new plugin has been installed and c.buildConfig generated
     if (keyScope === null) {

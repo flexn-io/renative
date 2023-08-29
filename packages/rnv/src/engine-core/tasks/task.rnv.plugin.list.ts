@@ -2,8 +2,9 @@ import { logTask, logToSummary } from '../../core/systemManager/logger';
 import { getPluginList } from '../../core/pluginManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_PLUGIN_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvPluginList = async (c, parentTask, originTask) => {
+export const taskRnvPluginList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPluginList');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_LIST, originTask);

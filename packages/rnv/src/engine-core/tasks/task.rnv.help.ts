@@ -1,8 +1,9 @@
 import { chalk, logToSummary, logTask } from '../../core/systemManager/logger';
 import { PARAMS } from '../../core/constants';
 import { getRegisteredEngines } from '../../core/engineManager';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvHelp = (c) => {
+export const taskRnvHelp: RnvTaskFn = async (c) => {
     logTask('taskRnvHelp');
 
     // PARAMS

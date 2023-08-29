@@ -5,7 +5,7 @@ import { getPluginList } from '../../core/pluginManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_PLUGIN_UPDATE, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 
-export const taskRnvPluginUpdate = async (c, parentTask, originTask) => {
+export const taskRnvPluginUpdate = async (c: RnvConfig, parentTask, originTask) => {
     logTask('taskRnvPluginUpdate');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_UPDATE, originTask);

@@ -2,8 +2,9 @@ import { logToSummary, logTask } from '../../core/systemManager/logger';
 import { getTemplateOptions } from '../../core/templateManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_TEMPLATE_LIST, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvTemplateList = async (c, parentTask, originTask) => {
+export const taskRnvTemplateList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTemplateList');
 
     if (c.paths.project.configExists) {

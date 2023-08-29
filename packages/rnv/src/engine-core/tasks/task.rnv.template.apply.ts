@@ -3,8 +3,9 @@ import { logTask } from '../../core/systemManager/logger';
 import { applyTemplate, getInstalledTemplateOptions } from '../../core/templateManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_TEMPLATE_APPLY, TASK_PROJECT_CONFIGURE, TASK_APP_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvTemplateApply = async (c, parentTask, originTask) => {
+export const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTemplateApply', `template: ${c.program.template}`);
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_APPLY, originTask);

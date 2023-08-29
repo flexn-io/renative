@@ -90,7 +90,7 @@ export const checkAndCreateProjectPackage = async (c: RnvConfig) => {
 
 export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
-export const listAndSelectNpmVersion = async (c, npmPackage) => {
+export const listAndSelectNpmVersion = async (c: RnvConfig, npmPackage) => {
     const templateVersionsStr = await executeAsync(c, `npm view ${npmPackage} versions`);
     const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',');
 
@@ -166,7 +166,7 @@ const _getInstallScript = (c) => {
 
 export const isYarnInstalled = () => commandExistsSync('yarn') || doResolve('yarn', false);
 
-export const installPackageDependencies = async (c, failOnError = false) => {
+export const installPackageDependencies = async (c: RnvConfig, failOnError = false) => {
     c.runtime.forceBuildHookRebuild = true;
     const customScript = _getInstallScript(c);
 
