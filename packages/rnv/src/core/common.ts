@@ -8,7 +8,7 @@ import path from 'path';
 import { inquirerPrompt } from '../cli/prompt';
 import { CLI_PROPS } from './constants';
 import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
-import { chalk, logDebug, logError, logSuccess, logTask, logWarning } from './systemManager/logger';
+import { chalk, logError, logTask, logWarning } from './systemManager/logger';
 import { getValidLocalhost } from './systemManager/utils';
 import { RenativeConfigBuildScheme, RenativeConfigFile, RnvConfig } from './configManager/types';
 
@@ -49,7 +49,7 @@ export const addSystemInjects = (c: RnvConfig, injects: Array<string>) => {
     }
 };
 
-export const sanitizeColor = (val, key) => {
+export const sanitizeColor = (val: string, key: string) => {
     if (!val) {
         logWarning(`You are missing ${chalk().white(key)} in your renative config. will use default #FFFFFF instead`);
         return {
@@ -64,7 +64,7 @@ export const sanitizeColor = (val, key) => {
 
     return {
         rgb,
-        rgbDecimal: rgb.map((v) => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
+        rgbDecimal: rgb.map((v: number) => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
         hex,
     };
 };
@@ -278,7 +278,7 @@ export const _getConfigProp = (
     const p = sourceObj.platforms?.[platform];
     const ps = c.runtime.scheme;
     const keyArr = key.split('.');
-    const baseKey = keyArr.shift();
+    const baseKey = keyArr.shift() || '';
     const subKey = keyArr.join('.');
 
     let resultPlatforms;
@@ -469,7 +469,7 @@ export const getMonorepoRoot = () => {
     }
 };
 
-export const getBuildsFolder = (c: RnvConfig, platform: string, customPath: string) => {
+export const getBuildsFolder = (c: RnvConfig, platform: string, customPath?: string) => {
     const pp = customPath || c.paths.appConfig.dir;
     // if (!fsExistsSync(pp)) {
     //     logWarning(`Path ${chalk().white(pp)} does not exist! creating one for you..`);
@@ -495,7 +495,7 @@ export const checkPortInUse = (c: RnvConfig, platform: string, port: string) =>
             resolve(false);
             return;
         }
-        detectPort(port, (err, availablePort) => {
+        detectPort(port, (err: string, availablePort: string) => {
             if (err) {
                 reject(err);
                 return;
@@ -516,11 +516,20 @@ export const getBuildFilePath = (c: RnvConfig, platform: string, filePath: strin
     // P1 => platformTemplates
     let sp = path.join(getAppTemplateFolder(c, platform), filePath);
     // P2 => appConfigs/base + @buildSchemes
-    const sp2 = path.join(getBuildsFolder(c, platform, c.paths.project.appConfigBase.dir), filePath);
-    if (fsExistsSync(sp2)) sp = sp2;
+    const sp2bf = getBuildsFolder(c, platform, c.paths.project.appConfigBase.dir);
+    if (sp2bf) {
+        const sp2 = path.join(sp2bf, filePath);
+        if (fsExistsSync(sp2)) sp = sp2;
+    }
+
     // P3 => appConfigs + @buildSchemes
-    const sp3 = path.join(getBuildsFolder(c, platform), filePath);
-    if (fsExistsSync(sp3)) sp = sp3;
+    const sp3bf = getBuildsFolder(c, platform);
+
+    if (sp3bf) {
+        const sp3 = path.join(sp3bf, filePath);
+        if (fsExistsSync(sp3)) sp = sp3;
+    }
+
     return sp;
 };
 

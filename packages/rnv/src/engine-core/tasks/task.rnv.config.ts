@@ -4,13 +4,14 @@ import { logWarning, logTask } from '../../core/systemManager/logger';
 import { configSchema, PARAMS } from '../../core/constants';
 import Config from '../../core/configManager/config';
 import { getCliArguments } from '../../core/common';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvConfig = (c) => {
+export const taskRnvConfig: RnvTaskFn = async (c) => {
     logTask('taskRnvConfig');
 
     const [, key, value] = getCliArguments(c); // first arg is config so it's useless
     if (key === 'list') {
-        const rows = [];
+        const rows: Array<string> = [];
         Object.keys(configSchema).forEach((k) => rows.push(Config.listConfigValue(k)));
 
         printTable([].concat(...rows));

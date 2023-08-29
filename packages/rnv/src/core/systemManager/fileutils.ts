@@ -7,7 +7,7 @@ import merge from 'deepmerge';
 import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from './logger';
 import { RnvConfig } from '../configManager/types';
-import { OverridesOptions, TimestampPathsConfig } from './types';
+import { FileUtilsPropConfig, FileUtilsUpdateConfig, OverridesOptions, TimestampPathsConfig } from './types';
 
 export const configureFilesystem = (_getConfigProp: () => string, _doResolve: () => any, _isSystemWin: boolean) => {
     global.getConfigProp = _getConfigProp;
@@ -144,7 +144,7 @@ export const writeCleanFile = (source: string, destination: string, overrides, t
     }
 };
 
-export const readCleanFile = (source: string, overrides: OverridesOptions) => {
+export const readCleanFile = (source: string, overrides?: OverridesOptions) => {
     // logTask(`writeCleanFile`)
     // console.log('readCleanFile', source);
     if (!fs.existsSync(source)) {
@@ -168,9 +168,9 @@ export const copyFileWithInjectSync = (
     source: string,
     target: string,
     skipOverride: boolean,
-    injectObject: object | null,
-    timestampPathsConfig,
-    c: RnvConfig
+    injectObject?: OverridesOptions,
+    timestampPathsConfig?: TimestampPathsConfig,
+    c?: RnvConfig
 ) => {
     logDebug('copyFileWithInjectSync', source);
 
@@ -212,10 +212,10 @@ export const copyFolderRecursiveSync = (
     target: string,
     convertSvg = true,
     skipOverride: boolean,
-    injectObject = null,
-    timestampPathsConfig = null,
-    c: RnvConfig,
-    extFilter: Array<string> | null = null
+    injectObject?: OverridesOptions,
+    timestampPathsConfig?: TimestampPathsConfig,
+    c?: RnvConfig,
+    extFilter?: Array<string>
 ) => {
     logDebug('copyFolderRecursiveSync', source, target);
     if (!fs.existsSync(source)) return;
@@ -260,17 +260,18 @@ export const copyFolderRecursiveSync = (
 };
 
 export const copyFolderContentsRecursiveSync = (
-    source: string,
+    source: string | null,
     target: string,
     convertSvg = true,
     skipPaths?: Array<string>,
     skipOverride?: boolean,
-    injectObject: object | null = null,
-    timestampPathsConfig = null,
+    injectObject?: OverridesOptions,
+    timestampPathsConfig?: TimestampPathsConfig,
     c?: RnvConfig,
-    extFilter: Array<string> | null = null
+    extFilter?: Array<string>
 ) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
+    if (!source) return;
     if (!fs.existsSync(source)) return;
     let files = [];
     const targetFolder = path.join(target);
@@ -287,7 +288,7 @@ export const copyFolderContentsRecursiveSync = (
                         curSource,
                         targetFolder,
                         convertSvg,
-                        skipOverride,
+                        skipOverride || false,
                         injectObject,
                         timestampPathsConfig,
                         c,
@@ -297,7 +298,7 @@ export const copyFolderContentsRecursiveSync = (
                     copyFileWithInjectSync(
                         curSource,
                         targetFolder,
-                        skipOverride,
+                        skipOverride || false,
                         injectObject,
                         timestampPathsConfig,
                         c
@@ -341,7 +342,7 @@ export const saveAsJs = (source: string, dest: string) => {
     });
 };
 
-export const removeDir = (pth: string, callback) => {
+export const removeDir = (pth: string, callback: () => void) => {
     rimraf(pth, callback);
 };
 
@@ -385,7 +386,7 @@ export const removeDirsSync = (dirPaths: Array<string>) => {
     for (let i = 0; i < dirPaths.length; i++) {
         try {
             removeDirSync(dirPaths[i]);
-        } catch (e) {
+        } catch (e: any) {
             logError(e);
         }
     }
@@ -444,7 +445,7 @@ export const removeDirSync = (_dir: string, _rmSelf?: boolean) => {
     }
 };
 
-export const writeFileSync = (filePath: string, obj, spaces = 4, addNewLine = true) => {
+export const writeFileSync = (filePath: string, obj: string | object, spaces = 4, addNewLine = true) => {
     logDebug('writeFileSync', filePath);
     if (filePath.includes('?') || filePath.includes('undefined')) return;
     let output;
@@ -461,7 +462,7 @@ export const writeFileSync = (filePath: string, obj, spaces = 4, addNewLine = tr
     return output;
 };
 
-export const writeObjectSync = (filePath: string, obj, spaces, addNewLine = true) => {
+export const writeObjectSync = (filePath: string, obj: string | object, spaces: number, addNewLine = true) => {
     logDebug('writeObjectSync', filePath);
     logWarning('writeObjectSync is DEPRECATED. use writeFileSync instead');
     return writeFileSync(filePath, obj, spaces, addNewLine);
@@ -487,10 +488,10 @@ export const readObjectSync = (filePath: string, sanitize?: boolean, c?: RnvConf
             }
             if (obj._refs) {
                 obj = sanitizeDynamicProps(obj, {
-                    files: c.files,
-                    runtimeProps: c.runtime,
+                    files: c?.files,
+                    runtimeProps: c?.runtime,
                     props: obj._refs,
-                    configProps: c.configPropsInjects,
+                    configProps: c?.configPropsInjects,
                 });
             }
         }
@@ -501,8 +502,8 @@ export const readObjectSync = (filePath: string, sanitize?: boolean, c?: RnvConf
     return obj;
 };
 
-export const updateObjectSync = (filePath: string, updateObj) => {
-    let output;
+export const updateObjectSync = (filePath: string, updateObj: object) => {
+    let output: object;
     const obj = readObjectSync(filePath);
     if (obj) {
         output = merge(obj, updateObj);
@@ -604,7 +605,7 @@ export const resolvePackage = (text: string) => {
     return newText;
 };
 
-export const sanitizeDynamicProps = (obj: any, propConfig) => {
+export const sanitizeDynamicProps = (obj: Record<string, string | undefined>, propConfig: FileUtilsPropConfig) => {
     if (!obj) {
         return obj;
     }
@@ -645,7 +646,12 @@ const BIND_CONFIG_PROPS = '{{configProps.';
 const BIND_RUNTIME_PROPS = '{{runtimeProps.';
 const BIND_ENV = '{{env.';
 
-const _bindStringVals = (obj, _val, newKey, propConfig) => {
+const _bindStringVals = (
+    obj: Record<string, string | undefined>,
+    _val: string,
+    newKey: string,
+    propConfig: FileUtilsPropConfig
+) => {
     const { props = {}, configProps = {}, runtimeProps = {} } = propConfig;
     let val = _val;
     if (val.includes(BIND_FILES)) {
@@ -682,7 +688,7 @@ export const mergeObjects = (c: RnvConfig, obj1: any, obj2: any, dynamicRefs = t
     return dynamicRefs ? sanitizeDynamicRefs(c, obj) : obj;
 };
 
-export const updateConfigFile = async (update, globalConfigPath: string) => {
+export const updateConfigFile = async (update: FileUtilsUpdateConfig, globalConfigPath: string) => {
     const configContents = JSON.parse(fs.readFileSync(globalConfigPath).toString());
 
     if (update.androidSdk) {

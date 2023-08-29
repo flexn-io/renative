@@ -1,3 +1,7 @@
+export type RnvEngine = {
+    config: RnvEngineConfig;
+};
+
 export type RnvEngineConfig = {
     id: string;
 };

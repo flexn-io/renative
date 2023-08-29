@@ -17,6 +17,7 @@ import { doResolve } from './resolve';
 
 import { inquirerPrompt } from '../../cli/prompt';
 import { getConfigProp } from '../common';
+import { RnvConfig } from '../configManager/types';
 
 const packageJsonIsValid = (c) => {
     if (!fsExistsSync(c.paths.project.package)) return false;

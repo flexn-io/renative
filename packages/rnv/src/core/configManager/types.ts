@@ -1,14 +1,22 @@
+import { RnvEngine } from '../engineManager/types';
+import { RnvPlatform } from '../types';
+
 export interface RnvConfig {
     program: any;
-    command: string;
-    subCommand: string;
-    buildConfig: any;
-    platform: string;
+    command: string | null;
+    subCommand: string | null;
+    buildConfig: RenativeConfigFile & {
+        _meta: {
+            currentAppConfigId: string;
+        };
+    };
+    platform: RnvPlatform;
     process: any;
     rnvVersion: string;
     _currentTask?: string;
     systemPropsInjects: Array<string>;
     _requiresNpmInstall?: boolean;
+    buildPipes: Record<string, Array<(c: RnvConfig) => Promise<boolean>>>;
     //=======
     _renativePluginCache: any;
     cli: any;
@@ -24,13 +32,9 @@ export interface RnvConfig {
     runtime: {
         appId: string | null;
         appDir: string;
-        enginesByPlatform: any;
-        enginesByIndex: Array<{
-            config: {
-                id: string;
-            };
-        }>;
-        enginesById: Record<string, any>;
+        enginesByPlatform: Record<string, RnvEngine>;
+        enginesByIndex: Array<RnvEngine>;
+        enginesById: Record<string, RnvEngine>;
         missingEnginePlugins: Record<string, any>;
         localhost: string;
         scheme: string;
@@ -52,6 +56,8 @@ export interface RnvConfig {
         hasAllEnginesRegistered: boolean;
         skipPackageUpdate?: boolean;
         selectedTemplate?: string;
+        runtimeExtraProps: string;
+        requiresBootstrap: boolean;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;
@@ -178,6 +184,7 @@ export interface RnvConfig {
             assets: Record<string, any>;
             platformTemplates: Record<string, any>;
             appConfigsDir: string;
+            configTemplate: string;
         };
         appConfigBase: string;
     };
@@ -289,15 +296,27 @@ export interface RnvConfigFileObj {
 }
 
 export type RenativeConfigFile = {
+    workspaceID: string;
     common: {
         buildSchemes: Record<string, RenativeConfigBuildScheme>;
+    };
+    defaults: {
+        ports: Record<string, string>;
     };
     platforms: Record<
         string,
         {
             buildSchemes: Record<string, RenativeConfigBuildScheme>;
+            entryFile?: string;
         }
     >;
+    templates: Record<string, string>;
+    currentTemplate: string;
+    projectTemplates: object;
+    paths: {
+        appConfigsDirs: Array<string>;
+    };
+    integrations: Record<string, string>;
 };
 
 export type RenativeConfigBuildScheme = Record<string, any>;

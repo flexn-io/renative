@@ -16,6 +16,7 @@ export type PromptParams = {
     name: string;
     type: string;
     pageSize?: number;
+    validate?: (i: string) => string;
 };
 
-export type PromptRenderFn = (i: number, obj, mapping, defaultVal) => string;
+export type PromptRenderFn = (i: number, obj: any, mapping: any, defaultVal: string) => string;

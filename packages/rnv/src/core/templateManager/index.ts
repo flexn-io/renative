@@ -319,7 +319,7 @@ export const getTemplateOptions = (c: RnvConfig, isGlobalScope?: boolean) => {
     });
 };
 
-export const getInstalledTemplateOptions = (c) => {
+export const getInstalledTemplateOptions = (c: RnvConfig) => {
     if (c.files.project.config.isTemplate) return [];
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
@@ -331,7 +331,7 @@ export const getInstalledTemplateOptions = (c) => {
 export const isTemplateInstalled = (c: RnvConfig) =>
     c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : false;
 
-export const applyTemplate = async (c: RnvConfig, selectedTemplate: string) => {
+export const applyTemplate = async (c: RnvConfig, selectedTemplate?: string) => {
     logTask('applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`);
     if (c.files.project.config.isTemplate) return true;
 

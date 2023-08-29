@@ -555,7 +555,8 @@ export const getEngineRunner = (c: RnvConfig, task: string, customTasks?: RnvTas
     }
 
     const { configExists } = c.paths.project;
-    let engine = c.runtime.enginesByPlatform[c.platform];
+
+    let engine = typeof c.platform === 'string' && c.runtime.enginesByPlatform[c.platform];
     if (!engine) {
         engine = c.runtime.enginesById['engine-core'];
     }
@@ -577,4 +578,4 @@ export const getEngineRunner = (c: RnvConfig, task: string, customTasks?: RnvTas
     return null;
 };
 
-export const getRegisteredEngines = (c) => c.runtime.enginesByIndex;
+export const getRegisteredEngines = (c: RnvConfig) => c.runtime.enginesByIndex;

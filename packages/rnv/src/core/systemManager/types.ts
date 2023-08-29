@@ -16,6 +16,14 @@ export type ExecOptions = {
     ignoreErrors?: boolean;
     detached?: boolean;
     cwd?: string;
+    timeout?: number;
+};
+
+export type ResolveOptions = {
+    basedir?: string;
+    forceForwardPaths?: boolean;
+    extensions?: Array<string>;
+    keepSuffix?: boolean;
 };
 
 export type ExecCallback = (isError: boolean) => void;
@@ -37,3 +45,16 @@ export type TimestampPathsConfig = {
 };
 
 export type RnvCLI = Record<string, object>;
+
+export type FileUtilsPropConfig = {
+    props: Record<string, string>;
+    configProps?: Record<string, string>;
+    runtimeProps?: Record<string, string>;
+    files: Array<string>;
+};
+
+export type FileUtilsUpdateConfig = {
+    androidSdk: string;
+    tizenSdk: string;
+    webosSdk: string;
+};

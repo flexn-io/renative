@@ -60,10 +60,10 @@ const _getTaskObj = (taskInstance) => {
     };
 };
 
-export const findSuitableTask = async (c: RnvConfig, specificTask) => {
+export const findSuitableTask = async (c: RnvConfig, specificTask?: string) => {
     logTask('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines(c);
-    let task;
+    let task: string;
     if (!specificTask) {
         if (!c.command) {
             const suitableTaskInstances = {};
@@ -265,7 +265,7 @@ const _populateExtraParameters = (c: RnvConfig, task: RnvTask) => {
     }
 };
 
-const _selectPlatform = async (c: RnvConfig, suitableEngines, task) => {
+const _selectPlatform = async (c: RnvConfig, suitableEngines, task: string) => {
     const supportedPlatforms = {};
     suitableEngines.forEach((engine) => {
         getEngineTask(task, engine.tasks).platforms.forEach((plat) => {
@@ -285,15 +285,16 @@ const _selectPlatform = async (c: RnvConfig, suitableEngines, task) => {
     }
 };
 
-const _executePipe = async (c: RnvConfig, task, phase) => executePipe(c, `${task.split(' ').join(':')}:${phase}`);
+const _executePipe = async (c: RnvConfig, task: string, phase: string) =>
+    executePipe(c, `${task.split(' ').join(':')}:${phase}`);
 
 const TASK_LIMIT = 20;
 
 export const executeTask = async (
     c: RnvConfig,
     task: string,
-    parentTask: string | null,
-    originTask: string,
+    parentTask?: string | null,
+    originTask?: string,
     isFirstTask?: boolean
 ) => {
     const pt = parentTask ? `=> [${parentTask}] ` : '';

@@ -17,8 +17,11 @@ class BasePlatformSetup {
     globalConfigPath: string;
     availableDownloader: string | null;
     androidSdkLocation: string;
+    sdksToInstall: string;
+    webosSdkPath?: string;
+    tizenSdkPath?: string;
 
-    constructor(os: string, c: RnvConfig) {
+    constructor(os: string, c?: RnvConfig) {
         // eslint-disable-next-line no-param-reassign
         if (!c) c = Config.getConfig();
         const { paths } = c;
@@ -49,7 +52,7 @@ class BasePlatformSetup {
         return true;
     }
 
-    async postInstall(sdk) {
+    async postInstall(sdk: string) {
         if (sdk === 'android') {
             const { location } = setupConfig.android;
             await updateConfigFile({ androidSdk: location }, this.globalConfigPath);
@@ -67,7 +70,7 @@ class BasePlatformSetup {
         }
     }
 
-    async downloadSdk(sdk) {
+    async downloadSdk(sdk: string) {
         const downloader = this.availableDownloader;
         if (!downloader) throw new Error('Wget or cURL not installed!');
         logDebug(`Downloading ${sdk} SDK to ${setupConfig[sdk].downloadLocation} using ${downloader}`);
@@ -163,13 +166,13 @@ class BasePlatformSetup {
         logError(
             'Install fastlane not supported yet. Follow https://docs.fastlane.tools/getting-started/ios/setup/ to install it manually'
         );
-        return true;
+        return;
     }
 
     async installDocker() {
         // to be overwritten
         logError('Install docker not supported yet');
-        return true;
+        return;
     }
 
     async installAws() {

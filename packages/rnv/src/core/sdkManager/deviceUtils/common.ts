@@ -1,7 +1,8 @@
 import ora from '../../../cli/ora';
+import { RnvConfig } from '../../configManager/types';
 import { execCLI } from '../../systemManager/exec';
 
-export const waitForEmulator = async (c, cli, command, callback) => {
+export const waitForEmulator = async (c: RnvConfig, cli: string, command: string, callback) => {
     let attempts = 0;
     const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;

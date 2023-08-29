@@ -11,10 +11,13 @@ import { RnvTaskFn } from '../../core/taskManager/types';
 export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvKill');
 
-    const usedPorts = [];
-    let platArray = [];
+    const usedPorts: Array<string> = [];
+    let platArray: Array<{
+        platform: string;
+        port: string;
+    }> = [];
     const results = [];
-    let ports;
+    let ports: Record<string, string> = {};
 
     await configureRuntimeDefaults(c);
 

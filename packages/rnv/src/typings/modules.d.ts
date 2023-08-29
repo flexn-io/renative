@@ -1,4 +1,5 @@
 declare module 'netcat';
+declare module 'netcat/client';
 declare module 'color-string';
 declare module 'detect-port';
 declare module 'ip';

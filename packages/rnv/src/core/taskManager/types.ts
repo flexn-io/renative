@@ -4,6 +4,7 @@ export type RnvTask = {
     task: string;
     params: Array<RnvTaskParameter>;
     isGlobalScope: boolean;
+    platforms: Array<string>;
 };
 
 export type RnvTaskParameter = {

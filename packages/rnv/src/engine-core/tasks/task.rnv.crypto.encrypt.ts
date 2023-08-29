@@ -21,7 +21,7 @@ import { RnvTaskFn } from '../../core/taskManager/types';
 
 const iocane = require('iocane');
 
-const readdirAsync = promisify(fsReaddir);
+const readdirAsync = promisify<Array<string>>(fsReaddir);
 
 const generateRandomKey = (length: number) =>
     Array(length)

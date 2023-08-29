@@ -25,7 +25,8 @@ export const getAppleDevices = async (c: RnvConfig, ignoreDevices?: boolean, ign
         // xcode < 13
         devicesAndSims = await executeAsync('xcrun instruments -s');
     }
-    const simctl = JSON.parse(await executeAsync('xcrun simctl list --json'));
+    const res = await executeAsync('xcrun simctl list --json');
+    const simctl = JSON.parse(res.toString());
     const availableSims = [];
     Object.keys(simctl.devices).forEach((runtime) => {
         logDebug('runtime', runtime);
@@ -170,7 +171,7 @@ const _parseIOSDevicesList = (rawDevices, platform, ignoreDevices = false, ignor
     return devices;
 };
 
-export const launchAppleSimulator = async (c: RnvConfig, target) => {
+export const launchAppleSimulator = async (c: RnvConfig, target: string) => {
     logTask('launchAppleSimulator', `${target}`);
 
     const devicesArr = await getAppleDevices(c, true);

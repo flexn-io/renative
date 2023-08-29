@@ -1,6 +1,7 @@
 import resolve from 'resolve';
 import fs from 'fs';
 import path from 'path';
+import { ResolveOptions } from './types';
 /**
  * An attempt at drying out filesystem references to [external packages](https://tinyurl.com/mao2dy6).
  *
@@ -17,27 +18,31 @@ import path from 'path';
  * @param {*} mandatory - whether it throws
  * @param {*} options - docs - https://tinyurl.com/r9sfpf7 && {keepSuffix: boolean}
  */
-export const doResolve = (aPath: string, mandatory = true, options = {}) => {
+export const doResolve = (aPath: string, mandatory = true, options: ResolveOptions = {}) => {
     options.basedir = options.basedir ?? process.cwd();
     try {
         if (aPath.startsWith('file:')) {
             return _withPathFix(_doResolveFSPath(aPath, options), options?.forceForwardPaths);
         }
-        return _withPathFix(_doResolveExternalPackage(aPath, options), options?.forceForwardPaths);
+        const pth = _doResolveExternalPackage(aPath, options);
+        if (pth) {
+            return _withPathFix(pth, options?.forceForwardPaths);
+        }
+        return undefined;
     } catch (err) {
         // perhaps do some warning logging here..
         if (mandatory) throw err;
     }
 };
 
-const _withPathFix = (p, forceForwardPaths) => {
+const _withPathFix = (p: string, forceForwardPaths?: boolean) => {
     if (p && forceForwardPaths) {
         return p.replace(/\\/g, '/');
     }
     return p;
 };
 
-export const doResolvePath = (aPath, mandatory = true, options = {}, fallbackBase = '') => {
+export const doResolvePath = (aPath: string, mandatory = true, options: ResolveOptions = {}, fallbackBase = '') => {
     options.basedir = options.basedir ?? process.cwd();
 
     try {
@@ -94,7 +99,7 @@ const _getPackagePathParts = (aPath: string) => {
 /**
  * We support path linking using 'file:' protocol (not part of official node resolution alg.)
  */
-const _doResolveFSPath = (aPath: string, options) => {
+const _doResolveFSPath = (aPath: string, options: ResolveOptions) => {
     const fileRelPath = `${options.basedir ? `${options.basedir}/`.replace(/.*\/+$/, '/') : ''}${aPath.replace(
         'file:',
         ''
@@ -108,7 +113,7 @@ const _doResolveFSPath = (aPath: string, options) => {
 /**
  * @see 'LOAD_NODE_MODULES' of node resolution alg. - https://tinyurl.com/pgz6f33
  */
-const _doResolveExternalPackage = (aPath: string, options) => {
+const _doResolveExternalPackage = (aPath: string, options: ResolveOptions) => {
     const [packageBase, packageSuffix] = _getPackagePathParts(aPath);
 
     try {

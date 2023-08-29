@@ -108,7 +108,7 @@ ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
         let data;
         try {
             data = await iocane.createSession().use('cbc').decrypt(fsReadFileSync(source), key);
-        } catch (e) {
+        } catch (e: any) {
             if (e?.message?.includes) {
                 if (e.message.includes('Signature mismatch')) {
                     const err = `You're trying to decode crypto file encoded with previous version of crypto.

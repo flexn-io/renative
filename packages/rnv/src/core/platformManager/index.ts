@@ -60,7 +60,7 @@ export const cleanPlatformBuild = (c: RnvConfig, platform: string) =>
     });
 
 export const createPlatformBuild = (c: RnvConfig, platform: string) =>
-    new Promise((resolve, reject) => {
+    new Promise<void>((resolve, reject) => {
         logTask('createPlatformBuild');
 
         if (!isPlatformSupportedSync(c, platform, null, reject)) return;
