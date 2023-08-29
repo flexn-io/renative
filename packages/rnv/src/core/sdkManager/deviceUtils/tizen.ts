@@ -15,12 +15,12 @@ const parser = new xml2js.Parser();
 
 export const DEFAULT_CERTIFICATE_NAME = 'tizen_author';
 
-const formatXMLObject = (obj) => {
+const formatXMLObject = (obj: Record<string, any>) => {
     const platArr = obj['model-config']?.platform;
     const platKeyArr = platArr?.[0]?.key || platArr?.key;
     if (platKeyArr) {
         return {
-            ...platKeyArr.reduce((acc, cur) => {
+            ...platKeyArr.reduce((acc: Record<string, any>, cur: any) => {
                 acc[cur.$.name] = cur._;
                 return acc;
             }, {}),
@@ -32,7 +32,7 @@ const formatXMLObject = (obj) => {
 
 export const DEFAULT_SECURITY_PROFILE_NAME = 'RNVanillaCert';
 
-export const launchTizenSimulator = (c, name) => {
+export const launchTizenSimulator = (c: RnvConfig, name: string) => {
     logTask(`launchTizenSimulator:${name}`);
 
     if (name) {
@@ -43,7 +43,7 @@ export const launchTizenSimulator = (c, name) => {
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listTizenTargets = async (c) => {
+export const listTizenTargets = async (c: RnvConfig) => {
     const targets = await execCLI(c, CLI_TIZEN_EMULATOR, 'list-vm', {
         detached: true,
     });
@@ -83,7 +83,7 @@ export const createDevelopTizenCertificate = (c) =>
             });
     });
 
-export const addDevelopTizenCertificate = (c, secureProfileConfig) =>
+export const addDevelopTizenCertificate = (c: RnvConfig, secureProfileConfig) =>
     new Promise((resolve) => {
         logTask('addDevelopTizenCertificate');
 
@@ -136,7 +136,7 @@ const _getDeviceID = async (c, target) => {
     return Promise.reject(`No device matching ${target} could be found.`);
 };
 
-const _getRunningDevices = async (c) => {
+const _getRunningDevices = async (c: RnvConfig) => {
     const { platform } = c.program;
     const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     const lines = devicesList

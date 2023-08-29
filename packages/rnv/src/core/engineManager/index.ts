@@ -12,7 +12,7 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { RnvConfig } from '../configManager/types';
 import { RnvTask, RnvTaskMap } from '../taskManager/types';
 import { RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
-import { RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
+import { RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -33,7 +33,7 @@ export const registerEngine = async (c, engine, platform, engConfig) => {
     _registerEnginePlatform(c, platform, engine);
 };
 
-const _registerEnginePlatform = (c, platform, engine) => {
+const _registerEnginePlatform = (c: RnvConfig, platform, engine) => {
     if (platform) {
         c.runtime.enginesByPlatform[platform] = engine;
     }
@@ -80,7 +80,7 @@ export const generateEngineTasks = (taskArr) => {
     return tasks;
 };
 
-export const configureEngines = async (c) => {
+export const configureEngines = async (c: RnvConfig) => {
     logTask('configureEngines');
     // const { engines } = c.files.project.config;
     const engines = _getFilteredEngines(c);
@@ -134,13 +134,13 @@ export const registerMissingPlatformEngines = async (c, taskInstance) => {
     return true;
 };
 
-export const registerAllPlatformEngines = async (c) => {
+export const registerAllPlatformEngines = async (c: RnvConfig) => {
     logTask('registerAllPlatformEngines');
     if (!c.buildConfig?.defaults?.supportedPlatforms?.forEach) {
         c.runtime.hasAllEnginesRegistered = true;
         return true;
     }
-    const registerEngineList = [];
+    const registerEngineList: Array<Promise<void>> = [];
     c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
         registerEngineList.push(_registerPlatformEngine(c, platform));
     });
@@ -152,7 +152,7 @@ export const registerAllPlatformEngines = async (c) => {
     return true;
 };
 
-export const loadEnginePluginDeps = async (c, engineConfigs) => {
+export const loadEnginePluginDeps = async (c: RnvConfig, engineConfigs) => {
     logTask('loadEnginePluginDeps');
     if (c.files.project.config.isTemplate) return 0;
 
@@ -425,10 +425,10 @@ const _getMergedEngineConfigs = (c: RnvConfig) => {
     return mergedEngineConfigs;
 };
 
-const _getEngineConfigByPlatform = (c: RnvConfig, platform: string) => {
+const _getEngineConfigByPlatform = (c: RnvConfig, platform: string): RnvEngineConfig | null => {
     const mergedEngineConfigs = _getMergedEngineConfigs(c);
     const engineId = c.program.engine || getConfigProp(c, platform, 'engine');
-    let selectedEngineConfig;
+    let selectedEngineConfig: RnvEngineConfig | null = null;
     Object.values(mergedEngineConfigs).forEach((engineConfig) => {
         if (engineConfig.id === engineId) {
             selectedEngineConfig = engineConfig;
@@ -463,7 +463,7 @@ const _resolvePkgPath = (c: RnvConfig, packageName: string) => {
     return pkgPath;
 };
 
-const _registerPlatformEngine = (c: RnvConfig, platform: RnvPlatform) => {
+const _registerPlatformEngine = async (c: RnvConfig, platform: RnvPlatform): Promise<void> => {
     // Only register active platform engine to be faster
     if (platform === true || !platform) return;
     const selectedEngineConfig = _getEngineConfigByPlatform(c, platform);
@@ -503,7 +503,7 @@ export const generateEnvVars = (c: RnvConfig, moduleConfig: RnvModuleConfig, nex
     };
 };
 
-export const getPlatformExtensions = (c, excludeServer = false, addDotPrefix = false) => {
+export const getPlatformExtensions = (c: RnvConfig, excludeServer = false, addDotPrefix = false) => {
     const { engine } = c.runtime;
     let output;
     const { platforms } = engine;
@@ -549,7 +549,7 @@ export const hasEngineTask = (task: string, tasks: RnvTaskMap, isProjectScope: b
 export const getEngineSubTasks = (task: string, tasks: RnvTaskMap, exactMatch: boolean) =>
     Object.values(tasks).filter((v) => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
 
-export const getEngineRunner = (c: RnvConfig, task: string, customTasks: RnvTaskMap, failOnMissingEngine = true) => {
+export const getEngineRunner = (c: RnvConfig, task: string, customTasks?: RnvTaskMap, failOnMissingEngine = true) => {
     if (customTasks?.[task]) {
         return c.runtime.enginesById[ENGINE_CORE];
     }

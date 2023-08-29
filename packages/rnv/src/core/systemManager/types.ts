@@ -14,6 +14,7 @@ export type ExecOptions = {
     privateParams?: Array<string>;
     env?: Record<string, string>;
     ignoreErrors?: boolean;
+    detached?: boolean;
 };
 
 export type ExecCallback = (isError: boolean) => void;

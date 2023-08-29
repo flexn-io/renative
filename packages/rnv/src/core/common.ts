@@ -151,7 +151,7 @@ export const existBuildsOverrideForTargetPathSync = (c: RnvConfig, destPath: str
     return result;
 };
 
-export const confirmActiveBundler = async (c) => {
+export const confirmActiveBundler = async (c: RnvConfig) => {
     if (c.runtime.skipActiveServerCheck) return true;
 
     if (c.program.ci) {

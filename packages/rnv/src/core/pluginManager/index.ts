@@ -20,7 +20,7 @@ import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } f
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { doResolve, doResolvePath } from '../systemManager/resolve';
 
-export const getPluginList = (c, isUpdate = false) => {
+export const getPluginList = (c: RnvConfig, isUpdate = false) => {
     const output = {
         asString: '',
         asArray: [],
@@ -108,7 +108,7 @@ const _getPluginScope = (plugin) => {
     return { scope: 'rnv' };
 };
 
-export const getMergedPlugin = (c, key) => {
+export const getMergedPlugin = (c: RnvConfig, key) => {
     logDebug(`getMergedPlugin:${key}`);
 
     const plugin = c.buildConfig.plugins?.[key];
@@ -126,7 +126,7 @@ export const getMergedPlugin = (c, key) => {
     return mergedPlugin;
 };
 
-const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitize) => {
+const _getMergedPlugin = (c: RnvConfig, plugin, pluginKey, parentScope, scopes, skipSanitize) => {
     if (!plugin) {
         return {};
     }
@@ -205,7 +205,7 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes, skipSanitiz
     return mergedPlugin;
 };
 
-export const configurePlugins = async (c) => {
+export const configurePlugins = async (c: RnvConfig) => {
     logTask('configurePlugins');
 
     if (c.program.skipDependencyCheck) return true;
@@ -324,14 +324,14 @@ ${ovMsg}`
     return true;
 };
 
-const _updatePackage = (c, override) => {
+const _updatePackage = (c: RnvConfig, override) => {
     const newPackage = merge(c.files.project.package, override);
     writeRenativeConfigFile(c, c.paths.project.package, newPackage);
     c.files.project.package = newPackage;
     c._requiresNpmInstall = true;
 };
 
-export const resolvePluginDependants = async (c) => {
+export const resolvePluginDependants = async (c: RnvConfig) => {
     logTask('resolvePluginDependants');
     const { plugins } = c.buildConfig;
 
@@ -396,7 +396,7 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
     return true;
 };
 
-export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCheck) => {
+export const parsePlugins = (c: RnvConfig, platform, pluginCallback, ignorePlatformObjectCheck) => {
     logTask('parsePlugins');
     if (c.buildConfig) {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
@@ -456,7 +456,7 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
     }
 };
 
-export const loadPluginTemplates = async (c) => {
+export const loadPluginTemplates = async (c: RnvConfig) => {
     logTask('loadPluginTemplates');
 
     //This comes from project dependency
@@ -515,7 +515,7 @@ export const loadPluginTemplates = async (c) => {
     return true;
 };
 
-const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'root') => {
+const _parsePluginTemplateDependencies = (c: RnvConfig, customPluginTemplates, scope = 'root') => {
     logTask('_parsePluginTemplateDependencies', `scope:${scope}`);
     const missingDeps = [];
     if (customPluginTemplates) {
@@ -574,7 +574,7 @@ const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'roo
 // Alternative Regex seem more accurate
 const getCleanRegExString = (str) => str.replace(/[-\\.,_*+?^$[\](){}!=|`]/gi, '\\$&');
 
-const _overridePlugin = (c, pluginsPath, dir) => {
+const _overridePlugin = (c: RnvConfig, pluginsPath, dir) => {
     const source = path.resolve(pluginsPath, dir, 'overrides');
     const dest = doResolve(dir, false);
     if (!dest) return;
@@ -706,7 +706,7 @@ export const overrideFileContents = (dest, override, overridePath = '') => {
     }
 };
 
-export const installPackageDependenciesAndPlugins = async (c) => {
+export const installPackageDependenciesAndPlugins = async (c: RnvConfig) => {
     logTask('installPackageDependenciesAndPlugins');
 
     await installPackageDependencies(c);
@@ -715,7 +715,7 @@ export const installPackageDependenciesAndPlugins = async (c) => {
     await checkForPluginDependencies(c);
 };
 
-const _getPluginConfiguration = (c, pluginName) => {
+const _getPluginConfiguration = (c: RnvConfig, pluginName) => {
     let renativePluginPath;
     try {
         renativePluginPath = require.resolve(`${pluginName}/renative.plugin.json`, { paths: [c.paths.project.dir] });
@@ -729,7 +729,7 @@ const _getPluginConfiguration = (c, pluginName) => {
     return null;
 };
 
-export const checkForPluginDependencies = async (c) => {
+export const checkForPluginDependencies = async (c: RnvConfig) => {
     const toAdd = {};
     Object.keys(c.buildConfig.plugins).forEach((pluginName) => {
         const renativePluginConfig = _getPluginConfiguration(c, pluginName);
@@ -781,7 +781,7 @@ export const checkForPluginDependencies = async (c) => {
     }
 };
 
-export const overrideTemplatePlugins = async (c) => {
+export const overrideTemplatePlugins = async (c: RnvConfig) => {
     logTask('overrideTemplatePlugins');
 
     const rnvPluginsDirs = c.paths.rnv.pluginTemplates.dirs;
@@ -918,7 +918,7 @@ export const getLocalRenativePlugin = () => ({
     },
 });
 
-export const getModuleConfigs = (c, primaryKey) => {
+export const getModuleConfigs = (c: RnvConfig, primaryKey) => {
     let modulePaths = [];
     const moduleAliases = {};
 

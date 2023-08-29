@@ -8,7 +8,7 @@ import { loadPluginTemplates } from '../pluginManager';
 import { parseRenativeConfigs } from '../configManager/index';
 import { RnvConfig } from '../configManager/types';
 
-export const updateRenativeConfigs = async (c) => {
+export const updateRenativeConfigs = async (c: RnvConfig) => {
     await loadPluginTemplates(c);
     await parseRenativeConfigs(c);
     return true;

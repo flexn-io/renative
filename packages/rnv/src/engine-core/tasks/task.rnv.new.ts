@@ -36,7 +36,7 @@ import { isYarnInstalled, listAndSelectNpmVersion } from '../../core/systemManag
 
 const highlight = chalk().green;
 
-const _prepareProjectOverview = (c, data) => {
+const _prepareProjectOverview = (c: RnvConfig, data) => {
     data.appTitle = data.inputAppTitle || data.defaultAppTitle;
     data.teamID = '';
     data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
@@ -138,7 +138,7 @@ const interactiveQuestion = async (results, bootstrapQuestions, providedAnswers)
     }
 };
 
-export const taskRnvNew = async (c) => {
+export const taskRnvNew = async (c: RnvConfig) => {
     logTask('taskRnvNew');
     const {
         ci,
@@ -604,7 +604,7 @@ export const taskRnvNew = async (c) => {
     );
 };
 
-const findEngineKeyById = (c, id) => {
+const findEngineKeyById = (c: RnvConfig, id) => {
     const { engineTemplates } = c.files.rnv.projectTemplates.config;
     const etk = Object.keys(engineTemplates);
     for (let i = 0; i < etk.length; i++) {

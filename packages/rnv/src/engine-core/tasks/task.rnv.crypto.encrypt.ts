@@ -27,7 +27,7 @@ const generateRandomKey = (length) =>
         .map((x) => x[Math.floor(Math.random() * x.length)])
         .join('');
 
-const _checkAndConfigureCrypto = async (c) => {
+const _checkAndConfigureCrypto = async (c: RnvConfig) => {
     // handle missing config
     const source = `./${c.files.project.package.name}`;
 

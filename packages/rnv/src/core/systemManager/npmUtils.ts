@@ -46,7 +46,7 @@ export const checkNpxIsInstalled = async () => {
     }
 };
 
-export const checkAndCreateProjectPackage = async (c) => {
+export const checkAndCreateProjectPackage = async (c: RnvConfig) => {
     logTask('checkAndCreateProjectPackage');
 
     if (!packageJsonIsValid(c)) {
@@ -140,7 +140,7 @@ export const listAndSelectNpmVersion = async (c, npmPackage) => {
     return inputTemplateVersion;
 };
 
-export const checkIfProjectAndNodeModulesExists = async (c) => {
+export const checkIfProjectAndNodeModulesExists = async (c: RnvConfig) => {
     logTask('checkIfProjectAndNodeModulesExists');
 
     if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
@@ -270,7 +270,7 @@ export const installPackageDependencies = async (c, failOnError = false) => {
     }
 };
 
-export const jetifyIfRequired = async (c) => {
+export const jetifyIfRequired = async (c: RnvConfig) => {
     logTask('jetifyIfRequired');
     if (c.files.project.configLocal?._meta?.requiresJetify) {
         if (doResolve('jetifier')) {

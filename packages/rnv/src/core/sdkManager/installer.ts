@@ -68,7 +68,7 @@ const _logSdkWarning = (c) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
 };
 
-export const checkAndConfigureAndroidSdks = async (c) => {
+export const checkAndConfigureAndroidSdks = async (c: RnvConfig) => {
     const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
     logTask('checkAndConfigureAndroidSdks', `(${sdk})`);
 
@@ -98,7 +98,7 @@ export const checkAndConfigureAndroidSdks = async (c) => {
     c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
 };
 
-export const checkAndConfigureTizenSdks = async (c) => {
+export const checkAndConfigureTizenSdks = async (c: RnvConfig) => {
     logTask(`checkAndConfigureTizenSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.TIZEN_SDK;
     if (sdk) {
@@ -113,7 +113,7 @@ export const checkAndConfigureTizenSdks = async (c) => {
     }
 };
 
-export const checkAndConfigureWebosSdks = async (c) => {
+export const checkAndConfigureWebosSdks = async (c: RnvConfig) => {
     logTask(`checkAndConfigureWebosSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.WEBOS_SDK;
     if (sdk) {
@@ -147,7 +147,7 @@ export const checkAndConfigureWebosSdks = async (c) => {
     }
 };
 
-export const checkAndConfigureSdks = async (c) => {
+export const checkAndConfigureSdks = async (c: RnvConfig) => {
     logTask('checkAndConfigureSdks');
 
     switch (c.platform) {
@@ -264,7 +264,7 @@ const _attemptAutoFix = async (c, sdkPlatform, sdkKey, traverseUntilFoundFile) =
     return true;
 };
 
-export const checkSdk = async (c) => {
+export const checkSdk = async (c: RnvConfig) => {
     logTask('checkSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(

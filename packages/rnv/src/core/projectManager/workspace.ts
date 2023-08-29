@@ -20,7 +20,7 @@ export const createWorkspace = async (c, workspaceID, workspacePath) => {
     return true;
 };
 
-export const getWorkspaceDirPath = async (c) => {
+export const getWorkspaceDirPath = async (c: RnvConfig) => {
     logTask('getWorkspaceDirPath');
     const wss = c.files.rnv.configWorkspaces;
     const ws = c.runtime.selectedWorkspace || c.buildConfig?.workspaceID;

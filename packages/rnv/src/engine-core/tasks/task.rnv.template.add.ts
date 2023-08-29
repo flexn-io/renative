@@ -7,12 +7,12 @@ import { TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD, PARAMS } from '../../core/co
 
 import { getTemplateOptions } from '../../core/templateManager';
 
-const _writeObjectSync = (c, p, s) => {
+const _writeObjectSync = (c: RnvConfig, p, s) => {
     writeFileSync(p, s);
     generateBuildConfig(c);
 };
 
-export const _addTemplate = (c, template) => {
+export const _addTemplate = (c: RnvConfig, template) => {
     logTask('addTemplate');
 
     c.files.project.config.templates = c.files.project.config.templates || {};

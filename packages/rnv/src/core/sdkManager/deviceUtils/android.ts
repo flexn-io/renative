@@ -87,7 +87,7 @@ export const launchAndroidSimulator = async (c, target, isIndependentThread = fa
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listAndroidTargets = async (c) => {
+export const listAndroidTargets = async (c: RnvConfig) => {
     logTask('listAndroidTargets');
     const {
         program: { device },
@@ -314,7 +314,7 @@ const getDeviceType = async (device, c) => {
     return device;
 };
 
-const getAvdDetails = (c, deviceName) => {
+const getAvdDetails = (c: RnvConfig, deviceName) => {
     const { ANDROID_SDK_HOME, ANDROID_AVD_HOME } = process.env;
 
     // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
@@ -529,7 +529,7 @@ export const askForNewEmulator = async (c: RnvConfig, platform: string) => {
     return Promise.reject('Action canceled!');
 };
 
-const _createEmulator = (c, apiVersion, emuPlatform, emuName, arch = 'x86') => {
+const _createEmulator = (c: RnvConfig, apiVersion, emuPlatform, emuName, arch = 'x86') => {
     logTask('_createEmulator');
 
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};${arch}"`)
@@ -546,7 +546,7 @@ const _createEmulator = (c, apiVersion, emuPlatform, emuName, arch = 'x86') => {
         .catch((e) => logError(e, true));
 };
 
-const waitForEmulatorToBeReady = (c, emulator) =>
+const waitForEmulatorToBeReady = (c: RnvConfig, emulator) =>
     waitForEmulator(c, CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`, (res) =>
         res.includes('stopped')
     );

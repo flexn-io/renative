@@ -369,7 +369,7 @@ const _loadConfigFiles = (
     return result;
 };
 
-export const generateRuntimeConfig = async (c) => {
+export const generateRuntimeConfig = async (c: RnvConfig) => {
     logTask('generateRuntimeConfig');
     // c.assetConfig = {
     //     common: c.buildConfig.common,

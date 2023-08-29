@@ -2,7 +2,7 @@ import merge from 'deepmerge';
 import { logError, logTask, logWarning, chalk, logInfo } from '../systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
 
-export const isBuildSchemeSupported = async (c) => {
+export const isBuildSchemeSupported = async (c: RnvConfig) => {
     logTask('isBuildSchemeSupported');
 
     const { scheme } = c.program;

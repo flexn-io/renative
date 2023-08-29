@@ -9,7 +9,7 @@ import {
 } from '../../core/systemManager/fileutils';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../../core/systemManager/logger';
 
-export const taskRnvWorkspaceConfigure = async (c) => {
+export const taskRnvWorkspaceConfigure = async (c: RnvConfig) => {
     logTask('taskRnvWorkspaceConfigure');
 
     // Check globalConfig Dir

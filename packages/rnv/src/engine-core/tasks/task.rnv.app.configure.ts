@@ -6,6 +6,7 @@ import { TASK_APP_CONFIGURE, PARAMS } from '../../core/constants';
 import { writeFileSync, fsExistsSync, fsReadFileSync, fsRenameSync } from '../../core/systemManager/fileutils';
 import { chalk, logError, logTask, logWarning, logDebug, logInfo, logAppInfo } from '../../core/systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
+import { RnvConfig } from '../../core/configManager/types';
 
 const _loadAppConfigIDfromDir = (dirName, appConfigsDir) => {
     logDebug(`_loadAppConfigIDfromDir:${dirName}:${appConfigsDir}`, chalk().grey);
@@ -94,7 +95,7 @@ const matchAppConfigID = async (c, appConfigID) => {
     return false;
 };
 
-const _findAndSwitchAppConfigDir = async (c) => {
+const _findAndSwitchAppConfigDir = async (c: RnvConfig) => {
     logTask('_findAndSwitchAppConfigDir');
     const { appConfigsDirNames } = c.paths.project;
     if (appConfigsDirNames.length) {
@@ -123,7 +124,7 @@ const _findAndSwitchAppConfigDir = async (c) => {
     return false;
 };
 
-const _setAppId = (c, appId) => {
+const _setAppId = (c: RnvConfig, appId: string) => {
     const currentAppConfigId = c.files.project?.configLocal?._meta?.currentAppConfigId;
 
     logTask('_setAppId', `appId:${appId} runtime.appId:${c.runtime.appId} _meta.appId:${currentAppConfigId}`);
@@ -131,7 +132,7 @@ const _setAppId = (c, appId) => {
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
 };
 
-export const taskRnvAppConfigure = async (c) => {
+export const taskRnvAppConfigure = async (c: RnvConfig) => {
     logTask('taskRnvAppConfigure');
 
     c.paths.project.appConfigsDirNames = listAppConfigsFoldersSync(c, true);
@@ -151,7 +152,7 @@ export const taskRnvAppConfigure = async (c) => {
     }
 
     // Reset appId if appConfig no longer exists but renative.local.json still has reference to it
-    if (!c.paths.project.appConfigsDirNames.includes(c.runtime.appId)) {
+    if (c.runtime.appId && !c.paths.project.appConfigsDirNames.includes(c.runtime.appId)) {
         c.runtime.appId = null;
     }
 
@@ -179,8 +180,10 @@ export const taskRnvAppConfigure = async (c) => {
     }
 
     // Generate true path to appConfig (ensure external appConfigsDirs are included)
-    c.runtime.appConfigDir =
-        c.paths.project.appConfigsDirs[c.paths.project.appConfigsDirNames.indexOf(c.runtime.appId)];
+    if (c.runtime.appId) {
+        c.runtime.appConfigDir =
+            c.paths.project.appConfigsDirs[c.paths.project.appConfigsDirNames.indexOf(c.runtime.appId)];
+    }
 
     await updateRenativeConfigs(c);
     logAppInfo(c);

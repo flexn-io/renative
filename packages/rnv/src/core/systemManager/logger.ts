@@ -327,7 +327,7 @@ export const logTask = (task: string, customChalk?: any) => {
     console.log(_sanitizePaths(msg));
 };
 
-export const logInitTask = (task: string, customChalk: string | ((s: string) => string)) => {
+export const logInitTask = (task: string, customChalk?: string | ((s: string) => string)) => {
     if (_jsonOnly) {
         return _printJson({
             type: 'taskInit',

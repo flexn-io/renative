@@ -3,7 +3,7 @@ import { getAppFolder, getCliArguments } from '../../core/common';
 import { IOS, TVOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, PARAMS } from '../../core/constants';
 import PlatformSetup from '../../core/setupManager';
 
-export const taskRnvFastlane = async (c) => {
+export const taskRnvFastlane = async (c: RnvConfig) => {
     const args = getCliArguments(c);
     args.shift(); // we know the first one is fastlane, trash it
 

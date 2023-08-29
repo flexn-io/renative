@@ -22,7 +22,7 @@ import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import { RnvConfig } from '../configManager/types';
 
-export const checkIfTemplateConfigured = async (c) => {
+export const checkIfTemplateConfigured = async (c: RnvConfig) => {
     logTask('checkIfTemplateConfigured');
     if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return true;
     if (!c.buildConfig.templates) {
@@ -73,7 +73,7 @@ const _cleanProjectTemplateSync = (c) => {
     removeFilesSync(filesToRemove);
 };
 
-const _applyTemplate = async (c) => {
+const _applyTemplate = async (c: RnvConfig) => {
     logTask('_applyTemplate', `current:${c.buildConfig.currentTemplate} selected:${c.runtime.selectedTemplate}`);
 
     if (c.runtime.selectedTemplate) {
@@ -207,7 +207,7 @@ const _configureProjectConfig = (c) =>
         resolve();
     });
 
-const _configureRenativeConfig = async (c) => {
+const _configureRenativeConfig = async (c: RnvConfig) => {
     // renative.json
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
     logDebug('configureProject:check renative.json');
@@ -237,7 +237,7 @@ const _configureRenativeConfig = async (c) => {
     return true;
 };
 
-export const configureTemplateFiles = async (c) => {
+export const configureTemplateFiles = async (c: RnvConfig) => {
     logTask('configureTemplateFiles');
 
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
@@ -299,12 +299,12 @@ export const configureEntryPoint = async (c: RnvConfig, platform: string) => {
     return true;
 };
 
-const _writeObjectSync = (c, p, s) => {
+const _writeObjectSync = (c: RnvConfig, p, s) => {
     writeFileSync(p, s);
     generateBuildConfig(c);
 };
 
-export const getTemplateOptions = (c, isGlobalScope) => {
+export const getTemplateOptions = (c: RnvConfig, isGlobalScope) => {
     let defaultProjectTemplates;
     if (isGlobalScope) {
         defaultProjectTemplates = c.files.rnv.projectTemplates.config.projectTemplates;

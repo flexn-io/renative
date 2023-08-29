@@ -15,4 +15,5 @@ export type PromptParams = {
     default?: any;
     name: string;
     type: string;
+    pageSize?: number;
 };

@@ -24,7 +24,7 @@ export const executePipe = async (c, key) => {
     }
 };
 
-export const buildHooks = async (c) => {
+export const buildHooks = async (c: RnvConfig) => {
     logDebug('buildHooks');
 
     const enableHookRebuild = getConfigProp(c, c.platform, 'enableHookRebuild');

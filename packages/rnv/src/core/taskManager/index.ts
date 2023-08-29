@@ -12,12 +12,14 @@ import {
     registerAllPlatformEngines,
 } from '../engineManager';
 import { TASK_CONFIGURE_SOFT } from '../constants';
+import { RnvConfig } from '../configManager/types';
+import { RnvTask, RnvTaskMap } from './types';
 
 let executedTasks = {};
 
-const CUSTOM_TASKS = {};
+const CUSTOM_TASKS: RnvTaskMap = {};
 
-export const registerCustomTask = async (c, task) => {
+export const registerCustomTask = async (_c: RnvConfig, task: RnvTask) => {
     if (task.task) {
         CUSTOM_TASKS[task.task] = task;
     }
@@ -58,7 +60,7 @@ const _getTaskObj = (taskInstance) => {
     };
 };
 
-export const findSuitableTask = async (c, specificTask) => {
+export const findSuitableTask = async (c: RnvConfig, specificTask) => {
     logTask('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines(c);
     let task;
@@ -242,7 +244,7 @@ export const findSuitableTask = async (c, specificTask) => {
     return getEngineTask(task, c.runtime.engine.tasks);
 };
 
-const _populateExtraParameters = (c, task) => {
+const _populateExtraParameters = (c: RnvConfig, task: RnvTask) => {
     if (task.params) {
         task.params.forEach((param) => {
             let cmd = '';
@@ -287,7 +289,13 @@ const _executePipe = async (c, task, phase) => executePipe(c, `${task.split(' ')
 
 const TASK_LIMIT = 20;
 
-export const executeTask = async (c, task, parentTask, originTask, isFirstTask) => {
+export const executeTask = async (
+    c: RnvConfig,
+    task: string,
+    parentTask: string | null,
+    originTask: string,
+    isFirstTask?: boolean
+) => {
     const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
     logInitTask(`${pt}=> [${chalk().bold.rgb(170, 106, 170)(task)}]`);
@@ -324,7 +332,7 @@ const _logSkip = (task) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
 };
 
-export const shouldSkipTask = (c, task, originTask) => {
+export const shouldSkipTask = (c: RnvConfig, task, originTask) => {
     const tasks = c.buildConfig?.tasks;
     c.runtime.platform = c.platform;
     if (!tasks) return;

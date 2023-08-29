@@ -20,7 +20,8 @@ export interface RnvConfig {
     };
     configPropsInjects: any;
     runtime: {
-        appId: string;
+        appId: string | null;
+        appDir: string;
         enginesByPlatform: any;
         enginesByIndex: Array<{
             config: {
@@ -45,6 +46,8 @@ export interface RnvConfig {
         availablePlatforms: Array<string>;
         _platformBuildsSuffix?: string;
         timestamp: number;
+        appConfigDir: string;
+        hasAllEnginesRegistered: boolean;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;
@@ -231,6 +234,7 @@ export interface RnvConfig {
             platformTemplates: Record<string, any>;
             //ADDON
             config: any;
+            config_original: any;
             configLocal: any;
             configPrivate: any;
             package: any;

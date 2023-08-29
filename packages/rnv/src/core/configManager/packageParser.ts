@@ -107,7 +107,7 @@ export const checkRequiredPackage = async (
     return false;
 };
 
-export const injectPlatformDependencies = async (c) => {
+export const injectPlatformDependencies = async (c: RnvConfig) => {
     logTask('injectPlatformDependencies');
     const { platform } = c;
     const engine = getEngineRunnerByPlatform(c, platform);

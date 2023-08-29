@@ -13,7 +13,7 @@ import {
 } from '../../core/systemManager/fileutils';
 import { doResolve } from '../../core/systemManager/resolve';
 
-export const taskRnvAppCreate = async (c) => {
+export const taskRnvAppCreate = async (c: RnvConfig) => {
     logTask('taskRnvAppCreate');
 
     await configureRuntimeDefaults(c);

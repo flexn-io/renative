@@ -513,9 +513,9 @@ Object.keys(PARAM_KEYS).forEach((k) => {
 });
 
 export const PARAMS = {
-    withBase: (arr: any) =>
+    withBase: (arr?: any) =>
         [PARAM_KEYS.info, PARAM_KEYS.ci, PARAM_KEYS.mono, PARAM_KEYS.maxErrorLength, PARAM_KEYS.only].concat(arr || []),
-    withConfigure: (arr: any) =>
+    withConfigure: (arr?: any) =>
         [
             PARAM_KEYS.reset,
             PARAM_KEYS.resetHard,
@@ -525,7 +525,7 @@ export const PARAMS = {
             PARAM_KEYS.scheme,
             PARAM_KEYS.platform,
         ].concat(arr || []),
-    withRun: (arr: any) =>
+    withRun: (arr?: any) =>
         [
             PARAM_KEYS.target,
             PARAM_KEYS.device,
@@ -536,7 +536,7 @@ export const PARAMS = {
             PARAM_KEYS.skipTargetCheck,
             PARAM_KEYS.host,
         ].concat(arr || []),
-    withAll: (arr: any) => Object.values(PARAM_KEYS).concat(arr || []),
+    withAll: (arr?: any) => Object.values(PARAM_KEYS).concat(arr || []),
     all: Object.keys(PARAM_KEYS),
 };
 

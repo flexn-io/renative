@@ -13,7 +13,7 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         super('linux', c);
     }
 
-    async installSoftware(software) {
+    async installSoftware(software: string) {
         if (commandExistsSync('apt-get')) {
             await shell.exec(`apt-get -qq update && apt-get install ${software} -y > /dev/null`);
         }
@@ -41,7 +41,7 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         return true;
     }
 
-    async postInstall(sdk) {
+    async postInstall(sdk: string) {
         if (sdk === 'android') {
             const { location } = setupConfig.android;
             logDebug(
