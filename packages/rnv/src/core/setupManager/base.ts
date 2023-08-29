@@ -9,9 +9,16 @@ import { replaceHomeFolder, updateConfigFile } from '../systemManager/fileutils'
 import setupConfig from './config';
 import Config from '../configManager/config';
 import { logTask, logError, logInfo, logDebug, logSuccess } from '../systemManager/logger';
+import { RnvConfig } from '../configManager/types';
 
 class BasePlatformSetup {
-    constructor(os, c) {
+    os: string;
+    c: RnvConfig;
+    globalConfigPath: string;
+    availableDownloader: string | null;
+    androidSdkLocation: string;
+
+    constructor(os: string, c: RnvConfig) {
         // eslint-disable-next-line no-param-reassign
         if (!c) c = Config.getConfig();
         const { paths } = c;

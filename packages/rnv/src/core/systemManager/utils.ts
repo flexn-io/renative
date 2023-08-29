@@ -1,10 +1,13 @@
+import { RnvConfig } from '../configManager/types';
+import { RenativeConfigVersion } from '../types';
+
 export const isSystemMac = process.platform === 'darwin';
 
 export const isSystemLinux = process.platform === 'linux';
 
 export const isSystemWin = process.platform === 'win32';
 
-export const replaceOverridesInString = (string, overrides, mask) => {
+export const replaceOverridesInString = (string: string, overrides: Array<string>, mask: string) => {
     let replacedString = string;
     if (overrides?.length && replacedString?.replace) {
         overrides.forEach((v) => {
@@ -15,7 +18,7 @@ export const replaceOverridesInString = (string, overrides, mask) => {
     return replacedString;
 };
 
-export const getValidLocalhost = (value, localhost) => {
+export const getValidLocalhost = (value: string, localhost: string) => {
     if (!value) return localhost;
     switch (value) {
         case 'localhost':
@@ -27,7 +30,7 @@ export const getValidLocalhost = (value, localhost) => {
     }
 };
 
-export const isUrlLocalhost = (value) => {
+export const isUrlLocalhost = (value: string) => {
     if (value?.includes) {
         if (value.includes('localhost')) return true;
         if (value.includes('0.0.0.0')) return true;
@@ -36,7 +39,7 @@ export const isUrlLocalhost = (value) => {
     return false;
 };
 
-export const getScopedVersion = (c, key, val, sourceObjKey) => {
+export const getScopedVersion = (c: RnvConfig, key: string, val: RenativeConfigVersion, sourceObjKey: string) => {
     if (typeof val === 'string') {
         if (val.startsWith('source:')) {
             const sourceObj = c.buildConfig?.[sourceObjKey];

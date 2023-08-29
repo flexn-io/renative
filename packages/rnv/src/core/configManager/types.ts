@@ -22,7 +22,11 @@ export interface RnvConfig {
     runtime: {
         appId: string;
         enginesByPlatform: any;
-        enginesByIndex: Array<string>;
+        enginesByIndex: Array<{
+            config: {
+                id: string;
+            };
+        }>;
         enginesById: Record<string, any>;
         missingEnginePlugins: Record<string, any>;
         localhost: string;
@@ -96,7 +100,7 @@ export interface RnvConfig {
                 configsLocal: Array<string>;
             };
             //ADDON
-            config?: string;
+            config: string;
             configLocal?: string;
             configPrivate?: string;
             dir: string;
