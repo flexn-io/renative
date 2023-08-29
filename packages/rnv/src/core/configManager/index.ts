@@ -35,13 +35,13 @@ import { getConfigProp } from '../common';
 import { getWorkspaceDirPath } from '../projectManager/workspace';
 import { chalk, logError, logTask, logWarning, logDebug } from '../systemManager/logger';
 import { doResolve } from '../systemManager/resolve';
-import { RnvConfigFileObj, RnvConfigPathObj, RnvConfog } from './types';
+import { RnvConfigFileObj, RnvConfigPathObj, RnvConfig } from './types';
 import { generateConfigBase } from './configBase';
 // import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
 
-export const checkIsRenativeProject = (c: RnvConfog) =>
+export const checkIsRenativeProject = (c: RnvConfig) =>
     new Promise((resolve, reject) => {
         if (!c.paths.project.configExists) {
             return reject(
@@ -64,7 +64,7 @@ const _generateConfigPaths = (pathObj: RnvConfigPathObj, dir: string, configName
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
-const getEnginesPluginDelta = (c: RnvConfog) => {
+const getEnginesPluginDelta = (c: RnvConfig) => {
     logDebug('getEnginesPluginDelta');
 
     if (!c.buildConfig) return;
@@ -89,13 +89,13 @@ const getEnginesPluginDelta = (c: RnvConfog) => {
     return enginePlugins;
 };
 
-export const writeRenativeConfigFile = (c: RnvConfog, configPath: string, configData: string) => {
+export const writeRenativeConfigFile = (c: RnvConfig, configPath: string, configData: string) => {
     logDebug(`writeRenativeConfigFile:${configPath}`);
     writeFileSync(configPath, configData);
     generateBuildConfig(c);
 };
 
-export const generateBuildConfig = (c: RnvConfog) => {
+export const generateBuildConfig = (c: RnvConfig) => {
     logDebug('generateBuildConfig');
 
     const mergeOrder = [
@@ -221,7 +221,7 @@ export const generateBuildConfig = (c: RnvConfog) => {
 };
 
 export const loadFileExtended = (
-    c: RnvConfog,
+    c: RnvConfig,
     fileObj: Record<string, any>,
     pathObj: RnvConfigPathObj,
     key: string
@@ -264,7 +264,7 @@ export const loadFileExtended = (
 };
 
 const _loadConfigFiles = (
-    c: RnvConfog,
+    c: RnvConfig,
     fileObj: RnvConfigFileObj,
     pathObj: RnvConfigPathObj,
     parseAppConfigs?: boolean
@@ -393,7 +393,7 @@ export const generateRuntimeConfig = async (c) => {
     return true;
 };
 
-export const generateLocalConfig = (c: RnvConfog, resetAppId?: boolean) => {
+export const generateLocalConfig = (c: RnvConfig, resetAppId?: boolean) => {
     logTask('generateLocalConfig', `resetAppId:${!!resetAppId}`);
     const configLocal = c.files.project.configLocal || {};
     configLocal._meta = configLocal._meta || {};
@@ -406,7 +406,7 @@ export const generateLocalConfig = (c: RnvConfog, resetAppId?: boolean) => {
     writeFileSync(c.paths.project.configLocal, configLocal);
 };
 
-const _generatePlatformTemplatePaths = (c: RnvConfog) => {
+const _generatePlatformTemplatePaths = (c: RnvConfig) => {
     logTask('_generatePlatformTemplatePaths');
     if (!c.buildConfig.paths) {
         logWarning(`You're missing paths object in your ${chalk().red(c.paths.project.config)}`);
@@ -440,7 +440,7 @@ const _generatePlatformTemplatePaths = (c: RnvConfog) => {
     return result;
 };
 
-export const listAppConfigsFoldersSync = (c: RnvConfog, ignoreHiddenConfigs, appConfigsDirPath) => {
+export const listAppConfigsFoldersSync = (c: RnvConfig, ignoreHiddenConfigs, appConfigsDirPath) => {
     logTask('listAppConfigsFoldersSync', `ignoreHiddenConfigs:${!!ignoreHiddenConfigs}`);
 
     if (!c.paths?.project) return [];
@@ -472,7 +472,7 @@ export const listAppConfigsFoldersSync = (c: RnvConfog, ignoreHiddenConfigs, app
     return appConfigsDirs;
 };
 
-const _loadWorkspacesSync = (c: RnvConfog) => {
+const _loadWorkspacesSync = (c: RnvConfig) => {
     // CHECK WORKSPACES
     if (fsExistsSync(c.paths.rnv.configWorkspaces)) {
         logDebug(`${c.paths.rnv.configWorkspaces} file exists!`);
@@ -505,7 +505,7 @@ const _loadWorkspacesSync = (c: RnvConfog) => {
     }
 };
 
-export const parseRenativeConfigs = async (c: RnvConfog) => {
+export const parseRenativeConfigs = async (c: RnvConfig) => {
     logTask('parseRenativeConfigs');
     // LOAD ./package.json
     loadFile(c.files.project, c.paths.project, 'package');
@@ -590,7 +590,7 @@ export const parseRenativeConfigs = async (c: RnvConfog) => {
 };
 
 export const createRnvConfig = (program: any, process: any, cmd: string, subCmd: string, { projectRoot } = {}) => {
-    const c: RnvConfog = generateConfigBase();
+    const c: RnvConfig = generateConfigBase();
 
     global.RNV_CONFIG = c;
 

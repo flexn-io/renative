@@ -26,7 +26,8 @@ export const inquirerPrompt = async (params: PromptParams) => {
     const { type, name } = params;
     if (type === 'confirm' && !name) params.name = 'confirm';
 
-    return inquirer.prompt(params as any);
+    const resp = inquirer.prompt(params as any);
+    return resp;
 };
 
 export const pressAnyKeyToContinue = () => {

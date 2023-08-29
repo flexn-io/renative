@@ -10,8 +10,9 @@ import { writeRenativeConfigFile } from './index';
 import { overrideTemplatePlugins } from '../pluginManager';
 import { configureFonts } from '../projectManager';
 import { getConfigProp } from '../common';
+import { DependencyType, RnvConfig } from './types';
 
-const injectProjectDependency = async (c, dependency, version, type, skipInstall = false) => {
+const injectProjectDependency = async (c: RnvConfig, dependency, version, type, skipInstall = false) => {
     logTask('injectProjectDependency');
 
     const currentPackage = c.files.project.package;
@@ -28,10 +29,10 @@ const injectProjectDependency = async (c, dependency, version, type, skipInstall
 };
 
 export const checkRequiredPackage = async (
-    c,
-    pkg,
+    c: RnvConfig,
+    pkg: string,
     version = false,
-    type,
+    type: DependencyType = 'dependencies',
     skipAsking = false,
     skipInstall = false,
     skipVersionCheck = false

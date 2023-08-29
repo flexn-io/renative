@@ -1,9 +1,9 @@
 import { fsExistsSync, fsReadFileSync, fsReaddirSync, fsWriteFileSync } from '../systemManager/fileutils';
 
 import path from 'path';
-import { RnvConfog } from './types';
+import { RnvConfig } from './types';
 
-export const generateConfigBase = (): RnvConfog => ({
+export const generateConfigBase = (): RnvConfig => ({
     program: {},
     buildConfig: {},
     command: '',

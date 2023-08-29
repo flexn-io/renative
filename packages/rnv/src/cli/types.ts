@@ -8,11 +8,11 @@ export type PromptOptions = {
 };
 
 export type PromptParams = {
-    logMessage: string;
-    warningMessage: string;
+    logMessage?: string;
+    warningMessage?: string;
     message: string;
-    choices: any;
-    default: any;
+    choices?: any;
+    default?: any;
     name: string;
     type: string;
 };

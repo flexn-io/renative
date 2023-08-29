@@ -1,4 +1,4 @@
-export interface RnvConfog {
+export interface RnvConfig {
     program: any;
     command: string;
     subCommand: string;
@@ -32,8 +32,8 @@ export interface RnvConfog {
             pluginTemplates: {
                 configs: Record<string, any>;
                 //ADDON
-                dir: string;
-                config: string;
+                dir?: string;
+                config?: string;
             };
             platformTemplates: Record<string, any>;
             projectTemplates: Record<string, any>;
@@ -42,8 +42,8 @@ export interface RnvConfog {
             engines: Record<string, any>;
             projectTemplate: Record<string, any>;
             //ADDON
-            dir: string;
-            package: string;
+            dir?: string;
+            package?: string;
             // config: string;
             // configLocal: string;
             // configPrivate: string;
@@ -64,12 +64,12 @@ export interface RnvConfog {
                 appConfigsDirs: Array<string>;
                 appConfigsDirNames: Array<string>;
                 //ADDON
-                dir: string;
-                config: string;
-                configExists: boolean;
-                configLocal: string;
-                configPrivate: string;
-                appConfigsDir: string;
+                dir?: string;
+                config?: string;
+                configExists?: boolean;
+                configLocal?: string;
+                configPrivate?: string;
+                appConfigsDir?: string;
             };
             appConfig: {
                 configs: Array<string>;
@@ -77,10 +77,10 @@ export interface RnvConfog {
                 configsLocal: Array<string>;
             };
             //ADDON
-            config: string;
-            configLocal: string;
-            configPrivate: string;
-            dir: string;
+            config?: string;
+            configLocal?: string;
+            configPrivate?: string;
+            dir?: string;
         };
         defaultWorkspace: {
             //ADDON
@@ -207,6 +207,7 @@ export interface RnvConfog {
             config: any;
             configLocal: any;
             configPrivate: any;
+            package: any;
         };
         appConfig: {
             config?: any;
@@ -216,6 +217,8 @@ export interface RnvConfog {
         };
     };
 }
+
+export type DependencyType = 'devDependencies' | 'dependencies' | 'peerDependencies';
 
 export type RnvConfigSchema = Record<string, any>;
 
