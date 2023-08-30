@@ -67,13 +67,18 @@ const _getTaskObj = (taskInstance: RnvTask) => {
     };
 };
 
-export const findSuitableTask = async (c: RnvConfig, specificTask?: string) => {
+type TaskObj = {
+    key: string;
+    taskInstance: RnvTask;
+};
+
+export const findSuitableTask = async (c: RnvConfig, specificTask?: string): Promise<RnvTask> => {
     logTask('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines(c);
-    let task: string = '';
+    let task = '';
     if (!specificTask) {
         if (!c.command) {
-            const suitableTaskInstances = {};
+            const suitableTaskInstances: Record<string, TaskObj> = {};
             REGISTERED_ENGINES.forEach((engine) => {
                 Object.values(engine.tasks).forEach((taskInstance) => {
                     const taskObj = _getTaskObj(taskInstance);
@@ -87,7 +92,7 @@ export const findSuitableTask = async (c: RnvConfig, specificTask?: string) => {
 
             const taskInstances = Object.values(suitableTaskInstances);
             let tasks;
-            let defaultCmd = 'new';
+            let defaultCmd: string | undefined = 'new';
             let tasksCommands;
             let filteredTasks;
             let addendum = '';

@@ -49,7 +49,7 @@ export interface RnvConfig {
         };
         bundleAssets: boolean;
         activeTemplate: string;
-        engine: any;
+        engine?: RnvEngine;
         target: string;
         supportedPlatforms: Array<{
             platform: string;
@@ -372,7 +372,7 @@ export type RenativeConfigFile = {
     integrations: Record<string, string>;
     tasks: Array<any> | Record<string, any>;
     engineTemplates: Record<string, any>;
-    engines: Record<string, any>;
+    engines: Record<string, string>;
     pluginTemplates: Record<string, any>;
     runtime: Record<string, any>;
     defaultTargets: Record<string, string>;

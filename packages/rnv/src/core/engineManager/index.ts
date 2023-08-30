@@ -12,7 +12,7 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { RnvConfig } from '../configManager/types';
 import { RnvTask, RnvTaskMap } from '../taskManager/types';
 import { RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
-import { RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
+import { RenativeEngineConfig, RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -38,13 +38,13 @@ export const registerEngine = async (
     _registerEnginePlatform(c, platform, engine);
 };
 
-const _registerEnginePlatform = (c: RnvConfig, platform: RnvPlatform, engine: RnvEngine) => {
-    if (platform) {
+const _registerEnginePlatform = (c: RnvConfig, platform?: RnvPlatform, engine?: RnvEngine) => {
+    if (platform && engine) {
         c.runtime.enginesByPlatform[platform] = engine;
     }
 };
 
-export const registerEngineExtension = (ext: string | null, eExt: string | null, extras: Array<string> = []) => {
+export const registerEngineExtension = (ext: string | null, eExt?: string | null, extras: Array<string> = []) => {
     const e1 = ext ? `${ext}.` : '';
     const e2 = eExt ? `${eExt}.` : '';
     let extArr;
@@ -67,7 +67,7 @@ export const registerEngineExtension = (ext: string | null, eExt: string | null,
     return extArr;
 };
 
-export const generateEngineExtensions = (exts: Array<string>, config) => {
+export const generateEngineExtensions = (exts: Array<string>, config: RenativeEngineConfig) => {
     const { id, engineExtension } = config;
     let extArr = [...registerEngineExtension(id)];
     exts.forEach((ext) => {
@@ -126,7 +126,7 @@ export const registerMissingPlatformEngines = async (c: RnvConfig, taskInstance?
         (!taskInstance.isGlobalScope && taskInstance?.platforms?.length === 0) ||
         c.program.platform === 'all'
     ) {
-        const registerEngineList = [];
+        const registerEngineList: Array<Promise<void>> = [];
         c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
             registerEngineList.push(_registerPlatformEngine(c, platform));
         });
@@ -157,7 +157,7 @@ export const registerAllPlatformEngines = async (c: RnvConfig) => {
     return true;
 };
 
-export const loadEnginePluginDeps = async (c: RnvConfig, engineConfigs) => {
+export const loadEnginePluginDeps = async (c: RnvConfig, engineConfigs: Array<RnvEngineInstallConfig>) => {
     logTask('loadEnginePluginDeps');
     if (c.files.project.config.isTemplate) return 0;
 
@@ -207,7 +207,7 @@ If you don't want to use this dependency make sure you remove platform which req
     return Object.keys(addedPlugins).length;
 };
 
-export const loadEnginePackageDeps = async (c: RnvConfig, engineConfigs) => {
+export const loadEnginePackageDeps = async (c: RnvConfig, engineConfigs: Array<RnvEngineInstallConfig>) => {
     logTask('loadEnginePackageDeps');
     if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return 0;
     // Check engine dependencies
@@ -305,7 +305,7 @@ const _getFilteredEngines = (c: RnvConfig) => {
     const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
     const supportedPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
 
-    const filteredEngines = {};
+    const filteredEngines: Record<string, string> = {};
     supportedPlatforms.forEach((v: string) => {
         const platforms = c.files.project.config.platforms || {};
         const engineKey = platforms[v]?.engine || rnvPlatforms[v]?.engine;
@@ -328,9 +328,9 @@ export const loadEngines = async (c: RnvConfig, failOnMissingDeps?: boolean): Pr
     logTask('loadEngines');
     if (!fsExistsSync(c.paths.project.config)) return true;
 
-    const filteredEngines: Record<string, object> = _getFilteredEngines(c);
+    const filteredEngines: Record<string, string> = _getFilteredEngines(c);
     const enginesToInstall: Array<RnvEngineInstallConfig> = [];
-    const readyEngines: Array<RnvEngineInstallConfig> = [];
+    const readyEngines: Array<string> = [];
     const engineConfigs: Array<RnvEngineInstallConfig> = [];
     // if (filteredEngines) {
     Object.keys(filteredEngines).forEach((k) => {
@@ -422,9 +422,10 @@ const _getMergedEngineConfigs = (c: RnvConfig) => {
                 if (!engineTemplatesKeys.includes(enginePackageName)) {
                     logWarning(`Engine ${enginePackageName} not found in default engineTemplates`);
                 }
-            } else {
-                mergedEngineConfigs[enginePackageName] = engineVal;
             }
+            // else {
+            //     mergedEngineConfigs[enginePackageName] = engineVal;
+            // }
         });
     }
     return mergedEngineConfigs;
@@ -468,7 +469,7 @@ const _resolvePkgPath = (c: RnvConfig, packageName: string) => {
     return pkgPath;
 };
 
-const _registerPlatformEngine = async (c: RnvConfig, platform: RnvPlatform): Promise<void> => {
+const _registerPlatformEngine = async (c: RnvConfig, platform: RnvPlatform | boolean): Promise<void> => {
     // Only register active platform engine to be faster
     if (platform === true || !platform) return;
     const selectedEngineConfig = _getEngineConfigByPlatform(c, platform);
@@ -484,7 +485,7 @@ const _registerPlatformEngine = async (c: RnvConfig, platform: RnvPlatform): Pro
         } else {
             _registerEnginePlatform(c, platform, existingEngine);
         }
-    } else if (platform !== true && platform) {
+    } else if (platform) {
         logWarning(`Could not find suitable engine for platform ${platform}
 Maybe you forgot to define platforms.${platform}.engine in your renative.json?`);
     }
@@ -495,7 +496,7 @@ export const generateEnvVars = (c: RnvConfig, moduleConfig: RnvModuleConfig, nex
     const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
     return {
         RNV_EXTENSIONS: getPlatformExtensions(c),
-        RNV_ENGINE_PATH: c.runtime.engine.rootPath,
+        RNV_ENGINE_PATH: c.runtime.engine?.rootPath,
         RNV_MODULE_PATHS: moduleConfig?.modulePaths || [],
         RNV_MODULE_ALIASES: moduleConfig?.moduleAliasesArray || [],
         RNV_NEXT_TRANSPILE_MODULES: nextConfig,
@@ -503,14 +504,15 @@ export const generateEnvVars = (c: RnvConfig, moduleConfig: RnvModuleConfig, nex
         RNV_APP_BUILD_DIR: getAppFolder(c),
         RNV_IS_MONOREPO: isMonorepo,
         RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir,
-        RNV_ENGINE: c.runtime.engine.config.id,
+        RNV_ENGINE: c.runtime.engine?.config.id,
         RNV_IS_NATIVE_TV: [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform),
     };
 };
 
-export const getPlatformExtensions = (c: RnvConfig, excludeServer = false, addDotPrefix = false) => {
+export const getPlatformExtensions = (c: RnvConfig, excludeServer = false, addDotPrefix = false): Array<string> => {
     const { engine } = c.runtime;
     let output;
+    if (!engine) return [];
     const { platforms } = engine;
 
     if (addDotPrefix) {
@@ -551,7 +553,7 @@ export const getEngineTask = (
 export const hasEngineTask = (task: string, tasks: RnvTaskMap, isProjectScope: boolean) =>
     isProjectScope ? !!getEngineTask(task, tasks) : getEngineTask(task, tasks)?.isGlobalScope;
 
-export const getEngineSubTasks = (task: string, tasks: RnvTaskMap, exactMatch: boolean) =>
+export const getEngineSubTasks = (task: string, tasks: RnvTaskMap, exactMatch?: boolean) =>
     Object.values(tasks).filter((v) => (exactMatch ? v.task.split(' ')[0] === task : v.task.startsWith(task)));
 
 export const getEngineRunner = (c: RnvConfig, task: string, customTasks?: RnvTaskMap, failOnMissingEngine = true) => {
