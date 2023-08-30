@@ -17,4 +17,6 @@ declare global {
     var doResolve;
     //eslint-disable-next-line no-var
     var getConfigProp
+    //eslint-disable-next-line no-var
+    var fetch;
 }

@@ -35,7 +35,7 @@ import Config from './core/configManager/config';
 
 global.RNV_ANALYTICS = Analytics;
 
-export const initializeBuilder = async (cmd, subCmd, process, program) => {
+export const initializeBuilder = async (cmd: string, subCmd: string, process: any, program: any) => {
     // set mono and ci if json is enabled
     if (program.json) {
         program.mono = true;
@@ -53,7 +53,7 @@ export const initializeBuilder = async (cmd, subCmd, process, program) => {
     return c;
 };
 
-const run = (cmd, subCmd, program, process) => {
+const run = (cmd: string, subCmd: string, program: any, process: any) => {
     initializeBuilder(cmd, subCmd, process, program)
         .then((c) => Config.initializeConfig(c))
         .then((c) => CLI(c))

@@ -7,8 +7,9 @@ import { executeTask } from '../../core/taskManager';
 import { listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
 import { installPackageDependenciesAndPlugins } from '../../core/pluginManager';
 import { fsExistsSync, readObjectSync } from '../../core/systemManager/fileutils';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvProjectUpgrade = async (c: RnvConfig, parentTask, originTask) => {
+export const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvProjectUpgrade');
     const upgradedPaths = [];
     if (fsExistsSync(c.paths.project.config)) {
@@ -50,7 +51,7 @@ export const taskRnvProjectUpgrade = async (c: RnvConfig, parentTask, originTask
         }
     }
 
-    logToSummary(`Upgraded following files:\n${upgradedPaths.join('\n')}`, true);
+    logToSummary(`Upgraded following files:\n${upgradedPaths.join('\n')}`);
 
     return true;
 };

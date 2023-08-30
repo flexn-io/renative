@@ -3,8 +3,9 @@ import { configureFonts, copyRuntimeAssets } from '../../core/projectManager';
 import { generateRuntimeConfig } from '../../core/configManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_SWITCH, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvSwitch = async (c: RnvConfig, parentTask, originTask) => {
+export const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvSwitch');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_SWITCH, originTask);

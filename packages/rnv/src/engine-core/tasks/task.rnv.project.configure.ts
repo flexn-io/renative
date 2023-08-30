@@ -43,7 +43,7 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
         logInfo(`Creating folder ${c.paths.project.builds.dir} ...DONE`);
         fsMkdirSync(c.paths.project.builds.dir);
     }
-    await checkAndMigrateProject(c);
+    await checkAndMigrateProject();
     await updateRenativeConfigs(c);
     await checkIsRenativeProject(c);
     // await checkAndCreateProjectPackage(c);

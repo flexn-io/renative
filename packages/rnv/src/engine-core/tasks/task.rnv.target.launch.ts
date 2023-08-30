@@ -47,9 +47,9 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
         case TIZEN:
             return launchTizenSimulator(c, target);
         case WEBOS:
-            return launchWebOSimulator(c, target);
+            return launchWebOSimulator(c);
         case KAIOS:
-            return launchKaiOSSimulator(c, target);
+            return launchKaiOSSimulator(c);
         default:
             return Promise.reject(
                 `"target launch" command does not support ${chalk().white.bold(

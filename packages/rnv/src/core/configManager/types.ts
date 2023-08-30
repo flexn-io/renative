@@ -85,6 +85,7 @@ export interface RnvConfig {
         currentEngine: RnvEngine;
         hosted: boolean;
         task: string;
+        selectedWorkspace: string;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;

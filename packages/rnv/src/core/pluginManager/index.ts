@@ -328,7 +328,7 @@ ${ovMsg}`
 };
 
 const _updatePackage = (c: RnvConfig, override: any) => {
-    const newPackage = merge(c.files.project.package, override);
+    const newPackage: any = merge(c.files.project.package, override);
     writeRenativeConfigFile(c, c.paths.project.package, newPackage);
     c.files.project.package = newPackage;
     c._requiresNpmInstall = true;

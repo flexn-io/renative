@@ -37,7 +37,44 @@ import { RnvConfig } from '../../core/configManager/types';
 
 const highlight = chalk().green;
 
-const _prepareProjectOverview = (c: RnvConfig, data) => {
+type NewProjectData = {
+    appTitle: string;
+    inputAppTitle: string;
+    packageName: string;
+    defaultAppTitle: string;
+    defaultTemplate: string;
+    inputProjectName: string;
+    teamID: string;
+    appID: string;
+    inputAppID: string;
+    inputVersion: string;
+    defaultVersion: string;
+    inputTemplate: string;
+    version: string;
+    optionTemplates: {
+        selectedOption?: string;
+        selectedVersion?: string;
+        valuesAsObject?: any;
+        valuesAsArray?: Array<string>;
+        keysAsArray?: Array<string>;
+    };
+    projectName: string;
+    optionWorkspaces: {
+        selectedOption: string;
+        valuesAsObject?: any;
+        valuesAsArray?: Array<string>;
+        keysAsArray?: Array<string>;
+    };
+    gitEnabled: boolean;
+    optionPlatforms: {
+        selectedOptions: Array<string>;
+    };
+    confirmString: string;
+    defaultProjectName: string;
+    defaultWorkspace: string;
+};
+
+const _prepareProjectOverview = (c: RnvConfig, data: NewProjectData) => {
     data.appTitle = data.inputAppTitle || data.defaultAppTitle;
     data.teamID = '';
     data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
@@ -46,13 +83,13 @@ const _prepareProjectOverview = (c: RnvConfig, data) => {
 
     let str = printBoxStart('🚀  ReNative Project Generator');
     str += printIntoBox('');
-    str += printIntoBox(`Project Name (folder): ${highlight(data.projectName)}`, 1);
-    str += printIntoBox(`Workspace: ${highlight(data.optionWorkspaces.selectedOption)}`, 1);
-    str += printIntoBox(`Project Title: ${highlight(data.appTitle)}`, 1);
-    str += printIntoBox(`Project Version: ${highlight(data.version)}`, 1);
-    str += printIntoBox(`App ID: ${highlight(data.appID)}`, 1);
-    str += printIntoBox(`Project Template: ${highlight(tempString)}`, 1);
-    str += printIntoBox(`Git Enabled: ${highlight(data.gitEnabled)}`, 1);
+    str += printIntoBox(`Project Name (folder): ${highlight(data.projectName)}`);
+    str += printIntoBox(`Workspace: ${highlight(data.optionWorkspaces.selectedOption)}`);
+    str += printIntoBox(`Project Title: ${highlight(data.appTitle)}`);
+    str += printIntoBox(`Project Version: ${highlight(data.version)}`);
+    str += printIntoBox(`App ID: ${highlight(data.appID)}`);
+    str += printIntoBox(`Project Template: ${highlight(tempString)}`);
+    str += printIntoBox(`Git Enabled: ${highlight(data.gitEnabled)}`);
     str += printIntoBox('');
     str += printIntoBox('Project Platforms:');
     str += printArrIntoBox(data.optionPlatforms.selectedOptions);
@@ -88,7 +125,7 @@ const interactiveQuestion = async (results, bootstrapQuestions, providedAnswers)
             // inquirer will nest them if they look like an object
             const qKeyClean = qKey.replace('.', '__');
 
-            const choicesObj = {};
+            const choicesObj: Record<string, any> = {};
             if (q.options) {
                 q.options.forEach((opt) => {
                     choicesObj[opt.title] = opt;
@@ -180,7 +217,7 @@ export const taskRnvNew = async (c: RnvConfig) => {
         }
     }
 
-    let data = {
+    let data: NewProjectData = {
         defaultVersion: '0.1.0',
         defaultTemplate: '@rnv/template-starter',
         defaultProjectName: 'helloRenative',
@@ -195,7 +232,7 @@ export const taskRnvNew = async (c: RnvConfig) => {
     // INPUT: Project Name
     // ==================================================
 
-    let inputProjectName;
+    let inputProjectName: string;
 
     if (projectName && projectName !== '') {
         inputProjectName = projectName;
@@ -313,7 +350,7 @@ export const taskRnvNew = async (c: RnvConfig) => {
         options.push(val.title);
     });
 
-    const getTemplateKey = (val) => data.optionTemplates.valuesAsArray.find((v) => v.title === val)?.key;
+    const getTemplateKey = (val: string) => data.optionTemplates.valuesAsArray.find((v) => v.title === val)?.key;
 
     // ==================================================
     // INPUT: Template
@@ -352,11 +389,7 @@ export const taskRnvNew = async (c: RnvConfig) => {
     if (templateVersion && templateVersion !== '') {
         inputTemplateVersion = templateVersion;
     } else {
-        inputTemplateVersion = await listAndSelectNpmVersion(
-            c,
-            data.optionTemplates.selectedOption,
-            Object.keys(c.files.rnv.projectTemplates.config.projectTemplates)
-        );
+        inputTemplateVersion = await listAndSelectNpmVersion(c, data.optionTemplates.selectedOption);
     }
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
@@ -439,10 +472,10 @@ export const taskRnvNew = async (c: RnvConfig) => {
     const renativeTemplateConfigExt = {};
     const bootstrapQuestions = renativeTemplateConfig?.templateConfig?.bootstrapQuestions;
     const results = {};
-    const providedAnswers = {};
+    const providedAnswers: Record<string, any> = {};
 
     if (c.program.answer) {
-        c.program.answer.forEach((a) => {
+        c.program.answer.forEach((a: string) => {
             const key = a.split('=')[0];
             let value;
 

@@ -18,7 +18,7 @@ export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTa
         return;
     }
 
-    let selectedPlatforms;
+    let selectedPlatforms: Array<string>;
     if (c.platform) {
         selectedPlatforms = [c.platform];
     } else {

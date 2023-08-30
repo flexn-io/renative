@@ -26,7 +26,7 @@ export const taskRnvHelp: RnvTaskFn = async (c) => {
     });
 
     // TASKS
-    const commands = [];
+    const commands: Array<string> = [];
     const engines = getRegisteredEngines(c);
 
     engines.forEach((engine) => {

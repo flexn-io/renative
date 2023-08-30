@@ -3,8 +3,9 @@ import { generateOptions } from '../../cli/prompt';
 import { buildHooks } from '../../core/projectManager/buildHooks';
 import { executeTask } from '../../core/taskManager';
 import { TASK_HOOKS_PIPES, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvHooksPipes = async (c: RnvConfig, parentTask, originTask) => {
+export const taskRnvHooksPipes: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvHooksPipes');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_HOOKS_PIPES, originTask);

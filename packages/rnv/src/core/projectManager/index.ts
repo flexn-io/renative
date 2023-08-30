@@ -499,11 +499,11 @@ export const copyAssetsFolder = async (c: RnvConfig, platform: RnvPlatform, subP
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
             const sourcePath = path.join(v, `assets/${assetFolderPlatform}`);
-            copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
+            copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, {}, tsPathsConfig, c);
         });
     } else {
         const sourcePath = path.join(c.paths.appConfig.dir, `assets/${assetFolderPlatform}`);
-        copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
+        copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, {}, tsPathsConfig, c);
     }
 };
 
@@ -691,8 +691,8 @@ export const upgradeProjectDependencies = (c: RnvConfig, version: string) => {
 export const upgradeDependencies = (
     packageFile: NpmPackageFile,
     packagesPath: string,
-    configFile: RenativeConfigFile,
-    configPath: string,
+    configFile: RenativeConfigFile | null,
+    configPath: string | null,
     version: string
 ) => {
     // logTask('upgradeDependencies');
