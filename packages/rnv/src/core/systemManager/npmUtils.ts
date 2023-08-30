@@ -92,7 +92,7 @@ export const checkAndCreateProjectPackage = async (c: RnvConfig) => {
 
 export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
-export const listAndSelectNpmVersion = async (c: RnvConfig, npmPackage) => {
+export const listAndSelectNpmVersion = async (c: RnvConfig, npmPackage: string) => {
     const templateVersionsStr = await executeAsync(c, `npm view ${npmPackage} versions`);
     const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',');
 
@@ -297,13 +297,17 @@ export const cleanNodeModules = () =>
             'react-native-safe-area-view/.git',
             '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
             'react-navigation/node_modules/react-native-safe-area-view/.git',
-        ].reduce((acc, dir) => {
-            const [_all, aPackage, aPath] = dir.match(/([^/]+)\/(.*)/);
-            logDebug(`Cleaning: ${_all}`);
-            const resolved = doResolve(aPackage, false);
-            if (resolved) {
-                acc.push(`${resolved}/${aPath}`);
+        ].reduce<Array<string>>((acc, dir) => {
+            const res = dir.match(/([^/]+)\/(.*)/);
+            if (res) {
+                const [_all, aPackage, aPath] = res;
+                logDebug(`Cleaning: ${_all}`);
+                const resolved = doResolve(aPackage, false);
+                if (resolved) {
+                    acc.push(`${resolved}/${aPath}`);
+                }
             }
+
             return acc;
         }, []);
         removeDirs(dirs)

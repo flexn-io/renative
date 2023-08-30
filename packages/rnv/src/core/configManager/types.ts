@@ -9,6 +9,7 @@ export interface RnvConfig {
         _meta: {
             currentAppConfigId: string;
         };
+        _refs: any;
     };
     platform: RnvPlatform;
     process: any;
@@ -17,6 +18,7 @@ export interface RnvConfig {
     systemPropsInjects: Array<string>;
     _requiresNpmInstall?: boolean;
     buildPipes: Record<string, Array<(c: RnvConfig) => Promise<boolean>>>;
+    isBuildHooksReady: boolean;
     //=======
     _renativePluginCache: any;
     cli: any;
@@ -71,6 +73,8 @@ export interface RnvConfig {
             isWebHosted: boolean;
         };
         _skipPluginScopeWarnings: boolean;
+        skipBuildHooks: boolean;
+        isFirstRunAfterNew: boolean;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;
@@ -83,6 +87,7 @@ export interface RnvConfig {
                 //ADDON
                 dir?: string;
                 config?: string;
+                dirs: Array<string>;
             };
             platformTemplates: Record<string, any>;
             projectTemplates: Record<string, any>;
@@ -124,6 +129,7 @@ export interface RnvConfig {
                 configs: Array<string>;
                 configsPrivate: Array<string>;
                 configsLocal: Array<string>;
+                dir: string;
             };
             //ADDON
             config: string;
@@ -334,6 +340,13 @@ export type RenativeConfigFile = {
             version: string;
         }
     >;
+    plugins: Record<
+        string,
+        {
+            'no-npm': boolean;
+            version: string;
+        }
+    >;
     currentTemplate: string;
     projectTemplates: object;
     paths: {
@@ -343,6 +356,7 @@ export type RenativeConfigFile = {
     tasks: Array<any> | Record<string, any>;
     engineTemplates: Record<string, any>;
     engines: Record<string, any>;
+    pluginTemplates: Record<string, any>;
 };
 
 export type RenativeConfigBuildScheme = Record<string, any>;

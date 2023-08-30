@@ -18,7 +18,7 @@ import {
 import { isSystemWin, isUrlLocalhost } from '../../systemManager/utils';
 import { RnvConfig } from '../../configManager/types';
 
-export const launchWebOSimulator = (c) => {
+export const launchWebOSimulator = (c: RnvConfig) => {
     logTask('launchWebOSimulator');
 
     const availableEmulatorVersions = getDirectories(
@@ -47,7 +47,7 @@ export const launchWebOSimulator = (c) => {
 //     }
 // };
 
-const parseDevices = (c: RnvConfig, devicesResponse) => {
+const parseDevices = (c: RnvConfig, devicesResponse: string) => {
     const linesArray = devicesResponse
         .split('\n')
         .slice(2)
@@ -81,7 +81,7 @@ const parseDevices = (c: RnvConfig, devicesResponse) => {
     );
 };
 
-const installAndLaunchApp = async (c: RnvConfig, target, appPath, tId) => {
+const installAndLaunchApp = async (c: RnvConfig, target: string, appPath: string, tId: string) => {
     try {
         await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
     } catch (e) {
@@ -137,7 +137,7 @@ export const runWebosSimOrDevice = async (c: RnvConfig) => {
     const configFilePath = path.join(tDir, 'appinfo.json');
 
     // logTask(`runWebOS:${target}:${isHosted}`, chalk().grey);
-    const cnfg = JSON.parse(fsReadFileSync(configFilePath, 'utf-8'));
+    const cnfg = JSON.parse(fsReadFileSync(configFilePath).toString());
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 

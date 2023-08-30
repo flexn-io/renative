@@ -9,9 +9,12 @@ import { logInfo, logDebug } from '../systemManager/logger';
 import { replaceHomeFolder, fsExistsSync } from '../systemManager/fileutils';
 import BasePlatformSetup from './base';
 import setupConfig from './config';
+import { RnvConfig } from '../configManager/types';
 
 class LinuxPlatformSetup extends BasePlatformSetup {
-    constructor(c) {
+    scoopInstalled: boolean;
+
+    constructor(c: RnvConfig) {
         super('win32', c);
         this.scoopInstalled = false;
     }
@@ -29,13 +32,13 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         }
     }
 
-    async installSoftware(software) {
+    async installSoftware(software: string) {
         await shell.exec(replaceHomeFolder(`~/scoop/shims/scoop install ${software}`));
         await this.reloadPathEnv();
         return true;
     }
 
-    addScoopBucket(bucket) {
+    addScoopBucket(bucket: string) {
         return shell.exec(replaceHomeFolder(`~/scoop/shims/scoop bucket add ${bucket}`));
     }
 

@@ -19,6 +19,9 @@ import {
 import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../systemManager/logger';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { doResolve, doResolvePath } from '../systemManager/resolve';
+import { RnvConfig } from '../configManager/types';
+import { RnvPlatform } from '../types';
+import { ResolveOptions } from '../systemManager/types';
 
 export const getPluginList = (c: RnvConfig, isUpdate = false) => {
     const output = {
@@ -221,8 +224,8 @@ export const configurePlugins = async (c: RnvConfig) => {
     }
 
     const { isTemplate } = c.files.project.config;
-    const newDeps = {};
-    const newDevDeps = {};
+    const newDeps: Record<string, string> = {};
+    const newDevDeps: Record<string, string> = {};
     const { dependencies, devDependencies } = c.files.project.package;
     const ovMsg = isTemplate ? 'This is template. NO ACTION' : 'package.json will be overriden';
     Object.keys(c.buildConfig.plugins).forEach((k) => {
@@ -346,7 +349,7 @@ export const resolvePluginDependants = async (c: RnvConfig) => {
     return true;
 };
 
-const _resolvePluginDependencies = async (c: RnvConfig, key, keyScope, parentKey) => {
+const _resolvePluginDependencies = async (c: RnvConfig, key: string, keyScope: string | null, parentKey: string) => {
     // IMPORTANT: Do not cache this valuse as they need to be refreshed every
     // round in case new plugin has been installed and c.buildConfig generated
     if (keyScope === null) {
@@ -396,7 +399,12 @@ const _resolvePluginDependencies = async (c: RnvConfig, key, keyScope, parentKey
     return true;
 };
 
-export const parsePlugins = (c: RnvConfig, platform, pluginCallback, ignorePlatformObjectCheck) => {
+export const parsePlugins = (
+    c: RnvConfig,
+    platform: RnvPlatform,
+    pluginCallback,
+    ignorePlatformObjectCheck?: boolean
+) => {
     logTask('parsePlugins');
     if (c.buildConfig) {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
@@ -461,7 +469,7 @@ export const loadPluginTemplates = async (c: RnvConfig) => {
 
     //This comes from project dependency
     let flexnPluginsPath = doResolve('@flexn/plugins');
-    if (!fsExistsSync(flexnPluginsPath)) {
+    if (flexnPluginsPath && !fsExistsSync(flexnPluginsPath)) {
         //This comes from rnv built-in dependency (installed via npm)
         flexnPluginsPath = path.resolve(__dirname, '../../../node_modules/@flexn/plugins');
         if (!fsExistsSync(flexnPluginsPath)) {
@@ -472,6 +480,9 @@ export const loadPluginTemplates = async (c: RnvConfig) => {
             }
         }
     }
+
+    if (!flexnPluginsPath) return Promise.reject(`flexnPluginsPath missing`);
+
     const flexnPluginTemplatesPath = path.join(flexnPluginsPath, 'pluginTemplates');
 
     const flexnPluginTemplates = readObjectSync(path.join(flexnPluginTemplatesPath, 'renative.plugins.json'));
@@ -517,7 +528,7 @@ export const loadPluginTemplates = async (c: RnvConfig) => {
 
 const _parsePluginTemplateDependencies = (c: RnvConfig, customPluginTemplates, scope = 'root') => {
     logTask('_parsePluginTemplateDependencies', `scope:${scope}`);
-    const missingDeps = [];
+    const missingDeps: Array<string> = [];
     if (customPluginTemplates) {
         Object.keys(customPluginTemplates).forEach((k) => {
             const val = customPluginTemplates[k];
@@ -572,9 +583,9 @@ const _parsePluginTemplateDependencies = (c: RnvConfig, customPluginTemplates, s
 //     .replace(/\+/g, '\\+')
 //     .replace(/ /g, ' {1,}');
 // Alternative Regex seem more accurate
-const getCleanRegExString = (str) => str.replace(/[-\\.,_*+?^$[\](){}!=|`]/gi, '\\$&');
+const getCleanRegExString = (str: string) => str.replace(/[-\\.,_*+?^$[\](){}!=|`]/gi, '\\$&');
 
-const _overridePlugin = (c: RnvConfig, pluginsPath, dir) => {
+const _overridePlugin = (c: RnvConfig, pluginsPath: string, dir: string) => {
     const source = path.resolve(pluginsPath, dir, 'overrides');
     const dest = doResolve(dir, false);
     if (!dest) return;
@@ -608,11 +619,11 @@ const _overridePlugin = (c: RnvConfig, pluginsPath, dir) => {
         );
     }
 
-    let overridePath;
+    let overridePath: string;
     if (plugin.version) {
         const pluginVerArr = plugin.version.split('.');
-        const pluginVersions = [];
-        let prevVersion;
+        const pluginVersions: Array<string> = [];
+        let prevVersion: string;
         pluginVerArr.forEach((v) => {
             if (prevVersion) {
                 prevVersion = `${prevVersion}.${v}`;
@@ -651,7 +662,7 @@ const _overridePlugin = (c: RnvConfig, pluginsPath, dir) => {
     }
 };
 
-export const overrideFileContents = (dest, override, overridePath = '') => {
+export const overrideFileContents = (dest: string, override, overridePath = '') => {
     if (fsExistsSync(dest)) {
         let fileToFix = fsReadFileSync(dest).toString();
         let foundRegEx = false;
@@ -887,7 +898,7 @@ export const copyTemplatePluginsSync = (c) => {
     });
 };
 
-export const sanitizePluginPath = (str, name, mandatory, options) => {
+export const sanitizePluginPath = (str: string, name: string, mandatory: boolean, options: ResolveOptions) => {
     let newStr = str;
     try {
         if (str?.replace) {
@@ -899,7 +910,7 @@ export const sanitizePluginPath = (str, name, mandatory, options) => {
     return newStr;
 };
 
-export const includesPluginPath = (str) => {
+export const includesPluginPath = (str: string) => {
     if (str?.includes) {
         return str.includes('{{PLUGIN_ROOT}}');
     }
@@ -918,9 +929,9 @@ export const getLocalRenativePlugin = () => ({
     },
 });
 
-export const getModuleConfigs = (c: RnvConfig, primaryKey) => {
+export const getModuleConfigs = (c: RnvConfig, primaryKey: string) => {
     let modulePaths = [];
-    const moduleAliases = {};
+    const moduleAliases: Record<string, string | undefined> = {};
 
     const doNotResolveModulePaths = [];
 
@@ -972,7 +983,7 @@ export const getModuleConfigs = (c: RnvConfig, primaryKey) => {
         true
     );
 
-    const moduleAliasesArray = [];
+    const moduleAliasesArray: Array<string> = [];
     Object.keys(moduleAliases).forEach((key) => {
         moduleAliasesArray.push(`${key}:${moduleAliases[key]}`);
     });

@@ -6,13 +6,13 @@ const ajvRenativeJson = new Ajv({ schemas: SCHEMAS_RENATIVE_JSON, allErrors: tru
 const ajvRuntimeObject = new Ajv({ schemas: SCHEMAS_RUNTIME_OBJECT, allErrors: true, allowUnionTypes: true });
 
 export const getRenativeJsonSchema = () => SCHEMAS_RENATIVE_JSON[0];
-export const validateRenativeJsonSchema = (cObj) => {
+export const validateRenativeJsonSchema = (cObj: any) => {
     const valid = ajvRenativeJson.validate(SCHEMAS_RENATIVE_JSON[0], cObj);
     return [valid, ajvRenativeJson];
 };
 
 export const getRuntimeObjectSchema = () => SCHEMAS_RUNTIME_OBJECT[0];
-export const validateRuntimeObjectSchema = (cObj) => {
+export const validateRuntimeObjectSchema = (cObj: any) => {
     const valid = ajvRuntimeObject.validate(SCHEMAS_RUNTIME_OBJECT[0], cObj);
     return [valid, ajvRuntimeObject];
 };

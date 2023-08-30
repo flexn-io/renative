@@ -49,13 +49,13 @@ export const fsSymlinkSync = (arg1: fs.PathLike, arg2: fs.PathLike) => {
     fs.symlinkSync(arg1, arg2);
 };
 
-export const fsReadFile = (arg1: fs.PathLike, arg2) => {
+export const fsReadFile = (arg1: fs.PathLike, arg2: any) => {
     fs.readFile(arg1, arg2);
 };
 
-export const fsReaddir = (arg1: fs.PathLike, arg2) => fs.readdir(arg1, arg2);
+export const fsReaddir = (arg1: fs.PathLike, arg2: any) => fs.readdir(arg1, arg2);
 
-const _getSanitizedPath = (origPath: fs.PathLike, timestampPathsConfig: TimestampPathsConfig) => {
+const _getSanitizedPath = (origPath: string, timestampPathsConfig: TimestampPathsConfig) => {
     if (timestampPathsConfig?.paths?.length && timestampPathsConfig?.timestamp) {
         const pths = timestampPathsConfig.paths;
         if (pths.includes(origPath)) {

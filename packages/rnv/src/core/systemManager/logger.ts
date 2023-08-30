@@ -101,7 +101,7 @@ const cnf = () => {
     return _c;
 };
 
-const _configureLogger = (c: RnvConfig, analytics) => {
+const _configureLogger = (c: RnvConfig, analytics: AnalyticsApi) => {
     global._messages = [];
     _c = c;
     if (!global.timeStart) global.timeStart = new Date();
@@ -143,7 +143,7 @@ export const getCurrentCommand = (excludeDollar = false) => {
     const argArr = cnf().process.argv.slice(2);
     let hideNext = false;
     const output = argArr
-        .map((v) => {
+        .map((v: string) => {
             if (hideNext) {
                 hideNext = false;
                 return '********';

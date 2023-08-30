@@ -95,7 +95,7 @@ class BasePlatformSetup {
         await shell.exec(command);
     }
 
-    async unzipSdk(sdk) {
+    async unzipSdk(sdk: string) {
         logDebug(`Unzipping from ${setupConfig[sdk].downloadLocation} to ${setupConfig[sdk].location}`);
         if (!commandExistsSync('unzip')) {
             throw new Error('unzip is not installed');
@@ -183,7 +183,7 @@ class BasePlatformSetup {
         return true;
     }
 
-    async askToInstallSDK(sdk) {
+    async askToInstallSDK(sdk: string) {
         let sdkInstall;
         if (!this.c.program.ci) {
             const response = await inquirer.prompt([

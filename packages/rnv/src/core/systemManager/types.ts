@@ -42,6 +42,7 @@ export type OverridesOptions = Array<{
 
 export type TimestampPathsConfig = {
     timestamp: Array<string>;
+    paths: Array<string>;
 };
 
 export type RnvCLI = Record<string, object>;
@@ -49,8 +50,8 @@ export type RnvCLI = Record<string, object>;
 export type FileUtilsPropConfig = {
     props: Record<string, string>;
     configProps?: Record<string, string>;
-    runtimeProps?: Record<string, string>;
-    files: Array<string>;
+    runtimeProps?: Record<string, any>;
+    files: Record<string, any>;
 };
 
 export type FileUtilsUpdateConfig = {

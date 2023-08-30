@@ -33,6 +33,7 @@ import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from
 import { configureTemplateFiles, configureEntryPoint } from '../templateManager';
 import { parseRenativeConfigs } from '../configManager';
 import { NpmPackageFile, RenativeConfigFile, RnvConfig } from '../configManager/types';
+import { RnvPlatform } from '../types';
 
 export const checkAndBootstrapIfRequired = async (c: RnvConfig) => {
     logTask('checkAndBootstrapIfRequired');
@@ -425,7 +426,7 @@ const _resolvePackage = (c: RnvConfig, v) => {
 //     return false;
 // };
 
-export const copyAssetsFolder = async (c: RnvConfig, platform, subPath, customFn) => {
+export const copyAssetsFolder = async (c: RnvConfig, platform: RnvPlatform, subPath: string, customFn) => {
     logTask('copyAssetsFolder');
 
     if (!isPlatformActive(c, platform)) return;
@@ -462,7 +463,7 @@ export const copyAssetsFolder = async (c: RnvConfig, platform, subPath, customFn
             )}. Will be used to generate assets.`
         );
         validAssetSources.forEach((sourcePath) => {
-            copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, {}, tsPathsConfig, c);
+            copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, {}, tsPathsConfig, c);
         });
         return;
     }
@@ -569,7 +570,7 @@ export const copyBuildsFolder = (c: RnvConfig, platform: string) =>
         const sourcePath1sec = getBuildsFolder(c, platform, c.paths.workspace.project.appConfigBase.dir);
         copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, undefined, false, allInjects, tsPathsConfig);
 
-        if (fsExistsSync(sourcePath1secLegacy)) {
+        if (sourcePath1secLegacy && fsExistsSync(sourcePath1secLegacy)) {
             logWarning(`Path: ${chalk().red(sourcePath1secLegacy)} is DEPRECATED.
 Move your files to: ${chalk().white(sourcePath1sec)} instead`);
         }

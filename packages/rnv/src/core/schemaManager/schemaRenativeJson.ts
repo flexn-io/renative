@@ -956,7 +956,7 @@ const platformChromecastProps = {
 // BUILD SCHEME PROPS
 // ==================================================
 
-const generateBuildSchemeProps = (obj) => ({
+const generateBuildSchemeProps = (obj: any) => ({
     buildSchemes: {
         additionalProperties: {
             type: 'object',
