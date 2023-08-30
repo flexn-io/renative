@@ -12,6 +12,7 @@ import { fsExistsSync } from './fileutils';
 import { replaceOverridesInString } from './utils';
 import { RnvConfig } from '../configManager/types';
 import { ExecCallback, ExecCallback2, ExecOptions } from './types';
+import { RnvError } from '../types';
 
 const { exec, execSync } = require('child_process');
 
@@ -68,7 +69,7 @@ const _execute = (c: RnvConfig, command: string, opts: ExecOptions = {}) => {
 
     cleanCommand += cleanRawCmd.join(' ');
     let logMessage = cleanCommand;
-    const { privateParams } = mergedOpts;
+    const privateParams = mergedOpts.privateParams || [];
     if (privateParams && Array.isArray(privateParams)) {
         logMessage = replaceOverridesInString(command, privateParams, privateMask);
     }
@@ -99,11 +100,11 @@ const _execute = (c: RnvConfig, command: string, opts: ExecOptions = {}) => {
 
     const printLastLine = (buffer: WithImplicitCoercion<ArrayBuffer | SharedArrayBuffer>) => {
         const text = Buffer.from(buffer).toString().trim();
-        const lastLine = text.split('\n').pop();
+        const lastLine = text.split('\n').pop() || '';
         if (spinner !== false) {
             spinner.text = replaceOverridesInString(
                 lastLine?.substring(0, MAX_OUTPUT_LENGTH),
-                privateParams,
+                privateParams || [],
                 privateMask
             );
         }
@@ -144,7 +145,7 @@ const _execute = (c: RnvConfig, command: string, opts: ExecOptions = {}) => {
             // logDebug(err);
             if (ignoreErrors && !silent && !mono && !!spinner) {
                 spinner.succeed(`Executing: ${logMessage}`);
-                return true;
+                return '';
             }
 
             let errMessage = parseErrorMessage(err.all, maxErrorLength);
@@ -216,7 +217,12 @@ const execCLI = (c: RnvConfig, cli: string, command: string, opts: ExecOptions =
  * @returns {Promise}
  *
  */
-const executeAsync = async (_c: RnvConfig | string, _cmd?: string | ExecOptions, _opts?: ExecOptions) => {
+
+const executeAsync = async (
+    _c: RnvConfig | string,
+    _cmd?: string | ExecOptions,
+    _opts?: ExecOptions
+): Promise<string> => {
     // swap values if c is not specified and get it from it's rightful place, config :)
     let c: RnvConfig;
     let cmd = '';
@@ -284,7 +290,7 @@ const executeTelnet = (c: RnvConfig, port: string, command: string) =>
                 if (output.includes('OK')) nc2.close();
             });
             nc2.on('close', () => resolve(output));
-        } catch (e) {
+        } catch (e: RnvError) {
             logError(e);
             resolve(true);
         }

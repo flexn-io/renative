@@ -89,7 +89,7 @@ const getEnginesPluginDelta = (c: RnvConfig) => {
     return enginePlugins;
 };
 
-export const writeRenativeConfigFile = (c: RnvConfig, configPath: string, configData: string) => {
+export const writeRenativeConfigFile = (c: RnvConfig, configPath: string, configData: string | object) => {
     logDebug(`writeRenativeConfigFile:${configPath}`);
     writeFileSync(configPath, configData);
     generateBuildConfig(c);
@@ -241,22 +241,27 @@ export const loadFileExtended = (
             }
         }
         if (currTemplate) {
-            let extendsPath;
-            if (extendsTemplate.startsWith(currTemplate)) {
-                extendsPath = path.join(doResolve(currTemplate), extendsTemplate.replace(currTemplate, ''));
-            } else {
-                extendsPath = path.join(doResolve(currTemplate), extendsTemplate);
-            }
+            const currTemplateRes = doResolve(currTemplate);
+            if (currTemplateRes) {
+                let extendsPath;
+                if (extendsTemplate.startsWith(currTemplate)) {
+                    extendsPath = path.join(currTemplateRes, extendsTemplate.replace(currTemplate, ''));
+                } else {
+                    extendsPath = path.join(currTemplateRes, extendsTemplate);
+                }
 
-            if (fsExistsSync(extendsPath)) {
-                const extendsFile = readObjectSync(extendsPath);
+                if (fsExistsSync(extendsPath)) {
+                    const extendsFile = readObjectSync(extendsPath);
 
-                fileObj[key] = mergeObjects(c, extendsFile, fileObj[key], false, true);
-                // CLEAN props which should not be inherited
-                delete fileObj[key].isTemplate;
-                delete fileObj[key].tasks;
+                    fileObj[key] = mergeObjects(c, extendsFile, fileObj[key], false, true);
+                    // CLEAN props which should not be inherited
+                    delete fileObj[key].isTemplate;
+                    delete fileObj[key].tasks;
+                } else {
+                    logWarning(`You are trying to extend config file with ${extendsPath} does not exists. SKIPPING.`);
+                }
             } else {
-                logWarning(`You are trying to extend config file with ${extendsPath} does not exists. SKIPPING.`);
+                logWarning(`Cannot resolve currentTemplate ${currTemplate} `);
             }
         }
     }

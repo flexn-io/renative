@@ -33,7 +33,7 @@ export const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originT
     if ((c.program.reset || c.program.resetHard) && !c.runtime.disableReset) {
         logInfo(
             `You passed ${chalk().white(c.program.reset ? '-r' : '-R')} argument. "${chalk().white(
-                getAppFolder(c, c.platform)
+                getAppFolder(c)
             )}" CLEANING...DONE`
         );
         await cleanPlatformBuild(c, c.platform);

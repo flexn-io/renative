@@ -1,4 +1,5 @@
 import { RnvEngine } from '../engineManager/types';
+import { OverridesOptions } from '../systemManager/types';
 import { RnvPlatform } from '../types';
 
 export interface RnvConfig {
@@ -11,6 +12,7 @@ export interface RnvConfig {
         };
         _refs: any;
     };
+    assetConfig: object;
     platform: RnvPlatform;
     process: any;
     rnvVersion: string;
@@ -19,6 +21,8 @@ export interface RnvConfig {
     _requiresNpmInstall?: boolean;
     buildPipes: Record<string, Array<(c: RnvConfig) => Promise<boolean>>>;
     isBuildHooksReady: boolean;
+    supportedPlatforms: Array<string>;
+    runtimePropsInjects: OverridesOptions;
     //=======
     _renativePluginCache: any;
     cli: any;
@@ -39,7 +43,9 @@ export interface RnvConfig {
         enginesById: Record<string, RnvEngine>;
         missingEnginePlugins: Record<string, any>;
         localhost: string;
-        scheme: string;
+        scheme: {
+            bundleAssets: boolean;
+        };
         bundleAssets: boolean;
         activeTemplate: string;
         engine: any;
@@ -65,16 +71,20 @@ export interface RnvConfig {
         forceBuildHookRebuild: boolean;
         disableReset: boolean;
         skipActiveServerCheck: boolean;
-        port: number;
+        port: string;
         rnvVersionRunner: string;
         rnvVersionProject: string;
         versionCheckCompleted: boolean;
         currentPlatform: {
             isWebHosted: boolean;
+            defaultPort: string;
         };
         _skipPluginScopeWarnings: boolean;
         skipBuildHooks: boolean;
         isFirstRunAfterNew: boolean;
+        currentEngine: RnvEngine;
+        hosted: boolean;
+        task: string;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;
@@ -206,7 +216,7 @@ export interface RnvConfig {
             appConfigsDir: string;
             configTemplate: string;
             config: string;
-            dir?: string;
+            dir: string;
         };
         appConfigBase: string;
     };
@@ -322,16 +332,19 @@ export type RenativeConfigFile = {
     workspaceID: string;
     common: {
         buildSchemes: Record<string, RenativeConfigBuildScheme>;
+        runtime: Record<string, any>;
     };
     defaults: {
         ports: Record<string, string>;
         supportedPlatforms: Array<string>;
+        portOffset: number;
     };
     platforms: Record<
         string,
         {
             buildSchemes: Record<string, RenativeConfigBuildScheme>;
             entryFile?: string;
+            runtime: Record<string, any>;
         }
     >;
     templates: Record<
@@ -349,14 +362,18 @@ export type RenativeConfigFile = {
     >;
     currentTemplate: string;
     projectTemplates: object;
+    platformTemplatesDirs: Record<string, string>;
     paths: {
         appConfigsDirs: Array<string>;
+        platformTemplatesDirs: Record<string, string>;
     };
     integrations: Record<string, string>;
     tasks: Array<any> | Record<string, any>;
     engineTemplates: Record<string, any>;
     engines: Record<string, any>;
     pluginTemplates: Record<string, any>;
+    runtime: Record<string, any>;
+    defaultTargets: Record<string, string>;
 };
 
 export type RenativeConfigBuildScheme = Record<string, any>;

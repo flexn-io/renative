@@ -3,8 +3,9 @@ import { logTask, logRaw } from '../../core/systemManager/logger';
 import { getWorkspaceConnectionString } from '../../core/projectManager/workspace';
 import { executeTask } from '../../core/taskManager';
 import { TASK_WORKSPACE_CONNECT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvWorkspaceConnect = async (c: RnvConfig, parentTask, originTask) => {
+export const taskRnvWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvWorkspaceConnect');
 
     if (!c.paths.project.configExists) {

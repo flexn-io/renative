@@ -25,7 +25,7 @@ export const registerCustomTask = async (_c: RnvConfig, task: RnvTask) => {
     }
 };
 
-export const initializeTask = async (c: RnvConfig, task) => {
+export const initializeTask = async (c: RnvConfig, task: string) => {
     logTask('initializeTask', task);
     c.runtime.task = task;
     executedTasks = {};
@@ -39,7 +39,13 @@ export const initializeTask = async (c: RnvConfig, task) => {
     return true;
 };
 
-const _getTaskOption = ({ taskInstance, hasMultipleSubTasks }) => {
+const _getTaskOption = ({
+    taskInstance,
+    hasMultipleSubTasks,
+}: {
+    taskInstance: RnvTask;
+    hasMultipleSubTasks: boolean;
+}) => {
     if (hasMultipleSubTasks) {
         return `${taskInstance.task.split(' ')[0]}...`;
     }
@@ -49,7 +55,7 @@ const _getTaskOption = ({ taskInstance, hasMultipleSubTasks }) => {
     return `${taskInstance.task.split(' ')[0]}`;
 };
 
-const _getTaskObj = (taskInstance) => {
+const _getTaskObj = (taskInstance: RnvTask) => {
     const key = taskInstance.task.split(' ')[0];
     let hasMultipleSubTasks = false;
     if (taskInstance.task.includes(' ')) hasMultipleSubTasks = true;
@@ -63,7 +69,7 @@ const _getTaskObj = (taskInstance) => {
 export const findSuitableTask = async (c: RnvConfig, specificTask?: string) => {
     logTask('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines(c);
-    let task: string;
+    let task: string = '';
     if (!specificTask) {
         if (!c.command) {
             const suitableTaskInstances = {};
@@ -106,7 +112,7 @@ export const findSuitableTask = async (c: RnvConfig, specificTask?: string) => {
             });
             c.command = tasksCommands[tasks.indexOf(command)];
         }
-        task = c.command;
+        if (c.command) task = c.command;
         if (c.subCommand) task += ` ${c.subCommand}`;
 
         let suitableEngines = REGISTERED_ENGINES.filter((engine) =>
@@ -124,7 +130,10 @@ export const findSuitableTask = async (c: RnvConfig, specificTask?: string) => {
 
         if (!suitableEngines.length) {
             // Get all supported tasks
-            const supportedSubtasksArr = [];
+            const supportedSubtasksArr: Array<{
+                desc: string;
+                taskKey: string;
+            }> = [];
             REGISTERED_ENGINES.forEach((engine) => {
                 getEngineSubTasks(task, engine.tasks).forEach((taskInstance) => {
                     const isNotViable = !c.paths.project.configExists && !taskInstance.isGlobalScope;
@@ -151,7 +160,13 @@ export const findSuitableTask = async (c: RnvConfig, specificTask?: string) => {
             });
             const supportedSubtasks = {};
             // Normalize task options
-            const supportedSubtasksFilter = {};
+            const supportedSubtasksFilter: Record<
+                string,
+                {
+                    desc: string;
+                    taskKey: string;
+                }
+            > = {};
             supportedSubtasksArr.forEach((tsk) => {
                 const mergedTask = supportedSubtasksFilter[tsk.taskKey];
                 if (!mergedTask) {

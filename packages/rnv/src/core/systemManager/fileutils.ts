@@ -8,6 +8,7 @@ import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from './logger';
 import { RnvConfig } from '../configManager/types';
 import { FileUtilsPropConfig, FileUtilsUpdateConfig, OverridesOptions, TimestampPathsConfig } from './types';
+import type { RnvError } from '../types';
 
 export const configureFilesystem = (_getConfigProp: () => string, _doResolve: () => any, _isSystemWin: boolean) => {
     global.getConfigProp = _getConfigProp;
@@ -55,7 +56,7 @@ export const fsReadFile = (arg1: fs.PathLike, arg2: any) => {
 
 export const fsReaddir = (arg1: fs.PathLike, arg2: any) => fs.readdir(arg1, arg2);
 
-const _getSanitizedPath = (origPath: string, timestampPathsConfig: TimestampPathsConfig) => {
+const _getSanitizedPath = (origPath: string, timestampPathsConfig?: TimestampPathsConfig) => {
     if (timestampPathsConfig?.paths?.length && timestampPathsConfig?.timestamp) {
         const pths = timestampPathsConfig.paths;
         if (pths.includes(origPath)) {
@@ -101,7 +102,13 @@ export const copyFileSync = (
 };
 
 const SKIP_INJECT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.svg', '.jar', '.zip', '.ico'];
-export const writeCleanFile = (source: string, destination: string, overrides, timestampPathsConfig, c) => {
+export const writeCleanFile = (
+    source: string,
+    destination: string,
+    overrides?: OverridesOptions,
+    timestampPathsConfig?: TimestampPathsConfig,
+    c?: RnvConfig
+) => {
     // logTask(`writeCleanFile`)
     // console.log('writeCleanFile', destination);
     if (!fs.existsSync(source)) {
@@ -374,7 +381,7 @@ export const removeFilesSync = (filePaths: Array<string>) => {
             } else {
                 logDebug(`Path ${filePath} does not exist`);
             }
-        } catch (e) {
+        } catch (e: RnvError) {
             logError(e);
         }
     });
@@ -605,7 +612,7 @@ export const resolvePackage = (text: string) => {
     return newText;
 };
 
-export const sanitizeDynamicProps = (obj: Record<string, string | undefined>, propConfig: FileUtilsPropConfig) => {
+export const sanitizeDynamicProps = (obj: any, propConfig: FileUtilsPropConfig): any => {
     if (!obj) {
         return obj;
     }
@@ -730,7 +737,7 @@ export const getFileListSync = (dir: fs.PathLike) => {
     return results;
 };
 
-export const loadFile = (fileObj: any, pathObj: Record<string, boolean | string>, key: string) => {
+export const loadFile = (fileObj: any, pathObj: Record<string, any>, key: string) => {
     const pKey = `${key}Exists`;
     const pth = pathObj[key];
 

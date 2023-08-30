@@ -111,7 +111,7 @@ const _getPluginScope = (plugin) => {
     return { scope: 'rnv' };
 };
 
-export const getMergedPlugin = (c: RnvConfig, key) => {
+export const getMergedPlugin = (c: RnvConfig, key: string) => {
     logDebug(`getMergedPlugin:${key}`);
 
     const plugin = c.buildConfig.plugins?.[key];
@@ -327,7 +327,7 @@ ${ovMsg}`
     return true;
 };
 
-const _updatePackage = (c: RnvConfig, override) => {
+const _updatePackage = (c: RnvConfig, override: any) => {
     const newPackage = merge(c.files.project.package, override);
     writeRenativeConfigFile(c, c.paths.project.package, newPackage);
     c.files.project.package = newPackage;

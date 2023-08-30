@@ -51,7 +51,7 @@ export type FileUtilsPropConfig = {
     props: Record<string, string>;
     configProps?: Record<string, string>;
     runtimeProps?: Record<string, any>;
-    files: Record<string, any>;
+    files?: Record<string, any>;
 };
 
 export type FileUtilsUpdateConfig = {

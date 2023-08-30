@@ -63,7 +63,7 @@ export const createPlatformBuild = (c: RnvConfig, platform: string) =>
     new Promise<void>((resolve, reject) => {
         logTask('createPlatformBuild');
 
-        if (!isPlatformSupportedSync(c, platform, null, reject)) return;
+        if (!isPlatformSupportedSync(c, platform, undefined, reject)) return;
 
         const pPath = getAppFolder(c);
         const ptPath = path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
@@ -183,7 +183,7 @@ export const isPlatformActive = (c: RnvConfig, platform: string, resolve?: () =>
     }
     return true;
 };
-export const copySharedPlatforms = (c) =>
+export const copySharedPlatforms = (c: RnvConfig) =>
     new Promise<void>((resolve) => {
         logTask('copySharedPlatforms');
 

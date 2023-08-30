@@ -6,8 +6,9 @@ import { writeFileSync, removeDirs } from '../../core/systemManager/fileutils';
 import { generatePlatformChoices } from '../../core/platformManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, PARAMS } from '../../core/constants';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvPlatformConnect = async (c: RnvConfig, parentTask, originTask) => {
+export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformConnect');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, originTask);
@@ -55,7 +56,7 @@ export const taskRnvPlatformConnect = async (c: RnvConfig, parentTask, originTas
     });
 
     if (deletePlatformFolder) {
-        const pathsToRemove = [];
+        const pathsToRemove: Array<string> = [];
         selectedPlatforms.forEach((platform) => {
             pathsToRemove.push(path.join(c.paths.project.platformTemplatesDirs[platform], platform));
         });

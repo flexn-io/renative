@@ -22,6 +22,7 @@ import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import { RnvConfig } from '../configManager/types';
 import { RnvError } from '../types';
+import { PromptOptions } from '../../cli/types';
 
 export const checkIfTemplateConfigured = async (c: RnvConfig) => {
     logTask('checkIfTemplateConfigured');
@@ -326,13 +327,13 @@ export const getTemplateOptions = (c: RnvConfig, isGlobalScope?: boolean) => {
     });
 };
 
-export const getInstalledTemplateOptions = (c: RnvConfig) => {
-    if (c.files.project.config.isTemplate) return [];
+export const getInstalledTemplateOptions = (c: RnvConfig): PromptOptions | null => {
+    if (c.files.project.config.isTemplate) return null;
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
     }
     logError("You don't have any local templates installed", false, true);
-    return [];
+    return null;
 };
 
 export const isTemplateInstalled = (c: RnvConfig) =>
@@ -348,16 +349,19 @@ export const applyTemplate = async (c: RnvConfig, selectedTemplate?: string) => 
         logWarning("You don't have any current template selected");
         const opts = getInstalledTemplateOptions(c);
 
-        const { template } = await inquirer.prompt({
-            type: 'list',
-            name: 'template',
-            message: 'Pick which template to apply',
-            choices: opts.keysAsArray,
-        });
-
-        c.buildConfig.currentTemplate = template;
-        c.files.project.config.currentTemplate = template;
-        _writeObjectSync(c, c.paths.project.config, c.files.project.config);
+        if (opts) {
+            const { template } = await inquirer.prompt({
+                type: 'list',
+                name: 'template',
+                message: 'Pick which template to apply',
+                choices: opts.keysAsArray,
+            });
+            c.buildConfig.currentTemplate = template;
+            c.files.project.config.currentTemplate = template;
+            _writeObjectSync(c, c.paths.project.config, c.files.project.config);
+        } else {
+            logError('Could not find any installed templates');
+        }
     }
 
     const templateIsInstalled = doResolve(c.buildConfig.currentTemplate);

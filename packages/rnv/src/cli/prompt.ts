@@ -3,9 +3,9 @@ import { chalk, logWarning, logTask, logDebug } from '../core/systemManager/logg
 import Config from '../core/configManager/config';
 import { PromptOptions, PromptParams, PromptRenderFn } from './types';
 
-export const inquirerPrompt = async (params: PromptParams): Promise<any> => {
+export const inquirerPrompt = async (params: PromptParams): Promise<Record<string, any>> => {
     const c = Config.getConfig();
-    if (c.program?.yes) return true;
+    if (c.program?.yes) return {};
 
     const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program?.ci) {
@@ -15,7 +15,8 @@ export const inquirerPrompt = async (params: PromptParams): Promise<any> => {
             params.choices.includes(params.default)
         ) {
             logDebug(`defaulting to choice '${params.default}' for prompt '${params.name}'`);
-            return Promise.resolve({ [params.name]: params.default });
+
+            if (params.name) return Promise.resolve({ [params.name]: params.default });
         }
         return Promise.reject(`--ci option does not allow prompts. question: ${msg}.`);
     }

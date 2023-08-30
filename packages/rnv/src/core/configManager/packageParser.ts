@@ -37,7 +37,7 @@ const injectProjectDependency = async (
 export const checkRequiredPackage = async (
     c: RnvConfig,
     pkg: string,
-    version = false,
+    version = '',
     type: DependencyType = 'dependencies',
     skipAsking = false,
     skipInstall = false,
@@ -61,7 +61,7 @@ export const checkRequiredPackage = async (
 
         if (confirm) {
             let latestVersion = 'latest';
-            if (!version && !skipVersionCheck) {
+            if (version === '' && !skipVersionCheck) {
                 try {
                     latestVersion = await executeAsync(`npm show ${pkg} version`);
                     // eslint-disable-next-line no-empty
@@ -69,7 +69,7 @@ export const checkRequiredPackage = async (
             }
             return injectProjectDependency(c, pkg, version || latestVersion, type, skipInstall);
         }
-    } else if (!version) {
+    } else if (version === '') {
         // package exists, checking version only if version is not
         const currentVersion = projectConfig.package[type][pkg];
         let latestVersion;

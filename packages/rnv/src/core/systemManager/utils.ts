@@ -7,7 +7,8 @@ export const isSystemLinux = process.platform === 'linux';
 
 export const isSystemWin = process.platform === 'win32';
 
-export const replaceOverridesInString = (string: string, overrides: Array<string>, mask: string) => {
+export const replaceOverridesInString = (string: string | undefined, overrides: Array<string>, mask: string) => {
+    if (!string) return '';
     let replacedString = string;
     if (overrides?.length && replacedString?.replace) {
         overrides.forEach((v) => {
@@ -39,7 +40,12 @@ export const isUrlLocalhost = (value: string) => {
     return false;
 };
 
-export const getScopedVersion = (c: RnvConfig, key: string, val: RenativeConfigVersion, sourceObjKey: string) => {
+export const getScopedVersion = (
+    c: RnvConfig,
+    key: string,
+    val: RenativeConfigVersion,
+    sourceObjKey: 'engineTemplates' | 'plugins'
+) => {
     if (typeof val === 'string') {
         if (val.startsWith('source:')) {
             const sourceObj = c.buildConfig?.[sourceObjKey];

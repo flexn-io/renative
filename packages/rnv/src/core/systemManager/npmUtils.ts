@@ -20,7 +20,7 @@ import { getConfigProp } from '../common';
 import { RnvConfig } from '../configManager/types';
 import { RnvError } from '../types';
 
-const packageJsonIsValid = (c) => {
+const packageJsonIsValid = (c: RnvConfig) => {
     if (!fsExistsSync(c.paths.project.package)) return false;
     const pkg = readObjectSync(c.paths.project.package);
     if (!pkg) return false;
@@ -34,7 +34,7 @@ export const checkNpxIsInstalled = async () => {
     if (!commandExistsSync('npx')) {
         logWarning('npx is not installed, please install it before running this command');
 
-        const { confirm } = inquirerPrompt({
+        const { confirm } = await inquirerPrompt({
             type: 'confirm',
             message: 'Do you want to install npx it now?',
         });
