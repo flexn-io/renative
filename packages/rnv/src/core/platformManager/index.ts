@@ -168,7 +168,7 @@ export const isPlatformSupportedSync = (
     return true;
 };
 
-export const isPlatformActive = (c: RnvConfig, platform: string, resolve: () => void) => {
+export const isPlatformActive = (c: RnvConfig, platform: string, resolve?: () => void) => {
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(
             `Your appConfigFile is not configured properly! check ${chalk().white(c.paths.appConfig.config)} location.`
@@ -184,7 +184,7 @@ export const isPlatformActive = (c: RnvConfig, platform: string, resolve: () => 
     return true;
 };
 export const copySharedPlatforms = (c) =>
-    new Promise((resolve) => {
+    new Promise<void>((resolve) => {
         logTask('copySharedPlatforms');
 
         if (c.platform) {

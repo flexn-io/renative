@@ -22,8 +22,9 @@ import { launchAndroidSimulator } from '../../core/sdkManager/deviceUtils/androi
 import { launchAppleSimulator } from '../../core/sdkManager/deviceUtils/apple';
 import { launchKaiOSSimulator } from '../../core/sdkManager/deviceUtils/kaios';
 import { executeTask } from '../../core/taskManager';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvTargetLaunch = async (c: RnvConfig, parentTask, originTask) => {
+export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetLaunch');
 
     await isPlatformSupported(c, true);

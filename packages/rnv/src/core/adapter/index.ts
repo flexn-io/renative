@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { logInfo } from '../systemManager/logger';
 
-export const withDefaultRNVBabel = (cnf) => ({
+export const withDefaultRNVBabel = (cnf: any) => ({
     retainLines: true,
     presets: [['@babel/preset-env', {}]],
     plugins: [
@@ -15,25 +15,30 @@ export const withDefaultRNVBabel = (cnf) => ({
     ...cnf,
 });
 
-export const withRNVBabel = (cnf) => (api) => {
-    if (!fs.existsSync(process.env.RNV_ENGINE_PATH)) {
+export const withRNVBabel = (cnf: any) => (api: any) => {
+    if (process.env.RNV_ENGINE_PATH && !fs.existsSync(process.env.RNV_ENGINE_PATH)) {
         logInfo(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);
         api.cache(false);
         return withDefaultRNVBabel(cnf);
     }
-    const engine = require(process.env.RNV_ENGINE_PATH);
-    api.cache(true);
-    if (engine.withRNVBabel) {
-        return engine.withRNVBabel(cnf);
+
+    if (process.env.RNV_ENGINE_PATH) {
+        const engine = require(process.env.RNV_ENGINE_PATH);
+        api.cache(true);
+        if (engine.withRNVBabel) {
+            return engine.withRNVBabel(cnf);
+        }
     }
 
     return cnf;
 };
 
-export const withRNVMetro = (cnf) => {
-    const engine = require(process.env.RNV_ENGINE_PATH);
-    if (engine.withRNV) {
-        return engine.withRNV(cnf);
+export const withRNVMetro = (cnf: any) => {
+    if (process.env.RNV_ENGINE_PATH) {
+        const engine = require(process.env.RNV_ENGINE_PATH);
+        if (engine.withRNV) {
+            return engine.withRNV(cnf);
+        }
     }
 
     return cnf;

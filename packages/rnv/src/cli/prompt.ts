@@ -3,7 +3,7 @@ import { chalk, logWarning, logTask, logDebug } from '../core/systemManager/logg
 import Config from '../core/configManager/config';
 import { PromptOptions, PromptParams, PromptRenderFn } from './types';
 
-export const inquirerPrompt = async (params: PromptParams) => {
+export const inquirerPrompt = async (params: PromptParams): Promise<any> => {
     const c = Config.getConfig();
     if (c.program?.yes) return true;
 

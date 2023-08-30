@@ -16,7 +16,7 @@ import { RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './t
 
 const ENGINE_CORE = 'engine-core';
 
-export const registerEngine = async (c: RnvConfig, engine, platform, engConfig) => {
+export const registerEngine = async (c: RnvConfig, engine, platform: RnvPlatform, engConfig) => {
     logTask(`registerEngine:${engine.config.id}`);
     c.runtime.enginesById[engine.config.id] = engine;
     engine.initializeRuntimeConfig(c);
@@ -33,13 +33,13 @@ export const registerEngine = async (c: RnvConfig, engine, platform, engConfig) 
     _registerEnginePlatform(c, platform, engine);
 };
 
-const _registerEnginePlatform = (c: RnvConfig, platform, engine) => {
+const _registerEnginePlatform = (c: RnvConfig, platform: RnvPlatform, engine) => {
     if (platform) {
         c.runtime.enginesByPlatform[platform] = engine;
     }
 };
 
-export const registerEngineExtension = (ext, eExt, extras = []) => {
+export const registerEngineExtension = (ext: string | null, eExt: string | null, extras: Array<string> = []) => {
     const e1 = ext ? `${ext}.` : '';
     const e2 = eExt ? `${eExt}.` : '';
     let extArr;
@@ -62,7 +62,7 @@ export const registerEngineExtension = (ext, eExt, extras = []) => {
     return extArr;
 };
 
-export const generateEngineExtensions = (exts, config) => {
+export const generateEngineExtensions = (exts: Array<string>, config) => {
     const { id, engineExtension } = config;
     let extArr = [...registerEngineExtension(id)];
     exts.forEach((ext) => {
@@ -72,8 +72,8 @@ export const generateEngineExtensions = (exts, config) => {
     return extArr;
 };
 
-export const generateEngineTasks = (taskArr) => {
-    const tasks = {};
+export const generateEngineTasks = (taskArr: Array<RnvTask>) => {
+    const tasks: RnvTaskMap = {};
     taskArr.forEach((taskInstance) => {
         tasks[taskInstance.task] = taskInstance;
     });
@@ -157,7 +157,7 @@ export const loadEnginePluginDeps = async (c: RnvConfig, engineConfigs) => {
     if (c.files.project.config.isTemplate) return 0;
 
     // Check engine dependencies
-    const addedPlugins = {};
+    const addedPlugins: Record<string, Array<string>> = {};
     let hasAddedPlugins = false;
     const originalProjectPlugins = c.files.project.config_original.plugins || {};
     engineConfigs.forEach((ecf) => {
@@ -280,7 +280,7 @@ export const loadEnginePackageDeps = async (c: RnvConfig, engineConfigs) => {
     return addedDeps.length;
 };
 
-const ENGINE_ID_MAP = {
+const ENGINE_ID_MAP: Record<string, string> = {
     'engine-lightning': '@rnv/engine-lightning',
     'engine-rn': '@rnv/engine-rn',
     'engine-rn-electron': '@rnv/engine-rn-electron',
@@ -291,7 +291,7 @@ const ENGINE_ID_MAP = {
     'engine-rn-windows': '@rnv/engine-rn-windows',
 };
 
-const _getFilteredEngines = (c) => {
+const _getFilteredEngines = (c: RnvConfig) => {
     const engines = c.buildConfig?.engines;
     if (!engines) {
         logError('Engine configs missing in your renative.json. FIXING...DONE');
@@ -301,7 +301,7 @@ const _getFilteredEngines = (c) => {
     const supportedPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
 
     const filteredEngines = {};
-    supportedPlatforms.forEach((v) => {
+    supportedPlatforms.forEach((v: string) => {
         const platforms = c.files.project.config.platforms || {};
         const engineKey = platforms[v]?.engine || rnvPlatforms[v]?.engine;
 
@@ -372,7 +372,7 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
 
     if (plugDepsCount + pkgDepsCount > 0) {
         c.runtime._skipPluginScopeWarnings = true;
-        await configurePlugins(c, true); // TODO: This is too early as scoped plugin have not been installed
+        await configurePlugins(c); // TODO: This is too early as scoped plugin have not been installed
         c.runtime._skipPluginScopeWarnings = false;
         await installPackageDependencies(c);
     }

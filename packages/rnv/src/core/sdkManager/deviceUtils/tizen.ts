@@ -195,7 +195,7 @@ const _waitForEmulatorToBeReady = (c: RnvConfig, target) =>
         return devices.length > 0;
     });
 
-const _composeDevicesString = (devices) =>
+const _composeDevicesString = (devices: Array<any>) =>
     devices.map((device) => ({
         key: device.id,
         name: device.name,
@@ -208,7 +208,7 @@ const _composeDevicesString = (devices) =>
 //     }
 // };
 
-export const runTizenSimOrDevice = async (c: RnvConfig, buildCoreWebpackProject) => {
+export const runTizenSimOrDevice = async (c: RnvConfig, buildCoreWebpackProject: () => Promise<void>) => {
     const { hosted } = c.program;
     const { target, engine } = c.runtime;
     const { platform } = c;

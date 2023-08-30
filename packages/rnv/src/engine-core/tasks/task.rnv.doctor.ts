@@ -8,7 +8,6 @@ import {
     validateRenativeJsonSchema,
     // validateRuntimeObjectSchema
 } from '../../core/schemaManager';
-import { RnvConfig } from '../../core/configManager/types';
 import { RnvTaskFn } from '../../core/taskManager/types';
 
 const configTargets = [
@@ -26,7 +25,7 @@ export const taskRnvDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
     await executeTask(c, TASK_APP_CONFIGURE, parentTask, originTask);
     await configureRuntimeDefaults(c);
 
-    const configPaths = [];
+    const configPaths: Array<string> = [];
 
     configTargets.forEach((target) => {
         const tPath = lGet(c.paths, target);

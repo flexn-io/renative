@@ -9,8 +9,9 @@ import { executeTask, shouldSkipTask } from '../../core/taskManager';
 import { PARAMS, TASK_PLATFORM_CONFIGURE, TASK_PROJECT_CONFIGURE, TASK_INSTALL } from '../../core/constants';
 
 import { checkSdk } from '../../core/sdkManager/installer';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvPlatformConfigure = async (c: RnvConfig, parentTask, originTask) => {
+export const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformConfigure', '');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONFIGURE, originTask);

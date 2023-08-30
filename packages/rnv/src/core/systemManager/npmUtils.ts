@@ -110,7 +110,7 @@ export const listAndSelectNpmVersion = async (c: RnvConfig, npmPackage) => {
     });
 
     versionArr.reverse();
-    const validVersions = versionArr.map((v) => ({ name: v, value: v }));
+    const validVersions = versionArr.map((v: string) => ({ name: v, value: v }));
 
     let recommendedVersion;
     validVersions.forEach((item) => {

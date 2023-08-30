@@ -32,6 +32,7 @@ import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from
 
 import { configureTemplateFiles, configureEntryPoint } from '../templateManager';
 import { parseRenativeConfigs } from '../configManager';
+import { NpmPackageFile, RenativeConfigFile, RnvConfig } from '../configManager/types';
 
 export const checkAndBootstrapIfRequired = async (c: RnvConfig) => {
     logTask('checkAndBootstrapIfRequired');
@@ -443,7 +444,7 @@ export const copyAssetsFolder = async (c: RnvConfig, platform, subPath, customFn
 
     const assetSources = getConfigProp(c, platform, 'assetSources', []);
 
-    const validAssetSources = [];
+    const validAssetSources: Array<string> = [];
     assetSources.forEach((v) => {
         const assetsPath = path.join(_resolvePackage(c, v), assetFolderPlatform);
         if (fsExistsSync(assetsPath)) {
@@ -531,14 +532,14 @@ export const copyAssetsFolder = async (c: RnvConfig, platform, subPath, customFn
 // };
 
 export const copyBuildsFolder = (c: RnvConfig, platform: string) =>
-    new Promise((resolve) => {
+    new Promise<void>((resolve) => {
         logTask('copyBuildsFolder');
         if (!isPlatformActive(c, platform, resolve)) return;
 
         const destPath = path.join(getAppFolder(c));
         const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
-        const configPropsInjects = [];
+        const configPropsInjects: Array<any> = [];
         INJECTABLE_CONFIG_PROPS.forEach((v) => {
             configPropsInjects.push({
                 pattern: `{{configProps.${v}}}`,
@@ -550,15 +551,23 @@ export const copyBuildsFolder = (c: RnvConfig, platform: string) =>
 
         // FOLDER MERGERS PROJECT CONFIG
         const sourcePath1 = getBuildsFolder(c, platform, c.paths.project.appConfigBase.dir);
-        copyFolderContentsRecursiveSync(sourcePath1, destPath, true, false, false, allInjects, tsPathsConfig);
+        copyFolderContentsRecursiveSync(sourcePath1, destPath, true, undefined, false, allInjects, tsPathsConfig);
 
         // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
         const sourcePath1secLegacy = getBuildsFolder(c, platform, c.paths.workspace.project.appConfigBase.dir_LEGACY);
-        copyFolderContentsRecursiveSync(sourcePath1secLegacy, destPath, true, false, false, allInjects, tsPathsConfig);
+        copyFolderContentsRecursiveSync(
+            sourcePath1secLegacy,
+            destPath,
+            true,
+            undefined,
+            false,
+            allInjects,
+            tsPathsConfig
+        );
 
         // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
         const sourcePath1sec = getBuildsFolder(c, platform, c.paths.workspace.project.appConfigBase.dir);
-        copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, false, false, allInjects, tsPathsConfig);
+        copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, undefined, false, allInjects, tsPathsConfig);
 
         if (fsExistsSync(sourcePath1secLegacy)) {
             logWarning(`Path: ${chalk().red(sourcePath1secLegacy)} is DEPRECATED.
@@ -578,14 +587,14 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
         if (c.paths.appConfig.dirs) {
             c.paths.appConfig.dirs.forEach((v) => {
                 const sourceV = getBuildsFolder(c, platform, v);
-                copyFolderContentsRecursiveSync(sourceV, destPath, true, false, false, allInjects, tsPathsConfig);
+                copyFolderContentsRecursiveSync(sourceV, destPath, true, undefined, false, allInjects, tsPathsConfig);
             });
         } else {
             copyFolderContentsRecursiveSync(
                 getBuildsFolder(c, platform, c.paths.appConfig.dir),
                 destPath,
                 true,
-                false,
+                undefined,
                 false,
                 allInjects,
                 tsPathsConfig
@@ -594,7 +603,7 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
 
         // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
         const sourcePath0sec = getBuildsFolder(c, platform, c.paths.workspace.appConfig.dir);
-        copyFolderContentsRecursiveSync(sourcePath0sec, destPath, true, false, false, allInjects, tsPathsConfig);
+        copyFolderContentsRecursiveSync(sourcePath0sec, destPath, true, undefined, false, allInjects, tsPathsConfig);
 
         copyTemplatePluginsSync(c);
 
@@ -661,7 +670,7 @@ It is recommended that you run your rnv command with npx prefix: ${recCmd} . or 
     return true;
 };
 
-export const upgradeProjectDependencies = (c: RnvConfig, version) => {
+export const upgradeProjectDependencies = (c: RnvConfig, version: string) => {
     logTask('upgradeProjectDependencies');
 
     // const templates = c.files.project.config?.templates;
@@ -678,7 +687,13 @@ export const upgradeProjectDependencies = (c: RnvConfig, version) => {
     return result;
 };
 
-export const upgradeDependencies = (packageFile, packagesPath, configFile, configPath, version) => {
+export const upgradeDependencies = (
+    packageFile: NpmPackageFile,
+    packagesPath: string,
+    configFile: RenativeConfigFile,
+    configPath: string,
+    version: string
+) => {
     // logTask('upgradeDependencies');
 
     const result = [];
@@ -703,7 +718,7 @@ export const upgradeDependencies = (packageFile, packagesPath, configFile, confi
     return result;
 };
 
-const _fixDeps = (deps, version) => {
+const _fixDeps = (deps: Record<string, string>, version: string) => {
     SYNCED_DEPS.forEach((dep) => {
         const d = deps?.[dep];
         if (d) {

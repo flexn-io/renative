@@ -10,10 +10,10 @@ export type PromptOptions = {
 export type PromptParams = {
     logMessage?: string;
     warningMessage?: string;
-    message: string;
+    message?: string;
     choices?: any;
     default?: any;
-    name: string;
+    name?: string;
     type: string;
     pageSize?: number;
     validate?: (i: string) => string;

@@ -4,6 +4,8 @@ export type RnvEngine = {
 
 export type RnvEngineConfig = {
     id: string;
+    platforms: any;
+    npm: any;
 };
 
 export type RnvEngineConfigMap = Record<string, RnvEngineConfig>;

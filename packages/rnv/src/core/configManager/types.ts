@@ -61,6 +61,16 @@ export interface RnvConfig {
         currentTemplate: string;
         requiresForcedTemplateApply: boolean;
         forceBuildHookRebuild: boolean;
+        disableReset: boolean;
+        skipActiveServerCheck: boolean;
+        port: number;
+        rnvVersionRunner: string;
+        rnvVersionProject: string;
+        versionCheckCompleted: boolean;
+        currentPlatform: {
+            isWebHosted: boolean;
+        };
+        _skipPluginScopeWarnings: boolean;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;
@@ -172,6 +182,7 @@ export interface RnvConfig {
             configsPrivate: Array<string>;
             configsLocal: Array<string>;
             dir: string;
+            dirs: Array<string>;
         };
         // EXTRA
         buildHooks: {
@@ -330,6 +341,14 @@ export type RenativeConfigFile = {
     };
     integrations: Record<string, string>;
     tasks: Array<any> | Record<string, any>;
+    engineTemplates: Record<string, any>;
+    engines: Record<string, any>;
 };
 
 export type RenativeConfigBuildScheme = Record<string, any>;
+
+export type NpmPackageFile = {
+    devDependencies: Record<string, string>;
+    dependencies: Record<string, string>;
+    peerDependencies: Record<string, string>;
+};

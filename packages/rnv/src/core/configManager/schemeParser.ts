@@ -1,6 +1,7 @@
 import merge from 'deepmerge';
 import { logError, logTask, logWarning, chalk, logInfo } from '../systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
+import { RnvConfig } from './types';
 
 export const isBuildSchemeSupported = async (c: RnvConfig) => {
     logTask('isBuildSchemeSupported');
@@ -8,11 +9,13 @@ export const isBuildSchemeSupported = async (c: RnvConfig) => {
     const { scheme } = c.program;
 
     if (!c.buildConfig.platforms[c.platform]) {
-        c.buildConfig.platforms[c.platform] = {};
+        c.buildConfig.platforms[c.platform] = {
+            buildSchemes: {},
+        };
     }
 
     const baseBuildSchemes = c.buildConfig.common?.buildSchemes || {};
-    const platformBuildSchemes = c.buildConfig.platforms?.[c.platform]?.buildSchemes || {};
+    const platformBuildSchemes = c.buildConfig.platforms[c.platform]?.buildSchemes;
 
     const buildSchemes = merge(baseBuildSchemes, platformBuildSchemes);
 
@@ -27,8 +30,8 @@ export const isBuildSchemeSupported = async (c: RnvConfig) => {
             logError('Build scheme you picked does not exists.');
         }
         // const opts = generateOptions(buildSchemes);
-        const schemeOptions = [];
-        const schemeVals = {};
+        const schemeOptions: Array<string> = [];
+        const schemeVals: Record<string, string> = {};
         Object.keys(buildSchemes).forEach((k) => {
             const s = buildSchemes[k];
             const desc = s.description ? chalk().grey(` (${s.description})`) : '';

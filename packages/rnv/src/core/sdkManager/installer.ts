@@ -35,8 +35,9 @@ import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync, fsLstatSync } 
 import { chalk, logTask, logWarning, logSuccess, logError, logInfo } from '../systemManager/logger';
 import PlatformSetup from '../setupManager';
 import { generateBuildConfig } from '../configManager';
+import { RnvConfig } from '../configManager/types';
 
-const SDK_LOCATIONS = {
+const SDK_LOCATIONS: Record<string, Array<string>> = {
     android: [
         path.join('/usr/local/android-sdk'),
         path.join(USER_HOME_DIR, 'Library/Android/sdk'),
@@ -174,7 +175,7 @@ const _isSdkInstalled = (c) => {
 
     if (!SDK_PLATFORMS[c.platform]) return true;
 
-    const sdkPath = _getCurrentSdkPath(c, c.platform);
+    const sdkPath = _getCurrentSdkPath(c);
 
     return fsExistsSync(getRealPath(c, sdkPath));
 };
@@ -197,7 +198,7 @@ const _findFolderWithFile = (dir, fileToFind) => {
     return foundDir;
 };
 
-const _attemptAutoFix = async (c: RnvConfig, sdkPlatform, sdkKey, traverseUntilFoundFile) => {
+const _attemptAutoFix = async (c: RnvConfig, sdkPlatform: string, sdkKey: string, traverseUntilFoundFile: boolean) => {
     logTask('_attemptAutoFix');
 
     if (c.program.hosted) {

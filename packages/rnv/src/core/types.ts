@@ -1,4 +1,4 @@
-export type RnvPlatform = string | boolean;
+export type RnvPlatform = string;
 
 export type RnvModuleConfig = {
     modulePaths: Array<string>;

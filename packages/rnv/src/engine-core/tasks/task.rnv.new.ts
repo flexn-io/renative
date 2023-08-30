@@ -605,7 +605,7 @@ export const taskRnvNew = async (c: RnvConfig) => {
     );
 };
 
-const findEngineKeyById = (c: RnvConfig, id) => {
+const findEngineKeyById = (c: RnvConfig, id: string) => {
     const { engineTemplates } = c.files.rnv.projectTemplates.config;
     const etk = Object.keys(engineTemplates);
     for (let i = 0; i < etk.length; i++) {

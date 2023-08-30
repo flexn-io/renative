@@ -21,7 +21,7 @@ import { RnvTaskFn } from '../../core/taskManager/types';
 
 const iocane = require('iocane');
 
-const readdirAsync = promisify<Array<string>>(fsReaddir);
+const readdirAsync = promisify(fsReaddir);
 
 const generateRandomKey = (length: number) =>
     Array(length)
@@ -66,9 +66,9 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
         mkdirSync(path.join(sourceFolder, 'certs'));
         writeFileSync(path.join(sourceFolder, 'renative.private.json'), {});
 
-        const appConfigsDirs = await readdirAsync(c.paths.project.appConfigsDir);
+        const appConfigsDirs: any = await readdirAsync(c.paths.project.appConfigsDir);
 
-        appConfigsDirs.forEach((item) => {
+        appConfigsDirs.forEach((item: string) => {
             const appConfigDir = path.join(sourceFolder, item);
             mkdirSync(appConfigDir);
             mkdirSync(path.join(appConfigDir, 'certs'));

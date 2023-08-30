@@ -72,7 +72,7 @@ export const checkRequiredPackage = async (
     } else if (!version) {
         // package exists, checking version only if version is not
         const currentVersion = projectConfig.package[type][pkg];
-        let latestVersion = false;
+        let latestVersion;
         try {
             latestVersion = await executeAsync(`npm show ${pkg} version`);
             // eslint-disable-next-line no-empty
@@ -114,10 +114,10 @@ export const injectPlatformDependencies = async (c: RnvConfig) => {
     const npmDepsBase = engine?.config?.npm || {};
     const npmDepsExt = engine?.config?.platforms[platform]?.npm || {};
 
-    const npmDeps = merge(npmDepsBase, npmDepsExt);
+    const npmDeps = merge<any>(npmDepsBase, npmDepsExt);
 
     if (npmDeps) {
-        const promises = Object.keys(npmDeps).reduce((acc, type) => {
+        const promises = Object.keys(npmDeps).reduce<Array<Promise<boolean>>>((acc, type) => {
             // iterate over dependencies, devDepencencies or optionalDependencies
             Object.keys(npmDeps[type]).forEach((dep) => {
                 // iterate over deps

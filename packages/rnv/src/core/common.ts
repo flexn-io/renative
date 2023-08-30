@@ -233,7 +233,7 @@ export const getAppFolder = (c: RnvConfig, isRelativePath?: boolean) => {
 export const getAppTemplateFolder = (c: RnvConfig, platform: string) =>
     path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
-const _getValueOrMergedObject = (resultCli, resultScheme, resultPlatforms, resultCommon) => {
+const _getValueOrMergedObject = (resultCli: any, resultScheme: any, resultPlatforms: any, resultCommon: any) => {
     if (resultCli !== undefined) {
         return resultCli;
     }
@@ -372,7 +372,7 @@ export const getAppVersion = (c: RnvConfig, platform: string) => {
     if (!versionFormat) return version;
     const versionCodeArr = versionFormat.split('.');
     const dotLength = versionCodeArr.length;
-    const isNumArr = versionCodeArr.map((v) => !Number.isNaN(Number(v)));
+    const isNumArr = versionCodeArr.map((v: string) => !Number.isNaN(Number(v)));
 
     const verArr: Array<string> = [];
     let i = 0;
