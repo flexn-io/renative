@@ -14,6 +14,7 @@ import {
 import { TASK_CONFIGURE_SOFT } from '../constants';
 import { RnvConfig } from '../configManager/types';
 import { RnvTask, RnvTaskMap } from './types';
+import { RnvEngine } from '../engineManager/types';
 
 let executedTasks = {};
 
@@ -280,8 +281,8 @@ const _populateExtraParameters = (c: RnvConfig, task: RnvTask) => {
     }
 };
 
-const _selectPlatform = async (c: RnvConfig, suitableEngines, task: string) => {
-    const supportedPlatforms = {};
+const _selectPlatform = async (c: RnvConfig, suitableEngines: Array<RnvEngine>, task: string) => {
+    const supportedPlatforms: Record<string, true> = {};
     suitableEngines.forEach((engine) => {
         getEngineTask(task, engine.tasks).platforms.forEach((plat) => {
             supportedPlatforms[plat] = true;
@@ -344,11 +345,11 @@ export const executeOrSkipTask = async (c: RnvConfig, task, parentTask, originTa
 
 const ACCEPTED_CONDITIONS = ['platform', 'target', 'appId', 'scheme'];
 
-const _logSkip = (task) => {
+const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
 };
 
-export const shouldSkipTask = (c: RnvConfig, task, originTask) => {
+export const shouldSkipTask = (c: RnvConfig, task: string, originTask: string) => {
     const tasks = c.buildConfig?.tasks;
     c.runtime.platform = c.platform;
     if (!tasks) return;
@@ -407,7 +408,14 @@ export const shouldSkipTask = (c: RnvConfig, task, originTask) => {
     return false;
 };
 
-export const executeEngineTask = async (c: RnvConfig, task, parentTask, originTask, tasks, isFirstTask) => {
+export const executeEngineTask = async (
+    c: RnvConfig,
+    task: string,
+    parentTask: string,
+    originTask: string,
+    tasks: Record<string, RnvTask>,
+    isFirstTask: boolean
+) => {
     const needsHelp = Object.prototype.hasOwnProperty.call(c.program, 'help');
 
     const t = getEngineTask(task, tasks, CUSTOM_TASKS);
@@ -444,7 +452,7 @@ ${t.params
         }
     }
     if (isFirstTask) {
-        c.runtime.forceBuildHookRebuild = t.forceBuildHookRebuild;
+        c.runtime.forceBuildHookRebuild = !!t.forceBuildHookRebuild;
     }
     const inOnlyMode = c.program.only;
     const doPipe = !t.isGlobalScope && (!inOnlyMode || (inOnlyMode && isFirstTask));

@@ -6,6 +6,9 @@ export type RnvTask = {
     isGlobalScope?: boolean;
     platforms: Array<string>;
     description: string;
+    forceBuildHookRebuild?: boolean;
+    fn?: RnvTaskFn;
+    fnHelp?: RnvTaskFn;
 };
 
 export type RnvTaskParameter = {

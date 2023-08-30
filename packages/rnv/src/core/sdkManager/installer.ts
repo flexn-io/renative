@@ -181,7 +181,7 @@ const _isSdkInstalled = (c: RnvConfig) => {
     return fsExistsSync(getRealPath(c, sdkPath));
 };
 
-const _findFolderWithFile = (dir, fileToFind) => {
+const _findFolderWithFile = (dir: string, fileToFind: string) => {
     const opt = path.join(dir, fileToFind);
     if (fsExistsSync(opt)) {
         return dir;
@@ -207,7 +207,7 @@ const _attemptAutoFix = async (c: RnvConfig, sdkPlatform: string, sdkKey: string
         return true;
     }
 
-    let locations = SDK_LOCATIONS[sdkPlatform];
+    let locations: Array<string | undefined> = SDK_LOCATIONS[sdkPlatform];
 
     // try common Android SDK env variables
     if (sdkKey === ANDROID_SDK) {
@@ -227,7 +227,7 @@ const _attemptAutoFix = async (c: RnvConfig, sdkPlatform: string, sdkKey: string
         if (subResult) {
             result = subResult;
         } else {
-            result = null;
+            // result = null;
         }
     }
 

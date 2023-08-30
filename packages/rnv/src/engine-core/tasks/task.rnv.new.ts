@@ -38,19 +38,19 @@ import { RnvConfig } from '../../core/configManager/types';
 const highlight = chalk().green;
 
 type NewProjectData = {
-    appTitle: string;
-    inputAppTitle: string;
-    packageName: string;
-    defaultAppTitle: string;
-    defaultTemplate: string;
-    inputProjectName: string;
-    teamID: string;
-    appID: string;
-    inputAppID: string;
-    inputVersion: string;
+    appTitle?: string;
+    inputAppTitle?: string;
+    packageName?: string;
+    defaultAppTitle?: string;
+    defaultTemplate?: string;
+    inputProjectName?: string;
+    teamID?: string;
+    appID?: string;
+    inputAppID?: string;
+    inputVersion?: string;
     defaultVersion: string;
-    inputTemplate: string;
-    version: string;
+    inputTemplate?: string;
+    version?: string;
     optionTemplates: {
         selectedOption?: string;
         selectedVersion?: string;
@@ -60,14 +60,14 @@ type NewProjectData = {
     };
     projectName: string;
     optionWorkspaces: {
-        selectedOption: string;
+        selectedOption?: string;
         valuesAsObject?: any;
         valuesAsArray?: Array<string>;
         keysAsArray?: Array<string>;
     };
     gitEnabled: boolean;
     optionPlatforms: {
-        selectedOptions: Array<string>;
+        selectedOptions?: Array<string>;
     };
     confirmString: string;
     defaultProjectName: string;
@@ -92,7 +92,7 @@ const _prepareProjectOverview = (c: RnvConfig, data: NewProjectData) => {
     str += printIntoBox(`Git Enabled: ${highlight(data.gitEnabled)}`);
     str += printIntoBox('');
     str += printIntoBox('Project Platforms:');
-    str += printArrIntoBox(data.optionPlatforms.selectedOptions);
+    str += printArrIntoBox(data.optionPlatforms.selectedOptions || []);
     str += printIntoBox('');
     str += printIntoBox('Project Structure:');
     str += printIntoBox('');
@@ -408,7 +408,7 @@ export const taskRnvNew = async (c: RnvConfig) => {
         return;
     }
 
-    if (!data.optionTemplates.keysAsArray.includes(selectedInputTemplate)) {
+    if (!data.optionTemplates.keysAsArray?.includes(selectedInputTemplate)) {
         const { confirmAddTemplate } = await inquirer.prompt({
             name: 'confirmAddTemplate',
             type: 'confirm',

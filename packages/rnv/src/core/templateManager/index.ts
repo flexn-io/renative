@@ -88,11 +88,11 @@ const _applyTemplate = async (c: RnvConfig) => {
         //         c.runtime.selectedTemplate
         //     );
         // } else {
-        c.paths.template.dir = doResolve(c.runtime.selectedTemplate);
+        c.paths.template.dir = doResolve(c.runtime.selectedTemplate) || 'Error: unresolved';
         // c.paths.template.dir = path.join(c.paths.project.nodeModulesDir, c.runtime.selectedTemplate);
         // }
     } else {
-        c.paths.template.dir = doResolve(c.buildConfig.currentTemplate);
+        c.paths.template.dir = doResolve(c.buildConfig.currentTemplate) || 'Error: unresolved';
         // c.paths.template.dir = path.join(c.paths.project.nodeModulesDir, c.buildConfig.currentTemplate);
     }
 

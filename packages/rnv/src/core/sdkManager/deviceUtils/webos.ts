@@ -133,8 +133,16 @@ const waitForEmulatorToBeReady = async (c: RnvConfig) => {
 export const runWebosSimOrDevice = async (c: RnvConfig) => {
     const { device } = c.program;
 
+    const platDir = getPlatformBuildDir(c);
+    if (!platDir) {
+        return Promise.reject(`Cannot determine getPlatformBuildDir value`);
+    }
+
     const tDir = getPlatformProjectDir(c);
-    const tOut = path.join(getPlatformBuildDir(c), 'output');
+    if (!tDir) {
+        return Promise.reject(`Cannot determine getPlatformProjectDir value`);
+    }
+    const tOut = path.join(platDir, 'output');
     const tSim = c.program.target || 'emulator';
     const configFilePath = path.join(tDir, 'appinfo.json');
 

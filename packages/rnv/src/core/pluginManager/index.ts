@@ -19,7 +19,7 @@ import {
 import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../systemManager/logger';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { doResolve, doResolvePath } from '../systemManager/resolve';
-import { RenativeConfigPlugin, RnvConfig } from '../configManager/types';
+import { RenativeConfigPlugin, RenativeWebpackConfig, RnvConfig } from '../configManager/types';
 import { ResolveOptions } from '../systemManager/types';
 import { PluginCallback, PluginListResponse, RnvPlugin, RnvPluginPlatform, RnvPluginScope } from './types';
 
@@ -236,7 +236,7 @@ export const configurePlugins = async (c: RnvConfig) => {
     }
 
     const { isTemplate } = c.files.project.config;
-    const newDeps: Record<string, string> = {};
+    const newDeps: Record<string, string | undefined> = {};
     const newDevDeps: Record<string, string> = {};
     const { dependencies, devDependencies } = c.files.project.package;
     const ovMsg = isTemplate ? 'This is template. NO ACTION' : 'package.json will be overriden';
@@ -303,7 +303,7 @@ ${ovMsg}`
 
         if (plugin && plugin.npm) {
             Object.keys(plugin.npm).forEach((npmKey) => {
-                const npmDep = plugin.npm[npmKey];
+                const npmDep = plugin.npm?.[npmKey];
                 // IMPORTANT: Do not override top level override with plugin.npm ones
                 const topLevelPlugin = getMergedPlugin(c, npmKey);
                 if (topLevelPlugin && topLevelPlugin?.version !== npmDep) {
@@ -640,7 +640,7 @@ const _overridePlugin = (c: RnvConfig, pluginsPath: string, dir: string) => {
         );
     }
 
-    let overridePath: string;
+    let overridePath: string | undefined;
     if (plugin?.version) {
         const pluginVerArr = plugin.version.split('.');
         const pluginVersions: Array<string> = [];
@@ -663,10 +663,10 @@ const _overridePlugin = (c: RnvConfig, pluginsPath: string, dir: string) => {
         }
     }
 
-    if (!fsExistsSync(overridePath)) {
+    if (overridePath && !fsExistsSync(overridePath)) {
         overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
     }
-    const overrideConfig = readObjectSync(overridePath);
+    const overrideConfig = overridePath ? readObjectSync(overridePath) : null;
     const overrides = overrideConfig?.overrides;
     if (overrides) {
         Object.keys(overrides).forEach((k) => {
@@ -683,7 +683,7 @@ const _overridePlugin = (c: RnvConfig, pluginsPath: string, dir: string) => {
     }
 };
 
-export const overrideFileContents = (dest: string, override, overridePath = '') => {
+export const overrideFileContents = (dest: string, override: Record<string, string>, overridePath = '') => {
     if (fsExistsSync(dest)) {
         let fileToFix = fsReadFileSync(dest).toString();
         let foundRegEx = false;
@@ -762,7 +762,7 @@ const _getPluginConfiguration = (c: RnvConfig, pluginName: string) => {
 };
 
 export const checkForPluginDependencies = async (c: RnvConfig) => {
-    const toAdd = {};
+    const toAdd: Record<string, string> = {};
     Object.keys(c.buildConfig.plugins).forEach((pluginName) => {
         const renativePluginConfig = _getPluginConfiguration(c, pluginName);
 
@@ -773,7 +773,8 @@ export const checkForPluginDependencies = async (c: RnvConfig) => {
         if (renativePluginConfig?.plugins) {
             // we have dependencies for this plugin
             Object.keys(renativePluginConfig.plugins).forEach((p) => {
-                if (!c.buildConfig.plugins[p] && c.buildConfig.plugins[pluginName].plugins?.[p] !== null) {
+                const plg = c.buildConfig.plugins[pluginName];
+                if (!c.buildConfig.plugins[p] && typeof plg !== 'string' && plg.plugins?.[p] !== null) {
                     logWarning(`Plugin ${p} is not installed yet.`);
                     toAdd[p] = renativePluginConfig.plugins[p];
                     c.buildConfig.plugins[p] = renativePluginConfig.plugins[p];
@@ -854,19 +855,21 @@ export const copyTemplatePluginsSync = (c: RnvConfig) => {
 
     logTask('copyTemplatePluginsSync', `(${destPath})`);
 
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
         const objectInject = [...c.configPropsInjects];
         if (plugin.props) {
             Object.keys(plugin.props).forEach((v) => {
                 objectInject.push({
                     pattern: `{{props.${v}}}`,
-                    override: plugin.props[v],
+                    override: plugin.props?.[v],
                 });
             });
         }
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
-        const sourcePathRnvPlugin = getBuildsFolder(c, platform, path.join(c.paths.rnv.pluginTemplates.dir, key));
-        copyFolderContentsRecursiveSync(sourcePathRnvPlugin, destPath, true, undefined, false, objectInject);
+        if (c.paths.rnv.pluginTemplates.dir) {
+            const sourcePathRnvPlugin = getBuildsFolder(c, platform, path.join(c.paths.rnv.pluginTemplates.dir, key));
+            copyFolderContentsRecursiveSync(sourcePathRnvPlugin, destPath, true, undefined, false, objectInject);
+        }
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
         const sourcePath3 = getBuildsFolder(
@@ -892,7 +895,7 @@ export const copyTemplatePluginsSync = (c: RnvConfig) => {
         );
         copyFolderContentsRecursiveSync(sourcePath3sec, destPath, true, undefined, false, objectInject);
 
-        if (fsExistsSync(sourcePath3secLegacy)) {
+        if (sourcePath3secLegacy && fsExistsSync(sourcePath3secLegacy)) {
             logWarning(`Path: ${chalk().red(sourcePath3secLegacy)} is DEPRECATED.
     Move your files to: ${chalk().white(sourcePath3sec)} instead`);
         }
@@ -921,11 +924,11 @@ export const copyTemplatePluginsSync = (c: RnvConfig) => {
     });
 };
 
-export const sanitizePluginPath = (str: string, name: string, mandatory: boolean, options: ResolveOptions) => {
+export const sanitizePluginPath = (str: string, name: string, mandatory?: boolean, options?: ResolveOptions) => {
     let newStr = str;
     try {
         if (str?.replace) {
-            newStr = str.replace('{{PLUGIN_ROOT}}', doResolve(name, mandatory, options));
+            newStr = str.replace('{{PLUGIN_ROOT}}', doResolve(name, mandatory, options) || '');
         }
     } catch (e) {
         // Ignore
@@ -952,8 +955,8 @@ export const getLocalRenativePlugin = () => ({
     },
 });
 
-export const getModuleConfigs = (c: RnvConfig, primaryKey: string) => {
-    let modulePaths: Array<string> = [];
+export const getModuleConfigs = (c: RnvConfig, primaryKey?: RnvPluginPlatform) => {
+    let modulePaths: Array<string | undefined> = [];
     const moduleAliases: Record<string, string | undefined> = {};
 
     const doNotResolveModulePaths: Array<string> = [];
@@ -961,16 +964,22 @@ export const getModuleConfigs = (c: RnvConfig, primaryKey: string) => {
     // PLUGINS
     parsePlugins(
         c,
-        c.platform,
+        c.platform as RnvPluginPlatform,
         (plugin, pluginPlat, key) => {
-            const webpackConfig = plugin[primaryKey] || plugin.webpack || plugin.webpackConfig;
+            let webpackConfig: RenativeWebpackConfig | undefined;
+
+            if (primaryKey && plugin[primaryKey]) {
+                webpackConfig = plugin[primaryKey];
+            } else {
+                webpackConfig = plugin.webpack || plugin.webpackConfig;
+            }
 
             if (webpackConfig) {
                 if (webpackConfig.modulePaths) {
-                    if (webpackConfig.modulePaths === false) {
-                        // ignore
-                    } else if (webpackConfig.modulePaths === true) {
-                        modulePaths.push(`node_modules/${key}`);
+                    if (typeof webpackConfig.modulePaths === 'boolean') {
+                        if (webpackConfig.modulePaths) {
+                            modulePaths.push(`node_modules/${key}`);
+                        }
                     } else {
                         webpackConfig.modulePaths.forEach((v) => {
                             if (typeof v === 'string') {
@@ -983,12 +992,13 @@ export const getModuleConfigs = (c: RnvConfig, primaryKey: string) => {
                         });
                     }
                 }
-                if (webpackConfig.moduleAliases) {
-                    if (webpackConfig.moduleAliases === true) {
+                const wpMa = webpackConfig.moduleAliases;
+                if (wpMa) {
+                    if (typeof wpMa === 'boolean') {
                         moduleAliases[key] = doResolvePath(key, true, {}, c.paths.project.nodeModulesDir);
                     } else {
-                        Object.keys(webpackConfig.moduleAliases).forEach((aKey) => {
-                            const mAlias = webpackConfig.moduleAliases[aKey];
+                        Object.keys(wpMa).forEach((aKey) => {
+                            const mAlias = wpMa[aKey];
                             if (typeof mAlias === 'string') {
                                 moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
                             } else if (mAlias.path) {
@@ -1012,7 +1022,7 @@ export const getModuleConfigs = (c: RnvConfig, primaryKey: string) => {
     });
 
     modulePaths = modulePaths
-        .map((v) => doResolvePath(v, true, {}, c.paths.project.dir))
+        .map((v) => v && doResolvePath(v, true, {}, c.paths.project.dir))
         .concat(doNotResolveModulePaths)
         .concat([c.paths.project.assets.dir])
         .filter(Boolean);

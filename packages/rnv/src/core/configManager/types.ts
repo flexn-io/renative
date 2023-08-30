@@ -36,6 +36,7 @@ export interface RnvConfig {
     };
     configPropsInjects: any;
     runtime: {
+        platform: string;
         appId: string | null;
         appDir: string;
         enginesByPlatform: Record<string, RnvEngine>;
@@ -53,7 +54,7 @@ export interface RnvConfig {
         supportedPlatforms: Array<{
             platform: string;
             isConnected: boolean;
-            engine: any;
+            engine?: any;
         }>;
         keepSessionActive: boolean;
         platformBuildsProjectPath: string;
@@ -388,11 +389,35 @@ export type RenativeConfigPlugin = {
     tvos?: any;
     androidtv?: any;
     web?: any;
-    webpack?: any;
+    webpack?: RenativeWebpackConfig; //DEPRECATED
+    webpackConfig?: RenativeWebpackConfig;
     npm?: Record<string, string>;
     enabled?: boolean;
     deprecated?: boolean;
     plugins?: Record<string, string>;
+    props?: Record<string, string | boolean | number>;
+};
+
+export type RenativeWebpackConfig = {
+    modulePaths?:
+        | Array<
+              | {
+                    projectPath: string;
+                }
+              | string
+          >
+        | boolean;
+
+    moduleAliases?:
+        | Record<
+              string,
+              | string
+              | {
+                    path: string;
+                    projectPath: string;
+                }
+          >
+        | boolean;
 };
 
 export type RenativeConfigBuildScheme = Record<string, any>;

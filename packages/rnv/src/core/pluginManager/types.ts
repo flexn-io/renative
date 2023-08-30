@@ -6,7 +6,12 @@ export type PluginListResponse = {
     asString: string;
     asArray: PluginListResponseItem[];
     plugins: PluginListResponseItem[];
-    allPlugins: Record<string, object>;
+    allPlugins: Record<
+        string,
+        {
+            version: string;
+        }
+    >;
 };
 
 export type PluginListResponseItem = {
