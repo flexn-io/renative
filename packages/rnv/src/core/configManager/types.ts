@@ -352,6 +352,7 @@ export type RenativeConfigFile = {
             appName: string;
             id: string;
             certificateProfile: string;
+            engine: string;
         }
     >;
     templates: Record<
@@ -376,6 +377,7 @@ export type RenativeConfigFile = {
     pluginTemplates: Record<string, any>;
     runtime: Record<string, any>;
     defaultTargets: Record<string, string>;
+    templateConfig: any;
 };
 
 export type RenativeConfigPlugin = {

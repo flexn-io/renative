@@ -33,7 +33,7 @@ import {
     printIntoBox,
 } from '../../core/systemManager/logger';
 import { isYarnInstalled, listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
-import { RnvConfig } from '../../core/configManager/types';
+import { RenativeConfigFile, RnvConfig } from '../../core/configManager/types';
 
 const highlight = chalk().green;
 
@@ -55,23 +55,26 @@ type NewProjectData = {
         selectedOption?: string;
         selectedVersion?: string;
         valuesAsObject?: any;
-        valuesAsArray?: Array<string>;
+        valuesAsArray?: Array<{
+            title: string;
+            key: string;
+        }>;
         keysAsArray?: Array<string>;
     };
-    projectName: string;
+    projectName?: string;
     optionWorkspaces: {
         selectedOption?: string;
         valuesAsObject?: any;
         valuesAsArray?: Array<string>;
         keysAsArray?: Array<string>;
     };
-    gitEnabled: boolean;
+    gitEnabled?: boolean;
     optionPlatforms: {
         selectedOptions?: Array<string>;
     };
-    confirmString: string;
-    defaultProjectName: string;
-    defaultWorkspace: string;
+    confirmString?: string;
+    defaultProjectName?: string;
+    defaultWorkspace?: string;
 };
 
 const _prepareProjectOverview = (c: RnvConfig, data: NewProjectData) => {
@@ -117,7 +120,32 @@ const _prepareProjectOverview = (c: RnvConfig, data: NewProjectData) => {
     data.confirmString = str;
 };
 
-const interactiveQuestion = async (results, bootstrapQuestions, providedAnswers) => {
+type QuestionResults = Record<
+    string,
+    {
+        answer: string;
+        configProp: any;
+        value: any;
+    }
+>;
+
+type BootstrapQuestions = Array<{
+    options: Array<{
+        title: string;
+    }>;
+    configProp: {
+        prop: string;
+        key: string;
+    };
+    type: string;
+    title: string;
+}>;
+
+const interactiveQuestion = async (
+    results: QuestionResults,
+    bootstrapQuestions: BootstrapQuestions,
+    providedAnswers
+) => {
     if (bootstrapQuestions?.length) {
         for (let i = 0; i < bootstrapQuestions.length; i++) {
             const q = bootstrapQuestions[i];
@@ -223,6 +251,9 @@ export const taskRnvNew = async (c: RnvConfig) => {
         defaultProjectName: 'helloRenative',
         defaultAppTitle: 'Hello Renative',
         defaultWorkspace: 'rnv',
+        optionPlatforms: {},
+        optionTemplates: {},
+        optionWorkspaces: {},
     };
     data.optionPlatforms = {};
     data.optionTemplates = {};
@@ -350,7 +381,7 @@ export const taskRnvNew = async (c: RnvConfig) => {
         options.push(val.title);
     });
 
-    const getTemplateKey = (val: string) => data.optionTemplates.valuesAsArray.find((v) => v.title === val)?.key;
+    const getTemplateKey = (val: string) => data.optionTemplates.valuesAsArray?.find((v) => v.title === val)?.key;
 
     // ==================================================
     // INPUT: Template
@@ -389,7 +420,7 @@ export const taskRnvNew = async (c: RnvConfig) => {
     if (templateVersion && templateVersion !== '') {
         inputTemplateVersion = templateVersion;
     } else {
-        inputTemplateVersion = await listAndSelectNpmVersion(c, data.optionTemplates.selectedOption);
+        inputTemplateVersion = await listAndSelectNpmVersion(c, data.optionTemplates.selectedOption || '');
     }
 
     data.optionTemplates.selectedVersion = inputTemplateVersion;
@@ -471,7 +502,12 @@ export const taskRnvNew = async (c: RnvConfig) => {
     // ==================================================
     const renativeTemplateConfigExt = {};
     const bootstrapQuestions = renativeTemplateConfig?.templateConfig?.bootstrapQuestions;
-    const results = {};
+    const results: Record<
+        string,
+        {
+            value: string;
+        }
+    > = {};
     const providedAnswers: Record<string, any> = {};
 
     if (c.program.answer) {
@@ -562,20 +598,27 @@ export const taskRnvNew = async (c: RnvConfig) => {
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
     c.paths.project.config = path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME);
 
-    data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
+    data.packageName = data?.appTitle?.replace(/\s+/g, '-').toLowerCase();
 
-    const templates = {};
+    const templates: Record<
+        string,
+        {
+            version?: string;
+        }
+    > = {};
 
     logTask(
         `_generateProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
         chalk().grey
     );
 
-    templates[data.optionTemplates.selectedOption] = {
-        version: data.optionTemplates.selectedVersion,
-    };
+    if (data.optionTemplates.selectedOption) {
+        templates[data.optionTemplates.selectedOption] = {
+            version: data.optionTemplates.selectedVersion,
+        };
+    }
 
-    const config = {
+    const config: RenativeConfigFile = {
         platforms: {},
         ...renativeTemplateConfig,
         ...renativeTemplateConfigExt,
