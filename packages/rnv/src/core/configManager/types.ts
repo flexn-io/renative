@@ -58,6 +58,9 @@ export interface RnvConfig {
         selectedTemplate?: string;
         runtimeExtraProps: string;
         requiresBootstrap: boolean;
+        currentTemplate: string;
+        requiresForcedTemplateApply: boolean;
+        forceBuildHookRebuild: boolean;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;
@@ -185,6 +188,8 @@ export interface RnvConfig {
             platformTemplates: Record<string, any>;
             appConfigsDir: string;
             configTemplate: string;
+            config: string;
+            dir?: string;
         };
         appConfigBase: string;
     };
@@ -296,12 +301,14 @@ export interface RnvConfigFileObj {
 }
 
 export type RenativeConfigFile = {
+    sdks: Record<string, string>;
     workspaceID: string;
     common: {
         buildSchemes: Record<string, RenativeConfigBuildScheme>;
     };
     defaults: {
         ports: Record<string, string>;
+        supportedPlatforms: Array<string>;
     };
     platforms: Record<
         string,
@@ -310,13 +317,19 @@ export type RenativeConfigFile = {
             entryFile?: string;
         }
     >;
-    templates: Record<string, string>;
+    templates: Record<
+        string,
+        {
+            version: string;
+        }
+    >;
     currentTemplate: string;
     projectTemplates: object;
     paths: {
         appConfigsDirs: Array<string>;
     };
     integrations: Record<string, string>;
+    tasks: Array<any> | Record<string, any>;
 };
 
 export type RenativeConfigBuildScheme = Record<string, any>;

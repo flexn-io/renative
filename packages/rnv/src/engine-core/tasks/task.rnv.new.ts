@@ -33,6 +33,7 @@ import {
     printIntoBox,
 } from '../../core/systemManager/logger';
 import { isYarnInstalled, listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
+import { RnvConfig } from '../../core/configManager/types';
 
 const highlight = chalk().green;
 

@@ -18,6 +18,7 @@ import { doResolve } from './resolve';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getConfigProp } from '../common';
 import { RnvConfig } from '../configManager/types';
+import { RnvError } from '../types';
 
 const packageJsonIsValid = (c) => {
     if (!fsExistsSync(c.paths.project.package)) return false;
@@ -96,7 +97,10 @@ export const listAndSelectNpmVersion = async (c: RnvConfig, npmPackage) => {
     const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',');
 
     const templateTagsStr = await executeAsync(c, `npm dist-tag ls ${npmPackage}`);
-    const tagArr = [];
+    const tagArr: Array<{
+        name: string;
+        version: string;
+    }> = [];
     templateTagsStr.split('\n').forEach((tString) => {
         const tArr = tString.split(': ');
         tagArr.push({
@@ -111,7 +115,7 @@ export const listAndSelectNpmVersion = async (c: RnvConfig, npmPackage) => {
     let recommendedVersion;
     validVersions.forEach((item) => {
         let matchStr = '';
-        const matchArr = [];
+        const matchArr: Array<string> = [];
         tagArr.forEach((tag) => {
             if (tag.version === item.value) {
                 matchArr.push(tag.name);
@@ -151,7 +155,7 @@ export const checkIfProjectAndNodeModulesExists = async (c: RnvConfig) => {
     }
 };
 
-const _getInstallScript = (c) => {
+const _getInstallScript = (c: RnvConfig) => {
     const tasks = c.buildConfig?.tasks;
     if (!tasks) return null;
     if (Array.isArray(tasks)) {
@@ -229,7 +233,7 @@ export const installPackageDependencies = async (c: RnvConfig, failOnError = fal
     try {
         await executeAsync(command);
         await invalidatePodsChecksum(c);
-    } catch (e) {
+    } catch (e: RnvError) {
         if (failOnError) {
             logError(e);
             throw e;
@@ -238,9 +242,9 @@ export const installPackageDependencies = async (c: RnvConfig, failOnError = fal
             `${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`
         );
         try {
-            await cleanNodeModules(c);
+            await cleanNodeModules();
             await installPackageDependencies(c, true);
-        } catch (npmErr) {
+        } catch (npmErr: RnvError) {
             logError(npmErr);
             throw npmErr;
         }
@@ -265,7 +269,7 @@ export const installPackageDependencies = async (c: RnvConfig, failOnError = fal
         }
         c._requiresNpmInstall = false;
         return true;
-    } catch (jetErr) {
+    } catch (jetErr: RnvError) {
         logError(jetErr);
         return false;
     }
@@ -284,7 +288,7 @@ export const jetifyIfRequired = async (c: RnvConfig) => {
 };
 
 export const cleanNodeModules = () =>
-    new Promise((resolve, reject) => {
+    new Promise<void>((resolve, reject) => {
         logTask('cleanNodeModules');
         const dirs = [
             'react-native-safe-area-view/.git',

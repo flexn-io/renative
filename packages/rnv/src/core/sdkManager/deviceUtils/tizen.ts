@@ -84,7 +84,7 @@ export const createDevelopTizenCertificate = (c) =>
     });
 
 export const addDevelopTizenCertificate = (c: RnvConfig, secureProfileConfig) =>
-    new Promise((resolve) => {
+    new Promise<void>((resolve) => {
         logTask('addDevelopTizenCertificate');
 
         const { profileName, certPath, certPassword } = secureProfileConfig || {};
@@ -98,11 +98,11 @@ export const addDevelopTizenCertificate = (c: RnvConfig, secureProfileConfig) =>
             });
     });
 
-const _getDeviceID = async (c: RnvConfig, target) => {
+const _getDeviceID = async (c: RnvConfig, target: string) => {
     const { device } = c.program;
 
     if (device) {
-        let connectResponse;
+        let connectResponse: string;
         try {
             connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
         } catch (e) {

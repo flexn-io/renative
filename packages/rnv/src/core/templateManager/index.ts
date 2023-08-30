@@ -21,6 +21,7 @@ import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from
 import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import { RnvConfig } from '../configManager/types';
+import { RnvError } from '../types';
 
 export const checkIfTemplateConfigured = async (c: RnvConfig) => {
     logTask('checkIfTemplateConfigured');
@@ -56,7 +57,7 @@ export const checkIfTemplateConfigured = async (c: RnvConfig) => {
     return true;
 };
 
-const _cleanProjectTemplateSync = (c) => {
+const _cleanProjectTemplateSync = (c: RnvConfig) => {
     logTask('_cleanProjectTemplateSync');
     const dirsToRemove = [
         path.join(c.paths.project.appConfigBase.dir),
@@ -94,9 +95,11 @@ const _applyTemplate = async (c: RnvConfig) => {
         // c.paths.template.dir = path.join(c.paths.project.nodeModulesDir, c.buildConfig.currentTemplate);
     }
 
-    c.paths.template.configTemplate = path.join(c.paths.template.dir, RENATIVE_CONFIG_TEMPLATE_NAME);
+    if (c.paths.template.dir) {
+        c.paths.template.configTemplate = path.join(c.paths.template.dir, RENATIVE_CONFIG_TEMPLATE_NAME);
 
-    c.paths.template.config = path.join(c.paths.template.dir, RENATIVE_CONFIG_NAME);
+        c.paths.template.config = path.join(c.paths.template.dir, RENATIVE_CONFIG_NAME);
+    }
 
     // if (fsExistsSync(c.paths.template.config)) {
     //     c.files.template.config = readObjectSync(c.paths.template.config);
@@ -113,7 +116,7 @@ const _applyTemplate = async (c: RnvConfig) => {
 
     logDebug(`_applyTemplate:${c.runtime.selectedTemplate}:${c.paths.template.dir}`);
 
-    c.paths.template.appConfigsDir = path.join(c.paths.template.dir, 'appConfigs');
+    if (c.paths.template.dir) c.paths.template.appConfigsDir = path.join(c.paths.template.dir, 'appConfigs');
     c.paths.template.appConfigBase.dir = path.join(c.paths.template.appConfigsDir, 'base');
     c.runtime.currentTemplate = c.files.project.config.currentTemplate;
     if (!c.runtime.currentTemplate) {
@@ -130,7 +133,7 @@ const _applyTemplate = async (c: RnvConfig) => {
     return true;
 };
 
-const _configureSrc = (c) =>
+const _configureSrc = (c: RnvConfig) =>
     new Promise<void>((resolve) => {
         // Check src
         logDebug('configureProject:check src');
@@ -186,13 +189,13 @@ const _configureAppConfigs = async (c: RnvConfig) => {
                     }
                 }
             });
-        } catch (e) {
+        } catch (e: RnvError) {
             logError(e);
         }
     }
 };
 
-const _configureProjectConfig = (c) =>
+const _configureProjectConfig = (c: RnvConfig) =>
     new Promise<void>((resolve) => {
         // Check projectConfigs
         logDebug('configureProject:check projectConfigs');
@@ -245,19 +248,23 @@ export const configureTemplateFiles = async (c: RnvConfig) => {
     const includedPaths = templateConfig?.templateConfig?.includedPaths;
     if (includedPaths) {
         includedPaths.forEach((name: string) => {
-            const sourcePath = path.join(c.paths.template.dir, name);
-            const destPath = path.join(c.paths.project.dir, name);
-            if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
-                try {
-                    if (fsLstatSync(sourcePath).isDirectory()) {
-                        logInfo(`Missing directory ${chalk().white(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
-                        copyFolderContentsRecursiveSync(sourcePath, destPath);
-                    } else {
-                        logInfo(`Missing file ${chalk().white(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
-                        copyFileSync(sourcePath, destPath);
+            if (c.paths.template.dir) {
+                const sourcePath = path.join(c.paths.template.dir, name);
+                const destPath = path.join(c.paths.project.dir, name);
+                if (!fsExistsSync(destPath) && fsExistsSync(sourcePath)) {
+                    try {
+                        if (fsLstatSync(sourcePath).isDirectory()) {
+                            logInfo(
+                                `Missing directory ${chalk().white(`${destPath}.js`)}. COPYING from TEMPATE...DONE`
+                            );
+                            copyFolderContentsRecursiveSync(sourcePath, destPath);
+                        } else {
+                            logInfo(`Missing file ${chalk().white(`${destPath}.js`)}. COPYING from TEMPATE...DONE`);
+                            copyFileSync(sourcePath, destPath);
+                        }
+                    } catch (e) {
+                        // Get some beer and order hookers
                     }
-                } catch (e) {
-                    // Get some beer and order hookers
                 }
             }
         });

@@ -8,3 +8,5 @@ export type RnvModuleConfig = {
 export type RnvNextJSConfig = {};
 
 export type RenativeConfigVersion = string | { version: string };
+
+export type RnvError = any;

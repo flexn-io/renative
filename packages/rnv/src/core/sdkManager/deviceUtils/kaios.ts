@@ -3,11 +3,12 @@ import path from 'path';
 import { fsExistsSync, getRealPath } from '../../systemManager/fileutils';
 import { chalk, logTask } from '../../systemManager/logger';
 import { KAIOS_SDK } from '../../constants';
+import { RnvConfig } from '../../configManager/types';
 
 const childProcess = require('child_process');
 
-export const launchKaiOSSimulator = (c) =>
-    new Promise((resolve, reject) => {
+export const launchKaiOSSimulator = (c: RnvConfig) =>
+    new Promise<void>((resolve, reject) => {
         logTask('launchKaiOSSimulator');
 
         if (!c.buildConfig?.sdks?.KAIOS_SDK) {
@@ -23,7 +24,7 @@ export const launchKaiOSSimulator = (c) =>
 
         const ePath = getRealPath(path.join(c.buildConfig?.sdks?.KAIOS_SDK));
 
-        if (!fsExistsSync(ePath)) {
+        if (ePath && !fsExistsSync(ePath)) {
             reject(`Can't find emulator at path: ${ePath}`);
             return;
         }
