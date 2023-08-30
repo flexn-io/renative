@@ -86,6 +86,7 @@ export interface RnvConfig {
         hosted: boolean;
         task: string;
         selectedWorkspace: string;
+        isWSConfirmed: boolean;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;
@@ -367,6 +368,7 @@ export type RenativeConfigFile = {
     paths: {
         appConfigsDirs: Array<string>;
         platformTemplatesDirs: Record<string, string>;
+        globalConfigDir: string;
     };
     integrations: Record<string, string>;
     tasks: Array<any> | Record<string, any>;

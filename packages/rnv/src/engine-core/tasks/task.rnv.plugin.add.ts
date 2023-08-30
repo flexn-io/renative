@@ -37,7 +37,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
         installMessage.push(`${chalk().white(selPluginKey)} v(${chalk().green(selPlugin.version)})`);
     }
 
-    const questionPlugins = {};
+    const questionPlugins: Record<string, object> = {};
 
     Object.keys(selectedPlugins).forEach((key) => {
         // c.buildConfig.plugins[key] = 'source:rnv';

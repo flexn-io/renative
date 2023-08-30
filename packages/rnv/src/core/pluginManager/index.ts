@@ -22,6 +22,7 @@ import { doResolve, doResolvePath } from '../systemManager/resolve';
 import { RnvConfig } from '../configManager/types';
 import { RnvPlatform } from '../types';
 import { ResolveOptions } from '../systemManager/types';
+import { PluginCallback } from './types';
 
 export const getPluginList = (c: RnvConfig, isUpdate = false) => {
     const output = {
@@ -129,7 +130,14 @@ export const getMergedPlugin = (c: RnvConfig, key: string) => {
     return mergedPlugin;
 };
 
-const _getMergedPlugin = (c: RnvConfig, plugin, pluginKey, parentScope, scopes, skipSanitize) => {
+const _getMergedPlugin = (
+    c: RnvConfig,
+    plugin,
+    pluginKey: string,
+    parentScope?: string,
+    scopes?: Array<string>,
+    skipSanitize?: boolean
+) => {
     if (!plugin) {
         return {};
     }
@@ -149,11 +157,11 @@ const _getMergedPlugin = (c: RnvConfig, plugin, pluginKey, parentScope, scopes, 
         !c.runtime._skipPluginScopeWarnings
     ) {
         logWarning(`Plugin ${pluginKey} is not recognized plugin in ${scope} scope`);
-    } else if (scope) {
+    } else if (scope && parentScope) {
         const skipRnvOverrides = c.buildConfig.pluginTemplates?.[parentScope]?.disableRnvDefaultOverrides;
         if (skipRnvOverrides && scope === 'rnv') {
             // Merges down to RNV defaults will be skipped
-        } else {
+        } else if (scopes) {
             scopes.push(scope);
         }
     }
@@ -402,7 +410,7 @@ const _resolvePluginDependencies = async (c: RnvConfig, key: string, keyScope: s
 export const parsePlugins = (
     c: RnvConfig,
     platform: RnvPlatform,
-    pluginCallback,
+    pluginCallback: PluginCallback,
     ignorePlatformObjectCheck?: boolean
 ) => {
     logTask('parsePlugins');
@@ -526,7 +534,11 @@ export const loadPluginTemplates = async (c: RnvConfig) => {
     return true;
 };
 
-const _parsePluginTemplateDependencies = (c: RnvConfig, customPluginTemplates, scope = 'root') => {
+const _parsePluginTemplateDependencies = (
+    c: RnvConfig,
+    customPluginTemplates: Record<string, { npm: string }>,
+    scope = 'root'
+) => {
     logTask('_parsePluginTemplateDependencies', `scope:${scope}`);
     const missingDeps: Array<string> = [];
     if (customPluginTemplates) {
@@ -666,7 +678,7 @@ export const overrideFileContents = (dest: string, override, overridePath = '') 
     if (fsExistsSync(dest)) {
         let fileToFix = fsReadFileSync(dest).toString();
         let foundRegEx = false;
-        const failTerms = [];
+        const failTerms: Array<string> = [];
         Object.keys(override).forEach((fk) => {
             const regEx = new RegExp(`${getCleanRegExString(fk)}`, 'g');
             const count = (fileToFix.match(regEx) || []).length;
@@ -843,7 +855,7 @@ export const copyTemplatePluginsSync = (c) => {
         }
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
         const sourcePathRnvPlugin = getBuildsFolder(c, platform, path.join(c.paths.rnv.pluginTemplates.dir, key));
-        copyFolderContentsRecursiveSync(sourcePathRnvPlugin, destPath, true, false, false, objectInject);
+        copyFolderContentsRecursiveSync(sourcePathRnvPlugin, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
         const sourcePath3 = getBuildsFolder(
@@ -851,7 +863,7 @@ export const copyTemplatePluginsSync = (c) => {
             platform,
             path.join(c.paths.project.appConfigBase.dir, `plugins/${key}`)
         );
-        copyFolderContentsRecursiveSync(sourcePath3, destPath, true, false, false, objectInject);
+        copyFolderContentsRecursiveSync(sourcePath3, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGERS FROM PROJECT CONFIG (PRIVATE)
         const sourcePath3secLegacy = getBuildsFolder(
@@ -859,7 +871,7 @@ export const copyTemplatePluginsSync = (c) => {
             platform,
             path.join(c.paths.workspace.project.appConfigBase.dir_LEGACY, `plugins/${key}`)
         );
-        copyFolderContentsRecursiveSync(sourcePath3secLegacy, destPath, true, false, false, objectInject);
+        copyFolderContentsRecursiveSync(sourcePath3secLegacy, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
         const sourcePath3sec = getBuildsFolder(
@@ -867,7 +879,7 @@ export const copyTemplatePluginsSync = (c) => {
             platform,
             path.join(c.paths.workspace.project.appConfigBase.dir, `plugins/${key}`)
         );
-        copyFolderContentsRecursiveSync(sourcePath3sec, destPath, true, false, false, objectInject);
+        copyFolderContentsRecursiveSync(sourcePath3sec, destPath, true, undefined, false, objectInject);
 
         if (fsExistsSync(sourcePath3secLegacy)) {
             logWarning(`Path: ${chalk().red(sourcePath3secLegacy)} is DEPRECATED.
@@ -876,7 +888,7 @@ export const copyTemplatePluginsSync = (c) => {
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN
         const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfig.dir, `plugins/${key}`));
-        copyFolderContentsRecursiveSync(sourcePath2, destPath, true, false, false, objectInject);
+        copyFolderContentsRecursiveSync(sourcePath2, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
         const sourcePath2sec = getBuildsFolder(
@@ -884,7 +896,7 @@ export const copyTemplatePluginsSync = (c) => {
             platform,
             path.join(c.paths.workspace.appConfig.dir, `plugins/${key}`)
         );
-        copyFolderContentsRecursiveSync(sourcePath2sec, destPath, true, false, false, objectInject);
+        copyFolderContentsRecursiveSync(sourcePath2sec, destPath, true, undefined, false, objectInject);
 
         // FOLDER MERGES FROM SCOPED PLUGIN TEMPLATES
         Object.keys(c.paths.rnv.pluginTemplates.dirs).forEach((pathKey) => {
@@ -892,7 +904,7 @@ export const copyTemplatePluginsSync = (c) => {
                 const pluginTemplatePath = c.paths.rnv.pluginTemplates.dirs[pathKey];
 
                 const sourcePath4sec = getBuildsFolder(c, platform, path.join(pluginTemplatePath, key));
-                copyFolderContentsRecursiveSync(sourcePath4sec, destPath, true, false, false, objectInject);
+                copyFolderContentsRecursiveSync(sourcePath4sec, destPath, true, undefined, false, objectInject);
             }
         });
     });
@@ -930,10 +942,10 @@ export const getLocalRenativePlugin = () => ({
 });
 
 export const getModuleConfigs = (c: RnvConfig, primaryKey: string) => {
-    let modulePaths = [];
+    let modulePaths: Array<string> = [];
     const moduleAliases: Record<string, string | undefined> = {};
 
-    const doNotResolveModulePaths = [];
+    const doNotResolveModulePaths: Array<string> = [];
 
     // PLUGINS
     parsePlugins(

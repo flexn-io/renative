@@ -12,13 +12,14 @@ import {
     writeFileSync,
 } from '../../core/systemManager/fileutils';
 import { doResolve } from '../../core/systemManager/resolve';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
-export const taskRnvAppCreate = async (c: RnvConfig) => {
+export const taskRnvAppCreate: RnvTaskFn = async (c) => {
     logTask('taskRnvAppCreate');
 
     await configureRuntimeDefaults(c);
 
-    let sourcePath;
+    let sourcePath: string;
 
     if (c.program.sourceAppConfigID) {
         const sourceAppConfigDirPath = path.join(c.paths.project.appConfigsDir, c.program.sourceAppConfigID);
@@ -28,7 +29,7 @@ export const taskRnvAppCreate = async (c: RnvConfig) => {
         }
     } else if (c.program.ci) {
         const tacPath = doResolve(c.buildConfig.currentTemplate);
-        if (fsExistsSync(tacPath)) {
+        if (tacPath && fsExistsSync(tacPath)) {
             const tacDirsPath = path.join(tacPath, 'appConfigs');
             const tacDirs = fsReaddirSync(tacDirsPath);
             tacDirs.forEach((v) => {
@@ -41,8 +42,13 @@ export const taskRnvAppCreate = async (c: RnvConfig) => {
             });
         }
     } else {
-        const appConfigChoicesObj = {};
-        const appConfigChoices = [];
+        const appConfigChoicesObj: Record<
+            string,
+            {
+                path: string;
+            }
+        > = {};
+        const appConfigChoices: Array<string> = [];
         // Project Configs
         const acDirs = fsReaddirSync(c.paths.project.appConfigsDir);
         acDirs.forEach((v) => {
@@ -60,7 +66,7 @@ export const taskRnvAppCreate = async (c: RnvConfig) => {
 
         // Template Configs
         const tacPath = doResolve(c.buildConfig.currentTemplate);
-        if (fsExistsSync(tacPath)) {
+        if (tacPath && fsExistsSync(tacPath)) {
             const tacDirsPath = path.join(tacPath, 'appConfigs');
             const tacDirs = fsReaddirSync(tacDirsPath);
             tacDirs.forEach((v) => {

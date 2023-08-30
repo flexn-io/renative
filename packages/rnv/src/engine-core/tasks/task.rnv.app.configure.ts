@@ -13,7 +13,7 @@ const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
     const filePath = path.join(appConfigsDir, 'renative.json');
     if (fsExistsSync(filePath)) {
         try {
-            const renativeConf = JSON.parse(fsReadFileSync(filePath));
+            const renativeConf = JSON.parse(fsReadFileSync(filePath).toString());
             return { dir: dirName, id: renativeConf.id };
         } catch (e) {
             logError(`File ${filePath} is MALFORMED:\n${e}`);
@@ -22,7 +22,7 @@ const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
     return { dir: dirName, id: null };
 };
 
-const _askUserAboutConfigs = async (c: RnvConfig, dir, id, basePath) => {
+const _askUserAboutConfigs = async (c: RnvConfig, dir: string, id: string, basePath: string) => {
     logTask('_askUserAboutConfigs');
     logWarning(
         `AppConfig error - It seems you have a mismatch between appConfig folder name (${dir}) and the id defined in renative.json (${id}). They must match.`
@@ -64,7 +64,7 @@ const _askUserAboutConfigs = async (c: RnvConfig, dir, id, basePath) => {
 
     if (choice === 'keepFolder') {
         const filePath = path.join(basePath, dir, 'renative.json');
-        const fileContents = JSON.parse(fsReadFileSync(filePath));
+        const fileContents = JSON.parse(fsReadFileSync(filePath).toString());
         fileContents.id = dir;
         conf.id = dir;
 
@@ -75,7 +75,7 @@ const _askUserAboutConfigs = async (c: RnvConfig, dir, id, basePath) => {
 };
 
 /* eslint-disable no-await-in-loop */
-const matchAppConfigID = async (c: RnvConfig, appConfigID) => {
+const matchAppConfigID = async (c: RnvConfig, appConfigID: string) => {
     logTask('matchAppConfigID', `appId:${appConfigID}`);
 
     if (!appConfigID) return false;

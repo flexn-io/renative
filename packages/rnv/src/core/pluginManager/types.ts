@@ -1,1 +1,1 @@
-export type PluginCallback = () => void;
+export type PluginCallback = (plugin, pluginPlat, key: string) => void;

@@ -12,11 +12,16 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { RnvConfig } from '../configManager/types';
 import { RnvTask, RnvTaskMap } from '../taskManager/types';
 import { RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
-import { RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
+import { RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
 
 const ENGINE_CORE = 'engine-core';
 
-export const registerEngine = async (c: RnvConfig, engine, platform: RnvPlatform, engConfig) => {
+export const registerEngine = async (
+    c: RnvConfig,
+    engine: RnvEngine,
+    platform?: RnvPlatform,
+    engConfig?: RnvEngineConfig
+) => {
     logTask(`registerEngine:${engine.config.id}`);
     c.runtime.enginesById[engine.config.id] = engine;
     engine.initializeRuntimeConfig(c);
@@ -33,7 +38,7 @@ export const registerEngine = async (c: RnvConfig, engine, platform: RnvPlatform
     _registerEnginePlatform(c, platform, engine);
 };
 
-const _registerEnginePlatform = (c: RnvConfig, platform: RnvPlatform, engine) => {
+const _registerEnginePlatform = (c: RnvConfig, platform: RnvPlatform, engine: RnvEngine) => {
     if (platform) {
         c.runtime.enginesByPlatform[platform] = engine;
     }
@@ -114,7 +119,7 @@ export const configureEngines = async (c: RnvConfig) => {
     return true;
 };
 
-export const registerMissingPlatformEngines = async (c: RnvConfig, taskInstance) => {
+export const registerMissingPlatformEngines = async (c: RnvConfig, taskInstance?: RnvTask) => {
     logTask('registerMissingPlatformEngines');
     if (
         !taskInstance ||
@@ -319,11 +324,11 @@ const _getFilteredEngines = (c: RnvConfig) => {
     return filteredEngines;
 };
 
-export const loadEngines = async (c: RnvConfig, failOnMissingDeps: boolean): Promise<boolean> => {
+export const loadEngines = async (c: RnvConfig, failOnMissingDeps?: boolean): Promise<boolean> => {
     logTask('loadEngines');
     if (!fsExistsSync(c.paths.project.config)) return true;
 
-    const filteredEngines = _getFilteredEngines(c);
+    const filteredEngines: Record<string, object> = _getFilteredEngines(c);
     const enginesToInstall: Array<RnvEngineInstallConfig> = [];
     const readyEngines: Array<RnvEngineInstallConfig> = [];
     const engineConfigs: Array<RnvEngineInstallConfig> = [];

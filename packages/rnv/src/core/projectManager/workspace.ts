@@ -2,8 +2,9 @@ import path from 'path';
 import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/logger';
 import { writeFileSync, mkdirSync, fsExistsSync } from '../systemManager/fileutils';
+import { RnvConfig } from '../configManager/types';
 
-export const createWorkspace = async (c: RnvConfig, workspaceID, workspacePath) => {
+export const createWorkspace = async (c: RnvConfig, workspaceID: string, workspacePath: string) => {
     c.files.rnv.configWorkspaces.workspaces[workspaceID] = {
         path: workspacePath,
     };
@@ -70,7 +71,7 @@ export const getWorkspaceDirPath = async (c: RnvConfig) => {
     return dirPath;
 };
 
-export const getWorkspaceConnectionString = (obj) => {
+export const getWorkspaceConnectionString = (obj: any) => {
     const remoteUrl = obj.remote?.url;
     const connectMsg = remoteUrl ? chalk().green(`(${obj.remote.type}:${remoteUrl})`) : '';
     return connectMsg;

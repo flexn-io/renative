@@ -3,7 +3,7 @@ import { RnvConfig } from '../configManager/types';
 export type RnvTask = {
     task: string;
     params: Array<RnvTaskParameter>;
-    isGlobalScope: boolean;
+    isGlobalScope?: boolean;
     platforms: Array<string>;
     description: string;
 };

@@ -106,6 +106,7 @@ export const taskRnvClean = async (c: RnvConfig, skipQuestionParam = false) => {
         builds: false,
         cache: false,
         nothingToClean: !skipQuestion,
+        locals: false,
     };
 
     if (pathsToRemove.length) {

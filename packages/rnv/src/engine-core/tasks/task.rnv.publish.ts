@@ -6,6 +6,7 @@ import { writeFileSync } from '../../core/systemManager/fileutils';
 import { executeTask } from '../../core/taskManager';
 import { TASK_PUBLISH, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
 import { RnvTaskFn } from '../../core/taskManager/types';
+import { checkRequiredPackage } from '../../core/configManager/packageParser';
 
 const includesPre = (version: string) => {
     if (version.includes('alpha')) return 'alpha';
@@ -34,7 +35,7 @@ export const taskRnvPublish: RnvTaskFn = async (c, _parentTask, originTask) => {
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PUBLISH, originTask);
 
     // make sure release-it is installed
-    await Config.checkRequiredPackage(c, 'release-it', '12.4.3', 'devDependencies');
+    await checkRequiredPackage(c, 'release-it', '12.4.3', 'devDependencies');
     // make sure required object is present in package.json
     const pkgJson = c.files.project.package;
     const existingPath = c.paths.project.package;
