@@ -17,6 +17,8 @@ import {
 } from '../../constants';
 import { isSystemWin, isUrlLocalhost } from '../../systemManager/utils';
 import { RnvConfig } from '../../configManager/types';
+import { WebosDevice } from '../types';
+import { RnvError } from '../../types';
 
 export const launchWebOSimulator = (c: RnvConfig) => {
     logTask('launchWebOSimulator');
@@ -47,7 +49,7 @@ export const launchWebOSimulator = (c: RnvConfig) => {
 //     }
 // };
 
-const parseDevices = (c: RnvConfig, devicesResponse: string) => {
+const parseDevices = (c: RnvConfig, devicesResponse: string): Promise<Array<WebosDevice>> => {
     const linesArray = devicesResponse
         .split('\n')
         .slice(2)
@@ -65,7 +67,7 @@ const parseDevices = (c: RnvConfig, devicesResponse: string) => {
                     silent: true,
                     timeout: 10000,
                 });
-            } catch (e) {
+            } catch (e: RnvError) {
                 deviceInfo = e;
             }
 
@@ -101,7 +103,7 @@ const installAndLaunchApp = async (c: RnvConfig, target: string, appPath: string
     return toReturn;
 };
 
-const buildDeviceChoices = (devices) =>
+const buildDeviceChoices = (devices: Array<WebosDevice>) =>
     devices.map((device) => ({
         key: device.name,
         name: `${device.name} - ${device.device}`,

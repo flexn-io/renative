@@ -28,26 +28,26 @@ export const fsCopyFileSync = (source: string, dest: string) => {
     fs.copyFileSync(source, dest);
 };
 
-export const fsExistsSync = (dest: fs.PathLike) => fs.existsSync(dest);
+export const fsExistsSync = (dest: fs.PathLike | undefined) => fs.existsSync(dest!);
 
-export const fsReaddirSync = (dest: fs.PathLike) => fs.readdirSync(dest);
+export const fsReaddirSync = (dest: fs.PathLike | undefined) => fs.readdirSync(dest!);
 
-export const fsLstatSync = (dest: fs.PathLike) => fs.lstatSync(dest);
+export const fsLstatSync = (dest: fs.PathLike | undefined) => fs.lstatSync(dest!);
 
-export const fsReadFileSync = (dest: fs.PathLike) => fs.readFileSync(dest);
+export const fsReadFileSync = (dest: fs.PathLike | undefined) => fs.readFileSync(dest!);
 
-export const fsChmodSync = (dest: fs.PathLike, flag: fs.Mode) => fs.chmodSync(dest, flag);
+export const fsChmodSync = (dest: fs.PathLike | undefined, flag: fs.Mode) => fs.chmodSync(dest!, flag);
 
-export const fsRenameSync = (arg1: fs.PathLike, arg2: fs.PathLike) => fs.renameSync(arg1, arg2);
+export const fsRenameSync = (arg1: fs.PathLike | undefined, arg2: fs.PathLike) => fs.renameSync(arg1!, arg2);
 
-export const fsStatSync = (arg1: fs.PathLike) => fs.statSync(arg1);
+export const fsStatSync = (arg1: fs.PathLike | undefined) => fs.statSync(arg1!);
 
-export const fsMkdirSync = (arg1: fs.PathLike) => fs.mkdirSync(arg1);
+export const fsMkdirSync = (arg1: fs.PathLike | undefined) => fs.mkdirSync(arg1!);
 
-export const fsUnlinkSync = (arg1: fs.PathLike) => fs.unlinkSync(arg1);
+export const fsUnlinkSync = (arg1: fs.PathLike | undefined) => fs.unlinkSync(arg1!);
 
-export const fsSymlinkSync = (arg1: fs.PathLike, arg2: fs.PathLike) => {
-    fs.symlinkSync(arg1, arg2);
+export const fsSymlinkSync = (arg1: fs.PathLike | undefined, arg2: fs.PathLike) => {
+    fs.symlinkSync(arg1!, arg2);
 };
 
 export const fsReadFile = (arg1: fs.PathLike, arg2: any) => {
@@ -267,7 +267,7 @@ export const copyFolderRecursiveSync = (
 };
 
 export const copyFolderContentsRecursiveSync = (
-    source: string | null,
+    source: string | null | undefined,
     target: string,
     convertSvg = true,
     skipPaths?: Array<string>,
@@ -475,7 +475,7 @@ export const writeObjectSync = (filePath: string, obj: string | object, spaces: 
     return writeFileSync(filePath, obj, spaces, addNewLine);
 };
 
-export const readObjectSync = (filePath: string, sanitize?: boolean, c?: RnvConfig) => {
+export const readObjectSync = (filePath?: string, sanitize?: boolean, c?: RnvConfig) => {
     logDebug(`readObjectSync:${sanitize}:${filePath}`);
     if (!filePath) {
         logDebug('readObjectSync: filePath is undefined');

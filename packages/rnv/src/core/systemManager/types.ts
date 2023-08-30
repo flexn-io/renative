@@ -1,7 +1,7 @@
 export type ExecOptions = {
     interactive?: boolean;
     silent?: boolean;
-    stdio?: 'pipe' | 'inherit';
+    stdio?: 'pipe' | 'inherit' | 'ignore';
     shell?: boolean;
     localDir?: string;
     preferLocal?: boolean;

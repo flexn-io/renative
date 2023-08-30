@@ -27,7 +27,7 @@ export const getAppleDevices = async (c: RnvConfig, ignoreDevices?: boolean, ign
     }
     const res = await executeAsync('xcrun simctl list --json');
     const simctl = JSON.parse(res.toString());
-    const availableSims = [];
+    const availableSims: Array<AppleDevice> = [];
     Object.keys(simctl.devices).forEach((runtime) => {
         logDebug('runtime', runtime);
         simctl.devices[runtime].forEach((device) => {

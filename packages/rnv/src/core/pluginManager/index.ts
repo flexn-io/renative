@@ -536,7 +536,7 @@ export const loadPluginTemplates = async (c: RnvConfig) => {
 
 const _parsePluginTemplateDependencies = (
     c: RnvConfig,
-    customPluginTemplates: Record<string, { npm: string }>,
+    customPluginTemplates: Record<string, { npm: string; path: string }>,
     scope = 'root'
 ) => {
     logTask('_parsePluginTemplateDependencies', `scope:${scope}`);
@@ -738,7 +738,7 @@ export const installPackageDependenciesAndPlugins = async (c: RnvConfig) => {
     await checkForPluginDependencies(c);
 };
 
-const _getPluginConfiguration = (c: RnvConfig, pluginName) => {
+const _getPluginConfiguration = (c: RnvConfig, pluginName: string) => {
     let renativePluginPath;
     try {
         renativePluginPath = require.resolve(`${pluginName}/renative.plugin.json`, { paths: [c.paths.project.dir] });
@@ -837,7 +837,7 @@ export const overrideTemplatePlugins = async (c: RnvConfig) => {
     return true;
 };
 
-export const copyTemplatePluginsSync = (c) => {
+export const copyTemplatePluginsSync = (c: RnvConfig) => {
     const { platform } = c;
     const destPath = path.join(getAppFolder(c));
 

@@ -66,7 +66,7 @@ const SDK_LOCATIONS: Record<string, Array<string>> = {
     webos: [path.join('/opt/webOS_TV_SDK'), path.join('C:\\webOS_TV_SDK')],
 };
 
-const _logSdkWarning = (c) => {
+const _logSdkWarning = (c: RnvConfig) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
 };
 
@@ -169,9 +169,9 @@ export const checkAndConfigureSdks = async (c: RnvConfig) => {
     }
 };
 
-const _getCurrentSdkPath = (c) => c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]];
+const _getCurrentSdkPath = (c: RnvConfig) => c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]];
 
-const _isSdkInstalled = (c) => {
+const _isSdkInstalled = (c: RnvConfig) => {
     logTask('_isSdkInstalled');
 
     if (!SDK_PLATFORMS[c.platform]) return true;
@@ -199,7 +199,7 @@ const _findFolderWithFile = (dir, fileToFind) => {
     return foundDir;
 };
 
-const _attemptAutoFix = async (c: RnvConfig, sdkPlatform: string, sdkKey: string, traverseUntilFoundFile?: boolean) => {
+const _attemptAutoFix = async (c: RnvConfig, sdkPlatform: string, sdkKey: string, traverseUntilFoundFile?: string) => {
     logTask('_attemptAutoFix');
 
     if (c.program.hosted) {

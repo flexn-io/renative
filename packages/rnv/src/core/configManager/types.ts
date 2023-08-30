@@ -99,7 +99,7 @@ export interface RnvConfig {
                 //ADDON
                 dir?: string;
                 config?: string;
-                dirs: Array<string>;
+                dirs: Record<string, string>;
             };
             platformTemplates: Record<string, any>;
             projectTemplates: Record<string, any>;
@@ -347,6 +347,9 @@ export type RenativeConfigFile = {
             buildSchemes: Record<string, RenativeConfigBuildScheme>;
             entryFile?: string;
             runtime: Record<string, any>;
+            appName: string;
+            id: string;
+            certificateProfile: string;
         }
     >;
     templates: Record<

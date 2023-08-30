@@ -1,9 +1,8 @@
-import path from 'path';
-
 import { fsExistsSync, getRealPath } from '../../systemManager/fileutils';
 import { chalk, logTask } from '../../systemManager/logger';
 import { KAIOS_SDK } from '../../constants';
 import { RnvConfig } from '../../configManager/types';
+import { RnvError } from '../../types';
 
 const childProcess = require('child_process');
 
@@ -22,14 +21,14 @@ export const launchKaiOSSimulator = (c: RnvConfig) =>
             return;
         }
 
-        const ePath = getRealPath(path.join(c.buildConfig?.sdks?.KAIOS_SDK));
+        const ePath = getRealPath(c, c.buildConfig?.sdks?.KAIOS_SDK);
 
         if (ePath && !fsExistsSync(ePath)) {
             reject(`Can't find emulator at path: ${ePath}`);
             return;
         }
 
-        childProcess.exec(`open ${ePath}`, (err) => {
+        childProcess.exec(`open ${ePath}`, (err: RnvError) => {
             if (err) {
                 reject(err);
                 return;

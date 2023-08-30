@@ -7,6 +7,8 @@ import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, RENATIVE_CONFIG_NAME } fr
 import { execCLI } from '../../systemManager/exec';
 import { fsRenameSync } from '../../systemManager/fileutils';
 import { chalk, logDebug, logError, logInfo, logTask, logToSummary, logWarning } from '../../systemManager/logger';
+import { RnvError } from '../../types';
+import { TizenDevice, TizenSecurityConfig } from '../types';
 import { waitForEmulator } from './common';
 
 const xml2js = require('xml2js');
@@ -55,8 +57,8 @@ export const listTizenTargets = async (c: RnvConfig) => {
     logToSummary(`Tizen Targets:\n${targetStr}`);
 };
 
-export const createDevelopTizenCertificate = (c) =>
-    new Promise((resolve) => {
+export const createDevelopTizenCertificate = (c: RnvConfig) =>
+    new Promise<void>((resolve) => {
         logTask('createDevelopTizenCertificate');
 
         const certDirPath = c.paths.workspace.dir;
@@ -83,7 +85,7 @@ export const createDevelopTizenCertificate = (c) =>
             });
     });
 
-export const addDevelopTizenCertificate = (c: RnvConfig, secureProfileConfig) =>
+export const addDevelopTizenCertificate = (c: RnvConfig, secureProfileConfig: TizenSecurityConfig) =>
     new Promise<void>((resolve) => {
         logTask('addDevelopTizenCertificate');
 
@@ -105,7 +107,7 @@ const _getDeviceID = async (c: RnvConfig, target: string) => {
         let connectResponse: string;
         try {
             connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
-        } catch (e) {
+        } catch (e: RnvError) {
             connectResponse = e;
         }
         if (connectResponse.includes('EPERM')) {
@@ -143,7 +145,7 @@ const _getRunningDevices = async (c: RnvConfig) => {
         .trim()
         .split(/\r?\n/)
         .filter((line) => !line.includes('List of devices'));
-    const devices = [];
+    const devices: Array<TizenDevice> = [];
 
     await Promise.all(
         lines.map(async (line) => {
@@ -188,7 +190,7 @@ const _getRunningDevices = async (c: RnvConfig) => {
     return devices;
 };
 
-const _waitForEmulatorToBeReady = (c: RnvConfig, target) =>
+const _waitForEmulatorToBeReady = (c: RnvConfig, target: string) =>
     waitForEmulator(c, CLI_SDB_TIZEN, 'devices', (res) => {
         const lines = res.trim().split(/\r?\n/);
         const devices = lines.filter((line) => line.includes(target) && line.includes('device'));
@@ -241,7 +243,7 @@ export const runTizenSimOrDevice = async (c: RnvConfig, buildCoreWebpackProject:
     const wgtClean = `${platformConfig.appName.replace(/[^a-z0-9]/gi, '_')}.wgt`;
     const certProfile = platformConfig.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
-    let deviceID;
+    let deviceID: string;
 
     const askForEmulator = async () => {
         const { startEmulator } = await inquirer.prompt([
@@ -292,7 +294,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
             await execCLI(c, CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, { ignoreErrors: true });
             hasDevice = true;
-        } catch (e) {
+        } catch (e: RnvError) {
             if (e && e.includes && e.includes('No device matching')) {
                 await launchTizenSimulator(c, target);
                 hasDevice = await _waitForEmulatorToBeReady(c, target);
@@ -305,13 +307,13 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
                 );
                 fsRenameSync(path.join(tOut, wgt), path.join(tOut, wgtClean));
             }
-        } catch (err) {
+        } catch (err: RnvError) {
             logError(err);
         }
         try {
             await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${wgtClean} -t ${deviceID}`);
             hasDevice = true;
-        } catch (err) {
+        } catch (err: RnvError) {
             logError(err);
             logWarning(
                 `There is no emulator or device connected! Let's try to launch it. "${chalk().white.bold(

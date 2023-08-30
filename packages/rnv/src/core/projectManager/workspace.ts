@@ -77,7 +77,7 @@ export const getWorkspaceConnectionString = (obj: any) => {
     return connectMsg;
 };
 
-export const getWorkspaceOptions = (c) =>
+export const getWorkspaceOptions = (c: RnvConfig) =>
     generateOptions(c.files.rnv.configWorkspaces?.workspaces, false, null, (i, obj, mapping, defaultVal) => {
         logDebug('getWorkspaceOptions');
 
