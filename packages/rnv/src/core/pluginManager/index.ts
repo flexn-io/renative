@@ -19,13 +19,12 @@ import {
 import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../systemManager/logger';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { doResolve, doResolvePath } from '../systemManager/resolve';
-import { RnvConfig } from '../configManager/types';
-import { RnvPlatform } from '../types';
+import { RenativeConfigPlugin, RnvConfig } from '../configManager/types';
 import { ResolveOptions } from '../systemManager/types';
-import { PluginCallback } from './types';
+import { PluginCallback, PluginListResponse, RnvPlugin, RnvPluginPlatform, RnvPluginScope } from './types';
 
 export const getPluginList = (c: RnvConfig, isUpdate = false) => {
-    const output = {
+    const output: PluginListResponse = {
         asString: '',
         asArray: [],
         plugins: [],
@@ -55,10 +54,12 @@ export const getPluginList = (c: RnvConfig, isUpdate = false) => {
             if (isUpdate && installedPlugin) {
                 output.plugins.push(k);
                 let versionString;
-                if (installedPlugin.version !== p.version) {
-                    versionString = `(${chalk().yellow(installedPlugin.version)}) => (${chalk().green(p.version)})`;
+                const installedPluginVersion =
+                    typeof installedPlugin !== 'string' ? installedPlugin.version : installedPlugin;
+                if (installedPluginVersion !== p.version) {
+                    versionString = `(${chalk().yellow(installedPluginVersion)}) => (${chalk().green(p.version)})`;
                 } else {
-                    versionString = `(${chalk().green(installedPlugin.version)})`;
+                    versionString = `(${chalk().green(installedPluginVersion)})`;
                 }
                 output.asString += ` [${i}]> ${chalk().bold(k)} ${versionString}\n`;
                 output.asArray.push({
@@ -99,12 +100,12 @@ export const getPluginList = (c: RnvConfig, isUpdate = false) => {
     return output;
 };
 
-const _getPluginScope = (plugin) => {
-    if (typeof plugin === 'string' || plugin instanceof String) {
+const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
+    if (typeof plugin === 'string') {
         if (plugin.startsWith('source:')) {
-            return { scope: plugin.split(':').pop() };
+            return { scope: plugin.split(':').pop() || 'rnv' };
         }
-        return { npmVersion: plugin };
+        return { npmVersion: plugin, scope: 'rnv' };
     }
     if (plugin?.source) {
         return { scope: plugin?.source };
@@ -118,8 +119,8 @@ export const getMergedPlugin = (c: RnvConfig, key: string) => {
     const plugin = c.buildConfig.plugins?.[key];
     if (!plugin) return null;
 
-    const scopes = [];
-    const mergedPlugin = _getMergedPlugin(c, plugin, key, null, scopes);
+    const scopes: Array<string> = [];
+    const mergedPlugin = _getMergedPlugin(c, plugin, key, undefined, scopes);
     scopes.reverse();
     // if (!mergedPlugin.version) {
     //     logWarning(`Plugin ${key} has no version`);
@@ -132,18 +133,19 @@ export const getMergedPlugin = (c: RnvConfig, key: string) => {
 
 const _getMergedPlugin = (
     c: RnvConfig,
-    plugin,
+    plugin: RenativeConfigPlugin | string,
     pluginKey: string,
     parentScope?: string,
     scopes?: Array<string>,
     skipSanitize?: boolean
-) => {
+): RnvPlugin => {
     if (!plugin) {
         return {};
     }
 
     const { scope, npmVersion } = _getPluginScope(plugin);
-    if (scope === parentScope) return plugin;
+    const mergedPlgn: RnvPlugin = typeof plugin !== 'string' ? plugin : {};
+    if (scope === parentScope) return mergedPlgn;
 
     if (npmVersion) {
         return {
@@ -174,16 +176,18 @@ const _getMergedPlugin = (
         scopes,
         true
     );
-    let currentPlugin = plugin;
+    let currentPlugin: RenativeConfigPlugin;
     if (typeof plugin === 'string' || plugin instanceof String) {
         currentPlugin = {};
+    } else {
+        currentPlugin = plugin;
     }
     INJECTABLE_CONFIG_PROPS.forEach((v) => {
         c.configPropsInjects[v] = getConfigProp(c, c.platform, v);
     });
     if (currentPlugin.pluginDependencies) {
         Object.keys(currentPlugin.pluginDependencies).forEach((plugDepKey) => {
-            if (currentPlugin.pluginDependencies[plugDepKey] === 'source:self') {
+            if (currentPlugin.pluginDependencies?.[plugDepKey] === 'source:self') {
                 currentPlugin.pluginDependencies[plugDepKey] = `source:${parentScope}`;
             }
         });
@@ -204,7 +208,7 @@ const _getMergedPlugin = (
           });
 
     // IMPORTANT: only final top level merge should be sanitized
-    const mergedPlugin = skipSanitize
+    const mergedPlugin: RnvPlugin = skipSanitize
         ? obj
         : sanitizeDynamicProps(obj, {
               files: c.files,
@@ -350,14 +354,19 @@ export const resolvePluginDependants = async (c: RnvConfig) => {
         const pluginKeys = Object.keys(plugins);
         for (let i = 0; i < pluginKeys.length; i++) {
             const key = pluginKeys[i];
-            await _resolvePluginDependencies(c, key, plugins[key], null);
+            await _resolvePluginDependencies(c, key, plugins[key]);
         }
     }
 
     return true;
 };
 
-const _resolvePluginDependencies = async (c: RnvConfig, key: string, keyScope: string | null, parentKey: string) => {
+const _resolvePluginDependencies = async (
+    c: RnvConfig,
+    key: string,
+    keyScope: RenativeConfigPlugin | string,
+    parentKey?: string
+) => {
     // IMPORTANT: Do not cache this valuse as they need to be refreshed every
     // round in case new plugin has been installed and c.buildConfig generated
     if (keyScope === null) {
@@ -409,7 +418,7 @@ const _resolvePluginDependencies = async (c: RnvConfig, key: string, keyScope: s
 
 export const parsePlugins = (
     c: RnvConfig,
-    platform: RnvPlatform,
+    platform: RnvPluginPlatform,
     pluginCallback: PluginCallback,
     ignorePlatformObjectCheck?: boolean
 ) => {
@@ -632,7 +641,7 @@ const _overridePlugin = (c: RnvConfig, pluginsPath: string, dir: string) => {
     }
 
     let overridePath: string;
-    if (plugin.version) {
+    if (plugin?.version) {
         const pluginVerArr = plugin.version.split('.');
         const pluginVersions: Array<string> = [];
         let prevVersion: string;
@@ -804,6 +813,8 @@ export const checkForPluginDependencies = async (c: RnvConfig) => {
     }
 };
 
+// const getPluginPlatformFromString = (p: string): RnvPluginPlatform => p as RnvPluginPlatform;
+
 export const overrideTemplatePlugins = async (c: RnvConfig) => {
     logTask('overrideTemplatePlugins');
 
@@ -812,7 +823,7 @@ export const overrideTemplatePlugins = async (c: RnvConfig) => {
     const appBasePluginDir = c.paths.project.appConfigBase.pluginsDir;
     parsePlugins(
         c,
-        c.platform,
+        c.platform as RnvPluginPlatform,
         (plugin, pluginPlat, key) => {
             if (plugin?._scopes?.length) {
                 plugin._scopes.forEach((pluginScope) => {

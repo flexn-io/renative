@@ -18,7 +18,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
     const o = getPluginList(c);
 
     const selPlugin = selPluginKey && o.allPlugins[selPluginKey];
-    const selectedPlugins: Record<string, string> = {};
+    const selectedPlugins: Record<string, object> = {};
     const installMessage = [];
 
     if (!selPlugin) {

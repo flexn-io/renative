@@ -201,6 +201,7 @@ export interface RnvConfig {
             configsLocal: Array<string>;
             dir: string;
             dirs: Array<string>;
+            pluginDirs: Array<string>;
         };
         // EXTRA
         buildHooks: {
@@ -358,13 +359,7 @@ export type RenativeConfigFile = {
             version: string;
         }
     >;
-    plugins: Record<
-        string,
-        {
-            'no-npm': boolean;
-            version: string;
-        }
-    >;
+    plugins: Record<string, RenativeConfigPlugin | string>;
     currentTemplate: string;
     projectTemplates: object;
     platformTemplatesDirs: Record<string, string>;
@@ -380,6 +375,24 @@ export type RenativeConfigFile = {
     pluginTemplates: Record<string, any>;
     runtime: Record<string, any>;
     defaultTargets: Record<string, string>;
+};
+
+export type RenativeConfigPlugin = {
+    source?: string;
+    'no-npm'?: boolean;
+    'no-active'?: boolean;
+    version?: string;
+    pluginDependencies?: Record<string, string>;
+    ios?: any;
+    android?: any;
+    tvos?: any;
+    androidtv?: any;
+    web?: any;
+    webpack?: any;
+    npm?: Record<string, string>;
+    enabled?: boolean;
+    deprecated?: boolean;
+    plugins?: Record<string, string>;
 };
 
 export type RenativeConfigBuildScheme = Record<string, any>;

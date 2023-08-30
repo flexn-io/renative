@@ -388,16 +388,17 @@ export const logHook = (hook = '', msg = '') => {
     );
 };
 
-export const logWarning = (msg: string) => {
+export const logWarning = (msg: string | boolean) => {
+    const msgSn = typeof msg === 'string' ? _sanitizePaths(msg) : String(msg);
     if (_jsonOnly) {
         return _printJson({
             type: 'log',
             level: 'warning',
             task: stripAnsi(_getCurrentTask()),
-            message: stripAnsi(_sanitizePaths(msg)),
+            message: stripAnsi(msgSn),
         });
     }
-    logAndSave(currentChalk.yellow(`[ warn ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
+    logAndSave(currentChalk.yellow(`[ warn ]${_getCurrentTask()} ${msgSn}`));
 };
 
 export const logInfo = (msg: string) => {
