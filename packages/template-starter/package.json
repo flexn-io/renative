@@ -87,10 +87,11 @@
         "@rnv/engine-rn-tvos": "0.37.3",
         "@rnv/engine-rn-web": "0.37.3",
         "@rnv/renative": "0.37.3",
-        "@types/react": "18.0.11",
-        "@types/react-dom": "18.0.5",
-        "@types/react-native": "0.67.2",
-        "babel-jest": "26.6.3",
+        "@types/react": "18.2.6",
+        "@types/react-dom": "18.2.6",
+        "@types/react-native": "0.72.2",
+        "@react-native/metro-config": "^0.72.11",
+        "babel-jest": "29.2.1",
         "babel-loader": "8.3.0",
         "detox": "18.20.2",
         "jetifier": "1.6.5",
@@ -98,9 +99,11 @@
         "react": "18.2.0",
         "react-art": "18.2.0",
         "react-dom": "18.2.0",
-        "react-native": "0.67.2",
+        "react-native": "0.72.4",
         "react-native-gesture-handler": "2.9.0",
-        "rnv": "0.37.3"
+        "metro-react-native-babel-preset": "0.76.8",
+        "rnv": "0.37.3",
+        "xcode": "2.1.0"
     },
     "private": false,
     "publishConfig": {
@@ -117,5 +120,6 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    }
+    },
+    "dependencies": {}
 }
