@@ -2,4 +2,4 @@
 import { AppRegistry } from 'react-native';
 import App from '../app';
 
-AppRegistry.registerComponent('TestRNProject', () => App);
+AppRegistry.registerComponent('RNVApp', () => App);
