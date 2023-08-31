@@ -7,10 +7,10 @@ export interface RnvConfig {
     command: string | null;
     subCommand: string | null;
     buildConfig: RenativeConfigFile & {
-        _meta: {
+        _meta?: {
             currentAppConfigId: string;
         };
-        _refs: any;
+        _refs?: any;
     };
     assetConfig: object;
     platform: RnvPlatform;

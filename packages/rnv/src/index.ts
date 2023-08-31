@@ -47,7 +47,9 @@ export const initializeBuilder = async (cmd: string, subCmd: string, process: an
     const c = ConfigManager.createRnvConfig(program, process, cmd, subCmd);
     Logger.logInitialize();
 
+    //@ts-ignore
     global.fetch = await import('node-fetch');
+    //@ts-ignore
     global.Headers = global.fetch.Headers;
 
     return c;

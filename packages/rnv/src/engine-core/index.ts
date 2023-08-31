@@ -41,11 +41,14 @@ import taskRnvTargetList from './tasks/task.rnv.target.list';
 import taskRnvTargetLaunch from './tasks/task.rnv.target.launch';
 import taskRnvLink from './tasks/task.rnv.link';
 import taskRnvUnlink from './tasks/task.rnv.unlink';
+import { RnvEngine } from '../core/engineManager/types';
 
-export default {
+const engine: RnvEngine = {
     initializeRuntimeConfig: () => {
         //Do nothing
     },
+    runtimeExtraProps: {},
+    serverDirName: '',
     tasks: generateEngineTasks([
         taskRnvCryptoDecrypt,
         taskRnvCryptoEncrypt,
@@ -98,5 +101,7 @@ export default {
     package: {},
     projectDirName: '',
     ejectPlatform: null,
-    platforms: null,
+    platforms: {},
 };
+
+export default engine;

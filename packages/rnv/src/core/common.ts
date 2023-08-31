@@ -220,6 +220,10 @@ export const getTemplateProjectDir = (c: RnvConfig) => {
         logError('getTemplateProjectDir not available without specific engine');
         return null;
     }
+    if (!c.runtime.engine.projectDirName) {
+        logError('c.runtime.engine.projectDirName missing');
+        return null;
+    }
     return path.join(getTemplateDir(c), c.runtime.engine.projectDirName);
 };
 

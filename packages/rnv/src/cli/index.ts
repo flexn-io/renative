@@ -37,7 +37,7 @@ const run = async (c: RnvConfig) => {
     }
     // Skip babel.config creation until template check
     // await checkAndCreateBabelConfig(c);
-    await initializeTask(c, taskInstance.task);
+    if (taskInstance?.task) await initializeTask(c, taskInstance?.task);
 };
 
 export default run;

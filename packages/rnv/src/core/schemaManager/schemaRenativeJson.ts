@@ -962,6 +962,8 @@ const generateBuildSchemeProps = (obj: any) => ({
             type: 'object',
             additionalProperties: false,
             properties: {
+                ...platformCommonProps,
+                ...obj,
                 enabled: {
                     type: 'boolean',
                 },
@@ -971,8 +973,6 @@ const generateBuildSchemeProps = (obj: any) => ({
                         'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`',
                     examples: ['This is some build scheme'],
                 },
-                ...platformCommonProps,
-                ...obj,
             },
         },
         type: 'object',

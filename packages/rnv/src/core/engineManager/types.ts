@@ -2,17 +2,19 @@ import { RnvConfig } from '../configManager/types';
 import { RnvTaskMap } from '../taskManager/types';
 
 export type RnvEngine = {
-    originalTemplatePlatformsDir: string;
+    originalTemplatePlatformsDir?: string;
     platforms: Record<string, RnvEnginePlatform>;
     config: RnvEngineConfig;
     tasks: RnvTaskMap;
     initializeRuntimeConfig: (c: RnvConfig) => void;
-    rootPath: string;
-    originalTemplatePlatformProjectDir: string;
+    rootPath?: string;
+    originalTemplatePlatformProjectDir?: string;
     projectDirName: string;
     runtimeExtraProps: any;
     outputDirName?: string;
-    serverDirName?: string;
+    serverDirName: string;
+    package: any;
+    ejectPlatform: any;
 };
 
 export type RnvEnginePlatform = {
@@ -22,11 +24,12 @@ export type RnvEnginePlatform = {
 };
 
 export type RnvEngineConfig = {
+    title: string;
     id: string;
     platforms: any;
     npm: any;
-    plugins: any;
-    packageName: string;
+    plugins?: any;
+    packageName?: string;
 };
 
 export type RnvEngineConfigMap = Record<string, RnvEngineConfig>;

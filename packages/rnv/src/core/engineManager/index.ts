@@ -476,12 +476,14 @@ const _registerPlatformEngine = async (c: RnvConfig, platform: RnvPlatform | boo
     if (selectedEngineConfig) {
         const existingEngine = c.runtime.enginesById[selectedEngineConfig.id];
         if (!existingEngine) {
-            registerEngine(
-                c,
-                require(_resolvePkgPath(c, selectedEngineConfig.packageName))?.default,
-                platform,
-                selectedEngineConfig
-            );
+            if (selectedEngineConfig.packageName) {
+                registerEngine(
+                    c,
+                    require(_resolvePkgPath(c, selectedEngineConfig.packageName))?.default,
+                    platform,
+                    selectedEngineConfig
+                );
+            }
         } else {
             _registerEnginePlatform(c, platform, existingEngine);
         }

@@ -5,7 +5,9 @@ import { RnvConfig } from './types';
 
 export const generateConfigBase = (): RnvConfig => ({
     program: {},
-    buildConfig: {},
+    buildConfig: {
+        _meta: {},
+    },
     command: '',
     subCommand: '',
     platform: '',

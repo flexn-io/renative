@@ -201,7 +201,11 @@ export const ejectPlatform = (c: RnvConfig, platform: string) => {
     const engine = c.runtime.enginesByPlatform[platform];
     const destDir = path.join(c.paths.project.dir, 'platformTemplates', platform);
     const sourcePlatformDir = engine.originalTemplatePlatformsDir;
-    copyFolderContentsRecursiveSync(path.join(sourcePlatformDir, platform), destDir);
-    // DEPRECATED: only for legacy support
-    copyFolderContentsRecursiveSync(path.join(sourcePlatformDir, '_shared'), destDir);
+    if (sourcePlatformDir) {
+        copyFolderContentsRecursiveSync(path.join(sourcePlatformDir, platform), destDir);
+        // DEPRECATED: only for legacy support
+        copyFolderContentsRecursiveSync(path.join(sourcePlatformDir, '_shared'), destDir);
+    } else {
+        logError(`engine.originalTemplatePlatformsDir is undefined`);
+    }
 };
