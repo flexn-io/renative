@@ -302,11 +302,18 @@ const _loadConfigFiles = (
         fileObj.configs = [];
         fileObj.configsLocal = [];
         fileObj.configsPrivate = [];
-        const fileObj1: RnvConfigFileObj = {};
+        const fileObj1: RnvConfigFileObj = {
+            configs: [],
+            configsLocal: [],
+            configsPrivate: [],
+        };
 
         // PATH1: appConfigs/base
         const path1 = path.join(pathObj.appConfigsDir, 'base');
         const pathObj1: RnvConfigPathObj = {
+            configs: [],
+            configsLocal: [],
+            configsPrivate: [],
             config: path.join(path1, RENATIVE_CONFIG_NAME),
             configLocal: path.join(path1, RENATIVE_CONFIG_LOCAL_NAME),
             configPrivate: path.join(path1, RENATIVE_CONFIG_PRIVATE_NAME),
@@ -334,7 +341,11 @@ const _loadConfigFiles = (
                     configLocal: path.join(path2, RENATIVE_CONFIG_LOCAL_NAME),
                     configPrivate: path.join(path2, RENATIVE_CONFIG_PRIVATE_NAME),
                 };
-                const fileObj2: RnvConfigFileObj = {};
+                const fileObj2: RnvConfigFileObj = {
+                    configs: [],
+                    configsLocal: [],
+                    configsPrivate: [],
+                };
                 // PATH2: appConfigs/<extendConfig>
                 pathObj.dirs.push(path2);
                 pathObj.fontsDirs.push(path.join(path2, 'fonts'));
@@ -415,7 +426,10 @@ const _generatePlatformTemplatePaths = (c: RnvConfig) => {
     logTask('_generatePlatformTemplatePaths');
     if (!c.buildConfig.paths) {
         logWarning(`You're missing paths object in your ${chalk().red(c.paths.project.config)}`);
-        c.buildConfig.paths = {};
+        c.buildConfig.paths = {
+            appConfigsDirs: [],
+            platformTemplatesDirs: {},
+        };
     }
 
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
@@ -669,7 +683,7 @@ export const createRnvConfig = (program: any, process: any, cmd: string, subCmd:
     // LOAD WORKSPACES
     try {
         _loadWorkspacesSync(c);
-    } catch (e) {
+    } catch (e: any) {
         logError(e);
     }
 

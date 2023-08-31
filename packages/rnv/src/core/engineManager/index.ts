@@ -549,7 +549,7 @@ export const getEngineTask = (task: string, tasks?: RnvTaskMap, customTasks?: Rn
     return tsk;
 };
 
-export const hasEngineTask = (task: string, tasks: RnvTaskMap, isProjectScope: boolean) =>
+export const hasEngineTask = (task: string, tasks: RnvTaskMap, isProjectScope?: boolean) =>
     isProjectScope ? !!getEngineTask(task, tasks) : getEngineTask(task, tasks)?.isGlobalScope;
 
 export const getEngineSubTasks = (task: string, tasks: RnvTaskMap, exactMatch?: boolean) =>

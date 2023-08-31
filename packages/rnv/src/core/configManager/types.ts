@@ -182,58 +182,33 @@ export interface RnvConfig {
             configWorkspaces: any;
             package: any;
         };
-        workspace: {
-            project: RnvConfigPathObj & {
+        workspace: RnvConfigFileObj & {
+            project: RnvConfigFileObj & {
                 appConfigBase: Record<string, any>;
                 builds: Record<string, any>;
                 assets: Record<string, any>;
                 platformTemplates: Record<string, any>;
             };
-            appConfig: {
-                configs: Array<string>;
-                configsPrivate: Array<string>;
-                configsLocal: Array<string>;
-            };
-            //ADDON
-            config: any;
-            configLocal: any;
-            configPrivate: any;
+            appConfig: RnvConfigFileObj;
         };
-        defaultWorkspace: {
-            project: {
+        defaultWorkspace: RnvConfigFileObj & {
+            project: RnvConfigFileObj & {
                 appConfigBase: Record<string, any>;
                 builds: Record<string, any>;
                 assets: Record<string, any>;
                 platformTemplates: Record<string, any>;
             };
-            appConfig: {
-                configs: Array<string>;
-                configsPrivate: Array<string>;
-                configsLocal: Array<string>;
-            };
-            //ADDON
-            config: any;
-            configLocal: any;
-            configPrivate: any;
+            appConfig: RnvConfigFileObj;
         };
-        project: {
+        project: RnvConfigFileObj & {
             appConfigBase: Record<string, any>;
             builds: Record<string, any>;
             assets: Record<string, any>;
             platformTemplates: Record<string, any>;
             //ADDON
-            config: any;
-            config_original: any;
-            configLocal: any;
-            configPrivate: any;
             package: any;
         };
-        appConfig: {
-            config?: any;
-            configs: Array<string>;
-            configsPrivate: Array<string>;
-            configsLocal: Array<string>;
-        };
+        appConfig: RnvConfigFileObj;
     };
 }
 
@@ -266,9 +241,10 @@ export interface RnvConfigPathObj {
 }
 
 export interface RnvConfigFileObj {
-    config: any;
-    configLocal: any;
-    configPrivate: any;
+    config?: any;
+    config_original?: any;
+    configLocal?: any;
+    configPrivate?: any;
     configs: Array<any>;
     configsLocal: Array<any>;
     configsPrivate: Array<any>;
@@ -289,13 +265,13 @@ export type RenativeConfigFile = {
     platforms: Record<
         string,
         {
-            buildSchemes: Record<string, RenativeConfigBuildScheme>;
+            buildSchemes?: Record<string, RenativeConfigBuildScheme>;
             entryFile?: string;
-            runtime: Record<string, any>;
-            appName: string;
-            id: string;
-            certificateProfile: string;
-            engine: string;
+            runtime?: Record<string, any>;
+            appName?: string;
+            id?: string;
+            certificateProfile?: string;
+            engine?: string;
         }
     >;
     templates: Record<
@@ -311,7 +287,7 @@ export type RenativeConfigFile = {
     paths: {
         appConfigsDirs: Array<string>;
         platformTemplatesDirs: Record<string, string>;
-        globalConfigDir: string;
+        globalConfigDir?: string;
     };
     integrations: Record<string, string>;
     tasks: Array<any> | Record<string, any>;

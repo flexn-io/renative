@@ -15,7 +15,7 @@ export const executePipe = async (c: RnvConfig, key: string) => {
     const pipes = c.buildPipes ? c.buildPipes[key] : null;
 
     if (Array.isArray(pipes)) {
-        await pipes.reduce((accumulatorPromise: Promise<void>, next) => {
+        await pipes.reduce((accumulatorPromise: any, next) => {
             logHook(`buildHook.${next?.name}`, '(EXECUTING)');
             return accumulatorPromise.then(() => next(c));
         }, Promise.resolve());

@@ -15,7 +15,7 @@ export const isBuildSchemeSupported = async (c: RnvConfig) => {
     }
 
     const baseBuildSchemes = c.buildConfig.common?.buildSchemes || {};
-    const platformBuildSchemes = c.buildConfig.platforms[c.platform]?.buildSchemes;
+    const platformBuildSchemes = c.buildConfig.platforms[c.platform]?.buildSchemes || {};
 
     const buildSchemes = merge(baseBuildSchemes, platformBuildSchemes);
 

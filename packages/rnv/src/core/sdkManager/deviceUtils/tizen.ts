@@ -7,7 +7,6 @@ import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, RENATIVE_CONFIG_NAME } fr
 import { execCLI } from '../../systemManager/exec';
 import { fsRenameSync } from '../../systemManager/fileutils';
 import { chalk, logDebug, logError, logInfo, logTask, logToSummary, logWarning } from '../../systemManager/logger';
-import { RnvError } from '../../types';
 import { TizenDevice, TizenSecurityConfig } from '../types';
 import { waitForEmulator } from './common';
 
@@ -107,7 +106,7 @@ const _getDeviceID = async (c: RnvConfig, target: string) => {
         let connectResponse: string;
         try {
             connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
-        } catch (e: RnvError) {
+        } catch (e: any) {
             connectResponse = e;
         }
         if (connectResponse.includes('EPERM')) {
@@ -248,6 +247,8 @@ export const runTizenSimOrDevice = async (c: RnvConfig, buildCoreWebpackProject:
 
     let deviceID: string;
 
+    if (!tId) return Promise.reject(`Tizen platform requires "id" filed in platforms.tizen`);
+
     const askForEmulator = async () => {
         const { startEmulator } = await inquirer.prompt([
             {
@@ -297,7 +298,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
             await execCLI(c, CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, { ignoreErrors: true });
             hasDevice = true;
-        } catch (e: RnvError) {
+        } catch (e: any) {
             if (e && e.includes && e.includes('No device matching')) {
                 await launchTizenSimulator(c, target);
                 hasDevice = await _waitForEmulatorToBeReady(c, target);
@@ -310,13 +311,13 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
                 );
                 fsRenameSync(path.join(tOut, wgt), path.join(tOut, wgtClean));
             }
-        } catch (err: RnvError) {
+        } catch (err: any) {
             logError(err);
         }
         try {
             await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${wgtClean} -t ${deviceID}`);
             hasDevice = true;
-        } catch (err: RnvError) {
+        } catch (err: any) {
             logError(err);
             logWarning(
                 `There is no emulator or device connected! Let's try to launch it. "${chalk().white.bold(
