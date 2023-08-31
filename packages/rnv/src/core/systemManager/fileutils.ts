@@ -531,7 +531,7 @@ export const updateObjectSync = (filePath: string, updateObj: object) => {
     return output;
 };
 
-export const getRealPath = (c: RnvConfig, p: string, key = 'undefined', original?: string) => {
+export const getRealPath = (c: RnvConfig, p: string | undefined, key = 'undefined', original?: string) => {
     if (!p) {
         if (original) {
             logDebug(`Path ${chalk().white(key)} is not defined. using default: ${chalk().white(original)}`);

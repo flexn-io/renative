@@ -429,9 +429,11 @@ const _generatePlatformTemplatePaths = (c: RnvConfig) => {
 
                 if (originalPath) {
                     if (!pt[platform]) {
-                        result[platform] = getRealPath(c, originalPath, 'platformTemplatesDir', originalPath);
+                        const pt1 = getRealPath(c, originalPath, 'platformTemplatesDir', originalPath);
+                        if (pt1) result[platform] = pt1;
                     } else {
-                        result[platform] = getRealPath(c, pt[platform], 'platformTemplatesDir', originalPath);
+                        const pt2 = getRealPath(c, pt[platform], 'platformTemplatesDir', originalPath);
+                        if (pt2) result[platform] = pt2;
                     }
                 } else {
                     logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
@@ -528,8 +530,11 @@ export const parseRenativeConfigs = async (c: RnvConfig) => {
     loadFile(c.files.project.builds, c.paths.project.builds, 'config');
 
     // LOAD WORKSPACE /RENATIVE.*.JSON
-    _generateConfigPaths(c.paths.workspace, getRealPath(c, await getWorkspaceDirPath(c)));
-    _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
+    const wsDir = getRealPath(c, await getWorkspaceDirPath(c));
+    if (wsDir) {
+        _generateConfigPaths(c.paths.workspace, wsDir);
+        _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
+    }
 
     // LOAD DEFAULT WORKSPACE
     _generateConfigPaths(c.paths.defaultWorkspace, c.paths.GLOBAL_RNV_DIR);
@@ -586,15 +591,21 @@ export const parseRenativeConfigs = async (c: RnvConfig) => {
         loadFile(c.files.project.assets, c.paths.project.assets, 'config');
 
         // LOAD WORKSPACE /RENATIVE.*.JSON
-        _generateConfigPaths(c.paths.workspace, getRealPath(c, await getWorkspaceDirPath(c)));
-        _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
+        const wsPath = await getWorkspaceDirPath(c);
+        if (wsPath) {
+            const wsPathReal = getRealPath(c, wsPath);
+            if (wsPathReal) {
+                _generateConfigPaths(c.paths.workspace, wsPathReal);
+                _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
+            }
+        }
 
         generateLocalConfig(c);
         generateBuildConfig(c);
     }
 };
 
-export const createRnvConfig = (program: any, process: any, cmd: string, subCmd: string, { projectRoot } = {}) => {
+export const createRnvConfig = (program: any, process: any, cmd: string, subCmd: string) => {
     const c: RnvConfig = generateConfigBase();
 
     global.RNV_CONFIG = c;
@@ -628,7 +639,7 @@ export const createRnvConfig = (program: any, process: any, cmd: string, subCmd:
         mkdirSync(c.paths.GLOBAL_RNV_DIR);
     }
 
-    _generateConfigPaths(c.paths.project, projectRoot || CURRENT_DIR, c.program.configName);
+    _generateConfigPaths(c.paths.project, CURRENT_DIR, c.program.configName);
 
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
     c.paths.buildHooks.dist.dir = path.join(c.paths.project.dir, 'buildHooks/dist');

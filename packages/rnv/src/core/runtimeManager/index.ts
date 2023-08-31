@@ -6,7 +6,7 @@ import { getConfigProp } from '../common';
 import { logTask } from '../systemManager/logger';
 import { loadPluginTemplates } from '../pluginManager';
 import { parseRenativeConfigs } from '../configManager/index';
-import { RnvConfig } from '../configManager/types';
+import { RnvConfig, RnvConfigPlatform } from '../configManager/types';
 
 export const updateRenativeConfigs = async (c: RnvConfig) => {
     await loadPluginTemplates(c);
@@ -44,10 +44,11 @@ export const configureRuntimeDefaults = async (c: RnvConfig) => {
     c.systemPropsInjects = c.systemPropsInjects || [];
     c.runtimePropsInjects = [];
 
+    const rt: any = c.runtime;
     INJECTABLE_RUNTIME_PROPS.forEach((key) => {
         c.runtimePropsInjects.push({
             pattern: `{{runtimeProps.${key}}}`,
-            override: c.runtime[key],
+            override: rt[key],
         });
     });
     if (c.buildConfig) {
@@ -57,31 +58,30 @@ export const configureRuntimeDefaults = async (c: RnvConfig) => {
 
         // c.runtime.devServer = `http://${ip.address()}:${c.runtime.port}`;
         if (c.buildConfig.defaults?.supportedPlatforms) {
-            c.runtime.supportedPlatforms = c.buildConfig.defaults.supportedPlatforms
-                .map((platform) => {
-                    const engine = getEngineRunnerByPlatform(c, platform);
-                    if (engine) {
-                        const dir = engine.originalTemplatePlatformsDir;
+            c.runtime.supportedPlatforms = [];
+            c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
+                const engine = getEngineRunnerByPlatform(c, platform);
+                if (engine) {
+                    const dir = engine.originalTemplatePlatformsDir;
 
-                        let isConnected = false;
-                        let isValid = false;
-                        const pDir = c.paths.project.platformTemplatesDirs?.[platform];
-                        if (pDir) {
-                            isValid = true;
-                            isConnected = pDir?.includes?.(getRealPath(c, dir) || 'UNDEFINED');
-                        }
-                        const port = c.buildConfig.defaults?.[platform] || c.runtime.currentPlatform?.defaultPort;
-                        return {
-                            engine,
-                            platform,
-                            isConnected,
-                            port,
-                            isValid,
-                        };
+                    let isConnected = false;
+                    let isValid = false;
+                    const pDir = c.paths.project.platformTemplatesDirs?.[platform];
+                    if (pDir) {
+                        isValid = true;
+                        isConnected = pDir?.includes?.(getRealPath(c, dir) || 'UNDEFINED');
                     }
-                    return null;
-                })
-                .filter((v) => v);
+                    const port = c.buildConfig.defaults?.ports?.[platform] || c.runtime.currentPlatform?.defaultPort;
+                    const cp: RnvConfigPlatform = {
+                        engine,
+                        platform,
+                        isConnected,
+                        port,
+                        isValid,
+                    };
+                    c.runtime.supportedPlatforms.push(cp);
+                }
+            });
         }
     }
     return true;

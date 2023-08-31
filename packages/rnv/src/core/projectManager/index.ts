@@ -39,7 +39,7 @@ import { RnvPluginPlatform } from '../pluginManager/types';
 
 export const checkAndBootstrapIfRequired = async (c: RnvConfig) => {
     logTask('checkAndBootstrapIfRequired');
-    const { template } = c.program;
+    const template: string = c.program?.template;
     if (!c.paths.project.configExists && template) {
         await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add ${template}`, {
             cwd: c.paths.project.dir,
@@ -450,7 +450,7 @@ export const copyAssetsFolder = async (
 
     const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
-    const assetSources = getConfigProp(c, platform, 'assetSources', []);
+    const assetSources = getConfigProp<Array<string>>(c, platform, 'assetSources', []);
 
     const validAssetSources: Array<string> = [];
     assetSources.forEach((v) => {
@@ -460,7 +460,7 @@ export const copyAssetsFolder = async (
         }
     });
 
-    const destPath = path.join(getPlatformProjectDir(c, platform), subPath || '');
+    const destPath = path.join(getPlatformProjectDir(c) || '', subPath || '');
 
     // FOLDER MERGERS FROM EXTERNAL SOURCES
     if (validAssetSources.length > 0) {
@@ -470,7 +470,7 @@ export const copyAssetsFolder = async (
             )}. Will be used to generate assets.`
         );
         validAssetSources.forEach((sourcePath) => {
-            copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, {}, tsPathsConfig, c);
+            copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, undefined, tsPathsConfig, c);
         });
         return;
     }
@@ -506,11 +506,11 @@ export const copyAssetsFolder = async (
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
             const sourcePath = path.join(v, `assets/${assetFolderPlatform}`);
-            copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, {}, tsPathsConfig, c);
+            copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, undefined, tsPathsConfig, c);
         });
     } else {
         const sourcePath = path.join(c.paths.appConfig.dir, `assets/${assetFolderPlatform}`);
-        copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, {}, tsPathsConfig, c);
+        copyFolderContentsRecursiveSync(sourcePath, destPath, true, undefined, false, undefined, tsPathsConfig, c);
     }
 };
 
@@ -588,7 +588,14 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
             if (fsExistsSync(sourcePathShared)) {
                 logWarning('Folder builds/_shared is DEPRECATED. use builds/<PLATFORM> instead ');
             }
-            copyFolderContentsRecursiveSync(sourcePathShared, getPlatformBuildDir(c), true, false, false, allInjects);
+            copyFolderContentsRecursiveSync(
+                sourcePathShared,
+                getPlatformBuildDir(c),
+                true,
+                undefined,
+                false,
+                allInjects
+            );
         }
 
         // FOLDER MERGERS FROM APP CONFIG + EXTEND
@@ -719,7 +726,7 @@ export const upgradeDependencies = (
         writeFileSync(packagesPath, packageFile);
         result.push(packagesPath);
     }
-    if (configFile) {
+    if (configFile && configPath) {
         writeFileSync(configPath, configFile);
         result.push(configPath);
     }

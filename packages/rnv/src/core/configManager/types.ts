@@ -52,12 +52,7 @@ export interface RnvConfig {
         activeTemplate: string;
         engine?: RnvEngine;
         target: string;
-        supportedPlatforms: Array<{
-            platform: string;
-            isConnected: boolean;
-            engine?: any;
-            port?: string;
-        }>;
+        supportedPlatforms: Array<RnvConfigPlatform>;
         keepSessionActive: boolean;
         platformBuildsProjectPath: string;
         availablePlatforms: Array<string>;
@@ -110,48 +105,19 @@ export interface RnvConfig {
             //ADDON
             dir: string;
             package: string;
-            // config: string;
-            // configLocal: string;
-            // configPrivate: string;
-            // appConfigsDir: string;
-            // dirs: Array<string>;
-            // fontsDirs: Array<string>;
-            // pluginDirs: Array<string>;
-            // configs: Array<string>;
-            // configsLocal: Array<string>;
-            // configsPrivate: Array<string>;
         };
-        workspace: {
-            project: {
+        workspace: RnvConfigPathObj & {
+            project: RnvConfigPathObj & {
                 appConfigBase: Record<string, any>;
                 builds: Record<string, any>;
                 assets: Record<string, any>;
                 platformTemplates: Record<string, any>;
                 appConfigsDirs: Array<string>;
                 appConfigsDirNames: Array<string>;
-                //ADDON
-                dir?: string;
-                config?: string;
-                configExists?: boolean;
-                configLocal?: string;
-                configPrivate?: string;
-                appConfigsDir?: string;
             };
-            appConfig: {
-                configs: Array<string>;
-                configsPrivate: Array<string>;
-                configsLocal: Array<string>;
-                dir: string;
-            };
-            //ADDON
-            config: string;
-            configLocal?: string;
-            configPrivate?: string;
-            dir: string;
+            appConfig: RnvConfigPathObj;
         };
-        defaultWorkspace: {
-            //ADDON
-            config: string;
+        defaultWorkspace: RnvConfigPathObj & {
             project: {
                 appConfigBase: Record<string, any>;
                 builds: Record<string, any>;
@@ -167,8 +133,6 @@ export interface RnvConfig {
             };
         };
         project: RnvConfigPathObj & {
-            config: string;
-            configExists: boolean;
             appConfigBase: Record<string, any>;
             builds: Record<string, any>;
             assets: Record<string, any>;
@@ -179,32 +143,12 @@ export interface RnvConfig {
             dir: string;
             nodeModulesDir: string;
             srcDir: string;
-            appConfigsDir: string;
             package: string;
             rnCliConfig: string;
             babelConfig: string;
-            configLocal: string;
-            configPrivate: string;
             platformTemplatesDirs: Record<string, string>;
-            // appConfigsDir: string;
-            // dirs: Array<string>;
-            // fontsDirs: Array<string>;
-            // pluginDirs: Array<string>;
-            // configs: Array<string>;
-            // configsLocal: Array<string>;
-            // configsPrivate: Array<string>;
         };
-        appConfig: {
-            config: string;
-            configs: Array<string>;
-            configsPrivate: Array<string>;
-            configsLocal: Array<string>;
-            dir: string;
-            dirs: Array<string>;
-            pluginDirs: Array<string>;
-            fontsDirs: Array<string>;
-            fontsDir: string;
-        };
+        appConfig: RnvConfigPathObj;
         // EXTRA
         buildHooks: {
             dist: Record<string, any>;
@@ -239,15 +183,11 @@ export interface RnvConfig {
             package: any;
         };
         workspace: {
-            project: {
+            project: RnvConfigPathObj & {
                 appConfigBase: Record<string, any>;
                 builds: Record<string, any>;
                 assets: Record<string, any>;
                 platformTemplates: Record<string, any>;
-                //ADDON
-                config: any;
-                configLocal: any;
-                configPrivate: any;
             };
             appConfig: {
                 configs: Array<string>;
@@ -309,12 +249,14 @@ export interface RnvConfigPathObj {
     configLocal: string;
     configPrivate: string;
     appConfigsDir: string;
+    fontsDir: string;
     dirs: Array<string>;
     fontsDirs: Array<string>;
     pluginDirs: Array<string>;
     configs: Array<string>;
     configsLocal: Array<string>;
     configsPrivate: Array<string>;
+    configExists?: boolean;
     // appConfigBase: Record<string, any>;
     // builds: Record<string, any>;
     // assets: Record<string, any>;
@@ -380,6 +322,7 @@ export type RenativeConfigFile = {
     defaultTargets: Record<string, string>;
     templateConfig: any;
     enableAnalytics: boolean;
+    workspaceAppConfigsDir: string;
 };
 
 export type RenativeConfigPlugin = {
@@ -400,6 +343,14 @@ export type RenativeConfigPlugin = {
     deprecated?: boolean;
     plugins?: Record<string, string>;
     props?: Record<string, string | boolean | number>;
+};
+
+export type RnvConfigPlatform = {
+    platform: string;
+    isConnected: boolean;
+    engine?: any;
+    port?: string;
+    isValid?: boolean;
 };
 
 export type RenativeWebpackConfig = {

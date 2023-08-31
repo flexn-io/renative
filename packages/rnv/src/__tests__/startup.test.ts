@@ -35,7 +35,7 @@ let c;
 
 describe('Bootstrapping the CLI', () => {
     beforeAll(() => {
-        c = createRnvConfig({ program: true }, { process: true }, { cmd: true }, { subCmd: true });
+        c = createRnvConfig({ program: true }, { process: true }, 'command', 'subcommand');
         generateBuildConfig(c);
     });
 

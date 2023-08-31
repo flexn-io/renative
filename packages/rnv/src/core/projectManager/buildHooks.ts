@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import path from 'path';
 import { build } from 'esbuild';
-import { logDebug, logHook, logInfo } from '../systemManager/logger';
+import { logDebug, logError, logHook, logInfo } from '../systemManager/logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
@@ -12,16 +12,15 @@ export const executePipe = async (c: RnvConfig, key: string) => {
 
     await buildHooks(c);
 
-    const pipe = c.buildPipes ? c.buildPipes[key] : null;
+    const pipes = c.buildPipes ? c.buildPipes[key] : null;
 
-    if (Array.isArray(pipe)) {
-        await pipe.reduce((accumulatorPromise, next) => {
+    if (Array.isArray(pipes)) {
+        await pipes.reduce((accumulatorPromise: Promise<void>, next) => {
             logHook(`buildHook.${next?.name}`, '(EXECUTING)');
             return accumulatorPromise.then(() => next(c));
         }, Promise.resolve());
-    } else if (pipe) {
-        logHook(`buildHook.${pipe?.name}`, '(EXECUTING)');
-        await pipe(c);
+    } else if (pipes) {
+        logError(`buildPipes is not an Array!`);
     }
 };
 
