@@ -217,7 +217,8 @@ export const findSuitableTask = async (c: RnvConfig, specificTask?: string): Pro
             c.subCommand = null;
             return findSuitableTask(c);
         }
-        if (!c.platform || c.platform === true) {
+        //TODO: special type case for c.platform
+        if (!c.platform || c.program.platform === true) {
             await _selectPlatform(c, suitableEngines, task);
         }
         c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS, false);
@@ -344,7 +345,7 @@ const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
 };
 
-export const shouldSkipTask = (c: RnvConfig, task: string, originTask: string) => {
+export const shouldSkipTask = (c: RnvConfig, task: string, originTask?: string) => {
     const tasks = c.buildConfig?.tasks;
     c.runtime.platform = c.platform;
     if (!tasks) return;
@@ -364,7 +365,8 @@ export const shouldSkipTask = (c: RnvConfig, task: string, originTask: string) =
                     conditions.forEach((con: string) => {
                         const conArr = con.split('=');
                         if (ACCEPTED_CONDITIONS.includes(conArr[0])) {
-                            if (c.runtime[conArr[0]] === conArr[1]) {
+                            const rt: any = c.runtime;
+                            if (rt[conArr[0]] === conArr[1]) {
                                 conditionsToMatch--;
                             }
                         } else {
@@ -392,6 +394,9 @@ export const shouldSkipTask = (c: RnvConfig, task: string, originTask: string) =
         if (ignoreTask) {
             _logSkip(task);
             return true;
+        }
+        if (!originTask) {
+            return false;
         }
         const ignoreTasks = tasks[originTask]?.platform?.[c.platform]?.ignoreTasks || [];
         if (ignoreTasks.includes(task)) {

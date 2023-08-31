@@ -81,15 +81,15 @@ class LinuxPlatformSetup extends BasePlatformSetup {
 
     async installSdksAndEmulator() {
         logDebug('Accepting licenses');
-        await executeAsync({}, `${this.androidSdkLocation}/tools/bin/sdkmanager.bat --licenses`);
+        await executeAsync(`${this.androidSdkLocation}/tools/bin/sdkmanager.bat --licenses`);
         logDebug('Installing SDKs', this.sdksToInstall);
-        await executeAsync({}, `${this.androidSdkLocation}/tools/bin/sdkmanager.bat ${this.sdksToInstall}`);
+        await executeAsync(`${this.androidSdkLocation}/tools/bin/sdkmanager.bat ${this.sdksToInstall}`);
     }
 
     async installTizenSdk() {
-        let downloadDir = setupConfig.tizen.downloadLocation.split('/');
-        downloadDir.pop();
-        downloadDir = downloadDir.join('/');
+        const _downloadDir = setupConfig.tizen.downloadLocation.split('/');
+        _downloadDir.pop();
+        const downloadDir = _downloadDir.join('/');
         logInfo(`Opening ${downloadDir}. Please install the SDK then continue after it finished installing.`);
         exec(`start "" "${downloadDir}"`);
 

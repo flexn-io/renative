@@ -12,7 +12,6 @@ import { fsExistsSync } from './fileutils';
 import { replaceOverridesInString } from './utils';
 import { RnvConfig } from '../configManager/types';
 import { ExecCallback, ExecCallback2, ExecOptions } from './types';
-import { RnvError } from '../types';
 
 const { exec, execSync } = require('child_process');
 
@@ -77,7 +76,7 @@ const _execute = (c: RnvConfig, command: string, opts: ExecOptions = {}) => {
     logMessage = `${env ? `${env} ` : ''}${logMessage}`;
     logDebug(`_execute: ${logMessage}`);
     const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
-    const spinner = !silent && !mono && ora({ text: `Executing: ${logMessage}` }).start();
+    const spinner = !silent && !mono && ora({ text: `Executing: ${logMessage}` }).start('');
     if (opts.interactive) {
         logRaw(`${chalk().green('✔')} Executing: ${logMessage}\n`);
     }
@@ -290,7 +289,7 @@ const executeTelnet = (c: RnvConfig, port: string, command: string) =>
                 if (output.includes('OK')) nc2.close();
             });
             nc2.on('close', () => resolve(output));
-        } catch (e: RnvError) {
+        } catch (e: any) {
             logError(e);
             resolve('');
         }

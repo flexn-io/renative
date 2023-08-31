@@ -1,7 +1,7 @@
 import resolve from 'resolve';
 import fs from 'fs';
 import path from 'path';
-import { ResolveOptions } from './types';
+import { DoResolveFn, ResolveOptions } from './types';
 /**
  * An attempt at drying out filesystem references to [external packages](https://tinyurl.com/mao2dy6).
  *
@@ -18,7 +18,7 @@ import { ResolveOptions } from './types';
  * @param {*} mandatory - whether it throws
  * @param {*} options - docs - https://tinyurl.com/r9sfpf7 && {keepSuffix: boolean}
  */
-export const doResolve = (aPath: string, mandatory = true, options: ResolveOptions = {}) => {
+export const doResolve: DoResolveFn = (aPath, mandatory = true, options = {}) => {
     options.basedir = options.basedir ?? process.cwd();
     try {
         if (aPath.startsWith('file:')) {

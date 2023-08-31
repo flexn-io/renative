@@ -11,17 +11,21 @@ import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
 import { chalk, logError, logTask, logWarning } from './systemManager/logger';
 import { getValidLocalhost } from './systemManager/utils';
 import { RenativeConfigBuildScheme, RenativeConfigFile, RnvConfig } from './configManager/types';
+import { GetConfigPropFn } from './types';
+import { TimestampPathsConfig } from './systemManager/types';
 
-export const getTimestampPathsConfig = (c: RnvConfig, platform: string) => {
-    let timestampBuildFiles;
+export const getTimestampPathsConfig = (c: RnvConfig, platform: string): TimestampPathsConfig | undefined => {
+    let timestampBuildFiles: Array<string> = [];
     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
     if (platform === 'web') {
-        timestampBuildFiles = getConfigProp(c, platform, 'timestampBuildFiles', []).map((v) => path.join(pPath, v));
+        timestampBuildFiles = getConfigProp<Array<string>>(c, platform, 'timestampBuildFiles', []).map((v) =>
+            path.join(pPath, v)
+        );
     }
     if (timestampBuildFiles?.length) {
         return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
     }
-    return null;
+    return undefined;
 };
 
 export const getCliArguments = (c: RnvConfig) => {
@@ -255,7 +259,7 @@ const _getValueOrMergedObject = (resultCli: any, resultScheme: any, resultPlatfo
     return resultCommon;
 };
 
-export const getConfigProp = (c: RnvConfig, platform: string, key: string, defaultVal?: any) => {
+export const getConfigProp: GetConfigPropFn = (c, platform, key, defaultVal?) => {
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
         return null;
@@ -343,12 +347,12 @@ export const getConfigPropArray = (c: RnvConfig, platform: string, key: string) 
 };
 
 export const getAppId = (c: RnvConfig, platform: string) => {
-    const id = getConfigProp(c, platform, 'id');
-    const idSuffix = getConfigProp(c, platform, 'idSuffix');
+    const id = getConfigProp<string>(c, platform, 'id');
+    const idSuffix = getConfigProp<string>(c, platform, 'idSuffix');
     return idSuffix ? `${id}${idSuffix}` : id;
 };
 
-export const getAppTitle = (c: RnvConfig, platform: string) => getConfigProp(c, platform, 'title');
+export const getAppTitle = (c: RnvConfig, platform: string) => getConfigProp<string>(c, platform, 'title');
 
 export const getAppAuthor = (c: RnvConfig, platform: string) =>
     getConfigProp(c, platform, 'author') || c.files.project.package?.author;

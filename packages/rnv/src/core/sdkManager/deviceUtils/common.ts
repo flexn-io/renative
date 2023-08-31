@@ -12,7 +12,7 @@ export const waitForEmulator = async (
     const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;
     const { maxErrorLength } = c.program;
-    const spinner = ora('Waiting for emulator to boot...').start();
+    const spinner = ora('Waiting for emulator to boot...').start('');
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
@@ -24,7 +24,7 @@ export const waitForEmulator = async (
                 .then((resp) => {
                     if (callback(resp)) {
                         clearInterval(interval);
-                        spinner.succeed();
+                        spinner.succeed('');
                         return resolve(true);
                     }
                     attempts++;

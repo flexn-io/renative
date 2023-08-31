@@ -5,15 +5,16 @@ export type PluginCallback = (plugin: RnvPlugin, pluginPlat: any, key: string) =
 export type PluginListResponse = {
     asString: string;
     asArray: PluginListResponseItem[];
-    plugins: PluginListResponseItem[];
+    plugins: string[];
     allPlugins: Record<string, PluginListResponseItem>;
+    json?: any;
 };
 
 export type PluginListResponseItem = {
     name: string;
     value: string;
-    props: any;
-    version: string;
+    props?: any;
+    version?: string;
 };
 
 export type RnvPluginScope = {

@@ -7,10 +7,20 @@ import merge from 'deepmerge';
 import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from './logger';
 import { RnvConfig } from '../configManager/types';
-import { FileUtilsPropConfig, FileUtilsUpdateConfig, OverridesOptions, TimestampPathsConfig } from './types';
-import type { RnvError } from '../types';
+import {
+    DoResolveFn,
+    FileUtilsPropConfig,
+    FileUtilsUpdateConfig,
+    OverridesOptions,
+    TimestampPathsConfig,
+} from './types';
+import type { GetConfigPropFn } from '../types';
 
-export const configureFilesystem = (_getConfigProp: () => string, _doResolve: () => any, _isSystemWin: boolean) => {
+export const configureFilesystem = (
+    _getConfigProp: GetConfigPropFn,
+    _doResolve: DoResolveFn,
+    _isSystemWin: boolean
+) => {
     global.getConfigProp = _getConfigProp;
     global.doResolve = _doResolve;
     global.isSystemWin = _isSystemWin;
@@ -268,7 +278,7 @@ export const copyFolderRecursiveSync = (
 
 export const copyFolderContentsRecursiveSync = (
     source: string | null | undefined,
-    target: string,
+    target: string | null | undefined,
     convertSvg = true,
     skipPaths?: Array<string>,
     skipOverride?: boolean,
@@ -278,7 +288,7 @@ export const copyFolderContentsRecursiveSync = (
     extFilter?: Array<string>
 ) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
-    if (!source) return;
+    if (!source || !target) return;
     if (!fs.existsSync(source)) return;
     let files = [];
     const targetFolder = path.join(target);
@@ -381,7 +391,7 @@ export const removeFilesSync = (filePaths: Array<string>) => {
             } else {
                 logDebug(`Path ${filePath} does not exist`);
             }
-        } catch (e: RnvError) {
+        } catch (e: any) {
             logError(e);
         }
     });

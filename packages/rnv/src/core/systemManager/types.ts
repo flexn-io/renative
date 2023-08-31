@@ -41,7 +41,7 @@ export type OverridesOptions = Array<{
 }>;
 
 export type TimestampPathsConfig = {
-    timestamp: Array<string>;
+    timestamp: number;
     paths: Array<string>;
 };
 
@@ -59,3 +59,5 @@ export type FileUtilsUpdateConfig = {
     tizenSdk?: string;
     webosSdk?: string;
 };
+
+export type DoResolveFn = (aPath: string, mandatory?: boolean, options?: ResolveOptions) => string | undefined;

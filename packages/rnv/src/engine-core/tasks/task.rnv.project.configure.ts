@@ -69,7 +69,9 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
 
             const taskInstance = await findSuitableTask(c);
             c.runtime.requiresBootstrap = false;
-            return initializeTask(c, taskInstance.task);
+            if (taskInstance?.task) {
+                return initializeTask(c, taskInstance?.task);
+            }
         }
         await applyTemplate(c);
         await configureRuntimeDefaults(c);

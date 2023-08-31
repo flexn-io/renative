@@ -21,7 +21,7 @@ export const getEnvVar = (c: RnvConfig) => {
     return envVar;
 };
 
-export const checkCrypto = async (c: RnvConfig, parentTask: string, originTask: string) => {
+export const checkCrypto = async (c: RnvConfig, parentTask?: string, originTask?: string) => {
     logTask('checkCrypto');
 
     if (c.program.ci || c.files.project.config?.crypto?.optional) return;

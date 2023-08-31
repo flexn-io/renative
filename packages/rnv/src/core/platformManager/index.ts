@@ -74,7 +74,7 @@ export const createPlatformBuild = (c: RnvConfig, platform: string) =>
             false,
             [path.join(ptPath, '_privateConfig')],
             false,
-            {},
+            [],
             getTimestampPathsConfig(c, platform),
             c
         );
@@ -85,7 +85,7 @@ export const createPlatformBuild = (c: RnvConfig, platform: string) =>
 export const isPlatformSupported = async (c: RnvConfig, isGlobalScope = false) => {
     logTask('isPlatformSupported');
 
-    if (c.platform && c.platform !== true && isGlobalScope) {
+    if (c.platform && c.program.platform !== true && isGlobalScope) {
         return c.platform;
     }
 
@@ -99,7 +99,7 @@ export const isPlatformSupported = async (c: RnvConfig, isGlobalScope = false) =
     if (!platformsAsObj) platformsAsObj = c.runtime.availablePlatforms;
     const opts = generateOptions(platformsAsObj);
 
-    if (!c.platform || c.platform === true || !c.runtime.availablePlatforms?.includes?.(c.platform)) {
+    if (!c.platform || c.program.platform === true || !c.runtime.availablePlatforms?.includes?.(c.platform)) {
         const { platform } = await inquirerPrompt({
             name: 'platform',
             type: 'list',

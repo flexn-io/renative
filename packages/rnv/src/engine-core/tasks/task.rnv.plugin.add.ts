@@ -68,7 +68,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
         c.files.project.config.config_original[pluginKey].props = finalProps;
     }
 
-    const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
+    const spinner = ora(`Installing: ${installMessage.join(', ')}`).start('');
 
     writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
 

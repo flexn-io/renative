@@ -18,17 +18,19 @@ import {
 import { isSystemWin, isUrlLocalhost } from '../../systemManager/utils';
 import { RnvConfig } from '../../configManager/types';
 import { WebosDevice } from '../types';
-import { RnvError } from '../../types';
 
 export const launchWebOSimulator = (c: RnvConfig) => {
     logTask('launchWebOSimulator');
 
-    const availableEmulatorVersions = getDirectories(
-        path.join(getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK), 'Emulator')
-    );
+    const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
+    if (!webosSdkPath) {
+        return Promise.reject(`c.buildConfig.sdks.WEBOS_SDK undefined`);
+    }
+
+    const availableEmulatorVersions = getDirectories(path.join(webosSdkPath, 'Emulator'));
 
     const ePath = path.join(
-        getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK),
+        webosSdkPath,
         `Emulator/${availableEmulatorVersions?.[0] || 'v4.0.0'}/LG_webOS_TV_Emulator${
             isSystemWin ? '.exe' : '_RCU.app'
         }`
@@ -67,7 +69,7 @@ const parseDevices = (c: RnvConfig, devicesResponse: string): Promise<Array<Webo
                     silent: true,
                     timeout: 10000,
                 });
-            } catch (e: RnvError) {
+            } catch (e: any) {
                 deviceInfo = e;
             }
 
@@ -127,7 +129,9 @@ const waitForEmulatorToBeReady = async (c: RnvConfig) => {
     const emulator = devices.filter((d) => !d.isDevice)[0];
     if (!emulator) throw new Error('No WebOS emulator configured');
 
-    return waitForEmulator(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${emulator.name}`, (res) => res.includes('modelName'));
+    return waitForEmulator(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${emulator.name}`, (res) =>
+        typeof res === 'string' ? res.includes('modelName') : res
+    );
 };
 
 export const runWebosSimOrDevice = async (c: RnvConfig) => {

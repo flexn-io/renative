@@ -146,7 +146,7 @@ class BasePlatformSetup {
         this.postInstall(sdk);
     }
 
-    async installTizenSdk() {
+    async installTizenSdk(): Promise<any> {
         // to be overwritten
         logError(
             'Install webos sdk not supported yet. Follow https://developer.tizen.org/development/tizen-studio/download to install it manually'
@@ -154,7 +154,7 @@ class BasePlatformSetup {
         return true;
     }
 
-    async installWebosSdk() {
+    async installWebosSdk(): Promise<any> {
         // to be overwritten
         logError(
             'Install webos sdk not supported yet. Follow http://webostv.developer.lge.com/sdk/installation/ to install it manually'
