@@ -1,13 +1,36 @@
 import { fsExistsSync, fsReadFileSync, fsReaddirSync, fsWriteFileSync } from '../systemManager/fileutils';
 
 import path from 'path';
-import { RnvConfig } from './types';
+import { RnvConfig, RnvConfigFileObj, RnvConfigPathObj } from './types';
+
+const generateRnvConfigPathObj = (): RnvConfigPathObj => {
+    return {
+        configs: [],
+        configsPrivate: [],
+        configsLocal: [],
+        appConfigsDir: '',
+        config: '',
+        configLocal: '',
+        configPrivate: '',
+        dir: '',
+        dirs: [],
+        fontsDir: '',
+        fontsDirs: [],
+        pluginDirs: [],
+    };
+};
+
+const generateRnvConfigFileObj = (): RnvConfigFileObj => {
+    return {
+        configs: [],
+        configsLocal: [],
+        configsPrivate: [],
+    };
+};
 
 export const generateConfigBase = (): RnvConfig => ({
     program: {},
-    buildConfig: {
-        _meta: {},
-    },
+    buildConfig: {},
     command: '',
     subCommand: '',
     platform: '',
@@ -31,8 +54,12 @@ export const generateConfigBase = (): RnvConfig => ({
     paths: {
         GLOBAL_RNV_CONFIG: '',
         rnv: {
+            configWorkspaces: {},
+            dir: '',
+            package: '',
             pluginTemplates: {
                 configs: {},
+                dirs: {},
             },
             platformTemplates: {},
             projectTemplates: {},
@@ -42,7 +69,9 @@ export const generateConfigBase = (): RnvConfig => ({
             projectTemplate: {},
         },
         workspace: {
+            ...generateRnvConfigPathObj(),
             project: {
+                ...generateRnvConfigPathObj(),
                 appConfigBase: {},
                 builds: {},
                 assets: {},
@@ -51,12 +80,11 @@ export const generateConfigBase = (): RnvConfig => ({
                 appConfigsDirNames: [],
             },
             appConfig: {
-                configs: [],
-                configsPrivate: [],
-                configsLocal: [],
+                ...generateRnvConfigPathObj(),
             },
         },
         defaultWorkspace: {
+            ...generateRnvConfigPathObj(),
             project: {
                 appConfigBase: {},
                 builds: {},
@@ -72,6 +100,7 @@ export const generateConfigBase = (): RnvConfig => ({
             },
         },
         project: {
+            ...generateRnvConfigPathObj(),
             config: '',
             appConfigBase: {},
             builds: {},
@@ -81,17 +110,19 @@ export const generateConfigBase = (): RnvConfig => ({
             appConfigsDirNames: [],
         },
         appConfig: {
-            configs: [],
-            configsPrivate: [],
-            configsLocal: [],
+            ...generateRnvConfigPathObj(),
         },
         // EXTRA
         GLOBAL_RNV_DIR: '',
         buildHooks: {
             dist: {},
+            dir: '',
+            index: '',
         },
         home: {},
         template: {
+            ...generateRnvConfigPathObj(),
+            configTemplate: '',
             appConfigBase: {},
             builds: {},
             assets: {},
@@ -109,20 +140,23 @@ export const generateConfigBase = (): RnvConfig => ({
             projectTemplate: {},
         },
         workspace: {
+            ...generateRnvConfigFileObj(),
             project: {
+                ...generateRnvConfigFileObj(),
+                configs: [],
                 appConfigBase: {},
                 builds: {},
                 assets: {},
                 platformTemplates: {},
             },
             appConfig: {
-                configs: [],
-                configsPrivate: [],
-                configsLocal: [],
+                ...generateRnvConfigFileObj(),
             },
         },
         defaultWorkspace: {
+            ...generateRnvConfigPathObj(),
             project: {
+                ...generateRnvConfigPathObj(),
                 appConfigBase: {},
                 builds: {},
                 assets: {},
@@ -135,15 +169,14 @@ export const generateConfigBase = (): RnvConfig => ({
             },
         },
         project: {
+            ...generateRnvConfigFileObj(),
             appConfigBase: {},
             builds: {},
             assets: {},
             platformTemplates: {},
         },
         appConfig: {
-            configs: [],
-            configsPrivate: [],
-            configsLocal: [],
+            ...generateRnvConfigFileObj(),
         },
     },
 });

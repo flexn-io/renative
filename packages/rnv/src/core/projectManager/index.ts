@@ -55,7 +55,7 @@ export const checkAndBootstrapIfRequired = async (c: RnvConfig) => {
         const templateObj = readObjectSync(c.paths.template.configTemplate);
         const appConfigPath = path.join(c.paths.project.appConfigsDir, c.program.appConfigID, 'renative.json');
         const appConfigObj: RenativeConfigFile = readObjectSync(appConfigPath);
-        const supportedPlatforms = appConfigObj?.defaults?.supportedPlatforms;
+        const supportedPlatforms = appConfigObj?.defaults?.supportedPlatforms || [];
         const engineTemplates = c.files.rnv.projectTemplates?.config?.engineTemplates;
         const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
         const activeEngineKeys: Array<string> = [];

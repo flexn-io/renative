@@ -436,7 +436,7 @@ const _generatePlatformTemplatePaths = (c: RnvConfig) => {
     const result: Record<string, string> = {};
 
     if (c.buildConfig.defaults) {
-        c.buildConfig.defaults.supportedPlatforms.forEach((platform: string) => {
+        c.buildConfig.defaults?.supportedPlatforms?.forEach((platform: string) => {
             const engine = c.runtime.enginesByPlatform[platform];
             if (engine) {
                 const originalPath = engine.originalTemplatePlatformsDir;

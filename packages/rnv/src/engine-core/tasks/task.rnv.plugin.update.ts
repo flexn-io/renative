@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import { writeFileSync } from '../../core/systemManager/fileutils';
-import { logSuccess, logTask } from '../../core/systemManager/logger';
+import { logSuccess, logTask, logWarning } from '../../core/systemManager/logger';
 import { getPluginList } from '../../core/pluginManager';
 import { executeTask } from '../../core/taskManager';
 import { TASK_PLUGIN_UPDATE, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
@@ -23,14 +23,18 @@ export const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask)
 
     if (confirm) {
         const { plugins } = c.buildConfig;
-        Object.keys(plugins).forEach((key) => {
-            // c.buildConfig.plugins[key] = o.json[key];
-            c.files.project.config_original.plugins[key] = pluginList.json[key];
-        });
+        if (plugins) {
+            Object.keys(plugins).forEach((key) => {
+                // c.buildConfig.plugins[key] = o.json[key];
+                c.files.project.config_original.plugins[key] = pluginList.json[key];
+            });
 
-        writeFileSync(c.paths.project.config, c.files.project.config_original);
+            writeFileSync(c.paths.project.config, c.files.project.config_original);
 
-        logSuccess('Plugins updated successfully!');
+            logSuccess('Plugins updated successfully!');
+        } else {
+            logWarning(`No plugins found in renative.json`);
+        }
     }
 };
 

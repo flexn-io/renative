@@ -8,16 +8,20 @@ export const isBuildSchemeSupported = async (c: RnvConfig) => {
 
     const { scheme } = c.program;
 
-    if (!c.buildConfig.platforms[c.platform]) {
-        c.buildConfig.platforms[c.platform] = {
+    const platforms = c.buildConfig.platforms || {};
+
+    if (!platforms[c.platform]) {
+        platforms[c.platform] = {
             buildSchemes: {},
         };
     }
 
     const baseBuildSchemes = c.buildConfig.common?.buildSchemes || {};
-    const platformBuildSchemes = c.buildConfig.platforms[c.platform]?.buildSchemes || {};
+    const platformBuildSchemes = platforms[c.platform]?.buildSchemes || {};
 
     const buildSchemes = merge(baseBuildSchemes, platformBuildSchemes);
+
+    c.buildConfig.platforms = platforms;
 
     if (!buildSchemes) {
         logWarning(`Your appConfig for platform ${c.platform} has no buildSchemes. Will continue with defaults`);

@@ -379,7 +379,7 @@ const _resolvePluginDependencies = async (
     const { scope } = _getPluginScope(keyScope);
 
     if (!plugin) {
-        const depPlugin = pluginTemplates[scope]?.pluginTemplates?.[key];
+        const depPlugin = pluginTemplates?.[scope]?.pluginTemplates?.[key];
         if (depPlugin) {
             // console.log('INSTALL PLUGIN???', key, depPlugin.source);
             const { confirm } = await inquirerPrompt({
@@ -763,6 +763,10 @@ const _getPluginConfiguration = (c: RnvConfig, pluginName: string) => {
 
 export const checkForPluginDependencies = async (c: RnvConfig) => {
     const toAdd: Record<string, string> = {};
+    if (!c.buildConfig.plugins) return;
+
+    const bcPlugins = c.buildConfig.plugins;
+
     Object.keys(c.buildConfig.plugins).forEach((pluginName) => {
         const renativePluginConfig = _getPluginConfiguration(c, pluginName);
 
@@ -773,11 +777,11 @@ export const checkForPluginDependencies = async (c: RnvConfig) => {
         if (renativePluginConfig?.plugins) {
             // we have dependencies for this plugin
             Object.keys(renativePluginConfig.plugins).forEach((p) => {
-                const plg = c.buildConfig.plugins[pluginName];
-                if (!c.buildConfig.plugins[p] && typeof plg !== 'string' && plg.plugins?.[p] !== null) {
+                const plg = bcPlugins[pluginName];
+                if (!bcPlugins[p] && typeof plg !== 'string' && plg.plugins?.[p] !== null) {
                     logWarning(`Plugin ${p} is not installed yet.`);
                     toAdd[p] = renativePluginConfig.plugins[p];
-                    c.buildConfig.plugins[p] = renativePluginConfig.plugins[p];
+                    bcPlugins[p] = renativePluginConfig.plugins[p];
                 }
             });
         }

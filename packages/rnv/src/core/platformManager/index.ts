@@ -42,7 +42,7 @@ export const cleanPlatformBuild = (c: RnvConfig, platform: string) =>
 
         const cleanTasks = [];
 
-        if (platform === 'all') {
+        if (platform === 'all' && c.buildConfig.platforms) {
             Object.keys(c.buildConfig.platforms).forEach((k) => {
                 if (isPlatformSupportedSync(c, k)) {
                     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
@@ -122,6 +122,7 @@ export const isPlatformSupported = async (c: RnvConfig, isGlobalScope = false) =
         if (confirm) {
             const newPlatforms = [...configuredPlatforms, c.platform];
             updateProjectPlatforms(c, newPlatforms);
+            c.buildConfig.defaults = c.buildConfig.defaults || {};
             c.buildConfig.defaults.supportedPlatforms = newPlatforms;
             // await configureEntryPoints(c);
         } else {

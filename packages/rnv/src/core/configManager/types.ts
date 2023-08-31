@@ -6,7 +6,7 @@ export interface RnvConfig {
     program: any;
     command: string | null;
     subCommand: string | null;
-    buildConfig: RenativeConfigFile & {
+    buildConfig: Partial<RenativeConfigFile> & {
         _meta?: {
             currentAppConfigId: string;
         };
@@ -251,16 +251,16 @@ export interface RnvConfigFileObj {
 }
 
 export type RenativeConfigFile = {
-    sdks: Record<string, string>;
+    sdks?: Record<string, string>;
     workspaceID: string;
     common: {
-        buildSchemes: Record<string, RenativeConfigBuildScheme>;
-        runtime: Record<string, any>;
+        buildSchemes?: Record<string, RenativeConfigBuildScheme>;
+        runtime?: Record<string, any>;
     };
     defaults: {
-        ports: Record<string, string>;
-        supportedPlatforms: Array<string>;
-        portOffset: number;
+        ports?: Record<string, string>;
+        supportedPlatforms?: Array<string>;
+        portOffset?: number;
     };
     platforms: Record<
         string,
@@ -281,8 +281,8 @@ export type RenativeConfigFile = {
         }
     >;
     plugins: Record<string, RenativeConfigPlugin | string>;
-    currentTemplate: string;
-    projectTemplates: object;
+    currentTemplate?: string;
+    projectTemplates?: object;
     platformTemplatesDirs: Record<string, string>;
     paths: {
         appConfigsDirs: Array<string>;
@@ -293,12 +293,12 @@ export type RenativeConfigFile = {
     tasks: Array<any> | Record<string, any>;
     engineTemplates: Record<string, any>;
     engines: Record<string, string>;
-    pluginTemplates: Record<string, any>;
+    pluginTemplates?: Record<string, any>;
     runtime: Record<string, any>;
     defaultTargets: Record<string, string>;
-    templateConfig: any;
-    enableAnalytics: boolean;
-    workspaceAppConfigsDir: string;
+    templateConfig?: any;
+    enableAnalytics?: boolean;
+    workspaceAppConfigsDir?: string;
 };
 
 export type RenativeConfigPlugin = {

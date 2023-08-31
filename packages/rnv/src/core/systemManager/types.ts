@@ -60,4 +60,4 @@ export type FileUtilsUpdateConfig = {
     webosSdk?: string;
 };
 
-export type DoResolveFn = (aPath: string, mandatory?: boolean, options?: ResolveOptions) => string | undefined;
+export type DoResolveFn = (aPath?: string, mandatory?: boolean, options?: ResolveOptions) => string | undefined;

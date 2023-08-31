@@ -217,7 +217,7 @@ export const runTizenSimOrDevice = async (c: RnvConfig, buildCoreWebpackProject:
     const { target, engine } = c.runtime;
     const { platform } = c;
 
-    const platformConfig = c.buildConfig.platforms[platform];
+    const platformConfig = c.buildConfig.platforms?.[platform];
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const isHosted = hosted ?? !bundleAssets;
     const isLightningEngine = engine?.config.id === 'engine-lightning';

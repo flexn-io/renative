@@ -127,7 +127,7 @@ export const registerMissingPlatformEngines = async (c: RnvConfig, taskInstance?
         c.program.platform === 'all'
     ) {
         const registerEngineList: Array<Promise<void>> = [];
-        c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
+        c.buildConfig.defaults?.supportedPlatforms?.forEach((platform) => {
             registerEngineList.push(_registerPlatformEngine(c, platform));
         });
 
@@ -214,7 +214,7 @@ export const loadEnginePackageDeps = async (c: RnvConfig, engineConfigs: Array<R
     const addedDeps = [];
     engineConfigs.forEach((ecf) => {
         const engineConfig = readObjectSync(ecf.configPath);
-        c.buildConfig.defaults.supportedPlatforms.forEach((platform) => {
+        c.buildConfig.defaults?.supportedPlatforms?.forEach((platform) => {
             const npm = engineConfig?.platforms?.[platform]?.npm;
             if (npm) {
                 if (npm.devDependencies) {
@@ -405,7 +405,7 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
 
 const _getMergedEngineConfigs = (c: RnvConfig) => {
     const engines = c.buildConfig?.engines;
-    const engineTemplates = c.buildConfig?.engineTemplates;
+    const engineTemplates = c.buildConfig?.engineTemplates || {};
     const mergedEngineConfigs: RnvEngineConfigMap = {};
     Object.keys(engineTemplates).forEach((packageName) => {
         mergedEngineConfigs[packageName] = {

@@ -28,18 +28,20 @@ export const taskRnvAppCreate: RnvTaskFn = async (c) => {
             sourcePath = sourceAppConfigDirPath;
         }
     } else if (c.program.ci) {
-        const tacPath = doResolve(c.buildConfig.currentTemplate);
-        if (tacPath && fsExistsSync(tacPath)) {
-            const tacDirsPath = path.join(tacPath, 'appConfigs');
-            const tacDirs = fsReaddirSync(tacDirsPath);
-            tacDirs.forEach((v) => {
-                if (v !== 'base') {
-                    const pth = path.join(tacDirsPath, v);
-                    if (fsLstatSync(pth).isDirectory()) {
-                        sourcePath = pth;
+        if (c.buildConfig.currentTemplate) {
+            const tacPath = doResolve(c.buildConfig.currentTemplate);
+            if (tacPath && fsExistsSync(tacPath)) {
+                const tacDirsPath = path.join(tacPath, 'appConfigs');
+                const tacDirs = fsReaddirSync(tacDirsPath);
+                tacDirs.forEach((v) => {
+                    if (v !== 'base') {
+                        const pth = path.join(tacDirsPath, v);
+                        if (fsLstatSync(pth).isDirectory()) {
+                            sourcePath = pth;
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     } else {
         const appConfigChoicesObj: Record<
@@ -65,22 +67,24 @@ export const taskRnvAppCreate: RnvTaskFn = async (c) => {
         });
 
         // Template Configs
-        const tacPath = doResolve(c.buildConfig.currentTemplate);
-        if (tacPath && fsExistsSync(tacPath)) {
-            const tacDirsPath = path.join(tacPath, 'appConfigs');
-            const tacDirs = fsReaddirSync(tacDirsPath);
-            tacDirs.forEach((v) => {
-                if (v !== 'base') {
-                    const pth = path.join(tacDirsPath, v);
-                    if (fsLstatSync(pth).isDirectory()) {
-                        const key = `template>${v}`;
-                        appConfigChoices.push(key);
-                        appConfigChoicesObj[key] = {
-                            path: pth,
-                        };
+        if (c.buildConfig.currentTemplate) {
+            const tacPath = doResolve(c.buildConfig.currentTemplate);
+            if (tacPath && fsExistsSync(tacPath)) {
+                const tacDirsPath = path.join(tacPath, 'appConfigs');
+                const tacDirs = fsReaddirSync(tacDirsPath);
+                tacDirs.forEach((v) => {
+                    if (v !== 'base') {
+                        const pth = path.join(tacDirsPath, v);
+                        if (fsLstatSync(pth).isDirectory()) {
+                            const key = `template>${v}`;
+                            appConfigChoices.push(key);
+                            appConfigChoicesObj[key] = {
+                                path: pth,
+                            };
+                        }
                     }
-                }
-            });
+                });
+            }
         }
 
         const { sourceAppConfig } = await inquirerPrompt({

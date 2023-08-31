@@ -639,7 +639,7 @@ export const taskRnvNew = async (c: RnvConfig) => {
         isMonorepo: false,
     };
 
-    const { supportedPlatforms: supPlats } = config.defaults;
+    const supPlats = config.defaults.supportedPlatforms || [];
 
     // Remove unused platforms
     Object.keys(config.platforms).forEach((k) => {

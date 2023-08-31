@@ -21,7 +21,6 @@ import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from
 import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import { RnvConfig } from '../configManager/types';
-import { RnvError } from '../types';
 import { PromptOptions } from '../../cli/types';
 
 export const checkIfTemplateConfigured = async (c: RnvConfig) => {
@@ -36,7 +35,7 @@ export const checkIfTemplateConfigured = async (c: RnvConfig) => {
         return false;
     }
     Object.keys(c.buildConfig.templates).forEach((k) => {
-        const obj = c.buildConfig.templates[k];
+        const obj = c.buildConfig.templates?.[k] || { version: 'unknown template version' };
         if (!doResolve(k, false, { basedir: '../' }) && !doResolve(k, false)) {
             logInfo(
                 `Your ${chalk().white(`${k}@${obj.version}`)} template is missing in renative.json. CONFIGURING...DONE`
@@ -66,13 +65,13 @@ const _cleanProjectTemplateSync = (c: RnvConfig) => {
         path.join(c.paths.project.appConfigsDir),
     ];
 
-    const filesToRemove = c.buildConfig.defaults.supportedPlatforms.map((p) =>
+    const filesToRemove = c.buildConfig.defaults?.supportedPlatforms?.map((p) =>
         path.join(c.paths.project.dir, `index.${p}.js`)
     );
 
     removeDirsSync(dirsToRemove);
     // TODO: NOT SERVED FROM TEMPLATE YET
-    removeFilesSync(filesToRemove);
+    if (filesToRemove) removeFilesSync(filesToRemove);
 };
 
 const _applyTemplate = async (c: RnvConfig) => {
@@ -190,7 +189,7 @@ const _configureAppConfigs = async (c: RnvConfig) => {
                     }
                 }
             });
-        } catch (e: RnvError) {
+        } catch (e: any) {
             logError(e);
         }
     }

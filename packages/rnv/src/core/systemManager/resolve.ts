@@ -19,6 +19,7 @@ import { DoResolveFn, ResolveOptions } from './types';
  * @param {*} options - docs - https://tinyurl.com/r9sfpf7 && {keepSuffix: boolean}
  */
 export const doResolve: DoResolveFn = (aPath, mandatory = true, options = {}) => {
+    if (!aPath) return undefined;
     options.basedir = options.basedir ?? process.cwd();
     try {
         if (aPath.startsWith('file:')) {
