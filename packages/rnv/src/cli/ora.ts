@@ -1,3 +1,4 @@
+//@ts-nocheck
 import readline from 'readline';
 import chalk from 'chalk';
 import cliCursor from 'cli-cursor';

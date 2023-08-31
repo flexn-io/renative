@@ -8,8 +8,8 @@ const path = require('path');
 
 // global.Headers = global.fetch.Headers;
 
-const cli = require('../dist/index.js');
-const CONSTANTS = require('../dist/core/constants.js');
+const cli = require('../lib/index.js');
+const CONSTANTS = require('../lib/core/constants.js');
 
 const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')));
 let cmdValue;
