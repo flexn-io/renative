@@ -276,7 +276,7 @@ export const _getConfigProp = (
     platform: string,
     key: string,
     defaultVal?: any,
-    sourceObj?: RenativeConfigFile
+    sourceObj?: Partial<RenativeConfigFile>
 ) => {
     if (!sourceObj) return null;
 
@@ -294,14 +294,14 @@ export const _getConfigProp = (
     let scheme: RenativeConfigBuildScheme;
     if (p) {
         scheme = p.buildSchemes?.[ps] || {};
-        resultPlatforms = getFlavouredProp(c, sourceObj.platforms[platform], baseKey);
+        resultPlatforms = getFlavouredProp(c, sourceObj.platforms?.[platform] || {}, baseKey);
     } else {
         scheme = {};
     }
 
     const resultCli = baseKey && CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
     const resultScheme = baseKey && scheme[baseKey];
-    const resultCommonRoot = getFlavouredProp(c, sourceObj.common, baseKey);
+    const resultCommonRoot = getFlavouredProp(c, sourceObj.common || {}, baseKey);
     const resultCommonScheme = getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, baseKey);
     const resultCommon = resultCommonScheme || resultCommonRoot;
 

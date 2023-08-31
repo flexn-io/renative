@@ -704,7 +704,7 @@ export const upgradeProjectDependencies = (c: RnvConfig, version: string) => {
 
 export const upgradeDependencies = (
     packageFile: NpmPackageFile,
-    packagesPath: string,
+    packagesPath: string | undefined,
     configFile: RenativeConfigFile | null,
     configPath: string | null,
     version: string

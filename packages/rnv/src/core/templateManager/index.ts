@@ -59,11 +59,7 @@ export const checkIfTemplateConfigured = async (c: RnvConfig) => {
 
 const _cleanProjectTemplateSync = (c: RnvConfig) => {
     logTask('_cleanProjectTemplateSync');
-    const dirsToRemove = [
-        path.join(c.paths.project.appConfigBase.dir),
-        path.join(c.paths.project.srcDir),
-        path.join(c.paths.project.appConfigsDir),
-    ];
+    const dirsToRemove = [c.paths.project.appConfigBase.dir, c.paths.project.srcDir, c.paths.project.appConfigsDir];
 
     const filesToRemove = c.buildConfig.defaults?.supportedPlatforms?.map((p) =>
         path.join(c.paths.project.dir, `index.${p}.js`)
@@ -306,7 +302,7 @@ export const configureEntryPoint = async (c: RnvConfig, platform: string) => {
     return true;
 };
 
-const _writeObjectSync = (c: RnvConfig, p: string, s: string) => {
+const _writeObjectSync = (c: RnvConfig, p: string | undefined, s: string) => {
     writeFileSync(p, s);
     generateBuildConfig(c);
 };

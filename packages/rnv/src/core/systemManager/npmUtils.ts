@@ -18,7 +18,6 @@ import { doResolve } from './resolve';
 import { inquirerPrompt } from '../../cli/prompt';
 import { getConfigProp } from '../common';
 import { RnvConfig } from '../configManager/types';
-import { RnvError } from '../types';
 
 const packageJsonIsValid = (c: RnvConfig) => {
     if (!fsExistsSync(c.paths.project.package)) return false;
@@ -233,7 +232,7 @@ export const installPackageDependencies = async (c: RnvConfig, failOnError = fal
     try {
         await executeAsync(command);
         await invalidatePodsChecksum(c);
-    } catch (e: RnvError) {
+    } catch (e: any) {
         if (failOnError) {
             logError(e);
             throw e;
@@ -244,7 +243,7 @@ export const installPackageDependencies = async (c: RnvConfig, failOnError = fal
         try {
             await cleanNodeModules();
             await installPackageDependencies(c, true);
-        } catch (npmErr: RnvError) {
+        } catch (npmErr: any) {
             logError(npmErr);
             throw npmErr;
         }
@@ -269,7 +268,7 @@ export const installPackageDependencies = async (c: RnvConfig, failOnError = fal
         }
         c._requiresNpmInstall = false;
         return true;
-    } catch (jetErr: RnvError) {
+    } catch (jetErr: any) {
         logError(jetErr);
         return false;
     }

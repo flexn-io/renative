@@ -36,7 +36,7 @@ import { getWorkspaceDirPath } from '../projectManager/workspace';
 import { chalk, logError, logTask, logWarning, logDebug } from '../systemManager/logger';
 import { doResolve } from '../systemManager/resolve';
 import { RnvConfigFileObj, RnvConfigPathObj, RnvConfig, RnvFileKey } from './types';
-import { generateConfigBase } from './configBase';
+import { generateConfigBase, generateRnvConfigPathObj } from './configBase';
 // import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
@@ -89,7 +89,7 @@ const getEnginesPluginDelta = (c: RnvConfig) => {
     return enginePlugins;
 };
 
-export const writeRenativeConfigFile = (c: RnvConfig, configPath: string, configData: string | object) => {
+export const writeRenativeConfigFile = (c: RnvConfig, configPath: string | undefined, configData: string | object) => {
     logDebug(`writeRenativeConfigFile:${configPath}`);
     writeFileSync(configPath, configData);
     generateBuildConfig(c);
@@ -310,10 +310,9 @@ const _loadConfigFiles = (
 
         // PATH1: appConfigs/base
         const path1 = path.join(pathObj.appConfigsDir, 'base');
+
         const pathObj1: RnvConfigPathObj = {
-            configs: [],
-            configsLocal: [],
-            configsPrivate: [],
+            ...generateRnvConfigPathObj(),
             config: path.join(path1, RENATIVE_CONFIG_NAME),
             configLocal: path.join(path1, RENATIVE_CONFIG_LOCAL_NAME),
             configPrivate: path.join(path1, RENATIVE_CONFIG_PRIVATE_NAME),
@@ -337,6 +336,7 @@ const _loadConfigFiles = (
             if (parseAppConfigs && extendAppId && appConfigsDirNames.includes(extendAppId)) {
                 const path2 = path.join(pathObj.appConfigsDir, extendAppId);
                 const pathObj2: RnvConfigPathObj = {
+                    ...generateRnvConfigPathObj(),
                     config: path.join(path2, RENATIVE_CONFIG_NAME),
                     configLocal: path.join(path2, RENATIVE_CONFIG_LOCAL_NAME),
                     configPrivate: path.join(path2, RENATIVE_CONFIG_PRIVATE_NAME),

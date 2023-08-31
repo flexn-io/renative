@@ -3,7 +3,7 @@ import { fsExistsSync, fsReadFileSync, fsReaddirSync, fsWriteFileSync } from '..
 import path from 'path';
 import { RnvConfig, RnvConfigFileObj, RnvConfigPathObj } from './types';
 
-const generateRnvConfigPathObj = (): RnvConfigPathObj => {
+export const generateRnvConfigPathObj = (): RnvConfigPathObj => {
     return {
         configs: [],
         configsPrivate: [],
@@ -20,7 +20,7 @@ const generateRnvConfigPathObj = (): RnvConfigPathObj => {
     };
 };
 
-const generateRnvConfigFileObj = (): RnvConfigFileObj => {
+export const generateRnvConfigFileObj = (): RnvConfigFileObj => {
     return {
         configs: [],
         configsLocal: [],
@@ -28,7 +28,21 @@ const generateRnvConfigFileObj = (): RnvConfigFileObj => {
     };
 };
 
+const runtime: any = {
+    enginesByPlatform: {},
+    enginesByIndex: [],
+    enginesById: {},
+};
+
 export const generateConfigBase = (): RnvConfig => ({
+    assetConfig: {},
+    rnvVersion: '',
+    buildHooks: {},
+    buildPipes: {},
+    isBuildHooksReady: false,
+    runtimePropsInjects: [],
+    supportedPlatforms: [],
+    systemPropsInjects: [],
     program: {},
     buildConfig: {},
     command: '',
@@ -46,12 +60,9 @@ export const generateConfigBase = (): RnvConfig => ({
         path,
     },
     configPropsInjects: {},
-    runtime: {
-        enginesByPlatform: {},
-        enginesByIndex: [],
-        enginesById: {},
-    },
+    runtime,
     paths: {
+        appConfigBase: '',
         GLOBAL_RNV_CONFIG: '',
         rnv: {
             configWorkspaces: {},
@@ -108,6 +119,9 @@ export const generateConfigBase = (): RnvConfig => ({
             platformTemplates: {},
             appConfigsDirs: [],
             appConfigsDirNames: [],
+            dir: '',
+            platformTemplatesDirs: {},
+            nodeModulesDir: '',
         },
         appConfig: {
             ...generateRnvConfigPathObj(),
@@ -138,6 +152,8 @@ export const generateConfigBase = (): RnvConfig => ({
             plugins: {},
             engines: {},
             projectTemplate: {},
+            configWorkspaces: {},
+            package: {},
         },
         workspace: {
             ...generateRnvConfigFileObj(),
@@ -174,6 +190,7 @@ export const generateConfigBase = (): RnvConfig => ({
             builds: {},
             assets: {},
             platformTemplates: {},
+            package: {},
         },
         appConfig: {
             ...generateRnvConfigFileObj(),

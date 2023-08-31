@@ -26,10 +26,11 @@ export const configureFilesystem = (
     global.isSystemWin = _isSystemWin;
 };
 
-export const fsWriteFileSync = (dest: string, data: string, options?: fs.WriteFileOptions) => {
+export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {
     //     console.log('FS_WRITE', dest, data.length);
     // }
+    if (!dest) return;
     fs.writeFileSync(dest, data, options);
 };
 
@@ -82,10 +83,11 @@ const _getSanitizedPath = (origPath: string, timestampPathsConfig?: TimestampPat
 
 export const copyFileSync = (
     source: string,
-    target: string,
+    target: string | undefined,
     skipOverride?: boolean,
     timestampPathsConfig?: TimestampPathsConfig
 ) => {
+    if (!target) return;
     logDebug('copyFileSync', source);
     let targetFile = target;
     // if target is a directory a new file with the same name will be created
@@ -462,7 +464,8 @@ export const removeDirSync = (_dir: string, _rmSelf?: boolean) => {
     }
 };
 
-export const writeFileSync = (filePath: string, obj: string | object, spaces = 4, addNewLine = true) => {
+export const writeFileSync = (filePath: string | undefined, obj: string | object, spaces = 4, addNewLine = true) => {
+    if (!filePath) return;
     logDebug('writeFileSync', filePath);
     if (filePath.includes('?') || filePath.includes('undefined')) return;
     let output;

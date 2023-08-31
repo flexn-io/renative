@@ -142,10 +142,10 @@ export interface RnvConfig {
             //ADDON
             dir: string;
             nodeModulesDir: string;
-            srcDir: string;
-            package: string;
-            rnCliConfig: string;
-            babelConfig: string;
+            srcDir?: string;
+            package?: string;
+            rnCliConfig?: string;
+            babelConfig?: string;
             platformTemplatesDirs: Record<string, string>;
         };
         appConfig: RnvConfigPathObj;
