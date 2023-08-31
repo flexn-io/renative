@@ -37,7 +37,7 @@ export const checkIfTemplateConfigured = async (c: RnvConfig) => {
     }
     Object.keys(c.buildConfig.templates).forEach((k) => {
         const obj = c.buildConfig.templates[k];
-        if (!doResolve(k.version, false, { basedir: '../' }) && !doResolve(k, false)) {
+        if (!doResolve(k, false, { basedir: '../' }) && !doResolve(k, false)) {
             logInfo(
                 `Your ${chalk().white(`${k}@${obj.version}`)} template is missing in renative.json. CONFIGURING...DONE`
             );

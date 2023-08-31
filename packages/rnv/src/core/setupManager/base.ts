@@ -162,7 +162,7 @@ class BasePlatformSetup {
         return true;
     }
 
-    async installFastlane() {
+    async installFastlane(): Promise<any> {
         // to be overwritten
         logError(
             'Install fastlane not supported yet. Follow https://docs.fastlane.tools/getting-started/ios/setup/ to install it manually'

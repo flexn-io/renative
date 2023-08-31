@@ -653,17 +653,13 @@ const BIND_CONFIG_PROPS = '{{configProps.';
 const BIND_RUNTIME_PROPS = '{{runtimeProps.';
 const BIND_ENV = '{{env.';
 
-const _bindStringVals = (
-    obj: Record<string, string | undefined>,
-    _val: string,
-    newKey: string,
-    propConfig: FileUtilsPropConfig
-) => {
+const _bindStringVals = (obj: any, _val: string, newKey: string | number, propConfig: FileUtilsPropConfig) => {
     const { props = {}, configProps = {}, runtimeProps = {} } = propConfig;
     let val = _val;
     if (val.includes(BIND_FILES)) {
         const key = val.replace(BIND_FILES, '').replace('}}', '');
-        const nVal = key.split('.').reduce((o, i) => o?.[i], propConfig.files);
+        //TODO: this any not good
+        const nVal: any = key.split('.').reduce((o, i) => o?.[i], propConfig.files);
         obj[newKey] = resolvePackage(nVal);
     } else if (val.includes(BIND_PROPS)) {
         Object.keys(props).forEach((pk) => {

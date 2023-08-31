@@ -379,6 +379,7 @@ export type RenativeConfigFile = {
     runtime: Record<string, any>;
     defaultTargets: Record<string, string>;
     templateConfig: any;
+    enableAnalytics: boolean;
 };
 
 export type RenativeConfigPlugin = {

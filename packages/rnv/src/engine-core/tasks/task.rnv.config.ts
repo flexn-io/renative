@@ -11,7 +11,8 @@ export const taskRnvConfig: RnvTaskFn = async (c) => {
 
     const [, key, value] = getCliArguments(c); // first arg is config so it's useless
     if (key === 'list') {
-        const rows: Array<string> = [];
+        const rows: Array<any> = [];
+        //TODO: is this really needed?
         Object.keys(configSchema).forEach((k) => rows.push(Config.listConfigValue(k)));
 
         printTable([].concat(...rows));

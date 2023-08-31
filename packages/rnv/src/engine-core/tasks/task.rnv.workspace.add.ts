@@ -30,7 +30,7 @@ export const taskRnvWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask)
         if (!confirm) return false;
     }
 
-    let workspaceID = workspacePath.split('/').pop()?.replace(/@|\./g, '');
+    let workspaceID = workspacePath.split('/').pop()?.replace(/@|\./g, '') || 'rnv';
 
     const { workspaceIDInput } = await inquirerPrompt({
         name: 'workspaceIDInput',

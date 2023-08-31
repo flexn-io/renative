@@ -6,7 +6,7 @@ import { chalk, logTask, logToSummary, logDebug } from '../../core/systemManager
 import { executeAsync } from '../../core/systemManager/exec';
 import { PARAMS } from '../../core/constants';
 import { isSystemWin } from '../../core/systemManager/utils';
-import { RnvConfig } from '../../core/configManager/types';
+import { RnvTaskFn } from '../../core/taskManager/types';
 
 function clearWindowsCacheFiles() {
     const opts = {
@@ -34,9 +34,9 @@ function clearWindowsCacheFiles() {
     return true;
 }
 
-export const taskRnvClean = async (c: RnvConfig, skipQuestionParam = false) => {
+export const taskRnvClean: RnvTaskFn = async (c) => {
     logTask('taskRnvClean');
-    const skipQuestion = c.program.ci ? true : skipQuestionParam;
+    const skipQuestion = c.program.ci;
     const pathsToRemove = [];
     const localFiles = [];
     const immediateNodeModuleDir = path.join(c.paths.project.dir, 'node_modules');
