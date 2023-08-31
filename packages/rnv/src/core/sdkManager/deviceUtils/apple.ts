@@ -30,7 +30,7 @@ export const getAppleDevices = async (c: RnvConfig, ignoreDevices?: boolean, ign
     const availableSims: Array<AppleDevice> = [];
     Object.keys(simctl.devices).forEach((runtime) => {
         logDebug('runtime', runtime);
-        simctl.devices[runtime].forEach((device) => {
+        simctl.devices[runtime].forEach((device: AppleDevice) => {
             if (device.isAvailable) {
                 availableSims.push({
                     ...device,
@@ -64,70 +64,77 @@ export const getAppleDevices = async (c: RnvConfig, ignoreDevices?: boolean, ign
     return allDevices;
 };
 
-const _parseNewIOSDevicesList = (rawDevices, platform, ignoreDevices = false) => {
-    const devices = [];
+const _parseNewIOSDevicesList = (rawDevices: string | Array<AppleDevice>, platform: string, ignoreDevices = false) => {
+    const devices: Array<AppleDevice> = [];
     if (ignoreDevices) return devices;
-    const decideIcon = (device) => {
+    const decideIcon = (device: AppleDevice) => {
         const { name, isDevice } = device;
         switch (platform) {
             case IOS:
-                if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod')) {
+                if (name?.includes('iPhone') || name?.includes('iPad') || name?.includes('iPod')) {
                     let icon = 'Phone 📱';
                     if (name.includes('iPad')) icon = 'Tablet 💊';
                     return icon;
                 }
-                return null;
+                return undefined;
             case TVOS:
-                if (name.includes('TV') && !name.includes('iPhone') && !name.includes('iPad')) {
+                if (name?.includes('TV') && !name?.includes('iPhone') && !name?.includes('iPad')) {
                     return 'TV 📺';
                 }
-                return null;
+                return undefined;
             default:
                 if (isDevice) {
                     return 'Apple Device';
                 }
-                return null;
+                return undefined;
         }
     };
-    const lines = rawDevices.split('\n');
-    const devicesOnly = lines.slice(1, lines.indexOf(''));
-    devicesOnly.forEach((device) => {
-        const udid = device.match(/\(([^()]*)\)$/)[1];
-        const name = device.split(' (').slice(0, -1).join(' (');
-        const icon = decideIcon({ name, isDevice: true });
-        devices.push({
-            udid,
-            name,
-            icon,
-            isDevice: true,
+    if (typeof rawDevices === 'string') {
+        const lines = rawDevices.split('\n');
+        const devicesOnly: Array<string> = lines.slice(1, lines.indexOf(''));
+        devicesOnly.forEach((device) => {
+            const udid = device.match(/\(([^()]*)\)$/)?.[1];
+            const name = device.split(' (').slice(0, -1).join(' (');
+            const icon = decideIcon({ name, isDevice: true });
+            devices.push({
+                udid,
+                name,
+                icon,
+                isDevice: true,
+            });
         });
-    });
+    }
 
     return devices;
 };
 
-const _parseIOSDevicesList = (rawDevices, platform, ignoreDevices = false, ignoreSimulators = false) => {
-    const devices = [];
-    const decideIcon = (device) => {
+const _parseIOSDevicesList = (
+    rawDevices: string | Array<AppleDevice>,
+    platform: string,
+    ignoreDevices = false,
+    ignoreSimulators = false
+) => {
+    const devices: Array<AppleDevice> = [];
+    const decideIcon = (device: AppleDevice) => {
         const { name, isDevice } = device;
         switch (platform) {
             case IOS:
-                if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod')) {
+                if (name?.includes('iPhone') || name?.includes('iPad') || name?.includes('iPod')) {
                     let icon = 'Phone 📱';
                     if (name.includes('iPad')) icon = 'Tablet 💊';
                     return icon;
                 }
-                return null;
+                return undefined;
             case TVOS:
-                if (name.includes('TV') && !name.includes('iPhone') && !name.includes('iPad')) {
+                if (name?.includes('TV') && !name?.includes('iPhone') && !name?.includes('iPad')) {
                     return 'TV 📺';
                 }
-                return null;
+                return undefined;
             default:
                 if (isDevice) {
                     return 'Apple Device';
                 }
-                return null;
+                return undefined;
         }
     };
     if (typeof rawDevices === 'string' && !ignoreDevices) {
@@ -211,7 +218,7 @@ export const launchAppleSimulator = async (c: RnvConfig, target: string) => {
 
 const _launchSimulator = async (selectedDevice: AppleDevice) => {
     try {
-        child_process.spawnSync('xcrun', ['simctl', 'boot', selectedDevice.udid]);
+        if (selectedDevice.udid) child_process.spawnSync('xcrun', ['simctl', 'boot', selectedDevice.udid]);
     } catch (e) {
         // instruments always fail with 255 because it expects more arguments,
         // but we want it to only launch the simulator

@@ -278,7 +278,7 @@ const executeAsync = async (
  *
  */
 const executeTelnet = (c: RnvConfig, port: string, command: string) =>
-    new Promise((resolve) => {
+    new Promise<string>((resolve) => {
         logDebug(`execTelnet: ${port} ${command}`);
         try {
             let output = '';
@@ -292,7 +292,7 @@ const executeTelnet = (c: RnvConfig, port: string, command: string) =>
             nc2.on('close', () => resolve(output));
         } catch (e: RnvError) {
             logError(e);
-            resolve(true);
+            resolve('');
         }
     });
 

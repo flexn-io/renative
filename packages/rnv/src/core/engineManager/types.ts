@@ -10,10 +10,13 @@ export type RnvEngine = {
     rootPath: string;
     originalTemplatePlatformProjectDir: string;
     projectDirName: string;
+    runtimeExtraProps: any;
 };
 
 export type RnvEnginePlatform = {
     extensions: Array<string>;
+    isWebHosted: boolean;
+    defaultPort: string;
 };
 
 export type RnvEngineConfig = {

@@ -13,10 +13,10 @@ import {
 } from '../engineManager';
 import { TASK_CONFIGURE_SOFT } from '../constants';
 import { RnvConfig } from '../configManager/types';
-import { RnvTask, RnvTaskMap } from './types';
+import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engineManager/types';
 
-let executedTasks = {};
+let executedTasks: Record<string, number> = {};
 
 const CUSTOM_TASKS: RnvTaskMap = {};
 
@@ -40,13 +40,7 @@ export const initializeTask = async (c: RnvConfig, task: string) => {
     return true;
 };
 
-const _getTaskOption = ({
-    taskInstance,
-    hasMultipleSubTasks,
-}: {
-    taskInstance: RnvTask;
-    hasMultipleSubTasks: boolean;
-}) => {
+const _getTaskOption = ({ taskInstance, hasMultipleSubTasks }: TaskObj) => {
     if (hasMultipleSubTasks) {
         return `${taskInstance.task.split(' ')[0]}...`;
     }
@@ -67,12 +61,7 @@ const _getTaskObj = (taskInstance: RnvTask) => {
     };
 };
 
-type TaskObj = {
-    key: string;
-    taskInstance: RnvTask;
-};
-
-export const findSuitableTask = async (c: RnvConfig, specificTask?: string): Promise<RnvTask> => {
+export const findSuitableTask = async (c: RnvConfig, specificTask?: string): Promise<RnvTask | undefined> => {
     logTask('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines(c);
     let task = '';
@@ -164,20 +153,14 @@ export const findSuitableTask = async (c: RnvConfig, specificTask?: string): Pro
                     });
                 }
             });
-            const supportedSubtasks = {};
+            const supportedSubtasks: TaskItemMap = {};
             // Normalize task options
-            const supportedSubtasksFilter: Record<
-                string,
-                {
-                    desc: string;
-                    taskKey: string;
-                }
-            > = {};
+            const supportedSubtasksFilter: TaskItemMap = {};
             supportedSubtasksArr.forEach((tsk) => {
                 const mergedTask = supportedSubtasksFilter[tsk.taskKey];
                 if (!mergedTask) {
                     supportedSubtasksFilter[tsk.taskKey] = tsk;
-                } else if (!mergedTask.desc.includes(tsk.desc)) {
+                } else if (!mergedTask.desc?.includes(tsk.desc)) {
                     mergedTask.desc += `, ${tsk.desc}`;
                 }
             });
@@ -243,12 +226,12 @@ export const findSuitableTask = async (c: RnvConfig, specificTask?: string): Pro
             await _selectPlatform(c, suitableEngines, task);
             c.runtime.engine = getEngineRunner(c, task, CUSTOM_TASKS);
         }
-        if (c.runtime.engine.runtimeExtraProps) {
+        if (c.runtime.engine?.runtimeExtraProps) {
             c.runtime.runtimeExtraProps = c.runtime.engine.runtimeExtraProps;
         }
         logInfo(
-            `Current Engine: ${chalk().bold.white(c.runtime.engine.config.id)} path: ${chalk().grey(
-                c.runtime.engine.rootPath
+            `Current Engine: ${chalk().bold.white(c.runtime.engine?.config.id)} path: ${chalk().grey(
+                c.runtime.engine?.rootPath
             )}`
         );
         const customTask = CUSTOM_TASKS[task];
@@ -261,8 +244,8 @@ export const findSuitableTask = async (c: RnvConfig, specificTask?: string): Pro
         task = specificTask;
         c.runtime.engine = getEngineRunner(c, task);
     }
-    c.runtime.availablePlatforms = Object.keys(c.runtime.engine.platforms || []);
-    return getEngineTask(task, c.runtime.engine.tasks);
+    c.runtime.availablePlatforms = Object.keys(c.runtime.engine?.platforms || []);
+    return getEngineTask(task, c.runtime.engine?.tasks);
 };
 
 const _populateExtraParameters = (c: RnvConfig, task: RnvTask) => {
@@ -289,7 +272,7 @@ const _populateExtraParameters = (c: RnvConfig, task: RnvTask) => {
 const _selectPlatform = async (c: RnvConfig, suitableEngines: Array<RnvEngine>, task: string) => {
     const supportedPlatforms: Record<string, true> = {};
     suitableEngines.forEach((engine) => {
-        getEngineTask(task, engine.tasks).platforms.forEach((plat) => {
+        getEngineTask(task, engine.tasks)?.platforms.forEach((plat) => {
             supportedPlatforms[plat] = true;
         });
     });
@@ -314,7 +297,7 @@ const TASK_LIMIT = 20;
 export const executeTask = async (
     c: RnvConfig,
     task: string,
-    parentTask?: string | null,
+    parentTask?: string,
     originTask?: string,
     isFirstTask?: boolean
 ) => {
@@ -331,7 +314,14 @@ but issue migh not be necessarily with this task
 
 To avoid that test your task code against parentTask and avoid executing same task X from within task X`);
     }
-    await executeEngineTask(c, task, parentTask, originTask, getEngineRunner(c, task, CUSTOM_TASKS).tasks, isFirstTask);
+    await executeEngineTask(
+        c,
+        task,
+        parentTask,
+        originTask,
+        getEngineRunner(c, task, CUSTOM_TASKS)?.tasks,
+        isFirstTask
+    );
     // await getEngineRunner(c, task, CUSTOM_TASKS).executeTask(c, task, parentTask, originTask, isFirstTask);
     executedTasks[task]++;
 
@@ -416,16 +406,16 @@ export const shouldSkipTask = (c: RnvConfig, task: string, originTask: string) =
 export const executeEngineTask = async (
     c: RnvConfig,
     task: string,
-    parentTask: string,
-    originTask: string,
-    tasks: Record<string, RnvTask>,
-    isFirstTask: boolean
+    parentTask?: string,
+    originTask?: string,
+    tasks?: Record<string, RnvTask>,
+    isFirstTask?: boolean
 ) => {
     const needsHelp = Object.prototype.hasOwnProperty.call(c.program, 'help');
 
     const t = getEngineTask(task, tasks, CUSTOM_TASKS);
 
-    if (needsHelp && !parentTask) {
+    if (needsHelp && !parentTask && t) {
         logRaw(`
 =======================================================
 INTERACTIVE HELP FOR TASK: ${chalk().green(t.task)}

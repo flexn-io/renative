@@ -534,19 +534,18 @@ export const getEngineRunnerByPlatform = (c: RnvConfig, platform: string, ignore
     return selectedEngine;
 };
 
-export const getEngineTask = (
-    task: string,
-    tasks: Record<string, RnvTask>,
-    customTasks?: Record<string, RnvTask>
-): RnvTask => {
+export const getEngineTask = (task: string, tasks?: RnvTaskMap, customTasks?: RnvTaskMap): RnvTask | undefined => {
     const customTask = customTasks?.[task];
     if (customTask) return customTask;
     let tsk;
     const taskCleaned = task.split(' ')[0];
-    tsk = tasks[task];
-    if (!tsk) {
-        tsk = tasks[taskCleaned];
+    if (tasks) {
+        tsk = tasks[task];
+        if (!tsk) {
+            tsk = tasks[taskCleaned];
+        }
     }
+
     return tsk;
 };
 
@@ -575,14 +574,14 @@ export const getEngineRunner = (c: RnvConfig, task: string, customTasks?: RnvTas
             throw new Error(`Cound not find active engine for platform ${c.platform}. Available engines:
         ${c.runtime.enginesByIndex.map((v) => v.config.id).join(', ')}`);
         }
-        return null;
+        return undefined;
     }
     if (hasEngineTask(task, engine.tasks, configExists)) return engine;
     if (hasEngineTask(task, c.runtime.enginesById[ENGINE_CORE].tasks, configExists)) {
         return c.runtime.enginesById[ENGINE_CORE];
     }
     if (failOnMissingEngine) throw new Error(`Cound not find suitable executor for task ${chalk().white(task)}`);
-    return null;
+    return undefined;
 };
 
 export const getRegisteredEngines = (c: RnvConfig) => c.runtime.enginesByIndex;

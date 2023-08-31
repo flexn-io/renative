@@ -30,14 +30,15 @@ import {
 } from '../../constants';
 import { RnvConfig } from '../../configManager/types';
 import { AndroidDevice } from '../types';
+import { RnvError } from '../../types';
 
 const CHECK_INTEVAL = 5000;
 
-const currentDeviceProps = {};
+const currentDeviceProps: Record<string, Record<string, string>> = {};
 
-export const composeDevicesString = (devices, returnArray?: boolean) => {
+export const composeDevicesString = (devices: Array<AndroidDevice>, returnArray?: boolean) => {
     logTask('composeDevicesString', `numDevices:${devices ? devices.length : null}`);
-    const devicesArray = [];
+    const devicesArray: Array<string> = [];
     devices.forEach((v, i) => devicesArray.push(_getDeviceString(v, !returnArray ? i : null)));
     if (returnArray) return devicesArray;
     return `\n${devicesArray.join('')}`;
@@ -45,11 +46,11 @@ export const composeDevicesString = (devices, returnArray?: boolean) => {
 
 export const launchAndroidSimulator = async (
     c: RnvConfig,
-    target: boolean | { name: string } | string,
+    target: true | { name: string } | string,
     isIndependentThread = false
 ) => {
     logTask('launchAndroidSimulator', `target:${target} independentThread:${!!isIndependentThread}`);
-    let newTarget = target;
+    let newTarget: { name: string } | string;
     if (target === true) {
         const {
             program: { device },
@@ -67,10 +68,12 @@ export const launchAndroidSimulator = async (
             },
         ]);
         newTarget = response.chosenEmulator;
+    } else {
+        newTarget = target;
     }
 
     if (newTarget) {
-        const actualTarget = newTarget.name || newTarget;
+        const actualTarget = typeof newTarget === 'string' ? newTarget : newTarget.name;
         if (isIndependentThread) {
             execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, {
                 detached: isIndependentThread,
@@ -103,13 +106,14 @@ export const listAndroidTargets = async (c: RnvConfig) => {
     const list = await getAndroidTargets(c, false, device, device);
     const devices = await composeDevicesString(list);
     logToSummary(`Android Targets:\n${devices}`);
-    if (devices.trim() === '') {
+    if (typeof devices === 'string' && devices.trim() === '') {
         logToSummary('Android Targets: No devices found');
     }
     return devices;
 };
 
-const _getDeviceString = (device, i) => {
+//Fuck it, I just any this return until complete refactor
+const _getDeviceString = (device: AndroidDevice, i: number | null): any => {
     const { isTV, isTablet, name, udid, isDevice, isActive, avdConfig, isWear, arch } = device;
     let deviceIcon = '';
     if (isTablet) deviceIcon = 'Tablet 💊 ';
@@ -153,8 +157,8 @@ export const getAndroidTargets = async (c: RnvConfig, skipDevices: boolean, skip
     await new Promise((r) => setTimeout(r, 1000));
 
     try {
-        let devicesResult;
-        let avdResult;
+        let devicesResult: any;
+        let avdResult: any;
 
         if (!skipDevices) {
             devicesResult = await execCLI(c, CLI_ANDROID_ADB, 'devices -l');
@@ -175,24 +179,26 @@ const calculateDeviceDiagonal = (width: number, height: number, density: number)
     return Math.sqrt(widthInches * widthInches + heightInches * heightInches);
 };
 
-const getRunningDeviceProp = async (c: RnvConfig, udid: string, prop) => {
+const getRunningDeviceProp = async (c: RnvConfig, udid: string, prop: string): Promise<string> => {
     // avoid multiple calls to the same device
     if (currentDeviceProps[udid]) {
-        if (!prop) return currentDeviceProps[udid];
+        // if (!prop) return currentDeviceProps[udid];
         return currentDeviceProps[udid][prop];
     }
     const rawProps = await execCLI(c, CLI_ANDROID_ADB, `-s ${udid} shell getprop`);
     const reg = /\[.+\]: \[.*\n?[^[]*\]/gm;
     const lines = rawProps.match(reg);
 
-    lines.forEach((line) => {
-        const words = line.split(']: [');
-        const key = words[0].slice(1);
-        const value = words[1].slice(0, words[1].length - 1);
+    if (lines) {
+        lines.forEach((line) => {
+            const words = line.split(']: [');
+            const key = words[0].slice(1);
+            const value = words[1].slice(0, words[1].length - 1);
 
-        if (!currentDeviceProps[udid]) currentDeviceProps[udid] = {};
-        currentDeviceProps[udid][key] = value;
-    });
+            if (!currentDeviceProps[udid]) currentDeviceProps[udid] = {};
+            currentDeviceProps[udid][key] = value;
+        });
+    }
 
     return getRunningDeviceProp(c, udid, prop);
 };
@@ -214,7 +220,7 @@ const decideIfTVRunning = async (c: RnvConfig, device: AndroidDevice) => {
         if (string && string.toLowerCase().includes('tv')) isTV = true;
     });
 
-    if (model.includes('SHIELD')) isTV = true;
+    if (model?.includes('SHIELD')) isTV = true;
     if (hdmi) isTV = true;
     if (modelGroup && modelGroup.toLowerCase().includes('firetv')) isTV = true;
     if (configuration === 'tv') isTV = true;
@@ -246,13 +252,18 @@ const getDeviceType = async (device: AndroidDevice, c: RnvConfig) => {
         const screenSizeResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm size`);
         const screenDensityResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm density`);
         const arch = await getRunningDeviceProp(c, device.udid, 'ro.product.cpu.abi');
-        let screenProps;
+        let screenProps = {
+            width: 0,
+            height: 0,
+            density: 0,
+        };
 
         if (screenSizeResult) {
             const [width, height] = screenSizeResult.split('Physical size: ')[1].split('x');
             screenProps = {
-                width: parseInt(width, 10),
-                height: parseInt(height, 10),
+                width: parseInt(width, 10) || 0,
+                height: parseInt(height, 10) || 0,
+                density: 0,
             };
         }
 
@@ -263,11 +274,11 @@ const getDeviceType = async (device: AndroidDevice, c: RnvConfig) => {
 
         device.isTV = await decideIfTVRunning(c, device);
 
-        if (screenSizeResult && screenDensityResult) {
+        if (screenSizeResult && screenDensityResult && screenProps) {
             const { width, height, density } = screenProps;
 
             const diagonalInches = calculateDeviceDiagonal(width, height, density);
-            screenProps = { ...screenProps, diagonalInches };
+            screenProps = { ...screenProps };
             device.isTablet = !device.isTV && diagonalInches > IS_TABLET_ABOVE_INCH && diagonalInches <= 15;
             device.isWear = await decideIfWearRunning(c, device);
         }
@@ -326,7 +337,7 @@ const getAvdDetails = (c: RnvConfig, deviceName: string) => {
     // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
     const avdConfigPaths = [`${ANDROID_AVD_HOME}`, `${ANDROID_SDK_HOME}/.android/avd`, `${USER_HOME_DIR}/.android/avd`];
 
-    const results = {};
+    const results: { avdConfig?: Record<string, string> } = {};
 
     avdConfigPaths.forEach((cPath) => {
         if (fsExistsSync(cPath)) {
@@ -343,7 +354,7 @@ const getAvdDetails = (c: RnvConfig, deviceName: string) => {
                         if (key === 'path') {
                             const initData = fsReadFileSync(`${value}/config.ini`).toString();
                             const initLines = initData.trim().split(/\r?\n/);
-                            const avdConfig = {};
+                            const avdConfig: Record<string, string> = {};
                             initLines.forEach((initLine) => {
                                 const [iniKey, iniValue] = initLine.split('=');
                                 // also remove the white space
@@ -370,7 +381,7 @@ const getEmulatorName = async (c: RnvConfig, words: Array<string>) => {
     return emulatorName;
 };
 
-export const connectToWifiDevice = async (c: RnvConfig, target) => {
+export const connectToWifiDevice = async (c: RnvConfig, target: string) => {
     let connect_str = `connect ${target}`;
 
     if (!target.includes(':')) {
@@ -440,7 +451,7 @@ const _parseDevicesResult = async (c: RnvConfig, devicesString: string, avdsStri
 
                 try {
                     avdDetails = getAvdDetails(c, line);
-                } catch (e) {
+                } catch (e: RnvError) {
                     logError(e);
                 }
 
@@ -493,7 +504,7 @@ const _parseDevicesResult = async (c: RnvConfig, devicesString: string, avdsStri
     );
 };
 
-const _getDeviceProp = (arr, prop) => {
+const _getDeviceProp = (arr: Array<string>, prop: string) => {
     for (let i = 0; i < arr.length; i++) {
         const v = arr[i];
         if (v && v.includes(prop)) return v.replace(prop, '');
@@ -553,9 +564,12 @@ const _createEmulator = (c: RnvConfig, apiVersion: string, emuPlatform: string, 
 };
 
 const waitForEmulatorToBeReady = (c: RnvConfig, emulator: string) =>
-    waitForEmulator(c, CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`, (res) =>
-        res.includes('stopped')
-    );
+    waitForEmulator(c, CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`, (res) => {
+        if (typeof res === 'string') {
+            return res.includes('stopped');
+        }
+        return res;
+    });
 
 export const checkForActiveEmulator = (c: RnvConfig) =>
     new Promise((resolve, reject) => {

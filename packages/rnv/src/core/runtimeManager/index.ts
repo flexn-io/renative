@@ -53,7 +53,7 @@ export const configureRuntimeDefaults = async (c: RnvConfig) => {
     if (c.buildConfig) {
         c.runtime.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
         const { hosted } = c.program;
-        c.runtime.hosted = (hosted || !c.runtime.scheme.bundleAssets) && c.runtime.currentPlatform?.isWebHosted;
+        c.runtime.hosted = hosted && c.runtime.currentPlatform?.isWebHosted;
 
         // c.runtime.devServer = `http://${ip.address()}:${c.runtime.port}`;
         if (c.buildConfig.defaults?.supportedPlatforms) {
@@ -68,7 +68,7 @@ export const configureRuntimeDefaults = async (c: RnvConfig) => {
                         const pDir = c.paths.project.platformTemplatesDirs?.[platform];
                         if (pDir) {
                             isValid = true;
-                            isConnected = pDir?.includes?.(getRealPath(c, dir));
+                            isConnected = pDir?.includes?.(getRealPath(c, dir) || 'UNDEFINED');
                         }
                         const port = c.buildConfig.defaults?.[platform] || c.runtime.currentPlatform?.defaultPort;
                         return {

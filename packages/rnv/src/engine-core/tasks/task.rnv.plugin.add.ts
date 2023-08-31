@@ -6,6 +6,7 @@ import { chalk, logSuccess, logTask } from '../../core/systemManager/logger';
 import { getPluginList, resolvePluginDependants } from '../../core/pluginManager';
 import { executeTask } from '../../core/taskManager';
 import { RnvTaskFn } from '../../core/taskManager/types';
+import { PluginListResponseItem } from '../../core/pluginManager/types';
 
 /* eslint-disable no-await-in-loop */
 export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -18,7 +19,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
     const o = getPluginList(c);
 
     const selPlugin = selPluginKey && o.allPlugins[selPluginKey];
-    const selectedPlugins: Record<string, object> = {};
+    const selectedPlugins: Record<string, PluginListResponseItem> = {};
     const installMessage = [];
 
     if (!selPlugin) {
@@ -37,7 +38,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
         installMessage.push(`${chalk().white(selPluginKey)} v(${chalk().green(selPlugin.version)})`);
     }
 
-    const questionPlugins: Record<string, object> = {};
+    const questionPlugins: Record<string, PluginListResponseItem> = {};
 
     Object.keys(selectedPlugins).forEach((key) => {
         // c.buildConfig.plugins[key] = 'source:rnv';
@@ -54,7 +55,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
         const pluginKey = pluginKeys[i];
         const plugin = questionPlugins[pluginKey];
         const pluginProps = Object.keys(plugin.props);
-        const finalProps = {};
+        const finalProps: Record<string, string> = {};
         for (let i2 = 0; i2 < pluginProps.length; i2++) {
             const { propValue } = await inquirer.prompt({
                 name: 'propValue',

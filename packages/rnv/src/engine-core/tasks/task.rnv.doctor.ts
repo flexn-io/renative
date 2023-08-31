@@ -55,15 +55,17 @@ export const taskRnvDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
                         cPath
                     }. ISSUES:\n\n`
                 );
-                ajv.errors.forEach((err) => {
-                    errMsg += chalk().yellow(
-                        `${chalk().grey(err.dataPath === '' ? '/' : err.dataPath)}: ${err.message} ${Object.keys(
-                            err.params
-                        )
-                            .map((k) => `=> ${chalk().red(err.params[k])}`)
-                            .join('\n')}\n`
-                    );
-                });
+                if (typeof ajv !== 'boolean' && ajv) {
+                    ajv.errors?.forEach((err) => {
+                        errMsg += chalk().yellow(
+                            `${chalk().grey(err.dataPath === '' ? '/' : err.dataPath)}: ${err.message} ${Object.keys(
+                                err.params
+                            )
+                                .map((k) => `=> ${chalk().red(err.params[k])}`)
+                                .join('\n')}\n`
+                        );
+                    });
+                }
             }
         }
     });

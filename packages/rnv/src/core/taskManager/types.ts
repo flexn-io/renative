@@ -24,4 +24,19 @@ export type RnvTaskParameter = {
 
 export type RnvTaskMap = Record<string, RnvTask>;
 
-export type RnvTaskFn = (c: RnvConfig, parentTask: string, originTask: string) => Promise<boolean | void | string>;
+//Too many choices of return types
+export type RnvTaskFn = (c: RnvConfig, parentTask?: string, originTask?: string) => Promise<any>; // Promise<boolean | void | string>;
+
+export type TaskItemMap = Record<
+    string,
+    {
+        desc?: string;
+        taskKey: string;
+    }
+>;
+
+export type TaskObj = {
+    key: string;
+    taskInstance: RnvTask;
+    hasMultipleSubTasks?: boolean;
+};

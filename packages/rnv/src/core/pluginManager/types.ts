@@ -6,17 +6,14 @@ export type PluginListResponse = {
     asString: string;
     asArray: PluginListResponseItem[];
     plugins: PluginListResponseItem[];
-    allPlugins: Record<
-        string,
-        {
-            version: string;
-        }
-    >;
+    allPlugins: Record<string, PluginListResponseItem>;
 };
 
 export type PluginListResponseItem = {
     name: string;
     value: string;
+    props: any;
+    version: string;
 };
 
 export type RnvPluginScope = {

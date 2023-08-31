@@ -75,6 +75,8 @@ type NewProjectData = {
     confirmString?: string;
     defaultProjectName?: string;
     defaultWorkspace?: string;
+    inputSupportedPlatforms?: Array<string>;
+    inputWorkspace?: string;
 };
 
 const _prepareProjectOverview = (c: RnvConfig, data: NewProjectData) => {
@@ -99,7 +101,7 @@ const _prepareProjectOverview = (c: RnvConfig, data: NewProjectData) => {
     str += printIntoBox('');
     str += printIntoBox('Project Structure:');
     str += printIntoBox('');
-    str += printIntoBox(data.projectName);
+    str += printIntoBox(data.projectName || 'UNKNOWN');
     str += chalk().gray(`│   ├── appConfigs            # Application flavour configuration files/assets │
 │   │   └── [APP_ID]          # Example application flavour                    │
 │   │       ├── assets        # Platform assets injected to ./platformAssets   │
@@ -144,7 +146,7 @@ type BootstrapQuestions = Array<{
 const interactiveQuestion = async (
     results: QuestionResults,
     bootstrapQuestions: BootstrapQuestions,
-    providedAnswers
+    providedAnswers: Record<string, string>
 ) => {
     if (bootstrapQuestions?.length) {
         for (let i = 0; i < bootstrapQuestions.length; i++) {
@@ -176,7 +178,7 @@ const interactiveQuestion = async (
                     value,
                 };
             } else {
-                const inqQuestion = {
+                const inqQuestion: any = {
                     name: qKeyClean,
                     type: q.type,
                     message: q.title,
@@ -502,12 +504,7 @@ export const taskRnvNew = async (c: RnvConfig) => {
     // ==================================================
     const renativeTemplateConfigExt = {};
     const bootstrapQuestions = renativeTemplateConfig?.templateConfig?.bootstrapQuestions;
-    const results: Record<
-        string,
-        {
-            value: string;
-        }
-    > = {};
+    const results: QuestionResults = {};
     const providedAnswers: Record<string, any> = {};
 
     if (c.program.answer) {

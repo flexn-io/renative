@@ -210,7 +210,7 @@ export const logSummary = (header = 'SUMMARY') => {
         if (cnf().platform) {
             addon = ` ($.platforms.${cnf().platform}.engine)`;
         }
-        str += printIntoBox(`Engine${addon}: ${_highlightColor(cnf().runtime?.engine?.config?.id)}`);
+        str += printIntoBox(`Engine${addon}: ${_highlightColor(cnf().runtime?.engine?.config?.id || '')}`);
     }
     if (cnf().runtime?.activeTemplate) {
         str += printIntoBox(`Template: ${_highlightColor(cnf().runtime?.activeTemplate)}`);
@@ -355,7 +355,7 @@ type PrintJsonPayload = {
     level?: string;
 };
 
-export const logExitTask = (task: string, customChalk: (s: string) => string) => {
+export const logExitTask = (task: string, customChalk?: (s: string) => string) => {
     if (_jsonOnly) {
         return _printJson({
             type: 'taskExit',

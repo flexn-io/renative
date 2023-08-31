@@ -1,4 +1,4 @@
-import { RnvEngine } from '../engineManager/types';
+import { RnvEngine, RnvEnginePlatform } from '../engineManager/types';
 import { OverridesOptions } from '../systemManager/types';
 import { RnvPlatform } from '../types';
 
@@ -44,9 +44,10 @@ export interface RnvConfig {
         enginesById: Record<string, RnvEngine>;
         missingEnginePlugins: Record<string, any>;
         localhost: string;
-        scheme: {
-            bundleAssets: boolean;
-        };
+        scheme: string;
+        // scheme: {
+        //     bundleAssets: boolean;
+        // };
         bundleAssets: boolean;
         activeTemplate: string;
         engine?: RnvEngine;
@@ -76,10 +77,7 @@ export interface RnvConfig {
         rnvVersionRunner: string;
         rnvVersionProject: string;
         versionCheckCompleted: boolean;
-        currentPlatform: {
-            isWebHosted: boolean;
-            defaultPort: string;
-        };
+        currentPlatform: RnvEnginePlatform;
         _skipPluginScopeWarnings: boolean;
         skipBuildHooks: boolean;
         isFirstRunAfterNew: boolean;
