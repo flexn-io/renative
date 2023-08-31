@@ -5,6 +5,7 @@ import os from 'os';
 import path from 'path';
 
 import Config from '../configManager/config';
+//@ts-ignore
 import pkg from '../../../package.json';
 import { REDASH_KEY, REDASH_URL, SENTRY_ENDPOINT } from '../constants';
 
@@ -90,9 +91,9 @@ export class Analytics {
         }
     }
 
-    captureException(e: any, context = {}) {
+    captureException(e: any, context: any = {}) {
         if (Config.isAnalyticsEnabled && this.errorFixer) {
-            this.errorFixer.withScope((scope) => {
+            this.errorFixer.withScope((scope: any) => {
                 const { extra = {}, tags = {} } = context;
                 scope.setTags({ ...tags, os: os.platform() });
                 scope.setExtras({ ...extra, fingerprint: machineIdSync() });

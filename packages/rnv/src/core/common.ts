@@ -138,7 +138,8 @@ export const existBuildsOverrideForTargetPathSync = (c: RnvConfig, destPath: str
 
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
-            pathsToCheck.push(getBuildsFolder(c, c.platform, v));
+            const bf = getBuildsFolder(c, c.platform, v);
+            if (bf) pathsToCheck.push();
         });
     }
 
@@ -155,7 +156,7 @@ export const confirmActiveBundler = async (c: RnvConfig) => {
     if (c.runtime.skipActiveServerCheck) return true;
 
     if (c.program.ci) {
-        return killPort(c.runtime.port);
+        return killPort(parseInt(c.runtime.port));
     }
 
     const choices = ['Restart the server (recommended)', 'Use existing session'];
@@ -168,7 +169,7 @@ export const confirmActiveBundler = async (c: RnvConfig) => {
     });
 
     if (choices[0] === selectedOption) {
-        await killPort(c.runtime.port);
+        await killPort(parseInt(c.runtime.port));
     } else {
         return false;
     }

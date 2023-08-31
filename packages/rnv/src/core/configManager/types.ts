@@ -56,6 +56,7 @@ export interface RnvConfig {
             platform: string;
             isConnected: boolean;
             engine?: any;
+            port?: string;
         }>;
         keepSessionActive: boolean;
         platformBuildsProjectPath: string;
@@ -165,7 +166,7 @@ export interface RnvConfig {
                 configsLocal: Array<string>;
             };
         };
-        project: {
+        project: RnvConfigPathObj & {
             config: string;
             configExists: boolean;
             appConfigBase: Record<string, any>;
@@ -201,6 +202,8 @@ export interface RnvConfig {
             dir: string;
             dirs: Array<string>;
             pluginDirs: Array<string>;
+            fontsDirs: Array<string>;
+            fontsDir: string;
         };
         // EXTRA
         buildHooks: {

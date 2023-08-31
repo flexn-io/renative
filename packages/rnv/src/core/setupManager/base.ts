@@ -6,11 +6,12 @@ import { commandExistsSync } from '../systemManager/exec';
 import { TASK_WORKSPACE_CONFIGURE } from '../constants';
 import { executeTask } from '../taskManager';
 import { replaceHomeFolder, updateConfigFile } from '../systemManager/fileutils';
-import setupConfig from './config';
+import _setupConfig from './config';
 import Config from '../configManager/config';
 import { logTask, logError, logInfo, logDebug, logSuccess } from '../systemManager/logger';
 import { RnvConfig } from '../configManager/types';
 
+const setupConfig: any = _setupConfig;
 class BasePlatformSetup {
     os: string;
     c: RnvConfig;
@@ -112,7 +113,7 @@ class BasePlatformSetup {
         logSuccess(`SDK succefully installed at: ${setupConfig.android.location}`);
     }
 
-    async installSdk(sdk, skipPrereq) {
+    async installSdk(sdk: string, skipPrereq: boolean) {
         logTask(`installSdk:${sdk}`);
         !skipPrereq && this.checkPrereqs();
         !skipPrereq && (await this.installPrereqs());

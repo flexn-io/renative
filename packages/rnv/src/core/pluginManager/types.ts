@@ -25,6 +25,9 @@ export type RnvPlugin = RenativeConfigPlugin & {
     scope?: string;
     _scopes?: Array<string>;
     _id?: string;
+    config?: {
+        fontSources: Array<string>;
+    };
 };
 
 export type RnvPluginPlatform = 'ios' | 'android' | 'webpack';

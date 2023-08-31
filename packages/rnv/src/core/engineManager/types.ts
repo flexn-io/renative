@@ -11,6 +11,8 @@ export type RnvEngine = {
     originalTemplatePlatformProjectDir: string;
     projectDirName: string;
     runtimeExtraProps: any;
+    outputDirName?: string;
+    serverDirName?: string;
 };
 
 export type RnvEnginePlatform = {

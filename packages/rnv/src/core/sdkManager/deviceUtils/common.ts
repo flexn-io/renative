@@ -7,7 +7,7 @@ export const waitForEmulator = async (
     cli: string,
     command: string,
     callback: (resp: string | true) => boolean
-) => {
+): Promise<boolean> => {
     let attempts = 0;
     const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;

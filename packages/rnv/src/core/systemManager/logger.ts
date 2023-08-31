@@ -26,7 +26,7 @@ const ICN_UNICORN = isSystemWin ? 'unicorn' : '🦄';
 
 const _chalkPass = (v: string | boolean): string => (typeof v === 'string' ? v : String(v));
 
-const _chalkCols = {
+const _chalkCols: any = {
     white: (v: string | boolean) => _chalkPass(v),
     green: (v: string) => _chalkPass(v),
     red: (v: string) => _chalkPass(v),

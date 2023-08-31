@@ -36,7 +36,7 @@ export const initializeTask = async (c: RnvConfig, task: string) => {
         platform: c.platform,
     });
 
-    await executeTask(c, task, null, task, true);
+    await executeTask(c, task, undefined, task, true);
     return true;
 };
 
@@ -330,7 +330,7 @@ To avoid that test your task code against parentTask and avoid executing same ta
     logExitTask(`${prt}<= ${task}`);
 };
 
-export const executeOrSkipTask = async (c: RnvConfig, task, parentTask, originTask) => {
+export const executeOrSkipTask = async (c: RnvConfig, task: string, parentTask: string, originTask: string) => {
     if (!c.program.only) {
         return executeTask(c, task, parentTask, originTask);
     }
@@ -361,7 +361,7 @@ export const shouldSkipTask = (c: RnvConfig, task: string, originTask: string) =
                 if (t.filter) {
                     const conditions = t.filter.split('&');
                     let conditionsToMatch = conditions.length;
-                    conditions.forEach((con) => {
+                    conditions.forEach((con: string) => {
                         const conArr = con.split('=');
                         if (ACCEPTED_CONDITIONS.includes(conArr[0])) {
                             if (c.runtime[conArr[0]] === conArr[1]) {
@@ -440,18 +440,18 @@ ${t.params
         logRaw(`
 =======================================================`);
     }
-    if (!t.isGlobalScope && isFirstTask) {
+    if (t && !t.isGlobalScope && isFirstTask) {
         if (c.files.project.package) {
             // This has to happen in order for hooks to be able to run
             await checkIfProjectAndNodeModulesExists(c);
         }
     }
     if (isFirstTask) {
-        c.runtime.forceBuildHookRebuild = !!t.forceBuildHookRebuild;
+        c.runtime.forceBuildHookRebuild = !!t?.forceBuildHookRebuild;
     }
     const inOnlyMode = c.program.only;
-    const doPipe = !t.isGlobalScope && (!inOnlyMode || (inOnlyMode && isFirstTask));
+    const doPipe = t && !t.isGlobalScope && (!inOnlyMode || (inOnlyMode && isFirstTask));
     if (doPipe) await _executePipe(c, task, 'before');
-    await t.fn(c, parentTask, originTask);
+    if (t && t.fn) await t.fn(c, parentTask, originTask);
     if (doPipe) await _executePipe(c, task, 'after');
 };

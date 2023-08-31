@@ -55,7 +55,7 @@ export type FileUtilsPropConfig = {
 };
 
 export type FileUtilsUpdateConfig = {
-    androidSdk: string;
-    tizenSdk: string;
-    webosSdk: string;
+    androidSdk?: string;
+    tizenSdk?: string;
+    webosSdk?: string;
 };

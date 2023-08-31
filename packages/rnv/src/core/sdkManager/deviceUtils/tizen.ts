@@ -51,7 +51,7 @@ export const listTizenTargets = async (c: RnvConfig) => {
     });
     const targetArr = targets.split('\n');
     let targetStr = '';
-    Object.keys(targetArr).forEach((i) => {
+    targetArr.forEach((_, i) => {
         targetStr += `[${i}]> ${targetArr[i]}\n`;
     });
     logToSummary(`Tizen Targets:\n${targetStr}`);
@@ -162,7 +162,7 @@ const _getRunningDevices = async (c: RnvConfig) => {
                 let deviceInfo;
                 let deviceType;
 
-                if (deviceInfoXML !== true && deviceInfoXML !== '') {
+                if (deviceInfoXML !== '') {
                     // for some reason the tv does not connect through sdb
 
                     const parseObj = await parser.parseStringPromise(deviceInfoXML);
@@ -190,11 +190,14 @@ const _getRunningDevices = async (c: RnvConfig) => {
     return devices;
 };
 
-const _waitForEmulatorToBeReady = (c: RnvConfig, target: string) =>
+const _waitForEmulatorToBeReady = (c: RnvConfig, target: string): Promise<boolean> =>
     waitForEmulator(c, CLI_SDB_TIZEN, 'devices', (res) => {
-        const lines = res.trim().split(/\r?\n/);
-        const devices = lines.filter((line) => line.includes(target) && line.includes('device'));
-        return devices.length > 0;
+        if (typeof res === 'string') {
+            const lines = res.trim().split(/\r?\n/);
+            const devices = lines.filter((line) => line.includes(target) && line.includes('device'));
+            return devices.length > 0;
+        }
+        return res;
     });
 
 const _composeDevicesString = (devices: Array<any>) =>
@@ -218,7 +221,7 @@ export const runTizenSimOrDevice = async (c: RnvConfig, buildCoreWebpackProject:
     const platformConfig = c.buildConfig.platforms[platform];
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const isHosted = hosted ?? !bundleAssets;
-    const isLightningEngine = engine.config.id === 'engine-lightning';
+    const isLightningEngine = engine?.config.id === 'engine-lightning';
     if (!bundleAssets && !hosted) {
         // console.log('RUN WEINRE');
     }
@@ -234,7 +237,7 @@ export const runTizenSimOrDevice = async (c: RnvConfig, buildCoreWebpackProject:
         );
     }
 
-    const tDir = getPlatformProjectDir(c);
+    const tDir = getPlatformProjectDir(c) || 'UNDEFINED';
     const tBuild = path.join(tDir, 'build');
     const tOut = path.join(tDir, 'output');
     const tId = platformConfig.id;
@@ -285,7 +288,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
         if (!isLightningEngine && buildCoreWebpackProject) {
             // lightning engine handles the build and packaging
-            !isHosted && (await buildCoreWebpackProject(c));
+            !isHosted && (await buildCoreWebpackProject());
             await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
             await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
         }

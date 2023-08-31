@@ -34,6 +34,8 @@ import { configureTemplateFiles, configureEntryPoint } from '../templateManager'
 import { parseRenativeConfigs } from '../configManager';
 import { NpmPackageFile, RenativeConfigFile, RnvConfig } from '../configManager/types';
 import { RnvPlatform } from '../types';
+import { ParseFontsCallback } from './types';
+import { RnvPluginPlatform } from '../pluginManager/types';
 
 export const checkAndBootstrapIfRequired = async (c: RnvConfig) => {
     logTask('checkAndBootstrapIfRequired');
@@ -52,11 +54,11 @@ export const checkAndBootstrapIfRequired = async (c: RnvConfig) => {
 
         const templateObj = readObjectSync(c.paths.template.configTemplate);
         const appConfigPath = path.join(c.paths.project.appConfigsDir, c.program.appConfigID, 'renative.json');
-        const appConfigObj = readObjectSync(appConfigPath);
+        const appConfigObj: RenativeConfigFile = readObjectSync(appConfigPath);
         const supportedPlatforms = appConfigObj?.defaults?.supportedPlatforms;
         const engineTemplates = c.files.rnv.projectTemplates?.config?.engineTemplates;
         const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
-        const activeEngineKeys = [];
+        const activeEngineKeys: Array<string> = [];
 
         supportedPlatforms.forEach((supPlat) => {
             Object.keys(engineTemplates).forEach((eKey) => {
@@ -83,7 +85,7 @@ export const checkAndBootstrapIfRequired = async (c: RnvConfig) => {
             if (!pkgJson.dependencies) pkgJson.dependencies = {};
             c.files.project.package = pkgJson;
 
-            const installPromises = [];
+            const installPromises: Array<Promise<any>> = [];
             Object.keys(pkgJson.devDependencies).forEach((devDepKey) => {
                 if (activeEngineKeys.includes(devDepKey)) {
                     installPromises.push(
@@ -171,7 +173,7 @@ export const checkAndBootstrapIfRequired = async (c: RnvConfig) => {
         await parseRenativeConfigs(c);
 
         await configureTemplateFiles(c);
-        await configureEntryPoint(c);
+        await configureEntryPoint(c, c.platform);
         // await applyTemplate(c);
 
         // copyFolderContentsRecursiveSync(templatePath, c.paths.project.dir);
@@ -209,7 +211,7 @@ export const configureFonts = async (c: RnvConfig) => {
     // FONTS
     let fontsObj = 'export default [';
 
-    const duplicateFontCheck = [];
+    const duplicateFontCheck: Array<string> = [];
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf') || font.includes('.woff')) {
             const keOriginal = font.split('.')[0];
@@ -308,7 +310,7 @@ export const copyRuntimeAssets = async (c: RnvConfig) => {
     return true;
 };
 
-export const parseFonts = (c: RnvConfig, callback) => {
+export const parseFonts = (c: RnvConfig, callback: ParseFontsCallback) => {
     logTask('parseFonts');
 
     if (c.buildConfig) {
@@ -338,7 +340,7 @@ export const parseFonts = (c: RnvConfig, callback) => {
         // PLUGIN FONTS
         parsePlugins(
             c,
-            c.platform,
+            c.platform as RnvPluginPlatform,
             (plugin) => {
                 if (plugin.config?.fontSources) {
                     _parseFontSources(c, plugin.config?.fontSources, callback);
@@ -349,7 +351,7 @@ export const parseFonts = (c: RnvConfig, callback) => {
     }
 };
 
-const _parseFontSources = (c: RnvConfig, fontSourcesArr, callback) => {
+const _parseFontSources = (c: RnvConfig, fontSourcesArr: Array<string>, callback: ParseFontsCallback) => {
     const fontSources = fontSourcesArr.map((v) => _resolvePackage(c, v));
     fontSources.forEach((fontSourceDir) => {
         if (fsExistsSync(fontSourceDir)) {
@@ -360,7 +362,7 @@ const _parseFontSources = (c: RnvConfig, fontSourcesArr, callback) => {
     });
 };
 
-const _resolvePackage = (c: RnvConfig, v) => {
+const _resolvePackage = (c: RnvConfig, v: string) => {
     if (v?.startsWith?.('./')) {
         return path.join(c.paths.project.dir, v);
     }
@@ -426,7 +428,12 @@ const _resolvePackage = (c: RnvConfig, v) => {
 //     return false;
 // };
 
-export const copyAssetsFolder = async (c: RnvConfig, platform: RnvPlatform, subPath: string, customFn) => {
+export const copyAssetsFolder = async (
+    c: RnvConfig,
+    platform: RnvPlatform,
+    subPath: string,
+    customFn: (c: RnvConfig, platform: string) => void
+) => {
     logTask('copyAssetsFolder');
 
     if (!isPlatformActive(c, platform)) return;

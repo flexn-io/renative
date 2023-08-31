@@ -19,7 +19,7 @@ export const taskRnvAppCreate: RnvTaskFn = async (c) => {
 
     await configureRuntimeDefaults(c);
 
-    let sourcePath: string;
+    let sourcePath: string | undefined;
 
     if (c.program.sourceAppConfigID) {
         const sourceAppConfigDirPath = path.join(c.paths.project.appConfigsDir, c.program.sourceAppConfigID);
@@ -109,7 +109,7 @@ export const taskRnvAppCreate: RnvTaskFn = async (c) => {
     }
 
     logInfo('Copying new app config...');
-    await copyFolderContentsRecursive(sourcePath, destPath);
+    if (sourcePath) await copyFolderContentsRecursive(sourcePath, destPath);
     logInfo('Copying new app config...DONE');
 
     const confObjPath = path.join(destPath, 'renative.json');

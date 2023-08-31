@@ -7,15 +7,13 @@ import { configureRuntimeDefaults } from '../../core/runtimeManager';
 
 import { PARAMS, TASK_KILL, TASK_APP_CONFIGURE } from '../../core/constants';
 import { RnvTaskFn } from '../../core/taskManager/types';
+import { RnvConfig } from '../../core/configManager/types';
 
 export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvKill');
 
-    const usedPorts: Array<string> = [];
-    let platArray: Array<{
-        platform: string;
-        port: string;
-    }> = [];
+    const usedPorts: RnvConfig['runtime']['supportedPlatforms'] = [];
+    let platArray: RnvConfig['runtime']['supportedPlatforms'] = [];
     const results = [];
     let ports: Record<string, string> = {};
 
@@ -52,7 +50,7 @@ ${usedPorts.map((v) => chalk().white(`> ${v.port} (${v.platform})`)).join('\n')}
         if (confirm) {
             const killPromise = [];
             usedPorts.forEach((v) => {
-                killPromise.push(killPort(v.port));
+                if (v.port) killPromise.push(killPort(parseInt(v.port)));
             });
             await Promise.all(usedPorts);
             logSuccess('Processes KILLED');

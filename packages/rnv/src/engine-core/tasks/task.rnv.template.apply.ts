@@ -28,7 +28,7 @@ export const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask
         type: 'list',
         message: 'Pick which template to install',
         name: 'template',
-        choices: opts.keysAsArray,
+        choices: opts?.keysAsArray,
     });
 
     await applyTemplate(c, template);
