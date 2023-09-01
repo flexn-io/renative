@@ -119,7 +119,7 @@ export const getMergedPlugin = (c: RnvConfig, key: string) => {
     const plugin = c.buildConfig.plugins?.[key];
     if (!plugin) return null;
 
-    const scopes: Array<string> = [];
+    const scopes: Array<string> = ['rnv'];
     const mergedPlugin = _getMergedPlugin(c, plugin, key, undefined, scopes);
     scopes.reverse();
     // if (!mergedPlugin.version) {
@@ -161,6 +161,7 @@ const _getMergedPlugin = (
         logWarning(`Plugin ${pluginKey} is not recognized plugin in ${scope} scope`);
     } else if (scope && parentScope) {
         const skipRnvOverrides = c.buildConfig.pluginTemplates?.[parentScope]?.disableRnvDefaultOverrides;
+
         if (skipRnvOverrides && scope === 'rnv') {
             // Merges down to RNV defaults will be skipped
         } else if (scopes) {
@@ -486,7 +487,7 @@ export const loadPluginTemplates = async (c: RnvConfig) => {
 
     //This comes from project dependency
     let flexnPluginsPath = doResolve('@flexn/plugins');
-    if (flexnPluginsPath && !fsExistsSync(flexnPluginsPath)) {
+    if (!fsExistsSync(flexnPluginsPath)) {
         //This comes from rnv built-in dependency (installed via npm)
         flexnPluginsPath = path.resolve(__dirname, '../../../node_modules/@flexn/plugins');
         if (!fsExistsSync(flexnPluginsPath)) {

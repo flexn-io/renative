@@ -225,7 +225,7 @@ const executeAsync = async (
     // swap values if c is not specified and get it from it's rightful place, config :)
     let c: RnvConfig;
     let cmd = '';
-    let opts: ExecOptions = {};
+    let opts: ExecOptions = _opts || {};
     if (typeof _c === 'string') {
         cmd = _c;
         c = Config.getConfig();

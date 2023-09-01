@@ -36,7 +36,6 @@ import { chalk, logTask, logWarning, logSuccess, logError, logInfo } from '../sy
 import PlatformSetup from '../setupManager';
 import { generateBuildConfig } from '../configManager';
 import { RnvConfig } from '../configManager/types';
-import { RnvError } from '../types';
 
 const SDK_LOCATIONS: Record<string, Array<string>> = {
     android: [
@@ -250,7 +249,7 @@ const _attemptAutoFix = async (c: RnvConfig, sdkPlatform: string, sdkKey: string
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
                 generateBuildConfig(c);
                 await checkAndConfigureSdks(c);
-            } catch (e: RnvError) {
+            } catch (e: any) {
                 logError(e);
             }
 

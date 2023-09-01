@@ -30,7 +30,6 @@ import {
 } from '../../constants';
 import { RnvConfig } from '../../configManager/types';
 import { AndroidDevice } from '../types';
-import { RnvError } from '../../types';
 
 const CHECK_INTEVAL = 5000;
 
@@ -451,7 +450,7 @@ const _parseDevicesResult = async (c: RnvConfig, devicesString: string, avdsStri
 
                 try {
                     avdDetails = getAvdDetails(c, line);
-                } catch (e: RnvError) {
+                } catch (e: any) {
                     logError(e);
                 }
 
