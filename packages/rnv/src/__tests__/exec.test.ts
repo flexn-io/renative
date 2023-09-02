@@ -1,57 +1,31 @@
 import { executeAsync, commandExistsSync, commandExists } from '../../src/core/systemManager/exec';
+import { generateConfigBase } from '../core/configManager/configBase';
 
-jest.mock('../../src/core/systemManager/logger.js', () => {
-    const _chalkCols = {
-        white: (v) => v,
-        green: (v) => v,
-        red: (v) => v,
-        yellow: (v) => v,
-        default: (v) => v,
-        gray: (v) => v,
-        grey: (v) => v,
-        blue: (v) => v,
-        cyan: (v) => v,
-        magenta: (v) => v,
-    };
-    _chalkCols.rgb = () => (v) => v;
-    _chalkCols.bold = _chalkCols;
-    const _chalkMono = {
-        ..._chalkCols,
-    };
-    return {
-        logToSummary: jest.fn(),
-        logTask: jest.fn(),
-        logDebug: jest.fn(),
-        logInfo: jest.fn(),
-        logError: jest.fn(),
-        logWarning: jest.fn(),
-        logSuccess: jest.fn(),
-        chalk: () => _chalkMono,
-        stripAnsi: (v: any) => v,
-    };
-});
+jest.mock('../../src/core/systemManager/logger.ts');
 
 describe('Testing exec functions', () => {
     it('should execute command', async () => {
         expect.assertions(1);
-        await expect(executeAsync({ program: {} }, 'node -v').then((data) => typeof data)).resolves.toBe('string');
+        await expect(executeAsync(generateConfigBase(), 'node -v').then((data) => typeof data)).resolves.toBe('string');
     });
 
     it('should execute array command', async () => {
         expect.assertions(1);
-        await expect(executeAsync({ program: {} }, ['node', '-v']).then((data) => typeof data)).resolves.toBe('string');
+        await expect(executeAsync(generateConfigBase(), ['node', '-v']).then((data) => typeof data)).resolves.toBe(
+            'string'
+        );
     });
 
     it('should execute command with privateParams', async () => {
         expect.assertions(1);
         await expect(
-            executeAsync({ program: {} }, 'node -v 1234', { privateParams: ['1234'] }).then((data) => typeof data)
+            executeAsync(generateConfigBase(), 'node -v 1234', { privateParams: ['1234'] }).then((data) => typeof data)
         ).resolves.toBe('string');
     });
 
     it('should execute with error', async () => {
         expect.assertions(1);
-        await expect(executeAsync({ program: {} }, 'shouldTrow')).rejects.toBeDefined();
+        await expect(executeAsync(generateConfigBase(), 'shouldTrow')).rejects.toBeDefined();
     });
 
     it('should recognize command sync', () => {

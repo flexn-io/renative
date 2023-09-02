@@ -256,6 +256,7 @@ export type RenativeConfigFile = {
     common: {
         buildSchemes?: Record<string, RenativeConfigBuildScheme>;
         runtime?: Record<string, any>;
+        versionCodeFormat?: string;
     };
     defaults: {
         ports?: Record<string, string>;

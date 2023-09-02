@@ -14,7 +14,7 @@ jest.mock('inquirer', () => ({
     prompt: () => true,
 }));
 
-jest.mock('../../src/core/engineManager/index.js', () => ({
+jest.mock('../../src/core/engineManager/index.ts', () => ({
     // getEngineConfigByPlatform: () => ({
     //     platforms: {
     //         ios: {
@@ -31,50 +31,22 @@ jest.mock('child_process', () => ({
     spawn: jest.fn(),
 }));
 
-jest.mock('../../src/core/taskManager/index.js', () => ({
+jest.mock('../../src/core/taskManager/index.ts', () => ({
     executeTask: jest.fn(),
     shouldSkipTask: () => false,
 }));
 
-jest.mock('../../src/core/configManager/config.js', () => ({
+jest.mock('../../src/core/configManager/config.ts', () => ({
     getConfig: () => null,
 }));
 
-jest.mock('../../src/core/systemManager/utils.js', () => ({
+jest.mock('../../src/core/systemManager/utils.ts', () => ({
     isSystemWin: false,
 }));
 
-jest.mock('../../src/core/systemManager/logger.js', () => {
-    const _chalkCols: any = {
-        white: (v) => v,
-        green: (v) => v,
-        red: (v) => v,
-        yellow: (v) => v,
-        default: (v) => v,
-        gray: (v) => v,
-        grey: (v) => v,
-        blue: (v) => v,
-        cyan: (v) => v,
-        magenta: (v) => v,
-        rgb: () => (v) => v,
-    };
-    _chalkCols.bold = _chalkCols;
-    const _chalkMono = {
-        ..._chalkCols,
-    };
-    return {
-        logToSummary: jest.fn(),
-        logTask: jest.fn(),
-        logDebug: jest.fn(),
-        logInfo: jest.fn(),
-        logError: jest.fn(),
-        logWarning: jest.fn(),
-        logSuccess: jest.fn(),
-        chalk: () => _chalkMono,
-    };
-});
+jest.mock('../../src/core/systemManager/logger.ts');
 
-jest.mock('../../src/core/systemManager/fileutils.js', () => ({
+jest.mock('../../src/core/systemManager/fileutils.ts', () => ({
     removeDirs: jest.fn(),
     fsExistsSync: () => true,
     fsReaddirSync: () => [],
@@ -82,7 +54,7 @@ jest.mock('../../src/core/systemManager/fileutils.js', () => ({
     copyFolderContentsRecursiveSync: jest.fn(),
 }));
 
-jest.mock('../../src/core/systemManager/exec.js', () => ({
+jest.mock('../../src/core/systemManager/exec.ts', () => ({
     executeAsync: jest.fn(),
 }));
 
@@ -95,7 +67,7 @@ const c = generateMockConfig({
 });
 
 // const parentTask = null;
-const originTask = {};
+const originTask = undefined;
 
 beforeEach(() => {
     //Do nothing
@@ -106,29 +78,29 @@ afterEach(() => {
 });
 
 test('Execute task.rnv.platform.list', async () => {
-    const taskManager = require('../../src/core/taskManager/index.js');
-    await expect(taskRnvPlatformList.fn(c, null, originTask)).resolves.toEqual(true);
+    const taskManager = require('../../src/core/taskManager/index.ts');
+    await expect(taskRnvPlatformList.fn(c, undefined, originTask)).resolves.toEqual(true);
     expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform list', originTask);
 });
 
 test('Execute task.rnv.platform.configure', async () => {
-    const taskManager = require('../../src/core/taskManager/index.js');
-    await expect(taskRnvPlatformConfigure.fn(c, null, originTask)).resolves.toEqual(true);
+    const taskManager = require('../../src/core/taskManager/index.ts');
+    await expect(taskRnvPlatformConfigure.fn(c, undefined, originTask)).resolves.toEqual(true);
     expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform configure', originTask);
 });
 
 test('Execute task.rnv.kill', async () => {
-    const taskManager = require('../../src/core/taskManager/index.js');
-    await expect(taskRnvKill.fn(c, null, originTask)).resolves.toEqual(true);
+    const taskManager = require('../../src/core/taskManager/index.ts');
+    await expect(taskRnvKill.fn(c, undefined, originTask)).resolves.toEqual(true);
     expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'app configure', 'kill', originTask);
 });
 
 test('Execute task.rnv.clean', async () => {
-    const configure = generateMockConfig({});
-    const systemManager = require('../../src/core/systemManager/exec.js');
-    const fileUtils = require('../../src/core/systemManager/fileutils.js');
+    const configure = generateMockConfig({ program: { ci: true } });
+    const systemManager = require('../../src/core/systemManager/exec.ts');
+    const fileUtils = require('../../src/core/systemManager/fileutils.ts');
 
-    await expect(taskRnvClean.fn(configure, true)).resolves.toEqual(true);
+    await expect(taskRnvClean.fn(configure)).resolves.toEqual(true);
     expect(fileUtils.removeDirs).toHaveBeenCalledTimes(3);
     expect(systemManager.executeAsync).toHaveBeenCalledWith(configure, 'watchman watch-del-all');
     expect(systemManager.executeAsync).toHaveBeenCalledWith(
@@ -145,7 +117,7 @@ test('Execute task.rnv.clean', async () => {
 //     };
 //     const configure = generateMockConfig({});
 //     const child_process = require('child_process');
-//     jest.doMock('../../src/core/systemManager/utils.js', () => ({
+//     jest.doMock('../../src/core/systemManager/utils.ts', () => ({
 //         isSystemWin: true
 //     }));
 
@@ -157,7 +129,7 @@ test('Execute task.rnv.clean', async () => {
 // });
 // describe('Test task.rnv.platform.list', () => {
 //     // const MOCK_FILE_INFO = {
-//     //     '/path/to/file1.js': 'console.log("file1 contents");',
+//     //     '/path/to/file1.ts': 'console.log("file1 contents");',
 //     //     '/path/to/file2.txt': 'file2 contents',
 //     // };
 //     //
@@ -169,7 +141,7 @@ test('Execute task.rnv.clean', async () => {
 //
 //     it('should execute task', async () => {
 //         task.fn(c);
-//         const engineManager = require('../../core/engineManager/index.js');
+//         const engineManager = require('../../core/engineManager/index.ts');
 //         await expect(task.fn(c, null, originTask)).resolves.toEqual(true);
 //         expect(engineManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform list', originTask);
 //

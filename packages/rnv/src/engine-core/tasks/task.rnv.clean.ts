@@ -169,7 +169,7 @@ export const taskRnvClean: RnvTaskFn = async (c) => {
 
     if (answers.nothingToClean) {
         logToSummary('Nothing to clean');
-        return Promise.resolve();
+        return true;
     }
 
     if (answers.modules) {

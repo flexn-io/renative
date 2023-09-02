@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
-import _chalk from 'chalk';
+import _chalk, { Chalk } from 'chalk';
 import { RnvConfig } from '../configManager/types';
+import { getChalk } from './chalk';
 import { AnalyticsApi } from './types';
 import { isSystemWin } from './utils';
 
@@ -24,31 +25,17 @@ export function stripAnsi(string: string) {
 const ICN_ROCKET = isSystemWin ? 'RNV' : '🚀';
 const ICN_UNICORN = isSystemWin ? 'unicorn' : '🦄';
 
-const _chalkPass = (v: string | boolean): string => (typeof v === 'string' ? v : String(v));
+const _chalkCols = getChalk();
 
-const _chalkCols: any = {
-    white: (v: string | boolean) => _chalkPass(v),
-    green: (v: string) => _chalkPass(v),
-    red: (v: string) => _chalkPass(v),
-    yellow: (v: string) => _chalkPass(v),
-    default: (v: string) => _chalkPass(v),
-    gray: (v: string) => _chalkPass(v),
-    grey: (v: string) => _chalkPass(v),
-    blue: (v: string) => _chalkPass(v),
-    cyan: (v: string) => _chalkPass(v),
-    magenta: (v: string) => _chalkPass(v),
-    rgb: () => (v: string) => _chalkPass(v),
-};
-_chalkCols.bold = _chalkCols;
-const _chalkMono = {
+const _chalkMono: any = {
     ..._chalkCols,
 };
 
-let currentChalk = _chalk;
+let currentChalk: Chalk = _chalk;
 
 let RNV = 'ReNative';
 
-export const chalk = () => currentChalk || _chalk;
+export const chalk = (): Chalk => currentChalk || _chalk;
 
 export const logWelcome = () => {
     // prettier-ignore

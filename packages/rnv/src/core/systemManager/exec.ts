@@ -33,7 +33,7 @@ const { exec, execSync } = require('child_process');
  * @returns {Promise}
  *
  */
-const _execute = (c: RnvConfig, command: string, opts: ExecOptions = {}) => {
+const _execute = (c: RnvConfig, command: string | Array<string>, opts: ExecOptions = {}) => {
     const defaultOpts: ExecOptions = {
         stdio: 'pipe',
         localDir: path.resolve('./node_modules/.bin'),
@@ -58,19 +58,20 @@ const _execute = (c: RnvConfig, command: string, opts: ExecOptions = {}) => {
                   .join(' ')
             : null;
 
-    let cleanCommand = command;
+    const commandAsString = Array.isArray(command) ? command.join(' ') : command;
+    let cleanCommand = commandAsString;
+
     let interval: NodeJS.Timer;
     const intervalTimer = 30000; // 30s
     let timer = intervalTimer;
     const privateMask = '*******';
     const cleanRawCmd = opts.rawCommand?.args || [];
-    if (Array.isArray(command)) cleanCommand = command.join(' ');
 
     cleanCommand += cleanRawCmd.join(' ');
     let logMessage = cleanCommand;
     const privateParams = mergedOpts.privateParams || [];
     if (privateParams && Array.isArray(privateParams)) {
-        logMessage = replaceOverridesInString(command, privateParams, privateMask);
+        logMessage = replaceOverridesInString(commandAsString, privateParams, privateMask);
     }
 
     logMessage = `${env ? `${env} ` : ''}${logMessage}`;
@@ -90,7 +91,7 @@ const _execute = (c: RnvConfig, command: string, opts: ExecOptions = {}) => {
     let child: ExecaChildProcess;
     if (opts.rawCommand) {
         const { args } = opts.rawCommand;
-        child = execa(command, args, mergedOpts);
+        child = execa(commandAsString, args, mergedOpts);
     } else {
         child = execa.command(cleanCommand, mergedOpts);
     }
@@ -218,29 +219,36 @@ const execCLI = (c: RnvConfig, cli: string, command: string, opts: ExecOptions =
  */
 
 const executeAsync = async (
-    _c: RnvConfig | string,
-    _cmd?: string | ExecOptions,
+    _c: RnvConfig | string | Array<string>,
+    _cmd?: string | Array<string> | ExecOptions,
     _opts?: ExecOptions
 ): Promise<string> => {
     // swap values if c is not specified and get it from it's rightful place, config :)
     let c: RnvConfig;
-    let cmd = '';
+    let cmd: string | Array<string> = '';
     let opts: ExecOptions = _opts || {};
-    if (typeof _c === 'string') {
+    const isArg1Command = typeof _c === 'string' || Array.isArray(_c);
+    if (isArg1Command) {
         cmd = _c;
         c = Config.getConfig();
     } else {
         c = _c;
     }
 
-    if (typeof _cmd === 'string') {
+    const isArg2Command = typeof _cmd === 'string' || Array.isArray(_cmd);
+    if (isArg2Command) {
         cmd = _cmd;
     } else if (_cmd) {
         opts = _cmd;
     }
 
     if (cmd.includes('npm') && process.platform === 'win32') {
-        cmd.replace('npm', 'npm.cmd');
+        if (typeof cmd === 'string') {
+            cmd.replace('npm', 'npm.cmd');
+        } else {
+            cmd = cmd.join(' ').replace('npm', 'npm.cmd');
+            cmd = cmd.split(' ');
+        }
     }
     // let cmdArr;
     // if (typeof cmd === 'string') {
@@ -401,9 +409,9 @@ const fileNotExistsSync = (commandName: string) => {
     }
 };
 
-const localExecutable = (commandName: string, callback: ExecCallback2) => {
+const localExecutable = (commandName: string, callback?: ExecCallback2) => {
     access(commandName, constants.F_OK | constants.X_OK, (err) => {
-        callback(null, !err);
+        callback && callback(null, !err);
     });
 };
 
@@ -416,13 +424,13 @@ const localExecutableSync = (commandName: string) => {
     }
 };
 
-const commandExistsUnix = (commandName: string, cleanedCommandName: string, callback: ExecCallback2) => {
+const commandExistsUnix = (commandName: string, cleanedCommandName: string, callback?: ExecCallback2) => {
     fileNotExists(commandName, (isFile: boolean) => {
         if (!isFile) {
             exec(
                 `command -v ${cleanedCommandName} 2>/dev/null` + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`,
                 (_error: any, stdout: any) => {
-                    callback(null, !!stdout);
+                    callback && callback(null, !!stdout);
                 }
             );
             return;
@@ -432,16 +440,16 @@ const commandExistsUnix = (commandName: string, cleanedCommandName: string, call
     });
 };
 
-const commandExistsWindows = (commandName: string, cleanedCommandName: string, callback: ExecCallback2) => {
+const commandExistsWindows = (commandName: string, cleanedCommandName: string, callback?: ExecCallback2) => {
     if (/[\x00-\x1f<>:"|?*]/.test(commandName)) {
-        callback(null, false);
+        callback && callback(null, false);
         return;
     }
     exec(`where ${cleanedCommandName}`, (error: any) => {
         if (error !== null) {
-            callback(null, false);
+            callback && callback(null, false);
         } else {
-            callback(null, true);
+            callback && callback(null, true);
         }
     });
 };
@@ -495,7 +503,7 @@ if (isUsingWindows) {
     };
 }
 
-const commandExists = (commandName: string, callback: ExecCallback2) => {
+const commandExists = (commandName: string, callback?: ExecCallback2) => {
     const cleanedCommandName = cleanInput(commandName);
     if (!callback && typeof Promise !== 'undefined') {
         return new Promise((resolve, reject) => {
