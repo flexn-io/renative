@@ -432,7 +432,7 @@ export const copyAssetsFolder = async (
     c: RnvConfig,
     platform: RnvPlatform,
     subPath: string,
-    customFn: (c: RnvConfig, platform: string) => void
+    customFn?: (c: RnvConfig, platform: string) => void
 ) => {
     logTask('copyAssetsFolder');
 

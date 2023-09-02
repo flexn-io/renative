@@ -122,6 +122,9 @@ export const ejectGradleProject = async (c: any) => {
 
     parsePlugins(c, c.platform, (_plugin: any, pluginPlat: any, key: string) => {
         const pluginPath = doResolvePath(key);
+
+        if (!pluginPath) return;
+
         const extensionsFilter = [
             '.java',
             '.gradle',
@@ -147,7 +150,17 @@ export const ejectGradleProject = async (c: any) => {
         }
 
         const destPath = path.join(appFolder, 'node_modules', key);
-        copyFolderContentsRecursiveSync(pluginPath, destPath, false, null, false, null, null, c, extensionsFilter);
+        copyFolderContentsRecursiveSync(
+            pluginPath,
+            destPath,
+            false,
+            undefined,
+            false,
+            undefined,
+            undefined,
+            c,
+            extensionsFilter
+        );
         copyFileSync(path.join(pluginPath, 'package.json'), path.join(destPath, 'package.json'));
     });
 

@@ -38,7 +38,7 @@ export const withRNV = (config) => {
         watchFolders.push(...config.watchFolders);
     }
 
-    const exts = process.env.RNV_EXTENSIONS || '';
+    const exts = process.env.RNV_EXTENSIONS || [];
 
     const cnf = {
         ...config,

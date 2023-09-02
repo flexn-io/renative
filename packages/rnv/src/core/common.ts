@@ -12,7 +12,7 @@ import { chalk, logError, logTask, logWarning } from './systemManager/logger';
 import { getValidLocalhost } from './systemManager/utils';
 import { RenativeConfigBuildScheme, RenativeConfigFile, RnvConfig } from './configManager/types';
 import { GetConfigPropFn } from './types';
-import { TimestampPathsConfig } from './systemManager/types';
+import { OverridesOptions, TimestampPathsConfig } from './systemManager/types';
 
 export const getTimestampPathsConfig = (c: RnvConfig, platform: string): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
@@ -44,7 +44,7 @@ export const getCliArguments = (c: RnvConfig) => {
     return argsCopy.filter((arg) => !!arg);
 };
 
-export const addSystemInjects = (c: RnvConfig, injects: Array<string>) => {
+export const addSystemInjects = (c: RnvConfig, injects: OverridesOptions) => {
     if (!c.systemPropsInjects) c.systemPropsInjects = [];
     if (injects) {
         injects.forEach((item) => {

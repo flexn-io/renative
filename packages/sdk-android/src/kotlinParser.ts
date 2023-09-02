@@ -72,7 +72,7 @@ export const parseMainApplicationSync = (c: any) => {
         getBuildFilePath(c, platform, applicationPath),
         path.join(appFolder, applicationPath),
         injects,
-        null,
+        undefined,
         c
     );
 };
@@ -112,7 +112,13 @@ export const parseMainActivitySync = (c: any) => {
 
     addSystemInjects(c, injects);
 
-    writeCleanFile(getBuildFilePath(c, platform, activityPath), path.join(appFolder, activityPath), injects, null, c);
+    writeCleanFile(
+        getBuildFilePath(c, platform, activityPath),
+        path.join(appFolder, activityPath),
+        injects,
+        undefined,
+        c
+    );
 };
 
 export const parseSplashActivitySync = (c: any) => {
@@ -138,7 +144,7 @@ export const parseSplashActivitySync = (c: any) => {
 
     addSystemInjects(c, injects);
 
-    writeCleanFile(getBuildFilePath(c, platform, splashPath), path.join(appFolder, splashPath), injects, null, c);
+    writeCleanFile(getBuildFilePath(c, platform, splashPath), path.join(appFolder, splashPath), injects, undefined, c);
 };
 
 export const injectPluginKotlinSync = (c: any, plugin: any, key: any, pkg: any) => {

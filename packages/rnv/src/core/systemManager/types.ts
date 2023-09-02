@@ -12,7 +12,7 @@ export type ExecOptions = {
         args: Array<string>;
     };
     privateParams?: Array<string>;
-    env?: NodeJS.Process['env'];
+    env?: Record<string, any>; // NodeJS.Process['env'];
     ignoreErrors?: boolean;
     detached?: boolean;
     cwd?: string;

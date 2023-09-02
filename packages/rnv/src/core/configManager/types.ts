@@ -17,7 +17,7 @@ export interface RnvConfig {
     process: any;
     rnvVersion: string;
     _currentTask?: string;
-    systemPropsInjects: Array<string>;
+    systemPropsInjects: OverridesOptions;
     _requiresNpmInstall?: boolean;
     buildPipes: Record<string, Array<(c: RnvConfig) => Promise<boolean>>>;
     isBuildHooksReady: boolean;

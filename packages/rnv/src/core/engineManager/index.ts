@@ -494,7 +494,7 @@ Maybe you forgot to define platforms.${platform}.engine in your renative.json?`)
     }
 };
 
-export const generateEnvVars = (c: RnvConfig, moduleConfig: RnvModuleConfig, nextConfig: RnvNextJSConfig) => {
+export const generateEnvVars = (c: RnvConfig, moduleConfig?: RnvModuleConfig, nextConfig?: RnvNextJSConfig) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
     const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
     return {
