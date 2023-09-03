@@ -30,8 +30,8 @@ export const registerDevice = async (c: RnvContext<Payload>) => {
     }
 };
 
-export const updateProfile = async (c: RnvContext<Payload>, appConfigId: string) => {
-    logTask(`updateProfile:${appConfigId}`, chalk().grey);
+export const updateProfile = async (c: RnvContext<Payload>) => {
+    logTask(`updateProfile`, chalk().grey);
 
     // TODO: run trough all schemes
     // const schemes = c.buildConfig.platforms?.[c.platform]?.buildSchemes

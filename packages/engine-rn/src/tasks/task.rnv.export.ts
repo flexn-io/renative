@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
 import { exportXcodeProject } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
@@ -7,7 +7,7 @@ const { IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_BUILD, TASK
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
-export const taskRnvExport = async (c, parentTask, originTask) => {
+export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);
     const { platform } = c;
 
@@ -18,7 +18,7 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
     switch (platform) {
         case IOS:
         case MACOS:
-            return exportXcodeProject(c, platform);
+            return exportXcodeProject(c);
         case ANDROID:
         case ANDROID_TV:
         case FIRE_TV:

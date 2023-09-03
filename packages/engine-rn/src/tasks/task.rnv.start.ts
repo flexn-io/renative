@@ -1,4 +1,4 @@
-import { TaskManager, EngineManager, Constants, Logger, PlatformManager, Exec, Common, Resolver } from 'rnv';
+import { TaskManager, EngineManager, Constants, Logger, PlatformManager, Exec, Common, Resolver, RnvTaskFn } from 'rnv';
 import { isBundlerActive } from '../commonEngine';
 
 const { getEntryFile, confirmActiveBundler } = Common;
@@ -10,7 +10,7 @@ const { chalk, logTask, logError, logRaw, logInfo } = Logger;
 const { IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_START, TASK_CONFIGURE_SOFT, PARAMS } = Constants;
 const { executeAsync } = Exec;
 
-const BUNDLER_PLATFORMS = {};
+const BUNDLER_PLATFORMS: Record<string, string> = {};
 
 BUNDLER_PLATFORMS[IOS] = IOS;
 BUNDLER_PLATFORMS[MACOS] = IOS;
@@ -19,7 +19,7 @@ BUNDLER_PLATFORMS[ANDROID_TV] = ANDROID;
 BUNDLER_PLATFORMS[FIRE_TV] = ANDROID;
 BUNDLER_PLATFORMS[ANDROID_WEAR] = ANDROID;
 
-export const taskRnvStart = async (c, parentTask, originTask) => {
+export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { hosted } = c.program;
 

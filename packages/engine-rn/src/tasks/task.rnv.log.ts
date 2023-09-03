@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager, SDKManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, SDKManager, RnvTaskFn } from 'rnv';
 
 import { runAndroidLog } from '@rnv/sdk-android';
 
@@ -13,7 +13,7 @@ const { PARAMS, IOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_WORKSPACE_
     Constants;
 const { executeTask } = TaskManager;
 
-export const taskRnvLog = async (c, parentTask, originTask) => {
+export const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvLog', `parent:${parentTask}`);
 
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);

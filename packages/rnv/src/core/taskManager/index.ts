@@ -331,7 +331,7 @@ To avoid that test your task code against parentTask and avoid executing same ta
     logExitTask(`${prt}<= ${task}`);
 };
 
-export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask: string, originTask: string) => {
+export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask: string, originTask?: string) => {
     if (!c.program.only) {
         return executeTask(c, task, parentTask, originTask);
     }

@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
 import { buildAndroid } from '@rnv/sdk-android';
 import { buildXcodeProject } from '@rnv/sdk-apple';
 
@@ -9,7 +9,7 @@ const { IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_BUILD, TASK
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
-export const taskRnvBuild = async (c, parentTask, originTask) => {
+export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild');
     const { platform } = c;
 
@@ -29,7 +29,7 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
                 // build task is not necessary when exporting ios
                 return true;
             }
-            return buildXcodeProject(c, platform);
+            return buildXcodeProject(c);
         default:
             return logErrorPlatform(c);
     }

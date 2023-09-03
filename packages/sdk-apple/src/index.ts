@@ -16,7 +16,7 @@ import {
     SDKManager,
 } from 'rnv';
 import { getAppFolderName } from './common';
-import { registerDevice } from './fastlane';
+import { registerDevice, updateProfile } from './fastlane';
 import { parseEntitlementsPlist, parseExportOptionsPlist, parseInfoPlist } from './plistParser';
 import { parsePodFile } from './podfileParser';
 import { parseAppDelegate } from './swiftParser';
@@ -931,4 +931,5 @@ export {
     exportXcodeProject,
     archiveXcodeProject,
     runAppleLog,
+    updateProfile,
 };

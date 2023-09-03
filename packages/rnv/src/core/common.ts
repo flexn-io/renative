@@ -161,7 +161,9 @@ export const confirmActiveBundler = async (c: RnvContext) => {
     if (c.runtime.skipActiveServerCheck) return true;
 
     if (c.program.ci) {
-        return killPort(parseInt(c.runtime.port));
+        //TODO: handle return codes properly
+        await killPort(parseInt(c.runtime.port));
+        return true;
     }
 
     const choices = ['Restart the server (recommended)', 'Use existing session'];

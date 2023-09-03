@@ -1,12 +1,12 @@
 import path from 'path';
-import { TaskManager, Constants, Logger, FileUtils } from 'rnv';
+import { TaskManager, Constants, Logger, FileUtils, RnvTaskFn } from 'rnv';
 
 const { logWarning, logError, logTask, logDebug } = Logger;
 const { getFileListSync, copyFileSync, mkdirSync, fsExistsSync } = FileUtils;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { TASK_CRYPTO_INSTALL_PROFILES, TASK_PROJECT_CONFIGURE, PARAMS } = Constants;
 
-export const taskRnvCryptoInstallProfiles = async (c, parentTask, originTask) => {
+export const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoInstallProfiles');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_INSTALL_PROFILES, originTask);
@@ -33,7 +33,7 @@ export const taskRnvCryptoInstallProfiles = async (c, parentTask, originTask) =>
             logDebug(`taskRnvCryptoInstallProfiles: Installing: ${v}`);
             copyFileSync(v, ppFolder);
         });
-    } catch (e) {
+    } catch (e: any) {
         logError(e);
     }
 

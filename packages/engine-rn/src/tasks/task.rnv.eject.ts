@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
 import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
 
@@ -10,7 +10,7 @@ const TASK_EJECT = 'eject';
 
 const { shouldSkipTask, executeOrSkipTask } = TaskManager;
 
-export const taskRnvEject = async (c, parentTask, originTask) => {
+export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvEject');
     const { platform } = c;
 
