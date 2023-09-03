@@ -550,7 +550,7 @@ export const configureProject = async (c: RnvContext<Payload>) => {
 
     // PLUGINS
     parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
-        injectPluginGradleSync(c, pluginPlat, key, pluginPlat.package, plugin);
+        injectPluginGradleSync(c, plugin, pluginPlat, key);
         injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
         injectPluginXmlValuesSync(c, pluginPlat);

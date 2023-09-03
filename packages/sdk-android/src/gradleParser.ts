@@ -572,10 +572,9 @@ export const parseGradlePropertiesSync = (c: RnvContext<Payload>) => {
 
 export const injectPluginGradleSync = (
     c: RnvContext<Payload>,
+    pluginRoot: RnvPlugin,
     plugin: RenativeConfigPluginPlatform,
-    key: string,
-    _pkg: string,
-    pluginRoot: RnvPlugin
+    key: string
 ) => {
     // const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     // const packagePath = plugin.path ?? `${key}/android`;
