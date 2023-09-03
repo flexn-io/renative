@@ -13,6 +13,7 @@ export type RnvEngine = {
     runtimeExtraProps: any;
     outputDirName?: string;
     serverDirName: string;
+    getAliases?: (alias: any) => any;
     // package: string;
     // ejectPlatform: null;
 };

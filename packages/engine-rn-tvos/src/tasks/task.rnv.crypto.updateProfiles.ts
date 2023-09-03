@@ -1,28 +1,28 @@
-import { TaskManager, Constants, Logger, ConfigManager } from 'rnv';
+import { TaskManager, Constants, Logger, ConfigManager, RnvTaskFn, RnvContext, TVOS } from 'rnv';
 import { updateProfile } from '@rnv/sdk-apple';
 
 const { listAppConfigsFoldersSync } = ConfigManager;
 
 const { chalk, logTask } = Logger;
-const { TVOS, TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE, PARAMS } = Constants;
+const { TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE, PARAMS } = Constants;
 const { executeTask, shouldSkipTask } = TaskManager;
 
-const _updateProfile = (c, v) =>
-    new Promise((resolve, reject) => {
+const _updateProfile = (c: RnvContext, v: string) =>
+    new Promise<void>((resolve, reject) => {
         logTask(`_updateProfile:${v}`, chalk().grey);
-        updateProfile(c, v)
+        updateProfile(c)
             .then(() => resolve())
-            .catch((e) => reject(e));
+            .catch((e: any) => reject(e));
     });
 
-const _updateProfiles = (c) => {
+const _updateProfiles = (c: RnvContext) => {
     logTask('_updateProfiles', chalk().grey);
     const acList = listAppConfigsFoldersSync(c, true);
 
     return acList.reduce((previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)), Promise.resolve());
 };
 
-export const taskRnvCryptoUpdateProfiles = async (c, parentTask, originTask) => {
+export const taskRnvCryptoUpdateProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoUpdateProfiles');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_UPDATE_PROFILES, originTask);

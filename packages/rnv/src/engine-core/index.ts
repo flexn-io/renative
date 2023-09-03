@@ -43,7 +43,7 @@ import taskRnvLink from './tasks/task.rnv.link';
 import taskRnvUnlink from './tasks/task.rnv.unlink';
 import { RnvEngine } from '../core/engineManager/types';
 
-const engine: RnvEngine = {
+const Engine: RnvEngine = {
     initializeRuntimeConfig: () => {
         //Do nothing
     },
@@ -104,4 +104,4 @@ const engine: RnvEngine = {
     platforms: {},
 };
 
-export default engine;
+export default Engine;

@@ -1,4 +1,4 @@
-import { Common, Constants, Logger, PlatformManager, TaskManager } from 'rnv';
+import { Common, Constants, Logger, PlatformManager, RnvTaskFn, TaskManager } from 'rnv';
 import { packageAndroid, runAndroid } from '@rnv/sdk-android';
 import { runXcodeProject } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
@@ -10,7 +10,7 @@ const { logTask, logSummary, logRaw } = Logger;
 const { logErrorPlatform } = PlatformManager;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
-export const taskRnvRun = async (c, parentTask, originTask) => {
+export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
@@ -31,13 +31,13 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
                 if (bundleAssets) {
                     await packageAndroid(c);
                 }
-                await runAndroid(c, target);
+                await runAndroid(c);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
                 return waitForBundlerIfRequired(c);
             }
-            return runAndroid(c, target);
+            return runAndroid(c);
         case TVOS:
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);

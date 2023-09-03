@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, Exec, FileUtils } from 'rnv';
+import { TaskManager, Constants, Logger, Exec, FileUtils, RnvTaskFn } from 'rnv';
 
 const { logWarning, logError, logTask } = Logger;
 const { getFileListSync } = FileUtils;
@@ -6,7 +6,7 @@ const { executeAsync } = Exec;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { TASK_CRYPTO_INSTALL_CERTS, TASK_PROJECT_CONFIGURE, PARAMS } = Constants;
 
-export const taskRnvCryptoInstallCerts = async (c, parentTask, originTask) => {
+export const taskRnvCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoInstallCerts');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_INSTALL_CERTS, originTask);
@@ -24,7 +24,7 @@ export const taskRnvCryptoInstallCerts = async (c, parentTask, originTask) => {
 
     try {
         Promise.all(cerArr.map((v) => executeAsync(c, `security import ${v} -k ${kChain} -A`)));
-    } catch (e) {
+    } catch (e: any) {
         logWarning(e);
         return true;
     }

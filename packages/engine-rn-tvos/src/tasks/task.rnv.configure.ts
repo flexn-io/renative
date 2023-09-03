@@ -1,4 +1,4 @@
-import { Constants, Logger, PlatformManager, TaskManager, NPMUtils, TemplateManager } from 'rnv';
+import { Constants, Logger, PlatformManager, TaskManager, NPMUtils, TemplateManager, RnvTaskFn } from 'rnv';
 import { configureGradleProject } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 import { configureMetroConfigs } from '../commonEngine';
@@ -12,7 +12,7 @@ const { TVOS, ANDROID_TV, FIRE_TV, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARA
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
 
-export const taskRnvConfigure = async (c, parentTask, originTask) => {
+export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
     await configureMetroConfigs(c);

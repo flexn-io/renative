@@ -1,4 +1,4 @@
-import { EngineManager, Config } from 'rnv';
+import { EngineManager, Config, RnvEngine } from 'rnv';
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvPackage from './tasks/task.rnv.package';
 import taskRnvBuild from './tasks/task.rnv.build';
@@ -12,12 +12,13 @@ import taskRnvCryptoUpdateProfile from './tasks/task.rnv.crypto.updateProfile';
 import taskRnvCryptoUpdateProfiles from './tasks/task.rnv.crypto.updateProfiles';
 import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfiles';
 import taskRnvLog from './tasks/task.rnv.log';
+//@ts-ignore
 import CNF from '../renative.engine.json';
 import { createEngineAlias, withRNVMetro, withRNVBabel } from './adapter';
 
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
-export default {
+const Engine: RnvEngine = {
     initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
@@ -42,7 +43,8 @@ export default {
         xcodeProjectName: 'RNVAppTVOS',
     },
     projectDirName: '',
-    ejectPlatform: null,
+    serverDirName: '',
+    // ejectPlatform: null,
     platforms: {
         tvos: {
             defaultPort: 8089,
@@ -68,3 +70,5 @@ export default {
 const withRNV = withRNVMetro;
 
 export { withRNVMetro, withRNV, withRNVBabel };
+
+export default Engine;

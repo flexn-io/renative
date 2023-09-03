@@ -19,7 +19,7 @@ import taskRnvEject from './tasks/task.rnv.eject';
 
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
-const engine: RnvEngine = {
+const Engine: RnvEngine = {
     initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
@@ -90,7 +90,7 @@ const engine: RnvEngine = {
     },
 };
 
-export default engine;
+export default Engine;
 
 // Backward compatibility
 const withRNV = withRNVMetro;
