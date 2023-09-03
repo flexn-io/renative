@@ -847,6 +847,7 @@ const configureXcodeProject = async (c: Context) => {
             },
         },
         podfileSources: '',
+        deploymentTarget: '',
     };
 
     // FONTS

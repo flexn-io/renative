@@ -43,7 +43,7 @@ export type Payload = {
         pluginActivityResultMethods: string;
         pluginApplicationCreateMethods: string;
         pluginSplashActivityImports: string;
-        resourceStrings: RenativeConfigPluginPlatform['ResourceStrings']['children'];
+        resourceStrings: Required<RenativeConfigPluginPlatform>['ResourceStrings']['children'];
         store?: {
             storeFile: string;
             keyAlias: string;

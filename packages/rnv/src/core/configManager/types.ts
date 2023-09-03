@@ -132,7 +132,7 @@ export type RenativeConfigPluginPlatform = {
         dexOptions: Record<string, boolean>;
     };
     BuildGradle?: RenativeConfigPluginPlatform['build.gradle'];
-    ResourceStrings: {
+    ResourceStrings?: {
         children: Array<{
             tag: string;
             name: string;
@@ -140,13 +140,15 @@ export type RenativeConfigPluginPlatform = {
         }>;
     };
     //iOS
-    appDelegateMethods: RenativeConfigAppDelegateMethods;
-    Podfile: {
+    appDelegateMethods?: RenativeConfigAppDelegateMethods;
+    Podfile?: {
         injectLines: Array<string>;
         post_install: Array<string>;
         sources: Array<string>;
     };
-    staticPods: Array<string>;
+    staticPods?: Array<string>;
+    podNames?: Array<string>;
+    podDependencies?: Array<string>;
 };
 
 export type RenativeConfigAppDelegateMethods = {

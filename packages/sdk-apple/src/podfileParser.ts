@@ -35,13 +35,17 @@ export const parsePodFile = async (c: Context, platform: string) => {
         if (podName) {
             pluginInject += _injectPod(podName, pluginPlat, plugin, key);
         }
-        const podNames = getFlavouredProp(c, pluginPlat, 'podNames');
+        const podNames = getFlavouredProp<RenativeConfigPluginPlatform['podNames']>(c, pluginPlat, 'podNames');
         if (podNames) {
             podNames.forEach((v) => {
                 pluginInject += _injectPod(v, pluginPlat, plugin, key);
             });
         }
-        const podDependencies = getFlavouredProp(c, pluginPlat, 'podDependencies');
+        const podDependencies = getFlavouredProp<RenativeConfigPluginPlatform['podDependencies']>(
+            c,
+            pluginPlat,
+            'podDependencies'
+        );
         if (podDependencies) {
             podDependencies.forEach((v) => {
                 pluginInject += `  pod ${v}\n`;
@@ -100,7 +104,7 @@ export const parsePodFile = async (c: Context, platform: string) => {
     const ignoreWarnings = getConfigProp(c, platform, 'ignoreWarnings');
     const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
 
-    const podfile = getConfigProp(c, c.platform, 'Podfile');
+    const podfile = getConfigProp<RenativeConfigPluginPlatform['Podfile']>(c, c.platform, 'Podfile');
     if (podfile) {
         const { injectLines, post_install } = podfile;
         // INJECT LINES
@@ -219,7 +223,7 @@ const _injectPod = (
     const isNpm = plugin['no-npm'] !== true;
     if (isNpm) {
         if (includesPluginPath(pluginPlat.path)) {
-            podPath = sanitizePluginPath(pluginPlat.path, key);
+            podPath = sanitizePluginPath(pluginPlat.path || '', key);
         } else {
             podPath = doResolvePath(pluginPlat.path ?? key);
         }

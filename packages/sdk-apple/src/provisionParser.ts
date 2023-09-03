@@ -15,6 +15,7 @@ export const parseProvisioningProfiles = async (c: Context) => {
         const provisionProfiles = provision.read();
         const result = provision.select(provisionProfiles, {
             AppId: id,
+            //@ts-ignore //TODO: Check TeamIdentifier in ios-mobileprovision-finder
             TeamIdentifier: teamID,
             Certificates: certificates.valid,
         });
