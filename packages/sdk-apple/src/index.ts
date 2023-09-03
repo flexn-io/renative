@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import inquirer from 'inquirer';
 import path from 'path';
 import {
+    AppleDevice,
     Common,
     Constants,
     EngineManager,
@@ -22,6 +23,7 @@ import { parseAppDelegate } from './swiftParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
 import { ejectXcodeProject } from './ejector';
+import { Context } from './types';
 
 const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
@@ -36,13 +38,13 @@ const { copyAssetsFolder, copyBuildsFolder, parseFonts } = ProjectManager;
 const { IOS, MACOS, TVOS } = Constants;
 const { chalk, logInfo, logTask, logError, logWarning, logDebug, logSuccess, logRaw } = Logger;
 
-export const generateChecksum = (str, algorithm, encoding) =>
+export const generateChecksum = (str: string, algorithm?: string, encoding?: string) =>
     crypto
         .createHash(algorithm || 'md5')
         .update(str, 'utf8')
         .digest(encoding || 'hex');
 
-const checkIfPodsIsRequired = async (c) => {
+const checkIfPodsIsRequired = async (c: Context) => {
     const appFolder = getAppFolder(c, c.platform);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
     if (!fsExistsSync(podChecksumPath)) return true;
@@ -59,9 +61,9 @@ const checkIfPodsIsRequired = async (c) => {
     return false;
 };
 
-const updatePodsChecksum = (c) => {
+const updatePodsChecksum = (c: Context) => {
     logTask('updatePodsChecksum');
-    const appFolder = getAppFolder(c, c.platform);
+    const appFolder = getAppFolder(c);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
     const podContentChecksum = generateChecksum(fsReadFileSync(path.join(appFolder, 'Podfile')).toString());
     if (fsExistsSync(podChecksumPath)) {
@@ -76,7 +78,7 @@ const updatePodsChecksum = (c) => {
     return fsWriteFileSync(podChecksumPath, podContentChecksum);
 };
 
-const runCocoaPods = async (c) => {
+const runCocoaPods = async (c: Context) => {
     logTask('runCocoaPods', `forceUpdate:${!!c.program.updatePods}`);
 
     if (c.runtime._skipNativeDepResolutions) return;
@@ -122,8 +124,8 @@ const runCocoaPods = async (c) => {
     }
 };
 
-const copyAppleAssets = (c, platform, appFolderName) =>
-    new Promise((resolve) => {
+const copyAppleAssets = (c: Context, platform: string, appFolderName: string) =>
+    new Promise<void>((resolve) => {
         logTask('copyAppleAssets');
         if (!isPlatformActive(c, platform, resolve)) return;
 
@@ -137,18 +139,18 @@ const copyAppleAssets = (c, platform, appFolderName) =>
         resolve();
     });
 
-export const runXcodeProject = async (c) => {
+export const runXcodeProject = async (c: Context) => {
     logTask('runXcodeProject', `target:${c.runtime.target}`);
 
-    const appPath = getAppFolder(c, c.platform);
+    const appPath = getAppFolder(c);
     const { device } = c.program;
     const appFolderName = getAppFolderName(c, c.platform);
     const runScheme = getConfigProp(c, c.platform, 'runScheme');
     const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
-    let p;
+    let p: string | undefined;
 
-    let devicesArr;
+    let devicesArr: AppleDevice[] = [];
     if (device === true) {
         devicesArr = await getAppleDevices(c, false, true);
     } else if (c.runtime.target) {
@@ -169,7 +171,7 @@ export const runXcodeProject = async (c) => {
                 p = `--device ${devicesArr[0].name}`;
             }
         } else if (devicesArr.length > 1) {
-            const run = (selectedDevice) => {
+            const run = (selectedDevice: AppleDevice) => {
                 logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
                 c.runtime.targetUDID = selectedDevice.udid;
                 if (selectedDevice.udid) {
@@ -303,7 +305,7 @@ export const runXcodeProject = async (c) => {
         }
 
         try {
-            await buildXcodeProject(c, c.platform);
+            await buildXcodeProject(c);
         } catch (e) {
             await _handleMissingTeam(c, e);
         }
@@ -323,7 +325,15 @@ export const runXcodeProject = async (c) => {
     // return Promise.reject('Missing options for react-native command!');
 };
 
-const _packageOrRun = (c, bundleAssets, bundleIsDev, appPath, scheme, runScheme, p) => {
+const _packageOrRun = (
+    c: Context,
+    bundleAssets: boolean,
+    bundleIsDev: boolean,
+    appPath: string,
+    scheme: string,
+    runScheme: string,
+    p: string
+) => {
     if (bundleAssets) {
         return packageBundleForXcode(c, bundleIsDev).then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
     }
@@ -335,7 +345,7 @@ const _packageOrRun = (c, bundleAssets, bundleIsDev, appPath, scheme, runScheme,
 //     return path.join(cli, 'build/bin.js');
 // };
 
-const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
+const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, runScheme: string, p = '') => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
     const appFolderName = getAppFolderName(c, c.platform);
 
@@ -346,7 +356,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p = '') => {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
         return executeAsync(c, cmd);
-    } catch (e) {
+    } catch (e: any) {
         if (e && e.includes) {
             const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
             if (isDeviceLocked) {
@@ -416,7 +426,7 @@ and we will try to help!
     }
 };
 
-const _handleMissingTeam = async (c, e) => {
+const _handleMissingTeam = async (c: Context, e: any) => {
     const isDevelopmentTeamMissing = e.includes('requires a development team. Select a development team');
     if (isDevelopmentTeamMissing) {
         const loc = `./appConfigs/${c.runtime.appId}/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
@@ -443,7 +453,7 @@ Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.con
     }
 };
 
-const _handleProvisioningIssues = async (c, e, msg) => {
+const _handleProvisioningIssues = async (c: Context, e: any, msg: string) => {
     const provisioningStyle = getConfigProp(c, c.platform, 'provisioningStyle');
     const appFolderName = getAppFolderName(c, c.platform); // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
     const isProvAutomatic = provisioningStyle === 'Automatic';
@@ -453,7 +463,7 @@ const _handleProvisioningIssues = async (c, e, msg) => {
               c.platform
           }, scheme: ${c.runtime.scheme}`;
     const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
-    const workspacePath = chalk().white(`${getAppFolder(c, c.platform)}/${appFolderName}.xcworkspace`);
+    const workspacePath = chalk().white(`${getAppFolder(c)}/${appFolderName}.xcworkspace`);
     logError(e);
     logWarning(`${msg}. To fix try:
 ${chalk().white('[1]>')} Configure your certificates, provisioning profiles correctly manually
@@ -479,7 +489,7 @@ ${proAutoText}`);
     }
 };
 
-const _setAutomaticSigning = async (c) => {
+const _setAutomaticSigning = async (c: Context) => {
     logTask(`_setAutomaticSigning:${c.platform}`);
 
     const scheme = c.files.appConfig?.config?.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
@@ -494,7 +504,7 @@ const _setAutomaticSigning = async (c) => {
     }
 };
 
-const _setDevelopmentTeam = async (c, teamID) => {
+const _setDevelopmentTeam = async (c: Context, teamID: string) => {
     logTask(`_setDevelopmentTeam:${teamID}`);
 
     try {
@@ -512,7 +522,7 @@ const _setDevelopmentTeam = async (c, teamID) => {
     logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
 };
 
-const composeXcodeArgsFromCLI = (string) => {
+const composeXcodeArgsFromCLI = (string: string) => {
     const spacesReplaced = string.replace(/\s(?=(?:[^'"`]*(['"`])[^'"`]*\1)*[^'"`]*$)/g, '&&&'); // replaces spaces outside quotes with &&& for easy split
     const keysAndValues = spacesReplaced.split('&&&');
     const unescapedValues = keysAndValues.map((s) => s.replace(/'/g, '').replace(/"/g, '').replace(/\\/g, '')); // removes all quotes or backslashes
@@ -520,7 +530,7 @@ const composeXcodeArgsFromCLI = (string) => {
     return unescapedValues;
 };
 
-export const buildXcodeProject = async (c) => {
+export const buildXcodeProject = async (c: Context) => {
     logTask('buildXcodeProject');
 
     const { platform } = c;
@@ -616,7 +626,7 @@ export const buildXcodeProject = async (c) => {
     });
 };
 
-const archiveXcodeProject = (c) => {
+const archiveXcodeProject = (c: Context) => {
     logTask('archiveXcodeProject');
     const { platform } = c;
 
@@ -684,7 +694,7 @@ const archiveXcodeProject = (c) => {
     });
 };
 
-const exportXcodeProject = async (c) => {
+const exportXcodeProject = async (c: Context) => {
     logTask('exportXcodeProject');
 
     const { platform } = c;
@@ -728,7 +738,7 @@ const exportXcodeProject = async (c) => {
     });
 };
 
-export const packageBundleForXcode = (c, isDev = false) => {
+export const packageBundleForXcode = (c: Context, isDev = false) => {
     logTask('packageBundleForXcode');
     // const { maxErrorLength } = c.program;
     const args = [
@@ -740,14 +750,14 @@ export const packageBundleForXcode = (c, isDev = false) => {
         '--assets-dest',
         `platformBuilds/${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`,
         '--entry-file',
-        `${c.buildConfig.platforms[c.platform].entryFile}.js`,
+        `${c.buildConfig.platforms?.[c.platform].entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c, c.platform)}/main.jsbundle`,
+        `${getAppFolder(c)}/main.jsbundle`,
     ];
 
     if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
         args.push('--sourcemap-output');
-        args.push(`${getAppFolder(c, c.platform)}/main.jsbundle.map`);
+        args.push(`${getAppFolder(c)}/main.jsbundle.map`);
     }
 
     if (c.program.info) {
@@ -766,7 +776,7 @@ export const packageBundleForXcode = (c, isDev = false) => {
 };
 
 // Resolve or reject will not be called so this will keep running
-const runAppleLog = (c) =>
+const runAppleLog = (c: Context) =>
     new Promise(() => {
         logTask('runAppleLog');
         const filter = c.program.filter || 'RNV';
@@ -788,7 +798,7 @@ const runAppleLog = (c) =>
         });
     });
 
-const configureXcodeProject = async (c) => {
+const configureXcodeProject = async (c: Context) => {
     logTask('configureXcodeProject');
 
     const { device } = c.program;
@@ -800,7 +810,7 @@ const configureXcodeProject = async (c) => {
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     // INJECTORS
-    c.pluginConfigiOS = {
+    c.payload.pluginConfigiOS = {
         podfileInject: '',
         podPostInstall: '',
         staticPodExtraConditions: '',
@@ -846,14 +856,14 @@ const configureXcodeProject = async (c) => {
     //     // TODO: enable this once mmoved to modular_headers Podfile
     //     // if (ignoreProjectFonts) {
     //     //     ignoreProjectFonts.forEach((v) => {
-    //     //         if (!c.pluginConfigiOS.ignoreProjectFonts.includes(v)) {
+    //     //         if (!c.payload.pluginConfigiOS.ignoreProjectFonts.includes(v)) {
     //     //             logDebug(`Igonoring font: ${v}`);
-    //     //             c.pluginConfigiOS.ignoreProjectFonts.push(v);
+    //     //             c.payload.pluginConfigiOS.ignoreProjectFonts.push(v);
     //     //         }
     //     //     });
     //     // }
     // });
-    const embeddedFontSourcesCheck = [];
+    const embeddedFontSourcesCheck: Array<string> = [];
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
@@ -867,15 +877,15 @@ const configureXcodeProject = async (c) => {
                     copyFileSync(fontSource, fontDest);
 
                     if (
-                        !c.pluginConfigiOS.ignoreProjectFonts.includes(font) &&
+                        !c.payload.pluginConfigiOS.ignoreProjectFonts.includes(font) &&
                         !embeddedFontSourcesCheck.includes(font)
                     ) {
-                        c.pluginConfigiOS.embeddedFontSources.push(fontSource);
+                        c.payload.pluginConfigiOS.embeddedFontSources.push(fontSource);
                         embeddedFontSourcesCheck.push(font);
                     }
 
-                    if (!c.pluginConfigiOS.embeddedFonts.includes(font)) {
-                        c.pluginConfigiOS.embeddedFonts.push(font);
+                    if (!c.payload.pluginConfigiOS.embeddedFonts.includes(font)) {
+                        c.payload.pluginConfigiOS.embeddedFonts.push(font);
                     }
                 } else {
                     logWarning(`Font ${chalk().white(fontSource)} doesn't exist! Skipping.`);
@@ -904,7 +914,7 @@ const configureXcodeProject = async (c) => {
     await parseInfoPlist(c, platform);
     await copyBuildsFolder(c, platform);
     await runCocoaPods(c);
-    await parseXcodeProject(c, platform);
+    await parseXcodeProject(c);
     return true;
 };
 

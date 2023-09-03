@@ -59,6 +59,11 @@ export type RenativeConfigPlatform = {
     'gradle.properties'?: Record<string, string | boolean>;
     includedPermissions?: RenativeConfigPermissionsList;
     excludedPermissions?: RenativeConfigPermissionsList;
+    orientationSupport?: {
+        phone: string;
+        tab: string;
+    };
+    urlScheme?: string;
 };
 
 export type RenativeConfigPermissionsList = Array<string>;

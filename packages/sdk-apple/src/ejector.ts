@@ -1,7 +1,8 @@
 import path from 'path';
-import { Common, FileUtils, PluginManager, ProjectManager, Resolver } from 'rnv';
+import { Common, FileUtils, PluginManager, ProjectManager, Resolver, RnvPluginPlatform } from 'rnv';
 // import { logWarning } from 'rnv/dist/core/systemManager/logger';
 import { getAppFolderName } from './common';
+import { Context } from './types';
 
 const {
     fsExistsSync,
@@ -22,7 +23,7 @@ const {
     // sanitizePluginPath, includesPluginPath
 } = PluginManager;
 
-export const ejectXcodeProject = async (c) => {
+export const ejectXcodeProject = async (c: Context) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
     const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
 
@@ -86,14 +87,26 @@ export const ejectXcodeProject = async (c) => {
     // Plugins
     //= ==========
 
-    parsePlugins(c, c.platform, (_plugin, pluginPlat, key) => {
+    parsePlugins(c, c.platform as RnvPluginPlatform, (_plugin, pluginPlat, key) => {
         const podPath = doResolvePath(key);
         const extensionsFilter = ['.h', '.m', '.swift', '.c', '.podspec', '.rb', '.mm'];
         // const excludeFolders = ['node_modules', 'android'];
 
-        const destPath = path.join(appFolder, 'rn_modules', key);
-        copyFolderContentsRecursiveSync(podPath, destPath, false, null, false, null, null, c, extensionsFilter);
-        copyFileSync(path.join(podPath, 'package.json'), path.join(destPath, 'package.json'));
+        if (podPath) {
+            const destPath = path.join(appFolder, 'rn_modules', key);
+            copyFolderContentsRecursiveSync(
+                podPath,
+                destPath,
+                false,
+                undefined,
+                false,
+                undefined,
+                undefined,
+                c,
+                extensionsFilter
+            );
+            copyFileSync(path.join(podPath, 'package.json'), path.join(destPath, 'package.json'));
+        }
     });
 
     // try {

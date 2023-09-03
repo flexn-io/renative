@@ -1,6 +1,15 @@
 import path from 'path';
-import { Logger, Common, ObjectUtils, PluginManager, FileUtils } from 'rnv';
+import {
+    Logger,
+    Common,
+    ObjectUtils,
+    PluginManager,
+    FileUtils,
+    RnvPluginPlatform,
+    RenativeConfigPermissionsList,
+} from 'rnv';
 import { getAppFolderName } from './common';
+import { Context } from './types';
 
 const { isObject, isArray, isBool, isString, isNumber } = ObjectUtils;
 const {
@@ -17,15 +26,15 @@ const { logTask, logError, logWarning } = Logger;
 const { parsePlugins } = PluginManager;
 const { readObjectSync, mergeObjects, writeCleanFile, fsWriteFileSync } = FileUtils;
 
-export const parseExportOptionsPlist = (c, platform) =>
-    new Promise((resolve) => {
+export const parseExportOptionsPlist = (c: Context, platform: string) =>
+    new Promise<void>((resolve) => {
         // EXPORT OPTIONS
         const tId = getConfigProp(c, platform, 'teamID');
         const appFolder = getAppFolder(c);
         const exportOptions = getConfigProp(c, platform, 'exportOptions') || {};
         const id = getConfigProp(c, platform, 'id');
 
-        c.pluginConfigiOS.exportOptions = objToPlist(exportOptions);
+        c.payload.pluginConfigiOS.exportOptions = objToPlist(exportOptions);
 
         if (exportOptions.provisioningProfiles) {
             const expProvProfile = exportOptions.provisioningProfiles[id];
@@ -42,18 +51,18 @@ export const parseExportOptionsPlist = (c, platform) =>
             { pattern: '{{TEAM_ID}}', override: tId },
             {
                 pattern: '{{PLUGIN_EXPORT_OPTIONS}}',
-                override: c.pluginConfigiOS.exportOptions,
+                override: c.payload.pluginConfigiOS.exportOptions,
             },
         ];
 
         addSystemInjects(c, injects);
 
-        writeCleanFile(bPath, path.join(appFolder, 'exportOptions.plist'), injects, null, c);
+        writeCleanFile(bPath, path.join(appFolder, 'exportOptions.plist'), injects, undefined, c);
         resolve();
     });
 
-export const parseEntitlementsPlist = (c, platform) =>
-    new Promise((resolve) => {
+export const parseEntitlementsPlist = (c: Context, platform: string) =>
+    new Promise<void>((resolve) => {
         logTask('parseEntitlementsPlist');
 
         const appFolder = getAppFolder(c);
@@ -69,13 +78,13 @@ export const parseEntitlementsPlist = (c, platform) =>
         resolve();
     });
 
-export const parseInfoPlist = (c, platform) =>
-    new Promise((resolve) => {
+export const parseInfoPlist = (c: Context, platform: string) =>
+    new Promise<void>((resolve) => {
         logTask('parseInfoPlist');
 
         const appFolder = getAppFolder(c);
         const appFolderName = getAppFolderName(c, platform);
-        const plat = c.buildConfig.platforms[platform];
+        const plat = c.buildConfig.platforms?.[platform] || {};
         const { orientationSupport, urlScheme } = plat;
         const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
@@ -85,11 +94,11 @@ export const parseInfoPlist = (c, platform) =>
         plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
         plistObj.CFBundleVersion = getAppVersionCode(c, platform);
         // FONTS
-        if (c.pluginConfigiOS.embeddedFonts.length) {
-            plistObj.UIAppFonts = c.pluginConfigiOS.embeddedFonts;
+        if (c.payload.pluginConfigiOS.embeddedFonts.length) {
+            plistObj.UIAppFonts = c.payload.pluginConfigiOS.embeddedFonts;
         }
         // PERMISSIONS
-        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
+        const includedPermissions = getConfigProp<RenativeConfigPermissionsList>(c, platform, 'includedPermissions');
         if (includedPermissions && c.buildConfig.permissions) {
             const platPrem = c.buildConfig.permissions[platform] ? platform : 'ios';
             const pc = c.buildConfig.permissions[platPrem];
@@ -139,7 +148,7 @@ export const parseInfoPlist = (c, platform) =>
         }
 
         // PLUGINS
-        parsePlugins(c, platform, (plugin, pluginPlat) => {
+        parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat) => {
             const plistPlug = getFlavouredProp(c, pluginPlat, 'plist');
             if (plistPlug) {
                 plistObj = mergeObjects(c, plistObj, plistPlug, true, false);
@@ -155,14 +164,14 @@ const PLIST_START = `<?xml version="1.0" encoding="UTF-8"?>
 
 const PLIST_END = '</plist>\n';
 
-const objToPlist = (obj) => {
+const objToPlist = (obj: any): string => {
     let output = PLIST_START;
     output += _parseObject(obj, 0);
     output += PLIST_END;
     return output;
 };
 
-const _parseObject = (obj, level) => {
+const _parseObject = (obj: any, level: number) => {
     let output = '';
     let space = '';
     for (let i = 0; i < level; i++) {
@@ -170,7 +179,7 @@ const _parseObject = (obj, level) => {
     }
     if (isArray(obj)) {
         output += `${space}<array>\n`;
-        obj.forEach((v) => {
+        obj.forEach((v: any) => {
             output += _parseObject(v, level + 1);
         });
         output += `${space}</array>\n`;
@@ -192,7 +201,7 @@ const _parseObject = (obj, level) => {
     return output;
 };
 
-const saveObjToPlistSync = (c, filePath, obj) => {
+const saveObjToPlistSync = (c: Context, filePath: string, obj: any) => {
     // fsWriteFileSync(filePath, objToPlist(sanitizeDynamicProps(obj, c.buildConfig?._refs)));
     fsWriteFileSync(filePath, objToPlist(obj));
 };

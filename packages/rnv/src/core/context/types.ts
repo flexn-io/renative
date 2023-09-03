@@ -84,6 +84,8 @@ export interface RnvContext<Payload = any> {
         task: string;
         selectedWorkspace: string;
         isWSConfirmed: boolean;
+        _skipNativeDepResolutions: boolean;
+        targetUDID?: string;
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;

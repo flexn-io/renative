@@ -1,12 +1,13 @@
 import path from 'path';
-import { Exec, Logger, Constants, Common } from 'rnv';
+import { Exec, Logger, Constants, Common, RnvContext } from 'rnv';
+import { Payload } from './types';
 
 const { getConfigProp, getAppId } = Common;
 const { chalk, logTask, logWarning, logSuccess } = Logger;
 const { executeAsync } = Exec;
 const { IOS } = Constants;
 
-export const registerDevice = async (c) => {
+export const registerDevice = async (c: RnvContext<Payload>) => {
     logTask(`registerDevice:${c.platform}`);
 
     const teamID = getConfigProp(c, c.platform, 'teamID');
@@ -23,13 +24,13 @@ export const registerDevice = async (c) => {
         });
         logSuccess(`Succesfully registered device ${deviceName}:${udid}:${teamID}`);
         return true;
-    } catch (e) {
+    } catch (e: any) {
         logWarning(e);
         return true;
     }
 };
 
-export const updateProfile = async (c, appConfigId) => {
+export const updateProfile = async (c: RnvContext<Payload>, appConfigId: string) => {
     logTask(`updateProfile:${appConfigId}`, chalk().grey);
 
     // TODO: run trough all schemes
@@ -89,7 +90,7 @@ export const updateProfile = async (c, appConfigId) => {
         });
         logSuccess(`Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`);
         return true;
-    } catch (e) {
+    } catch (e: any) {
         logWarning(e);
         return true;
     }

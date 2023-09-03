@@ -171,7 +171,7 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
             const method = methods[key];
             Object.keys(method).forEach((key2) => {
                 const f = method[key2];
-                const lines = c.pluginConfigiOS.appDelegateMethods[key][key2];
+                const lines = c.payload.pluginConfigiOS.appDelegateMethods[key][key2];
                 const cleanedLines = {};
 
                 lines.forEach((l) => {
@@ -195,7 +195,7 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
         });
 
         injectors.forEach((v) => {
-            c.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(v.lines, v.f);
+            c.payload.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(v.lines, v.f);
         });
 
         const injects = [
@@ -206,15 +206,15 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
             { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
             {
                 pattern: '{{APPDELEGATE_IMPORTS}}',
-                override: c.pluginConfigiOS.pluginAppDelegateImports,
+                override: c.payload.pluginConfigiOS.pluginAppDelegateImports,
             },
             {
                 pattern: '{{APPDELEGATE_METHODS}}',
-                override: c.pluginConfigiOS.pluginAppDelegateMethods,
+                override: c.payload.pluginConfigiOS.pluginAppDelegateMethods,
             },
             {
                 pattern: '{{APPDELEGATE_EXTENSIONS}}',
-                override: c.pluginConfigiOS.pluginAppDelegateExtensions,
+                override: c.payload.pluginConfigiOS.pluginAppDelegateExtensions,
             },
         ];
 
@@ -237,14 +237,14 @@ export const injectPluginSwiftSync = (c, plugin, key) => {
         appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
             logDebug('appDelegateImports add');
-            if (c.pluginConfigiOS.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
+            if (c.payload.pluginConfigiOS.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
                 logDebug('appDelegateImports add ok');
-                c.pluginConfigiOS.pluginAppDelegateImports += `import ${appDelegateImport}\n`;
+                c.payload.pluginConfigiOS.pluginAppDelegateImports += `import ${appDelegateImport}\n`;
             }
         });
     }
     // if (plugin.appDelegateMethods instanceof Array) {
-    //     c.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
+    //     c.payload.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     // }
 
     const appDelegateExtensions = getFlavouredProp(c, plugin, 'appDelegateExtensions');
@@ -252,9 +252,9 @@ export const injectPluginSwiftSync = (c, plugin, key) => {
         appDelegateExtensions.forEach((appDelegateExtension) => {
             // Avoid duplicate imports
             logDebug('appDelegateExtensions add');
-            if (c.pluginConfigiOS.pluginAppDelegateExtensions.indexOf(appDelegateExtension) === -1) {
+            if (c.payload.pluginConfigiOS.pluginAppDelegateExtensions.indexOf(appDelegateExtension) === -1) {
                 logDebug('appDelegateExtensions add ok');
-                c.pluginConfigiOS.pluginAppDelegateExtensions += `, ${appDelegateExtension}`;
+                c.payload.pluginConfigiOS.pluginAppDelegateExtensions += `, ${appDelegateExtension}`;
             }
         });
     }
@@ -263,7 +263,7 @@ export const injectPluginSwiftSync = (c, plugin, key) => {
     if (appDelegateMethods) {
         Object.keys(appDelegateMethods).forEach((delKey) => {
             Object.keys(appDelegateMethods[delKey]).forEach((key2) => {
-                const plugArr = c.pluginConfigiOS.appDelegateMethods[delKey][key2];
+                const plugArr = c.payload.pluginConfigiOS.appDelegateMethods[delKey][key2];
                 if (!plugArr) {
                     logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
                 } else {

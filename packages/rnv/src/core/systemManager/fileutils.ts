@@ -82,12 +82,13 @@ const _getSanitizedPath = (origPath: string, timestampPathsConfig?: TimestampPat
 };
 
 export const copyFileSync = (
-    source: string,
+    source: string | undefined,
     target: string | undefined,
     skipOverride?: boolean,
     timestampPathsConfig?: TimestampPathsConfig
 ) => {
     if (!target) return;
+    if (!source) return;
     logDebug('copyFileSync', source);
     let targetFile = target;
     // if target is a directory a new file with the same name will be created

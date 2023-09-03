@@ -17,7 +17,7 @@ export const parsePodFile = async (c, platform) => {
     let pluginInject = '';
 
     // PLUGINS
-    c.pluginConfigiOS.podfileInject = '';
+    c.payload.pluginConfigiOS.podfileInject = '';
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         const podName = getFlavouredProp(c, pluginPlat, 'podName');
         if (podName) {
@@ -37,15 +37,15 @@ export const parsePodFile = async (c, platform) => {
         }
         const isStatic = getFlavouredProp(c, pluginPlat, 'isStatic');
         if (isStatic === true) {
-            if (!c.pluginConfigiOS.staticFrameworks.includes(podName)) {
-                c.pluginConfigiOS.staticFrameworks.push(`'${podName}'`);
+            if (!c.payload.pluginConfigiOS.staticFrameworks.includes(podName)) {
+                c.payload.pluginConfigiOS.staticFrameworks.push(`'${podName}'`);
             }
         }
         const staticPods = getFlavouredProp(c, pluginPlat, 'staticPods');
         if (staticPods?.forEach) {
             staticPods.forEach((sPod) => {
                 if (sPod.startsWith('::startsWith::')) {
-                    c.pluginConfigiOS.staticPodExtraConditions += ` || pod.name.start_with?('${sPod.replace(
+                    c.payload.pluginConfigiOS.staticPodExtraConditions += ` || pod.name.start_with?('${sPod.replace(
                         '::startsWith::',
                         ''
                     )}')`;
@@ -64,20 +64,20 @@ export const parsePodFile = async (c, platform) => {
             // INJECT LINES
             if (injectLines) {
                 injectLines.forEach((v) => {
-                    c.pluginConfigiOS.podfileInject += `${v}\n`;
+                    c.payload.pluginConfigiOS.podfileInject += `${v}\n`;
                 });
             }
 
             if (post_install) {
                 post_install.forEach((v) => {
-                    c.pluginConfigiOS.podPostInstall += `${v}\n`;
+                    c.payload.pluginConfigiOS.podPostInstall += `${v}\n`;
                 });
             }
             const podfileSources = podfile?.sources;
             if (podfileSources && podfileSources.length) {
                 podfileSources.forEach((v) => {
-                    if (!c.pluginConfigiOS.podfileSources.includes(v)) {
-                        c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
+                    if (!c.payload.pluginConfigiOS.podfileSources.includes(v)) {
+                        c.payload.pluginConfigiOS.podfileSources += `source '${v}'\n`;
                     }
                 });
             }
@@ -94,21 +94,21 @@ export const parsePodFile = async (c, platform) => {
         // INJECT LINES
         if (injectLines) {
             injectLines.forEach((v) => {
-                c.pluginConfigiOS.podfileInject += `${v}\n`;
+                c.payload.pluginConfigiOS.podfileInject += `${v}\n`;
             });
         }
         // POST INSTALL
         if (post_install) {
             post_install.forEach((v) => {
-                c.pluginConfigiOS.podPostInstall += `${v}\n`;
+                c.payload.pluginConfigiOS.podPostInstall += `${v}\n`;
             });
         }
         // SOURCES
         const podfileSources = podfile?.sources;
         if (podfileSources && podfileSources.length) {
             podfileSources.forEach((v) => {
-                if (!c.pluginConfigiOS.podfileSources.includes(v)) {
-                    c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
+                if (!c.payload.pluginConfigiOS.podfileSources.includes(v)) {
+                    c.payload.pluginConfigiOS.podfileSources += `source '${v}'\n`;
                 }
             });
         }
@@ -116,16 +116,16 @@ export const parsePodFile = async (c, platform) => {
 
     // DEPLOYMENT TARGET
     const deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '11.0');
-    c.pluginConfigiOS.deploymentTarget = deploymentTarget;
+    c.payload.pluginConfigiOS.deploymentTarget = deploymentTarget;
 
     // STATIC POD INJECT VERSION
-    c.pluginConfigiOS.staticPodDefinition = 'Pod::BuildType.static_library';
+    c.payload.pluginConfigiOS.staticPodDefinition = 'Pod::BuildType.static_library';
     if (!c.runtime._skipNativeDepResolutions) {
         try {
             const podVersion = await executeAsync(c, 'pod --version');
             const isPodOld = compareVersions(podVersion, '1.9') < 0;
             if (isPodOld) {
-                c.pluginConfigiOS.staticPodDefinition = 'Pod::Target::BuildType.static_library';
+                c.payload.pluginConfigiOS.staticPodDefinition = 'Pod::Target::BuildType.static_library';
             }
         } catch (e) {
             // Ignore
@@ -137,23 +137,23 @@ export const parsePodFile = async (c, platform) => {
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
         {
             pattern: '{{PLUGIN_PODFILE_INJECT}}',
-            override: c.pluginConfigiOS.podfileInject,
+            override: c.payload.pluginConfigiOS.podfileInject,
         },
         {
             pattern: '{{INJECT_POST_INSTALL}}',
-            override: c.pluginConfigiOS.podPostInstall,
+            override: c.payload.pluginConfigiOS.podPostInstall,
         },
         {
             pattern: '{{PLUGIN_PODFILE_SOURCES}}',
-            override: c.pluginConfigiOS.podfileSources,
+            override: c.payload.pluginConfigiOS.podfileSources,
         },
         {
             pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}',
-            override: c.pluginConfigiOS.deploymentTarget,
+            override: c.payload.pluginConfigiOS.deploymentTarget,
         },
         {
             pattern: '{{PLUGIN_STATIC_FRAMEWORKS}}',
-            override: c.pluginConfigiOS.staticFrameworks.join(','),
+            override: c.payload.pluginConfigiOS.staticFrameworks.join(','),
         },
         {
             pattern: '{{PATH_JSC_ANDROID}}',
@@ -165,11 +165,11 @@ export const parsePodFile = async (c, platform) => {
         },
         {
             pattern: '{{PLUGIN_STATIC_POD_DEFINITION}}',
-            override: c.pluginConfigiOS.staticPodDefinition,
+            override: c.payload.pluginConfigiOS.staticPodDefinition,
         },
         {
             pattern: '{{PLUGIN_STATIC_POD_EXTRA_CONDITIONS}}',
-            override: c.pluginConfigiOS.staticPodExtraConditions,
+            override: c.payload.pluginConfigiOS.staticPodExtraConditions,
         },
     ];
 
