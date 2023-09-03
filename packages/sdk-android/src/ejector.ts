@@ -1,5 +1,5 @@
 import path from 'path';
-import { Common, FileUtils, PluginManager, Resolver } from 'rnv';
+import { Common, FileUtils, PluginManager, Resolver, RnvContext, RnvPluginPlatform } from 'rnv';
 // import { logWarning } from 'rnv/dist/core/systemManager/logger';
 
 const {
@@ -19,7 +19,7 @@ const {
     // sanitizePluginPath, includesPluginPath
 } = PluginManager;
 
-export const ejectGradleProject = async (c: any) => {
+export const ejectGradleProject = async (c: RnvContext) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
     const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
 
@@ -120,7 +120,7 @@ export const ejectGradleProject = async (c: any) => {
 
     const afterEvaluateFix: Array<{ match: string; replace: string }> = [];
 
-    parsePlugins(c, c.platform, (_plugin: any, pluginPlat: any, key: string) => {
+    parsePlugins(c, c.platform as RnvPluginPlatform, (_plugin: any, pluginPlat: any, key: string) => {
         const pluginPath = doResolvePath(key);
 
         if (!pluginPath) return;

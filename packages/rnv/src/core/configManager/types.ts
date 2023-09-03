@@ -11,18 +11,7 @@ export type RenativeConfigFile = {
         supportedPlatforms?: Array<string>;
         portOffset?: number;
     };
-    platforms: Record<
-        string,
-        {
-            buildSchemes?: Record<string, RenativeConfigBuildScheme>;
-            entryFile?: string;
-            runtime?: Record<string, any>;
-            appName?: string;
-            id?: string;
-            certificateProfile?: string;
-            engine?: string;
-        }
-    >;
+    platforms: Record<string, RenativeConfigPlatform>;
     templates: Record<
         string,
         {
@@ -50,6 +39,20 @@ export type RenativeConfigFile = {
     workspaceAppConfigsDir?: string;
 };
 
+export type RenativeConfigPlatform = {
+    buildSchemes?: Record<string, RenativeConfigBuildScheme>;
+    entryFile?: string;
+    runtime?: Record<string, any>;
+    appName?: string;
+    id?: string;
+    certificateProfile?: string;
+    engine?: string;
+    gradle?: {
+        buildTypes: Record<string, string[]>;
+    };
+    'gradle.properties'?: Record<string, string | boolean>;
+};
+
 export type RenativeConfigPlugin = {
     source?: string;
     'no-npm'?: boolean;
@@ -68,6 +71,44 @@ export type RenativeConfigPlugin = {
     deprecated?: boolean;
     plugins?: Record<string, string>;
     props?: Record<string, string | boolean | number>;
+};
+
+export type RenativeConfigPluginPlatform = {
+    package?: string;
+    path?: string;
+    //IOS
+
+    //ANDROID
+    projectName?: string;
+    skipLinking?: boolean;
+    skipImplementation?: boolean;
+    implementation?: string;
+    afterEvaluate?: string[];
+    implementations?: string[];
+    'app/build.gradle'?: {
+        apply: string[];
+        defaultConfig: string[];
+    };
+    'build.gradle'?: {
+        allprojects?: {
+            repositories: Record<string, boolean>;
+        };
+        plugins?: string[];
+        buildscript: {
+            repositories: Record<string, boolean>;
+            dependencies: Record<string, boolean>;
+        };
+        injectAfterAll: string[];
+        dexOptions: Record<string, boolean>;
+    };
+    BuildGradle?: RenativeConfigPluginPlatform['build.gradle'];
+    ResourceStrings: {
+        children: Array<{
+            tag: string;
+            name: string;
+            child_value: string;
+        }>;
+    };
 };
 
 export type RenativeWebpackConfig = {

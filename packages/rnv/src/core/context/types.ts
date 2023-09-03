@@ -3,8 +3,9 @@ import { RnvEngine, RnvEnginePlatform } from '../engineManager/types';
 import { OverridesOptions } from '../systemManager/types';
 import { RnvPlatform } from '../types';
 
-export interface RnvContext {
+export interface RnvContext<Payload = any> {
     program: any;
+    payload: Payload;
     command: string | null;
     subCommand: string | null;
     buildConfig: Partial<RenativeConfigFile> & {
@@ -63,7 +64,7 @@ export interface RnvContext {
         hasAllEnginesRegistered: boolean;
         skipPackageUpdate?: boolean;
         selectedTemplate?: string;
-        runtimeExtraProps: string;
+        runtimeExtraProps: any;
         requiresBootstrap: boolean;
         currentTemplate: string;
         requiresForcedTemplateApply: boolean;
