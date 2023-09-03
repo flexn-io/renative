@@ -515,7 +515,11 @@ export const checkPortInUse = (c: RnvContext, platform: string, port: string) =>
         });
     });
 
-export const getFlavouredProp = <T = any>(c: RnvContext, obj: Record<string, any>, key: string): T | null => {
+export const getFlavouredProp = <T = any>(
+    c: RnvContext,
+    obj: Record<string, any> | undefined,
+    key: string
+): T | null => {
     if (!key || !obj) return null;
     const val1 = obj[`${key}@${c.runtime.scheme}`];
     if (val1) return val1;

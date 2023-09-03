@@ -1,6 +1,6 @@
-import { RenativeConfigPlugin } from '../configManager/types';
+import { RenativeConfigPlugin, RenativeConfigPluginPlatform } from '../configManager/types';
 
-export type PluginCallback = (plugin: RnvPlugin, pluginPlat: any, key: string) => void;
+export type PluginCallback = (plugin: RnvPlugin, pluginPlat: RenativeConfigPluginPlatform, key: string) => void;
 
 export type PluginListResponse = {
     asString: string;
@@ -23,6 +23,7 @@ export type RnvPluginScope = {
 };
 
 export type RnvPlugin = RenativeConfigPlugin & {
+    packageName?: string;
     scope?: string;
     _scopes?: Array<string>;
     _id?: string;
@@ -31,4 +32,6 @@ export type RnvPlugin = RenativeConfigPlugin & {
     };
 };
 
-export type RnvPluginPlatform = 'ios' | 'android' | 'webpack';
+export type RnvPluginPlatform = 'ios' | 'android' | 'web';
+
+export type RnvPluginWebpackKey = 'webpack' | 'webpackConfig' | 'engine-rn-next';

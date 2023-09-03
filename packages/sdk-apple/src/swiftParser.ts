@@ -1,6 +1,24 @@
 import path from 'path';
-import { FileUtils, Logger, PluginManager, Common, RnvPluginPlatform } from 'rnv';
-import { Context } from './types';
+import {
+    FileUtils,
+    Logger,
+    PluginManager,
+    Common,
+    RnvPluginPlatform,
+    RenativeConfigAppDelegateMethod,
+    RenativeConfigAppDelegateMethods,
+    RenativeConfigPluginPlatform,
+} from 'rnv';
+import {
+    Context,
+    PayloadAppDelegateKey,
+    PayloadAppDelegateMethod,
+    PayloadAppDelegateSubKey,
+    SwiftAppDelegate,
+    SwiftAppDelegateKey,
+    SwiftAppDelegateSubKey,
+    SwiftMethod,
+} from './types';
 
 const {
     getEntryFile,
@@ -23,7 +41,7 @@ export const parseAppDelegate = (
     isBundled = false,
     ip = 'localhost'
 ) =>
-    new Promise((resolve) => {
+    new Promise<void>((resolve) => {
         const newPort = c.runtime?.port;
         logTask('parseAppDelegateSync', `ip:${ip} port:${newPort}`);
         const appDelegate = 'AppDelegate.swift';
@@ -58,7 +76,7 @@ export const parseAppDelegate = (
 
         const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor'), 'backgroundColor').rgbDecimal;
         const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]}, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
-        const methods = {
+        const methods: SwiftAppDelegate = {
             application: {
                 didFinishLaunchingWithOptions: {
                     isRequired: true,
@@ -158,7 +176,7 @@ export const parseAppDelegate = (
             },
         };
 
-        const constructMethod = (lines, method) => {
+        const constructMethod = (lines: Array<string>, method: SwiftMethod) => {
             let output = '';
             if (lines.length || method.isRequired) {
                 output += `\n${method.func}\n`;
@@ -173,14 +191,19 @@ export const parseAppDelegate = (
         };
 
         // REORDER Injects
-        const injectors = [];
+        const injectors: Array<{
+            f: SwiftMethod;
+            lines: Array<string>;
+        }> = [];
         let cleanedLinesArr;
-        Object.keys(methods).forEach((key) => {
+        const mk = Object.keys(methods) as Array<SwiftAppDelegateKey>;
+        mk.forEach((key) => {
             const method = methods[key];
-            Object.keys(method).forEach((key2) => {
+            const mk2 = Object.keys(method) as Array<SwiftAppDelegateSubKey>;
+            mk2.forEach((key2) => {
                 const f = method[key2];
-                const lines = c.payload.pluginConfigiOS.appDelegateMethods[key][key2];
-                const cleanedLines = {};
+                const lines: Array<PayloadAppDelegateMethod> = c.payload.pluginConfigiOS.appDelegateMethods[key][key2];
+                const cleanedLines: Record<string, PayloadAppDelegateMethod> = {};
 
                 lines.forEach((l) => {
                     if (!cleanedLines[l.value]) {
@@ -232,13 +255,13 @@ export const parseAppDelegate = (
             path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
             path.join(appFolder, appFolderName, appDelegate),
             injects,
-            null,
+            undefined,
             c
         );
         resolve();
     });
 
-export const injectPluginSwiftSync = (c, plugin, key) => {
+export const injectPluginSwiftSync = (c: Context, plugin: RenativeConfigPluginPlatform, key: string) => {
     logDebug(`injectPluginSwiftSync:${c.platform}:${key}`);
     const appDelegateImports = getFlavouredProp(c, plugin, 'appDelegateImports');
     if (appDelegateImports instanceof Array) {
@@ -267,21 +290,25 @@ export const injectPluginSwiftSync = (c, plugin, key) => {
         });
     }
 
-    const appDelegateMethods = getFlavouredProp(c, plugin, 'appDelegateMethods');
+    const appDelegateMethods = getFlavouredProp<RenativeConfigAppDelegateMethods>(c, plugin, 'appDelegateMethods');
     if (appDelegateMethods) {
-        Object.keys(appDelegateMethods).forEach((delKey) => {
-            Object.keys(appDelegateMethods[delKey]).forEach((key2) => {
-                const plugArr = c.payload.pluginConfigiOS.appDelegateMethods[delKey][key2];
+        const admk = Object.keys(appDelegateMethods) as Array<PayloadAppDelegateKey>;
+        admk.forEach((delKey) => {
+            const amdk2 = Object.keys(appDelegateMethods[delKey]) as Array<PayloadAppDelegateSubKey>;
+            amdk2.forEach((key2) => {
+                const plugArr: Array<RenativeConfigAppDelegateMethod> =
+                    c.payload.pluginConfigiOS.appDelegateMethods[delKey][key2];
                 if (!plugArr) {
                     logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
                 } else {
-                    const plugVal = appDelegateMethods[delKey][key2];
+                    const plugVal: Array<RenativeConfigAppDelegateMethod> = appDelegateMethods[delKey][key2];
                     if (plugVal) {
                         plugVal.forEach((v) => {
+                            const isString = typeof v === 'string';
                             plugArr.push({
-                                order: v?.order || 0,
-                                value: v?.value || v,
-                                weight: v?.weight || 0,
+                                order: isString ? 0 : v?.order || 0,
+                                value: isString ? v : v?.value,
+                                weight: isString ? 0 : v?.weight || 0,
                             });
                         });
                     }

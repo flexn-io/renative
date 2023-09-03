@@ -21,7 +21,14 @@ import { installPackageDependencies } from '../systemManager/npmUtils';
 import { doResolve, doResolvePath } from '../systemManager/resolve';
 import { RnvContext } from '../context/types';
 import { ResolveOptions } from '../systemManager/types';
-import { PluginCallback, PluginListResponse, RnvPlugin, RnvPluginPlatform, RnvPluginScope } from './types';
+import {
+    PluginCallback,
+    PluginListResponse,
+    RnvPlugin,
+    RnvPluginPlatform,
+    RnvPluginScope,
+    RnvPluginWebpackKey,
+} from './types';
 import { RenativeConfigPlugin, RenativeWebpackConfig } from '../configManager/types';
 
 export const getPluginList = (c: RnvContext, isUpdate = false) => {
@@ -942,7 +949,7 @@ export const sanitizePluginPath = (str: string, name: string, mandatory?: boolea
     return newStr;
 };
 
-export const includesPluginPath = (str: string) => {
+export const includesPluginPath = (str?: string) => {
     if (str?.includes) {
         return str.includes('{{PLUGIN_ROOT}}');
     }
@@ -961,7 +968,7 @@ export const getLocalRenativePlugin = () => ({
     },
 });
 
-export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginPlatform) => {
+export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey) => {
     let modulePaths: Array<string | undefined> = [];
     const moduleAliases: Record<string, string | undefined> = {};
 

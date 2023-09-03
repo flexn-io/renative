@@ -1,7 +1,19 @@
 import path from 'path';
-import { Exec, Logger, PluginManager, FileUtils, Resolver, Common } from 'rnv';
+import {
+    Exec,
+    Logger,
+    PluginManager,
+    FileUtils,
+    Resolver,
+    Common,
+    RnvPluginPlatform,
+    RnvPlugin,
+    RenativeConfigPluginPlatform,
+    OverridesOptions,
+} from 'rnv';
 
 import compareVersions from 'compare-versions';
+import { Context } from './types';
 
 const { getAppFolder, getAppTemplateFolder, getConfigProp, getFlavouredProp, addSystemInjects } = Common;
 const { logTask, logWarning } = Logger;
@@ -10,7 +22,7 @@ const { doResolve, doResolvePath } = Resolver;
 const { executeAsync } = Exec;
 const { writeCleanFile } = FileUtils;
 
-export const parsePodFile = async (c, platform) => {
+export const parsePodFile = async (c: Context, platform: string) => {
     logTask('parsePodFile');
 
     const appFolder = getAppFolder(c);
@@ -18,7 +30,7 @@ export const parsePodFile = async (c, platform) => {
 
     // PLUGINS
     c.payload.pluginConfigiOS.podfileInject = '';
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
         const podName = getFlavouredProp(c, pluginPlat, 'podName');
         if (podName) {
             pluginInject += _injectPod(podName, pluginPlat, plugin, key);
@@ -41,7 +53,7 @@ export const parsePodFile = async (c, platform) => {
                 c.payload.pluginConfigiOS.staticFrameworks.push(`'${podName}'`);
             }
         }
-        const staticPods = getFlavouredProp(c, pluginPlat, 'staticPods');
+        const staticPods = getFlavouredProp<RenativeConfigPluginPlatform['staticPods']>(c, pluginPlat, 'staticPods');
         if (staticPods?.forEach) {
             staticPods.forEach((sPod) => {
                 if (sPod.startsWith('::startsWith::')) {
@@ -58,7 +70,7 @@ export const parsePodFile = async (c, platform) => {
             logWarning('reactSubSpecs prop is deprecated. You can safely remove it');
         }
 
-        const podfile = getFlavouredProp(c, pluginPlat, 'Podfile');
+        const podfile = getFlavouredProp<RenativeConfigPluginPlatform['Podfile']>(c, pluginPlat, 'Podfile');
         if (podfile) {
             const { injectLines, post_install } = podfile;
             // INJECT LINES
@@ -132,7 +144,7 @@ export const parsePodFile = async (c, platform) => {
         }
     }
 
-    const injects = [
+    const injects: OverridesOptions = [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
         {
@@ -157,11 +169,13 @@ export const parsePodFile = async (c, platform) => {
         },
         {
             pattern: '{{PATH_JSC_ANDROID}}',
-            override: doResolve('jsc-android'),
+            override: doResolve('jsc-android') || 'UNRESOLVED(jsc-android)',
         },
         {
             pattern: '{{PATH_REACT_NATIVE}}',
-            override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'),
+            override:
+                doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native') ||
+                'UNRESOLVED(react-native)',
         },
         {
             pattern: '{{PLUGIN_STATIC_POD_DEFINITION}}',
@@ -179,7 +193,7 @@ export const parsePodFile = async (c, platform) => {
         path.join(getAppTemplateFolder(c, platform), 'Podfile'),
         path.join(appFolder, 'Podfile'),
         injects,
-        null,
+        undefined,
         c
     );
     return true;
@@ -190,7 +204,14 @@ const REACT_CORE_OVERRIDES = {
     's.dependency "React"': 's.dependency "React-Core"',
 };
 
-const _injectPod = (_podName, pluginPlat, plugin, _key) => {
+const _injectPod = (
+    _podName: string,
+    pluginPlat: RenativeConfigPluginPlatform | undefined,
+    plugin: RnvPlugin,
+    _key: string
+) => {
+    if (!pluginPlat) return '';
+
     const key = plugin.packageName || _key;
     const podName = _podName;
     let pluginInject = '';

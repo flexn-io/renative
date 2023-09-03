@@ -19,25 +19,70 @@ export type Payload = {
         pluginAppDelegateExtensions: string;
         appDelegateMethods: {
             application: {
-                didFinishLaunchingWithOptions: Array<string>;
-                applicationDidBecomeActive: Array<string>;
-                open: Array<string>;
-                supportedInterfaceOrientationsFor: Array<string>;
-                didReceiveRemoteNotification: Array<string>;
-                didFailToRegisterForRemoteNotificationsWithError: Array<string>;
-                didReceive: Array<string>;
-                didRegister: Array<string>;
-                didRegisterForRemoteNotificationsWithDeviceToken: Array<string>;
-                continue: Array<string>;
-                didConnectCarInterfaceController: Array<string>;
-                didDisconnectCarInterfaceController: Array<string>;
+                didFinishLaunchingWithOptions: Array<PayloadAppDelegateMethod>;
+                applicationDidBecomeActive: Array<PayloadAppDelegateMethod>;
+                open: Array<PayloadAppDelegateMethod>;
+                supportedInterfaceOrientationsFor: Array<PayloadAppDelegateMethod>;
+                didReceiveRemoteNotification: Array<PayloadAppDelegateMethod>;
+                didFailToRegisterForRemoteNotificationsWithError: Array<PayloadAppDelegateMethod>;
+                didReceive: Array<PayloadAppDelegateMethod>;
+                didRegister: Array<PayloadAppDelegateMethod>;
+                didRegisterForRemoteNotificationsWithDeviceToken: Array<PayloadAppDelegateMethod>;
+                continue: Array<PayloadAppDelegateMethod>;
+                didConnectCarInterfaceController: Array<PayloadAppDelegateMethod>;
+                didDisconnectCarInterfaceController: Array<PayloadAppDelegateMethod>;
             };
             userNotificationCenter: {
-                willPresent: Array<string>;
+                willPresent: Array<PayloadAppDelegateMethod>;
             };
         };
         podfileSources: string;
+        deploymentTarget: string;
     };
 };
 
+export type PayloadAppDelegateMethod = {
+    order: number;
+    value: string;
+    weight: number;
+};
+
+export type PayloadAppDelegateKey = keyof Payload['pluginConfigiOS']['appDelegateMethods'];
+
+export type PayloadAppDelegateSubKey = keyof Payload['pluginConfigiOS']['appDelegateMethods']['application'] &
+    keyof Payload['pluginConfigiOS']['appDelegateMethods']['userNotificationCenter'];
+
 export type Context = RnvContext<Payload>;
+
+export type SwiftMethod = {
+    isRequired?: boolean;
+    func: string;
+    begin: string | null;
+    render: (v: string) => string;
+    end: string | null;
+};
+
+export type SwiftAppDelegate = {
+    application: {
+        didFinishLaunchingWithOptions: SwiftMethod;
+        applicationDidBecomeActive: SwiftMethod;
+        open: SwiftMethod;
+        continue: SwiftMethod;
+        supportedInterfaceOrientationsFor: SwiftMethod;
+        didConnectCarInterfaceController: SwiftMethod;
+        didDisconnectCarInterfaceController: SwiftMethod;
+        didReceiveRemoteNotification: SwiftMethod;
+        didFailToRegisterForRemoteNotificationsWithError: SwiftMethod;
+        didReceive: SwiftMethod;
+        didRegister: SwiftMethod;
+        didRegisterForRemoteNotificationsWithDeviceToken: SwiftMethod;
+    };
+    userNotificationCenter: {
+        willPresent: SwiftMethod;
+    };
+};
+
+export type SwiftAppDelegateSubKey = keyof SwiftAppDelegate['application'] &
+    keyof SwiftAppDelegate['userNotificationCenter'];
+
+export type SwiftAppDelegateKey = keyof SwiftAppDelegate;

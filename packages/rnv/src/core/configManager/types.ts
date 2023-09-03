@@ -86,13 +86,14 @@ export type RenativeConfigPlugin = {
     'no-active'?: boolean;
     version?: string;
     pluginDependencies?: Record<string, string>;
-    ios?: any;
-    android?: any;
-    tvos?: any;
-    androidtv?: any;
-    web?: any;
+    ios?: RenativeConfigPluginPlatform;
+    android?: RenativeConfigPluginPlatform;
+    tvos?: RenativeConfigPluginPlatform;
+    androidtv?: RenativeConfigPluginPlatform;
+    web?: RenativeConfigPluginPlatform;
     webpack?: RenativeWebpackConfig; //DEPRECATED
     webpackConfig?: RenativeWebpackConfig;
+    'engine-rn-next'?: RenativeWebpackConfig; //DEPRECATED?
     npm?: Record<string, string>;
     enabled?: boolean;
     deprecated?: boolean;
@@ -103,8 +104,10 @@ export type RenativeConfigPlugin = {
 export type RenativeConfigPluginPlatform = {
     package?: string;
     path?: string;
-    //IOS
-
+    git?: string;
+    commit?: string;
+    enabled?: boolean;
+    version?: string;
     //ANDROID
     projectName?: string;
     skipLinking?: boolean;
@@ -136,7 +139,43 @@ export type RenativeConfigPluginPlatform = {
             child_value: string;
         }>;
     };
+    //iOS
+    appDelegateMethods: RenativeConfigAppDelegateMethods;
+    Podfile: {
+        injectLines: Array<string>;
+        post_install: Array<string>;
+        sources: Array<string>;
+    };
+    staticPods: Array<string>;
 };
+
+export type RenativeConfigAppDelegateMethods = {
+    application: {
+        didFinishLaunchingWithOptions: Array<RenativeConfigAppDelegateMethod>;
+        applicationDidBecomeActive: Array<RenativeConfigAppDelegateMethod>;
+        open: Array<RenativeConfigAppDelegateMethod>;
+        supportedInterfaceOrientationsFor: Array<RenativeConfigAppDelegateMethod>;
+        didReceiveRemoteNotification: Array<RenativeConfigAppDelegateMethod>;
+        didFailToRegisterForRemoteNotificationsWithError: Array<RenativeConfigAppDelegateMethod>;
+        didReceive: Array<RenativeConfigAppDelegateMethod>;
+        didRegister: Array<RenativeConfigAppDelegateMethod>;
+        didRegisterForRemoteNotificationsWithDeviceToken: Array<RenativeConfigAppDelegateMethod>;
+        continue: Array<RenativeConfigAppDelegateMethod>;
+        didConnectCarInterfaceController: Array<RenativeConfigAppDelegateMethod>;
+        didDisconnectCarInterfaceController: Array<RenativeConfigAppDelegateMethod>;
+    };
+    userNotificationCenter: {
+        willPresent: Array<RenativeConfigAppDelegateMethod>;
+    };
+};
+
+export type RenativeConfigAppDelegateMethod =
+    | {
+          order: number;
+          value: string;
+          weight: number;
+      }
+    | string;
 
 export type RenativeWebpackConfig = {
     modulePaths?:
