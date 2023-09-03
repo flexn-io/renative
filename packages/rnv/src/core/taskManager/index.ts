@@ -12,7 +12,7 @@ import {
     registerAllPlatformEngines,
 } from '../engineManager';
 import { TASK_CONFIGURE_SOFT } from '../constants';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engineManager/types';
 

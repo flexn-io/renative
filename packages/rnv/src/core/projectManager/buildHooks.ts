@@ -5,7 +5,7 @@ import { logDebug, logError, logHook, logInfo } from '../systemManager/logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 
 export const executePipe = async (c: RnvContext, key: string) => {
     logHook('executePipe', c?.program?.json ? key : `('${key}')`);

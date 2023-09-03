@@ -6,7 +6,7 @@ import { TASK_APP_CONFIGURE, PARAMS } from '../../core/constants';
 import { writeFileSync, fsExistsSync, fsReadFileSync, fsRenameSync } from '../../core/systemManager/fileutils';
 import { chalk, logError, logTask, logWarning, logDebug, logInfo, logAppInfo } from '../../core/systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
-import { RnvContext } from '../../core/configManager/types';
+import { RnvContext } from '../../core/context/types';
 
 const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
     logDebug(`_loadAppConfigIDfromDir:${dirName}:${appConfigsDir}`, chalk().grey);

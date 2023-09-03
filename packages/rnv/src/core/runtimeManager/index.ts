@@ -6,7 +6,7 @@ import { getConfigProp } from '../common';
 import { logTask } from '../systemManager/logger';
 import { loadPluginTemplates } from '../pluginManager';
 import { parseRenativeConfigs } from '../configManager/index';
-import { RnvContext, RnvConfigPlatform } from '../configManager/types';
+import { RnvContext, RnvContextPlatform } from '../context/types';
 
 export const updateRenativeConfigs = async (c: RnvContext) => {
     await loadPluginTemplates(c);
@@ -72,7 +72,7 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
                         isConnected = pDir?.includes?.(getRealPath(c, dir) || 'UNDEFINED');
                     }
                     const port = c.buildConfig.defaults?.ports?.[platform] || c.runtime.currentPlatform?.defaultPort;
-                    const cp: RnvConfigPlatform = {
+                    const cp: RnvContextPlatform = {
                         engine,
                         platform,
                         isConnected,

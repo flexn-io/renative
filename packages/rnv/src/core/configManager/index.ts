@@ -35,8 +35,9 @@ import { getConfigProp } from '../common';
 import { getWorkspaceDirPath } from '../projectManager/workspace';
 import { chalk, logError, logTask, logWarning, logDebug } from '../systemManager/logger';
 import { doResolve } from '../systemManager/resolve';
-import { RnvConfigFileObj, RnvConfigPathObj, RnvContext, RnvFileKey } from './types';
-import { generateConfigBase, generateRnvConfigPathObj } from './configBase';
+import { RnvContextFileObj, RnvContextPathObj, RnvContext } from '../context/types';
+import { generateConfigBase, generateRnvConfigPathObj } from '../context/contextBase';
+import { RnvFileKey } from './types';
 // import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
@@ -54,7 +55,7 @@ export const checkIsRenativeProject = (c: RnvContext) =>
         return resolve(true);
     });
 
-const _generateConfigPaths = (pathObj: RnvConfigPathObj, dir: string, configName?: string) => {
+const _generateConfigPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {
     pathObj.dir = dir;
     pathObj.config = path.join(dir, configName || RENATIVE_CONFIG_NAME);
     pathObj.configLocal = path.join(dir, RENATIVE_CONFIG_LOCAL_NAME);
@@ -223,7 +224,7 @@ export const generateBuildConfig = (c: RnvContext) => {
 export const loadFileExtended = (
     c: RnvContext,
     fileObj: Record<string, any>,
-    pathObj: RnvConfigPathObj,
+    pathObj: RnvContextPathObj,
     key: RnvFileKey
 ) => {
     const result = loadFile(fileObj, pathObj, key);
@@ -270,8 +271,8 @@ export const loadFileExtended = (
 
 const _loadConfigFiles = (
     c: RnvContext,
-    fileObj: RnvConfigFileObj,
-    pathObj: RnvConfigPathObj,
+    fileObj: RnvContextFileObj,
+    pathObj: RnvContextPathObj,
     parseAppConfigs?: boolean
 ) => {
     let result = false;
@@ -302,7 +303,7 @@ const _loadConfigFiles = (
         fileObj.configs = [];
         fileObj.configsLocal = [];
         fileObj.configsPrivate = [];
-        const fileObj1: RnvConfigFileObj = {
+        const fileObj1: RnvContextFileObj = {
             configs: [],
             configsLocal: [],
             configsPrivate: [],
@@ -311,7 +312,7 @@ const _loadConfigFiles = (
         // PATH1: appConfigs/base
         const path1 = path.join(pathObj.appConfigsDir, 'base');
 
-        const pathObj1: RnvConfigPathObj = {
+        const pathObj1: RnvContextPathObj = {
             ...generateRnvConfigPathObj(),
             config: path.join(path1, RENATIVE_CONFIG_NAME),
             configLocal: path.join(path1, RENATIVE_CONFIG_LOCAL_NAME),
@@ -335,13 +336,13 @@ const _loadConfigFiles = (
             const appConfigsDirNames = fsReaddirSync(pathObj.appConfigsDir);
             if (parseAppConfigs && extendAppId && appConfigsDirNames.includes(extendAppId)) {
                 const path2 = path.join(pathObj.appConfigsDir, extendAppId);
-                const pathObj2: RnvConfigPathObj = {
+                const pathObj2: RnvContextPathObj = {
                     ...generateRnvConfigPathObj(),
                     config: path.join(path2, RENATIVE_CONFIG_NAME),
                     configLocal: path.join(path2, RENATIVE_CONFIG_LOCAL_NAME),
                     configPrivate: path.join(path2, RENATIVE_CONFIG_PRIVATE_NAME),
                 };
-                const fileObj2: RnvConfigFileObj = {
+                const fileObj2: RnvContextFileObj = {
                     configs: [],
                     configsLocal: [],
                     configsPrivate: [],

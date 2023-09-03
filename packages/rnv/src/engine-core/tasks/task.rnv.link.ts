@@ -3,7 +3,7 @@ import { logInfo, logTask, logSuccess } from '../../core/systemManager/logger';
 import { PARAMS, RNV_PACKAGES } from '../../core/constants';
 import { fsExistsSync, fsRenameSync, fsSymlinkSync } from '../../core/systemManager/fileutils';
 import { RnvTaskFn } from '../../core/taskManager/types';
-import { RnvContext } from '../../core/configManager/types';
+import { RnvContext } from '../../core/context/types';
 
 const _linkPackage = (c: RnvContext, key: string, folder: string) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);

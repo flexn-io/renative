@@ -1,5 +1,5 @@
 import path from 'path';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 import { fsExistsSync } from '../systemManager/fileutils';
 // import { getScopedVersion } from '../systemManager/utils';
 import { logTask, logWarning } from '../systemManager/logger';

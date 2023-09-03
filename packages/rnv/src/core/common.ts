@@ -10,9 +10,10 @@ import { CLI_PROPS } from './constants';
 import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
 import { chalk, logError, logTask, logWarning } from './systemManager/logger';
 import { getValidLocalhost } from './systemManager/utils';
-import { RenativeConfigBuildScheme, RenativeConfigFile, RnvContext } from './configManager/types';
+import { RnvContext } from './context/types';
 import { GetConfigPropFn } from './types';
 import { OverridesOptions, TimestampPathsConfig } from './systemManager/types';
+import { RenativeConfigBuildScheme, RenativeConfigFile } from './configManager/types';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: string): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];

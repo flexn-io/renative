@@ -6,7 +6,7 @@ import { executeTask } from '../../core/taskManager';
 import { TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD, PARAMS } from '../../core/constants';
 
 import { getTemplateOptions } from '../../core/templateManager';
-import { RnvContext } from '../../core/configManager/types';
+import { RnvContext } from '../../core/context/types';
 import { RnvTaskFn } from '../../core/taskManager/types';
 
 const _writeObjectSync = (c: RnvContext, p: string, s: string) => {

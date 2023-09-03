@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import _chalk, { Chalk } from 'chalk';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 import { getChalk } from './chalk';
 import { AnalyticsApi } from './types';
 import { isSystemWin } from './utils';

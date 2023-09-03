@@ -14,7 +14,7 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../../core/systemManager/crypto';
 import { executeTask } from '../../core/taskManager';
 import { TASK_CRYPTO_DECRYPT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
-import { RnvContext } from '../../core/configManager/types';
+import { RnvContext } from '../../core/context/types';
 import { RnvTaskFn } from '../../core/taskManager/types';
 
 const iocane = require('iocane');

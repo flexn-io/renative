@@ -16,7 +16,7 @@ import {
     CLI_WEBOS_ARES_SETUP_DEVICE,
 } from '../../constants';
 import { isSystemWin, isUrlLocalhost } from '../../systemManager/utils';
-import { RnvContext } from '../../configManager/types';
+import { RnvContext } from '../../context/types';
 import { WebosDevice } from '../types';
 
 export const launchWebOSimulator = (c: RnvContext) => {

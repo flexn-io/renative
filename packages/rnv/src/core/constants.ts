@@ -1,7 +1,6 @@
 // PLATFORM
 import { homedir } from 'os';
 import path from 'path';
-import { RnvConfigSchema } from './configManager/types';
 import { RnvTaskParameter } from './taskManager/types';
 
 export const USER_HOME_DIR = homedir();
@@ -541,7 +540,7 @@ export const PARAMS = {
     all: Object.keys(PARAM_KEYS),
 };
 
-export const configSchema: RnvConfigSchema = {
+export const configSchema: Record<string, any> = {
     analytics: {
         values: ['true', 'false'],
         key: 'enableAnalytics',

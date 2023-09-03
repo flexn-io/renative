@@ -1,9 +1,9 @@
 import { fsExistsSync, fsReadFileSync, fsReaddirSync, fsWriteFileSync } from '../systemManager/fileutils';
 
 import path from 'path';
-import { RnvContext, RnvConfigFileObj, RnvConfigPathObj } from './types';
+import { RnvContext, RnvContextFileObj, RnvContextPathObj } from './types';
 
-export const generateRnvConfigPathObj = (): RnvConfigPathObj => {
+export const generateRnvConfigPathObj = (): RnvContextPathObj => {
     return {
         configs: [],
         configsPrivate: [],
@@ -20,7 +20,7 @@ export const generateRnvConfigPathObj = (): RnvConfigPathObj => {
     };
 };
 
-export const generateRnvConfigFileObj = (): RnvConfigFileObj => {
+export const generateRnvConfigFileObj = (): RnvContextFileObj => {
     return {
         configs: [],
         configsLocal: [],

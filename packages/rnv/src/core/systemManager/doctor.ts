@@ -1,7 +1,7 @@
 import { writeFileSync, readObjectSync } from './fileutils';
 import { PACKAGE_JSON_FILEDS } from '../constants';
 import { chalk, logWarning } from './logger';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 
 const getSortedObject = (obj: any) => {
     if (obj !== null && typeof obj === 'object' && !Array.isArray(obj)) {

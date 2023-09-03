@@ -31,7 +31,7 @@ import * as Doctor from './core/systemManager/doctor';
 import * as Logger from './core/systemManager/logger';
 import * as Resolver from './core/systemManager/resolve';
 import Analytics from './core/systemManager/analytics';
-import Config from './core/configManager/config';
+import Config from './core/context/context';
 
 global.RNV_ANALYTICS = Analytics;
 

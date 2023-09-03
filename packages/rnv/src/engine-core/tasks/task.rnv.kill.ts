@@ -7,7 +7,7 @@ import { configureRuntimeDefaults } from '../../core/runtimeManager';
 
 import { PARAMS, TASK_KILL, TASK_APP_CONFIGURE } from '../../core/constants';
 import { RnvTaskFn } from '../../core/taskManager/types';
-import { RnvContext } from '../../core/configManager/types';
+import { RnvContext } from '../../core/context/types';
 
 export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvKill');

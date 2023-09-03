@@ -1,4 +1,4 @@
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 import { RnvTaskMap } from '../taskManager/types';
 
 export type RnvEngine = {

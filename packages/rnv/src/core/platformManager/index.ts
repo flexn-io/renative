@@ -5,7 +5,7 @@ import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync } from '../
 import { checkAndConfigureSdks } from '../sdkManager/installer';
 import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
 import { SUPPORTED_PLATFORMS } from '../constants';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 
 export const logErrorPlatform = (c: RnvContext) => {
     logError(

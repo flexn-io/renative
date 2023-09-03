@@ -10,7 +10,7 @@ import { writeRenativeConfigFile } from './index';
 import { overrideTemplatePlugins } from '../pluginManager';
 import { configureFonts } from '../projectManager';
 import { getConfigProp } from '../common';
-import { RnvContext } from './types';
+import { RnvContext } from '../context/types';
 
 const injectProjectDependency = async (
     c: RnvContext,

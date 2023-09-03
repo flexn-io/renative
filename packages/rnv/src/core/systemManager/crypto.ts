@@ -4,7 +4,7 @@ import { isSystemWin } from './utils';
 import { getRealPath, fsExistsSync, fsReadFileSync } from './fileutils';
 import { TASK_CRYPTO_DECRYPT } from '../constants';
 import { executeTask } from '../taskManager';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 
 export const getEnvExportCmd = (envVar: string, key: string) => {
     if (isSystemWin) {

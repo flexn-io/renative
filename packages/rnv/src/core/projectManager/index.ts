@@ -32,10 +32,11 @@ import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from
 
 import { configureTemplateFiles, configureEntryPoint } from '../templateManager';
 import { parseRenativeConfigs } from '../configManager';
-import { NpmPackageFile, RenativeConfigFile, RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
 import { RnvPluginPlatform } from '../pluginManager/types';
+import { NpmPackageFile, RenativeConfigFile } from '../configManager/types';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');

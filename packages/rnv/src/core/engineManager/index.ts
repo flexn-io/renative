@@ -9,7 +9,7 @@ import { getScopedVersion } from '../systemManager/utils';
 import { writeRenativeConfigFile } from '../configManager';
 import { configurePlugins } from '../pluginManager';
 import { inquirerPrompt } from '../../cli/prompt';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap } from '../taskManager/types';
 import { RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
 import { RenativeEngineConfig, RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';

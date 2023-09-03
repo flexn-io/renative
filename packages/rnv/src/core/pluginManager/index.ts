@@ -19,9 +19,10 @@ import {
 import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../systemManager/logger';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { doResolve, doResolvePath } from '../systemManager/resolve';
-import { RenativeConfigPlugin, RenativeWebpackConfig, RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 import { ResolveOptions } from '../systemManager/types';
 import { PluginCallback, PluginListResponse, RnvPlugin, RnvPluginPlatform, RnvPluginScope } from './types';
+import { RenativeConfigPlugin, RenativeWebpackConfig } from '../configManager/types';
 
 export const getPluginList = (c: RnvContext, isUpdate = false) => {
     const output: PluginListResponse = {

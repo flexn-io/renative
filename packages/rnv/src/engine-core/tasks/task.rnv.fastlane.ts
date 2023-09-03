@@ -2,7 +2,7 @@ import { executeAsync, commandExistsSync } from '../../core/systemManager/exec';
 import { getAppFolder, getCliArguments } from '../../core/common';
 import { IOS, TVOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, PARAMS } from '../../core/constants';
 import PlatformSetup from '../../core/setupManager';
-import { RnvContext } from '../../core/configManager/types';
+import { RnvContext } from '../../core/context/types';
 
 export const taskRnvFastlane = async (c: RnvContext) => {
     const args = getCliArguments(c);

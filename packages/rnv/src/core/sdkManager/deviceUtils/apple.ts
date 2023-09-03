@@ -4,7 +4,7 @@ import { chalk, logToSummary, logTask, logWarning, logDebug } from '../../system
 import { IOS, TVOS } from '../../constants';
 import { executeAsync } from '../../systemManager/exec';
 import { AppleDevice } from '../types';
-import { RnvContext } from '../../configManager/types';
+import { RnvContext } from '../../context/types';
 
 export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
     const { platform } = c;

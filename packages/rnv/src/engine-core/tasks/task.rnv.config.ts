@@ -2,7 +2,7 @@ import { printTable } from 'console-table-printer';
 
 import { logWarning, logTask } from '../../core/systemManager/logger';
 import { configSchema, PARAMS } from '../../core/constants';
-import Config from '../../core/configManager/config';
+import Config from '../../core/context/context';
 import { getCliArguments } from '../../core/common';
 import { RnvTaskFn } from '../../core/taskManager/types';
 

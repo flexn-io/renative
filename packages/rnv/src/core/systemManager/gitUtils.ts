@@ -1,5 +1,5 @@
 import path from 'path';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 import { executeAsync, commandExistsSync } from './exec';
 import { fsExistsSync } from './fileutils';
 import { logTask, logWarning, logInfo } from './logger';

@@ -35,7 +35,7 @@ import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync, fsLstatSync } 
 import { chalk, logTask, logWarning, logSuccess, logError, logInfo } from '../systemManager/logger';
 import PlatformSetup from '../setupManager';
 import { generateBuildConfig } from '../configManager';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 
 const SDK_LOCATIONS: Record<string, Array<string>> = {
     android: [

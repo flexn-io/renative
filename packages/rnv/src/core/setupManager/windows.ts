@@ -9,7 +9,7 @@ import { logInfo, logDebug } from '../systemManager/logger';
 import { replaceHomeFolder, fsExistsSync } from '../systemManager/fileutils';
 import BasePlatformSetup from './base';
 import setupConfig from './config';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 
 class LinuxPlatformSetup extends BasePlatformSetup {
     scoopInstalled: boolean;

@@ -1,7 +1,7 @@
 import path from 'path';
 import semver from 'semver';
 
-import Config from '../configManager/config';
+import Config from '../context/context';
 import { executeAsync } from '../systemManager/exec';
 import {
     copyFileSync,

@@ -6,7 +6,7 @@ import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from './logger';
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 import {
     DoResolveFn,
     FileUtilsPropConfig,

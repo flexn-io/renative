@@ -2,7 +2,7 @@ import { writeFileSync, fsExistsSync } from '../systemManager/fileutils';
 import { logWarning } from '../systemManager/logger';
 import { configSchema } from '../constants';
 import { RnvContext } from './types';
-import { generateConfigBase } from './configBase';
+import { generateConfigBase } from './contextBase';
 
 class Config {
     config: RnvContext;

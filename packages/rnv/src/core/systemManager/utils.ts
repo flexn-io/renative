@@ -1,4 +1,4 @@
-import { RnvContext } from '../configManager/types';
+import { RnvContext } from '../context/types';
 import { RenativeConfigVersion } from '../types';
 
 export const isSystemMac = process.platform === 'darwin';

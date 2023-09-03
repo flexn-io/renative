@@ -1,5 +1,5 @@
 import ora from '../../../cli/ora';
-import { RnvContext } from '../../configManager/types';
+import { RnvContext } from '../../context/types';
 import { execCLI } from '../../systemManager/exec';
 
 export const waitForEmulator = async (

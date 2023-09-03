@@ -28,7 +28,7 @@ import {
     CLI_ANDROID_SDKMANAGER,
     USER_HOME_DIR,
 } from '../../constants';
-import { RnvContext } from '../../configManager/types';
+import { RnvContext } from '../../context/types';
 import { AndroidDevice } from '../types';
 
 const CHECK_INTEVAL = 5000;
