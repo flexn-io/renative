@@ -87,6 +87,7 @@ export interface RnvContext<Payload = any> {
         isWSConfirmed: boolean;
         _skipNativeDepResolutions: boolean;
         targetUDID?: string;
+        forceBundleAssets?: boolean;
         xcodeProj?: {
             id?: string;
             runScheme?: string;

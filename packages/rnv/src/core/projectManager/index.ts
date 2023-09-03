@@ -432,7 +432,7 @@ const _resolvePackage = (c: RnvContext, v: string) => {
 export const copyAssetsFolder = async (
     c: RnvContext,
     platform: RnvPlatform,
-    subPath: string,
+    subPath?: string,
     customFn?: (c: RnvContext, platform: string) => void
 ) => {
     logTask('copyAssetsFolder');

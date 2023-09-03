@@ -212,7 +212,7 @@ const _composeDevicesString = (devices: Array<any>) =>
 //     }
 // };
 
-export const runTizenSimOrDevice = async (c: RnvContext, buildCoreWebpackProject: () => Promise<void>) => {
+export const runTizenSimOrDevice = async (c: RnvContext, buildCoreWebpackProject?: () => Promise<void>) => {
     const { hosted } = c.program;
     const { target, engine } = c.runtime;
     const { platform } = c;

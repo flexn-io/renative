@@ -1,4 +1,5 @@
-import { Config, EngineManager } from 'rnv';
+import { Config, EngineManager, RnvEngine } from 'rnv';
+//@ts-ignore
 import CNF from '../renative.engine.json';
 // import taskRnvPackage from './tasks/task.rnv.package';
 import taskRnvBuild from './tasks/task.rnv.build';
@@ -11,7 +12,7 @@ import taskRnvRun from './tasks/task.rnv.run';
 
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
-export default {
+const Engine: RnvEngine = {
     initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
@@ -26,7 +27,8 @@ export default {
     config: CNF,
     projectDirName: 'project',
     serverDirName: 'server',
-    ejectPlatform: null,
+    runtimeExtraProps: {},
+    // ejectPlatform: null,
     platforms: {
         tizen: {
             defaultPort: 8087,
@@ -40,3 +42,5 @@ export default {
         },
     },
 };
+
+export default Engine;

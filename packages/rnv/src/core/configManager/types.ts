@@ -59,6 +59,7 @@ export type RenativeConfigPlatform = {
     'gradle.properties'?: Record<string, string | boolean>;
     includedPermissions?: RenativeConfigPermissionsList;
     excludedPermissions?: RenativeConfigPermissionsList;
+    //iOS
     orientationSupport?: {
         phone: string;
         tab: string;
@@ -76,6 +77,8 @@ export type RenativeConfigPlatform = {
         frameworks: Array<string>;
         buildSettings: Record<string, any>;
     };
+    //Tizen
+    package?: string;
 };
 
 export type RenativeConfigPermissionsList = Array<string>;

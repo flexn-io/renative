@@ -8,6 +8,7 @@ import {
     Logger,
     PlatformManager,
     ProjectManager,
+    RnvContext,
     SDKManager,
 } from 'rnv';
 import semver from 'semver';
@@ -33,8 +34,8 @@ const { writeCleanFile } = FileUtils;
 const { runTizenSimOrDevice, DEFAULT_SECURITY_PROFILE_NAME } = SDKManager.Tizen;
 const { runWebosSimOrDevice } = SDKManager.Webos;
 
-export const runLightningProject = async (c, target) => {
-    logTask('runLightningProject', `target:${target}`);
+export const runLightningProject = async (c: RnvContext) => {
+    logTask('runLightningProject');
     const entryFile = getConfigProp(c, c.platform, 'entryFile');
     const { platform } = c;
     const { hosted } = c.program;
@@ -63,18 +64,18 @@ export const runLightningProject = async (c, target) => {
     return true;
 };
 
-export const buildLightningProject = async (c) => {
+export const buildLightningProject = async (c: RnvContext) => {
     logTask('buildLightningProject');
 
     const { platform } = c;
-    const platformConfig = c.buildConfig.platforms[platform];
+    const platformConfig = c.buildConfig.platforms?.[platform];
 
     const entryFile = getConfigProp(c, c.platform, 'entryFile');
     const target = getConfigProp(c, platform, 'target', 'es6');
     const tBuild = getPlatformProjectDir(c);
 
-    const tOut = path.join(tBuild, 'output');
-    const certProfile = platformConfig.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
+    const tOut = path.join(tBuild || '', 'output');
+    const certProfile = platformConfig?.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
     await executeAsync(c, `lng dist --${target}`, {
         stdio: 'inherit',
@@ -99,7 +100,7 @@ export const buildLightningProject = async (c) => {
     return true;
 };
 
-export const configureLightningProject = async (c) => {
+export const configureLightningProject = async (c: RnvContext) => {
     logTask('configureLightningProject');
     const { platform } = c;
     c.runtime.platformBuildsProjectPath = `${getPlatformBuildDir(c)}`;
@@ -111,18 +112,18 @@ export const configureLightningProject = async (c) => {
     return copyBuildsFolder(c, platform);
 };
 
-const _configureProject = (c) =>
-    new Promise((resolve) => {
+const _configureProject = (c: RnvContext) =>
+    new Promise<void>((resolve) => {
         logTask('_configureProject');
         const { platform } = c;
-        const p = c.buildConfig.platforms[platform];
+        const p = c.buildConfig.platforms?.[platform];
 
         const injects =
             platform === TIZEN
                 ? [
-                      { pattern: '{{PACKAGE}}', override: p.package },
-                      { pattern: '{{ID}}', override: p.id },
-                      { pattern: '{{APP_NAME}}', override: p.appName },
+                      { pattern: '{{PACKAGE}}', override: p?.package },
+                      { pattern: '{{ID}}', override: p?.id },
+                      { pattern: '{{APP_NAME}}', override: p?.appName },
                       { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) },
                   ]
                 : [
@@ -138,8 +139,8 @@ const _configureProject = (c) =>
         addSystemInjects(c, injects);
 
         const configFile = platform === TIZEN ? 'config.xml' : 'appinfo.json';
-        const file = path.join(getPlatformProjectDir(c), configFile);
-        writeCleanFile(file, file, injects, null, c);
+        const file = path.join(getPlatformProjectDir(c) || '', configFile);
+        writeCleanFile(file, file, injects, undefined, c);
 
         resolve();
     });
