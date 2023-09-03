@@ -17,9 +17,9 @@ import { doResolve } from './resolve';
 
 import { inquirerPrompt } from '../../cli/prompt';
 import { getConfigProp } from '../common';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 
-const packageJsonIsValid = (c: RnvConfig) => {
+const packageJsonIsValid = (c: RnvContext) => {
     if (!fsExistsSync(c.paths.project.package)) return false;
     const pkg = readObjectSync(c.paths.project.package);
     if (!pkg) return false;
@@ -47,7 +47,7 @@ export const checkNpxIsInstalled = async () => {
     }
 };
 
-export const checkAndCreateProjectPackage = async (c: RnvConfig) => {
+export const checkAndCreateProjectPackage = async (c: RnvContext) => {
     logTask('checkAndCreateProjectPackage');
 
     if (!packageJsonIsValid(c)) {
@@ -91,7 +91,7 @@ export const checkAndCreateProjectPackage = async (c: RnvConfig) => {
 
 export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
-export const listAndSelectNpmVersion = async (c: RnvConfig, npmPackage: string) => {
+export const listAndSelectNpmVersion = async (c: RnvContext, npmPackage: string) => {
     const templateVersionsStr = await executeAsync(c, `npm view ${npmPackage} versions`);
     const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',');
 
@@ -144,7 +144,7 @@ export const listAndSelectNpmVersion = async (c: RnvConfig, npmPackage: string) 
     return inputTemplateVersion;
 };
 
-export const checkIfProjectAndNodeModulesExists = async (c: RnvConfig) => {
+export const checkIfProjectAndNodeModulesExists = async (c: RnvContext) => {
     logTask('checkIfProjectAndNodeModulesExists');
 
     if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
@@ -154,7 +154,7 @@ export const checkIfProjectAndNodeModulesExists = async (c: RnvConfig) => {
     }
 };
 
-const _getInstallScript = (c: RnvConfig) => {
+const _getInstallScript = (c: RnvContext) => {
     const tasks = c.buildConfig?.tasks;
     if (!tasks) return null;
     if (Array.isArray(tasks)) {
@@ -170,7 +170,7 @@ const _getInstallScript = (c: RnvConfig) => {
 
 export const isYarnInstalled = () => commandExistsSync('yarn') || doResolve('yarn', false);
 
-export const installPackageDependencies = async (c: RnvConfig, failOnError = false) => {
+export const installPackageDependencies = async (c: RnvContext, failOnError = false) => {
     c.runtime.forceBuildHookRebuild = true;
     const customScript = _getInstallScript(c);
 
@@ -274,7 +274,7 @@ export const installPackageDependencies = async (c: RnvConfig, failOnError = fal
     }
 };
 
-export const jetifyIfRequired = async (c: RnvConfig) => {
+export const jetifyIfRequired = async (c: RnvContext) => {
     logTask('jetifyIfRequired');
     if (c.files.project.configLocal?._meta?.requiresJetify) {
         if (doResolve('jetifier')) {

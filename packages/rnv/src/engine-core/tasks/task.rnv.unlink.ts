@@ -3,9 +3,9 @@ import { logInfo, logTask, logSuccess } from '../../core/systemManager/logger';
 import { PARAMS, RNV_PACKAGES } from '../../core/constants';
 import { fsExistsSync, fsRenameSync, fsUnlinkSync, fsLstatSync } from '../../core/systemManager/fileutils';
 import { RnvTaskFn } from '../../core/taskManager/types';
-import { RnvConfig } from '../../core/configManager/types';
+import { RnvContext } from '../../core/configManager/types';
 
-const _unlinkPackage = (c: RnvConfig, key: string) => {
+const _unlinkPackage = (c: RnvContext, key: string) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);
     const rnvPathUnlinked = path.join(c.paths.project.nodeModulesDir, `${key}_unlinked`);
 

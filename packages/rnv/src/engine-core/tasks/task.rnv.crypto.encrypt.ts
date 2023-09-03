@@ -16,7 +16,7 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../../core/systemManager/crypto';
 import { executeTask } from '../../core/taskManager';
 import { TASK_CRYPTO_ENCRYPT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
-import { RnvConfig } from '../../core/configManager/types';
+import { RnvContext } from '../../core/configManager/types';
 import { RnvTaskFn } from '../../core/taskManager/types';
 
 const iocane = require('iocane');
@@ -29,7 +29,7 @@ const generateRandomKey = (length: number) =>
         .map((x) => x[Math.floor(Math.random() * x.length)])
         .join('');
 
-const _checkAndConfigureCrypto = async (c: RnvConfig) => {
+const _checkAndConfigureCrypto = async (c: RnvContext) => {
     // handle missing config
     const source = `./${c.files.project.package.name}`;
 

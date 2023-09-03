@@ -1,4 +1,4 @@
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 import { RenativeConfigVersion } from '../types';
 
 export const isSystemMac = process.platform === 'darwin';
@@ -41,7 +41,7 @@ export const isUrlLocalhost = (value: string) => {
 };
 
 export const getScopedVersion = (
-    c: RnvConfig,
+    c: RnvContext,
     key: string,
     val: RenativeConfigVersion,
     sourceObjKey: 'engineTemplates' | 'plugins'

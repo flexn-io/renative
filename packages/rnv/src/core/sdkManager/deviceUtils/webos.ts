@@ -16,10 +16,10 @@ import {
     CLI_WEBOS_ARES_SETUP_DEVICE,
 } from '../../constants';
 import { isSystemWin, isUrlLocalhost } from '../../systemManager/utils';
-import { RnvConfig } from '../../configManager/types';
+import { RnvContext } from '../../configManager/types';
 import { WebosDevice } from '../types';
 
-export const launchWebOSimulator = (c: RnvConfig) => {
+export const launchWebOSimulator = (c: RnvContext) => {
     logTask('launchWebOSimulator');
 
     const webosSdkPath = getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK);
@@ -51,7 +51,7 @@ export const launchWebOSimulator = (c: RnvConfig) => {
 //     }
 // };
 
-const parseDevices = (c: RnvConfig, devicesResponse: string): Promise<Array<WebosDevice>> => {
+const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<WebosDevice>> => {
     const linesArray = devicesResponse
         .split('\n')
         .slice(2)
@@ -85,7 +85,7 @@ const parseDevices = (c: RnvConfig, devicesResponse: string): Promise<Array<Webo
     );
 };
 
-const installAndLaunchApp = async (c: RnvConfig, target: string, appPath: string, tId: string) => {
+const installAndLaunchApp = async (c: RnvContext, target: string, appPath: string, tId: string) => {
     try {
         await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
     } catch (e) {
@@ -112,7 +112,7 @@ const buildDeviceChoices = (devices: Array<WebosDevice>) =>
         value: device.name,
     }));
 
-export const listWebOSTargets = async (c: RnvConfig) => {
+export const listWebOSTargets = async (c: RnvContext) => {
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
 
@@ -123,7 +123,7 @@ export const listWebOSTargets = async (c: RnvConfig) => {
     return true;
 };
 
-const waitForEmulatorToBeReady = async (c: RnvConfig) => {
+const waitForEmulatorToBeReady = async (c: RnvContext) => {
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
     const emulator = devices.filter((d) => !d.isDevice)[0];
@@ -134,7 +134,7 @@ const waitForEmulatorToBeReady = async (c: RnvConfig) => {
     );
 };
 
-export const runWebosSimOrDevice = async (c: RnvConfig) => {
+export const runWebosSimOrDevice = async (c: RnvContext) => {
     const { device } = c.program;
 
     const platDir = getPlatformBuildDir(c);

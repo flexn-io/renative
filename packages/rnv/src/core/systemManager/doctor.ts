@@ -1,7 +1,7 @@
 import { writeFileSync, readObjectSync } from './fileutils';
 import { PACKAGE_JSON_FILEDS } from '../constants';
 import { chalk, logWarning } from './logger';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 
 const getSortedObject = (obj: any) => {
     if (obj !== null && typeof obj === 'object' && !Array.isArray(obj)) {
@@ -36,7 +36,7 @@ const checkForDuplicates = (arr: Array<any>) => {
     });
 };
 
-const fixPackageJson = (c: RnvConfig, pkgPath: string) =>
+const fixPackageJson = (c: RnvContext, pkgPath: string) =>
     new Promise<void>((resolve) => {
         const pth = pkgPath || c.paths.project.package;
         const pp = readObjectSync(pth);

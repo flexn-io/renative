@@ -5,9 +5,9 @@ import { logDebug, logError, logHook, logInfo } from '../systemManager/logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../systemManager/fileutils';
 import { getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 
-export const executePipe = async (c: RnvConfig, key: string) => {
+export const executePipe = async (c: RnvContext, key: string) => {
     logHook('executePipe', c?.program?.json ? key : `('${key}')`);
 
     await buildHooks(c);
@@ -24,7 +24,7 @@ export const executePipe = async (c: RnvConfig, key: string) => {
     }
 };
 
-export const buildHooks = async (c: RnvConfig) => {
+export const buildHooks = async (c: RnvContext) => {
     logDebug('buildHooks');
 
     const enableHookRebuild = getConfigProp(c, c.platform, 'enableHookRebuild');

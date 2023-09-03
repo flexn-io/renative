@@ -5,9 +5,9 @@ import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync } from '../
 import { checkAndConfigureSdks } from '../sdkManager/installer';
 import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
 import { SUPPORTED_PLATFORMS } from '../constants';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 
-export const logErrorPlatform = (c: RnvConfig) => {
+export const logErrorPlatform = (c: RnvContext) => {
     logError(
         `Platform: ${chalk().white(c.platform)} doesn't support command: ${chalk().white(c.command)}`,
         true // kill it if we're not supporting this
@@ -15,7 +15,7 @@ export const logErrorPlatform = (c: RnvConfig) => {
     return false;
 };
 
-export const updateProjectPlatforms = (c: RnvConfig, platforms: Array<string>) => {
+export const updateProjectPlatforms = (c: RnvContext, platforms: Array<string>) => {
     const {
         project: { config },
     } = c.paths;
@@ -25,7 +25,7 @@ export const updateProjectPlatforms = (c: RnvConfig, platforms: Array<string>) =
     writeFileSync(config, currentConfig);
 };
 
-export const generatePlatformChoices = (c: RnvConfig) => {
+export const generatePlatformChoices = (c: RnvContext) => {
     const options = c.runtime.supportedPlatforms.map((v) => ({
         name: `${v.platform} - ${
             v.isConnected ? chalk().green('(connected)') : chalk().yellow('(ejected)')
@@ -36,7 +36,7 @@ export const generatePlatformChoices = (c: RnvConfig) => {
     return options;
 };
 
-export const cleanPlatformBuild = (c: RnvConfig, platform: string) =>
+export const cleanPlatformBuild = (c: RnvContext, platform: string) =>
     new Promise<void>((resolve) => {
         logTask('cleanPlatformBuild');
 
@@ -59,7 +59,7 @@ export const cleanPlatformBuild = (c: RnvConfig, platform: string) =>
         });
     });
 
-export const createPlatformBuild = (c: RnvConfig, platform: string) =>
+export const createPlatformBuild = (c: RnvContext, platform: string) =>
     new Promise<void>((resolve, reject) => {
         logTask('createPlatformBuild');
 
@@ -82,7 +82,7 @@ export const createPlatformBuild = (c: RnvConfig, platform: string) =>
         resolve();
     });
 
-export const isPlatformSupported = async (c: RnvConfig, isGlobalScope = false) => {
+export const isPlatformSupported = async (c: RnvContext, isGlobalScope = false) => {
     logTask('isPlatformSupported');
 
     if (c.platform && c.program.platform !== true && isGlobalScope) {
@@ -136,7 +136,7 @@ export const isPlatformSupported = async (c: RnvConfig, isGlobalScope = false) =
 };
 
 export const isPlatformSupportedSync = (
-    c: RnvConfig,
+    c: RnvContext,
     platform: string,
     resolve?: () => void,
     reject?: (e: string) => void
@@ -169,7 +169,7 @@ export const isPlatformSupportedSync = (
     return true;
 };
 
-export const isPlatformActive = (c: RnvConfig, platform: string, resolve?: () => void) => {
+export const isPlatformActive = (c: RnvContext, platform: string, resolve?: () => void) => {
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(
             `Your appConfigFile is not configured properly! check ${chalk().white(c.paths.appConfig.config)} location.`
@@ -184,7 +184,7 @@ export const isPlatformActive = (c: RnvConfig, platform: string, resolve?: () =>
     }
     return true;
 };
-export const copySharedPlatforms = (c: RnvConfig) =>
+export const copySharedPlatforms = (c: RnvContext) =>
     new Promise<void>((resolve) => {
         logTask('copySharedPlatforms');
 
@@ -198,7 +198,7 @@ export const copySharedPlatforms = (c: RnvConfig) =>
         resolve();
     });
 
-export const ejectPlatform = (c: RnvConfig, platform: string) => {
+export const ejectPlatform = (c: RnvContext, platform: string) => {
     const engine = c.runtime.enginesByPlatform[platform];
     const destDir = path.join(c.paths.project.dir, 'platformTemplates', platform);
     const sourcePlatformDir = engine.originalTemplatePlatformsDir;

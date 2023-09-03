@@ -1,11 +1,11 @@
 import path from 'path';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 import { fsExistsSync } from '../systemManager/fileutils';
 // import { getScopedVersion } from '../systemManager/utils';
 import { logTask, logWarning } from '../systemManager/logger';
 import { registerCustomTask } from '../taskManager';
 
-export const loadIntegrations = async (c: RnvConfig) => {
+export const loadIntegrations = async (c: RnvContext) => {
     logTask('loadIntegrations');
     const integrations = c.buildConfig?.integrations;
 

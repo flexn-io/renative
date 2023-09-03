@@ -1,7 +1,7 @@
 import { fsExistsSync, fsReadFileSync, fsReaddirSync, fsWriteFileSync } from '../systemManager/fileutils';
 
 import path from 'path';
-import { RnvConfig, RnvConfigFileObj, RnvConfigPathObj } from './types';
+import { RnvContext, RnvConfigFileObj, RnvConfigPathObj } from './types';
 
 export const generateRnvConfigPathObj = (): RnvConfigPathObj => {
     return {
@@ -34,7 +34,7 @@ const runtime: any = {
     enginesById: {},
 };
 
-export const generateConfigBase = (): RnvConfig => ({
+export const generateConfigBase = (): RnvContext => ({
     assetConfig: {},
     rnvVersion: '',
     buildHooks: {},

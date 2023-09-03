@@ -6,15 +6,15 @@ import { getConfigProp } from '../common';
 import { logTask } from '../systemManager/logger';
 import { loadPluginTemplates } from '../pluginManager';
 import { parseRenativeConfigs } from '../configManager/index';
-import { RnvConfig, RnvConfigPlatform } from '../configManager/types';
+import { RnvContext, RnvConfigPlatform } from '../configManager/types';
 
-export const updateRenativeConfigs = async (c: RnvConfig) => {
+export const updateRenativeConfigs = async (c: RnvContext) => {
     await loadPluginTemplates(c);
     await parseRenativeConfigs(c);
     return true;
 };
 
-export const configureRuntimeDefaults = async (c: RnvConfig) => {
+export const configureRuntimeDefaults = async (c: RnvContext) => {
     c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId || null;
     // c.runtime.appConfigDir = c.files.project?.configLocal?._meta?.currentAppConfigDir || null;
 

@@ -1,9 +1,9 @@
 import ora from '../../../cli/ora';
-import { RnvConfig } from '../../configManager/types';
+import { RnvContext } from '../../configManager/types';
 import { execCLI } from '../../systemManager/exec';
 
 export const waitForEmulator = async (
-    c: RnvConfig,
+    c: RnvContext,
     cli: string,
     command: string,
     callback: (resp: string | true) => boolean

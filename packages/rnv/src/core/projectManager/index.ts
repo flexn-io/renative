@@ -32,12 +32,12 @@ import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from
 
 import { configureTemplateFiles, configureEntryPoint } from '../templateManager';
 import { parseRenativeConfigs } from '../configManager';
-import { NpmPackageFile, RenativeConfigFile, RnvConfig } from '../configManager/types';
+import { NpmPackageFile, RenativeConfigFile, RnvContext } from '../configManager/types';
 import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
 import { RnvPluginPlatform } from '../pluginManager/types';
 
-export const checkAndBootstrapIfRequired = async (c: RnvConfig) => {
+export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');
     const template: string = c.program?.template;
     if (!c.paths.project.configExists && template) {
@@ -181,7 +181,7 @@ export const checkAndBootstrapIfRequired = async (c: RnvConfig) => {
     return true;
 };
 
-export const checkAndCreateGitignore = async (c: RnvConfig) => {
+export const checkAndCreateGitignore = async (c: RnvContext) => {
     logTask('checkAndCreateGitignore');
     const ignrPath = path.join(c.paths.project.dir, '.gitignore');
     if (!fsExistsSync(ignrPath)) {
@@ -192,7 +192,7 @@ export const checkAndCreateGitignore = async (c: RnvConfig) => {
     return true;
 };
 
-export const checkAndCreateBabelConfig = async (c: RnvConfig) => {
+export const checkAndCreateBabelConfig = async (c: RnvContext) => {
     logTask('checkAndCreateBabelConfig');
 
     if (!c.paths.project.configExists) return false;
@@ -207,7 +207,7 @@ export const checkAndCreateBabelConfig = async (c: RnvConfig) => {
     return true;
 };
 
-export const configureFonts = async (c: RnvConfig) => {
+export const configureFonts = async (c: RnvContext) => {
     // FONTS
     let fontsObj = 'export default [';
 
@@ -278,7 +278,7 @@ export const configureFonts = async (c: RnvConfig) => {
     return true;
 };
 
-export const copyRuntimeAssets = async (c: RnvConfig) => {
+export const copyRuntimeAssets = async (c: RnvContext) => {
     logTask('copyRuntimeAssets');
 
     const destPath = path.join(c.paths.project.assets.dir, 'runtime');
@@ -310,7 +310,7 @@ export const copyRuntimeAssets = async (c: RnvConfig) => {
     return true;
 };
 
-export const parseFonts = (c: RnvConfig, callback: ParseFontsCallback) => {
+export const parseFonts = (c: RnvContext, callback: ParseFontsCallback) => {
     logTask('parseFonts');
 
     if (c.buildConfig) {
@@ -351,7 +351,7 @@ export const parseFonts = (c: RnvConfig, callback: ParseFontsCallback) => {
     }
 };
 
-const _parseFontSources = (c: RnvConfig, fontSourcesArr: Array<string>, callback: ParseFontsCallback) => {
+const _parseFontSources = (c: RnvContext, fontSourcesArr: Array<string>, callback: ParseFontsCallback) => {
     const fontSources = fontSourcesArr.map((v) => _resolvePackage(c, v));
     fontSources.forEach((fontSourceDir) => {
         if (fsExistsSync(fontSourceDir)) {
@@ -362,7 +362,7 @@ const _parseFontSources = (c: RnvConfig, fontSourcesArr: Array<string>, callback
     });
 };
 
-const _resolvePackage = (c: RnvConfig, v: string) => {
+const _resolvePackage = (c: RnvContext, v: string) => {
     if (v?.startsWith?.('./')) {
         return path.join(c.paths.project.dir, v);
     }
@@ -429,10 +429,10 @@ const _resolvePackage = (c: RnvConfig, v: string) => {
 // };
 
 export const copyAssetsFolder = async (
-    c: RnvConfig,
+    c: RnvContext,
     platform: RnvPlatform,
     subPath: string,
-    customFn?: (c: RnvConfig, platform: string) => void
+    customFn?: (c: RnvContext, platform: string) => void
 ) => {
     logTask('copyAssetsFolder');
 
@@ -539,7 +539,7 @@ export const copyAssetsFolder = async (
 // }
 // };
 
-export const copyBuildsFolder = (c: RnvConfig, platform: string) =>
+export const copyBuildsFolder = (c: RnvContext, platform: string) =>
     new Promise<void>((resolve) => {
         logTask('copyBuildsFolder');
         if (!isPlatformActive(c, platform, resolve)) return;
@@ -641,7 +641,7 @@ const SYNCED_DEPS = [
 
 const SYNCED_TEMPLATES = ['@rnv/template-starter'];
 
-export const versionCheck = async (c: RnvConfig) => {
+export const versionCheck = async (c: RnvContext) => {
     logTask('versionCheck');
 
     if (c.runtime.versionCheckCompleted || c.files.project?.config?.skipAutoUpdate || c.program.skipDependencyCheck) {
@@ -685,7 +685,7 @@ It is recommended that you run your rnv command with npx prefix: ${recCmd} . or 
     return true;
 };
 
-export const upgradeProjectDependencies = (c: RnvConfig, version: string) => {
+export const upgradeProjectDependencies = (c: RnvContext, version: string) => {
     logTask('upgradeProjectDependencies');
 
     // const templates = c.files.project.config?.templates;
@@ -743,7 +743,7 @@ const _fixDeps = (deps: Record<string, string>, version: string) => {
     });
 };
 
-export const cleanPlaformAssets = async (c: RnvConfig) => {
+export const cleanPlaformAssets = async (c: RnvContext) => {
     logTask('cleanPlaformAssets');
 
     await cleanFolder(c.paths.project.assets.dir);

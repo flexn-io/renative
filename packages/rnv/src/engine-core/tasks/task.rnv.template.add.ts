@@ -6,15 +6,15 @@ import { executeTask } from '../../core/taskManager';
 import { TASK_PROJECT_CONFIGURE, TASK_TEMPLATE_ADD, PARAMS } from '../../core/constants';
 
 import { getTemplateOptions } from '../../core/templateManager';
-import { RnvConfig } from '../../core/configManager/types';
+import { RnvContext } from '../../core/configManager/types';
 import { RnvTaskFn } from '../../core/taskManager/types';
 
-const _writeObjectSync = (c: RnvConfig, p: string, s: string) => {
+const _writeObjectSync = (c: RnvContext, p: string, s: string) => {
     writeFileSync(p, s);
     generateBuildConfig(c);
 };
 
-export const _addTemplate = (c: RnvConfig, template: string) => {
+export const _addTemplate = (c: RnvContext, template: string) => {
     logTask('addTemplate');
 
     c.files.project.config.templates = c.files.project.config.templates || {};

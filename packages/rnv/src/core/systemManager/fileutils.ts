@@ -6,7 +6,7 @@ import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from './logger';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 import {
     DoResolveFn,
     FileUtilsPropConfig,
@@ -119,7 +119,7 @@ export const writeCleanFile = (
     destination: string,
     overrides?: OverridesOptions,
     timestampPathsConfig?: TimestampPathsConfig,
-    c?: RnvConfig
+    c?: RnvContext
 ) => {
     // logTask(`writeCleanFile`)
     // console.log('writeCleanFile', destination);
@@ -189,7 +189,7 @@ export const copyFileWithInjectSync = (
     skipOverride: boolean,
     injectObject?: OverridesOptions,
     timestampPathsConfig?: TimestampPathsConfig,
-    c?: RnvConfig
+    c?: RnvContext
 ) => {
     logDebug('copyFileWithInjectSync', source);
 
@@ -218,7 +218,7 @@ export const copyFileWithInjectSync = (
     }
 };
 
-export const invalidatePodsChecksum = (c: RnvConfig) => {
+export const invalidatePodsChecksum = (c: RnvContext) => {
     const appFolder = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
     if (fs.existsSync(podChecksumPath)) {
@@ -233,7 +233,7 @@ export const copyFolderRecursiveSync = (
     skipOverride: boolean,
     injectObject?: OverridesOptions,
     timestampPathsConfig?: TimestampPathsConfig,
-    c?: RnvConfig,
+    c?: RnvContext,
     extFilter?: Array<string>
 ) => {
     logDebug('copyFolderRecursiveSync', source, target);
@@ -286,7 +286,7 @@ export const copyFolderContentsRecursiveSync = (
     skipOverride?: boolean,
     injectObject?: OverridesOptions,
     timestampPathsConfig?: TimestampPathsConfig,
-    c?: RnvConfig,
+    c?: RnvContext,
     extFilter?: Array<string>
 ) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
@@ -488,7 +488,7 @@ export const writeObjectSync = (filePath: string, obj: string | object, spaces: 
     return writeFileSync(filePath, obj, spaces, addNewLine);
 };
 
-export const readObjectSync = (filePath?: string, sanitize?: boolean, c?: RnvConfig) => {
+export const readObjectSync = (filePath?: string, sanitize?: boolean, c?: RnvContext) => {
     logDebug(`readObjectSync:${sanitize}:${filePath}`);
     if (!filePath) {
         logDebug('readObjectSync: filePath is undefined');
@@ -534,7 +534,7 @@ export const updateObjectSync = (filePath: string, updateObj: object) => {
     return output;
 };
 
-export const getRealPath = (c: RnvConfig, p: string | undefined, key = 'undefined', original?: string) => {
+export const getRealPath = (c: RnvContext, p: string | undefined, key = 'undefined', original?: string) => {
     if (!p) {
         if (original) {
             logDebug(`Path ${chalk().white(key)} is not defined. using default: ${chalk().white(original)}`);
@@ -556,7 +556,7 @@ export const getRealPath = (c: RnvConfig, p: string | undefined, key = 'undefine
     return output;
 };
 
-const _refToValue = (c: RnvConfig, ref: string, key: string) => {
+const _refToValue = (c: RnvContext, ref: string, key: string) => {
     const val = ref.replace('$REF$:', '').split('$...');
 
     const realPath = getRealPath(c, val[0], key);
@@ -586,7 +586,7 @@ export const arrayMerge = (destinationArray: Array<string>, sourceArray: Array<s
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
-export const sanitizeDynamicRefs = (c: RnvConfig, obj: any) => {
+export const sanitizeDynamicRefs = (c: RnvContext, obj: any) => {
     if (!obj) return obj;
     if (Array.isArray(obj)) {
         obj.forEach((v) => {
@@ -695,7 +695,7 @@ const _bindStringVals = (obj: any, _val: string, newKey: string | number, propCo
     }
 };
 
-export const mergeObjects = (c: RnvConfig, obj1: any, obj2: any, dynamicRefs = true, replaceArrays = false) => {
+export const mergeObjects = (c: RnvContext, obj1: any, obj2: any, dynamicRefs = true, replaceArrays = false) => {
     if (!obj2) return obj1;
     if (!obj1) return obj2;
     const obj = merge(obj1, obj2, {

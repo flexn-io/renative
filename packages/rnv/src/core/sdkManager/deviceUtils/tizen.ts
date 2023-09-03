@@ -2,7 +2,7 @@ import inquirer from 'inquirer';
 import net from 'net';
 import path from 'path';
 import { getConfigProp, getPlatformProjectDir } from '../../common';
-import { RnvConfig } from '../../configManager/types';
+import { RnvContext } from '../../configManager/types';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, RENATIVE_CONFIG_NAME } from '../../constants';
 import { execCLI } from '../../systemManager/exec';
 import { fsRenameSync } from '../../systemManager/fileutils';
@@ -33,7 +33,7 @@ const formatXMLObject = (obj: Record<string, any>) => {
 
 export const DEFAULT_SECURITY_PROFILE_NAME = 'RNVanillaCert';
 
-export const launchTizenSimulator = (c: RnvConfig, name: string) => {
+export const launchTizenSimulator = (c: RnvContext, name: string) => {
     logTask(`launchTizenSimulator:${name}`);
 
     if (name) {
@@ -44,7 +44,7 @@ export const launchTizenSimulator = (c: RnvConfig, name: string) => {
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listTizenTargets = async (c: RnvConfig) => {
+export const listTizenTargets = async (c: RnvContext) => {
     const targets = await execCLI(c, CLI_TIZEN_EMULATOR, 'list-vm', {
         detached: true,
     });
@@ -56,7 +56,7 @@ export const listTizenTargets = async (c: RnvConfig) => {
     logToSummary(`Tizen Targets:\n${targetStr}`);
 };
 
-export const createDevelopTizenCertificate = (c: RnvConfig) =>
+export const createDevelopTizenCertificate = (c: RnvContext) =>
     new Promise<void>((resolve) => {
         logTask('createDevelopTizenCertificate');
 
@@ -84,7 +84,7 @@ export const createDevelopTizenCertificate = (c: RnvConfig) =>
             });
     });
 
-export const addDevelopTizenCertificate = (c: RnvConfig, secureProfileConfig: TizenSecurityConfig) =>
+export const addDevelopTizenCertificate = (c: RnvContext, secureProfileConfig: TizenSecurityConfig) =>
     new Promise<void>((resolve) => {
         logTask('addDevelopTizenCertificate');
 
@@ -99,7 +99,7 @@ export const addDevelopTizenCertificate = (c: RnvConfig, secureProfileConfig: Ti
             });
     });
 
-const _getDeviceID = async (c: RnvConfig, target: string) => {
+const _getDeviceID = async (c: RnvContext, target: string) => {
     const { device } = c.program;
 
     if (device) {
@@ -137,7 +137,7 @@ const _getDeviceID = async (c: RnvConfig, target: string) => {
     return Promise.reject(`No device matching ${target} could be found.`);
 };
 
-const _getRunningDevices = async (c: RnvConfig) => {
+const _getRunningDevices = async (c: RnvContext) => {
     const { platform } = c.program;
     const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     const lines = devicesList
@@ -189,7 +189,7 @@ const _getRunningDevices = async (c: RnvConfig) => {
     return devices;
 };
 
-const _waitForEmulatorToBeReady = (c: RnvConfig, target: string): Promise<boolean> =>
+const _waitForEmulatorToBeReady = (c: RnvContext, target: string): Promise<boolean> =>
     waitForEmulator(c, CLI_SDB_TIZEN, 'devices', (res) => {
         if (typeof res === 'string') {
             const lines = res.trim().split(/\r?\n/);
@@ -212,7 +212,7 @@ const _composeDevicesString = (devices: Array<any>) =>
 //     }
 // };
 
-export const runTizenSimOrDevice = async (c: RnvConfig, buildCoreWebpackProject: () => Promise<void>) => {
+export const runTizenSimOrDevice = async (c: RnvContext, buildCoreWebpackProject: () => Promise<void>) => {
     const { hosted } = c.program;
     const { target, engine } = c.runtime;
     const { platform } = c;

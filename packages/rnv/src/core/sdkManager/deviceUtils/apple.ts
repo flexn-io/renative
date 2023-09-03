@@ -4,9 +4,9 @@ import { chalk, logToSummary, logTask, logWarning, logDebug } from '../../system
 import { IOS, TVOS } from '../../constants';
 import { executeAsync } from '../../systemManager/exec';
 import { AppleDevice } from '../types';
-import { RnvConfig } from '../../configManager/types';
+import { RnvContext } from '../../configManager/types';
 
-export const getAppleDevices = async (c: RnvConfig, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
+export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
     const { platform } = c;
 
     logTask('getAppleDevices', `ignoreDevices:${ignoreDevices} ignoreSimulators${ignoreSimulators}`);
@@ -178,7 +178,7 @@ const _parseIOSDevicesList = (
     return devices;
 };
 
-export const launchAppleSimulator = async (c: RnvConfig, target: string) => {
+export const launchAppleSimulator = async (c: RnvContext, target: string) => {
     logTask('launchAppleSimulator', `${target}`);
 
     const devicesArr = await getAppleDevices(c, true);
@@ -227,7 +227,7 @@ const _launchSimulator = async (selectedDevice: AppleDevice) => {
     return true;
 };
 
-export const listAppleDevices = async (c: RnvConfig) => {
+export const listAppleDevices = async (c: RnvContext) => {
     logTask('listAppleDevices');
     const { platform } = c;
     const devicesArr = await getAppleDevices(c);

@@ -10,10 +10,10 @@ import { writeRenativeConfigFile } from './index';
 import { overrideTemplatePlugins } from '../pluginManager';
 import { configureFonts } from '../projectManager';
 import { getConfigProp } from '../common';
-import { RnvConfig } from './types';
+import { RnvContext } from './types';
 
 const injectProjectDependency = async (
-    c: RnvConfig,
+    c: RnvContext,
     dependency: string,
     version: string,
     type: string,
@@ -35,7 +35,7 @@ const injectProjectDependency = async (
 };
 
 export const checkRequiredPackage = async (
-    c: RnvConfig,
+    c: RnvContext,
     pkg: string,
     version = '',
     type: string,
@@ -107,7 +107,7 @@ export const checkRequiredPackage = async (
     return false;
 };
 
-export const injectPlatformDependencies = async (c: RnvConfig) => {
+export const injectPlatformDependencies = async (c: RnvContext) => {
     logTask('injectPlatformDependencies');
     const { platform } = c;
     const engine = getEngineRunnerByPlatform(c, platform);

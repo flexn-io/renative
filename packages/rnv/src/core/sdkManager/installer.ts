@@ -35,7 +35,7 @@ import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync, fsLstatSync } 
 import { chalk, logTask, logWarning, logSuccess, logError, logInfo } from '../systemManager/logger';
 import PlatformSetup from '../setupManager';
 import { generateBuildConfig } from '../configManager';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 
 const SDK_LOCATIONS: Record<string, Array<string>> = {
     android: [
@@ -65,11 +65,11 @@ const SDK_LOCATIONS: Record<string, Array<string>> = {
     webos: [path.join('/opt/webOS_TV_SDK'), path.join('C:\\webOS_TV_SDK')],
 };
 
-const _logSdkWarning = (c: RnvConfig) => {
+const _logSdkWarning = (c: RnvContext) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
 };
 
-export const checkAndConfigureAndroidSdks = async (c: RnvConfig) => {
+export const checkAndConfigureAndroidSdks = async (c: RnvContext) => {
     const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
     logTask('checkAndConfigureAndroidSdks', `(${sdk})`);
 
@@ -99,7 +99,7 @@ export const checkAndConfigureAndroidSdks = async (c: RnvConfig) => {
     c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
 };
 
-export const checkAndConfigureTizenSdks = async (c: RnvConfig) => {
+export const checkAndConfigureTizenSdks = async (c: RnvContext) => {
     logTask(`checkAndConfigureTizenSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.TIZEN_SDK;
     if (sdk) {
@@ -114,7 +114,7 @@ export const checkAndConfigureTizenSdks = async (c: RnvConfig) => {
     }
 };
 
-export const checkAndConfigureWebosSdks = async (c: RnvConfig) => {
+export const checkAndConfigureWebosSdks = async (c: RnvContext) => {
     logTask(`checkAndConfigureWebosSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.WEBOS_SDK;
     if (sdk) {
@@ -148,7 +148,7 @@ export const checkAndConfigureWebosSdks = async (c: RnvConfig) => {
     }
 };
 
-export const checkAndConfigureSdks = async (c: RnvConfig) => {
+export const checkAndConfigureSdks = async (c: RnvContext) => {
     logTask('checkAndConfigureSdks');
 
     switch (c.platform) {
@@ -168,9 +168,9 @@ export const checkAndConfigureSdks = async (c: RnvConfig) => {
     }
 };
 
-const _getCurrentSdkPath = (c: RnvConfig) => c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]];
+const _getCurrentSdkPath = (c: RnvContext) => c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]];
 
-const _isSdkInstalled = (c: RnvConfig) => {
+const _isSdkInstalled = (c: RnvContext) => {
     logTask('_isSdkInstalled');
 
     if (!SDK_PLATFORMS[c.platform]) return true;
@@ -198,7 +198,7 @@ const _findFolderWithFile = (dir: string, fileToFind: string) => {
     return foundDir;
 };
 
-const _attemptAutoFix = async (c: RnvConfig, sdkPlatform: string, sdkKey: string, traverseUntilFoundFile?: string) => {
+const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: string, traverseUntilFoundFile?: string) => {
     logTask('_attemptAutoFix');
 
     if (c.program.hosted) {
@@ -265,7 +265,7 @@ const _attemptAutoFix = async (c: RnvConfig, sdkPlatform: string, sdkKey: string
     return true;
 };
 
-export const checkSdk = async (c: RnvConfig) => {
+export const checkSdk = async (c: RnvContext) => {
     logTask('checkSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(

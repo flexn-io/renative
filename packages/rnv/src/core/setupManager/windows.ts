@@ -9,12 +9,12 @@ import { logInfo, logDebug } from '../systemManager/logger';
 import { replaceHomeFolder, fsExistsSync } from '../systemManager/fileutils';
 import BasePlatformSetup from './base';
 import setupConfig from './config';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 
 class LinuxPlatformSetup extends BasePlatformSetup {
     scoopInstalled: boolean;
 
-    constructor(c: RnvConfig) {
+    constructor(c: RnvContext) {
         super('win32', c);
         this.scoopInstalled = false;
     }

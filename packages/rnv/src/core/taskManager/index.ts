@@ -12,7 +12,7 @@ import {
     registerAllPlatformEngines,
 } from '../engineManager';
 import { TASK_CONFIGURE_SOFT } from '../constants';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engineManager/types';
 
@@ -20,13 +20,13 @@ let executedTasks: Record<string, number> = {};
 
 const CUSTOM_TASKS: RnvTaskMap = {};
 
-export const registerCustomTask = async (_c: RnvConfig, task: RnvTask) => {
+export const registerCustomTask = async (_c: RnvContext, task: RnvTask) => {
     if (task.task) {
         CUSTOM_TASKS[task.task] = task;
     }
 };
 
-export const initializeTask = async (c: RnvConfig, task: string) => {
+export const initializeTask = async (c: RnvContext, task: string) => {
     logTask('initializeTask', task);
     c.runtime.task = task;
     executedTasks = {};
@@ -61,7 +61,7 @@ const _getTaskObj = (taskInstance: RnvTask) => {
     };
 };
 
-export const findSuitableTask = async (c: RnvConfig, specificTask?: string): Promise<RnvTask | undefined> => {
+export const findSuitableTask = async (c: RnvContext, specificTask?: string): Promise<RnvTask | undefined> => {
     logTask('findSuitableTask');
     const REGISTERED_ENGINES = getRegisteredEngines(c);
     let task = '';
@@ -249,7 +249,7 @@ export const findSuitableTask = async (c: RnvConfig, specificTask?: string): Pro
     return getEngineTask(task, c.runtime.engine?.tasks);
 };
 
-const _populateExtraParameters = (c: RnvConfig, task: RnvTask) => {
+const _populateExtraParameters = (c: RnvContext, task: RnvTask) => {
     if (task.params) {
         task.params.forEach((param) => {
             let cmd = '';
@@ -270,7 +270,7 @@ const _populateExtraParameters = (c: RnvConfig, task: RnvTask) => {
     }
 };
 
-const _selectPlatform = async (c: RnvConfig, suitableEngines: Array<RnvEngine>, task: string) => {
+const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>, task: string) => {
     const supportedPlatforms: Record<string, true> = {};
     suitableEngines.forEach((engine) => {
         getEngineTask(task, engine.tasks)?.platforms.forEach((plat) => {
@@ -290,13 +290,13 @@ const _selectPlatform = async (c: RnvConfig, suitableEngines: Array<RnvEngine>, 
     }
 };
 
-const _executePipe = async (c: RnvConfig, task: string, phase: string) =>
+const _executePipe = async (c: RnvContext, task: string, phase: string) =>
     executePipe(c, `${task.split(' ').join(':')}:${phase}`);
 
 const TASK_LIMIT = 20;
 
 export const executeTask = async (
-    c: RnvConfig,
+    c: RnvContext,
     task: string,
     parentTask?: string,
     originTask?: string,
@@ -331,7 +331,7 @@ To avoid that test your task code against parentTask and avoid executing same ta
     logExitTask(`${prt}<= ${task}`);
 };
 
-export const executeOrSkipTask = async (c: RnvConfig, task: string, parentTask: string, originTask: string) => {
+export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask: string, originTask: string) => {
     if (!c.program.only) {
         return executeTask(c, task, parentTask, originTask);
     }
@@ -345,7 +345,7 @@ const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
 };
 
-export const shouldSkipTask = (c: RnvConfig, task: string, originTask?: string) => {
+export const shouldSkipTask = (c: RnvContext, task: string, originTask?: string) => {
     const tasks = c.buildConfig?.tasks;
     c.runtime.platform = c.platform;
     if (!tasks) return;
@@ -409,7 +409,7 @@ export const shouldSkipTask = (c: RnvConfig, task: string, originTask?: string) 
 };
 
 export const executeEngineTask = async (
-    c: RnvConfig,
+    c: RnvContext,
     task: string,
     parentTask?: string,
     originTask?: string,

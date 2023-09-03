@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import _chalk, { Chalk } from 'chalk';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 import { getChalk } from './chalk';
 import { AnalyticsApi } from './types';
 import { isSystemWin } from './utils';
@@ -74,7 +74,7 @@ export const logWelcome = () => {
 let _currentProcess: any;
 let _isInfoEnabled = false;
 let _infoFilter: Array<string> = [];
-let _c: RnvConfig;
+let _c: RnvContext;
 let _isMono = false;
 let _defaultColor = _chalkCols.white;
 let _highlightColor = _chalkCols.white;
@@ -88,7 +88,7 @@ const cnf = () => {
     return _c;
 };
 
-const _configureLogger = (c: RnvConfig, analytics: AnalyticsApi) => {
+const _configureLogger = (c: RnvContext, analytics: AnalyticsApi) => {
     global._messages = [];
     _c = c;
     if (!global.timeStart) global.timeStart = new Date();
@@ -490,7 +490,7 @@ export const logInitialize = () => {
     if (!_jsonOnly) logWelcome();
 };
 
-export const logAppInfo = (c: RnvConfig) => {
+export const logAppInfo = (c: RnvContext) => {
     if (!_jsonOnly) {
         logInfo(`Current App Config: ${currentChalk.bold.white(c.runtime.appId)}`);
     }

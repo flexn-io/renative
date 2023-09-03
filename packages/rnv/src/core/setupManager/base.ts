@@ -9,12 +9,12 @@ import { replaceHomeFolder, updateConfigFile } from '../systemManager/fileutils'
 import _setupConfig from './config';
 import Config from '../configManager/config';
 import { logTask, logError, logInfo, logDebug, logSuccess } from '../systemManager/logger';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 
 const setupConfig: any = _setupConfig;
 class BasePlatformSetup {
     os: string;
-    c: RnvConfig;
+    c: RnvContext;
     globalConfigPath: string;
     availableDownloader: string | null;
     androidSdkLocation: string;
@@ -22,7 +22,7 @@ class BasePlatformSetup {
     webosSdkPath?: string;
     tizenSdkPath?: string;
 
-    constructor(os: string, c?: RnvConfig) {
+    constructor(os: string, c?: RnvContext) {
         // eslint-disable-next-line no-param-reassign
         if (!c) c = Config.getConfig();
         const { paths } = c;

@@ -1,17 +1,17 @@
 import { writeFileSync, fsExistsSync } from '../systemManager/fileutils';
 import { logWarning } from '../systemManager/logger';
 import { configSchema } from '../constants';
-import { RnvConfig } from './types';
+import { RnvContext } from './types';
 import { generateConfigBase } from './configBase';
 
 class Config {
-    config: RnvConfig;
+    config: RnvContext;
 
     constructor() {
         this.config = generateConfigBase();
     }
 
-    initializeConfig(c: RnvConfig) {
+    initializeConfig(c: RnvContext) {
         this.config = c;
         return c;
     }

@@ -2,7 +2,7 @@ import { RnvEngine, RnvEnginePlatform } from '../engineManager/types';
 import { OverridesOptions } from '../systemManager/types';
 import { RnvPlatform } from '../types';
 
-export interface RnvConfig {
+export interface RnvContext {
     program: any;
     command: string | null;
     subCommand: string | null;
@@ -19,14 +19,14 @@ export interface RnvConfig {
     _currentTask?: string;
     systemPropsInjects: OverridesOptions;
     _requiresNpmInstall?: boolean;
-    buildPipes: Record<string, Array<(c: RnvConfig) => Promise<boolean>>>;
+    buildPipes: Record<string, Array<(c: RnvContext) => Promise<boolean>>>;
     isBuildHooksReady: boolean;
     supportedPlatforms: Array<string>;
     runtimePropsInjects: OverridesOptions;
     //=======
     _renativePluginCache: any;
     cli: any;
-    buildHooks: Record<string, (c: RnvConfig) => Promise<void>>;
+    buildHooks: Record<string, (c: RnvContext) => Promise<void>>;
     api: {
         fsExistsSync: any;
         fsReadFileSync: any;

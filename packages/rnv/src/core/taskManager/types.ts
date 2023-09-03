@@ -1,4 +1,4 @@
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 
 export type RnvTask = {
     task: string;
@@ -25,7 +25,7 @@ export type RnvTaskParameter = {
 export type RnvTaskMap = Record<string, RnvTask>;
 
 //Too many choices of return types
-export type RnvTaskFn = (c: RnvConfig, parentTask?: string, originTask?: string) => Promise<any>; // Promise<boolean | void | string>;
+export type RnvTaskFn = (c: RnvContext, parentTask?: string, originTask?: string) => Promise<any>; // Promise<boolean | void | string>;
 
 export type TaskItemMap = Record<
     string,

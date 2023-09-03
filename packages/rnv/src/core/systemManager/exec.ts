@@ -10,7 +10,7 @@ import Config from '../configManager/config';
 import { chalk, logDebug, logRaw, logError } from './logger';
 import { fsExistsSync } from './fileutils';
 import { replaceOverridesInString } from './utils';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 import { ExecCallback, ExecCallback2, ExecOptions } from './types';
 
 const { exec, execSync } = require('child_process');
@@ -33,7 +33,7 @@ const { exec, execSync } = require('child_process');
  * @returns {Promise}
  *
  */
-const _execute = (c: RnvConfig, command: string | Array<string>, opts: ExecOptions = {}) => {
+const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOptions = {}) => {
     const defaultOpts: ExecOptions = {
         stdio: 'pipe',
         localDir: path.resolve('./node_modules/.bin'),
@@ -185,7 +185,7 @@ const _execute = (c: RnvConfig, command: string | Array<string>, opts: ExecOptio
  * @returns {Promise}
  *
  */
-const execCLI = (c: RnvConfig, cli: string, command: string, opts: ExecOptions = {}) => {
+const execCLI = (c: RnvContext, cli: string, command: string, opts: ExecOptions = {}) => {
     if (!c.program) {
         return Promise.reject('You need to pass c object as first parameter to execCLI()');
     }
@@ -219,12 +219,12 @@ const execCLI = (c: RnvConfig, cli: string, command: string, opts: ExecOptions =
  */
 
 const executeAsync = async (
-    _c: RnvConfig | string | Array<string>,
+    _c: RnvContext | string | Array<string>,
     _cmd?: string | Array<string> | ExecOptions,
     _opts?: ExecOptions
 ): Promise<string> => {
     // swap values if c is not specified and get it from it's rightful place, config :)
-    let c: RnvConfig;
+    let c: RnvContext;
     let cmd: string | Array<string> = '';
     let opts: ExecOptions = _opts || {};
     const isArg1Command = typeof _c === 'string' || Array.isArray(_c);
@@ -284,7 +284,7 @@ const executeAsync = async (
  * @returns {Promise}
  *
  */
-const executeTelnet = (c: RnvConfig, port: string, command: string) =>
+const executeTelnet = (c: RnvContext, port: string, command: string) =>
     new Promise<string>((resolve) => {
         logDebug(`execTelnet: ${port} ${command}`);
         try {

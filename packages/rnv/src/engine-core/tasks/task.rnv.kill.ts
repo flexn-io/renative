@@ -7,13 +7,13 @@ import { configureRuntimeDefaults } from '../../core/runtimeManager';
 
 import { PARAMS, TASK_KILL, TASK_APP_CONFIGURE } from '../../core/constants';
 import { RnvTaskFn } from '../../core/taskManager/types';
-import { RnvConfig } from '../../core/configManager/types';
+import { RnvContext } from '../../core/configManager/types';
 
 export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvKill');
 
-    const usedPorts: RnvConfig['runtime']['supportedPlatforms'] = [];
-    let platArray: RnvConfig['runtime']['supportedPlatforms'] = [];
+    const usedPorts: RnvContext['runtime']['supportedPlatforms'] = [];
+    let platArray: RnvContext['runtime']['supportedPlatforms'] = [];
     const results = [];
     let ports: Record<string, string> = {};
 

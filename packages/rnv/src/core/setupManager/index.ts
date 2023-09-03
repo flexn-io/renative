@@ -2,9 +2,9 @@ import LinuxPlatformSetup from './linux';
 import WindowsPlatformSetup from './windows';
 import DarwinPlatformSetup from './darwin';
 import Config from '../configManager/config';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 
-export default (_c: RnvConfig) => {
+export default (_c: RnvContext) => {
     let c = _c;
     if (!c) c = Config.getConfig();
     const {

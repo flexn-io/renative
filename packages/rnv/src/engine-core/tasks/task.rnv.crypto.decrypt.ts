@@ -14,13 +14,13 @@ import { inquirerPrompt } from '../../cli/prompt';
 import { getEnvVar, getEnvExportCmd } from '../../core/systemManager/crypto';
 import { executeTask } from '../../core/taskManager';
 import { TASK_CRYPTO_DECRYPT, TASK_PROJECT_CONFIGURE, PARAMS } from '../../core/constants';
-import { RnvConfig } from '../../core/configManager/types';
+import { RnvContext } from '../../core/configManager/types';
 import { RnvTaskFn } from '../../core/taskManager/types';
 
 const iocane = require('iocane');
 
 const _unzipAndCopy = async (
-    c: RnvConfig,
+    c: RnvContext,
     shouldCleanFolder: boolean,
     destTemp: string,
     wsPath: string,

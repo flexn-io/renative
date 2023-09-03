@@ -1,4 +1,4 @@
-import { RnvConfig } from './configManager/types';
+import { RnvContext } from './configManager/types';
 
 export type RnvPlatform = string;
 
@@ -13,4 +13,4 @@ export type RenativeConfigVersion = string | { version: string };
 
 export type RnvError = any;
 
-export type GetConfigPropFn = <T = any>(c: RnvConfig, platform: string, key: string, defaultVal?: any) => T;
+export type GetConfigPropFn = <T = any>(c: RnvContext, platform: string, key: string, defaultVal?: any) => T;

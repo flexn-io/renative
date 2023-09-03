@@ -7,10 +7,10 @@ import BasePlatformSetup from './base';
 import { updateConfigFile, getRealPath } from '../systemManager/fileutils';
 import setupConfig from './config';
 import { CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_EMULATOR, CLI_ANDROID_SDKMANAGER } from '../constants';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 
 class LinuxPlatformSetup extends BasePlatformSetup {
-    constructor(c: RnvConfig) {
+    constructor(c: RnvContext) {
         super('linux', c);
     }
 

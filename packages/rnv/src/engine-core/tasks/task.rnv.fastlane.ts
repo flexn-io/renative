@@ -2,9 +2,9 @@ import { executeAsync, commandExistsSync } from '../../core/systemManager/exec';
 import { getAppFolder, getCliArguments } from '../../core/common';
 import { IOS, TVOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, PARAMS } from '../../core/constants';
 import PlatformSetup from '../../core/setupManager';
-import { RnvConfig } from '../../core/configManager/types';
+import { RnvContext } from '../../core/configManager/types';
 
-export const taskRnvFastlane = async (c: RnvConfig) => {
+export const taskRnvFastlane = async (c: RnvContext) => {
     const args = getCliArguments(c);
     args.shift(); // we know the first one is fastlane, trash it
 

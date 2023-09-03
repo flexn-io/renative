@@ -2,9 +2,9 @@ import path from 'path';
 import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/logger';
 import { writeFileSync, mkdirSync, fsExistsSync } from '../systemManager/fileutils';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 
-export const createWorkspace = async (c: RnvConfig, workspaceID: string, workspacePath: string) => {
+export const createWorkspace = async (c: RnvContext, workspaceID: string, workspacePath: string) => {
     c.files.rnv.configWorkspaces.workspaces[workspaceID] = {
         path: workspacePath,
     };
@@ -21,7 +21,7 @@ export const createWorkspace = async (c: RnvConfig, workspaceID: string, workspa
     return true;
 };
 
-export const getWorkspaceDirPath = async (c: RnvConfig) => {
+export const getWorkspaceDirPath = async (c: RnvContext) => {
     logTask('getWorkspaceDirPath');
     const wss = c.files.rnv.configWorkspaces;
     const ws = c.runtime.selectedWorkspace || c.buildConfig?.workspaceID;
@@ -77,7 +77,7 @@ export const getWorkspaceConnectionString = (obj: any) => {
     return connectMsg;
 };
 
-export const getWorkspaceOptions = (c: RnvConfig) =>
+export const getWorkspaceOptions = (c: RnvContext) =>
     generateOptions(c.files.rnv.configWorkspaces?.workspaces, false, null, (i, obj, mapping, defaultVal) => {
         logDebug('getWorkspaceOptions');
 

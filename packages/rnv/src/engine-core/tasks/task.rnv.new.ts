@@ -33,7 +33,7 @@ import {
     printIntoBox,
 } from '../../core/systemManager/logger';
 import { isYarnInstalled, listAndSelectNpmVersion } from '../../core/systemManager/npmUtils';
-import { RenativeConfigFile, RnvConfig } from '../../core/configManager/types';
+import { RenativeConfigFile, RnvContext } from '../../core/configManager/types';
 
 const highlight = chalk().green;
 
@@ -79,7 +79,7 @@ type NewProjectData = {
     inputWorkspace?: string;
 };
 
-const _prepareProjectOverview = (c: RnvConfig, data: NewProjectData) => {
+const _prepareProjectOverview = (c: RnvContext, data: NewProjectData) => {
     data.appTitle = data.inputAppTitle || data.defaultAppTitle;
     data.teamID = '';
     data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
@@ -206,7 +206,7 @@ const interactiveQuestion = async (
     }
 };
 
-export const taskRnvNew = async (c: RnvConfig) => {
+export const taskRnvNew = async (c: RnvContext) => {
     logTask('taskRnvNew');
     const {
         ci,
@@ -678,7 +678,7 @@ export const taskRnvNew = async (c: RnvConfig) => {
     );
 };
 
-const findEngineKeyById = (c: RnvConfig, id: string) => {
+const findEngineKeyById = (c: RnvContext, id: string) => {
     const { engineTemplates } = c.files.rnv.projectTemplates.config;
     const etk = Object.keys(engineTemplates);
     for (let i = 0; i < etk.length; i++) {

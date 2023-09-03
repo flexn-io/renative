@@ -20,10 +20,10 @@ import { getConfigProp } from '../common';
 import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from '../configManager';
 import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 import { PromptOptions } from '../../cli/types';
 
-export const checkIfTemplateConfigured = async (c: RnvConfig) => {
+export const checkIfTemplateConfigured = async (c: RnvContext) => {
     logTask('checkIfTemplateConfigured');
     if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return true;
     if (!c.buildConfig.templates) {
@@ -57,7 +57,7 @@ export const checkIfTemplateConfigured = async (c: RnvConfig) => {
     return true;
 };
 
-const _cleanProjectTemplateSync = (c: RnvConfig) => {
+const _cleanProjectTemplateSync = (c: RnvContext) => {
     logTask('_cleanProjectTemplateSync');
     const dirsToRemove = [c.paths.project.appConfigBase.dir, c.paths.project.srcDir, c.paths.project.appConfigsDir];
 
@@ -70,7 +70,7 @@ const _cleanProjectTemplateSync = (c: RnvConfig) => {
     if (filesToRemove) removeFilesSync(filesToRemove);
 };
 
-const _applyTemplate = async (c: RnvConfig) => {
+const _applyTemplate = async (c: RnvContext) => {
     logTask('_applyTemplate', `current:${c.buildConfig.currentTemplate} selected:${c.runtime.selectedTemplate}`);
 
     if (c.runtime.selectedTemplate) {
@@ -129,7 +129,7 @@ const _applyTemplate = async (c: RnvConfig) => {
     return true;
 };
 
-const _configureSrc = (c: RnvConfig) =>
+const _configureSrc = (c: RnvContext) =>
     new Promise<void>((resolve) => {
         // Check src
         logDebug('configureProject:check src');
@@ -140,7 +140,7 @@ const _configureSrc = (c: RnvConfig) =>
         resolve();
     });
 
-const _configureAppConfigs = async (c: RnvConfig) => {
+const _configureAppConfigs = async (c: RnvContext) => {
     // Check appConfigs
     logDebug('configureProject:check appConfigs');
     //
@@ -191,7 +191,7 @@ const _configureAppConfigs = async (c: RnvConfig) => {
     }
 };
 
-const _configureProjectConfig = (c: RnvConfig) =>
+const _configureProjectConfig = (c: RnvContext) =>
     new Promise<void>((resolve) => {
         // Check projectConfigs
         logDebug('configureProject:check projectConfigs');
@@ -206,7 +206,7 @@ const _configureProjectConfig = (c: RnvConfig) =>
         resolve();
     });
 
-const _configureRenativeConfig = async (c: RnvConfig) => {
+const _configureRenativeConfig = async (c: RnvContext) => {
     // renative.json
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
     logDebug('configureProject:check renative.json');
@@ -236,7 +236,7 @@ const _configureRenativeConfig = async (c: RnvConfig) => {
     return true;
 };
 
-export const configureTemplateFiles = async (c: RnvConfig) => {
+export const configureTemplateFiles = async (c: RnvContext) => {
     logTask('configureTemplateFiles');
 
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
@@ -267,7 +267,7 @@ export const configureTemplateFiles = async (c: RnvConfig) => {
     }
 };
 
-export const configureEntryPoint = async (c: RnvConfig, platform: string) => {
+export const configureEntryPoint = async (c: RnvContext, platform: string) => {
     logTask('configureEntryPoint');
 
     if (c.files.project.config.isTemplate) return true;
@@ -302,12 +302,12 @@ export const configureEntryPoint = async (c: RnvConfig, platform: string) => {
     return true;
 };
 
-const _writeObjectSync = (c: RnvConfig, p: string | undefined, s: string) => {
+const _writeObjectSync = (c: RnvContext, p: string | undefined, s: string) => {
     writeFileSync(p, s);
     generateBuildConfig(c);
 };
 
-export const getTemplateOptions = (c: RnvConfig, isGlobalScope?: boolean) => {
+export const getTemplateOptions = (c: RnvContext, isGlobalScope?: boolean) => {
     let defaultProjectTemplates;
     if (isGlobalScope) {
         defaultProjectTemplates = c.files.rnv.projectTemplates.config.projectTemplates;
@@ -322,7 +322,7 @@ export const getTemplateOptions = (c: RnvConfig, isGlobalScope?: boolean) => {
     });
 };
 
-export const getInstalledTemplateOptions = (c: RnvConfig): PromptOptions | null => {
+export const getInstalledTemplateOptions = (c: RnvContext): PromptOptions | null => {
     if (c.files.project.config.isTemplate) return null;
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
@@ -331,10 +331,10 @@ export const getInstalledTemplateOptions = (c: RnvConfig): PromptOptions | null 
     return null;
 };
 
-export const isTemplateInstalled = (c: RnvConfig) =>
+export const isTemplateInstalled = (c: RnvContext) =>
     c.buildConfig.currentTemplate ? doResolve(c.buildConfig.currentTemplate) : false;
 
-export const applyTemplate = async (c: RnvConfig, selectedTemplate?: string) => {
+export const applyTemplate = async (c: RnvContext, selectedTemplate?: string) => {
     logTask('applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`);
     if (c.files.project.config.isTemplate) return true;
 

@@ -1,10 +1,10 @@
 import path from 'path';
-import { RnvConfig } from '../configManager/types';
+import { RnvContext } from '../configManager/types';
 import { executeAsync, commandExistsSync } from './exec';
 import { fsExistsSync } from './fileutils';
 import { logTask, logWarning, logInfo } from './logger';
 
-export const configureGit = async (c: RnvConfig) => {
+export const configureGit = async (c: RnvContext) => {
     const projectPath = c.paths.project.dir;
     logTask(`configureGit:${projectPath}`);
 
