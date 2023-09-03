@@ -5,6 +5,9 @@ export type RenativeConfigFile = {
         buildSchemes?: Record<string, RenativeConfigBuildScheme>;
         runtime?: Record<string, any>;
         versionCodeFormat?: string;
+        includedFonts: Array<string>;
+        includedPermissions: RenativeConfigPermissionsList;
+        excludedPermissions: RenativeConfigPermissionsList;
     };
     defaults: {
         ports?: Record<string, string>;
@@ -37,7 +40,10 @@ export type RenativeConfigFile = {
     templateConfig?: any;
     enableAnalytics?: boolean;
     workspaceAppConfigsDir?: string;
+    permissions: Record<string, RenativeConfigPermission>;
 };
+
+export type RenativeConfigPermission = Record<string, Record<string, string>>;
 
 export type RenativeConfigPlatform = {
     buildSchemes?: Record<string, RenativeConfigBuildScheme>;
@@ -51,7 +57,11 @@ export type RenativeConfigPlatform = {
         buildTypes: Record<string, string[]>;
     };
     'gradle.properties'?: Record<string, string | boolean>;
+    includedPermissions?: RenativeConfigPermissionsList;
+    excludedPermissions?: RenativeConfigPermissionsList;
 };
+
+export type RenativeConfigPermissionsList = Array<string>;
 
 export type RenativeConfigPlugin = {
     source?: string;

@@ -37,7 +37,7 @@ export type AnalyticsApi = {
 
 export type OverridesOptions = Array<{
     pattern: string;
-    override: string | undefined;
+    override: string;
 }>;
 
 export type TimestampPathsConfig = {

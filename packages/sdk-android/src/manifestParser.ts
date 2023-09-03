@@ -1,5 +1,14 @@
 import path from 'path';
-import { FileUtils, Common, Logger, PluginManager } from 'rnv';
+import {
+    FileUtils,
+    Common,
+    Logger,
+    PluginManager,
+    RnvContext,
+    RenativeConfigPermissionsList,
+    RnvPluginPlatform,
+} from 'rnv';
+import { Payload } from './types';
 
 const {
     getAppFolder,
@@ -17,7 +26,7 @@ const { parsePlugins } = PluginManager;
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
 
-const _findChildNode = (tag, name, node) => {
+const _findChildNode = (tag: string, name: string, node: any) => {
     if (!node) {
         logWarning('_findChildNode: Node is undefined');
         return;
@@ -34,9 +43,9 @@ const _findChildNode = (tag, name, node) => {
     return null;
 };
 
-const _convertToXML = (manifestObj) => _parseNode(manifestObj, 0);
+const _convertToXML = (manifestObj: any) => _parseNode(manifestObj, 0);
 
-const _parseNode = (n, level) => {
+const _parseNode = (n: any, level: number) => {
     let output = '';
     let space = '';
     for (let i = 0; i < level; i++) {
@@ -73,7 +82,7 @@ const _parseNode = (n, level) => {
         }
 
         const nextLevel = level + 1;
-        n.children.forEach((v) => {
+        n.children.forEach((v: any) => {
             output += _parseNode(v, nextLevel);
         });
         output += `${space}</${n.tag}>\n`;
@@ -83,7 +92,7 @@ const _parseNode = (n, level) => {
     return output;
 };
 
-const _mergeNodeParameters = (node, nodeParamsExt) => {
+const _mergeNodeParameters = (node: any, nodeParamsExt: any) => {
     if (!nodeParamsExt) {
         logWarning('_mergeNodeParameters: nodeParamsExt value is null');
         return;
@@ -98,7 +107,7 @@ const _mergeNodeParameters = (node, nodeParamsExt) => {
     });
 };
 
-const _mergeNodeChildren = (node, nodeChildrenExt = []) => {
+const _mergeNodeChildren = (node: any, nodeChildrenExt: Array<ManifestFeature> = []) => {
     // console.log('_mergeNodeChildren', node, 'OVERRIDE', nodeChildrenExt);
     if (!node) {
         logWarning('_mergeNodeChildren: Node is undefined');
@@ -121,11 +130,22 @@ const _mergeNodeChildren = (node, nodeChildrenExt = []) => {
     });
 };
 
-const _mergeFeatures = (c, baseManifestFile, configKey, value) => {
-    const features = getConfigProp(c, c.platform, configKey);
+type ManifestFeature = {
+    tag: string;
+    'android:name': string;
+    'android:required': boolean;
+    children?: Array<ManifestFeature>;
+};
+
+// type ManufestNode = {
+//     children:
+// }
+
+const _mergeFeatures = (c: RnvContext<Payload>, baseManifestFile: any, configKey: string, value: boolean) => {
+    const features = getConfigProp<string[]>(c, c.platform, configKey);
 
     if (features) {
-        const featuresObj = [];
+        const featuresObj: Array<ManifestFeature> = [];
         features.forEach((key) => {
             featuresObj.push({
                 tag: 'uses-feature',
@@ -137,7 +157,7 @@ const _mergeFeatures = (c, baseManifestFile, configKey, value) => {
     }
 };
 
-export const parseAndroidManifestSync = (c) => {
+export const parseAndroidManifestSync = (c: RnvContext<Payload>) => {
     logTask('parseAndroidManifestSync');
     const { platform } = c;
 
@@ -157,7 +177,7 @@ export const parseAndroidManifestSync = (c) => {
         });
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
-        parsePlugins(c, platform, (plugin, pluginPlat) => {
+        parsePlugins(c, platform as RnvPluginPlatform, (_plugin, pluginPlat) => {
             const androidManifestPlugin = getFlavouredProp(c, pluginPlat, 'AndroidManifest');
             if (androidManifestPlugin) {
                 _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
@@ -170,8 +190,8 @@ export const parseAndroidManifestSync = (c) => {
         // appConfig PERMISSIONS OVERRIDES
         const configPermissions = c.buildConfig?.permissions;
 
-        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
-        const excludedPermissions = getConfigProp(c, platform, 'excludedPermissions');
+        const includedPermissions = getConfigProp<RenativeConfigPermissionsList>(c, platform, 'includedPermissions');
+        const excludedPermissions = getConfigProp<RenativeConfigPermissionsList>(c, platform, 'excludedPermissions');
         if (includedPermissions?.forEach && configPermissions) {
             const platPerm = configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
@@ -208,7 +228,7 @@ export const parseAndroidManifestSync = (c) => {
         // get correct source of manifest
         const manifestFile = 'app/src/main/AndroidManifest.xml';
 
-        const injects = [{ pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml }];
+        const injects = [{ pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml || '' }];
 
         addSystemInjects(c, injects);
 
@@ -218,12 +238,12 @@ export const parseAndroidManifestSync = (c) => {
             getBuildFilePath(c, platform, manifestFile),
             path.join(appFolder, manifestFile),
             injects,
-            null,
+            undefined,
             c
         );
 
         return;
-    } catch (e) {
+    } catch (e: any) {
         logError(e);
     }
 };

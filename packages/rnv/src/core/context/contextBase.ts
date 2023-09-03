@@ -35,6 +35,7 @@ const runtime: any = {
 };
 
 export const generateConfigBase = (): RnvContext => ({
+    payload: {},
     assetConfig: {},
     rnvVersion: '',
     buildHooks: {},

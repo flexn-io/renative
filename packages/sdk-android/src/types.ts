@@ -32,16 +32,19 @@ export type Payload = {
         pluginActivityImports: string;
         buildGradlePlugins: string;
         buildGradleAfterAll: string;
+        pluginActivityCreateMethods: string;
         buildGradleBuildScriptDependencies: string;
         applyPlugin: string;
         splits: string;
+        pluginActivityMethods: string;
         pluginApplicationDebugServer: string;
         pluginPackages: string;
         pluginApplicationMethods: string;
+        pluginActivityResultMethods: string;
         pluginApplicationCreateMethods: string;
         pluginSplashActivityImports: string;
         resourceStrings: RenativeConfigPluginPlatform['ResourceStrings']['children'];
-        store: {
+        store?: {
             storeFile: string;
             keyAlias: string;
             storePassword: string;

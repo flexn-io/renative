@@ -18,6 +18,7 @@ import {
     SDKManager,
     RuntimeManager,
     RnvContext,
+    RnvPluginPlatform,
 } from 'rnv';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -92,7 +93,7 @@ export const packageAndroid = async (c: RnvContext<Payload>) => {
             'src',
             'main',
             'res'
-        )} --entry-file ${c.buildConfig.platforms[c.platform]?.entryFile}.js --bundle-output ${path.join(
+        )} --entry-file ${c.buildConfig.platforms?.[c.platform]?.entryFile}.js --bundle-output ${path.join(
             appFolder,
             'app',
             'src',
@@ -518,7 +519,6 @@ export const configureProject = async (c: RnvContext<Payload>) => {
         pluginActivityCreateMethods: '',
         pluginActivityResultMethods: '',
         pluginSplashActivityImports: '',
-        manifestApplication: '',
         buildGradleAllProjectsRepositories: '',
         buildGradleBuildScriptRepositories: '',
         buildGradlePlugins: '',
@@ -534,10 +534,22 @@ export const configureProject = async (c: RnvContext<Payload>) => {
         injectHermes: '',
         kotlinVersion: '',
         googleServicesVersion: '',
+        buildToolsVersion: '',
+        buildTypes: '',
+        compileOptions: '',
+        compileSdkVersion: '',
+        gradleBuildToolsVersion: '',
+        gradleWrapperVersion: '',
+        localProperties: '',
+        minSdkVersion: '',
+        multiAPKs: '',
+        splits: '',
+        supportLibVersion: '',
+        targetSdkVersion: '',
     };
 
     // PLUGINS
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
         injectPluginGradleSync(c, pluginPlat, key, pluginPlat.package, plugin);
         injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
@@ -554,7 +566,7 @@ export const configureProject = async (c: RnvContext<Payload>) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
 
-            const { includedFonts } = c.buildConfig.common;
+            const { includedFonts } = c.buildConfig.common || {};
             if (includedFonts) {
                 if (includedFonts.includes('*') || includedFonts.includes(key)) {
                     if (font) {

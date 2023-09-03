@@ -318,8 +318,8 @@ export const _getConfigProp = (
     return result;
 };
 
-export const getConfigPropArray = (c: RnvContext, platform: string, key: string) => {
-    const result: Array<string> = [];
+export const getConfigPropArray = <T = any>(c: RnvContext, platform: string, key: string) => {
+    const result: Array<T> = [];
     const configArr = [
         c.files.defaultWorkspace.config,
         c.files.rnv.projectTemplates.config,

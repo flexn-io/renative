@@ -1,5 +1,5 @@
 import path from 'path';
-import { Common, FileUtils, Logger, RnvContext } from 'rnv';
+import { Common, FileUtils, Logger, OverridesOptions, RnvContext } from 'rnv';
 import { Payload } from './types';
 
 const {
@@ -37,9 +37,9 @@ export const parseMainApplicationSync = (c: RnvContext<Payload>) => {
         c.payload.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit()?.putString("debug_http_host", "${bundlerIp}:${c.runtime.port}")?.apply()\n`;
     }
 
-    const injects = [
+    const injects: OverridesOptions = [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
+        { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) || '' },
         { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
         {
             pattern: '{{PLUGIN_IMPORTS}}',

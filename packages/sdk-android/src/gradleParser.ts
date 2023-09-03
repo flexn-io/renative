@@ -3,11 +3,13 @@ import {
     Common,
     FileUtils,
     Logger,
+    OverridesOptions,
     PluginManager,
     RenativeConfigPlatform,
     RenativeConfigPluginPlatform,
     Resolver,
     RnvContext,
+    RnvPlugin,
     Utils,
 } from 'rnv';
 import { Payload } from './types';
@@ -31,7 +33,7 @@ export const parseBuildGradleSync = (c: RnvContext<Payload>) => {
             ${c.payload.pluginConfigAndroid.buildGradleBuildScriptDexOptions}
         }`;
     }
-    const injects = [
+    const injects: OverridesOptions = [
         {
             pattern: '{{COMPILE_SDK_VERSION}}',
             override: c.payload.pluginConfigAndroid.compileSdkVersion,
@@ -90,9 +92,10 @@ export const parseBuildGradleSync = (c: RnvContext<Payload>) => {
         },
         {
             pattern: '{{PATH_REACT_NATIVE}}',
-            override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
-                forceForwardPaths: true,
-            }),
+            override:
+                doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
+                    forceForwardPaths: true,
+                }) || '',
         },
     ];
     addSystemInjects(c, injects);
@@ -572,7 +575,7 @@ export const injectPluginGradleSync = (
     plugin: RenativeConfigPluginPlatform,
     key: string,
     _pkg: string,
-    pluginRoot
+    pluginRoot: RnvPlugin
 ) => {
     // const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     // const packagePath = plugin.path ?? `${key}/android`;
