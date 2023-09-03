@@ -11,6 +11,7 @@ import {
     PlatformManager,
     ProjectManager,
     Resolver,
+    RnvContext,
 } from 'rnv';
 
 const { getEngineRunnerByPlatform } = EngineManager;
@@ -38,7 +39,7 @@ const { chalk, logTask, logError, logWarning, logSuccess, logInfo } = Logger;
 const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
 const { MACOS, LINUX } = Constants;
 
-export const configureElectronProject = async (c, exitOnFail) => {
+export const configureElectronProject = async (c: RnvContext, exitOnFail?: boolean) => {
     logTask('configureElectronProject');
 
     const { platform } = c;
@@ -52,7 +53,7 @@ export const configureElectronProject = async (c, exitOnFail) => {
     await copyAssetsFolder(
         c,
         platform,
-        null,
+        undefined,
         (platform === MACOS || platform === LINUX) && fsExistsSync(iconsetPath) ? _generateICNS : null
     );
 
@@ -63,8 +64,8 @@ export const configureElectronProject = async (c, exitOnFail) => {
 };
 const merge = require('deepmerge');
 
-const configureProject = (c, exitOnFail) =>
-    new Promise((resolve, reject) => {
+const configureProject = (c: RnvContext, exitOnFail) =>
+    new Promise<void>((resolve, reject) => {
         logTask('configureProject');
         const { platform } = c;
 
@@ -194,7 +195,7 @@ const configureProject = (c, exitOnFail) =>
                 path.join(platformProjectDir, 'main.dev.js'),
                 path.join(platformProjectDir, 'main.js'),
                 injects,
-                null,
+                undefined,
                 c
             );
         }
@@ -237,7 +238,7 @@ const configureProject = (c, exitOnFail) =>
         resolve();
     });
 
-const buildElectron = async (c) => {
+const buildElectron = async (c: RnvContext) => {
     logTask('buildElectron');
 
     await buildCoreWebpackProject(c);
@@ -263,7 +264,7 @@ const buildElectron = async (c) => {
     return true;
 };
 
-const exportElectron = async (c) => {
+const exportElectron = async (c: RnvContext) => {
     logTask('exportElectron');
 
     const platformBuildDir = getPlatformBuildDir(c);
@@ -355,8 +356,8 @@ const _runElectronSimulator = async (c) => {
     child.unref();
 };
 
-const _generateICNS = (c) =>
-    new Promise((resolve, reject) => {
+const _generateICNS = (c: RnvContext) =>
+    new Promise<void>((resolve, reject) => {
         logTask('_generateICNS');
         const { platform } = c;
 

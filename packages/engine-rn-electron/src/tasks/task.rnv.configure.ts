@@ -1,4 +1,4 @@
-import { Constants, Logger, PlatformManager, TaskManager, TemplateManager } from 'rnv';
+import { Constants, Logger, PlatformManager, RnvTaskFn, TaskManager, TemplateManager } from 'rnv';
 import { SDKElectron } from '../sdks';
 
 const { logErrorPlatform, copySharedPlatforms } = PlatformManager;
@@ -8,7 +8,7 @@ const { configureElectronProject } = SDKElectron;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
 
-export const taskRnvConfigure = async (c, parentTask, originTask) => {
+export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
     await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);

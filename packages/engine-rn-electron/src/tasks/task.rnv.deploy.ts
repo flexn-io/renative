@@ -1,10 +1,10 @@
-import { Constants, Logger, TaskManager } from 'rnv';
+import { Constants, Logger, RnvTaskFn, TaskManager } from 'rnv';
 
 const { logTask } = Logger;
 const { MACOS, WINDOWS, LINUX, TASK_EXPORT, TASK_DEPLOY, PARAMS } = Constants;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
-export const taskRnvDeploy = async (c, parentTask, originTask) => {
+export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);
 
     await executeOrSkipTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);

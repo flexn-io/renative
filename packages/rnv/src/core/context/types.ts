@@ -88,6 +88,7 @@ export interface RnvContext<Payload = any> {
         _skipNativeDepResolutions: boolean;
         targetUDID?: string;
         forceBundleAssets?: boolean;
+        webpackTarget?: string;
         xcodeProj?: {
             id?: string;
             runScheme?: string;

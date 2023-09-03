@@ -1,10 +1,10 @@
-import { Constants, Logger, PlatformManager } from 'rnv';
+import { Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
 
 const { logErrorPlatform } = PlatformManager;
 const { logTask } = Logger;
 const { MACOS, WINDOWS, LINUX, PARAMS } = Constants;
 
-export const taskRnvDebug = async (c) => {
+export const taskRnvDebug: RnvTaskFn = async (c) => {
     logTask('taskRnvDebug');
     const { platform } = c;
 
