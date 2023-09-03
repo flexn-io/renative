@@ -15,7 +15,7 @@ export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     const usedPorts: RnvContext['runtime']['supportedPlatforms'] = [];
     let platArray: RnvContext['runtime']['supportedPlatforms'] = [];
     const results = [];
-    let ports: Record<string, string> = {};
+    let ports: Record<string, number> = {};
 
     await configureRuntimeDefaults(c);
 
@@ -50,7 +50,7 @@ ${usedPorts.map((v) => chalk().white(`> ${v.port} (${v.platform})`)).join('\n')}
         if (confirm) {
             const killPromise = [];
             usedPorts.forEach((v) => {
-                if (v.port) killPromise.push(killPort(parseInt(v.port)));
+                if (v.port) killPromise.push(killPort(v.port));
             });
             await Promise.all(usedPorts);
             logSuccess('Processes KILLED');

@@ -98,9 +98,9 @@ const engine: RnvEngine = {
         platforms: {},
         npm: {},
     },
-    package: {},
+    // package: '',
     projectDirName: '',
-    ejectPlatform: null,
+    // ejectPlatform: null,
     platforms: {},
 };
 

@@ -261,6 +261,6 @@ export interface RnvContextPlatform {
     platform: string;
     isConnected: boolean;
     engine?: any;
-    port?: string;
+    port?: number;
     isValid?: boolean;
 }

@@ -45,7 +45,7 @@ const engine: RnvEngine = {
     },
     projectDirName: '',
     serverDirName: '',
-    package: '',
+    // package: '',
     // ejectPlatform: null,
     platforms: {
         ios: {

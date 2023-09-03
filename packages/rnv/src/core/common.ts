@@ -501,7 +501,7 @@ export const getBuildsFolder = (c: RnvContext, platform: string, customPath?: st
 
 export const getIP = () => ip.address();
 
-export const checkPortInUse = (c: RnvContext, platform: string, port: string) =>
+export const checkPortInUse = (c: RnvContext, platform: string, port: number) =>
     new Promise((resolve, reject) => {
         if (port === undefined || port === null) {
             resolve(false);
@@ -512,7 +512,7 @@ export const checkPortInUse = (c: RnvContext, platform: string, port: string) =>
                 reject(err);
                 return;
             }
-            const result = parseInt(port, 10) !== parseInt(availablePort, 10);
+            const result = port !== parseInt(availablePort, 10);
             resolve(result);
         });
     });

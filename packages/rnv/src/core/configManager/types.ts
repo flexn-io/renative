@@ -10,7 +10,7 @@ export type RenativeConfigFile = {
         excludedPermissions: RenativeConfigPermissionsList;
     };
     defaults: {
-        ports?: Record<string, string>;
+        ports?: Record<string, number>;
         supportedPlatforms?: Array<string>;
         portOffset?: number;
     };
