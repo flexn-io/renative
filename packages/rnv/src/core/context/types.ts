@@ -57,7 +57,7 @@ export interface RnvContext<Payload = any> {
         isTargetTrue: boolean;
         supportedPlatforms: Array<RnvContextPlatform>;
         keepSessionActive: boolean;
-        platformBuildsProjectPath: string;
+        platformBuildsProjectPath?: string;
         availablePlatforms: Array<string>;
         _platformBuildsSuffix?: string;
         timestamp: number;
@@ -72,7 +72,7 @@ export interface RnvContext<Payload = any> {
         forceBuildHookRebuild: boolean;
         disableReset: boolean;
         skipActiveServerCheck: boolean;
-        port: string;
+        port: number;
         rnvVersionRunner: string;
         rnvVersionProject: string;
         versionCheckCompleted: boolean;
@@ -89,6 +89,7 @@ export interface RnvContext<Payload = any> {
         targetUDID?: string;
         forceBundleAssets?: boolean;
         webpackTarget?: string;
+        shouldOpenBrowser?: string;
         xcodeProj?: {
             id?: string;
             runScheme?: string;

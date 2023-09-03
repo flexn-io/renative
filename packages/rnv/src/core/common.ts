@@ -162,7 +162,7 @@ export const confirmActiveBundler = async (c: RnvContext) => {
 
     if (c.program.ci) {
         //TODO: handle return codes properly
-        await killPort(parseInt(c.runtime.port));
+        await killPort(c.runtime.port);
         return true;
     }
 
@@ -176,7 +176,7 @@ export const confirmActiveBundler = async (c: RnvContext) => {
     });
 
     if (choices[0] === selectedOption) {
-        await killPort(parseInt(c.runtime.port));
+        await killPort(c.runtime.port);
     } else {
         return false;
     }

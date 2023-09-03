@@ -342,7 +342,7 @@ const _runElectronSimulator = async (c) => {
     let platformProjectDir = getPlatformProjectDir(c);
 
     if (bundleAssets) {
-        platformProjectDir = path.join(getPlatformBuildDir(c), 'build');
+        platformProjectDir = path.join(getPlatformBuildDir(c)!, 'build');
     }
 
     const child = spawn('node', [elc, path.join(platformProjectDir, '/main.js')], {
@@ -374,7 +374,7 @@ const _generateICNS = (c: RnvContext) =>
             source = path.join(c.paths.appConfig.dir, `assets/${platform}/AppIcon.iconset`);
         }
 
-        const dest = path.join(getPlatformProjectDir(c), 'resources/icon.icns');
+        const dest = path.join(getPlatformProjectDir(c)!, 'resources/icon.icns');
 
         // It's ok if icns are not generated as png is also valid https://www.electron.build/icons.html#macos
         if (!source) {
@@ -393,7 +393,7 @@ const _generateICNS = (c: RnvContext) =>
             return;
         }
 
-        mkdirSync(path.join(getPlatformProjectDir(c), 'resources'));
+        mkdirSync(path.join(getPlatformProjectDir(c)!, 'resources'));
 
         const p = ['--convert', 'icns', source, '--output', dest];
         try {

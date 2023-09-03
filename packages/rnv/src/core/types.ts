@@ -4,6 +4,7 @@ export type RnvPlatform = string;
 
 export type RnvModuleConfig = {
     modulePaths: Array<string>;
+    moduleAliases: Record<string, string | undefined>;
     moduleAliasesArray: Array<string>;
 };
 

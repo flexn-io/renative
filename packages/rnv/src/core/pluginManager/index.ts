@@ -30,6 +30,7 @@ import {
     RnvPluginWebpackKey,
 } from './types';
 import { RenativeConfigPlugin, RenativeWebpackConfig } from '../configManager/types';
+import { RnvModuleConfig } from '../types';
 
 export const getPluginList = (c: RnvContext, isUpdate = false) => {
     const output: PluginListResponse = {
@@ -968,8 +969,8 @@ export const getLocalRenativePlugin = () => ({
     },
 });
 
-export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey) => {
-    let modulePaths: Array<string | undefined> = [];
+export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey): RnvModuleConfig => {
+    let modulePaths: Array<string> = [];
     const moduleAliases: Record<string, string | undefined> = {};
 
     const doNotResolveModulePaths: Array<string> = [];
@@ -1035,7 +1036,7 @@ export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey
     });
 
     modulePaths = modulePaths
-        .map((v) => v && doResolvePath(v, true, {}, c.paths.project.dir))
+        .map((v) => v && doResolvePath(v, true, {}, c.paths.project.dir)!)
         .concat(doNotResolveModulePaths)
         .concat([c.paths.project.assets.dir])
         .filter(Boolean);
