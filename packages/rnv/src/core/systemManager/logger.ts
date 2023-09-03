@@ -252,7 +252,7 @@ export const logSummary = (header = 'SUMMARY') => {
     str += printIntoBox('');
     if (cnf().runtime?.platformBuildsProjectPath) {
         str += printIntoBox('Project location:');
-        str += printIntoBox(`${currentChalk.cyan(_sanitizePaths(cnf().runtime.platformBuildsProjectPath))}`);
+        str += printIntoBox(`${currentChalk.cyan(_sanitizePaths(cnf().runtime.platformBuildsProjectPath || ''))}`);
     }
     str += printBoxEnd();
 

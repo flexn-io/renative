@@ -32,7 +32,7 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
 
     const portOffset = c.buildConfig?.defaults?.portOffset || 0;
 
-    c.runtime.port = (Number(portString) + portOffset).toString();
+    c.runtime.port = Number(portString) + portOffset;
 
     if (c.program.target !== true) {
         c.runtime.target = c.program.target || c.buildConfig?.defaultTargets?.[c.platform];
