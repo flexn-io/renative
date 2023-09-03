@@ -10,7 +10,7 @@ const { executeTask, shouldSkipTask } = TaskManager;
 const _updateProfile = (c: RnvContext, v: string) =>
     new Promise<void>((resolve, reject) => {
         logTask(`_updateProfile:${v}`, chalk().grey);
-        updateProfile(c, v)
+        updateProfile(c)
             .then(() => resolve())
             .catch((e: any) => reject(e));
     });

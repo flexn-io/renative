@@ -13,14 +13,14 @@ export type RnvEngine = {
     runtimeExtraProps: any;
     outputDirName?: string;
     serverDirName: string;
-    package: any;
-    ejectPlatform: any;
+    package: string;
+    // ejectPlatform: null;
 };
 
 export type RnvEnginePlatform = {
     extensions: Array<string>;
-    isWebHosted: boolean;
-    defaultPort: string;
+    isWebHosted?: boolean;
+    defaultPort: number;
 };
 
 export type RnvEngineConfig = {

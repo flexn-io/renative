@@ -1,5 +1,6 @@
-import { EngineManager, Config } from 'rnv';
+import { EngineManager, Config, RnvEngine } from 'rnv';
 import { withRNVMetro, withRNVBabel } from './adapter';
+//@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvPackage from './tasks/task.rnv.package';
@@ -18,7 +19,7 @@ import taskRnvEject from './tasks/task.rnv.eject';
 
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
-export default {
+const engine: RnvEngine = {
     initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
@@ -43,7 +44,9 @@ export default {
         xcodeProjectName: 'RNVApp',
     },
     projectDirName: '',
-    ejectPlatform: null,
+    serverDirName: '',
+    package: '',
+    // ejectPlatform: null,
     platforms: {
         ios: {
             defaultPort: 8082,
@@ -86,6 +89,8 @@ export default {
         },
     },
 };
+
+export default engine;
 
 // Backward compatibility
 const withRNV = withRNVMetro;
