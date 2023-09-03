@@ -1,5 +1,6 @@
 import path from 'path';
-import { FileUtils, Logger, PluginManager, Common } from 'rnv';
+import { FileUtils, Logger, PluginManager, Common, RnvPluginPlatform } from 'rnv';
+import { Context } from './types';
 
 const {
     getEntryFile,
@@ -14,7 +15,14 @@ const { chalk, logTask, logDebug, logWarning } = Logger;
 const { parsePlugins } = PluginManager;
 const { writeCleanFile } = FileUtils;
 
-export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost') =>
+export const parseAppDelegate = (
+    c: Context,
+    platform: string,
+    appFolder: string,
+    appFolderName: string,
+    isBundled = false,
+    ip = 'localhost'
+) =>
     new Promise((resolve) => {
         const newPort = c.runtime?.port;
         logTask('parseAppDelegateSync', `ip:${ip} port:${newPort}`);
@@ -33,8 +41,8 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
         }
 
         // PLUGINS
-        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-            injectPluginSwiftSync(c, pluginPlat, key, pluginPlat.package);
+        parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
+            injectPluginSwiftSync(c, pluginPlat, key);
         });
 
         // BG COLOR

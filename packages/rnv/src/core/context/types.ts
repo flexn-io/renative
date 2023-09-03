@@ -54,6 +54,7 @@ export interface RnvContext<Payload = any> {
         activeTemplate: string;
         engine?: RnvEngine;
         target: string;
+        isTargetTrue: boolean;
         supportedPlatforms: Array<RnvContextPlatform>;
         keepSessionActive: boolean;
         platformBuildsProjectPath: string;
@@ -86,6 +87,20 @@ export interface RnvContext<Payload = any> {
         isWSConfirmed: boolean;
         _skipNativeDepResolutions: boolean;
         targetUDID?: string;
+        xcodeProj?: {
+            id?: string;
+            runScheme?: string;
+            provisioningStyle?: string;
+            deploymentTarget?: string;
+            provisionProfileSpecifier?: any;
+            provisionProfileSpecifiers?: any;
+            excludedArchs?: Array<string>;
+            codeSignIdentity?: string;
+            codeSignIdentities?: Record<string, string>;
+            systemCapabilities?: Record<string, boolean>;
+            teamID?: any;
+            appId?: any;
+        };
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;

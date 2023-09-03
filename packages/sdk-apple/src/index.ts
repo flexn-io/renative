@@ -1,4 +1,4 @@
-import child_process from 'child_process';
+import child_process, { ExecFileOptions } from 'child_process';
 import crypto from 'crypto';
 import inquirer from 'inquirer';
 import path from 'path';
@@ -24,6 +24,7 @@ import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
 import { ejectXcodeProject } from './ejector';
 import { Context } from './types';
+import { ObjectEncodingOptions } from 'fs';
 
 const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
@@ -38,14 +39,14 @@ const { copyAssetsFolder, copyBuildsFolder, parseFonts } = ProjectManager;
 const { IOS, MACOS, TVOS } = Constants;
 const { chalk, logInfo, logTask, logError, logWarning, logDebug, logSuccess, logRaw } = Logger;
 
-export const generateChecksum = (str: string, algorithm?: string, encoding?: string) =>
+export const generateChecksum = (str: string, algorithm?: string, encoding?: 'base64' | 'base64url' | 'hex') =>
     crypto
         .createHash(algorithm || 'md5')
         .update(str, 'utf8')
         .digest(encoding || 'hex');
 
 const checkIfPodsIsRequired = async (c: Context) => {
-    const appFolder = getAppFolder(c, c.platform);
+    const appFolder = getAppFolder(c);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
     if (!fsExistsSync(podChecksumPath)) return true;
     const podChecksum = fsReadFileSync(podChecksumPath).toString();
@@ -191,7 +192,7 @@ export const runXcodeProject = async (c: Context) => {
                 return _checkLockAndExec(c, appPath, appFolderName, runScheme, p);
             };
 
-            if (c.runtime.target !== true) {
+            if (c.runtime.target) {
                 const selectedDevice = devicesArr.find((d) => d.name === c.runtime.target);
                 if (selectedDevice) {
                     return run(selectedDevice);
@@ -221,7 +222,7 @@ export const runXcodeProject = async (c: Context) => {
         }
     } else if (device) {
         p = `--device ${device}`;
-    } else if (c.runtime.target === true) {
+    } else if (c.runtime.isTargetTrue) {
         const devices = devicesArr.map((v) => ({
             name: `${v.name} | ${v.icon} | v: ${chalk().green(v.version)} | udid: ${chalk().grey(v.udid)}${
                 v.isDevice ? chalk().red(' (device)') : ''
@@ -780,22 +781,25 @@ const runAppleLog = (c: Context) =>
     new Promise(() => {
         logTask('runAppleLog');
         const filter = c.program.filter || 'RNV';
+        const opts: ObjectEncodingOptions & ExecFileOptions = {}; //{ stdio: 'inherit', customFds: [0, 1, 2] };
         const child = child_process.execFile(
             'xcrun',
             ['simctl', 'spawn', 'booted', 'log', 'stream', '--predicate', `eventMessage contains "${filter}"`],
-            { stdio: 'inherit', customFds: [0, 1, 2] }
+            opts
         );
         // use event hooks to provide a callback to execute when data are available:
-        child.stdout.on('data', (data) => {
-            const d = data.toString();
-            if (d.toLowerCase().includes('error')) {
-                logRaw(chalk().red(d));
-            } else if (d.toLowerCase().includes('success')) {
-                logRaw(chalk().green(d));
-            } else {
-                logRaw(d);
-            }
-        });
+        if (child.stdout) {
+            child.stdout.on('data', (data) => {
+                const d = data.toString();
+                if (d.toLowerCase().includes('error')) {
+                    logRaw(chalk().red(d));
+                } else if (d.toLowerCase().includes('success')) {
+                    logRaw(chalk().green(d));
+                } else {
+                    logRaw(d);
+                }
+            });
+        }
     });
 
 const configureXcodeProject = async (c: Context) => {

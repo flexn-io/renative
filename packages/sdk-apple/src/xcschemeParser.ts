@@ -1,6 +1,7 @@
 import path from 'path';
 import { FileUtils, Logger, Common } from 'rnv';
 import { getAppFolderName } from './common';
+import { Context } from './types';
 
 const { getAppFolder, getAppTemplateFolder, addSystemInjects, getConfigProp } = Common;
 const { logTask } = Logger;
@@ -8,7 +9,7 @@ const { writeCleanFile } = FileUtils;
 // const xml2js = require('xml2js');
 // const parser = new xml2js.Parser();
 
-export const parseXcscheme = async (c, platform) => {
+export const parseXcscheme = async (c: Context, platform: string) => {
     logTask('parseXcscheme');
     // XCSCHEME
     // const allowProvisioningUpdates = getConfigProp(
@@ -37,7 +38,7 @@ export const parseXcscheme = async (c, platform) => {
     const schemePath = `${appFolderName}.xcodeproj/xcshareddata/xcschemes/${appFolderName}.xcscheme`;
 
     let _commandLineArguments = '';
-    const commandLineArguments = getConfigProp(c, c.platform, 'commandLineArguments');
+    const commandLineArguments = getConfigProp<string[]>(c, c.platform, 'commandLineArguments');
     if (commandLineArguments?.length) {
         commandLineArguments.forEach((arg) => {
             _commandLineArguments += `
@@ -57,7 +58,7 @@ export const parseXcscheme = async (c, platform) => {
 
     addSystemInjects(c, injects);
 
-    writeCleanFile(path.join(appTemplateFolder, schemePath), path.join(appFolder, schemePath), injects, null, c);
+    writeCleanFile(path.join(appTemplateFolder, schemePath), path.join(appFolder, schemePath), injects, undefined, c);
 
     // const parseObj = await parser.parseStringPromise(path.join(appFolder, schemePath));
 };

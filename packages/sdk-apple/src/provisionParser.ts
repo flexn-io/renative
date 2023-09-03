@@ -1,11 +1,12 @@
 import { provision, cert } from 'ios-mobileprovision-finder';
 import path from 'path';
 import { Logger, Common } from 'rnv';
+import { Context } from './types';
 
 const { getConfigProp } = Common;
 const { chalk, logWarning } = Logger;
 
-export const parseProvisioningProfiles = async (c) => {
+export const parseProvisioningProfiles = async (c: Context) => {
     // PROJECT
     const teamID = getConfigProp(c, c.platform, 'teamID');
     const id = getConfigProp(c, c.platform, 'id');

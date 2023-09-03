@@ -64,6 +64,18 @@ export type RenativeConfigPlatform = {
         tab: string;
     };
     urlScheme?: string;
+    xcodeproj?: {
+        sourceFiles: Array<string>;
+        resourceFiles: Array<string>;
+        headerFiles: Array<string>;
+        buildPhases: Array<{
+            shellPath: string;
+            shellScript: string;
+            inputPaths: string;
+        }>;
+        frameworks: Array<string>;
+        buildSettings: Record<string, any>;
+    };
 };
 
 export type RenativeConfigPermissionsList = Array<string>;

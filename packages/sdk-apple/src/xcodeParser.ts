@@ -1,7 +1,20 @@
+import { provision } from 'ios-mobileprovision-finder';
 import path from 'path';
-import { Resolver, Logger, Constants, Common, PluginManager, Prompt, FileUtils } from 'rnv';
+import {
+    Resolver,
+    Logger,
+    Constants,
+    Common,
+    PluginManager,
+    Prompt,
+    FileUtils,
+    logError,
+    RenativeConfigPlatform,
+    RnvPluginPlatform,
+} from 'rnv';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
+import { Context } from './types';
 
 const { getAppFolder, getAppId, getConfigProp, getFlavouredProp } = Common;
 const { fsExistsSync, writeFileSync, fsWriteFileSync } = FileUtils;
@@ -11,7 +24,7 @@ const { inquirerPrompt } = Prompt;
 const { IOS } = Constants;
 const { parsePlugins } = PluginManager;
 
-export const parseXcodeProject = async (c) => {
+export const parseXcodeProject = async (c: Context) => {
     logTask('parseXcodeProject');
     const { platform } = c;
     // PROJECT
@@ -34,13 +47,13 @@ export const parseXcodeProject = async (c) => {
     if (c.runtime.xcodeProj.provisioningStyle !== 'Automatic' && !c.runtime.xcodeProj.provisionProfileSpecifier) {
         const result = await parseProvisioningProfiles(c);
 
-        let eligibleProfile;
+        let eligibleProfile: provision.MobileProvision | undefined;
 
         if (result?.eligable) {
             result.eligable.forEach((v) => {
                 const bundleId = v.Entitlements['application-identifier'];
 
-                if (bundleId === `${c.runtime.xcodeProj.teamID}.${c.runtime.xcodeProj.id}`) {
+                if (bundleId === `${c.runtime.xcodeProj?.teamID}.${c.runtime.xcodeProj?.id}`) {
                     eligibleProfile = v;
                 }
             });
@@ -70,10 +83,15 @@ export const parseXcodeProject = async (c) => {
     await _parseXcodeProject(c, platform);
 };
 
-const _parseXcodeProject = (c, platform) =>
-    new Promise((resolve) => {
+const _parseXcodeProject = (c: Context, platform: string) =>
+    new Promise<void>((resolve) => {
         logTask('_parseXcodeProject');
-        const xcode = require(doResolve('xcode'));
+        const xcodePath = doResolve('xcode');
+        if (!xcodePath) {
+            logError(`Cannot resolve xcode path`);
+            return;
+        }
+        const xcode = require(xcodePath);
         // const xcode = require(`${c.paths.project.nodeModulesDir}/xcode`);
         const appFolder = getAppFolder(c);
         const appFolderName = getAppFolderName(c, platform);
@@ -91,9 +109,9 @@ const _parseXcodeProject = (c, platform) =>
                 systemCapabilities,
                 teamID,
                 appId,
-            } = c.runtime.xcodeProj;
+            } = c.runtime.xcodeProj || {};
 
-            if (c.runtime.xcodeProj.teamID) {
+            if (teamID) {
                 xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', teamID);
             } else {
                 xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
@@ -121,7 +139,7 @@ const _parseXcodeProject = (c, platform) =>
             }
 
             if (excludedArchs) {
-                const tempExcludedArchs = [];
+                const tempExcludedArchs: string[] = [];
 
                 if (typeof excludedArchs.forEach === 'function') {
                     excludedArchs.forEach((arch) => {
@@ -162,7 +180,7 @@ const _parseXcodeProject = (c, platform) =>
             // }
 
             if (systemCapabilities) {
-                const sysCapObj = {};
+                const sysCapObj: Record<string, { enabled: number }> = {};
                 Object.keys(systemCapabilities).forEach((sk) => {
                     const val = systemCapabilities[sk];
                     sysCapObj[sk] = { enabled: val === true ? 1 : 0 };
@@ -171,7 +189,7 @@ const _parseXcodeProject = (c, platform) =>
                 xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
             }
 
-            const xcodeprojObj1 = getConfigProp(c, c.platform, 'xcodeproj');
+            const xcodeprojObj1 = getConfigProp<RenativeConfigPlatform['xcodeproj']>(c, c.platform, 'xcodeproj');
 
             if (xcodeprojObj1?.sourceFiles) {
                 xcodeprojObj1.sourceFiles.forEach((v) => {
@@ -189,8 +207,8 @@ const _parseXcodeProject = (c, platform) =>
             }
 
             // PLUGINS
-            parsePlugins(c, platform, (plugin, pluginPlat) => {
-                const xcodeprojObj = getFlavouredProp(c, pluginPlat, 'xcodeproj');
+            parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat) => {
+                const xcodeprojObj = getFlavouredProp<RenativeConfigPlatform['xcodeproj']>(c, pluginPlat, 'xcodeproj');
                 if (xcodeprojObj) {
                     if (xcodeprojObj.resourceFiles) {
                         xcodeprojObj.resourceFiles.forEach((v) => {

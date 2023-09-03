@@ -36,7 +36,7 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
 
     if (c.program.target !== true) {
         c.runtime.target = c.program.target || c.buildConfig?.defaultTargets?.[c.platform];
-    } else c.runtime.target = c.program.target;
+    } else c.runtime.isTargetTrue = c.program.target;
     c.runtime.scheme = c.program.scheme || 'debug';
     c.runtime.localhost = c.program.hostIp || defaultHost;
     c.runtime.timestamp = c.runtime.timestamp || Date.now();
