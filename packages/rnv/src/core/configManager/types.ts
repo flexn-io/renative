@@ -202,6 +202,7 @@ export type RenativeWebpackConfig = {
                 }
           >
         | boolean;
+    nextTranspileModules?: Array<string>;
 };
 
 export type RenativeConfigBuildScheme = Record<string, any>;

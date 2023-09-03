@@ -8,7 +8,7 @@ const nextTranspile = require('next-transpile-modules');
 // DEPRECATED
 // const withCSS = require('@zeit/next-css');
 
-export const withRNVNext = (config, opts) => {
+export const withRNVNext = (config: any, opts: any) => {
     const cnf = {
         ...config,
         images: {
@@ -17,7 +17,7 @@ export const withRNVNext = (config, opts) => {
         },
         // webpack5: false,
         distDir: process.env.NEXT_DIST_DIR,
-        webpack: (cfg, props) => {
+        webpack: (cfg: any, props: any) => {
             const { isServer } = props;
             const rootPath = process.env.RNV_PROJECT_ROOT || process.cwd();
             if (process.env.RNV_EXTENSIONS) {
@@ -67,7 +67,7 @@ export const withRNVNext = (config, opts) => {
             return cfg;
         },
     };
-    let transModules = [];
+    let transModules: string[] = [];
     // console.log('Transpiled Modules:', process.env.RNV_NEXT_TRANSPILE_MODULES.split(','));
     if (process.env.RNV_NEXT_TRANSPILE_MODULES) {
         transModules = process.env.RNV_NEXT_TRANSPILE_MODULES.split(',');
@@ -93,7 +93,7 @@ export const withRNVNext = (config, opts) => {
     return cnf1;
 };
 
-export const withRNVBabel = (cnf) => {
+export const withRNVBabel = (cnf: any) => {
     const plugins = cnf?.plugins || [];
 
     return {

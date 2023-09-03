@@ -1,5 +1,5 @@
 import open from 'better-opn';
-import { TaskManager, Constants, Logger, PlatformManager, Common } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, Common, RnvTaskFn } from 'rnv';
 import { SDKNext } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
@@ -9,7 +9,7 @@ const { runWebNext } = SDKNext;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { waitForHost } = Common;
 
-export const taskRnvStart = async (c, parentTask, originTask) => {
+export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;
@@ -35,7 +35,7 @@ export const taskRnvStart = async (c, parentTask, originTask) => {
         case WEB:
         case CHROMECAST:
             c.runtime.shouldOpenBrowser = false;
-            return runWebNext(c, port, true);
+            return runWebNext(c);
         default:
             return logErrorPlatform(c);
     }

@@ -89,7 +89,7 @@ export interface RnvContext<Payload = any> {
         targetUDID?: string;
         forceBundleAssets?: boolean;
         webpackTarget?: string;
-        shouldOpenBrowser?: string;
+        shouldOpenBrowser?: boolean;
         xcodeProj?: {
             id?: string;
             runScheme?: string;

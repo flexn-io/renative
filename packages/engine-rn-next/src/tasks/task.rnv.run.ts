@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
 import { SDKNext } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
@@ -7,7 +7,7 @@ const { WEB, CHROMECAST, TASK_RUN, TASK_CONFIGURE, PARAMS } = Constants;
 const { runWebNext } = SDKNext;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
-export const taskRnvRun = async (c, parentTask, originTask) => {
+export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     logTask('taskRnvRun', `parent:${parentTask}`);
 
@@ -19,7 +19,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
         case WEB:
         case CHROMECAST:
             c.runtime.shouldOpenBrowser = true;
-            return runWebNext(c, true);
+            return runWebNext(c);
         default:
             return logErrorPlatform(c);
     }

@@ -1,6 +1,17 @@
 import path from 'path';
 import open from 'better-opn';
-import { Exec, FileUtils, Common, Logger, Constants, EngineManager, PluginManager, ProjectManager } from 'rnv';
+import {
+    Exec,
+    FileUtils,
+    Common,
+    Logger,
+    Constants,
+    EngineManager,
+    PluginManager,
+    ProjectManager,
+    RnvContext,
+    RnvPluginPlatform,
+} from 'rnv';
 
 const { executeAsync } = Exec;
 const { checkPortInUse, getConfigProp, confirmActiveBundler, getPlatformBuildDir, getDevServerHost, waitForHost } =
@@ -13,7 +24,7 @@ const { copyAssetsFolder } = ProjectManager;
 
 const { parsePlugins, getModuleConfigs } = PluginManager;
 
-export const configureNextIfRequired = async (c) => {
+export const configureNextIfRequired = async (c: RnvContext) => {
     logTask('configureNextIfRequired');
     c.runtime.platformBuildsProjectPath = `${getPlatformBuildDir(c)}`;
     const { platformTemplatesDirs, dir } = c.paths.project;
@@ -38,11 +49,11 @@ export const configureNextIfRequired = async (c) => {
 
     // add config
     if (!fsExistsSync(configFile)) {
-        writeCleanFile(path.join(supportFilesDir, NEXT_CONFIG_NAME), configFile, null, null, c);
+        writeCleanFile(path.join(supportFilesDir, NEXT_CONFIG_NAME), configFile, undefined, undefined, c);
     }
 };
 
-export const runWebNext = async (c) => {
+export const runWebNext = async (c: RnvContext) => {
     const { port } = c.runtime;
     logTask('runWebNext', `port:${port}`);
     const { platform } = c;
@@ -79,8 +90,14 @@ export const runWebNext = async (c) => {
     }
 };
 
-const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) =>
-    new Promise((resolve) => {
+const _runWebBrowser = (
+    c: RnvContext,
+    _platform: string,
+    devServerHost: string,
+    port: number,
+    alreadyStarted: boolean
+) =>
+    new Promise<void>((resolve) => {
         logTask('_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`);
         if (!c.runtime.shouldOpenBrowser) return resolve();
         const wait = waitForHost(c, '')
@@ -94,17 +111,17 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) =>
         return resolve();
     });
 
-const getOutputDir = (c) => {
+const getOutputDir = (c: RnvContext) => {
     const distDir = getConfigProp(c, c.platform, 'outputDir');
     return distDir || `platformBuilds/${c.runtime.appId}_${c.platform}/.next`;
 };
 
-const getExportDir = (c) => {
+const getExportDir = (c: RnvContext) => {
     const outputDir = getConfigProp(c, c.platform, 'exportDir');
-    return outputDir || path.join(getPlatformBuildDir(c), 'output');
+    return outputDir || path.join(getPlatformBuildDir(c)!, 'output');
 };
 
-const _checkPagesDir = async (c) => {
+const _checkPagesDir = async (c: RnvContext) => {
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     const distDir = getOutputDir(c);
     if (pagesDir) {
@@ -131,12 +148,12 @@ Alternatively you can configure custom entry folder via ${c.platform}.pagesDir i
     return { NEXT_PAGES_DIR: 'src/app', NEXT_DIST_DIR: distDir };
 };
 
-export const getTranspileModules = (c) => {
+export const getTranspileModules = (c: RnvContext) => {
     const transModules = getConfigProp(c, c.platform, 'webpackConfig', {}).nextTranspileModules || [];
 
     parsePlugins(
         c,
-        c.platform,
+        c.platform as RnvPluginPlatform,
         (plugin, pluginPlat, key) => {
             const webpackConfig = plugin.webpack || plugin.webpackConfig;
             if (webpackConfig) {
@@ -157,7 +174,7 @@ export const getTranspileModules = (c) => {
     return transModules;
 };
 
-export const buildWebNext = async (c) => {
+export const buildWebNext = async (c: RnvContext) => {
     logTask('buildWebNext');
     const env = getConfigProp(c, c.platform, 'environment');
 
@@ -175,7 +192,7 @@ export const buildWebNext = async (c) => {
     return true;
 };
 
-export const runWebDevServer = async (c) => {
+export const runWebDevServer = async (c: RnvContext) => {
     logTask('runWebDevServer');
     const env = getConfigProp(c, c.platform, 'environment');
     const envExt = await _checkPagesDir(c);
@@ -210,7 +227,7 @@ export const deployWebNext = () => {
     return true;
 };
 
-export const exportWebNext = async (c) => {
+export const exportWebNext = async (c: RnvContext) => {
     logTask('exportWebNext');
     // const { platform } = c;
 

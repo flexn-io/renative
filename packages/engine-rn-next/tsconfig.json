@@ -3,8 +3,8 @@
     "compilerOptions": {
         "outDir": "./dist",
         "rootDir": "./src",
-        "allowJs": true,
         "resolveJsonModule": false
     },
-    "include": ["./src/**/*", "./src/**/*.json", "./types.d.ts", "./package.json"]
+    "include": ["./src/**/*", "./src/**/*.json", "./types.d.ts", "./package.json"],
+    "exclude": ["node_modules", "./src/__tests__", "./dist/**/*"]
 }
