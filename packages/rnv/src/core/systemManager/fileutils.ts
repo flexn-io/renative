@@ -187,7 +187,7 @@ export const readCleanFile = (source: string, overrides?: OverridesOptions) => {
 export const copyFileWithInjectSync = (
     source: string,
     target: string,
-    skipOverride: boolean,
+    skipOverride?: boolean,
     injectObject?: OverridesOptions,
     timestampPathsConfig?: TimestampPathsConfig,
     c?: RnvContext
@@ -231,7 +231,7 @@ export const copyFolderRecursiveSync = (
     source: string,
     target: string,
     convertSvg = true,
-    skipOverride: boolean,
+    skipOverride?: boolean,
     injectObject?: OverridesOptions,
     timestampPathsConfig?: TimestampPathsConfig,
     c?: RnvContext,

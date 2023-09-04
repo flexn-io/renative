@@ -1,6 +1,6 @@
 import path from 'path';
 import chalk from 'chalk';
-import { Logger, Common, Exec, Prompt, FileUtils } from 'rnv';
+import { Logger, Common, Exec, Prompt, FileUtils, RnvContext } from 'rnv';
 
 const { logTask, logInfo, logSuccess } = Logger;
 const { executeAsync, commandExistsSync } = Exec;
@@ -11,7 +11,8 @@ const { copyFolderRecursiveSync, cleanFolder, writeCleanFile, fsExistsSync } = F
 const rootPath = path.join(__dirname, './');
 
 class Docker {
-    constructor(c) {
+    c: RnvContext;
+    constructor(c: RnvContext) {
         this.c = c;
     }
 
@@ -19,12 +20,12 @@ class Docker {
         const { c } = this;
         const { runtime, platform, files } = c;
         let outputDir = 'output';
-        let projectBuildWeb = path.join(getPlatformBuildDir(c), outputDir);
+        let projectBuildWeb = path.join(getPlatformBuildDir(c)!, outputDir);
         if (!fsExistsSync(projectBuildWeb)) {
             outputDir = 'project';
-            projectBuildWeb = path.join(getPlatformBuildDir(c), outputDir);
+            projectBuildWeb = path.join(getPlatformBuildDir(c)!, outputDir);
         }
-        const dockerDestination = path.join(getPlatformBuildDir(c), 'export', 'docker');
+        const dockerDestination = path.join(getPlatformBuildDir(c)!, 'export', 'docker');
 
         const dockerFile = path.join(rootPath, '../Dockerfile');
         const nginxConfFile = path.join(rootPath, '../nginx/default.conf');
@@ -39,7 +40,7 @@ class Docker {
         const copiedDockerComposeBuildFile = path.join(dockerDestination, 'docker-compose.build.yml');
         const copiedDockerComposeFile = path.join(dockerDestination, 'docker-compose.yml');
 
-        const imageName = runtime.appId.toLowerCase();
+        const imageName = runtime.appId?.toLowerCase();
         const appVersion = files.project.package.version;
 
         // save the docker files
@@ -79,10 +80,10 @@ class Docker {
             program: { scheme = 'debug' },
         } = c;
 
-        const imageName = runtime.appId.toLowerCase();
+        const imageName = runtime.appId?.toLowerCase();
         const appVersion = files.project.package.version;
 
-        const dockerDestination = path.join(getPlatformBuildDir(c), 'export', 'docker');
+        const dockerDestination = path.join(getPlatformBuildDir(c)!, 'export', 'docker');
         const dockerSaveFile = path.join(dockerDestination, `${imageName}_${appVersion}.tar`);
 
         logTask('docker:Dockerfile:build');
@@ -157,7 +158,7 @@ class Docker {
             }
         }
 
-        const imageName = runtime.appId.toLowerCase();
+        const imageName = runtime.appId?.toLowerCase();
         const imageTag = `${DOCKERHUB_USER}/${imageName}`;
         const appVersion = files.project.package.version;
 
