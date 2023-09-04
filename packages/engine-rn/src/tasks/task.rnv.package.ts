@@ -1,13 +1,22 @@
-import { TaskManager, Constants, Logger, PlatformManager, Common, RnvTaskFn } from 'rnv';
+import {
+    logErrorPlatform,
+    logTask,
+    TASK_CONFIGURE,
+    PARAMS,
+    RnvTaskFn,
+    executeOrSkipTask,
+    shouldSkipTask,
+    TASK_PACKAGE,
+    ANDROID,
+    ANDROID_TV,
+    FIRE_TV,
+    ANDROID_WEAR,
+    MACOS,
+    IOS,
+    getConfigProp,
+} from 'rnv';
 import { packageAndroid } from '@rnv/sdk-android';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const { IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_PACKAGE, TASK_CONFIGURE, PARAMS } = Constants;
-const { getConfigProp } = Common;
-
-const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);

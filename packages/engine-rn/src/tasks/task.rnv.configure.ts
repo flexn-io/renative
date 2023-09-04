@@ -1,16 +1,24 @@
-import { TaskManager, Constants, Logger, PlatformManager, NPMUtils, TemplateManager, RnvTaskFn } from 'rnv';
+import {
+    logErrorPlatform,
+    logTask,
+    TASK_PLATFORM_CONFIGURE,
+    TASK_CONFIGURE,
+    PARAMS,
+    RnvTaskFn,
+    configureEntryPoint,
+    executeTask,
+    shouldSkipTask,
+    ANDROID,
+    ANDROID_TV,
+    FIRE_TV,
+    ANDROID_WEAR,
+    MACOS,
+    IOS,
+    jetifyIfRequired,
+} from 'rnv';
 import { configureGradleProject } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 import { configureMetroConfigs } from '../commonEngine';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const { jetifyIfRequired } = NPMUtils;
-const { IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS } =
-    Constants;
-
-const { executeTask, shouldSkipTask } = TaskManager;
-const { configureEntryPoint } = TemplateManager;
 
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');

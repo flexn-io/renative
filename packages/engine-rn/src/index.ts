@@ -1,4 +1,3 @@
-import { EngineManager, Config, RnvEngine } from 'rnv';
 import { withRNVMetro, withRNVBabel } from './adapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
@@ -16,8 +15,7 @@ import taskRnvCryptoUpdateProfiles from './tasks/task.rnv.crypto.updateProfiles'
 import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfiles';
 import taskRnvLog from './tasks/task.rnv.log';
 import taskRnvEject from './tasks/task.rnv.eject';
-
-const { generateEngineTasks, generateEngineExtensions } = EngineManager;
+import { Config, generateEngineExtensions, generateEngineTasks, RnvEngine } from 'rnv';
 
 const Engine: RnvEngine = {
     initializeRuntimeConfig: (c) => Config.initializeConfig(c),

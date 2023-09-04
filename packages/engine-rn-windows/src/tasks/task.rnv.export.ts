@@ -1,12 +1,19 @@
-import { Constants, Logger, PlatformManager, RnvTaskFn, TaskManager } from 'rnv';
+import {
+    logErrorPlatform,
+    logTask,
+    WINDOWS,
+    XBOX,
+    PARAMS,
+    RnvTaskFn,
+    TASK_BUILD,
+    TASK_EXPORT,
+    executeOrSkipTask,
+    shouldSkipTask,
+} from 'rnv';
 import { SDKWindows } from '../sdks';
 
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const { WINDOWS, XBOX, TASK_BUILD, TASK_EXPORT, PARAMS } = Constants;
 // TODO Implement export windows app (currently it only seems to be available through VS Studio itself...)
 const { packageWindowsApp, clearWindowsTemporaryFiles } = SDKWindows;
-const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);

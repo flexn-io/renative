@@ -1,12 +1,19 @@
-import { TaskManager, Constants, Logger, PlatformManager, Common, RnvTaskFn } from 'rnv';
+import {
+    logErrorPlatform,
+    logTask,
+    WINDOWS,
+    XBOX,
+    TASK_CONFIGURE,
+    PARAMS,
+    RnvTaskFn,
+    executeOrSkipTask,
+    shouldSkipTask,
+    getConfigProp,
+    TASK_PACKAGE,
+} from 'rnv';
 import { SDKWindows } from '../sdks';
 
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const { WINDOWS, XBOX, TASK_PACKAGE, TASK_CONFIGURE, PARAMS } = Constants;
-const { getConfigProp } = Common;
 const { packageBundleForWindows } = SDKWindows;
-const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);

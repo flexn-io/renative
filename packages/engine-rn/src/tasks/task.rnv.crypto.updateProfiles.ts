@@ -1,11 +1,17 @@
-import { TaskManager, Constants, Logger, ConfigManager, RnvTaskFn, RnvContext } from 'rnv';
+import {
+    logTask,
+    PARAMS,
+    RnvTaskFn,
+    executeTask,
+    shouldSkipTask,
+    chalk,
+    IOS,
+    RnvContext,
+    listAppConfigsFoldersSync,
+    TASK_PROJECT_CONFIGURE,
+    TASK_CRYPTO_UPDATE_PROFILES,
+} from 'rnv';
 import { updateProfile } from '@rnv/sdk-apple';
-
-const { listAppConfigsFoldersSync } = ConfigManager;
-
-const { chalk, logTask } = Logger;
-const { IOS, TASK_CRYPTO_UPDATE_PROFILES, TASK_PROJECT_CONFIGURE, PARAMS } = Constants;
-const { executeTask, shouldSkipTask } = TaskManager;
 
 const _updateProfile = (c: RnvContext, v: string) =>
     new Promise<void>((resolve, reject) => {

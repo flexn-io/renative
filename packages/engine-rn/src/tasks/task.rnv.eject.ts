@@ -1,14 +1,22 @@
-import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
+import {
+    logErrorPlatform,
+    logTask,
+    PARAMS,
+    RnvTaskFn,
+    executeOrSkipTask,
+    shouldSkipTask,
+    TASK_PACKAGE,
+    ANDROID,
+    ANDROID_TV,
+    FIRE_TV,
+    ANDROID_WEAR,
+    MACOS,
+    IOS,
+} from 'rnv';
 import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
 
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const { IOS, MACOS, ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TASK_PACKAGE, PARAMS } = Constants;
-
 const TASK_EJECT = 'eject';
-
-const { shouldSkipTask, executeOrSkipTask } = TaskManager;
 
 export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvEject');

@@ -1,13 +1,21 @@
 import path from 'path';
 import axios from 'axios';
-import { TaskManager, Constants, Logger, Common, FileUtils, Prompt, Spinner, RnvContext } from 'rnv';
-
-const { inquirerPrompt } = Prompt;
-const { getConfigProp, confirmActiveBundler } = Common;
-const { chalk, logTask, logInfo, logWarning } = Logger;
-const { fsExistsSync, copyFileSync } = FileUtils;
-const { TASK_START, RN_CLI_CONFIG_NAME } = Constants;
-const { executeTask } = TaskManager;
+import {
+    logTask,
+    executeTask,
+    chalk,
+    logInfo,
+    confirmActiveBundler,
+    TASK_START,
+    getConfigProp,
+    RnvContext,
+    fsExistsSync,
+    logWarning,
+    inquirerPrompt,
+    RN_CLI_CONFIG_NAME,
+    Spinner,
+} from 'rnv';
+import { copyFileSync } from 'fs';
 
 let keepRNVRunning = false;
 
@@ -76,7 +84,7 @@ to your ${chalk().white('/.metro.config.js')} instead and delete deprecated file
     // Check rn-cli-config
     if (!fsExistsSync(c.paths.project.rnCliConfig)) {
         logInfo(`Your rn-cli config file ${chalk().white(c.paths.project.rnCliConfig)} is missing! INSTALLING...DONE`);
-        copyFileSync(path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME), c.paths.project.rnCliConfig);
+        copyFileSync(path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME), c.paths.project.rnCliConfig!);
     }
 };
 
