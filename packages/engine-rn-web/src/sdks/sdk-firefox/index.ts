@@ -1,6 +1,6 @@
 import { buildCoreWebpackProject, configureCoreWebProject } from '@rnv/sdk-webpack';
 import path from 'path';
-import { Common, FileUtils, Logger, PlatformManager, ProjectManager, SDKManager } from 'rnv';
+import { Common, FileUtils, Logger, PlatformManager, ProjectManager, RnvContext, SDKManager } from 'rnv';
 
 const { getPlatformProjectDir, getAppTitle, getAppDescription, getAppAuthor } = Common;
 const { fsWriteFileSync, fsReadFileSync } = FileUtils;
@@ -10,7 +10,7 @@ const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
 
 const { launchKaiOSSimulator } = SDKManager.Kaios;
 
-export const configureKaiOSProject = async (c) => {
+export const configureKaiOSProject = async (c: RnvContext) => {
     logTask('configureKaiOSProject');
 
     const { platform } = c;
@@ -20,13 +20,13 @@ export const configureKaiOSProject = async (c) => {
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);
-    await configureCoreWebProject(c);
+    await configureCoreWebProject();
     await _configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 
-const _configureProject = (c) =>
-    new Promise((resolve) => {
+const _configureProject = (c: RnvContext) =>
+    new Promise<void>((resolve) => {
         logTask('configureProject');
         const { platform } = c;
 
@@ -34,8 +34,8 @@ const _configureProject = (c) =>
 
         const appFolder = getPlatformProjectDir(c);
 
-        const manifestFilePath = path.join(appFolder, 'manifest.webapp');
-        const manifestFile = JSON.parse(fsReadFileSync(manifestFilePath));
+        const manifestFilePath = path.join(appFolder!, 'manifest.webapp');
+        const manifestFile = JSON.parse(fsReadFileSync(manifestFilePath).toString());
 
         manifestFile.name = `${getAppTitle(c, platform)}`;
         manifestFile.description = `${getAppDescription(c, platform)}`;
@@ -46,16 +46,15 @@ const _configureProject = (c) =>
         resolve();
     });
 
-export const runFirefoxProject = async (c) => {
+export const runFirefoxProject = async (c: RnvContext) => {
     logTask('runFirefoxProject');
-    const { platform } = c;
 
     await buildCoreWebpackProject(c);
-    await launchKaiOSSimulator(c, platform);
+    await launchKaiOSSimulator(c);
     return true;
 };
 
-export const buildFirefoxProject = async (c) => {
+export const buildFirefoxProject = async (c: RnvContext) => {
     logTask('buildFirefoxProject');
 
     await buildCoreWebpackProject(c);

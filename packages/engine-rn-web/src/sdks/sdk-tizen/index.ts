@@ -1,6 +1,17 @@
 import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
 import path from 'path';
-import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, SDKManager } from 'rnv';
+import {
+    Common,
+    Constants,
+    Exec,
+    FileUtils,
+    Logger,
+    OverridesOptions,
+    PlatformManager,
+    ProjectManager,
+    RnvContext,
+    SDKManager,
+} from 'rnv';
 import semver from 'semver';
 
 const { execCLI } = Exec;
@@ -26,8 +37,8 @@ const { runTizenSimOrDevice, createDevelopTizenCertificate, DEFAULT_CERTIFICATE_
 
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
 
-export const configureTizenGlobal = (c) =>
-    new Promise((resolve, reject) => {
+export const configureTizenGlobal = (c: RnvContext) =>
+    new Promise<void>((resolve, reject) => {
         logTask('configureTizenGlobal');
         // Check Tizen Cert
         // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
@@ -44,7 +55,7 @@ export const configureTizenGlobal = (c) =>
         // }
     });
 
-const _runTizenSimOrDevice = async (c) => {
+const _runTizenSimOrDevice = async (c: RnvContext) => {
     try {
         await runTizenSimOrDevice(c, buildCoreWebpackProject);
     } catch (e) {
@@ -54,7 +65,7 @@ const _runTizenSimOrDevice = async (c) => {
     return true;
 };
 
-export const runTizen = async (c, target) => {
+export const runTizen = async (c: RnvContext, target: string) => {
     logTask('runTizen', `target:${target}`);
     const { platform } = c;
     const { hosted } = c.program;
@@ -106,19 +117,19 @@ export const runTizen = async (c, target) => {
     }
 };
 
-export const buildTizenProject = async (c) => {
+export const buildTizenProject = async (c: RnvContext) => {
     logTask('buildTizenProject');
 
     const { platform } = c;
 
-    const platformConfig = c.buildConfig.platforms[platform];
-    const tDir = getPlatformProjectDir(c);
+    const platformConfig = c.buildConfig.platforms?.[platform];
+    const tDir = getPlatformProjectDir(c)!;
 
     await buildCoreWebpackProject(c);
     if (!c.program.hosted) {
         const tOut = path.join(tDir, 'output');
         const tBuild = path.join(tDir, 'build');
-        const certProfile = platformConfig.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
+        const certProfile = platformConfig?.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
         await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
         await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
@@ -131,7 +142,7 @@ export const buildTizenProject = async (c) => {
 
 let _isGlobalConfigured = false;
 
-export const configureTizenProject = async (c) => {
+export const configureTizenProject = async (c: RnvContext) => {
     logTask('configureTizenProject');
 
     const { platform } = c;
@@ -148,30 +159,30 @@ export const configureTizenProject = async (c) => {
     }
 
     await copyAssetsFolder(c, platform);
-    await configureCoreWebProject(c);
+    await configureCoreWebProject();
     await _configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 
-const _configureProject = (c) =>
-    new Promise((resolve) => {
+const _configureProject = (c: RnvContext) =>
+    new Promise<void>((resolve) => {
         logTask('_configureProject');
         const { platform } = c;
 
         const configFile = 'config.xml';
-        const p = c.buildConfig.platforms[platform];
+        const p = c.buildConfig.platforms?.[platform];
 
-        const injects = [
-            { pattern: '{{PACKAGE}}', override: p.package },
-            { pattern: '{{ID}}', override: p.id },
-            { pattern: '{{APP_NAME}}', override: p.appName },
-            { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) },
+        const injects: OverridesOptions = [
+            { pattern: '{{PACKAGE}}', override: p?.package || '' },
+            { pattern: '{{ID}}', override: p?.id || '' },
+            { pattern: '{{APP_NAME}}', override: p?.appName || '' },
+            { pattern: '{{APP_VERSION}}', override: semver.valid(semver.coerce(getAppVersion(c, platform))) || '' },
         ];
 
         addSystemInjects(c, injects);
 
-        const file = path.join(getPlatformProjectDir(c), configFile);
-        writeCleanFile(file, file, injects, null, c);
+        const file = path.join(getPlatformProjectDir(c)!, configFile);
+        writeCleanFile(file, file, injects, undefined, c);
 
         resolve();
     });

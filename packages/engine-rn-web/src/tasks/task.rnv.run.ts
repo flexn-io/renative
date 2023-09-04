@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager, FileUtils, Common } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, FileUtils, Common, RnvContext, RnvTaskFn } from 'rnv';
 import ip from 'ip';
 import path from 'path';
 import { runChromecast, runWebpackServer } from '@rnv/sdk-webpack';
@@ -30,19 +30,19 @@ const { runFirefoxProject } = SDKFirefox;
 const { writeCleanFile } = FileUtils;
 const { executeTask, executeOrSkipTask, shouldSkipTask } = TaskManager;
 
-const _configureHostedIfRequired = async (c) => {
+const _configureHostedIfRequired = async (c: RnvContext) => {
     logTask('_configureHostedIfRequired');
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
     const hostedShellHeaders = getConfigProp(c, c.platform, 'hostedShellHeaders', '');
 
-    if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir(c), 'index.html'))) {
+    if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir(c)!, 'index.html'))) {
         logDebug('Running hosted build');
         const { rnv } = c.paths;
         const ipAddress = c.program.hostIp || ip.address();
         writeCleanFile(
             path.join(rnv.dir, 'coreTemplateFiles', 'appShell', 'index.html'),
-            path.join(getPlatformProjectDir(c), 'index.html'),
+            path.join(getPlatformProjectDir(c)!, 'index.html'),
             [
                 {
                     pattern: '{{DEV_SERVER}}',
@@ -53,13 +53,13 @@ const _configureHostedIfRequired = async (c) => {
                     override: String(hostedShellHeaders || ''),
                 },
             ],
-            null,
+            undefined,
             c
         );
     }
 };
 
-export const taskRnvRun = async (c, parentTask, originTask) => {
+export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
@@ -101,7 +101,7 @@ export const taskRnvRun = async (c, parentTask, originTask) => {
             if (!c.program.only) {
                 await _configureHostedIfRequired(c);
             }
-            return runChromecast(c, platform, target);
+            return runChromecast(c);
         default:
             return logErrorPlatform(c);
     }

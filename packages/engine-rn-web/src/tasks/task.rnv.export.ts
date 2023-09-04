@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
 import { exportWeb } from '@rnv/sdk-webpack';
 
 const { logErrorPlatform } = PlatformManager;
@@ -20,7 +20,7 @@ const {
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
-export const taskRnvExport = async (c, parentTask, originTask) => {
+export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);
 
     const { platform } = c;
@@ -31,7 +31,7 @@ export const taskRnvExport = async (c, parentTask, originTask) => {
 
     switch (platform) {
         case WEB:
-            return exportWeb(c);
+            return exportWeb();
         default:
             logErrorPlatform(c);
     }

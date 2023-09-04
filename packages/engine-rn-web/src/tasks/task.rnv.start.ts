@@ -1,6 +1,6 @@
 import { runWebpackServer } from '@rnv/sdk-webpack';
 import open from 'better-opn';
-import { Common, Constants, Logger, PlatformManager, TaskManager } from 'rnv';
+import { Common, Constants, Logger, PlatformManager, RnvTaskFn, TaskManager } from 'rnv';
 
 const { getConfigProp, waitForHost } = Common;
 const { logErrorPlatform } = PlatformManager;
@@ -24,7 +24,7 @@ const {
 
 const { executeTask, shouldSkipTask } = TaskManager;
 
-export const taskRnvStart = async (c, parentTask, originTask) => {
+export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;

@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger } from 'rnv';
+import { TaskManager, Constants, Logger, RnvTaskFn } from 'rnv';
 
 const { logTask } = Logger;
 const {
@@ -18,7 +18,7 @@ const {
 
 const { executeOrSkipTask } = TaskManager;
 
-export const taskRnvPackage = async (c, parentTask, originTask) => {
+export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);
 
     await executeOrSkipTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);

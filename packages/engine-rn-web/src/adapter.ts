@@ -1,4 +1,4 @@
-export const withRNVBabel = (cnf) => {
+export const withRNVBabel = (cnf: any) => {
     const plugins = cnf?.plugins || [];
 
     return {

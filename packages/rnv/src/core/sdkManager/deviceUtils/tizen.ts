@@ -212,7 +212,10 @@ const _composeDevicesString = (devices: Array<any>) =>
 //     }
 // };
 
-export const runTizenSimOrDevice = async (c: RnvContext, buildCoreWebpackProject?: () => Promise<void>) => {
+export const runTizenSimOrDevice = async (
+    c: RnvContext,
+    buildCoreWebpackProject?: (c: RnvContext) => Promise<void>
+) => {
     const { hosted } = c.program;
     const { target, engine } = c.runtime;
     const { platform } = c;
@@ -289,7 +292,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
 
         if (!isLightningEngine && buildCoreWebpackProject) {
             // lightning engine handles the build and packaging
-            !isHosted && (await buildCoreWebpackProject());
+            !isHosted && (await buildCoreWebpackProject(c));
             await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
             await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
         }

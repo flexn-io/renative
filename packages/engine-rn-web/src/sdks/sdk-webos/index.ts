@@ -1,6 +1,16 @@
 import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
 import path from 'path';
-import { Common, Constants, Exec, FileUtils, Logger, PlatformManager, ProjectManager, SDKManager } from 'rnv';
+import {
+    Common,
+    Constants,
+    Exec,
+    FileUtils,
+    Logger,
+    PlatformManager,
+    ProjectManager,
+    RnvContext,
+    SDKManager,
+} from 'rnv';
 import semver from 'semver';
 
 const { writeCleanFile } = FileUtils;
@@ -25,7 +35,7 @@ const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
 const { CLI_WEBOS_ARES_PACKAGE, REMOTE_DEBUGGER_ENABLED_PLATFORMS } = Constants;
 const { runWebosSimOrDevice } = SDKManager.Webos;
 
-export const runWebOS = async (c) => {
+export const runWebOS = async (c: RnvContext) => {
     const { hosted } = c.program;
     const { target } = c.runtime;
     const { platform } = c;
@@ -85,36 +95,36 @@ export const runWebOS = async (c) => {
     }
 };
 
-export const buildWebOSProject = async (c) => {
+export const buildWebOSProject = async (c: RnvContext) => {
     logTask('buildWebOSProject');
 
     await buildCoreWebpackProject(c);
 
     if (!c.program.hosted) {
         const tDir = getPlatformProjectDir(c);
-        const tOut = path.join(getPlatformBuildDir(c), 'output');
+        const tOut = path.join(getPlatformBuildDir(c)!, 'output');
         await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
         logSuccess(`Your IPK package is located in ${chalk().cyan(tOut)} .`);
     }
 };
 
-export const configureWebOSProject = async (c) => {
+export const configureWebOSProject = async (c: RnvContext) => {
     logTask('configureWebOSProject');
 
     const { platform } = c;
 
-    c.runtime.platformBuildsProjectPath = getPlatformProjectDir(c);
+    c.runtime.platformBuildsProjectPath = getPlatformProjectDir(c)!;
 
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);
-    await configureCoreWebProject(c);
+    await configureCoreWebProject();
     await _configureProject(c);
     return copyBuildsFolder(c, platform);
 };
 
-const _configureProject = async (c) => {
+const _configureProject = async (c: RnvContext) => {
     logTask('_configureProject');
     const { platform } = c;
 
@@ -153,9 +163,9 @@ const _configureProject = async (c) => {
 
     addSystemInjects(c, injects);
 
-    const file = path.join(getPlatformProjectDir(c), configFile);
+    const file = path.join(getPlatformProjectDir(c)!, configFile);
 
-    writeCleanFile(file, file, injects, null, c);
+    writeCleanFile(file, file, injects, undefined, c);
 
     return true;
 };
