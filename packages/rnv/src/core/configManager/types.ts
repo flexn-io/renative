@@ -41,6 +41,13 @@ export type RenativeConfigFile = {
     enableAnalytics?: boolean;
     workspaceAppConfigsDir?: string;
     permissions: Record<string, RenativeConfigPermission>;
+    //Integrations
+    requiredBackendOutputs?: Array<{
+        toKey: string;
+        toFile: string;
+        fromKey: string;
+    }>;
+    backendServiceConfig: any;
 };
 
 export type RenativeConfigPermission = Record<string, Record<string, string>>;
@@ -79,6 +86,17 @@ export type RenativeConfigPlatform = {
     };
     //Tizen
     package?: string;
+    //Integration ftp
+    deploy?: {
+        ftp?: {
+            type?: string;
+            localRoot?: string;
+            remoteRoot?: string;
+            include?: string[];
+            exclude?: string[];
+            deleteRemote?: boolean;
+        };
+    };
 };
 
 export type RenativeConfigPermissionsList = Array<string>;

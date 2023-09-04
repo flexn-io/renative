@@ -1,4 +1,5 @@
 import taskRnvVercelDeploy from './tasks/task.rnv.ftp.deploy';
+//@ts-ignore
 import config from '../renative.integration.json';
 
 const TASKS = [taskRnvVercelDeploy];
