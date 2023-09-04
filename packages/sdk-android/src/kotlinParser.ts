@@ -1,8 +1,5 @@
 import path from 'path';
-import { Common, FileUtils, Logger, OverridesOptions, RnvContext } from 'rnv';
-import { Payload } from './types';
-
-const {
+import {
     getAppFolder,
     getAppId,
     getBuildFilePath,
@@ -11,16 +8,18 @@ const {
     getConfigProp,
     getIP,
     addSystemInjects,
-} = Common;
-const { logWarning } = Logger;
-const { writeCleanFile } = FileUtils;
+    logWarning,
+    writeCleanFile,
+    OverridesOptions,
+} from 'rnv';
+import { Context } from './types';
 
 const JS_BUNDLE_DEFAULTS: any = {
     // Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     androidwear: '"assets://index.androidwear.bundle"',
 };
 
-export const parseMainApplicationSync = (c: RnvContext<Payload>) => {
+export const parseMainApplicationSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
@@ -123,7 +122,7 @@ export const parseMainActivitySync = (c: any) => {
     );
 };
 
-export const parseSplashActivitySync = (c: RnvContext<Payload>) => {
+export const parseSplashActivitySync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
     const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';

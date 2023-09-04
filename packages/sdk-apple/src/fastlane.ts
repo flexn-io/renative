@@ -1,13 +1,8 @@
 import path from 'path';
-import { Exec, Logger, Constants, Common, RnvContext } from 'rnv';
-import { Payload } from './types';
+import { getConfigProp, getAppId, chalk, logTask, logWarning, logSuccess, executeAsync, IOS } from 'rnv';
+import { Context } from './types';
 
-const { getConfigProp, getAppId } = Common;
-const { chalk, logTask, logWarning, logSuccess } = Logger;
-const { executeAsync } = Exec;
-const { IOS } = Constants;
-
-export const registerDevice = async (c: RnvContext<Payload>) => {
+export const registerDevice = async (c: Context) => {
     logTask(`registerDevice:${c.platform}`);
 
     const teamID = getConfigProp(c, c.platform, 'teamID');
@@ -30,7 +25,7 @@ export const registerDevice = async (c: RnvContext<Payload>) => {
     }
 };
 
-export const updateProfile = async (c: RnvContext<Payload>) => {
+export const updateProfile = async (c: Context) => {
     logTask(`updateProfile`, chalk().grey);
 
     // TODO: run trough all schemes

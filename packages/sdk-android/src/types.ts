@@ -1,4 +1,4 @@
-import { RenativeConfigPluginPlatform } from 'rnv';
+import { RenativeConfigPluginPlatform, RnvContext } from 'rnv';
 
 export type Payload = {
     pluginConfigAndroid: {
@@ -52,3 +52,5 @@ export type Payload = {
         };
     };
 };
+
+export type Context = RnvContext<Payload>;

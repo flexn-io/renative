@@ -1,11 +1,18 @@
 import path from 'path';
-import { FileUtils, Common, RnvContext, RenativeConfigPluginPlatform } from 'rnv';
-import { Payload } from './types';
+import {
+    RenativeConfigPluginPlatform,
+    getAppFolder,
+    getAppTitle,
+    getBuildFilePath,
+    getConfigProp,
+    sanitizeColor,
+    addSystemInjects,
+    writeFileSync,
+    writeCleanFile,
+} from 'rnv';
+import { Context } from './types';
 
-const { getAppFolder, getAppTitle, getBuildFilePath, getConfigProp, sanitizeColor, addSystemInjects } = Common;
-const { writeFileSync, writeCleanFile } = FileUtils;
-
-export const parseValuesStringsSync = (c: RnvContext<Payload>) => {
+export const parseValuesStringsSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const stringsPath = 'app/src/main/res/values/strings.xml';
     let strings = '<resources>\n';
@@ -17,7 +24,7 @@ export const parseValuesStringsSync = (c: RnvContext<Payload>) => {
     writeFileSync(path.join(appFolder, stringsPath), strings);
 };
 
-export const parseValuesColorsSync = (c: RnvContext<Payload>) => {
+export const parseValuesColorsSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const stringsPath = 'app/src/main/res/values/colors.xml';
 
@@ -39,7 +46,7 @@ export const parseValuesColorsSync = (c: RnvContext<Payload>) => {
     );
 };
 
-export const injectPluginXmlValuesSync = (c: RnvContext<Payload>, plugin: RenativeConfigPluginPlatform) => {
+export const injectPluginXmlValuesSync = (c: Context, plugin: RenativeConfigPluginPlatform) => {
     const rStrings = plugin.ResourceStrings?.children;
     if (rStrings) {
         rStrings.forEach((obj) => {

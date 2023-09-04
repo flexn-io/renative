@@ -1,9 +1,7 @@
-import { Common, RnvContext } from 'rnv';
-import { Payload } from './types';
+import { getConfigProp } from 'rnv';
+import { Context } from './types';
 
-const { getConfigProp } = Common;
-
-export const getAppFolderName = (c: RnvContext<Payload>, platform: string) => {
+export const getAppFolderName = (c: Context, platform: string) => {
     // NOTE: DEPRECATED
     let projectFolder = getConfigProp(c, platform, 'projectFolder');
     if (projectFolder) {

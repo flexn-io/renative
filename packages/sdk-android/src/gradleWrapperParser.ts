@@ -1,12 +1,8 @@
 import path from 'path';
-import { FileUtils, Logger, Common, RnvContext } from 'rnv';
-import { Payload } from './types';
+import { getAppFolder, logTask, getConfigProp, addSystemInjects, writeCleanFile, getBuildFilePath } from 'rnv';
+import { Context } from './types';
 
-const { getAppFolder, getBuildFilePath, getConfigProp, addSystemInjects } = Common;
-const { writeCleanFile } = FileUtils;
-const { logTask } = Logger;
-
-export const parseGradleWrapperSync = (c: RnvContext<Payload>) => {
+export const parseGradleWrapperSync = (c: Context) => {
     logTask('parseGradleWrapperSync');
 
     const appFolder = getAppFolder(c);

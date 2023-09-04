@@ -1,18 +1,17 @@
 import path from 'path';
-import { Common, FileUtils, PluginManager, Resolver, RnvContext, RnvPluginPlatform } from 'rnv';
-// import { logWarning } from 'rnv/dist/core/systemManager/logger';
-
-const {
+import {
+    PluginManager,
+    RnvContext,
+    RnvPluginPlatform,
     fsExistsSync,
     copyFileSync,
     fsWriteFileSync,
     fsReadFileSync,
     copyFolderContentsRecursiveSync,
-    // cleanEmptyFoldersRecursively,
-    // fsMkdirSync,
-} = FileUtils;
-const { getAppFolder, getConfigProp } = Common;
-const { doResolvePath } = Resolver;
+    getAppFolder,
+    getConfigProp,
+    doResolvePath,
+} from 'rnv';
 
 const {
     parsePlugins,

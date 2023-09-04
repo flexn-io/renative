@@ -12,7 +12,7 @@ import {
     RnvPlugin,
     Utils,
 } from 'rnv';
-import { Payload } from './types';
+import { Context } from './types';
 
 const { getAppFolder, getAppVersion, getAppVersionCode, getAppId, getBuildFilePath, getConfigProp, addSystemInjects } =
     Common;
@@ -22,7 +22,7 @@ const { chalk, logTask, logWarning, logDebug } = Logger;
 const { sanitizePluginPath, includesPluginPath } = PluginManager;
 const { isSystemWin } = Utils;
 
-export const parseBuildGradleSync = (c: RnvContext<Payload>) => {
+export const parseBuildGradleSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
 
@@ -109,7 +109,7 @@ export const parseBuildGradleSync = (c: RnvContext<Payload>) => {
     );
 };
 
-const setReactNativeEngineDefault = (c: RnvContext<Payload>) => {
+const setReactNativeEngineDefault = (c: Context) => {
     c.payload.pluginConfigAndroid.injectReactNativeEngine = `
 maven { url "${doResolve('react-native', true, { forceForwardPaths: true })}/android" }
 maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
@@ -120,7 +120,7 @@ maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist
     c.payload.pluginConfigAndroid.injectHermes = '    enableHermes: false,';
 };
 
-const setReactNativeEngineHermes = (c: RnvContext<Payload>) => {
+const setReactNativeEngineHermes = (c: Context) => {
     c.payload.pluginConfigAndroid.injectReactNativeEngine = `
   maven { url "${doResolve('react-native', true, { forceForwardPaths: true })}/android" }
   maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
@@ -143,7 +143,7 @@ deleteDebugFilesForVariant: { false },
     `;
 };
 
-const setReactNativeEngineV8 = (c: RnvContext<Payload>) => {
+const setReactNativeEngineV8 = (c: Context) => {
     c.payload.pluginConfigAndroid.injectReactNativeEngine = `
   maven { url "${doResolve('react-native', true, { forceForwardPaths: true })}/android" }
   maven { url("${doResolve('jsc-android', true, { forceForwardPaths: true })}/dist") }
@@ -168,7 +168,7 @@ const setReactNativeEngineV8 = (c: RnvContext<Payload>) => {
     exclude '**/libjsc.so'`;
 };
 
-export const parseAppBuildGradleSync = (c: RnvContext<Payload>) => {
+export const parseAppBuildGradleSync = (c: Context) => {
     logTask('parseAppBuildGradleSync');
     const appFolder = getAppFolder(c);
     const { platform } = c;
@@ -504,7 +504,7 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     );
 };
 
-export const parseSettingsGradleSync = (c: RnvContext<Payload>) => {
+export const parseSettingsGradleSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
     const injects = [
@@ -529,7 +529,7 @@ export const parseSettingsGradleSync = (c: RnvContext<Payload>) => {
     );
 };
 
-export const parseGradlePropertiesSync = (c: RnvContext<Payload>) => {
+export const parseGradlePropertiesSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
     // GRADLE.PROPERTIES
@@ -571,7 +571,7 @@ export const parseGradlePropertiesSync = (c: RnvContext<Payload>) => {
 };
 
 export const injectPluginGradleSync = (
-    c: RnvContext<Payload>,
+    c: Context,
     pluginRoot: RnvPlugin,
     plugin: RenativeConfigPluginPlatform,
     key: string

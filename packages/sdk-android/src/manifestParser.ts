@@ -1,16 +1,7 @@
 import path from 'path';
 import {
-    FileUtils,
-    Common,
-    Logger,
-    PluginManager,
-    RnvContext,
     RenativeConfigPermissionsList,
     RnvPluginPlatform,
-} from 'rnv';
-import { Payload } from './types';
-
-const {
     getAppFolder,
     getAppId,
     getBuildFilePath,
@@ -18,10 +9,15 @@ const {
     getFlavouredProp,
     addSystemInjects,
     getConfigPropArray,
-} = Common;
-const { logTask, logError, logWarning, logDebug } = Logger;
-const { readObjectSync, writeCleanFile } = FileUtils;
-const { parsePlugins } = PluginManager;
+    logTask,
+    logError,
+    logWarning,
+    logDebug,
+    readObjectSync,
+    writeCleanFile,
+    parsePlugins,
+} from 'rnv';
+import { Context } from './types';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
@@ -141,7 +137,7 @@ type ManifestFeature = {
 //     children:
 // }
 
-const _mergeFeatures = (c: RnvContext<Payload>, baseManifestFile: any, configKey: string, value: boolean) => {
+const _mergeFeatures = (c: Context, baseManifestFile: any, configKey: string, value: boolean) => {
     const features = getConfigProp<string[]>(c, c.platform, configKey);
 
     if (features) {
@@ -157,7 +153,7 @@ const _mergeFeatures = (c: RnvContext<Payload>, baseManifestFile: any, configKey
     }
 };
 
-export const parseAndroidManifestSync = (c: RnvContext<Payload>) => {
+export const parseAndroidManifestSync = (c: Context) => {
     logTask('parseAndroidManifestSync');
     const { platform } = c;
 
