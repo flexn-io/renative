@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager, TemplateManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, TemplateManager, RnvTaskFn } from 'rnv';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 import { configureMetroConfigs } from '../commonEngine';
 
@@ -9,7 +9,7 @@ const { MACOS, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS } = Constants;
 const { executeTask, shouldSkipTask } = TaskManager;
 const { configureEntryPoint } = TemplateManager;
 
-export const taskRnvConfigure = async (c, parentTask, originTask) => {
+export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
 
     await configureMetroConfigs(c);

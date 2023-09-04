@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager, Common } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, Common, RnvTaskFn } from 'rnv';
 import { runXcodeProject } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
 
@@ -9,7 +9,7 @@ const { MACOS, TASK_RUN, TASK_CONFIGURE, PARAMS } = Constants;
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
-export const taskRnvRun = async (c, parentTask, originTask) => {
+export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;

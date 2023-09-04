@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
 import { buildXcodeProject } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;
@@ -7,7 +7,7 @@ const { MACOS, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, PARAMS } = Constants;
 
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
-export const taskRnvBuild = async (c, parentTask, originTask) => {
+export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild');
     const { platform } = c;
 
@@ -21,7 +21,7 @@ export const taskRnvBuild = async (c, parentTask, originTask) => {
                 // build task is not necessary when exporting macos
                 return true;
             }
-            return buildXcodeProject(c, platform);
+            return buildXcodeProject(c);
         default:
             return logErrorPlatform(c);
     }
