@@ -12,11 +12,11 @@ declare global {
     //eslint-disable-next-line no-var
     var RNV_ANALYTICS
     //eslint-disable-next-line no-var
-    var isSystemWin: boolean;
+    var _isSystemWin: boolean;
     //eslint-disable-next-line no-var
-    var doResolve;
+    var _doResolve;
     //eslint-disable-next-line no-var
-    var getConfigProp
+    var _getConfigProp
     //eslint-disable-next-line no-var
     var fetch;
 }

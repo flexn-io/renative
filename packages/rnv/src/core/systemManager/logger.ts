@@ -90,6 +90,8 @@ const cnf = () => {
 
 const _configureLogger = (c: RnvContext, analytics: AnalyticsApi) => {
     global._messages = [];
+    console.log('BOOLLLL', c);
+
     _c = c;
     if (!global.timeStart) global.timeStart = new Date();
     _currentProcess = c.process;

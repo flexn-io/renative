@@ -4,6 +4,9 @@ import { configureFilesystem } from './core/systemManager/fileutils';
 import { createRnvConfig } from './core/configManager';
 import { logComplete, logError, logInitialize } from './core/systemManager/logger';
 import CLI from './cli';
+import { getConfigProp } from './core/common';
+import { doResolve } from './core/systemManager/resolve';
+import { isSystemWin } from './core/systemManager/utils';
 
 global.RNV_ANALYTICS = Analytics;
 

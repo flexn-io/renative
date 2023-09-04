@@ -623,6 +623,8 @@ export const parseRenativeConfigs = async (c: RnvContext) => {
 export const createRnvConfig = (program: any, process: any, cmd: string, subCmd: string) => {
     const c: RnvContext = generateConfigBase();
 
+    console.log('DHDHDH', c);
+
     global.RNV_CONFIG = c;
 
     c.program = program;

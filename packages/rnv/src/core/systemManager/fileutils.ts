@@ -21,9 +21,9 @@ export const configureFilesystem = (
     _doResolve: DoResolveFn,
     _isSystemWin: boolean
 ) => {
-    global.getConfigProp = _getConfigProp;
-    global.doResolve = _doResolve;
-    global.isSystemWin = _isSystemWin;
+    global._getConfigProp = _getConfigProp;
+    global._doResolve = _doResolve;
+    global._isSystemWin = _isSystemWin;
 };
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
@@ -154,7 +154,7 @@ export const writeCleanFile = (
                 if (occurences) {
                     occurences.forEach((occ) => {
                         const val = occ.replace('{{configProps.', '').replace('}}', '');
-                        const configVal = global.getConfigProp(c, c.platform, val, '');
+                        const configVal = global._getConfigProp(c, c.platform, val, '');
                         pFileClean = pFileClean.replace(occ, configVal);
                     });
                 }
@@ -620,7 +620,7 @@ export const resolvePackage = (text: string) => {
             const val = match.replace('{{resolvePackage(', '').replace(')}}', '');
             // TODO: Figure out WIN vs LINUX treatment here
             // forceForwardPaths is required for WIN Android to work correctly
-            newText = newText.replace(match, global.doResolve(val, false, { forceForwardPaths: true }));
+            newText = newText.replace(match, global._doResolve(val, false, { forceForwardPaths: true }));
         });
     }
     return newText;
@@ -726,7 +726,7 @@ export const updateConfigFile = async (update: FileUtilsUpdateConfig, globalConf
 };
 
 export const replaceHomeFolder = (p: string) => {
-    if (global.isSystemWin) return p.replace('~', process.env.USERPROFILE || '');
+    if (global._isSystemWin) return p.replace('~', process.env.USERPROFILE || '');
     return p.replace('~', process.env.HOME || '');
 };
 
