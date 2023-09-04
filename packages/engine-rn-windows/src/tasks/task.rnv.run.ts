@@ -1,4 +1,4 @@
-import { Constants, Logger, PlatformManager, TaskManager } from 'rnv';
+import { Constants, Logger, PlatformManager, RnvTaskFn, TaskManager } from 'rnv';
 import { SDKWindows } from '../sdks';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
 
@@ -8,7 +8,7 @@ const { WINDOWS, XBOX, TASK_RUN, TASK_CONFIGURE, PARAMS } = Constants;
 const { ruWindowsProject, clearWindowsTemporaryFiles } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
-export const taskRnvRun = async (c, parentTask, originTask) => {
+export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;

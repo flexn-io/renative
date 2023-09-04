@@ -1,4 +1,4 @@
-import { Constants, Logger, PlatformManager, TaskManager } from 'rnv';
+import { Constants, Logger, PlatformManager, RnvTaskFn, TaskManager } from 'rnv';
 import { SDKWindows } from '../sdks';
 
 const { logErrorPlatform } = PlatformManager;
@@ -8,7 +8,7 @@ const { WINDOWS, XBOX, TASK_BUILD, TASK_EXPORT, PARAMS } = Constants;
 const { packageWindowsApp, clearWindowsTemporaryFiles } = SDKWindows;
 const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
-export const taskRnvExport = async (c, parentTask, originTask) => {
+export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);
 
     const { platform } = c;

@@ -1,4 +1,4 @@
-import { TaskManager, EngineManager, Constants, Logger, PlatformManager, Exec, Common, Resolver } from 'rnv';
+import { TaskManager, EngineManager, Constants, Logger, PlatformManager, Exec, Common, Resolver, RnvTaskFn } from 'rnv';
 import { isBundlerActive } from '../commonEngine';
 
 const { getEntryFile, confirmActiveBundler } = Common;
@@ -10,12 +10,12 @@ const { WINDOWS, XBOX, TASK_START, TASK_CONFIGURE_SOFT, PARAMS } = Constants;
 const { executeAsync } = Exec;
 const { doResolve } = Resolver;
 
-const BUNDLER_PLATFORMS = {};
+const BUNDLER_PLATFORMS: Record<string, string> = {};
 
 BUNDLER_PLATFORMS[WINDOWS] = WINDOWS;
 BUNDLER_PLATFORMS[XBOX] = WINDOWS;
 
-export const taskRnvStart = async (c, parentTask, originTask) => {
+export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { hosted } = c.program;
 
