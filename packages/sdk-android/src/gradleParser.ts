@@ -627,7 +627,7 @@ export const injectPluginGradleSync = (
             c.payload.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
             c.payload.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File('${pathAbsolute}')\n`;
         }
-        if (!plugin.skipImplementation) {
+        if (!plugin.skipLinking && !plugin.skipImplementation) {
             if (plugin.implementation) {
                 c.payload.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
             } else {

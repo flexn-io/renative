@@ -448,7 +448,7 @@ export const parsePlugins = (
                         const plugin = getMergedPlugin(c, key);
 
                         if (plugin) {
-                            const pluginPlat = plugin[platform] || { skipLinking: true, enabled: false };
+                            const pluginPlat = plugin[platform] || { skipLinking: true };
                             if (ignorePlatformObjectCheck) {
                                 // totalIncludedPlugins++;
                                 pluginCallback(plugin, pluginPlat, key);
