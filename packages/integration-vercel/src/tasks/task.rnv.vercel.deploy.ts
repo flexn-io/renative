@@ -2,7 +2,7 @@ import path from 'path';
 import inquirer from 'inquirer';
 import dotenv from 'dotenv';
 
-import { Logger, Constants, FileUtils, Exec, Common } from 'rnv';
+import { Logger, Constants, FileUtils, Exec, Common, RnvContext } from 'rnv';
 
 const { fsExistsSync, fsWriteFileSync, fsReadFileSync } = FileUtils;
 const { executeAsync } = Exec;
@@ -11,13 +11,10 @@ const { chalk, logInfo, logTask } = Logger;
 
 const { PARAMS, WEB } = Constants;
 
-const _runDeploymentTask = (c, nowConfigPath) =>
-    new Promise((resolve, reject) => {
+const _runDeploymentTask = (c: RnvContext, nowConfigPath: string) =>
+    new Promise<void>((resolve, reject) => {
         dotenv.config();
-        const defaultBuildFolder = path.join(
-            getAppFolder(c, c.platform),
-            c.platform.includes('next') ? 'out' : 'public'
-        );
+        const defaultBuildFolder = path.join(getAppFolder(c), c.platform.includes('next') ? 'out' : 'public');
         const params = [defaultBuildFolder, '-A', nowConfigPath];
         if (process.env.NOW_TOKEN) params.push('-t', process.env.NOW_TOKEN);
         const nowIsProduction = getConfigProp(c, c.platform, 'nowIsProduction', false) === true;
@@ -29,10 +26,15 @@ const _runDeploymentTask = (c, nowConfigPath) =>
             .catch((error) => reject(error));
     });
 
-const _createConfigFiles = async (configFilePath, envConfigPath, nowParamsExists = false, _envContent = '') => {
+const _createConfigFiles = async (
+    configFilePath: string,
+    envConfigPath: string,
+    nowParamsExists = false,
+    _envContent = ''
+) => {
     let envContent = _envContent;
     if (!fsExistsSync(configFilePath)) {
-        const content = { public: true, version: 2 };
+        const content = { public: true, version: 2, name: '' };
         logInfo(`${chalk().white('now.json')} file does not exist. Creating one for you`);
 
         const { name } = await inquirer.prompt([
@@ -67,7 +69,7 @@ const _createConfigFiles = async (configFilePath, envConfigPath, nowParamsExists
     }
 };
 
-export const taskRnvVercelDeploy = async (c) => {
+export const taskRnvVercelDeploy = async (c: RnvContext) => {
     logTask('taskRnvVercelDeploy');
 
     const nowConfigPath = path.resolve(c.paths.project.dir, 'configs', `now.${c.platform}.json`);
