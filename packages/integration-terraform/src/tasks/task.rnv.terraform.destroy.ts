@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { Logger, Constants, FileUtils, Exec } from 'rnv';
+import { Logger, Constants, FileUtils, Exec, RnvContext } from 'rnv';
 
 const { fsExistsSync } = FileUtils;
 const { executeAsync, commandExistsSync } = Exec;
@@ -8,7 +8,7 @@ const { logSuccess, logTask, logError } = Logger;
 
 const { PARAMS } = Constants;
 
-const _checkPrereqs = (c) => {
+const _checkPrereqs = (c: RnvContext) => {
     const backendFolder = path.resolve(c.paths.project.dir, 'backend');
 
     if (!fsExistsSync(backendFolder)) {
@@ -23,35 +23,25 @@ const _checkPrereqs = (c) => {
     }
 };
 
-export const taskRnvTerraformStatus = async (c) => {
-    logTask('taskRnvTerraformStatus');
+export const taskRnvTerraformDestroy = async (c: RnvContext) => {
+    logTask('taskRnvTerraformDestroy');
 
     // let's see if you're good to go
     _checkPrereqs(c);
 
     const backendFolder = path.resolve(c.paths.project.dir, 'backend');
 
-    const lines = (
-        await executeAsync(c, 'terraform plan --json', {
-            cwd: backendFolder,
-        })
-    )
-        .split('\n')
-        .map(JSON.parse);
+    await executeAsync(c, 'terraform destroy -auto-approve', {
+        cwd: backendFolder,
+    });
 
-    const changeSummary = lines.filter((line) => line.type === 'change_summary');
-
-    if (!changeSummary) {
-        return logError('Could not get change summary from terraform plan', true);
-    }
-
-    logSuccess(changeSummary['@message']);
+    logSuccess('Terraform destroy complete');
 };
 
 export default {
-    description: 'Check your terraform project for pending changes',
-    fn: taskRnvTerraformStatus,
-    task: 'terraform status',
+    description: 'Deletes your terraform project',
+    fn: taskRnvTerraformDestroy,
+    task: 'terraform destroy',
     params: PARAMS.withBase(),
     platforms: [],
 };

@@ -2,7 +2,7 @@ import path from 'path';
 import lSet from 'lodash/set';
 import lGet from 'lodash/get';
 
-import { Logger, Constants, FileUtils, Exec } from 'rnv';
+import { Logger, Constants, FileUtils, Exec, RnvContext } from 'rnv';
 
 const { fsExistsSync, writeFileSync, fsReadFileSync, fsWriteFileSync } = FileUtils;
 const { executeAsync, commandExistsSync } = Exec;
@@ -10,7 +10,7 @@ const { logInfo, logTask, logError, logSuccess } = Logger;
 
 const { PARAMS } = Constants;
 
-const _checkPrereqs = (c) => {
+const _checkPrereqs = (c: RnvContext) => {
     const backendFolder = path.resolve(c.paths.project.dir, 'backend');
 
     if (!fsExistsSync(backendFolder)) {
@@ -32,7 +32,7 @@ const _checkPrereqs = (c) => {
     }
 };
 
-export const taskRnvTerraformDeploy = async (c) => {
+export const taskRnvTerraformDeploy = async (c: RnvContext) => {
     logTask('taskRnvTerraformDeploy');
 
     // let's see if you're good to go
@@ -63,12 +63,12 @@ export const taskRnvTerraformDeploy = async (c) => {
 
     logInfo('Terraform deployment complete');
 
-    const tfStateFile = JSON.parse(FileUtils.fsReadFileSync(tfStateFilePath));
+    const tfStateFile = JSON.parse(FileUtils.fsReadFileSync(tfStateFilePath).toString());
 
     c.buildConfig.requiredBackendOutputs?.forEach((output) => {
         const value = lGet(tfStateFile, output.fromKey);
         const targetFile = path.join(c.paths.project.dir, output.toFile);
-        const targetFileContent = fsReadFileSync(targetFile);
+        const targetFileContent = fsReadFileSync(targetFile).toString();
         const targetFileContentJson = JSON.parse(targetFileContent);
         lSet(targetFileContentJson, output.toKey, value);
         writeFileSync(targetFile, targetFileContentJson);
