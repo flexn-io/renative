@@ -1,6 +1,6 @@
 import path from 'path';
 import axios from 'axios';
-import { TaskManager, Constants, Logger, Common, FileUtils, Spinner } from 'rnv';
+import { TaskManager, Constants, Logger, Common, FileUtils, Spinner, RnvContext } from 'rnv';
 
 const { getConfigProp, confirmActiveBundler } = Common;
 const { chalk, logTask, logInfo, logWarning } = Logger;
@@ -10,7 +10,7 @@ const { executeTask } = TaskManager;
 
 let keepRNVRunning = false;
 
-export const startBundlerIfRequired = async (c, parentTask, originTask) => {
+export const startBundlerIfRequired = async (c: RnvContext, parentTask: string, originTask?: string) => {
     logTask('startBundlerIfRequired');
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
@@ -33,7 +33,7 @@ export const startBundlerIfRequired = async (c, parentTask, originTask) => {
     }
 };
 
-export const waitForBundlerIfRequired = async (c) => {
+export const waitForBundlerIfRequired = async (c: RnvContext) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
     // return a new promise that does...nothing, just to keep RNV running while the bundler is running
@@ -44,7 +44,7 @@ export const waitForBundlerIfRequired = async (c) => {
     return true;
 };
 
-export const configureMetroConfigs = async (c) => {
+export const configureMetroConfigs = async (c: RnvContext) => {
     logTask('configureMetroConfigs');
 
     const cfPath = path.join(c.paths.project.dir, 'configs', `metro.config.${c.platform}.js`);
@@ -59,7 +59,7 @@ export const configureMetroConfigs = async (c) => {
     }
 };
 
-const _isBundlerRunning = async (c) => {
+const _isBundlerRunning = async (c: RnvContext) => {
     logTask('_isBundlerRunning');
     try {
         const { data } = await axios.get(
@@ -77,7 +77,7 @@ const _isBundlerRunning = async (c) => {
     }
 };
 
-export const isBundlerActive = async (c) => {
+export const isBundlerActive = async (c: RnvContext) => {
     logTask('isBundlerActive', `(http://${c.runtime.localhost}:${c.runtime.port})`);
     try {
         await axios.get(`http://${c.runtime.localhost}:${c.runtime.port}`);
@@ -87,15 +87,15 @@ export const isBundlerActive = async (c) => {
     }
 };
 
-const poll = (fn, timeout = 10000, interval = 1000) => {
+const poll = (fn: () => Promise<boolean>, timeout = 10000, interval = 1000) => {
     const endTime = Number(new Date()) + timeout;
 
-    const spinner = Spinner('Waiting for bundler to finish...').start();
-    const checkCondition = async (resolve, reject) => {
+    const spinner = Spinner('Waiting for bundler to finish...').start('');
+    const checkCondition = async (resolve: () => void, reject: (e: any) => void) => {
         try {
             const result = await fn();
             if (result) {
-                spinner.succeed();
+                spinner.succeed('');
                 resolve();
             } else if (Number(new Date()) < endTime) {
                 setTimeout(checkCondition, interval, resolve, reject);
@@ -109,7 +109,7 @@ const poll = (fn, timeout = 10000, interval = 1000) => {
         }
     };
 
-    return new Promise(checkCondition);
+    return new Promise<void>(checkCondition);
 };
 
-export const waitForBundler = async (c) => poll(() => _isBundlerRunning(c));
+export const waitForBundler = async (c: RnvContext) => poll(() => _isBundlerRunning(c));

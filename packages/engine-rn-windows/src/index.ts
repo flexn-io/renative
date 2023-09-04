@@ -1,5 +1,6 @@
-import { Config, EngineManager } from 'rnv';
-import { withRNV } from './adapter';
+import { Config, EngineManager, RnvEngine } from 'rnv';
+import { withRNVBabel, withRNVMetro } from './adapter';
+//@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRnvBuild from './tasks/task.rnv.build';
 import taskRnvConfigure from './tasks/task.rnv.configure';
@@ -12,7 +13,7 @@ import taskRnvStart from './tasks/task.rnv.start';
 
 const { generateEngineTasks, generateEngineExtensions } = EngineManager;
 
-export default {
+const Engine: RnvEngine = {
     initializeRuntimeConfig: (c) => Config.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
@@ -26,7 +27,8 @@ export default {
     ]),
     config: CNF,
     projectDirName: '',
-    ejectPlatform: null,
+    runtimeExtraProps: {},
+    serverDirName: '',
     platforms: {
         windows: {
             defaultPort: 8092,
@@ -40,4 +42,9 @@ export default {
     },
 };
 
-export { withRNV };
+// Backward compatibility
+const withRNV = withRNVMetro;
+
+export { withRNV, withRNVMetro, withRNVBabel };
+
+export default Engine;
