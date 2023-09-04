@@ -26,6 +26,7 @@ describe('Bootstrapping the CLI', () => {
             'files',
             'isBuildHooksReady',
             'paths',
+            'payload',
             'platform',
             'process',
             'program',

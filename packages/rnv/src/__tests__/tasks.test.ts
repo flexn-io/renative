@@ -36,7 +36,7 @@ jest.mock('../../src/core/taskManager/index.ts', () => ({
     shouldSkipTask: () => false,
 }));
 
-jest.mock('../../src/core/configManager/config.ts', () => ({
+jest.mock('../../src/core/context/context.ts', () => ({
     getConfig: () => null,
 }));
 

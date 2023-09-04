@@ -1,5 +1,5 @@
 import { getAppVersionCode } from '../../src/core/common';
-import { generateConfigBase } from '../core/configManager/configBase';
+import { generateConfigBase } from '../core/context/contextBase';
 
 jest.mock('../../src/core/systemManager/logger.ts');
 

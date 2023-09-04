@@ -1,5 +1,5 @@
 import { executeAsync, commandExistsSync, commandExists } from '../../src/core/systemManager/exec';
-import { generateConfigBase } from '../core/configManager/configBase';
+import { generateConfigBase } from '../core/context/contextBase';
 
 jest.mock('../../src/core/systemManager/logger.ts');
 

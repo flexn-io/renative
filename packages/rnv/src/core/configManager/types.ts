@@ -5,9 +5,9 @@ export type RenativeConfigFile = {
         buildSchemes?: Record<string, RenativeConfigBuildScheme>;
         runtime?: Record<string, any>;
         versionCodeFormat?: string;
-        includedFonts: Array<string>;
-        includedPermissions: RenativeConfigPermissionsList;
-        excludedPermissions: RenativeConfigPermissionsList;
+        includedFonts?: Array<string>;
+        includedPermissions?: RenativeConfigPermissionsList;
+        excludedPermissions?: RenativeConfigPermissionsList;
     };
     defaults: {
         ports?: Record<string, number>;
