@@ -97,10 +97,16 @@ const _getPackagePathParts = (aPath: string) => {
     return parts.slice(1);
 };
 
+const DIR_MAX_LENGTH = 99999;
+
 /**
  * We support path linking using 'file:' protocol (not part of official node resolution alg.)
  */
 const _doResolveFSPath = (aPath: string, options: ResolveOptions) => {
+    //SECURITY-PATCH https://github.com/flexn-io/renative/security/code-scanning/70
+    if (options.basedir && options.basedir?.length > DIR_MAX_LENGTH) {
+        throw new Error(`Dir path max length (${DIR_MAX_LENGTH}) exceeded: ${options.basedir?.length}`);
+    }
     const fileRelPath = `${options.basedir ? `${options.basedir}/`.replace(/.*\/+$/, '/') : ''}${aPath.replace(
         'file:',
         ''
