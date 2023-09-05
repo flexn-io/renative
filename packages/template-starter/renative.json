@@ -193,10 +193,12 @@
         "react": "source:rnv",
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
-        "react-native": "source:rnv",
         "react-native-gesture-handler": "source:rnv",
         "@react-native-community/cli-platform-ios": "source:rnv",
-        "@react-native-community/cli": "source:rnv"
+        "@react-native-community/cli": "source:rnv",
+        "react-native": {
+            "version": "0.72.4"
+        }
     },
     "permissions": {
         "ios": {},
