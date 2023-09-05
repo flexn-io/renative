@@ -199,7 +199,9 @@
         "react": "source:rnv",
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
-        "react-native": "source:rnv",
+        "react-native": {
+            "version": "0.72.4"
+        },
         "react-native-gesture-handler": "source:rnv"
     },
     "permissions": {
