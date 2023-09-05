@@ -100,7 +100,10 @@
         "react-dom": "18.2.0",
         "react-native": "0.67.2",
         "react-native-gesture-handler": "2.9.0",
-        "rnv": "0.37.3"
+        "rnv": "0.37.3",
+        "xcode": "2.1.0",
+        "@react-native-community/cli-platform-ios": "^6.0.0",
+        "@react-native-community/cli": "^6.0.0"
     },
     "private": false,
     "publishConfig": {
@@ -117,5 +120,6 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    }
+    },
+    "dependencies": {}
 }

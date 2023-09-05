@@ -17,6 +17,7 @@ import {
     Prompt,
     SDKManager,
     RuntimeManager,
+    RnvPluginPlatform,
 } from 'rnv';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -36,6 +37,7 @@ import {
 import { parseGradleWrapperSync } from './gradleWrapperParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
+import { Context } from './types';
 
 const {
     resetAdb,
@@ -58,10 +60,10 @@ const { generateEnvVars } = EngineManager;
 const { isSystemWin } = Utils;
 const { inquirerPrompt } = Prompt;
 const { updateRenativeConfigs } = RuntimeManager;
-const { chalk, logTask, logWarning, logDebug, logInfo, logSuccess, logRaw } = Logger;
+const { chalk, logTask, logWarning, logDebug, logInfo, logSuccess, logRaw, logError } = Logger;
 const { ANDROID_WEAR, ANDROID, ANDROID_TV, FIRE_TV, CLI_ANDROID_ADB } = Constants;
 
-export const packageAndroid = async (c: any) => {
+export const packageAndroid = async (c: Context) => {
     logTask('packageAndroid');
     const { platform } = c;
 
@@ -90,7 +92,7 @@ export const packageAndroid = async (c: any) => {
             'src',
             'main',
             'res'
-        )} --entry-file ${c.buildConfig.platforms[c.platform]?.entryFile}.js --bundle-output ${path.join(
+        )} --entry-file ${c.buildConfig.platforms?.[c.platform]?.entryFile}.js --bundle-output ${path.join(
             appFolder,
             'app',
             'src',
@@ -119,7 +121,7 @@ export const packageAndroid = async (c: any) => {
     }
 };
 
-export const runAndroid = async (c: any) => {
+export const runAndroid = async (c: Context) => {
     const { target } = c.program;
     const { platform } = c;
     const defaultTarget = c.runtime.target;
@@ -222,12 +224,12 @@ export const runAndroid = async (c: any) => {
     }
 };
 
-const _checkSigningCerts = async (c: any) => {
+const _checkSigningCerts = async (c: Context) => {
     logTask('_checkSigningCerts');
     const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
     const isRelease = signingConfig === 'Release';
 
-    if (isRelease && !c.pluginConfigAndroid?.store?.storeFile) {
+    if (isRelease && !c.payload.pluginConfigAndroid?.store?.storeFile) {
         const msg = `You're attempting to ${
             c.command
         } app in release mode but you have't configured your ${chalk().white(
@@ -348,7 +350,7 @@ const _checkSigningCerts = async (c: any) => {
     }
 };
 
-const _runGradleApp = async (c: any, platform: any, device: any) => {
+const _runGradleApp = async (c: Context, platform: any, device: any) => {
     logTask('_runGradleApp');
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
@@ -404,7 +406,7 @@ const _runGradleApp = async (c: any, platform: any, device: any) => {
     }
 };
 
-export const buildAndroid = async (c: any) => {
+export const buildAndroid = async (c: Context) => {
     logTask('buildAndroid');
     const { platform } = c;
 
@@ -434,7 +436,7 @@ export const buildAndroid = async (c: any) => {
     return true;
 };
 
-export const configureAndroidProperties = async (c: any) => {
+export const configureAndroidProperties = async (c: Context) => {
     logTask('configureAndroidProperties');
 
     const appFolder = getAppFolder(c);
@@ -444,6 +446,11 @@ export const configureAndroidProperties = async (c: any) => {
     const addNDK = c.buildConfig?.sdks?.ANDROID_NDK && !c.buildConfig.sdks.ANDROID_NDK.includes('<USER>');
     let ndkString = `ndk.dir=${getRealPath(c, c.buildConfig?.sdks?.ANDROID_NDK)}`;
     let sdkDir = getRealPath(c, c.buildConfig?.sdks?.ANDROID_SDK);
+
+    if (!sdkDir) {
+        logError(`Cannot resolve c.buildConfig?.sdks?.ANDROID_SDK: ${c.buildConfig?.sdks?.ANDROID_SDK}`);
+        return false;
+    }
 
     if (isSystemWin) {
         sdkDir = sdkDir.replace(/\\/g, '/');
@@ -460,7 +467,7 @@ sdk.dir=${sdkDir}`
     return true;
 };
 
-export const configureGradleProject = async (c: any) => {
+export const configureGradleProject = async (c: Context) => {
     const { platform } = c;
     logTask('configureGradleProject');
 
@@ -472,7 +479,7 @@ export const configureGradleProject = async (c: any) => {
     return true;
 };
 
-export const configureProject = async (c: any) => {
+export const configureProject = async (c: Context) => {
     logTask('configureProject');
     const { platform } = c;
 
@@ -495,10 +502,9 @@ export const configureProject = async (c: any) => {
     fsChmodSync(gradlew, '755');
 
     // INJECTORS
-    c.pluginConfigAndroid = {
+    c.payload.pluginConfigAndroid = {
         pluginIncludes: "include ':app'",
         pluginPaths: '',
-        pluginImports: '',
         pluginPackages: 'MainReactPackage(),\n',
         pluginActivityImports: '',
         pluginActivityMethods: '',
@@ -512,7 +518,6 @@ export const configureProject = async (c: any) => {
         pluginActivityCreateMethods: '',
         pluginActivityResultMethods: '',
         pluginSplashActivityImports: '',
-        manifestApplication: '',
         buildGradleAllProjectsRepositories: '',
         buildGradleBuildScriptRepositories: '',
         buildGradlePlugins: '',
@@ -528,19 +533,31 @@ export const configureProject = async (c: any) => {
         injectHermes: '',
         kotlinVersion: '',
         googleServicesVersion: '',
+        buildToolsVersion: '',
+        buildTypes: '',
+        compileOptions: '',
+        compileSdkVersion: '',
+        gradleBuildToolsVersion: '',
+        gradleWrapperVersion: '',
+        localProperties: '',
+        minSdkVersion: '',
+        multiAPKs: '',
+        splits: '',
+        supportLibVersion: '',
+        targetSdkVersion: '',
     };
 
     // PLUGINS
-    parsePlugins(c, platform, (plugin: any, pluginPlat: any, key: any) => {
-        injectPluginGradleSync(c, pluginPlat, key, pluginPlat.package, plugin);
+    parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
+        injectPluginGradleSync(c, plugin, pluginPlat, key);
         injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();
         injectPluginXmlValuesSync(c, pluginPlat);
     });
 
-    c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(
+    c.payload.pluginConfigAndroid.pluginPackages = c.payload.pluginConfigAndroid.pluginPackages.substring(
         0,
-        c.pluginConfigAndroid.pluginPackages.length - 2
+        c.payload.pluginConfigAndroid.pluginPackages.length - 2
     );
 
     // FONTS
@@ -548,7 +565,7 @@ export const configureProject = async (c: any) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
 
-            const { includedFonts } = c.buildConfig.common;
+            const { includedFonts } = c.buildConfig.common || {};
             if (includedFonts) {
                 if (includedFonts.includes('*') || includedFonts.includes(key)) {
                     if (font) {
@@ -585,7 +602,7 @@ export const configureProject = async (c: any) => {
 };
 
 // Resolve or reject will not be called so this will keep running
-export const runAndroidLog = async (c: any) => {
+export const runAndroidLog = async (c: Context) => {
     logTask('runAndroidLog');
     const filter = c.program.filter || '';
     const child = execa.command(`${c.cli[CLI_ANDROID_ADB]} logcat`);

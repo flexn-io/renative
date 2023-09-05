@@ -52,10 +52,10 @@
     "files": [
         "bin",
         "coreTemplateFiles",
-        "dist",
+        "lib",
         "pluginTemplates"
     ],
-    "main": "dist/index.js",
+    "main": "lib/index.js",
     "bin": {
         "rnv": "./bin/index.js"
     },
@@ -65,11 +65,11 @@
     },
     "scripts": {
         "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./dist && rm -rf tsconfig.tsbuildinfo",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "prepublishOnly": "yarn clean && yarn compile:prod",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
         "@babel/cli": "7.17.6",

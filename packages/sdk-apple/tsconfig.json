@@ -4,7 +4,8 @@
         "outDir": "./dist",
         "rootDir": "./src",
         "allowJs": true,
-        "resolveJsonModule": false
+        "resolveJsonModule": false,
+        "lib": ["ES2021.String"]
     },
     "include": ["./src/**/*", "./src/**/*.json", "./types.d.ts", "./package.json"],
     "exclude": ["node_modules", "./src/__tests__"]

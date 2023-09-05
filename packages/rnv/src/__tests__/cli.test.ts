@@ -2,38 +2,9 @@
 // import { configureFilesystem } from '../../src/core/systemManager/fileutils';
 // import cli from '../../src/cli';
 
-jest.mock('../../src/core/systemManager/logger.js', () => {
-    const _chalkCols: any = {
-        white: (v) => v,
-        green: (v) => v,
-        red: (v) => v,
-        yellow: (v) => v,
-        default: (v) => v,
-        gray: (v) => v,
-        grey: (v) => v,
-        blue: (v) => v,
-        cyan: (v) => v,
-        magenta: (v) => v,
-        rgb: () => (v) => v,
-    };
-    _chalkCols.bold = _chalkCols;
-    const _chalkMono = {
-        ..._chalkCols,
-    };
-    return {
-        logToSummary: jest.fn(),
-        logTask: jest.fn(),
-        logDebug: jest.fn(),
-        logInfo: jest.fn(),
-        logError: jest.fn(),
-        logWarning: jest.fn(),
-        logSuccess: jest.fn(),
-        logInitTask: jest.fn(),
-        chalk: () => _chalkMono,
-    };
-});
+jest.mock('../../src/core/systemManager/logger.ts');
 
-jest.mock('../../src/core/taskManager/index.js', () => ({
+jest.mock('../../src/core/taskManager/index.ts', () => ({
     initializeTask: jest.fn(),
     findSuitableTask: () => {
         //Do nothing
@@ -41,7 +12,7 @@ jest.mock('../../src/core/taskManager/index.js', () => ({
 }));
 
 const itShouldResolve = (cmd) => {
-    it(`${cmd} should resolve`, () => shouldResolve(cmd));
+    it(`${cmd} should resolve`, () => shouldResolve());
 };
 
 // const itShouldReject = (cmd, reject) => {
