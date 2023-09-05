@@ -71,12 +71,12 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
 
         if (!isPlatformActive(c, platform, resolve)) return;
 
-        const platformProjectDir = getPlatformProjectDir(c);
+        const platformProjectDir = getPlatformProjectDir(c)!;
         const engine = getEngineRunnerByPlatform(c, c.platform);
-        const platformBuildDir = getPlatformBuildDir(c);
+        const platformBuildDir = getPlatformBuildDir(c)!;
         const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-        const electronConfigPath = path.join(platformBuildDir!, 'electronConfig.json');
-        const packagePath = path.join(platformBuildDir!, 'package.json');
+        const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');
+        const packagePath = path.join(platformBuildDir, 'package.json');
         // If path does not exist for png, try iconset
         const pngIconPath = path.join(c.paths.appConfig.dir, `assets/${platform}/resources/icon.png`);
         const appId = getAppId(c, platform);
@@ -124,8 +124,8 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             webPreferences: { nodeIntegration: true, enableRemoteModule: true, contextIsolation: false },
             icon:
                 (platform === MACOS || platform === LINUX) && !fsExistsSync(pngIconPath)
-                    ? path.join(platformProjectDir!, 'resources', 'icon.icns')
-                    : path.join(platformProjectDir!, 'resources', 'icon.png'),
+                    ? path.join(platformProjectDir, 'resources', 'icon.icns')
+                    : path.join(platformProjectDir, 'resources', 'icon.png'),
         };
         const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
         if (browserWindowExt) {
@@ -159,8 +159,8 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             addSystemInjects(c, injects);
 
             writeCleanFile(
-                path.join(platformProjectDir!, 'main.prod.js'),
-                path.join(platformProjectDir!, 'main.js'),
+                path.join(platformProjectDir, 'main.prod.js'),
+                path.join(platformProjectDir, 'main.js'),
                 injects,
                 undefined,
                 c
@@ -192,8 +192,8 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             addSystemInjects(c, injects);
 
             writeCleanFile(
-                path.join(platformProjectDir!, 'main.dev.js'),
-                path.join(platformProjectDir!, 'main.js'),
+                path.join(platformProjectDir, 'main.dev.js'),
+                path.join(platformProjectDir, 'main.js'),
                 injects,
                 undefined,
                 c
@@ -203,14 +203,14 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
         const macConfig: any = {};
         if (platform === MACOS) {
             macConfig.mac = {
-                entitlements: path.join(platformProjectDir!, 'entitlements.mac.plist'),
-                entitlementsInherit: path.join(platformProjectDir!, 'entitlements.mac.plist'),
+                entitlements: path.join(platformProjectDir, 'entitlements.mac.plist'),
+                entitlementsInherit: path.join(platformProjectDir, 'entitlements.mac.plist'),
                 hardenedRuntime: true,
             };
             macConfig.mas = {
-                entitlements: path.join(platformProjectDir!, 'entitlements.mas.plist'),
-                entitlementsInherit: path.join(platformProjectDir!, 'entitlements.mas.inherit.plist'),
-                provisioningProfile: path.join(platformProjectDir!, 'embedded.provisionprofile'),
+                entitlements: path.join(platformProjectDir, 'entitlements.mas.plist'),
+                entitlementsInherit: path.join(platformProjectDir, 'entitlements.mas.inherit.plist'),
+                provisioningProfile: path.join(platformProjectDir, 'embedded.provisionprofile'),
                 hardenedRuntime: false,
             };
         }
@@ -219,9 +219,9 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             {
                 appId,
                 directories: {
-                    app: path.join(platformBuildDir!, 'build'),
-                    buildResources: path.join(platformProjectDir!, 'resources'),
-                    output: path.join(platformBuildDir!, 'export'),
+                    app: path.join(platformBuildDir, 'build'),
+                    buildResources: path.join(platformProjectDir, 'resources'),
+                    output: path.join(platformBuildDir, 'export'),
                 },
                 files: ['!export/*'],
             },
@@ -244,21 +244,21 @@ const buildElectron = async (c: RnvContext) => {
     await buildCoreWebpackProject(c);
     // Webpack 5 deletes build folder but does not copy package json
 
-    const platformBuildDir = getPlatformBuildDir(c);
+    const platformBuildDir = getPlatformBuildDir(c)!;
 
     // workaround: electron-builder fails export in npx mode due to trying install node_modules. we trick it not to do that
-    mkdirSync(path.join(platformBuildDir!, 'build', 'node_modules'));
+    mkdirSync(path.join(platformBuildDir, 'build', 'node_modules'));
 
-    const packagePathSrc = path.join(platformBuildDir!, 'package.json');
-    const packagePathDest = path.join(platformBuildDir!, 'build', 'package.json');
+    const packagePathSrc = path.join(platformBuildDir, 'package.json');
+    const packagePathDest = path.join(platformBuildDir, 'build', 'package.json');
     copyFileSync(packagePathSrc, packagePathDest);
 
-    const mainPathSrc = path.join(platformBuildDir!, 'main.js');
-    const mainPathDest = path.join(platformBuildDir!, 'build', 'main.js');
+    const mainPathSrc = path.join(platformBuildDir, 'main.js');
+    const mainPathDest = path.join(platformBuildDir, 'build', 'main.js');
     copyFileSync(mainPathSrc, mainPathDest);
 
-    const menuPathSrc = path.join(platformBuildDir!, 'contextMenu.js');
-    const menuPathDest = path.join(platformBuildDir!, 'build', 'contextMenu.js');
+    const menuPathSrc = path.join(platformBuildDir, 'contextMenu.js');
+    const menuPathDest = path.join(platformBuildDir, 'build', 'contextMenu.js');
     copyFileSync(menuPathSrc, menuPathDest);
 
     return true;
@@ -267,8 +267,8 @@ const buildElectron = async (c: RnvContext) => {
 const exportElectron = async (c: RnvContext) => {
     logTask('exportElectron');
 
-    const platformBuildDir = getPlatformBuildDir(c);
-    const buildPath = path.join(platformBuildDir!, 'build', 'release');
+    const platformBuildDir = getPlatformBuildDir(c)!;
+    const buildPath = path.join(platformBuildDir, 'build', 'release');
 
     if (fsExistsSync(buildPath)) {
         logInfo(`exportElectron: removing old build ${buildPath}`);
@@ -288,10 +288,10 @@ const exportElectron = async (c: RnvContext) => {
     }
     await executeAsync(
         c,
-        `${electronBuilderPath} --config ${path.join(platformBuildDir!, 'electronConfig.json')} --${c.platform}`
+        `${electronBuilderPath} --config ${path.join(platformBuildDir, 'electronConfig.json')} --${c.platform}`
     );
 
-    logSuccess(`Your Exported App is located in ${chalk().cyan(path.join(platformBuildDir!, 'export'))} .`);
+    logSuccess(`Your Exported App is located in ${chalk().cyan(path.join(platformBuildDir, 'export'))} .`);
 };
 
 export const runElectron = async (c: RnvContext) => {
@@ -339,13 +339,13 @@ const _runElectronSimulator = async (c: RnvContext) => {
     // const appFolder = getAppFolder(c, c.platform);
     const elc = `${doResolve('electron')}/cli.js`;
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
-    let platformProjectDir = getPlatformProjectDir(c);
+    let platformProjectDir = getPlatformProjectDir(c)!;
 
     if (bundleAssets) {
         platformProjectDir = path.join(getPlatformBuildDir(c)!, 'build');
     }
 
-    const child = spawn('node', [elc, path.join(platformProjectDir!, '/main.js')], {
+    const child = spawn('node', [elc, path.join(platformProjectDir, '/main.js')], {
         detached: true,
         env: process.env,
         stdio: 'inherit',
