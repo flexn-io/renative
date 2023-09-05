@@ -25,6 +25,7 @@ import { parseXcscheme } from './xcschemeParser';
 import { ejectXcodeProject } from './ejector';
 import { Context } from './types';
 import { ObjectEncodingOptions } from 'fs';
+import shellQuote from 'shell-quote';
 
 const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
@@ -751,7 +752,8 @@ export const packageBundleForXcode = (c: Context, isDev = false) => {
         '--assets-dest',
         `platformBuilds/${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`,
         '--entry-file',
-        `${c.buildConfig.platforms?.[c.platform].entryFile}.js`,
+        // SECURITY-PATCH https://github.com/flexn-io/renative/security/code-scanning/112
+        shellQuote.quote([`${c.buildConfig.platforms?.[c.platform].entryFile}.js`]),
         '--bundle-output',
         `${getAppFolder(c)}/main.jsbundle`,
     ];
