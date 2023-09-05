@@ -90,20 +90,6 @@ export interface RnvContext<Payload = any> {
         forceBundleAssets?: boolean;
         webpackTarget?: string;
         shouldOpenBrowser?: boolean;
-        xcodeProj?: {
-            id?: string;
-            runScheme?: string;
-            provisioningStyle?: string;
-            deploymentTarget?: string;
-            provisionProfileSpecifier?: any;
-            provisionProfileSpecifiers?: any;
-            excludedArchs?: Array<string>;
-            codeSignIdentity?: string;
-            codeSignIdentities?: Record<string, string>;
-            systemCapabilities?: Record<string, boolean>;
-            teamID?: any;
-            appId?: any;
-        };
     };
     paths: {
         GLOBAL_RNV_CONFIG: string;

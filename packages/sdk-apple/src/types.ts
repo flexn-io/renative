@@ -39,6 +39,20 @@ export type Payload = {
         podfileSources: string;
         deploymentTarget: string;
     };
+    xcodeProj?: {
+        id?: string;
+        runScheme?: string;
+        provisioningStyle?: string;
+        deploymentTarget?: string;
+        provisionProfileSpecifier?: any;
+        provisionProfileSpecifiers?: any;
+        excludedArchs?: Array<string>;
+        codeSignIdentity?: string;
+        codeSignIdentities?: Record<string, string>;
+        systemCapabilities?: Record<string, boolean>;
+        teamID?: any;
+        appId?: any;
+    };
 };
 
 export type PayloadAppDelegateMethod = {

@@ -139,7 +139,7 @@ const _configureProject = (c: RnvContext) =>
         addSystemInjects(c, injects);
 
         const configFile = platform === TIZEN ? 'config.xml' : 'appinfo.json';
-        const file = path.join(getPlatformProjectDir(c) || '', configFile);
+        const file = path.join(getPlatformProjectDir(c)!, configFile);
         writeCleanFile(file, file, injects, undefined, c);
 
         resolve();

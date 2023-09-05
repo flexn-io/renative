@@ -28,23 +28,23 @@ export const parseXcodeProject = async (c: Context) => {
     logTask('parseXcodeProject');
     const { platform } = c;
     // PROJECT
-    c.runtime.xcodeProj = {};
-    c.runtime.xcodeProj.provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
-    c.runtime.xcodeProj.deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '14.0');
-    c.runtime.xcodeProj.provisionProfileSpecifier = getConfigProp(c, platform, 'provisionProfileSpecifier');
-    c.runtime.xcodeProj.provisionProfileSpecifiers = getConfigProp(c, platform, 'provisionProfileSpecifiers');
-    c.runtime.xcodeProj.codeSignIdentity = getConfigProp(c, platform, 'codeSignIdentity', 'iPhone Developer');
+    c.payload.xcodeProj = {};
+    c.payload.xcodeProj.provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
+    c.payload.xcodeProj.deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '14.0');
+    c.payload.xcodeProj.provisionProfileSpecifier = getConfigProp(c, platform, 'provisionProfileSpecifier');
+    c.payload.xcodeProj.provisionProfileSpecifiers = getConfigProp(c, platform, 'provisionProfileSpecifiers');
+    c.payload.xcodeProj.codeSignIdentity = getConfigProp(c, platform, 'codeSignIdentity', 'iPhone Developer');
 
-    c.runtime.xcodeProj.codeSignIdentities = getConfigProp(c, platform, 'codeSignIdentities');
+    c.payload.xcodeProj.codeSignIdentities = getConfigProp(c, platform, 'codeSignIdentities');
 
-    c.runtime.xcodeProj.systemCapabilities = getConfigProp(c, platform, 'systemCapabilities');
-    c.runtime.xcodeProj.excludedArchs = getConfigProp(c, platform, 'excludedArchs');
-    c.runtime.xcodeProj.runScheme = getConfigProp(c, platform, 'runScheme');
-    c.runtime.xcodeProj.teamID = getConfigProp(c, platform, 'teamID');
-    c.runtime.xcodeProj.id = getConfigProp(c, platform, 'id');
-    c.runtime.xcodeProj.appId = getAppId(c, platform);
+    c.payload.xcodeProj.systemCapabilities = getConfigProp(c, platform, 'systemCapabilities');
+    c.payload.xcodeProj.excludedArchs = getConfigProp(c, platform, 'excludedArchs');
+    c.payload.xcodeProj.runScheme = getConfigProp(c, platform, 'runScheme');
+    c.payload.xcodeProj.teamID = getConfigProp(c, platform, 'teamID');
+    c.payload.xcodeProj.id = getConfigProp(c, platform, 'id');
+    c.payload.xcodeProj.appId = getAppId(c, platform);
 
-    if (c.runtime.xcodeProj.provisioningStyle !== 'Automatic' && !c.runtime.xcodeProj.provisionProfileSpecifier) {
+    if (c.payload.xcodeProj.provisioningStyle !== 'Automatic' && !c.payload.xcodeProj.provisionProfileSpecifier) {
         const result = await parseProvisioningProfiles(c);
 
         let eligibleProfile: provision.MobileProvision | undefined;
@@ -53,7 +53,7 @@ export const parseXcodeProject = async (c: Context) => {
             result.eligable.forEach((v) => {
                 const bundleId = v.Entitlements['application-identifier'];
 
-                if (bundleId === `${c.runtime.xcodeProj?.teamID}.${c.runtime.xcodeProj?.id}`) {
+                if (bundleId === `${c.payload.xcodeProj?.teamID}.${c.payload.xcodeProj?.id}`) {
                     eligibleProfile = v;
                 }
             });
@@ -68,7 +68,7 @@ export const parseXcodeProject = async (c: Context) => {
                     'No provisionProfileSpecifier configured in appConfig despite setting provisioningStyle to manual',
             });
             if (autoFix) {
-                c.runtime.xcodeProj.provisionProfileSpecifier = eligibleProfile.Name;
+                c.payload.xcodeProj.provisionProfileSpecifier = eligibleProfile.Name;
                 c.files.appConfig.config.platforms[platform].buildSchemes[c.program.scheme].provisionProfileSpecifier =
                     eligibleProfile.Name;
                 writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
@@ -76,7 +76,7 @@ export const parseXcodeProject = async (c: Context) => {
         } else {
             const w =
                 'Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for';
-            logWarning(`${w} ${c.runtime.xcodeProj.id}`);
+            logWarning(`${w} ${c.payload.xcodeProj.id}`);
         }
     }
 
@@ -109,7 +109,7 @@ const _parseXcodeProject = (c: Context, platform: string) =>
                 systemCapabilities,
                 teamID,
                 appId,
-            } = c.runtime.xcodeProj || {};
+            } = c.payload.xcodeProj || {};
 
             if (teamID) {
                 xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', teamID);

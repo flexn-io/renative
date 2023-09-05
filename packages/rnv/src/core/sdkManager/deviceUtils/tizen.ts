@@ -239,7 +239,7 @@ export const runTizenSimOrDevice = async (
         );
     }
 
-    const tDir = getPlatformProjectDir(c) || 'UNDEFINED';
+    const tDir = getPlatformProjectDir(c)!;
     const tBuild = path.join(tDir, 'build');
     const tOut = path.join(tDir, 'output');
     const tId = platformConfig.id;
