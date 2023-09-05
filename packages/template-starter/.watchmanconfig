@@ -1,6 +1,7 @@
 {
     "ignore_dirs": [
         "platformBuilds",
-        "buildHooks/dist"
+        "buildHooks/dist",
+        "/Users/lego/work/renative/packages/rnv"
     ]
 }

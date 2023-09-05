@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		087CF81E9E602AE88EC4E83F /* Pods_RNVApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 925060F95C8C5B820440EBDB /* Pods_RNVApp.framework */; };
-		200132F41F6BF9CF00450340 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200132F31F6BF9CF00450340 /* AppDelegate.swift */; };
 		200132FC1F6BF9CF00450340 /* RNVApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 200132FA1F6BF9CF00450340 /* RNVApp.xcdatamodeld */; };
 		200132FE1F6BF9CF00450340 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 200132FD1F6BF9CF00450340 /* Assets.xcassets */; };
 		207BDA4024AB543F00F32013 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 207BDA3F24AB543F00F32013 /* LaunchScreen.storyboard */; };
@@ -18,7 +17,8 @@
 		20C4C37C1FE53E1A00D9721E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C4C37B1FE53E1A00D9721E /* ImageIO.framework */; };
 		20C4C37E1FE53E4A00D9721E /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C4C37D1FE53E4A00D9721E /* libc++.tbd */; };
 		20CB0E7D21C695460010854F /* images in Resources */ = {isa = PBXBuildFile; fileRef = 20CB0E7B21C695460010854F /* images */; };
-		20DEE9D7225238DF00AA9637 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 20DEE9D6225238DF00AA9637 /* main.jsbundle */; };
+		9408A38A2A97997800B2E736 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9408A3872A97997800B2E736 /* AppDelegate.mm */; };
+		9408A38B2A97997800B2E736 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9408A3882A97997800B2E736 /* main.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +48,6 @@
 		0782652F658FF043B8F5C682 /* Pods-RNVApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNVApp/Pods-RNVApp.release.xcconfig"; sourceTree = "<group>"; };
 		1457A110E23AF3761AE396A6 /* Pods-RNVAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVAppUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNVAppUITests/Pods-RNVAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		200132F01F6BF9CF00450340 /* RNVApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNVApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		200132F31F6BF9CF00450340 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		200132FB1F6BF9CF00450340 /* RNVApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RNVApp.xcdatamodel; sourceTree = "<group>"; };
 		200132FD1F6BF9CF00450340 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		200133021F6BF9CF00450340 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -61,12 +60,13 @@
 		20C4C37B1FE53E1A00D9721E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		20C4C37D1FE53E4A00D9721E /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		20CB0E7B21C695460010854F /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
-		20CEF6F71F9E47330094A59C /* Bridge-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridge-Header.h"; sourceTree = "<group>"; };
-		20DEE9D6225238DF00AA9637 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = SOURCE_ROOT; };
 		3471B97B677CE64891C44686 /* Pods-RNVAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNVAppUITests/Pods-RNVAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4EC4EAA4E066BD0502B9DF3F /* Pods-RNVAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNVAppTests/Pods-RNVAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5A3295F713AD7DF91D6C2EF3 /* Pods_RNVAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNVAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		925060F95C8C5B820440EBDB /* Pods_RNVApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNVApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9408A3872A97997800B2E736 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		9408A3882A97997800B2E736 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9408A3892A97997800B2E736 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AF8EFAC6D34EF718C410C11B /* Pods_RNVAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNVAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7A51880565C9437FC383DF0 /* Pods-RNVApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNVApp/Pods-RNVApp.debug.xcconfig"; sourceTree = "<group>"; };
 		FA2535CB3354D16A4910CDF1 /* Pods-RNVAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNVAppTests/Pods-RNVAppTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -119,14 +119,14 @@
 		200132F21F6BF9CF00450340 /* RNVApp */ = {
 			isa = PBXGroup;
 			children = (
-				20DEE9D6225238DF00AA9637 /* main.jsbundle */,
 				20CB0E7B21C695460010854F /* images */,
 				2034B5411FB5CB98001A5872 /* RNVApp.entitlements */,
-				200132F31F6BF9CF00450340 /* AppDelegate.swift */,
+				9408A3892A97997800B2E736 /* AppDelegate.h */,
+				9408A3872A97997800B2E736 /* AppDelegate.mm */,
+				9408A3882A97997800B2E736 /* main.m */,
 				200132FD1F6BF9CF00450340 /* Assets.xcassets */,
 				200133021F6BF9CF00450340 /* Info.plist */,
 				200132FA1F6BF9CF00450340 /* RNVApp.xcdatamodeld */,
-				20CEF6F71F9E47330094A59C /* Bridge-Header.h */,
 				207BDA3F24AB543F00F32013 /* LaunchScreen.storyboard */,
 			);
 			path = RNVApp;
@@ -181,9 +181,11 @@
 			buildConfigurationList = 2001331B1F6BF9D000450340 /* Build configuration list for PBXNativeTarget "RNVApp" */;
 			buildPhases = (
 				46D6CEE2E773CE5689ECE6E4 /* [CP] Check Pods Manifest.lock */,
+				9408A38E2AA0DEE800B2E736 /* Start Packager */,
 				200132EC1F6BF9CF00450340 /* Sources */,
 				200132ED1F6BF9CF00450340 /* Frameworks */,
 				200132EE1F6BF9CF00450340 /* Resources */,
+				9408A38F2AA0DF7700B2E736 /* Bundle React Native code and images */,
 				47C90D4AD2F08223E16AFD26 /* [CP] Embed Pods Frameworks */,
 				202C7E712190E14100449711 /* Embed Frameworks */,
 			);
@@ -271,7 +273,6 @@
 			files = (
 				20A3B6EF2252512D0084A50B /* assets in Resources */,
 				200132FE1F6BF9CF00450340 /* Assets.xcassets in Resources */,
-				20DEE9D7225238DF00AA9637 /* main.jsbundle in Resources */,
 				207BDA4024AB543F00F32013 /* LaunchScreen.storyboard in Resources */,
 				20CB0E7D21C695460010854F /* images in Resources */,
 			);
@@ -331,6 +332,45 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RNVApp/Pods-RNVApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		9408A38E2AA0DEE800B2E736 /* Start Packager */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Start Packager";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../../../../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../../../../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9408A38F2AA0DF7700B2E736 /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/.xcode.env",
+			);
+			name = "Bundle React Native code and images";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../../../../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../../../../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -338,8 +378,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9408A38A2A97997800B2E736 /* AppDelegate.mm in Sources */,
+				9408A38B2A97997800B2E736 /* main.m in Sources */,
 				200132FC1F6BF9CF00450340 /* RNVApp.xcdatamodeld in Sources */,
-				200132F41F6BF9CF00450340 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,7 +514,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C7A51880565C9437FC383DF0 /* Pods-RNVApp.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RNVApp/RNVApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -496,7 +536,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = renative.helloworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "./RNVApp/Bridge-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -506,7 +545,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0782652F658FF043B8F5C682 /* Pods-RNVApp.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RNVApp/RNVApp.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -524,7 +562,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = renative.helloworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "./RNVApp/Bridge-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -538,7 +575,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -563,7 +599,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;

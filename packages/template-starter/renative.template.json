@@ -1,18 +1,31 @@
 {
     "templateConfig": {
-        "includedPaths": ["buildHooks", "src", "index.js", "tsconfig.json"],
+        "includedPaths": [
+            "buildHooks",
+            "src",
+            "index.js",
+            "tsconfig.json"
+        ],
         "packageTemplate": {
             "devDependencies": {
                 "typescript": "4.9.5",
                 "@types/react": "18.2.6",
-                "@types/react-dom": "~18.2.4",
-                "@types/react-native": "~0.67.2",
+                "@types/react-dom": "18.2.6",
+                "@types/react-native": "0.72.2",
                 "@flexn/typescript-config": "1.0.0",
                 "@flexn/assets-renative-outline": "0.3.2"
             },
             "browserslist": {
-                "production": [">0.2%", "not dead", "not op_mini all"],
-                "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+                "production": [
+                    ">0.2%",
+                    "not dead",
+                    "not op_mini all"
+                ],
+                "development": [
+                    "last 1 chrome version",
+                    "last 1 firefox version",
+                    "last 1 safari version"
+                ]
             },
             "resolutions": {
                 "@babel/traverse": "7.15.0"

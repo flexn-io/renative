@@ -60,7 +60,7 @@
         "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "engines": {
-        "node": ">=6.0.0",
+        "node": ">=16.0.0",
         "npm": ">=4.0.0"
     },
     "private": false,

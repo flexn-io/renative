@@ -34,18 +34,18 @@
     "dependencies": {
         "@rnv/sdk-android": "0.37.3",
         "@rnv/sdk-apple": "0.37.3",
-        "react-native-tvos": "0.66.3-1"
+        "react-native-tvos": "0.71.12-0"
     },
     "devDependencies": {
-        "@babel/cli": "7.17.6",
-        "@babel/core": "7.8.3",
-        "@babel/node": "7.8.3",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
-        "@babel/plugin-proposal-optional-chaining": "7.8.3",
-        "@babel/preset-env": "7.8.7"
+        "@babel/cli": "7.20.7",
+        "@babel/core": "7.20.7",
+        "@babel/node": "7.20.7",
+        "@babel/plugin-proposal-nullish-coalescing-operator": "7.18.6",
+        "@babel/plugin-proposal-optional-chaining": "7.20.7",
+        "@babel/preset-env": "7.21.5"
     },
     "peerDependencies": {
-        "metro-cache": "^0.66.2",
+        "metro-cache": "^0.78.1",
         "rnv": "^0.37.3"
     },
     "private": false,
