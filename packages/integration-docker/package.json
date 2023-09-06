@@ -41,7 +41,7 @@
         "@babel/preset-env": "7.21.5"
     },
     "peerDependencies": {
-        "rnv": "^0.37.3"
+        "rnv": "^0.38.0-canary.1"
     },
     "publishConfig": {
         "access": "public"

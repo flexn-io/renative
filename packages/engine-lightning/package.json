@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-lightning",
-    "version": "0.37.3",
+    "version": "0.38.0-canary.1",
     "description": "ReNative Engine to build lightning based apps.",
     "keywords": [
         "lightning"
@@ -47,7 +47,7 @@
         "@babel/preset-env": "7.21.5"
     },
     "peerDependencies": {
-        "rnv": "^0.37.3"
+        "rnv": "^0.38.0-canary.1"
     },
     "private": false,
     "publishConfig": {
