@@ -3,6 +3,7 @@ import net from 'net';
 import shell from 'shelljs';
 import inquirer from 'inquirer';
 import execa from 'execa';
+import { mkdir } from 'fs/promises'
 import {
     FileUtils,
     Exec,
@@ -25,6 +26,7 @@ import {
     parseSplashActivitySync,
     parseMainApplicationSync,
     injectPluginKotlinSync,
+    parseFlipperSync
 } from './kotlinParser';
 import {
     parseAppBuildGradleSync,
@@ -503,6 +505,20 @@ export const configureGradleProject = async (c: Context) => {
     return true;
 };
 
+const createJavaPackageFolders = async (c: Context, appFolder: string) => {
+    console.log('createJavaPackageFolders', appFolder);
+    const appId = getAppId(c, c.platform);
+    console.log('appId', appId);
+    const javaPackageArray = appId.split('.');
+    const javaPackagePath = path.join(appFolder, 'app/src/main/java', ...javaPackageArray);
+    console.log('javaPackagePath', javaPackagePath);
+
+    if (!fsExistsSync(javaPackagePath)) {
+        await mkdir(javaPackagePath, { recursive: true });
+    }
+    throw new Error('createJavaPackageFolders not implemented');
+}
+
 export const configureProject = async (c: Context) => {
     logTask('configureProject');
     const { platform } = c;
@@ -521,6 +537,7 @@ export const configureProject = async (c: Context) => {
 
     const outputFile = getEntryFile(c, platform);
 
+    // await createJavaPackageFolders(c, appFolder);
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
     fsChmodSync(gradlew, '755');
@@ -620,6 +637,8 @@ export const configureProject = async (c: Context) => {
     parseValuesColorsSync(c);
     parseAndroidManifestSync(c);
     parseGradlePropertiesSync(c);
+    parseFlipperSync(c, 'debug');
+    parseFlipperSync(c, 'release');
     await _checkSigningCerts(c);
 
     return true;

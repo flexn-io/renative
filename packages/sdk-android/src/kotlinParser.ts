@@ -12,6 +12,7 @@ import {
     writeCleanFile,
     OverridesOptions,
 } from 'rnv';
+import { mkdirSync } from 'fs'
 import { Context } from './types';
 
 const JS_BUNDLE_DEFAULTS: any = {
@@ -19,10 +20,48 @@ const JS_BUNDLE_DEFAULTS: any = {
     androidwear: '"assets://index.androidwear.bundle"',
 };
 
+export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
+    const appFolder = getAppFolder(c);
+    const { platform } = c;
+
+    const appId = getAppId(c, c.platform);
+    console.log('appId', appId);
+    const javaPackageArray = appId.split('.');
+
+    const javaPackagePath = `app/src/${scheme}/java/${javaPackageArray.join('/')}`;
+    mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
+
+    const templatePath = `app/src/${scheme}/java/rnv_template/ReactNativeFlipper.java.tpl`;
+    const applicationPath = `${javaPackagePath}/ReactNativeFlipper.java`;
+
+    const injects: OverridesOptions = [
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) }
+    ];
+
+    addSystemInjects(c, injects);
+
+     writeCleanFile(
+        getBuildFilePath(c, platform, templatePath),
+        path.join(appFolder, applicationPath),
+        injects,
+        undefined,
+        c
+    );
+};
+
 export const parseMainApplicationSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
-    const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
+
+    const appId = getAppId(c, c.platform);
+    console.log('appId', appId);
+    const javaPackageArray = appId.split('.');
+
+    const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
+    mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
+
+    const templatePath = 'app/src/main/java/rnv_template/MainApplication.java.tpl';
+    const applicationPath = `${javaPackagePath}/MainApplication.java`;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const bundleDefault = JS_BUNDLE_DEFAULTS[platform];
     const bundleFile: string =
@@ -69,7 +108,7 @@ export const parseMainApplicationSync = (c: Context) => {
     addSystemInjects(c, injects);
 
     writeCleanFile(
-        getBuildFilePath(c, platform, applicationPath),
+        getBuildFilePath(c, platform, templatePath),
         path.join(appFolder, applicationPath),
         injects,
         undefined,
@@ -80,7 +119,16 @@ export const parseMainApplicationSync = (c: Context) => {
 export const parseMainActivitySync = (c: any) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
-    const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
+
+    const appId = getAppId(c, c.platform);
+    console.log('appId', appId);
+    const javaPackageArray = appId.split('.');
+
+    const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
+    mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
+
+    const templatePath = 'app/src/main/java/rnv_template/MainActivity.java.tpl';
+    const activityPath = `${javaPackagePath}/MainActivity.java`;
 
     const mainActivity = getConfigProp(c, platform, 'mainActivity', {});
 
@@ -114,7 +162,7 @@ export const parseMainActivitySync = (c: any) => {
     addSystemInjects(c, injects);
 
     writeCleanFile(
-        getBuildFilePath(c, platform, activityPath),
+        getBuildFilePath(c, platform, templatePath),
         path.join(appFolder, activityPath),
         injects,
         undefined,
