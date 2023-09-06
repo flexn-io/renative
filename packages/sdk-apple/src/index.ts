@@ -99,11 +99,14 @@ const runCocoaPods = async (c: Context) => {
 
         try {
             await executeAsync(c, 'bundle install', {
-                cwd: appFolder,
                 env: process.env,
             });
-            await executeAsync(c, 'RCT_NEW_ARCH_ENABLED=1 bundle exec pod install', {
+            await executeAsync(c, 'bundle exec pod install', {
                 cwd: appFolder,
+                env: {
+                    ...process.env,
+                    RCT_NEW_ARCH_ENABLED: 1,
+                }
             });
         } catch (e) {
             const s = e?.toString ? e.toString() : '';
@@ -117,13 +120,15 @@ const runCocoaPods = async (c: Context) => {
             }
             logWarning(`pod install is not enough! Let's try pod update! Error:\n ${s}`);
             await executeAsync(c, 'bundle update', {
-                cwd: appFolder,
                 env: process.env,
             });
 
             return executeAsync(c, 'RCT_NEW_ARCH_ENABLED=1 bundle exec pod update', {
                 cwd: appFolder,
-                env: process.env,
+                env: {
+                    ...process.env,
+                    RCT_NEW_ARCH_ENABLED: 1,
+                }
             })
                 .then(() => updatePodsChecksum(c))
                 .catch((er) => Promise.reject(er));

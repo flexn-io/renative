@@ -3,6 +3,7 @@ import net from 'net';
 import shell from 'shelljs';
 import inquirer from 'inquirer';
 import execa from 'execa';
+// import { mkdir } from 'fs/promises'
 import {
     FileUtils,
     Exec,
@@ -25,6 +26,7 @@ import {
     parseSplashActivitySync,
     parseMainApplicationSync,
     injectPluginKotlinSync,
+    parseFlipperSync
 } from './kotlinParser';
 import {
     parseAppBuildGradleSync,
@@ -38,6 +40,7 @@ import { parseGradleWrapperSync } from './gradleWrapperParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
 import { Context } from './types';
+// import { adb, getAdbPath } from '@react-native-community/cli-platform-android';
 
 const {
     resetAdb,
@@ -53,8 +56,8 @@ const { parsePlugins } = PluginManager;
 
 const { fsExistsSync, copyFileSync, mkdirSync, getRealPath, updateObjectSync, fsWriteFileSync, fsChmodSync } =
     FileUtils;
-const { executeAsync, execCLI } = Exec;
-const { getAppFolder, getConfigProp, getAppId, getEntryFile } = Common;
+const { executeAsync } = Exec;
+const { getAppFolder, getConfigProp, getEntryFile } = Common;
 const { isPlatformActive, createPlatformBuild } = PlatformManager;
 const { generateEnvVars } = EngineManager;
 const { isSystemWin } = Utils;
@@ -355,55 +358,69 @@ const _runGradleApp = async (c: Context, platform: any, device: any) => {
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
     const appFolder = getAppFolder(c);
-    const bundleId = getAppId(c, platform);
-    const outputAab = getConfigProp(c, platform, 'aab', false);
-    const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
-    const { arch, name } = device;
-    const stacktrace = c.program.info ? ' --debug' : '';
+    // const bundleId = getAppId(c, platform);
+    // const outputAab = getConfigProp(c, platform, 'aab', false);
+    // const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
+    const { udid } = device;
+    // const stacktrace = c.program.info ? ' --debug' : '';
 
     shell.cd(`${appFolder}`);
 
-    await executeAsync(
-        c,
-        `${isSystemWin ? 'gradlew.bat' : './gradlew'} ${
-            outputAab && c.runtime.task !== 'run' ? 'bundle' : 'assemble'
-        }${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`
-        // { interactive: true }
-    );
-    if (outputAab) {
-        const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
-        logInfo(`App built. Path ${aabPath}`);
-        return true;
-    }
-    let apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`);
-    if (!fsExistsSync(apkPath)) {
-        apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`);
-    }
-    if (!fsExistsSync(apkPath)) {
-        apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${arch}-${outputFolder}.apk`);
-    }
-    logInfo(`Installing ${apkPath} on ${name}`);
-    try {
-        await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
-    } catch (e: any) {
-        if (e?.includes('INSTALL_FAILED') || e?.message?.includes('INSTALL_FAILED')) {
-            const { confirm } = await inquirerPrompt({
-                type: 'confirm',
-                message:
-                    "It seems you already have the app installed but RNV can't update it. Uninstall that one and try again?",
-            });
+    // const adbPath = getAdbPath();
+    // const devices = adb.getDevices(adbPath);
+    // console.log('DEVICES FROM RN', devices);
 
-            if (!confirm) throw new Error('User canceled');
-            await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} uninstall ${bundleId}`);
-            await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
-        } else {
-            throw new Error(e);
-        }
+
+    let command = `npx react-native run-android --mode=${signingConfig} --no-packager`;
+
+    if (udid) {
+        command += ` --deviceId=${udid}`;
     }
 
-    if (!outputAab) {
-        await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`);
-    }
+    // await executeAsync(
+    //     c,
+    //     `${isSystemWin ? 'gradlew.bat' : './gradlew'} ${
+    //         outputAab && c.runtime.task !== 'run' ? 'bundle' : 'assemble'
+    //     }${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`
+    //     // { interactive: true }
+    // );
+
+    await executeAsync(c, command);
+
+    // if (outputAab) {
+    //     const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
+    //     logInfo(`App built. Path ${aabPath}`);
+    //     return true;
+    // }
+    // let apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`);
+    // if (!fsExistsSync(apkPath)) {
+    //     apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`);
+    // }
+    // if (!fsExistsSync(apkPath)) {
+    //     apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${arch}-${outputFolder}.apk`);
+    // }
+    // logInfo(`Installing ${apkPath} on ${name}`);
+    // try {
+    //     await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
+    // } catch (e: any) {
+    //     if (e?.includes('INSTALL_FAILED') || e?.message?.includes('INSTALL_FAILED')) {
+    //         const { confirm } = await inquirerPrompt({
+    //             type: 'confirm',
+    //             message:
+    //                 "It seems you already have the app installed but RNV can't update it. Uninstall that one and try again?",
+    //         });
+
+    //         if (!confirm) throw new Error('User canceled');
+    //         await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} uninstall ${bundleId}`);
+    //         await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
+    //     } else {
+    //         throw new Error(e);
+    //     }
+    // }
+
+    // if (!outputAab) {
+    //     await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`);
+    // }
 };
 
 export const buildAndroid = async (c: Context) => {
@@ -420,13 +437,22 @@ export const buildAndroid = async (c: Context) => {
     shell.cd(`${appFolder}`);
 
     const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
+
+    let command = `npx react-native build-android --mode=${signingConfig} --no-packager`;
+
+    if (extraGradleParams) {
+        command += ` --extra-params ${extraGradleParams}`;
+    }
+
+    await executeAsync(c, command);
+
     // await _checkSigningCerts(c);
-    await executeAsync(
-        c,
-        `${
-            isSystemWin ? 'gradlew.bat' : './gradlew'
-        } assemble${signingConfig} -x bundleReleaseJsAndAssets ${extraGradleParams}`
-    );
+    // await executeAsync(
+    //     c,
+    //     `${
+    //         isSystemWin ? 'gradlew.bat' : './gradlew'
+    //     } assemble${signingConfig} -x bundleReleaseJsAndAssets ${extraGradleParams}`
+    // );
 
     logSuccess(
         `Your APK is located in ${chalk().cyan(
@@ -479,6 +505,20 @@ export const configureGradleProject = async (c: Context) => {
     return true;
 };
 
+// const createJavaPackageFolders = async (c: Context, appFolder: string) => {
+//     console.log('createJavaPackageFolders', appFolder);
+//     const appId = getAppId(c, c.platform);
+//     console.log('appId', appId);
+//     const javaPackageArray = appId.split('.');
+//     const javaPackagePath = path.join(appFolder, 'app/src/main/java', ...javaPackageArray);
+//     console.log('javaPackagePath', javaPackagePath);
+
+//     if (!fsExistsSync(javaPackagePath)) {
+//         await mkdir(javaPackagePath, { recursive: true });
+//     }
+//     throw new Error('createJavaPackageFolders not implemented');
+// }
+
 export const configureProject = async (c: Context) => {
     logTask('configureProject');
     const { platform } = c;
@@ -497,6 +537,7 @@ export const configureProject = async (c: Context) => {
 
     const outputFile = getEntryFile(c, platform);
 
+    // await createJavaPackageFolders(c, appFolder);
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
     fsChmodSync(gradlew, '755');
@@ -596,6 +637,8 @@ export const configureProject = async (c: Context) => {
     parseValuesColorsSync(c);
     parseAndroidManifestSync(c);
     parseGradlePropertiesSync(c);
+    parseFlipperSync(c, 'debug');
+    parseFlipperSync(c, 'release');
     await _checkSigningCerts(c);
 
     return true;

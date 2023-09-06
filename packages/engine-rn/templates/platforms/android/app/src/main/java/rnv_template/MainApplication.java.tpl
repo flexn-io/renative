@@ -1,4 +1,4 @@
-package com.testrnproject;
+package {{APPLICATION_ID}};
 
 import android.app.Application;
 import com.facebook.react.PackageList;
