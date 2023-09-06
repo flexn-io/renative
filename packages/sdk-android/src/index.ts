@@ -435,13 +435,22 @@ export const buildAndroid = async (c: Context) => {
     shell.cd(`${appFolder}`);
 
     const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
+
+    let command = `npx react-native build-android --mode=${signingConfig} --no-packager`;
+
+    if (extraGradleParams) {
+        command += ` --extra-params ${extraGradleParams}`;
+    }
+
+    await executeAsync(c, command);
+
     // await _checkSigningCerts(c);
-    await executeAsync(
-        c,
-        `${
-            isSystemWin ? 'gradlew.bat' : './gradlew'
-        } assemble${signingConfig} -x bundleReleaseJsAndAssets ${extraGradleParams}`
-    );
+    // await executeAsync(
+    //     c,
+    //     `${
+    //         isSystemWin ? 'gradlew.bat' : './gradlew'
+    //     } assemble${signingConfig} -x bundleReleaseJsAndAssets ${extraGradleParams}`
+    // );
 
     logSuccess(
         `Your APK is located in ${chalk().cyan(
