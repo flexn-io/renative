@@ -3,7 +3,7 @@ import net from 'net';
 import shell from 'shelljs';
 import inquirer from 'inquirer';
 import execa from 'execa';
-import { mkdir } from 'fs/promises'
+// import { mkdir } from 'fs/promises'
 import {
     FileUtils,
     Exec,
@@ -57,7 +57,7 @@ const { parsePlugins } = PluginManager;
 const { fsExistsSync, copyFileSync, mkdirSync, getRealPath, updateObjectSync, fsWriteFileSync, fsChmodSync } =
     FileUtils;
 const { executeAsync } = Exec;
-const { getAppFolder, getConfigProp, getAppId, getEntryFile } = Common;
+const { getAppFolder, getConfigProp, getEntryFile } = Common;
 const { isPlatformActive, createPlatformBuild } = PlatformManager;
 const { generateEnvVars } = EngineManager;
 const { isSystemWin } = Utils;
@@ -505,19 +505,19 @@ export const configureGradleProject = async (c: Context) => {
     return true;
 };
 
-const createJavaPackageFolders = async (c: Context, appFolder: string) => {
-    console.log('createJavaPackageFolders', appFolder);
-    const appId = getAppId(c, c.platform);
-    console.log('appId', appId);
-    const javaPackageArray = appId.split('.');
-    const javaPackagePath = path.join(appFolder, 'app/src/main/java', ...javaPackageArray);
-    console.log('javaPackagePath', javaPackagePath);
+// const createJavaPackageFolders = async (c: Context, appFolder: string) => {
+//     console.log('createJavaPackageFolders', appFolder);
+//     const appId = getAppId(c, c.platform);
+//     console.log('appId', appId);
+//     const javaPackageArray = appId.split('.');
+//     const javaPackagePath = path.join(appFolder, 'app/src/main/java', ...javaPackageArray);
+//     console.log('javaPackagePath', javaPackagePath);
 
-    if (!fsExistsSync(javaPackagePath)) {
-        await mkdir(javaPackagePath, { recursive: true });
-    }
-    throw new Error('createJavaPackageFolders not implemented');
-}
+//     if (!fsExistsSync(javaPackagePath)) {
+//         await mkdir(javaPackagePath, { recursive: true });
+//     }
+//     throw new Error('createJavaPackageFolders not implemented');
+// }
 
 export const configureProject = async (c: Context) => {
     logTask('configureProject');

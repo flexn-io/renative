@@ -40,7 +40,7 @@ export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
 
     addSystemInjects(c, injects);
 
-     writeCleanFile(
+    writeCleanFile(
         getBuildFilePath(c, platform, templatePath),
         path.join(appFolder, applicationPath),
         injects,
