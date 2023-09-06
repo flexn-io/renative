@@ -38,7 +38,7 @@
         "babel-loader": "8.3.0",
         "babel-preset-expo": "9.5.0",
         "better-opn": "1.0.0",
-        "electron": "19.0.4",
+        "electron": "19.1.8",
         "electron-builder": "24.0.0",
         "electron-notarize": "1.0.0",
         "html-webpack-harddisk-plugin": "1.0.2",
