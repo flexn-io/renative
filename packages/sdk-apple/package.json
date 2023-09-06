@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-apple",
-    "version": "0.37.3",
+    "version": "0.38.0-canary.1",
     "description": "ReNative Apple SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -34,15 +34,15 @@
         "compare-versions": "3.6.0",
         "inquirer": "8.2.0",
         "ios-mobileprovision-finder": "1.0.11",
+        "shell-quote": "1.8.1",
         "shelljs": "0.8.5",
-        "xcode": "2.1.0",
-        "shell-quote": "1.8.1"
+        "xcode": "2.1.0"
     },
     "devDependencies": {
         "@types/shell-quote": "1.7.1"
     },
     "peerDependencies": {
-        "rnv": "^0.37.3"
+        "rnv": "^0.38.0-canary.1"
     },
     "optionalDependencies": {
         "ios-deploy": "1.11.4"
