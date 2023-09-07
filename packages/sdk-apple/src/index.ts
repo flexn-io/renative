@@ -19,7 +19,7 @@ import { getAppFolderName } from './common';
 import { registerDevice, updateProfile } from './fastlane';
 import { parseEntitlementsPlist, parseExportOptionsPlist, parseInfoPlist } from './plistParser';
 import { parsePodFile } from './podfileParser';
-import { parseAppDelegate } from './swiftParser';
+// import { parseAppDelegate } from './swiftParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
 import { ejectXcodeProject } from './ejector';
@@ -31,7 +31,7 @@ const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
 const { fsExistsSync, copyFileSync, mkdirSync, writeFileSync, fsWriteFileSync, fsReadFileSync } = FileUtils;
 const { executeAsync, commandExistsSync } = Exec;
-const { getAppFolder, getConfigProp, getIP } = Common;
+const { getAppFolder, getConfigProp } = Common;
 const { generateEnvVars } = EngineManager;
 const { doResolve } = Resolver;
 const { isPlatformActive } = PlatformManager;
@@ -361,12 +361,13 @@ const _packageOrRun = (
 // };
 
 const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, runScheme: string, p = '') => {
-    logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
+    logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme} p:${p}`);
     const appFolderName = getAppFolderName(c, c.platform);
 
-    const cmd = `node ${doResolve(
-        c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
-    )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+    // const cmd = `node ${doResolve(
+    //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
+    // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+    const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme}`;
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
@@ -822,12 +823,12 @@ const configureXcodeProject = async (c: Context) => {
 
     const { device } = c.program;
     const { platform } = c;
-    const bundlerIp = device ? getIP() : 'localhost';
+    // const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c);
     const appFolderName = getAppFolderName(c, platform);
     c.runtime.platformBuildsProjectPath = `${appFolder}/${appFolderName}.xcworkspace`;
 
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    // const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     // INJECTORS
     c.payload.pluginConfigiOS = {
         podfileInject: '',
@@ -926,7 +927,7 @@ const configureXcodeProject = async (c: Context) => {
 
     await copyAssetsFolder(c, platform, appFolderName);
     await copyAppleAssets(c, platform, appFolderName);
-    await parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp);
+    // await parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp);
     await parseExportOptionsPlist(c, platform);
     await parseXcscheme(c, platform);
     await parsePodFile(c, platform);

@@ -130,6 +130,6 @@ const config = {
   resetCache: false,
 };
 const cfg = mergeConfig(getDefaultConfig(__dirname), config);
-console.log('cfg', JSON.stringify(cfg, null, 3));
+// console.log('cfg', JSON.stringify(cfg, null, 3));
 
 module.exports = cfg;

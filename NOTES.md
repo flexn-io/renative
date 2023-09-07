@@ -54,3 +54,21 @@ await executeRnv({
 - merge engine-rn + tvos + macos????
 
 
+templateFiles: {
+    'ios/Info.plist': {
+        isTemplate: source.endsWith('.tpl'),
+        source: 'ios/Info.plist.tpl',
+        dest: 'ios/Info.plist',
+        injections: {
+            '{{NAME}}': 'myApp'
+        }
+    },
+    'ios/image.png': {
+        source: 'ios/image.png',
+        dest: 'ios/image.png'
+    }
+}
+
+
+if isTemplate = true && injections = undefined => use global injections
+if isTemplate = true && injections = {...} => use local injections
