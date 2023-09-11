@@ -367,7 +367,7 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
     // const cmd = `node ${doResolve(
     //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
     // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
-    const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme}`;
+    const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager`;
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });

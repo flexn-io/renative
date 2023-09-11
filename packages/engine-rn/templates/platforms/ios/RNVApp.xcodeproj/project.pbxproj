@@ -20,7 +20,6 @@
 		752A9765F8A14465B24BF97C /* libPods-RNVApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C717EEC7024EA4A970A8C0B /* libPods-RNVApp.a */; };
 		9408A38A2A97997800B2E736 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9408A3872A97997800B2E736 /* AppDelegate.mm */; };
 		9408A38B2A97997800B2E736 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9408A3882A97997800B2E736 /* main.m */; };
-		6A66EBB832774DC797D46743 /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0589671279BD450C95EFE3FA /* Inter-Light.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,7 +74,6 @@
 		C7A51880565C9437FC383DF0 /* Pods-RNVApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNVApp/Pods-RNVApp.debug.xcconfig"; sourceTree = "<group>"; };
 		FA2535CB3354D16A4910CDF1 /* Pods-RNVAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNVAppTests/Pods-RNVAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB345A890161D745CEEFDE63 /* Pods-RNVApp-RNVAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVApp-RNVAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNVApp-RNVAppTests/Pods-RNVApp-RNVAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		0589671279BD450C95EFE3FA /* Inter-Light.ttf */ = {isa = PBXFileReference; name = "Inter-Light.ttf"; path = "/Users/lego/work/renative/packages/template-starter/appConfigs/base/fonts/Inter-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,9 +139,7 @@
 		};
 		2030C437224AE567002469E4 /* Resources */ = {
 			isa = PBXGroup;
-			children = (
-				0589671279BD450C95EFE3FA /* Inter-Light.ttf */,
-			);
+			children = ();
 			path = Resources;
 			sourceTree = "<group>";
 		};
@@ -356,7 +352,6 @@
 				200132FE1F6BF9CF00450340 /* Assets.xcassets in Resources */,
 				207BDA4024AB543F00F32013 /* LaunchScreen.storyboard in Resources */,
 				20CB0E7D21C695460010854F /* images in Resources */,
-				6A66EBB832774DC797D46743 /* Inter-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
