@@ -37,7 +37,6 @@ export * from './core/context/types';
 export * from './core/pluginManager/types';
 export * from './core/projectManager/types';
 export * from './core/configManager/types';
-export * from './core/sdkManager/types';
 export * from './core/taskManager/types';
 export * from './core/systemManager/types';
 export * from './cli/types';
