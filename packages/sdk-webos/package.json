@@ -1,0 +1,46 @@
+{
+    "name": "@rnv/sdk-webos",
+    "version": "0.38.0-canary.1",
+    "description": "ReNative WebOS SDK",
+    "keywords": [],
+    "homepage": "https://github.com/flexn-io/renative#readme",
+    "bugs": {
+        "url": "https://github.com/flexn-io/renative/issues"
+    },
+    "license": "MIT",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "files": [
+        "dist",
+        "supportFiles",
+        "types.d.ts"
+    ],
+    "main": "dist/index.js",
+    "bin": {
+        "sdk-android": "./dist/cli.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/flexn-io/renative.git"
+    },
+    "scripts": {
+        "bootstrap": "yarn && yarn build && npm link",
+        "build": "yarn clean && yarn compile",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.json",
+        "lint": "eslint . --ext .ts",
+        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+    },
+    "dependencies": {
+        "execa": "5.1.1",
+        "inquirer": "8.2.0",
+        "shelljs": "0.8.5"
+    },
+    "peerDependencies": {
+        "rnv": "^0.38.0-canary.1"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    }
+}
