@@ -68,10 +68,5 @@
         "access": "public"
     },
     "types": "lib/index",
-    "husky": {
-        "hooks": {
-            "pre-commit": "pretty-quick --staged"
-        }
-    },
     "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
 }
