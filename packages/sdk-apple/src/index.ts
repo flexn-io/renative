@@ -29,7 +29,7 @@ import shellQuote from 'shell-quote';
 
 const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
-const { fsExistsSync, copyFileSync, mkdirSync, writeFileSync, fsWriteFileSync, fsReadFileSync } = FileUtils;
+const { fsExistsSync, mkdirSync, writeFileSync, fsWriteFileSync, fsReadFileSync, copyFileSync } = FileUtils;
 const { executeAsync, commandExistsSync } = Exec;
 const { getAppFolder, getConfigProp } = Common;
 const { generateEnvVars } = EngineManager;
@@ -108,7 +108,7 @@ const runCocoaPods = async (c: Context) => {
                     RCT_NEW_ARCH_ENABLED: 1,
                 }
             });
-        } catch (e) {
+        } catch (e: Error | any) {
             const s = e?.toString ? e.toString() : '';
             const isGenericError =
                 s.includes('No provisionProfileSpecifier configured') ||
@@ -371,7 +371,11 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
-        return executeAsync(c, cmd);
+        return executeAsync(c, cmd, {
+            env: {
+                RCT_METRO_PORT: c.runtime.port,
+            },
+        });
     } catch (e: any) {
         if (e && e.includes) {
             const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
@@ -381,7 +385,11 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
                     type: 'confirm',
                     name: 'confirm',
                 });
-                return executeAsync(c, cmd);
+                return executeAsync(c, cmd, {
+                    env: {
+                        RCT_METRO_PORT: c.runtime.port,
+                    },
+                });
             }
             const isDeviceNotRegistered = e.includes("doesn't include the currently selected device");
             if (isDeviceNotRegistered) {

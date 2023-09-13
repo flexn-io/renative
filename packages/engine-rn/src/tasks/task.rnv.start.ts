@@ -5,7 +5,6 @@ import {
     RnvTaskFn,
     executeTask,
     shouldSkipTask,
-    doResolve,
     chalk,
     logInfo,
     logRaw,
@@ -58,9 +57,9 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
         case ANDROID_TV:
         case FIRE_TV:
         case ANDROID_WEAR: {
-            let startCmd = `node ${doResolve('react-native')}/local-cli/cli.js start --port ${
+            let startCmd = `npx react-native start --port ${
                 c.runtime.port
-            } --config=metro.config.js --no-interactive`;
+            } --no-interactive`;
 
             if (c.program.resetHard) {
                 startCmd += ' --reset-cache';

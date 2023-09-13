@@ -14,6 +14,7 @@ import {
     inquirerPrompt,
     RN_CLI_CONFIG_NAME,
     Spinner,
+    parseFonts,
 } from 'rnv';
 import { copyFileSync } from 'fs';
 
@@ -140,5 +141,28 @@ const poll = (fn: () => Promise<boolean>, timeout = 10000, interval = 1000) => {
 
     return new Promise<void>(checkCondition);
 };
+
+export const configureFonts = async (c: RnvContext) => {
+    const fontFolders = new Set<string>();
+    parseFonts(c, (font, dir) => {
+        if (font.includes('.ttf') || font.includes('.otf')) {
+            const key = font.split('.')[0];
+            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
+            if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
+                const fontSource = path.join(dir, font);
+                if (fsExistsSync(fontSource)) {
+                    // extract folder name from path
+                    const fontFolder = fontSource.split('/').slice(0, -1).join('/');
+                    fontFolders.add(fontFolder);
+                } else {
+                    logWarning(`Font ${chalk().white(fontSource)} doesn't exist! Skipping.`);
+                }
+            }
+        }
+    });
+
+    // set it so react-native.config.js can pick it up
+    c.paths.project.fontSourceDirs = Array.from(fontFolders);
+}
 
 export const waitForBundler = async (c: RnvContext) => poll(() => _isBundlerRunning(c));
