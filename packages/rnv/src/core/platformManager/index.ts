@@ -2,7 +2,6 @@ import path from 'path';
 import { chalk, logTask, logError, logWarning } from '../systemManager/logger';
 import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync } from '../systemManager/fileutils';
-import { checkAndConfigureSdks } from '../sdkManager/installer';
 import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import { RnvContext } from '../context/types';
@@ -130,8 +129,6 @@ export const isPlatformSupported = async (c: RnvContext, isGlobalScope = false) 
         }
     }
 
-    // Check global SDKs
-    await checkAndConfigureSdks(c);
     return c.platform;
 };
 

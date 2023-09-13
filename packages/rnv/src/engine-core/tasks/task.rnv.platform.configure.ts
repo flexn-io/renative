@@ -20,6 +20,7 @@ export const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originT
 
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
+    await checkAndConfigureSdks(c);
     await checkSdk(c);
     await configureRuntimeDefaults(c);
 

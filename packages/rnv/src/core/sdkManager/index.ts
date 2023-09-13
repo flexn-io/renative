@@ -1,11 +1,23 @@
-import { waitForEmulator } from './deviceUtils/common';
-import * as Android from './deviceUtils/android';
-import * as Apple from './deviceUtils/apple';
-import * as Tizen from './deviceUtils/tizen';
-import * as Webos from './deviceUtils/webos';
-import * as Kaios from './deviceUtils/kaios';
-import * as Installer from './installer';
+import { ANDROID, TIZEN, WEBOS, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TIZEN_MOBILE, TIZEN_WATCH } from '../constants';
+import { logTask } from '../systemManager/logger';
+import { RnvContext } from '../context/types';
 
-export * from './installer';
+export const checkAndConfigureSdks = async (c: RnvContext) => {
+    logTask('checkAndConfigureSdks');
 
-export { waitForEmulator, Android, Apple, Tizen, Webos, Kaios, Installer };
+    switch (c.platform) {
+        case ANDROID:
+        case ANDROID_TV:
+        case FIRE_TV:
+        case ANDROID_WEAR:
+            return checkAndConfigureAndroidSdks(c);
+        case TIZEN:
+        case TIZEN_MOBILE:
+        case TIZEN_WATCH:
+            return checkAndConfigureTizenSdks(c);
+        case WEBOS:
+            return checkAndConfigureWebosSdks(c);
+        default:
+            return true;
+    }
+};

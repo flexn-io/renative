@@ -28,6 +28,7 @@ export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) 
     logTask('taskRnvTargetLaunch');
 
     await isPlatformSupported(c, true);
+    await checkAndConfigureSdks(c);
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_TARGET_LAUNCH, originTask);
 
     const { platform, program } = c;

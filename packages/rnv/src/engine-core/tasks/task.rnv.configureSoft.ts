@@ -14,6 +14,7 @@ export const taskRnvConfigureSoft: RnvTaskFn = async (c, parentTask, originTask)
     await executeTask(c, TASK_APP_CONFIGURE, parentTask, originTask);
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
+    await checkAndConfigureSdks(c);
     await checkSdk(c);
     await configureRuntimeDefaults(c);
     return true;

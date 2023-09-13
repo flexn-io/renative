@@ -1,20 +1,9 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import {
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_SDKMANAGER,
-    CLI_ANDROID_ADB,
     CLI_TIZEN_EMULATOR,
     CLI_TIZEN,
     CLI_SDB_TIZEN,
-    CLI_WEBOS_ARES,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBOS_ARES_INSTALL,
-    CLI_WEBOS_ARES_LAUNCH,
-    CLI_WEBOS_ARES_NOVACOM,
-    CLI_WEBOS_ARES_SETUP_DEVICE,
-    CLI_WEBOS_ARES_DEVICE_INFO,
     ANDROID,
     TIZEN,
     WEBOS,
@@ -29,34 +18,24 @@ import {
     WEBOS_SDK,
     ANDROID_NDK,
     USER_HOME_DIR,
-} from '../constants';
-import { isSystemWin } from '../systemManager/utils';
-import { getRealPath, writeFileSync, fsExistsSync, fsReaddirSync, fsLstatSync } from '../systemManager/fileutils';
-import { chalk, logTask, logWarning, logSuccess, logError, logInfo } from '../systemManager/logger';
-import PlatformSetup from '../setupManager';
-import { generateBuildConfig } from '../configManager';
-import { RnvContext } from '../context/types';
+    isSystemWin,
+    getRealPath,
+    writeFileSync,
+    fsExistsSync,
+    fsReaddirSync,
+    fsLstatSync,
+    chalk,
+    logTask,
+    logWarning,
+    logSuccess,
+    logError,
+    logInfo,
+    PlatformSetup,
+    generateBuildConfig,
+    RnvContext,
+} from 'rnv';
 
 const SDK_LOCATIONS: Record<string, Array<string>> = {
-    android: [
-        path.join('/usr/local/android-sdk'),
-        path.join(USER_HOME_DIR, 'Library/Android/sdk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk'),
-        path.join('Program Files (x86)/Android/android-sdk'),
-    ],
-    'android-ndk': [
-        path.join('/usr/local/android-sdk/ndk'),
-        path.join(USER_HOME_DIR, 'Library/Android/sdk/ndk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk/ndk'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk/ndk'),
-        path.join('Program Files (x86)/Android/android-sdk/ndk'),
-        path.join('/usr/local/android-sdk/ndk-bundle'),
-        path.join(USER_HOME_DIR, 'Library/Android/sdk/ndk-bundle'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/android-sdk/ndk-bundle'),
-        path.join(USER_HOME_DIR, 'AppData/Local/Android/sdk/ndk-bundle'),
-        path.join('Program Files (x86)/Android/android-sdk/ndk-bundle'),
-    ],
     tizen: [
         path.join('usr/local/tizen-studio'),
         path.join(USER_HOME_DIR, 'tizen-studio'),
@@ -67,36 +46,6 @@ const SDK_LOCATIONS: Record<string, Array<string>> = {
 
 const _logSdkWarning = (c: RnvContext) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
-};
-
-export const checkAndConfigureAndroidSdks = async (c: RnvContext) => {
-    const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
-    logTask('checkAndConfigureAndroidSdks', `(${sdk})`);
-
-    if (!sdk) return _logSdkWarning(c);
-
-    let sdkManagerPath = getRealPath(
-        c,
-        path.join(sdk, `cmdline-tools/latest/bin/sdkmanager${isSystemWin ? '.bat' : ''}`)
-    );
-
-    if (!fsExistsSync(sdkManagerPath)) {
-        sdkManagerPath = getRealPath(c, path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`));
-    }
-
-    let avdManagerPath = getRealPath(
-        c,
-        path.join(sdk, `cmdline-tools/latest/bin/avdmanager${isSystemWin ? '.bat' : ''}`)
-    );
-
-    if (!fsExistsSync(avdManagerPath)) {
-        avdManagerPath = getRealPath(c, path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`));
-    }
-
-    c.cli[CLI_ANDROID_EMULATOR] = getRealPath(c, path.join(sdk, `emulator/emulator${isSystemWin ? '.exe' : ''}`));
-    c.cli[CLI_ANDROID_ADB] = getRealPath(c, path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`));
-    c.cli[CLI_ANDROID_AVDMANAGER] = avdManagerPath;
-    c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
 };
 
 export const checkAndConfigureTizenSdks = async (c: RnvContext) => {
@@ -111,60 +60,6 @@ export const checkAndConfigureTizenSdks = async (c: RnvContext) => {
         c.cli[CLI_SDB_TIZEN] = getRealPath(c, path.join(sdk, `tools/sdb${isSystemWin ? '.exe' : ''}`));
     } else {
         _logSdkWarning(c);
-    }
-};
-
-export const checkAndConfigureWebosSdks = async (c: RnvContext) => {
-    logTask(`checkAndConfigureWebosSdks:${c.platform}`);
-    const sdk = c.buildConfig?.sdks?.WEBOS_SDK;
-    if (sdk) {
-        c.cli[CLI_WEBOS_ARES] = getRealPath(c, path.join(sdk, `CLI/bin/ares${isSystemWin ? '.cmd' : ''}`));
-        c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(
-            c,
-            path.join(sdk, `CLI/bin/ares-package${isSystemWin ? '.cmd' : ''}`)
-        );
-        c.cli[CLI_WEBOS_ARES_INSTALL] = getRealPath(
-            c,
-            path.join(sdk, `CLI/bin/ares-install${isSystemWin ? '.cmd' : ''}`)
-        );
-        c.cli[CLI_WEBOS_ARES_LAUNCH] = getRealPath(
-            c,
-            path.join(sdk, `CLI/bin/ares-launch${isSystemWin ? '.cmd' : ''}`)
-        );
-        c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = getRealPath(
-            c,
-            path.join(sdk, `CLI/bin/ares-setup-device${isSystemWin ? '.cmd' : ''}`)
-        );
-        c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = getRealPath(
-            c,
-            path.join(sdk, `CLI/bin/ares-device-info${isSystemWin ? '.cmd' : ''}`)
-        );
-        c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(
-            c,
-            path.join(sdk, `CLI/bin/ares-novacom${isSystemWin ? '.cmd' : ''}`)
-        );
-    } else {
-        _logSdkWarning(c);
-    }
-};
-
-export const checkAndConfigureSdks = async (c: RnvContext) => {
-    logTask('checkAndConfigureSdks');
-
-    switch (c.platform) {
-        case ANDROID:
-        case ANDROID_TV:
-        case FIRE_TV:
-        case ANDROID_WEAR:
-            return checkAndConfigureAndroidSdks(c);
-        case TIZEN:
-        case TIZEN_MOBILE:
-        case TIZEN_WATCH:
-            return checkAndConfigureTizenSdks(c);
-        case WEBOS:
-            return checkAndConfigureWebosSdks(c);
-        default:
-            return true;
     }
 };
 
