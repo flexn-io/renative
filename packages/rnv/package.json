@@ -123,8 +123,7 @@
         "source-map-support": "0.5.13",
         "svg2js": "0.0.4-alpha1",
         "tar": "4.4.19",
-        "tslib": "2.3.1",
-        "xml2js": "0.6.0"
+        "tslib": "2.3.1"
     },
     "engines": {
         "node": ">=16.0.0",

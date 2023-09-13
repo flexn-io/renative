@@ -1,23 +1,31 @@
 import path from 'path';
 import inquirer from 'inquirer';
-import { fsExistsSync, getRealPath, fsReadFileSync, getDirectories } from '../../systemManager/fileutils';
-import { executeAsync, execCLI, openCommand } from '../../systemManager/exec';
-import { getPlatformProjectDir, getPlatformBuildDir } from '../../common';
-
-import { waitForEmulator } from './common';
-import { chalk, logToSummary, logTask, logInfo } from '../../systemManager/logger';
-
 import {
+    fsExistsSync,
+    getRealPath,
+    fsReadFileSync,
+    getDirectories,
+    executeAsync,
+    execCLI,
+    openCommand,
+    getPlatformProjectDir,
+    getPlatformBuildDir,
+    waitForEmulator,
+    chalk,
+    logToSummary,
+    logTask,
+    logInfo,
     CLI_WEBOS_ARES_PACKAGE,
     CLI_WEBOS_ARES_INSTALL,
     CLI_WEBOS_ARES_DEVICE_INFO,
     CLI_WEBOS_ARES_LAUNCH,
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE,
-} from '../../constants';
-import { isSystemWin, isUrlLocalhost } from '../../systemManager/utils';
-import { RnvContext } from '../../context/types';
-import { WebosDevice } from '../types';
+    isSystemWin,
+    isUrlLocalhost,
+    RnvContext,
+} from 'rnv';
+import { WebosDevice } from './types';
 
 export const launchWebOSimulator = (c: RnvContext) => {
     logTask('launchWebOSimulator');

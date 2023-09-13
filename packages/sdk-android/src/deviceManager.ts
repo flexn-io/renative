@@ -2,11 +2,15 @@ import path from 'path';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 import os from 'os';
-import { fsExistsSync, fsReaddirSync, fsLstatSync, fsReadFileSync } from '../../systemManager/fileutils';
-import { execCLI, executeTelnet } from '../../systemManager/exec';
-import { waitForEmulator } from './common';
-import { isSystemWin } from '../../systemManager/utils';
 import {
+    fsExistsSync,
+    fsReaddirSync,
+    fsLstatSync,
+    fsReadFileSync,
+    execCLI,
+    executeTelnet,
+    waitForEmulator,
+    isSystemWin,
     chalk,
     logToSummary,
     logTask,
@@ -15,8 +19,6 @@ import {
     logDebug,
     logSuccess,
     logRaw,
-} from '../../systemManager/logger';
-import {
     IS_TABLET_ABOVE_INCH,
     ANDROID_WEAR,
     ANDROID,
@@ -27,9 +29,10 @@ import {
     CLI_ANDROID_AVDMANAGER,
     CLI_ANDROID_SDKMANAGER,
     USER_HOME_DIR,
-} from '../../constants';
-import { RnvContext } from '../../context/types';
-import { AndroidDevice } from '../types';
+    RnvContext,
+} from 'rnv';
+
+import { AndroidDevice } from './types';
 
 const CHECK_INTEVAL = 5000;
 

@@ -1,14 +1,27 @@
 import inquirer from 'inquirer';
 import net from 'net';
 import path from 'path';
-import { getConfigProp, getPlatformProjectDir } from '../../common';
-import { RnvContext } from '../../context/types';
-import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, RENATIVE_CONFIG_NAME } from '../../constants';
-import { execCLI } from '../../systemManager/exec';
-import { fsRenameSync } from '../../systemManager/fileutils';
-import { chalk, logDebug, logError, logInfo, logTask, logToSummary, logWarning } from '../../systemManager/logger';
-import { TizenDevice, TizenSecurityConfig } from '../types';
-import { waitForEmulator } from './common';
+import {
+    getConfigProp,
+    getPlatformProjectDir,
+    RnvContext,
+    CLI_SDB_TIZEN,
+    CLI_TIZEN,
+    CLI_TIZEN_EMULATOR,
+    RENATIVE_CONFIG_NAME,
+    execCLI,
+    fsRenameSync,
+    chalk,
+    logDebug,
+    logError,
+    logInfo,
+    logTask,
+    logToSummary,
+    logWarning,
+    waitForEmulator,
+} from 'rnv';
+
+import { TizenDevice, TizenSecurityConfig } from './types';
 
 const xml2js = require('xml2js');
 

@@ -54,3 +54,21 @@ export type Payload = {
 };
 
 export type Context = RnvContext<Payload>;
+
+export type AndroidDevice = {
+    udid: string;
+    model?: string;
+    product?: string;
+    isPhone?: boolean;
+    isTablet?: boolean;
+    isWear?: boolean;
+    isTV?: boolean;
+    isMobile?: boolean;
+    screenProps?: any;
+    arch?: string;
+    avdConfig?: any;
+    isNotEligibleAndroid?: boolean;
+    name: string;
+    isDevice?: boolean;
+    isActive: boolean;
+};

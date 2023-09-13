@@ -1,5 +1,14 @@
 import { RnvContext } from 'rnv';
 
+export type AppleDevice = {
+    udid?: string;
+    version?: string;
+    isAvailable?: boolean;
+    name?: string;
+    icon?: string;
+    isDevice?: boolean;
+};
+
 export type Payload = {
     pluginConfigiOS: {
         exportOptions: string;

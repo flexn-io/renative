@@ -1,7 +1,7 @@
 {
-    "name": "@rnv/sdk-webos",
+    "name": "@rnv/sdk-kaios",
     "version": "0.38.0-canary.1",
-    "description": "ReNative WebOS SDK",
+    "description": "ReNative Kaios SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
     "bugs": {
@@ -31,9 +31,7 @@
         "lint": "eslint . --ext .ts",
         "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
-    "dependencies": {
-        "inquirer": "8.2.0"
-    },
+    "dependencies": {},
     "peerDependencies": {
         "rnv": "^0.38.0-canary.1"
     },
