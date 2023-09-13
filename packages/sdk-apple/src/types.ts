@@ -38,6 +38,7 @@ export type Payload = {
         };
         podfileSources: string;
         deploymentTarget: string;
+        podfileNodeRequire: string;
     };
     xcodeProj?: {
         id?: string;

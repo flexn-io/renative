@@ -26,6 +26,7 @@ import { ejectXcodeProject } from './ejector';
 import { Context } from './types';
 import { ObjectEncodingOptions } from 'fs';
 import shellQuote from 'shell-quote';
+import RNPermissionsMap from './rnPermissionsMap'
 
 const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
 
@@ -52,8 +53,10 @@ const checkIfPodsIsRequired = async (c: Context) => {
     if (!fsExistsSync(podChecksumPath)) return true;
     const podChecksum = fsReadFileSync(podChecksumPath).toString();
     const podContentChecksum = generateChecksum(fsReadFileSync(path.join(appFolder, 'Podfile')).toString());
+    const packageDependenciesChecksum = generateChecksum(JSON.stringify({ ...c.files.project.package.dependencies, ...c.files.project.package.devDependencies }));
+    const combinedChecksum = podContentChecksum + packageDependenciesChecksum;
 
-    if (podChecksum !== podContentChecksum) {
+    if (podChecksum !== combinedChecksum) {
         logDebug('runCocoaPods:isMandatory');
         return true;
     }
@@ -68,16 +71,20 @@ const updatePodsChecksum = (c: Context) => {
     const appFolder = getAppFolder(c);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
     const podContentChecksum = generateChecksum(fsReadFileSync(path.join(appFolder, 'Podfile')).toString());
+    const packageDependenciesChecksum = generateChecksum(
+        JSON.stringify({ ...c.files.project.package.dependencies, ...c.files.project.package.devDependencies })
+    );
+    const combinedChecksum = podContentChecksum + packageDependenciesChecksum;
     if (fsExistsSync(podChecksumPath)) {
         const existingContent = fsReadFileSync(podChecksumPath).toString();
-        if (existingContent !== podContentChecksum) {
-            logDebug(`updatePodsChecksum:${podContentChecksum}`);
-            return fsWriteFileSync(podChecksumPath, podContentChecksum);
+        if (existingContent !== combinedChecksum) {
+            logDebug(`updatePodsChecksum:${combinedChecksum}`);
+            return fsWriteFileSync(podChecksumPath, combinedChecksum);
         }
         return true;
     }
-    logDebug(`updatePodsChecksum:${podContentChecksum}`);
-    return fsWriteFileSync(podChecksumPath, podContentChecksum);
+    logDebug(`updatePodsChecksum:${combinedChecksum}`);
+    return fsWriteFileSync(podChecksumPath, combinedChecksum);
 };
 
 const runCocoaPods = async (c: Context) => {
@@ -91,6 +98,21 @@ const runCocoaPods = async (c: Context) => {
         return Promise.reject(`Location ${appFolder} does not exists!`);
     }
     const podsRequired = c.program.updatePods || (await checkIfPodsIsRequired(c));
+    const permissions = c.buildConfig.permissions?.[c.platform];
+    let requiredPodPermissions = permissions
+            ? Object.keys(permissions).map((key) => RNPermissionsMap[key]?.podPermissionKey)
+            : ''
+
+    // remove duplicates
+    if (requiredPodPermissions) {
+        requiredPodPermissions = Array.from(new Set(requiredPodPermissions))
+    }
+
+    const env = {
+        ...process.env,
+        RCT_NEW_ARCH_ENABLED: 1,
+        REACT_NATIVE_PERMISSIONS_REQUIRED: requiredPodPermissions,
+    };
 
     if (podsRequired) {
         if (!commandExistsSync('pod')) {
@@ -103,10 +125,7 @@ const runCocoaPods = async (c: Context) => {
             });
             await executeAsync(c, 'bundle exec pod install', {
                 cwd: appFolder,
-                env: {
-                    ...process.env,
-                    RCT_NEW_ARCH_ENABLED: 1,
-                }
+                env
             });
         } catch (e: Error | any) {
             const s = e?.toString ? e.toString() : '';
@@ -125,10 +144,7 @@ const runCocoaPods = async (c: Context) => {
 
             return executeAsync(c, 'RCT_NEW_ARCH_ENABLED=1 bundle exec pod update', {
                 cwd: appFolder,
-                env: {
-                    ...process.env,
-                    RCT_NEW_ARCH_ENABLED: 1,
-                }
+                env
             })
                 .then(() => updatePodsChecksum(c))
                 .catch((er) => Promise.reject(er));
@@ -368,13 +384,16 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
     //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
     // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
     const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager`;
+
+    const env: Record<string, string | number> = {
+        RCT_METRO_PORT: c.runtime.port,
+    }
+
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
         return executeAsync(c, cmd, {
-            env: {
-                RCT_METRO_PORT: c.runtime.port,
-            },
+            env,
         });
     } catch (e: any) {
         if (e && e.includes) {
@@ -386,9 +405,7 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
                     name: 'confirm',
                 });
                 return executeAsync(c, cmd, {
-                    env: {
-                        RCT_METRO_PORT: c.runtime.port,
-                    },
+                    env,
                 });
             }
             const isDeviceNotRegistered = e.includes("doesn't include the currently selected device");

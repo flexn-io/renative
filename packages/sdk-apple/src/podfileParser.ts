@@ -189,6 +189,10 @@ export const parsePodFile = async (c: Context, platform: string) => {
             pattern: '{{PLUGIN_STATIC_POD_EXTRA_CONDITIONS}}',
             override: c.payload.pluginConfigiOS.staticPodExtraConditions,
         },
+        {
+            pattern: '{{PLUGIN_NODE_REQUIRE}}',
+            override: c.payload.pluginConfigiOS.podfileNodeRequire || '',
+        },
     ];
 
     addSystemInjects(c, injects);
