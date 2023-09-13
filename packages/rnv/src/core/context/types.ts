@@ -155,6 +155,7 @@ export interface RnvContext<Payload = any> {
             rnCliConfig?: string;
             babelConfig?: string;
             platformTemplatesDirs: Record<string, string>;
+            fontSourceDirs?: Array<string>;
         };
         appConfig: RnvContextPathObj;
         // EXTRA

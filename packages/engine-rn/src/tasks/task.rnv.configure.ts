@@ -18,7 +18,7 @@ import {
 } from 'rnv';
 import { configureGradleProject } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
-import { configureMetroConfigs } from '../commonEngine';
+import { configureFonts, configureMetroConfigs } from '../commonEngine';
 
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
@@ -38,18 +38,21 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
         case IOS:
         case MACOS:
             await configureXcodeProject(c);
-            return true;
+            break;
         case ANDROID:
         case ANDROID_TV:
         case FIRE_TV:
         case ANDROID_WEAR:
             await configureGradleProject(c);
             await jetifyIfRequired(c);
-            return true;
+            break;
         default:
-            await logErrorPlatform(c);
-            return true;
+            logErrorPlatform(c);
+            break;
     }
+
+    await configureFonts(c);
+    return true;
 };
 
 export default {

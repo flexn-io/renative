@@ -385,7 +385,11 @@ const _runGradleApp = async (c: Context, platform: any, device: any) => {
     //     // { interactive: true }
     // );
 
-    await executeAsync(c, command);
+    await executeAsync(c, command, {
+        env: {
+            RCT_METRO_PORT: c.runtime.port,
+        },
+    });
 
     // if (outputAab) {
     //     const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
