@@ -74,18 +74,13 @@ export const ICONS = {
 };
 
 export const REMOTE_DEBUG_PORT = 8079;
-// CLI
-export const CLI_TIZEN_EMULATOR = 'tizenEmulator';
-export const CLI_KAIOS_EMULATOR = 'tizenEmulator';
-export const CLI_TIZEN = 'tizen';
-export const CLI_SDB_TIZEN = 'tizenSdb';
 
 // SDK
-export const ANDROID_SDK = 'ANDROID_SDK';
-export const ANDROID_NDK = 'ANDROID_NDK';
-export const TIZEN_SDK = 'TIZEN_SDK';
-export const WEBOS_SDK = 'WEBOS_SDK';
-export const KAIOS_SDK = 'KAIOS_SDK';
+// export const ANDROID_SDK = 'ANDROID_SDK';
+// export const ANDROID_NDK = 'ANDROID_NDK';
+// export const TIZEN_SDK = 'TIZEN_SDK';
+// export const WEBOS_SDK = 'WEBOS_SDK';
+// export const KAIOS_SDK = 'KAIOS_SDK';
 
 export const RENATIVE_CONFIG_NAME = 'renative.json';
 export const RENATIVE_CONFIG_LOCAL_NAME = 'renative.local.json';
@@ -159,17 +154,6 @@ export const SUPPORTED_PLATFORMS = [
     FIREFOX_TV,
     CHROMECAST,
 ];
-
-export const SDK_PLATFORMS: any = {};
-SDK_PLATFORMS[ANDROID] = ANDROID_SDK;
-SDK_PLATFORMS[ANDROID_TV] = ANDROID_SDK;
-SDK_PLATFORMS[FIRE_TV] = ANDROID_SDK;
-SDK_PLATFORMS[ANDROID_WEAR] = ANDROID_SDK;
-SDK_PLATFORMS[TIZEN] = TIZEN_SDK;
-SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
-SDK_PLATFORMS[TIZEN_MOBILE] = TIZEN_SDK;
-SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
-SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
 
 export const TASK_RUN = 'run';
 export const TASK_CONFIGURE = 'configure';

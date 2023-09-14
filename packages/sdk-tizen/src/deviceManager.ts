@@ -5,9 +5,6 @@ import {
     getConfigProp,
     getPlatformProjectDir,
     RnvContext,
-    CLI_SDB_TIZEN,
-    CLI_TIZEN,
-    CLI_TIZEN_EMULATOR,
     RENATIVE_CONFIG_NAME,
     execCLI,
     fsRenameSync,
@@ -20,6 +17,7 @@ import {
     logWarning,
     waitForExecCLI,
 } from 'rnv';
+import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
 import { TizenDevice, TizenSecurityConfig } from './types';
 

@@ -5,9 +5,6 @@ import {
     ANDROID_TV,
     FIRE_TV,
     ANDROID_WEAR,
-    SDK_PLATFORMS,
-    ANDROID_SDK,
-    ANDROID_NDK,
     USER_HOME_DIR,
     isSystemWin,
     getRealPath,
@@ -25,7 +22,15 @@ import {
     RnvContext,
 } from 'rnv';
 
-import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
+import {
+    CLI_ANDROID_EMULATOR,
+    CLI_ANDROID_ADB,
+    CLI_ANDROID_AVDMANAGER,
+    CLI_ANDROID_SDKMANAGER,
+    SDK_PLATFORMS,
+    ANDROID_SDK,
+    ANDROID_NDK,
+} from './constants';
 
 const SDK_LOCATIONS: Record<string, Array<string>> = {
     android: [

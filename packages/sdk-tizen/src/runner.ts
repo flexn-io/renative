@@ -2,7 +2,6 @@ import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } fr
 import path from 'path';
 import {
     execCLI,
-    CLI_TIZEN,
     REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     RnvContext,
     getPlatformProjectDir,
@@ -27,6 +26,7 @@ import {
     OverridesOptions,
 } from 'rnv';
 import semver from 'semver';
+import { CLI_TIZEN } from './constants';
 
 import {
     runTizenSimOrDevice,

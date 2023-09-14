@@ -1,14 +1,9 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import {
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_SDB_TIZEN,
     TIZEN,
     TIZEN_MOBILE,
     TIZEN_WATCH,
-    SDK_PLATFORMS,
-    TIZEN_SDK,
     USER_HOME_DIR,
     isSystemWin,
     getRealPath,
@@ -25,6 +20,7 @@ import {
     generateBuildConfig,
     RnvContext,
 } from 'rnv';
+import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, SDK_PLATFORMS, TIZEN_SDK } from './constants';
 
 const SDK_LOCATIONS: Record<string, Array<string>> = {
     tizen: [
