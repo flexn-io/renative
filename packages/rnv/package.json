@@ -84,6 +84,7 @@
         "@babel/plugin-transform-runtime": "7.21.4",
         "@babel/runtime": "7.20.7",
         "@flexn/plugins": "1.0.9",
+        "@rnv/engine-core": "0.38.0-canary.1",
         "@sentry/integrations": "7.57.0",
         "@sentry/node": "7.57.0",
         "ajv": "7.0.0-beta.0",

@@ -7,11 +7,11 @@ import { loadIntegrations } from '../core/integrationManager';
 import { initializeTask, findSuitableTask } from '../core/taskManager';
 import { RnvContext } from '../core/contextManager/types';
 
-const EngineCore = require('@rnv/engine-core');
-
 const IGNORE_MISSING_ENGINES_TASKS = ['link', 'unlink'];
 
 const run = async (c: RnvContext) => {
+    const EngineCore = require('@rnv/engine-core').default;
+
     await registerEngine(c, EngineCore);
     await configureRuntimeDefaults(c);
     await checkAndMigrateProject();
