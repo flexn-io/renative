@@ -1,39 +1,39 @@
 import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
 import path from 'path';
 import {
-    Common,
-    Constants,
-    Exec,
-    FileUtils,
-    Logger,
-    OverridesOptions,
-    PlatformManager,
-    ProjectManager,
+    execCLI,
+    CLI_TIZEN,
+    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     RnvContext,
-    SDKManager,
-} from 'rnv';
-import semver from 'semver';
-
-const { execCLI } = Exec;
-const { CLI_TIZEN, REMOTE_DEBUGGER_ENABLED_PLATFORMS } = Constants;
-const {
     getPlatformProjectDir,
-    // getTemplateProjectDir,
     getAppVersion,
     getConfigProp,
     checkPortInUse,
     confirmActiveBundler,
     addSystemInjects,
     waitForHost,
-} = Common;
-const { chalk, logTask, logDebug, logError, logSuccess, logWarning, logInfo } = Logger;
-const { isPlatformActive } = PlatformManager;
-const { writeCleanFile, fsExistsSync } = FileUtils;
+    chalk,
+    logTask,
+    logDebug,
+    logError,
+    logSuccess,
+    logWarning,
+    logInfo,
+    isPlatformActive,
+    writeCleanFile,
+    fsExistsSync,
+    copyAssetsFolder,
+    copyBuildsFolder,
+    OverridesOptions,
+} from 'rnv';
+import semver from 'semver';
 
-const { copyAssetsFolder, copyBuildsFolder } = ProjectManager;
-
-const { runTizenSimOrDevice, createDevelopTizenCertificate, DEFAULT_CERTIFICATE_NAME, DEFAULT_SECURITY_PROFILE_NAME } =
-    SDKManager.Tizen;
+import {
+    runTizenSimOrDevice,
+    createDevelopTizenCertificate,
+    DEFAULT_CERTIFICATE_NAME,
+    DEFAULT_SECURITY_PROFILE_NAME,
+} from './deviceManager';
 
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
 

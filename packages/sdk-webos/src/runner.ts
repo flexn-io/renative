@@ -1,39 +1,33 @@
 import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } from '@rnv/sdk-webpack';
 import path from 'path';
 import {
-    Common,
-    Constants,
-    Exec,
-    FileUtils,
-    Logger,
-    PlatformManager,
-    ProjectManager,
+    execCLI,
+    REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     RnvContext,
-    SDKManager,
-} from 'rnv';
-import semver from 'semver';
-
-const { writeCleanFile } = FileUtils;
-const { execCLI } = Exec;
-const {
     getPlatformProjectDir,
-    getPlatformBuildDir,
     getAppVersion,
-    getAppTitle,
-    getAppId,
-    getAppDescription,
     getConfigProp,
     checkPortInUse,
     confirmActiveBundler,
     addSystemInjects,
     waitForHost,
-} = Common;
-
-const { isPlatformActive } = PlatformManager;
-const { chalk, logTask, logInfo, logSuccess, logError } = Logger;
-const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
-const { CLI_WEBOS_ARES_PACKAGE, REMOTE_DEBUGGER_ENABLED_PLATFORMS } = Constants;
-const { runWebosSimOrDevice } = SDKManager.Webos;
+    chalk,
+    logTask,
+    logError,
+    logSuccess,
+    logInfo,
+    isPlatformActive,
+    writeCleanFile,
+    copyAssetsFolder,
+    copyBuildsFolder,
+    getPlatformBuildDir,
+    CLI_WEBOS_ARES_PACKAGE,
+    getAppId,
+    getAppTitle,
+    getAppDescription,
+} from 'rnv';
+import semver from 'semver';
+import { runWebosSimOrDevice } from './deviceManager';
 
 export const runWebOS = async (c: RnvContext) => {
     const { hosted } = c.program;
