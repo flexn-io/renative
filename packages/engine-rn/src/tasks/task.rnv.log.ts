@@ -11,24 +11,23 @@ import {
     IOS,
     TASK_WORKSPACE_CONFIGURE,
     TASK_PROJECT_CONFIGURE,
-    checkAndConfigureSdks,
 } from 'rnv';
-import { runAndroidLog } from '@rnv/sdk-android';
+import { runAndroidLog, checkAndConfigureAndroidSdks } from '@rnv/sdk-android';
 import { runAppleLog } from '@rnv/sdk-apple';
+
+import {} from '@rnv/sdk-android';
 
 export const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvLog', `parent:${parentTask}`);
 
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
 
-    // await checkSdk(c);
-    await checkAndConfigureSdks(c);
-
     switch (c.platform) {
         case ANDROID:
         case ANDROID_TV:
         case FIRE_TV:
         case ANDROID_WEAR:
+            await checkAndConfigureAndroidSdks(c);
             return runAndroidLog(c);
         case IOS:
             return runAppleLog(c);

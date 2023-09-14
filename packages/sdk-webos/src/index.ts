@@ -1,1 +1,2 @@
-export default {};
+export * from './deviceManager';
+export * from './installer';

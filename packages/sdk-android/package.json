@@ -15,9 +15,6 @@
         "types.d.ts"
     ],
     "main": "dist/index.js",
-    "bin": {
-        "sdk-android": "./dist/cli.js"
-    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/flexn-io/renative.git"

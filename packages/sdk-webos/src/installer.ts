@@ -1,13 +1,6 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import {
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_SDKMANAGER,
-    CLI_ANDROID_ADB,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_SDB_TIZEN,
     CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE,
     CLI_WEBOS_ARES_INSTALL,
@@ -28,7 +21,6 @@ import {
     TIZEN_SDK,
     WEBOS_SDK,
     ANDROID_NDK,
-    USER_HOME_DIR,
     isSystemWin,
     getRealPath,
     writeFileSync,
@@ -168,7 +160,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
                 c.files.workspace.config.sdks[sdkKey] = result;
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
                 generateBuildConfig(c);
-                await checkAndConfigureSdks(c);
+                await checkAndConfigureWebosSdks(c);
             } catch (e: any) {
                 logError(e);
             }
@@ -210,8 +202,6 @@ export const checkSdk = async (c: RnvContext) => {
             default:
                 return true;
         }
-    } else {
-        await checkAndConfigureAndroidSdks(c);
     }
     return true;
 };

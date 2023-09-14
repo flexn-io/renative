@@ -17,11 +17,12 @@ import {
     executeTask,
     RnvTaskFn,
 } from 'rnv';
+import { listAndroidTargets } from '@rnv/sdk-android';
+import { listAppleDevices } from '@rnv/sdk-apple';
+import { listTizenTargets } from '@rnv/sdk-tizen';
+import { listWebOSTargets } from '@rnv/sdk-webos';
 
-import { listTizenTargets } from '../../core/sdkManager/deviceUtils/tizen';
-import { listWebOSTargets } from '../../core/sdkManager/deviceUtils/webos';
-import { listAndroidTargets } from '../../core/sdkManager/deviceUtils/android';
-import { listAppleDevices } from '../../core/sdkManager/deviceUtils/apple';
+import { checkAndConfigureSdks } from '../common';
 
 export const taskRnvTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTargetList');

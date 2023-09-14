@@ -13,8 +13,9 @@ import {
     PlatformManager,
     ProjectManager,
     Resolver,
-    SDKManager,
 } from 'rnv';
+import { getAppleDevices, launchAppleSimulator } from './deviceManager';
+
 import { getAppFolderName } from './common';
 import { registerDevice, updateProfile } from './fastlane';
 import { parseEntitlementsPlist, parseExportOptionsPlist, parseInfoPlist } from './plistParser';
@@ -26,9 +27,9 @@ import { ejectXcodeProject } from './ejector';
 import { Context } from './types';
 import { ObjectEncodingOptions } from 'fs';
 import shellQuote from 'shell-quote';
-import RNPermissionsMap from './rnPermissionsMap'
+import RNPermissionsMap from './rnPermissionsMap';
 
-const { getAppleDevices, launchAppleSimulator } = SDKManager.Apple;
+export * from './deviceManager';
 
 const { fsExistsSync, mkdirSync, writeFileSync, fsWriteFileSync, fsReadFileSync, copyFileSync } = FileUtils;
 const { executeAsync, commandExistsSync } = Exec;
@@ -53,7 +54,9 @@ const checkIfPodsIsRequired = async (c: Context) => {
     if (!fsExistsSync(podChecksumPath)) return true;
     const podChecksum = fsReadFileSync(podChecksumPath).toString();
     const podContentChecksum = generateChecksum(fsReadFileSync(path.join(appFolder, 'Podfile')).toString());
-    const packageDependenciesChecksum = generateChecksum(JSON.stringify({ ...c.files.project.package.dependencies, ...c.files.project.package.devDependencies }));
+    const packageDependenciesChecksum = generateChecksum(
+        JSON.stringify({ ...c.files.project.package.dependencies, ...c.files.project.package.devDependencies })
+    );
     const combinedChecksum = podContentChecksum + packageDependenciesChecksum;
 
     if (podChecksum !== combinedChecksum) {
@@ -100,12 +103,12 @@ const runCocoaPods = async (c: Context) => {
     const podsRequired = c.program.updatePods || (await checkIfPodsIsRequired(c));
     const permissions = c.buildConfig.permissions?.[c.platform];
     let requiredPodPermissions = permissions
-            ? Object.keys(permissions).map((key) => RNPermissionsMap[key]?.podPermissionKey)
-            : ''
+        ? Object.keys(permissions).map((key) => RNPermissionsMap[key]?.podPermissionKey)
+        : '';
 
     // remove duplicates
     if (requiredPodPermissions) {
-        requiredPodPermissions = Array.from(new Set(requiredPodPermissions))
+        requiredPodPermissions = Array.from(new Set(requiredPodPermissions));
     }
 
     const env = {
@@ -125,7 +128,7 @@ const runCocoaPods = async (c: Context) => {
             });
             await executeAsync(c, 'bundle exec pod install', {
                 cwd: appFolder,
-                env
+                env,
             });
         } catch (e: Error | any) {
             const s = e?.toString ? e.toString() : '';
@@ -144,7 +147,7 @@ const runCocoaPods = async (c: Context) => {
 
             return executeAsync(c, 'RCT_NEW_ARCH_ENABLED=1 bundle exec pod update', {
                 cwd: appFolder,
-                env
+                env,
             })
                 .then(() => updatePodsChecksum(c))
                 .catch((er) => Promise.reject(er));
@@ -387,7 +390,7 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
 
     const env: Record<string, string | number> = {
         RCT_METRO_PORT: c.runtime.port,
-    }
+    };
 
     try {
         // Inherit full logs

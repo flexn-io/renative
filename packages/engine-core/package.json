@@ -15,9 +15,6 @@
         "types.d.ts"
     ],
     "main": "dist/index.js",
-    "bin": {
-        "sdk-android": "./dist/cli.js"
-    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/flexn-io/renative.git"
@@ -32,7 +29,12 @@
         "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
-        "inquirer": "8.2.0"
+        "inquirer": "8.2.0",
+        "@rnv/sdk-android": "0.38.0-canary.1",
+        "@rnv/sdk-apple": "0.38.0-canary.1",
+        "@rnv/sdk-tizen": "0.38.0-canary.1",
+        "@rnv/sdk-webos": "0.38.0-canary.1",
+        "@rnv/sdk-kaios": "0.38.0-canary.1"
     },
     "peerDependencies": {
         "rnv": "^0.38.0-canary.1"

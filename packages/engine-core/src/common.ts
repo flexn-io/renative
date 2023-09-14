@@ -1,6 +1,18 @@
-import { ANDROID, TIZEN, WEBOS, ANDROID_TV, FIRE_TV, ANDROID_WEAR, TIZEN_MOBILE, TIZEN_WATCH } from '../constants';
-import { logTask } from '../systemManager/logger';
-import { RnvContext } from '../context/types';
+import {
+    ANDROID,
+    ANDROID_TV,
+    ANDROID_WEAR,
+    FIRE_TV,
+    logTask,
+    RnvContext,
+    TIZEN,
+    TIZEN_MOBILE,
+    TIZEN_WATCH,
+    WEBOS,
+} from 'rnv';
+import { checkAndConfigureAndroidSdks } from '@rnv/sdk-android';
+import { checkAndConfigureTizenSdks } from '@rnv/sdk-tizen';
+import { checkAndConfigureWebosSdks } from '@rnv/sdk-webos';
 
 export const checkAndConfigureSdks = async (c: RnvContext) => {
     logTask('checkAndConfigureSdks');

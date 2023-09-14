@@ -1,5 +1,7 @@
-import { isPlatformSupported,
-    chalk, logTask,
+import {
+    isPlatformSupported,
+    chalk,
+    logTask,
     IOS,
     ANDROID,
     TVOS,
@@ -13,15 +15,16 @@ import { isPlatformSupported,
     TASK_TARGET_LAUNCH,
     PARAMS,
     checkSdk,
-    launchTizenSimulator,
-    launchWebOSimulator,
-    launchAndroidSimulator,
-    launchAppleSimulator,
-    launchKaiOSSimulator,
-    executeTask
-    RnvTaskFn
+    executeTask,
+    RnvTaskFn,
 } from 'rnv';
+import { checkAndConfigureSdks } from '../common';
 
+import { launchAndroidSimulator } from '@rnv/sdk-android';
+import { launchAppleSimulator } from '@rnv/sdk-apple';
+import { launchTizenSimulator } from '@rnv/sdk-tizen';
+import { launchWebOSimulator } from '@rnv/sdk-webos';
+import { launchKaiOSSimulator } from '@rnv/sdk-kaios';
 
 export const taskRnvTargetLaunch: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvTargetLaunch');

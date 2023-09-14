@@ -16,7 +16,6 @@ import {
     Common,
     PlatformManager,
     Prompt,
-    SDKManager,
     RuntimeManager,
     RnvPluginPlatform,
 } from 'rnv';
@@ -26,7 +25,7 @@ import {
     parseSplashActivitySync,
     parseMainApplicationSync,
     injectPluginKotlinSync,
-    parseFlipperSync
+    parseFlipperSync,
 } from './kotlinParser';
 import {
     parseAppBuildGradleSync,
@@ -42,7 +41,10 @@ import { ejectGradleProject } from './ejector';
 import { Context } from './types';
 // import { adb, getAdbPath } from '@react-native-community/cli-platform-android';
 
-const {
+export * from './installer';
+export * from './deviceManager';
+
+import {
     resetAdb,
     getAndroidTargets,
     composeDevicesString,
@@ -50,7 +52,7 @@ const {
     checkForActiveEmulator,
     askForNewEmulator,
     connectToWifiDevice,
-} = SDKManager.Android;
+} from './deviceManager';
 const { copyAssetsFolder, copyBuildsFolder, parseFonts } = ProjectManager;
 const { parsePlugins } = PluginManager;
 
@@ -369,7 +371,6 @@ const _runGradleApp = async (c: Context, platform: any, device: any) => {
     // const adbPath = getAdbPath();
     // const devices = adb.getDevices(adbPath);
     // console.log('DEVICES FROM RN', devices);
-
 
     let command = `npx react-native run-android --mode=${signingConfig} --no-packager`;
 

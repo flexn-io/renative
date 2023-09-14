@@ -143,7 +143,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
                 c.files.workspace.config.sdks[sdkKey] = result;
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
                 generateBuildConfig(c);
-                await checkAndConfigureSdks(c);
+                await checkAndConfigureTizenSdks(c);
             } catch (e: any) {
                 logError(e);
             }

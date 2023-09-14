@@ -10,6 +10,7 @@ import {
     isBuildSchemeSupported,
     logTask,
 } from 'rnv';
+import { checkAndConfigureSdks } from '../common';
 
 export const taskRnvConfigureSoft: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigureSoft');
