@@ -2,8 +2,6 @@ import path from 'path';
 import inquirer from 'inquirer';
 import {
     WEBOS,
-    SDK_PLATFORMS,
-    WEBOS_SDK,
     isSystemWin,
     getRealPath,
     writeFileSync,
@@ -28,6 +26,8 @@ import {
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE,
     CLI_WEBOS_ARES_DEVICE_INFO,
+    WEBOS_SDK,
+    SDK_PLATFORMS,
 } from './constants';
 
 const SDK_LOCATIONS: Record<string, Array<string>> = {
