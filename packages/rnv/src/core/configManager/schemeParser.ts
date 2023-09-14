@@ -1,7 +1,7 @@
 import merge from 'deepmerge';
 import { logError, logTask, logWarning, chalk, logInfo } from '../systemManager/logger';
 import { inquirerPrompt } from '../../cli/prompt';
-import { RnvContext } from '../context/types';
+import { RnvContext } from '../contextManager/types';
 
 export const isBuildSchemeSupported = async (c: RnvContext) => {
     logTask('isBuildSchemeSupported');

@@ -24,7 +24,7 @@ import * as Prompt from './cli/prompt';
 import * as Constants from './core/constants';
 import Spinner from './cli/ora';
 import CLI from './cli';
-import Config from './core/context/context';
+import Config from './core/contextManager/context';
 
 export {
     // MANAGERS

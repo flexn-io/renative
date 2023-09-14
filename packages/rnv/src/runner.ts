@@ -1,5 +1,5 @@
 import Analytics from './core/systemManager/analytics';
-import Config from './core/context/context';
+import Config from './core/contextManager/context';
 import { configureFilesystem } from './core/systemManager/fileutils';
 import { createRnvConfig } from './core/configManager';
 import { logComplete, logError, logInitialize } from './core/systemManager/logger';

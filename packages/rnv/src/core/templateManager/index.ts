@@ -20,7 +20,7 @@ import { getConfigProp } from '../common';
 import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from '../configManager';
 import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
-import { RnvContext } from '../context/types';
+import { RnvContext } from '../contextManager/types';
 import { PromptOptions } from '../../cli/types';
 
 export const checkIfTemplateConfigured = async (c: RnvContext) => {

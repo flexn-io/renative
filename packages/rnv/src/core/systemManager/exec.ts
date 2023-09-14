@@ -5,12 +5,12 @@ import { access, accessSync, constants } from 'fs';
 import execa, { ExecaChildProcess } from 'execa';
 import NClient from 'netcat/client';
 import ora from '../../cli/ora';
-import Config from '../context/context';
+import Config from '../contextManager/context';
 
 import { chalk, logDebug, logRaw, logError } from './logger';
 import { fsExistsSync } from './fileutils';
 import { replaceOverridesInString } from './utils';
-import { RnvContext } from '../context/types';
+import { RnvContext } from '../contextManager/types';
 import { ExecCallback, ExecCallback2, ExecOptions } from './types';
 
 const { exec, execSync } = require('child_process');

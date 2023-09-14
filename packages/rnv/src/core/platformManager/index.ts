@@ -4,7 +4,7 @@ import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync } from '../systemManager/fileutils';
 import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
 import { SUPPORTED_PLATFORMS } from '../constants';
-import { RnvContext } from '../context/types';
+import { RnvContext } from '../contextManager/types';
 
 export const logErrorPlatform = (c: RnvContext) => {
     logError(

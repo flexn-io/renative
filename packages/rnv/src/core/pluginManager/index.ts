@@ -19,7 +19,7 @@ import {
 import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../systemManager/logger';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { doResolve, doResolvePath } from '../systemManager/resolve';
-import { RnvContext } from '../context/types';
+import { RnvContext } from '../contextManager/types';
 import { ResolveOptions } from '../systemManager/types';
 import {
     PluginCallback,

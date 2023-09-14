@@ -6,7 +6,7 @@ import { getConfigProp } from '../common';
 import { logTask } from '../systemManager/logger';
 import { loadPluginTemplates } from '../pluginManager';
 import { parseRenativeConfigs } from '../configManager/index';
-import { RnvContext, RnvContextPlatform } from '../context/types';
+import { RnvContext, RnvContextPlatform } from '../contextManager/types';
 
 export const updateRenativeConfigs = async (c: RnvContext) => {
     await loadPluginTemplates(c);

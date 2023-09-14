@@ -10,7 +10,7 @@ import { CLI_PROPS } from './constants';
 import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
 import { chalk, logError, logTask, logWarning } from './systemManager/logger';
 import { getValidLocalhost } from './systemManager/utils';
-import { RnvContext } from './context/types';
+import { RnvContext } from './contextManager/types';
 import { GetConfigPropFn } from './types';
 import { OverridesOptions, TimestampPathsConfig } from './systemManager/types';
 import { RenativeConfigBuildScheme, RenativeConfigFile } from './configManager/types';

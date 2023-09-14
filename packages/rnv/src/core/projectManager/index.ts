@@ -32,7 +32,7 @@ import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from
 
 import { configureTemplateFiles, configureEntryPoint } from '../templateManager';
 import { parseRenativeConfigs } from '../configManager';
-import { RnvContext } from '../context/types';
+import { RnvContext } from '../contextManager/types';
 import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
 import { RnvPluginPlatform } from '../pluginManager/types';

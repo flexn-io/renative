@@ -35,8 +35,8 @@ import { getConfigProp } from '../common';
 import { getWorkspaceDirPath } from '../projectManager/workspace';
 import { chalk, logError, logTask, logWarning, logDebug } from '../systemManager/logger';
 import { doResolve } from '../systemManager/resolve';
-import { RnvContextFileObj, RnvContextPathObj, RnvContext } from '../context/types';
-import { generateConfigBase, generateRnvConfigPathObj } from '../context/contextBase';
+import { RnvContextFileObj, RnvContextPathObj, RnvContext } from '../contextManager/types';
+import { generateConfigBase, generateRnvConfigPathObj } from '../contextManager/contextBase';
 import { RnvFileKey } from './types';
 // import { loadPluginTemplates } from '../pluginManager';
 

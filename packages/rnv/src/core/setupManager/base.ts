@@ -7,9 +7,9 @@ import { TASK_WORKSPACE_CONFIGURE } from '../constants';
 import { executeTask } from '../taskManager';
 import { replaceHomeFolder, updateConfigFile } from '../systemManager/fileutils';
 import _setupConfig from './config';
-import Config from '../context/context';
+import Config from '../contextManager/context';
 import { logTask, logError, logInfo, logDebug, logSuccess } from '../systemManager/logger';
-import { RnvContext } from '../context/types';
+import { RnvContext } from '../contextManager/types';
 
 const setupConfig: any = _setupConfig;
 class BasePlatformSetup {

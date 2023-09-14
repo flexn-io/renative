@@ -1,8 +1,8 @@
 import LinuxPlatformSetup from './linux';
 import WindowsPlatformSetup from './windows';
 import DarwinPlatformSetup from './darwin';
-import Config from '../context/context';
-import { RnvContext } from '../context/types';
+import Config from '../contextManager/context';
+import { RnvContext } from '../contextManager/types';
 
 export default (_c: RnvContext) => {
     let c = _c;

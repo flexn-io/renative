@@ -1,6 +1,6 @@
 import { commandExistsSync, executeAsync } from '../systemManager/exec';
 import BasePlatformSetup from './base';
-import Config from '../context/context';
+import Config from '../contextManager/context';
 
 class LinuxPlatformSetup extends BasePlatformSetup {
     constructor() {
