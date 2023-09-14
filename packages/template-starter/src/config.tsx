@@ -16,8 +16,6 @@ export function testProps(testId: string | undefined) {
     return { accessibilityLabel: testId, accessible: true };
 }
 
-console.disableYellowBox = true; // eslint-disable-line
-
 if (!global.performance) {
     // @ts-expect-error Performance needs to be typed
     global.performance = {};
