@@ -3,7 +3,6 @@ import crypto from 'crypto';
 import inquirer from 'inquirer';
 import path from 'path';
 import {
-    AppleDevice,
     Common,
     Constants,
     EngineManager,
@@ -24,7 +23,7 @@ import { parsePodFile } from './podfileParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseXcscheme } from './xcschemeParser';
 import { ejectXcodeProject } from './ejector';
-import { Context } from './types';
+import { AppleDevice, Context } from './types';
 import { ObjectEncodingOptions } from 'fs';
 import shellQuote from 'shell-quote';
 import RNPermissionsMap from './rnPermissionsMap';
@@ -859,6 +858,7 @@ const configureXcodeProject = async (c: Context) => {
     // const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     // INJECTORS
     c.payload.pluginConfigiOS = {
+        podfileNodeRequire: '',
         podfileInject: '',
         podPostInstall: '',
         staticPodExtraConditions: '',

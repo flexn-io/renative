@@ -6,17 +6,11 @@ import {
     CLI_ANDROID_SDKMANAGER,
     CLI_ANDROID_ADB,
     ANDROID,
-    TIZEN,
-    WEBOS,
     ANDROID_TV,
     FIRE_TV,
     ANDROID_WEAR,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
     SDK_PLATFORMS,
     ANDROID_SDK,
-    TIZEN_SDK,
-    WEBOS_SDK,
     ANDROID_NDK,
     USER_HOME_DIR,
     isSystemWin,
@@ -31,7 +25,6 @@ import {
     logSuccess,
     logError,
     logInfo,
-    PlatformSetup,
     generateBuildConfig,
     RnvContext,
 } from 'rnv';
@@ -183,8 +176,8 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
 
     logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS[sdkPlatform].join(', ')}`);
 
-    const setupInstance = PlatformSetup(c);
-    await setupInstance.askToInstallSDK(sdkPlatform);
+    // const setupInstance = PlatformSetup(c);
+    // await setupInstance.askToInstallSDK(sdkPlatform);
     generateBuildConfig(c);
     return true;
 };
@@ -205,12 +198,6 @@ export const checkSdk = async (c: RnvContext) => {
             case ANDROID_WEAR:
                 await _attemptAutoFix(c, 'android', ANDROID_SDK);
                 return _attemptAutoFix(c, 'android-ndk', ANDROID_NDK, 'source.properties');
-            case TIZEN:
-            case TIZEN_MOBILE:
-            case TIZEN_WATCH:
-                return _attemptAutoFix(c, 'tizen', TIZEN_SDK);
-            case WEBOS:
-                return _attemptAutoFix(c, 'webos', WEBOS_SDK);
             default:
                 return true;
         }

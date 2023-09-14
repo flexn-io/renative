@@ -8,19 +8,9 @@ import {
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE,
     CLI_WEBOS_ARES_DEVICE_INFO,
-    ANDROID,
-    TIZEN,
     WEBOS,
-    ANDROID_TV,
-    FIRE_TV,
-    ANDROID_WEAR,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
     SDK_PLATFORMS,
-    ANDROID_SDK,
-    TIZEN_SDK,
     WEBOS_SDK,
-    ANDROID_NDK,
     isSystemWin,
     getRealPath,
     writeFileSync,
@@ -33,7 +23,6 @@ import {
     logSuccess,
     logError,
     logInfo,
-    PlatformSetup,
     generateBuildConfig,
     RnvContext,
 } from 'rnv';
@@ -118,18 +107,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
         return true;
     }
 
-    let locations: Array<string | undefined> = SDK_LOCATIONS[sdkPlatform];
-
-    // try common Android SDK env variables
-    if (sdkKey === ANDROID_SDK) {
-        const { ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK: ANDROID_SDK_ENV } = process.env;
-        locations = locations.concat([ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK_ENV]);
-    }
-
-    if (sdkKey === ANDROID_NDK) {
-        const { ANDROID_NDK_HOME } = process.env;
-        locations.push(ANDROID_NDK_HOME);
-    }
+    const locations: Array<string | undefined> = SDK_LOCATIONS[sdkPlatform];
 
     let result = locations.find((v) => fsExistsSync(v));
 
@@ -171,8 +149,8 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
 
     logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS[sdkPlatform].join(', ')}`);
 
-    const setupInstance = PlatformSetup(c);
-    await setupInstance.askToInstallSDK(sdkPlatform);
+    // const setupInstance = PlatformSetup(c);
+    // await setupInstance.askToInstallSDK(sdkPlatform);
     generateBuildConfig(c);
     return true;
 };
@@ -187,16 +165,6 @@ export const checkSdk = async (c: RnvContext) => {
         );
 
         switch (c.platform) {
-            case ANDROID:
-            case ANDROID_TV:
-            case FIRE_TV:
-            case ANDROID_WEAR:
-                await _attemptAutoFix(c, 'android', ANDROID_SDK);
-                return _attemptAutoFix(c, 'android-ndk', ANDROID_NDK, 'source.properties');
-            case TIZEN:
-            case TIZEN_MOBILE:
-            case TIZEN_WATCH:
-                return _attemptAutoFix(c, 'tizen', TIZEN_SDK);
             case WEBOS:
                 return _attemptAutoFix(c, 'webos', WEBOS_SDK);
             default:

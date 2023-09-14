@@ -10,8 +10,8 @@ import {
     FIRE_TV,
     ANDROID_WEAR,
     PARAMS,
-    PlatformSetup,
     RnvContext,
+    logError,
 } from 'rnv';
 
 export const taskRnvFastlane = async (c: RnvContext) => {
@@ -19,8 +19,9 @@ export const taskRnvFastlane = async (c: RnvContext) => {
     args.shift(); // we know the first one is fastlane, trash it
 
     if (!commandExistsSync('fastlane')) {
-        const setupInstance = PlatformSetup(c);
-        await setupInstance.askToInstallSDK('fastlane');
+        // const setupInstance = PlatformSetup(c);
+        // await setupInstance.askToInstallSDK('fastlane');
+        logError('Cannot find command fastlane. make sure you install it first');
     }
 
     const appFolder = getAppFolder(c);

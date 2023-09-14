@@ -10,7 +10,6 @@ export * from './modules';
 export * from './core/adapter';
 
 export * from './core/engineManager';
-export * from './core/setupManager';
 export * from './core/platformManager';
 export * from './core/pluginManager';
 export * from './core/projectManager';
