@@ -12,7 +12,7 @@ import {
 } from 'rnv';
 import semver from 'semver';
 
-const { TIZEN, CLI_TIZEN } = Constants;
+const { TIZEN } = Constants;
 const { isPlatformActive } = PlatformManager;
 const { chalk, logTask, logSuccess } = Logger;
 const { executeAsync, execCLI } = Exec;
@@ -30,7 +30,7 @@ const { generateEnvVars } = EngineManager;
 const { copyAssetsFolder, copyBuildsFolder } = ProjectManager;
 const { writeCleanFile } = FileUtils;
 
-import { runTizenSimOrDevice, DEFAULT_SECURITY_PROFILE_NAME } from '@rnv/sdk-tizen';
+import { runTizenSimOrDevice, DEFAULT_SECURITY_PROFILE_NAME, CLI_TIZEN } from '@rnv/sdk-tizen';
 import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
 
 export const runLightningProject = async (c: RnvContext) => {
