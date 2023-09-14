@@ -14,11 +14,10 @@ import {
     TASK_WORKSPACE_CONFIGURE,
     TASK_TARGET_LAUNCH,
     PARAMS,
-    checkSdk,
     executeTask,
     RnvTaskFn,
 } from 'rnv';
-import { checkAndConfigureSdks } from '../common';
+import { checkAndConfigureSdks, checkSdk } from '../common';
 
 import { launchAndroidSimulator } from '@rnv/sdk-android';
 import { launchAppleSimulator } from '@rnv/sdk-apple';

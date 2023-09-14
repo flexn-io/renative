@@ -18,7 +18,7 @@ import {
     logTask,
     logToSummary,
     logWarning,
-    waitForEmulator,
+    waitForExecCLI,
 } from 'rnv';
 
 import { TizenDevice, TizenSecurityConfig } from './types';
@@ -203,7 +203,7 @@ const _getRunningDevices = async (c: RnvContext) => {
 };
 
 const _waitForEmulatorToBeReady = (c: RnvContext, target: string): Promise<boolean> =>
-    waitForEmulator(c, CLI_SDB_TIZEN, 'devices', (res) => {
+    waitForExecCLI(c, CLI_SDB_TIZEN, 'devices', (res) => {
         if (typeof res === 'string') {
             const lines = res.trim().split(/\r?\n/);
             const devices = lines.filter((line) => line.includes(target) && line.includes('device'));

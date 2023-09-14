@@ -75,21 +75,11 @@ export const ICONS = {
 
 export const REMOTE_DEBUG_PORT = 8079;
 // CLI
-export const CLI_ANDROID_EMULATOR = 'androidEmulator';
-export const CLI_ANDROID_ADB = 'androidAdb';
-export const CLI_ANDROID_AVDMANAGER = 'androidAvdManager';
-export const CLI_ANDROID_SDKMANAGER = 'androidSdkManager';
 export const CLI_TIZEN_EMULATOR = 'tizenEmulator';
 export const CLI_KAIOS_EMULATOR = 'tizenEmulator';
 export const CLI_TIZEN = 'tizen';
 export const CLI_SDB_TIZEN = 'tizenSdb';
-export const CLI_WEBOS_ARES = 'webosAres';
-export const CLI_WEBOS_ARES_PACKAGE = 'webosAresPackage';
-export const CLI_WEBOS_ARES_INSTALL = 'webosAresInstall';
-export const CLI_WEBOS_ARES_LAUNCH = 'webosAresLaunch';
-export const CLI_WEBOS_ARES_SETUP_DEVICE = 'webosAresSetup';
-export const CLI_WEBOS_ARES_DEVICE_INFO = 'webosAresDeviceInfo';
-export const CLI_WEBOS_ARES_NOVACOM = 'webosAresNovacom';
+
 // SDK
 export const ANDROID_SDK = 'ANDROID_SDK';
 export const ANDROID_NDK = 'ANDROID_NDK';

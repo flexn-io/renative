@@ -2,7 +2,6 @@ import {
     isPlatformSupported,
     chalk,
     logTask,
-    checkSdk,
     IOS,
     ANDROID,
     TVOS,
@@ -22,7 +21,7 @@ import { listAppleDevices } from '@rnv/sdk-apple';
 import { listTizenTargets } from '@rnv/sdk-tizen';
 import { listWebOSTargets } from '@rnv/sdk-webos';
 
-import { checkAndConfigureSdks } from '../common';
+import { checkAndConfigureSdks, checkSdk } from '../common';
 
 export const taskRnvTargetList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTargetList');

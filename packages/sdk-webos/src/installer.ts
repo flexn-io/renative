@@ -1,13 +1,6 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import {
-    CLI_WEBOS_ARES,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBOS_ARES_INSTALL,
-    CLI_WEBOS_ARES_LAUNCH,
-    CLI_WEBOS_ARES_NOVACOM,
-    CLI_WEBOS_ARES_SETUP_DEVICE,
-    CLI_WEBOS_ARES_DEVICE_INFO,
     WEBOS,
     SDK_PLATFORMS,
     WEBOS_SDK,
@@ -26,6 +19,16 @@ import {
     generateBuildConfig,
     RnvContext,
 } from 'rnv';
+
+import {
+    CLI_WEBOS_ARES,
+    CLI_WEBOS_ARES_PACKAGE,
+    CLI_WEBOS_ARES_INSTALL,
+    CLI_WEBOS_ARES_LAUNCH,
+    CLI_WEBOS_ARES_NOVACOM,
+    CLI_WEBOS_ARES_SETUP_DEVICE,
+    CLI_WEBOS_ARES_DEVICE_INFO,
+} from './constants';
 
 const SDK_LOCATIONS: Record<string, Array<string>> = {
     webos: [path.join('/opt/webOS_TV_SDK'), path.join('C:\\webOS_TV_SDK')],
@@ -155,8 +158,8 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
     return true;
 };
 
-export const checkSdk = async (c: RnvContext) => {
-    logTask('checkSdk');
+export const checkWebosSdk = async (c: RnvContext) => {
+    logTask('checkWebosSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
             `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().white(

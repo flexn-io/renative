@@ -9,11 +9,10 @@ import {
     PlatformManager,
     ProjectManager,
     RnvContext,
-    SDKManager,
 } from 'rnv';
 import semver from 'semver';
 
-const { TIZEN, CLI_TIZEN, CLI_WEBOS_ARES_PACKAGE } = Constants;
+const { TIZEN, CLI_TIZEN } = Constants;
 const { isPlatformActive } = PlatformManager;
 const { chalk, logTask, logSuccess } = Logger;
 const { executeAsync, execCLI } = Exec;
@@ -31,8 +30,8 @@ const { generateEnvVars } = EngineManager;
 const { copyAssetsFolder, copyBuildsFolder } = ProjectManager;
 const { writeCleanFile } = FileUtils;
 
-const { runTizenSimOrDevice, DEFAULT_SECURITY_PROFILE_NAME } = SDKManager.Tizen;
-const { runWebosSimOrDevice } = SDKManager.Webos;
+import { runTizenSimOrDevice, DEFAULT_SECURITY_PROFILE_NAME } from '@rnv/sdk-tizen';
+import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
 
 export const runLightningProject = async (c: RnvContext) => {
     logTask('runLightningProject');

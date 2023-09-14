@@ -5,9 +5,9 @@ import { checkAndMigrateProject } from '../core/projectManager/migrator';
 import { checkAndBootstrapIfRequired } from '../core/projectManager';
 import { loadIntegrations } from '../core/integrationManager';
 import { initializeTask, findSuitableTask } from '../core/taskManager';
-
-import EngineCore from '../engine-core';
 import { RnvContext } from '../core/contextManager/types';
+
+const EngineCore = require('@rnv/engine-core');
 
 const IGNORE_MISSING_ENGINES_TASKS = ['link', 'unlink'];
 

@@ -1,10 +1,6 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import {
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_SDKMANAGER,
-    CLI_ANDROID_ADB,
     ANDROID,
     ANDROID_TV,
     FIRE_TV,
@@ -28,6 +24,8 @@ import {
     generateBuildConfig,
     RnvContext,
 } from 'rnv';
+
+import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
 const SDK_LOCATIONS: Record<string, Array<string>> = {
     android: [
@@ -182,8 +180,8 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
     return true;
 };
 
-export const checkSdk = async (c: RnvContext) => {
-    logTask('checkSdk');
+export const checkAndroidSdk = async (c: RnvContext) => {
+    logTask('checkAndroidSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
             `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().white(

@@ -16,10 +16,9 @@ import {
     TASK_PLATFORM_CONFIGURE,
     TASK_PROJECT_CONFIGURE,
     TASK_INSTALL,
-    checkSdk,
     RnvTaskFn,
 } from 'rnv';
-import { checkAndConfigureSdks } from '../common';
+import { checkAndConfigureSdks, checkSdk } from '../common';
 
 export const taskRnvPlatformConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPlatformConfigure', '');

@@ -1,13 +1,11 @@
 // MANAGERS
 import * as EngineManager from './core/engineManager';
-import * as SetupManager from './core/setupManager';
 import * as PlatformManager from './core/platformManager';
 import * as PluginManager from './core/pluginManager';
 import * as ProjectManager from './core/projectManager';
 import * as ConfigManager from './core/configManager';
 import * as SchemaManager from './core/schemaManager';
 import * as RuntimeManager from './core/runtimeManager';
-import * as SDKManager from './core/sdkManager';
 import * as TemplateManager from './core/templateManager';
 import * as TaskManager from './core/taskManager';
 // SUB-MODULES
@@ -30,12 +28,10 @@ export {
     // MANAGERS
     EngineManager,
     PlatformManager,
-    SetupManager,
     PluginManager,
     ProjectManager,
     ConfigManager,
     SchemaManager,
-    SDKManager,
     TemplateManager,
     TaskManager,
     RuntimeManager,

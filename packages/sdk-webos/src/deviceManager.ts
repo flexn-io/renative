@@ -10,22 +10,24 @@ import {
     openCommand,
     getPlatformProjectDir,
     getPlatformBuildDir,
-    waitForEmulator,
     chalk,
     logToSummary,
     logTask,
     logInfo,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBOS_ARES_INSTALL,
-    CLI_WEBOS_ARES_DEVICE_INFO,
-    CLI_WEBOS_ARES_LAUNCH,
-    CLI_WEBOS_ARES_NOVACOM,
-    CLI_WEBOS_ARES_SETUP_DEVICE,
     isSystemWin,
     isUrlLocalhost,
     RnvContext,
+    waitForExecCLI,
 } from 'rnv';
 import { WebosDevice } from './types';
+import {
+    CLI_WEBOS_ARES_PACKAGE,
+    CLI_WEBOS_ARES_INSTALL,
+    CLI_WEBOS_ARES_LAUNCH,
+    CLI_WEBOS_ARES_NOVACOM,
+    CLI_WEBOS_ARES_SETUP_DEVICE,
+    CLI_WEBOS_ARES_DEVICE_INFO,
+} from './constants';
 
 export const launchWebOSimulator = (c: RnvContext) => {
     logTask('launchWebOSimulator');
@@ -137,7 +139,7 @@ const waitForEmulatorToBeReady = async (c: RnvContext) => {
     const emulator = devices.filter((d) => !d.isDevice)[0];
     if (!emulator) throw new Error('No WebOS emulator configured');
 
-    return waitForEmulator(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${emulator.name}`, (res) =>
+    return waitForExecCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${emulator.name}`, (res) =>
         typeof res === 'string' ? res.includes('modelName') : res
     );
 };

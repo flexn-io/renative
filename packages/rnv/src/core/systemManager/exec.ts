@@ -4,7 +4,7 @@ import path from 'path';
 import { access, accessSync, constants } from 'fs';
 import execa, { ExecaChildProcess } from 'execa';
 import NClient from 'netcat/client';
-import ora from '../../cli/ora';
+import Spinner from '../../cli/ora';
 import Config from '../contextManager/context';
 
 import { chalk, logDebug, logRaw, logError } from './logger';
@@ -77,7 +77,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     logMessage = `${env ? `${env} ` : ''}${logMessage}`;
     logDebug(`_execute: ${logMessage}`);
     const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
-    const spinner = !silent && !mono && ora({ text: `Executing: ${logMessage}` }).start('');
+    const spinner = !silent && !mono && Spinner({ text: `Executing: ${logMessage}` }).start('');
     if (opts.interactive) {
         logRaw(`${chalk().green('✔')} Executing: ${logMessage}\n`);
     }
@@ -544,7 +544,7 @@ export const waitForExecCLI = async (
     const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;
     const { maxErrorLength } = c.program;
-    const spinner = ora('Waiting for emulator to boot...').start('');
+    const spinner = Spinner('Waiting for emulator to boot...').start('');
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {

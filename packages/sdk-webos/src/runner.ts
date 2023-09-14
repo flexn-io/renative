@@ -21,13 +21,13 @@ import {
     copyAssetsFolder,
     copyBuildsFolder,
     getPlatformBuildDir,
-    CLI_WEBOS_ARES_PACKAGE,
     getAppId,
     getAppTitle,
     getAppDescription,
 } from 'rnv';
 import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
+import { CLI_WEBOS_ARES_PACKAGE } from './constants';
 
 export const runWebOS = async (c: RnvContext) => {
     const { hosted } = c.program;

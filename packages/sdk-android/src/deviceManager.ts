@@ -9,7 +9,6 @@ import {
     fsReadFileSync,
     execCLI,
     executeTelnet,
-    waitForEmulator,
     isSystemWin,
     chalk,
     logToSummary,
@@ -24,13 +23,11 @@ import {
     ANDROID,
     ANDROID_TV,
     FIRE_TV,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_ADB,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_SDKMANAGER,
     USER_HOME_DIR,
     RnvContext,
+    waitForExecCLI,
 } from 'rnv';
+import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
 import { AndroidDevice } from './types';
 
@@ -566,7 +563,7 @@ const _createEmulator = (c: RnvContext, apiVersion: string, emuPlatform: string,
 };
 
 const waitForEmulatorToBeReady = (c: RnvContext, emulator: string) =>
-    waitForEmulator(c, CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`, (res) => {
+    waitForExecCLI(c, CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`, (res) => {
         if (typeof res === 'string') {
             return res.includes('stopped');
         }

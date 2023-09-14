@@ -1,20 +1,27 @@
 import path from 'path';
 import tar from 'tar';
-import { chalk, logWarning, logTask, logSuccess,  getRealPath,
+import {
+    chalk,
+    logWarning,
+    logTask,
+    logSuccess,
+    getRealPath,
     removeFilesSync,
     copyFileSync,
     fsWriteFileSync,
     cleanFolder,
     fsExistsSync,
     fsReadFileSync,
-    inquirerPrompt
-    getEnvVar, getEnvExportCmd,
+    inquirerPrompt,
+    getEnvVar,
+    getEnvExportCmd,
     executeTask,
-    TASK_CRYPTO_DECRYPT, TASK_PROJECT_CONFIGURE, PARAMS,
+    TASK_CRYPTO_DECRYPT,
+    TASK_PROJECT_CONFIGURE,
+    PARAMS,
     RnvContext,
-    RnvTaskFn
+    RnvTaskFn,
 } from 'rnv';
-
 
 const iocane = require('iocane');
 

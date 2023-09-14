@@ -140,8 +140,8 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
     return true;
 };
 
-export const checkSdk = async (c: RnvContext) => {
-    logTask('checkSdk');
+export const checkTizenSdk = async (c: RnvContext) => {
+    logTask('checkTizenSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(
             `${c.platform} requires SDK to be installed. Your SDK path in ${chalk().white(
