@@ -8,16 +8,16 @@ class Config {
     // config: RnvContext;
 
     constructor() {
-        RNV_CONTEXT = generateConfigBase();
+        global.RNV_CONTEXT = generateConfigBase();
     }
 
     initializeConfig(c: RnvContext) {
-        RNV_CONTEXT = c;
+        global.RNV_CONTEXT = c;
         return c;
     }
 
     getConfig(): RnvContext {
-        return RNV_CONTEXT;
+        return global.RNV_CONTEXT;
     }
 
     // RNV CONFIG

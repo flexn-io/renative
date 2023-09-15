@@ -15,6 +15,9 @@
         "types.d.ts"
     ],
     "main": "lib/index.js",
+    "bin": {
+        "rnv": "./lib/bin.js"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/flexn-io/renative.git"
