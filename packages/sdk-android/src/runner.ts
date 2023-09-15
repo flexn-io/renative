@@ -15,9 +15,9 @@ import {
     ProjectManager,
     Common,
     PlatformManager,
-    Prompt,
     RuntimeManager,
     RnvPluginPlatform,
+    inquirerPrompt,
 } from 'rnv';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -61,7 +61,6 @@ const { getAppFolder, getConfigProp, getEntryFile } = Common;
 const { isPlatformActive, createPlatformBuild } = PlatformManager;
 const { generateEnvVars } = EngineManager;
 const { isSystemWin } = Utils;
-const { inquirerPrompt } = Prompt;
 const { updateRenativeConfigs } = RuntimeManager;
 const { chalk, logTask, logWarning, logDebug, logInfo, logSuccess, logRaw, logError } = Logger;
 const { ANDROID_WEAR, ANDROID, ANDROID_TV, FIRE_TV } = Constants;

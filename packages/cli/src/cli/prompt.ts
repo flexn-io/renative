@@ -122,4 +122,5 @@ const _generateOptionString = (i: number, _obj: any, mapping: any, defaultVal: s
 export default {
     inquirerPrompt,
     generateOptions,
+    pressAnyKeyToContinue,
 };

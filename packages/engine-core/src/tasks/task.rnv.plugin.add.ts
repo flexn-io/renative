@@ -13,7 +13,7 @@ import {
     executeTask,
     RnvTaskFn,
     PluginListResponseItem,
-    Spinner,
+    getContext,
 } from 'rnv';
 
 /* eslint-disable no-await-in-loop */
@@ -76,7 +76,9 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
         c.files.project.config.config_original[pluginKey].props = finalProps;
     }
 
-    const spinner = Spinner(`Installing: ${installMessage.join(', ')}`).start('');
+    const spinner = getContext()
+        .spinner(`Installing: ${installMessage.join(', ')}`)
+        .start('');
 
     writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
 

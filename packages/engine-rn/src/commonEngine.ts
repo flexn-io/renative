@@ -13,8 +13,8 @@ import {
     logWarning,
     inquirerPrompt,
     RN_CLI_CONFIG_NAME,
-    Spinner,
     parseFonts,
+    getContext,
 } from 'rnv';
 import { copyFileSync } from 'fs';
 
@@ -120,7 +120,7 @@ export const isBundlerActive = async (c: RnvContext) => {
 const poll = (fn: () => Promise<boolean>, timeout = 10000, interval = 1000) => {
     const endTime = Number(new Date()) + timeout;
 
-    const spinner = Spinner('Waiting for bundler to finish...').start('');
+    const spinner = getContext().spinner('Waiting for bundler to finish...').start('');
     const checkCondition = async (resolve: () => void, reject: (e: string) => void) => {
         try {
             const result = await fn();
@@ -163,6 +163,6 @@ export const configureFonts = async (c: RnvContext) => {
 
     // set it so react-native.config.js can pick it up
     c.paths.project.fontSourceDirs = Array.from(fontFolders);
-}
+};
 
 export const waitForBundler = async (c: RnvContext) => poll(() => _isBundlerRunning(c));

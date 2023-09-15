@@ -13,7 +13,7 @@ import { RnvContext } from './contextManager/types';
 import { GetConfigPropFn } from './types';
 import { OverridesOptions, TimestampPathsConfig } from './systemManager/types';
 import { RenativeConfigBuildScheme, RenativeConfigFile } from './configManager/types';
-import { getContext } from './contextManager/context';
+import { inquirerPrompt } from './contextManager/api';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: string): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
@@ -168,7 +168,7 @@ export const confirmActiveBundler = async (c: RnvContext) => {
 
     const choices = ['Restart the server (recommended)', 'Use existing session'];
 
-    const { selectedOption } = await getContext().prompt.inquirerPrompt({
+    const { selectedOption } = await inquirerPrompt({
         name: 'selectedOption',
         type: 'list',
         choices,

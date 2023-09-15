@@ -17,6 +17,7 @@ import {
     PARAMS,
     listAppConfigsFoldersSync,
     updateRenativeConfigs,
+    inquirerPrompt,
     RnvContext,
 } from 'rnv';
 

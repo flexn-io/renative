@@ -1,10 +1,9 @@
 import path from 'path';
 import chalk from 'chalk';
-import { Logger, Common, Exec, Prompt, FileUtils, RnvContext } from 'rnv';
+import { Logger, Common, Exec, FileUtils, RnvContext, inquirerPrompt } from 'rnv';
 
 const { logTask, logInfo, logSuccess } = Logger;
 const { executeAsync, commandExistsSync } = Exec;
-const { inquirerPrompt } = Prompt;
 const { getConfigProp, getPlatformBuildDir } = Common;
 const { copyFolderRecursiveSync, cleanFolder, writeCleanFile, fsExistsSync } = FileUtils;
 

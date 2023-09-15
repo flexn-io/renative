@@ -20,7 +20,7 @@ export const taskRnvWorkspaceAdd: RnvTaskFn = async (c, _parentTask, originTask)
         name: 'workspace',
         type: 'input',
         message: 'absolute path to new workspace',
-        validate: (i) => !!i || 'No path provided',
+        validate: (i: string) => !!i || 'No path provided',
     });
 
     const workspacePath = path.join(workspace);

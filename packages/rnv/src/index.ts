@@ -6,6 +6,8 @@ import Analytics from './core/systemManager/analytics';
 
 global.RNV_ANALYTICS = Analytics;
 
+export * from './core/contextManager/api';
+export * from './core/contextManager/context';
 export * from './modules';
 export * from './core/adapter';
 export * from './core/engineManager';

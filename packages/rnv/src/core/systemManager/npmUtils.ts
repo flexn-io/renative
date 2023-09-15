@@ -17,7 +17,7 @@ import { doResolve } from './resolve';
 
 import { getConfigProp } from '../common';
 import { RnvContext } from '../contextManager/types';
-import { getContext } from '../contextManager/context';
+import { inquirerPrompt } from '../contextManager/api';
 
 const packageJsonIsValid = (c: RnvContext) => {
     if (!fsExistsSync(c.paths.project.package)) return false;
@@ -33,7 +33,7 @@ export const checkNpxIsInstalled = async () => {
     if (!commandExistsSync('npx')) {
         logWarning('npx is not installed, please install it before running this command');
 
-        const { confirm } = await getContext().prompt.inquirerPrompt({
+        const { confirm } = await inquirerPrompt({
             type: 'confirm',
             message: 'Do you want to install npx it now?',
         });
@@ -217,7 +217,7 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
         }
     } else {
         // no cli option either, asking
-        const { packageManager } = await getContext().prompt.inquirerPrompt({
+        const { packageManager } = await inquirerPrompt({
             type: 'list',
             name: 'packageManager',
             message: 'What package manager would you like to use?',

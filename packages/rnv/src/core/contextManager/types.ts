@@ -13,7 +13,17 @@ export type RnvContextSpinner = {
 
 //TODO: type this properly
 export type RnvContextPrompt = {
-    inquirerPrompt: (options: any) => Promise<any>;
+    inquirerPrompt: (options: {
+        name?: string;
+        type: string;
+        message?: string;
+        choices?: Array<string>;
+        validate?: (i: string) => string | boolean;
+        logMessage?: string;
+        warningMessage?: string;
+        default?: any;
+        pageSize?: number;
+    }) => Promise<any>;
     generateOptions: (inputData: any, isMultiChoice?: boolean, mapping?: any, renderMethod?: PromptRenderFn) => any;
     pressAnyKeyToContinue: () => Promise<any>;
 };

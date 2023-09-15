@@ -3,22 +3,22 @@ const program = require('commander');
 const fs = require('fs');
 const path = require('path');
 
+import { Constants } from 'rnv';
 // global.fetch = require('node-fetch');
 // global.fetch = await import('node-fetch');
 
 // global.Headers = global.fetch.Headers;
 
-const cli = require('./cli');
-const CONSTANTS = require('../lib/core/constants.js');
+import cli from './cli';
 
 export const run = () => {
     const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')));
-    let cmdValue;
-    let cmdOption;
+    let cmdValue = '';
+    let cmdOption = '';
 
     program.version(packageJson.version, '-v, --version', 'output current version');
 
-    CONSTANTS.PARAMS.withAll().forEach((param: any) => {
+    Constants.PARAMS.withAll().forEach((param: any) => {
         let cmd = '';
         if (param.shortcut) {
             cmd += `-${param.shortcut}, `;
@@ -43,5 +43,5 @@ export const run = () => {
 
     program.parse(process.argv);
 
-    cli.default.run(cmdValue, cmdOption, program, process);
+    cli.run(cmdValue, cmdOption, program, process);
 };

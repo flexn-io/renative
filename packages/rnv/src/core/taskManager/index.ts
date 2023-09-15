@@ -14,7 +14,7 @@ import { TASK_CONFIGURE_SOFT } from '../constants';
 import { RnvContext } from '../contextManager/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engineManager/types';
-import { getContext } from '../contextManager/context';
+import { inquirerPrompt, pressAnyKeyToContinue } from '../contextManager/api';
 
 let executedTasks: Record<string, number> = {};
 
@@ -96,7 +96,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 defaultCmd = tasks.find((v) => v.startsWith('run'));
             }
 
-            const { command } = await getContext().prompt.inquirerPrompt({
+            const { command } = await inquirerPrompt({
                 type: 'list',
                 default: defaultCmd,
                 name: 'command',
@@ -176,7 +176,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
 
             const subTasks = Object.keys(supportedSubtasks);
             if (subTasks.length) {
-                const { subCommand } = await getContext().prompt.inquirerPrompt({
+                const { subCommand } = await inquirerPrompt({
                     type: 'list',
                     name: 'subCommand',
                     message,
@@ -280,7 +280,7 @@ const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>,
     const platforms = Object.keys(supportedPlatforms);
 
     if (platforms.length) {
-        const { platform } = await getContext().prompt.inquirerPrompt({
+        const { platform } = await inquirerPrompt({
             type: 'list',
             name: 'platform',
             message: `Pick a platform for ${task}`,
@@ -441,7 +441,7 @@ ${t.params
             await t.fnHelp(c, parentTask, originTask);
         }
 
-        await getContext().prompt.pressAnyKeyToContinue();
+        await pressAnyKeyToContinue();
         logRaw(`
 =======================================================`);
     }

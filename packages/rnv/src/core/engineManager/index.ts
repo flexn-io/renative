@@ -12,7 +12,7 @@ import { RnvContext } from '../contextManager/types';
 import { RnvTask, RnvTaskMap } from '../taskManager/types';
 import { RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
 import { RenativeEngineConfig, RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
-import { getContext } from '../contextManager/context';
+import { inquirerPrompt } from '../contextManager/api';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -191,7 +191,7 @@ export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<R
                 allPlugins.join(',')
             )} to be added to ${chalk().white(c.paths.project.config)}`
         );
-        const confirm = await getContext().prompt.inquirerPrompt({
+        const confirm = await inquirerPrompt({
             name: 'selectedScheme',
             type: 'confirm',
             message: `Continue?.

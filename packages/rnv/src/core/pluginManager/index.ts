@@ -30,7 +30,7 @@ import {
 } from './types';
 import { RenativeConfigPlugin, RenativeWebpackConfig } from '../configManager/types';
 import { RnvModuleConfig } from '../types';
-import { getContext } from '../contextManager/context';
+import { inquirerPrompt } from '../contextManager/api';
 
 export const getPluginList = (c: RnvContext, isUpdate = false) => {
     const output: PluginListResponse = {
@@ -392,7 +392,7 @@ const _resolvePluginDependencies = async (
         const depPlugin = pluginTemplates?.[scope]?.pluginTemplates?.[key];
         if (depPlugin) {
             // console.log('INSTALL PLUGIN???', key, depPlugin.source);
-            const { confirm } = await getContext().prompt.inquirerPrompt({
+            const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${key}?`,
                 warningMessage: `Plugin ${chalk().white(key)} source:${chalk().white(scope)} required by ${chalk().red(
@@ -801,7 +801,7 @@ export const checkForPluginDependencies = async (c: RnvContext) => {
         // ask the user
         let install = false;
         if (!c.program.ci) {
-            const answer = await getContext().prompt.inquirerPrompt({
+            const answer = await inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${Object.keys(toAdd).join(', ')}?`,
                 warningMessage: `One or more dependencies are not installed: ${chalk().white(

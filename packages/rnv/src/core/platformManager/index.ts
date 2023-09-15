@@ -4,7 +4,7 @@ import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync } from '../
 import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import { RnvContext } from '../contextManager/types';
-import { getContext } from '../contextManager/context';
+import { generateOptions, inquirerPrompt } from '../contextManager/api';
 
 export const logErrorPlatform = (c: RnvContext) => {
     logError(
@@ -96,10 +96,10 @@ export const isPlatformSupported = async (c: RnvContext, isGlobalScope = false) 
     }
 
     if (!platformsAsObj) platformsAsObj = c.runtime.availablePlatforms;
-    const opts = getContext().prompt.generateOptions(platformsAsObj);
+    const opts = generateOptions(platformsAsObj);
 
     if (!c.platform || c.program.platform === true || !c.runtime.availablePlatforms?.includes?.(c.platform)) {
-        const { platform } = await getContext().prompt.inquirerPrompt({
+        const { platform } = await inquirerPrompt({
             name: 'platform',
             type: 'list',
             message: 'Pick one of available platforms',
@@ -113,7 +113,7 @@ export const isPlatformSupported = async (c: RnvContext, isGlobalScope = false) 
     const configuredPlatforms = c.files.project.config?.defaults?.supportedPlatforms;
 
     if (Array.isArray(configuredPlatforms) && !configuredPlatforms.includes(c.platform)) {
-        const { confirm } = await getContext().prompt.inquirerPrompt({
+        const { confirm } = await inquirerPrompt({
             type: 'confirm',
             message: `Platform ${c.platform} is not supported by your project. Would you like to enable it?`,
         });

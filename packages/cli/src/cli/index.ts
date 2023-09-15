@@ -10,6 +10,16 @@ import {
     initializeTask,
     findSuitableTask,
     RnvContext,
+    Analytics,
+    configureFilesystem,
+    createRnvConfig,
+    logInitialize,
+    getConfigProp,
+    doResolve,
+    isSystemWin,
+    Config,
+    logComplete,
+    logError,
 } from 'rnv';
 import Spinner from './ora';
 import Prompt from './prompt';
