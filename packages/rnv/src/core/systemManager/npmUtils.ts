@@ -15,9 +15,9 @@ import { logTask, logWarning, logError, logInfo, logDebug, logSuccess } from './
 import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { doResolve } from './resolve';
 
-import { inquirerPrompt } from '../../cli/prompt';
 import { getConfigProp } from '../common';
 import { RnvContext } from '../contextManager/types';
+import { inquirerPrompt } from '../contextManager/api';
 
 const packageJsonIsValid = (c: RnvContext) => {
     if (!fsExistsSync(c.paths.project.package)) return false;

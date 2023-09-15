@@ -1,12 +1,13 @@
 import 'regenerator-runtime/runtime';
 import 'source-map-support/register';
 
-import Spinner from './cli/ora';
-import CLI from './cli';
 import Config from './core/contextManager/context';
 import Analytics from './core/systemManager/analytics';
-import { run } from './runner';
 
+global.RNV_ANALYTICS = Analytics;
+
+export * from './core/contextManager/api';
+export * from './core/contextManager/context';
 export * from './modules';
 export * from './core/adapter';
 export * from './core/engineManager';
@@ -22,6 +23,7 @@ export * from './core/configManager/packageParser';
 export * from './core/schemaManager';
 export * from './core/runtimeManager';
 export * from './core/templateManager';
+export * from './core/integrationManager';
 export * from './core/taskManager';
 export * from './core/systemManager/npmUtils';
 export * from './core/systemManager/gitUtils';
@@ -34,7 +36,6 @@ export * from './core/systemManager/resolve';
 export * from './core/systemManager/crypto';
 export * from './core/common';
 export * from './core/systemManager/utils';
-export * from './cli/prompt';
 export * from './core/constants';
 
 //TYPES
@@ -45,9 +46,8 @@ export * from './core/projectManager/types';
 export * from './core/configManager/types';
 export * from './core/taskManager/types';
 export * from './core/systemManager/types';
-export * from './cli/types';
 export * from './core/types';
 
-export { CLI, Spinner, Analytics };
+export { Analytics };
 
-export default { run, Config };
+export default { Config };

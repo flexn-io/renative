@@ -1,7 +1,6 @@
 import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../systemManager/logger';
 import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
-import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import {
     getEngineRunner,
@@ -15,6 +14,7 @@ import { TASK_CONFIGURE_SOFT } from '../constants';
 import { RnvContext } from '../contextManager/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engineManager/types';
+import { inquirerPrompt, pressAnyKeyToContinue } from '../contextManager/api';
 
 let executedTasks: Record<string, number> = {};
 

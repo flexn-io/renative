@@ -34,7 +34,21 @@ const runtime: any = {
     enginesById: {},
 };
 
+const spinner: any = () => ({});
+
 export const generateConfigBase = (): RnvContext => ({
+    prompt: {
+        generateOptions() {
+            //NOOP
+        },
+        inquirerPrompt: async () => {
+            //NOOP
+        },
+        pressAnyKeyToContinue: async () => {
+            //NOOP
+        },
+    },
+    spinner: spinner,
     payload: {},
     assetConfig: {},
     rnvVersion: '',

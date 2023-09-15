@@ -1,7 +1,6 @@
 import merge from 'deepmerge';
 import path from 'path';
 import intersection from 'lodash.intersection';
-import { inquirerPrompt } from '../../cli/prompt';
 import { getAppFolder, getBuildsFolder, getConfigProp } from '../common';
 import { parseRenativeConfigs, writeRenativeConfigFile } from '../configManager';
 import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
@@ -31,6 +30,7 @@ import {
 } from './types';
 import { RenativeConfigPlugin, RenativeWebpackConfig } from '../configManager/types';
 import { RnvModuleConfig } from '../types';
+import { inquirerPrompt } from '../contextManager/api';
 
 export const getPluginList = (c: RnvContext, isUpdate = false) => {
     const output: PluginListResponse = {

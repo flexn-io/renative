@@ -4,8 +4,7 @@ import path from 'path';
 import { access, accessSync, constants } from 'fs';
 import execa, { ExecaChildProcess } from 'execa';
 import NClient from 'netcat/client';
-import Spinner from '../../cli/ora';
-import Config from '../contextManager/context';
+import { getContext } from '../contextManager/context';
 
 import { chalk, logDebug, logRaw, logError } from './logger';
 import { fsExistsSync } from './fileutils';
@@ -77,7 +76,12 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     logMessage = `${env ? `${env} ` : ''}${logMessage}`;
     logDebug(`_execute: ${logMessage}`);
     const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
-    const spinner = !silent && !mono && Spinner({ text: `Executing: ${logMessage}` }).start('');
+    const spinner =
+        !silent &&
+        !mono &&
+        getContext()
+            .spinner({ text: `Executing: ${logMessage}` })
+            .start('');
     if (opts.interactive) {
         logRaw(`${chalk().green('✔')} Executing: ${logMessage}\n`);
     }
@@ -230,7 +234,7 @@ const executeAsync = async (
     const isArg1Command = typeof _c === 'string' || Array.isArray(_c);
     if (isArg1Command) {
         cmd = _c;
-        c = Config.getConfig();
+        c = getContext();
     } else {
         c = _c;
     }
@@ -544,7 +548,7 @@ export const waitForExecCLI = async (
     const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;
     const { maxErrorLength } = c.program;
-    const spinner = Spinner('Waiting for emulator to boot...').start('');
+    const spinner = getContext().spinner('Waiting for emulator to boot...').start('');
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {

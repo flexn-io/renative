@@ -1,10 +1,10 @@
 import path from 'path';
 import { chalk, logTask, logError, logWarning } from '../systemManager/logger';
-import { generateOptions, inquirerPrompt } from '../../cli/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync } from '../systemManager/fileutils';
 import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import { RnvContext } from '../contextManager/types';
+import { generateOptions, inquirerPrompt } from '../contextManager/api';
 
 export const logErrorPlatform = (c: RnvContext) => {
     logError(

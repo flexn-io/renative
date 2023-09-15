@@ -5,24 +5,24 @@ import { RnvContext } from './types';
 import { generateConfigBase } from './contextBase';
 
 class Config {
-    config: RnvContext;
+    // config: RnvContext;
 
     constructor() {
-        this.config = generateConfigBase();
+        global.RNV_CONTEXT = generateConfigBase();
     }
 
     initializeConfig(c: RnvContext) {
-        this.config = c;
+        global.RNV_CONTEXT = c;
         return c;
     }
 
-    getConfig() {
-        return this.config;
+    getConfig(): RnvContext {
+        return global.RNV_CONTEXT;
     }
 
     // RNV CONFIG
     getConfigValueSeparate(key: string, global = false) {
-        const { paths } = this.config;
+        const { paths } = this.getConfig();
 
         if (!global && !fsExistsSync(paths.project.config)) return 'N/A'; // string because there might be a setting where we will use null
         const cfg = global ? require(paths.GLOBAL_RNV_CONFIG) : require(paths.project.config);
@@ -75,7 +75,7 @@ class Config {
         const {
             program: { global },
             paths,
-        } = this.config;
+        } = this.getConfig();
 
         if (this.isConfigValueValid(key, value)) {
             let isValid = value;
@@ -94,10 +94,16 @@ class Config {
     }
 
     get isAnalyticsEnabled() {
-        return this.config.buildConfig?.enableAnalytics;
+        return this.getConfig().buildConfig?.enableAnalytics;
     }
 }
 
-const Conf = new Config();
+const Context = new Config();
 
-export default Conf;
+export const getContext = (): RnvContext => {
+    return Context.getConfig();
+};
+
+export { Context };
+
+export default Context;

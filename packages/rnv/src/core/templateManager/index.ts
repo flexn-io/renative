@@ -15,13 +15,13 @@ import {
     removeDirSync,
 } from '../systemManager/fileutils';
 import { chalk, logError, logInfo, logWarning, logTask, logDebug } from '../systemManager/logger';
-import { generateOptions } from '../../cli/prompt';
 import { getConfigProp } from '../common';
 import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from '../configManager';
 import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import { RnvContext } from '../contextManager/types';
-import { PromptOptions } from '../../cli/types';
+import { PromptOptions } from '../types';
+import { generateOptions } from '../contextManager/api';
 
 export const checkIfTemplateConfigured = async (c: RnvContext) => {
     logTask('checkIfTemplateConfigured');

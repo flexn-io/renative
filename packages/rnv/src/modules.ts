@@ -18,10 +18,7 @@ import * as Logger from './core/systemManager/logger';
 import * as Resolver from './core/systemManager/resolve';
 import * as Common from './core/common';
 import * as Utils from './core/systemManager/utils';
-import * as Prompt from './cli/prompt';
 import * as Constants from './core/constants';
-import Spinner from './cli/ora';
-import CLI from './cli';
 import Config from './core/contextManager/context';
 
 export {
@@ -39,7 +36,6 @@ export {
     // MANAGERS
     Constants,
     Common,
-    Prompt,
     Exec,
     FileUtils,
     ObjectUtils,
@@ -49,6 +45,4 @@ export {
     NPMUtils,
     Resolver,
     Utils,
-    CLI,
-    Spinner,
 };

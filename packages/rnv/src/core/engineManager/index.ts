@@ -8,11 +8,11 @@ import { doResolve } from '../systemManager/resolve';
 import { getScopedVersion } from '../systemManager/utils';
 import { writeRenativeConfigFile } from '../configManager';
 import { configurePlugins } from '../pluginManager';
-import { inquirerPrompt } from '../../cli/prompt';
 import { RnvContext } from '../contextManager/types';
 import { RnvTask, RnvTaskMap } from '../taskManager/types';
 import { RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
 import { RenativeEngineConfig, RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
+import { inquirerPrompt } from '../contextManager/api';
 
 const ENGINE_CORE = 'engine-core';
 

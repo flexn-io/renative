@@ -4,13 +4,13 @@ import merge from 'deepmerge';
 import { executeAsync } from '../systemManager/exec';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { chalk, logInfo, logDebug, logTask } from '../systemManager/logger';
-import { inquirerPrompt } from '../../cli/prompt';
 import { getEngineRunnerByPlatform } from '../engineManager';
 import { writeRenativeConfigFile } from './index';
 import { overrideTemplatePlugins } from '../pluginManager';
 import { configureFonts } from '../projectManager';
 import { getConfigProp } from '../common';
 import { RnvContext } from '../contextManager/types';
+import { inquirerPrompt } from '../contextManager/api';
 
 const injectProjectDependency = async (
     c: RnvContext,

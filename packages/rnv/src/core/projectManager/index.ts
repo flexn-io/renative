@@ -1,5 +1,4 @@
 import path from 'path';
-import { inquirerPrompt } from '../../cli/prompt';
 import {
     getAppFolder,
     getBuildsFolder,
@@ -37,6 +36,7 @@ import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
 import { RnvPluginPlatform } from '../pluginManager/types';
 import { NpmPackageFile, RenativeConfigFile } from '../configManager/types';
+import { inquirerPrompt } from '../contextManager/api';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');

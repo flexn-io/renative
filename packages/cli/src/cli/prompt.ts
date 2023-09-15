@@ -1,7 +1,5 @@
 import inquirer from 'inquirer';
-import { chalk, logWarning, logTask, logDebug } from '../core/systemManager/logger';
-import Config from '../core/contextManager/context';
-import { PromptOptions, PromptParams, PromptRenderFn } from './types';
+import { chalk, logWarning, logTask, logDebug, Config, PromptOptions, PromptParams, PromptRenderFn } from 'rnv';
 
 export const inquirerPrompt = async (params: PromptParams): Promise<Record<string, any>> => {
     const c = Config.getConfig();
@@ -120,3 +118,9 @@ const _sort = (a: any, b: any) => {
 
 const _generateOptionString = (i: number, _obj: any, mapping: any, defaultVal: string) =>
     ` [${chalk().bold.grey(i + 1)}]> ${chalk().bold.grey(mapping ? '' : defaultVal)} \n`;
+
+export default {
+    inquirerPrompt,
+    generateOptions,
+    pressAnyKeyToContinue,
+};

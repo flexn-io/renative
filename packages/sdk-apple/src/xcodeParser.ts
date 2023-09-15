@@ -6,11 +6,11 @@ import {
     Constants,
     Common,
     PluginManager,
-    Prompt,
     FileUtils,
     logError,
     RenativeConfigPlatform,
     RnvPluginPlatform,
+    inquirerPrompt,
 } from 'rnv';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
@@ -20,7 +20,6 @@ const { getAppFolder, getAppId, getConfigProp, getFlavouredProp } = Common;
 const { fsExistsSync, writeFileSync, fsWriteFileSync } = FileUtils;
 const { doResolve } = Resolver;
 const { chalk, logTask, logWarning } = Logger;
-const { inquirerPrompt } = Prompt;
 const { IOS } = Constants;
 const { parsePlugins } = PluginManager;
 

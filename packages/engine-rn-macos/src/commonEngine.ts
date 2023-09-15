@@ -1,6 +1,6 @@
 import path from 'path';
 import axios from 'axios';
-import { TaskManager, Constants, Logger, Common, FileUtils, Spinner, RnvContext } from 'rnv';
+import { TaskManager, Constants, Logger, Common, FileUtils, RnvContext, getContext } from 'rnv';
 
 const { getConfigProp, confirmActiveBundler } = Common;
 const { chalk, logTask, logInfo, logWarning } = Logger;
@@ -90,7 +90,7 @@ export const isBundlerActive = async (c: RnvContext) => {
 const poll = (fn: () => Promise<boolean>, timeout = 10000, interval = 1000) => {
     const endTime = Number(new Date()) + timeout;
 
-    const spinner = Spinner('Waiting for bundler to finish...').start('');
+    const spinner = getContext().spinner('Waiting for bundler to finish...').start('');
     const checkCondition = async (resolve: () => void, reject: (e: any) => void) => {
         try {
             const result = await fn();

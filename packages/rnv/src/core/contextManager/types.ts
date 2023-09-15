@@ -1,9 +1,36 @@
 import { RenativeConfigFile } from '../configManager/types';
 import { RnvEngine, RnvEnginePlatform } from '../engineManager/types';
 import { OverridesOptions } from '../systemManager/types';
-import { RnvPlatform } from '../types';
+import { PromptRenderFn, RnvPlatform } from '../types';
+
+//TODO: move
+export type RnvContextSpinner = {
+    start: (msg: string) => RnvContextSpinner;
+    fail: (msg: string) => RnvContextSpinner;
+    succeed: (msg: string) => RnvContextSpinner;
+    text: string;
+};
+
+//TODO: type this properly
+export type RnvContextPrompt = {
+    inquirerPrompt: (options: {
+        name?: string;
+        type: string;
+        message?: string;
+        choices?: Array<string>;
+        validate?: (i: string) => string | boolean;
+        logMessage?: string;
+        warningMessage?: string;
+        default?: any;
+        pageSize?: number;
+    }) => Promise<any>;
+    generateOptions: (inputData: any, isMultiChoice?: boolean, mapping?: any, renderMethod?: PromptRenderFn) => any;
+    pressAnyKeyToContinue: () => Promise<any>;
+};
 
 export interface RnvContext<Payload = any> {
+    spinner: (msg: string | { text: string }) => RnvContextSpinner;
+    prompt: RnvContextPrompt;
     program: any;
     payload: Payload;
     command: string | null;
