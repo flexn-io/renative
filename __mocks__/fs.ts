@@ -1,11 +1,12 @@
-// __mocks__/fs.js
+// __mocks__/fs.ts
 const path = require('path');
 
-const fs = jest.createMockFromModule('fs');
+const fs: any = jest.createMockFromModule('fs');
 
 let mockFiles = Object.create(null);
 function __setMockFiles(newMockFiles) {
     mockFiles = Object.create(null);
+    //@ts-expect-error
     Array.values(newMockFiles).forEach((file) => {
         const dir = path.dirname(file);
 

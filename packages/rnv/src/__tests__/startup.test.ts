@@ -30,13 +30,16 @@ describe('Bootstrapping the CLI', () => {
             'platform',
             'process',
             'program',
+            'prompt',
             'rnvVersion',
             'runtime',
             'runtimePropsInjects',
+            'spinner',
             'subCommand',
             'supportedPlatforms',
             'systemPropsInjects',
         ];
+
         expect(cKeys).toEqual(expectKeys);
     });
 
