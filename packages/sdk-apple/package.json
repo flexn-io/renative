@@ -39,8 +39,7 @@
     },
     "devDependencies": {},
     "peerDependencies": {
-        "rnv": "^0.38.0-canary.1",
-        "@rnv/cli": "^0.38.0-canary.1"
+        "rnv": "^0.38.0-canary.1"
     },
     "optionalDependencies": {
         "ios-deploy": "1.11.4"

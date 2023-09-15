@@ -33,22 +33,11 @@
     },
     "dependencies": {
         "@lightningjs/cli": "2.11.0",
-        "@lightningjs/sdk": "5.2.0",
-        "babel-loader": "9.1.3",
-        "html-webpack-harddisk-plugin": "1.0.2",
-        "html-webpack-plugin": "5.5.0"
+        "@lightningjs/sdk": "5.2.0"
     },
-    "devDependencies": {
-        "@babel/cli": "7.20.7",
-        "@babel/core": "7.20.7",
-        "@babel/node": "7.20.7",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "7.18.6",
-        "@babel/plugin-proposal-optional-chaining": "7.20.7",
-        "@babel/preset-env": "7.22.15"
-    },
+    "devDependencies": {},
     "peerDependencies": {
-        "rnv": "^0.38.0-canary.1",
-        "@rnv/cli": "^0.38.0-canary.1"
+        "rnv": "^0.38.0-canary.1"
     },
     "private": false,
     "publishConfig": {
