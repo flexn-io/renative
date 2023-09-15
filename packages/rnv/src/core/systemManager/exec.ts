@@ -279,6 +279,10 @@ const executeAsync = async (
     return result;
 };
 
+export const execaCommand = (cmd: string, options?: execa.Options) => {
+    return execa.command(cmd, options);
+};
+
 /**
  *
  * Connect to a local telnet server and execute a command
