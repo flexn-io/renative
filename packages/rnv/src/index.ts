@@ -3,7 +3,8 @@ import 'source-map-support/register';
 
 import Config from './core/contextManager/context';
 import Analytics from './core/systemManager/analytics';
-import { run } from './runner';
+
+global.RNV_ANALYTICS = Analytics;
 
 export * from './modules';
 export * from './core/adapter';
@@ -47,4 +48,4 @@ export * from './core/types';
 
 export { Analytics };
 
-export default { run, Config };
+export default { Config };

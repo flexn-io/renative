@@ -15,9 +15,9 @@ import { logTask, logWarning, logError, logInfo, logDebug, logSuccess } from './
 import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { doResolve } from './resolve';
 
-import { inquirerPrompt } from '@rnv/cli';
 import { getConfigProp } from '../common';
 import { RnvContext } from '../contextManager/types';
+import { getContext } from '../contextManager/context';
 
 const packageJsonIsValid = (c: RnvContext) => {
     if (!fsExistsSync(c.paths.project.package)) return false;
@@ -33,7 +33,7 @@ export const checkNpxIsInstalled = async () => {
     if (!commandExistsSync('npx')) {
         logWarning('npx is not installed, please install it before running this command');
 
-        const { confirm } = await inquirerPrompt({
+        const { confirm } = await getContext().prompt.inquirerPrompt({
             type: 'confirm',
             message: 'Do you want to install npx it now?',
         });
@@ -217,7 +217,7 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
         }
     } else {
         // no cli option either, asking
-        const { packageManager } = await inquirerPrompt({
+        const { packageManager } = await getContext().prompt.inquirerPrompt({
             type: 'list',
             name: 'packageManager',
             message: 'What package manager would you like to use?',

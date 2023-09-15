@@ -4,13 +4,13 @@ import merge from 'deepmerge';
 import { executeAsync } from '../systemManager/exec';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { chalk, logInfo, logDebug, logTask } from '../systemManager/logger';
-import { inquirerPrompt } from '@rnv/cli';
 import { getEngineRunnerByPlatform } from '../engineManager';
 import { writeRenativeConfigFile } from './index';
 import { overrideTemplatePlugins } from '../pluginManager';
 import { configureFonts } from '../projectManager';
 import { getConfigProp } from '../common';
 import { RnvContext } from '../contextManager/types';
+import { getContext } from '../contextManager/context';
 
 const injectProjectDependency = async (
     c: RnvContext,
@@ -51,7 +51,7 @@ export const checkRequiredPackage = async (
         // package does not exist, adding it
         let confirm = skipAsking;
         if (!confirm) {
-            const resp = await inquirerPrompt({
+            const resp = await getContext().prompt.inquirerPrompt({
                 type: 'confirm',
                 message: `You do not have ${pkg} installed. Do you want to add it now?`,
             });
@@ -89,7 +89,7 @@ export const checkRequiredPackage = async (
             if (updateAvailable) {
                 let confirm = skipAsking;
                 if (!confirm) {
-                    const resp = await inquirerPrompt({
+                    const resp = await getContext().prompt.inquirerPrompt({
                         type: 'confirm',
                         message: `Seems like ${pkg}@${currentVersion} is installed while there is a newer version, ${pkg}@${latestVersion}. Do you want to upgrade?`,
                     });

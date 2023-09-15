@@ -1,7 +1,6 @@
 import merge from 'deepmerge';
 import path from 'path';
 import intersection from 'lodash.intersection';
-import { inquirerPrompt } from '@rnv/cli';
 import { getAppFolder, getBuildsFolder, getConfigProp } from '../common';
 import { parseRenativeConfigs, writeRenativeConfigFile } from '../configManager';
 import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
@@ -31,6 +30,7 @@ import {
 } from './types';
 import { RenativeConfigPlugin, RenativeWebpackConfig } from '../configManager/types';
 import { RnvModuleConfig } from '../types';
+import { getContext } from '../contextManager/context';
 
 export const getPluginList = (c: RnvContext, isUpdate = false) => {
     const output: PluginListResponse = {
@@ -392,7 +392,7 @@ const _resolvePluginDependencies = async (
         const depPlugin = pluginTemplates?.[scope]?.pluginTemplates?.[key];
         if (depPlugin) {
             // console.log('INSTALL PLUGIN???', key, depPlugin.source);
-            const { confirm } = await inquirerPrompt({
+            const { confirm } = await getContext().prompt.inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${key}?`,
                 warningMessage: `Plugin ${chalk().white(key)} source:${chalk().white(scope)} required by ${chalk().red(
@@ -801,7 +801,7 @@ export const checkForPluginDependencies = async (c: RnvContext) => {
         // ask the user
         let install = false;
         if (!c.program.ci) {
-            const answer = await inquirerPrompt({
+            const answer = await getContext().prompt.inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${Object.keys(toAdd).join(', ')}?`,
                 warningMessage: `One or more dependencies are not installed: ${chalk().white(

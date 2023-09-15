@@ -1,8 +1,8 @@
 import path from 'path';
-import { generateOptions, inquirerPrompt } from '@rnv/cli';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/logger';
 import { writeFileSync, mkdirSync, fsExistsSync } from '../systemManager/fileutils';
 import { RnvContext } from '../contextManager/types';
+import { getContext } from '../contextManager/context';
 
 export const createWorkspace = async (c: RnvContext, workspaceID: string, workspacePath: string) => {
     c.files.rnv.configWorkspaces.workspaces[workspaceID] = {
@@ -41,7 +41,7 @@ export const getWorkspaceDirPath = async (c: RnvContext) => {
             } else if (!c.runtime.isWSConfirmed || c.program.ci === true) {
                 let confirm = true;
                 if (c.program.ci !== true) {
-                    const { conf } = await inquirerPrompt({
+                    const { conf } = await getContext().prompt.inquirerPrompt({
                         name: 'conf',
                         type: 'confirm',
                         message: `Your project belongs to workspace ${chalk().white(
@@ -78,8 +78,13 @@ export const getWorkspaceConnectionString = (obj: any) => {
 };
 
 export const getWorkspaceOptions = (c: RnvContext) =>
-    generateOptions(c.files.rnv.configWorkspaces?.workspaces, false, null, (i, obj, mapping, defaultVal) => {
-        logDebug('getWorkspaceOptions');
+    getContext().prompt.generateOptions(
+        c.files.rnv.configWorkspaces?.workspaces,
+        false,
+        null,
+        (i, obj, mapping, defaultVal) => {
+            logDebug('getWorkspaceOptions');
 
-        return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)} ${getWorkspaceConnectionString(obj)}\n`;
-    });
+            return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)} ${getWorkspaceConnectionString(obj)}\n`;
+        }
+    );

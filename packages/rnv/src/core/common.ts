@@ -5,7 +5,6 @@ import killPort from 'kill-port';
 import axios from 'axios';
 import lGet from 'lodash.get';
 import path from 'path';
-import { inquirerPrompt } from '@rnv/cli';
 import { CLI_PROPS } from './constants';
 import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
 import { chalk, logError, logTask, logWarning } from './systemManager/logger';
@@ -14,6 +13,7 @@ import { RnvContext } from './contextManager/types';
 import { GetConfigPropFn } from './types';
 import { OverridesOptions, TimestampPathsConfig } from './systemManager/types';
 import { RenativeConfigBuildScheme, RenativeConfigFile } from './configManager/types';
+import { getContext } from './contextManager/context';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: string): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
@@ -168,7 +168,7 @@ export const confirmActiveBundler = async (c: RnvContext) => {
 
     const choices = ['Restart the server (recommended)', 'Use existing session'];
 
-    const { selectedOption } = await inquirerPrompt({
+    const { selectedOption } = await getContext().prompt.inquirerPrompt({
         name: 'selectedOption',
         type: 'list',
         choices,

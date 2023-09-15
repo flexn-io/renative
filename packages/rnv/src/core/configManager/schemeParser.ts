@@ -1,7 +1,7 @@
 import merge from 'deepmerge';
 import { logError, logTask, logWarning, chalk, logInfo } from '../systemManager/logger';
-import { inquirerPrompt } from '@rnv/cli';
 import { RnvContext } from '../contextManager/types';
+import { getContext } from '../contextManager/context';
 
 export const isBuildSchemeSupported = async (c: RnvContext) => {
     logTask('isBuildSchemeSupported');
@@ -44,7 +44,7 @@ export const isBuildSchemeSupported = async (c: RnvContext) => {
             schemeVals[key] = k;
         });
 
-        const { selectedScheme } = await inquirerPrompt({
+        const { selectedScheme } = await getContext().prompt.inquirerPrompt({
             name: 'selectedScheme',
             type: 'list',
             message: 'Pick one of available buildSchemes',

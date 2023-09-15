@@ -15,13 +15,13 @@ import {
     removeDirSync,
 } from '../systemManager/fileutils';
 import { chalk, logError, logInfo, logWarning, logTask, logDebug } from '../systemManager/logger';
-import { generateOptions } from '@rnv/cli';
 import { getConfigProp } from '../common';
 import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from '../configManager';
 import { doResolve } from '../systemManager/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import { RnvContext } from '../contextManager/types';
-import { PromptOptions } from '../../cli/types';
+import { PromptOptions } from '../types';
+import { getContext } from '../contextManager/context';
 
 export const checkIfTemplateConfigured = async (c: RnvContext) => {
     logTask('checkIfTemplateConfigured');
@@ -315,7 +315,7 @@ export const getTemplateOptions = (c: RnvContext, isGlobalScope?: boolean) => {
         defaultProjectTemplates = c.buildConfig.projectTemplates || {};
     }
 
-    return generateOptions(defaultProjectTemplates, false, null, (i, obj, mapping, defaultVal) => {
+    return getContext().prompt.generateOptions(defaultProjectTemplates, false, null, (i, obj, mapping, defaultVal) => {
         const exists = c.buildConfig.templates?.[defaultVal];
         const installed = exists ? chalk().yellow(' (installed)') : '';
         return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)}${installed} \n`;
@@ -325,7 +325,7 @@ export const getTemplateOptions = (c: RnvContext, isGlobalScope?: boolean) => {
 export const getInstalledTemplateOptions = (c: RnvContext): PromptOptions | null => {
     if (c.files.project.config.isTemplate) return null;
     if (c.buildConfig.templates) {
-        return generateOptions(c.buildConfig.templates);
+        return getContext().prompt.generateOptions(c.buildConfig.templates);
     }
     logError("You don't have any local templates installed", false, true);
     return null;

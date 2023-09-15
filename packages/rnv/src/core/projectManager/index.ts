@@ -1,5 +1,4 @@
 import path from 'path';
-import { inquirerPrompt } from '@rnv/cli';
 import {
     getAppFolder,
     getBuildsFolder,
@@ -37,6 +36,7 @@ import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
 import { RnvPluginPlatform } from '../pluginManager/types';
 import { NpmPackageFile, RenativeConfigFile } from '../configManager/types';
+import { getContext } from '../contextManager/context';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');
@@ -661,7 +661,7 @@ export const versionCheck = async (c: RnvContext) => {
             const actionWithUpdate = 'Continue and update package.json';
             const actionUpgrade = `Upgrade project to ${c.runtime.rnvVersionRunner}`;
 
-            const { chosenAction } = await inquirerPrompt({
+            const { chosenAction } = await getContext().prompt.inquirerPrompt({
                 message: 'What to do next?',
                 type: 'list',
                 name: 'chosenAction',

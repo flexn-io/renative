@@ -1,7 +1,6 @@
 import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../systemManager/logger';
 import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
-import { inquirerPrompt, pressAnyKeyToContinue } from '@rnv/cli';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import {
     getEngineRunner,
@@ -15,6 +14,7 @@ import { TASK_CONFIGURE_SOFT } from '../constants';
 import { RnvContext } from '../contextManager/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engineManager/types';
+import { getContext } from '../contextManager/context';
 
 let executedTasks: Record<string, number> = {};
 
@@ -96,7 +96,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
                 defaultCmd = tasks.find((v) => v.startsWith('run'));
             }
 
-            const { command } = await inquirerPrompt({
+            const { command } = await getContext().prompt.inquirerPrompt({
                 type: 'list',
                 default: defaultCmd,
                 name: 'command',
@@ -176,7 +176,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
 
             const subTasks = Object.keys(supportedSubtasks);
             if (subTasks.length) {
-                const { subCommand } = await inquirerPrompt({
+                const { subCommand } = await getContext().prompt.inquirerPrompt({
                     type: 'list',
                     name: 'subCommand',
                     message,
@@ -280,7 +280,7 @@ const _selectPlatform = async (c: RnvContext, suitableEngines: Array<RnvEngine>,
     const platforms = Object.keys(supportedPlatforms);
 
     if (platforms.length) {
-        const { platform } = await inquirerPrompt({
+        const { platform } = await getContext().prompt.inquirerPrompt({
             type: 'list',
             name: 'platform',
             message: `Pick a platform for ${task}`,
@@ -441,7 +441,7 @@ ${t.params
             await t.fnHelp(c, parentTask, originTask);
         }
 
-        await pressAnyKeyToContinue();
+        await getContext().prompt.pressAnyKeyToContinue();
         logRaw(`
 =======================================================`);
     }
