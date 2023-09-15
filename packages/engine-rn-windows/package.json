@@ -48,7 +48,8 @@
     "peerDependencies": {
         "@react-native-community/cli": "*",
         "react-native": "*",
-        "rnv": "^0.38.0-canary.1"
+        "rnv": "^0.38.0-canary.1",
+        "@rnv/cli": "^0.38.0-canary.1"
     },
     "private": false,
     "publishConfig": {

@@ -36,7 +36,8 @@
         "shelljs": "0.8.5"
     },
     "peerDependencies": {
-        "rnv": "^0.38.0-canary.1"
+        "rnv": "^0.38.0-canary.1",
+        "@rnv/cli": "^0.38.0-canary.1"
     },
     "private": false,
     "publishConfig": {

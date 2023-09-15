@@ -1,11 +1,16 @@
-/* eslint-disable global-require */
-import { configureRuntimeDefaults, updateRenativeConfigs } from '../core/runtimeManager';
-import { registerEngine, registerMissingPlatformEngines, loadEngines } from '../core/engineManager';
-import { checkAndMigrateProject } from '../core/projectManager/migrator';
-import { checkAndBootstrapIfRequired } from '../core/projectManager';
-import { loadIntegrations } from '../core/integrationManager';
-import { initializeTask, findSuitableTask } from '../core/taskManager';
-import { RnvContext } from '../core/contextManager/types';
+import {
+    configureRuntimeDefaults,
+    updateRenativeConfigs,
+    registerEngine,
+    registerMissingPlatformEngines,
+    loadEngines,
+    checkAndMigrateProject,
+    checkAndBootstrapIfRequired,
+    loadIntegrations,
+    initializeTask,
+    findSuitableTask,
+    RnvContext,
+} from 'rnv';
 
 const IGNORE_MISSING_ENGINES_TASKS = ['link', 'unlink'];
 

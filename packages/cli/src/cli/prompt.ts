@@ -1,6 +1,5 @@
 import inquirer from 'inquirer';
-import { chalk, logWarning, logTask, logDebug } from '../core/systemManager/logger';
-import Config from '../core/contextManager/context';
+import { chalk, logWarning, logTask, logDebug, Config } from 'rnv';
 import { PromptOptions, PromptParams, PromptRenderFn } from './types';
 
 export const inquirerPrompt = async (params: PromptParams): Promise<Record<string, any>> => {
