@@ -59,10 +59,6 @@
         "compile:prod": "tsc -b tsconfig.json",
         "watch": "tsc --watch --preserveWatchOutput"
     },
-    "engines": {
-        "node": ">=16.0.0",
-        "npm": ">=4.0.0"
-    },
     "private": false,
     "publishConfig": {
         "access": "public"

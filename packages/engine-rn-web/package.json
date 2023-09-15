@@ -33,7 +33,6 @@
     },
     "dependencies": {
         "@rnv/sdk-webpack": "0.38.0-canary.1",
-        "babel-preset-expo": "9.5.2",
         "better-opn": "1.0.0",
         "html-webpack-harddisk-plugin": "1.0.2",
         "html-webpack-plugin": "4.5.1",

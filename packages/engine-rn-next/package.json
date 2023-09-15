@@ -35,14 +35,13 @@
     "dependencies": {
         "@expo/config": "8.1.2",
         "@expo/next-adapter": "5.0.2",
-        "ally.js": "1.4.1",
         "better-opn": "1.0.0",
         "next": "12.3.4",
         "next-fonts": "1.5.1",
         "next-images": "1.8.4",
         "next-transpile-modules": "9.0.0",
-        "react-native-web": "0.19.8",
-        "webpack": "5.76.0"
+        "webpack": "5.76.0",
+        "babel-preset-expo": "9.5.2"
     },
     "devDependencies": {},
     "peerDependencies": {

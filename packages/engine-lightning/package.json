@@ -32,8 +32,8 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@lightningjs/cli": "2.11.0",
-        "@lightningjs/sdk": "5.2.0"
+        "@lightningjs/cli": "2.12.0",
+        "@lightningjs/sdk": "5.4.1"
     },
     "devDependencies": {},
     "peerDependencies": {

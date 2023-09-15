@@ -29,9 +29,7 @@
         "prepublishOnly": "yarn clean && yarn compile:prod",
         "watch": "tsc --watch --preserveWatchOutput"
     },
-    "dependencies": {
-        "get-installed-path": "^4.0.8"
-    },
+    "dependencies": {},
     "devDependencies": {},
     "peerDependencies": {
         "rnv": "^0.38.0-canary.1"

@@ -29,12 +29,16 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "inquirer": "8.2.0",
         "@rnv/sdk-android": "0.38.0-canary.1",
         "@rnv/sdk-apple": "0.38.0-canary.1",
         "@rnv/sdk-tizen": "0.38.0-canary.1",
         "@rnv/sdk-webos": "0.38.0-canary.1",
-        "@rnv/sdk-kaios": "0.38.0-canary.1"
+        "@rnv/sdk-kaios": "0.38.0-canary.1",
+        "console-table-printer": "1.1.10",
+        "inquirer": "8.2.0",
+        "kill-port": "1.6.1",
+        "tar": "4.4.19",
+        "iocane": "4.0.0"
     },
     "peerDependencies": {
         "rnv": "^0.38.0-canary.1"

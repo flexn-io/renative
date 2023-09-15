@@ -81,14 +81,11 @@
         "axios": "0.21.2",
         "chalk": "4.1.0",
         "color-string": "1.9.0",
-        "console-table-printer": "1.1.10",
         "deepmerge": "3.2.0",
         "detect-port": "1.3.0",
         "esbuild": "^0.12.1",
         "execa": "5.1.1",
-        "get-installed-path": "4.0.8",
         "inquirer": "8.2.0",
-        "iocane": "4.0.0",
         "ip": "1.1.5",
         "kill-port": "1.6.1",
         "lodash.get": "4.4.2",
@@ -102,15 +99,9 @@
         "rimraf": "2.6.2",
         "semver": "^7.5.3",
         "shelljs": "0.8.5",
-        "source-map-loader": "4.0.0",
         "source-map-support": "0.5.13",
         "svg2js": "0.0.4-alpha1",
-        "tar": "4.4.19",
-        "tslib": "2.3.1"
-    },
-    "engines": {
-        "node": ">=16.0.0",
-        "npm": ">=4.0.0"
+        "tslib": "2.5.2"
     },
     "private": false,
     "publishConfig": {
