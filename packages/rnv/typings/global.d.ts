@@ -1,3 +1,5 @@
+// import type { RnvContext } from "rnv";
+
 export {};
 
 declare global {
@@ -19,4 +21,6 @@ declare global {
     var _getConfigProp
     //eslint-disable-next-line no-var
     var fetch;
+    // //eslint-disable-next-line no-var
+    // var RNV_CONTEXT: RnvContext;
 }

@@ -1,5 +1,5 @@
 import path from 'path';
-import { inquirerPrompt } from '../../cli/prompt';
+import { inquirerPrompt } from '@rnv/cli';
 import {
     getAppFolder,
     getBuildsFolder,

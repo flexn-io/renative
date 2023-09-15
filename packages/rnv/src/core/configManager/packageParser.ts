@@ -4,7 +4,7 @@ import merge from 'deepmerge';
 import { executeAsync } from '../systemManager/exec';
 import { installPackageDependencies } from '../systemManager/npmUtils';
 import { chalk, logInfo, logDebug, logTask } from '../systemManager/logger';
-import { inquirerPrompt } from '../../cli/prompt';
+import { inquirerPrompt } from '@rnv/cli';
 import { getEngineRunnerByPlatform } from '../engineManager';
 import { writeRenativeConfigFile } from './index';
 import { overrideTemplatePlugins } from '../pluginManager';

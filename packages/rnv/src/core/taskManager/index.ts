@@ -1,7 +1,7 @@
 import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../systemManager/logger';
 import Analytics from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
-import { inquirerPrompt, pressAnyKeyToContinue } from '../../cli/prompt';
+import { inquirerPrompt, pressAnyKeyToContinue } from '@rnv/cli';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import {
     getEngineRunner,

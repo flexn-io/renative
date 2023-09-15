@@ -15,7 +15,7 @@ import { logTask, logWarning, logError, logInfo, logDebug, logSuccess } from './
 import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { doResolve } from './resolve';
 
-import { inquirerPrompt } from '../../cli/prompt';
+import { inquirerPrompt } from '@rnv/cli';
 import { getConfigProp } from '../common';
 import { RnvContext } from '../contextManager/types';
 

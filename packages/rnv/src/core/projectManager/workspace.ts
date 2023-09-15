@@ -1,5 +1,5 @@
 import path from 'path';
-import { generateOptions, inquirerPrompt } from '../../cli/prompt';
+import { generateOptions, inquirerPrompt } from '@rnv/cli';
 import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemManager/logger';
 import { writeFileSync, mkdirSync, fsExistsSync } from '../systemManager/fileutils';
 import { RnvContext } from '../contextManager/types';

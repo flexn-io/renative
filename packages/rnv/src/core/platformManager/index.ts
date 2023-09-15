@@ -1,6 +1,6 @@
 import path from 'path';
 import { chalk, logTask, logError, logWarning } from '../systemManager/logger';
-import { generateOptions, inquirerPrompt } from '../../cli/prompt';
+import { generateOptions, inquirerPrompt } from '@rnv/cli';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync } from '../systemManager/fileutils';
 import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
 import { SUPPORTED_PLATFORMS } from '../constants';

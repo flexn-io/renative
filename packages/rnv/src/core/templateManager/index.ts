@@ -15,7 +15,7 @@ import {
     removeDirSync,
 } from '../systemManager/fileutils';
 import { chalk, logError, logInfo, logWarning, logTask, logDebug } from '../systemManager/logger';
-import { generateOptions } from '../../cli/prompt';
+import { generateOptions } from '@rnv/cli';
 import { getConfigProp } from '../common';
 import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from '../configManager';
 import { doResolve } from '../systemManager/resolve';

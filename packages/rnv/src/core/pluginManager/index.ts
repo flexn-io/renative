@@ -1,7 +1,7 @@
 import merge from 'deepmerge';
 import path from 'path';
 import intersection from 'lodash.intersection';
-import { inquirerPrompt } from '../../cli/prompt';
+import { inquirerPrompt } from '@rnv/cli';
 import { getAppFolder, getBuildsFolder, getConfigProp } from '../common';
 import { parseRenativeConfigs, writeRenativeConfigFile } from '../configManager';
 import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';

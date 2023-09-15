@@ -5,7 +5,7 @@ import killPort from 'kill-port';
 import axios from 'axios';
 import lGet from 'lodash.get';
 import path from 'path';
-import { inquirerPrompt } from '../cli/prompt';
+import { inquirerPrompt } from '@rnv/cli';
 import { CLI_PROPS } from './constants';
 import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
 import { chalk, logError, logTask, logWarning } from './systemManager/logger';
