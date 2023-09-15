@@ -157,19 +157,5 @@
             "**/@flexn/plugins"
         ]
     },
-    "resolutions": {
-        "@types/react": "18.2.6",
-        "tslib": "2.5.2",
-        "axios": "^0.21.2",
-        "plist": "^3.0.5",
-        "merge": "^2.1.1",
-        "minimist": "1.2.6",
-        "react-dev-utils": "^12.0.0",
-        "node-forge": "1.3.0",
-        "chokidar": "3.5.3",
-        "terser": "5.14.2",
-        "simple-plist": "1.3.1",
-        "ejs": "3.1.7",
-        "shell-quote": "1.7.3"
-    }
+    "resolutions": {}
 }

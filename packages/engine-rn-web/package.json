@@ -41,7 +41,7 @@
         "html-webpack-plugin": "4.5.1",
         "mini-css-extract-plugin": "0.8.0",
         "react-native-web": "0.19.8",
-        "webpack-bundle-analyzer": "3.5.1"
+        "webpack-bundle-analyzer": "4.9.1"
     },
     "devDependencies": {
         "@babel/cli": "7.20.7",
@@ -58,6 +58,5 @@
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
+    }
 }

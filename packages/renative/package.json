@@ -67,6 +67,5 @@
     "publishConfig": {
         "access": "public"
     },
-    "types": "lib/index",
-    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
+    "types": "lib/index"
 }

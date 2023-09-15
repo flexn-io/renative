@@ -31,7 +31,7 @@
     },
     "dependencies": {
         "dotenv": "8.1.0",
-        "ftp-deploy": "2.3.3"
+        "ftp-deploy": "2.4.5"
     },
     "devDependencies": {
         "@babel/cli": "7.20.7",
