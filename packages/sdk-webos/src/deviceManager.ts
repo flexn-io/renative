@@ -56,7 +56,7 @@ export const launchWebOSimulator = (c: RnvContext) => {
 };
 
 // const startHostedServerIfRequired = (c) => {
-//     if (Config.isWebHostEnabled) {
+//     if (Context.isWebHostEnabled) {
 //         return rnvStart(c);
 //     }
 // };

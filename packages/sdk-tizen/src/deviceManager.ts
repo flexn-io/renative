@@ -218,7 +218,7 @@ const _composeDevicesString = (devices: Array<any>) =>
     }));
 
 // const startHostedServerIfRequired = (c) => {
-//     if (Config.isWebHostEnabled) {
+//     if (Context.isWebHostEnabled) {
 //         return rnvStart(c);
 //     }
 // };

@@ -1,7 +1,7 @@
 import semver from 'semver';
 import {
     executeAsync,
-    Config,
+    Context,
     logWarning,
     logTask,
     writeFileSync,
@@ -80,7 +80,7 @@ export const taskRnvPublish: RnvTaskFn = async (c, _parentTask, originTask) => {
         writeFileSync(existingPath, pkgJson);
     }
 
-    let args = [...Config.getConfig().program.rawArgs];
+    let args = [...Context.getConfig().program.rawArgs];
     args = args.slice(3);
 
     const maybeVersion = args[0];
@@ -98,9 +98,9 @@ export const taskRnvPublish: RnvTaskFn = async (c, _parentTask, originTask) => {
         prereleaseMark = `--preRelease=${includesPre(maybeVersion)}`;
     }
 
-    const { dir } = Config.getConfig().paths.project;
+    const { dir } = Context.getConfig().paths.project;
     const execCommonOpts = { interactive: true, env: process.env, cwd: dir };
-    const { ci } = Config.getConfig().program;
+    const { ci } = Context.getConfig().program;
     const publishMode = pkgJson['release-it'].publish || 'local';
     const { skipRootPublish, rootPublishCommand } = pkgJson['release-it'];
 

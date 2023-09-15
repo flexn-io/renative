@@ -1,6 +1,6 @@
 import { printTable } from 'console-table-printer';
 
-import { logWarning, logTask, configSchema, PARAMS, Config, getCliArguments, RnvTaskFn } from 'rnv';
+import { logWarning, logTask, configSchema, PARAMS, Context, getCliArguments, RnvTaskFn } from 'rnv';
 
 export const taskRnvConfig: RnvTaskFn = async (c) => {
     logTask('taskRnvConfig');
@@ -9,7 +9,7 @@ export const taskRnvConfig: RnvTaskFn = async (c) => {
     if (key === 'list') {
         const rows: Array<any> = [];
         //TODO: is this really needed?
-        Object.keys(configSchema).forEach((k) => rows.push(Config.listConfigValue(k)));
+        Object.keys(configSchema).forEach((k) => rows.push(Context.listConfigValue(k)));
 
         printTable([].concat(...rows));
         return true;
@@ -28,9 +28,9 @@ export const taskRnvConfig: RnvTaskFn = async (c) => {
 
     if (!value) {
         // list the value
-        printTable(Config.listConfigValue(key));
-    } else if (Config.setConfigValue(key, value)) {
-        printTable(Config.listConfigValue(key));
+        printTable(Context.listConfigValue(key));
+    } else if (Context.setConfigValue(key, value)) {
+        printTable(Context.listConfigValue(key));
     }
 
     return true;

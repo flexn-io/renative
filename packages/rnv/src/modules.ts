@@ -19,7 +19,7 @@ import * as Resolver from './core/systemManager/resolve';
 import * as Common from './core/common';
 import * as Utils from './core/systemManager/utils';
 import * as Constants from './core/constants';
-import Config from './core/contextManager/context';
+import { Context } from './core/contextManager/context';
 
 export {
     // MANAGERS
@@ -40,7 +40,7 @@ export {
     FileUtils,
     ObjectUtils,
     Doctor,
-    Config,
+    Context,
     Logger,
     NPMUtils,
     Resolver,

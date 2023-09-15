@@ -4,7 +4,7 @@ import { configSchema } from '../constants';
 import { RnvContext } from './types';
 import { generateConfigBase } from './contextBase';
 
-class Config {
+class ContextCls {
     // config: RnvContext;
 
     constructor() {
@@ -98,12 +98,10 @@ class Config {
     }
 }
 
-const Context = new Config();
+const Context = new ContextCls();
 
 export const getContext = (): RnvContext => {
     return Context.getConfig();
 };
 
 export { Context };
-
-export default Context;

@@ -1,11 +1,7 @@
 import 'regenerator-runtime/runtime';
 import 'source-map-support/register';
 
-import Config from './core/contextManager/context';
-import Analytics from './core/systemManager/analytics';
-
-global.RNV_ANALYTICS = Analytics;
-
+export * from './core/systemManager/analytics';
 export * from './core/contextManager/api';
 export * from './core/contextManager/context';
 export * from './modules';
@@ -47,7 +43,3 @@ export * from './core/configManager/types';
 export * from './core/taskManager/types';
 export * from './core/systemManager/types';
 export * from './core/types';
-
-export { Analytics };
-
-export default { Config };

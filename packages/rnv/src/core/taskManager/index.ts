@@ -1,5 +1,5 @@
 import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../systemManager/logger';
-import Analytics from '../systemManager/analytics';
+import { Analytics } from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import {

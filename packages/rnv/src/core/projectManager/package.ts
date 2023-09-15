@@ -1,7 +1,7 @@
 import path from 'path';
 import semver from 'semver';
 
-import Config from '../contextManager/context';
+import { Context, getContext } from '../contextManager/context';
 import { executeAsync } from '../systemManager/exec';
 import {
     copyFileSync,
@@ -17,7 +17,7 @@ const bumpVersions = (version: string) => {
     const {
         project: { dir },
         rnv: { pluginTemplates },
-    } = Config.getConfig().paths;
+    } = Context.getConfig().paths;
     // check for packages to bump
     const packagesDir = path.join(dir, 'packages');
     if (fsExistsSync(packagesDir)) {
@@ -50,7 +50,7 @@ const bumpVersions = (version: string) => {
 const publishAll = () => {
     const {
         project: { dir },
-    } = Config.getConfig().paths;
+    } = Context.getConfig().paths;
     const packagesDir = path.join(dir, 'packages');
     if (fsExistsSync(packagesDir)) {
         const packages = fsReaddirSync(packagesDir);
@@ -65,7 +65,7 @@ const publishAll = () => {
 };
 
 const taskRnvPkg = async () => {
-    let args = [...Config.getConfig().program.rawArgs];
+    let args = [...getContext().program.rawArgs];
     args = args.slice(3);
 
     const firstArg = args[0];

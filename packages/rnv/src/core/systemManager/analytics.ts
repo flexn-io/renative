@@ -4,7 +4,7 @@ import axios from 'axios';
 import os from 'os';
 import path from 'path';
 
-import Config from '../contextManager/context';
+import { Context } from '../contextManager/context';
 //@ts-ignore
 import pkg from '../../../package.json';
 import { REDASH_KEY, REDASH_URL, SENTRY_ENDPOINT } from '../constants';
@@ -44,7 +44,7 @@ class Redash {
     }
 }
 
-export class Analytics {
+export class AnalyticsCls {
     errorFixer: any;
     knowItAll: any;
 
@@ -54,7 +54,7 @@ export class Analytics {
     }
 
     initialize() {
-        if (Config.isAnalyticsEnabled) {
+        if (Context.isAnalyticsEnabled) {
             // ERROR HANDLING
             // eslint-disable-next-line global-require
             this.errorFixer = require('@sentry/node');
@@ -92,7 +92,7 @@ export class Analytics {
     }
 
     captureException(e: any, context: any = {}) {
-        if (Config.isAnalyticsEnabled && this.errorFixer) {
+        if (Context.isAnalyticsEnabled && this.errorFixer) {
             this.errorFixer.withScope((scope: any) => {
                 const { extra = {}, tags = {} } = context;
                 scope.setTags({ ...tags, os: os.platform() });
@@ -107,7 +107,7 @@ export class Analytics {
     }
 
     async captureEvent(e: any) {
-        if (Config.isAnalyticsEnabled && this.knowItAll) {
+        if (Context.isAnalyticsEnabled && this.knowItAll) {
             return this.knowItAll.captureEvent(e);
         }
         return true;
@@ -115,7 +115,7 @@ export class Analytics {
 
     teardown() {
         return new Promise<void>((resolve) => {
-            if (Config.isAnalyticsEnabled && this.errorFixer) {
+            if (Context.isAnalyticsEnabled && this.errorFixer) {
                 const client = this.errorFixer.getCurrentHub().getClient();
                 if (client) {
                     return client.close(2000).then(resolve);
@@ -127,4 +127,8 @@ export class Analytics {
     }
 }
 
-export default new Analytics();
+const Analytics = new AnalyticsCls();
+
+global.RNV_ANALYTICS = Analytics;
+
+export { Analytics };

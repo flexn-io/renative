@@ -17,9 +17,9 @@ import {
     getConfigProp,
     doResolve,
     isSystemWin,
-    Config,
     logComplete,
     logError,
+    Context,
 } from 'rnv';
 import Spinner from './ora';
 import Prompt from './prompt';
@@ -81,9 +81,9 @@ const initializeBuilder = async (cmd: string, subCmd: string, process: any, prog
 
 const run = (cmd: string, subCmd: string, program: any, process: any) => {
     initializeBuilder(cmd, subCmd, process, program)
-        .then((c) => Config.initializeConfig(c))
+        .then((c) => Context.initializeConfig(c))
         .then((c) => CLI(c))
-        .then(() => logComplete(!Config.getConfig().runtime.keepSessionActive))
+        .then(() => logComplete(!Context.getConfig().runtime.keepSessionActive))
         .catch((e) => logError(e, true));
 };
 
