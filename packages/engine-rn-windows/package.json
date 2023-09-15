@@ -42,7 +42,7 @@
         "@babel/node": "7.20.7",
         "@babel/plugin-proposal-nullish-coalescing-operator": "7.18.6",
         "@babel/plugin-proposal-optional-chaining": "7.20.7",
-        "@babel/preset-env": "7.21.5",
+        "@babel/preset-env": "7.22.15",
         "@react-native-windows/cli": "0.72.2"
     },
     "peerDependencies": {

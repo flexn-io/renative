@@ -12,12 +12,6 @@ export const withRNVBabel = (cnf: any) => {
                     root: [process.env.RNV_MONO_ROOT || '.'],
                 },
             ],
-            // [
-            //     '@babel/plugin-transform-react-jsx',
-            //     {
-            //         runtime: 'automatic',
-            //     },
-            // ],
             ...plugins,
         ],
     };

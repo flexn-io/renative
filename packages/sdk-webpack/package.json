@@ -29,13 +29,13 @@
         "watch": "tsc --watch --preserveWatchOutput --allowJs"
     },
     "dependencies": {
+        "@babel/preset-react": "7.22.15",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
         "@svgr/webpack": "6.3.1",
         "axios": "0.21.2",
         "babel-jest": "^29.2.1",
-        "babel-loader": "^8.3.0",
+        "babel-loader": "9.1.3",
         "babel-plugin-named-asset-import": "^0.3.8",
-        "babel-preset-react-app": "^10.0.1",
         "better-opn": "1.0.0",
         "bfj": "^7.0.2",
         "browserslist": "^4.18.1",
@@ -47,7 +47,6 @@
         "css-minimizer-webpack-plugin": "^3.2.0",
         "dotenv": "^10.0.0",
         "dotenv-expand": "^5.1.0",
-        "eslint-config-react-app": "^7.0.0",
         "eslint-webpack-plugin": "^3.1.1",
         "file-loader": "^6.2.0",
         "fs-extra": "^10.0.0",
