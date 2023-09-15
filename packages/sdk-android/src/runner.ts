@@ -1,8 +1,6 @@
 import path from 'path';
 import net from 'net';
-import shell from 'shelljs';
 import inquirer from 'inquirer';
-import execa from 'execa';
 // import { mkdir } from 'fs/promises'
 import {
     FileUtils,
@@ -18,6 +16,7 @@ import {
     RuntimeManager,
     RnvPluginPlatform,
     inquirerPrompt,
+    execaCommand,
 } from 'rnv';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -363,8 +362,6 @@ const _runGradleApp = async (c: Context, platform: any, device: any) => {
     const { udid } = device;
     // const stacktrace = c.program.info ? ' --debug' : '';
 
-    shell.cd(`${appFolder}`);
-
     // const adbPath = getAdbPath();
     // const devices = adb.getDevices(adbPath);
     // console.log('DEVICES FROM RN', devices);
@@ -387,6 +384,7 @@ const _runGradleApp = async (c: Context, platform: any, device: any) => {
         env: {
             RCT_METRO_PORT: c.runtime.port,
         },
+        cwd: appFolder,
     });
 
     // if (outputAab) {
@@ -436,8 +434,6 @@ export const buildAndroid = async (c: Context) => {
     // shortcircuit devices logic since aabs can't be installed on a device
     if (outputAab) return _runGradleApp(c, platform, {});
 
-    shell.cd(`${appFolder}`);
-
     const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
 
     let command = `npx react-native build-android --mode=${signingConfig} --no-packager`;
@@ -446,7 +442,7 @@ export const buildAndroid = async (c: Context) => {
         command += ` --extra-params ${extraGradleParams}`;
     }
 
-    await executeAsync(c, command);
+    await executeAsync(c, command, { cwd: appFolder });
 
     // await _checkSigningCerts(c);
     // await executeAsync(
@@ -650,7 +646,7 @@ export const configureProject = async (c: Context) => {
 export const runAndroidLog = async (c: Context) => {
     logTask('runAndroidLog');
     const filter = c.program.filter || '';
-    const child = execa.command(`${c.cli[CLI_ANDROID_ADB]} logcat`);
+    const child = execaCommand(`${c.cli[CLI_ANDROID_ADB]} logcat`);
     // use event hooks to provide a callback to execute when data are available:
     child.stdout?.on('data', (data: any) => {
         const d = data.toString().split('\n');

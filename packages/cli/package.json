@@ -29,12 +29,11 @@
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "lint": "eslint . --ext .ts",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "execa": "5.1.1",
         "inquirer": "8.2.0",
-        "shelljs": "0.8.5"
+        "commander": "^6.2.0"
     },
     "peerDependencies": {
         "rnv": "^0.38.0-canary.1"

@@ -26,7 +26,7 @@
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "lint": "eslint . --ext .ts",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
         "@react-native-community/cli": "^11.3.0",
@@ -35,12 +35,9 @@
         "inquirer": "8.2.0",
         "ios-mobileprovision-finder": "1.0.11",
         "shell-quote": "1.8.1",
-        "shelljs": "0.8.5",
         "xcode": "2.1.0"
     },
-    "devDependencies": {
-        "@types/shell-quote": "1.7.1"
-    },
+    "devDependencies": {},
     "peerDependencies": {
         "rnv": "^0.38.0-canary.1",
         "@rnv/cli": "^0.38.0-canary.1"

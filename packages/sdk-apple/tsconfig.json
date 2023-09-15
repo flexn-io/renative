@@ -3,10 +3,8 @@
     "compilerOptions": {
         "outDir": "./dist",
         "rootDir": "./src",
-        "allowJs": true,
-        "resolveJsonModule": false,
         "lib": ["ES2021.String"]
     },
-    "include": ["./src/**/*", "./src/**/*.json", "./types.d.ts", "./package.json"],
+    "include": ["./src/**/*", "./src/**/*.json", "./types.d.ts"],
     "exclude": ["node_modules", "./src/__tests__"]
 }

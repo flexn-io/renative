@@ -11,13 +11,6 @@ export const withRNVBabel = (cnf: any) => {
                     root: [process.env.RNV_MONO_ROOT || '.'],
                 },
             ],
-            // This is needed for electron projects with _self ref errors
-            [
-                '@babel/plugin-transform-react-jsx',
-                {
-                    runtime: 'automatic',
-                },
-            ],
             ...plugins,
         ],
     };

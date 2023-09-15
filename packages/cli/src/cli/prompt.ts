@@ -25,7 +25,7 @@ export const inquirerPrompt = async (params: PromptParams): Promise<Record<strin
     const { type, name } = params;
     if (type === 'confirm' && !name) params.name = 'confirm';
 
-    const resp = inquirer.prompt(params as any);
+    const resp = inquirer.prompt(params);
     return resp;
 };
 
