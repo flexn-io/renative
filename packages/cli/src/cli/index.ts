@@ -83,7 +83,7 @@ const run = (cmd: string, subCmd: string, program: any, process: any) => {
     initializeBuilder(cmd, subCmd, process, program)
         .then((c) => Context.initializeConfig(c))
         .then((c) => CLI(c))
-        .then(() => logComplete(!Context.getConfig().runtime.keepSessionActive))
+        .then(() => logComplete(!Context.getContext().runtime.keepSessionActive))
         .catch((e) => logError(e, true));
 };
 

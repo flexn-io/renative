@@ -16,13 +16,13 @@ class ContextCls {
         return c;
     }
 
-    getConfig(): RnvContext {
+    getContext(): RnvContext {
         return global.RNV_CONTEXT;
     }
 
     // RNV CONFIG
     getConfigValueSeparate(key: string, global = false) {
-        const { paths } = this.getConfig();
+        const { paths } = this.getContext();
 
         if (!global && !fsExistsSync(paths.project.config)) return 'N/A'; // string because there might be a setting where we will use null
         const cfg = global ? require(paths.GLOBAL_RNV_CONFIG) : require(paths.project.config);
@@ -75,7 +75,7 @@ class ContextCls {
         const {
             program: { global },
             paths,
-        } = this.getConfig();
+        } = this.getContext();
 
         if (this.isConfigValueValid(key, value)) {
             let isValid = value;
@@ -94,14 +94,14 @@ class ContextCls {
     }
 
     get isAnalyticsEnabled() {
-        return this.getConfig().buildConfig?.enableAnalytics;
+        return this.getContext().buildConfig?.enableAnalytics;
     }
 }
 
 const Context = new ContextCls();
 
 export const getContext = (): RnvContext => {
-    return Context.getConfig();
+    return Context.getContext();
 };
 
 export { Context };

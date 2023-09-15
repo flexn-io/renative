@@ -23,7 +23,7 @@ const bumpVersions = (version: string) => {
     const {
         project: { dir },
         rnv: { pluginTemplates },
-    } = Context.getConfig().paths;
+    } = Context.getContext().paths;
     // check for packages to bump
     const packagesDir = path.join(dir, 'packages');
     if (fsExistsSync(packagesDir)) {
@@ -56,7 +56,7 @@ const bumpVersions = (version: string) => {
 const publishAll = () => {
     const {
         project: { dir },
-    } = Context.getConfig().paths;
+    } = Context.getContext().paths;
     const packagesDir = path.join(dir, 'packages');
     if (fsExistsSync(packagesDir)) {
         const packages = fsReaddirSync(packagesDir);
@@ -75,7 +75,7 @@ export const taskRnvPkg: RnvTaskFn = async (c, _parentTask, originTask) => {
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PKG, originTask);
 
-    let args = [...Context.getConfig().program.rawArgs];
+    let args = [...Context.getContext().program.rawArgs];
     args = args.slice(3);
 
     const firstArg = args[0];

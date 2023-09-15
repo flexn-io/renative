@@ -80,7 +80,7 @@ export const taskRnvPublish: RnvTaskFn = async (c, _parentTask, originTask) => {
         writeFileSync(existingPath, pkgJson);
     }
 
-    let args = [...Context.getConfig().program.rawArgs];
+    let args = [...Context.getContext().program.rawArgs];
     args = args.slice(3);
 
     const maybeVersion = args[0];
@@ -98,9 +98,9 @@ export const taskRnvPublish: RnvTaskFn = async (c, _parentTask, originTask) => {
         prereleaseMark = `--preRelease=${includesPre(maybeVersion)}`;
     }
 
-    const { dir } = Context.getConfig().paths.project;
+    const { dir } = Context.getContext().paths.project;
     const execCommonOpts = { interactive: true, env: process.env, cwd: dir };
-    const { ci } = Context.getConfig().program;
+    const { ci } = Context.getContext().program;
     const publishMode = pkgJson['release-it'].publish || 'local';
     const { skipRootPublish, rootPublishCommand } = pkgJson['release-it'];
 
