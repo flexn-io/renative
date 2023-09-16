@@ -88,7 +88,7 @@
         "@babel/plugin-transform-runtime": "^7.0.0",
         "@babel/preset-react": "7.22.15",
         "@babel/runtime": "^7.0.0",
-        "@flexn/build-hooks-git": "0.1.0",
+        "@flexn/build-hooks-git": "0.31.1-canary.0",
         "@flexn/build-hooks-version": "0.1.0",
         "@flexn/eslint-config": "1.0.0",
         "@flexn/prettier-config": "1.0.0",

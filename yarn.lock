@@ -1631,12 +1631,12 @@
   resolved "https://registry.npmjs.org/@flexn/assets-renative-outline/-/assets-renative-outline-0.3.2.tgz#484f4a507960685e6031eca7d8f09edd7e3afe44"
   integrity sha512-uZDQJHXIMmd97Us1Cb2HetDQ2vTKp7vKUzBCGWjBy0hsOSGQuuZ2uz2lcYFkv0upGsJAdw2d+ApnFGNhKM7Zqg==
 
-"@flexn/build-hooks-git@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@flexn/build-hooks-git/-/build-hooks-git-0.1.0.tgz#a1c3accdfdbb89760a8f2bde00fc59d4c5c23d67"
-  integrity sha512-rTxcJGNN1P85Ajw1/ln3/sPU4f1ZQ86FCNvwC86FoGsSBvCtiJZfyB50u1u9A4xAK9BRdznrxcPmJdtSKn2Ikw==
+"@flexn/build-hooks-git@0.31.1-canary.0":
+  version "0.31.1-canary.0"
+  resolved "https://registry.npmjs.org/@flexn/build-hooks-git/-/build-hooks-git-0.31.1-canary.0.tgz#14f85ef56832cd4bdd756e6a776e3fb035202a45"
+  integrity sha512-9rZPOC8RhtcXpyJiItYDxxX9954Ml/6epeQDBTAFQHtNERuAQxnry+SxBhY9ZLujYkN75paUP+bGPovEL/XPqA==
   dependencies:
-    simple-git "3.12.0"
+    simple-git "^3.16.0"
 
 "@flexn/build-hooks-version@0.1.0":
   version "0.1.0"
@@ -21062,10 +21062,10 @@ simple-get@^3.0.3:
     once "^1.3.1"
     simple-concat "^1.0.0"
 
-simple-git@3.12.0:
-  version "3.12.0"
-  resolved "https://registry.npmjs.org/simple-git/-/simple-git-3.12.0.tgz#12fa8e762d8d9629fb1c72a0e2b4e6ae5b1f11e8"
-  integrity sha512-cy1RSRFHGZSrlYa3MnUuNVOXLUdifEZD2X8+AZjg8mKCdRvtCFSga6acq5N2g0ggb8lH3jBi369MrFZ+Y6sfsA==
+simple-git@^3.16.0:
+  version "3.19.1"
+  resolved "https://registry.npmjs.org/simple-git/-/simple-git-3.19.1.tgz#ff9c021961a3d876a1b115b1893bed9a28855d30"
+  integrity sha512-Ck+rcjVaE1HotraRAS8u/+xgTvToTuoMkT9/l9lvuP5jftwnYUp6DwuJzsKErHgfyRk8IB8pqGHWEbM3tLgV1w==
   dependencies:
     "@kwsites/file-exists" "^1.1.1"
     "@kwsites/promise-deferred" "^1.1.1"
