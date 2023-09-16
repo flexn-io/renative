@@ -26,6 +26,7 @@ yarn-error.log
 platformBuilds/
 platformAssets/
 buildHooks/dist
+buildHooks/lib
 renative.local.json
 renative.private.json
 renative.build.json

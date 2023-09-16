@@ -1,6 +1,5 @@
 import path from 'path';
 import { Common, FileUtils, PluginManager, ProjectManager, Resolver, RnvPluginPlatform } from 'rnv';
-// import { logWarning } from 'rnv/dist/core/systemManager/logger';
 import { getAppFolderName } from './common';
 import { Context } from './types';
 

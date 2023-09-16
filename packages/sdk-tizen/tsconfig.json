@@ -1,7 +1,7 @@
 {
     "extends": "@flexn/typescript-config/tsconfig.lib.node.json",
     "compilerOptions": {
-        "outDir": "./dist",
+        "outDir": "./lib",
         "rootDir": "./src",
         "resolveJsonModule": false,
         "lib": ["ES2021.String"]

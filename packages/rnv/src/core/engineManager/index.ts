@@ -450,7 +450,11 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
         try {
             let pkgPathLocal = require.resolve(packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
             //TODO: this needs to be changed to support ts libs
-            pkgPathLocal = pkgPathLocal.replace('/dist/index.js', '').replace('\\dist\\index.js', '');
+            pkgPathLocal = pkgPathLocal
+                .replace('/dist/index.js', '')
+                .replace('\\dist\\index.js', '')
+                .replace('/lib/index.js', '')
+                .replace('\\lib\\index.js', '');
             return pkgPathLocal;
         } catch {
             logInfo(`Running local rnv but did not find linked ${packageName}. moving on...`);

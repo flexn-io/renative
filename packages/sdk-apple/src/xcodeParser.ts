@@ -48,8 +48,8 @@ export const parseXcodeProject = async (c: Context) => {
 
         let eligibleProfile: provision.MobileProvision | undefined;
 
-        if (result?.eligable) {
-            result.eligable.forEach((v) => {
+        if (result?.eligible) {
+            result.eligible.forEach((v) => {
                 const bundleId = v.Entitlements['application-identifier'];
 
                 if (bundleId === `${c.payload.xcodeProj?.teamID}.${c.payload.xcodeProj?.id}`) {

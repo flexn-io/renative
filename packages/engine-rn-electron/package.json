@@ -14,19 +14,19 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
-        "dist",
+        "lib",
         "renative.engine.json",
         "supportFiles",
         "templates"
     ],
-    "main": "dist/index.js",
+    "main": "lib/index.js",
     "repository": {
         "type": "git",
         "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
         "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./dist && rm -rf tsconfig.tsbuildinfo",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "prepublishOnly": "yarn clean && yarn compile:prod",

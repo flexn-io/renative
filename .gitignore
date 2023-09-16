@@ -53,6 +53,8 @@ buck-out/
 # Testing
 /packages/**/coverage
 /packages/**/dist
+/packages/**/lib
+
 .expo
 coverage
 

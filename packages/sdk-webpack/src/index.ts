@@ -16,7 +16,6 @@ import {
     FileUtils,
     RnvContext,
 } from 'rnv';
-// import { fsExistsSync, fsWriteFileSync } from 'rnv/dist/core/systemManager/fileutils';
 // import { runServer } from './scripts/start';
 
 const { isPlatformActive } = PlatformManager;
