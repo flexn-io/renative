@@ -1,48 +1,50 @@
 // MANAGERS
-import * as EngineManager from './core/engineManager';
-import * as PlatformManager from './core/platformManager';
-import * as PluginManager from './core/pluginManager';
-import * as ProjectManager from './core/projectManager';
-import * as ConfigManager from './core/configManager';
-import * as SchemaManager from './core/schemaManager';
-import * as RuntimeManager from './core/runtimeManager';
-import * as TemplateManager from './core/templateManager';
-import * as TaskManager from './core/taskManager';
-// SUB-MODULES
-import * as NPMUtils from './core/systemManager/npmUtils';
-import * as ObjectUtils from './core/systemManager/objectUtils';
-import * as Exec from './core/systemManager/exec';
-import * as FileUtils from './core/systemManager/fileutils';
-import * as Doctor from './core/systemManager/doctor';
-import * as Logger from './core/systemManager/logger';
-import * as Resolver from './core/systemManager/resolve';
-import * as Common from './core/common';
-import * as Utils from './core/systemManager/utils';
-import * as Constants from './core/constants';
-import { Context } from './core/contextManager/context';
+// import * as EngineManager from './core/engineManager';
+// import * as PlatformManager from './core/platformManager';
+// import * as PluginManager from './core/pluginManager';
+// import * as ProjectManager from './core/projectManager';
+// import * as ConfigManager from './core/configManager';
+// import * as SchemaManager from './core/schemaManager';
+// import * as RuntimeManager from './core/runtimeManager';
+// import * as TemplateManager from './core/templateManager';
+// import * as TaskManager from './core/taskManager';
+// // SUB-MODULES
+// import * as NPMUtils from './core/systemManager/npmUtils';
+// import * as ObjectUtils from './core/systemManager/objectUtils';
+// import * as Exec from './core/systemManager/exec';
+// import * as FileUtils from './core/systemManager/fileutils';
+// import * as Doctor from './core/systemManager/doctor';
+// import * as Logger from './core/systemManager/logger';
+// import * as Resolver from './core/systemManager/resolve';
+// import * as Common from './core/common';
+// import * as Utils from './core/systemManager/utils';
+// import * as Constants from './core/constants';
+// import { Context } from './core/contextManager/context';
 
-export {
-    // MANAGERS
-    EngineManager,
-    PlatformManager,
-    PluginManager,
-    ProjectManager,
-    ConfigManager,
-    SchemaManager,
-    TemplateManager,
-    TaskManager,
-    RuntimeManager,
-    // SUBMODULES
-    // MANAGERS
-    Constants,
-    Common,
-    Exec,
-    FileUtils,
-    ObjectUtils,
-    Doctor,
-    Context,
-    Logger,
-    NPMUtils,
-    Resolver,
-    Utils,
-};
+// export {
+//     // MANAGERS
+//     // EngineManager,
+//     // PlatformManager,
+//     // PluginManager,
+//     // ProjectManager,
+//     // ConfigManager,
+//     // SchemaManager,
+//     // TemplateManager,
+//     // TaskManager,
+//     // RuntimeManager,
+//     // // SUBMODULES
+//     // // MANAGERS
+//     // Constants,
+//     // Common,
+//     // Exec,
+//     // FileUtils,
+//     // ObjectUtils,
+//     // Doctor,
+//     // Context,
+//     // Logger,
+//     // NPMUtils,
+//     // Resolver,
+//     // Utils,
+// };
+
+export default {};
