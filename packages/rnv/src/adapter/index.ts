@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { logInfo } from '../systemManager/logger';
+import { logInfo } from '@rnv/core';
 
 export const withDefaultRNVBabel = (cnf: any) => ({
     retainLines: true,

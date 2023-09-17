@@ -1,14 +1,20 @@
 import path from 'path';
 import lSet from 'lodash/set';
 import lGet from 'lodash/get';
-
-import { Logger, Constants, FileUtils, Exec, RnvContext } from '@rnv/core';
-
-const { fsExistsSync, writeFileSync, fsReadFileSync, fsWriteFileSync } = FileUtils;
-const { executeAsync, commandExistsSync } = Exec;
-const { logInfo, logTask, logError, logSuccess } = Logger;
-
-const { PARAMS } = Constants;
+import {
+    RnvContext,
+    fsExistsSync,
+    writeFileSync,
+    fsReadFileSync,
+    fsWriteFileSync,
+    executeAsync,
+    commandExistsSync,
+    logInfo,
+    logTask,
+    logError,
+    logSuccess,
+    PARAMS,
+} from '@rnv/core';
 
 const _checkPrereqs = (c: RnvContext) => {
     const backendFolder = path.resolve(c.paths.project.dir, 'backend');
@@ -63,7 +69,7 @@ export const taskRnvTerraformDeploy = async (c: RnvContext) => {
 
     logInfo('Terraform deployment complete');
 
-    const tfStateFile = JSON.parse(FileUtils.fsReadFileSync(tfStateFilePath).toString());
+    const tfStateFile = JSON.parse(fsReadFileSync(tfStateFilePath).toString());
 
     c.buildConfig.requiredBackendOutputs?.forEach((output) => {
         const value = lGet(tfStateFile, output.fromKey);

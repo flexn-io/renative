@@ -4,7 +4,7 @@ import axios from 'axios';
 import os from 'os';
 import path from 'path';
 
-import { Context } from '../contextManager/context';
+import { Context } from '@rnv/core';
 //@ts-ignore
 import pkg from '../../../package.json';
 import { REDASH_KEY, REDASH_URL, SENTRY_ENDPOINT } from '../constants';
