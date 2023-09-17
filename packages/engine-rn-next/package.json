@@ -45,7 +45,7 @@
     },
     "devDependencies": {},
     "peerDependencies": {
-        "rnv": "^0.38.0-canary.1"
+        "@rnv/core": "^0.38.0-canary.1"
     },
     "private": false,
     "publishConfig": {

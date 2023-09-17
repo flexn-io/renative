@@ -28,9 +28,14 @@ export type RnvContextPrompt = {
     pressAnyKeyToContinue: () => Promise<any>;
 };
 
+export type RnvContextAnalytics = {
+    captureEvent: (ops: { type: string; platform: string }) => void;
+};
+
 export interface RnvContext<Payload = any> {
     spinner: (msg: string | { text: string }) => RnvContextSpinner;
     prompt: RnvContextPrompt;
+    analytics: RnvContextAnalytics;
     program: any;
     payload: Payload;
     command: string | null;

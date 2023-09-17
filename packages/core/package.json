@@ -1,5 +1,5 @@
 {
-    "name": "rnv",
+    "name": "@rnv/core",
     "version": "0.38.0-canary.1",
     "description": "RNV Core SDK",
     "keywords": [],

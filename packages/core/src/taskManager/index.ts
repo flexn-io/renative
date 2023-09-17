@@ -1,5 +1,4 @@
 import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../systemManager/logger';
-import { Analytics } from '../systemManager/analytics';
 import { executePipe } from '../projectManager/buildHooks';
 import { checkIfProjectAndNodeModulesExists } from '../systemManager/npmUtils';
 import {
@@ -15,6 +14,7 @@ import { RnvContext } from '../contextManager/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engineManager/types';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../contextManager/api';
+import { getContext } from '../contextManager/context';
 
 let executedTasks: Record<string, number> = {};
 
@@ -31,7 +31,7 @@ export const initializeTask = async (c: RnvContext, task: string) => {
     c.runtime.task = task;
     executedTasks = {};
 
-    Analytics.captureEvent({
+    getContext().analytics.captureEvent({
         type: `${task}Project`,
         platform: c.platform,
     });

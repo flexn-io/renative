@@ -41,6 +41,11 @@ const spinner: any = () => ({
 });
 
 export const generateConfigBase = (): RnvContext => ({
+    analytics: {
+        captureEvent: () => {
+            //NOOP
+        },
+    },
     prompt: {
         generateOptions() {
             //NOOP
