@@ -15,7 +15,7 @@ import taskRnvCryptoUpdateProfiles from './tasks/task.rnv.crypto.updateProfiles'
 import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfiles';
 import taskRnvLog from './tasks/task.rnv.log';
 import taskRnvEject from './tasks/task.rnv.eject';
-import { Context, generateEngineExtensions, generateEngineTasks, RnvEngine } from 'rnv';
+import { Context, generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
 
 const Engine: RnvEngine = {
     initializeRuntimeConfig: (c) => Context.initializeConfig(c),

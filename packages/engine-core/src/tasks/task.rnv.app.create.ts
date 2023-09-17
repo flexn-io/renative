@@ -15,7 +15,7 @@ import {
     logTask,
     TASK_APP_CREATE,
     PARAMS,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvAppCreate: RnvTaskFn = async (c) => {
     logTask('taskRnvAppCreate');

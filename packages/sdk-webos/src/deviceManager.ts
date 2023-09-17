@@ -18,7 +18,7 @@ import {
     isUrlLocalhost,
     RnvContext,
     waitForExecCLI,
-} from 'rnv';
+} from '@rnv/core';
 import { WebosDevice } from './types';
 import {
     CLI_WEBOS_ARES_PACKAGE,

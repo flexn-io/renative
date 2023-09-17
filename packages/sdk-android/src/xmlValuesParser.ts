@@ -9,7 +9,7 @@ import {
     addSystemInjects,
     writeFileSync,
     writeCleanFile,
-} from 'rnv';
+} from '@rnv/core';
 import { Context } from './types';
 
 export const parseValuesStringsSync = (c: Context) => {

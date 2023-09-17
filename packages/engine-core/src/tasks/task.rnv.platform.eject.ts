@@ -13,7 +13,7 @@ import {
     ejectPlatform,
     executeTask,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformEject');

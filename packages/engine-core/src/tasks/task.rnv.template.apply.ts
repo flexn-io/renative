@@ -9,7 +9,7 @@ import {
     TASK_APP_CONFIGURE,
     PARAMS,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvTemplateApply', `template: ${c.program.template}`);

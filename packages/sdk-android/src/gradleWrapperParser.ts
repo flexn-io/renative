@@ -1,5 +1,5 @@
 import path from 'path';
-import { getAppFolder, logTask, getConfigProp, addSystemInjects, writeCleanFile, getBuildFilePath } from 'rnv';
+import { getAppFolder, logTask, getConfigProp, addSystemInjects, writeCleanFile, getBuildFilePath } from '@rnv/core';
 import { Context } from './types';
 
 export const parseGradleWrapperSync = (c: Context) => {

@@ -1,4 +1,4 @@
-import { ANDROID, ANDROID_TV, ANDROID_WEAR, FIRE_TV } from 'rnv';
+import { ANDROID, ANDROID_TV, ANDROID_WEAR, FIRE_TV } from '@rnv/core';
 
 export const CLI_ANDROID_EMULATOR = 'androidEmulator';
 export const CLI_ANDROID_ADB = 'androidAdb';

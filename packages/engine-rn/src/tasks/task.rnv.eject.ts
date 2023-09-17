@@ -12,7 +12,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
-} from 'rnv';
+} from '@rnv/core';
 import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
 

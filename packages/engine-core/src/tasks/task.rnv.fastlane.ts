@@ -12,7 +12,7 @@ import {
     PARAMS,
     RnvContext,
     logError,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvFastlane = async (c: RnvContext) => {
     const args = getCliArguments(c);

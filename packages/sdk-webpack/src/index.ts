@@ -15,7 +15,7 @@ import {
     ProjectManager,
     FileUtils,
     RnvContext,
-} from 'rnv';
+} from '@rnv/core';
 // import { runServer } from './scripts/start';
 
 const { isPlatformActive } = PlatformManager;

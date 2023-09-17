@@ -15,7 +15,7 @@ import {
     PARAMS,
     executeTask,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 import { listAndroidTargets } from '@rnv/sdk-android';
 import { listAppleDevices } from '@rnv/sdk-apple';
 import { listTizenTargets } from '@rnv/sdk-tizen';

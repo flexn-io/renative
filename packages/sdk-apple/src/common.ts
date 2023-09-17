@@ -1,4 +1,4 @@
-import { getConfigProp } from 'rnv';
+import { getConfigProp } from '@rnv/core';
 import { Context } from './types';
 
 export const getAppFolderName = (c: Context, platform: string) => {

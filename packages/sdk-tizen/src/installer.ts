@@ -19,7 +19,7 @@ import {
     logInfo,
     generateBuildConfig,
     RnvContext,
-} from 'rnv';
+} from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, SDK_PLATFORMS, TIZEN_SDK } from './constants';
 
 const SDK_LOCATIONS: Record<string, Array<string>> = {

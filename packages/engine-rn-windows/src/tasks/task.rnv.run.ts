@@ -9,7 +9,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
     TASK_RUN,
-} from 'rnv';
+} from '@rnv/core';
 import { SDKWindows } from '../sdks';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
 

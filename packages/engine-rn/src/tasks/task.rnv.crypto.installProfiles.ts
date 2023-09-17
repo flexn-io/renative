@@ -13,7 +13,7 @@ import {
     logWarning,
     getFileListSync,
     logDebug,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoInstallProfiles');

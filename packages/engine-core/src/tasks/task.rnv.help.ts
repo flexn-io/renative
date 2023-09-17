@@ -1,4 +1,4 @@
-import { chalk, logToSummary, logTask, PARAMS, getRegisteredEngines, RnvTaskFn } from 'rnv';
+import { chalk, logToSummary, logTask, PARAMS, getRegisteredEngines, RnvTaskFn } from '@rnv/core';
 
 export const taskRnvHelp: RnvTaskFn = async (c) => {
     logTask('taskRnvHelp');

@@ -1,4 +1,4 @@
-import { Context, generateEngineExtensions, generateEngineTasks, RnvEngine } from 'rnv';
+import { Context, generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRnvBuild from './tasks/task.rnv.build';

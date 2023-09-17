@@ -14,7 +14,7 @@ import {
     TASK_PLATFORM_CONNECT,
     PARAMS,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformConnect');

@@ -3,16 +3,34 @@ import crypto from 'crypto';
 import inquirer from 'inquirer';
 import path from 'path';
 import {
-    Common,
-    Constants,
-    EngineManager,
-    Exec,
-    FileUtils,
-    Logger,
-    PlatformManager,
-    ProjectManager,
-    Resolver,
-} from 'rnv';
+    fsExistsSync,
+    mkdirSync,
+    writeFileSync,
+    fsWriteFileSync,
+    fsReadFileSync,
+    copyFileSync,
+    executeAsync,
+    commandExistsSync,
+    getAppFolder,
+    getConfigProp,
+    generateEnvVars,
+    doResolve,
+    isPlatformActive,
+    copyAssetsFolder,
+    copyBuildsFolder,
+    parseFonts,
+    IOS,
+    MACOS,
+    TVOS,
+    chalk,
+    logInfo,
+    logTask,
+    logError,
+    logWarning,
+    logDebug,
+    logSuccess,
+    logRaw,
+} from '@rnv/core';
 import { getAppleDevices, launchAppleSimulator } from './deviceManager';
 
 import { getAppFolderName } from './common';
@@ -29,17 +47,6 @@ import shellQuote from 'shell-quote';
 import RNPermissionsMap from './rnPermissionsMap';
 
 export * from './deviceManager';
-
-const { fsExistsSync, mkdirSync, writeFileSync, fsWriteFileSync, fsReadFileSync, copyFileSync } = FileUtils;
-const { executeAsync, commandExistsSync } = Exec;
-const { getAppFolder, getConfigProp } = Common;
-const { generateEnvVars } = EngineManager;
-const { doResolve } = Resolver;
-const { isPlatformActive } = PlatformManager;
-const { copyAssetsFolder, copyBuildsFolder, parseFonts } = ProjectManager;
-
-const { IOS, MACOS, TVOS } = Constants;
-const { chalk, logInfo, logTask, logError, logWarning, logDebug, logSuccess, logRaw } = Logger;
 
 export const generateChecksum = (str: string, algorithm?: string, encoding?: 'base64' | 'base64url' | 'hex') =>
     crypto

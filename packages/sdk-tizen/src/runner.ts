@@ -24,7 +24,7 @@ import {
     copyAssetsFolder,
     copyBuildsFolder,
     OverridesOptions,
-} from 'rnv';
+} from '@rnv/core';
 import semver from 'semver';
 import { CLI_TIZEN } from './constants';
 

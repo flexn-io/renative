@@ -20,7 +20,7 @@ import {
     logComplete,
     logError,
     Context,
-} from 'rnv';
+} from '@rnv/core';
 import Spinner from './ora';
 import Prompt from './prompt';
 

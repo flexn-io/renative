@@ -1,13 +1,19 @@
 import { buildCoreWebpackProject, configureCoreWebProject } from '@rnv/sdk-webpack';
 import path from 'path';
-import { Common, FileUtils, Logger, PlatformManager, ProjectManager, RnvContext } from 'rnv';
+import {
+    RnvContext,
+    getPlatformProjectDir,
+    getAppTitle,
+    getAppDescription,
+    getAppAuthor,
+    fsWriteFileSync,
+    fsReadFileSync,
+    logTask,
+    isPlatformActive,
+    copyBuildsFolder,
+    copyAssetsFolder,
+} from '@rnv/core';
 import { launchKaiOSSimulator } from './deviceManager';
-
-const { getPlatformProjectDir, getAppTitle, getAppDescription, getAppAuthor } = Common;
-const { fsWriteFileSync, fsReadFileSync } = FileUtils;
-const { logTask } = Logger;
-const { isPlatformActive } = PlatformManager;
-const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
 
 export const configureKaiOSProject = async (c: RnvContext) => {
     logTask('configureKaiOSProject');

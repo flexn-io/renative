@@ -8,7 +8,7 @@ import wcwidth from 'wcwidth';
 import isInteractive from 'is-interactive';
 import isUnicodeSupported from 'is-unicode-supported';
 import { BufferListStream } from 'bl';
-import { stripAnsi } from 'rnv';
+import { stripAnsi } from '@rnv/core';
 
 let stdinDiscarder;
 

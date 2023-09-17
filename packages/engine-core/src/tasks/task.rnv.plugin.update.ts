@@ -10,7 +10,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPluginUpdate');

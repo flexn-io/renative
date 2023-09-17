@@ -10,7 +10,7 @@ import {
     fsSymlinkSync,
     RnvTaskFn,
     RnvContext,
-} from 'rnv';
+} from '@rnv/core';
 
 const _linkPackage = (c: RnvContext, key: string, folder: string) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);

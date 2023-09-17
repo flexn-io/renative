@@ -5,7 +5,7 @@ import {
     logTask,
     logInfo,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvInstall: RnvTaskFn = async (c, parentTask, _) => {
     logTask('taskRnvInstall', `requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);

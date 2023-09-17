@@ -11,7 +11,7 @@ import {
     fsLstatSync,
     RnvTaskFn,
     RnvContext,
-} from 'rnv';
+} from '@rnv/core';
 
 const _unlinkPackage = (c: RnvContext, key: string) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);

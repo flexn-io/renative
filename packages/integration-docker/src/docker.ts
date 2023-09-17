@@ -1,11 +1,20 @@
 import path from 'path';
 import chalk from 'chalk';
-import { Logger, Common, Exec, FileUtils, RnvContext, inquirerPrompt } from 'rnv';
-
-const { logTask, logInfo, logSuccess } = Logger;
-const { executeAsync, commandExistsSync } = Exec;
-const { getConfigProp, getPlatformBuildDir } = Common;
-const { copyFolderRecursiveSync, cleanFolder, writeCleanFile, fsExistsSync } = FileUtils;
+import {
+    RnvContext,
+    inquirerPrompt,
+    logTask,
+    logInfo,
+    logSuccess,
+    executeAsync,
+    commandExistsSync,
+    getConfigProp,
+    getPlatformBuildDir,
+    copyFolderRecursiveSync,
+    cleanFolder,
+    writeCleanFile,
+    fsExistsSync,
+} from '@rnv/core';
 
 const rootPath = path.join(__dirname, './');
 

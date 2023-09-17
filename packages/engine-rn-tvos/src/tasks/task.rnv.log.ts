@@ -9,7 +9,7 @@ import {
     executeTask,
     logErrorPlatform,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 import { runAppleLog } from '@rnv/sdk-apple';
 import { runAndroidLog, checkAndConfigureAndroidSdks } from '@rnv/sdk-android';

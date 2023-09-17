@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, RnvTaskFn } from 'rnv';
+import { TaskManager, Constants, Logger, RnvTaskFn } from '@rnv/core';
 
 const { logTask } = Logger;
 const { TASK_EXPORT, TASK_DEPLOY, MACOS, PARAMS } = Constants;

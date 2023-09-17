@@ -1,4 +1,4 @@
-import { Context, generateEngineExtensions, generateEngineTasks, RnvEngine } from 'rnv';
+import { Context, generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvPackage from './tasks/task.rnv.package';
 import taskRnvBuild from './tasks/task.rnv.build';

@@ -1,4 +1,4 @@
-import { RenativeConfigPluginPlatform, RnvContext } from 'rnv';
+import { RenativeConfigPluginPlatform, RnvContext } from '@rnv/core';
 
 export type Payload = {
     pluginConfigAndroid: {

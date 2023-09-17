@@ -8,7 +8,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvPlatformList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformList');

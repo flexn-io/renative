@@ -1,14 +1,28 @@
-import { TaskManager, EngineManager, Constants, Logger, PlatformManager, Exec, Common, Resolver, RnvTaskFn } from 'rnv';
+import {
+    getEntryFile,
+    confirmActiveBundler,
+    doResolve,
+    logErrorPlatform,
+    generateEnvVars,
+    executeTask,
+    shouldSkipTask,
+    chalk,
+    logTask,
+    logError,
+    logRaw,
+    logInfo,
+    IOS,
+    TVOS,
+    ANDROID,
+    ANDROID_TV,
+    FIRE_TV,
+    TASK_START,
+    TASK_CONFIGURE_SOFT,
+    PARAMS,
+    executeAsync,
+    RnvTaskFn,
+} from '@rnv/core';
 import { isBundlerActive } from '../commonEngine';
-
-const { getEntryFile, confirmActiveBundler } = Common;
-const { doResolve } = Resolver;
-const { logErrorPlatform } = PlatformManager;
-const { generateEnvVars } = EngineManager;
-const { executeTask, shouldSkipTask } = TaskManager;
-const { chalk, logTask, logError, logRaw, logInfo } = Logger;
-const { IOS, TVOS, ANDROID, ANDROID_TV, FIRE_TV, TASK_START, TASK_CONFIGURE_SOFT, PARAMS } = Constants;
-const { executeAsync } = Exec;
 
 const BUNDLER_PLATFORMS: Record<string, string> = {};
 

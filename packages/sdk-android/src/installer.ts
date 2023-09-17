@@ -20,7 +20,7 @@ import {
     logInfo,
     generateBuildConfig,
     RnvContext,
-} from 'rnv';
+} from '@rnv/core';
 
 import {
     CLI_ANDROID_EMULATOR,

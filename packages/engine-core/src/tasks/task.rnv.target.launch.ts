@@ -16,7 +16,7 @@ import {
     PARAMS,
     executeTask,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../common';
 
 import { launchAndroidSimulator } from '@rnv/sdk-android';

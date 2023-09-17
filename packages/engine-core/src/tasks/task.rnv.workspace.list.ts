@@ -8,7 +8,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvWorkspaceList: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvWorkspaceList');

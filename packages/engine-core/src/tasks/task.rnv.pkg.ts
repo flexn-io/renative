@@ -17,7 +17,7 @@ import {
     logTask,
     executeTask,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 const bumpVersions = (version: string) => {
     const {

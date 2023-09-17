@@ -1,14 +1,23 @@
 import path from 'path';
 import {
-    FileUtils,
-    Logger,
-    PluginManager,
-    Common,
     RnvPluginPlatform,
     RenativeConfigAppDelegateMethod,
     RenativeConfigAppDelegateMethods,
     RenativeConfigPluginPlatform,
-} from 'rnv';
+    getEntryFile,
+    getAppTemplateFolder,
+    getConfigProp,
+    getGetJsBundleFile,
+    sanitizeColor,
+    getFlavouredProp,
+    addSystemInjects,
+    chalk,
+    logTask,
+    logDebug,
+    logWarning,
+    parsePlugins,
+    writeCleanFile,
+} from '@rnv/core';
 import {
     Context,
     PayloadAppDelegateKey,
@@ -19,19 +28,6 @@ import {
     SwiftAppDelegateSubKey,
     SwiftMethod,
 } from './types';
-
-const {
-    getEntryFile,
-    getAppTemplateFolder,
-    getConfigProp,
-    getGetJsBundleFile,
-    sanitizeColor,
-    getFlavouredProp,
-    addSystemInjects,
-} = Common;
-const { chalk, logTask, logDebug, logWarning } = Logger;
-const { parsePlugins } = PluginManager;
-const { writeCleanFile } = FileUtils;
 
 export const parseAppDelegate = (
     c: Context,

@@ -1,6 +1,6 @@
 import { printTable } from 'console-table-printer';
 
-import { logWarning, logTask, configSchema, PARAMS, Context, getCliArguments, RnvTaskFn } from 'rnv';
+import { logWarning, logTask, configSchema, PARAMS, Context, getCliArguments, RnvTaskFn } from '@rnv/core';
 
 export const taskRnvConfig: RnvTaskFn = async (c) => {
     logTask('taskRnvConfig');

@@ -1,13 +1,19 @@
 import open from 'better-opn';
-import { TaskManager, Constants, Logger, PlatformManager, Common, RnvTaskFn } from 'rnv';
-import { SDKNext } from '../sdks';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask, logError } = Logger;
-const { WEB, CHROMECAST, TASK_START, TASK_CONFIGURE, PARAMS } = Constants;
-const { runWebNext } = SDKNext;
-const { executeTask, shouldSkipTask } = TaskManager;
-const { waitForHost } = Common;
+import {
+    RnvTaskFn,
+    logErrorPlatform,
+    logTask,
+    logError,
+    WEB,
+    CHROMECAST,
+    TASK_START,
+    TASK_CONFIGURE,
+    PARAMS,
+    executeTask,
+    shouldSkipTask,
+    waitForHost,
+} from '@rnv/core';
+import { runWebNext } from '../sdks/sdk-next';
 
 export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

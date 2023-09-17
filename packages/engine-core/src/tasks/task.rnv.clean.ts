@@ -13,7 +13,7 @@ import {
     PARAMS,
     isSystemWin,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 function clearWindowsCacheFiles() {
     const opts = {

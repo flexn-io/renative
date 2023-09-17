@@ -1,6 +1,6 @@
 import path from 'path';
 import axios from 'axios';
-import { TaskManager, Constants, Logger, Common, FileUtils, RnvContext, getContext } from 'rnv';
+import { TaskManager, Constants, Logger, Common, FileUtils, RnvContext, getContext } from '@rnv/core';
 
 const { getConfigProp, confirmActiveBundler } = Common;
 const { chalk, logTask, logInfo, logWarning } = Logger;

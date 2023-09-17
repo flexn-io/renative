@@ -3,7 +3,7 @@ const program = require('commander');
 const fs = require('fs');
 const path = require('path');
 
-import { Constants } from 'rnv';
+import { Constants } from '@rnv/core';
 // global.fetch = require('node-fetch');
 // global.fetch = await import('node-fetch');
 

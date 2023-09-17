@@ -1,4 +1,4 @@
-import { fsExistsSync, getRealPath, chalk, logTask, RnvError, RnvContext } from 'rnv';
+import { fsExistsSync, getRealPath, chalk, logTask, RnvError, RnvContext } from '@rnv/core';
 import { KAIOS_SDK } from './constants';
 
 const childProcess = require('child_process');

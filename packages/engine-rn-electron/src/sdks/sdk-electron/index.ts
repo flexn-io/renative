@@ -2,24 +2,18 @@ import { buildCoreWebpackProject, configureCoreWebProject, runWebpackServer } fr
 import { spawn } from 'child_process';
 import path from 'path';
 import {
-    Common,
-    Constants,
-    EngineManager,
-    Exec,
-    FileUtils,
-    Logger,
-    PlatformManager,
-    ProjectManager,
-    Resolver,
     RnvContext,
-} from 'rnv';
-
-const { getEngineRunnerByPlatform } = EngineManager;
-
-const { createPlatformBuild, isPlatformActive } = PlatformManager;
-const { executeAsync } = Exec;
-const { fsExistsSync, mkdirSync, writeFileSync, readObjectSync, removeDirs, writeCleanFile, copyFileSync } = FileUtils;
-const {
+    getEngineRunnerByPlatform,
+    createPlatformBuild,
+    isPlatformActive,
+    executeAsync,
+    fsExistsSync,
+    mkdirSync,
+    writeFileSync,
+    readObjectSync,
+    removeDirs,
+    writeCleanFile,
+    copyFileSync,
     getPlatformProjectDir,
     getPlatformBuildDir,
     getAppVersion,
@@ -33,11 +27,18 @@ const {
     confirmActiveBundler,
     addSystemInjects,
     waitForHost,
-} = Common;
-const { doResolve } = Resolver;
-const { chalk, logTask, logError, logWarning, logSuccess, logInfo } = Logger;
-const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
-const { MACOS, LINUX } = Constants;
+    doResolve,
+    chalk,
+    logTask,
+    logError,
+    logWarning,
+    logSuccess,
+    logInfo,
+    copyBuildsFolder,
+    copyAssetsFolder,
+    MACOS,
+    LINUX,
+} from '@rnv/core';
 
 export const configureElectronProject = async (c: RnvContext, exitOnFail?: boolean) => {
     logTask('configureElectronProject');

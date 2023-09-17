@@ -11,7 +11,7 @@ import {
     PARAMS,
     RnvTaskFn,
     checkRequiredPackage,
-} from 'rnv';
+} from '@rnv/core';
 
 const includesPre = (version: string) => {
     if (version.includes('alpha')) return 'alpha';

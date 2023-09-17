@@ -13,7 +13,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
-} from 'rnv';
+} from '@rnv/core';
 import { exportXcodeProject } from '@rnv/sdk-apple';
 
 export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {

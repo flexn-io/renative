@@ -1,4 +1,14 @@
-import { TaskManager, EngineManager, Constants, Logger, PlatformManager, Exec, Common, Resolver, RnvTaskFn } from 'rnv';
+import {
+    TaskManager,
+    EngineManager,
+    Constants,
+    Logger,
+    PlatformManager,
+    Exec,
+    Common,
+    Resolver,
+    RnvTaskFn,
+} from '@rnv/core';
 import { isBundlerActive } from '../commonEngine';
 
 const { getEntryFile, confirmActiveBundler } = Common;

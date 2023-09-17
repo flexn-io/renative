@@ -1,27 +1,27 @@
 import { provision } from 'ios-mobileprovision-finder';
 import path from 'path';
 import {
-    Resolver,
-    Logger,
-    Constants,
-    Common,
-    PluginManager,
-    FileUtils,
     logError,
     RenativeConfigPlatform,
     RnvPluginPlatform,
     inquirerPrompt,
-} from 'rnv';
+    getAppFolder,
+    getAppId,
+    getConfigProp,
+    getFlavouredProp,
+    fsExistsSync,
+    writeFileSync,
+    fsWriteFileSync,
+    doResolve,
+    chalk,
+    logTask,
+    logWarning,
+    IOS,
+    parsePlugins,
+} from '@rnv/core';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
 import { Context } from './types';
-
-const { getAppFolder, getAppId, getConfigProp, getFlavouredProp } = Common;
-const { fsExistsSync, writeFileSync, fsWriteFileSync } = FileUtils;
-const { doResolve } = Resolver;
-const { chalk, logTask, logWarning } = Logger;
-const { IOS } = Constants;
-const { parsePlugins } = PluginManager;
 
 export const parseXcodeProject = async (c: Context) => {
     logTask('parseXcodeProject');

@@ -17,7 +17,6 @@ import {
     checkAndCreateGitignore,
     getWorkspaceOptions,
     updateRenativeConfigs,
-    Analytics,
     executeAsync,
     configureGit,
     chalk,
@@ -35,7 +34,8 @@ import {
     listAndSelectNpmVersion,
     RnvContext,
     RenativeConfigFile,
-} from 'rnv';
+    getContext,
+} from '@rnv/core';
 
 const highlight = chalk().green;
 
@@ -585,7 +585,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     // Setup Project
 
     try {
-        await Analytics.captureEvent({
+        await getContext().analytics.captureEvent({
             type: 'newProject',
             template: selectedInputTemplate,
             platforms: inputSupportedPlatforms,

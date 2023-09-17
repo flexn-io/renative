@@ -19,7 +19,7 @@ import {
     updateRenativeConfigs,
     inquirerPrompt,
     RnvContext,
-} from 'rnv';
+} from '@rnv/core';
 
 const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
     logDebug(`_loadAppConfigIDfromDir:${dirName}:${appConfigsDir}`, chalk().grey);

@@ -10,7 +10,7 @@ import {
     PARAMS,
     PARAM_KEYS,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvHooksRun');

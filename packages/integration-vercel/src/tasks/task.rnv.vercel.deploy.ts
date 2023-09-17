@@ -1,15 +1,20 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import dotenv from 'dotenv';
-
-import { Logger, Constants, FileUtils, Exec, Common, RnvContext } from 'rnv';
-
-const { fsExistsSync, fsWriteFileSync, fsReadFileSync } = FileUtils;
-const { executeAsync } = Exec;
-const { getAppFolder, getConfigProp } = Common;
-const { chalk, logInfo, logTask } = Logger;
-
-const { PARAMS, WEB } = Constants;
+import {
+    RnvContext,
+    fsExistsSync,
+    fsWriteFileSync,
+    fsReadFileSync,
+    executeAsync,
+    getAppFolder,
+    getConfigProp,
+    chalk,
+    logInfo,
+    logTask,
+    PARAMS,
+    WEB,
+} from '@rnv/core';
 
 const _runDeploymentTask = (c: RnvContext, nowConfigPath: string) =>
     new Promise<void>((resolve, reject) => {

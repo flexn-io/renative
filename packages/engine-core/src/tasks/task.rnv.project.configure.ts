@@ -35,7 +35,7 @@ import {
     initializeTask,
     findSuitableTask,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvProjectConfigure');

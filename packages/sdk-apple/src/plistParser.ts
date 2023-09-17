@@ -1,18 +1,10 @@
 import path from 'path';
 import {
-    Logger,
-    Common,
-    ObjectUtils,
-    PluginManager,
-    FileUtils,
-    RnvPluginPlatform,
-    RenativeConfigPermissionsList,
-} from 'rnv';
-import { getAppFolderName } from './common';
-import { Context } from './types';
-
-const { isObject, isArray, isBool, isString, isNumber } = ObjectUtils;
-const {
+    isObject,
+    isArray,
+    isBool,
+    isString,
+    isNumber,
     getAppFolder,
     getAppVersion,
     getAppTitle,
@@ -21,10 +13,19 @@ const {
     getBuildFilePath,
     getFlavouredProp,
     addSystemInjects,
-} = Common;
-const { logTask, logError, logWarning } = Logger;
-const { parsePlugins } = PluginManager;
-const { readObjectSync, mergeObjects, writeCleanFile, fsWriteFileSync } = FileUtils;
+    logTask,
+    logError,
+    logWarning,
+    parsePlugins,
+    readObjectSync,
+    mergeObjects,
+    writeCleanFile,
+    fsWriteFileSync,
+    RnvPluginPlatform,
+    RenativeConfigPermissionsList,
+} from '@rnv/core';
+import { getAppFolderName } from './common';
+import { Context } from './types';
 
 export const parseExportOptionsPlist = (c: Context, platform: string) =>
     new Promise<void>((resolve) => {

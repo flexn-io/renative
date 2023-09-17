@@ -13,7 +13,7 @@ import {
     logDebug,
     logInfo,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
     logTask('taskRnvWorkspaceConfigure');

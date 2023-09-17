@@ -12,7 +12,7 @@ import {
     fsExistsSync,
     validateRenativeJsonSchema,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 const configTargets = [
     'workspace.config',

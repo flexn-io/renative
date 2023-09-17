@@ -2,7 +2,7 @@ import path from 'path';
 import lSet from 'lodash/set';
 import lGet from 'lodash/get';
 
-import { Logger, Constants, FileUtils, Exec, RnvContext } from 'rnv';
+import { Logger, Constants, FileUtils, Exec, RnvContext } from '@rnv/core';
 
 const { fsExistsSync, writeFileSync, fsReadFileSync, fsWriteFileSync } = FileUtils;
 const { executeAsync, commandExistsSync } = Exec;

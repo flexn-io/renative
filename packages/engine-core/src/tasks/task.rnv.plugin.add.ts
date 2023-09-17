@@ -14,7 +14,7 @@ import {
     RnvTaskFn,
     PluginListResponseItem,
     getContext,
-} from 'rnv';
+} from '@rnv/core';
 
 /* eslint-disable no-await-in-loop */
 export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) => {

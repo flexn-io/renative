@@ -12,7 +12,7 @@ import {
     TASK_APP_CONFIGURE,
     RnvTaskFn,
     RnvContext,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvKill');

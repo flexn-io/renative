@@ -16,7 +16,7 @@ import {
     readObjectSync,
     writeCleanFile,
     parsePlugins,
-} from 'rnv';
+} from '@rnv/core';
 import { Context } from './types';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];

@@ -1,4 +1,4 @@
-import { logErrorPlatform, logTask, PARAMS, RnvTaskFn } from 'rnv';
+import { logErrorPlatform, logTask, PARAMS, RnvTaskFn } from '@rnv/core';
 
 export const taskRnvDebug: RnvTaskFn = async (c, parentTask) => {
     logTask('taskRnvDebug', `parent:${parentTask}`);

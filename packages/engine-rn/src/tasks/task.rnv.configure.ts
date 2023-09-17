@@ -15,7 +15,7 @@ import {
     MACOS,
     IOS,
     jetifyIfRequired,
-} from 'rnv';
+} from '@rnv/core';
 import { configureGradleProject } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 import { configureFonts, configureMetroConfigs } from '../commonEngine';

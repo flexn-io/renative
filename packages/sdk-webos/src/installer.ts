@@ -16,7 +16,7 @@ import {
     logInfo,
     generateBuildConfig,
     RnvContext,
-} from 'rnv';
+} from '@rnv/core';
 
 import {
     CLI_WEBOS_ARES,

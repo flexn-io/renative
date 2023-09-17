@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager, Common, RnvTaskFn } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, Common, RnvTaskFn } from '@rnv/core';
 import { runXcodeProject } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
 

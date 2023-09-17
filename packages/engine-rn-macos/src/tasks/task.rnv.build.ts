@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from '@rnv/core';
 import { buildXcodeProject } from '@rnv/sdk-apple';
 
 const { logErrorPlatform } = PlatformManager;

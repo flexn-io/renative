@@ -25,7 +25,7 @@ import {
     executeTask,
     executeOrSkipTask,
     shouldSkipTask,
-} from 'rnv';
+} from '@rnv/core';
 import ip from 'ip';
 import path from 'path';
 import { runChromecast, runWebpackServer } from '@rnv/sdk-webpack';

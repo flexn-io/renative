@@ -14,7 +14,7 @@ import {
     MACOS,
     IOS,
     getConfigProp,
-} from 'rnv';
+} from '@rnv/core';
 import { packageAndroid } from '@rnv/sdk-android';
 import { packageBundleForXcode } from '@rnv/sdk-apple';
 

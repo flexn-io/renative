@@ -1,4 +1,4 @@
-import { TIZEN, TIZEN_MOBILE, TIZEN_WATCH } from 'rnv';
+import { TIZEN, TIZEN_MOBILE, TIZEN_WATCH } from '@rnv/core';
 
 export const CLI_TIZEN_EMULATOR = 'tizenEmulator';
 export const CLI_TIZEN = 'tizen';

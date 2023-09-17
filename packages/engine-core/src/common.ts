@@ -9,7 +9,7 @@ import {
     TIZEN_MOBILE,
     TIZEN_WATCH,
     WEBOS,
-} from 'rnv';
+} from '@rnv/core';
 import { checkAndConfigureAndroidSdks, checkAndroidSdk } from '@rnv/sdk-android';
 import { checkAndConfigureTizenSdks, checkTizenSdk } from '@rnv/sdk-tizen';
 import { checkAndConfigureWebosSdks, checkWebosSdk } from '@rnv/sdk-webos';

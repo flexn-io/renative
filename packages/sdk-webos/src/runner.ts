@@ -24,7 +24,7 @@ import {
     getAppId,
     getAppTitle,
     getAppDescription,
-} from 'rnv';
+} from '@rnv/core';
 import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
 import { CLI_WEBOS_ARES_PACKAGE } from './constants';

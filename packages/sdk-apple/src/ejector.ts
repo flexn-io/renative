@@ -1,26 +1,20 @@
 import path from 'path';
-import { Common, FileUtils, PluginManager, ProjectManager, Resolver, RnvPluginPlatform } from 'rnv';
-import { getAppFolderName } from './common';
-import { Context } from './types';
-
-const {
+import {
+    RnvPluginPlatform,
     fsExistsSync,
     copyFileSync,
     fsWriteFileSync,
     fsReadFileSync,
     copyFolderContentsRecursiveSync,
-    // cleanEmptyFoldersRecursively,
     fsMkdirSync,
-} = FileUtils;
-const { getAppFolder, getConfigProp } = Common;
-const { doResolvePath } = Resolver;
-
-const { parseFonts } = ProjectManager;
-
-const {
+    getAppFolder,
+    getConfigProp,
+    doResolvePath,
+    parseFonts,
     parsePlugins,
-    // sanitizePluginPath, includesPluginPath
-} = PluginManager;
+} from '@rnv/core';
+import { getAppFolderName } from './common';
+import { Context } from './types';
 
 export const ejectXcodeProject = async (c: Context) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');

@@ -29,7 +29,7 @@ export type RnvContextPrompt = {
 };
 
 export type RnvContextAnalytics = {
-    captureEvent: (ops: { type: string; platform: string }) => void;
+    captureEvent: (ops: { type: string; platform?: string; template?: string; platforms?: Array<string> }) => void;
 };
 
 export interface RnvContext<Payload = any> {

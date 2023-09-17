@@ -15,7 +15,7 @@ import {
     RN_CLI_CONFIG_NAME,
     parseFonts,
     getContext,
-} from 'rnv';
+} from '@rnv/core';
 import { copyFileSync } from 'fs';
 
 let keepRNVRunning = false;

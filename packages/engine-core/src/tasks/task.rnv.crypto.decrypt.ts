@@ -21,7 +21,7 @@ import {
     PARAMS,
     RnvContext,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 const iocane = require('iocane');
 

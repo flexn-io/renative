@@ -7,7 +7,7 @@ import {
     logTask,
     executeTask,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformSetup');

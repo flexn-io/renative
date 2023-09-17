@@ -11,8 +11,8 @@ import {
     logWarning,
     writeCleanFile,
     OverridesOptions,
-} from 'rnv';
-import { mkdirSync } from 'fs'
+} from '@rnv/core';
+import { mkdirSync } from 'fs';
 import { Context } from './types';
 
 const JS_BUNDLE_DEFAULTS: any = {
@@ -34,9 +34,7 @@ export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
     const templatePath = `app/src/${scheme}/java/rnv_template/ReactNativeFlipper.java.tpl`;
     const applicationPath = `${javaPackagePath}/ReactNativeFlipper.java`;
 
-    const injects: OverridesOptions = [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) }
-    ];
+    const injects: OverridesOptions = [{ pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) }];
 
     addSystemInjects(c, injects);
 

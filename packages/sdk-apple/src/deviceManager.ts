@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import child_process from 'child_process';
-import { chalk, logToSummary, logTask, logWarning, logDebug, IOS, TVOS, executeAsync, RnvContext } from 'rnv';
+import { chalk, logToSummary, logTask, logWarning, logDebug, IOS, TVOS, executeAsync, RnvContext } from '@rnv/core';
 import { AppleDevice } from './types';
 
 export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {

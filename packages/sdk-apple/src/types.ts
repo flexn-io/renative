@@ -1,4 +1,4 @@
-import { RnvContext } from 'rnv';
+import { RnvContext } from '@rnv/core';
 
 export type AppleDevice = {
     udid?: string;

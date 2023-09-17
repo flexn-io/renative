@@ -9,7 +9,7 @@ import {
     TASK_EXPORT,
     executeOrSkipTask,
     shouldSkipTask,
-} from 'rnv';
+} from '@rnv/core';
 import { SDKWindows } from '../sdks';
 
 // TODO Implement export windows app (currently it only seems to be available through VS Studio itself...)

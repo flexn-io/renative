@@ -18,7 +18,7 @@ import {
     TASK_START,
     TASK_CONFIGURE_SOFT,
     logError,
-} from 'rnv';
+} from '@rnv/core';
 import { isBundlerActive } from '../commonEngine';
 
 const BUNDLER_PLATFORMS: Record<string, string> = {};

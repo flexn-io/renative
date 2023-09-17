@@ -1,4 +1,4 @@
-import { KAIOS } from 'rnv';
+import { KAIOS } from '@rnv/core';
 
 export const CLI_KAIOS_EMULATOR = 'tizenEmulator';
 

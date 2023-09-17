@@ -1,14 +1,22 @@
-import { Common, Constants, Logger, PlatformManager, RnvTaskFn, TaskManager } from 'rnv';
+import {
+    RnvTaskFn,
+    TVOS,
+    TASK_RUN,
+    ANDROID_TV,
+    FIRE_TV,
+    TASK_CONFIGURE,
+    PARAMS,
+    getConfigProp,
+    logTask,
+    logSummary,
+    logRaw,
+    logErrorPlatform,
+    executeOrSkipTask,
+    shouldSkipTask,
+} from '@rnv/core';
 import { packageAndroid, runAndroid } from '@rnv/sdk-android';
 import { runXcodeProject } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
-
-const { TVOS, TASK_RUN, ANDROID_TV, FIRE_TV, TASK_CONFIGURE, PARAMS } = Constants;
-
-const { getConfigProp } = Common;
-const { logTask, logSummary, logRaw } = Logger;
-const { logErrorPlatform } = PlatformManager;
-const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

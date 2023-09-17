@@ -26,7 +26,7 @@ import {
     USER_HOME_DIR,
     RnvContext,
     waitForExecCLI,
-} from 'rnv';
+} from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
 import { AndroidDevice } from './types';

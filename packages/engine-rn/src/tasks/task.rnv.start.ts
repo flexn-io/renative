@@ -21,7 +21,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
-} from 'rnv';
+} from '@rnv/core';
 import { isBundlerActive } from '../commonEngine';
 
 const BUNDLER_PLATFORMS: Record<string, string> = {};
@@ -57,9 +57,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
         case ANDROID_TV:
         case FIRE_TV:
         case ANDROID_WEAR: {
-            let startCmd = `npx react-native start --port ${
-                c.runtime.port
-            } --no-interactive`;
+            let startCmd = `npx react-native start --port ${c.runtime.port} --no-interactive`;
 
             if (c.program.resetHard) {
                 startCmd += ' --reset-cache';

@@ -1,4 +1,4 @@
-import { TaskManager, Constants, Logger, PlatformManager, TemplateManager, RnvTaskFn } from 'rnv';
+import { TaskManager, Constants, Logger, PlatformManager, TemplateManager, RnvTaskFn } from '@rnv/core';
 import { configureXcodeProject } from '@rnv/sdk-apple';
 import { configureMetroConfigs } from '../commonEngine';
 

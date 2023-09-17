@@ -16,7 +16,7 @@ import {
     logToSummary,
     logWarning,
     waitForExecCLI,
-} from 'rnv';
+} from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
 import { TizenDevice, TizenSecurityConfig } from './types';

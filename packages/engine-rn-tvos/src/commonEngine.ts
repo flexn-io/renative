@@ -1,12 +1,21 @@
 import path from 'path';
 import axios from 'axios';
-import { TaskManager, Constants, Logger, Common, FileUtils, RnvContext, inquirerPrompt, getContext } from 'rnv';
-
-const { getConfigProp, confirmActiveBundler } = Common;
-const { chalk, logTask, logInfo, logWarning } = Logger;
-const { fsExistsSync, copyFileSync } = FileUtils;
-const { TASK_START, RN_CLI_CONFIG_NAME } = Constants;
-const { executeTask } = TaskManager;
+import {
+    RnvContext,
+    inquirerPrompt,
+    getContext,
+    getConfigProp,
+    confirmActiveBundler,
+    chalk,
+    logTask,
+    logInfo,
+    logWarning,
+    fsExistsSync,
+    copyFileSync,
+    TASK_START,
+    RN_CLI_CONFIG_NAME,
+    executeTask,
+} from '@rnv/core';
 
 let keepRNVRunning = false;
 

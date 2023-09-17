@@ -1,4 +1,4 @@
-import { RnvEngine, generateEngineTasks } from 'rnv';
+import { RnvEngine, generateEngineTasks } from '@rnv/core';
 
 import taskRnvCryptoDecrypt from './tasks/task.rnv.crypto.decrypt';
 import taskRnvCryptoEncrypt from './tasks/task.rnv.crypto.encrypt';

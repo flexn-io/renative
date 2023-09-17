@@ -1,12 +1,8 @@
-import { TaskManager, Constants, Logger, PlatformManager, TemplateManager, RnvTaskFn } from 'rnv';
-import { configureWebProject, configureChromecastProject } from '@rnv/sdk-webpack';
-import { configureKaiOSProject } from '@rnv/sdk-kaios';
-import { configureWebOSProject } from '@rnv/sdk-webos';
-import { configureTizenProject } from '@rnv/sdk-tizen';
-
-const { logErrorPlatform, copySharedPlatforms } = PlatformManager;
-const { logTask } = Logger;
-const {
+import {
+    RnvTaskFn,
+    logErrorPlatform,
+    copySharedPlatforms,
+    logTask,
     WEB,
     WEBTV,
     TIZEN,
@@ -20,10 +16,14 @@ const {
     TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
     PARAMS,
-} = Constants;
-
-const { executeTask, shouldSkipTask } = TaskManager;
-const { configureEntryPoint } = TemplateManager;
+    executeTask,
+    shouldSkipTask,
+    configureEntryPoint,
+} from '@rnv/core';
+import { configureWebProject, configureChromecastProject } from '@rnv/sdk-webpack';
+import { configureKaiOSProject } from '@rnv/sdk-kaios';
+import { configureWebOSProject } from '@rnv/sdk-webos';
+import { configureTizenProject } from '@rnv/sdk-tizen';
 
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');

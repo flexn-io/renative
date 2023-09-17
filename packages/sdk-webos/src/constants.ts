@@ -1,4 +1,4 @@
-import { WEBOS } from 'rnv';
+import { WEBOS } from '@rnv/core';
 
 export const CLI_WEBOS_ARES = 'webosAres';
 export const CLI_WEBOS_ARES_PACKAGE = 'webosAresPackage';

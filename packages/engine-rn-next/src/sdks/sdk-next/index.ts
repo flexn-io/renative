@@ -1,28 +1,31 @@
 import path from 'path';
 import open from 'better-opn';
 import {
-    Exec,
-    FileUtils,
-    Common,
-    Logger,
-    Constants,
-    EngineManager,
-    PluginManager,
-    ProjectManager,
     RnvContext,
     RnvPluginPlatform,
-} from 'rnv';
-
-const { executeAsync } = Exec;
-const { checkPortInUse, getConfigProp, confirmActiveBundler, getPlatformBuildDir, getDevServerHost, waitForHost } =
-    Common;
-const { fsExistsSync, writeCleanFile, copyFolderContentsRecursiveSync } = FileUtils;
-const { chalk, logTask, logInfo, logWarning, logRaw, logSummary, logSuccess } = Logger;
-const { NEXT_CONFIG_NAME } = Constants;
-const { generateEnvVars } = EngineManager;
-const { copyAssetsFolder } = ProjectManager;
-
-const { parsePlugins, getModuleConfigs } = PluginManager;
+    executeAsync,
+    checkPortInUse,
+    getConfigProp,
+    confirmActiveBundler,
+    getPlatformBuildDir,
+    getDevServerHost,
+    waitForHost,
+    fsExistsSync,
+    writeCleanFile,
+    copyFolderContentsRecursiveSync,
+    chalk,
+    logTask,
+    logInfo,
+    logWarning,
+    logRaw,
+    logSummary,
+    logSuccess,
+    NEXT_CONFIG_NAME,
+    generateEnvVars,
+    copyAssetsFolder,
+    parsePlugins,
+    getModuleConfigs,
+} from '@rnv/core';
 
 export const configureNextIfRequired = async (c: RnvContext) => {
     logTask('configureNextIfRequired');

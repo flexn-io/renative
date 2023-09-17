@@ -10,7 +10,7 @@ import {
     getTemplateOptions,
     RnvContext,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 const _writeObjectSync = (c: RnvContext, p: string, s: string) => {
     writeFileSync(p, s);

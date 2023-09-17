@@ -11,7 +11,7 @@ import {
     IOS,
     TASK_WORKSPACE_CONFIGURE,
     TASK_PROJECT_CONFIGURE,
-} from 'rnv';
+} from '@rnv/core';
 import { runAndroidLog, checkAndConfigureAndroidSdks } from '@rnv/sdk-android';
 import { runAppleLog } from '@rnv/sdk-apple';
 

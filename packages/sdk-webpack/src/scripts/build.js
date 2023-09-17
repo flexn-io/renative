@@ -2,7 +2,7 @@
 
 // Do this as the first thing so that any code reading it knows the right env.
 
-import { Logger } from 'rnv';
+import { Logger } from '@rnv/core';
 
 process.env.BABEL_ENV = 'production';
 process.env.NODE_ENV = 'production';

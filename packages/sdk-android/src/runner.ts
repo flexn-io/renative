@@ -1,23 +1,43 @@
 import path from 'path';
 import net from 'net';
 import inquirer from 'inquirer';
-// import { mkdir } from 'fs/promises'
 import {
-    FileUtils,
-    Exec,
-    Utils,
-    Logger,
-    Constants,
-    EngineManager,
-    PluginManager,
-    ProjectManager,
-    Common,
-    PlatformManager,
-    RuntimeManager,
     RnvPluginPlatform,
     inquirerPrompt,
     execaCommand,
-} from 'rnv';
+    copyAssetsFolder,
+    copyBuildsFolder,
+    parseFonts,
+    parsePlugins,
+    fsExistsSync,
+    copyFileSync,
+    mkdirSync,
+    getRealPath,
+    updateObjectSync,
+    fsWriteFileSync,
+    fsChmodSync,
+    executeAsync,
+    getAppFolder,
+    getConfigProp,
+    getEntryFile,
+    isPlatformActive,
+    createPlatformBuild,
+    generateEnvVars,
+    isSystemWin,
+    updateRenativeConfigs,
+    chalk,
+    logTask,
+    logWarning,
+    logDebug,
+    logInfo,
+    logSuccess,
+    logRaw,
+    logError,
+    ANDROID_WEAR,
+    ANDROID,
+    ANDROID_TV,
+    FIRE_TV,
+} from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
     parseMainActivitySync,
@@ -38,8 +58,6 @@ import { parseGradleWrapperSync } from './gradleWrapperParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
 import { Context } from './types';
-// import { adb, getAdbPath } from '@react-native-community/cli-platform-android';
-
 import {
     resetAdb,
     getAndroidTargets,
@@ -50,19 +68,6 @@ import {
     connectToWifiDevice,
 } from './deviceManager';
 import { CLI_ANDROID_ADB } from './constants';
-const { copyAssetsFolder, copyBuildsFolder, parseFonts } = ProjectManager;
-const { parsePlugins } = PluginManager;
-
-const { fsExistsSync, copyFileSync, mkdirSync, getRealPath, updateObjectSync, fsWriteFileSync, fsChmodSync } =
-    FileUtils;
-const { executeAsync } = Exec;
-const { getAppFolder, getConfigProp, getEntryFile } = Common;
-const { isPlatformActive, createPlatformBuild } = PlatformManager;
-const { generateEnvVars } = EngineManager;
-const { isSystemWin } = Utils;
-const { updateRenativeConfigs } = RuntimeManager;
-const { chalk, logTask, logWarning, logDebug, logInfo, logSuccess, logRaw, logError } = Logger;
-const { ANDROID_WEAR, ANDROID, ANDROID_TV, FIRE_TV } = Constants;
 
 export const packageAndroid = async (c: Context) => {
     logTask('packageAndroid');

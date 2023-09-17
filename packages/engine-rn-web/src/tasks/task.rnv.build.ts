@@ -1,9 +1,7 @@
-import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
-import { buildWeb } from '@rnv/sdk-webpack';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const {
+import {
+    RnvTaskFn,
+    logErrorPlatform,
+    logTask,
     WEB,
     WEBTV,
     TIZEN,
@@ -17,12 +15,13 @@ const {
     TASK_BUILD,
     TASK_PACKAGE,
     PARAMS,
-} = Constants;
-
+    executeOrSkipTask,
+    shouldSkipTask,
+} from '@rnv/core';
+import { buildWeb } from '@rnv/sdk-webpack';
 import { buildTizenProject } from '@rnv/sdk-tizen';
 import { buildWebOSProject } from '@rnv/sdk-webos';
 import { buildKaiOSProject } from '@rnv/sdk-kaios';
-const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild', `parent:${parentTask}`);

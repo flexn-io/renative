@@ -8,7 +8,7 @@ import {
     isPlatformSupported,
     isBuildSchemeSupported,
     logTask,
-} from 'rnv';
+} from '@rnv/core';
 import { checkAndConfigureSdks, checkSdk } from '../common';
 
 export const taskRnvConfigureSoft: RnvTaskFn = async (c, parentTask, originTask) => {

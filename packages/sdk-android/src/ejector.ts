@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    PluginManager,
     RnvContext,
     RnvPluginPlatform,
     fsExistsSync,
@@ -11,12 +10,8 @@ import {
     getAppFolder,
     getConfigProp,
     doResolvePath,
-} from 'rnv';
-
-const {
     parsePlugins,
-    // sanitizePluginPath, includesPluginPath
-} = PluginManager;
+} from '@rnv/core';
 
 export const ejectGradleProject = async (c: RnvContext) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');

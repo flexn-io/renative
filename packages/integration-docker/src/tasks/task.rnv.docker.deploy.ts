@@ -1,9 +1,14 @@
-import { Logger, Constants, TaskManager, RnvTaskFn } from 'rnv';
+import {
+    RnvTaskFn,
+    logTask,
+    PARAMS,
+    WEB,
+    TASK_EXPORT,
+    executeOrSkipTask,
+    initializeTask,
+    findSuitableTask,
+} from '@rnv/core';
 import Docker from '../docker';
-
-const { logTask } = Logger;
-const { PARAMS, WEB, TASK_EXPORT } = Constants;
-const { executeOrSkipTask, initializeTask, findSuitableTask } = TaskManager;
 
 export const taskRnvDockerDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDockerDeploy', `parent:${parentTask}`);

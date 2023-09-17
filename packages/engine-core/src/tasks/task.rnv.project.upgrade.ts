@@ -15,7 +15,7 @@ import {
     fsExistsSync,
     readObjectSync,
     RnvTaskFn,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvProjectUpgrade');

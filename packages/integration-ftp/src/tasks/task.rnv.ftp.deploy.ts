@@ -1,11 +1,18 @@
 import path from 'path';
 import inquirer from 'inquirer';
 
-import { Logger, Constants, FileUtils, RnvContext } from 'rnv';
+import {
+    RnvContext,
+    PARAMS,
+    WEB,
+    logTask,
+    logInfo,
+    fsExistsSync,
+    writeFileSync,
+    fsWriteFileSync,
+    fsReadFile,
+} from '@rnv/core';
 
-const { PARAMS, WEB } = Constants;
-const { logTask, logInfo } = Logger;
-const { fsExistsSync, writeFileSync, fsWriteFileSync, fsReadFile } = FileUtils;
 const DEPLOY_TARGET_FTP = 'ftp';
 
 const FtpDeploy = require('ftp-deploy');
