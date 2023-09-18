@@ -4,7 +4,6 @@ import path from 'path';
 import semver from 'semver';
 import {
     RENATIVE_CONFIG_NAME,
-    CURRENT_DIR,
     PARAMS,
     RENATIVE_CONFIG_TEMPLATE_NAME,
     getTemplateOptions,
@@ -282,7 +281,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     }
 
     data.projectName = inputProjectName;
-    c.paths.project.dir = path.join(CURRENT_DIR, data.projectName.replace(/(\s+)/g, '_'));
+    c.paths.project.dir = path.join(c.paths.CURRENT_DIR, data.projectName.replace(/(\s+)/g, '_'));
 
     if (fsExistsSync(c.paths.project.dir)) {
         const { confirm } = await inquirer.prompt({

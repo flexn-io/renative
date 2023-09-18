@@ -86,6 +86,10 @@ export const generateConfigBase = (): RnvContext => ({
     configPropsInjects: {},
     runtime,
     paths: {
+        CURRENT_DIR: '',
+        IS_LINKED: false,
+        RNV_HOME_DIR: '',
+        RNV_NODE_MODULES_DIR: '',
         appConfigBase: '',
         GLOBAL_RNV_CONFIG: '',
         rnv: {

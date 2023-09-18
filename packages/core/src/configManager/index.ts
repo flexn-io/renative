@@ -13,8 +13,6 @@ import {
     RN_BABEL_CONFIG_NAME,
     // PLATFORMS,
     USER_HOME_DIR,
-    RNV_HOME_DIR,
-    CURRENT_DIR,
 } from '../constants';
 import {
     mkdirSync,
@@ -620,7 +618,19 @@ export const parseRenativeConfigs = async (c: RnvContext) => {
     }
 };
 
-export const createRnvConfig = (program: any, process: any, cmd: string, subCmd: string) => {
+export const createRnvConfig = ({
+    program,
+    process,
+    cmd,
+    subCmd,
+    RNV_HOME_DIR,
+}: {
+    program: any;
+    process: any;
+    cmd: string;
+    subCmd: string;
+    RNV_HOME_DIR: string;
+}) => {
     const c: RnvContext = generateConfigBase();
 
     global.RNV_CONFIG = c;
@@ -632,6 +642,11 @@ export const createRnvConfig = (program: any, process: any, cmd: string, subCmd:
     // c.platformDefaults = PLATFORMS;
 
     c.paths.rnv.dir = RNV_HOME_DIR;
+
+    //TODO: find better way to deal with linking
+    c.paths.IS_LINKED = path.dirname(RNV_HOME_DIR).split(path.sep).pop() === 'packages';
+    c.paths.CURRENT_DIR = path.resolve('.');
+    c.paths.RNV_NODE_MODULES_DIR = path.join(RNV_HOME_DIR, 'node_modules');
 
     c.paths.rnv.engines.dir = path.join(c.paths.rnv.dir, 'engineTemplates');
     c.paths.rnv.pluginTemplates.dir = path.join(c.paths.rnv.dir, 'pluginTemplates');
@@ -654,7 +669,7 @@ export const createRnvConfig = (program: any, process: any, cmd: string, subCmd:
         mkdirSync(c.paths.GLOBAL_RNV_DIR);
     }
 
-    _generateConfigPaths(c.paths.project, CURRENT_DIR, c.program.configName);
+    _generateConfigPaths(c.paths.project, c.paths.CURRENT_DIR, c.program.configName);
 
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
     c.paths.buildHooks.dist.dir = path.join(c.paths.project.dir, 'buildHooks/dist');

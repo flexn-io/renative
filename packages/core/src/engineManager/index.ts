@@ -1,7 +1,7 @@
 import path from 'path';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../systemManager/fileutils';
 import { checkAndCreateProjectPackage, installPackageDependencies } from '../systemManager/npmUtils';
-import { IS_LINKED, RNV_HOME_DIR, TVOS, ANDROID_TV, FIRE_TV } from '../constants';
+import { TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../systemManager/logger';
 import { getAppFolder, getConfigProp } from '../common';
 import { doResolve } from '../systemManager/resolve';
@@ -445,10 +445,10 @@ const _getEngineConfigByPlatform = (c: RnvContext, platform: string): RnvEngineC
 };
 
 const _resolvePkgPath = (c: RnvContext, packageName: string) => {
-    if (IS_LINKED && !c.program.unlinked) {
+    if (c.paths.IS_LINKED && !c.program.unlinked) {
         // In the instances of running linked rnv instead of installed one load local packages
         try {
-            let pkgPathLocal = require.resolve(packageName, { paths: [path.join(RNV_HOME_DIR, '..')] });
+            let pkgPathLocal = require.resolve(packageName, { paths: [path.join(c.paths.rnv.dir, '..')] });
             //TODO: this needs to be changed to support ts libs
             pkgPathLocal = pkgPathLocal
                 .replace('/dist/index.js', '')

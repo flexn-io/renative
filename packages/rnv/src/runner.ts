@@ -21,6 +21,7 @@ import {
     registerMissingPlatformEngines,
     updateRenativeConfigs,
 } from '@rnv/core';
+import { RNV_HOME_DIR } from './constants';
 
 const IGNORE_MISSING_ENGINES_TASKS = ['link', 'unlink'];
 
@@ -47,7 +48,7 @@ export const executeRnv = async ({
 
     Analytics.initialize();
     configureFilesystem(getConfigProp, doResolve, isSystemWin);
-    const c = createRnvConfig(program, process, cmd, subCmd);
+    const c = createRnvConfig({ program, process, cmd, subCmd, RNV_HOME_DIR });
     logInitialize();
 
     //@ts-ignore
