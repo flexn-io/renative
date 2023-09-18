@@ -1,25 +1,25 @@
 // MANAGERS
-import * as EngineManager from './engineManager';
-import * as PlatformManager from './platformManager';
-import * as PluginManager from './pluginManager';
-import * as ProjectManager from './projectManager';
-import * as ConfigManager from './configManager';
-import * as SchemaManager from './schemaManager';
-import * as RuntimeManager from './runtimeManager';
-import * as TemplateManager from './templateManager';
-import * as TaskManager from './taskManager';
+import * as EngineManager from './engines';
+import * as PlatformManager from './platforms';
+import * as PluginManager from './plugins';
+import * as ProjectManager from './projects';
+import * as ConfigManager from './configs';
+import * as SchemaManager from './schema';
+import * as RuntimeManager from './runtime';
+import * as TemplateManager from './templates';
+import * as TaskManager from './tasks';
 // SUB-MODULES
-import * as NPMUtils from './systemManager/npmUtils';
-import * as ObjectUtils from './systemManager/objectUtils';
-import * as Exec from './systemManager/exec';
-import * as FileUtils from './systemManager/fileutils';
-import * as Doctor from './systemManager/doctor';
-import * as Logger from './systemManager/logger';
-import * as Resolver from './systemManager/resolve';
+import * as NPMUtils from './npm';
+import * as ObjectUtils from './utils/is';
+import * as Exec from './system/exec';
+import * as FileUtils from './system/fs';
+import * as Doctor from './doctor';
+import * as Logger from './logging/logger';
+import * as Resolver from './system/resolve';
 import * as Common from './common';
-import * as Utils from './systemManager/utils';
+import * as Utils from './utils/utils';
 import * as Constants from './constants';
-import { Context } from './contextManager/context';
+import { Context } from './context/context';
 
 export {
     // MANAGERS

@@ -1,6 +1,6 @@
 // PLATFORM
 import { homedir } from 'os';
-import { RnvTaskParameter } from './taskManager/types';
+import { RnvTaskParameter } from './tasks/types';
 
 export const USER_HOME_DIR = homedir();
 

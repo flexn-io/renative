@@ -6,14 +6,14 @@ import axios from 'axios';
 import lGet from 'lodash.get';
 import path from 'path';
 import { CLI_PROPS } from './constants';
-import { fsExistsSync, writeCleanFile } from './systemManager/fileutils';
-import { chalk, logError, logTask, logWarning } from './systemManager/logger';
-import { getValidLocalhost } from './systemManager/utils';
-import { RnvContext } from './contextManager/types';
+import { fsExistsSync, writeCleanFile } from './system/fs';
+import { chalk, logError, logTask, logWarning } from './logging/logger';
+import { getValidLocalhost } from './utils/utils';
+import { RnvContext } from './context/types';
 import { GetConfigPropFn } from './types';
-import { OverridesOptions, TimestampPathsConfig } from './systemManager/types';
-import { RenativeConfigBuildScheme, RenativeConfigFile } from './configManager/types';
-import { inquirerPrompt } from './contextManager/api';
+import { OverridesOptions, TimestampPathsConfig } from './system/types';
+import { RenativeConfigBuildScheme, RenativeConfigFile } from './configs/types';
+import { inquirerPrompt } from './api';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: string): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];

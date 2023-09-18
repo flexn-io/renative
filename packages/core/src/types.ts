@@ -1,4 +1,4 @@
-import { RnvContext } from './contextManager/types';
+import { RnvContext } from './context/types';
 
 export type RnvPlatform = string;
 
