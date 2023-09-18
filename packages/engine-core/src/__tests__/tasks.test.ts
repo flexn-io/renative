@@ -25,11 +25,11 @@ jest.mock('inquirer', () => ({
 //     }),
 // }));
 
-// jest.mock('../../src/core/systemManager/utils.ts', () => ({
+// jest.mock('../../src/core/system/utils.ts', () => ({
 //     isSystemWin: false,
 // }));
 
-// jest.mock('../../src/core/systemManager/logger.ts');
+// jest.mock('../../src/core/system/logger.ts');
 
 const c = generateMockConfig({
     buildConfig: {
@@ -88,7 +88,7 @@ test('Execute task.rnv.clean', async () => {
 //     };
 //     const configure = generateMockConfig({});
 //     const child_process = require('child_process');
-//     jest.doMock('../../src/core/systemManager/utils.ts', () => ({
+//     jest.doMock('../../src/core/system/utils.ts', () => ({
 //         isSystemWin: true
 //     }));
 

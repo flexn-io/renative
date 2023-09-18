@@ -1,6 +1,6 @@
-jest.mock('../systemManager/logger.ts');
+jest.mock('../logging/logger.ts');
 
-jest.mock('../taskManager/index.ts', () => ({
+jest.mock('../tasks/index.ts', () => ({
     initializeTask: jest.fn(),
     findSuitableTask: () => {
         //Do nothing

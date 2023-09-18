@@ -3,7 +3,7 @@ import { createRnvContext } from '../context';
 import { getAppVersionCode } from '../common';
 
 jest.mock('fs');
-jest.mock('../systemManager/logger.ts');
+jest.mock('../logging/logger.ts');
 
 let c;
 
@@ -23,8 +23,6 @@ describe('Bootstrapping the CLI', () => {
         const cKeys = Object.keys(c).sort();
         const expectKeys = [
             '_renativePluginCache',
-            'analytics',
-            'api',
             'assetConfig',
             'buildConfig',
             'buildHooks',
@@ -39,11 +37,9 @@ describe('Bootstrapping the CLI', () => {
             'platform',
             'process',
             'program',
-            'prompt',
             'rnvVersion',
             'runtime',
             'runtimePropsInjects',
-            'spinner',
             'subCommand',
             'supportedPlatforms',
             'systemPropsInjects',

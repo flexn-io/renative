@@ -1,7 +1,7 @@
 import { getAppVersionCode } from '../common';
-import { generateConfigBase } from '../contextManager/contextBase';
+import { generateContextDefaults } from '../context/defaults';
 
-jest.mock('../systemManager/logger.ts');
+jest.mock('../logging/logger.ts');
 
 // TO TEST:
 // 0.0.4
@@ -36,7 +36,7 @@ jest.mock('../systemManager/logger.ts');
 // 99999999999999999999999.999999999999999999.99999999999999999
 // 1.0.0-0A.is.legal
 
-const BUILD_CONF = generateConfigBase();
+const BUILD_CONF = generateContextDefaults();
 BUILD_CONF.runtime.scheme = 'debug';
 
 describe('Testing getAppVersionCode functions', () => {

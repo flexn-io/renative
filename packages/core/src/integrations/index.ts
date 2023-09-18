@@ -1,7 +1,7 @@
 import path from 'path';
 import { RnvContext } from '../context/types';
 import { fsExistsSync } from '../system/fs';
-// import { getScopedVersion } from '../systemManager/utils';
+// import { getScopedVersion } from '../system/utils';
 import { logTask, logWarning } from '../logging/logger';
 import { registerCustomTask } from '../tasks';
 
