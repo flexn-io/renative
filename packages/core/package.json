@@ -27,6 +27,7 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
+        "@flexn/plugins": "1.0.9",
         "ajv": "7.0.0-beta.0",
         "axios": "0.21.2",
         "chalk": "4.1.0",

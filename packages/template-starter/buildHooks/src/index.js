@@ -1,4 +1,4 @@
-import { Logger } from '@rnv/core';
+import { Logger } from 'rnv';
 
 const hooks = {
     hello: async () => {
