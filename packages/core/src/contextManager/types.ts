@@ -4,10 +4,10 @@ import { OverridesOptions } from '../systemManager/types';
 import { PromptRenderFn, RnvPlatform } from '../types';
 
 //TODO: move
-export type RnvContextSpinner = {
-    start: (msg: string) => RnvContextSpinner;
-    fail: (msg: string) => RnvContextSpinner;
-    succeed: (msg: string) => RnvContextSpinner;
+export type RnvContextSpinner = (msg: string | { text: string }) => {
+    start: RnvContextSpinner;
+    fail: RnvContextSpinner;
+    succeed: RnvContextSpinner;
     text: string;
 };
 
@@ -33,7 +33,7 @@ export type RnvContextAnalytics = {
 };
 
 export interface RnvContext<Payload = any> {
-    spinner: (msg: string | { text: string }) => RnvContextSpinner;
+    spinner: RnvContextSpinner;
     prompt: RnvContextPrompt;
     analytics: RnvContextAnalytics;
     program: any;
