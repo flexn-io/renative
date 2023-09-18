@@ -6,7 +6,7 @@ import path from 'path';
 
 import { Context } from '@rnv/core';
 //@ts-ignore
-import pkg from '../../../package.json';
+import pkg from '../../package.json';
 import { REDASH_KEY, REDASH_URL, SENTRY_ENDPOINT } from '../constants';
 
 // deal with useless duplicate errors on sentry because of different error texts

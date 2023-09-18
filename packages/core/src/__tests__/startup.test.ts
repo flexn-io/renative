@@ -1,7 +1,8 @@
-import { createRnvConfig, generateBuildConfig } from '../../src/core/configManager';
-import { getAppVersionCode } from '../../src/core/common';
+import { createRnvConfig, generateBuildConfig } from '../configManager';
+import { getAppVersionCode } from '../common';
 
-jest.mock('../../src/core/systemManager/logger.ts');
+jest.mock('fs');
+jest.mock('../systemManager/logger.ts');
 
 let c;
 
@@ -15,6 +16,7 @@ describe('Bootstrapping the CLI', () => {
         const cKeys = Object.keys(c).sort();
         const expectKeys = [
             '_renativePluginCache',
+            'analytics',
             'api',
             'assetConfig',
             'buildConfig',

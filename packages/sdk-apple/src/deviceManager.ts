@@ -25,17 +25,19 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
     const res = await executeAsync('xcrun simctl list --json');
     const simctl = JSON.parse(res.toString());
     const availableSims: Array<AppleDevice> = [];
-    Object.keys(simctl.devices).forEach((runtime) => {
-        logDebug('runtime', runtime);
-        simctl.devices[runtime].forEach((device: AppleDevice) => {
-            if (device.isAvailable) {
-                availableSims.push({
-                    ...device,
-                    version: runtime.split('.').pop(),
-                });
-            }
+    if (simctl.devices) {
+        Object.keys(simctl.devices).forEach((runtime) => {
+            logDebug('runtime', runtime);
+            simctl.devices[runtime].forEach((device: AppleDevice) => {
+                if (device.isAvailable) {
+                    availableSims.push({
+                        ...device,
+                        version: runtime.split('.').pop(),
+                    });
+                }
+            });
         });
-    });
+    }
 
     let parseFunction = _parseIOSDevicesList;
     if (isXcode13) {

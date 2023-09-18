@@ -23,5 +23,6 @@ function readdirSync(directoryPath) {
 
 fs.__setMockFiles = __setMockFiles;
 fs.readdirSync = readdirSync;
+fs.readFileSync = () => '{}';
 
 module.exports = fs;

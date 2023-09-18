@@ -1,7 +1,7 @@
-import { executeAsync, commandExistsSync, commandExists } from '../core/systemManager/exec';
-import { generateConfigBase } from '../core/contextManager/contextBase';
+import { executeAsync, commandExistsSync, commandExists } from '../systemManager/exec';
+import { generateConfigBase } from '../contextManager/contextBase';
 
-jest.mock('../core/systemManager/logger.ts');
+jest.mock('../systemManager/logger.ts');
 
 describe('Testing exec functions', () => {
     it('should execute command', async () => {

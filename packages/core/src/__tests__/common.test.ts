@@ -1,7 +1,7 @@
-import { getAppVersionCode } from '../core/common';
-import { generateConfigBase } from '../core/contextManager/contextBase';
+import { getAppVersionCode } from '../common';
+import { generateConfigBase } from '../contextManager/contextBase';
 
-jest.mock('../../src/core/systemManager/logger.ts');
+jest.mock('../systemManager/logger.ts');
 
 // TO TEST:
 // 0.0.4

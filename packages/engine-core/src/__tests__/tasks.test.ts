@@ -1,16 +1,12 @@
-/* eslint-disable global-require */
-
 import taskRnvPlatformList from '../tasks/task.rnv.platform.list';
 import taskRnvKill from '../tasks/task.rnv.kill';
 import taskRnvPlatformConfigure from '../tasks/task.rnv.platform.configure';
 import taskRnvClean from '../tasks/task.rnv.clean';
-// import taskRnvPlatformEject from '../../src/engine-core/tasks/task.rnv.platform.eject';
-// import taskRnvPlatformSetup from '../../src/engine-core/tasks/task.rnv.platform.setup';
 import { generateMockConfig } from '../../../jest-preset-rnv/mocks';
 
 jest.mock('fs');
 jest.mock('child_process');
-jest.mock('rnv');
+jest.mock('@rnv/core');
 
 jest.mock('inquirer', () => ({
     prompt: () => true,
@@ -46,7 +42,7 @@ const c = generateMockConfig({
 // const parentTask = null;
 const originTask = undefined;
 
-const { executeTask, executeAsync, removeDirs } = require('rnv');
+const { executeTask, executeAsync, removeDirs } = require('@rnv/core');
 
 beforeEach(() => {
     //Do nothing

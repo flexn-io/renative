@@ -1,10 +1,6 @@
-// import { createRnvConfig, generateBuildConfig } from '../../src/core/configManager';
-// import { configureFilesystem } from '../../src/core/systemManager/fileutils';
-// import cli from '../../src/cli';
+jest.mock('../systemManager/logger.ts');
 
-jest.mock('../../src/core/systemManager/logger.ts');
-
-jest.mock('../../src/core/taskManager/index.ts', () => ({
+jest.mock('../taskManager/index.ts', () => ({
     initializeTask: jest.fn(),
     findSuitableTask: () => {
         //Do nothing
