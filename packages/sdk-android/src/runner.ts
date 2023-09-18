@@ -60,11 +60,11 @@ import { Context } from './types';
 import {
     resetAdb,
     getAndroidTargets,
-    composeDevicesString,
     launchAndroidSimulator,
     checkForActiveEmulator,
     askForNewEmulator,
     connectToWifiDevice,
+    composeDevicesArray,
 } from './deviceManager';
 import { CLI_ANDROID_ADB } from './constants';
 
@@ -151,7 +151,7 @@ export const runAndroid = async (c: Context) => {
     const askWhereToRun = async () => {
         if (activeDevices.length === 0 && inactiveDevices.length > 0) {
             // No device active, but there are emulators created
-            const devicesString = composeDevicesString(inactiveDevices, true);
+            const devicesString = composeDevicesArray(inactiveDevices);
             const choices = devicesString;
             const response = await inquirerPrompt({
                 name: 'chosenEmulator',
@@ -165,7 +165,7 @@ export const runAndroid = async (c: Context) => {
                 await _runGradleApp(c, platform, devices);
             }
         } else if (activeDevices.length > 1) {
-            const devicesString = composeDevicesString(activeDevices, true);
+            const devicesString = composeDevicesArray(activeDevices);
             const choices = devicesString;
             const response = await inquirerPrompt({
                 name: 'chosenEmulator',

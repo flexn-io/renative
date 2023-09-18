@@ -35,12 +35,18 @@ const CHECK_INTEVAL = 5000;
 
 const currentDeviceProps: Record<string, Record<string, string>> = {};
 
-export const composeDevicesString = (devices: Array<AndroidDevice>, returnArray?: boolean) => {
+export const composeDevicesString = (devices: Array<AndroidDevice>) => {
     logTask('composeDevicesString', `numDevices:${devices ? devices.length : null}`);
     const devicesArray: Array<string> = [];
-    devices.forEach((v, i) => devicesArray.push(_getDeviceString(v, !returnArray ? i : null)));
-    if (returnArray) return devicesArray;
+    devices.forEach((v, i) => devicesArray.push(_getDeviceString(v, i)));
     return `\n${devicesArray.join('')}`;
+};
+
+export const composeDevicesArray = (devices: Array<AndroidDevice>) => {
+    logTask('composeDevicesString', `numDevices:${devices ? devices.length : null}`);
+    const devicesArray: Array<string> = [];
+    devices.forEach((v) => devicesArray.push(_getDeviceString(v, null)));
+    return devicesArray;
 };
 
 export const launchAndroidSimulator = async (
@@ -56,7 +62,7 @@ export const launchAndroidSimulator = async (
         } = c;
         const list = await getAndroidTargets(c, false, device, device);
 
-        const devicesString = composeDevicesString(list, true);
+        const devicesString = composeDevicesArray(list);
         const choices = devicesString;
         const response = await inquirerPrompt({
             name: 'chosenEmulator',

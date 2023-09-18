@@ -7,13 +7,7 @@ import merge from 'deepmerge';
 import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
-import {
-    DoResolveFn,
-    FileUtilsPropConfig,
-    FileUtilsUpdateConfig,
-    OverridesOptions,
-    TimestampPathsConfig,
-} from './types';
+import { DoResolveFn, FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from './types';
 import type { GetConfigPropFn } from '../types';
 
 export const configureFilesystem = (
@@ -705,26 +699,6 @@ export const mergeObjects = (c: RnvContext, obj1: any, obj2: any, dynamicRefs = 
     return dynamicRefs ? sanitizeDynamicRefs(c, obj) : obj;
 };
 
-export const updateConfigFile = async (update: FileUtilsUpdateConfig, globalConfigPath: string) => {
-    const configContents = JSON.parse(fs.readFileSync(globalConfigPath).toString());
-
-    if (update.androidSdk) {
-        configContents.sdks.ANDROID_SDK = update.androidSdk;
-    }
-
-    if (update.tizenSdk) {
-        configContents.sdks.TIZEN_SDK = update.tizenSdk;
-    }
-
-    if (update.webosSdk) {
-        configContents.sdks.WEBOS_SDK = update.webosSdk;
-    }
-
-    logDebug(`Updating ${globalConfigPath}. New file ${JSON.stringify(configContents, null, 3)}`);
-
-    fsWriteFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
-};
-
 export const replaceHomeFolder = (p: string) => {
     if (global._isSystemWin) return p.replace('~', process.env.USERPROFILE || '');
     return p.replace('~', process.env.HOME || '');
@@ -842,7 +816,6 @@ export default {
     updateObjectSync,
     arrayMerge,
     mergeObjects,
-    updateConfigFile,
     replaceHomeFolder,
     getDirectories,
     resolvePackage,
