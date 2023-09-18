@@ -24,7 +24,7 @@ export * from './utils/is';
 export * from './system/exec';
 export * from './system/fs';
 export * from './doctor';
-export * from './logging/logger';
+export * from './logger';
 export * from './system/resolve';
 export * from './crypto';
 export * from './common';

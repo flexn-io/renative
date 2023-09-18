@@ -11,7 +11,7 @@ import {
     loadFile,
     readObjectSync,
 } from '../system/fs';
-import { logTask, logWarning, logError, logInfo, logDebug, logSuccess } from '../logging/logger';
+import { logTask, logWarning, logError, logInfo, logDebug, logSuccess } from '../logger';
 import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { doResolve } from '../system/resolve';
 

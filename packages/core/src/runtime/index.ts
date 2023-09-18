@@ -3,7 +3,7 @@ import { getEngineRunnerByPlatform } from '../engines';
 import { isSystemWin } from '../utils/utils';
 import { getRealPath } from '../system/fs';
 import { getConfigProp } from '../common';
-import { logTask } from '../logging/logger';
+import { logTask } from '../logger';
 import { loadPluginTemplates } from '../plugins';
 import { parseRenativeConfigs } from '../configs/index';
 import { RnvContext, RnvContextPlatform } from '../context/types';

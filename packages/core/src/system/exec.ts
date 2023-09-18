@@ -5,7 +5,7 @@ import { access, accessSync, constants } from 'fs';
 import execa, { ExecaChildProcess } from 'execa';
 import NClient from 'netcat/client';
 import { getContext } from '../context';
-import { chalk, logDebug, logRaw, logError } from '../logging/logger';
+import { chalk, logDebug, logRaw, logError } from '../logger';
 import { fsExistsSync } from './fs';
 import { replaceOverridesInString } from '../utils/utils';
 import { RnvContext } from '../context/types';

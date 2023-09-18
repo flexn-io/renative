@@ -2,7 +2,7 @@ import path from 'path';
 import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
 import { checkAndCreateProjectPackage, installPackageDependencies } from '../npm';
 import { TVOS, ANDROID_TV, FIRE_TV } from '../constants';
-import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logging/logger';
+import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
 import { getAppFolder, getConfigProp } from '../common';
 import { doResolve } from '../system/resolve';
 import { getScopedVersion } from '../utils/utils';

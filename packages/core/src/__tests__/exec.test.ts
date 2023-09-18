@@ -1,7 +1,7 @@
 import { generateContextDefaults } from '../context/defaults';
 import { executeAsync, commandExistsSync, commandExists } from '../system/exec';
 
-jest.mock('../logging/logger.ts');
+jest.mock('../logger/index.ts');
 
 describe('Testing exec functions', () => {
     it('should execute command', async () => {

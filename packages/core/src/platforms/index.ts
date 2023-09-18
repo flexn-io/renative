@@ -1,5 +1,5 @@
 import path from 'path';
-import { chalk, logTask, logError, logWarning } from '../logging/logger';
+import { chalk, logTask, logError, logWarning } from '../logger';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync } from '../system/fs';
 import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
 import { SUPPORTED_PLATFORMS } from '../constants';

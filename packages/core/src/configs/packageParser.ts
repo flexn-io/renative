@@ -3,7 +3,7 @@ import merge from 'deepmerge';
 
 import { executeAsync } from '../system/exec';
 import { installPackageDependencies } from '../npm';
-import { chalk, logInfo, logDebug, logTask } from '../logging/logger';
+import { chalk, logInfo, logDebug, logTask } from '../logger';
 import { getEngineRunnerByPlatform } from '../engines';
 import { writeRenativeConfigFile } from './index';
 import { overrideTemplatePlugins } from '../plugins';

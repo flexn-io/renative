@@ -18,7 +18,7 @@ import {
 } from '../system/fs';
 import { getConfigProp } from '../common';
 import { getWorkspaceDirPath } from '../workspaces';
-import { chalk, logTask, logWarning, logDebug } from '../logging/logger';
+import { chalk, logTask, logWarning, logDebug } from '../logger';
 import { doResolve } from '../system/resolve';
 import { RnvContextFileObj, RnvContextPathObj, RnvContext } from '../context/types';
 import { generateRnvConfigPathObj } from '../context/defaults';

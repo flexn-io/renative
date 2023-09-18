@@ -1,5 +1,5 @@
 import path from 'path';
-import { chalk, logTask, logWarning, logDebug, logInfo } from '../logging/logger';
+import { chalk, logTask, logWarning, logDebug, logInfo } from '../logger';
 import { writeFileSync, mkdirSync, fsExistsSync } from '../system/fs';
 import { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';

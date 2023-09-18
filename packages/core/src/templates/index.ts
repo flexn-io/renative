@@ -14,7 +14,7 @@ import {
     fsUnlinkSync,
     removeDirSync,
 } from '../system/fs';
-import { chalk, logError, logInfo, logWarning, logTask, logDebug } from '../logging/logger';
+import { chalk, logError, logInfo, logWarning, logTask, logDebug } from '../logger';
 import { getConfigProp } from '../common';
 import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from '../configs';
 import { doResolve } from '../system/resolve';

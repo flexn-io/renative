@@ -14,7 +14,7 @@ import * as ObjectUtils from './utils/is';
 import * as Exec from './system/exec';
 import * as FileUtils from './system/fs';
 import * as Doctor from './doctor';
-import * as Logger from './logging/logger';
+import * as Logger from './logger';
 import * as Resolver from './system/resolve';
 import * as Common from './common';
 import * as Utils from './utils/utils';

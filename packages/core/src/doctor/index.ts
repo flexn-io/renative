@@ -1,6 +1,6 @@
 import { writeFileSync, readObjectSync } from '../system/fs';
 import { PACKAGE_JSON_FILEDS } from '../constants';
-import { chalk, logWarning } from '../logging/logger';
+import { chalk, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 
 const getSortedObject = (obj: any) => {

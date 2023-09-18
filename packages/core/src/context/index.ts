@@ -1,5 +1,5 @@
 import { writeFileSync, fsExistsSync, fsReadFileSync } from '../system/fs';
-import { logWarning } from '../logging/logger';
+import { logWarning } from '../logger';
 import { RENATIVE_CONFIG_LOCAL_NAME, RENATIVE_CONFIG_PRIVATE_NAME, configSchema } from '../constants';
 import { RnvContext, RnvContextPathObj } from './types';
 import { generateContextDefaults } from './defaults';

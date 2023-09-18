@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import path from 'path';
 import { build } from 'esbuild';
-import { logDebug, logError, logHook, logInfo } from '../logging/logger';
+import { logDebug, logError, logHook, logInfo } from '../logger';
 import { fsExistsSync, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getConfigProp } from '../common';
 import { doResolve } from '../system/resolve';

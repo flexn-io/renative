@@ -1,5 +1,5 @@
 import merge from 'deepmerge';
-import { logError, logTask, logWarning, chalk, logInfo } from '../logging/logger';
+import { logError, logTask, logWarning, chalk, logInfo } from '../logger';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 

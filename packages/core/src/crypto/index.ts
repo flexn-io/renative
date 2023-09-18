@@ -1,5 +1,5 @@
 import path from 'path';
-import { chalk, logWarning, logTask, logDebug } from '../logging/logger';
+import { chalk, logWarning, logTask, logDebug } from '../logger';
 import { isSystemWin } from '../utils/utils';
 import { getRealPath, fsExistsSync, fsReadFileSync } from '../system/fs';
 import { TASK_CRYPTO_DECRYPT } from '../constants';

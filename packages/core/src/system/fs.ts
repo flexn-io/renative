@@ -5,7 +5,7 @@ import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import ncp from 'ncp';
-import { chalk, logDebug, logError, logWarning } from '../logging/logger';
+import { chalk, logDebug, logError, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import {
     DoResolveFn,

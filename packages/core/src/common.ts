@@ -7,7 +7,7 @@ import lGet from 'lodash.get';
 import path from 'path';
 import { CLI_PROPS } from './constants';
 import { fsExistsSync, writeCleanFile } from './system/fs';
-import { chalk, logError, logTask, logWarning } from './logging/logger';
+import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
 import { RnvContext } from './context/types';
 import { GetConfigPropFn } from './types';

@@ -1,6 +1,6 @@
 import { sanitizeDynamicProps } from '../system/fs';
 
-jest.mock('../logging/logger.ts');
+jest.mock('../logger/index.ts');
 
 describe('sanitizeDynamicProps', () => {
     it('sanitize {{props.XXX}}', async () => {

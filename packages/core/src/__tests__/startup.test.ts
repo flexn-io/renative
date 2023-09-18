@@ -3,7 +3,7 @@ import { createRnvContext } from '../context';
 import { getAppVersionCode } from '../common';
 
 jest.mock('fs');
-jest.mock('../logging/logger.ts');
+jest.mock('../logger/index.ts');
 
 let c;
 

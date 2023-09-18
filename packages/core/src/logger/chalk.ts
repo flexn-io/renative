@@ -1,4 +1,4 @@
-import { ChalkApi as ChalkMock } from '../logging/types';
+import { ChalkApi as ChalkMock } from '../logger/types';
 
 const _chalkPass = (v: string | boolean): string => (typeof v === 'string' ? v : String(v));
 

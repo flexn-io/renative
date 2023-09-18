@@ -2,7 +2,7 @@ import path from 'path';
 import { RnvContext } from '../context/types';
 import { executeAsync, commandExistsSync } from '../system/exec';
 import { fsExistsSync } from '../system/fs';
-import { logTask, logWarning, logInfo } from '../logging/logger';
+import { logTask, logWarning, logInfo } from '../logger';
 
 export const configureGit = async (c: RnvContext) => {
     const projectPath = c.paths.project.dir;

@@ -1,7 +1,7 @@
 import { getAppVersionCode } from '../common';
 import { generateContextDefaults } from '../context/defaults';
 
-jest.mock('../logging/logger.ts');
+jest.mock('../logger/index.ts');
 
 // TO TEST:
 // 0.0.4

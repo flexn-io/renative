@@ -15,7 +15,7 @@ import {
     readObjectSync,
     sanitizeDynamicProps,
 } from '../system/fs';
-import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../logging/logger';
+import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../logger';
 import { installPackageDependencies } from '../npm';
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';

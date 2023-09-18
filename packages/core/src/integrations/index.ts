@@ -2,7 +2,7 @@ import path from 'path';
 import { RnvContext } from '../context/types';
 import { fsExistsSync } from '../system/fs';
 // import { getScopedVersion } from '../system/utils';
-import { logTask, logWarning } from '../logging/logger';
+import { logTask, logWarning } from '../logger';
 import { registerCustomTask } from '../tasks';
 
 export const loadIntegrations = async (c: RnvContext) => {
