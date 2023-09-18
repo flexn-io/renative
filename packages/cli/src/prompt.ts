@@ -29,6 +29,10 @@ export const inquirerPrompt = async (params: PromptParams): Promise<Record<strin
     return resp;
 };
 
+export const inquirerSeparator = () => {
+    return new inquirer.Separator();
+};
+
 export const pressAnyKeyToContinue = () => {
     const params = {
         type: 'input',
@@ -123,4 +127,5 @@ export default {
     inquirerPrompt,
     generateOptions,
     pressAnyKeyToContinue,
+    inquirerSeparator,
 };

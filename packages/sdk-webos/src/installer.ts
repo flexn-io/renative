@@ -1,5 +1,4 @@
 import path from 'path';
-import inquirer from 'inquirer';
 import {
     WEBOS,
     isSystemWin,
@@ -16,6 +15,7 @@ import {
     logInfo,
     generateBuildConfig,
     RnvContext,
+    inquirerPrompt,
 } from '@rnv/core';
 
 import {
@@ -127,7 +127,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
         logSuccess(`Found existing ${c.platform} SDK location at ${chalk().white(result)}`);
         let confirmSdk = true;
         if (!c.program.ci) {
-            const { confirm } = await inquirer.prompt({
+            const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'confirm',
                 message: 'Do you want to use it?',

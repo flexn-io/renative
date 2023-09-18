@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import {
     chalk,
     logTask,
@@ -13,6 +12,7 @@ import {
     ejectPlatform,
     executeTask,
     RnvTaskFn,
+    inquirerPrompt,
 } from '@rnv/core';
 
 export const taskRnvPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -24,7 +24,7 @@ export const taskRnvPlatformEject: RnvTaskFn = async (c, _parentTask, originTask
         selectedPlatforms = [c.platform];
     } else {
         logInfo(`Preparing to eject engine platforms to local ${chalk().white('./platformTemplates')}`);
-        const { ejectedPlatforms } = await inquirer.prompt({
+        const { ejectedPlatforms } = await inquirerPrompt({
             name: 'ejectedPlatforms',
             message: 'Select platforms you would like to eject (use SPACE key)',
             type: 'checkbox',

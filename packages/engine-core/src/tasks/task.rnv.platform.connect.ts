@@ -1,5 +1,4 @@
 import path from 'path';
-import inquirer from 'inquirer';
 
 import {
     chalk,
@@ -14,6 +13,7 @@ import {
     TASK_PLATFORM_CONNECT,
     PARAMS,
     RnvTaskFn,
+    inquirerPrompt,
 } from '@rnv/core';
 
 export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -30,7 +30,7 @@ export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTa
     if (c.platform) {
         selectedPlatforms = [c.platform];
     } else {
-        const { connectedPlatforms } = await inquirer.prompt({
+        const { connectedPlatforms } = await inquirerPrompt({
             name: 'connectedPlatforms',
             message:
                 'This will point platformTemplates folders from your local project to ReNative managed one. Select platforms you would like to connect',
@@ -57,7 +57,7 @@ export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTa
         });
     }
 
-    const { deletePlatformFolder } = await inquirer.prompt({
+    const { deletePlatformFolder } = await inquirerPrompt({
         name: 'deletePlatformFolder',
         type: 'confirm',
         message: 'Would you also like to delete the previously used platform folder?',

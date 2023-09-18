@@ -1,6 +1,16 @@
-import inquirer from 'inquirer';
 import child_process from 'child_process';
-import { chalk, logToSummary, logTask, logWarning, logDebug, IOS, TVOS, executeAsync, RnvContext } from '@rnv/core';
+import {
+    chalk,
+    logToSummary,
+    logTask,
+    logWarning,
+    logDebug,
+    IOS,
+    TVOS,
+    executeAsync,
+    RnvContext,
+    inquirerPrompt,
+} from '@rnv/core';
 import { AppleDevice } from './types';
 
 export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ignoreSimulators?: boolean) => {
@@ -201,7 +211,7 @@ export const launchAppleSimulator = async (c: RnvContext, target: string) => {
         value: v,
     }));
 
-    const { sim } = await inquirer.prompt({
+    const { sim } = await inquirerPrompt({
         name: 'sim',
         message: 'Select the simulator you want to launch',
         type: 'list',

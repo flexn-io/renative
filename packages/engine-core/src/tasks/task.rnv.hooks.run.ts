@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import {
     logTask,
     logInfo,
@@ -10,6 +9,7 @@ import {
     PARAMS,
     PARAM_KEYS,
     RnvTaskFn,
+    inquirerPrompt,
 } from '@rnv/core';
 
 export const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -38,7 +38,7 @@ export const taskRnvHooksRun: RnvTaskFn = async (c, _parentTask, originTask) => 
     if (showHookList) {
         const hooksList = Object.keys(c.buildHooks);
 
-        const { selectedHook } = await inquirer.prompt({
+        const { selectedHook } = await inquirerPrompt({
             name: 'selectedHook',
             type: 'list',
             message: 'Pick an available hook:',

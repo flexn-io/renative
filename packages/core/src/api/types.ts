@@ -17,15 +17,17 @@ export type RnvApiPrompt = {
         name?: string;
         type: string;
         message?: string;
-        choices?: Array<string>;
+        choices?: Array<{ name: string; value: any } | string>;
         validate?: (i: string) => string | boolean;
         logMessage?: string;
         warningMessage?: string;
         default?: any;
         pageSize?: number;
+        loop?: boolean;
     }) => Promise<any>;
     generateOptions: (inputData: any, isMultiChoice?: boolean, mapping?: any, renderMethod?: PromptRenderFn) => any;
     pressAnyKeyToContinue: () => Promise<any>;
+    inquirerSeparator: () => any;
 };
 
 export type RnvContextAnalytics = {

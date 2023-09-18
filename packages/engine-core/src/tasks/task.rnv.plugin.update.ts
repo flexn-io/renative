@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import {
     writeFileSync,
     logSuccess,
@@ -10,6 +9,7 @@ import {
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
+    inquirerPrompt,
 } from '@rnv/core';
 
 export const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -21,7 +21,7 @@ export const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask)
 
     // console.log(o.asString);
 
-    const { confirm } = await inquirer.prompt({
+    const { confirm } = await inquirerPrompt({
         name: 'confirm',
         type: 'confirm',
         message: 'Above installed plugins will be updated with RNV',

@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import {
     writeRenativeConfigFile,
     TASK_INSTALL,
@@ -14,6 +13,7 @@ import {
     RnvTaskFn,
     PluginListResponseItem,
     getApi,
+    inquirerPrompt,
 } from '@rnv/core';
 
 /* eslint-disable no-await-in-loop */
@@ -31,7 +31,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
     const installMessage = [];
 
     if (!selPlugin) {
-        const { plugin } = await inquirer.prompt({
+        const { plugin } = await inquirerPrompt({
             name: 'plugin',
             type: 'rawlist',
             message: 'Select the plugins you want to add',
@@ -65,7 +65,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
         const pluginProps = Object.keys(plugin.props);
         const finalProps: Record<string, string> = {};
         for (let i2 = 0; i2 < pluginProps.length; i2++) {
-            const { propValue } = await inquirer.prompt({
+            const { propValue } = await inquirerPrompt({
                 name: 'propValue',
                 type: 'input',
                 message: `${pluginKey}: Add value for ${pluginProps[i2]} (You can do this later in ./renative.json file)`,

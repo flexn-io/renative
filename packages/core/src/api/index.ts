@@ -48,6 +48,10 @@ export const inquirerPrompt: RnvApiPrompt['inquirerPrompt'] = (opts) => {
     return getApi().prompt.inquirerPrompt(opts);
 };
 
+export const inquirerSeparator: RnvApiPrompt['inquirerSeparator'] = () => {
+    return getApi().prompt.inquirerSeparator();
+};
+
 export const generateOptions: RnvApiPrompt['generateOptions'] = (inputData, isMultiChoice, mapping, renderMethod) => {
     return getApi().prompt.generateOptions(inputData, isMultiChoice, mapping, renderMethod);
 };

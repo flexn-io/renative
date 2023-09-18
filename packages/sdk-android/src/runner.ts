@@ -1,6 +1,5 @@
 import path from 'path';
 import net from 'net';
-import inquirer from 'inquirer';
 import {
     RnvPluginPlatform,
     inquirerPrompt,
@@ -154,14 +153,12 @@ export const runAndroid = async (c: Context) => {
             // No device active, but there are emulators created
             const devicesString = composeDevicesString(inactiveDevices, true);
             const choices = devicesString;
-            const response = await inquirer.prompt([
-                {
-                    name: 'chosenEmulator',
-                    type: 'list',
-                    message: 'What emulator would you like to start?',
-                    choices,
-                },
-            ]);
+            const response = await inquirerPrompt({
+                name: 'chosenEmulator',
+                type: 'list',
+                message: 'What emulator would you like to start?',
+                choices,
+            });
             if (response.chosenEmulator) {
                 await launchAndroidSimulator(c, response.chosenEmulator, true);
                 const devices = await checkForActiveEmulator(c);
@@ -170,14 +167,12 @@ export const runAndroid = async (c: Context) => {
         } else if (activeDevices.length > 1) {
             const devicesString = composeDevicesString(activeDevices, true);
             const choices = devicesString;
-            const response = await inquirer.prompt([
-                {
-                    name: 'chosenEmulator',
-                    type: 'list',
-                    message: 'Where would you like to run your app?',
-                    choices,
-                },
-            ]);
+            const response = await inquirerPrompt({
+                name: 'chosenEmulator',
+                type: 'list',
+                message: 'Where would you like to run your app?',
+                choices,
+            });
             if (response.chosenEmulator) {
                 const dev = activeDevices.find((d: any) => d.name === response.chosenEmulator);
                 await _runGradleApp(c, platform, dev);
@@ -246,7 +241,7 @@ const _checkSigningCerts = async (c: Context) => {
         }
         logWarning(msg);
 
-        const { confirm } = await inquirer.prompt({
+        const { confirm } = await inquirerPrompt({
             type: 'confirm',
             name: 'confirm',
             message: 'Do you want to configure it now?',
@@ -297,23 +292,23 @@ const _checkSigningCerts = async (c: Context) => {
                     storeFile = result?.storeFile;
                 }
 
-                const { storePassword, keyAlias, keyPassword } = await inquirer.prompt([
-                    {
-                        type: 'password',
-                        name: 'storePassword',
-                        message: 'storePassword',
-                    },
-                    {
-                        type: 'input',
-                        name: 'keyAlias',
-                        message: 'keyAlias',
-                    },
-                    {
-                        type: 'password',
-                        name: 'keyPassword',
-                        message: 'keyPassword',
-                    },
-                ]);
+                const { storePassword } = await inquirerPrompt({
+                    type: 'password',
+                    name: 'storePassword',
+                    message: 'storePassword',
+                });
+
+                const { keyAlias } = await inquirerPrompt({
+                    type: 'input',
+                    name: 'keyAlias',
+                    message: 'keyAlias',
+                });
+
+                const { keyPassword } = await inquirerPrompt({
+                    type: 'password',
+                    name: 'keyPassword',
+                    message: 'keyPassword',
+                });
 
                 if (confirmNewKeystore) {
                     const keystorePath = path.join(c.paths.workspace.appConfig.dir, 'release.keystore');

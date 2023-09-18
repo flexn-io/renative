@@ -1,5 +1,4 @@
 import path from 'path';
-import inquirer from 'inquirer';
 
 import {
     removeDirs,
@@ -13,6 +12,7 @@ import {
     PARAMS,
     isSystemWin,
     RnvTaskFn,
+    inquirerPrompt,
 } from '@rnv/core';
 
 function clearWindowsCacheFiles() {
@@ -118,7 +118,7 @@ export const taskRnvClean: RnvTaskFn = async (c) => {
 
     if (pathsToRemove.length) {
         if (!skipQuestion) {
-            const { confirm } = await inquirer.prompt({
+            const { confirm } = await inquirerPrompt({
                 name: 'confirm',
                 type: 'confirm',
                 message: `Do you want to remove node_module related files/folders? \n${chalk().red(
@@ -134,7 +134,7 @@ export const taskRnvClean: RnvTaskFn = async (c) => {
 
     if (buildDirs.length) {
         if (!skipQuestion) {
-            const { confirmBuilds } = await inquirer.prompt({
+            const { confirmBuilds } = await inquirerPrompt({
                 name: 'confirmBuilds',
                 type: 'confirm',
                 message: `Do you want to clean your platformBuilds and platformAssets? \n${chalk().red(
@@ -150,7 +150,7 @@ export const taskRnvClean: RnvTaskFn = async (c) => {
 
     if (localFiles.length) {
         if (!skipQuestion) {
-            const { confirmLocals } = await inquirer.prompt({
+            const { confirmLocals } = await inquirerPrompt({
                 name: 'confirmLocals',
                 type: 'confirm',
                 message: `Do you want to clean local files? \n${chalk().red(localFiles.join('\n'))}`,
@@ -163,7 +163,7 @@ export const taskRnvClean: RnvTaskFn = async (c) => {
     }
 
     if (!skipQuestion) {
-        const { confirmCache } = await inquirer.prompt({
+        const { confirmCache } = await inquirerPrompt({
             name: 'confirmCache',
             type: 'confirm',
             message: 'Do you want to clean your npm/bundler cache?',

@@ -25,6 +25,9 @@ export const generateApiDefaults = (): RnvApi => ({
         pressAnyKeyToContinue: async () => {
             //NOOP
         },
+        inquirerSeparator() {
+            //NOOP
+        },
     },
     spinner: spinner,
     fsExistsSync,

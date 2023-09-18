@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import lSet from 'lodash.set';
 import path from 'path';
 import semver from 'semver';
@@ -34,6 +33,7 @@ import {
     RnvContext,
     RenativeConfigFile,
     getApi,
+    inquirerPrompt,
 } from '@rnv/core';
 
 const highlight = chalk().green;
@@ -186,7 +186,7 @@ const interactiveQuestion = async (
                     choices: Object.keys(choicesObj),
                 };
                 // eslint-disable-next-line no-await-in-loop
-                const result = await inquirer.prompt(inqQuestion);
+                const result = await inquirerPrompt(inqQuestion);
                 const val = q.type === 'list' ? choicesObj[result[qKeyClean]]?.value : result[qKeyClean];
                 results[qKey] = {
                     answer: result[qKeyClean],
@@ -224,7 +224,7 @@ export const taskRnvNew = async (c: RnvContext) => {
 
     if (fsExistsSync(c.paths.project.config)) {
         logWarning(`You are in ReNative project. Found: ${c.paths.project.config}`);
-        const { confirmInRnvProject } = await inquirer.prompt({
+        const { confirmInRnvProject } = await inquirerPrompt({
             name: 'confirmInRnvProject',
             type: 'confirm',
             message: 'Are you sure you want to continue?',
@@ -238,7 +238,7 @@ export const taskRnvNew = async (c: RnvContext) => {
         logWarning(
             `Found node_modules directory at your location. If you continue it will be deleted: ${c.paths.project.nodeModulesDir}`
         );
-        const { confirmDeleteNodeModules } = await inquirer.prompt({
+        const { confirmDeleteNodeModules } = await inquirerPrompt({
             name: 'confirmDeleteNodeModules',
             type: 'confirm',
             message: 'Are you sure you want to continue?',
@@ -271,7 +271,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     if (projectName && projectName !== '') {
         inputProjectName = projectName;
     } else {
-        const inputProjectNameObj = await inquirer.prompt({
+        const inputProjectNameObj = await inquirerPrompt({
             name: 'inputProjectName',
             type: 'input',
             validate: (value) => !!value,
@@ -284,7 +284,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     c.paths.project.dir = path.join(c.paths.CURRENT_DIR, data.projectName.replace(/(\s+)/g, '_'));
 
     if (fsExistsSync(c.paths.project.dir)) {
-        const { confirm } = await inquirer.prompt({
+        const { confirm } = await inquirerPrompt({
             type: 'confirm',
             name: 'confirm',
             message: `Folder ${c.paths.project.dir} already exists. RNV will override it. Continue?`,
@@ -309,38 +309,37 @@ export const taskRnvNew = async (c: RnvContext) => {
         inputAppID = id;
         inputVersion = appVersion;
     } else {
-        const answers = await inquirer.prompt([
-            {
-                name: 'inputAppTitle',
-                type: 'input',
-                default: data.defaultAppTitle,
-                validate: (val) => !!val || 'Please enter a title',
-                message: "What's your project Title?",
+        const answer1 = await inquirerPrompt({
+            name: 'inputAppTitle',
+            type: 'input',
+            default: data.defaultAppTitle,
+            validate: (val) => !!val || 'Please enter a title',
+            message: "What's your project Title?",
+        });
+        const answer2 = await inquirerPrompt({
+            name: 'inputAppID',
+            type: 'input',
+            default: () => {
+                data.appID = `com.mycompany.${inputProjectName.replace(/\s+/g, '').toLowerCase()}`;
+                return data.appID;
             },
-            {
-                name: 'inputAppID',
-                type: 'input',
-                default: () => {
-                    data.appID = `com.mycompany.${inputProjectName.replace(/\s+/g, '').toLowerCase()}`;
-                    return data.appID;
-                },
-                validate: (appId) =>
-                    !!appId.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/) || 'Please enter a valid appID (com.test.app)',
-                message: "What's your App ID?",
-            },
-            {
-                name: 'inputVersion',
-                type: 'input',
-                default: data.defaultVersion,
-                validate: (v) =>
-                    !!semver.valid(semver.coerce(v)) ||
-                    'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
-                message: "What's your Version?",
-            },
-        ]);
-        inputAppTitle = answers?.inputAppTitle;
-        inputAppID = answers?.inputAppID;
-        inputVersion = answers?.inputVersion;
+            validate: (appId) =>
+                !!appId.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/) || 'Please enter a valid appID (com.test.app)',
+            message: "What's your App ID?",
+        });
+
+        const answer3 = await inquirerPrompt({
+            name: 'inputVersion',
+            type: 'input',
+            default: data.defaultVersion,
+            validate: (v) =>
+                !!semver.valid(semver.coerce(v)) ||
+                'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
+            message: "What's your Version?",
+        });
+        inputAppTitle = answer1?.inputAppTitle;
+        inputAppID = answer2?.inputAppID;
+        inputVersion = answer3?.inputVersion;
     }
 
     // ==================================================
@@ -352,15 +351,13 @@ export const taskRnvNew = async (c: RnvContext) => {
     } else if (ci) {
         inputWorkspace = data.defaultWorkspace;
     } else {
-        const answer = await inquirer.prompt([
-            {
-                name: 'inputWorkspace',
-                type: 'list',
-                message: 'What workspace to use?',
-                default: data.defaultWorkspace,
-                choices: data.optionWorkspaces.keysAsArray,
-            },
-        ]);
+        const answer = await inquirerPrompt({
+            name: 'inputWorkspace',
+            type: 'list',
+            message: 'What workspace to use?',
+            default: data.defaultWorkspace,
+            choices: data.optionWorkspaces.keysAsArray,
+        });
 
         inputWorkspace = answer?.inputWorkspace;
     }
@@ -397,7 +394,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     if (projectTemplate && projectTemplate !== '') {
         selectedInputTemplate = projectTemplate;
     } else {
-        const { inputTemplate } = await inquirer.prompt({
+        const { inputTemplate } = await inquirerPrompt({
             name: 'inputTemplate',
             type: 'list',
             message: 'What template to use?',
@@ -406,7 +403,7 @@ export const taskRnvNew = async (c: RnvContext) => {
         });
 
         if (inputTemplate === customTemplate) {
-            const { inputTemplateCustom } = await inquirer.prompt({
+            const { inputTemplateCustom } = await inquirerPrompt({
                 name: 'inputTemplateCustom',
                 type: 'input',
                 message: 'Type exact name of your template NPM package.',
@@ -443,7 +440,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     }
 
     if (!data.optionTemplates.keysAsArray?.includes(selectedInputTemplate)) {
-        const { confirmAddTemplate } = await inquirer.prompt({
+        const { confirmAddTemplate } = await inquirerPrompt({
             name: 'confirmAddTemplate',
             type: 'confirm',
             message: `Would you like to add ${chalk().white(selectedInputTemplate)} to your ${
@@ -488,7 +485,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     if (platform && platform !== '') {
         inputSupportedPlatforms = platform.split(',');
     } else {
-        const answer = await inquirer.prompt({
+        const answer = await inquirerPrompt({
             name: 'inputSupportedPlatforms',
             type: 'checkbox',
             pageSize: 20,
@@ -542,7 +539,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     // INPUT: Git Enabled
     // ==================================================
     if (gitEnabled === undefined && !ci) {
-        const response = await inquirer.prompt({
+        const response = await inquirerPrompt({
             name: 'gitEnabled',
             type: 'confirm',
             message: 'Do you want to set-up git in your new project?',
@@ -569,7 +566,7 @@ export const taskRnvNew = async (c: RnvContext) => {
 
     _prepareProjectOverview(c, data);
     if (!ci) {
-        const { confirm } = await inquirer.prompt({
+        const { confirm } = await inquirerPrompt({
             type: 'confirm',
             name: 'confirm',
             message: `\n${data.confirmString}\nIs all this correct?`,

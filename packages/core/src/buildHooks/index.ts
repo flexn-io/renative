@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import path from 'path';
 import { build } from 'esbuild';
 import { logDebug, logError, logHook, logInfo } from '../logger';
@@ -6,6 +5,7 @@ import { fsExistsSync, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getConfigProp } from '../common';
 import { doResolve } from '../system/resolve';
 import { RnvContext } from '../context/types';
+import { inquirerPrompt } from '../api';
 
 export const executePipe = async (c: RnvContext, key: string) => {
     logHook('executePipe', c?.program?.json ? key : `('${key}')`);
@@ -53,7 +53,7 @@ export const buildHooks = async (c: RnvContext) => {
         if (c.program.yes) {
             confirmed = true;
         } else {
-            const { confirm } = await inquirer.prompt({
+            const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'confirm',
                 message: 'Build hooks not configured in this project. Configure?',

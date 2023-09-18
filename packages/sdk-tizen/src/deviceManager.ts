@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import net from 'net';
 import path from 'path';
 import {
@@ -16,6 +15,7 @@ import {
     logToSummary,
     logWarning,
     waitForExecCLI,
+    inquirerPrompt,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
@@ -264,13 +264,11 @@ export const runTizenSimOrDevice = async (
     if (!tId) return Promise.reject(`Tizen platform requires "id" filed in platforms.tizen`);
 
     const askForEmulator = async () => {
-        const { startEmulator } = await inquirer.prompt([
-            {
-                name: 'startEmulator',
-                type: 'confirm',
-                message: `Could not find or connect to the specified target (${target}). Would you like to start an emulator?`,
-            },
-        ]);
+        const { startEmulator } = await inquirerPrompt({
+            name: 'startEmulator',
+            type: 'confirm',
+            message: `Could not find or connect to the specified target (${target}). Would you like to start an emulator?`,
+        });
 
         if (startEmulator) {
             const defaultTarget = c.files.workspace.config.defaultTargets[platform];
@@ -395,14 +393,12 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         }
         if (devices.length > 1) {
             const choices = _composeDevicesString(devices);
-            const { chosenEmulator } = await inquirer.prompt([
-                {
-                    name: 'chosenEmulator',
-                    type: 'list',
-                    message: 'On what emulator would you like to run the app?',
-                    choices,
-                },
-            ]);
+            const { chosenEmulator } = await inquirerPrompt({
+                name: 'chosenEmulator',
+                type: 'list',
+                message: 'On what emulator would you like to run the app?',
+                choices,
+            });
             deviceID = chosenEmulator;
             return continueLaunching();
         }

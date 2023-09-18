@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import {
     writeFileSync,
     logTask,
@@ -10,6 +9,7 @@ import {
     getTemplateOptions,
     RnvContext,
     RnvTaskFn,
+    inquirerPrompt,
 } from '@rnv/core';
 
 const _writeObjectSync = (c: RnvContext, p: string, s: string) => {
@@ -38,7 +38,7 @@ export const taskRnvTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) 
 
     const opts = getTemplateOptions(c);
 
-    const { template } = await inquirer.prompt({
+    const { template } = await inquirerPrompt({
         type: 'list',
         message: 'Pick which template to install',
         name: 'template',

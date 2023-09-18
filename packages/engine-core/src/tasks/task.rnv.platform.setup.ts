@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import {
     TASK_PLATFORM_SETUP,
     TASK_PROJECT_CONFIGURE,
@@ -7,6 +6,7 @@ import {
     logTask,
     executeTask,
     RnvTaskFn,
+    inquirerPrompt,
 } from '@rnv/core';
 
 export const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -16,7 +16,7 @@ export const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask
 
     const currentPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
 
-    const { inputSupportedPlatforms } = await inquirer.prompt({
+    const { inputSupportedPlatforms } = await inquirerPrompt({
         name: 'inputSupportedPlatforms',
         type: 'checkbox',
         pageSize: 20,

@@ -1,6 +1,4 @@
-// import semver from 'semver';
 import path from 'path';
-import inquirer from 'inquirer';
 import { executeAsync, commandExistsSync } from '../system/exec';
 import {
     fsExistsSync,
@@ -132,7 +130,7 @@ export const listAndSelectNpmVersion = async (c: RnvContext, npmPackage: string)
         recommendedVersion = validVersions[0];
     }
 
-    const { inputTemplateVersion } = await inquirer.prompt({
+    const { inputTemplateVersion } = await inquirerPrompt({
         name: 'inputTemplateVersion',
         type: 'list',
         message: `What ${npmPackage} version to use?`,

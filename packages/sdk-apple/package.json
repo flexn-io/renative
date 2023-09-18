@@ -32,7 +32,6 @@
         "@react-native-community/cli": "^11.3.0",
         "@react-native-community/cli-platform-ios": "^11.3.0",
         "compare-versions": "3.6.0",
-        "inquirer": "8.2.0",
         "ios-mobileprovision-finder": "1.1.0",
         "shell-quote": "1.8.1",
         "xcode": "2.1.0"

@@ -1,5 +1,4 @@
 import path from 'path';
-import inquirer from 'inquirer';
 import {
     fsExistsSync,
     getRealPath,
@@ -18,6 +17,7 @@ import {
     isUrlLocalhost,
     RnvContext,
     waitForExecCLI,
+    inquirerPrompt,
 } from '@rnv/core';
 import { WebosDevice } from './types';
 import {
@@ -180,14 +180,12 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
 
         if (!actualDevices.length) {
             // No device configured. Asking to configure
-            const response = await inquirer.prompt([
-                {
-                    type: 'confirm',
-                    name: 'setupDevice',
-                    message: 'You want to deploy on a device but have none configured. Do you want to configure one?',
-                    default: false,
-                },
-            ]);
+            const response = await inquirerPrompt({
+                type: 'confirm',
+                name: 'setupDevice',
+                message: 'You want to deploy on a device but have none configured. Do you want to configure one?',
+                default: false,
+            });
 
             if (response.setupDevice) {
                 // Yes, I would like that
@@ -227,14 +225,12 @@ export const runWebosSimOrDevice = async (c: RnvContext) => {
         if (activeDevices.length > 1) {
             // More than one, choosing
             const choices = buildDeviceChoices(devices);
-            const response = await inquirer.prompt([
-                {
-                    name: 'chosenDevice',
-                    type: 'list',
-                    message: 'What device would you like to start the app?',
-                    choices,
-                },
-            ]);
+            const response = await inquirerPrompt({
+                name: 'chosenDevice',
+                type: 'list',
+                message: 'What device would you like to start the app?',
+                choices,
+            });
             if (response.chosenDevice) {
                 return installAndLaunchApp(c, response.chosenDevice, appPath, tId);
             }

@@ -1,4 +1,3 @@
-import inquirer from 'inquirer';
 import {
     logTask,
     applyTemplate,
@@ -9,6 +8,7 @@ import {
     TASK_APP_CONFIGURE,
     PARAMS,
     RnvTaskFn,
+    inquirerPrompt,
 } from '@rnv/core';
 
 export const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -30,7 +30,7 @@ export const taskRnvTemplateApply: RnvTaskFn = async (c, _parentTask, originTask
     }
     const opts = getInstalledTemplateOptions(c);
 
-    const { template } = await inquirer.prompt({
+    const { template } = await inquirerPrompt({
         type: 'list',
         message: 'Pick which template to install',
         name: 'template',

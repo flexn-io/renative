@@ -7,10 +7,7 @@ import { generateMockConfig } from '../../../jest-preset-rnv/mocks';
 jest.mock('fs');
 jest.mock('child_process');
 jest.mock('@rnv/core');
-
-jest.mock('inquirer', () => ({
-    prompt: () => true,
-}));
+jest.mock('inquirer');
 
 // jest.mock('../../src/core/engineManager/index.ts', () => ({
 //     // getEngineConfigByPlatform: () => ({

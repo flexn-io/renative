@@ -1,6 +1,5 @@
 import child_process, { ExecFileOptions } from 'child_process';
 import crypto from 'crypto';
-import inquirer from 'inquirer';
 import path from 'path';
 import {
     fsExistsSync,
@@ -30,6 +29,7 @@ import {
     logDebug,
     logSuccess,
     logRaw,
+    inquirerPrompt,
 } from '@rnv/core';
 import { getAppleDevices, launchAppleSimulator } from './deviceManager';
 
@@ -246,7 +246,7 @@ export const runXcodeProject = async (c: Context) => {
                 value: v,
             }));
 
-            const { sim } = await inquirer.prompt({
+            const { sim } = await inquirerPrompt({
                 name: 'sim',
                 message: 'Select the device you want to launch on',
                 type: 'list',
@@ -269,7 +269,7 @@ export const runXcodeProject = async (c: Context) => {
             value: v,
         }));
 
-        const { sim } = await inquirer.prompt({
+        const { sim } = await inquirerPrompt({
             name: 'sim',
             message: 'Select the device you want to launch on',
             type: 'list',
@@ -283,7 +283,7 @@ export const runXcodeProject = async (c: Context) => {
         // check if the default sim is available
         const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
         if (!desiredSim) {
-            const { sim } = await inquirer.prompt({
+            const { sim } = await inquirerPrompt({
                 name: 'sim',
                 message: `We couldn't find ${c.runtime.target} as a device supported by the current version of your Xcode. Please select another sim`,
                 type: 'list',
@@ -305,7 +305,7 @@ export const runXcodeProject = async (c: Context) => {
             } default target for platform ${c.platform}`;
             const actionNoUpdate = "Don't update";
 
-            const { chosenAction } = await inquirer.prompt({
+            const { chosenAction } = await inquirerPrompt({
                 message: 'What to do next?',
                 type: 'list',
                 name: 'chosenAction',
@@ -408,7 +408,7 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
         if (e && e.includes) {
             const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
             if (isDeviceLocked) {
-                await inquirer.prompt({
+                await inquirerPrompt({
                     message: 'Unlock your device and press ENTER',
                     type: 'confirm',
                     name: 'confirm',
@@ -427,7 +427,7 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
                         getConfigProp(c, c.platform, 'teamID')
                     )}`
                 );
-                const { confirm } = await inquirer.prompt({
+                const { confirm } = await inquirerPrompt({
                     name: 'confirm',
                     message: 'Do you want to register it?',
                     type: 'confirm',
@@ -488,7 +488,7 @@ const _handleMissingTeam = async (c: Context, e: any) => {
       'https://developer.apple.com/account/#/overview/YOUR-TEAM-ID'
   )}
 Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.config})`);
-        const { confirm } = await inquirer.prompt({
+        const { confirm } = await inquirerPrompt({
             name: 'confirm',
             message: 'Apple Team ID',
             type: 'input',
@@ -525,7 +525,7 @@ ${chalk().white(
 )} Open generated project in Xcode: ${workspacePath} and debug from there (Sometimes this helps for the first-time builds)
 ${proAutoText}`);
     if (isProvAutomatic) return false;
-    const { confirmAuto } = await inquirer.prompt({
+    const { confirmAuto } = await inquirerPrompt({
         name: 'confirmAuto',
         message: 'Switch to automatic signing?',
         type: 'confirm',

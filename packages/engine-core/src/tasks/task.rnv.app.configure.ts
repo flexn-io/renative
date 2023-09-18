@@ -1,5 +1,4 @@
 import path from 'path';
-import inquirer from 'inquirer';
 
 import {
     chalk,
@@ -19,6 +18,7 @@ import {
     updateRenativeConfigs,
     inquirerPrompt,
     RnvContext,
+    inquirerSeparator,
 } from '@rnv/core';
 
 const _loadAppConfigIDfromDir = (dirName: string, appConfigsDir: string) => {
@@ -43,7 +43,7 @@ const _askUserAboutConfigs = async (c: RnvContext, dir: string, id: string, base
     if (c.program.ci === true) {
         throw new Error('You cannot continue if you set --ci flag. please fix above error first');
     }
-    const { choice } = await inquirer.prompt({
+    const { choice } = await inquirerPrompt({
         type: 'list',
         name: 'choice',
         message: 'You must choose what you want to keep',
@@ -56,7 +56,7 @@ const _askUserAboutConfigs = async (c: RnvContext, dir: string, id: string, base
                 name: `Keep folder name (${dir}) and rename the ID from renative.json (${id} -> ${dir})`,
                 value: 'keepFolder',
             },
-            new inquirer.Separator(),
+            inquirerSeparator(),
             {
                 name: "I'll do it manually",
                 value: 'manually',

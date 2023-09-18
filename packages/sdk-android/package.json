@@ -30,8 +30,7 @@
     },
     "dependencies": {
         "@react-native-community/cli": "^11.3.0",
-        "@react-native-community/cli-platform-android": "^11.3.0",
-        "inquirer": "8.2.0"
+        "@react-native-community/cli-platform-android": "^11.3.0"
     },
     "peerDependencies": {
         "@rnv/core": "^0.38.0-canary.1"

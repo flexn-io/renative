@@ -1,5 +1,4 @@
 import path from 'path';
-import inquirer from 'inquirer';
 import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import {
     copyFolderContentsRecursiveSync,
@@ -20,7 +19,7 @@ import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from
 import { doResolve } from '../system/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../npm';
 import { RnvContext } from '../context/types';
-import { generateOptions } from '../api';
+import { generateOptions, inquirerPrompt } from '../api';
 import { PromptOptions } from '../api/types';
 
 export const checkIfTemplateConfigured = async (c: RnvContext) => {
@@ -345,7 +344,7 @@ export const applyTemplate = async (c: RnvContext, selectedTemplate?: string) =>
         const opts = getInstalledTemplateOptions(c);
 
         if (opts) {
-            const { template } = await inquirer.prompt({
+            const { template } = await inquirerPrompt({
                 type: 'list',
                 name: 'template',
                 message: 'Pick which template to apply',

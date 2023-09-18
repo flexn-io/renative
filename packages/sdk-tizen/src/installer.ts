@@ -1,5 +1,4 @@
 import path from 'path';
-import inquirer from 'inquirer';
 import {
     TIZEN,
     TIZEN_MOBILE,
@@ -19,6 +18,7 @@ import {
     logInfo,
     generateBuildConfig,
     RnvContext,
+    inquirerPrompt,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, SDK_PLATFORMS, TIZEN_SDK } from './constants';
 
@@ -105,7 +105,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
         logSuccess(`Found existing ${c.platform} SDK location at ${chalk().white(result)}`);
         let confirmSdk = true;
         if (!c.program.ci) {
-            const { confirm } = await inquirer.prompt({
+            const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'confirm',
                 message: 'Do you want to use it?',

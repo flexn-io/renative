@@ -1,6 +1,5 @@
 import path from 'path';
 import child_process from 'child_process';
-import inquirer from 'inquirer';
 import os from 'os';
 import {
     fsExistsSync,
@@ -26,6 +25,7 @@ import {
     USER_HOME_DIR,
     RnvContext,
     waitForExecCLI,
+    inquirerPrompt,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
@@ -58,14 +58,12 @@ export const launchAndroidSimulator = async (
 
         const devicesString = composeDevicesString(list, true);
         const choices = devicesString;
-        const response = await inquirer.prompt([
-            {
-                name: 'chosenEmulator',
-                type: 'list',
-                message: 'What emulator would you like to start?',
-                choices,
-            },
-        ]);
+        const response = await inquirerPrompt({
+            name: 'chosenEmulator',
+            type: 'list',
+            message: 'What emulator would you like to start?',
+            choices,
+        });
         newTarget = response.chosenEmulator;
     } else {
         newTarget = target;
@@ -515,7 +513,7 @@ export const askForNewEmulator = async (c: RnvContext, platform: string) => {
     logTask('askForNewEmulator');
     const emuName = c.files.workspace.config.defaultTargets[platform];
 
-    const { confirm } = await inquirer.prompt({
+    const { confirm } = await inquirerPrompt({
         name: 'confirm',
         type: 'confirm',
         message: `Do you want ReNative to create new Emulator (${chalk().white(emuName)}) for you?`,
