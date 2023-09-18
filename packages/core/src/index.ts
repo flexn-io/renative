@@ -2,7 +2,7 @@ import 'regenerator-runtime/runtime';
 import 'source-map-support/register';
 
 export * from './api';
-export * from './context/context';
+export * from './context';
 export * from './engines';
 export * from './platforms';
 export * from './plugins';
@@ -39,4 +39,5 @@ export * from './projects/types';
 export * from './configs/types';
 export * from './tasks/types';
 export * from './system/types';
+export * from './api/types';
 export * from './types';

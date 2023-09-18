@@ -1,41 +1,9 @@
 import { RenativeConfigFile } from '../configs/types';
 import { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import { OverridesOptions } from '../system/types';
-import { PromptRenderFn, RnvPlatform } from '../types';
-
-//TODO: move
-export type RnvContextSpinner = (msg: string | { text: string }) => {
-    start: RnvContextSpinner;
-    fail: RnvContextSpinner;
-    succeed: RnvContextSpinner;
-    text: string;
-};
-
-//TODO: type this properly
-export type RnvContextPrompt = {
-    inquirerPrompt: (options: {
-        name?: string;
-        type: string;
-        message?: string;
-        choices?: Array<string>;
-        validate?: (i: string) => string | boolean;
-        logMessage?: string;
-        warningMessage?: string;
-        default?: any;
-        pageSize?: number;
-    }) => Promise<any>;
-    generateOptions: (inputData: any, isMultiChoice?: boolean, mapping?: any, renderMethod?: PromptRenderFn) => any;
-    pressAnyKeyToContinue: () => Promise<any>;
-};
-
-export type RnvContextAnalytics = {
-    captureEvent: (ops: { type: string; platform?: string; template?: string; platforms?: Array<string> }) => void;
-};
+import { RnvPlatform } from '../types';
 
 export interface RnvContext<Payload = any> {
-    spinner: RnvContextSpinner;
-    prompt: RnvContextPrompt;
-    analytics: RnvContextAnalytics;
     program: any;
     payload: Payload;
     command: string | null;
@@ -61,13 +29,6 @@ export interface RnvContext<Payload = any> {
     _renativePluginCache: any;
     cli: any;
     buildHooks: Record<string, (c: RnvContext) => Promise<void>>;
-    api: {
-        fsExistsSync: any;
-        fsReadFileSync: any;
-        fsReaddirSync: any;
-        fsWriteFileSync: any;
-        path: any;
-    };
     configPropsInjects: any;
     runtime: {
         platform: string;

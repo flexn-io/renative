@@ -20,8 +20,8 @@ import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from
 import { doResolve } from '../system/resolve';
 import { checkIfProjectAndNodeModulesExists } from '../npm';
 import { RnvContext } from '../context/types';
-import { PromptOptions } from '../types';
 import { generateOptions } from '../api';
+import { PromptOptions } from '../api/types';
 
 export const checkIfTemplateConfigured = async (c: RnvContext) => {
     logTask('checkIfTemplateConfigured');

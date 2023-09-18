@@ -1,6 +1,3 @@
-import { fsExistsSync, fsReadFileSync, fsReaddirSync, fsWriteFileSync } from '../system/fs';
-
-import path from 'path';
 import { RnvContext, RnvContextFileObj, RnvContextPathObj } from './types';
 
 export const generateRnvConfigPathObj = (): RnvContextPathObj => {
@@ -34,30 +31,7 @@ const runtime: any = {
     enginesById: {},
 };
 
-const spinner: any = () => ({
-    start: () => {
-        //NOOP
-    },
-});
-
-export const generateConfigBase = (): RnvContext => ({
-    analytics: {
-        captureEvent: () => {
-            //NOOP
-        },
-    },
-    prompt: {
-        generateOptions() {
-            //NOOP
-        },
-        inquirerPrompt: async () => {
-            //NOOP
-        },
-        pressAnyKeyToContinue: async () => {
-            //NOOP
-        },
-    },
-    spinner: spinner,
+export const generateContextDefaults = (): RnvContext => ({
     payload: {},
     assetConfig: {},
     rnvVersion: '',
@@ -76,13 +50,6 @@ export const generateConfigBase = (): RnvContext => ({
     //==========
     _renativePluginCache: {},
     cli: {},
-    api: {
-        fsExistsSync,
-        fsReadFileSync,
-        fsReaddirSync,
-        fsWriteFileSync,
-        path,
-    },
     configPropsInjects: {},
     runtime,
     paths: {

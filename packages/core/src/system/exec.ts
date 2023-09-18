@@ -4,13 +4,13 @@ import path from 'path';
 import { access, accessSync, constants } from 'fs';
 import execa, { ExecaChildProcess } from 'execa';
 import NClient from 'netcat/client';
-import { getContext } from '../context/context';
-
+import { getContext } from '../context';
 import { chalk, logDebug, logRaw, logError } from '../logging/logger';
 import { fsExistsSync } from './fs';
 import { replaceOverridesInString } from '../utils/utils';
 import { RnvContext } from '../context/types';
 import { ExecCallback, ExecCallback2, ExecOptions } from './types';
+import { getApi } from '../api';
 
 const { exec, execSync } = require('child_process');
 
@@ -79,7 +79,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     const spinner =
         !silent &&
         !mono &&
-        getContext()
+        getApi()
             .spinner({ text: `Executing: ${logMessage}` })
             .start('');
     if (opts.interactive) {
@@ -552,7 +552,7 @@ export const waitForExecCLI = async (
     const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;
     const { maxErrorLength } = c.program;
-    const spinner = getContext().spinner('Waiting for emulator to boot...').start('');
+    const spinner = getApi().spinner('Waiting for emulator to boot...').start('');
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {

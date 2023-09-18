@@ -1,14 +1,16 @@
 import { Analytics } from './analytics';
 import {
+    Api,
     Context,
+    RnvApiPrompt,
+    RnvApiSpinner,
     RnvContext,
-    RnvContextPrompt,
-    RnvContextSpinner,
     checkAndBootstrapIfRequired,
     checkAndMigrateProject,
     configureFilesystem,
     configureRuntimeDefaults,
-    createRnvConfig,
+    createRnvApi,
+    createRnvContext,
     doResolve,
     findSuitableTask,
     getConfigProp,
@@ -16,6 +18,8 @@ import {
     isSystemWin,
     loadEngines,
     loadIntegrations,
+    loadWorkspacesSync,
+    logError,
     logInitialize,
     registerEngine,
     registerMissingPlatformEngines,
@@ -37,8 +41,8 @@ export const executeRnv = async ({
     subCmd: string;
     process: any;
     program: any;
-    spinner: RnvContextSpinner;
-    prompt: RnvContextPrompt;
+    spinner: RnvApiSpinner;
+    prompt: RnvApiPrompt;
 }) => {
     // set mono and ci if json is enabled
     if (program.json) {
@@ -48,7 +52,13 @@ export const executeRnv = async ({
 
     Analytics.initialize();
     configureFilesystem(getConfigProp, doResolve, isSystemWin);
-    const c = createRnvConfig({ program, process, cmd, subCmd, RNV_HOME_DIR });
+    const c = createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
+    // LOAD WORKSPACES
+    try {
+        loadWorkspacesSync(c);
+    } catch (e: any) {
+        logError(e);
+    }
     logInitialize();
 
     //@ts-ignore
@@ -58,9 +68,9 @@ export const executeRnv = async ({
 
     Context.initializeConfig(c);
 
-    c.spinner = spinner;
-    c.prompt = prompt;
-    c.analytics = Analytics;
+    const api = createRnvApi({ spinner, prompt, analytics: Analytics });
+
+    Api.initializeApi(api);
 
     await _executeRnv(c);
 

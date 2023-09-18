@@ -22,4 +22,6 @@ declare global {
     var fetch;
     //eslint-disable-next-line no-var
     var RNV_CONTEXT;
+    //eslint-disable-next-line no-var
+    var RNV_API;
 }

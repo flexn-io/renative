@@ -14,7 +14,7 @@ import {
     inquirerPrompt,
     RN_CLI_CONFIG_NAME,
     parseFonts,
-    getContext,
+    getApi,
 } from '@rnv/core';
 import { copyFileSync } from 'fs';
 
@@ -120,7 +120,7 @@ export const isBundlerActive = async (c: RnvContext) => {
 const poll = (fn: () => Promise<boolean>, timeout = 10000, interval = 1000) => {
     const endTime = Number(new Date()) + timeout;
 
-    const spinner = getContext().spinner('Waiting for bundler to finish...').start('');
+    const spinner = getApi().spinner('Waiting for bundler to finish...').start('');
     const checkCondition = async (resolve: () => void, reject: (e: string) => void) => {
         try {
             const result = await fn();

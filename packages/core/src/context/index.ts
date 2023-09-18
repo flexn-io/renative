@@ -1,0 +1,211 @@
+import { writeFileSync, fsExistsSync, fsReadFileSync } from '../system/fs';
+import { logWarning } from '../logging/logger';
+import { RENATIVE_CONFIG_LOCAL_NAME, RENATIVE_CONFIG_PRIVATE_NAME, configSchema } from '../constants';
+import { RnvContext, RnvContextPathObj } from './types';
+import { generateContextDefaults } from './defaults';
+
+import {
+    RENATIVE_CONFIG_NAME,
+    RENATIVE_CONFIG_RUNTIME_NAME,
+    RENATIVE_CONFIG_WORKSPACES_NAME,
+    RENATIVE_CONFIG_PLUGINS_NAME,
+    RENATIVE_CONFIG_TEMPLATES_NAME,
+    RN_CLI_CONFIG_NAME,
+    RN_BABEL_CONFIG_NAME,
+    // PLATFORMS,
+    USER_HOME_DIR,
+} from '../constants';
+
+import path from 'path';
+import { mkdirSync } from 'fs';
+
+export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {
+    pathObj.dir = dir;
+    pathObj.config = path.join(dir, configName || RENATIVE_CONFIG_NAME);
+    pathObj.configLocal = path.join(dir, RENATIVE_CONFIG_LOCAL_NAME);
+    pathObj.configPrivate = path.join(dir, RENATIVE_CONFIG_PRIVATE_NAME);
+    pathObj.appConfigsDir = path.join(dir, '..');
+};
+
+export const createRnvContext = ({
+    program,
+    process,
+    cmd,
+    subCmd,
+    RNV_HOME_DIR,
+}: {
+    program: any;
+    process: any;
+    cmd: string;
+    subCmd: string;
+    RNV_HOME_DIR: string;
+}) => {
+    const c: RnvContext = generateContextDefaults();
+
+    global.RNV_CONFIG = c;
+
+    c.program = program;
+    c.process = process;
+    c.command = cmd;
+    c.subCommand = subCmd;
+    // c.platformDefaults = PLATFORMS;
+
+    c.paths.rnv.dir = RNV_HOME_DIR;
+
+    //TODO: find better way to deal with linking
+    c.paths.IS_LINKED = path.dirname(RNV_HOME_DIR).split(path.sep).pop() === 'packages';
+    c.paths.CURRENT_DIR = path.resolve('.');
+    c.paths.RNV_NODE_MODULES_DIR = path.join(RNV_HOME_DIR, 'node_modules');
+
+    c.paths.rnv.engines.dir = path.join(c.paths.rnv.dir, 'engineTemplates');
+    c.paths.rnv.pluginTemplates.dir = path.join(c.paths.rnv.dir, 'pluginTemplates');
+
+    c.paths.rnv.pluginTemplates.config = path.join(c.paths.rnv.pluginTemplates.dir, RENATIVE_CONFIG_PLUGINS_NAME);
+    c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'coreTemplateFiles');
+    c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.projectTemplates.dir, RENATIVE_CONFIG_TEMPLATES_NAME);
+    c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
+
+    c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'coreTemplateFiles');
+    c.files.rnv.package = JSON.parse(fsReadFileSync(c.paths.rnv.package).toString());
+
+    c.platform = c.program.platform;
+    c.paths.home.dir = USER_HOME_DIR;
+    c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
+    c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_NAME);
+    c.paths.rnv.configWorkspaces = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_WORKSPACES_NAME);
+
+    if (!fsExistsSync(c.paths.GLOBAL_RNV_DIR)) {
+        mkdirSync(c.paths.GLOBAL_RNV_DIR);
+    }
+
+    generateContextPaths(c.paths.project, c.paths.CURRENT_DIR, c.program.configName);
+
+    c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
+    c.paths.buildHooks.dist.dir = path.join(c.paths.project.dir, 'buildHooks/dist');
+    c.paths.buildHooks.index = path.join(c.paths.buildHooks.dir, 'index.js');
+    c.paths.buildHooks.dist.index = path.join(c.paths.buildHooks.dist.dir, 'index.js');
+    c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
+    c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
+    c.paths.project.appConfigsDir = path.join(c.paths.project.dir, 'appConfigs');
+    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
+    c.paths.project.rnCliConfig = path.join(c.paths.project.dir, RN_CLI_CONFIG_NAME);
+    c.paths.project.babelConfig = path.join(c.paths.project.dir, RN_BABEL_CONFIG_NAME);
+    // c.paths.project.npmLinkPolyfill = path.join(
+    //     c.paths.project.dir,
+    //     'npm_link_polyfill.json'
+    // );
+    c.paths.project.appConfigBase.dir = path.join(c.paths.project.dir, 'appConfigs', 'base');
+    c.paths.project.appConfigBase.pluginsDir = path.join(c.paths.project.appConfigBase.dir, 'plugins');
+    c.paths.project.appConfigBase.fontsDir = path.join(c.paths.project.appConfigBase.dir, 'fonts');
+    c.paths.project.appConfigBase.fontsDirs = [c.paths.project.appConfigBase.fontsDir];
+    c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
+    c.paths.project.assets.runtimeDir = path.join(c.paths.project.assets.dir, 'runtime');
+    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_RUNTIME_NAME);
+    c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
+
+    generateContextPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
+
+    return c;
+};
+
+class ContextCls {
+    // config: RnvContext;
+
+    constructor() {
+        global.RNV_CONTEXT = generateContextDefaults();
+    }
+
+    initializeConfig(c: RnvContext) {
+        global.RNV_CONTEXT = c;
+        return c;
+    }
+
+    getContext(): RnvContext {
+        return global.RNV_CONTEXT;
+    }
+
+    // RNV CONFIG
+    getConfigValueSeparate(key: string, global = false) {
+        const { paths } = this.getContext();
+
+        if (!global && !fsExistsSync(paths.project.config)) return 'N/A'; // string because there might be a setting where we will use null
+        const cfg = global ? require(paths.GLOBAL_RNV_CONFIG) : require(paths.project.config);
+
+        const value = cfg[configSchema[key].key];
+        if (value === undefined) return 'N/A';
+
+        return value;
+    }
+
+    listConfigValue(key: string) {
+        let localVal = this.getConfigValueSeparate(key).toString();
+        let globalVal = this.getConfigValueSeparate(key, true).toString();
+
+        if (globalVal === 'N/A' && configSchema[key].default) {
+            globalVal = configSchema[key].default;
+        }
+        if (localVal === 'N/A') localVal = globalVal;
+
+        const table: Array<Record<string, any>> = [
+            {
+                Key: key,
+                'Global Value': globalVal,
+            },
+        ];
+
+        if (localVal !== 'N/A') {
+            table[0]['Project Value'] = localVal;
+        }
+
+        return table;
+    }
+
+    isConfigValueValid(key: string, value: string | boolean) {
+        const keySchema = configSchema[key];
+        if (!keySchema) {
+            logWarning(`Unknown config param ${key}`);
+            return false;
+        }
+
+        if (keySchema.values && !keySchema.values.includes(value)) {
+            logWarning(`Unsupported value provided for ${key}. Correct values are ${keySchema.values.join(', ')}`);
+            return false;
+        }
+
+        return true;
+    }
+
+    setConfigValue(key: string, value: string | boolean) {
+        const {
+            program: { global },
+            paths,
+        } = this.getContext();
+
+        if (this.isConfigValueValid(key, value)) {
+            let isValid = value;
+            const configPath = global ? paths.GLOBAL_RNV_CONFIG : paths.project.config;
+            const config = require(configPath);
+
+            if (typeof isValid === 'string') {
+                if (['true', 'false'].includes(isValid)) isValid = isValid === 'true'; // convert string to bool if it matches a bool value
+            }
+
+            config[configSchema[key].key] = isValid;
+            writeFileSync(configPath, config);
+            return true;
+        }
+        return false;
+    }
+
+    get isAnalyticsEnabled() {
+        return this.getContext().buildConfig?.enableAnalytics;
+    }
+}
+
+const Context = new ContextCls();
+
+export const getContext = (): RnvContext => {
+    return Context.getContext();
+};
+
+export { Context };

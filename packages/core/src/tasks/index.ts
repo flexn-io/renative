@@ -13,8 +13,7 @@ import { TASK_CONFIGURE_SOFT } from '../constants';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engines/types';
-import { inquirerPrompt, pressAnyKeyToContinue } from '../api';
-import { getContext } from '../context/context';
+import { getApi, inquirerPrompt, pressAnyKeyToContinue } from '../api';
 
 let executedTasks: Record<string, number> = {};
 
@@ -31,7 +30,7 @@ export const initializeTask = async (c: RnvContext, task: string) => {
     c.runtime.task = task;
     executedTasks = {};
 
-    getContext().analytics.captureEvent({
+    getApi().analytics.captureEvent({
         type: `${task}Project`,
         platform: c.platform,
     });

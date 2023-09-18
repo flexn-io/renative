@@ -1,19 +1,57 @@
-import { getContext } from '../context/context';
-import { RnvContextPrompt } from '../context/types';
+import { RnvApi, RnvApiPrompt, RnvApiSpinner, RnvContextAnalytics } from './types';
+import { generateApiDefaults } from './defaults';
 
-export const inquirerPrompt: RnvContextPrompt['inquirerPrompt'] = (opts) => {
-    return getContext().prompt.inquirerPrompt(opts);
+class ApiCls {
+    // config: RnvContext;
+
+    constructor() {
+        global.RNV_API = generateApiDefaults();
+    }
+
+    initializeApi(c: RnvApi) {
+        global.RNV_API = c;
+        return c;
+    }
+
+    getApi(): RnvApi {
+        return global.RNV_API;
+    }
+}
+
+export const createRnvApi = ({
+    spinner,
+    prompt,
+    analytics,
+}: {
+    spinner: RnvApiSpinner;
+    prompt: RnvApiPrompt;
+    analytics: RnvContextAnalytics;
+}) => {
+    const api: RnvApi = generateApiDefaults();
+
+    api.spinner = spinner;
+    api.prompt = prompt;
+    api.analytics = analytics;
+
+    return api;
 };
 
-export const generateOptions: RnvContextPrompt['generateOptions'] = (
-    inputData,
-    isMultiChoice,
-    mapping,
-    renderMethod
-) => {
-    return getContext().prompt.generateOptions(inputData, isMultiChoice, mapping, renderMethod);
+const Api = new ApiCls();
+
+export { Api };
+
+export const getApi = (): RnvApi => {
+    return Api.getApi();
 };
 
-export const pressAnyKeyToContinue: RnvContextPrompt['pressAnyKeyToContinue'] = () => {
-    return getContext().prompt.pressAnyKeyToContinue();
+export const inquirerPrompt: RnvApiPrompt['inquirerPrompt'] = (opts) => {
+    return getApi().prompt.inquirerPrompt(opts);
+};
+
+export const generateOptions: RnvApiPrompt['generateOptions'] = (inputData, isMultiChoice, mapping, renderMethod) => {
+    return getApi().prompt.generateOptions(inputData, isMultiChoice, mapping, renderMethod);
+};
+
+export const pressAnyKeyToContinue: RnvApiPrompt['pressAnyKeyToContinue'] = () => {
+    return getApi().prompt.pressAnyKeyToContinue();
 };

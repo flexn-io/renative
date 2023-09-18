@@ -33,7 +33,7 @@ import {
     listAndSelectNpmVersion,
     RnvContext,
     RenativeConfigFile,
-    getContext,
+    getApi,
 } from '@rnv/core';
 
 const highlight = chalk().green;
@@ -584,7 +584,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     // Setup Project
 
     try {
-        await getContext().analytics.captureEvent({
+        await getApi().analytics.captureEvent({
             type: 'newProject',
             template: selectedInputTemplate,
             platforms: inputSupportedPlatforms,

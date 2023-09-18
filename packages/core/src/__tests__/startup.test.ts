@@ -1,4 +1,5 @@
-import { createRnvConfig, generateBuildConfig } from '../configManager';
+import { generateBuildConfig } from '../configs';
+import { createRnvContext } from '../context';
 import { getAppVersionCode } from '../common';
 
 jest.mock('fs');
@@ -8,7 +9,13 @@ let c;
 
 describe('Bootstrapping the CLI', () => {
     beforeAll(() => {
-        c = createRnvConfig({ program: true }, { process: true }, 'command', 'subcommand');
+        c = createRnvContext({
+            program: { program: true },
+            process: { process: true },
+            cmd: 'command',
+            subCmd: 'subcommand',
+            RNV_HOME_DIR: '',
+        });
         generateBuildConfig(c);
     });
 

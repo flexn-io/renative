@@ -19,7 +19,7 @@ import * as Resolver from './system/resolve';
 import * as Common from './common';
 import * as Utils from './utils/utils';
 import * as Constants from './constants';
-import { Context } from './context/context';
+import { Context } from './context';
 
 export {
     // MANAGERS
