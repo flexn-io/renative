@@ -36,8 +36,6 @@ import {
     inquirerPrompt,
 } from '@rnv/core';
 
-const highlight = chalk().green;
-
 type NewProjectData = {
     appTitle?: string;
     inputAppTitle?: string;
@@ -86,6 +84,8 @@ const _prepareProjectOverview = (c: RnvContext, data: NewProjectData) => {
     data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
     data.version = data.inputVersion || data.defaultVersion;
     const tempString = `${data.optionTemplates.selectedOption}@${data.optionTemplates.selectedVersion}`;
+
+    const highlight = chalk().green;
 
     let str = printBoxStart('🚀  ReNative Project Generator');
     str += printIntoBox('');
