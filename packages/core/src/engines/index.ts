@@ -24,7 +24,7 @@ export const registerEngine = async (
 ) => {
     logTask(`registerEngine:${engine.config.id}`);
     c.runtime.enginesById[engine.config.id] = engine;
-    engine.initializeRuntimeConfig(c);
+    // engine.initializeRuntimeConfig(c);
 
     c.runtime.enginesByIndex.push(engine);
     if (engConfig?.packageName) {

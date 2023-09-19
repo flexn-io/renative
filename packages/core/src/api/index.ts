@@ -9,22 +9,6 @@ import {
 } from './types';
 import { generateApiDefaults } from './defaults';
 
-class ApiCls {
-    constructor() {
-        global.RNV_API = generateApiDefaults();
-    }
-
-    initializeApi(api: RnvApi) {
-        global.RNV_API = api;
-
-        return api;
-    }
-
-    getApi(): RnvApi {
-        return global.RNV_API;
-    }
-}
-
 export const createRnvApi = ({
     spinner,
     prompt,
@@ -48,12 +32,10 @@ export const createRnvApi = ({
     return api;
 };
 
-const Api = new ApiCls();
-
-export { Api };
+global.RNV_API = generateApiDefaults();
 
 export const getApi = (): RnvApi => {
-    return Api.getApi();
+    return RNV_API;
 };
 
 export const inquirerPrompt: RnvApiPrompt['inquirerPrompt'] = (opts) => {

@@ -4,7 +4,7 @@ import axios from 'axios';
 import os from 'os';
 import path from 'path';
 
-import { Context } from '@rnv/core';
+import { getContext } from '@rnv/core';
 //@ts-ignore
 import pkg from '../../package.json';
 import { REDASH_KEY, REDASH_URL, SENTRY_ENDPOINT } from '../constants';
@@ -53,8 +53,12 @@ export class AnalyticsCls {
         this.knowItAll = null;
     }
 
+    get isAnalyticsEnabled() {
+        return getContext().buildConfig?.enableAnalytics;
+    }
+
     initialize() {
-        if (Context.isAnalyticsEnabled) {
+        if (this.isAnalyticsEnabled) {
             // ERROR HANDLING
             // eslint-disable-next-line global-require
             this.errorFixer = require('@sentry/node');
@@ -92,7 +96,7 @@ export class AnalyticsCls {
     }
 
     captureException(e: any, context: any = {}) {
-        if (Context.isAnalyticsEnabled && this.errorFixer) {
+        if (this.isAnalyticsEnabled && this.errorFixer) {
             this.errorFixer.withScope((scope: any) => {
                 const { extra = {}, tags = {} } = context;
                 scope.setTags({ ...tags, os: os.platform() });
@@ -107,7 +111,7 @@ export class AnalyticsCls {
     }
 
     async captureEvent(e: any) {
-        if (Context.isAnalyticsEnabled && this.knowItAll) {
+        if (this.isAnalyticsEnabled && this.knowItAll) {
             return this.knowItAll.captureEvent(e);
         }
         return true;
@@ -115,7 +119,7 @@ export class AnalyticsCls {
 
     teardown() {
         return new Promise<void>((resolve) => {
-            if (Context.isAnalyticsEnabled && this.errorFixer) {
+            if (this.isAnalyticsEnabled && this.errorFixer) {
                 const client = this.errorFixer.getCurrentHub().getClient();
                 if (client) {
                     return client.close(2000).then(resolve);

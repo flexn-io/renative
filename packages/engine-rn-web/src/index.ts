@@ -1,4 +1,4 @@
-import { Context, generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
+import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
 import { withRNVBabel } from './adapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
@@ -20,7 +20,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 export { webpack, HtmlWebpackPlugin, HtmlWebpackHarddiskPlugin, MiniCssExtractPlugin, BundleAnalyzerPlugin };
 
 const Engine: RnvEngine = {
-    initializeRuntimeConfig: (c) => Context.initializeConfig(c),
+    // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
         taskRnvPackage,

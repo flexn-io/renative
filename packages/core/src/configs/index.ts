@@ -23,7 +23,7 @@ import { doResolve } from '../system/resolve';
 import { RnvContextFileObj, RnvContextPathObj, RnvContext } from '../context/types';
 import { generateRnvConfigPathObj } from '../context/defaults';
 import { RnvFileKey } from './types';
-import { generateContextPaths } from '../context';
+import { generateContextPaths, getContext } from '../context';
 // import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
@@ -472,7 +472,8 @@ export const listAppConfigsFoldersSync = (c: RnvContext, ignoreHiddenConfigs: bo
     return appConfigsDirs;
 };
 
-export const loadWorkspacesSync = (c: RnvContext) => {
+export const loadWorkspacesSync = () => {
+    const c = getContext();
     // CHECK WORKSPACES
     if (fsExistsSync(c.paths.rnv.configWorkspaces)) {
         logDebug(`${c.paths.rnv.configWorkspaces} file exists!`);

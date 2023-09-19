@@ -1,4 +1,3 @@
-import { RnvContext } from '../context/types';
 import { RnvTaskMap } from '../tasks/types';
 
 export type RnvEngine = {
@@ -6,7 +5,7 @@ export type RnvEngine = {
     platforms: Record<string, RnvEnginePlatform>;
     config: RnvEngineConfig;
     tasks: RnvTaskMap;
-    initializeRuntimeConfig: (c: RnvContext) => void;
+    // initializeRuntimeConfig: (c: RnvContext) => void;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
     projectDirName: string;

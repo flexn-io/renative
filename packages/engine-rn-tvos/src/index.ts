@@ -1,4 +1,4 @@
-import { Context, generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
+import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvPackage from './tasks/task.rnv.package';
 import taskRnvBuild from './tasks/task.rnv.build';
@@ -17,7 +17,7 @@ import CNF from '../renative.engine.json';
 import { createEngineAlias, withRNVMetro, withRNVBabel } from './adapter';
 
 const Engine: RnvEngine = {
-    initializeRuntimeConfig: (c) => Context.initializeConfig(c),
+    // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
         taskRnvPackage,

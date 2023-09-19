@@ -1,7 +1,7 @@
 import program from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { logComplete, logError, Context, PARAMS } from '@rnv/core';
+import { logComplete, logError, PARAMS, getContext } from '@rnv/core';
 import { executeRnv } from 'rnv';
 import Spinner from './ora';
 import Prompt from './prompt';
@@ -40,6 +40,6 @@ export const run = () => {
     program.parse(process.argv);
 
     executeRnv({ cmd: cmdValue, subCmd: cmdOption, program, process, spinner: Spinner, prompt: Prompt, logger: Logger })
-        .then(() => logComplete(!Context.getContext().runtime.keepSessionActive))
+        .then(() => logComplete(!getContext().runtime.keepSessionActive))
         .catch((e) => logError(e, true));
 };

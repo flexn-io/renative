@@ -1,8 +1,17 @@
 import inquirer from 'inquirer';
-import { chalk, logWarning, logTask, logDebug, Context, PromptParams, PromptOptions, PromptRenderFn } from '@rnv/core';
+import {
+    chalk,
+    logWarning,
+    logTask,
+    logDebug,
+    PromptParams,
+    PromptOptions,
+    PromptRenderFn,
+    getContext,
+} from '@rnv/core';
 
 export const inquirerPrompt = async (params: PromptParams): Promise<Record<string, any>> => {
-    const c = Context.getContext();
+    const c = getContext();
     if (c.program?.yes) return {};
 
     const msg = params.logMessage || params.warningMessage || params.message;

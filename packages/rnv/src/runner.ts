@@ -1,11 +1,8 @@
 import { Analytics } from './analytics';
 import {
-    Api,
-    Context,
     RnvApiLogger,
     RnvApiPrompt,
     RnvApiSpinner,
-    RnvContext,
     checkAndBootstrapIfRequired,
     checkAndMigrateProject,
     configureRuntimeDefaults,
@@ -14,6 +11,7 @@ import {
     doResolve,
     findSuitableTask,
     getConfigProp,
+    getContext,
     initializeTask,
     loadEngines,
     loadIntegrations,
@@ -56,31 +54,28 @@ export const executeRnv = async ({
         //@ts-ignore
         global.Headers = global.fetch.Headers;
 
-        const api = createRnvApi({ spinner, prompt, analytics: Analytics, logger, getConfigProp, doResolve });
-
-        Api.initializeApi(api);
+        createRnvApi({ spinner, prompt, analytics: Analytics, logger, getConfigProp, doResolve });
 
         // configureFilesystem(getConfigProp, doResolve, isSystemWin);
-        const c = createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
+        createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
 
-        loadWorkspacesSync(c);
+        loadWorkspacesSync();
 
-        Context.initializeConfig(c);
+        // Context.initializeConfig(c);
 
         logInitialize();
 
         Analytics.initialize();
 
-        await _executeRnv(c);
-
-        return c;
+        await _executeRnv();
     } catch (e) {
         console.log(e);
         // logError(e);
     }
 };
 
-const _executeRnv = async (c: RnvContext) => {
+const _executeRnv = async () => {
+    const c = getContext();
     const EngineCore = require('@rnv/engine-core').default;
 
     await registerEngine(c, EngineCore);

@@ -43,9 +43,9 @@ import taskRnvLink from './tasks/task.rnv.link';
 import taskRnvUnlink from './tasks/task.rnv.unlink';
 
 const Engine: RnvEngine = {
-    initializeRuntimeConfig: () => {
-        //Do nothing
-    },
+    // initializeRuntimeConfig: () => {
+    //     //Do nothing
+    // },
     runtimeExtraProps: {},
     serverDirName: '',
     tasks: generateEngineTasks([
