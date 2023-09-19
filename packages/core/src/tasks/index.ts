@@ -229,6 +229,7 @@ export const findSuitableTask = async (c: RnvContext, specificTask?: string): Pr
         if (c.runtime.engine?.runtimeExtraProps) {
             c.runtime.runtimeExtraProps = c.runtime.engine.runtimeExtraProps;
         }
+
         logInfo(
             `Current Engine: ${chalk().bold.white(c.runtime.engine?.config.id)} path: ${chalk().grey(
                 c.runtime.engine?.rootPath

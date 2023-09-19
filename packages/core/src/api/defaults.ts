@@ -9,11 +9,11 @@ const spinner: any = () => ({
     },
 });
 
-const chalk: any = () => ({});
+// const chalk: any = () => ({});
 const logger: any = {};
 
 export const generateApiDefaults = (): RnvApi => ({
-    chalk,
+    // chalk,
     logger,
     analytics: {
         captureEvent: () => {

@@ -2,6 +2,7 @@ import { Analytics } from './analytics';
 import {
     Api,
     Context,
+    RnvApiLogger,
     RnvApiPrompt,
     RnvApiSpinner,
     RnvContext,
@@ -19,7 +20,6 @@ import {
     loadEngines,
     loadIntegrations,
     loadWorkspacesSync,
-    logError,
     logInitialize,
     registerEngine,
     registerMissingPlatformEngines,
@@ -36,6 +36,7 @@ export const executeRnv = async ({
     program,
     spinner,
     prompt,
+    logger,
 }: {
     cmd: string;
     subCmd: string;
@@ -43,38 +44,42 @@ export const executeRnv = async ({
     program: any;
     spinner: RnvApiSpinner;
     prompt: RnvApiPrompt;
+    logger: RnvApiLogger;
 }) => {
-    // set mono and ci if json is enabled
-    if (program.json) {
-        program.mono = true;
-        program.ci = true;
-    }
-
-    Analytics.initialize();
-    configureFilesystem(getConfigProp, doResolve, isSystemWin);
-    const c = createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
-    // LOAD WORKSPACES
     try {
+        // set mono and ci if json is enabled
+        if (program.json) {
+            program.mono = true;
+            program.ci = true;
+        }
+
+        //@ts-ignore
+        global.fetch = await import('node-fetch');
+        //@ts-ignore
+        global.Headers = global.fetch.Headers;
+
+        const api = createRnvApi({ spinner, prompt, analytics: Analytics, logger });
+
+        Api.initializeApi(api);
+
+        configureFilesystem(getConfigProp, doResolve, isSystemWin);
+        const c = createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
+
         loadWorkspacesSync(c);
-    } catch (e: any) {
-        logError(e);
+
+        Context.initializeConfig(c);
+
+        logInitialize();
+
+        Analytics.initialize();
+
+        await _executeRnv(c);
+
+        return c;
+    } catch (e) {
+        console.log(e);
+        // logError(e);
     }
-    logInitialize();
-
-    //@ts-ignore
-    global.fetch = await import('node-fetch');
-    //@ts-ignore
-    global.Headers = global.fetch.Headers;
-
-    Context.initializeConfig(c);
-
-    const api = createRnvApi({ spinner, prompt, analytics: Analytics });
-
-    Api.initializeApi(api);
-
-    await _executeRnv(c);
-
-    return c;
 };
 
 const _executeRnv = async (c: RnvContext) => {

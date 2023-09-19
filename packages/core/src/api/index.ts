@@ -1,16 +1,15 @@
-import { RnvApi, RnvApiPrompt, RnvApiSpinner, RnvContextAnalytics } from './types';
+import { RnvApi, RnvApiLogger, RnvApiPrompt, RnvApiSpinner, RnvContextAnalytics } from './types';
 import { generateApiDefaults } from './defaults';
 
 class ApiCls {
-    // config: RnvContext;
-
     constructor() {
         global.RNV_API = generateApiDefaults();
     }
 
-    initializeApi(c: RnvApi) {
-        global.RNV_API = c;
-        return c;
+    initializeApi(api: RnvApi) {
+        global.RNV_API = api;
+
+        return api;
     }
 
     getApi(): RnvApi {
@@ -22,16 +21,19 @@ export const createRnvApi = ({
     spinner,
     prompt,
     analytics,
+    logger,
 }: {
     spinner: RnvApiSpinner;
     prompt: RnvApiPrompt;
     analytics: RnvContextAnalytics;
+    logger: RnvApiLogger;
 }) => {
     const api: RnvApi = generateApiDefaults();
 
     api.spinner = spinner;
     api.prompt = prompt;
     api.analytics = analytics;
+    api.logger = logger;
 
     return api;
 };

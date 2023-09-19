@@ -9,7 +9,7 @@ export interface RnvApi {
     spinner: RnvApiSpinner;
     prompt: RnvApiPrompt;
     analytics: RnvContextAnalytics;
-    chalk: RnvApiChalk;
+    // chalk: RnvApiChalk;
     logger: RnvApiLogger;
     fsExistsSync: any;
     fsReadFileSync: any;
@@ -85,6 +85,7 @@ export type RnvApiLogger = {
     printArrIntoBox: (arr: Array<string>, prefix?: string) => string;
     printBoxStart: (str: string, str2?: string) => string;
     printBoxEnd: () => string;
+    chalk: () => RnvApiChalk;
 };
 
 export type PromptOptions = {

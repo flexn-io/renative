@@ -2,7 +2,7 @@
 import { getApi } from '../api';
 import { RnvApiChalk, RnvApiLogger } from '../api/types';
 
-export const chalk = (): RnvApiChalk => getApi().chalk;
+export const chalk = (): RnvApiChalk => getApi().logger.chalk();
 
 export const logWelcome: RnvApiLogger['logWelcome'] = () => getApi().logger.logWelcome();
 

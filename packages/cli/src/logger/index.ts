@@ -1,6 +1,14 @@
 /* eslint-disable no-console */
-import _chalk, { Chalk } from 'chalk';
-import { RnvContext, getApi, getContext, isSystemWin, generateDefaultChalk, RnvApiLogger } from '@rnv/core';
+import _chalk from 'chalk';
+import {
+    RnvContext,
+    getApi,
+    getContext,
+    isSystemWin,
+    generateDefaultChalk,
+    RnvApiLogger,
+    RnvApiChalk,
+} from '@rnv/core';
 
 const ICN_ROCKET = isSystemWin ? 'RNV' : '🚀';
 const ICN_UNICORN = isSystemWin ? 'unicorn' : '🦄';
@@ -8,9 +16,8 @@ const _chalkCols = generateDefaultChalk();
 const _chalkMono: any = {
     ..._chalkCols,
 };
-let currentChalk: Chalk = _chalk;
+let currentChalk: RnvApiChalk = _chalk;
 let RNV = 'ReNative';
-export const chalk = (): Chalk => currentChalk || _chalk;
 const PRIVATE_PARAMS = ['-k', '--key'];
 let _currentProcess: any;
 let _isInfoEnabled = false;
@@ -21,6 +28,8 @@ let _defaultColor = _chalkCols.white;
 let _highlightColor = _chalkCols.white;
 // let _analytics: AnalyticsApi;
 let _jsonOnly: boolean;
+
+export const chalk = (): RnvApiChalk => currentChalk || _chalk;
 
 export const logInitialize = () => {
     // cnf();
@@ -139,6 +148,7 @@ const _printJson = (obj: PrintJsonPayload) => {
 
 export const getCurrentCommand = (excludeDollar = false) => {
     const ctx = getContext();
+
     const argArr = ctx.process.argv.slice(2);
     let hideNext = false;
     const output = argArr
@@ -596,6 +606,7 @@ const Logger: RnvApiLogger = {
     printBoxEnd,
     printBoxStart,
     printIntoBox,
+    chalk,
 };
 
 export default Logger;

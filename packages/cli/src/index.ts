@@ -5,6 +5,7 @@ import { logComplete, logError, Context, PARAMS } from '@rnv/core';
 import { executeRnv } from 'rnv';
 import Spinner from './ora';
 import Prompt from './prompt';
+import Logger from './logger';
 
 export const run = () => {
     const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')).toString());
@@ -38,7 +39,7 @@ export const run = () => {
 
     program.parse(process.argv);
 
-    executeRnv({ cmd: cmdValue, subCmd: cmdOption, program, process, spinner: Spinner, prompt: Prompt })
+    executeRnv({ cmd: cmdValue, subCmd: cmdOption, program, process, spinner: Spinner, prompt: Prompt, logger: Logger })
         .then(() => logComplete(!Context.getContext().runtime.keepSessionActive))
         .catch((e) => logError(e, true));
 };
