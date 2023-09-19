@@ -8,7 +8,6 @@ import {
     RnvContext,
     checkAndBootstrapIfRequired,
     checkAndMigrateProject,
-    configureFilesystem,
     configureRuntimeDefaults,
     createRnvApi,
     createRnvContext,
@@ -16,7 +15,6 @@ import {
     findSuitableTask,
     getConfigProp,
     initializeTask,
-    isSystemWin,
     loadEngines,
     loadIntegrations,
     loadWorkspacesSync,
@@ -58,11 +56,11 @@ export const executeRnv = async ({
         //@ts-ignore
         global.Headers = global.fetch.Headers;
 
-        const api = createRnvApi({ spinner, prompt, analytics: Analytics, logger });
+        const api = createRnvApi({ spinner, prompt, analytics: Analytics, logger, getConfigProp, doResolve });
 
         Api.initializeApi(api);
 
-        configureFilesystem(getConfigProp, doResolve, isSystemWin);
+        // configureFilesystem(getConfigProp, doResolve, isSystemWin);
         const c = createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
 
         loadWorkspacesSync(c);

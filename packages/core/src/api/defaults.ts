@@ -13,7 +13,12 @@ const spinner: any = () => ({
 const logger: any = {};
 
 export const generateApiDefaults = (): RnvApi => ({
-    // chalk,
+    doResolve: () => {
+        return undefined;
+    },
+    getConfigProp: <T>() => {
+        return undefined as T;
+    },
     logger,
     analytics: {
         captureEvent: () => {

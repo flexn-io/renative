@@ -1,17 +1,12 @@
+import { RnvApi, RnvContext } from "../src";
 
 export {};
 
 declare global {
     //eslint-disable-next-line no-var
-    var _isSystemWin: boolean;
-    //eslint-disable-next-line no-var
-    var _doResolve;
-    //eslint-disable-next-line no-var
-    var _getConfigProp
-    //eslint-disable-next-line no-var
     var fetch;
     //eslint-disable-next-line no-var
-    var RNV_CONTEXT;
+    var RNV_CONTEXT: RnvContext;
     //eslint-disable-next-line no-var
-    var RNV_API;
+    var RNV_API: RnvApi;
 }

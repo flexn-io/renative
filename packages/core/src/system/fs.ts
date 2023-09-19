@@ -7,18 +7,9 @@ import merge from 'deepmerge';
 import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
-import { DoResolveFn, FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from './types';
-import type { GetConfigPropFn } from '../types';
-
-export const configureFilesystem = (
-    _getConfigProp: GetConfigPropFn,
-    _doResolve: DoResolveFn,
-    _isSystemWin: boolean
-) => {
-    global._getConfigProp = _getConfigProp;
-    global._doResolve = _doResolve;
-    global._isSystemWin = _isSystemWin;
-};
+import { FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from './types';
+import { getContext } from '../context';
+import { getApi } from '../api';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {
@@ -118,6 +109,7 @@ export const writeCleanFile = (
 ) => {
     // logTask(`writeCleanFile`)
     // console.log('writeCleanFile', destination);
+    const api = getApi();
     if (!fs.existsSync(source)) {
         logError(`Cannot write file. source path doesn't exists: ${source}`);
         return;
@@ -148,7 +140,7 @@ export const writeCleanFile = (
                 if (occurences) {
                     occurences.forEach((occ) => {
                         const val = occ.replace('{{configProps.', '').replace('}}', '');
-                        const configVal = global._getConfigProp(c, c.platform, val, '');
+                        const configVal = api.getConfigProp(c, c.platform, val, '');
                         pFileClean = pFileClean.replace(occ, configVal);
                     });
                 }
@@ -605,6 +597,7 @@ export const sanitizeDynamicRefs = (c: RnvContext, obj: any) => {
 };
 
 export const resolvePackage = (text: string) => {
+    const api = getApi();
     if (typeof text !== 'string') return text;
     const regEx = /{{resolvePackage\(([\s\S]*?)\)}}/g;
     const matches = text.match(regEx);
@@ -614,7 +607,7 @@ export const resolvePackage = (text: string) => {
             const val = match.replace('{{resolvePackage(', '').replace(')}}', '');
             // TODO: Figure out WIN vs LINUX treatment here
             // forceForwardPaths is required for WIN Android to work correctly
-            newText = newText.replace(match, global._doResolve(val, false, { forceForwardPaths: true }));
+            newText = newText.replace(match, api.doResolve(val, false, { forceForwardPaths: true })!);
         });
     }
     return newText;
@@ -700,7 +693,7 @@ export const mergeObjects = (c: RnvContext, obj1: any, obj2: any, dynamicRefs = 
 };
 
 export const replaceHomeFolder = (p: string) => {
-    if (global._isSystemWin) return p.replace('~', process.env.USERPROFILE || '');
+    if (getContext().isSystemWin) return p.replace('~', process.env.USERPROFILE || '');
     return p.replace('~', process.env.HOME || '');
 };
 

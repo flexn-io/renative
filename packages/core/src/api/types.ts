@@ -16,6 +16,8 @@ export interface RnvApi {
     fsReaddirSync: any;
     fsWriteFileSync: any;
     path: any;
+    doResolve: DoResolveFn;
+    getConfigProp: GetConfigPropFn;
 }
 
 export type RnvApiSpinner = (msg: string | { text: string }) => {
@@ -121,3 +123,14 @@ export type PromptParams = {
 };
 
 export type PromptRenderFn = (i: number, obj: any, mapping: any, defaultVal: string) => string;
+
+export type DoResolveFn = (aPath?: string, mandatory?: boolean, options?: ResolveOptions) => string | undefined;
+
+export type ResolveOptions = {
+    basedir?: string;
+    forceForwardPaths?: boolean;
+    extensions?: Array<string>;
+    keepSuffix?: boolean;
+};
+
+export type GetConfigPropFn = <T = any>(c: RnvContext, platform: string, key: string, defaultVal?: any) => T;

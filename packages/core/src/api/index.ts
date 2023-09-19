@@ -1,4 +1,12 @@
-import { RnvApi, RnvApiLogger, RnvApiPrompt, RnvApiSpinner, RnvContextAnalytics } from './types';
+import {
+    DoResolveFn,
+    GetConfigPropFn,
+    RnvApi,
+    RnvApiLogger,
+    RnvApiPrompt,
+    RnvApiSpinner,
+    RnvContextAnalytics,
+} from './types';
 import { generateApiDefaults } from './defaults';
 
 class ApiCls {
@@ -27,6 +35,8 @@ export const createRnvApi = ({
     prompt: RnvApiPrompt;
     analytics: RnvContextAnalytics;
     logger: RnvApiLogger;
+    getConfigProp: GetConfigPropFn;
+    doResolve: DoResolveFn;
 }) => {
     const api: RnvApi = generateApiDefaults();
 

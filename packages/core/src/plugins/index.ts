@@ -19,7 +19,6 @@ import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } f
 import { installPackageDependencies } from '../npm';
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';
-import { ResolveOptions } from '../system/types';
 import {
     PluginCallback,
     PluginListResponse,
@@ -31,6 +30,7 @@ import {
 import { RenativeConfigPlugin, RenativeWebpackConfig } from '../configs/types';
 import { RnvModuleConfig } from '../types';
 import { inquirerPrompt } from '../api';
+import { ResolveOptions } from '../api/types';
 
 export const getPluginList = (c: RnvContext, isUpdate = false) => {
     const output: PluginListResponse = {

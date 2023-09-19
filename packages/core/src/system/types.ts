@@ -19,13 +19,6 @@ export type ExecOptions = {
     timeout?: number;
 };
 
-export type ResolveOptions = {
-    basedir?: string;
-    forceForwardPaths?: boolean;
-    extensions?: Array<string>;
-    keepSuffix?: boolean;
-};
-
 export type ExecCallback = (isError: boolean) => void;
 
 export type ExecCallback2 = (result: any, isError: boolean) => void;
@@ -54,5 +47,3 @@ export type FileUtilsUpdateConfig = {
     tizenSdk?: string;
     webosSdk?: string;
 };
-
-export type DoResolveFn = (aPath?: string, mandatory?: boolean, options?: ResolveOptions) => string | undefined;

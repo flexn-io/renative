@@ -13,6 +13,7 @@ export interface RnvContext<Payload = any> {
     platform: RnvPlatform;
     process: any;
     rnvVersion: string;
+    isSystemWin: boolean;
     _currentTask?: string;
     systemPropsInjects: OverridesOptions;
     _requiresNpmInstall?: boolean;
