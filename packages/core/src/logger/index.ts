@@ -1,4 +1,3 @@
-// import { Chalk } from 'chalk';
 import { getApi } from '../api';
 import { RnvApiChalk, RnvApiLogger } from '../api/types';
 

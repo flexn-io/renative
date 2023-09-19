@@ -1,5 +1,4 @@
 import path from 'path';
-import chalk from 'chalk';
 import {
     RnvContext,
     inquirerPrompt,
@@ -14,6 +13,7 @@ import {
     cleanFolder,
     writeCleanFile,
     fsExistsSync,
+    chalk,
 } from '@rnv/core';
 
 const rootPath = path.join(__dirname, './');
@@ -97,16 +97,16 @@ class Docker {
         logTask('docker:Dockerfile:build');
         await executeAsync(`docker save -o ${dockerSaveFile} ${imageName}:${appVersion}`);
         logSuccess(
-            `${imageName}_${appVersion}.tar file has been saved in ${chalk.white(
+            `${imageName}_${appVersion}.tar file has been saved in ${chalk().white(
                 dockerDestination
-            )}. You can import it on another machine by running ${chalk.white(
+            )}. You can import it on another machine by running ${chalk().white(
                 `'docker load -i ${imageName}_${appVersion}.tar'`
             )}`
         );
         logSuccess(
-            `You can also test it locally by running the following command: ${chalk.white(
+            `You can also test it locally by running the following command: ${chalk().white(
                 `'docker run -d --rm -p 8081:80 -p 8443:443 ${imageName}:${appVersion}'`
-            )} and then opening ${chalk.white('http://localhost:8081')}`
+            )} and then opening ${chalk().white('http://localhost:8081')}`
         );
 
         const deployOptions = getConfigProp(c, platform, 'deploy');

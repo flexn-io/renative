@@ -42,8 +42,6 @@ export const createRnvContext = ({
 }) => {
     const c: RnvContext = generateContextDefaults();
 
-    global.RNV_CONFIG = c;
-
     c.program = program;
     c.process = process;
     c.command = cmd;
