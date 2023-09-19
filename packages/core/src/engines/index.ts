@@ -13,15 +13,12 @@ import { RnvTask, RnvTaskMap } from '../tasks/types';
 import { RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
 import { RenativeEngineConfig, RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
 import { inquirerPrompt } from '../api';
+import { getContext } from '../context/provider';
 
 const ENGINE_CORE = 'engine-core';
 
-export const registerEngine = async (
-    c: RnvContext,
-    engine: RnvEngine,
-    platform?: RnvPlatform,
-    engConfig?: RnvEngineConfig
-) => {
+export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineConfig) => {
+    const c = getContext();
     logTask(`registerEngine:${engine.config.id}`);
     c.runtime.enginesById[engine.config.id] = engine;
     // engine.initializeRuntimeConfig(c);
@@ -483,7 +480,6 @@ const _registerPlatformEngine = async (c: RnvContext, platform: RnvPlatform | bo
         if (!existingEngine) {
             if (selectedEngineConfig.packageName) {
                 registerEngine(
-                    c,
                     require(_resolvePkgPath(c, selectedEngineConfig.packageName))?.default,
                     platform,
                     selectedEngineConfig
