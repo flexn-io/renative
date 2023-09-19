@@ -32,6 +32,9 @@ const runtime: any = {
 };
 
 export const generateContextDefaults = (): RnvContext => ({
+    logMessages: [],
+    timeEnd: new Date(),
+    timeStart: new Date(),
     payload: {},
     assetConfig: {},
     rnvVersion: '',

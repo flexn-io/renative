@@ -1,8 +1,8 @@
-import { ChalkApi as ChalkMock } from '../logger/types';
+import { RnvApiChalk } from '../api/types';
 
 const _chalkPass = (v: string | boolean): string => (typeof v === 'string' ? v : String(v));
 
-export const getChalk = (): ChalkMock => {
+export const generateDefaultChalk = (): RnvApiChalk => {
     const chalk: any = {
         white: (v: string | boolean) => _chalkPass(v),
         green: (v: string) => _chalkPass(v),

@@ -9,15 +9,34 @@ const spinner: any = () => ({
     },
 });
 
+const chalk: any = () => ({});
+const logger: any = {};
+
 export const generateApiDefaults = (): RnvApi => ({
+    chalk,
+    logger,
     analytics: {
         captureEvent: () => {
+            //NOOP
+        },
+        captureException() {
+            //NOOP
+        },
+        teardown: async () => {
             //NOOP
         },
     },
     prompt: {
         generateOptions() {
             //NOOP
+            return {
+                asString: '',
+                keysAsArray: [],
+                keysAsObject: {},
+                optionsAsArray: [],
+                valuesAsArray: [],
+                valuesAsObject: {},
+            };
         },
         inquirerPrompt: async () => {
             //NOOP

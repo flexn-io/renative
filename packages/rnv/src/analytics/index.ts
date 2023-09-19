@@ -129,6 +129,4 @@ export class AnalyticsCls {
 
 const Analytics = new AnalyticsCls();
 
-global.RNV_ANALYTICS = Analytics;
-
 export { Analytics };
