@@ -7,9 +7,9 @@ import merge from 'deepmerge';
 import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
-import { FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from './types';
-import { getContext } from '../context';
-import { getApi } from '../api';
+import type { FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from './types';
+import { getApi } from '../api/provider';
+import { getContext } from '../context/provider';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {

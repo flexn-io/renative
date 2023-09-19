@@ -13,7 +13,8 @@ import { TASK_CONFIGURE_SOFT } from '../constants';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engines/types';
-import { getApi, inquirerPrompt, pressAnyKeyToContinue } from '../api';
+import { inquirerPrompt, pressAnyKeyToContinue } from '../api';
+import { getApi } from '../api/provider';
 
 let executedTasks: Record<string, number> = {};
 

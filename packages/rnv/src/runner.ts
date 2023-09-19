@@ -55,15 +55,10 @@ export const executeRnv = async ({
         global.Headers = global.fetch.Headers;
 
         createRnvApi({ spinner, prompt, analytics: Analytics, logger, getConfigProp, doResolve });
-
-        // configureFilesystem(getConfigProp, doResolve, isSystemWin);
         createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
 
-        loadWorkspacesSync();
-
-        // Context.initializeConfig(c);
-
         logInitialize();
+        loadWorkspacesSync();
 
         Analytics.initialize();
 

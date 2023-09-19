@@ -8,6 +8,9 @@ import {
     RnvContextAnalytics,
 } from './types';
 import { generateApiDefaults } from './defaults';
+import { getApi } from './provider';
+
+global.RNV_API = generateApiDefaults();
 
 export const createRnvApi = ({
     spinner,
@@ -29,13 +32,13 @@ export const createRnvApi = ({
     api.analytics = analytics;
     api.logger = logger;
 
-    return api;
-};
+    // api.fsExistsSync = fsExistsSync;
+    // api.fsReadFileSync = fsReadFileSync;
+    // api.fsReaddirSync = fsReaddirSync;
+    // api.fsWriteFileSync = fsWriteFileSync;
+    // api.path = path;
 
-global.RNV_API = generateApiDefaults();
-
-export const getApi = (): RnvApi => {
-    return RNV_API;
+    global.RNV_API = api;
 };
 
 export const inquirerPrompt: RnvApiPrompt['inquirerPrompt'] = (opts) => {

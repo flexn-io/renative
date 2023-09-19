@@ -4,13 +4,13 @@ import path from 'path';
 import { access, accessSync, constants } from 'fs';
 import execa, { ExecaChildProcess } from 'execa';
 import NClient from 'netcat/client';
-import { getContext } from '../context';
 import { chalk, logDebug, logRaw, logError } from '../logger';
 import { fsExistsSync } from './fs';
 import { replaceOverridesInString } from '../utils/utils';
 import { RnvContext } from '../context/types';
 import { ExecCallback, ExecCallback2, ExecOptions } from './types';
-import { getApi } from '../api';
+import { getContext } from '../context/provider';
+import { getApi } from '../api/provider';
 
 const { exec, execSync } = require('child_process');
 

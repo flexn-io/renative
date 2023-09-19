@@ -1,5 +1,4 @@
-import { isSystemWin } from '../utils/utils';
-import { RnvContext, RnvContextFileObj, RnvContextPathObj } from './types';
+import type { RnvContext, RnvContextFileObj, RnvContextPathObj } from './types';
 
 export const generateRnvConfigPathObj = (): RnvContextPathObj => {
     return {
@@ -33,7 +32,7 @@ const runtime: any = {
 };
 
 export const generateContextDefaults = (): RnvContext => ({
-    isSystemWin: isSystemWin,
+    isSystemWin: false,
     logMessages: [],
     timeEnd: new Date(),
     timeStart: new Date(),

@@ -23,7 +23,8 @@ import { doResolve } from '../system/resolve';
 import { RnvContextFileObj, RnvContextPathObj, RnvContext } from '../context/types';
 import { generateRnvConfigPathObj } from '../context/defaults';
 import { RnvFileKey } from './types';
-import { generateContextPaths, getContext } from '../context';
+import { generateContextPaths } from '../context';
+import { getContext } from '../context/provider';
 // import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
