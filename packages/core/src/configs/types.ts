@@ -120,6 +120,7 @@ export type RenativeConfigPlugin = {
     deprecated?: boolean;
     plugins?: Record<string, string>;
     props?: Record<string, string | boolean | number>;
+    disablePluginTemplateOverrides?: boolean;
 };
 
 export type RenativeConfigPluginPlatform = {

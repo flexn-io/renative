@@ -841,22 +841,28 @@ export const overrideTemplatePlugins = async (c: RnvContext) => {
         c,
         c.platform as RnvPluginPlatform,
         (plugin, pluginPlat, key) => {
-            if (plugin?._scopes?.length) {
-                plugin._scopes.forEach((pluginScope) => {
-                    const pluginOverridePath = rnvPluginsDirs[pluginScope];
-                    if (pluginOverridePath) {
-                        _overridePlugin(c, pluginOverridePath, key);
-                    }
-                });
-            }
-
-            if (appBasePluginDir) {
-                _overridePlugin(c, appBasePluginDir, key);
-            }
-            if (appPluginDirs) {
-                for (let k = 0; k < appPluginDirs.length; k++) {
-                    _overridePlugin(c, appPluginDirs[k], key);
+            if (!plugin.disablePluginTemplateOverrides) {
+                if (plugin?._scopes?.length) {
+                    plugin._scopes.forEach((pluginScope) => {
+                        const pluginOverridePath = rnvPluginsDirs[pluginScope];
+                        if (pluginOverridePath) {
+                            _overridePlugin(c, pluginOverridePath, key);
+                        }
+                    });
                 }
+
+                if (appBasePluginDir) {
+                    _overridePlugin(c, appBasePluginDir, key);
+                }
+                if (appPluginDirs) {
+                    for (let k = 0; k < appPluginDirs.length; k++) {
+                        _overridePlugin(c, appPluginDirs[k], key);
+                    }
+                }
+            } else {
+                logInfo(
+                    `Plugin overrides disabled for: ${chalk().white(key)} with disablePluginTemplateOverrides. SKIPPING`
+                );
             }
         },
         true

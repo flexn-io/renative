@@ -120,9 +120,7 @@
                 "org.gradle.configureondemand": true
             },
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "androidwear": {
             "minSdkVersion": 26,
@@ -144,9 +142,7 @@
                 "org.gradle.parallel": true,
                 "org.gradle.configureondemand": true
             },
-            "includedPermissions": [
-                "INTERNET"
-            ],
+            "includedPermissions": ["INTERNET"],
             "mainActivity": {
                 "onCreate": "super.onCreate(null)"
             }
@@ -172,9 +168,7 @@
                 "org.gradle.configureondemand": true
             },
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -210,6 +204,10 @@
         },
         "react-native": {
             "version": "0.72.4"
+        },
+        "next": {
+            "version": "13.5.2",
+            "disablePluginTemplateOverrides": true
         }
     },
     "permissions": {
