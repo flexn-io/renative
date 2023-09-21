@@ -1,3 +1,4 @@
+<!-- HARDCODED -->
 <resources>
-    <string name="app_name">{{APP_TITLE}}</string>
+    <string name="app_name">ReNative</string>
 </resources>
