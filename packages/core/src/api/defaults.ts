@@ -2,6 +2,8 @@ import { fsExistsSync, fsReadFileSync, fsReaddirSync, fsWriteFileSync } from '..
 
 import path from 'path';
 import { RnvApi } from './types';
+import { doResolve } from '../system/resolve';
+import { getConfigProp } from '../common';
 
 const spinner: any = () => ({
     start: () => {
@@ -13,12 +15,8 @@ const spinner: any = () => ({
 const logger: any = {};
 
 export const generateApiDefaults = (): RnvApi => ({
-    doResolve: () => {
-        return undefined;
-    },
-    getConfigProp: <T>() => {
-        return undefined as T;
-    },
+    doResolve,
+    getConfigProp: getConfigProp,
     logger,
     analytics: {
         captureEvent: () => {
