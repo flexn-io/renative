@@ -3,11 +3,13 @@ const withImages = require('next-images');
 // DEPRECATED
 // const withOptimizedImages = require('next-optimized-images');
 const withFonts = require('next-fonts');
-const path = require('path');
+// const path = require('path');
 // DEPRECATED
 // const nextTranspile = require('next-transpile-modules');
 // DEPRECATED
 // const withCSS = require('@zeit/next-css');
+
+//TODO: https://turbo.build/pack/docs/features/customizing-turbopack
 
 export const withRNVNext = (config: any, opts: any) => {
     const cnf = {
@@ -18,6 +20,15 @@ export const withRNVNext = (config: any, opts: any) => {
         },
         webpack5: false,
         distDir: process.env.NEXT_DIST_DIR,
+        webpack: (cfg: any, props: any) => {
+            const { isServer } = props;
+            if (process.env.RNV_EXTENSIONS) {
+                cfg.resolve.extensions = process.env.RNV_EXTENSIONS.split(',')
+                    .map((e) => `.${e}`)
+                    .filter((ext) => isServer || !ext.includes('server.'));
+            }
+            return cfg;
+        },
         // webpack: (cfg: any, props: any) => {
         //     const { isServer } = props;
         //     const rootPath = process.env.RNV_PROJECT_ROOT || process.cwd();
