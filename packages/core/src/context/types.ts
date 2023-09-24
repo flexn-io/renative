@@ -214,7 +214,6 @@ export type RnvContextPaths = {
         nodeModulesDir: string;
         srcDir?: string;
         package?: string;
-        rnCliConfig?: string;
         babelConfig?: string;
         platformTemplatesDirs: Record<string, string>;
         fontSourceDirs?: Array<string>;

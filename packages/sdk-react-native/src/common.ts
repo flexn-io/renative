@@ -4,19 +4,15 @@ import {
     logTask,
     executeTask,
     chalk,
-    logInfo,
     confirmActiveBundler,
     TASK_START,
     getConfigProp,
     RnvContext,
     fsExistsSync,
     logWarning,
-    inquirerPrompt,
-    RN_CLI_CONFIG_NAME,
     parseFonts,
     getApi,
 } from '@rnv/core';
-import { copyFileSync } from 'fs';
 
 let keepRNVRunning = false;
 
@@ -52,41 +48,6 @@ export const waitForBundlerIfRequired = async (c: RnvContext) => {
             //Do nothing
         });
     return true;
-};
-
-export const configureMetroConfigs = async (c: RnvContext) => {
-    logTask('configureMetroConfigs');
-
-    const metroSnippet = `
-const { withRNVMetro } = require('rnv');
-module.exports = withRNVMetro({});  
-`;
-
-    let cfPath = path.join(c.paths.project.dir, 'configs', `metro.config.${c.platform}.js`);
-    if (!fsExistsSync(cfPath)) {
-        cfPath = path.join(c.paths.project.dir, `metro.config.${c.platform}.js`);
-    }
-    if (fsExistsSync(cfPath)) {
-        logWarning(`${chalk().white(cfPath)} is DEPRECATED. You can add following snippet:
-${chalk().white(metroSnippet)}
-to your ${chalk().white('/.metro.config.js')} instead and delete deprecated file
-`);
-        const confirm = await inquirerPrompt({
-            name: 'selectedScheme',
-            type: 'confirm',
-            message: 'Are you sure you want to continue?',
-        });
-
-        if (!confirm) {
-            return Promise.reject('Cancelled by user');
-        }
-    }
-
-    // Check rn-cli-config
-    if (!fsExistsSync(c.paths.project.rnCliConfig)) {
-        logInfo(`Your rn-cli config file ${chalk().white(c.paths.project.rnCliConfig)} is missing! INSTALLING...DONE`);
-        copyFileSync(path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME), c.paths.project.rnCliConfig!);
-    }
 };
 
 const _isBundlerRunning = async (c: RnvContext) => {

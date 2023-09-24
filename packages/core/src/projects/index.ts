@@ -8,7 +8,7 @@ import {
     getPlatformProjectDir,
     getTimestampPathsConfig,
 } from '../common';
-import { INJECTABLE_CONFIG_PROPS, RN_BABEL_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
+import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { isPlatformActive } from '../platforms';
 import { copyTemplatePluginsSync, parsePlugins } from '../plugins';
 import {
@@ -190,21 +190,6 @@ export const checkAndCreateGitignore = async (c: RnvContext) => {
 
         copyFileSync(path.join(c.paths.rnv.dir, 'coreTemplateFiles/.gitignore.tpl'), ignrPath);
     }
-    return true;
-};
-
-export const checkAndCreateBabelConfig = async (c: RnvContext) => {
-    logTask('checkAndCreateBabelConfig');
-
-    if (!c.paths.project.configExists) return false;
-
-    // Check babel-config
-    logDebug('configureProject:check babel config');
-    if (!fsExistsSync(c.paths.project.babelConfig)) {
-        logInfo(`Your babel config file ${chalk().white(c.paths.project.babelConfig)} is missing! CREATING...DONE`);
-        copyFileSync(path.join(c.paths.rnv.projectTemplate.dir, RN_BABEL_CONFIG_NAME), c.paths.project.babelConfig);
-    }
-
     return true;
 };
 

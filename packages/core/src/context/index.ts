@@ -9,8 +9,6 @@ import {
     RENATIVE_CONFIG_WORKSPACES_NAME,
     RENATIVE_CONFIG_PLUGINS_NAME,
     RENATIVE_CONFIG_TEMPLATES_NAME,
-    RN_CLI_CONFIG_NAME,
-    RN_BABEL_CONFIG_NAME,
     // PLATFORMS,
     USER_HOME_DIR,
 } from '../constants';
@@ -89,8 +87,6 @@ export const createRnvContext = ({
     c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
     c.paths.project.appConfigsDir = path.join(c.paths.project.dir, 'appConfigs');
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
-    c.paths.project.rnCliConfig = path.join(c.paths.project.dir, RN_CLI_CONFIG_NAME);
-    c.paths.project.babelConfig = path.join(c.paths.project.dir, RN_BABEL_CONFIG_NAME);
     // c.paths.project.npmLinkPolyfill = path.join(
     //     c.paths.project.dir,
     //     'npm_link_polyfill.json'

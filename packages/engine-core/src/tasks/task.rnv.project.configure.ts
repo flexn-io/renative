@@ -24,7 +24,6 @@ import {
     TASK_APP_CONFIGURE,
     TASK_WORKSPACE_CONFIGURE,
     PARAMS,
-    checkAndCreateBabelConfig,
     copyRuntimeAssets,
     cleanPlaformAssets,
     checkAndCreateGitignore,
@@ -106,12 +105,9 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
         await copyRuntimeAssets(c);
         await configureTemplateFiles(c);
         await checkAndCreateGitignore(c);
-        await checkAndCreateBabelConfig(c);
         if (!c.buildConfig.platforms) {
             await updateRenativeConfigs(c);
         }
-        // NOTE: Migrated to engines
-        // await configureEntryPoints(c);
         await generateRuntimeConfig(c);
         await overrideTemplatePlugins(c);
         // NOTE: this is needed to ensure missing rnv plugin sub-deps are caught
