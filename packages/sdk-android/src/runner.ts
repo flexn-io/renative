@@ -21,7 +21,6 @@ import {
     getEntryFile,
     isPlatformActive,
     createPlatformBuild,
-    generateEnvVars,
     isSystemWin,
     updateRenativeConfigs,
     chalk,
@@ -67,63 +66,12 @@ import {
     composeDevicesArray,
 } from './deviceManager';
 import { CLI_ANDROID_ADB } from './constants';
+import { packageReactNativeAndroid, runReactNativeAndroid } from '@rnv/sdk-react-native';
 
 export const packageAndroid = async (c: Context) => {
     logTask('packageAndroid');
-    const { platform } = c;
 
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
-
-    if (!bundleAssets && platform !== ANDROID_WEAR) {
-        logInfo(`bundleAssets in scheme ${chalk().white(c.runtime.scheme)} marked false. SKIPPING PACKAGING...`);
-        return true;
-    }
-
-    const outputFile = getEntryFile(c, platform);
-
-    const appFolder = getAppFolder(c);
-    let reactNative = c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native';
-
-    if (isSystemWin) {
-        reactNative = path.normalize(`${process.cwd()}/node_modules/.bin/react-native.cmd`);
-    }
-
-    logInfo('ANDROID PACKAGE STARTING...');
-
-    try {
-        let cmd = `${reactNative} bundle --platform android --dev false --assets-dest ${path.join(
-            appFolder,
-            'app',
-            'src',
-            'main',
-            'res'
-        )} --entry-file ${c.buildConfig.platforms?.[c.platform]?.entryFile}.js --bundle-output ${path.join(
-            appFolder,
-            'app',
-            'src',
-            'main',
-            'assets',
-            `${outputFile}.bundle`
-        )} --config=metro.config.js`;
-
-        if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
-            cmd += ` --sourcemap-output ${path.join(
-                appFolder,
-                'app',
-                'src',
-                'main',
-                'assets',
-                `${outputFile}.bundle.map`
-            )}`;
-        }
-        await executeAsync(c, cmd, { env: { ...generateEnvVars(c) } });
-
-        logInfo('ANDROID PACKAGE FINISHED');
-        return true;
-    } catch (e) {
-        logInfo('ANDROID PACKAGE FAILED');
-        return Promise.reject(e);
-    }
+    return packageReactNativeAndroid(c);
 };
 
 export const runAndroid = async (c: Context) => {
@@ -162,7 +110,7 @@ export const runAndroid = async (c: Context) => {
             if (response.chosenEmulator) {
                 await launchAndroidSimulator(c, response.chosenEmulator, true);
                 const devices = await checkForActiveEmulator(c);
-                await _runGradleApp(c, platform, devices);
+                await runReactNativeAndroid(c, platform, devices);
             }
         } else if (activeDevices.length > 1) {
             const devicesString = composeDevicesArray(activeDevices);
@@ -175,12 +123,12 @@ export const runAndroid = async (c: Context) => {
             });
             if (response.chosenEmulator) {
                 const dev = activeDevices.find((d: any) => d.name === response.chosenEmulator);
-                await _runGradleApp(c, platform, dev);
+                await runReactNativeAndroid(c, platform, dev);
             }
         } else {
             await askForNewEmulator(c, platform);
             const devices = await checkForActiveEmulator(c);
-            await _runGradleApp(c, platform, devices);
+            await runReactNativeAndroid(c, platform, devices);
         }
     };
 
@@ -190,11 +138,11 @@ export const runAndroid = async (c: Context) => {
         const foundDevice = devicesAndEmulators.find((d: any) => d.udid.includes(target) || d.name.includes(target));
         if (foundDevice) {
             if (foundDevice.isActive) {
-                await _runGradleApp(c, platform, foundDevice);
+                await runReactNativeAndroid(c, platform, foundDevice);
             } else {
                 await launchAndroidSimulator(c, foundDevice, true);
                 const device = await checkForActiveEmulator(c);
-                await _runGradleApp(c, platform, device);
+                await runReactNativeAndroid(c, platform, device);
             }
         } else {
             await askWhereToRun();
@@ -203,7 +151,7 @@ export const runAndroid = async (c: Context) => {
         // Only one that is active, running on that one
         const dv = activeDevices[0];
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
-        await _runGradleApp(c, platform, dv);
+        await runReactNativeAndroid(c, platform, dv);
     } else if (defaultTarget) {
         // neither a target nor an active device is found, revert to default target if available
         logDebug('Default target used', defaultTarget);
@@ -216,7 +164,7 @@ export const runAndroid = async (c: Context) => {
         } else {
             await launchAndroidSimulator(c, foundDevice, true);
             const device = await checkForActiveEmulator(c);
-            await _runGradleApp(c, platform, device);
+            await runReactNativeAndroid(c, platform, device);
         }
     } else {
         // we don't know what to do, ask the user
@@ -351,79 +299,6 @@ const _checkSigningCerts = async (c: Context) => {
     }
 };
 
-const _runGradleApp = async (c: Context, platform: any, device: any) => {
-    logTask('_runGradleApp');
-
-    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
-    const appFolder = getAppFolder(c);
-    // const bundleId = getAppId(c, platform);
-    // const outputAab = getConfigProp(c, platform, 'aab', false);
-    // const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
-    const { udid } = device;
-    // const stacktrace = c.program.info ? ' --debug' : '';
-
-    // const adbPath = getAdbPath();
-    // const devices = adb.getDevices(adbPath);
-    // console.log('DEVICES FROM RN', devices);
-
-    let command = `npx react-native run-android --mode=${signingConfig} --no-packager`;
-
-    if (udid) {
-        command += ` --deviceId=${udid}`;
-    }
-
-    // await executeAsync(
-    //     c,
-    //     `${isSystemWin ? 'gradlew.bat' : './gradlew'} ${
-    //         outputAab && c.runtime.task !== 'run' ? 'bundle' : 'assemble'
-    //     }${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`
-    //     // { interactive: true }
-    // );
-
-    await executeAsync(c, command, {
-        env: {
-            RCT_METRO_PORT: c.runtime.port,
-            ...generateEnvVars(c),
-        },
-        cwd: appFolder,
-    });
-
-    // if (outputAab) {
-    //     const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
-    //     logInfo(`App built. Path ${aabPath}`);
-    //     return true;
-    // }
-    // let apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`);
-    // if (!fsExistsSync(apkPath)) {
-    //     apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`);
-    // }
-    // if (!fsExistsSync(apkPath)) {
-    //     apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${arch}-${outputFolder}.apk`);
-    // }
-    // logInfo(`Installing ${apkPath} on ${name}`);
-    // try {
-    //     await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
-    // } catch (e: any) {
-    //     if (e?.includes('INSTALL_FAILED') || e?.message?.includes('INSTALL_FAILED')) {
-    //         const { confirm } = await inquirerPrompt({
-    //             type: 'confirm',
-    //             message:
-    //                 "It seems you already have the app installed but RNV can't update it. Uninstall that one and try again?",
-    //         });
-
-    //         if (!confirm) throw new Error('User canceled');
-    //         await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} uninstall ${bundleId}`);
-    //         await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
-    //     } else {
-    //         throw new Error(e);
-    //     }
-    // }
-
-    // if (!outputAab) {
-    //     await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`);
-    // }
-};
-
 export const buildAndroid = async (c: Context) => {
     logTask('buildAndroid');
     const { platform } = c;
@@ -433,7 +308,7 @@ export const buildAndroid = async (c: Context) => {
 
     const outputAab = getConfigProp(c, platform, 'aab', false);
     // shortcircuit devices logic since aabs can't be installed on a device
-    if (outputAab) return _runGradleApp(c, platform, {});
+    if (outputAab) return runReactNativeAndroid(c, platform, {});
 
     const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
 

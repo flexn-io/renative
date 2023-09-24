@@ -14,7 +14,7 @@ import {
     RnvContext,
 } from '@rnv/core';
 
-export const packageAndroid = async (c: RnvContext) => {
+export const packageReactNativeAndroid = async (c: RnvContext) => {
     logTask('packageAndroid');
     const { platform } = c;
 
@@ -72,7 +72,7 @@ export const packageAndroid = async (c: RnvContext) => {
     }
 };
 
-const _runGradleApp = async (c: RnvContext, platform: any, device: any) => {
+export const runReactNativeAndroid = async (c: RnvContext, platform: any, device: any) => {
     logTask('_runGradleApp');
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
@@ -104,7 +104,7 @@ export const buildAndroid = async (c: RnvContext) => {
 
     const outputAab = getConfigProp(c, platform, 'aab', false);
     // shortcircuit devices logic since aabs can't be installed on a device
-    if (outputAab) return _runGradleApp(c, platform, {});
+    if (outputAab) return runReactNativeAndroid(c, platform, {});
 
     const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
 

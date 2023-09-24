@@ -13,7 +13,6 @@ import {
     getAppFolder,
     getConfigProp,
     generateEnvVars,
-    doResolve,
     isPlatformActive,
     copyAssetsFolder,
     copyBuildsFolder,
@@ -43,8 +42,8 @@ import { parseXcscheme } from './xcschemeParser';
 import { ejectXcodeProject } from './ejector';
 import { AppleDevice, Context } from './types';
 import { ObjectEncodingOptions } from 'fs';
-import shellQuote from 'shell-quote';
 import RNPermissionsMap from './rnPermissionsMap';
+import { packageReactNativeIOS, runReactNativeIOS } from '@rnv/sdk-react-native';
 
 export * from './deviceManager';
 
@@ -225,7 +224,7 @@ export const runXcodeProject = async (c: Context) => {
 
                 if (bundleAssets) {
                     logDebug('Assets will be bundled');
-                    return packageBundleForXcode(c, bundleIsDev).then(() =>
+                    return packageReactNativeIOS(c, bundleIsDev).then(() =>
                         _checkLockAndExec(c, appPath, appFolderName, runScheme, p)
                     );
                 }
@@ -342,7 +341,7 @@ export const runXcodeProject = async (c: Context) => {
 
     if (c.platform === MACOS) {
         if (bundleAssets) {
-            await packageBundleForXcode(c, bundleIsDev);
+            await packageReactNativeIOS(c, bundleIsDev);
         }
 
         try {
@@ -376,36 +375,32 @@ const _packageOrRun = (
     p: string
 ) => {
     if (bundleAssets) {
-        return packageBundleForXcode(c, bundleIsDev).then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
+        return packageReactNativeIOS(c, bundleIsDev).then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
     }
     return _checkLockAndExec(c, appPath, scheme, runScheme, p);
 };
-
-// const _getReactNativeCli = () => {
-//     const cli = doResolve('@react-native-community/cli');
-//     return path.join(cli, 'build/bin.js');
-// };
 
 const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, runScheme: string, p = '') => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme} p:${p}`);
     const appFolderName = getAppFolderName(c, c.platform);
 
-    // const cmd = `node ${doResolve(
-    //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
-    // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
-    const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager`;
+    // // const cmd = `node ${doResolve(
+    // //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
+    // // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+    // const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager`;
 
-    const env: Record<string, string | number | string[] | undefined | boolean> = {
-        RCT_METRO_PORT: c.runtime.port,
-        ...generateEnvVars(c),
-    };
+    // const env: Record<string, string | number | string[] | undefined | boolean> = {
+    //     RCT_METRO_PORT: c.runtime.port,
+    //     ...generateEnvVars(c),
+    // };
 
     try {
         // Inherit full logs
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
-        return executeAsync(c, cmd, {
-            env,
-        });
+        // return executeAsync(c, cmd, {
+        //     env,
+        // });
+        return runReactNativeIOS(c, scheme, runScheme);
     } catch (e: any) {
         if (e && e.includes) {
             const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
@@ -415,9 +410,7 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
                     type: 'confirm',
                     name: 'confirm',
                 });
-                return executeAsync(c, cmd, {
-                    env,
-                });
+                return runReactNativeIOS(c, scheme, runScheme);
             }
             const isDeviceNotRegistered = e.includes("doesn't include the currently selected device");
             if (isDeviceNotRegistered) {
@@ -788,44 +781,6 @@ const exportXcodeProject = async (c: Context) => {
     return executeAsync(c, `xcodebuild ${p.join(' ')}`).then(() => {
         logSuccess(`Your IPA is located in ${chalk().cyan(exportPath)} .`);
     });
-};
-
-export const packageBundleForXcode = (c: Context, isDev = false) => {
-    logTask('packageBundleForXcode');
-    // const { maxErrorLength } = c.program;
-    const args = [
-        'bundle',
-        '--platform',
-        'ios',
-        '--dev',
-        isDev,
-        '--assets-dest',
-        `platformBuilds/${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`,
-        '--entry-file',
-        // SECURITY-PATCH https://github.com/flexn-io/renative/security/code-scanning/112
-        shellQuote.quote([`${c.buildConfig.platforms?.[c.platform].entryFile}.js`]),
-        '--bundle-output',
-        `${getAppFolder(c)}/main.jsbundle`,
-    ];
-
-    if (getConfigProp(c, c.platform, 'enableSourceMaps', false)) {
-        args.push('--sourcemap-output');
-        args.push(`${getAppFolder(c)}/main.jsbundle.map`);
-    }
-
-    if (c.program.info) {
-        args.push('--verbose');
-    }
-
-    return executeAsync(
-        c,
-        `node ${doResolve(
-            c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
-        )}/local-cli/cli.js ${args.join(' ')} --config=${
-            c.runtime.runtimeExtraProps?.reactNativeMetroConfigName || 'metro.config.js'
-        }`,
-        { env: { ...generateEnvVars(c) } }
-    );
 };
 
 // Resolve or reject will not be called so this will keep running

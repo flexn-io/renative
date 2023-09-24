@@ -2,7 +2,7 @@ import { executeAsync, getAppFolder, getConfigProp, generateEnvVars, doResolve, 
 
 import shellQuote from 'shell-quote';
 
-export const packageBundleForXcode = (c: RnvContext, isDev = false) => {
+export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
     logTask('packageBundleForXcode');
     // const { maxErrorLength } = c.program;
     const args = [
@@ -40,8 +40,8 @@ export const packageBundleForXcode = (c: RnvContext, isDev = false) => {
     );
 };
 
-export const runIOS = async (c: RnvContext, appPath: string, scheme: string, runScheme: string, p = '') => {
-    logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme} p:${p}`);
+export const runReactNativeIOS = async (c: RnvContext, scheme: string, runScheme: string) => {
+    logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
 
     // const cmd = `node ${doResolve(
     //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
