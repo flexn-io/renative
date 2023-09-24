@@ -461,7 +461,7 @@ export const copyAssetsFolder = async (
         }
     });
 
-    const destPath = path.join(getPlatformProjectDir(c)!, subPath!);
+    const destPath = subPath ? path.join(getPlatformProjectDir(c)!, subPath) : getPlatformProjectDir(c)!;
 
     // FOLDER MERGERS FROM EXTERNAL SOURCES
     if (validAssetSources.length > 0) {

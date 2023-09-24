@@ -25,7 +25,7 @@ export const registerDevice = async (c: Context) => {
     }
 };
 
-export const updateProfile = async (c: Context) => {
+export const updateProfile = async (c: Context): Promise<boolean> => {
     logTask(`updateProfile`, chalk().grey);
 
     // TODO: run trough all schemes
