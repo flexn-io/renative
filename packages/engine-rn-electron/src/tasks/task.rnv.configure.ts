@@ -13,7 +13,7 @@ import {
     shouldSkipTask,
     configureEntryPoint,
 } from '@rnv/core';
-import { configureElectronProject } from '../sdks/sdk-electron';
+import { configureElectronProject } from '../sdk';
 
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');

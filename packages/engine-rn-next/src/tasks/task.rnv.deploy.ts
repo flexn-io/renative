@@ -10,7 +10,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
 } from '@rnv/core';
-import { deployWebNext } from '../sdks/sdk-next';
+import { deployWebNext } from '../sdk';
 
 export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);

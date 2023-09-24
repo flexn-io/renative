@@ -10,7 +10,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
 } from '@rnv/core';
-import { runWebNext } from '../sdks/sdk-next';
+import { runWebNext } from '../sdk';
 
 export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

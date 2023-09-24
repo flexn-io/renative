@@ -10,7 +10,7 @@ import {
     executeTask,
     shouldSkipTask,
 } from '@rnv/core';
-import { configureNextIfRequired } from '../sdks/sdk-next';
+import { configureNextIfRequired } from '../sdk';
 
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');

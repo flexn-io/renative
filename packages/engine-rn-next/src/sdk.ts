@@ -25,7 +25,7 @@ import {
     parsePlugins,
     getModuleConfigs,
 } from '@rnv/core';
-import { NEXT_CONFIG_NAME } from '../../constants';
+import { NEXT_CONFIG_NAME } from './constants';
 
 export const configureNextIfRequired = async (c: RnvContext) => {
     logTask('configureNextIfRequired');

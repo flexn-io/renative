@@ -11,7 +11,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
 } from '@rnv/core';
-import { runElectron } from '../sdks/sdk-electron';
+import { runElectron } from '../sdk';
 
 export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

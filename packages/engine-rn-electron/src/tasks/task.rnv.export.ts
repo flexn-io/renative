@@ -11,7 +11,7 @@ import {
     executeOrSkipTask,
     shouldSkipTask,
 } from '@rnv/core';
-import { exportElectron } from '../sdks/sdk-electron';
+import { exportElectron } from '../sdk';
 
 export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);
