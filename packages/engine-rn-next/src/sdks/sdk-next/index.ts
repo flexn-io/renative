@@ -20,20 +20,20 @@ import {
     logRaw,
     logSummary,
     logSuccess,
-    NEXT_CONFIG_NAME,
     generateEnvVars,
     copyAssetsFolder,
     parsePlugins,
     getModuleConfigs,
 } from '@rnv/core';
+import { NEXT_CONFIG_NAME } from '../../constants';
 
 export const configureNextIfRequired = async (c: RnvContext) => {
     logTask('configureNextIfRequired');
     c.runtime.platformBuildsProjectPath = `${getPlatformBuildDir(c)}`;
     const { platformTemplatesDirs, dir } = c.paths.project;
-    // const pagesDir = path.resolve(getConfigProp(c, c.platform, 'pagesDir') || 'src/app');
-    // const _appFile = path.join(pagesDir, '_app.js');
+
     const supportFilesDir = path.join(platformTemplatesDirs[c.platform], '../../supportFiles');
+
     const configFile = path.join(dir, NEXT_CONFIG_NAME);
 
     await copyAssetsFolder(c, c.platform);

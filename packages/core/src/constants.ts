@@ -69,13 +69,6 @@ export const ICONS = {
 
 export const REMOTE_DEBUG_PORT = 8079;
 
-// SDK
-// export const ANDROID_SDK = 'ANDROID_SDK';
-// export const ANDROID_NDK = 'ANDROID_NDK';
-// export const TIZEN_SDK = 'TIZEN_SDK';
-// export const WEBOS_SDK = 'WEBOS_SDK';
-// export const KAIOS_SDK = 'KAIOS_SDK';
-
 export const RENATIVE_CONFIG_NAME = 'renative.json';
 export const RENATIVE_CONFIG_LOCAL_NAME = 'renative.local.json';
 export const RENATIVE_CONFIG_PRIVATE_NAME = 'renative.private.json';
@@ -89,7 +82,6 @@ export const RENATIVE_CONFIG_PLATFORMS_NAME = 'renative.platforms.json';
 export const RENATIVE_CONFIG_ENGINE_NAME = 'renative.engine.json';
 export const RN_CLI_CONFIG_NAME = 'metro.config.js';
 export const RN_BABEL_CONFIG_NAME = 'babel.config.js';
-export const NEXT_CONFIG_NAME = 'next.config.js';
 export const SAMPLE_APP_ID = 'helloworld';
 
 export const IS_TABLET_ABOVE_INCH = 6.5;

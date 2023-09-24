@@ -4,10 +4,25 @@ import { OverridesOptions } from '../system/types';
 import { RnvPlatform } from '../types';
 
 export interface RnvContext<Payload = any> {
+    /**
+     * Node program object
+     */
     program: any;
+    /**
+     * Extra payload object used by 3rd party (ie @rnv/sdk-apple) to decorate context with extra typed information
+     */
     payload: Payload;
+    /**
+     * first command value from cli (ie "rnv run -p android") returns "run"
+     */
     command: string | null;
+    /**
+     * second command value from cli (ie "rnv hooks list") returns "list"
+     */
     subCommand: string | null;
+    /**
+     * complete object containing ALL renative.*.json files collected and merged during execution
+     */
     buildConfig: RnvContextBuildConfig;
     assetConfig: object;
     platform: RnvPlatform;

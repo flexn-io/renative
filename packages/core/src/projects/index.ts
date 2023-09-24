@@ -188,7 +188,7 @@ export const checkAndCreateGitignore = async (c: RnvContext) => {
     if (!fsExistsSync(ignrPath)) {
         logInfo('Your .gitignore is missing. CREATING...DONE');
 
-        copyFileSync(path.join(c.paths.rnv.dir, 'coreTemplateFiles/gitignore-template'), ignrPath);
+        copyFileSync(path.join(c.paths.rnv.dir, 'coreTemplateFiles/.gitignore.tpl'), ignrPath);
     }
     return true;
 };
