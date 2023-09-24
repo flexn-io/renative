@@ -1,7 +1,7 @@
-import engine from './Api2/engine';
-import factor from './Api2/factor';
-import platform from './Api2/platform';
-import { Platform, FormFactor, Engine } from './Constants2';
+import engine from './api/engine';
+import factor from './api/factor';
+import platform from './api/platform';
+import { Platform, FormFactor, Engine } from './constants';
 
 // PLATFORM
 export const isPlatformAndroid = platform === Platform.android;
