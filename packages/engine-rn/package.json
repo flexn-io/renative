@@ -32,7 +32,8 @@
     },
     "dependencies": {
         "@rnv/sdk-android": "0.38.0-canary.1",
-        "@rnv/sdk-apple": "0.38.0-canary.1"
+        "@rnv/sdk-apple": "0.38.0-canary.1",
+        "@rnv/sdk-react-native": "0.38.0-canary.1"
     },
     "devDependencies": {},
     "peerDependencies": {

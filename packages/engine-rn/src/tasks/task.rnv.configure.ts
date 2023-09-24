@@ -18,7 +18,7 @@ import {
 } from '@rnv/core';
 import { configureGradleProject } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
-import { configureFonts, configureMetroConfigs } from '../commonEngine';
+import { configureFonts, configureMetroConfigs } from '@rnv/sdk-react-native';
 
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');

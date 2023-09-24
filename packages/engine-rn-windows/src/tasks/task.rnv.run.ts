@@ -11,7 +11,7 @@ import {
     TASK_RUN,
 } from '@rnv/core';
 import { SDKWindows } from '../sdks';
-import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
+import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 
 const { ruWindowsProject, clearWindowsTemporaryFiles } = SDKWindows;
 

@@ -37,7 +37,8 @@
         "better-opn": "1.0.0",
         "electron": "26.2.1",
         "electron-builder": "24.6.4",
-        "electron-notarize": "1.2.2"
+        "electron-notarize": "1.2.2",
+        "@rnv/sdk-react-native": "0.38.0-canary.1"
     },
     "devDependencies": {},
     "peerDependencies": {

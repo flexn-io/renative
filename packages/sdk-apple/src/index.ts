@@ -47,6 +47,10 @@ import { packageReactNativeIOS, runReactNativeIOS } from '@rnv/sdk-react-native'
 
 export * from './deviceManager';
 
+export const packageBundleForXcode = (c: Context) => {
+    return packageReactNativeIOS(c);
+};
+
 export const generateChecksum = (str: string, algorithm?: string, encoding?: 'base64' | 'base64url' | 'hex') =>
     crypto
         .createHash(algorithm || 'md5')

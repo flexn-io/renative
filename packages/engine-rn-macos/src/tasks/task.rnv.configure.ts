@@ -11,7 +11,7 @@ import {
     configureEntryPoint,
 } from '@rnv/core';
 import { configureXcodeProject } from '@rnv/sdk-apple';
-import { configureMetroConfigs } from '../commonEngine';
+import { configureMetroConfigs } from '@rnv/sdk-react-native';
 
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');

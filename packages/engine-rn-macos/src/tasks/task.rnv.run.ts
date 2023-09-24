@@ -13,7 +13,7 @@ import {
     shouldSkipTask,
 } from '@rnv/core';
 import { runXcodeProject } from '@rnv/sdk-apple';
-import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
+import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 
 export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

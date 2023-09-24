@@ -22,7 +22,7 @@ import {
     MACOS,
     IOS,
 } from '@rnv/core';
-import { isBundlerActive } from '../commonEngine';
+import { isBundlerActive } from '@rnv/sdk-react-native';
 
 const BUNDLER_PLATFORMS: Record<string, string> = {};
 
