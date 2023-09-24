@@ -39,11 +39,6 @@ export const executeRnv = async ({
             program.ci = true;
         }
 
-        //@ts-ignore
-        global.fetch = await import('node-fetch');
-        //@ts-ignore
-        global.Headers = global.fetch.Headers;
-
         createRnvApi({ spinner, prompt, analytics: Analytics, logger, getConfigProp, doResolve });
         createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
 

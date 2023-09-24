@@ -11,7 +11,6 @@ export const withRNVNext = (config: any, opts: any) => {
             disableStaticImages: true,
             ...(config?.images || {}),
         },
-        webpack5: false,
         distDir: process.env.NEXT_DIST_DIR,
         webpack: (cfg: any, props: any) => {
             const { isServer } = props;
