@@ -121,6 +121,7 @@ const runCocoaPods = async (c: Context) => {
         ...process.env,
         RCT_NEW_ARCH_ENABLED: 1,
         REACT_NATIVE_PERMISSIONS_REQUIRED: requiredPodPermissions,
+        ...generateEnvVars(c),
     };
 
     if (podsRequired) {
@@ -394,8 +395,9 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
     // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
     const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager`;
 
-    const env: Record<string, string | number> = {
+    const env: Record<string, string | number | string[] | undefined | boolean> = {
         RCT_METRO_PORT: c.runtime.port,
+        ...generateEnvVars(c),
     };
 
     try {

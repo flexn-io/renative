@@ -383,6 +383,7 @@ const _runGradleApp = async (c: Context, platform: any, device: any) => {
     await executeAsync(c, command, {
         env: {
             RCT_METRO_PORT: c.runtime.port,
+            ...generateEnvVars(c),
         },
         cwd: appFolder,
     });
