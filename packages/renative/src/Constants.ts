@@ -1,6 +1,3 @@
-export const IS_TABLET_ABOVE_INCH = 6.5;
-export const IS_WEAR_UNDER_SIZE = 1000; // width + height
-
 export enum PlatformGroup {
     smarttv = 'smarttv',
     electron = 'electron',

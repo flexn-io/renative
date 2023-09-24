@@ -1,6 +1,6 @@
 // PLATFORM
 import { homedir } from 'os';
-import { RnvTaskParameter } from './tasks/types';
+import type { RnvTaskParameter } from './tasks/types';
 
 export const USER_HOME_DIR = homedir();
 
@@ -55,20 +55,6 @@ export const XBOX = 'xbox';
 export const XBOX360 = 'xbox360';
 // Kodi, Boxee, HorizonTV, Mediaroom(Ericsson), YahooSmartTV, Slingbox, Hololens, Occulus, GearVR, WebVR, Saphi
 
-export const ICONS = {
-    PHONE: '📱',
-    AUTO: '🚗',
-    TV: '📺',
-    CONSOLE: '🎮',
-    WATCH: '⌚',
-    DESKTOP: '🖥️ ',
-    BROWSER: '🌐',
-    VOICE: '📢',
-    SERVICE: '☁️',
-};
-
-export const REMOTE_DEBUG_PORT = 8079;
-
 export const RENATIVE_CONFIG_NAME = 'renative.json';
 export const RENATIVE_CONFIG_LOCAL_NAME = 'renative.local.json';
 export const RENATIVE_CONFIG_PRIVATE_NAME = 'renative.private.json';
@@ -81,9 +67,6 @@ export const RENATIVE_CONFIG_TEMPLATES_NAME = 'renative.templates.json';
 export const RENATIVE_CONFIG_PLATFORMS_NAME = 'renative.platforms.json';
 export const RENATIVE_CONFIG_ENGINE_NAME = 'renative.engine.json';
 export const SAMPLE_APP_ID = 'helloworld';
-
-export const IS_TABLET_ABOVE_INCH = 6.5;
-export const IS_WEAR_UNDER_SIZE = 1000; // width + height
 
 export const PACKAGE_JSON_FILEDS = [
     'name',
@@ -505,66 +488,6 @@ export const configSchema: Record<string, any> = {
         default: true,
     },
 };
-
-export const RNV_PACKAGES = [
-    {
-        packageName: 'renative',
-        folderName: 'renative',
-        skipLinking: true,
-    },
-    {
-        packageName: '@rnv/template-starter',
-        folderName: 'template-starter',
-    },
-    {
-        packageName: 'rnv',
-        folderName: 'rnv',
-    },
-    {
-        packageName: '@rnv/engine-lightning',
-        folderName: 'engine-lightning',
-    },
-    {
-        packageName: '@rnv/engine-rn',
-        folderName: 'engine-rn',
-    },
-    {
-        packageName: '@rnv/engine-rn-electron',
-        folderName: 'engine-rn-electron',
-    },
-    {
-        packageName: '@rnv/engine-rn-windows',
-        folderName: 'engine-rn-windows',
-    },
-    {
-        packageName: '@rnv/engine-rn-next',
-        folderName: 'engine-rn-next',
-    },
-    {
-        packageName: '@rnv/engine-rn-tvos',
-        folderName: 'engine-rn-tvos',
-    },
-    {
-        packageName: '@rnv/engine-rn-web',
-        folderName: 'engine-rn-web',
-    },
-    {
-        packageName: '@rnv/engine-roku',
-        folderName: 'engine-roku',
-    },
-    {
-        packageName: '@rnv/integration-docker',
-        folderName: 'integration-docker',
-    },
-    {
-        packageName: '@rnv/integration-ftp',
-        folderName: 'integration-ftp',
-    },
-    {
-        packageName: '@rnv/integration-vercel',
-        folderName: 'integration-vercel',
-    },
-];
 
 export const INJECTABLE_CONFIG_PROPS = [
     'id',

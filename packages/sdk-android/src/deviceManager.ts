@@ -17,7 +17,6 @@ import {
     logDebug,
     logSuccess,
     logRaw,
-    IS_TABLET_ABOVE_INCH,
     ANDROID_WEAR,
     ANDROID,
     ANDROID_TV,
@@ -32,6 +31,7 @@ import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDR
 import { AndroidDevice } from './types';
 
 const CHECK_INTEVAL = 5000;
+export const IS_TABLET_ABOVE_INCH = 6.5;
 
 const currentDeviceProps: Record<string, Record<string, string>> = {};
 

@@ -22,12 +22,13 @@ import {
     logSummary,
     generateEnvVars,
     getModuleConfigs,
-    REMOTE_DEBUG_PORT,
     executeAsync,
     copyFileSync,
     fsExistsSync,
     RnvContext,
 } from '@rnv/core';
+
+export const REMOTE_DEBUG_PORT = 8079;
 
 export const waitForUrl = (url: string) =>
     new Promise((resolve, reject) => {

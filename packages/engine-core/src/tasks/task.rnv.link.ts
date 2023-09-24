@@ -4,13 +4,13 @@ import {
     logTask,
     logSuccess,
     PARAMS,
-    RNV_PACKAGES,
     fsExistsSync,
     fsRenameSync,
     fsSymlinkSync,
     RnvTaskFn,
     RnvContext,
 } from '@rnv/core';
+import { RNV_PACKAGES } from '../constants';
 
 const _linkPackage = (c: RnvContext, key: string, folder: string) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);

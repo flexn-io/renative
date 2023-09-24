@@ -4,7 +4,6 @@ import {
     logTask,
     logSuccess,
     PARAMS,
-    RNV_PACKAGES,
     fsExistsSync,
     fsRenameSync,
     fsUnlinkSync,
@@ -12,6 +11,7 @@ import {
     RnvTaskFn,
     RnvContext,
 } from '@rnv/core';
+import { RNV_PACKAGES } from '../constants';
 
 const _unlinkPackage = (c: RnvContext, key: string) => {
     const rnvPath = path.join(c.paths.project.nodeModulesDir, key);

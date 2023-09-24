@@ -1,13 +1,6 @@
 const { withExpo } = require('@expo/next-adapter');
 const withImages = require('next-images');
-// DEPRECATED
-// const withOptimizedImages = require('next-optimized-images');
 const withFonts = require('next-fonts');
-// const path = require('path');
-// DEPRECATED
-// const nextTranspile = require('next-transpile-modules');
-// DEPRECATED
-// const withCSS = require('@zeit/next-css');
 
 //TODO: https://turbo.build/pack/docs/features/customizing-turbopack
 
