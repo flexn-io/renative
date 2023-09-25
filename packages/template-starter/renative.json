@@ -208,6 +208,12 @@
         "next": {
             "version": "13.5.2",
             "disablePluginTemplateOverrides": true
+        },
+        "react-native-web": {
+            "version": "0.19.8"
+        },
+        "react-native-tvos": {
+            "version": "0.72.4-0"
         }
     },
     "permissions": {

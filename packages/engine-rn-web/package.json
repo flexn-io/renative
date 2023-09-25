@@ -39,7 +39,6 @@
         "html-webpack-harddisk-plugin": "1.0.2",
         "html-webpack-plugin": "4.5.1",
         "mini-css-extract-plugin": "0.8.0",
-        "react-native-web": "0.19.8",
         "webpack-bundle-analyzer": "4.9.1"
     },
     "devDependencies": {},
