@@ -3,7 +3,7 @@ import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
 import { checkAndCreateProjectPackage, installPackageDependencies } from '../npm';
 import { TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
-import { getAppFolder, getConfigProp } from '../common';
+import { getAppFolder, getAppId, getConfigProp } from '../common';
 import { doResolve } from '../system/resolve';
 import { getScopedVersion } from '../utils/utils';
 import { writeRenativeConfigFile } from '../configs';
@@ -509,6 +509,7 @@ export const generateEnvVars = (c: RnvContext, moduleConfig?: RnvModuleConfig, n
         RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir,
         RNV_ENGINE: c.runtime.engine?.config.id,
         RNV_IS_NATIVE_TV: [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform),
+        RNV_APP_ID: getAppId(c, c.platform),
     };
 };
 
