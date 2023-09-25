@@ -14,13 +14,11 @@ import {
     getRealPath,
     updateObjectSync,
     fsWriteFileSync,
-    fsChmodSync,
     executeAsync,
     getAppFolder,
     getConfigProp,
     getEntryFile,
     isPlatformActive,
-    createPlatformBuild,
     isSystemWin,
     updateRenativeConfigs,
     chalk,
@@ -399,22 +397,19 @@ export const configureProject = async (c: Context) => {
 
     const appFolder = getAppFolder(c);
 
-    const gradlew = path.join(appFolder, 'gradlew');
+    // if (!fsExistsSync(gradlew)) {
+    //     logWarning(`Your ${chalk().white(platform)} platformBuild is misconfigured!. let's repair it.`);
+    //     await createPlatformBuild(c, platform);
+    //     await configureGradleProject(c);
 
-    if (!fsExistsSync(gradlew)) {
-        logWarning(`Your ${chalk().white(platform)} platformBuild is misconfigured!. let's repair it.`);
-        await createPlatformBuild(c, platform);
-        await configureGradleProject(c);
-
-        return true;
-    }
+    //     return true;
+    // }
 
     const outputFile = getEntryFile(c, platform);
 
     // await createJavaPackageFolders(c, appFolder);
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
-    fsChmodSync(gradlew, '755');
 
     // INJECTORS
     c.payload.pluginConfigAndroid = {

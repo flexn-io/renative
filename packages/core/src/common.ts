@@ -528,9 +528,9 @@ export const getFlavouredProp = <T = any>(
     return obj[key];
 };
 
-export const getBuildFilePath = (c: RnvContext, platform: string, filePath: string) => {
+export const getBuildFilePath = (c: RnvContext, platform: string, filePath: string, altTemplateFolder?: string) => {
     // P1 => platformTemplates
-    let sp = path.join(getAppTemplateFolder(c, platform), filePath);
+    let sp = path.join(altTemplateFolder || getAppTemplateFolder(c, platform), filePath);
     // P2 => appConfigs/base + @buildSchemes
     const sp2bf = getBuildsFolder(c, platform, c.paths.project.appConfigBase.dir);
     if (sp2bf) {
