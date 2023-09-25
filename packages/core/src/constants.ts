@@ -447,6 +447,9 @@ export const PARAM_KEYS: Record<string, RnvTaskParameter> = {
         description: 'Pass in answers to prompts',
         examples: ['--answer question=response --answer question2=response2', '--answer question=\'{"some": "json"}\''],
     },
+    resetAdb: {
+        description: 'Forces to reset android adb',
+    },
 };
 
 Object.keys(PARAM_KEYS).forEach((k) => {

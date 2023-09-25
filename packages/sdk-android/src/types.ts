@@ -71,4 +71,5 @@ export type AndroidDevice = {
     name: string;
     isDevice?: boolean;
     isActive: boolean;
+    isRunning?: boolean;
 };

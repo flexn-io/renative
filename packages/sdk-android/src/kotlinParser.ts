@@ -25,7 +25,7 @@ export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
     const { platform } = c;
 
     const appId = getAppId(c, c.platform);
-    console.log('appId', appId);
+    // console.log('appId', appId);
     const javaPackageArray = appId.split('.');
 
     const javaPackagePath = `app/src/${scheme}/java/${javaPackageArray.join('/')}`;
@@ -52,7 +52,7 @@ export const parseMainApplicationSync = (c: Context) => {
     const { platform } = c;
 
     const appId = getAppId(c, c.platform);
-    console.log('appId', appId);
+    // console.log('appId', appId);
     const javaPackageArray = appId.split('.');
 
     const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
@@ -119,7 +119,7 @@ export const parseMainActivitySync = (c: any) => {
     const { platform } = c;
 
     const appId = getAppId(c, c.platform);
-    console.log('appId', appId);
+    // console.log('appId', appId);
     const javaPackageArray = appId.split('.');
 
     const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;

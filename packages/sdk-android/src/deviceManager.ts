@@ -137,7 +137,8 @@ const _getDeviceString = (device: AndroidDevice, i: number | null): any => {
     return ` [${i + 1}]> ${deviceString}\n`;
 };
 
-export const resetAdb = async (c: RnvContext, ranBefore?: boolean) => {
+export const resetAdb = async (c: RnvContext, forceRun?: boolean, ranBefore?: boolean) => {
+    if (!c.program.resetAdb && !forceRun) return;
     try {
         if (!ranBefore) await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
     } catch (e: any) {
@@ -150,7 +151,7 @@ export const resetAdb = async (c: RnvContext, ranBefore?: boolean) => {
             return Promise.reject(e);
         }
         logWarning(`Got error:\n${e}\nWill attemnt again in 5 seconds`);
-        setTimeout(resetAdb, 5000, c, true);
+        setTimeout(resetAdb, 5000, c, true, true);
     }
 };
 
@@ -458,6 +459,14 @@ const _parseDevicesResult = async (c: RnvContext, devicesString: string, avdsStr
                     logError(e);
                 }
 
+                const device: AndroidDevice = {
+                    udid: 'unknown',
+                    isDevice: false,
+                    isActive: false,
+                    name: line,
+                    ...avdDetails,
+                };
+
                 try {
                     logDebug('_parseDevicesResult 8', { avdDetails });
 
@@ -470,14 +479,13 @@ const _parseDevicesResult = async (c: RnvContext, devicesString: string, avdsStr
                     logDebug('_parseDevicesResult 9 - excluding running emulator');
                 } catch (e) {
                     if (avdDetails) {
-                        devices.push({
-                            udid: 'unknown',
-                            isDevice: false,
-                            isActive: false,
-                            name: line,
-                            ...avdDetails,
-                        });
+                        //This is edge case scenarion where 'adb devices -l' does not return running emulator even it is in process
+                        device.isRunning = true;
                     }
+                }
+
+                if (avdDetails) {
+                    devices.push(device);
                 }
             })
         );
@@ -596,7 +604,7 @@ export const checkForActiveEmulator = (c: RnvContext) =>
                             logRaw(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
                             attempts++;
                             if ([ANDROID_TV, FIRE_TV, ANDROID_WEAR].includes(platform) && attempts === 2) {
-                                await resetAdb(c); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
+                                await resetAdb(c, true); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
                             }
                             if (attempts > maxAttempts) {
                                 clearInterval(poll);
