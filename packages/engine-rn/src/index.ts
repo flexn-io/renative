@@ -1,4 +1,6 @@
-import { withRNVMetro, withRNVBabel } from './adapter';
+import { withRNVMetro } from './adapters/metroAdapter';
+import { withRNVBabel } from './adapters/babelAdapter';
+
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRnvRun from './tasks/task.rnv.run';
