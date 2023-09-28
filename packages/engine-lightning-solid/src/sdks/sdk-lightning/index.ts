@@ -7,6 +7,7 @@ import {
     copyBuildsFolder,
     execCLI,
     executeAsync,
+    fsExistsSync,
     generateEnvVars,
     getAppDescription,
     getAppId,
@@ -25,6 +26,7 @@ import semver from 'semver';
 
 import { CLI_TIZEN, DEFAULT_SECURITY_PROFILE_NAME, runTizenSimOrDevice } from '@rnv/sdk-tizen';
 import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
+import { VITE_CONFIG_NAME } from '../../constants';
 
 export const runLightningProject = async (c: RnvContext) => {
     logTask('runLightningProject');
@@ -94,11 +96,18 @@ export const buildLightningProject = async (c: RnvContext) => {
 export const configureLightningProject = async (c: RnvContext) => {
     logTask('configureLightningProject');
     const { platform } = c;
+    const { platformTemplatesDirs, dir } = c.paths.project;
+    const supportFilesDir = path.join(platformTemplatesDirs[c.platform], '../../supportFiles');
+
+    const configFile = path.join(dir, VITE_CONFIG_NAME);
     c.runtime.platformBuildsProjectPath = `${getPlatformBuildDir(c)}`;
     if (!isPlatformActive(c, platform)) {
         return;
     }
     await copyAssetsFolder(c, platform);
+    if (!fsExistsSync(configFile)) {
+        writeCleanFile(path.join(supportFilesDir, VITE_CONFIG_NAME), configFile, undefined, undefined, c);
+    }
     await _configureProject(c);
     return copyBuildsFolder(c, platform);
 };
