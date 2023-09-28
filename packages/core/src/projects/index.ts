@@ -9,34 +9,34 @@ import {
     getTimestampPathsConfig,
 } from '../common';
 import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
+import { installPackageDependencies, isYarnInstalled } from '../npm';
 import { isPlatformActive } from '../platforms';
 import { copyTemplatePluginsSync, parsePlugins } from '../plugins';
+import { executeAsync } from '../system/exec';
 import {
     cleanFolder,
-    copyFolderContentsRecursiveSync,
     copyFileSync,
+    copyFolderContentsRecursiveSync,
+    fsExistsSync,
+    fsReadFileSync,
+    fsReaddirSync,
+    fsWriteFileSync,
     mkdirSync,
     readObjectSync,
-    writeFileSync,
-    fsWriteFileSync,
-    fsExistsSync,
-    fsReaddirSync,
-    fsReadFileSync,
     resolvePackage,
+    writeFileSync,
 } from '../system/fs';
-import { installPackageDependencies, isYarnInstalled } from '../npm';
-import { executeAsync } from '../system/exec';
 
-import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../logger';
+import { chalk, getCurrentCommand, logDebug, logInfo, logTask, logWarning } from '../logger';
 
-import { configureTemplateFiles, configureEntryPoint } from '../templates';
+import { inquirerPrompt } from '../api';
 import { parseRenativeConfigs } from '../configs';
+import { NpmPackageFile, RenativeConfigFile } from '../configs/types';
 import { RnvContext } from '../context/types';
+import { RnvPluginPlatform } from '../plugins/types';
+import { configureEntryPoint, configureTemplateFiles } from '../templates';
 import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
-import { RnvPluginPlatform } from '../plugins/types';
-import { NpmPackageFile, RenativeConfigFile } from '../configs/types';
-import { inquirerPrompt } from '../api';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');
@@ -616,6 +616,7 @@ const SYNCED_DEPS = [
     '@rnv/engine-rn',
     '@rnv/engine-rn-next',
     '@rnv/engine-lightning',
+    '@rnv/engine-lightning-solid',
     '@rnv/engine-rn-web',
     '@rnv/engine-rn-electron',
     '@rnv/engine-rn-macos',

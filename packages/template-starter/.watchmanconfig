@@ -5,6 +5,7 @@
         "../rnv",
         "../engine-core",
         "../engine-lightning",
+        "../engine-lightning-solid",
         "../engine-rn",
         "../engine-rn-electron",
         "../engine-rn-macos",

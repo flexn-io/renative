@@ -17,6 +17,10 @@ export const RNV_PACKAGES = [
         folderName: 'engine-lightning',
     },
     {
+        packageName: '@rnv/engine-lightning-solid',
+        folderName: 'engine-lightning-solid',
+    },
+    {
         packageName: '@rnv/engine-rn',
         folderName: 'engine-rn',
     },

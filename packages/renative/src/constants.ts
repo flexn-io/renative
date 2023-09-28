@@ -15,6 +15,7 @@ export enum FormFactor {
 export enum Engine {
     generic = 'generic',
     lightning = 'engine-lightning',
+    lightning_solid = 'engine-lightning-solid',
     rn_electron = 'engine-rn-electron',
     rn_macos = 'engine-rn-macos',
     rn_next = 'engine-rn-next',

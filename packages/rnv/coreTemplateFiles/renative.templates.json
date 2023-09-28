@@ -32,6 +32,10 @@
             "version": "0.38.0-canary.1",
             "id": "engine-lightning"
         },
+        "@rnv/engine-lightning-solid": {
+            "version": "0.38.0-canary.1",
+            "id": "engine-lightning-solid"
+        },
         "@rnv/engine-rn-macos": {
             "version": "0.38.0-canary.1",
             "id": "engine-rn-macos"

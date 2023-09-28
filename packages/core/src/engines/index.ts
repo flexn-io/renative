@@ -1,19 +1,19 @@
 import path from 'path';
-import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
-import { checkAndCreateProjectPackage, installPackageDependencies } from '../npm';
-import { TVOS, ANDROID_TV, FIRE_TV } from '../constants';
-import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
+import { inquirerPrompt } from '../api';
 import { getAppFolder, getAppId, getConfigProp } from '../common';
-import { doResolve } from '../system/resolve';
-import { getScopedVersion } from '../utils/utils';
 import { writeRenativeConfigFile } from '../configs';
-import { configurePlugins } from '../plugins';
+import { ANDROID_TV, FIRE_TV, TVOS } from '../constants';
+import { getContext } from '../context/provider';
 import { RnvContext } from '../context/types';
+import { chalk, logDebug, logError, logInfo, logTask, logWarning } from '../logger';
+import { checkAndCreateProjectPackage, installPackageDependencies } from '../npm';
+import { configurePlugins } from '../plugins';
+import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
+import { doResolve } from '../system/resolve';
 import { RnvTask, RnvTaskMap } from '../tasks/types';
 import { RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
+import { getScopedVersion } from '../utils/utils';
 import { RenativeEngineConfig, RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
-import { inquirerPrompt } from '../api';
-import { getContext } from '../context/provider';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -284,6 +284,7 @@ export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<
 
 const ENGINE_ID_MAP: Record<string, string> = {
     'engine-lightning': '@rnv/engine-lightning',
+    'engine-lightning-solid': '@rnv/engine-lightning-solid',
     'engine-rn': '@rnv/engine-rn',
     'engine-rn-electron': '@rnv/engine-rn-electron',
     'engine-rn-macos': '@rnv/engine-rn-macos',

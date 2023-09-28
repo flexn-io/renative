@@ -1,7 +1,7 @@
-import path from 'path';
+import { setPackageVersions } from '@flexn/build-hooks-version';
 import { Doctor, FileUtils } from '@rnv/core';
 import fs from 'fs';
-import { setPackageVersions } from '@flexn/build-hooks-version';
+import path from 'path';
 
 const { fsExistsSync, readObjectSync } = FileUtils;
 
@@ -16,6 +16,7 @@ const VERSIONED_PACKAGES = [
     'engine-rn-next',
     'engine-rn-web',
     'engine-lightning',
+    'engine-lightning-solid',
     'engine-rn-electron',
     'engine-rn-windows',
     'sdk-apple',
@@ -86,6 +87,7 @@ export const prePublish = async (c) => {
             '@rnv/engine-rn-next': v,
             '@rnv/engine-rn-electron': v,
             '@rnv/engine-lightning': v,
+            '@rnv/engine-lightning-solid': v,
             '@rnv/engine-rn-macos': v,
             '@rnv/engine-rn-windows': v,
         },

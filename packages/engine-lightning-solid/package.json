@@ -1,0 +1,48 @@
+{
+    "name": "@rnv/engine-lightning-solid",
+    "version": "0.38.0-canary.1",
+    "description": "ReNative Engine to build lightning based apps.",
+    "keywords": [
+        "lightning"
+    ],
+    "homepage": "https://github.com/flexn-io/renative#readme",
+    "bugs": {
+        "url": "https://github.com/flexn-io/renative/issues"
+    },
+    "license": "MIT",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "contributors": [],
+    "files": [
+        "lib",
+        "renative.engine.json",
+        "supportFiles",
+        "templates"
+    ],
+    "main": "lib/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/flexn-io/renative.git"
+    },
+    "scripts": {
+        "build": "yarn clean && yarn compile",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.json",
+        "prepublishOnly": "yarn clean && yarn compile:prod",
+        "watch": "tsc --watch --preserveWatchOutput"
+    },
+    "dependencies": {
+        "@lightningjs/cli": "2.12.0",
+        "@lightningjs/sdk": "5.4.1",
+        "@rnv/sdk-tizen": "^0.38.0-canary.1",
+        "@rnv/sdk-webos": "^0.38.0-canary.1"
+    },
+    "devDependencies": {},
+    "peerDependencies": {
+        "@rnv/core": "^0.38.0-canary.1"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    }
+}

@@ -1383,6 +1383,7 @@ export const schemaRoot = {
                     '@rnv/engine-rn-web': 'source:rnv',
                     '@rnv/engine-rn-next': 'source:rnv',
                     '@rnv/engine-lightning': 'source:rnv',
+                    '@rnv/engine-lightning-solid': 'source:rnv',
                     '@rnv/engine-rn-electron': 'source:rnv',
                     '@rnv/engine-rn-windows': 'source:rnv',
                 },

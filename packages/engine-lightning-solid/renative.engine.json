@@ -1,0 +1,16 @@
+{
+    "id": "engine-lightning-solid",
+    "overview": "ReNative Engine to build lightning based apps.",
+    "plugins": {
+        "@lightningjs/sdk": "source:rnv",
+        "@lightningjs/cli": "source:rnv"
+    },
+    "npm": {
+        "devDependencies": {}
+    },
+    "platforms": {
+        "tizen": {},
+        "webos": {},
+        "firefoxtv": {}
+    }
+}

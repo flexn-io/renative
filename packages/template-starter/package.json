@@ -88,6 +88,7 @@
         "@react-native-community/cli": "11.3.7",
         "@react-native-community/cli-platform-ios": "11.3.7",
         "@rnv/engine-lightning": "0.38.0-canary.1",
+        "@rnv/engine-lightning-solid": "0.38.0-canary.1",
         "@rnv/engine-rn": "0.38.0-canary.1",
         "@rnv/engine-rn-electron": "0.38.0-canary.1",
         "@rnv/engine-rn-next": "0.38.0-canary.1",
