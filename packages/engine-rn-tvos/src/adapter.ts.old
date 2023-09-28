@@ -1,6 +1,6 @@
 const path = require('path');
 const os = require('os');
-const { doResolve } = require('rnv');
+const { doResolve } = require('@rnv/core');
 
 const _require2 = require('metro-cache');
 

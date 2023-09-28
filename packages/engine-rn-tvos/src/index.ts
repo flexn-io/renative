@@ -14,7 +14,8 @@ import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfile
 import taskRnvLog from './tasks/task.rnv.log';
 //@ts-ignore
 import CNF from '../renative.engine.json';
-import { createEngineAlias, withRNVMetro, withRNVBabel } from './adapter';
+import { withRNVBabel } from './adapters/babelAdapter';
+import { withRNVMetro } from './adapters/metroAdapter';
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
@@ -33,7 +34,7 @@ const Engine: RnvEngine = {
         taskRnvCryptoInstallProfiles,
         taskRnvLog,
     ]),
-    getAliases: createEngineAlias,
+    // getAliases: createEngineAlias,
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',

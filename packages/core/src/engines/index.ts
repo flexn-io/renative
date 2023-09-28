@@ -510,6 +510,7 @@ export const generateEnvVars = (c: RnvContext, moduleConfig?: RnvModuleConfig, n
         RNV_ENGINE: c.runtime.engine?.config.id,
         RNV_IS_NATIVE_TV: [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform),
         RNV_APP_ID: getAppId(c, c.platform),
+        RNV_REACT_NATIVE_PATH: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'),
     };
 };
 

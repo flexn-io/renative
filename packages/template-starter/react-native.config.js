@@ -8,13 +8,29 @@ const getApplicationId = () => {
 
 const getPlatformAppFolder = () => {
     const pth = process.env.RNV_APP_BUILD_DIR;
-    const dir = pth.split('platformBuilds/')[1];
-    return `./platformBuilds/${dir}`;
+    if (pth) {
+        const dir = pth.split('platformBuilds/')[1];
+        return `./platformBuilds/${dir}`;
+    } else {
+        return process.cwd();
+    }
+};
+
+const getReactNativePath = () => {
+    //env: REACT_NATIVE_PATH
+    const rnPath = process.env.RNV_REACT_NATIVE_PATH;
+    return rnPath;
+};
+
+const getProjectRoot = () => {
+    //env: PROJECT_ROOT
+    const rnPath = process.env.RNV_PROJECT_ROOT;
+    return rnPath || './';
 };
 
 const config = {
-    root: './',
-    reactNativePath: '../../node_modules/react-native',
+    root: getProjectRoot(),
+    reactNativePath: getReactNativePath(),
     platforms: {
         ios: {},
         android: {},
