@@ -1,29 +1,29 @@
-import path from 'path';
 import {
-    TIZEN,
-    isPlatformActive,
-    chalk,
-    logTask,
-    logSuccess,
-    executeAsync,
-    execCLI,
     RnvContext,
-    getPlatformBuildDir,
-    getConfigProp,
+    TIZEN,
     addSystemInjects,
-    getAppVersion,
-    getPlatformProjectDir,
-    getAppTitle,
-    getAppId,
-    getAppDescription,
-    generateEnvVars,
+    chalk,
     copyAssetsFolder,
     copyBuildsFolder,
+    execCLI,
+    executeAsync,
+    generateEnvVars,
+    getAppDescription,
+    getAppId,
+    getAppTitle,
+    getAppVersion,
+    getConfigProp,
+    getPlatformBuildDir,
+    getPlatformProjectDir,
+    isPlatformActive,
+    logSuccess,
+    logTask,
     writeCleanFile,
 } from '@rnv/core';
+import path from 'path';
 import semver from 'semver';
 
-import { runTizenSimOrDevice, DEFAULT_SECURITY_PROFILE_NAME, CLI_TIZEN } from '@rnv/sdk-tizen';
+import { CLI_TIZEN, DEFAULT_SECURITY_PROFILE_NAME, runTizenSimOrDevice } from '@rnv/sdk-tizen';
 import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
 
 export const runLightningProject = async (c: RnvContext) => {
@@ -34,7 +34,7 @@ export const runLightningProject = async (c: RnvContext) => {
     const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
 
     if (isHosted) {
-        await executeAsync(c, 'lng dev', {
+        await executeAsync(c, 'vite --open --host', {
             stdio: 'inherit',
             silent: false,
             env: {
@@ -63,13 +63,12 @@ export const buildLightningProject = async (c: RnvContext) => {
     const platformConfig = c.buildConfig.platforms?.[platform];
 
     const entryFile = getConfigProp(c, c.platform, 'entryFile');
-    const target = getConfigProp(c, platform, 'target', 'es6');
     const tBuild = getPlatformProjectDir(c);
 
     const tOut = path.join(tBuild || '', 'output');
     const certProfile = platformConfig?.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
-    await executeAsync(c, `lng dist --${target}`, {
+    await executeAsync(c, `vite build --sourcemap=true`, {
         stdio: 'inherit',
         silent: false,
         env: {
