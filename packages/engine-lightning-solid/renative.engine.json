@@ -2,8 +2,18 @@
     "id": "engine-lightning-solid",
     "overview": "ReNative Engine to build lightning based apps.",
     "plugins": {
-        "@lightningjs/sdk": "source:rnv",
-        "@lightningjs/cli": "source:rnv"
+        "@lightningjs/renderer": {
+            "version": "^0.3.0"
+        },
+        "@lightningjs/solid": {
+            "version": "^0.3.0"
+        },
+        "@solidjs/router": {
+            "version": "^0.8.2"
+        },
+        "solid-js": {
+            "version": "^1.7.8"
+        }
     },
     "npm": {
         "devDependencies": {}
