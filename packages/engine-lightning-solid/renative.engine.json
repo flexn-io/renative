@@ -6,7 +6,10 @@
             "version": "^0.3.0"
         },
         "@lightningjs/solid": {
-            "version": "^0.3.0"
+            "version": "^0.4.2"
+        },
+        "@lightningjs/solid-primitives": {
+            "version": "^0.3.3"
         },
         "@solidjs/router": {
             "version": "^0.8.2"
@@ -17,11 +20,11 @@
     },
     "npm": {
         "devDependencies": {
+            "@lightningjs/vite-plugin-import-chunk-url": "^0.3.0",
             "vite": "^4.3.9",
             "vite-bundle-visualizer": "^0.10.0",
             "vite-plugin-cross-origin-isolation": "^0.1.6",
-            "vite-plugin-solid": "^2.7.0",
-            "@lightningjs/vite-plugin-import-chunk-url": "^0.3.0"
+            "vite-plugin-solid": "^2.7.0"
         }
     },
     "platforms": {
