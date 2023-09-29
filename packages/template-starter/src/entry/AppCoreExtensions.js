@@ -17,26 +17,19 @@
  * limitations under the License.
  */
 
-import {
-  CoreExtension,
-  WebTrFontFace,
-  SdfTrFontFace,
-} from '@lightningjs/renderer/core';
+import { CoreExtension, SdfTrFontFace } from '@lightningjs/renderer/core';
 
 export default class AppCoreExtension extends CoreExtension {
-  async run(stage) {
-    stage.fontManager.addFontFace(
-      new WebTrFontFace('NotoSans', {}, '/fonts/NotoSans-Regular.ttf'),
-    );
-    stage.fontManager.addFontFace(
-      new SdfTrFontFace(
-        'Ubuntu',
-        {},
-        'msdf',
-        stage,
-        '/fonts/Ubuntu-Bold.msdf.png',
-        '/fonts/Ubuntu-Bold.msdf.json',
-      ),
-    );
-  }
+    async run(stage) {
+        stage.fontManager.addFontFace(
+            new SdfTrFontFace(
+                'Ubuntu',
+                {},
+                'msdf',
+                stage,
+                '/fonts/Ubuntu-Bold.msdf.png',
+                '/fonts/Ubuntu-Bold.msdf.json'
+            )
+        );
+    }
 }
