@@ -13,12 +13,17 @@ export default defineConfig({
         }),
     ],
     resolve: {
-        dedupe: ['solid-js'],
+        dedupe: ['solid-js', '@lightningjs/solid'],
         extensions: process.env.RNV_EXTENSIONS.split(',').map((e) => `.${e}`),
     },
     optimizeDeps: {
         include: [],
-        exclude: ['@lightningjs/solid', '@lightningjs/renderer/core', '@lightningjs/renderer/workers/renderer'],
+        exclude: [
+            '@lightningjs/solid',
+            '@lightningjs/solid-primitives',
+            '@lightningjs/renderer/core',
+            '@lightningjs/renderer/workers/renderer',
+        ],
     },
     server: {
         hmr: false,
