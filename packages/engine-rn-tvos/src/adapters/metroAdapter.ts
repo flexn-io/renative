@@ -1,3 +1,7 @@
+import { FileStore } from 'metro-cache';
+import path from 'path';
+import os from 'os';
+
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
 const DEFAULT_CONFIG = {
@@ -53,7 +57,7 @@ const DEFAULT_CONFIG = {
         customSerializer: null,
     },
     server: {
-        port: 8081,
+        port: 8086,
         runInspectorProxy: true,
         unstable_serverRoot: null,
         useGlobalHotkey: true,
@@ -63,7 +67,7 @@ const DEFAULT_CONFIG = {
     transformer: {
         assetPlugins: [],
         asyncRequireModulePath: '../../node_modules/metro-runtime/src/modules/asyncRequire.js',
-        assetRegistryPath: 'react-native/Libraries/Image/AssetRegistry',
+        assetRegistryPath: 'react-native-tvos/Libraries/Image/AssetRegistry',
         babelTransformerPath: '../../node_modules/metro-react-native-babel-transformer/src/index.js',
         dynamicDepsInPackages: 'throwAtRuntime',
         enableBabelRCLookup: true,
@@ -118,6 +122,11 @@ const DEFAULT_CONFIG = {
     watchFolders: ['../..'],
     transformerPath: 'metro-transform-worker',
     resetCache: false,
+    cacheStores: [
+        new FileStore({
+            root: path.join(os.tmpdir(), 'metro-cache-tvos'),
+        }),
+    ],
 };
 
 export const withRNVMetro = (config: any) => {

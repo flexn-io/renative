@@ -38,7 +38,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'RNVAppTVOS' do
+target 'HelloWorld' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
