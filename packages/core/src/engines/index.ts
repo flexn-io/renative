@@ -1,5 +1,5 @@
 import path from 'path';
-import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
+import { fsExistsSync, getRelativePath, readObjectSync, writeFileSync } from '../system/fs';
 import { checkAndCreateProjectPackage, installPackageDependencies } from '../npm';
 import { TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
@@ -14,6 +14,7 @@ import { RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
 import { RenativeEngineConfig, RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
+import { RnvEnvContext } from '../env/types';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -497,21 +498,27 @@ Maybe you forgot to define platforms.${platform}.engine in your renative.json?`)
 export const generateEnvVars = (c: RnvContext, moduleConfig?: RnvModuleConfig, nextConfig?: RnvNextJSConfig) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
     const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
-    return {
+
+    const envConfig: RnvEnvContext = {
         RNV_EXTENSIONS: getPlatformExtensions(c),
         RNV_ENGINE_PATH: c.runtime.engine?.rootPath,
         RNV_MODULE_PATHS: moduleConfig?.modulePaths || [],
         RNV_MODULE_ALIASES: moduleConfig?.moduleAliasesArray || [],
         RNV_NEXT_TRANSPILE_MODULES: nextConfig,
         RNV_PROJECT_ROOT: c.paths.project.dir,
-        RNV_APP_BUILD_DIR: getAppFolder(c),
+        RNV_APP_BUILD_DIR: getRelativePath(c.paths.project.dir, getAppFolder(c)),
         RNV_IS_MONOREPO: isMonorepo,
         RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir,
         RNV_ENGINE: c.runtime.engine?.config.id,
         RNV_IS_NATIVE_TV: [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform),
         RNV_APP_ID: getAppId(c, c.platform),
-        RNV_REACT_NATIVE_PATH: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'),
+        RNV_REACT_NATIVE_PATH: getRelativePath(
+            c.paths.project.dir,
+            doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native')!
+        ),
     };
+
+    return envConfig;
 };
 
 export const getPlatformExtensions = (c: RnvContext, excludeServer = false, addDotPrefix = false): Array<string> => {

@@ -790,6 +790,11 @@ export const cleanEmptyFoldersRecursively = (folder: string) => {
     }
 };
 
+export const getRelativePath = (from: string, to: string) => {
+    console.log('JAKAK', from, to);
+    return path.relative(from, to);
+};
+
 export default {
     sanitizeDynamicRefs,
     getFileListSync,

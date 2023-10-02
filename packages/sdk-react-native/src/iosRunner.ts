@@ -1,4 +1,5 @@
 import { executeAsync, getAppFolder, getConfigProp, generateEnvVars, doResolve, logTask, RnvContext } from '@rnv/core';
+import { RnvEnvContext } from '@rnv/core/lib/env/types';
 
 import shellQuote from 'shell-quote';
 
@@ -48,7 +49,7 @@ export const runReactNativeIOS = async (c: RnvContext, scheme: string, runScheme
     // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
     const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager`;
 
-    const env: Record<string, string | number | string[] | undefined | boolean> = {
+    const env: RnvEnvContext = {
         RCT_METRO_PORT: c.runtime.port,
         ...generateEnvVars(c),
     };
