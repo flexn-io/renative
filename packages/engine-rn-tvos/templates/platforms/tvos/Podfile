@@ -1,36 +1,14 @@
+source 'https://github.com/react-native-tvos/react-native-tvos-podspecs.git'
+source 'https://cdn.cocoapods.org/'
+
 # Resolve react_native_pods.rb with node to allow for hoisting
-def node_require(script)
-  # Resolve script with node to allow for hoisting
-  require Pod::Executable.execute_command('node', ['-p',
-    "require.resolve(
-      '#{script}',
-      {paths: [process.argv[1]]},
-    )", __dir__]).strip
-end
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
 
-node_require('react-native-tvos/scripts/react_native_pods.rb')
-{{PLUGIN_NODE_REQUIRE}}
-
-# RN PERMISSIONS
-permissions_required = ENV['REACT_NATIVE_PERMISSIONS_REQUIRED']
-if permissions_required != '' && permissions_required != nil
-  node_require('react-native-permissions/scripts/setup.rb')
-  setup_permissions(permissions_required.split(","))
-end
-
-platform :ios, min_ios_version_supported
 prepare_react_native_project!
-
-# If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
-# because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
-#
-# To fix this you can also exclude `react-native-flipper` using a `react-native.config.js`
-# ```js
-# module.exports = {
-#   dependencies: {
-#     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
-# ```
-flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -40,6 +18,7 @@ end
 
 target 'HelloWorld' do
   config = use_native_modules!
+  platform :ios, min_ios_version_supported
 
   # Flags change depending on the env values.
   flags = get_default_flags()
@@ -49,22 +28,47 @@ target 'HelloWorld' do
     # Hermes is now enabled by default. Disable by setting this flag to false.
     :hermes_enabled => flags[:hermes_enabled],
     :fabric_enabled => flags[:fabric_enabled],
-    # Enables Flipper.
-    #
-    # Note that if you have use_frameworks! enabled, Flipper will not work and
-    # you should disable the next line.
-    :flipper_configuration => flipper_config,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
 
-  post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
-    react_native_post_install(
-      installer,
-      config[:reactNativePath],
-      :mac_catalyst_enabled => false
-    )
-    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  target 'HelloWorldTests' do
+    inherit! :complete
+    # Pods for testing
   end
+
+end
+
+target 'HelloWorld-tvOS' do
+  config = use_native_modules!
+  platform :tvos, min_ios_version_supported
+
+  # Flags change depending on the env values.
+  flags = get_default_flags()
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    :hermes_enabled => flags[:hermes_enabled],
+    :fabric_enabled => flags[:fabric_enabled],
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/../.."
+  )
+
+  target 'HelloWorld-tvOSTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+
+end
+
+post_install do |installer|
+  config = use_native_modules!
+  # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+  react_native_post_install(
+    installer,
+    config[:reactNativePath],
+    :mac_catalyst_enabled => false
+  )
+  __apply_Xcode_12_5_M1_post_install_workaround(installer)
 end
