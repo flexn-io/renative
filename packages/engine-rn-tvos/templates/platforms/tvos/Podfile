@@ -4,7 +4,7 @@ source 'https://cdn.cocoapods.org/'
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
-    "react-native/scripts/react_native_pods.rb",
+    "react-native-tvos/scripts/react_native_pods.rb",
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
@@ -16,7 +16,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'HelloWorld' do
+target 'RNVApp' do
   config = use_native_modules!
   platform :ios, min_ios_version_supported
 
@@ -32,14 +32,14 @@ target 'HelloWorld' do
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
 
-  target 'HelloWorldTests' do
+  target 'RNVAppTests' do
     inherit! :complete
     # Pods for testing
   end
 
 end
 
-target 'HelloWorld-tvOS' do
+target 'RNVApp-tvOS' do
   config = use_native_modules!
   platform :tvos, min_ios_version_supported
 
@@ -55,7 +55,7 @@ target 'HelloWorld-tvOS' do
     :app_path => "#{Pod::Config.instance.installation_root}/../.."
   )
 
-  target 'HelloWorld-tvOSTests' do
+  target 'RNVApp-tvOSTests' do
     inherit! :complete
     # Pods for testing
   end
