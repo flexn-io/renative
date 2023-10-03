@@ -1,9 +1,7 @@
 import path from 'path';
-import { Doctor, FileUtils } from '@rnv/core';
+import { copyFileSync, fixPackageObject, fsExistsSync, readObjectSync, writeFileSync } from '@rnv/core';
 import fs from 'fs';
-import { setPackageVersions } from '@flexn/build-hooks-version';
-
-const { fsExistsSync, readObjectSync } = FileUtils;
+// import { setPackageVersions } from '@flexn/build-hooks-version';
 
 const merge = require('deepmerge');
 
@@ -24,6 +22,17 @@ const VERSIONED_PACKAGES = [
     'renative',
 ];
 
+const setPackageVersions = (c, version, versionedPackages) => {
+    var v = {
+        version: version,
+    };
+    const pkgFolder = path.join(c.paths.project.dir, 'packages');
+    _updateJson(c.paths.project.package, v);
+    versionedPackages.forEach(function (pkgName) {
+        _updateJson(path.join(pkgFolder, pkgName, 'package.json'), v);
+    });
+};
+
 const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer = '') => {
     const { pkgFile, rnvFile } = pkgConfig;
 
@@ -41,8 +50,8 @@ const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer =
                 }
             }
             if (hasChanges) {
-                const output = Doctor.fixPackageObject(pkgFile);
-                FileUtils.writeFileSync(pkgConfig.pkgPath, output, 4, true);
+                const output = fixPackageObject(pkgFile);
+                writeFileSync(pkgConfig.pkgPath, output, 4, true);
             }
         }
         if (rnvFile) {
@@ -57,8 +66,8 @@ const updateDeps = (pkgConfig, depKey, packageNamesAll, packageConfigs, semVer =
                 }
             }
             if (hasRnvChanges) {
-                const output = Doctor.fixPackageObject(rnvFile);
-                FileUtils.writeFileSync(pkgConfig.rnvPath, output, 4, true);
+                const output = fixPackageObject(rnvFile);
+                writeFileSync(pkgConfig.rnvPath, output, 4, true);
             }
         }
     });
@@ -139,15 +148,15 @@ export const prePublish = async (c) => {
         updateDeps(pkgConfig, 'peerDependencies', packageNamesAll, packageConfigs, '^');
     });
 
-    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgDirPath, 'renative/README.md'));
-    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgDirPath, 'renative/README.md'));
-    FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgDirPath, 'rnv/README.md'));
+    copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgDirPath, 'renative/README.md'));
+    copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgDirPath, 'renative/README.md'));
+    copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgDirPath, 'rnv/README.md'));
 
     return true;
 };
 
 const _updateJson = (c, pPath, updateObj) => {
-    const pObj = FileUtils.readObjectSync(pPath);
+    const pObj = readObjectSync(pPath);
 
     if (!pObj) {
         throw new Error(`_updateJson called with unresolveable package.json path '${pPath}'`);
@@ -157,6 +166,6 @@ const _updateJson = (c, pPath, updateObj) => {
     if (pObj) {
         obj = merge(pObj, updateObj);
     }
-    const output = Doctor.fixPackageObject(obj);
-    FileUtils.writeFileSync(pPath, output, 4, true);
+    const output = fixPackageObject(obj);
+    writeFileSync(pPath, output, 4, true);
 };

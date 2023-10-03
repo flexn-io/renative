@@ -1,25 +1,25 @@
+import { logHook } from '@rnv/core';
 import path from 'path';
-import { Logger } from 'rnv';
 import simpleGit from 'simple-git';
 
 export const gitCommit = async (c: any) => {
     const v = c.files.project?.package?.version;
 
     const baseDir = path.join(c.paths.project.dir);
-    Logger.logHook(`gitCommitAndTagVersion v${v}`);
+    logHook(`gitCommitAndTagVersion v${v}`);
     const git = simpleGit({ baseDir });
-    Logger.logHook('adding files');
+    logHook('adding files');
     await git.add(`${baseDir}/*`);
-    Logger.logHook('COMMITING...');
+    logHook('COMMITING...');
     await git.commit(v);
-    Logger.logHook('DONE');
+    logHook('DONE');
 };
 
 export const gitTag = async (c: any) => {
     const v = c.files.project.package.version;
 
     const baseDir = path.join(c.paths.project.dir);
-    Logger.logHook(`gitTagAndPush v${v}`);
+    logHook(`gitTagAndPush v${v}`);
     const git = simpleGit({ baseDir });
     await git.addTag(v);
     return true;

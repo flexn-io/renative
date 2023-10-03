@@ -89,7 +89,6 @@
         "@babel/preset-react": "7.22.15",
         "@babel/runtime": "^7.0.0",
         "@rnv/build-hooks-git": "0.38.0-canary.1",
-        "@rnv/build-hooks-monorepo": "0.38.0-canary.1",
         "@flexn/eslint-config": "1.0.0",
         "@flexn/prettier-config": "1.0.0",
         "@flexn/typescript-config": "1.0.0",

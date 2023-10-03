@@ -31,7 +31,7 @@
     },
     "homepage": "https://github.com/flexn-io/renative#readme",
     "peerDependencies": {
-        "rnv": "*"
+        "@rnv/core": "*"
     },
     "dependencies": {
         "simple-git": "^3.16.0"
