@@ -1,8 +1,8 @@
-import taskRnvPlatformList from '../tasks/task.rnv.platform.list';
+import { createRnvApi, createRnvContext, executeAsync, executeTask, getContext, removeDirs } from '@rnv/core';
+import taskRnvClean from '../tasks/task.rnv.clean';
 import taskRnvKill from '../tasks/task.rnv.kill';
 import taskRnvPlatformConfigure from '../tasks/task.rnv.platform.configure';
-import taskRnvClean from '../tasks/task.rnv.clean';
-import { getContext, executeTask, executeAsync, removeDirs, createRnvContext, createRnvApi } from '@rnv/core';
+import taskRnvPlatformList from '../tasks/task.rnv.platform.list';
 
 jest.mock('fs');
 jest.mock('child_process');
@@ -32,8 +32,15 @@ test('Execute task.rnv.platform.configure', async () => {
 });
 
 test('Execute task.rnv.kill', async () => {
-    await expect(taskRnvKill.fn(getContext(), undefined, originTask)).resolves.toEqual(true);
-    expect(executeTask).toHaveBeenCalledWith(getContext(), 'app configure', 'kill', originTask);
+    const context = getContext();
+
+    const contextWithProjectConfig = {
+        ...context,
+        paths: { ...context.paths, project: { ...context.paths.project, configExists: true } },
+    };
+    await expect(taskRnvKill.fn(contextWithProjectConfig, undefined, originTask)).resolves.toEqual(true);
+
+    expect(executeTask).toHaveBeenCalledWith(contextWithProjectConfig, 'app configure', 'kill', originTask);
 });
 
 test('Execute task.rnv.clean', async () => {

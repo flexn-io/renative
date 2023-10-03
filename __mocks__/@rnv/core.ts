@@ -1,4 +1,13 @@
 // __mocks__/@rnv/core.ts
+
+type Context = {
+    program: any;
+    process: any;
+    cmd: string;
+    subCmd: string;
+    RNV_HOME_DIR: string;
+};
+
 const rnvcore: any = jest.createMockFromModule('@rnv/core');
 
 const configPropMocks = {
@@ -53,9 +62,29 @@ const runtime: any = {
     enginesByPlatform: {},
     enginesByIndex: [],
     enginesById: {},
+    supportedPlatforms: [
+        'ios',
+        'android',
+        'androidtv',
+        'firetv',
+        'androidwear',
+        'web',
+        'webtv',
+        'tizen',
+        'tvos',
+        'webos',
+        'macos',
+        'windows',
+        'tizenwatch',
+        'tizenmobile',
+        'kaios',
+        'firefoxos',
+        'firefoxtv',
+        'chromecast',
+    ],
 };
 
-export const generateContextDefaults = () => ({
+export const generateContextDefaults = (ctx?: Context) => ({
     isSystemWin: false,
     logMessages: [],
     timeEnd: new Date(),
@@ -73,7 +102,7 @@ export const generateContextDefaults = () => ({
     buildConfig: {},
     command: '',
     subCommand: '',
-    platform: '',
+    platform: ctx?.program.platform ?? '',
     process: {},
     //==========
     _renativePluginCache: {},
@@ -250,8 +279,8 @@ rnvcore.chalk = () => _chalkMono;
 
 rnvcore.inquirerPrompt = jest.fn();
 
-rnvcore.createRnvContext = () => {
-    global.MOCK_RNV_CONTEXT = generateContextDefaults();
+rnvcore.createRnvContext = (ctx?: Context) => {
+    global.MOCK_RNV_CONTEXT = generateContextDefaults(ctx);
 };
 rnvcore.getContext = () => {
     return global.MOCK_RNV_CONTEXT;

@@ -7,7 +7,7 @@ jest.mock('@rnv/core');
 jest.mock('@rnv/sdk-apple');
 
 beforeEach(() => {
-    createRnvContext();
+    createRnvContext({ program: { platform: 'ios' } });
     createRnvApi();
 });
 
