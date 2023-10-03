@@ -40,11 +40,14 @@ test('Execute task.rnv.clean', async () => {
     //GIVEN
     const ctx = getContext();
     const { inquirerPrompt } = require('@rnv/core');
-    inquirerPrompt.mockReturnValue(Promise.resolve({ confirm: true }));
+    inquirerPrompt.mockReturnValue(
+        Promise.resolve({ confirm: true, confirmBuilds: true, confirmLocals: true, confirmCache: true })
+    );
+    ctx.program.ci = false;
     //WHEN
     await expect(taskRnvClean.fn(ctx)).resolves.toEqual(true);
     //THEN
-    expect(removeDirs).toHaveBeenCalledTimes(1);
+    expect(removeDirs).toHaveBeenCalledTimes(3);
     expect(executeAsync).toHaveBeenCalledWith(ctx, 'watchman watch-del-all');
     expect(executeAsync).toHaveBeenCalledWith(
         ctx,
