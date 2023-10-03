@@ -2,62 +2,33 @@ import taskRnvPlatformList from '../tasks/task.rnv.platform.list';
 import taskRnvKill from '../tasks/task.rnv.kill';
 import taskRnvPlatformConfigure from '../tasks/task.rnv.platform.configure';
 import taskRnvClean from '../tasks/task.rnv.clean';
-import { getContext, executeTask, executeAsync, removeDirs } from '@rnv/core';
+import { getContext, executeTask, executeAsync, removeDirs, createRnvContext, createRnvApi } from '@rnv/core';
 
 jest.mock('fs');
 jest.mock('child_process');
 jest.mock('@rnv/core');
 jest.mock('inquirer');
 
-// jest.mock('../../src/core/engineManager/index.ts', () => ({
-//     // getEngineConfigByPlatform: () => ({
-//     //     platforms: {
-//     //         ios: {
-//     //             npm: {}
-//     //         }
-//     //     }
-//     // }),
-//     getEngineRunnerByPlatform: () => ({
-//         getOriginalPlatformTemplatesDir: () => 'sometemptdir',
-//     }),
-// }));
-
-// jest.mock('../../src/core/system/utils.ts', () => ({
-//     isSystemWin: false,
-// }));
-
-// jest.mock('../../src/core/system/logger.ts');
-
-// const c = generateMockConfig({
-//     buildConfig: {
-//         sdks: {
-//             ANDROID_SDK: '',
-//         },
-//     },
-// });
-
-// const parentTask = null;
 const originTask = undefined;
 
-// const { executeTask, executeAsync, removeDirs } = require('@rnv/core');
-
 beforeEach(() => {
-    //Do nothing
-});
-
-afterEach(() => {
-    //Do nothing
+    createRnvContext();
+    createRnvApi();
 });
 
 test('Execute task.rnv.platform.list', async () => {
-    await taskRnvPlatformList.fn(getContext(), undefined, originTask);
-    await expect(taskRnvPlatformList.fn(getContext(), undefined, originTask)).resolves.toEqual(true);
-    expect(executeTask).toHaveBeenCalledWith(getContext(), 'project configure', 'platform list', originTask);
+    const ctx = getContext();
+
+    await taskRnvPlatformList.fn(ctx, undefined, originTask);
+    await expect(taskRnvPlatformList.fn(ctx, undefined, originTask)).resolves.toEqual(true);
+    expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform list', originTask);
 });
 
 test('Execute task.rnv.platform.configure', async () => {
-    await expect(taskRnvPlatformConfigure.fn(getContext(), undefined, originTask)).resolves.toEqual(true);
-    expect(executeTask).toHaveBeenCalledWith(getContext(), 'project configure', 'platform configure', originTask);
+    const ctx = getContext();
+
+    await expect(taskRnvPlatformConfigure.fn(ctx, undefined, originTask)).resolves.toEqual(true);
+    expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform configure', originTask);
 });
 
 test('Execute task.rnv.kill', async () => {
@@ -68,7 +39,8 @@ test('Execute task.rnv.kill', async () => {
 test('Execute task.rnv.clean', async () => {
     const ctx = getContext();
 
-    await expect(taskRnvClean.fn(getContext())).resolves.toEqual(true);
+    await expect(taskRnvClean.fn(ctx)).resolves.toEqual(true);
+
     expect(removeDirs).toHaveBeenCalledTimes(3);
     expect(executeAsync).toHaveBeenCalledWith(ctx, 'watchman watch-del-all');
     expect(executeAsync).toHaveBeenCalledWith(
