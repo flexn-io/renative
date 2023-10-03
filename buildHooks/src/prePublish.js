@@ -7,7 +7,11 @@ const merge = require('deepmerge');
 
 const VERSIONED_PACKAGES = [
     'rnv',
+    'core',
+    'build-hooks-git',
+    'cli',
     'template-starter',
+    'engine-core',
     'engine-rn',
     'engine-rn-tvos',
     'engine-rn-macos',
@@ -19,6 +23,10 @@ const VERSIONED_PACKAGES = [
     'sdk-apple',
     'sdk-android',
     'sdk-webpack',
+    'sdk-react-native',
+    'sdk-kaios',
+    'sdk-tizen',
+    'sdk-webos',
     'renative',
 ];
 
@@ -81,13 +89,13 @@ export const prePublish = async (c) => {
 
     const pkgDirPath = path.join(c.paths.project.dir, 'packages');
 
-    _updateJson(c, path.join(pkgDirPath, 'rnv/pluginTemplates/renative.plugins.json'), {
+    _updateJson(path.join(pkgDirPath, 'rnv/pluginTemplates/renative.plugins.json'), {
         pluginTemplates: {
             '@rnv/renative': v,
         },
     });
 
-    _updateJson(c, path.join(pkgDirPath, 'rnv/coreTemplateFiles/renative.templates.json'), {
+    _updateJson(path.join(pkgDirPath, 'rnv/coreTemplateFiles/renative.templates.json'), {
         engineTemplates: {
             '@rnv/engine-rn': v,
             '@rnv/engine-rn-tvos': v,
@@ -155,7 +163,7 @@ export const prePublish = async (c) => {
     return true;
 };
 
-const _updateJson = (c, pPath, updateObj) => {
+const _updateJson = (pPath, updateObj) => {
     const pObj = readObjectSync(pPath);
 
     if (!pObj) {

@@ -1,6 +1,6 @@
 import { prePublish } from './prePublish';
 
-import { gitCommit, gitTag, gitCommitAndTag } from '@flexn/build-hooks-git';
+import { gitCommit, gitTag, gitCommitAndTag } from '@rnv/build-hooks-git';
 
 const hooks = {
     prePublish,
