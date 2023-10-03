@@ -248,9 +248,7 @@ rnvcore.logSuccess = jest.fn();
 rnvcore.logSummary = jest.fn();
 rnvcore.chalk = () => _chalkMono;
 
-rnvcore.inquirerPrompt = async () => {
-    return {};
-};
+rnvcore.inquirerPrompt = jest.fn();
 
 rnvcore.createRnvContext = () => {
     global.MOCK_RNV_CONTEXT = generateContextDefaults();
