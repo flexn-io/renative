@@ -158,7 +158,7 @@
                     "bundleIsDev": false,
                     "multipleAPKs": false
                 },
-                "production": {
+                "release": {
                     "signingConfig": "Release",
                     "multipleAPKs": true,
                     "bundleAssets": true,
