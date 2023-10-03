@@ -186,6 +186,7 @@ export const runXcodeProject = async (c: Context) => {
     const appPath = getAppFolder(c);
     const { device } = c.program;
     const appFolderName = getAppFolderName(c, c.platform);
+    const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget', 'RNVApp');
     const runScheme = getConfigProp(c, c.platform, 'runScheme');
     const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
@@ -361,7 +362,7 @@ export const runXcodeProject = async (c: Context) => {
     if (p) {
         const allowProvisioningUpdates = getConfigProp(c, c.platform, 'allowProvisioningUpdates', true);
         if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
-        return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, appFolderName, runScheme, p);
+        return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, schemeTarget, runScheme, p);
     }
     // return Promise.reject('Missing options for react-native command!');
 };
@@ -385,22 +386,7 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme} p:${p}`);
     const appFolderName = getAppFolderName(c, c.platform);
 
-    // // const cmd = `node ${doResolve(
-    // //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
-    // // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
-    // const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager`;
-
-    // const env: Record<string, string | number | string[] | undefined | boolean> = {
-    //     RCT_METRO_PORT: c.runtime.port,
-    //     ...generateEnvVars(c),
-    // };
-
     try {
-        // Inherit full logs
-        // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
-        // return executeAsync(c, cmd, {
-        //     env,
-        // });
         return runReactNativeIOS(c, scheme, runScheme);
     } catch (e: any) {
         if (e && e.includes) {

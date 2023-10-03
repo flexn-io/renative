@@ -14,7 +14,7 @@ import { RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
 import { RenativeEngineConfig, RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
-import { RnvEnvContext } from '../env/types';
+import { RnvEnvContext, RnvEnvContextOptions } from '../env/types';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -495,12 +495,17 @@ Maybe you forgot to define platforms.${platform}.engine in your renative.json?`)
     }
 };
 
-export const generateEnvVars = (c: RnvContext, moduleConfig?: RnvModuleConfig, nextConfig?: RnvNextJSConfig) => {
+export const generateEnvVars = (
+    c: RnvContext,
+    moduleConfig?: RnvModuleConfig,
+    nextConfig?: RnvNextJSConfig,
+    opts: RnvEnvContextOptions = {}
+) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
     const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
 
     const envConfig: RnvEnvContext = {
-        RNV_EXTENSIONS: getPlatformExtensions(c),
+        // RNV_EXTENSIONS: getPlatformExtensions(c),
         RNV_ENGINE_PATH: c.runtime.engine?.rootPath,
         RNV_MODULE_PATHS: moduleConfig?.modulePaths || [],
         RNV_MODULE_ALIASES: moduleConfig?.moduleAliasesArray || [],
@@ -517,6 +522,10 @@ export const generateEnvVars = (c: RnvContext, moduleConfig?: RnvModuleConfig, n
             doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native')!
         ),
     };
+    const excl = opts.exludeEnvKeys || [];
+    if (!excl.includes('RNV_EXTENSIONS')) {
+        envConfig.RNV_EXTENSIONS = getPlatformExtensions(c);
+    }
 
     return envConfig;
 };

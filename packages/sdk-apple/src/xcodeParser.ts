@@ -264,9 +264,10 @@ const _parseXcodeProject = (c: Context, platform: string) =>
 
             // FONTS
             // Cocoapods take care of this
-            c.payload.pluginConfigiOS.embeddedFontSources.forEach((v) => {
-                xcodeProj.addResourceFile(v, { variantGroup: false });
-            });
+            //TODO: DISABLED TEMORARILY DURING RN UPGRADE. investigating built in rn options for this
+            // c.payload.pluginConfigiOS.embeddedFontSources.forEach((v) => {
+            //     xcodeProj.addResourceFile(v, { variantGroup: false });
+            // });
 
             fsWriteFileSync(projectPath, xcodeProj.writeSync());
             resolve();

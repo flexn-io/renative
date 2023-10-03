@@ -175,6 +175,7 @@
         },
         "tvos": {
             "engine": "engine-rn-tvos",
+            "schemeTarget": "RNVApp-tvOS",
             "deploymentTarget": "14.0"
         },
         "macos": {
@@ -194,10 +195,12 @@
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
         "react-native-gesture-handler": {
-            "version": "2.12.1"
+            "version": "2.12.1",
+            "disablePluginTemplateOverrides": true
         },
         "@react-native-community/cli-platform-ios": {
-            "version": "11.3.7"
+            "version": "11.3.7",
+            "disablePluginTemplateOverrides": true
         },
         "@react-native-community/cli": {
             "version": "11.3.7"

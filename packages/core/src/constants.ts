@@ -183,6 +183,9 @@ export const PARAM_KEYS: Record<string, RnvTaskParameter> = {
         value: 'value',
         description: 'Show full debug Info',
     },
+    showEnv: {
+        description: 'Show exec commands with env info',
+    },
     updatePods: {
         shortcut: 'u',
         description: 'Force update dependencies (iOS only)',

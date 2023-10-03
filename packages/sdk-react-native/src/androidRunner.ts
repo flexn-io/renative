@@ -89,12 +89,13 @@ export const runReactNativeAndroid = async (c: RnvContext, platform: any, device
     return executeAsync(c, command, {
         env: {
             RCT_METRO_PORT: c.runtime.port,
-            ...generateEnvVars(c),
+            ...generateEnvVars(c, undefined, undefined, { exludeEnvKeys: ['RNV_EXTENSIONS'] }),
         },
         cwd: appFolder,
         //This is required to make rn cli logs visible in rnv executed terminal
         interactive: true,
         stdio: 'inherit',
+        printableEnvKeys: ['RNV_REACT_NATIVE_PATH', 'RNV_APP_ID', 'RNV_PROJECT_ROOT', 'RNV_APP_BUILD_DIR'],
     });
 };
 

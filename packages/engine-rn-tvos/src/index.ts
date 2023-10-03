@@ -39,7 +39,7 @@ const Engine: RnvEngine = {
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',
         reactNativeMetroConfigName: 'metro.config.js',
-        xcodeProjectName: 'HelloWorld',
+        xcodeProjectName: 'RNVApp',
     },
     projectDirName: '',
     serverDirName: '',

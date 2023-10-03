@@ -17,6 +17,7 @@ export type ExecOptions = {
     detached?: boolean;
     cwd?: string;
     timeout?: number;
+    printableEnvKeys?: Array<string>;
 };
 
 export type ExecCallback = (isError: boolean) => void;

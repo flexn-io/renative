@@ -51,7 +51,7 @@ export const runReactNativeIOS = async (c: RnvContext, scheme: string, runScheme
 
     const env: RnvEnvContext = {
         RCT_METRO_PORT: c.runtime.port,
-        ...generateEnvVars(c),
+        ...generateEnvVars(c, undefined, undefined, { exludeEnvKeys: ['RNV_EXTENSIONS'] }),
     };
 
     try {
@@ -59,6 +59,7 @@ export const runReactNativeIOS = async (c: RnvContext, scheme: string, runScheme
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
         return executeAsync(c, cmd, {
             env,
+            printableEnvKeys: ['RNV_REACT_NATIVE_PATH', 'RNV_APP_ID', 'RNV_PROJECT_ROOT', 'RNV_APP_BUILD_DIR'],
         });
     } catch (e: any) {
         return Promise.reject(e);
