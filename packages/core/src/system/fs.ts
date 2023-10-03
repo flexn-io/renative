@@ -10,6 +10,7 @@ import { RnvContext } from '../context/types';
 import type { FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from './types';
 import { getApi } from '../api/provider';
 import { getContext } from '../context/provider';
+import { matchRegEx } from './regex';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {
@@ -600,7 +601,7 @@ export const resolvePackage = (text: string) => {
     const api = getApi();
     if (typeof text !== 'string') return text;
     const regEx = /{{resolvePackage\(([\s\S]*?)\)}}/g;
-    const matches = text.match(regEx);
+    const matches = matchRegEx(text, regEx);
     let newText = text;
     if (matches?.length) {
         matches.forEach((match) => {
