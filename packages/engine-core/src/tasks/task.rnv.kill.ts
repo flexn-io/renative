@@ -1,18 +1,18 @@
-import killPort from 'kill-port';
 import {
-    inquirerPrompt,
-    checkPortInUse,
-    executeTask,
-    chalk,
-    logTask,
-    logSuccess,
-    configureRuntimeDefaults,
     PARAMS,
-    TASK_KILL,
-    TASK_APP_CONFIGURE,
-    RnvTaskFn,
     RnvContext,
+    RnvTaskFn,
+    TASK_APP_CONFIGURE,
+    TASK_KILL,
+    chalk,
+    checkPortInUse,
+    configureRuntimeDefaults,
+    executeTask,
+    inquirerPrompt,
+    logSuccess,
+    logTask,
 } from '@rnv/core';
+import killPort from 'kill-port';
 
 export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvKill');
@@ -30,14 +30,12 @@ export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
         platArray = Object.values(c.runtime.supportedPlatforms);
         ports = c.buildConfig?.defaults?.ports || {};
     }
-
     for (let i = 0; i < platArray.length; i++) {
         const plat = platArray[i];
         const port = ports?.[plat.platform];
         plat.port = port;
         results.push(checkPortInUse(c, plat.platform, port));
     }
-
     const usedPortsArr = await Promise.all(results);
     usedPortsArr.forEach((isInUse, i) => {
         if (isInUse) {

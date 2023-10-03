@@ -62,6 +62,26 @@ const runtime: any = {
     enginesByPlatform: {},
     enginesByIndex: [],
     enginesById: {},
+    supportedPlatforms: [
+        'ios',
+        'android',
+        'androidtv',
+        'firetv',
+        'androidwear',
+        'web',
+        'webtv',
+        'tizen',
+        'tvos',
+        'webos',
+        'macos',
+        'windows',
+        'tizenwatch',
+        'tizenmobile',
+        'kaios',
+        'firefoxos',
+        'firefoxtv',
+        'chromecast',
+    ],
 };
 
 export const generateContextDefaults = (ctx?: Context) => ({

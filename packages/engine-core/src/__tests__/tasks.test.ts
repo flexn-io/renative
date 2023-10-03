@@ -32,8 +32,15 @@ test('Execute task.rnv.platform.configure', async () => {
 });
 
 test('Execute task.rnv.kill', async () => {
-    await expect(taskRnvKill.fn(getContext(), undefined, originTask)).resolves.toEqual(true);
-    expect(executeTask).toHaveBeenCalledWith(getContext(), 'app configure', 'kill', originTask);
+    const context = getContext();
+
+    const contextWithProjectConfig = {
+        ...context,
+        paths: { ...context.paths, project: { ...context.paths.project, configExists: true } },
+    };
+    await expect(taskRnvKill.fn(contextWithProjectConfig, undefined, originTask)).resolves.toEqual(true);
+
+    expect(executeTask).toHaveBeenCalledWith(contextWithProjectConfig, 'app configure', 'kill', originTask);
 });
 
 test('Execute task.rnv.clean', async () => {
