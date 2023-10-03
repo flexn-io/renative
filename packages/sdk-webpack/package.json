@@ -10,11 +10,11 @@
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "files": [
-        "dist",
+        "lib",
         "nodeModuleOverrides",
         "types.d.ts"
     ],
-    "main": "dist/index.js",
+    "main": "lib/index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/flexn-io/renative.git"
@@ -26,16 +26,13 @@
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "lint": "eslint . --ext .ts",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
+        "@babel/preset-react": "7.22.15",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
         "@svgr/webpack": "6.3.1",
         "axios": "0.21.2",
-        "babel-jest": "^27.4.2",
-        "babel-loader": "^8.3.0",
-        "babel-plugin-named-asset-import": "^0.3.8",
-        "babel-preset-react-app": "^10.0.1",
         "better-opn": "1.0.0",
         "bfj": "^7.0.2",
         "browserslist": "^4.18.1",
@@ -47,7 +44,6 @@
         "css-minimizer-webpack-plugin": "^3.2.0",
         "dotenv": "^10.0.0",
         "dotenv-expand": "^5.1.0",
-        "eslint-config-react-app": "^7.0.0",
         "eslint-webpack-plugin": "^3.1.1",
         "file-loader": "^6.2.0",
         "fs-extra": "^10.0.0",
@@ -61,10 +57,10 @@
         "postcss-normalize": "^10.0.1",
         "postcss-preset-env": "^7.0.1",
         "prompts": "^2.4.2",
-        "react": "^17.0.2",
+        "react": "^18.0.2",
         "react-app-polyfill": "^3.0.0",
         "react-dev-utils": "^12.0.0",
-        "react-dom": "^17.0.2",
+        "react-dom": "^18.0.2",
         "react-refresh": "^0.11.0",
         "resolve": "^1.20.0",
         "resolve-url-loader": "^4.0.0",
@@ -82,21 +78,10 @@
         "workbox-webpack-plugin": "6.5.4"
     },
     "peerDependencies": {
-        "rnv": "^0.38.0-canary.1"
+        "@rnv/core": "^0.38.0-canary.1"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "yarn lint && yarn test"
-        }
-    },
-    "lint-staged": {
-        "*.ts": [
-            "eslint"
-        ]
-    },
-    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
+    }
 }

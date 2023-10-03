@@ -1,11 +1,18 @@
 import path from 'path';
-import inquirer from 'inquirer';
 
-import { Logger, Constants, FileUtils, RnvContext } from 'rnv';
+import {
+    RnvContext,
+    PARAMS,
+    WEB,
+    logTask,
+    logInfo,
+    fsExistsSync,
+    writeFileSync,
+    fsWriteFileSync,
+    fsReadFile,
+    inquirerPrompt,
+} from '@rnv/core';
 
-const { PARAMS, WEB } = Constants;
-const { logTask, logInfo } = Logger;
-const { fsExistsSync, writeFileSync, fsWriteFileSync, fsReadFile } = FileUtils;
 const DEPLOY_TARGET_FTP = 'ftp';
 
 const FtpDeploy = require('ftp-deploy');
@@ -75,32 +82,33 @@ const _deployToFtp = (c: RnvContext, platform: string) =>
 const _createEnvFtpConfig = async (configFilePath: string, previousContent = '') => {
     let envContent = previousContent || '';
 
-    const { host, user, password, port } = await inquirer.prompt([
-        {
-            name: 'host',
-            type: 'input',
-            message: 'Type your FTP host',
-            validate: (i) => !!i || 'No FTP server provided',
-        },
-        {
-            name: 'port',
-            type: 'number',
-            message: 'Type your FTP port',
-            default: 21,
-            validate: (i) => !!i || 'No FTP server provided',
-        },
-        {
-            name: 'user',
-            message: 'Type your FTP user',
-            type: 'input',
-            validate: (i) => !!i || 'No FTP user provided',
-        },
-        {
-            name: 'password',
-            message: 'Type your FTP password (or press ENTER for prompting every time)',
-            type: 'password',
-        },
-    ]);
+    const { host } = await inquirerPrompt({
+        name: 'host',
+        type: 'input',
+        message: 'Type your FTP host',
+        validate: (i) => !!i || 'No FTP server provided',
+    });
+
+    const { port } = await inquirerPrompt({
+        name: 'port',
+        type: 'number',
+        message: 'Type your FTP port',
+        default: 21,
+        validate: (i) => !!i || 'No FTP server provided',
+    });
+
+    const { user } = await inquirerPrompt({
+        name: 'user',
+        message: 'Type your FTP user',
+        type: 'input',
+        validate: (i) => !!i || 'No FTP user provided',
+    });
+
+    const { password } = await inquirerPrompt({
+        name: 'password',
+        message: 'Type your FTP password (or press ENTER for prompting every time)',
+        type: 'password',
+    });
 
     envContent += `RNV_DEPLOY_WEB_FTP_SERVER=${host}\n`;
     envContent += `RNV_DEPLOY_WEB_FTP_USER=${user}\n`;
@@ -120,36 +128,39 @@ const _createDeployConfig = async (c: RnvContext, platform: string) => {
     deploy[DEPLOY_TARGET_FTP].type = DEPLOY_TARGET_FTP;
 
     deploy[DEPLOY_TARGET_FTP].localRoot = path.resolve(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
-    const { remoteRoot, deleteRemote, include, exclude, excludeSourcemaps } = await inquirer.prompt([
-        {
-            name: 'remoteRoot',
-            type: 'input',
-            message: 'Folder on the ftp to upload the project',
-            default: '/',
-        },
-        {
-            name: 'deleteRemote',
-            type: 'confirm',
-            message: 'Delete all contents of that folder when deploying versions?',
-        },
-        {
-            name: 'include',
-            type: 'input',
-            message: 'Included files pattern, comma separated',
-            default: "'*','**/*'",
-        },
-        {
-            name: 'exclude',
-            type: 'input',
-            message: 'Excluded files pattern, comma separated',
-            default: '[]',
-        },
-        {
-            name: 'excludeSourcemaps',
-            type: 'confirm',
-            message: 'Exclude sourcemaps?',
-        },
-    ]);
+
+    const { remoteRoot } = await inquirerPrompt({
+        name: 'remoteRoot',
+        type: 'input',
+        message: 'Folder on the ftp to upload the project',
+        default: '/',
+    });
+
+    const { deleteRemote } = await inquirerPrompt({
+        name: 'deleteRemote',
+        type: 'confirm',
+        message: 'Delete all contents of that folder when deploying versions?',
+    });
+
+    const { include } = await inquirerPrompt({
+        name: 'include',
+        type: 'input',
+        message: 'Included files pattern, comma separated',
+        default: "'*','**/*'",
+    });
+
+    const { exclude } = await inquirerPrompt({
+        name: 'exclude',
+        type: 'input',
+        message: 'Excluded files pattern, comma separated',
+        default: '[]',
+    });
+
+    const { excludeSourcemaps } = await inquirerPrompt({
+        name: 'excludeSourcemaps',
+        type: 'confirm',
+        message: 'Exclude sourcemaps?',
+    });
 
     deploy[DEPLOY_TARGET_FTP].remoteRoot = remoteRoot || '/';
     deploy[DEPLOY_TARGET_FTP].deleteRemote = deleteRemote;

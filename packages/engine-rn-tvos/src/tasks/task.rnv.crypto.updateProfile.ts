@@ -1,10 +1,14 @@
-import { TaskManager, Constants, Logger, RnvTaskFn } from 'rnv';
-
+import {
+    RnvTaskFn,
+    executeTask,
+    shouldSkipTask,
+    logTask,
+    TASK_CRYPTO_UPDATE_PROFILE,
+    TASK_PROJECT_CONFIGURE,
+    TVOS,
+    PARAMS,
+} from '@rnv/core';
 import { updateProfile } from '@rnv/sdk-apple';
-
-const { executeTask, shouldSkipTask } = TaskManager;
-const { logTask } = Logger;
-const { TASK_CRYPTO_UPDATE_PROFILE, TASK_PROJECT_CONFIGURE, TVOS, PARAMS } = Constants;
 
 export const taskRnvCryptoUpdateProfile: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvCryptoUpdateProfile');

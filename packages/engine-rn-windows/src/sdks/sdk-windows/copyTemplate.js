@@ -4,7 +4,7 @@
  * @format
  */
 // DEPS
-import { Common, FileUtils, Logger, ProjectManager } from 'rnv';
+import { Common, FileUtils, Logger, ProjectManager } from '@rnv/core';
 
 const path = require('path');
 const username = require('username');

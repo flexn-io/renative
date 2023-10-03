@@ -10,14 +10,11 @@
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "files": [
-        "dist",
+        "lib",
         "supportFiles",
         "types.d.ts"
     ],
-    "main": "dist/index.js",
-    "bin": {
-        "sdk-android": "./dist/cli.js"
-    },
+    "main": "lib/index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/flexn-io/renative.git"
@@ -29,31 +26,18 @@
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "lint": "eslint . --ext .ts",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-native-community/cli": "^6.0.0",
-        "@react-native-community/cli-platform-android": "^6.0.0",
-        "execa": "5.1.1",
-        "inquirer": "8.2.0",
-        "shelljs": "0.8.5"
+        "@react-native-community/cli": "^11.3.0",
+        "@react-native-community/cli-platform-android": "^11.3.0",
+        "@rnv/sdk-react-native": "0.38.0-canary.1"
     },
     "peerDependencies": {
-        "rnv": "^0.38.0-canary.1"
+        "@rnv/core": "^0.38.0-canary.1"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "yarn lint && yarn test"
-        }
-    },
-    "lint-staged": {
-        "*.ts": [
-            "eslint"
-        ]
-    },
-    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
+    }
 }

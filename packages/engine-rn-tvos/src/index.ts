@@ -1,4 +1,4 @@
-import { Config, generateEngineExtensions, generateEngineTasks, RnvEngine } from 'rnv';
+import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvPackage from './tasks/task.rnv.package';
 import taskRnvBuild from './tasks/task.rnv.build';
@@ -14,10 +14,11 @@ import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfile
 import taskRnvLog from './tasks/task.rnv.log';
 //@ts-ignore
 import CNF from '../renative.engine.json';
-import { createEngineAlias, withRNVMetro, withRNVBabel } from './adapter';
+import { withRNVBabel } from './adapters/babelAdapter';
+import { withRNVMetro } from './adapters/metroAdapter';
 
 const Engine: RnvEngine = {
-    initializeRuntimeConfig: (c) => Config.initializeConfig(c),
+    // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
     tasks: generateEngineTasks([
         taskRnvRun,
         taskRnvPackage,
@@ -33,12 +34,12 @@ const Engine: RnvEngine = {
         taskRnvCryptoInstallProfiles,
         taskRnvLog,
     ]),
-    getAliases: createEngineAlias,
+    // getAliases: createEngineAlias,
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',
         reactNativeMetroConfigName: 'metro.config.js',
-        xcodeProjectName: 'RNVAppTVOS',
+        xcodeProjectName: 'RNVApp',
     },
     projectDirName: '',
     serverDirName: '',

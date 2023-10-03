@@ -1,11 +1,15 @@
-import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
+import {
+    RnvTaskFn,
+    logErrorPlatform,
+    logTask,
+    MACOS,
+    TASK_BUILD,
+    TASK_EXPORT,
+    PARAMS,
+    executeOrSkipTask,
+    shouldSkipTask,
+} from '@rnv/core';
 import { exportXcodeProject } from '@rnv/sdk-apple';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const { MACOS, TASK_BUILD, TASK_EXPORT, PARAMS } = Constants;
-
-const { executeOrSkipTask, shouldSkipTask } = TaskManager;
 
 export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvExport', `parent:${parentTask}`);

@@ -14,7 +14,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
-} from 'rnv';
+} from '@rnv/core';
 import { buildAndroid } from '@rnv/sdk-android';
 import { buildXcodeProject } from '@rnv/sdk-apple';
 

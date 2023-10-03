@@ -16,10 +16,10 @@ import {
     TASK_RUN,
     getConfigProp,
     logSummary,
-} from 'rnv';
+} from '@rnv/core';
 import { packageAndroid, runAndroid } from '@rnv/sdk-android';
 import { runXcodeProject } from '@rnv/sdk-apple';
-import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
+import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 
 export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

@@ -1,8 +1,14 @@
-import { Constants, Logger, RnvTaskFn, TaskManager } from 'rnv';
-
-const { logTask } = Logger;
-const { MACOS, WINDOWS, LINUX, TASK_PACKAGE, TASK_CONFIGURE, PARAMS } = Constants;
-const { executeOrSkipTask } = TaskManager;
+import {
+    RnvTaskFn,
+    logTask,
+    MACOS,
+    WINDOWS,
+    LINUX,
+    TASK_PACKAGE,
+    TASK_CONFIGURE,
+    PARAMS,
+    executeOrSkipTask,
+} from '@rnv/core';
 
 export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);

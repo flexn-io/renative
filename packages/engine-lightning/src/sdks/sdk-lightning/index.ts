@@ -1,23 +1,13 @@
 import path from 'path';
 import {
-    Common,
-    Constants,
-    EngineManager,
-    Exec,
-    FileUtils,
-    Logger,
-    PlatformManager,
-    ProjectManager,
+    TIZEN,
+    isPlatformActive,
+    chalk,
+    logTask,
+    logSuccess,
+    executeAsync,
+    execCLI,
     RnvContext,
-    SDKManager,
-} from 'rnv';
-import semver from 'semver';
-
-const { TIZEN, CLI_TIZEN, CLI_WEBOS_ARES_PACKAGE } = Constants;
-const { isPlatformActive } = PlatformManager;
-const { chalk, logTask, logSuccess } = Logger;
-const { executeAsync, execCLI } = Exec;
-const {
     getPlatformBuildDir,
     getConfigProp,
     addSystemInjects,
@@ -26,13 +16,15 @@ const {
     getAppTitle,
     getAppId,
     getAppDescription,
-} = Common;
-const { generateEnvVars } = EngineManager;
-const { copyAssetsFolder, copyBuildsFolder } = ProjectManager;
-const { writeCleanFile } = FileUtils;
+    generateEnvVars,
+    copyAssetsFolder,
+    copyBuildsFolder,
+    writeCleanFile,
+} from '@rnv/core';
+import semver from 'semver';
 
-const { runTizenSimOrDevice, DEFAULT_SECURITY_PROFILE_NAME } = SDKManager.Tizen;
-const { runWebosSimOrDevice } = SDKManager.Webos;
+import { runTizenSimOrDevice, DEFAULT_SECURITY_PROFILE_NAME, CLI_TIZEN } from '@rnv/sdk-tizen';
+import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
 
 export const runLightningProject = async (c: RnvContext) => {
     logTask('runLightningProject');

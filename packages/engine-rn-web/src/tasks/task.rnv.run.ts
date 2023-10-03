@@ -1,12 +1,6 @@
-import { TaskManager, Constants, Logger, PlatformManager, FileUtils, Common, RnvContext, RnvTaskFn } from 'rnv';
-import ip from 'ip';
-import path from 'path';
-import { runChromecast, runWebpackServer } from '@rnv/sdk-webpack';
-import { SDKTizen, SDKWebos, SDKFirefox } from '../sdks';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask, logDebug } = Logger;
-const {
+import {
+    RnvContext,
+    RnvTaskFn,
     WEB,
     WEBTV,
     TIZEN,
@@ -21,14 +15,23 @@ const {
     TASK_START,
     TASK_CONFIGURE,
     PARAMS,
-} = Constants;
-
-const { getConfigProp, getPlatformProjectDir, existBuildsOverrideForTargetPathSync } = Common;
-const { runTizen } = SDKTizen;
-const { runWebOS } = SDKWebos;
-const { runFirefoxProject } = SDKFirefox;
-const { writeCleanFile } = FileUtils;
-const { executeTask, executeOrSkipTask, shouldSkipTask } = TaskManager;
+    logErrorPlatform,
+    logTask,
+    logDebug,
+    getConfigProp,
+    getPlatformProjectDir,
+    existBuildsOverrideForTargetPathSync,
+    writeCleanFile,
+    executeTask,
+    executeOrSkipTask,
+    shouldSkipTask,
+} from '@rnv/core';
+import ip from 'ip';
+import path from 'path';
+import { runChromecast, runWebpackServer } from '@rnv/sdk-webpack';
+import { runTizen } from '@rnv/sdk-tizen';
+import { runWebOS } from '@rnv/sdk-webos';
+import { runKaiOSProject } from '@rnv/sdk-kaios';
 
 const _configureHostedIfRequired = async (c: RnvContext) => {
     logTask('_configureHostedIfRequired');
@@ -38,10 +41,10 @@ const _configureHostedIfRequired = async (c: RnvContext) => {
 
     if (!bundleAssets && !existBuildsOverrideForTargetPathSync(c, path.join(getPlatformProjectDir(c)!, 'index.html'))) {
         logDebug('Running hosted build');
-        const { rnv } = c.paths;
         const ipAddress = c.program.hostIp || ip.address();
+
         writeCleanFile(
-            path.join(rnv.dir, 'coreTemplateFiles', 'appShell', 'index.html'),
+            path.join(c.runtime.currentEngine.rootPath!, 'templates', 'appShell', 'index.html'),
             path.join(getPlatformProjectDir(c)!, 'index.html'),
             [
                 {
@@ -96,7 +99,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
         case KAIOS:
         case FIREFOX_OS:
         case FIREFOX_TV:
-            return runFirefoxProject(c);
+            return runKaiOSProject(c);
         case CHROMECAST:
             if (!c.program.only) {
                 await _configureHostedIfRequired(c);

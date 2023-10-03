@@ -1,10 +1,7 @@
-import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
-import { buildWeb } from '@rnv/sdk-webpack';
-import { SDKTizen, SDKWebos, SDKFirefox } from '../sdks';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const {
+import {
+    RnvTaskFn,
+    logErrorPlatform,
+    logTask,
     WEB,
     WEBTV,
     TIZEN,
@@ -18,12 +15,13 @@ const {
     TASK_BUILD,
     TASK_PACKAGE,
     PARAMS,
-} = Constants;
-
-const { buildTizenProject } = SDKTizen;
-const { buildWebOSProject } = SDKWebos;
-const { buildFirefoxProject } = SDKFirefox;
-const { executeOrSkipTask, shouldSkipTask } = TaskManager;
+    executeOrSkipTask,
+    shouldSkipTask,
+} from '@rnv/core';
+import { buildWeb } from '@rnv/sdk-webpack';
+import { buildTizenProject } from '@rnv/sdk-tizen';
+import { buildWebOSProject } from '@rnv/sdk-webos';
+import { buildKaiOSProject } from '@rnv/sdk-kaios';
 
 export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvBuild', `parent:${parentTask}`);
@@ -44,9 +42,7 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
             await buildWeb(c);
             return;
         case KAIOS:
-        case FIREFOX_OS:
-        case FIREFOX_TV:
-            await buildFirefoxProject(c);
+            await buildKaiOSProject(c);
             return;
         case TIZEN:
         case TIZEN_MOBILE:

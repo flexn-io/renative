@@ -1,125 +1,74 @@
-# require_relative '/Users/aurimas/projects/rs/renative/node_modules/react-native/scripts/react_native_pods'
-# require_relative '/Users/aurimas/projects/rs/renative/node_modules/@react-native-community/cli-platform-ios/native_modules'
+source 'https://github.com/react-native-tvos/react-native-tvos-podspecs.git'
+source 'https://cdn.cocoapods.org/'
 
-{{PLUGIN_PODFILE_SOURCES}}
-platform :tvos, '{{PLUGIN_DEPLOYMENT_TARGET}}'
-use_frameworks!
-{{PLUGIN_WARNINGS}}
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native-tvos/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
 
-# ReNative: To allow dynamic plugins via flavours autolinking has to be disabled
-# require_relative '../../node_modules/@react-native-community/cli-platform-ios/native_modules'
+prepare_react_native_project!
+
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
 
 target 'RNVApp' do
-  # Pods for RNVApp
+  config = use_native_modules!
+  platform :ios, min_ios_version_supported
 
-  pod 'FBLazyVector', :path => "{{PATH_REACT_NATIVE}}/Libraries/FBLazyVector"
-  pod 'FBReactNativeSpec', :path => "{{PATH_REACT_NATIVE}}/React/FBReactNativeSpec"
-  pod 'RCTRequired', :path => "{{PATH_REACT_NATIVE}}/Libraries/RCTRequired"
-  pod 'RCTTypeSafety', :path => "{{PATH_REACT_NATIVE}}/Libraries/TypeSafety"
-  pod 'React', :path => '{{PATH_REACT_NATIVE}}/'
-  pod 'React-Core', :path => '{{PATH_REACT_NATIVE}}/'
-  pod 'React-CoreModules', :path => '{{PATH_REACT_NATIVE}}/React/CoreModules'
-  pod 'React-Core/DevSupport', :path => '{{PATH_REACT_NATIVE}}/'
-  pod 'React-RCTActionSheet', :path => '{{PATH_REACT_NATIVE}}/Libraries/ActionSheetIOS'
-  pod 'React-RCTAnimation', :path => '{{PATH_REACT_NATIVE}}/Libraries/NativeAnimation'
-  pod 'React-RCTBlob', :path => '{{PATH_REACT_NATIVE}}/Libraries/Blob'
-  pod 'React-RCTImage', :path => '{{PATH_REACT_NATIVE}}/Libraries/Image'
-  pod 'React-RCTLinking', :path => '{{PATH_REACT_NATIVE}}/Libraries/LinkingIOS'
-  pod 'React-RCTNetwork', :path => '{{PATH_REACT_NATIVE}}/Libraries/Network'
-  pod 'React-RCTSettings', :path => '{{PATH_REACT_NATIVE}}/Libraries/Settings'
-  pod 'React-RCTText', :path => '{{PATH_REACT_NATIVE}}/Libraries/Text'
-  pod 'React-RCTVibration', :path => '{{PATH_REACT_NATIVE}}/Libraries/Vibration'
-  pod 'React-Core/RCTWebSocket', :path => '{{PATH_REACT_NATIVE}}/'
+  # Flags change depending on the env values.
+  flags = get_default_flags()
 
-  pod 'React-cxxreact', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/cxxreact'
-  pod 'React-jsi', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsi'
-  pod 'React-jsiexecutor', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsiexecutor'
-  pod 'React-jsinspector', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsinspector'
-  pod 'React-callinvoker', :path => "{{PATH_REACT_NATIVE}}/ReactCommon/callinvoker"
-  pod 'ReactCommon/turbomodule/core', :path => "{{PATH_REACT_NATIVE}}/ReactCommon"
-  pod 'Yoga', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/yoga'
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    :hermes_enabled => flags[:hermes_enabled],
+    :fabric_enabled => flags[:fabric_enabled],
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/../.."
+  )
 
-  pod 'DoubleConversion', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/glog.podspec'
-  pod 'boost', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/boost.podspec'
-  pod 'RCT-Folly', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/RCT-Folly.podspec'
-
-  pod 'React-perflogger', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/reactperflogger'
-  pod 'React-logger', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/logger'
-  pod 'React-runtimeexecutor', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/runtimeexecutor'
-
-end
-
-target 'RNVAppTVOS' do
-
-  # use_flipper_tvos!
-
-
-  pod 'FBLazyVector', :path => "{{PATH_REACT_NATIVE}}/Libraries/FBLazyVector"
-  pod 'FBReactNativeSpec', :path => "{{PATH_REACT_NATIVE}}/React/FBReactNativeSpec"
-  pod 'RCTRequired', :path => "{{PATH_REACT_NATIVE}}/Libraries/RCTRequired"
-  pod 'RCTTypeSafety', :path => "{{PATH_REACT_NATIVE}}/Libraries/TypeSafety"
-  pod 'React', :path => '{{PATH_REACT_NATIVE}}/'
-  pod 'React-Core', :path => '{{PATH_REACT_NATIVE}}/'
-  pod 'React-CoreModules', :path => '{{PATH_REACT_NATIVE}}/React/CoreModules'
-  pod 'React-Core/DevSupport', :path => '{{PATH_REACT_NATIVE}}/'
-  pod 'React-RCTActionSheet', :path => '{{PATH_REACT_NATIVE}}/Libraries/ActionSheetIOS'
-  pod 'React-RCTAnimation', :path => '{{PATH_REACT_NATIVE}}/Libraries/NativeAnimation'
-  pod 'React-RCTBlob', :path => '{{PATH_REACT_NATIVE}}/Libraries/Blob'
-  pod 'React-RCTImage', :path => '{{PATH_REACT_NATIVE}}/Libraries/Image'
-  pod 'React-RCTLinking', :path => '{{PATH_REACT_NATIVE}}/Libraries/LinkingIOS'
-  pod 'React-RCTNetwork', :path => '{{PATH_REACT_NATIVE}}/Libraries/Network'
-  pod 'React-RCTSettings', :path => '{{PATH_REACT_NATIVE}}/Libraries/Settings'
-  pod 'React-RCTText', :path => '{{PATH_REACT_NATIVE}}/Libraries/Text'
-  pod 'React-RCTVibration', :path => '{{PATH_REACT_NATIVE}}/Libraries/Vibration'
-  pod 'React-Core/RCTWebSocket', :path => '{{PATH_REACT_NATIVE}}/'
-
-  pod 'React-cxxreact', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/cxxreact'
-  pod 'React-jsi', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsi'
-  pod 'React-jsiexecutor', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsiexecutor'
-  pod 'React-jsinspector', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsinspector'
-  pod 'React-callinvoker', :path => "{{PATH_REACT_NATIVE}}/ReactCommon/callinvoker"
-
-  pod 'ReactCommon/turbomodule/core', :path => "{{PATH_REACT_NATIVE}}/ReactCommon"
-  pod 'Yoga', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/yoga'
-
-  pod 'DoubleConversion', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/glog.podspec'
-  pod 'fmt', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/fmt.podspec'
-  pod 'RCT-Folly', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/RCT-Folly.podspec'
-
-  pod 'React-perflogger', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/reactperflogger'
-  pod 'React-logger', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/logger'
-  pod 'React-runtimeexecutor', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/runtimeexecutor'
-
- {{PLUGIN_PATHS}}
-
-  # ReNative: To allow dynamic plugins via flavours autolinking has to be disabled
-  # use_native_modules!('../..')
-end
-
-pre_install do |installer|
-  # workaround for https://github.com/CocoaPods/CocoaPods/issues/3289
-  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
-end
-
-static_frameworks = [{{PLUGIN_STATIC_FRAMEWORKS}}]
-
-pre_install do |installer|
-  installer.pod_targets.each do |pod|
-    if static_frameworks.include?(pod.name) {{PLUGIN_STATIC_POD_EXTRA_CONDITIONS}}
-      def pod.static_framework?;
-        true
-      end
-      def pod.build_type;
-        {{PLUGIN_STATIC_POD_DEFINITION}}
-      end
-    end
+  target 'RNVAppTests' do
+    inherit! :complete
+    # Pods for testing
   end
+
 end
 
-# post_install do |installer|
-#   flipper_post_install(installer)
-# end
+target 'RNVApp-tvOS' do
+  config = use_native_modules!
+  platform :tvos, min_ios_version_supported
 
-{{PLUGIN_PODFILE_INJECT}}
+  # Flags change depending on the env values.
+  flags = get_default_flags()
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # Hermes is now enabled by default. Disable by setting this flag to false.
+    :hermes_enabled => flags[:hermes_enabled],
+    :fabric_enabled => flags[:fabric_enabled],
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/../.."
+  )
+
+  target 'RNVApp-tvOSTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+
+end
+
+post_install do |installer|
+  config = use_native_modules!
+  # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+  react_native_post_install(
+    installer,
+    config[:reactNativePath],
+    :mac_catalyst_enabled => false
+  )
+  __apply_Xcode_12_5_M1_post_install_workaround(installer)
+end

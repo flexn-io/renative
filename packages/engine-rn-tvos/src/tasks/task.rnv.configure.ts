@@ -1,21 +1,23 @@
-import { Constants, Logger, PlatformManager, TaskManager, NPMUtils, TemplateManager, RnvTaskFn } from 'rnv';
+import {
+    RnvTaskFn,
+    jetifyIfRequired,
+    logErrorPlatform,
+    logTask,
+    TVOS,
+    ANDROID_TV,
+    FIRE_TV,
+    TASK_PLATFORM_CONFIGURE,
+    TASK_CONFIGURE,
+    PARAMS,
+    executeTask,
+    shouldSkipTask,
+    configureEntryPoint,
+} from '@rnv/core';
 import { configureGradleProject } from '@rnv/sdk-android';
 import { configureXcodeProject } from '@rnv/sdk-apple';
-import { configureMetroConfigs } from '../commonEngine';
-
-const { jetifyIfRequired } = NPMUtils;
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const { TVOS, ANDROID_TV, FIRE_TV, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS } = Constants;
-
-const { executeTask, shouldSkipTask } = TaskManager;
-const { configureEntryPoint } = TemplateManager;
 
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');
-
-    await configureMetroConfigs(c);
 
     await executeTask(c, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, originTask);
     if (shouldSkipTask(c, TASK_CONFIGURE, originTask)) return true;

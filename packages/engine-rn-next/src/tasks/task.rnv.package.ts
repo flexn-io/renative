@@ -1,8 +1,13 @@
-import { TaskManager, Constants, Logger, RnvTaskFn } from 'rnv';
-
-const { logTask } = Logger;
-const { WEB, CHROMECAST, TASK_PACKAGE, TASK_CONFIGURE, PARAMS } = Constants;
-const { executeOrSkipTask } = TaskManager;
+import {
+    RnvTaskFn,
+    logTask,
+    WEB,
+    CHROMECAST,
+    TASK_PACKAGE,
+    TASK_CONFIGURE,
+    PARAMS,
+    executeOrSkipTask,
+} from '@rnv/core';
 
 export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvPackage', `parent:${parentTask}`);

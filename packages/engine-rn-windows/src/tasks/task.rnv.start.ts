@@ -18,8 +18,8 @@ import {
     TASK_START,
     TASK_CONFIGURE_SOFT,
     logError,
-} from 'rnv';
-import { isBundlerActive } from '../commonEngine';
+} from '@rnv/core';
+import { isBundlerActive } from '@rnv/sdk-react-native';
 
 const BUNDLER_PLATFORMS: Record<string, string> = {};
 

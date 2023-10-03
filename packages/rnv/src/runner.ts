@@ -1,39 +1,57 @@
-import Analytics from './core/systemManager/analytics';
-import Config from './core/context/context';
-import { configureFilesystem } from './core/systemManager/fileutils';
-import { createRnvConfig } from './core/configManager';
-import { logComplete, logError, logInitialize } from './core/systemManager/logger';
-import CLI from './cli';
-import { getConfigProp } from './core/common';
-import { doResolve } from './core/systemManager/resolve';
-import { isSystemWin } from './core/systemManager/utils';
+import { Analytics } from './analytics';
+import {
+    RnvApiLogger,
+    RnvApiPrompt,
+    RnvApiSpinner,
+    createRnvApi,
+    createRnvContext,
+    doResolve,
+    executeRnvCore,
+    getConfigProp,
+    loadWorkspacesSync,
+    logInitialize,
+    registerEngine,
+} from '@rnv/core';
+import { RNV_HOME_DIR } from './constants';
+import EngineCore from '@rnv/engine-core';
 
-global.RNV_ANALYTICS = Analytics;
+export const executeRnv = async ({
+    cmd,
+    subCmd,
+    process,
+    program,
+    spinner,
+    prompt,
+    logger,
+}: {
+    cmd: string;
+    subCmd: string;
+    process: any;
+    program: any;
+    spinner: RnvApiSpinner;
+    prompt: RnvApiPrompt;
+    logger: RnvApiLogger;
+}) => {
+    try {
+        // set mono and ci if json is enabled
+        if (program.json) {
+            program.mono = true;
+            program.ci = true;
+        }
 
-export const initializeBuilder = async (cmd: string, subCmd: string, process: any, program: any) => {
-    // set mono and ci if json is enabled
-    if (program.json) {
-        program.mono = true;
-        program.ci = true;
+        createRnvApi({ spinner, prompt, analytics: Analytics, logger, getConfigProp, doResolve });
+        createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
+
+        logInitialize();
+        loadWorkspacesSync();
+
+        Analytics.initialize();
+
+        await registerEngine(EngineCore);
+
+        await executeRnvCore();
+    } catch (e) {
+        console.log(e);
+        // logError(e);
     }
-
-    Analytics.initialize();
-    configureFilesystem(getConfigProp, doResolve, isSystemWin);
-    const c = createRnvConfig(program, process, cmd, subCmd);
-    logInitialize();
-
-    //@ts-ignore
-    global.fetch = await import('node-fetch');
-    //@ts-ignore
-    global.Headers = global.fetch.Headers;
-
-    return c;
-};
-
-export const run = (cmd: string, subCmd: string, program: any, process: any) => {
-    initializeBuilder(cmd, subCmd, process, program)
-        .then((c) => Config.initializeConfig(c))
-        .then((c) => CLI(c))
-        .then(() => logComplete(!Config.getConfig().runtime.keepSessionActive))
-        .catch((e) => logError(e, true));
 };

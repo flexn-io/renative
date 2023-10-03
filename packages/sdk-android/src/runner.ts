@@ -1,0 +1,537 @@
+import path from 'path';
+import net from 'net';
+import {
+    RnvPluginPlatform,
+    inquirerPrompt,
+    execaCommand,
+    copyAssetsFolder,
+    copyBuildsFolder,
+    parseFonts,
+    parsePlugins,
+    fsExistsSync,
+    copyFileSync,
+    mkdirSync,
+    getRealPath,
+    updateObjectSync,
+    fsWriteFileSync,
+    executeAsync,
+    getAppFolder,
+    getConfigProp,
+    getEntryFile,
+    isPlatformActive,
+    isSystemWin,
+    updateRenativeConfigs,
+    chalk,
+    logTask,
+    logWarning,
+    logDebug,
+    logInfo,
+    logSuccess,
+    logRaw,
+    logError,
+    ANDROID_WEAR,
+    ANDROID,
+    ANDROID_TV,
+    FIRE_TV,
+} from '@rnv/core';
+import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
+import {
+    parseMainActivitySync,
+    parseSplashActivitySync,
+    parseMainApplicationSync,
+    injectPluginKotlinSync,
+    parseFlipperSync,
+} from './kotlinParser';
+import {
+    parseAppBuildGradleSync,
+    parseBuildGradleSync,
+    parseSettingsGradleSync,
+    parseGradlePropertiesSync,
+    injectPluginGradleSync,
+    parseAndroidConfigObject,
+} from './gradleParser';
+import { parseGradleWrapperSync } from './gradleWrapperParser';
+import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
+import { ejectGradleProject } from './ejector';
+import { Context } from './types';
+import {
+    resetAdb,
+    getAndroidTargets,
+    launchAndroidSimulator,
+    checkForActiveEmulator,
+    askForNewEmulator,
+    connectToWifiDevice,
+    composeDevicesArray,
+} from './deviceManager';
+import { CLI_ANDROID_ADB } from './constants';
+import { packageReactNativeAndroid, runReactNativeAndroid } from '@rnv/sdk-react-native';
+
+export const packageAndroid = async (c: Context) => {
+    logTask('packageAndroid');
+
+    return packageReactNativeAndroid(c);
+};
+
+export const runAndroid = async (c: Context) => {
+    const { target } = c.program;
+    const { platform } = c;
+    const defaultTarget = c.runtime.target;
+    logTask('runAndroid', `target:${target} default:${defaultTarget}`);
+
+    await resetAdb(c);
+
+    if (target && net.isIP(target.split(':')[0])) {
+        await connectToWifiDevice(c, target);
+    }
+
+    let devicesAndEmulators;
+    try {
+        devicesAndEmulators = await getAndroidTargets(c, false, false, c.program.device !== undefined);
+    } catch (e) {
+        return Promise.reject(e);
+    }
+
+    const activeDevices = devicesAndEmulators.filter((d: any) => d.isActive);
+    const inactiveDevices = devicesAndEmulators.filter((d: any) => !d.isActive);
+
+    const askWhereToRun = async () => {
+        if (activeDevices.length === 0 && inactiveDevices.length > 0) {
+            // No device active, but there are emulators created
+            const devicesString = composeDevicesArray(inactiveDevices);
+            const choices = devicesString;
+            const response = await inquirerPrompt({
+                name: 'chosenEmulator',
+                type: 'list',
+                message: 'What emulator would you like to start?',
+                choices,
+            });
+            if (response.chosenEmulator) {
+                await launchAndroidSimulator(c, response.chosenEmulator, true);
+                const devices = await checkForActiveEmulator(c);
+                await runReactNativeAndroid(c, platform, devices);
+            }
+        } else if (activeDevices.length > 1) {
+            const devicesString = composeDevicesArray(activeDevices);
+            const choices = devicesString;
+            const response = await inquirerPrompt({
+                name: 'chosenEmulator',
+                type: 'list',
+                message: 'Where would you like to run your app?',
+                choices,
+            });
+            if (response.chosenEmulator) {
+                const dev = activeDevices.find((d: any) => d.name === response.chosenEmulator);
+                await runReactNativeAndroid(c, platform, dev);
+            }
+        } else {
+            await askForNewEmulator(c, platform);
+            const devices = await checkForActiveEmulator(c);
+            await runReactNativeAndroid(c, platform, devices);
+        }
+    };
+
+    if (target) {
+        // a target is provided
+        logDebug('Target provided', target);
+        const foundDevice = devicesAndEmulators.find((d: any) => d.udid.includes(target) || d.name.includes(target));
+        if (foundDevice) {
+            if (foundDevice.isActive) {
+                await runReactNativeAndroid(c, platform, foundDevice);
+            } else {
+                await launchAndroidSimulator(c, foundDevice, true);
+                const device = await checkForActiveEmulator(c);
+                await runReactNativeAndroid(c, platform, device);
+            }
+        } else {
+            await askWhereToRun();
+        }
+    } else if (activeDevices.length === 1) {
+        // Only one that is active, running on that one
+        const dv = activeDevices[0];
+        logInfo(`Found device ${dv.name}:${dv.udid}!`);
+        await runReactNativeAndroid(c, platform, dv);
+    } else if (defaultTarget) {
+        // neither a target nor an active device is found, revert to default target if available
+        logDebug('Default target used', defaultTarget);
+        const foundDevice = devicesAndEmulators.find(
+            (d: any) => d.udid.includes(defaultTarget) || d.name.includes(defaultTarget)
+        );
+        if (!foundDevice) {
+            logDebug('Target not provided, asking where to run');
+            await askWhereToRun();
+        } else {
+            await launchAndroidSimulator(c, foundDevice, true);
+            const device = await checkForActiveEmulator(c);
+            await runReactNativeAndroid(c, platform, device);
+        }
+    } else {
+        // we don't know what to do, ask the user
+        logDebug('Target not provided, asking where to run');
+        await askWhereToRun();
+    }
+};
+
+const _checkSigningCerts = async (c: Context) => {
+    logTask('_checkSigningCerts');
+    const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
+    const isRelease = signingConfig === 'Release';
+
+    if (isRelease && !c.payload.pluginConfigAndroid?.store?.storeFile) {
+        const msg = `You're attempting to ${
+            c.command
+        } app in release mode but you have't configured your ${chalk().white(
+            c.paths.workspace.appConfig.configPrivate
+        )} for ${chalk().white(c.platform)} platform yet.`;
+        if (c.program.ci === true) {
+            return Promise.reject(msg);
+        }
+        logWarning(msg);
+
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            name: 'confirm',
+            message: 'Do you want to configure it now?',
+        });
+
+        if (confirm) {
+            let confirmCopy = false;
+            let platCandidate = 'undefined';
+            const { confirmNewKeystore } = await inquirerPrompt({
+                type: 'confirm',
+                name: 'confirmNewKeystore',
+                message: 'Do you want to generate new keystore as well?',
+            });
+
+            if (c.files.workspace.appConfig.configPrivate) {
+                const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID, FIRE_TV];
+
+                platCandidates.forEach((v) => {
+                    if (c.files.workspace.appConfig.configPrivate[v]) {
+                        platCandidate = v;
+                    }
+                });
+                if (platCandidate) {
+                    const resultCopy = await inquirerPrompt({
+                        type: 'confirm',
+                        name: 'confirmCopy',
+                        message: `Found existing keystore configuration for ${platCandidate}. do you want to reuse it?`,
+                    });
+                    confirmCopy = resultCopy?.confirmCopy;
+                }
+            }
+
+            if (confirmCopy) {
+                c.files.workspace.appConfig.configPrivate[c.platform] =
+                    c.files.workspace.appConfig.configPrivate[platCandidate];
+            } else {
+                let storeFile;
+
+                if (!confirmNewKeystore) {
+                    const result = await inquirerPrompt({
+                        type: 'input',
+                        name: 'storeFile',
+                        default: './release.keystore',
+                        message: `Paste relative path to ${chalk().white(
+                            c.paths.workspace.appConfig.dir
+                        )} of your existing ${chalk().white('release.keystore')} file`,
+                    });
+                    storeFile = result?.storeFile;
+                }
+
+                const { storePassword } = await inquirerPrompt({
+                    type: 'password',
+                    name: 'storePassword',
+                    message: 'storePassword',
+                });
+
+                const { keyAlias } = await inquirerPrompt({
+                    type: 'input',
+                    name: 'keyAlias',
+                    message: 'keyAlias',
+                });
+
+                const { keyPassword } = await inquirerPrompt({
+                    type: 'password',
+                    name: 'keyPassword',
+                    message: 'keyPassword',
+                });
+
+                if (confirmNewKeystore) {
+                    const keystorePath = path.join(c.paths.workspace.appConfig.dir, 'release.keystore');
+                    mkdirSync(c.paths.workspace.appConfig.dir);
+                    const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath} -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword} -keyalg RSA -keysize 2048 -validity 10000`;
+                    await executeAsync(c, keytoolCmd, {
+                        env: process.env,
+                        shell: true,
+                        stdio: 'inherit',
+                        silent: true,
+                    });
+                    storeFile = './release.keystore';
+                }
+
+                if (c.paths.workspace.appConfig.dir) {
+                    mkdirSync(c.paths.workspace.appConfig.dir);
+                    c.files.workspace.appConfig.configPrivate = {
+                        platforms: {},
+                    };
+                    c.files.workspace.appConfig.configPrivate.platforms[c.platform] = {
+                        storeFile,
+                        storePassword,
+                        keyAlias,
+                        keyPassword,
+                    };
+                }
+            }
+
+            updateObjectSync(c.paths.workspace.appConfig.configPrivate, c.files.workspace.appConfig.configPrivate);
+            logSuccess(
+                `Successfully updated private config file at ${chalk().white(c.paths.workspace.appConfig.dir)}.`
+            );
+            // await configureProject(c);
+            await updateRenativeConfigs(c);
+            await parseAppBuildGradleSync(c);
+            // await configureGradleProject(c);
+        } else {
+            return Promise.reject("You selected no. Can't proceed");
+        }
+    }
+};
+
+export const buildAndroid = async (c: Context) => {
+    logTask('buildAndroid');
+    const { platform } = c;
+
+    const appFolder = getAppFolder(c);
+    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
+
+    const outputAab = getConfigProp(c, platform, 'aab', false);
+    // shortcircuit devices logic since aabs can't be installed on a device
+    if (outputAab) return runReactNativeAndroid(c, platform, {});
+
+    const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
+
+    let command = `npx react-native build-android --mode=${signingConfig} --no-packager`;
+
+    if (extraGradleParams) {
+        command += ` --extra-params ${extraGradleParams}`;
+    }
+
+    await executeAsync(c, command, { cwd: appFolder });
+
+    // await _checkSigningCerts(c);
+    // await executeAsync(
+    //     c,
+    //     `${
+    //         isSystemWin ? 'gradlew.bat' : './gradlew'
+    //     } assemble${signingConfig} -x bundleReleaseJsAndAssets ${extraGradleParams}`
+    // );
+
+    logSuccess(
+        `Your APK is located in ${chalk().cyan(
+            path.join(appFolder, `app/build/outputs/apk/${signingConfig.toLowerCase()}`)
+        )} .`
+    );
+    return true;
+};
+
+export const configureAndroidProperties = async (c: Context) => {
+    logTask('configureAndroidProperties');
+
+    const appFolder = getAppFolder(c);
+
+    c.runtime.platformBuildsProjectPath = appFolder;
+
+    const addNDK = c.buildConfig?.sdks?.ANDROID_NDK && !c.buildConfig.sdks.ANDROID_NDK.includes('<USER>');
+    let ndkString = `ndk.dir=${getRealPath(c, c.buildConfig?.sdks?.ANDROID_NDK)}`;
+    let sdkDir = getRealPath(c, c.buildConfig?.sdks?.ANDROID_SDK);
+
+    if (!sdkDir) {
+        logError(`Cannot resolve c.buildConfig?.sdks?.ANDROID_SDK: ${c.buildConfig?.sdks?.ANDROID_SDK}`);
+        return false;
+    }
+
+    if (isSystemWin) {
+        sdkDir = sdkDir.replace(/\\/g, '/');
+        ndkString = ndkString.replace(/\\/g, '/');
+    }
+
+    fsWriteFileSync(
+        path.join(appFolder, 'local.properties'),
+        `#Generated by ReNative (https://renative.org)
+${addNDK ? ndkString : ''}
+sdk.dir=${sdkDir}`
+    );
+
+    return true;
+};
+
+export const configureGradleProject = async (c: Context) => {
+    const { platform } = c;
+    logTask('configureGradleProject');
+
+    if (!isPlatformActive(c, platform)) return;
+    await copyAssetsFolder(c, platform, 'app/src/main');
+    await configureAndroidProperties(c);
+    await configureProject(c);
+    await copyBuildsFolder(c, platform);
+    return true;
+};
+
+// const createJavaPackageFolders = async (c: Context, appFolder: string) => {
+//     console.log('createJavaPackageFolders', appFolder);
+//     const appId = getAppId(c, c.platform);
+//     console.log('appId', appId);
+//     const javaPackageArray = appId.split('.');
+//     const javaPackagePath = path.join(appFolder, 'app/src/main/java', ...javaPackageArray);
+//     console.log('javaPackagePath', javaPackagePath);
+
+//     if (!fsExistsSync(javaPackagePath)) {
+//         await mkdir(javaPackagePath, { recursive: true });
+//     }
+//     throw new Error('createJavaPackageFolders not implemented');
+// }
+
+export const configureProject = async (c: Context) => {
+    logTask('configureProject');
+    const { platform } = c;
+
+    const appFolder = getAppFolder(c);
+
+    // if (!fsExistsSync(gradlew)) {
+    //     logWarning(`Your ${chalk().white(platform)} platformBuild is misconfigured!. let's repair it.`);
+    //     await createPlatformBuild(c, platform);
+    //     await configureGradleProject(c);
+
+    //     return true;
+    // }
+
+    const outputFile = getEntryFile(c, platform);
+
+    // await createJavaPackageFolders(c, appFolder);
+    mkdirSync(path.join(appFolder, 'app/src/main/assets'));
+    fsWriteFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
+
+    // INJECTORS
+    c.payload.pluginConfigAndroid = {
+        pluginIncludes: "include ':app'",
+        pluginPaths: '',
+        pluginPackages: 'MainReactPackage(),\n',
+        pluginActivityImports: '',
+        pluginActivityMethods: '',
+        pluginApplicationImports: '',
+        pluginApplicationMethods: '',
+        reactNativeHostMethods: '',
+        pluginApplicationCreateMethods: '',
+        pluginApplicationDebugServer: '',
+        applyPlugin: '',
+        defaultConfig: '',
+        pluginActivityCreateMethods: '',
+        pluginActivityResultMethods: '',
+        pluginSplashActivityImports: '',
+        buildGradleAllProjectsRepositories: '',
+        buildGradleBuildScriptRepositories: '',
+        buildGradlePlugins: '',
+        buildGradleAfterAll: '',
+        buildGradleBuildScriptDependencies: '',
+        injectReactNativeEngine: '',
+        buildGradleBuildScriptDexOptions: '',
+        appBuildGradleSigningConfigs: '',
+        packagingOptions: '',
+        appBuildGradleImplementations: '',
+        resourceStrings: [],
+        appBuildGradleAfterEvaluate: '',
+        injectHermes: '',
+        kotlinVersion: '',
+        googleServicesVersion: '',
+        buildToolsVersion: '',
+        buildTypes: '',
+        compileOptions: '',
+        compileSdkVersion: '',
+        gradleBuildToolsVersion: '',
+        gradleWrapperVersion: '',
+        localProperties: '',
+        minSdkVersion: '',
+        multiAPKs: '',
+        splits: '',
+        supportLibVersion: '',
+        targetSdkVersion: '',
+    };
+
+    // PLUGINS
+    parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
+        injectPluginGradleSync(c, plugin, pluginPlat, key);
+        injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
+        injectPluginManifestSync();
+        injectPluginXmlValuesSync(c, pluginPlat);
+    });
+
+    c.payload.pluginConfigAndroid.pluginPackages = c.payload.pluginConfigAndroid.pluginPackages.substring(
+        0,
+        c.payload.pluginConfigAndroid.pluginPackages.length - 2
+    );
+
+    // FONTS
+    parseFonts(c, (font: any, dir: any) => {
+        if (font.includes('.ttf') || font.includes('.otf')) {
+            const key = font.split('.')[0];
+
+            const { includedFonts } = c.buildConfig.common || {};
+            if (includedFonts) {
+                if (includedFonts.includes('*') || includedFonts.includes(key)) {
+                    if (font) {
+                        const fontSource = path.join(dir, font);
+                        if (fsExistsSync(fontSource)) {
+                            const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
+                            mkdirSync(fontFolder);
+                            const fontNormalised = font.replace(/__/g, ' ');
+                            const fontDest = path.join(fontFolder, fontNormalised);
+                            copyFileSync(fontSource, fontDest);
+                        } else {
+                            logWarning(`Font ${chalk().white(fontSource)} doesn't exist! Skipping.`);
+                        }
+                    }
+                }
+            }
+        }
+    });
+    parseAndroidConfigObject(c);
+    parseSettingsGradleSync(c);
+    parseAppBuildGradleSync(c);
+    parseBuildGradleSync(c);
+    parseGradleWrapperSync(c);
+    parseMainActivitySync(c);
+    parseMainApplicationSync(c);
+    parseSplashActivitySync(c);
+    parseValuesStringsSync(c);
+    parseValuesColorsSync(c);
+    parseAndroidManifestSync(c);
+    parseGradlePropertiesSync(c);
+    parseFlipperSync(c, 'debug');
+    parseFlipperSync(c, 'release');
+    await _checkSigningCerts(c);
+
+    return true;
+};
+
+// Resolve or reject will not be called so this will keep running
+export const runAndroidLog = async (c: Context) => {
+    logTask('runAndroidLog');
+    const filter = c.program.filter || '';
+    const child = execaCommand(`${c.cli[CLI_ANDROID_ADB]} logcat`);
+    // use event hooks to provide a callback to execute when data are available:
+    child.stdout?.on('data', (data: any) => {
+        const d = data.toString().split('\n');
+        d.forEach((v: any) => {
+            if (v.includes(' E ') && v.includes(filter)) {
+                logRaw(chalk().red(v));
+            } else if (v.includes(' W ') && v.includes(filter)) {
+                logRaw(chalk().yellow(v));
+            } else if (v.includes(filter)) {
+                logRaw(v);
+            }
+        });
+    });
+    return child.then((res: any) => res.stdout).catch((err: any) => Promise.reject(`Error: ${err}`));
+};
+
+export { ejectGradleProject };

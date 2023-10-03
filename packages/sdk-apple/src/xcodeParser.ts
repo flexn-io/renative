@@ -1,28 +1,27 @@
 import { provision } from 'ios-mobileprovision-finder';
 import path from 'path';
 import {
-    Resolver,
-    Logger,
-    Constants,
-    Common,
-    PluginManager,
-    Prompt,
-    FileUtils,
     logError,
     RenativeConfigPlatform,
     RnvPluginPlatform,
-} from 'rnv';
+    inquirerPrompt,
+    getAppFolder,
+    getAppId,
+    getConfigProp,
+    getFlavouredProp,
+    fsExistsSync,
+    writeFileSync,
+    fsWriteFileSync,
+    doResolve,
+    chalk,
+    logTask,
+    logWarning,
+    IOS,
+    parsePlugins,
+} from '@rnv/core';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
 import { Context } from './types';
-
-const { getAppFolder, getAppId, getConfigProp, getFlavouredProp } = Common;
-const { fsExistsSync, writeFileSync, fsWriteFileSync } = FileUtils;
-const { doResolve } = Resolver;
-const { chalk, logTask, logWarning } = Logger;
-const { inquirerPrompt } = Prompt;
-const { IOS } = Constants;
-const { parsePlugins } = PluginManager;
 
 export const parseXcodeProject = async (c: Context) => {
     logTask('parseXcodeProject');
@@ -49,8 +48,8 @@ export const parseXcodeProject = async (c: Context) => {
 
         let eligibleProfile: provision.MobileProvision | undefined;
 
-        if (result?.eligable) {
-            result.eligable.forEach((v) => {
+        if (result?.eligible) {
+            result.eligible.forEach((v) => {
                 const bundleId = v.Entitlements['application-identifier'];
 
                 if (bundleId === `${c.payload.xcodeProj?.teamID}.${c.payload.xcodeProj?.id}`) {
@@ -265,9 +264,10 @@ const _parseXcodeProject = (c: Context, platform: string) =>
 
             // FONTS
             // Cocoapods take care of this
-            c.payload.pluginConfigiOS.embeddedFontSources.forEach((v) => {
-                xcodeProj.addResourceFile(v, { variantGroup: false });
-            });
+            //TODO: DISABLED TEMORARILY DURING RN UPGRADE. investigating built in rn options for this
+            // c.payload.pluginConfigiOS.embeddedFontSources.forEach((v) => {
+            //     xcodeProj.addResourceFile(v, { variantGroup: false });
+            // });
 
             fsWriteFileSync(projectPath, xcodeProj.writeSync());
             resolve();

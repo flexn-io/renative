@@ -9,7 +9,7 @@ import {
     PARAMS,
     logTask,
     shouldSkipTask,
-} from 'rnv';
+} from '@rnv/core';
 import { ruWindowsProject } from '../sdks/sdk-windows';
 
 export const taskRnvBuild: RnvTaskFn = async (c, _parentTask, originTask) => {

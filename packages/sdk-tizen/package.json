@@ -1,0 +1,42 @@
+{
+    "name": "@rnv/sdk-tizen",
+    "version": "0.38.0-canary.1",
+    "description": "ReNative Tizen SDK",
+    "keywords": [],
+    "homepage": "https://github.com/flexn-io/renative#readme",
+    "bugs": {
+        "url": "https://github.com/flexn-io/renative/issues"
+    },
+    "license": "MIT",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "files": [
+        "lib",
+        "supportFiles",
+        "types.d.ts"
+    ],
+    "main": "lib/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/flexn-io/renative.git"
+    },
+    "scripts": {
+        "bootstrap": "yarn && yarn build && npm link",
+        "build": "yarn clean && yarn compile",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.json",
+        "lint": "eslint . --ext .ts",
+        "watch": "tsc --watch --preserveWatchOutput"
+    },
+    "dependencies": {
+        "xml2js": "0.6.0",
+        "@rnv/sdk-webos": "^0.38.0-canary.1"
+    },
+    "peerDependencies": {
+        "@rnv/core": "^0.38.0-canary.1"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    }
+}

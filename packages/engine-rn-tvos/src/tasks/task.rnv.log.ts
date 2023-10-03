@@ -1,27 +1,28 @@
-import { TaskManager, Constants, Logger, PlatformManager, SDKManager, RnvTaskFn } from 'rnv';
+import {
+    logTask,
+    PARAMS,
+    TVOS,
+    ANDROID_TV,
+    FIRE_TV,
+    TASK_WORKSPACE_CONFIGURE,
+    TASK_PROJECT_CONFIGURE,
+    executeTask,
+    logErrorPlatform,
+    RnvTaskFn,
+} from '@rnv/core';
 
 import { runAppleLog } from '@rnv/sdk-apple';
-import { runAndroidLog } from '@rnv/sdk-android';
-
-const { checkAndConfigureSdks } = SDKManager;
-
-const { logErrorPlatform } = PlatformManager;
-
-const { logTask } = Logger;
-const { PARAMS, TVOS, ANDROID_TV, FIRE_TV, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE } = Constants;
-const { executeTask } = TaskManager;
+import { runAndroidLog, checkAndConfigureAndroidSdks } from '@rnv/sdk-android';
 
 export const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvLog', `parent:${parentTask}`);
 
     await executeTask(c, TASK_WORKSPACE_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
 
-    // await checkSdk(c);
-    await checkAndConfigureSdks(c);
-
     switch (c.platform) {
         case ANDROID_TV:
         case FIRE_TV:
+            await checkAndConfigureAndroidSdks(c);
             return runAndroidLog(c);
         case TVOS:
             return runAppleLog(c);

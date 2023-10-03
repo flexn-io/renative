@@ -1,4 +1,13 @@
-import { RnvContext } from 'rnv';
+import { RnvContext } from '@rnv/core';
+
+export type AppleDevice = {
+    udid?: string;
+    version?: string;
+    isAvailable?: boolean;
+    name?: string;
+    icon?: string;
+    isDevice?: boolean;
+};
 
 export type Payload = {
     pluginConfigiOS: {
@@ -38,6 +47,7 @@ export type Payload = {
         };
         podfileSources: string;
         deploymentTarget: string;
+        podfileNodeRequire: string;
     };
     xcodeProj?: {
         id?: string;

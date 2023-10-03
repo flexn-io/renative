@@ -1,26 +1,27 @@
 import path from 'path';
 import {
-    Exec,
-    Logger,
-    PluginManager,
-    FileUtils,
-    Resolver,
-    Common,
     RnvPluginPlatform,
     RnvPlugin,
     RenativeConfigPluginPlatform,
     OverridesOptions,
-} from 'rnv';
-
+    getAppFolder,
+    getAppTemplateFolder,
+    getConfigProp,
+    getFlavouredProp,
+    addSystemInjects,
+    logTask,
+    logWarning,
+    parsePlugins,
+    sanitizePluginPath,
+    overrideFileContents,
+    includesPluginPath,
+    doResolve,
+    doResolvePath,
+    executeAsync,
+    writeCleanFile,
+} from '@rnv/core';
 import compareVersions from 'compare-versions';
 import { Context } from './types';
-
-const { getAppFolder, getAppTemplateFolder, getConfigProp, getFlavouredProp, addSystemInjects } = Common;
-const { logTask, logWarning } = Logger;
-const { parsePlugins, sanitizePluginPath, overrideFileContents, includesPluginPath } = PluginManager;
-const { doResolve, doResolvePath } = Resolver;
-const { executeAsync } = Exec;
-const { writeCleanFile } = FileUtils;
 
 export const parsePodFile = async (c: Context, platform: string) => {
     logTask('parsePodFile');
@@ -188,6 +189,10 @@ export const parsePodFile = async (c: Context, platform: string) => {
         {
             pattern: '{{PLUGIN_STATIC_POD_EXTRA_CONDITIONS}}',
             override: c.payload.pluginConfigiOS.staticPodExtraConditions,
+        },
+        {
+            pattern: '{{PLUGIN_NODE_REQUIRE}}',
+            override: c.payload.pluginConfigiOS.podfileNodeRequire || '',
         },
     ];
 

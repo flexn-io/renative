@@ -10,7 +10,7 @@ import {
     listAppConfigsFoldersSync,
     TASK_PROJECT_CONFIGURE,
     TASK_CRYPTO_UPDATE_PROFILES,
-} from 'rnv';
+} from '@rnv/core';
 import { updateProfile } from '@rnv/sdk-apple';
 
 const _updateProfile = (c: RnvContext, v: string) =>

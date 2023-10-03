@@ -13,44 +13,36 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
-        "dist",
+        "lib",
         "renative.engine.json",
         "supportFiles",
         "templates"
     ],
-    "main": "dist/index.js",
+    "main": "lib/index.js",
     "repository": {
         "type": "git",
         "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
         "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./dist && rm -rf tsconfig.tsbuildinfo",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "prepublishOnly": "yarn clean && yarn compile:prod",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
         "@rnv/sdk-android": "0.38.0-canary.1",
         "@rnv/sdk-apple": "0.38.0-canary.1",
-        "react-native-tvos": "0.66.3-1"
+        "@rnv/sdk-react-native": "0.38.0-canary.1"
     },
-    "devDependencies": {
-        "@babel/cli": "7.17.6",
-        "@babel/core": "7.8.3",
-        "@babel/node": "7.8.3",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
-        "@babel/plugin-proposal-optional-chaining": "7.8.3",
-        "@babel/preset-env": "7.8.7"
-    },
+    "devDependencies": {},
     "peerDependencies": {
-        "metro-cache": "^0.66.2",
-        "rnv": "^0.38.0-canary.1"
+        "metro-cache": "^0.78.1",
+        "@rnv/core": "^0.38.0-canary.1"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
+    }
 }

@@ -1,11 +1,12 @@
 import { runWebpackServer } from '@rnv/sdk-webpack';
 import open from 'better-opn';
-import { Common, Constants, Logger, PlatformManager, RnvTaskFn, TaskManager } from 'rnv';
-
-const { getConfigProp, waitForHost } = Common;
-const { logErrorPlatform } = PlatformManager;
-const { logTask, logError } = Logger;
-const {
+import {
+    RnvTaskFn,
+    getConfigProp,
+    waitForHost,
+    logErrorPlatform,
+    logTask,
+    logError,
     WEB,
     WEBTV,
     TIZEN,
@@ -20,9 +21,9 @@ const {
     TASK_CONFIGURE,
     REMOTE_DEBUGGER_ENABLED_PLATFORMS,
     PARAMS,
-} = Constants;
-
-const { executeTask, shouldSkipTask } = TaskManager;
+    executeTask,
+    shouldSkipTask,
+} from '@rnv/core';
 
 export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

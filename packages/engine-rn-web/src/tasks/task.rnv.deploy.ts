@@ -1,9 +1,7 @@
-import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
-import { deployWeb } from '@rnv/sdk-webpack';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const {
+import {
+    RnvTaskFn,
+    logErrorPlatform,
+    logTask,
     WEB,
     WEBTV,
     TIZEN,
@@ -17,9 +15,10 @@ const {
     TASK_EXPORT,
     TASK_DEPLOY,
     PARAMS,
-} = Constants;
-
-const { executeOrSkipTask, shouldSkipTask } = TaskManager;
+    executeOrSkipTask,
+    shouldSkipTask,
+} from '@rnv/core';
+import { deployWeb } from '@rnv/sdk-webpack';
 
 export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);

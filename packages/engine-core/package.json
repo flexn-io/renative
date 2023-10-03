@@ -1,0 +1,49 @@
+{
+    "name": "@rnv/engine-core",
+    "version": "0.38.0-canary.1",
+    "description": "ReNative Engine Core",
+    "keywords": [],
+    "homepage": "https://github.com/flexn-io/renative#readme",
+    "bugs": {
+        "url": "https://github.com/flexn-io/renative/issues"
+    },
+    "license": "MIT",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "files": [
+        "lib",
+        "supportFiles",
+        "types.d.ts"
+    ],
+    "main": "lib/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/flexn-io/renative.git"
+    },
+    "scripts": {
+        "bootstrap": "yarn && yarn build && npm link",
+        "build": "yarn clean && yarn compile",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.json",
+        "lint": "eslint . --ext .ts",
+        "watch": "tsc --watch --preserveWatchOutput"
+    },
+    "dependencies": {
+        "@rnv/sdk-android": "0.38.0-canary.1",
+        "@rnv/sdk-apple": "0.38.0-canary.1",
+        "@rnv/sdk-tizen": "0.38.0-canary.1",
+        "@rnv/sdk-webos": "0.38.0-canary.1",
+        "@rnv/sdk-kaios": "0.38.0-canary.1",
+        "console-table-printer": "1.1.10",
+        "kill-port": "1.6.1",
+        "tar": "4.4.19",
+        "iocane": "4.0.0"
+    },
+    "peerDependencies": {
+        "@rnv/core": "^0.38.0-canary.1"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    }
+}

@@ -1,11 +1,15 @@
 import path from 'path';
-import { FileUtils, Logger, Common } from 'rnv';
+import {
+    getAppFolder,
+    getAppTemplateFolder,
+    addSystemInjects,
+    getConfigProp,
+    logTask,
+    writeCleanFile,
+} from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context } from './types';
 
-const { getAppFolder, getAppTemplateFolder, addSystemInjects, getConfigProp } = Common;
-const { logTask } = Logger;
-const { writeCleanFile } = FileUtils;
 // const xml2js = require('xml2js');
 // const parser = new xml2js.Parser();
 

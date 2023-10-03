@@ -1,11 +1,16 @@
-import { Constants, Logger, PlatformManager, RnvTaskFn, TaskManager } from 'rnv';
-import { SDKLightning } from '../sdks';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask, logRaw } = Logger;
-const { TIZEN, WEBOS, TASK_RUN, TASK_CONFIGURE, PARAMS } = Constants;
-const { runLightningProject } = SDKLightning;
-const { executeOrSkipTask } = TaskManager;
+import {
+    RnvTaskFn,
+    logErrorPlatform,
+    logTask,
+    logRaw,
+    TIZEN,
+    WEBOS,
+    TASK_RUN,
+    TASK_CONFIGURE,
+    PARAMS,
+    executeOrSkipTask,
+} from '@rnv/core';
+import { runLightningProject } from '../sdks/sdk-lightning';
 
 export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

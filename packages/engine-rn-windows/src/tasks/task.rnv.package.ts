@@ -10,7 +10,7 @@ import {
     shouldSkipTask,
     getConfigProp,
     TASK_PACKAGE,
-} from 'rnv';
+} from '@rnv/core';
 import { SDKWindows } from '../sdks';
 
 const { packageBundleForWindows } = SDKWindows;

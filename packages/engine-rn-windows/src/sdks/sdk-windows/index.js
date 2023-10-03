@@ -1,7 +1,7 @@
 import fs from 'fs';
 import glob from 'glob';
 import path from 'path';
-import { Common, EngineManager, Exec, FileUtils, Logger, Resolver } from 'rnv';
+import { Common, EngineManager, Exec, FileUtils, Logger, Resolver } from '@rnv/core';
 // import cli from '@react-native-windows/cli';
 // import runWindowsCMD from '@react-native-windows/cli/lib-commonjs/runWindows/runWindows';
 // import msBuildTools from '@react-native-windows/cli/lib-commonjs/runWindows/utils/msbuildtools';

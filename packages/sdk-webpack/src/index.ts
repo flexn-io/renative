@@ -1,34 +1,34 @@
-/* eslint-disable global-require */
-
 import axios from 'axios';
 import open from 'better-opn';
 import path from 'path';
 import commandExists from 'command-exists';
 import {
-    Common,
-    Constants,
-    EngineManager,
-    Exec,
-    Logger,
-    PlatformManager,
-    PluginManager,
-    ProjectManager,
-    FileUtils,
+    isPlatformActive,
+    copyBuildsFolder,
+    copyAssetsFolder,
+    checkPortInUse,
+    getConfigProp,
+    confirmActiveBundler,
+    getPlatformProjectDir,
+    getDevServerHost,
+    waitForHost,
+    chalk,
+    logTask,
+    logInfo,
+    logWarning,
+    logSuccess,
+    logRaw,
+    logError,
+    logSummary,
+    generateEnvVars,
+    getModuleConfigs,
+    executeAsync,
+    copyFileSync,
+    fsExistsSync,
     RnvContext,
-} from 'rnv';
-// import { fsExistsSync, fsWriteFileSync } from 'rnv/dist/core/systemManager/fileutils';
-// import { runServer } from './scripts/start';
+} from '@rnv/core';
 
-const { isPlatformActive } = PlatformManager;
-const { copyBuildsFolder, copyAssetsFolder } = ProjectManager;
-const { checkPortInUse, getConfigProp, confirmActiveBundler, getPlatformProjectDir, getDevServerHost, waitForHost } =
-    Common;
-const { chalk, logTask, logInfo, logWarning, logSuccess, logRaw, logError, logSummary } = Logger;
-const { generateEnvVars } = EngineManager;
-const { getModuleConfigs } = PluginManager;
-const { REMOTE_DEBUG_PORT } = Constants;
-const { executeAsync } = Exec;
-const { copyFileSync, fsExistsSync } = FileUtils;
+export const REMOTE_DEBUG_PORT = 8079;
 
 export const waitForUrl = (url: string) =>
     new Promise((resolve, reject) => {

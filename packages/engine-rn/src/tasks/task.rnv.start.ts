@@ -5,7 +5,6 @@ import {
     RnvTaskFn,
     executeTask,
     shouldSkipTask,
-    doResolve,
     chalk,
     logInfo,
     logRaw,
@@ -22,8 +21,8 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
-} from 'rnv';
-import { isBundlerActive } from '../commonEngine';
+} from '@rnv/core';
+import { isBundlerActive } from '@rnv/sdk-react-native';
 
 const BUNDLER_PLATFORMS: Record<string, string> = {};
 
@@ -58,9 +57,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
         case ANDROID_TV:
         case FIRE_TV:
         case ANDROID_WEAR: {
-            let startCmd = `node ${doResolve('react-native')}/local-cli/cli.js start --port ${
-                c.runtime.port
-            } --config=metro.config.js --no-interactive`;
+            let startCmd = `npx react-native start --port ${c.runtime.port} --no-interactive`;
 
             if (c.program.resetHard) {
                 startCmd += ' --reset-cache';

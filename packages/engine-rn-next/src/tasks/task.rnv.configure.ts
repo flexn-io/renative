@@ -1,11 +1,16 @@
-import { TaskManager, Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
-import { SDKNext } from '../sdks';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const { WEB, CHROMECAST, TASK_PLATFORM_CONFIGURE, TASK_CONFIGURE, PARAMS } = Constants;
-const { configureNextIfRequired } = SDKNext;
-const { executeTask, shouldSkipTask } = TaskManager;
+import {
+    RnvTaskFn,
+    logErrorPlatform,
+    logTask,
+    WEB,
+    CHROMECAST,
+    TASK_PLATFORM_CONFIGURE,
+    TASK_CONFIGURE,
+    PARAMS,
+    executeTask,
+    shouldSkipTask,
+} from '@rnv/core';
+import { configureNextIfRequired } from '../sdk';
 
 export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvConfigure');

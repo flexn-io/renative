@@ -1,5 +1,5 @@
 import path from 'path';
-import { Doctor, FileUtils } from 'rnv';
+import { Doctor, FileUtils } from '@rnv/core';
 import fs from 'fs';
 import { setPackageVersions } from '@flexn/build-hooks-version';
 

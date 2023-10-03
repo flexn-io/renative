@@ -11,7 +11,7 @@ import {
     configureEntryPoint,
     executeTask,
     shouldSkipTask,
-} from 'rnv';
+} from '@rnv/core';
 import { SDKWindows } from '../sdks';
 
 const { configureWindowsProject } = SDKWindows;

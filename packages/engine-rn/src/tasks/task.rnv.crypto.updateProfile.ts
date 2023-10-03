@@ -7,7 +7,7 @@ import {
     IOS,
     TASK_PROJECT_CONFIGURE,
     TASK_CRYPTO_UPDATE_PROFILE,
-} from 'rnv';
+} from '@rnv/core';
 import { updateProfile } from '@rnv/sdk-apple';
 
 export const taskRnvCryptoUpdateProfile: RnvTaskFn = async (c, _parentTask, originTask) => {

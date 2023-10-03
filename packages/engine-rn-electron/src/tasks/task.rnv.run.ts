@@ -1,11 +1,17 @@
-import { Constants, Logger, PlatformManager, RnvTaskFn, TaskManager } from 'rnv';
-import { SDKElectron } from '../sdks';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const { MACOS, WINDOWS, LINUX, TASK_RUN, TASK_CONFIGURE, PARAMS } = Constants;
-const { runElectron } = SDKElectron;
-const { executeOrSkipTask, shouldSkipTask } = TaskManager;
+import {
+    RnvTaskFn,
+    logErrorPlatform,
+    logTask,
+    MACOS,
+    WINDOWS,
+    LINUX,
+    TASK_RUN,
+    TASK_CONFIGURE,
+    PARAMS,
+    executeOrSkipTask,
+    shouldSkipTask,
+} from '@rnv/core';
+import { runElectron } from '../sdk';
 
 export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

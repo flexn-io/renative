@@ -1,15 +1,20 @@
 import path from 'path';
-import inquirer from 'inquirer';
 import dotenv from 'dotenv';
-
-import { Logger, Constants, FileUtils, Exec, Common, RnvContext } from 'rnv';
-
-const { fsExistsSync, fsWriteFileSync, fsReadFileSync } = FileUtils;
-const { executeAsync } = Exec;
-const { getAppFolder, getConfigProp } = Common;
-const { chalk, logInfo, logTask } = Logger;
-
-const { PARAMS, WEB } = Constants;
+import {
+    RnvContext,
+    fsExistsSync,
+    fsWriteFileSync,
+    fsReadFileSync,
+    executeAsync,
+    getAppFolder,
+    getConfigProp,
+    chalk,
+    logInfo,
+    logTask,
+    PARAMS,
+    WEB,
+    inquirerPrompt,
+} from '@rnv/core';
 
 const _runDeploymentTask = (c: RnvContext, nowConfigPath: string) =>
     new Promise<void>((resolve, reject) => {
@@ -37,24 +42,17 @@ const _createConfigFiles = async (
         const content = { public: true, version: 2, name: '' };
         logInfo(`${chalk().white('now.json')} file does not exist. Creating one for you`);
 
-        const { name } = await inquirer.prompt([
-            {
-                type: 'input',
-                name: 'name',
-                message: 'What is your project name?',
-                validate: (i) => !!i || 'Please enter a name',
-            },
-            {
-                type: 'input',
-                name: 'token',
-                message: 'Do you have now token? If no leave empty and you will be asked to create one',
-            },
-        ]);
+        const { name } = await inquirerPrompt({
+            type: 'input',
+            name: 'name',
+            message: 'What is your project name?',
+            validate: (i) => !!i || 'Please enter a name',
+        });
 
         content.name = name;
 
         if (!nowParamsExists) {
-            const { token } = await inquirer.prompt({
+            const { token } = await inquirerPrompt({
                 type: 'input',
                 name: 'token',
                 message: 'Do you have now token? If no leave empty and you will be asked to create one',

@@ -31,13 +31,13 @@ const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 
 const reactRefreshRuntimeEntry = require.resolve('react-refresh/runtime');
 const reactRefreshWebpackPluginRuntimeEntry = require.resolve('@pmmmwh/react-refresh-webpack-plugin');
-const babelRuntimeEntry = require.resolve('babel-preset-react-app');
-const babelRuntimeEntryHelpers = require.resolve('@babel/runtime/helpers/esm/assertThisInitialized', {
-    paths: [babelRuntimeEntry],
-});
-const babelRuntimeRegenerator = require.resolve('@babel/runtime/regenerator', {
-    paths: [babelRuntimeEntry],
-});
+// const babelRuntimeEntry = require.resolve('babel-preset-react-app');
+// const babelRuntimeEntryHelpers = require.resolve('@babel/runtime/helpers/esm/assertThisInitialized', {
+//     paths: [babelRuntimeEntry],
+// });
+// const babelRuntimeRegenerator = require.resolve('@babel/runtime/regenerator', {
+//     paths: [babelRuntimeEntry],
+// });
 
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
 // makes for a smoother build process.
@@ -63,18 +63,18 @@ const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
-const hasJsxRuntime = (() => {
-    if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') {
-        return false;
-    }
+// const hasJsxRuntime = (() => {
+//     if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') {
+//         return false;
+//     }
 
-    try {
-        require.resolve('react/jsx-runtime');
-        return true;
-    } catch (e) {
-        return false;
-    }
-})();
+//     try {
+//         require.resolve('react/jsx-runtime');
+//         return true;
+//     } catch (e) {
+//         return false;
+//     }
+// })();
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
@@ -309,9 +309,9 @@ module.exports = function (webpackEnv) {
                     paths.appPackageJson,
                     reactRefreshRuntimeEntry,
                     reactRefreshWebpackPluginRuntimeEntry,
-                    babelRuntimeEntry,
-                    babelRuntimeEntryHelpers,
-                    babelRuntimeRegenerator,
+                    // babelRuntimeEntry,
+                    // babelRuntimeEntryHelpers,
+                    // babelRuntimeRegenerator,
                     ...process.env.RNV_EXTERNAL_PATHS.split(','),
                 ]),
             ],
@@ -388,14 +388,17 @@ module.exports = function (webpackEnv) {
                             include: [paths.appSrc, ...process.env.RNV_MODULE_PATHS.split(',')],
                             loader: require.resolve('babel-loader'),
                             options: {
-                                customize: require.resolve('babel-preset-react-app/webpack-overrides'),
+                                // customize: require.resolve('babel-preset-react-app/webpack-overrides'),
                                 presets: [
-                                    [
-                                        require.resolve('babel-preset-react-app'),
-                                        {
-                                            runtime: hasJsxRuntime ? 'automatic' : 'classic',
-                                        },
-                                    ],
+                                    // [
+                                    //     require.resolve('babel-preset-react-app'),
+                                    //     {
+                                    //         runtime: hasJsxRuntime ? 'automatic' : 'classic',
+                                    //     },
+                                    // ],
+                                    ["@babel/preset-react", {
+                                        "runtime": "automatic"
+                                    }]
                                 ],
 
                                 plugins: [
@@ -420,7 +423,12 @@ module.exports = function (webpackEnv) {
                                 babelrc: false,
                                 configFile: false,
                                 compact: false,
-                                presets: [[require.resolve('babel-preset-react-app/dependencies'), { helpers: true }]],
+                                // presets: [[require.resolve('babel-preset-react-app/dependencies'), { helpers: true }]],
+                                presets: [
+                                    ["@babel/preset-react", {
+                                        "runtime": "automatic"
+                                    }]
+                                ],
                                 cacheDirectory: true,
                                 // See #6846 for context on why cacheCompression is disabled
                                 cacheCompression: false,
@@ -681,31 +689,6 @@ module.exports = function (webpackEnv) {
                         infrastructure: 'silent',
                     },
                 }),
-            //     !disableESLintPlugin
-            // && new ESLintPlugin({
-            //     // Plugin options
-            //     extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
-            //     formatter: require.resolve('react-dev-utils/eslintFormatter'),
-            //     eslintPath: require.resolve('eslint'),
-            //     failOnError: !(isEnvDevelopment && emitErrorsAsWarnings),
-            //     context: paths.appSrc,
-            //     cache: true,
-            //     cacheLocation: path.resolve(
-            //         paths.appNodeModules,
-            //         '.cache/.eslintcache'
-            //     ),
-            //     // ESLint class options
-            //     cwd: paths.appPath,
-            //     resolvePluginsRelativeTo: __dirname,
-            //     baseConfig: {
-            //         extends: [require.resolve('eslint-config-react-app/base')],
-            //         rules: {
-            //             ...(!hasJsxRuntime && {
-            //                 'react/react-in-jsx-scope': 'error',
-            //             }),
-            //         },
-            //     },
-            // }),
         ].filter(Boolean),
         // Turn off performance processing because we utilize
         // our own hints via the FileSizeReporter

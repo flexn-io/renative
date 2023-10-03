@@ -1,8 +1,15 @@
-import { TaskManager, Constants, Logger, RnvTaskFn } from 'rnv';
-
-const { logTask } = Logger;
-const { TASK_EXPORT, TASK_DEPLOY, ANDROID_TV, FIRE_TV, TVOS, PARAMS } = Constants;
-const { executeOrSkipTask, shouldSkipTask } = TaskManager;
+import {
+    RnvTaskFn,
+    logTask,
+    TASK_EXPORT,
+    TASK_DEPLOY,
+    ANDROID_TV,
+    FIRE_TV,
+    TVOS,
+    PARAMS,
+    executeOrSkipTask,
+    shouldSkipTask,
+} from '@rnv/core';
 
 export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);

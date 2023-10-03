@@ -12,7 +12,7 @@ import {
     MACOS,
     IOS,
     TASK_DEPLOY,
-} from 'rnv';
+} from '@rnv/core';
 
 export const taskRnvDeploy: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvDeploy', `parent:${parentTask}`);

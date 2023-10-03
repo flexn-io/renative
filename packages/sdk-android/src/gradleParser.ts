@@ -1,26 +1,31 @@
 import path from 'path';
 import {
-    Common,
-    FileUtils,
-    Logger,
     OverridesOptions,
-    PluginManager,
     RenativeConfigPlatform,
     RenativeConfigPluginPlatform,
-    Resolver,
     RnvContext,
     RnvPlugin,
-    Utils,
-} from 'rnv';
+    getAppFolder,
+    getAppVersion,
+    getAppVersionCode,
+    getAppId,
+    getBuildFilePath,
+    getConfigProp,
+    addSystemInjects,
+    fsExistsSync,
+    writeCleanFile,
+    fsWriteFileSync,
+    doResolve,
+    doResolvePath,
+    chalk,
+    logTask,
+    logWarning,
+    logDebug,
+    sanitizePluginPath,
+    includesPluginPath,
+    isSystemWin,
+} from '@rnv/core';
 import { Context } from './types';
-
-const { getAppFolder, getAppVersion, getAppVersionCode, getAppId, getBuildFilePath, getConfigProp, addSystemInjects } =
-    Common;
-const { fsExistsSync, writeCleanFile, fsWriteFileSync } = FileUtils;
-const { doResolve, doResolvePath } = Resolver;
-const { chalk, logTask, logWarning, logDebug } = Logger;
-const { sanitizePluginPath, includesPluginPath } = PluginManager;
-const { isSystemWin } = Utils;
 
 export const parseBuildGradleSync = (c: Context) => {
     const appFolder = getAppFolder(c);

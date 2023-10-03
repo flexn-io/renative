@@ -1,8 +1,4 @@
-import { Constants, Logger, PlatformManager, RnvTaskFn } from 'rnv';
-
-const { logErrorPlatform } = PlatformManager;
-const { logTask } = Logger;
-const { PARAMS } = Constants;
+import { RnvTaskFn, logErrorPlatform, logTask, PARAMS } from '@rnv/core';
 
 export const taskRnvDebug: RnvTaskFn = async (c, parentTask) => {
     logTask('taskRnvDebug', `parent:${parentTask}`);

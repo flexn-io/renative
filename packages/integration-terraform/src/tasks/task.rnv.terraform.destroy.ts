@@ -1,12 +1,14 @@
 import path from 'path';
-
-import { Logger, Constants, FileUtils, Exec, RnvContext } from 'rnv';
-
-const { fsExistsSync } = FileUtils;
-const { executeAsync, commandExistsSync } = Exec;
-const { logSuccess, logTask, logError } = Logger;
-
-const { PARAMS } = Constants;
+import {
+    RnvContext,
+    fsExistsSync,
+    executeAsync,
+    commandExistsSync,
+    logSuccess,
+    logTask,
+    logError,
+    PARAMS,
+} from '@rnv/core';
 
 const _checkPrereqs = (c: RnvContext) => {
     const backendFolder = path.resolve(c.paths.project.dir, 'backend');

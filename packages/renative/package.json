@@ -57,21 +57,11 @@
         "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
-    },
-    "engines": {
-        "node": ">=6.0.0",
-        "npm": ">=4.0.0"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
     },
-    "types": "lib/index",
-    "husky": {
-        "hooks": {
-            "pre-commit": "pretty-quick --staged"
-        }
-    },
-    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
+    "types": "lib/index"
 }

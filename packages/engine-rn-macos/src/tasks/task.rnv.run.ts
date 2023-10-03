@@ -1,13 +1,19 @@
-import { TaskManager, Constants, Logger, PlatformManager, Common, RnvTaskFn } from 'rnv';
+import {
+    RnvTaskFn,
+    getConfigProp,
+    logErrorPlatform,
+    logTask,
+    logSummary,
+    logRaw,
+    MACOS,
+    TASK_RUN,
+    TASK_CONFIGURE,
+    PARAMS,
+    executeOrSkipTask,
+    shouldSkipTask,
+} from '@rnv/core';
 import { runXcodeProject } from '@rnv/sdk-apple';
-import { startBundlerIfRequired, waitForBundlerIfRequired } from '../commonEngine';
-
-const { getConfigProp } = Common;
-const { logErrorPlatform } = PlatformManager;
-const { logTask, logSummary, logRaw } = Logger;
-const { MACOS, TASK_RUN, TASK_CONFIGURE, PARAMS } = Constants;
-
-const { executeOrSkipTask, shouldSkipTask } = TaskManager;
+import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 
 export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;

@@ -6,7 +6,7 @@
 import fs from 'fs';
 import path from 'path';
 import mustache from 'mustache';
-import { Logger } from 'rnv';
+import { Logger } from '@rnv/core';
 
 const { logInfo } = Logger;
 
