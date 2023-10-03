@@ -10,7 +10,7 @@ import { RnvContext } from '../context/types';
 import type { FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from './types';
 import { getApi } from '../api/provider';
 import { getContext } from '../context/provider';
-import { matchRegEx } from './regex';
+import { matchRegEx } from './regEx';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {
