@@ -33,15 +33,15 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
+        "@rnv/sdk-react-native": "0.38.0-canary.1",
         "@xmldom/xmldom": "0.7.7",
-        "react-native-windows": "0.72.7",
-        "@rnv/sdk-react-native": "0.38.0-canary.1"
+        "react-native-windows": "0.72.7"
     },
     "devDependencies": {},
     "peerDependencies": {
         "@react-native-community/cli": "*",
-        "react-native": "*",
-        "@rnv/core": "^0.38.0-canary.1"
+        "@rnv/core": "^0.38.0-canary.1",
+        "react-native": "*"
     },
     "private": false,
     "publishConfig": {

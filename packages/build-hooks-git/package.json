@@ -2,38 +2,38 @@
     "name": "@rnv/build-hooks-git",
     "version": "0.38.0-canary.1",
     "description": "Build Hooks for Git",
-    "main": "lib/index",
-    "types": "lib/index",
-    "scripts": {
-        "watch": "tsc --watch --preserveWatchOutput",
-        "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
-        "compile": "tsc -b tsconfig.json"
+    "keywords": [],
+    "homepage": "https://github.com/flexn-io/renative#readme",
+    "bugs": {
+        "url": "https://github.com/flexn-io/renative/issues"
     },
+    "license": "MIT",
+    "author": "Flexn",
     "files": [
-        "lib",
         "LICENSE",
+        "lib",
         "src"
     ],
+    "main": "lib/index",
     "repository": {
         "directory": "packages/build-hooks-git",
         "type": "git",
         "url": "git+https://github.com/flexn-io/renative.git"
     },
-    "publishConfig": {
-        "access": "public"
-    },
-    "keywords": [],
-    "author": "Flexn",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/flexn-io/renative/issues"
-    },
-    "homepage": "https://github.com/flexn-io/renative#readme",
-    "peerDependencies": {
-        "@rnv/core": "*"
+    "scripts": {
+        "build": "yarn clean && yarn compile",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
         "simple-git": "^3.16.0"
-    }
+    },
+    "peerDependencies": {
+        "@rnv/core": "^0.38.0-canary.1"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "types": "lib/index"
 }

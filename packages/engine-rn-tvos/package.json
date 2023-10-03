@@ -38,8 +38,8 @@
     },
     "devDependencies": {},
     "peerDependencies": {
-        "metro-cache": "^0.78.1",
-        "@rnv/core": "^0.38.0-canary.1"
+        "@rnv/core": "^0.38.0-canary.1",
+        "metro-cache": "^0.78.1"
     },
     "private": false,
     "publishConfig": {

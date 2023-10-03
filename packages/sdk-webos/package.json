@@ -29,7 +29,7 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-webpack": "^0.38.0-canary.1"
+        "@rnv/sdk-webpack": "0.38.0-canary.1"
     },
     "peerDependencies": {
         "@rnv/core": "^0.38.0-canary.1"
