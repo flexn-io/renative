@@ -1,5 +1,5 @@
+import { createRnvApi, createRnvContext, getContext } from '@rnv/core';
 import taskRnvRun from '../tasks/task.rnv.run';
-import { generateMockConfig } from '../../../jest-preset-rnv/mocks';
 
 jest.mock('fs');
 jest.mock('axios');
@@ -133,7 +133,8 @@ jest.mock('@rnv/sdk-webpack', () => ({
 // });
 
 beforeEach(() => {
-    //Do nothing
+    createRnvContext();
+    createRnvApi();
 });
 
 afterEach(() => {
@@ -141,11 +142,11 @@ afterEach(() => {
 });
 
 const originTask = {};
-const c = generateMockConfig({ platform: 'web' });
+// const c = generateMockConfig({ platform: 'web' });
 
 test('Execute task.rnv.run', async () => {
     // const taskManager = require('../../src/core/taskManager/index.js');
-    await taskRnvRun.fn(c, null, originTask);
+    await taskRnvRun.fn(getContext(), null, originTask);
     // await expect(taskRnvRun.fn(c, null, originTask)).resolves();
     // expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform list', originTask);
 });
