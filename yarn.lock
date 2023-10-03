@@ -1630,20 +1630,6 @@
   resolved "https://registry.npmjs.org/@flexn/assets-renative-outline/-/assets-renative-outline-0.3.2.tgz#484f4a507960685e6031eca7d8f09edd7e3afe44"
   integrity sha512-uZDQJHXIMmd97Us1Cb2HetDQ2vTKp7vKUzBCGWjBy0hsOSGQuuZ2uz2lcYFkv0upGsJAdw2d+ApnFGNhKM7Zqg==
 
-"@flexn/build-hooks-git@0.31.1-canary.0":
-  version "0.31.1-canary.0"
-  resolved "https://registry.npmjs.org/@flexn/build-hooks-git/-/build-hooks-git-0.31.1-canary.0.tgz#14f85ef56832cd4bdd756e6a776e3fb035202a45"
-  integrity sha512-9rZPOC8RhtcXpyJiItYDxxX9954Ml/6epeQDBTAFQHtNERuAQxnry+SxBhY9ZLujYkN75paUP+bGPovEL/XPqA==
-  dependencies:
-    simple-git "^3.16.0"
-
-"@flexn/build-hooks-version@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@flexn/build-hooks-version/-/build-hooks-version-0.1.0.tgz#f7f2a23976c6757c71ee96e42c353e3b58c3f766"
-  integrity sha512-pASLleiIJX1juhCvLiZ6dhB7NDka5kmm3rr/F8rN08sIEDAAIkogkwU5acIlM75BqQOZ++OYWlokL1kiwIPPBw==
-  dependencies:
-    deepmerge "3.2.0"
-
 "@flexn/eslint-config@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@flexn/eslint-config/-/eslint-config-1.0.0.tgz#3337945b66c371005ba7b77a0fc11e0c43b5c2f8"
