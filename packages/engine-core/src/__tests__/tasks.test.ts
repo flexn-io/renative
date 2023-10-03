@@ -1,8 +1,8 @@
-import taskRnvPlatformList from '../tasks/task.rnv.platform.list';
+import { createRnvApi, createRnvContext, executeAsync, executeTask, getContext, removeDirs } from '@rnv/core';
+import taskRnvClean from '../tasks/task.rnv.clean';
 import taskRnvKill from '../tasks/task.rnv.kill';
 import taskRnvPlatformConfigure from '../tasks/task.rnv.platform.configure';
-import taskRnvClean from '../tasks/task.rnv.clean';
-import { getContext, executeTask, executeAsync, removeDirs, createRnvContext, createRnvApi } from '@rnv/core';
+import taskRnvPlatformList from '../tasks/task.rnv.platform.list';
 
 jest.mock('fs');
 jest.mock('child_process');
@@ -40,7 +40,7 @@ test('Execute task.rnv.clean', async () => {
     //GIVEN
     const ctx = getContext();
     const { inquirerPrompt } = require('@rnv/core');
-    inquirerPrompt.mockReturnValue(Promise.resolve({ confirm: true }));
+    inquirerPrompt.mockReturnValue(Promise.resolve({ confirm: true, confirmCache: true }));
     //WHEN
     await expect(taskRnvClean.fn(ctx)).resolves.toEqual(true);
     //THEN
