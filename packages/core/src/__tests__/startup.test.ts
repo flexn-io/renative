@@ -1,26 +1,27 @@
 import { generateBuildConfig } from '../configs';
 import { createRnvContext } from '../context';
 import { getAppVersionCode } from '../common';
+import { createRnvApi } from '../api';
+import { getContext } from '../context/provider';
 
 jest.mock('fs');
 jest.mock('../logger/index.ts');
 
-let c;
-
 describe('Bootstrapping the CLI', () => {
     beforeAll(() => {
-        c = createRnvContext({
+        createRnvContext({
             program: { program: true },
             process: { process: true },
             cmd: 'command',
             subCmd: 'subcommand',
             RNV_HOME_DIR: '',
         });
-        generateBuildConfig(c);
+        createRnvApi();
+        generateBuildConfig();
     });
 
     it('should create C variable correctly', async () => {
-        const cKeys = Object.keys(c).sort();
+        const cKeys = Object.keys(getContext()).sort();
         const expectKeys = [
             '_renativePluginCache',
             'assetConfig',
@@ -32,6 +33,7 @@ describe('Bootstrapping the CLI', () => {
             'configPropsInjects',
             'files',
             'isBuildHooksReady',
+            'isSystemWin',
             'logMessages',
             'paths',
             'payload',
@@ -52,6 +54,6 @@ describe('Bootstrapping the CLI', () => {
     });
 
     it('should return app version 0 if not defined', () => {
-        expect(getAppVersionCode(c, 'android')).toEqual('0');
+        expect(getAppVersionCode(getContext(), 'android')).toEqual('0');
     });
 });

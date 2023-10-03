@@ -27,13 +27,7 @@ export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, co
     pathObj.appConfigsDir = path.join(dir, '..');
 };
 
-export const createRnvContext = ({
-    program,
-    process,
-    cmd,
-    subCmd,
-    RNV_HOME_DIR,
-}: {
+export const createRnvContext = (ctx?: {
     program: any;
     process: any;
     cmd: string;
@@ -42,19 +36,19 @@ export const createRnvContext = ({
 }) => {
     const c: RnvContext = generateContextDefaults();
 
-    c.program = program;
-    c.process = process;
-    c.command = cmd;
-    c.subCommand = subCmd;
+    c.program = ctx?.program || c.program;
+    c.process = ctx?.process || c.process;
+    c.command = ctx?.cmd || c.command;
+    c.subCommand = ctx?.subCmd || c.subCommand;
     c.isSystemWin = isSystemWin;
     // c.platformDefaults = PLATFORMS;
 
-    c.paths.rnv.dir = RNV_HOME_DIR;
+    c.paths.rnv.dir = ctx?.RNV_HOME_DIR || c.paths.rnv.dir;
 
     //TODO: find better way to deal with linking
-    c.paths.IS_LINKED = path.dirname(RNV_HOME_DIR).split(path.sep).pop() === 'packages';
+    c.paths.IS_LINKED = path.dirname(c.paths.rnv.dir).split(path.sep).pop() === 'packages';
     c.paths.CURRENT_DIR = path.resolve('.');
-    c.paths.RNV_NODE_MODULES_DIR = path.join(RNV_HOME_DIR, 'node_modules');
+    c.paths.RNV_NODE_MODULES_DIR = path.join(c.paths.rnv.dir, 'node_modules');
 
     c.paths.rnv.engines.dir = path.join(c.paths.rnv.dir, 'engineTemplates');
     c.paths.rnv.pluginTemplates.dir = path.join(c.paths.rnv.dir, 'pluginTemplates');

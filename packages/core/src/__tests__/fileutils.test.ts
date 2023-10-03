@@ -1,8 +1,15 @@
+import { createRnvApi } from '../api';
+import { createRnvContext } from '../context';
 import { sanitizeDynamicProps } from '../system/fs';
 
 jest.mock('../logger/index.ts');
 
 describe('sanitizeDynamicProps', () => {
+    beforeAll(() => {
+        createRnvContext();
+        createRnvApi();
+    });
+
     it('sanitize {{props.XXX}}', async () => {
         const buildConfig = {
             common: {
