@@ -80,6 +80,7 @@
         "prettier-write-json": "npx prettier '**/{package.json,renative.plugins.json,renative.json}' --write --config .prettierrc.js",
         "sanity": "yarn compile && yarn lint && yarn test",
         "test": "jest",
+        "test-cover": "jest --coverage",
         "watch": "npx lerna exec yarn watch --parallel",
         "watch-alt": "npx lerna run compile & npx lerna watch -- lerna run compile"
     },

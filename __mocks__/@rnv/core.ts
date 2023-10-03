@@ -59,6 +59,7 @@ export const generateRnvConfigFileObj = () => {
 };
 
 const runtime: any = {
+    currentEngine: { rootPath: '' },
     enginesByPlatform: {},
     enginesByIndex: [],
     enginesById: {},
@@ -278,6 +279,8 @@ rnvcore.logSummary = jest.fn();
 rnvcore.chalk = () => _chalkMono;
 
 rnvcore.inquirerPrompt = jest.fn();
+
+rnvcore.getPlatformProjectDir = jest.fn();
 
 rnvcore.createRnvContext = (ctx?: Context) => {
     global.MOCK_RNV_CONTEXT = generateContextDefaults(ctx);

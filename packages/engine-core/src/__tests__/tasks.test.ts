@@ -9,38 +9,37 @@ jest.mock('child_process');
 jest.mock('@rnv/core');
 jest.mock('inquirer');
 
-const originTask = undefined;
-
 beforeEach(() => {
     createRnvContext();
     createRnvApi();
 });
 
 test('Execute task.rnv.platform.list', async () => {
+    //GIVEN
     const ctx = getContext();
-
-    await taskRnvPlatformList.fn(ctx, undefined, originTask);
-    await expect(taskRnvPlatformList.fn(ctx, undefined, originTask)).resolves.toEqual(true);
-    expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform list', originTask);
+    //WHEN
+    await expect(taskRnvPlatformList.fn(ctx)).resolves.toEqual(true);
+    //THEN
+    expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform list', undefined);
 });
 
 test('Execute task.rnv.platform.configure', async () => {
+    //GIVEN
     const ctx = getContext();
-
-    await expect(taskRnvPlatformConfigure.fn(ctx, undefined, originTask)).resolves.toEqual(true);
-    expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform configure', originTask);
+    //WHEN
+    await expect(taskRnvPlatformConfigure.fn(ctx)).resolves.toEqual(true);
+    //THEN
+    expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform configure', undefined);
 });
 
 test('Execute task.rnv.kill', async () => {
-    const context = getContext();
-
-    const contextWithProjectConfig = {
-        ...context,
-        paths: { ...context.paths, project: { ...context.paths.project, configExists: true } },
-    };
-    await expect(taskRnvKill.fn(contextWithProjectConfig, undefined, originTask)).resolves.toEqual(true);
-
-    expect(executeTask).toHaveBeenCalledWith(contextWithProjectConfig, 'app configure', 'kill', originTask);
+    //GIVEN
+    const ctx = getContext();
+    ctx.paths.project.configExists = true;
+    //WHEN
+    await expect(taskRnvKill.fn(ctx)).resolves.toEqual(true);
+    //THEN
+    expect(executeTask).toHaveBeenCalledWith(ctx, 'app configure', 'kill', undefined);
 });
 
 test('Execute task.rnv.clean', async () => {
