@@ -41,13 +41,18 @@ export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
     );
 };
 
-export const runReactNativeIOS = async (c: RnvContext, scheme: string, runScheme: string) => {
+export const runReactNativeIOS = async (
+    c: RnvContext,
+    scheme: string,
+    runScheme: string,
+    extraParamsString: string
+) => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
 
     // const cmd = `node ${doResolve(
     //     c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native'
     // )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
-    const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager`;
+    const cmd = `npx react-native run-ios --scheme=${scheme} --mode=${runScheme} --no-packager ${extraParamsString}`;
 
     const env: RnvEnvContext = {
         RCT_METRO_PORT: c.runtime.port,

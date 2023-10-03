@@ -360,8 +360,8 @@ export const runXcodeProject = async (c: Context) => {
     await launchAppleSimulator(c, c.runtime.target);
 
     if (p) {
-        const allowProvisioningUpdates = getConfigProp(c, c.platform, 'allowProvisioningUpdates', true);
-        if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
+        //const allowProvisioningUpdates = getConfigProp(c, c.platform, 'allowProvisioningUpdates', true);
+        //if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
         return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, schemeTarget, runScheme, p);
     }
     // return Promise.reject('Missing options for react-native command!');
@@ -374,20 +374,28 @@ const _packageOrRun = (
     appPath: string,
     scheme: string,
     runScheme: string,
-    p: string
+    extraParamsString: string
 ) => {
     if (bundleAssets) {
-        return packageReactNativeIOS(c, bundleIsDev).then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
+        return packageReactNativeIOS(c, bundleIsDev).then(() =>
+            _checkLockAndExec(c, appPath, scheme, runScheme, extraParamsString)
+        );
     }
-    return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+    return _checkLockAndExec(c, appPath, scheme, runScheme, extraParamsString);
 };
 
-const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, runScheme: string, p = '') => {
-    logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme} p:${p}`);
+const _checkLockAndExec = async (
+    c: Context,
+    appPath: string,
+    scheme: string,
+    runScheme: string,
+    extraParamsString = ''
+) => {
+    logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme} p:${extraParamsString}`);
     const appFolderName = getAppFolderName(c, c.platform);
 
     try {
-        return runReactNativeIOS(c, scheme, runScheme);
+        return runReactNativeIOS(c, scheme, runScheme, extraParamsString);
     } catch (e: any) {
         if (e && e.includes) {
             const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
@@ -397,7 +405,7 @@ const _checkLockAndExec = async (c: Context, appPath: string, scheme: string, ru
                     type: 'confirm',
                     name: 'confirm',
                 });
-                return runReactNativeIOS(c, scheme, runScheme);
+                return runReactNativeIOS(c, scheme, runScheme, extraParamsString);
             }
             const isDeviceNotRegistered = e.includes("doesn't include the currently selected device");
             if (isDeviceNotRegistered) {
