@@ -11,7 +11,7 @@
                 "typescript": "4.9.5",
                 "@types/react": "18.2.6",
                 "@types/react-dom": "18.2.6",
-                "@types/react-native": "0.72.2",
+                "@types/react-native": "0.72.3",
                 "@flexn/typescript-config": "1.0.0",
                 "@flexn/assets-renative-outline": "0.3.2"
             },

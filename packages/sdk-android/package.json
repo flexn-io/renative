@@ -29,8 +29,8 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-native-community/cli": "^11.3.0",
-        "@react-native-community/cli-platform-android": "^11.3.0",
+        "@react-native-community/cli": "^11.3.8",
+        "@react-native-community/cli-platform-android": "^11.3.8",
         "@rnv/sdk-react-native": "1.0.0-canary.1"
     },
     "peerDependencies": {

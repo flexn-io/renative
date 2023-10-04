@@ -35,7 +35,7 @@
     "dependencies": {
         "@rnv/sdk-react-native": "1.0.0-canary.1",
         "@xmldom/xmldom": "0.7.7",
-        "react-native-windows": "0.72.7"
+        "react-native-windows": "0.72.10"
     },
     "devDependencies": {},
     "peerDependencies": {
