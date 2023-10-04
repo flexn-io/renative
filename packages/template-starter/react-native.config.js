@@ -1,10 +1,10 @@
 // console.log('process EEEENV', process.env);
 //! NO CONSOLE LOGS HERE. IT WILL BREAK THE BUILD
 
-// const getApplicationId = () => {
-//     const appId = process.env.RNV_APP_ID;
-//     return appId;
-// };
+const getApplicationId = () => {
+    const appId = process.env.RNV_APP_ID;
+    return appId;
+};
 
 const getAppFolderRelative = () => {
     const pth = process.env.RNV_APP_BUILD_DIR;
@@ -55,11 +55,11 @@ const config = {
         ios: {
             sourceDir: getAppFolderRelative(),
         },
-        // android: {
-        //     appName: 'app',
-        //     sourceDir: getPlatformAppFolder(),
-        //     packageName: getApplicationId(),
-        // },
+        android: {
+            appName: 'app',
+            sourceDir: getAppFolderRelative(),
+            packageName: getApplicationId(),
+        },
     },
 };
 
