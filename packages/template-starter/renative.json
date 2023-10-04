@@ -213,7 +213,7 @@
             "disablePluginTemplateOverrides": true
         },
         "react-native-web": {
-            "version": "0.19.8"
+            "version": "0.19.9"
         },
         "react-native-tvos": {
             "version": "0.72.5-0"

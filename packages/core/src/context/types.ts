@@ -162,7 +162,7 @@ export type RnvContextPaths = {
         pluginTemplates: {
             configs: Record<string, any>;
             //ADDON
-            dir?: string;
+            overrideDir?: string;
             config?: string;
             dirs: Record<string, string>;
         };

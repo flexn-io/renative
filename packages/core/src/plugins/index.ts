@@ -522,7 +522,10 @@ export const loadPluginTemplates = async (c: RnvContext) => {
         rnv: c.files.rnv.pluginTemplates.config,
     };
 
-    c.paths.rnv.pluginTemplates.dirs = { rnv: flexnPluginTemplatesPath };
+    //Override default rnv path with flexn one and add it rnv as overrider
+    c.paths.rnv.pluginTemplates.dirs = {
+        rnv: flexnPluginTemplatesPath,
+    };
 
     const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
     const missingDeps = _parsePluginTemplateDependencies(c, customPluginTemplates);
@@ -618,7 +621,14 @@ const _parsePluginTemplateDependencies = (
 const getCleanRegExString = (str: string) => str.replace(/[-\\.,_*+?^$[\](){}!=|`]/gi, '\\$&');
 
 const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
-    const source = path.resolve(pluginsPath, dir, 'overrides');
+    let source;
+
+    source = path.resolve(c.paths.rnv.pluginTemplates.overrideDir!, dir, 'overrides');
+    if (!source) {
+        console.log('KDDK', source);
+
+        source = path.join(pluginsPath, dir, 'overrides');
+    }
     const dest = doResolve(dir, false);
     if (!dest) return;
 
@@ -887,10 +897,10 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
             });
         }
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
-        if (c.paths.rnv.pluginTemplates.dir) {
-            const sourcePathRnvPlugin = getBuildsFolder(c, platform, path.join(c.paths.rnv.pluginTemplates.dir, key));
-            copyFolderContentsRecursiveSync(sourcePathRnvPlugin, destPath, true, undefined, false, objectInject);
-        }
+        // if (c.paths.rnv.pluginTemplates.dir) {
+        //     const sourcePathRnvPlugin = getBuildsFolder(c, platform, path.join(c.paths.rnv.pluginTemplates.dir, key));
+        //     copyFolderContentsRecursiveSync(sourcePathRnvPlugin, destPath, true, undefined, false, objectInject);
+        // }
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
         const sourcePath3 = getBuildsFolder(

@@ -51,9 +51,12 @@ export const createRnvContext = (ctx?: {
     c.paths.RNV_NODE_MODULES_DIR = path.join(c.paths.rnv.dir, 'node_modules');
 
     c.paths.rnv.engines.dir = path.join(c.paths.rnv.dir, 'engineTemplates');
-    c.paths.rnv.pluginTemplates.dir = path.join(c.paths.rnv.dir, 'pluginTemplates');
+    c.paths.rnv.pluginTemplates.overrideDir = path.join(c.paths.rnv.dir, 'pluginTemplates');
 
-    c.paths.rnv.pluginTemplates.config = path.join(c.paths.rnv.pluginTemplates.dir, RENATIVE_CONFIG_PLUGINS_NAME);
+    c.paths.rnv.pluginTemplates.config = path.join(
+        c.paths.rnv.pluginTemplates.overrideDir,
+        RENATIVE_CONFIG_PLUGINS_NAME
+    );
     c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'coreTemplateFiles');
     c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.projectTemplates.dir, RENATIVE_CONFIG_TEMPLATES_NAME);
     c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
