@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-apple",
-    "version": "1.0.0-canary.0",
+    "version": "1.0.0-canary.1",
     "description": "ReNative Apple SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -31,14 +31,14 @@
     "dependencies": {
         "@react-native-community/cli": "^11.3.0",
         "@react-native-community/cli-platform-ios": "^11.3.0",
-        "@rnv/sdk-react-native": "1.0.0-canary.0",
+        "@rnv/sdk-react-native": "1.0.0-canary.1",
         "compare-versions": "3.6.0",
         "ios-mobileprovision-finder": "1.1.0",
         "xcode": "2.1.0"
     },
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-canary.0"
+        "@rnv/core": "^1.0.0-canary.1"
     },
     "optionalDependencies": {
         "ios-deploy": "1.11.4"
