@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "0.38.0-canary.1",
+    "version": "1.0.0-canary.0",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",
@@ -42,7 +42,7 @@
     },
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^0.38.0-canary.1"
+        "@rnv/core": "^1.0.0-canary.0"
     },
     "private": false,
     "publishConfig": {
