@@ -203,7 +203,12 @@ export type RnvContextPaths = {
         };
     };
     project: RnvContextPathObj & {
-        appConfigBase: Record<string, any>;
+        appConfigBase: {
+            dir: string;
+            pluginsDir: string;
+            fontsDir: string;
+            fontsDirs: Array<string>;
+        };
         builds: Record<string, any>;
         assets: Record<string, any>;
         platformTemplates: Record<string, any>;

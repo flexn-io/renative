@@ -80,8 +80,6 @@
         "@flexn/assets-renative-outline": "0.3.2",
         "@flexn/graybox": "0.21.1",
         "@flexn/typescript-config": "1.0.0",
-        "@react-native-community/cli": "11.3.8",
-        "@react-native-community/cli-platform-ios": "11.3.8",
         "@rnv/engine-lightning": "1.0.0-canary.1",
         "@rnv/engine-rn": "1.0.0-canary.1",
         "@rnv/engine-rn-electron": "1.0.0-canary.1",

@@ -315,7 +315,7 @@ const _loadConfigFiles = (
 
         if (fsExistsSync(pathObj.appConfigsDir)) {
             const appConfigsDirNames = fsReaddirSync(pathObj.appConfigsDir);
-            if (parseAppConfigs && extendAppId && appConfigsDirNames.includes(extendAppId)) {
+            if (parseAppConfigs && extendAppId && extendAppId !== 'base' && appConfigsDirNames.includes(extendAppId)) {
                 const path2 = path.join(pathObj.appConfigsDir, extendAppId);
                 const pathObj2: RnvContextPathObj = {
                     ...generateRnvConfigPathObj(),
@@ -346,7 +346,7 @@ const _loadConfigFiles = (
             }
         }
 
-        // PATH2: appConfigs/<appId>
+        // PATH3: appConfigs/<appId>
         const path3 = pathObj.dir;
         pathObj.dirs.push(path3);
         pathObj.fontsDirs.push(path.join(path3, 'fonts'));

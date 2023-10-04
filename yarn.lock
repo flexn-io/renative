@@ -3470,7 +3470,7 @@
     glob "^7.1.3"
     ora "^5.4.1"
 
-"@react-native-community/cli-platform-ios@11.3.8", "@react-native-community/cli-platform-ios@^11.3.8":
+"@react-native-community/cli-platform-ios@11.3.8":
   version "11.3.8"
   resolved "https://registry.npmjs.org/@react-native-community/cli-platform-ios/-/cli-platform-ios-11.3.8.tgz#5797e1b766875917b74446cf76f064e873353258"
   integrity sha512-py2g2gDLvsjkgwysgA9UzJqx5EovvaMTxnaF+UciObfHuY6yXsBm2TOEcLDyJ7Qen0Yy2YXvj3BcvNQsJW/WkQ==
@@ -3613,7 +3613,7 @@
     prompts "^2.4.0"
     semver "^7.5.2"
 
-"@react-native-community/cli@11.3.8", "@react-native-community/cli@^11.3.8":
+"@react-native-community/cli@^11.3.8":
   version "11.3.8"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-11.3.8.tgz#3bae488697cf3de4ca2d0c2dee80e40611883801"
   integrity sha512-myfJCbK6vPqskTnSTm224RZKGo60ND/jcylzEE7WPEU8myX5CAA/et2cK+gyjt2nh8mBvLBVBypsrwUbCIg70g==

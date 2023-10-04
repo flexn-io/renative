@@ -679,6 +679,7 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     }
     const overrideConfig = overridePath ? readObjectSync(overridePath) : null;
     const overrides = overrideConfig?.overrides;
+
     if (overrides) {
         Object.keys(overrides).forEach((k) => {
             const ovDir = path.join(dest, k);
@@ -692,6 +693,9 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
             }
         });
     }
+
+    // const parentDest = path.join(dir, '..')
+    // console.log('SKSLSL', dir, dest);
 };
 
 export const overrideFileContents = (dest: string, override: Record<string, string>, overridePath = '') => {
@@ -836,7 +840,7 @@ export const overrideTemplatePlugins = async (c: RnvContext) => {
 
     const rnvPluginsDirs = c.paths.rnv.pluginTemplates.dirs;
     const appPluginDirs = c.paths.appConfig.pluginDirs;
-    const appBasePluginDir = c.paths.project.appConfigBase.pluginsDir;
+
     parsePlugins(
         c,
         c.platform as RnvPluginPlatform,
@@ -849,10 +853,6 @@ export const overrideTemplatePlugins = async (c: RnvContext) => {
                             _overridePlugin(c, pluginOverridePath, key);
                         }
                     });
-                }
-
-                if (appBasePluginDir) {
-                    _overridePlugin(c, appBasePluginDir, key);
                 }
                 if (appPluginDirs) {
                     for (let k = 0; k < appPluginDirs.length; k++) {

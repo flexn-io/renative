@@ -120,9 +120,7 @@
                 "org.gradle.configureondemand": true
             },
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "androidwear": {
             "minSdkVersion": 26,
@@ -144,9 +142,7 @@
                 "org.gradle.parallel": true,
                 "org.gradle.configureondemand": true
             },
-            "includedPermissions": [
-                "INTERNET"
-            ],
+            "includedPermissions": ["INTERNET"],
             "mainActivity": {
                 "onCreate": "super.onCreate(null)"
             }
@@ -172,9 +168,7 @@
                 "org.gradle.configureondemand": true
             },
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -202,11 +196,11 @@
         "react-dom": "source:rnv",
         "react-native-gesture-handler": {
             "version": "2.13.1",
-            "disablePluginTemplateOverrides": true
+            "disablePluginTemplateOverrides": false
         },
         "@react-native-community/cli-platform-ios": {
             "version": "11.3.7",
-            "disablePluginTemplateOverrides": true
+            "disablePluginTemplateOverrides": false
         },
         "@react-native-community/cli": {
             "version": "11.3.8"

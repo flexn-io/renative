@@ -58,7 +58,7 @@ export const checkIfTemplateConfigured = async (c: RnvContext) => {
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
     logTask('_cleanProjectTemplateSync');
-    const dirsToRemove = [c.paths.project.appConfigBase.dir, c.paths.project.srcDir, c.paths.project.appConfigsDir];
+    const dirsToRemove = [c.paths.project.appConfigBase.dir, c.paths.project.srcDir!, c.paths.project.appConfigsDir];
 
     const filesToRemove = c.buildConfig.defaults?.supportedPlatforms?.map((p) =>
         path.join(c.paths.project.dir, `index.${p}.js`)

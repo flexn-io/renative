@@ -7,7 +7,7 @@
             "if (!version.includes('iOS')) {": "if (!version.includes('iOS') && !version.includes('tvOS')) { // <= PATCHED BY RENATIVE"
         },
         "build/commands/runIOS/index.js": {
-            "if (device.type === 'simulator') {\n if (selectedDevice.type === 'simulator') {return runOnSimulator(xcodeProject, scheme, modifiedArgs);": "if (device.type === 'simulator') {\n      return runOnSimulator(xcodeProject, scheme, modifiedArgs, device); // <= PATCHED BY RENATIVE"
+            "if (device.type === 'simulator') {\n      return runOnSimulator(xcodeProject, scheme, modifiedArgs);": "if (device.type === 'simulator') {\n      return runOnSimulator(xcodeProject, scheme, modifiedArgs, device); // <= PATCHED BY RENATIVE"
         }
     }
 }
