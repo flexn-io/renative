@@ -124,6 +124,8 @@ const runCocoaPods = async (c: Context) => {
         ...generateEnvVars(c),
     };
 
+    const printableEnvKeys = ['RCT_NEW_ARCH_ENABLED', 'REACT_NATIVE_PERMISSIONS_REQUIRED', 'RNV_APP_BUILD_DIR']
+
     if (podsRequired) {
         if (!commandExistsSync('pod')) {
             throw new Error('Cocoapods not installed. Please run `sudo gem install cocoapods`');
@@ -132,10 +134,12 @@ const runCocoaPods = async (c: Context) => {
         try {
             await executeAsync(c, 'bundle install', {
                 env: process.env,
+                printableEnvKeys
             });
             await executeAsync(c, 'bundle exec pod install', {
                 cwd: appFolder,
                 env,
+                printableEnvKeys,
             });
         } catch (e: Error | any) {
             const s = e?.toString ? e.toString() : '';
@@ -152,9 +156,10 @@ const runCocoaPods = async (c: Context) => {
                 env: process.env,
             });
 
-            return executeAsync(c, 'RCT_NEW_ARCH_ENABLED=1 bundle exec pod update', {
+            return executeAsync(c, 'bundle exec pod update', {
                 cwd: appFolder,
                 env,
+                printableEnvKeys
             })
                 .then(() => updatePodsChecksum(c))
                 .catch((er) => Promise.reject(er));
