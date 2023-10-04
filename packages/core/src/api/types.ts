@@ -72,7 +72,7 @@ export type RnvApiLogger = {
     logTask: (task: string, customChalk?: any) => void;
     logInitTask: (task: string, customChalk?: string | ((s: string) => string)) => void;
     logExitTask: (task: string, customChalk?: (s: string) => string) => void;
-    logHook: (hook: string, msg: string) => void;
+    logHook: (hook: string, msg?: string) => void;
     logWarning: (msg: string | boolean) => void;
     logInfo: (msg: string) => void;
     logDebug: (...args: Array<any>) => void;

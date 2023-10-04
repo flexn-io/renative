@@ -75,8 +75,10 @@ export const writeRenativeConfigFile = (c: RnvContext, configPath: string | unde
     generateBuildConfig(c);
 };
 
-export const generateBuildConfig = (c: RnvContext) => {
+export const generateBuildConfig = (_c?: RnvContext) => {
     logDebug('generateBuildConfig');
+
+    const c = _c || getContext();
 
     const mergeOrder = [
         c.paths.defaultWorkspace.config,

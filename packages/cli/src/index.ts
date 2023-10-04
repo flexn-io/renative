@@ -2,10 +2,12 @@ import program from 'commander';
 import fs from 'fs';
 import path from 'path';
 import { logComplete, logError, PARAMS, getContext } from '@rnv/core';
-import { executeRnv } from 'rnv';
 import Spinner from './ora';
 import Prompt from './prompt';
 import Logger from './logger';
+
+//Using require here to avoid circular dependency issue rnv => @rnv/cli => rnv
+const { executeRnv } = require('rnv');
 
 export const run = () => {
     const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')).toString());
@@ -41,5 +43,5 @@ export const run = () => {
 
     executeRnv({ cmd: cmdValue, subCmd: cmdOption, program, process, spinner: Spinner, prompt: Prompt, logger: Logger })
         .then(() => logComplete(!getContext().runtime.keepSessionActive))
-        .catch((e) => logError(e, true));
+        .catch((e: any) => logError(e, true));
 };

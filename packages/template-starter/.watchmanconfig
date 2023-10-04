@@ -17,7 +17,6 @@
         "../integration-ftp",
         "../integration-terraform",
         "../integration-vercel",
-        "../jest-preset-rnv",
         "../sdk-android",
         "../sdk-apple",
         "../sdk-kaios",

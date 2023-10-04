@@ -35,10 +35,10 @@
     "dependencies": {
         "@expo/config": "8.1.2",
         "@expo/next-adapter": "5.0.2",
+        "babel-preset-expo": "9.5.2",
         "better-opn": "1.0.0",
         "next-fonts": "1.5.1",
-        "next-images": "1.8.4",
-        "babel-preset-expo": "9.5.2"
+        "next-images": "1.8.4"
     },
     "devDependencies": {},
     "peerDependencies": {

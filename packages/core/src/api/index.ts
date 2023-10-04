@@ -12,12 +12,7 @@ import { getApi } from './provider';
 
 global.RNV_API = generateApiDefaults();
 
-export const createRnvApi = ({
-    spinner,
-    prompt,
-    analytics,
-    logger,
-}: {
+export const createRnvApi = (_api?: {
     spinner: RnvApiSpinner;
     prompt: RnvApiPrompt;
     analytics: RnvContextAnalytics;
@@ -27,10 +22,10 @@ export const createRnvApi = ({
 }) => {
     const api: RnvApi = generateApiDefaults();
 
-    api.spinner = spinner;
-    api.prompt = prompt;
-    api.analytics = analytics;
-    api.logger = logger;
+    api.spinner = _api?.spinner || api.spinner;
+    api.prompt = _api?.prompt || api.prompt;
+    api.analytics = _api?.analytics || api.analytics;
+    api.logger = _api?.logger || api.logger;
 
     // api.fsExistsSync = fsExistsSync;
     // api.fsReadFileSync = fsReadFileSync;

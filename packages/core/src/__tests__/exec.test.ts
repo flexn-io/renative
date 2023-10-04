@@ -1,9 +1,16 @@
+import { createRnvApi } from '../api';
+import { createRnvContext } from '../context';
 import { generateContextDefaults } from '../context/defaults';
 import { executeAsync, commandExistsSync, commandExists } from '../system/exec';
 
 jest.mock('../logger/index.ts');
 
 describe('Testing exec functions', () => {
+    beforeAll(() => {
+        createRnvContext();
+        createRnvApi();
+    });
+
     it('should execute command', async () => {
         expect.assertions(1);
         await expect(executeAsync(generateContextDefaults(), 'node -v').then((data) => typeof data)).resolves.toBe(

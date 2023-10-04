@@ -1,78 +1,62 @@
-import taskRnvPlatformList from '../tasks/task.rnv.platform.list';
+import { createRnvApi, createRnvContext, executeAsync, executeTask, getContext, removeDirs } from '@rnv/core';
+import taskRnvClean from '../tasks/task.rnv.clean';
 import taskRnvKill from '../tasks/task.rnv.kill';
 import taskRnvPlatformConfigure from '../tasks/task.rnv.platform.configure';
-import taskRnvClean from '../tasks/task.rnv.clean';
-import { generateMockConfig } from '../../../jest-preset-rnv/mocks';
+import taskRnvPlatformList from '../tasks/task.rnv.platform.list';
 
 jest.mock('fs');
 jest.mock('child_process');
 jest.mock('@rnv/core');
 jest.mock('inquirer');
 
-// jest.mock('../../src/core/engineManager/index.ts', () => ({
-//     // getEngineConfigByPlatform: () => ({
-//     //     platforms: {
-//     //         ios: {
-//     //             npm: {}
-//     //         }
-//     //     }
-//     // }),
-//     getEngineRunnerByPlatform: () => ({
-//         getOriginalPlatformTemplatesDir: () => 'sometemptdir',
-//     }),
-// }));
-
-// jest.mock('../../src/core/system/utils.ts', () => ({
-//     isSystemWin: false,
-// }));
-
-// jest.mock('../../src/core/system/logger.ts');
-
-const c = generateMockConfig({
-    buildConfig: {
-        sdks: {
-            ANDROID_SDK: '',
-        },
-    },
-});
-
-// const parentTask = null;
-const originTask = undefined;
-
-const { executeTask, executeAsync, removeDirs } = require('@rnv/core');
-
 beforeEach(() => {
-    //Do nothing
-});
-
-afterEach(() => {
-    //Do nothing
+    createRnvContext();
+    createRnvApi();
 });
 
 test('Execute task.rnv.platform.list', async () => {
-    await taskRnvPlatformList.fn(c, undefined, originTask);
-    await expect(taskRnvPlatformList.fn(c, undefined, originTask)).resolves.toEqual(true);
-    expect(executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform list', originTask);
+    //GIVEN
+    const ctx = getContext();
+    //WHEN
+    await expect(taskRnvPlatformList.fn(ctx)).resolves.toEqual(true);
+    //THEN
+    expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform list', undefined);
 });
 
 test('Execute task.rnv.platform.configure', async () => {
-    await expect(taskRnvPlatformConfigure.fn(c, undefined, originTask)).resolves.toEqual(true);
-    expect(executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform configure', originTask);
+    //GIVEN
+    const ctx = getContext();
+    //WHEN
+    await expect(taskRnvPlatformConfigure.fn(ctx)).resolves.toEqual(true);
+    //THEN
+    expect(executeTask).toHaveBeenCalledWith(ctx, 'project configure', 'platform configure', undefined);
 });
 
 test('Execute task.rnv.kill', async () => {
-    await expect(taskRnvKill.fn(c, undefined, originTask)).resolves.toEqual(true);
-    expect(executeTask).toHaveBeenCalledWith(c, 'app configure', 'kill', originTask);
+    //GIVEN
+    const ctx = getContext();
+    ctx.paths.project.configExists = true;
+    //WHEN
+    await expect(taskRnvKill.fn(ctx)).resolves.toEqual(true);
+    //THEN
+    expect(executeTask).toHaveBeenCalledWith(ctx, 'app configure', 'kill', undefined);
 });
 
 test('Execute task.rnv.clean', async () => {
-    const configure = generateMockConfig({ program: { ci: true } });
-
-    await expect(taskRnvClean.fn(configure)).resolves.toEqual(true);
+    //GIVEN
+    const ctx = getContext();
+    const { inquirerPrompt } = require('@rnv/core');
+    inquirerPrompt.mockReturnValue(
+        Promise.resolve({ confirm: true, confirmBuilds: true, confirmLocals: true, confirmCache: true })
+    );
+    ctx.program.ci = false;
+    //WHEN
+    await expect(taskRnvClean.fn(ctx)).resolves.toEqual(true);
+    //THEN
     expect(removeDirs).toHaveBeenCalledTimes(3);
-    expect(executeAsync).toHaveBeenCalledWith(configure, 'watchman watch-del-all');
+    expect(executeAsync).toHaveBeenCalledWith(ctx, 'watchman watch-del-all');
     expect(executeAsync).toHaveBeenCalledWith(
-        configure,
+        ctx,
         'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*'
     );
 });

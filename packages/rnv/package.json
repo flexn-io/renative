@@ -72,8 +72,8 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/engine-core": "0.38.0-canary.1",
         "@rnv/cli": "0.38.0-canary.1",
+        "@rnv/engine-core": "0.38.0-canary.1",
         "@sentry/integrations": "7.57.0",
         "@sentry/node": "7.57.0",
         "tslib": "2.5.2"

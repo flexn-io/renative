@@ -31,10 +31,10 @@
     "dependencies": {
         "@react-native-community/cli": "^11.3.0",
         "@react-native-community/cli-platform-ios": "^11.3.0",
+        "@rnv/sdk-react-native": "0.38.0-canary.1",
         "compare-versions": "3.6.0",
         "ios-mobileprovision-finder": "1.1.0",
-        "xcode": "2.1.0",
-        "@rnv/sdk-react-native": "0.38.0-canary.1"
+        "xcode": "2.1.0"
     },
     "devDependencies": {},
     "peerDependencies": {

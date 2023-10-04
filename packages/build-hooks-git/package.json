@@ -1,42 +1,39 @@
 {
-    "name": "@rnv/sdk-tizen",
+    "name": "@rnv/build-hooks-git",
     "version": "0.38.0-canary.1",
-    "description": "ReNative Tizen SDK",
+    "description": "Build Hooks for Git",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
     "bugs": {
         "url": "https://github.com/flexn-io/renative/issues"
     },
     "license": "MIT",
-    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "author": "Flexn",
     "files": [
+        "LICENSE",
         "lib",
-        "supportFiles",
-        "types.d.ts"
+        "src"
     ],
-    "main": "lib/index.js",
+    "main": "lib/index",
     "repository": {
+        "directory": "packages/build-hooks-git",
         "type": "git",
         "url": "git+https://github.com/flexn-io/renative.git"
     },
     "scripts": {
-        "bootstrap": "yarn && yarn build && npm link",
         "build": "yarn clean && yarn compile",
         "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
-        "compile:prod": "tsc -b tsconfig.json",
-        "lint": "eslint . --ext .ts",
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-webos": "0.38.0-canary.1",
-        "xml2js": "0.6.0"
+        "simple-git": "^3.16.0"
     },
     "peerDependencies": {
         "@rnv/core": "^0.38.0-canary.1"
     },
-    "private": false,
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "types": "lib/index"
 }

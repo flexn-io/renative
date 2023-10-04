@@ -1,5 +1,8 @@
+import { createRnvApi } from '../api';
 import { getAppVersionCode } from '../common';
+import { createRnvContext } from '../context';
 import { generateContextDefaults } from '../context/defaults';
+import { getContext } from '../context/provider';
 
 jest.mock('../logger/index.ts');
 
@@ -40,20 +43,15 @@ const BUILD_CONF = generateContextDefaults();
 BUILD_CONF.runtime.scheme = 'debug';
 
 describe('Testing getAppVersionCode functions', () => {
+    beforeAll(() => {
+        createRnvContext();
+        createRnvApi();
+    });
+
     it('should evaluate 1.2.3', async () => {
-        const result = getAppVersionCode(
-            {
-                ...BUILD_CONF,
-                files: {
-                    ...BUILD_CONF.files,
-                    project: {
-                        ...BUILD_CONF.files.project,
-                        package: { version: '1.2.3' },
-                    },
-                },
-            },
-            'ios'
-        );
+        const c = getContext();
+        c.files.project.package.version = '1.2.3';
+        const result = getAppVersionCode(c, 'ios');
         expect(result).toEqual('10203');
     });
 
