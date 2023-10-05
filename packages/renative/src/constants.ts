@@ -34,8 +34,6 @@ export enum Platform {
     androidwear = 'androidwear',
     androidauto = 'androidauto',
     alexa = 'alexa',
-    firefoxos = 'firefoxos',
-    firefoxtv = 'firefoxtv',
     firetv = 'firetv',
     fireos = 'fireos',
     kaios = 'kaios',

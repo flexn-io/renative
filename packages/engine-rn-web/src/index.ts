@@ -77,19 +77,6 @@ const Engine: RnvEngine = {
             isWebHosted: true,
             extensions: generateEngineExtensions(['webos.tv', 'web.tv', 'tv', 'webos', 'tv.web', 'web'], CNF),
         },
-        firefoxos: {
-            defaultPort: 8094,
-            isWebHosted: true,
-            extensions: generateEngineExtensions(
-                ['firefoxos.mobile', 'mobile', 'firefoxos', 'mobile.web', 'native'],
-                CNF
-            ),
-        },
-        firefoxtv: {
-            defaultPort: 8097,
-            isWebHosted: true,
-            extensions: generateEngineExtensions(['firefoxtv.tv', 'web.tv', 'tv', 'firefoxtv', 'tv.web', 'web'], CNF),
-        },
         kaios: {
             defaultPort: 8093,
             isWebHosted: true,

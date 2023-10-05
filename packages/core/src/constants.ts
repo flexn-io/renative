@@ -14,8 +14,6 @@ export const ASTIAN = 'astian';
 export const BLACKBERRY = 'blackberry';
 export const CHROMECAST = 'chromecast';
 export const CHROME_OS = 'chromeos';
-export const FIREFOX_OS = 'firefoxos';
-export const FIREFOX_TV = 'firefoxtv';
 export const FIRE_OS = 'fireos';
 export const FIRE_TV = 'firetv';
 export const HBBTV = 'hbbtv';
@@ -117,8 +115,6 @@ export const SUPPORTED_PLATFORMS = [
     LINUX,
     TIZEN_WATCH,
     KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
     CHROMECAST,
 ];
 
