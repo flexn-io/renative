@@ -8,8 +8,6 @@ import {
     TIZEN_MOBILE,
     TIZEN_WATCH,
     KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
     CHROMECAST,
     TASK_RUN,
     TASK_START,
@@ -97,8 +95,6 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
             }
             return runWebOS(c);
         case KAIOS:
-        case FIREFOX_OS:
-        case FIREFOX_TV:
             return runKaiOSProject(c);
         case CHROMECAST:
             if (!c.program.only) {
@@ -115,5 +111,5 @@ export default {
     fn: taskRnvRun,
     task: TASK_RUN,
     params: PARAMS.withBase(PARAMS.withConfigure(PARAMS.withRun())),
-    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV, CHROMECAST],
+    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
 };

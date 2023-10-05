@@ -925,7 +925,7 @@ const platformWebosProps = {
     ...engineRnWebConfig,
 };
 
-const platformFirefoxProps = {
+const platformKaiosProps = {
     ...engineRnWebConfig,
 };
 
@@ -1298,8 +1298,8 @@ export const schemaPlatforms = {
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...generateBuildSchemeProps(platformFirefoxProps),
-                ...platformFirefoxProps,
+                ...generateBuildSchemeProps(platformKaiosProps),
+                ...platformKaiosProps,
             },
         },
         macos: {

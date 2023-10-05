@@ -14,8 +14,6 @@ import {
     TIZEN_MOBILE,
     TIZEN_WATCH,
     KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
     CHROMECAST,
     TASK_START,
     TASK_CONFIGURE,
@@ -68,5 +66,5 @@ export default {
     fn: taskRnvStart,
     task: TASK_START,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV, CHROMECAST],
+    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
 };
