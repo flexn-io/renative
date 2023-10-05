@@ -46,6 +46,7 @@ export interface RnvContext<Payload = any> {
     logMessages: Array<string>;
     timeStart: Date;
     timeEnd: Date;
+    isDefault: boolean;
 }
 
 export type RnvContextBuildConfig = Partial<RenativeConfigFile> & {

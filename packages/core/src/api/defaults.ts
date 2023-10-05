@@ -15,6 +15,7 @@ const spinner: any = () => ({
 const logger: any = {};
 
 export const generateApiDefaults = (): RnvApi => ({
+    isDefault: true,
     doResolve,
     getConfigProp: getConfigProp,
     logger,

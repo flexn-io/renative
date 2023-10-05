@@ -33,6 +33,7 @@ describe('Bootstrapping the CLI', () => {
             'configPropsInjects',
             'files',
             'isBuildHooksReady',
+            'isDefault',
             'isSystemWin',
             'logMessages',
             'paths',
@@ -47,7 +48,7 @@ describe('Bootstrapping the CLI', () => {
             'supportedPlatforms',
             'systemPropsInjects',
             'timeEnd',
-            'timeStart',
+            'timeStart'
         ];
 
         expect(cKeys).toEqual(expectKeys);

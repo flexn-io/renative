@@ -17,8 +17,6 @@ import path from 'path';
 import { mkdirSync } from 'fs';
 import { isSystemWin } from '../utils/utils';
 
-global.RNV_CONTEXT = generateContextDefaults();
-
 export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, configName?: string) => {
     pathObj.dir = dir;
     pathObj.config = path.join(dir, configName || RENATIVE_CONFIG_NAME);
@@ -34,6 +32,12 @@ export const createRnvContext = (ctx?: {
     subCmd: string;
     RNV_HOME_DIR: string;
 }) => {
+    if (!ctx && !global.RNV_CONTEXT) {
+        global.RNV_CONTEXT = generateContextDefaults();
+        return;
+    }
+
+    if (!global.RNV_CONTEXT?.isDefault) return;
     const c: RnvContext = generateContextDefaults();
 
     c.program = ctx?.program || c.program;
@@ -101,3 +105,5 @@ export const createRnvContext = (ctx?: {
 
     global.RNV_CONTEXT = c;
 };
+
+createRnvContext();

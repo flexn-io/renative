@@ -6,6 +6,7 @@ import { RnvContext } from '../context/types';
 // };
 
 export interface RnvApi {
+    isDefault: boolean;
     spinner: RnvApiSpinner;
     prompt: RnvApiPrompt;
     analytics: RnvContextAnalytics;
