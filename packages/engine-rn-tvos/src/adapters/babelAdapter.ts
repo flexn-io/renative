@@ -1,18 +1,3 @@
-const env: any = process?.env;
-
-const createEngineAlias = () => {
-    const projectPath = process.env.RNV_PROJECT_ROOT || process.cwd();
-    const isMonorepo = process.env.RNV_IS_MONOREPO === 'true' || env.RNV_IS_MONOREPO === true;
-    const rootPath = isMonorepo ? process.env.RNV_MONO_ROOT || projectPath : projectPath;
-    const alias: any = {};
-
-    if (process.env.RNV_IS_NATIVE_TV === 'true' || env.RNV_IS_NATIVE_TV === true) {
-        alias['react-native'] = `${rootPath}/node_modules/react-native-tvos`;
-    }
-
-    return alias;
-};
-
 export const withRNVBabel = (cnf: any) => {
     const plugins = cnf?.plugins || [];
 
@@ -24,8 +9,10 @@ export const withRNVBabel = (cnf: any) => {
             [
                 require.resolve('babel-plugin-module-resolver'),
                 {
-                    root: [process.env.RNV_MONO_ROOT || '.'],
-                    alias: createEngineAlias(),
+                    root: [process.env.RNV_MONO_ROOT],
+                    alias: {
+                        'react-native': process.env.RNV_REACT_NATIVE_PATH,
+                    },
                 },
             ],
             ...plugins,

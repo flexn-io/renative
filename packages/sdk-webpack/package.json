@@ -29,7 +29,6 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@babel/preset-react": "7.22.15",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
         "@svgr/webpack": "6.3.1",
         "axios": "0.21.2",
