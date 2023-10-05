@@ -621,14 +621,8 @@ const _parsePluginTemplateDependencies = (
 const getCleanRegExString = (str: string) => str.replace(/[-\\.,_*+?^$[\](){}!=|`]/gi, '\\$&');
 
 const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
-    let source;
+    const source = path.join(pluginsPath, dir, 'overrides');
 
-    source = path.resolve(c.paths.rnv.pluginTemplates.overrideDir!, dir, 'overrides');
-    if (!source) {
-        console.log('KDDK', source);
-
-        source = path.join(pluginsPath, dir, 'overrides');
-    }
     const dest = doResolve(dir, false);
     if (!dest) return;
 
@@ -689,11 +683,11 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     }
     const overrideConfig = overridePath ? readObjectSync(overridePath) : null;
     const overrides = overrideConfig?.overrides;
-
     if (overrides) {
         Object.keys(overrides).forEach((k) => {
             const ovDir = path.join(dest, k);
             const override = overrides[k];
+
             if (fsExistsSync(ovDir)) {
                 if (fsLstatSync(ovDir).isDirectory()) {
                     logWarning('overrides.json: Directories not supported yet. specify path to actual file');
@@ -711,6 +705,7 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
 export const overrideFileContents = (dest: string, override: Record<string, string>, overridePath = '') => {
     if (fsExistsSync(dest)) {
         let fileToFix = fsReadFileSync(dest).toString();
+
         let foundRegEx = false;
         const failTerms: Array<string> = [];
         Object.keys(override).forEach((fk) => {
@@ -860,7 +855,12 @@ export const overrideTemplatePlugins = async (c: RnvContext) => {
                     plugin._scopes.forEach((pluginScope) => {
                         const pluginOverridePath = rnvPluginsDirs[pluginScope];
                         if (pluginOverridePath) {
-                            _overridePlugin(c, pluginOverridePath, key);
+                            const rnvOverridePath = path.join(c.paths.rnv.pluginTemplates.overrideDir!, key);
+                            if (fsExistsSync(rnvOverridePath)) {
+                                _overridePlugin(c, c.paths.rnv.pluginTemplates.overrideDir!, key);
+                            } else {
+                                _overridePlugin(c, pluginOverridePath, key);
+                            }
                         }
                     });
                 }
