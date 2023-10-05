@@ -112,7 +112,12 @@ export const generateContextDefaults = (): RnvContext => ({
         project: {
             ...generateRnvConfigPathObj(),
             config: '',
-            appConfigBase: {},
+            appConfigBase: {
+                dir: '',
+                fontsDir: '',
+                fontsDirs: [],
+                pluginsDir: '',
+            },
             builds: {},
             assets: {},
             platformTemplates: {},
