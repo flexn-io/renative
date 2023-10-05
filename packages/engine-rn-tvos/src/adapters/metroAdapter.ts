@@ -1,6 +1,10 @@
 import { FileStore } from 'metro-cache';
+const { doResolve } = require('@rnv/core');
+
 import path from 'path';
 import os from 'os';
+
+const env: any = process?.env;
 
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
@@ -131,7 +135,39 @@ const DEFAULT_CONFIG = {
 
 export const withRNVMetro = (config: any) => {
     const projectPath = process.env.RNV_PROJECT_ROOT || process.cwd();
-    const cfg = mergeConfig(getDefaultConfig(projectPath), DEFAULT_CONFIG);
+
+    const exts: string = env.RNV_EXTENSIONS || '';
+
+    const cfg = mergeConfig(getDefaultConfig(projectPath), {
+        ...DEFAULT_CONFIG,
+        transformer: {
+            getTransformOptions: async () => ({
+                transform: {
+                    experimentalImportSupport: false,
+                    // this defeats the RCTDeviceEventEmitter is not a registered callable module
+                    inlineRequires: true,
+                },
+            }),
+            assetRegistryPath: path.resolve(`${doResolve('react-native-tvos')}/Libraries/Image/AssetRegistry.js`),
+            ...(config?.transformer || {}),
+        },
+        resolver: {
+            // blacklistRE: blacklist([
+            //     /platformBuilds\/.*/,
+            //     /buildHooks\/.*/,
+            //     /projectConfig\/.*/,
+            //     /website\/.*/,
+            //     /appConfigs\/.*/,
+            //     /renative.local.*/,
+            //     /metro.config.local.*/,
+            //     /.expo\/.*/,
+            //     /.rollup.cache\/.*/,
+            // ]),
+            ...(config?.resolver || {}),
+            sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
+            extraNodeModules: config?.resolver?.extraNodeModules,
+        },
+    });
 
     const cnf = mergeConfig(cfg, config);
 

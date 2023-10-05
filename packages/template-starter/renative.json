@@ -200,13 +200,11 @@
         },
         "@react-native-community/cli-platform-ios": {
             "version": "11.3.7",
-            "disablePluginTemplateOverrides": false
-        },
-        "@react-native-community/cli": {
-            "version": "11.3.8"
+            "disablePluginTemplateOverrides": false,
+            "optionalDependency": true
         },
         "react-native": {
-            "version": "0.72.5"
+            "version": "0.72.4"
         },
         "next": {
             "version": "13.5.2",
@@ -216,7 +214,7 @@
             "version": "0.19.9"
         },
         "react-native-tvos": {
-            "version": "0.72.5-0"
+            "version": "0.72.4-0"
         }
     },
     "permissions": {
