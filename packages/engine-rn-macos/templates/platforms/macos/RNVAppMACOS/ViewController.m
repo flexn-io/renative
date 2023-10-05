@@ -9,7 +9,7 @@
   [super viewDidLoad];
 
   RCTBridge *bridge = [((AppDelegate *)[NSApp delegate])bridge];
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"App" initialProperties:nil];
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"RNVApp" initialProperties:nil];
 
   NSView *view = [self view];
 
