@@ -70,3 +70,4 @@ lib
 
 lerna-debug.log
 yarn-error.log
+.rnv

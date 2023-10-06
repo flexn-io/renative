@@ -1,4 +1,5 @@
 import { prePublish } from './prePublish';
+import { generateSchema } from './jsonSchema';
 
 import { gitCommit, gitTag, gitCommitAndTag } from '@rnv/build-hooks-git';
 
@@ -7,6 +8,7 @@ const hooks = {
     gitCommitAndTag,
     gitCommit,
     gitTag,
+    generateSchema,
 };
 
 const pipes = {};

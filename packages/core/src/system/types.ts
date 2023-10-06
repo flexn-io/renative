@@ -42,9 +42,3 @@ export type FileUtilsPropConfig = {
     runtimeProps?: Record<string, any>;
     files?: Record<string, any>;
 };
-
-export type FileUtilsUpdateConfig = {
-    androidSdk?: string;
-    tizenSdk?: string;
-    webosSdk?: string;
-};

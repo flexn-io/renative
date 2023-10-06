@@ -1217,6 +1217,7 @@ const pluginProps = {
 
 export const schemaPlatforms = {
     $id: 'http://renative.org/schemas/platforms.json',
+
     // required: [
     //     'id'
     // ],
@@ -1346,6 +1347,11 @@ export const schemaRoot = {
     type: 'object',
     additionalProperties: false,
     properties: {
+        $schema: {
+            type: 'string',
+            title: 'Schema',
+            description: 'Pointer to the schema against which this document should be validated.',
+        },
         common: {
             additionalProperties: false,
             type: 'object',
