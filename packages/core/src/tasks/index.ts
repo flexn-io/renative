@@ -1,4 +1,4 @@
-import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../logger';
+import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning, logError } from '../logger';
 import { executePipe } from '../buildHooks';
 import { checkIfProjectAndNodeModulesExists } from '../npm';
 import {
@@ -303,6 +303,7 @@ export const executeTask = async (
     originTask?: string,
     isFirstTask?: boolean
 ) => {
+    try {
     const pt = parentTask ? `=> [${parentTask}] ` : '';
     c._currentTask = task;
     logInitTask(`${pt}=> [${chalk().bold.rgb(170, 106, 170)(task)}]`);
@@ -330,6 +331,9 @@ To avoid that test your task code against parentTask and avoid executing same ta
     c._currentTask = parentTask;
     const prt = parentTask ? `<= [${chalk().rgb(170, 106, 170)(parentTask)}] ` : '';
     logExitTask(`${prt}<= ${task}`);
+    } catch (e) {
+        logError(e, true);
+    }
 };
 
 export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask: string, originTask?: string) => {

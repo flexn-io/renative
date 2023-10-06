@@ -30,7 +30,7 @@ import {
     logRaw,
     inquirerPrompt,
 } from '@rnv/core';
-import { getAppleDevices, launchAppleSimulator } from './deviceManager';
+import { getAppleDevices } from './deviceManager';
 
 import { getAppFolderName } from './common';
 import { parseEntitlementsPlist, parseExportOptionsPlist, parseInfoPlist } from './plistParser';
@@ -185,24 +185,18 @@ const copyAppleAssets = (c: Context, platform: string, appFolderName: string) =>
         resolve();
     });
 
-export const runXcodeProject = async (c: Context) => {
-    logTask('runXcodeProject', `target:${c.runtime.target}`);
-
-    const appPath = getAppFolder(c);
+export const getDeviceToRunOn = async (c: Context) => {
+    logTask('getDeviceToRunOn');
+    
     const { device } = c.program;
-    const appFolderName = getAppFolderName(c, c.platform);
-    const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget', 'RNVApp');
-    const runScheme = getConfigProp(c, c.platform, 'runScheme');
-    const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
-    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
-    let p: string | undefined;
-
     let devicesArr: AppleDevice[] = [];
     if (device === true) {
         devicesArr = await getAppleDevices(c, false, true);
-    } else if (c.runtime.target) {
+    } else if (c.runtime.isTargetTrue) {
         devicesArr = await getAppleDevices(c, true, false);
     }
+
+    let p = '';
 
     if (device === true) {
         if (devicesArr.length === 1) {
@@ -227,15 +221,7 @@ export const runXcodeProject = async (c: Context) => {
                     p = `--device ${selectedDevice.name}`;
                 }
 
-                logDebug(`RN params: ${p}`);
-
-                if (bundleAssets) {
-                    logDebug('Assets will be bundled');
-                    return packageReactNativeIOS(c, bundleIsDev).then(() =>
-                        _checkLockAndExec(c, appPath, appFolderName, runScheme, p)
-                    );
-                }
-                return _checkLockAndExec(c, appPath, appFolderName, runScheme, p);
+                return p;
             };
 
             if (c.runtime.target) {
@@ -289,6 +275,7 @@ export const runXcodeProject = async (c: Context) => {
     } else if (c.runtime.target) {
         // check if the default sim is available
         const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
+        console.log('seleeeected', desiredSim)
         if (!desiredSim) {
             const { sim } = await inquirerPrompt({
                 name: 'sim',
@@ -346,6 +333,29 @@ export const runXcodeProject = async (c: Context) => {
         p = `--simulator ${target}`;
     }
 
+    return p;
+};
+
+export const runXcodeProject = async (c: Context, runDeviceArguments?: string) => {
+    logTask('runXcodeProject', `targetArgs:${runDeviceArguments}`);
+
+    const appPath = getAppFolder(c);
+    const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget', 'RNVApp');
+    const runScheme = getConfigProp(c, c.platform, 'runScheme');
+    const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
+
+    if (runDeviceArguments) {
+        // await launchAppleSimulator(c, c.runtime.target); @TODO - do we still need this? RN CLI does it as well
+
+        //const allowProvisioningUpdates = getConfigProp(c, c.platform, 'allowProvisioningUpdates', true);
+        //if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
+        if (bundleAssets) {
+           await packageReactNativeIOS(c, bundleIsDev)
+        }
+        return _checkLockAndExec(c, appPath, schemeTarget, runScheme, runDeviceArguments);
+    }
+
     if (c.platform === MACOS) {
         if (bundleAssets) {
             await packageReactNativeIOS(c, bundleIsDev);
@@ -362,31 +372,7 @@ export const runXcodeProject = async (c: Context) => {
             `open ${path.join(appPath, `build/RNVApp/Build/Products/${runScheme}-maccatalyst/RNVApp.app`)}`
         );
     }
-    await launchAppleSimulator(c, c.runtime.target);
-
-    if (p) {
-        //const allowProvisioningUpdates = getConfigProp(c, c.platform, 'allowProvisioningUpdates', true);
-        //if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
-        return _packageOrRun(c, bundleAssets, bundleIsDev, appPath, schemeTarget, runScheme, p);
-    }
     // return Promise.reject('Missing options for react-native command!');
-};
-
-const _packageOrRun = (
-    c: Context,
-    bundleAssets: boolean,
-    bundleIsDev: boolean,
-    appPath: string,
-    scheme: string,
-    runScheme: string,
-    extraParamsString: string
-) => {
-    if (bundleAssets) {
-        return packageReactNativeIOS(c, bundleIsDev).then(() =>
-            _checkLockAndExec(c, appPath, scheme, runScheme, extraParamsString)
-        );
-    }
-    return _checkLockAndExec(c, appPath, scheme, runScheme, extraParamsString);
 };
 
 const _checkLockAndExec = async (

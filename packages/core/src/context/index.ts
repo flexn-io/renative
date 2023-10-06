@@ -26,11 +26,11 @@ export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, co
 };
 
 export const createRnvContext = (ctx?: {
-    program: any;
-    process: any;
-    cmd: string;
-    subCmd: string;
-    RNV_HOME_DIR: string;
+    program?: any;
+    process?: any;
+    cmd?: string;
+    subCmd?: string;
+    RNV_HOME_DIR?: string;
 }) => {
     if (!ctx && !global.RNV_CONTEXT) {
         global.RNV_CONTEXT = generateContextDefaults();

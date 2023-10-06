@@ -15,10 +15,12 @@ export const updateRenativeConfigs = async (c: RnvContext) => {
 };
 
 export const configureRuntimeDefaults = async (c: RnvContext) => {
+    console.log('asdasd')
     c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId || null;
     // c.runtime.appConfigDir = c.files.project?.configLocal?._meta?.currentAppConfigDir || null;
 
     logTask('configureRuntimeDefaults', `appId:${c.runtime.appId}`);
+
 
     // TODO:
     // version
@@ -84,5 +86,6 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
             });
         }
     }
+    console.log('c2', c)
     return true;
 };
