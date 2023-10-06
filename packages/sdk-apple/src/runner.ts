@@ -275,7 +275,6 @@ export const getDeviceToRunOn = async (c: Context) => {
     } else if (c.runtime.target) {
         // check if the default sim is available
         const desiredSim = devicesArr.find((d) => d.name === c.runtime.target && !d.isDevice);
-        console.log('seleeeected', desiredSim)
         if (!desiredSim) {
             const { sim } = await inquirerPrompt({
                 name: 'sim',
