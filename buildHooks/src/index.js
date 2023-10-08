@@ -1,7 +1,7 @@
 import { prePublish } from './prePublish';
-import { generateSchema } from './jsonSchema';
 
 import { gitCommit, gitTag, gitCommitAndTag } from '@rnv/build-hooks-git';
+import { generateSchema } from '@rnv/build-hooks-git';
 
 const hooks = {
     prePublish,

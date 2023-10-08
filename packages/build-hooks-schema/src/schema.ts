@@ -1,5 +1,13 @@
-import { RnvContext } from '@rnv/core';
+import { RnvContext, getRenativeJsonSchema } from '@rnv/core';
 
-export const generateSchema = async (_c: RnvContext) => {
-    console.log('Genrate Schema');
+import path from 'path';
+import fs from 'fs';
+
+export const generateSchema = async (c: RnvContext) => {
+    const schema: Record<string, any> = getRenativeJsonSchema();
+    schema['$schema'] = 'http://json-schema.org/draft-04/schema#';
+
+    const destPath = path.join(c.paths.project.dir, 'packages/core/schemas/renative.json');
+
+    fs.writeFileSync(destPath, JSON.stringify(schema, null, 2));
 };
