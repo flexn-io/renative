@@ -1,6 +1,15 @@
 import { z } from 'zod';
-import { Common, Id, Platforms, Version, VersionCode, VersionCodeFormat, VersionFormat } from './configLevel1';
-import { Hidden } from './configLevel2';
+import {
+    Common,
+    Hidden,
+    Id,
+    Platforms,
+    Plugins,
+    Version,
+    VersionCode,
+    VersionCodeFormat,
+    VersionFormat,
+} from './configLevel1';
 import { Ext } from './configCommon';
 
 //LEVEl 0 (ROOT)
@@ -15,6 +24,7 @@ export const RootApp = z.object({
     platforms: z.optional(Platforms),
     ext: z.optional(Ext),
     hidden: z.optional(Hidden),
+    plugins: z.optional(Plugins),
 });
 
 export type ConfigRootApp = z.infer<typeof RootApp>;

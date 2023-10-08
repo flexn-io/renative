@@ -23,6 +23,7 @@ import {
     Title,
 } from './configLevel2';
 import { Ext, PlatformsKeys, Runtime } from './configCommon';
+import { Plugin } from './configPlugin';
 
 //LEVEl 1
 
@@ -251,3 +252,21 @@ export const EnableHookRebuild = z
     );
 
 export const EnableAnalytics = z.boolean().describe('Enable or disable sending analytics to improve ReNative');
+
+export const ProjectName = z
+    .string()
+    .describe(
+        'Name of the project which will be used in workspace as folder name. this will also be used as part of the KEY in crypto env var generator'
+    );
+
+export const Hidden = z
+    .boolean()
+    .describe(
+        'If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`'
+    );
+
+export const MonoRoot = z
+    .boolean()
+    .describe('Define custom path to monorepo root where starting point is project directory');
+
+export const Plugins = z.record(z.string(), Plugin).describe('Object containing plugins configurations');

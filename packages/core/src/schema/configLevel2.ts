@@ -99,7 +99,12 @@ export const AssetSources = z
         'Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project. You can use resolve function here example: `{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets`'
     );
 
-export const Platform = z.object({}).merge(PlatformCommon).merge(PlatformiOS);
+export const Platform = z
+    .object({
+        buildSchemes: BuildSchemes,
+    })
+    .merge(PlatformCommon)
+    .merge(PlatformiOS);
 
 export const Engine = z.union([
     z.literal('source:rnv'),
@@ -107,19 +112,3 @@ export const Engine = z.union([
         version: z.optional(z.string()),
     }),
 ]);
-
-export const ProjectName = z
-    .string()
-    .describe(
-        'Name of the project which will be used in workspace as folder name. this will also be used as part of the KEY in crypto env var generator'
-    );
-
-export const Hidden = z
-    .boolean()
-    .describe(
-        'If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`'
-    );
-
-export const MonoRoot = z
-    .boolean()
-    .describe('Define custom path to monorepo root where starting point is project directory');

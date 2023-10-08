@@ -8,14 +8,16 @@ import {
     EnableHookRebuild,
     Engines,
     IsMonoRepo,
+    MonoRoot,
     Paths,
     Permissions,
     Pipes,
     Platforms,
+    Plugins,
+    ProjectName,
     Templates,
     WorkspaceID,
 } from './configLevel1';
-import { MonoRoot, ProjectName } from './configLevel2';
 import { Ext } from './configCommon';
 
 //LEVEl 0 (ROOT)
@@ -38,6 +40,7 @@ export const RootProject = z.object({
     enableHookRebuild: z.optional(EnableHookRebuild),
     monoRoot: z.optional(MonoRoot),
     enableAnalytics: z.optional(EnableAnalytics),
+    plugins: z.optional(Plugins),
 });
 //.catchall(z.never());
 
