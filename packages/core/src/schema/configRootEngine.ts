@@ -1,6 +1,5 @@
 import { z } from 'zod';
-
-import { Ext } from './configLevel2';
+import { Ext } from './configCommon';
 
 //LEVEl 0 (ROOT)
 

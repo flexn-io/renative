@@ -4,6 +4,7 @@ import {
     Crypto,
     CurrentTemplate,
     Defaults,
+    EnableAnalytics,
     EnableHookRebuild,
     Engines,
     IsMonoRepo,
@@ -14,12 +15,14 @@ import {
     Templates,
     WorkspaceID,
 } from './configLevel1';
-import { Ext } from './configLevel2';
+import { MonoRoot, ProjectName } from './configLevel2';
+import { Ext } from './configCommon';
 
 //LEVEl 0 (ROOT)
 
 export const RootProject = z.object({
     workspaceID: WorkspaceID,
+    projectName: ProjectName,
     isMonorepo: z.optional(IsMonoRepo),
     common: Common,
     defaults: z.optional(Defaults),
@@ -33,6 +36,8 @@ export const RootProject = z.object({
     engines: z.optional(Engines),
     ext: z.optional(Ext),
     enableHookRebuild: z.optional(EnableHookRebuild),
+    monoRoot: z.optional(MonoRoot),
+    enableAnalytics: z.optional(EnableAnalytics),
 });
 //.catchall(z.never());
 

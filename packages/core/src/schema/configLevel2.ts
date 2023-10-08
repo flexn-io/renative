@@ -1,19 +1,20 @@
 import { z } from 'zod';
 import { PlatformiOS } from './configPlatformiOS';
+import { PlatformCommon } from './configPlatformCommon';
+import { HexColor, PlatformsKeys } from './configCommon';
 
-export const PlatformsKeys = z.enum(['ios', 'android']);
+export const BuildScheme = z.object({
+    enabled: z.boolean().describe('Defines whether build scheme shows up in options to run'),
+    description: z
+        .string()
+        .describe(
+            'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
+        ),
+});
 
-export const HexColor = z.string().min(4).max(9).regex(/^#/);
-
-export const Ext = z
-    .any()
-    .describe(
-        'Object ysed to extend your renative with custom props. This allows renative json schema to be validated'
-    );
-
-export const BuildScheme = z.object({});
-
-export const BuildSchemes = z.record(BuildScheme);
+export const BuildSchemes = z
+    .record(z.string(), BuildScheme)
+    .describe('Customizations based on chosen build scheme `-s`');
 
 export const Schemes = z
     .record(PlatformsKeys, z.string())
@@ -98,52 +99,6 @@ export const AssetSources = z
         'Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project. You can use resolve function here example: `{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets`'
     );
 
-export const AssetFolderPlatform = z
-    .string()
-    .describe(
-        'Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets'
-    );
-
-export const Runtime = z
-    .any()
-    .describe(
-        'This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code'
-    );
-
-export const PlatformEngine = z
-    .string()
-    .describe('ID of engine to be used for this platform. Note: engine must be registered in `engines` field');
-
-export const PlatformEntryFile = z
-    .string()
-    .default('index')
-    .describe('Alternative name of the entry file without `.js` extension');
-
-export const BundleAssets = z
-    .boolean()
-    .describe(
-        'If set to `true` compiled js bundle file will generated. this is needed if you want to make production like builds'
-    );
-
-export const EnableSourceMaps = z
-    .boolean()
-    .describe('If set to `true` dedicated source map file will be generated alongside of compiled js bundle');
-
-export const BundleIsDev = z.boolean().describe('If set to `true` debug build will be generated');
-
-export const License = z.string().describe('Injects license information into app');
-
-export const PlatformCommon = z.object({
-    assetFolderPlatform: z.optional(AssetFolderPlatform),
-    runtime: z.optional(Runtime),
-    engine: z.optional(PlatformEngine),
-    entryFile: z.optional(PlatformEntryFile),
-    bundleAssets: z.optional(BundleAssets),
-    enableSourceMaps: z.optional(EnableSourceMaps),
-    bundleIsDev: z.optional(BundleIsDev),
-    license: z.optional(License),
-});
-
 export const Platform = z.object({}).merge(PlatformCommon).merge(PlatformiOS);
 
 export const Engine = z.union([
@@ -152,3 +107,19 @@ export const Engine = z.union([
         version: z.optional(z.string()),
     }),
 ]);
+
+export const ProjectName = z
+    .string()
+    .describe(
+        'Name of the project which will be used in workspace as folder name. this will also be used as part of the KEY in crypto env var generator'
+    );
+
+export const Hidden = z
+    .boolean()
+    .describe(
+        'If set to true in `./appConfigs/[APP_ID]/renative.json` the APP_ID will be hidden from list of appConfigs `-c`'
+    );
+
+export const MonoRoot = z
+    .boolean()
+    .describe('Define custom path to monorepo root where starting point is project directory');

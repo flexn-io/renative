@@ -8,16 +8,13 @@ import {
     Description,
     Engine,
     ExcludedPlugins,
-    Ext,
     FontSources,
     IncludedFonts,
     IncludedPermissions,
     IncludedPlugins,
     Platform,
-    PlatformsKeys,
     PortOffset,
     Ports,
-    Runtime,
     Schemes,
     SplashScreen,
     SupportedPlatforms,
@@ -25,6 +22,7 @@ import {
     Template,
     Title,
 } from './configLevel2';
+import { Ext, PlatformsKeys, Runtime } from './configCommon';
 
 //LEVEl 1
 
@@ -251,3 +249,5 @@ export const EnableHookRebuild = z
     .describe(
         'If set to true in `./renative.json` build hooks will be compiled at each rnv command run. If set to `false` (default) rebuild will be triggered only if `dist` folder is missing, `-r` has been passed or you run `rnv hooks run` directly making your rnv commands faster'
     );
+
+export const EnableAnalytics = z.boolean().describe('Enable or disable sending analytics to improve ReNative');
