@@ -1,8 +1,8 @@
-import { logHook } from '@rnv/core';
+import { RnvContext, logHook } from '@rnv/core';
 import path from 'path';
 import simpleGit from 'simple-git';
 
-export const gitCommit = async (c: any) => {
+export const gitCommit = async (c: RnvContext) => {
     const v = c.files.project?.package?.version;
 
     const baseDir = path.join(c.paths.project.dir);
@@ -15,7 +15,7 @@ export const gitCommit = async (c: any) => {
     logHook('DONE');
 };
 
-export const gitTag = async (c: any) => {
+export const gitTag = async (c: RnvContext) => {
     const v = c.files.project.package.version;
 
     const baseDir = path.join(c.paths.project.dir);
@@ -25,7 +25,7 @@ export const gitTag = async (c: any) => {
     return true;
 };
 
-export const gitCommitAndTag = async (c: any) => {
+export const gitCommitAndTag = async (c: RnvContext) => {
     await gitCommit(c);
     await gitTag(c);
     return true;
