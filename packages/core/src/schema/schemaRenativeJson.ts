@@ -925,7 +925,7 @@ const platformWebosProps = {
     ...engineRnWebConfig,
 };
 
-const platformFirefoxProps = {
+const platformKaiosProps = {
     ...engineRnWebConfig,
 };
 
@@ -1174,7 +1174,7 @@ const pluginProps = {
             ...commonPluginPlatformProps,
         },
     },
-    firefox: {
+    kaios: {
         additionalProperties: false,
         type: 'object',
         properties: {
@@ -1293,13 +1293,13 @@ export const schemaPlatforms = {
                 ...platformChromecastProps,
             },
         },
-        firefox: {
+        kaios: {
             additionalProperties: false,
             type: 'object',
             properties: {
                 ...platformCommonProps,
-                ...generateBuildSchemeProps(platformFirefoxProps),
-                ...platformFirefoxProps,
+                ...generateBuildSchemeProps(platformKaiosProps),
+                ...platformKaiosProps,
             },
         },
         macos: {
@@ -1454,14 +1454,6 @@ export const schemaRoot = {
                     // $ref: 'platforms.json#/definitions/windows'
                     ...schemaPlatforms.definitions.xbox,
                 },
-                firefoxtv: {
-                    // $ref: 'platforms.json#/definitions/firefox'
-                    ...schemaPlatforms.definitions.firefox,
-                },
-                firefoxos: {
-                    // $ref: 'platforms.json#/definitions/firefox'
-                    ...schemaPlatforms.definitions.firefox,
-                },
                 tizenmobile: {
                     // $ref: 'platforms.json#/definitions/tizen'
                     ...schemaPlatforms.definitions.tizen,
@@ -1475,8 +1467,8 @@ export const schemaRoot = {
                     ...schemaPlatforms.definitions.android,
                 },
                 kaios: {
-                    // $ref: 'platforms.json#/definitions/firefox'
-                    ...schemaPlatforms.definitions.firefox,
+                    // $ref: 'platforms.json#/definitions/kaios'
+                    ...schemaPlatforms.definitions.kaios,
                 },
             },
         },
@@ -1904,10 +1896,8 @@ To skip file overrides coming from source plugin you need to detach it from the 
                             tizenmobile: 8191,
                             windows: 8192,
                             kaios: 8193,
-                            firefoxos: 8194,
-                            firefoxtv: 8114,
+                            linux: 8194,
                             webtv: 8195,
-                            linux: 8200,
                         },
                     ],
                 },

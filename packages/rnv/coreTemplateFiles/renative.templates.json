@@ -95,12 +95,6 @@
         "chromecast": {
             "engine": "engine-rn-web"
         },
-        "firefoxos": {
-            "engine": "engine-rn-web"
-        },
-        "firefoxtv": {
-            "engine": "engine-rn-web"
-        },
         "kaios": {
             "engine": "engine-rn-web"
         },

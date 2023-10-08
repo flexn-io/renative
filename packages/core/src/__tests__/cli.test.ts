@@ -59,8 +59,6 @@ describe('Testing rnv run', () => {
     itShouldResolve('run -p webos');
     itShouldResolve('run -p web');
     itShouldResolve('run -p macos');
-    itShouldResolve('run -p firefoxtv');
-    itShouldResolve('run -p firefoxos');
 });
 
 describe('Testing rnv build', () => {
@@ -75,8 +73,6 @@ describe('Testing rnv build', () => {
     itShouldResolve('build -p webos');
     itShouldResolve('build -p web');
     itShouldResolve('build -p macos');
-    itShouldResolve('build -p firefoxtv');
-    itShouldResolve('build -p firefoxos');
 });
 
 describe('Testing rnv package', () => {
@@ -144,48 +140,3 @@ const shouldResolve = async () => {
     // await cli(getConfig(cmd));
     // await expect(cli(getConfig(cmd), null, true)).resolves;
 };
-
-// const getConfig = (s) => {
-//     const argArray = s.split(' ');
-
-//     const cmd = argArray.shift();
-//     let subCmd;
-
-//     if (argArray[0]) {
-//         if (!argArray[0].startsWith('-')) {
-//             subCmd = argArray.shift();
-//         }
-//     }
-
-//     const c = createRnvConfig({
-//         command: cmd,
-//         subCommand: subCmd
-//     }, { process: true }, cmd, subCmd);
-
-//     c.buildConfig = {
-//         defaults: {
-//             supportedPlatforms: ['ios', 'android', 'tizen', 'web', 'macos',
-//                 'webos', 'tizenmobile', 'tizenwatch', 'androidtv', 'androidwear',
-//                 'firefoxtv', 'firefoxos']
-//         },
-//         defaultTargets: {},
-//         common: {}
-//     };
-
-//     argArray.forEach((v, i) => {
-//         switch (v) {
-//             case '-p':
-//                 c.platform = argArray[i + 1];
-//                 break;
-//             case '-t':
-//                 c.target = argArray[i + 1];
-//                 break;
-//             default:
-//                 // DO nothing
-//         }
-//     });
-//     configureFilesystem(() => {}, () => {});
-
-//     generateBuildConfig(c);
-//     return c;
-// };

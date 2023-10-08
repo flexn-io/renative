@@ -79,8 +79,6 @@ const runtime: any = {
         'tizenwatch',
         'tizenmobile',
         'kaios',
-        'firefoxos',
-        'firefoxtv',
         'chromecast',
     ],
 };

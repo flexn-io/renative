@@ -5,6 +5,18 @@ export const RNV_PACKAGES = [
         skipLinking: true,
     },
     {
+        packageName: '@rnv/core',
+        folderName: 'core',
+    },
+    {
+        packageName: '@rnv/engine-core',
+        folderName: 'engine-core',
+    },
+    {
+        packageName: '@rnv/cli',
+        folderName: 'cli',
+    },
+    {
         packageName: '@rnv/template-starter',
         folderName: 'template-starter',
     },
@@ -55,5 +67,37 @@ export const RNV_PACKAGES = [
     {
         packageName: '@rnv/integration-vercel',
         folderName: 'integration-vercel',
+    },
+    {
+        packageName: '@rnv/build-hooks-git',
+        folderName: 'build-hooks-git',
+    },
+    {
+        packageName: '@rnv/sdk-apple',
+        folderName: 'sdk-apple',
+    },
+    {
+        packageName: '@rnv/sdk-android',
+        folderName: 'sdk-android',
+    },
+    {
+        packageName: '@rnv/sdk-tizen',
+        folderName: 'sdk-tizen',
+    },
+    {
+        packageName: '@rnv/sdk-kaios',
+        folderName: 'sdk-kaios',
+    },
+    {
+        packageName: '@rnv/sdk-react-native',
+        folderName: 'sdk-react-native',
+    },
+    {
+        packageName: '@rnv/sdk-webpack',
+        folderName: 'sdk-webpack',
+    },
+    {
+        packageName: '@rnv/sdk-webos',
+        folderName: 'sdk-webos',
     },
 ];

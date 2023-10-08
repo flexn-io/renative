@@ -38,9 +38,7 @@
             "tizenmobile": 8091,
             "windows": 8092,
             "xbox": 8099,
-            "kaios": 8093,
-            "firefoxos": 8094,
-            "firefoxtv": 8014
+            "kaios": 8093
         },
         "supportedPlatforms": [
             "ios",
@@ -58,8 +56,6 @@
             "tizenwatch",
             "tizenmobile",
             "kaios",
-            "firefoxos",
-            "firefoxtv",
             "chromecast"
         ],
         "schemes": {

@@ -402,30 +402,6 @@
                 }
             }
         },
-        "firefoxos": {
-            "entryFile": "index",
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
-        },
-        "firefoxtv": {
-            "entryFile": "index",
-            "buildSchemes": {
-                "debug": {
-                    "bundleAssets": false
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
-        },
         "chromecast": {
             "entryFile": "index",
             "webpackConfig": {

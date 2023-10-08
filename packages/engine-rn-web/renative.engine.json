@@ -27,8 +27,6 @@
         "tizenwatch": {},
         "tizenmobile": {},
         "chromecast": {},
-        "kaios": {},
-        "firefoxos": {},
-        "firefoxtv": {}
+        "kaios": {}
     }
 }

@@ -32,6 +32,7 @@ const runtime: any = {
 };
 
 export const generateContextDefaults = (): RnvContext => ({
+    isDefault: true,
     isSystemWin: false,
     logMessages: [],
     timeEnd: new Date(),

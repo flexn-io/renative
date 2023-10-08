@@ -10,8 +10,6 @@ import {
 import { generateApiDefaults } from './defaults';
 import { getApi } from './provider';
 
-global.RNV_API = generateApiDefaults();
-
 export const createRnvApi = (_api?: {
     spinner: RnvApiSpinner;
     prompt: RnvApiPrompt;
@@ -20,12 +18,19 @@ export const createRnvApi = (_api?: {
     getConfigProp: GetConfigPropFn;
     doResolve: DoResolveFn;
 }) => {
-    const api: RnvApi = generateApiDefaults();
+    if (!_api && !global.RNV_API) {
+        global.RNV_API = generateApiDefaults();
+        return;
+    }
 
+    if (!global.RNV_API?.isDefault) return;
+    const api: RnvApi = generateApiDefaults();
+    
     api.spinner = _api?.spinner || api.spinner;
     api.prompt = _api?.prompt || api.prompt;
     api.analytics = _api?.analytics || api.analytics;
     api.logger = _api?.logger || api.logger;
+    api.isDefault = false;
 
     // api.fsExistsSync = fsExistsSync;
     // api.fsReadFileSync = fsReadFileSync;
@@ -35,6 +40,8 @@ export const createRnvApi = (_api?: {
 
     global.RNV_API = api;
 };
+
+createRnvApi();
 
 export const inquirerPrompt: RnvApiPrompt['inquirerPrompt'] = (opts) => {
     return getApi().prompt.inquirerPrompt(opts);

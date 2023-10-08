@@ -10,8 +10,6 @@ import {
     TIZEN_MOBILE,
     TIZEN_WATCH,
     KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
     CHROMECAST,
     TASK_PLATFORM_CONFIGURE,
     TASK_CONFIGURE,
@@ -50,8 +48,6 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
             return configureWebOSProject(c);
         case CHROMECAST:
             return configureChromecastProject(c);
-        case FIREFOX_OS:
-        case FIREFOX_TV:
         case KAIOS:
             return configureKaiOSProject(c);
         default:
@@ -64,5 +60,5 @@ export default {
     fn: taskRnvConfigure,
     task: TASK_CONFIGURE,
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV, CHROMECAST],
+    platforms: [WEB, WEBTV, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
 };

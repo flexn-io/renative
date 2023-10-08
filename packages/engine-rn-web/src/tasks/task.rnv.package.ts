@@ -7,8 +7,6 @@ import {
     TIZEN_MOBILE,
     TIZEN_WATCH,
     KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
     CHROMECAST,
     TASK_PACKAGE,
     TASK_CONFIGURE,
@@ -29,5 +27,5 @@ export default {
     fn: taskRnvPackage,
     task: 'package',
     params: PARAMS.withBase(PARAMS.withConfigure()),
-    platforms: [WEB, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV, CHROMECAST],
+    platforms: [WEB, TIZEN, WEBOS, TIZEN_MOBILE, TIZEN_WATCH, KAIOS, CHROMECAST],
 };
