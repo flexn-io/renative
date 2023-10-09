@@ -116,7 +116,7 @@ export const SUPPORTED_PLATFORMS = [
     TIZEN_WATCH,
     KAIOS,
     CHROMECAST,
-];
+] as const;
 
 export const TASK_RUN = 'run';
 export const TASK_CONFIGURE = 'configure';

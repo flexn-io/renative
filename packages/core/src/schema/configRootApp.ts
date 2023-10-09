@@ -15,7 +15,7 @@ import { Extend, ExtendTemplate } from './configLevel2';
 
 //LEVEl 0 (ROOT)
 
-export const RootApp = z.object({
+const RootApp = z.object({
     id: z.optional(Id),
     version: z.optional(Version),
     versionCode: z.optional(VersionCode),

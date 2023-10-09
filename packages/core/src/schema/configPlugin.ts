@@ -29,33 +29,36 @@ const Webpack = z
     })
     .describe('Allows you to configure webpack bahaviour per each individual plugin');
 
-export const Plugin = z.object({
-    enabled: z.optional(Enabled),
-    props: z.optional(Props),
-    version: z.optional(Version),
-    source: z.optional(Source),
-    'no-npm': z.optional(NoNpm),
-    skipMerge: z.optional(SkipMerge),
-    npm: z.optional(Npm),
-    pluginDependencies: z.optional(PluginDependencies),
-    // DEPRECATED
-    webpack: z.optional(Webpack), //Should this be at root plugin???
-    webpackConfig: z.optional(Webpack), //Should this be at root plugin???
-    // PLATFORMS
-    android: z.optional(PluginAndroid),
-    androidtv: z.optional(PluginAndroid),
-    androidwear: z.optional(PluginAndroid),
-    firetv: z.optional(PluginAndroid),
-    ios: z.optional(PluginiOS),
-    tvos: z.optional(PluginiOS),
-    tizen: z.optional(PluginCommon),
-    webos: z.optional(PluginCommon),
-    web: z.optional(PluginCommon),
-    webtv: z.optional(PluginCommon),
-    chromecast: z.optional(PluginCommon),
-    kaios: z.optional(PluginCommon),
-    macos: z.optional(PluginCommon),
-    linux: z.optional(PluginCommon),
-    windows: z.optional(PluginCommon),
-    xbox: z.optional(PluginCommon),
-});
+export const Plugin = z.union([
+    z.object({
+        enabled: z.optional(Enabled),
+        props: z.optional(Props),
+        version: z.optional(Version),
+        source: z.optional(Source),
+        'no-npm': z.optional(NoNpm),
+        skipMerge: z.optional(SkipMerge),
+        npm: z.optional(Npm),
+        pluginDependencies: z.optional(PluginDependencies),
+        // DEPRECATED
+        webpack: z.optional(Webpack), //Should this be at root plugin???
+        webpackConfig: z.optional(Webpack), //Should this be at root plugin???
+        // PLATFORMS
+        android: z.optional(PluginAndroid),
+        androidtv: z.optional(PluginAndroid),
+        androidwear: z.optional(PluginAndroid),
+        firetv: z.optional(PluginAndroid),
+        ios: z.optional(PluginiOS),
+        tvos: z.optional(PluginiOS),
+        tizen: z.optional(PluginCommon),
+        webos: z.optional(PluginCommon),
+        web: z.optional(PluginCommon),
+        webtv: z.optional(PluginCommon),
+        chromecast: z.optional(PluginCommon),
+        kaios: z.optional(PluginCommon),
+        macos: z.optional(PluginCommon),
+        linux: z.optional(PluginCommon),
+        windows: z.optional(PluginCommon),
+        xbox: z.optional(PluginCommon),
+    }),
+    z.string(),
+]);

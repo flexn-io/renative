@@ -3,9 +3,9 @@ import { Ext } from './common/configCommon';
 
 //LEVEl 0 (ROOT)
 
-export const RootProject = z.object({
+const RootTemplates = z.object({
     ext: z.optional(Ext),
 });
 //.catchall(z.never());
 
-export type Config = z.infer<typeof RootProject>;
+export type ConfigRootTemplates = z.infer<typeof RootTemplates>;

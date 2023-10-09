@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { SUPPORTED_PLATFORMS } from '../../constants';
 
 export const Runtime = z
     .any()
@@ -6,7 +7,7 @@ export const Runtime = z
         'This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code'
     );
 
-export const PlatformsKeys = z.enum(['ios', 'android']);
+export const PlatformsKeys = z.enum(SUPPORTED_PLATFORMS);
 
 export const HexColor = z.string().min(4).max(9).regex(/^#/);
 

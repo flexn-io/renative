@@ -21,4 +21,7 @@ export const PlatformWeb = z.object({
     // environment: {
     //     type: 'string',
     // },
+    // devServerHost: {
+    //     type: 'string',
+    // },
 });

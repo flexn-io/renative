@@ -7,6 +7,8 @@ import {
     EnableAnalytics,
     EnableHookRebuild,
     Engines,
+    Env,
+    Integrations,
     IsMonoRepo,
     MonoRoot,
     Paths,
@@ -15,6 +17,7 @@ import {
     Platforms,
     Plugins,
     ProjectName,
+    Tasks,
     Templates,
     WorkspaceID,
 } from './configLevel1';
@@ -23,7 +26,7 @@ import { ExtendTemplate } from './configLevel2';
 
 //LEVEl 0 (ROOT)
 
-export const RootProject = z.object({
+const RootProject = z.object({
     workspaceID: WorkspaceID,
     projectName: ProjectName,
     isMonorepo: z.optional(IsMonoRepo),
@@ -43,7 +46,10 @@ export const RootProject = z.object({
     enableAnalytics: z.optional(EnableAnalytics),
     plugins: z.optional(Plugins),
     extendsTemplate: z.optional(ExtendTemplate),
+    tasks: z.optional(Tasks),
+    integrations: z.optional(Integrations),
+    env: z.optional(Env),
 });
 //.catchall(z.never());
 
-export type Config = z.infer<typeof RootProject>;
+export type ConfigRootProject = z.infer<typeof RootProject>;

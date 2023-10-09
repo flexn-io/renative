@@ -4,6 +4,9 @@ import { PlatformCommon } from './common/configPlatformCommon';
 import { HexColor, PlatformsKeys } from './common/configCommon';
 import { PlatformWeb } from './web/configPlatformWeb';
 import { PlatformTizen } from './tizen/configPlatformTizen';
+import { PlatformWebpack } from './webpack/configPlatformWebpack';
+import { PlatformElectron } from './electron/configPlatformElectron';
+import { PlatformWindows } from './windows/configPlatformWindows';
 
 export const BuildScheme = z
     .object({
@@ -17,7 +20,10 @@ export const BuildScheme = z
     .merge(PlatformCommon)
     .merge(PlatformiOS)
     .merge(PlatformWeb)
-    .merge(PlatformTizen);
+    .merge(PlatformTizen)
+    .merge(PlatformWebpack)
+    .merge(PlatformElectron)
+    .merge(PlatformWindows);
 
 // LEVEL 2
 
@@ -115,7 +121,10 @@ export const Platform = z
     .merge(PlatformCommon)
     .merge(PlatformiOS)
     .merge(PlatformWeb)
-    .merge(PlatformTizen);
+    .merge(PlatformTizen)
+    .merge(PlatformWebpack)
+    .merge(PlatformElectron)
+    .merge(PlatformWindows);
 
 export const Engine = z.union([
     z.literal('source:rnv'),

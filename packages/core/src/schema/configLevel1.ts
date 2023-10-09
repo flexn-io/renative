@@ -271,4 +271,26 @@ export const MonoRoot = z
     .boolean()
     .describe('Define custom path to monorepo root where starting point is project directory');
 
-export const Plugins = z.record(z.string(), Plugin).describe('Object containing plugins configurations');
+export const Plugins = z
+    .record(z.string(), Plugin)
+    .describe(
+        'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config'
+    );
+
+export const Tasks = z
+    .object({
+        install: z.optional(
+            z.object({
+                script: z.string(),
+            })
+        ),
+    })
+    .describe(
+        'Allows to override specific task within renative toolchain. (currently only `install` supported). this is useful if you want to change specific behaviour of built-in task. ie install task triggers yarn/npm install by default. but that might not be desirable installation trigger'
+    );
+
+export const Integrations = z
+    .record(z.string(), z.object({}))
+    .describe('Object containing integration configurations where key represents package name');
+
+export const Env = z.record(z.string(), z.any()).describe('Object containing injected env variables');
