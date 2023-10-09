@@ -96,7 +96,8 @@ Dev server running at: ${url}
                 return true;
             }
             // child_process_1.spawn('cmd.exe', ['/C', startCmd], { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
-            executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } });
+            executeAsync(c, startCmd, { stdio: 'inherit', silent: true, env: { ...generateEnvVars(c) } })
+                .catch(e => logError(e, true));
 
             return true;
         }
