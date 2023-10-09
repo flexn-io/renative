@@ -1,82 +1,53 @@
 import { z } from 'zod';
 
+const GradleProperties = z
+    .record(z.string(), z.union([z.string(), z.boolean(), z.number()]))
+    .describe('Overrides values in `gradle.properties` file of generated android based project');
+
+const BuildGradle = z
+    .object({
+        allprojects: z.object({
+            repositories: z.record(z.string(), z.boolean()),
+        }),
+    })
+    .describe('Overrides values in `build.gradle` file of generated android based project');
+
+const AppBuildGradle = z
+    .object({
+        apply: z.array(z.string()),
+    })
+    .describe('Overrides values in `app/build.gradle` file of generated android based project');
+
+const ManifestChild = z.object({
+    tag: z.string(),
+    'android:name': z.string(),
+    // 'android:name': '.MainApplication',
+    // 'android:allowBackup': true,
+    // 'android:largeHeap': true,
+    // 'android:usesCleartextTraffic': true,
+    // 'tools:targetApi': 28,
+});
+
+const ManifestChildWithChildren = ManifestChild.merge(
+    z.object({
+        children: z.array(ManifestChild),
+    })
+);
+
+const AndroidManifest = z.object({
+    apply: z.object({
+        children: z.array(ManifestChildWithChildren),
+    }),
+}).describe(`Allows you to directly manipulate \`AndroidManifest.xml\` via json override mechanism
+Injects / Overrides values in AndroidManifest.xml file of generated android based project
+> IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
+ `);
+
 export const PlatformCommonAndroid = z.object({
-    //     'gradle.properties': {
-    //         additionalProperties: true,
-    //         type: 'object',
-    //         description: 'Overrides values in `gradle.properties` file of generated android based project',
-    //         examples: [
-    //             {
-    //                 'gradle.properties': {
-    //                     'android.debug.obsoleteApi': true,
-    //                     'debug.keystore': 'debug.keystore',
-    //                     'org.gradle.daemon': true,
-    //                     'org.gradle.parallel': true,
-    //                     'org.gradle.configureondemand': true,
-    //                 },
-    //             },
-    //         ],
-    //     },
-    //     'build.gradle': {
-    //         additionalProperties: true,
-    //         type: 'object',
-    //         description: 'Overrides values in `build.gradle` file of generated android based project',
-    //         examples: [
-    //             {
-    //                 allprojects: {
-    //                     repositories: {
-    //                         'maven { url "https://dl.bintray.com/onfido/maven" }': true,
-    //                     },
-    //                 },
-    //             },
-    //         ],
-    //     },
-    //     'app/build.gradle': {
-    //         additionalProperties: true,
-    //         type: 'object',
-    //         description: 'Overrides values in `app/build.gradle` file of generated android based project',
-    //         examples: [
-    //             {
-    //                 apply: ["plugin: 'io.fabric'"],
-    //             },
-    //         ],
-    //     },
-    //     AndroidManifest: {
-    //         additionalProperties: true,
-    //         type: 'object',
-    //         description: `Allows you to directly manipulate \`AndroidManifest.xml\` via json override mechanism
-    // Injects / Overrides values in AndroidManifest.xml file of generated android based project
-    // > IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
-    // `,
-    //         examples: [
-    //             {
-    //                 children: [
-    //                     {
-    //                         tag: 'application',
-    //                         'android:name': '.MainApplication',
-    //                         children: [
-    //                             {
-    //                                 tag: 'activity',
-    //                                 'android:name': 'com.ahmedadeltito.photoeditor.PhotoEditorActivity',
-    //                             },
-    //                         ],
-    //                     },
-    //                 ],
-    //             },
-    //             {
-    //                 children: [
-    //                     {
-    //                         tag: 'application',
-    //                         'android:name': '.MainApplication',
-    //                         'android:allowBackup': true,
-    //                         'android:largeHeap': true,
-    //                         'android:usesCleartextTraffic': true,
-    //                         'tools:targetApi': 28,
-    //                     },
-    //                 ],
-    //             },
-    //         ],
-    //     },
+    'gradle.properties': z.optional(GradleProperties),
+    'build.gradle': z.optional(BuildGradle),
+    'app/build.gradle': z.optional(AppBuildGradle),
+    AndroidManifest: z.optional(AndroidManifest),
     //     applyPlugin: {
     //         type: 'array',
     //     },
