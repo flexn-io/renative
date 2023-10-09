@@ -36,7 +36,7 @@
         "@rnv/sdk-react-native": "1.0.0-canary.1",
         "@rnv/sdk-webpack": "1.0.0-canary.1",
         "better-opn": "1.0.0",
-        "electron": "26.2.4",
+        "electron": "26.3.0",
         "electron-builder": "24.6.4",
         "electron-notarize": "1.2.2"
     },
