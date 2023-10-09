@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { PluginAndroid } from './android/configPluginAndroid';
 import { PluginiOS } from './ios/configPluginiOS';
-import { PluginCommon } from './common/configPluginCommon';
+import { PluginShared } from './shared/configPluginShared';
 
 // DEPRECATED?
 const Enabled = z.boolean().default(true).describe('Marks plugin enabled or disabled'); //TODO: switch to disabled
@@ -49,16 +49,16 @@ export const Plugin = z.union([
         firetv: z.optional(PluginAndroid),
         ios: z.optional(PluginiOS),
         tvos: z.optional(PluginiOS),
-        tizen: z.optional(PluginCommon),
-        webos: z.optional(PluginCommon),
-        web: z.optional(PluginCommon),
-        webtv: z.optional(PluginCommon),
-        chromecast: z.optional(PluginCommon),
-        kaios: z.optional(PluginCommon),
-        macos: z.optional(PluginCommon),
-        linux: z.optional(PluginCommon),
-        windows: z.optional(PluginCommon),
-        xbox: z.optional(PluginCommon),
+        tizen: z.optional(PluginShared),
+        webos: z.optional(PluginShared),
+        web: z.optional(PluginShared),
+        webtv: z.optional(PluginShared),
+        chromecast: z.optional(PluginShared),
+        kaios: z.optional(PluginShared),
+        macos: z.optional(PluginShared),
+        linux: z.optional(PluginShared),
+        windows: z.optional(PluginShared),
+        xbox: z.optional(PluginShared),
     }),
     z.string(),
 ]);

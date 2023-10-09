@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PlatformCommon } from './common/configPlatformCommon';
+import { PlatformShared } from './shared/configPlatformShared';
 import { PlatformAndroid } from './android/configPlatformAndroid';
 import { PlatformiOS } from './ios/configPlatformiOS';
 import { PlatformWeb } from './web/configPlatformWeb';
@@ -24,7 +24,7 @@ const Base = z
     .object({
         buildSchemes: z.optional(BuildSchemes),
     })
-    .merge(PlatformCommon);
+    .merge(PlatformShared);
 
 export const Platforms = z
     .object({

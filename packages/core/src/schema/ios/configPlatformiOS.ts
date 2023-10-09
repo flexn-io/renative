@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PlatformCommoniOS } from './configPlatformCommoniOS';
+import { PlatformSharediOS } from './configPlatformSharediOS';
 
 const IgnoreWarnings = z.boolean().describe('Injects `inhibit_all_warnings` into Podfile');
 
@@ -7,7 +7,7 @@ const IgnoreLogs = z.boolean().describe('Passes `-quiet` to xcodebuild command')
 
 const DeploymentTarget = z.string().describe('Deployment target for xcodepoj');
 
-export const PlatformiOS = PlatformCommoniOS.merge(
+export const PlatformiOS = PlatformSharediOS.merge(
     z.object({
         ignoreWarnings: z.optional(IgnoreWarnings),
         ignoreLogs: z.optional(IgnoreLogs),

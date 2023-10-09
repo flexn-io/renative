@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Runtime } from './configCommon';
+import { Runtime } from './configShared';
 
 export const PlatformEngine = z
     .string()
@@ -30,7 +30,7 @@ export const AssetFolderPlatform = z
         'Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets'
     );
 
-export const PlatformCommon = z.object({
+export const PlatformShared = z.object({
     assetFolderPlatform: z.optional(AssetFolderPlatform),
     runtime: z.optional(Runtime),
     engine: z.optional(PlatformEngine),

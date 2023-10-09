@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { Common, Env, MonoRoot } from './configLevel1';
-import { Ext } from './common/configCommon';
+import { Ext } from './shared/configShared';
 import { ExtendTemplate, PortOffset, Ports, Schemes, SupportedPlatforms, Targets } from './configLevel2';
 import { Platforms } from './configPlatforms';
 import { Plugins } from './configPlugins';

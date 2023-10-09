@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PluginCommon } from '../common/configPluginCommon';
-import { PlatformCommoniOS } from './configPlatformCommoniOS';
+import { PluginShared } from '../shared/configPluginShared';
+import { PlatformSharediOS } from './configPlatformSharediOS';
 
-export const PluginiOS = z.object({}).merge(PluginCommon).merge(PlatformCommoniOS);
+export const PluginiOS = z.object({}).merge(PluginShared).merge(PlatformSharediOS);

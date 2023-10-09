@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Ext } from './common/configCommon';
+import { Ext } from './shared/configShared';
 
 //LEVEl 0 (ROOT)
 

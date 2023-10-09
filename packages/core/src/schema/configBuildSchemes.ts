@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { PlatformiOS } from './ios/configPlatformiOS';
-import { PlatformCommon } from './common/configPlatformCommon';
+import { PlatformShared } from './shared/configPlatformShared';
 import { PlatformWeb } from './web/configPlatformWeb';
 import { PlatformTizen } from './tizen/configPlatformTizen';
 import { PlatformWebpack } from './webpack/configPlatformWebpack';
@@ -16,7 +16,7 @@ const BuildScheme = z
                 'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
             ),
     })
-    .merge(PlatformCommon)
+    .merge(PlatformShared)
     .merge(PlatformiOS)
     .merge(PlatformWeb)
     .merge(PlatformTizen)

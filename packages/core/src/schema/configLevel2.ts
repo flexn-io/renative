@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { HexColor, PlatformsKeys } from './common/configCommon';
+import { HexColor, PlatformsKeys } from './shared/configShared';
 
 export const Schemes = z
     .record(PlatformsKeys, z.string())

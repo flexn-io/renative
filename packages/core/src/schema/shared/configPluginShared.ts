@@ -8,7 +8,7 @@ const Path = z
         'Enables you to pass custom path to plugin. If undefined, the default `node_modules/[plugin-name]` will be used.'
     );
 
-export const PluginCommon = z.object({
+export const PluginShared = z.object({
     enabled: z.optional(Enabled),
     path: z.optional(Path),
 });

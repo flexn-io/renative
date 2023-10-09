@@ -13,10 +13,10 @@ import {
     SplashScreen,
     Title,
 } from './configLevel2';
-import { Ext, Runtime } from './common/configCommon';
-import { PlatformCommon } from './common/configPlatformCommon';
+import { Ext, Runtime } from './shared/configShared';
+import { PlatformShared } from './shared/configPlatformShared';
 
-export const CommonBuildSchemes = z.record(z.string(), PlatformCommon);
+export const CommonBuildSchemes = z.record(z.string(), PlatformShared);
 
 //LEVEl 1
 

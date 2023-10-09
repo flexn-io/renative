@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { PlatformCommonAndroid } from './configPlatformCommonAndroid';
+import { PlatformSharedAndroid } from './configPlatformSharedAndroid';
 
 const EnableAndroidX = z.boolean().default(true).describe('Enables new android X architecture');
 
-export const PlatformAndroid = PlatformCommonAndroid.merge(
+export const PlatformAndroid = PlatformSharedAndroid.merge(
     z.object({
         enableAndroidX: z.optional(EnableAndroidX),
 
