@@ -39,7 +39,7 @@ export * from './engines/types';
 export * from './context/types';
 export * from './plugins/types';
 export * from './projects/types';
-export * from './configs/types';
+export * from './schema/ts/types';
 export * from './tasks/types';
 export * from './system/types';
 export * from './api/types';

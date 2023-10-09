@@ -22,7 +22,7 @@ import { chalk, logTask, logWarning, logDebug } from '../logger';
 import { doResolve } from '../system/resolve';
 import { RnvContextFileObj, RnvContextPathObj, RnvContext } from '../context/types';
 import { generateRnvConfigPathObj } from '../context/defaults';
-import { RnvFileKey } from './types';
+import { RnvFileKey } from '../schema/ts/types';
 import { generateContextPaths } from '../context';
 import { getContext } from '../context/provider';
 // import { loadPluginTemplates } from '../pluginManager';

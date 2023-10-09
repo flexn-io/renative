@@ -1,4 +1,4 @@
-import { RenativeConfigFile } from '../configs/types';
+import { RenativeConfigFile } from '../schema/ts/types';
 import { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import { OverridesOptions } from '../system/types';
 import { RnvPlatform } from '../types';

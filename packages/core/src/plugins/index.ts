@@ -27,7 +27,7 @@ import {
     RnvPluginScope,
     RnvPluginWebpackKey,
 } from './types';
-import { RenativeConfigPlugin, RenativeWebpackConfig } from '../configs/types';
+import { RenativeConfigPlugin, RenativeWebpackConfig } from '../schema/ts/types';
 import { RnvModuleConfig } from '../types';
 import { inquirerPrompt } from '../api';
 import { ResolveOptions } from '../api/types';

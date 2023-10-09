@@ -35,7 +35,7 @@ import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
 import { RnvPluginPlatform } from '../plugins/types';
-import { NpmPackageFile, RenativeConfigFile } from '../configs/types';
+import { NpmPackageFile, RenativeConfigFile } from '../schema/ts/types';
 import { inquirerPrompt } from '../api';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
