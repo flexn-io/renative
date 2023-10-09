@@ -1,13 +1,12 @@
 import { z } from 'zod';
 import { PlatformCommonAndroid } from './configPlatformCommonAndroid';
 
+const EnableAndroidX = z.boolean().default(true).describe('Enables new android X architecture');
+
 export const PlatformAndroid = PlatformCommonAndroid.merge(
     z.object({
-        // enableAndroidX: {
-        //     type: 'boolean',
-        //     default: true,
-        //     examples: [true, false],
-        // },
+        enableAndroidX: z.optional(EnableAndroidX),
+
         // enableHermes: {
         //     type: 'boolean',
         //     default: false,

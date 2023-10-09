@@ -1,17 +1,9 @@
 import { z } from 'zod';
-import {
-    Common,
-    Hidden,
-    Id,
-    Platforms,
-    Plugins,
-    Version,
-    VersionCode,
-    VersionCodeFormat,
-    VersionFormat,
-} from './configLevel1';
+import { Common, Hidden, Id, Version, VersionCode, VersionCodeFormat, VersionFormat } from './configLevel1';
 import { Ext } from './common/configCommon';
 import { Extend, ExtendTemplate } from './configLevel2';
+import { Platforms } from './configPlatforms';
+import { Plugins } from './configPlugins';
 
 //LEVEl 0 (ROOT)
 

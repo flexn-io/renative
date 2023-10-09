@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
+const Podfile = z.object({}).describe('Allows to manipulate Podfile');
+
 export const PlatformCommoniOS = z.object({
+    Podfile: z.optional(Podfile),
     // Podfile: {
     //     additionalProperties: true,
     //     type: 'object',

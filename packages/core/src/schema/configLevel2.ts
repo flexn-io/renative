@@ -1,35 +1,6 @@
 import { z } from 'zod';
-import { PlatformiOS } from './ios/configPlatformiOS';
-import { PlatformCommon } from './common/configPlatformCommon';
+
 import { HexColor, PlatformsKeys } from './common/configCommon';
-import { PlatformWeb } from './web/configPlatformWeb';
-import { PlatformTizen } from './tizen/configPlatformTizen';
-import { PlatformWebpack } from './webpack/configPlatformWebpack';
-import { PlatformElectron } from './electron/configPlatformElectron';
-import { PlatformWindows } from './windows/configPlatformWindows';
-
-export const BuildScheme = z
-    .object({
-        enabled: z.boolean().describe('Defines whether build scheme shows up in options to run'),
-        description: z
-            .string()
-            .describe(
-                'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
-            ),
-    })
-    .merge(PlatformCommon)
-    .merge(PlatformiOS)
-    .merge(PlatformWeb)
-    .merge(PlatformTizen)
-    .merge(PlatformWebpack)
-    .merge(PlatformElectron)
-    .merge(PlatformWindows);
-
-// LEVEL 2
-
-export const BuildSchemes = z
-    .record(z.string(), BuildScheme)
-    .describe('Customizations based on chosen build scheme `-s`');
 
 export const Schemes = z
     .record(PlatformsKeys, z.string())
@@ -52,10 +23,6 @@ export const SupportedPlatforms = z
     .describe('Array list of all supported platforms in current project');
 
 export const PortOffset = z.number().describe('Offset each port default value by increment');
-
-export const Template = z.object({
-    version: z.string(),
-});
 
 export const IncludedPermissions = z
     .array(z.string())
@@ -113,25 +80,6 @@ export const AssetSources = z
     .describe(
         'Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project. You can use resolve function here example: `{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets`'
     );
-
-export const Platform = z
-    .object({
-        buildSchemes: z.optional(BuildSchemes),
-    })
-    .merge(PlatformCommon)
-    .merge(PlatformiOS)
-    .merge(PlatformWeb)
-    .merge(PlatformTizen)
-    .merge(PlatformWebpack)
-    .merge(PlatformElectron)
-    .merge(PlatformWindows);
-
-export const Engine = z.union([
-    z.literal('source:rnv'),
-    z.object({
-        version: z.optional(z.string()),
-    }),
-]);
 
 export const ExtendTemplate = z
     .string()

@@ -5,13 +5,13 @@ const IgnoreWarnings = z.boolean().describe('Injects `inhibit_all_warnings` into
 
 const IgnoreLogs = z.boolean().describe('Passes `-quiet` to xcodebuild command');
 
+const DeploymentTarget = z.string().describe('Deployment target for xcodepoj');
+
 export const PlatformiOS = PlatformCommoniOS.merge(
     z.object({
         ignoreWarnings: z.optional(IgnoreWarnings),
         ignoreLogs: z.optional(IgnoreLogs),
-        // deploymentTarget: {
-        //     type: 'string',
-        // },
+        deploymentTarget: z.optional(DeploymentTarget),
         // teamID: {
         //     type: 'string',
         // },

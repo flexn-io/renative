@@ -62,3 +62,9 @@ export const Plugin = z.union([
     }),
     z.string(),
 ]);
+
+export const Plugins = z
+    .record(z.string(), Plugin)
+    .describe(
+        'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config'
+    );
