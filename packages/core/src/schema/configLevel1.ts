@@ -3,6 +3,7 @@ import {
     AssetSources,
     Author,
     BackgroundColor,
+    BuildSchemes,
     BundleId,
     Description,
     Engine,
@@ -11,7 +12,6 @@ import {
     IncludedFonts,
     IncludedPermissions,
     IncludedPlugins,
-    Platform,
     PortOffset,
     Ports,
     Schemes,
@@ -21,9 +21,13 @@ import {
     Template,
     Title,
 } from './configLevel2';
-import { Ext, PlatformsKeys, Runtime } from './common/configCommon';
+import { Ext, Runtime } from './common/configCommon';
 import { Plugin } from './configPlugin';
 import { PlatformCommon } from './common/configPlatformCommon';
+import { PlatformAndroid } from './android/configPlatformAndroid';
+import { PlatformiOS } from './ios/configPlatformiOS';
+import { PlatformTizen } from './tizen/configPlatformTizen';
+import { PlatformWeb } from './web/configPlatformWeb';
 
 export const CommonBuildSchemes = z.record(z.string(), PlatformCommon);
 
@@ -245,7 +249,34 @@ export const Permissions = z
 
 export const Engines = z.record(z.string(), Engine).describe('List of engines available in this project');
 
-export const Platforms = z.record(PlatformsKeys, Platform).describe('Object containing platform configurations');
+// export const Platforms = z.record(PlatformsKeys, Platform).describe('Object containing platform configurations');
+
+const Base = z
+    .object({
+        buildSchemes: z.optional(BuildSchemes),
+    })
+    .merge(PlatformCommon);
+
+export const Platforms = z
+    .object({
+        android: z.optional(Base.merge(PlatformAndroid)),
+        androidtv: z.optional(Base.merge(PlatformAndroid)),
+        androidwear: z.optional(Base.merge(PlatformAndroid)),
+        firetv: z.optional(Base.merge(PlatformAndroid)),
+        ios: z.optional(Base.merge(PlatformiOS)),
+        tvos: z.optional(Base.merge(PlatformiOS)),
+        tizen: z.optional(Base.merge(PlatformTizen)),
+        webos: z.optional(Base.merge(PlatformWeb)),
+        web: z.optional(Base.merge(PlatformWeb)),
+        webtv: z.optional(Base.merge(PlatformWeb)),
+        chromecast: z.optional(Base.merge(PlatformWeb)),
+        kaios: z.optional(Base.merge(PlatformWeb)),
+        macos: z.optional(Base.merge(PlatformWeb)),
+        linux: z.optional(Base.merge(PlatformWeb)),
+        windows: z.optional(Base.merge(PlatformWeb)),
+        xbox: z.optional(Base.merge(PlatformWeb)),
+    })
+    .describe('Object containing platform configurations');
 
 export const EnableHookRebuild = z
     .boolean()

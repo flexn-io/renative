@@ -116,7 +116,7 @@ export const AssetSources = z
 
 export const Platform = z
     .object({
-        buildSchemes: BuildSchemes,
+        buildSchemes: z.optional(BuildSchemes),
     })
     .merge(PlatformCommon)
     .merge(PlatformiOS)
