@@ -18,7 +18,7 @@ import {
     logSummary,
 } from '@rnv/core';
 import { packageAndroid, runAndroid } from '@rnv/sdk-android';
-import { runXcodeProject } from '@rnv/sdk-apple';
+import { runXcodeProject, getDeviceToRunOn } from '@rnv/sdk-apple';
 import { startBundlerIfRequired, waitForBundlerIfRequired } from '@rnv/sdk-react-native';
 
 export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
@@ -36,15 +36,17 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (platform) {
         case IOS:
         case MACOS:
+            // eslint-disable-next-line no-case-declarations
+            const runDeviceArgs = await getDeviceToRunOn(c);
             if (!c.program.only) {
                 await startBundlerIfRequired(c, TASK_RUN, originTask);
-                await runXcodeProject(c);
+                await runXcodeProject(c, runDeviceArgs);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
                 }
                 return waitForBundlerIfRequired(c);
             }
-            return runXcodeProject(c);
+            return runXcodeProject(c, runDeviceArgs);
         case ANDROID:
         case ANDROID_TV:
         case FIRE_TV:
