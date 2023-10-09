@@ -1,11 +1,32 @@
 import { z } from 'zod';
-import { Common, Env, MonoRoot } from './configLevel1';
-import { Ext } from './shared/configShared';
-import { ExtendTemplate, PortOffset, Ports, Schemes, SupportedPlatforms, Targets } from './configLevel2';
+import { Common } from './configCommon';
+import { Ext, ExtendTemplate, PlatformsKeys } from './shared/configShared';
 import { Platforms } from './configPlatforms';
 import { Plugins } from './configPlugins';
 
-export const Defaults = z
+const Schemes = z
+    .record(PlatformsKeys, z.string())
+    .describe(
+        'List of default schemes for each platform. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`'
+    );
+
+const Targets = z.record(PlatformsKeys, z.string()).describe('Override of default targets specific to this project');
+
+const Ports = z
+    .record(PlatformsKeys, z.number()) //TODO maxValue(65535)
+    .describe(
+        'Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts'
+    );
+
+const SupportedPlatforms = z.array(PlatformsKeys).describe('Array list of all supported platforms in current project');
+
+const PortOffset = z.number().describe('Offset each port default value by increment');
+
+const MonoRoot = z.boolean().describe('Define custom path to monorepo root where starting point is project directory');
+
+const Env = z.record(z.string(), z.any()).describe('Object containing injected env variables');
+
+const Defaults = z
     .object({
         ports: Ports,
         supportedPlatforms: SupportedPlatforms,
@@ -15,13 +36,13 @@ export const Defaults = z
     })
     .describe('Default system config for this project');
 
-export const Pipes = z
+const Pipes = z
     .array(z.string())
     .describe(
         'To avoid rnv building `buildHooks/src` every time you can specify which specific pipes should trigger recompile of buildHooks'
     );
 
-export const WorkspaceID = z
+const WorkspaceID = z
     .string() //TODO: no spaces
     .describe(
         'Workspace ID your project belongs to. This will mach same folder name in the root of your user directory. ie `~/` on macOS'

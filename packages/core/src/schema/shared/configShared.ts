@@ -16,3 +16,9 @@ export const Ext = z
     .describe(
         'Object ysed to extend your renative with custom props. This allows renative json schema to be validated'
     );
+
+export const ExtendTemplate = z
+    .string()
+    .describe(
+        'You can extend another renative.json file of currently applied template by providing relative or full package name path. Exampe: `@rnv/template-starter/renative.json`'
+    );
