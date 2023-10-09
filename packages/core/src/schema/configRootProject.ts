@@ -198,7 +198,7 @@ const Paths = z
 
 //LEVEl 0 (ROOT)
 
-const RootProject = z.object({
+export const RootProjectSchema = z.object({
     workspaceID: WorkspaceID,
     projectName: ProjectName,
     isMonorepo: z.optional(IsMonoRepo),
@@ -224,4 +224,4 @@ const RootProject = z.object({
 });
 //.catchall(z.never());
 
-export type ConfigRootProject = z.infer<typeof RootProject>;
+export type _ConfigRootProject = z.infer<typeof RootProjectSchema>;

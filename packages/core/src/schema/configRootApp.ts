@@ -80,7 +80,7 @@ const Hidden = z
 
 //LEVEl 0 (ROOT)
 
-const RootApp = z.object({
+export const RootAppSchema = z.object({
     id: z.optional(Id),
     version: z.optional(Version),
     versionCode: z.optional(VersionCode),
@@ -95,4 +95,4 @@ const RootApp = z.object({
     extend: z.optional(Extend),
 });
 
-export type ConfigRootApp = z.infer<typeof RootApp>;
+export type _ConfigRootApp = z.infer<typeof RootAppSchema>;
