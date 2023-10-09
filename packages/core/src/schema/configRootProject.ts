@@ -18,7 +18,8 @@ import {
     Templates,
     WorkspaceID,
 } from './configLevel1';
-import { Ext } from './configCommon';
+import { Ext } from './common/configCommon';
+import { ExtendTemplate } from './configLevel2';
 
 //LEVEl 0 (ROOT)
 
@@ -41,6 +42,7 @@ export const RootProject = z.object({
     monoRoot: z.optional(MonoRoot),
     enableAnalytics: z.optional(EnableAnalytics),
     plugins: z.optional(Plugins),
+    extendsTemplate: z.optional(ExtendTemplate),
 });
 //.catchall(z.never());
 

@@ -1,16 +1,25 @@
 import { z } from 'zod';
-import { PlatformiOS } from './configPlatformiOS';
-import { PlatformCommon } from './configPlatformCommon';
-import { HexColor, PlatformsKeys } from './configCommon';
+import { PlatformiOS } from './ios/configPlatformiOS';
+import { PlatformCommon } from './common/configPlatformCommon';
+import { HexColor, PlatformsKeys } from './common/configCommon';
+import { PlatformWeb } from './web/configPlatformWeb';
+import { PlatformTizen } from './tizen/configPlatformTizen';
 
-export const BuildScheme = z.object({
-    enabled: z.boolean().describe('Defines whether build scheme shows up in options to run'),
-    description: z
-        .string()
-        .describe(
-            'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
-        ),
-});
+export const BuildScheme = z
+    .object({
+        enabled: z.boolean().describe('Defines whether build scheme shows up in options to run'),
+        description: z
+            .string()
+            .describe(
+                'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
+            ),
+    })
+    .merge(PlatformCommon)
+    .merge(PlatformiOS)
+    .merge(PlatformWeb)
+    .merge(PlatformTizen);
+
+// LEVEL 2
 
 export const BuildSchemes = z
     .record(z.string(), BuildScheme)
@@ -104,7 +113,9 @@ export const Platform = z
         buildSchemes: BuildSchemes,
     })
     .merge(PlatformCommon)
-    .merge(PlatformiOS);
+    .merge(PlatformiOS)
+    .merge(PlatformWeb)
+    .merge(PlatformTizen);
 
 export const Engine = z.union([
     z.literal('source:rnv'),
@@ -112,3 +123,11 @@ export const Engine = z.union([
         version: z.optional(z.string()),
     }),
 ]);
+
+export const ExtendTemplate = z
+    .string()
+    .describe(
+        'You can extend another renative.json file of currently applied template by providing relative or full package name path. Exampe: `@rnv/template-starter/renative.json`'
+    );
+
+export const Extend = z.string().describe('extend another appConfig by id');

@@ -10,7 +10,8 @@ import {
     VersionCodeFormat,
     VersionFormat,
 } from './configLevel1';
-import { Ext } from './configCommon';
+import { Ext } from './common/configCommon';
+import { Extend, ExtendTemplate } from './configLevel2';
 
 //LEVEl 0 (ROOT)
 
@@ -25,6 +26,8 @@ export const RootApp = z.object({
     ext: z.optional(Ext),
     hidden: z.optional(Hidden),
     plugins: z.optional(Plugins),
+    extendsTemplate: z.optional(ExtendTemplate),
+    extend: z.optional(Extend),
 });
 
 export type ConfigRootApp = z.infer<typeof RootApp>;

@@ -1,6 +1,7 @@
 import { z } from 'zod';
-import { PluginAndroid } from './configPluginAndroid';
-import { PluginiOS } from './configPluginiOS';
+import { PluginAndroid } from './android/configPluginAndroid';
+import { PluginiOS } from './ios/configPluginiOS';
+import { PluginCommon } from './common/configPluginCommon';
 
 // DEPRECATED?
 const Enabled = z.boolean().default(true).describe('Marks plugin enabled or disabled'); //TODO: switch to disabled
@@ -40,9 +41,21 @@ export const Plugin = z.object({
     // DEPRECATED
     webpack: z.optional(Webpack), //Should this be at root plugin???
     webpackConfig: z.optional(Webpack), //Should this be at root plugin???
+    // PLATFORMS
     android: z.optional(PluginAndroid),
     androidtv: z.optional(PluginAndroid),
     androidwear: z.optional(PluginAndroid),
+    firetv: z.optional(PluginAndroid),
     ios: z.optional(PluginiOS),
     tvos: z.optional(PluginiOS),
+    tizen: z.optional(PluginCommon),
+    webos: z.optional(PluginCommon),
+    web: z.optional(PluginCommon),
+    webtv: z.optional(PluginCommon),
+    chromecast: z.optional(PluginCommon),
+    kaios: z.optional(PluginCommon),
+    macos: z.optional(PluginCommon),
+    linux: z.optional(PluginCommon),
+    windows: z.optional(PluginCommon),
+    xbox: z.optional(PluginCommon),
 });

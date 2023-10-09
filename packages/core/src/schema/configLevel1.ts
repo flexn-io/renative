@@ -3,7 +3,6 @@ import {
     AssetSources,
     Author,
     BackgroundColor,
-    BuildSchemes,
     BundleId,
     Description,
     Engine,
@@ -22,14 +21,17 @@ import {
     Template,
     Title,
 } from './configLevel2';
-import { Ext, PlatformsKeys, Runtime } from './configCommon';
+import { Ext, PlatformsKeys, Runtime } from './common/configCommon';
 import { Plugin } from './configPlugin';
+import { PlatformCommon } from './common/configPlatformCommon';
+
+export const CommonBuildSchemes = z.record(z.string(), PlatformCommon);
 
 //LEVEl 1
 
 export const Common = z
     .object({
-        buildSchemes: z.optional(BuildSchemes),
+        buildSchemes: z.optional(CommonBuildSchemes),
         includedPermissions: z.optional(IncludedPermissions),
         id: z.optional(BundleId),
         title: z.optional(Title),
