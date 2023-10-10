@@ -448,14 +448,19 @@ export const parsePlugins = (
                         const plugin = getMergedPlugin(c, key);
 
                         if (plugin) {
-                            const pluginPlat = plugin[platform] || { skipLinking: true };
+                            const pluginPlat = plugin[platform] || {
+                                skipLinking: true,
+                                disabled: true,
+                                enabled: false,
+                            };
                             if (ignorePlatformObjectCheck) {
                                 // totalIncludedPlugins++;
                                 pluginCallback(plugin, pluginPlat, key);
                             } else if (pluginPlat) {
                                 if (
-                                    plugin['no-active'] !== true &&
+                                    plugin.disabled !== true &&
                                     plugin.enabled !== false &&
+                                    pluginPlat.disabled !== true &&
                                     pluginPlat.enabled !== false
                                 ) {
                                     if (plugin.deprecated) {

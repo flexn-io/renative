@@ -4,7 +4,9 @@ import { PluginiOS } from './ios/configPluginiOS';
 import { PluginShared } from './shared/configPluginShared';
 
 // DEPRECATED?
-const Enabled = z.boolean().default(true).describe('Marks plugin enabled or disabled'); //TODO: switch to disabled
+const Enabled = z.boolean().default(true).describe('Marks plugin enabled or disabled');
+const Disabled = z.boolean().default(false).describe('Marks plugin disabled');
+
 const Props = z.record(z.string(), z.any()).describe('Custom props passed to plugin');
 const Version = z.string().describe('Version of plugin. Typically package version');
 const Source = z
@@ -29,8 +31,10 @@ const Webpack = z
     })
     .describe('Allows you to configure webpack bahaviour per each individual plugin');
 
-export const PluginPartial = z.object({
+export const Plugin = z.object({
+    //DEPRECATED
     enabled: z.optional(Enabled),
+    disabled: z.optional(Disabled),
     props: z.optional(Props),
     version: z.optional(Version),
     source: z.optional(Source),
@@ -41,6 +45,7 @@ export const PluginPartial = z.object({
     // DEPRECATED
     webpack: z.optional(Webpack), //Should this be at root plugin???
     webpackConfig: z.optional(Webpack), //Should this be at root plugin???
+    'engine-rn-next': z.optional(Webpack), //Should this be at root plugin???
     // PLATFORMS
     android: z.optional(PluginAndroid),
     androidtv: z.optional(PluginAndroid),
@@ -60,12 +65,10 @@ export const PluginPartial = z.object({
     xbox: z.optional(PluginShared),
 });
 
-export const Plugin = z.union([PluginPartial, z.string()]);
-
-export type _PluginPartialType = z.infer<typeof Plugin>;
+export type _PluginType = z.infer<typeof Plugin>;
 
 export const Plugins = z
-    .record(z.string(), Plugin)
+    .record(z.string(), z.union([Plugin, z.string()]))
     .describe(
         'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config'
     );

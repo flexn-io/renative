@@ -303,7 +303,7 @@ export const _getConfigProp = (
     }
 
     const resultCli = baseKey && CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
-    const resultScheme = baseKey && scheme[baseKey];
+    const resultScheme = baseKey && scheme[baseKey as keyof RenativeConfigBuildScheme];
     const resultCommonRoot = getFlavouredProp(c, sourceObj.common || {}, baseKey);
     const resultCommonScheme = getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, baseKey);
     const resultCommon = resultCommonScheme || resultCommonRoot;

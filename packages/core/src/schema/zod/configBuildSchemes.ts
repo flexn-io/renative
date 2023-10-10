@@ -9,12 +9,14 @@ import { PlatformWindows } from './windows/configPlatformWindows';
 
 const BuildScheme = z
     .object({
-        enabled: z.boolean().describe('Defines whether build scheme shows up in options to run'),
-        description: z
-            .string()
-            .describe(
-                'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
-            ),
+        enabled: z.optional(z.boolean().describe('Defines whether build scheme shows up in options to run')),
+        description: z.optional(
+            z
+                .string()
+                .describe(
+                    'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
+                )
+        ),
     })
     .merge(PlatformShared)
     .merge(PlatformiOS)

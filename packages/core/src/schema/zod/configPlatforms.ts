@@ -14,7 +14,12 @@ const PlatformMerged = PlatformShared.merge(PlatformiOS)
     .merge(PlatformTizen)
     .merge(PlatformWebpack)
     .merge(PlatformElectron)
-    .merge(PlatformWindows);
+    .merge(PlatformWindows)
+    .merge(
+        z.object({
+            buildSchemes: z.optional(BuildSchemes),
+        })
+    );
 
 // export const Platform = z
 //     .object({
