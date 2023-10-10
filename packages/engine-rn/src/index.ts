@@ -1,5 +1,6 @@
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
+import { withRNVRNConfig } from './adapters/rnConfigAdapter';
 
 //@ts-ignore
 import CNF from '../renative.engine.json';
@@ -95,4 +96,4 @@ export default Engine;
 // Backward compatibility
 const withRNV = withRNVMetro;
 
-export { withRNV, withRNVMetro, withRNVBabel };
+export { withRNV, withRNVMetro, withRNVBabel, withRNVRNConfig };

@@ -1,5 +1,7 @@
 import { RnvEngine, generateEngineTasks, generateEngineExtensions } from '@rnv/core';
-import { withRNVBabel, withRNVMetro } from './adapter';
+import { withRNVMetro } from './adapters/metroAdapter';
+import { withRNVBabel } from './adapters/babelAdapter';
+import { withRNVRNConfig } from './adapters/rnConfigAdapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRnvBuild from './tasks/task.rnv.build';
@@ -43,6 +45,6 @@ const Engine: RnvEngine = {
 // Backward compatibility
 const withRNV = withRNVMetro;
 
-export { withRNV, withRNVMetro, withRNVBabel };
+export { withRNV, withRNVMetro, withRNVBabel, withRNVRNConfig };
 
 export default Engine;

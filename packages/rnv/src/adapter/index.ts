@@ -43,3 +43,14 @@ export const withRNVMetro = (cnf: any) => {
 
     return cnf;
 };
+
+export const withRNVRNConfig = (cnf: any) => {
+    if (process.env.RNV_ENGINE_PATH) {
+        const engine = require(process.env.RNV_ENGINE_PATH);
+        if (engine.withRNVRNConfig) {
+            return engine.withRNVRNConfig(cnf);
+        }
+    }
+
+    return cnf;
+};
