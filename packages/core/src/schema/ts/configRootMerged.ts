@@ -19,6 +19,13 @@ export type ConfigRootMerged = _RootGlobalSchemaType & {
         platforms: Record<string, _PlatformMergedType>;
     } & {
         projectTemplates?: object;
+        engineTemplates?: Record<
+            string,
+            {
+                version: string;
+                id: string;
+            }
+        >;
     };
 
 export const test = (test: ConfigRootMerged) => {

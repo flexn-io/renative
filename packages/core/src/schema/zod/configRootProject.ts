@@ -28,8 +28,8 @@ const Env = z.record(z.string(), z.any()).describe('Object containing injected e
 
 const Defaults = z
     .object({
-        ports: Ports,
-        supportedPlatforms: SupportedPlatforms,
+        ports: z.optional(Ports),
+        supportedPlatforms: z.optional(SupportedPlatforms),
         portOffset: z.optional(PortOffset),
         schemes: z.optional(Schemes),
         targets: z.optional(Targets),
@@ -53,6 +53,15 @@ const Tasks = z
         install: z.optional(
             z.object({
                 script: z.string(),
+                platform: z.optional(
+                    z.record(
+                        PlatformsKeys,
+                        z.object({
+                            ignore: z.optional(z.boolean()),
+                            ignoreTasks: z.optional(z.array(z.string())),
+                        })
+                    )
+                ),
             })
         ),
     })
@@ -64,12 +73,14 @@ const Integrations = z
     .record(z.string(), z.object({}))
     .describe('Object containing integration configurations where key represents package name');
 
-const Engine = z.union([
-    z.literal('source:rnv'),
-    z.object({
-        version: z.optional(z.string()),
-    }),
-]);
+// const Engine = z.union([
+//     z.literal('source:rnv'),
+//     z.object({
+//         version: z.optional(z.string()),
+//     }),
+// ]);
+
+const Engine = z.literal('source:rnv');
 
 const IsMonoRepo = z.boolean().describe('Mark if your project is part of monorepo');
 

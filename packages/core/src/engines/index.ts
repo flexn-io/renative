@@ -5,12 +5,11 @@ import { TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
 import { getAppFolder, getAppId, getConfigProp } from '../common';
 import { doResolve } from '../system/resolve';
-import { getScopedVersion } from '../utils/utils';
 import { writeRenativeConfigFile } from '../configs';
 import { configurePlugins } from '../plugins';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap } from '../tasks/types';
-import { RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
+import { RenativeConfigVersion, RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
 import { RenativeEngineConfig, RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
@@ -322,6 +321,27 @@ const _getFilteredEngines = (c: RnvContext) => {
     return filteredEngines;
 };
 
+const getScopedVersion = (
+    c: RnvContext,
+    key: string,
+    val: RenativeConfigVersion,
+    sourceObjKey: 'engineTemplates' | 'plugins'
+) => {
+    if (typeof val === 'string') {
+        if (val.startsWith('source:')) {
+            const sourceObj = c.buildConfig?.[sourceObjKey];
+            if (sourceObj) {
+                return sourceObj[key]?.version;
+            }
+        } else {
+            return val;
+        }
+    } else {
+        return val?.version;
+    }
+    return null;
+};
+
 export const loadEngines = async (c: RnvContext, failOnMissingDeps?: boolean): Promise<boolean> => {
     logTask('loadEngines');
     if (!fsExistsSync(c.paths.project.config)) return true;
@@ -406,9 +426,10 @@ const _getMergedEngineConfigs = (c: RnvContext) => {
     const engineTemplates = c.buildConfig?.engineTemplates || {};
     const mergedEngineConfigs: RnvEngineConfigMap = {};
     Object.keys(engineTemplates).forEach((packageName) => {
+        const engTemplate = engineTemplates[packageName];
         mergedEngineConfigs[packageName] = {
             packageName,
-            ...engineTemplates[packageName],
+            ...engTemplate,
         };
     });
 

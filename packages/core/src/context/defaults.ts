@@ -50,7 +50,7 @@ export const generateContextDefaults = (): RnvContext => ({
     buildConfig: {},
     command: '',
     subCommand: '',
-    platform: '',
+    platform: 'unknown',
     process: {},
     //==========
     _renativePluginCache: {},

@@ -1,6 +1,3 @@
-import type { RnvContext } from '../context/types';
-import type { RenativeConfigVersion } from '../types';
-
 export const isSystemMac = process.platform === 'darwin';
 
 export const isSystemLinux = process.platform === 'linux';
@@ -38,25 +35,4 @@ export const isUrlLocalhost = (value: string) => {
         if (value.includes('127.0.0.1')) return true;
     }
     return false;
-};
-
-export const getScopedVersion = (
-    c: RnvContext,
-    key: string,
-    val: RenativeConfigVersion,
-    sourceObjKey: 'engineTemplates' | 'plugins'
-) => {
-    if (typeof val === 'string') {
-        if (val.startsWith('source:')) {
-            const sourceObj = c.buildConfig?.[sourceObjKey];
-            if (sourceObj) {
-                return sourceObj[key]?.version;
-            }
-        } else {
-            return val;
-        }
-    } else {
-        return val?.version;
-    }
-    return null;
 };

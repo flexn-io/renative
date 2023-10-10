@@ -15,3 +15,5 @@ export type RenativeConfigPluginPlatform = _PluginPlatformMergedType;
 export type RenativeWebpackConfig = RenativeConfigFile['plugins'][string]['webpackConfig'];
 
 export type PlatformKey = _PlatformsKeysType;
+
+export type RenativeConfigTaskKey = keyof Required<Required<RenativeConfigFile>['tasks']>;
