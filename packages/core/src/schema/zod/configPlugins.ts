@@ -23,7 +23,9 @@ const SkipMerge = z
 const Npm = z
     .record(z.string(), z.string())
     .describe('Object of npm dependencies of this plugin. These will be injected into package.json');
-const PluginDependencies = z.array(z.string()).describe('List of other Renative plugins this plugin depends on');
+const PluginDependencies = z
+    .record(z.string(), z.string().nullable())
+    .describe('List of other Renative plugins this plugin depends on');
 const Webpack = z
     .object({
         modulePaths: z.union([z.boolean(), z.record(z.string(), z.string())]),
@@ -31,16 +33,22 @@ const Webpack = z
     })
     .describe('Allows you to configure webpack bahaviour per each individual plugin');
 
+const Deprecated = z
+    .string()
+    .describe('Marks your plugin deprecated with warning showing in the console during rnv commands');
+
 export const Plugin = z.object({
     //DEPRECATED
     enabled: z.optional(Enabled),
     disabled: z.optional(Disabled),
     props: z.optional(Props),
     version: z.optional(Version),
+    deprecated: z.optional(Deprecated),
     source: z.optional(Source),
+    //DEPRECATED => disableNpm
     'no-npm': z.optional(NoNpm),
     skipMerge: z.optional(SkipMerge),
-    npm: z.optional(Npm),
+    npm: z.optional(Npm), //=> npmDependencies
     pluginDependencies: z.optional(PluginDependencies),
     // DEPRECATED
     webpack: z.optional(Webpack), //Should this be at root plugin???

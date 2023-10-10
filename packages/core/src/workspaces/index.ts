@@ -1,5 +1,5 @@
 import path from 'path';
-import { chalk, logTask, logWarning, logDebug, logInfo } from '../logger';
+import { chalk, logTask, logDebug, logInfo } from '../logger';
 import { writeFileSync, mkdirSync, fsExistsSync } from '../system/fs';
 import { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
@@ -60,13 +60,9 @@ export const getWorkspaceDirPath = async (c: RnvContext) => {
             }
         }
     }
-    if (c.buildConfig?.paths?.globalConfigDir) {
-        logWarning(
-            `paths.globalConfigDir in ${c.paths.project.config} is DEPRECATED. use workspaceID instead. more info at https://renative.org/docs/workspaces`
-        );
-    }
+
     if (!dirPath) {
-        return c.buildConfig?.paths?.globalConfigDir || c.paths.GLOBAL_RNV_DIR;
+        return c.paths.GLOBAL_RNV_DIR;
     }
     return dirPath;
 };

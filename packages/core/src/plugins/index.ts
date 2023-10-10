@@ -266,7 +266,7 @@ export const configurePlugins = async (c: RnvContext) => {
                 );
             }
         } else if (dependencies && dependencies[k]) {
-            if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
+            if (plugin.disabled !== true && plugin['no-npm'] !== true) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -284,7 +284,7 @@ ${ovMsg}`
                 }
             }
         } else if (devDependencies && devDependencies[k]) {
-            if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
+            if (plugin.disabled !== true && plugin['no-npm'] !== true) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -299,7 +299,7 @@ ${ovMsg}`
                     newDevDeps[k] = plugin.version;
                 }
             }
-        } else if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
+        } else if (plugin.disabled !== true && plugin['no-npm'] !== true) {
             // Dependency does not exists
             if (plugin.version) {
                 logInfo(
