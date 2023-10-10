@@ -1,6 +1,7 @@
 import { _PlatformMergedType } from '../zod/configPlatforms';
 import { _PluginType } from '../zod/configPlugins';
 import { _RootAppSchemaPartialType } from '../zod/configRootApp';
+import { _RootGlobalSchemaType } from '../zod/configRootGlobal';
 import type { _RootProjectSchemaPartialType } from '../zod/configRootProject';
 import { _RootTemplatesSchemaType } from '../zod/configRootTemplates';
 // import type { RenativeConfigFile } from './types';
@@ -10,12 +11,14 @@ import { _RootTemplatesSchemaType } from '../zod/configRootTemplates';
 // here I'm giving TS hand by offloading some of the heavy computations to predefined types and removing unions
 // When all reantive json get merged into one file this happens conceptually anyway
 
-export type ConfigRootMerged = {
+export type ConfigRootMerged = _RootGlobalSchemaType & {
     pluginTemplates: Record<string, _RootTemplatesSchemaType>;
 } & _RootProjectSchemaPartialType &
     _RootAppSchemaPartialType & {
         plugins: Record<string, _PluginType>;
         platforms: Record<string, _PlatformMergedType>;
+    } & {
+        projectTemplates?: object;
     };
 
 export const test = (test: ConfigRootMerged) => {

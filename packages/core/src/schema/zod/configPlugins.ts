@@ -10,7 +10,7 @@ const Disabled = z.boolean().default(false).describe('Marks plugin disabled');
 const Props = z.record(z.string(), z.any()).describe('Custom props passed to plugin');
 const Version = z.string().describe('Version of plugin. Typically package version');
 const Source = z
-    .boolean()
+    .string()
     .describe(
         'Will define custom scope for your plugin config to extend from.\n\nNOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}'
     );
@@ -37,6 +37,8 @@ const Deprecated = z
     .string()
     .describe('Marks your plugin deprecated with warning showing in the console during rnv commands');
 
+const DisablePluginTemplateOverrides = z.string().describe('Disables plugin overrides for selected plugin');
+
 export const Plugin = z.object({
     //DEPRECATED
     enabled: z.optional(Enabled),
@@ -50,10 +52,13 @@ export const Plugin = z.object({
     skipMerge: z.optional(SkipMerge),
     npm: z.optional(Npm), //=> npmDependencies
     pluginDependencies: z.optional(PluginDependencies),
+    //DEPRECATED => pluginDependencies
+    plugins: z.optional(PluginDependencies),
     // DEPRECATED
     webpack: z.optional(Webpack), //Should this be at root plugin???
     webpackConfig: z.optional(Webpack), //Should this be at root plugin???
     'engine-rn-next': z.optional(Webpack), //Should this be at root plugin???
+    disablePluginTemplateOverrides: z.optional(DisablePluginTemplateOverrides),
     // PLATFORMS
     android: z.optional(PluginAndroid),
     androidtv: z.optional(PluginAndroid),
@@ -72,6 +77,8 @@ export const Plugin = z.object({
     windows: z.optional(PluginShared),
     xbox: z.optional(PluginShared),
 });
+
+export type _PluginPlatformMergedType = z.infer<typeof PluginAndroid> & z.infer<typeof PluginiOS>;
 
 export type _PluginType = z.infer<typeof Plugin>;
 

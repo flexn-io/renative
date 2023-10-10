@@ -142,7 +142,7 @@ export const getMergedPlugin = (c: RnvContext, key: string) => {
 
 const _getMergedPlugin = (
     c: RnvContext,
-    plugin: RenativeConfigPlugin | string,
+    plugin: RenativeConfigPlugin | string | undefined,
     pluginKey: string,
     parentScope?: string,
     scopes?: Array<string>,
@@ -420,7 +420,9 @@ const _resolvePluginDependencies = async (
         for (let i = 0; i < depsKeys.length; i++) {
             const depKey = depsKeys[i];
             const depScope = deps[depKey];
-            await _resolvePluginDependencies(c, depKey, depScope, key);
+            if (depScope) {
+                await _resolvePluginDependencies(c, depKey, depScope, key);
+            }
         }
     }
     return true;

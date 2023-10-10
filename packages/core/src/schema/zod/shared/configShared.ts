@@ -9,6 +9,8 @@ export const Runtime = z
 
 export const PlatformsKeys = z.enum(SUPPORTED_PLATFORMS);
 
+export type _PlatformsKeysType = z.infer<typeof PlatformsKeys>;
+
 export const HexColor = z.string().min(4).max(9).regex(/^#/);
 
 export const Ext = z
