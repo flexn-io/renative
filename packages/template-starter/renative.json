@@ -68,7 +68,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^1.0.0-canary.1"
+            "version": "^1.0.0-canary.2"
         }
     },
     "platforms": {
@@ -117,7 +117,9 @@
                 "org.gradle.configureondemand": true
             },
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "androidwear": {
             "minSdkVersion": 26,
@@ -139,7 +141,9 @@
                 "org.gradle.parallel": true,
                 "org.gradle.configureondemand": true
             },
-            "includedPermissions": ["INTERNET"],
+            "includedPermissions": [
+                "INTERNET"
+            ],
             "mainActivity": {
                 "onCreate": "super.onCreate(null)"
             }
@@ -165,7 +169,9 @@
                 "org.gradle.configureondemand": true
             },
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "web": {
             "engine": "engine-rn-next"
