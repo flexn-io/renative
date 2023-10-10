@@ -1,7 +1,6 @@
 import { RnvEngine, generateEngineTasks, generateEngineExtensions } from '@rnv/core';
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
-import { withRNVRNConfig } from './adapters/rnConfigAdapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRnvBuild from './tasks/task.rnv.build';
@@ -12,6 +11,7 @@ import taskRnvExport from './tasks/task.rnv.export';
 import taskRnvPackage from './tasks/task.rnv.package';
 import taskRnvRun from './tasks/task.rnv.run';
 import taskRnvStart from './tasks/task.rnv.start';
+import { withRNVRNConfig } from "@rnv/sdk-react-native";
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: (c) => Context.initializeConfig(c),

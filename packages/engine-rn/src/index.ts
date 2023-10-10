@@ -1,6 +1,5 @@
 import { withRNVMetro } from './adapters/metroAdapter';
 import { withRNVBabel } from './adapters/babelAdapter';
-import { withRNVRNConfig } from './adapters/rnConfigAdapter';
 
 //@ts-ignore
 import CNF from '../renative.engine.json';
@@ -19,6 +18,7 @@ import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfile
 import taskRnvLog from './tasks/task.rnv.log';
 import taskRnvEject from './tasks/task.rnv.eject';
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
+import { withRNVRNConfig } from "@rnv/sdk-react-native";
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: (c) => Context.initializeConfig(c),

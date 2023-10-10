@@ -16,7 +16,7 @@ import taskRnvLog from './tasks/task.rnv.log';
 import CNF from '../renative.engine.json';
 import { withRNVBabel } from './adapters/babelAdapter';
 import { withRNVMetro } from './adapters/metroAdapter';
-import { withRNVRNConfig } from './adapters/rnConfigAdapter';
+import { withRNVRNConfig } from "@rnv/sdk-react-native";
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
