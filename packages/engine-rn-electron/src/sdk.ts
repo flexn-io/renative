@@ -216,6 +216,11 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             };
         }
 
+        // Fix `Cannot compute electron version from installed node modules - none of the possible electron modules are installed.`
+        // See https://github.com/electron-userland/electron-builder/issues/3984#issuecomment-505307933
+        const enginePkgJson = path.join(engine.rootPath!, 'package.json');
+        const enginePackageJson = readObjectSync(enginePkgJson);
+
         let electronConfig = merge(
             {
                 appId,
@@ -225,6 +230,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
                     output: path.join(platformBuildDir, 'export'),
                 },
                 files: ['!export/*'],
+                electronVersion: enginePackageJson.dependencies.electron,
             },
             macConfig
         );
@@ -235,7 +241,6 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             electronConfig = merge(electronConfig, electronConfigExt);
         }
         writeFileSync(electronConfigPath, electronConfig);
-
         resolve();
     });
 
