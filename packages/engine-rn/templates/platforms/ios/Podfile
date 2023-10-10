@@ -18,7 +18,7 @@ if permissions_required != '' && permissions_required != nil
   setup_permissions(permissions_required.split(","))
 end
 
-platform :ios, min_ios_version_supported
+platform :ios, '{{PLUGIN_DEPLOYMENT_TARGET}}'
 prepare_react_native_project!
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.

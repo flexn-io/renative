@@ -18,7 +18,7 @@ end
 
 target 'RNVApp' do
   config = use_native_modules!
-  platform :ios, min_ios_version_supported
+  platform :ios, '{{PLUGIN_DEPLOYMENT_TARGET}}'
 
   # Flags change depending on the env values.
   flags = get_default_flags()
@@ -41,7 +41,7 @@ end
 
 target 'RNVApp-tvOS' do
   config = use_native_modules!
-  platform :tvos, min_ios_version_supported
+  platform :tvos, '{{PLUGIN_DEPLOYMENT_TARGET}}'
 
   # Flags change depending on the env values.
   flags = get_default_flags()
