@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { Common } from './configCommon';
-import { Ext, ExtendTemplate, PlatformsKeys } from './shared/configShared';
+import { Ext, ExtendTemplate, PlatformsKeys, Runtime } from './shared/configShared';
 import { Platforms } from './configPlatforms';
 import { Plugins } from './configPlugins';
 
@@ -230,6 +230,7 @@ export const RootProjectSchemaPartial = z.object({
     tasks: z.optional(Tasks),
     integrations: z.optional(Integrations),
     env: z.optional(Env),
+    runtime: z.optional(Runtime),
 });
 
 export const RootProjectSchema = RootProjectSchemaPartial.merge(

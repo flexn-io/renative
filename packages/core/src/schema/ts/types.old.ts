@@ -225,5 +225,3 @@ export type RenativeWebpackConfig = {
 };
 
 export type RenativeConfigBuildScheme = Record<string, any>;
-
-export type RnvFileKey = 'config' | 'configLocal' | 'configPrivate';

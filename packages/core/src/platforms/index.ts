@@ -5,6 +5,7 @@ import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../c
 import { SUPPORTED_PLATFORMS } from '../constants';
 import { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
+import { RnvPlatform, RnvPlatformWithAll } from '../types';
 
 export const logErrorPlatform = (c: RnvContext) => {
     logError(
@@ -35,15 +36,15 @@ export const generatePlatformChoices = (c: RnvContext) => {
     return options;
 };
 
-export const cleanPlatformBuild = (c: RnvContext, platform: string) =>
+export const cleanPlatformBuild = (c: RnvContext, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
         logTask('cleanPlatformBuild');
 
         const cleanTasks = [];
 
-        if (platform === 'all' && c.buildConfig.platforms) {
+        if ((platform as RnvPlatformWithAll) === 'all' && c.buildConfig.platforms) {
             Object.keys(c.buildConfig.platforms).forEach((k) => {
-                if (isPlatformSupportedSync(c, k)) {
+                if (isPlatformSupportedSync(c, k as RnvPlatform)) {
                     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
                     cleanTasks.push(cleanFolder(pPath));
                 }
@@ -58,11 +59,11 @@ export const cleanPlatformBuild = (c: RnvContext, platform: string) =>
         });
     });
 
-export const createPlatformBuild = (c: RnvContext, platform: string) =>
+export const createPlatformBuild = (c: RnvContext, platform: RnvPlatform) =>
     new Promise<void>((resolve, reject) => {
         logTask('createPlatformBuild');
 
-        if (!isPlatformSupportedSync(c, platform, undefined, reject)) return;
+        if (!platform || !isPlatformSupportedSync(c, platform, undefined, reject)) return;
 
         const pPath = getAppFolder(c);
         const ptPath = path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
@@ -134,7 +135,7 @@ export const isPlatformSupported = async (c: RnvContext, isGlobalScope = false) 
 
 export const isPlatformSupportedSync = (
     c: RnvContext,
-    platform: string,
+    platform: RnvPlatform,
     resolve?: () => void,
     reject?: (e: string) => void
 ) => {
@@ -147,6 +148,7 @@ export const isPlatformSupportedSync = (
                     )}" option to your command!`
                 )
             );
+            return false;
         }
         return false;
     }
@@ -166,7 +168,7 @@ export const isPlatformSupportedSync = (
     return true;
 };
 
-export const isPlatformActive = (c: RnvContext, platform: string, resolve?: () => void) => {
+export const isPlatformActive = (c: RnvContext, platform: RnvPlatform, resolve?: () => void) => {
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(
             `Your appConfigFile is not configured properly! check ${chalk().white(c.paths.appConfig.config)} location.`
@@ -174,7 +176,7 @@ export const isPlatformActive = (c: RnvContext, platform: string, resolve?: () =
         if (resolve) resolve();
         return false;
     }
-    if (!c.buildConfig.platforms[platform]) {
+    if (!platform || (platform && !c.buildConfig.platforms[platform])) {
         logWarning(`Platform ${platform} not configured for ${c.runtime.appId}. skipping.`);
         if (resolve) resolve();
         return false;

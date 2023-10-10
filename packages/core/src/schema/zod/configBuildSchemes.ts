@@ -7,18 +7,18 @@ import { PlatformWebpack } from './webpack/configPlatformWebpack';
 import { PlatformElectron } from './electron/configPlatformElectron';
 import { PlatformWindows } from './windows/configPlatformWindows';
 
-const BuildScheme = z
-    .object({
-        enabled: z.optional(z.boolean().describe('Defines whether build scheme shows up in options to run')),
-        description: z.optional(
-            z
-                .string()
-                .describe(
-                    'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
-                )
-        ),
-    })
-    .merge(PlatformShared)
+export const BuildSchemeShared = z.object({
+    enabled: z.optional(z.boolean().describe('Defines whether build scheme shows up in options to run')),
+    description: z.optional(
+        z
+            .string()
+            .describe(
+                'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
+            )
+    ),
+});
+
+const BuildScheme = BuildSchemeShared.merge(PlatformShared)
     .merge(PlatformiOS)
     .merge(PlatformWeb)
     .merge(PlatformTizen)

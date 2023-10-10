@@ -3,6 +3,7 @@ import { _PluginType } from '../zod/configPlugins';
 import { _RootAppSchemaPartialType } from '../zod/configRootApp';
 import { _RootGlobalSchemaType } from '../zod/configRootGlobal';
 import type { _RootProjectSchemaPartialType } from '../zod/configRootProject';
+import { _RootProjectLocalSchemaPartialType } from '../zod/configRootProjectLocal';
 import { _RootTemplatesSchemaType } from '../zod/configRootTemplates';
 // import type { RenativeConfigFile } from './types';
 
@@ -14,6 +15,7 @@ import { _RootTemplatesSchemaType } from '../zod/configRootTemplates';
 export type ConfigRootMerged = _RootGlobalSchemaType & {
     pluginTemplates: Record<string, _RootTemplatesSchemaType>;
 } & _RootProjectSchemaPartialType &
+    _RootProjectLocalSchemaPartialType &
     _RootAppSchemaPartialType & {
         plugins: Record<string, _PluginType>;
         platforms: Record<string, _PlatformMergedType>;

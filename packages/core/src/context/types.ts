@@ -57,7 +57,7 @@ export type RnvContextBuildConfig = Partial<RenativeConfigFile> & {
 };
 
 export type RnvContextRuntime = {
-    platform: string;
+    platform: RnvPlatform;
     appId: string | null;
     appDir: string;
     enginesByPlatform: Record<string, RnvEngine>;
@@ -279,3 +279,5 @@ export interface RnvContextPlatform {
     port?: number;
     isValid?: boolean;
 }
+
+export type RnvContextFileKey = 'config' | 'configLocal' | 'configPrivate';

@@ -112,11 +112,11 @@ export const injectPlatformDependencies = async (c: RnvContext) => {
     const { platform } = c;
     const engine = getEngineRunnerByPlatform(c, platform);
     const npmDepsBase = engine?.config?.npm || {};
-    const npmDepsExt = engine?.config?.platforms[platform]?.npm || {};
+    const npmDepsExt = platform ? engine?.config?.platforms[platform]?.npm || {} : {};
 
     const npmDeps = merge<any>(npmDepsBase, npmDepsExt);
 
-    if (npmDeps) {
+    if (engine && npmDeps) {
         const promises = Object.keys(npmDeps).reduce<Array<Promise<boolean>>>((acc, type) => {
             // iterate over dependencies, devDepencencies or optionalDependencies
             Object.keys(npmDeps[type]).forEach((dep) => {

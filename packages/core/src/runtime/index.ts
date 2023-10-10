@@ -23,19 +23,25 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
     // TODO:
     // version
     // title
-    c.runtime.currentEngine = c.runtime.enginesByPlatform?.[c.platform];
-    c.runtime.currentPlatform = c.runtime.currentEngine?.platforms?.[c.platform];
+    let port: number | undefined;
+    let defaultTarget: string | undefined;
+    if (c.platform) {
+        c.runtime.currentEngine = c.runtime.enginesByPlatform?.[c.platform];
+        c.runtime.currentPlatform = c.runtime.currentEngine?.platforms?.[c.platform];
+        port = c.buildConfig?.defaults?.ports?.[c.platform];
+        defaultTarget = c.buildConfig?.defaultTargets?.[c.platform];
+    }
+
     const defaultHost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
 
-    const portString =
-        c.program.port || c.buildConfig?.defaults?.ports?.[c.platform] || c.runtime.currentPlatform?.defaultPort; //  PLATFORMS[c.platform]?.defaultPort;
+    const portString = c.program.port || port || c.runtime.currentPlatform?.defaultPort; //  PLATFORMS[c.platform]?.defaultPort;
 
     const portOffset = c.buildConfig?.defaults?.portOffset || 0;
 
     c.runtime.port = Number(portString) + portOffset;
 
     if (c.program.target !== true) {
-        c.runtime.target = c.program.target || c.buildConfig?.defaultTargets?.[c.platform];
+        c.runtime.target = c.program.target || defaultTarget;
     } else c.runtime.isTargetTrue = c.program.target;
     c.runtime.scheme = c.program.scheme || 'debug';
     c.runtime.localhost = c.program.hostIp || defaultHost;

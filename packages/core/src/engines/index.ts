@@ -450,7 +450,7 @@ const _getMergedEngineConfigs = (c: RnvContext) => {
     return mergedEngineConfigs;
 };
 
-const _getEngineConfigByPlatform = (c: RnvContext, platform: string): RnvEngineConfig | null => {
+const _getEngineConfigByPlatform = (c: RnvContext, platform: RnvPlatform): RnvEngineConfig | null => {
     const mergedEngineConfigs = _getMergedEngineConfigs(c);
     const engineId = c.program.engine || getConfigProp(c, platform, 'engine');
     let selectedEngineConfig: RnvEngineConfig | null = null;
@@ -536,7 +536,7 @@ export const generateEnvVars = (
         RNV_IS_MONOREPO: isMonorepo,
         RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir,
         RNV_ENGINE: c.runtime.engine?.config.id,
-        RNV_IS_NATIVE_TV: [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform),
+        RNV_IS_NATIVE_TV: c.platform ? [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform) : false,
         RNV_APP_ID: getAppId(c, c.platform),
         RNV_REACT_NATIVE_PATH: getRelativePath(
             c.paths.project.dir,
@@ -554,7 +554,7 @@ export const generateEnvVars = (
 export const getPlatformExtensions = (c: RnvContext, excludeServer = false, addDotPrefix = false): Array<string> => {
     const { engine } = c.runtime;
     let output;
-    if (!engine) return [];
+    if (!engine || !c.platform) return [];
     const { platforms } = engine;
 
     if (addDotPrefix) {
@@ -567,7 +567,8 @@ export const getPlatformExtensions = (c: RnvContext, excludeServer = false, addD
     return output;
 };
 
-export const getEngineRunnerByPlatform = (c: RnvContext, platform: string, ignoreMissingError?: boolean) => {
+export const getEngineRunnerByPlatform = (c: RnvContext, platform: RnvPlatform, ignoreMissingError?: boolean) => {
+    if (!platform) return undefined;
     const selectedEngine = c.runtime.enginesByPlatform[platform];
     if (!selectedEngine && !ignoreMissingError) {
         logDebug(`ERROR: Engine for platform: ${platform} does not exists or is not registered ${new Error()}`);

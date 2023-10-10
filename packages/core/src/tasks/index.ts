@@ -393,7 +393,7 @@ export const shouldSkipTask = (c: RnvContext, taskKey: string, originTaskKey?: s
                 }
             }
         }
-    } else {
+    } else if (c.platform) {
         const ignoreTask = tasks[task]?.platform?.[c.platform]?.ignore;
         if (ignoreTask) {
             _logSkip(task);

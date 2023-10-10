@@ -419,7 +419,7 @@ export const copyAssetsFolder = async (
     c: RnvContext,
     platform: RnvPlatform,
     subPath?: string,
-    customFn?: (c: RnvContext, platform: string) => void
+    customFn?: (c: RnvContext, platform: RnvPlatform) => void
 ) => {
     logTask('copyAssetsFolder');
 
@@ -526,7 +526,7 @@ export const copyAssetsFolder = async (
 // }
 // };
 
-export const copyBuildsFolder = (c: RnvContext, platform: string) =>
+export const copyBuildsFolder = (c: RnvContext, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
         logTask('copyBuildsFolder');
         if (!isPlatformActive(c, platform, resolve)) return;

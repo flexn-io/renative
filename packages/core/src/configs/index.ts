@@ -20,9 +20,8 @@ import { getConfigProp } from '../common';
 import { getWorkspaceDirPath } from '../workspaces';
 import { chalk, logTask, logWarning, logDebug } from '../logger';
 import { doResolve } from '../system/resolve';
-import { RnvContextFileObj, RnvContextPathObj, RnvContext } from '../context/types';
+import { RnvContextFileObj, RnvContextPathObj, RnvContext, RnvContextFileKey } from '../context/types';
 import { generateRnvConfigPathObj } from '../context/defaults';
-import { RnvFileKey } from '../schema/ts/types';
 import { generateContextPaths } from '../context';
 import { getContext } from '../context/provider';
 // import { loadPluginTemplates } from '../pluginManager';
@@ -52,7 +51,7 @@ const getEnginesPluginDelta = (c: RnvContext) => {
     const enginePlugins: Record<string, any> = {};
     const missingEnginePlugins: Record<string, any> = {};
 
-    const engineConfig = c.runtime.enginesByPlatform[c.platform]?.config;
+    const engineConfig = c.platform ? c.runtime.enginesByPlatform[c.platform]?.config : undefined;
     if (engineConfig?.plugins) {
         const ePlugins = Object.keys(engineConfig.plugins);
 
@@ -206,7 +205,7 @@ export const loadFileExtended = (
     c: RnvContext,
     fileObj: Record<string, any>,
     pathObj: RnvContextPathObj,
-    key: RnvFileKey
+    key: RnvContextFileKey
 ) => {
     const result = loadFile(fileObj, pathObj, key);
     if (fileObj[key]) {
@@ -375,7 +374,11 @@ export const generateRuntimeConfig = async (c: RnvContext) => {
     // };
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.runtime || {});
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.common?.runtime || {});
-    c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.platforms?.[c.platform]?.runtime || {});
+    c.assetConfig = mergeObjects(
+        c,
+        c.assetConfig,
+        c.platform ? c.buildConfig.platforms?.[c.platform]?.runtime || {} : {}
+    );
     c.assetConfig = mergeObjects(c, c.assetConfig, getConfigProp(c, c.platform, 'runtime') || {});
 
     if (fsExistsSync(c.paths.project.assets.dir)) {
@@ -414,7 +417,7 @@ const _generatePlatformTemplatePaths = (c: RnvContext) => {
         };
     }
 
-    const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
+    const pt = c.buildConfig.paths?.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
     const result: Record<string, string> = {};
 
     if (c.buildConfig.defaults) {
