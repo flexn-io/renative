@@ -10,16 +10,11 @@ import { configurePlugins } from '../plugins';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap } from '../tasks/types';
 import { RenativeConfigVersion, RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
-import {
-    RenativeEngineConfig,
-    RnvEngine,
-    RnvEngineInstallConfig,
-    RnvEngineTemplate,
-    RnvEngineTemplateMap,
-} from './types';
+import { RnvEngine, RnvEngineInstallConfig, RnvEngineTemplate, RnvEngineTemplateMap } from './types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
 import { RnvEnvContext, RnvEnvContextOptions } from '../env/types';
+import { RenativeEngineConfig } from '../schema/ts/types';
 
 const ENGINE_CORE = 'engine-core';
 

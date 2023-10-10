@@ -1,3 +1,4 @@
+import { RenativeEngineConfig } from '../schema/ts/types';
 import { RnvTaskMap } from '../tasks/types';
 
 export type RnvEngine = {
@@ -28,15 +29,6 @@ export type RnvEngineTemplate = {
     packageName?: string;
 };
 
-// export type RnvEngineConfig = RnvEngineConfigUnloaded & {
-//     title: string;
-//     platforms: any;
-//     npm: any;
-//     plugins?: any;
-// };
-
-// export type RnvEngineConfigMap = Record<string, RnvEngineConfig>;
-
 export type RnvEngineTemplateMap = Record<string, RnvEngineTemplate>;
 
 export type RnvEngineInstallConfig = {
@@ -44,29 +36,4 @@ export type RnvEngineInstallConfig = {
     version?: string;
     engineRootPath?: string;
     configPath?: string;
-};
-
-export type RenativeEngineConfig = {
-    id: string;
-    engineExtension: string;
-    overview: string;
-    plugins: Record<string, string>;
-    npm: Record<string, Record<string, string>>;
-    platforms: {
-        ios: RenativeEngineConfigPlatform;
-        macos: RenativeEngineConfigPlatform;
-        android: RenativeEngineConfigPlatform;
-        androidwear: RenativeEngineConfigPlatform;
-        androidtv: RenativeEngineConfigPlatform;
-        firetv: RenativeEngineConfigPlatform;
-    };
-};
-
-export type RenativeEngineConfigPlatform = {
-    engine: string;
-    npm: {
-        dependencies?: Record<string, string>;
-        devDependencies?: Record<string, string>;
-        peerDependencies?: Record<string, string>;
-    };
 };

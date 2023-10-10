@@ -112,7 +112,7 @@ export const injectPlatformDependencies = async (c: RnvContext) => {
     const { platform } = c;
     const engine = getEngineRunnerByPlatform(c, platform);
     const npmDepsBase = engine?.config?.npm || {};
-    const npmDepsExt = platform ? engine?.config?.platforms[platform]?.npm || {} : {};
+    const npmDepsExt = platform ? engine?.config?.platforms?.[platform]?.npm || {} : {};
 
     const npmDeps = merge<any>(npmDepsBase, npmDepsExt);
 
