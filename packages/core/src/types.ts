@@ -1,4 +1,6 @@
-export type RnvPlatform = string;
+import type { PlatformKey } from './schema/ts/types';
+
+export type RnvPlatform = PlatformKey;
 
 export type RnvModuleConfig = {
     modulePaths: Array<string>;

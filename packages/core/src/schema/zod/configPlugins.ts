@@ -26,10 +26,22 @@ const Npm = z
 const PluginDependencies = z
     .record(z.string(), z.string().nullable())
     .describe('List of other Renative plugins this plugin depends on');
+
 const Webpack = z
     .object({
-        modulePaths: z.union([z.boolean(), z.record(z.string(), z.string())]),
-        moduleAliases: z.union([z.boolean(), z.record(z.string(), z.string())]),
+        modulePaths: z.union([z.boolean(), z.array(z.string())]),
+        moduleAliases: z.union([
+            z.boolean(),
+            z.record(
+                z.string(),
+                z.union([
+                    z.string(),
+                    z.object({
+                        projectPath: z.string(),
+                    }),
+                ])
+            ),
+        ]),
     })
     .describe('Allows you to configure webpack bahaviour per each individual plugin');
 
