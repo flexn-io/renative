@@ -8,4 +8,4 @@ const RootPlugin = z.object({
 });
 //.catchall(z.never());
 
-export type ConfigRootPlugin = z.infer<typeof RootPlugin>;
+export type _ConfigRootPlugin = z.infer<typeof RootPlugin>;

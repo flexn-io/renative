@@ -198,7 +198,7 @@ const Paths = z
 
 //LEVEl 0 (ROOT)
 
-export const RootProjectSchema = z.object({
+export const RootProjectSchemaPartial = z.object({
     workspaceID: WorkspaceID,
     projectName: ProjectName,
     isMonorepo: z.optional(IsMonoRepo),
@@ -210,18 +210,25 @@ export const RootProjectSchema = z.object({
     crypto: z.optional(Crypto),
     paths: z.optional(Paths),
     permissions: z.optional(Permissions),
-    platforms: z.optional(Platforms),
     engines: z.optional(Engines),
     ext: z.optional(Ext),
     enableHookRebuild: z.optional(EnableHookRebuild),
     monoRoot: z.optional(MonoRoot),
     enableAnalytics: z.optional(EnableAnalytics),
-    plugins: z.optional(Plugins),
     extendsTemplate: z.optional(ExtendTemplate),
     tasks: z.optional(Tasks),
     integrations: z.optional(Integrations),
     env: z.optional(Env),
 });
+
+export const RootProjectSchema = RootProjectSchemaPartial.merge(
+    z.object({
+        platforms: z.optional(Platforms),
+        plugins: z.optional(Plugins),
+    })
+);
 //.catchall(z.never());
 
-export type _ConfigRootProject = z.infer<typeof RootProjectSchema>;
+export type _RootProjectSchemaType = z.infer<typeof RootProjectSchema>;
+
+export type _RootProjectSchemaPartialType = z.infer<typeof RootProjectSchemaPartial>;

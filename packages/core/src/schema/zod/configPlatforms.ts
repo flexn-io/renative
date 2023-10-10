@@ -5,6 +5,16 @@ import { PlatformiOS } from './ios/configPlatformiOS';
 import { PlatformWeb } from './web/configPlatformWeb';
 import { PlatformTizen } from './tizen/configPlatformTizen';
 import { BuildSchemes } from './configBuildSchemes';
+import { PlatformElectron } from './electron/configPlatformElectron';
+import { PlatformWindows } from './windows/configPlatformWindows';
+import { PlatformWebpack } from './webpack/configPlatformWebpack';
+
+const PlatformMerged = PlatformShared.merge(PlatformiOS)
+    .merge(PlatformWeb)
+    .merge(PlatformTizen)
+    .merge(PlatformWebpack)
+    .merge(PlatformElectron)
+    .merge(PlatformWindows);
 
 // export const Platform = z
 //     .object({
@@ -17,6 +27,8 @@ import { BuildSchemes } from './configBuildSchemes';
 //     .merge(PlatformWebpack)
 //     .merge(PlatformElectron)
 //     .merge(PlatformWindows);
+
+export type _PlatformMergedType = z.infer<typeof PlatformMerged>;
 
 // export const Platforms = z.record(PlatformsKeys, Platform).describe('Object containing platform configurations');
 

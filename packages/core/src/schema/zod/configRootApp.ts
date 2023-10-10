@@ -80,19 +80,26 @@ const Hidden = z
 
 //LEVEl 0 (ROOT)
 
-export const RootAppSchema = z.object({
+export const RootAppSchemaPartial = z.object({
     id: z.optional(Id),
     version: z.optional(Version),
     versionCode: z.optional(VersionCode),
     versionFormat: z.optional(VersionFormat),
     versionCodeFormat: z.optional(VersionCodeFormat),
     common: Common,
-    platforms: z.optional(Platforms),
     ext: z.optional(Ext),
     hidden: z.optional(Hidden),
-    plugins: z.optional(Plugins),
     extendsTemplate: z.optional(ExtendTemplate),
     extend: z.optional(Extend),
 });
 
-export type _ConfigRootApp = z.infer<typeof RootAppSchema>;
+export const RootAppSchema = RootAppSchemaPartial.merge(
+    z.object({
+        platforms: z.optional(Platforms),
+        plugins: z.optional(Plugins),
+    })
+);
+
+export type _RootAppSchemaPartialType = z.infer<typeof RootAppSchemaPartial>;
+
+export type _RootAppSchemaType = z.infer<typeof RootAppSchema>;

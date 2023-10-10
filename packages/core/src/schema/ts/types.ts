@@ -1,3 +1,5 @@
+// export type RenativeConfigFile = ConfigRootMerged
+
 export type RenativeConfigFile = {
     sdks?: Record<string, string>;
     workspaceID: string;

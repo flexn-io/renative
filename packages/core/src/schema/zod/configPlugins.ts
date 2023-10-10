@@ -29,39 +29,40 @@ const Webpack = z
     })
     .describe('Allows you to configure webpack bahaviour per each individual plugin');
 
-export const Plugin = z.union([
-    z.object({
-        enabled: z.optional(Enabled),
-        props: z.optional(Props),
-        version: z.optional(Version),
-        source: z.optional(Source),
-        'no-npm': z.optional(NoNpm),
-        skipMerge: z.optional(SkipMerge),
-        npm: z.optional(Npm),
-        pluginDependencies: z.optional(PluginDependencies),
-        // DEPRECATED
-        webpack: z.optional(Webpack), //Should this be at root plugin???
-        webpackConfig: z.optional(Webpack), //Should this be at root plugin???
-        // PLATFORMS
-        android: z.optional(PluginAndroid),
-        androidtv: z.optional(PluginAndroid),
-        androidwear: z.optional(PluginAndroid),
-        firetv: z.optional(PluginAndroid),
-        ios: z.optional(PluginiOS),
-        tvos: z.optional(PluginiOS),
-        tizen: z.optional(PluginShared),
-        webos: z.optional(PluginShared),
-        web: z.optional(PluginShared),
-        webtv: z.optional(PluginShared),
-        chromecast: z.optional(PluginShared),
-        kaios: z.optional(PluginShared),
-        macos: z.optional(PluginShared),
-        linux: z.optional(PluginShared),
-        windows: z.optional(PluginShared),
-        xbox: z.optional(PluginShared),
-    }),
-    z.string(),
-]);
+export const PluginPartial = z.object({
+    enabled: z.optional(Enabled),
+    props: z.optional(Props),
+    version: z.optional(Version),
+    source: z.optional(Source),
+    'no-npm': z.optional(NoNpm),
+    skipMerge: z.optional(SkipMerge),
+    npm: z.optional(Npm),
+    pluginDependencies: z.optional(PluginDependencies),
+    // DEPRECATED
+    webpack: z.optional(Webpack), //Should this be at root plugin???
+    webpackConfig: z.optional(Webpack), //Should this be at root plugin???
+    // PLATFORMS
+    android: z.optional(PluginAndroid),
+    androidtv: z.optional(PluginAndroid),
+    androidwear: z.optional(PluginAndroid),
+    firetv: z.optional(PluginAndroid),
+    ios: z.optional(PluginiOS),
+    tvos: z.optional(PluginiOS),
+    tizen: z.optional(PluginShared),
+    webos: z.optional(PluginShared),
+    web: z.optional(PluginShared),
+    webtv: z.optional(PluginShared),
+    chromecast: z.optional(PluginShared),
+    kaios: z.optional(PluginShared),
+    macos: z.optional(PluginShared),
+    linux: z.optional(PluginShared),
+    windows: z.optional(PluginShared),
+    xbox: z.optional(PluginShared),
+});
+
+export const Plugin = z.union([PluginPartial, z.string()]);
+
+export type _PluginPartialType = z.infer<typeof Plugin>;
 
 export const Plugins = z
     .record(z.string(), Plugin)

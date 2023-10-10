@@ -6,6 +6,5 @@ import { Ext } from './shared/configShared';
 const RootTemplates = z.object({
     ext: z.optional(Ext),
 });
-//.catchall(z.never());
 
-export type ConfigRootTemplates = z.infer<typeof RootTemplates>;
+export type _ConfigRootTemplates = z.infer<typeof RootTemplates>;
