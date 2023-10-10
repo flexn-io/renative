@@ -10,6 +10,7 @@ import {
     executeAsync,
     RnvContext,
     inquirerPrompt,
+    RnvPlatform,
 } from '@rnv/core';
 import { AppleDevice } from './types';
 
@@ -73,7 +74,11 @@ export const getAppleDevices = async (c: RnvContext, ignoreDevices?: boolean, ig
     return allDevices;
 };
 
-const _parseNewIOSDevicesList = (rawDevices: string | Array<AppleDevice>, platform: string, ignoreDevices = false) => {
+const _parseNewIOSDevicesList = (
+    rawDevices: string | Array<AppleDevice>,
+    platform: RnvPlatform,
+    ignoreDevices = false
+) => {
     const devices: Array<AppleDevice> = [];
     if (ignoreDevices) return devices;
     const decideIcon = (device: AppleDevice) => {
@@ -119,7 +124,7 @@ const _parseNewIOSDevicesList = (rawDevices: string | Array<AppleDevice>, platfo
 
 const _parseIOSDevicesList = (
     rawDevices: string | Array<AppleDevice>,
-    platform: string,
+    platform: RnvPlatform,
     ignoreDevices = false,
     ignoreSimulators = false
 ) => {

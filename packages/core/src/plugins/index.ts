@@ -19,16 +19,9 @@ import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } f
 import { installPackageDependencies } from '../npm';
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';
-import {
-    PluginCallback,
-    PluginListResponse,
-    RnvPlugin,
-    RnvPluginPlatform,
-    RnvPluginScope,
-    RnvPluginWebpackKey,
-} from './types';
+import { PluginCallback, PluginListResponse, RnvPlugin, RnvPluginScope, RnvPluginWebpackKey } from './types';
 import { RenativeConfigPlugin, RenativeWebpackConfig } from '../schema/ts/types';
-import { RnvModuleConfig } from '../types';
+import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { ResolveOptions } from '../api/types';
 
@@ -430,12 +423,12 @@ const _resolvePluginDependencies = async (
 
 export const parsePlugins = (
     c: RnvContext,
-    platform: RnvPluginPlatform,
+    platform: RnvPlatform,
     pluginCallback: PluginCallback,
     ignorePlatformObjectCheck?: boolean
 ) => {
     logTask('parsePlugins');
-    if (c.buildConfig) {
+    if (c.buildConfig && platform) {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
         if (includedPlugins) {
@@ -855,7 +848,7 @@ export const overrideTemplatePlugins = async (c: RnvContext) => {
 
     parsePlugins(
         c,
-        c.platform as RnvPluginPlatform,
+        c.platform,
         (plugin, pluginPlat, key) => {
             if (!plugin.disablePluginTemplateOverrides) {
                 if (plugin?._scopes?.length) {
@@ -893,7 +886,7 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
 
     logTask('copyTemplatePluginsSync', `(${destPath})`);
 
-    parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         const objectInject = [...c.configPropsInjects];
         if (plugin.props) {
             Object.keys(plugin.props).forEach((v) => {
@@ -1002,7 +995,7 @@ export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey
     // PLUGINS
     parsePlugins(
         c,
-        c.platform as RnvPluginPlatform,
+        c.platform,
         (plugin, pluginPlat, key) => {
             let webpackConfig: RenativeWebpackConfig | undefined;
 

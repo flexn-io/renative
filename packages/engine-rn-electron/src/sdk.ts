@@ -74,6 +74,9 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
 
         const platformProjectDir = getPlatformProjectDir(c)!;
         const engine = getEngineRunnerByPlatform(c, c.platform);
+
+        if (!engine || !platform) return;
+
         const platformBuildDir = getPlatformBuildDir(c)!;
         const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
         const electronConfigPath = path.join(platformBuildDir, 'electronConfig.json');

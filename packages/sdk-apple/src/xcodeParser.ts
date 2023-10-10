@@ -3,7 +3,6 @@ import path from 'path';
 import {
     logError,
     RenativeConfigPlatform,
-    RnvPluginPlatform,
     inquirerPrompt,
     getAppFolder,
     getAppId,
@@ -18,6 +17,7 @@ import {
     logWarning,
     IOS,
     parsePlugins,
+    RnvPlatform,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
@@ -82,7 +82,7 @@ export const parseXcodeProject = async (c: Context) => {
     await _parseXcodeProject(c, platform);
 };
 
-const _parseXcodeProject = (c: Context, platform: string) =>
+const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
         logTask('_parseXcodeProject');
         const xcodePath = doResolve('xcode');
@@ -206,7 +206,7 @@ const _parseXcodeProject = (c: Context, platform: string) =>
             }
 
             // PLUGINS
-            parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat) => {
+            parsePlugins(c, platform, (plugin, pluginPlat) => {
                 const xcodeprojObj = getFlavouredProp<RenativeConfigPlatform['xcodeproj']>(c, pluginPlat, 'xcodeproj');
                 if (xcodeprojObj) {
                     if (xcodeprojObj.resourceFiles) {

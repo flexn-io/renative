@@ -92,10 +92,12 @@ const Engine: RnvEngine = {
         taskRnvUnlink,
     ]),
     config: {
-        title: 'Engine Core',
+        // title: 'Engine Core',
         id: 'engine-core',
         platforms: {},
         npm: {},
+        engineExtension: 'core',
+        overview: '',
     },
     // package: '',
     projectDirName: '',

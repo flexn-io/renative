@@ -21,13 +21,13 @@ import {
     mergeObjects,
     writeCleanFile,
     fsWriteFileSync,
-    RnvPluginPlatform,
     RenativeConfigPermissionsList,
+    RnvPlatform,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context } from './types';
 
-export const parseExportOptionsPlist = (c: Context, platform: string) =>
+export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
         // EXPORT OPTIONS
         const tId = getConfigProp(c, platform, 'teamID');
@@ -62,7 +62,7 @@ export const parseExportOptionsPlist = (c: Context, platform: string) =>
         resolve();
     });
 
-export const parseEntitlementsPlist = (c: Context, platform: string) =>
+export const parseEntitlementsPlist = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
         logTask('parseEntitlementsPlist');
 
@@ -79,9 +79,11 @@ export const parseEntitlementsPlist = (c: Context, platform: string) =>
         resolve();
     });
 
-export const parseInfoPlist = (c: Context, platform: string) =>
+export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
         logTask('parseInfoPlist');
+
+        if (!platform) return;
 
         const appFolder = getAppFolder(c);
         const appFolderName = getAppFolderName(c, platform);

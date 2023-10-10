@@ -34,7 +34,6 @@ import { parseRenativeConfigs } from '../configs';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
-import { RnvPluginPlatform } from '../plugins/types';
 import { RenativeConfigFile } from '../schema/ts/types';
 import { inquirerPrompt } from '../api';
 import { NpmPackageFile } from '../configs/types';
@@ -327,7 +326,7 @@ export const parseFonts = (c: RnvContext, callback: ParseFontsCallback) => {
         // PLUGIN FONTS
         parsePlugins(
             c,
-            c.platform as RnvPluginPlatform,
+            c.platform,
             (plugin) => {
                 if (plugin.config?.fontSources) {
                     _parseFontSources(c, plugin.config?.fontSources, callback);

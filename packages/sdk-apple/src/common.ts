@@ -1,7 +1,7 @@
-import { getConfigProp } from '@rnv/core';
+import { RnvPlatform, getConfigProp } from '@rnv/core';
 import { Context } from './types';
 
-export const getAppFolderName = (c: Context, platform: string) => {
+export const getAppFolderName = (c: Context, platform: RnvPlatform) => {
     // NOTE: DEPRECATED
     let projectFolder = getConfigProp(c, platform, 'projectFolder');
     if (projectFolder) {

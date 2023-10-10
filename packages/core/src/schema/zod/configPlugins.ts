@@ -79,6 +79,8 @@ export const Plugin = z.object({
     ios: z.optional(PluginiOS),
     tvos: z.optional(PluginiOS),
     tizen: z.optional(PluginShared),
+    tizenmobile: z.optional(PluginShared),
+    tizenwatch: z.optional(PluginShared),
     webos: z.optional(PluginShared),
     web: z.optional(PluginShared),
     webtv: z.optional(PluginShared),

@@ -1,8 +1,5 @@
 import path from 'path';
 import {
-    RnvPluginPlatform,
-    RenativeConfigAppDelegateMethod,
-    RenativeConfigAppDelegateMethods,
     RenativeConfigPluginPlatform,
     getEntryFile,
     getAppTemplateFolder,
@@ -17,6 +14,7 @@ import {
     logWarning,
     parsePlugins,
     writeCleanFile,
+    RnvPlatform,
 } from '@rnv/core';
 import {
     Context,
@@ -31,7 +29,7 @@ import {
 
 export const parseAppDelegate = (
     c: Context,
-    platform: string,
+    platform: RnvPlatform,
     appFolder: string,
     appFolderName: string,
     isBundled = false,
@@ -55,7 +53,7 @@ export const parseAppDelegate = (
         }
 
         // PLUGINS
-        parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
+        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
             injectPluginSwiftSync(c, pluginPlat, key);
         });
 
@@ -248,7 +246,7 @@ export const parseAppDelegate = (
         addSystemInjects(c, injects);
 
         writeCleanFile(
-            path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
+            path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegate),
             path.join(appFolder, appFolderName, appDelegate),
             injects,
             undefined,

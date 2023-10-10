@@ -231,6 +231,8 @@ export const runTizenSimOrDevice = async (
     const { target, engine } = c.runtime;
     const { platform } = c;
 
+    if (!platform) return;
+
     const platformConfig = c.buildConfig.platforms?.[platform];
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const isHosted = hosted ?? !bundleAssets;

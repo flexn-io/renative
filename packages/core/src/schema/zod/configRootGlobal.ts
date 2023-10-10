@@ -1,8 +1,5 @@
 import { z } from 'zod';
-
-export const DefaultTargets = z
-    .record(z.string(), z.string())
-    .describe('Define targets to be used when -t is not set on any project run');
+import { DefaultTargets } from './shared/configShared';
 
 export const SDKs = z.record(z.string(), z.string()).describe('Define your sdk configurations');
 

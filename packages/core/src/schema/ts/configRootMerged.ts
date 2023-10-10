@@ -1,3 +1,4 @@
+import { NpmPackageFile } from '../../configs/types';
 import { _PlatformMergedType } from '../zod/configPlatforms';
 import { _PluginType } from '../zod/configPlugins';
 import { _RootAppSchemaPartialType } from '../zod/configRootApp';
@@ -14,7 +15,7 @@ import { _RootTemplatesSchemaType } from '../zod/configRootTemplates';
 
 export type ConfigRootMerged = _RootGlobalSchemaType & {
     pluginTemplates: Record<string, _RootTemplatesSchemaType>;
-} & _RootProjectSchemaPartialType &
+} & Required<_RootProjectSchemaPartialType> &
     _RootProjectLocalSchemaPartialType &
     _RootAppSchemaPartialType & {
         plugins: Record<string, _PluginType>;
@@ -28,6 +29,10 @@ export type ConfigRootMerged = _RootGlobalSchemaType & {
                 id: string;
             }
         >;
+        templateConfig?: {
+            includedPaths?: string[];
+            packageTemplate?: NpmPackageFile;
+        };
     };
 
 export const test = (test: ConfigRootMerged) => {

@@ -24,3 +24,7 @@ export const ExtendTemplate = z
     .describe(
         'You can extend another renative.json file of currently applied template by providing relative or full package name path. Exampe: `@rnv/template-starter/renative.json`'
     );
+
+export const DefaultTargets = z
+    .record(z.string(), z.string())
+    .describe('Define targets to be used when -t is not set on any project run');

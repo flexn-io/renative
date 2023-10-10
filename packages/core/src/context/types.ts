@@ -1,4 +1,4 @@
-import { RenativeConfigFile } from '../schema/ts/types';
+import { RenativeConfigFile, RenativeConfigLocal } from '../schema/ts/types';
 import { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import { OverridesOptions } from '../system/types';
 import { RnvPlatform } from '../types';
@@ -265,10 +265,10 @@ export interface RnvContextPathObj {
 export interface RnvContextFileObj {
     config?: any;
     config_original?: any;
-    configLocal?: any;
+    configLocal?: RenativeConfigLocal;
     configPrivate?: any;
     configs: Array<any>;
-    configsLocal: Array<any>;
+    configsLocal: Array<RenativeConfigLocal>;
     configsPrivate: Array<any>;
 }
 
