@@ -192,7 +192,7 @@ export const getDeviceToRunOn = async (c: Context) => {
     let devicesArr: AppleDevice[] = [];
     if (device === true) {
         devicesArr = await getAppleDevices(c, false, true);
-    } else if (c.runtime.isTargetTrue) {
+    } else {
         devicesArr = await getAppleDevices(c, true, false);
     }
 
