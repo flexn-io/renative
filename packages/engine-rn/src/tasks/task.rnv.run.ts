@@ -14,6 +14,7 @@ import {
     MACOS,
     IOS,
     TASK_RUN,
+    VISIONOS,
     getConfigProp,
     logSummary,
 } from '@rnv/core';
@@ -36,6 +37,7 @@ export const taskRnvRun: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (platform) {
         case IOS:
         case MACOS:
+        case VISIONOS:
             // eslint-disable-next-line no-case-declarations
             const runDeviceArgs = await getDeviceToRunOn(c);
             if (!c.program.only) {

@@ -80,6 +80,7 @@ const runtime: any = {
         'tizenmobile',
         'kaios',
         'chromecast',
+        'visionos'
     ],
 };
 

@@ -21,6 +21,7 @@ export const isPlatformLinux = platform === Platform.linux;
 export const isPlatformKaios = platform === Platform.kaios;
 export const isPlatformWebtv = platform === Platform.webtv;
 export const isPlatformXbox = platform === Platform.xbox;
+export const isPlatformVisionos = platform === Platform.visionos;
 
 // FACTOR
 export const isFactorBrowser = factor === FormFactor.browser;
@@ -57,3 +58,4 @@ export const isMacos = () => platform === Platform.macos;
 export const isWindows = () => platform === Platform.windows;
 export const isKaios = () => platform === Platform.kaios;
 export const isWebtv = () => platform === Platform.webtv;
+export const isVisionos = () => platform === Platform.visionos;

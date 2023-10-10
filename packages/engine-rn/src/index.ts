@@ -88,6 +88,10 @@ const Engine: RnvEngine = {
                 CNF
             ),
         },
+        visionos: {
+            defaultPort: 8087,
+            extensions: generateEngineExtensions(['visionos.ar', 'ar', 'visionos', 'ar.native', 'native'], CNF),
+        }
     },
 };
 

@@ -46,6 +46,11 @@
                 "debug": {}
             }
         },
+        "visionos": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
         "tvos": {
             "buildSchemes": {
                 "debug": {}

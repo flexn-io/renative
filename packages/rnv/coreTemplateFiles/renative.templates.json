@@ -65,6 +65,9 @@
         "firetv": {
             "engine": "engine-rn"
         },
+        "visionos": {
+            "engine": "engine-rn"
+        },
         "tvos": {
             "engine": "engine-rn-tvos"
         },

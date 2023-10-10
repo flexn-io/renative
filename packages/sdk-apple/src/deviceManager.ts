@@ -7,6 +7,7 @@ import {
     logDebug,
     IOS,
     TVOS,
+    VISIONOS,
     executeAsync,
     RnvContext,
     inquirerPrompt,
@@ -80,15 +81,21 @@ const _parseNewIOSDevicesList = (rawDevices: string | Array<AppleDevice>, platfo
         const { name, isDevice } = device;
         switch (platform) {
             case IOS:
-                if (name?.includes('iPhone') || name?.includes('iPad') || name?.includes('iPod')) {
+                if (name?.includes('iPhone') || name?.includes('iPad') || name?.includes('iPod') || name?.includes('Vision')) {
                     let icon = 'Phone 📱';
                     if (name.includes('iPad')) icon = 'Tablet 💊';
+                    if (name.includes('Vision')) icon = 'Vision 📷';
                     return icon;
                 }
                 return undefined;
             case TVOS:
                 if (name?.includes('TV') && !name?.includes('iPhone') && !name?.includes('iPad')) {
                     return 'TV 📺';
+                }
+                return undefined;
+            case VISIONOS:
+                if (name?.includes('Vision')) {
+                    return 'Vision 📷';
                 }
                 return undefined;
             default:
@@ -128,15 +135,21 @@ const _parseIOSDevicesList = (
         const { name, isDevice } = device;
         switch (platform) {
             case IOS:
-                if (name?.includes('iPhone') || name?.includes('iPad') || name?.includes('iPod')) {
+                if (name?.includes('iPhone') || name?.includes('iPad') || name?.includes('iPod') || name?.includes('Vision')) {
                     let icon = 'Phone 📱';
                     if (name.includes('iPad')) icon = 'Tablet 💊';
+                    if (name.includes('Vision')) icon = 'Vision 📷';
                     return icon;
                 }
                 return undefined;
             case TVOS:
                 if (name?.includes('TV') && !name?.includes('iPhone') && !name?.includes('iPad')) {
                     return 'TV 📺';
+                }
+                return undefined;
+            case VISIONOS:
+                if (name?.includes('Vision')) {
+                    return 'Vision 📷';
                 }
                 return undefined;
             default:

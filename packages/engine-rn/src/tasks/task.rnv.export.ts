@@ -13,6 +13,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
+    VISIONOS,
 } from '@rnv/core';
 import { exportXcodeProject } from '@rnv/sdk-apple';
 
@@ -27,6 +28,7 @@ export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (platform) {
         case IOS:
         case MACOS:
+        case VISIONOS:
             return exportXcodeProject(c);
         case ANDROID:
         case ANDROID_TV:

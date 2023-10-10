@@ -1209,6 +1209,13 @@ const pluginProps = {
             ...commonPluginPlatformProps,
         },
     },
+    visionos: {
+        additionalProperties: false,
+        type: 'object',
+        properties: {
+            ...commonPluginPlatformProps,
+        },
+    }
 };
 
 // ==================================================
@@ -1469,6 +1476,10 @@ export const schemaRoot = {
                 kaios: {
                     // $ref: 'platforms.json#/definitions/kaios'
                     ...schemaPlatforms.definitions.kaios,
+                },
+                visionos: {
+                    // $ref: 'platforms.json#/definitions/ios'
+                    ...schemaPlatforms.definitions.ios,
                 },
             },
         },

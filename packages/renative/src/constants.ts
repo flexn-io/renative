@@ -66,6 +66,7 @@ export enum Platform {
     vewd = 'vewd',
     vidaa = 'vidaa',
     vieraconnect = 'vieraconnect',
+    visionos = 'visionos',
     vizio = 'vizio',
     watchos = 'watchos',
     webian = 'webian',

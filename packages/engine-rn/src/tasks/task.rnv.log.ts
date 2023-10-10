@@ -11,6 +11,7 @@ import {
     IOS,
     TASK_WORKSPACE_CONFIGURE,
     TASK_PROJECT_CONFIGURE,
+    VISIONOS
 } from '@rnv/core';
 import { runAndroidLog, checkAndConfigureAndroidSdks } from '@rnv/sdk-android';
 import { runAppleLog } from '@rnv/sdk-apple';
@@ -30,6 +31,7 @@ export const taskRnvLog: RnvTaskFn = async (c, parentTask, originTask) => {
             await checkAndConfigureAndroidSdks(c);
             return runAndroidLog(c);
         case IOS:
+        case VISIONOS:
             return runAppleLog(c);
         default:
             return logErrorPlatform(c);

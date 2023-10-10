@@ -51,6 +51,7 @@ export const WP10 = 'wp10';
 export const WP8 = 'wp8';
 export const XBOX = 'xbox';
 export const XBOX360 = 'xbox360';
+export const VISIONOS = 'visionos';
 // Kodi, Boxee, HorizonTV, Mediaroom(Ericsson), YahooSmartTV, Slingbox, Hololens, Occulus, GearVR, WebVR, Saphi
 
 export const RENATIVE_CONFIG_NAME = 'renative.json';
@@ -116,6 +117,7 @@ export const SUPPORTED_PLATFORMS = [
     TIZEN_WATCH,
     KAIOS,
     CHROMECAST,
+    VISIONOS
 ];
 
 export const TASK_RUN = 'run';

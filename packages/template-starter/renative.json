@@ -38,7 +38,8 @@
             "tizenmobile": 8091,
             "windows": 8092,
             "xbox": 8099,
-            "kaios": 8093
+            "kaios": 8093,
+            "visionos": 8097
         },
         "supportedPlatforms": [
             "ios",
@@ -56,7 +57,8 @@
             "tizenwatch",
             "tizenmobile",
             "kaios",
-            "chromecast"
+            "chromecast",
+            "visionos"
         ],
         "schemes": {
             "run": "debug",
@@ -187,6 +189,10 @@
             "engine": "engine-rn-electron"
         },
         "ios": {
+            "engine": "engine-rn",
+            "deploymentTarget": "14.0"
+        },
+        "visionos": {
             "engine": "engine-rn",
             "deploymentTarget": "14.0"
         }

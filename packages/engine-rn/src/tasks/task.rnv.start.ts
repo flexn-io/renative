@@ -20,6 +20,7 @@ import {
     FIRE_TV,
     ANDROID_WEAR,
     MACOS,
+    VISIONOS,
     IOS,
 } from '@rnv/core';
 import { isBundlerActive } from '@rnv/sdk-react-native';
@@ -56,6 +57,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
         case ANDROID:
         case ANDROID_TV:
         case FIRE_TV:
+        case VISIONOS:
         case ANDROID_WEAR: {
             let startCmd = `npx react-native start --port ${c.runtime.port} --no-interactive`;
 

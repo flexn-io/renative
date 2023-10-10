@@ -14,6 +14,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
+    VISIONOS
 } from '@rnv/core';
 import { buildAndroid } from '@rnv/sdk-android';
 import { buildXcodeProject } from '@rnv/sdk-apple';
@@ -34,6 +35,7 @@ export const taskRnvBuild: RnvTaskFn = async (c, parentTask, originTask) => {
             return buildAndroid(c);
         case IOS:
         case MACOS:
+        case VISIONOS:
             if (parentTask === TASK_EXPORT) {
                 // build task is not necessary when exporting ios
                 return true;

@@ -12,6 +12,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
+    VISIONOS,
 } from '@rnv/core';
 import { ejectGradleProject } from '@rnv/sdk-android';
 import { ejectXcodeProject } from '@rnv/sdk-apple';
@@ -44,6 +45,7 @@ export const taskRnvEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     switch (platform) {
         case IOS:
         case MACOS:
+        case VISIONOS:
             await ejectXcodeProject(c);
             return true;
         case ANDROID:

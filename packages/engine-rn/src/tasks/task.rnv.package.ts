@@ -13,6 +13,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
+    VISIONOS,
     getConfigProp,
 } from '@rnv/core';
 import { packageAndroid } from '@rnv/sdk-android';
@@ -35,6 +36,7 @@ export const taskRnvPackage: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (platform) {
         case IOS:
         case MACOS:
+        case VISIONOS:
             return packageBundleForXcode(c);
         case ANDROID:
         case ANDROID_TV:

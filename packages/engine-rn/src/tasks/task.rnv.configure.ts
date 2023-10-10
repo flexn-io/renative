@@ -14,6 +14,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     IOS,
+    VISIONOS,
     jetifyIfRequired,
 } from '@rnv/core';
 import { configureGradleProject } from '@rnv/sdk-android';
@@ -35,6 +36,7 @@ export const taskRnvConfigure: RnvTaskFn = async (c, parentTask, originTask) => 
     switch (c.platform) {
         case IOS:
         case MACOS:
+        case VISIONOS:
             await configureXcodeProject(c);
             break;
         case ANDROID:

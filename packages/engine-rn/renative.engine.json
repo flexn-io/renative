@@ -22,6 +22,14 @@
                 }
             }
         },
+        "visionos": {
+            "engine": "engine-rn",
+            "npm": {
+                "devDependencies": {
+                    "xcode": "2.1.0"
+                }
+            }
+        },
         "macos": {
             "engine": "engine-rn",
             "npm": {

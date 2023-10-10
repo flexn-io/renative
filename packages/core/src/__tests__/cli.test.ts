@@ -59,6 +59,7 @@ describe('Testing rnv run', () => {
     itShouldResolve('run -p webos');
     itShouldResolve('run -p web');
     itShouldResolve('run -p macos');
+    itShouldResolve('run -p visionos');
 });
 
 describe('Testing rnv build', () => {
@@ -73,6 +74,7 @@ describe('Testing rnv build', () => {
     itShouldResolve('build -p webos');
     itShouldResolve('build -p web');
     itShouldResolve('build -p macos');
+    itShouldResolve('build -p visionos');
 });
 
 describe('Testing rnv package', () => {

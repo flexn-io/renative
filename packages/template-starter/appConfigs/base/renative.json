@@ -109,6 +109,30 @@
                 }
             }
         },
+        "visionos": {
+            "entryFile": "index",
+            "provisioningStyle": "Automatic",
+            "entitlements": {},
+            "permissions": [
+                "*"
+            ],
+            "buildSchemes": {
+                "debug": {
+                    "runScheme": "Debug",
+                    "bundleAssets": false
+                },
+                "test": {
+                    "runScheme": "Debug",
+                    "bundleAssets": true,
+                    "sdk": "appletvsimulator"
+                },
+                "release": {
+                    "runScheme": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
+        },
         "macos": {
             "entryFile": "index",
             "provisioningStyle": "Automatic",
