@@ -32,6 +32,6 @@ export type RnvPlugin = RenativeConfigPlugin & {
     };
 };
 
-export type RnvPluginPlatform = 'ios' | 'android' | 'web';
+// export type RnvPluginPlatform = 'ios' | 'android' | 'web';
 
 export type RnvPluginWebpackKey = 'webpack' | 'webpackConfig' | 'engine-rn-next';

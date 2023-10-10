@@ -1,13 +1,19 @@
 import { z } from 'zod';
 
-const Podfile = z.object({}).describe('Allows to manipulate Podfile');
+const Podfile = z
+    .object({
+        injectLines: z.optional(z.array(z.string())),
+        post_install: z.optional(z.array(z.string())),
+        sources: z.optional(z.array(z.string())),
+    })
+    .describe('Allows to manipulate Podfile');
 
 export const PlatformSharediOS = z.object({
     Podfile: z.optional(Podfile),
-    // Podfile: {
-    //     additionalProperties: true,
-    //     type: 'object',
-    // },
+    staticPods: z.optional(z.array(z.string())),
+
+    podNames: z.optional(z.array(z.string())),
+    podDependencies: z.optional(z.array(z.string())),
     // xcodeproj: {
     //     additionalProperties: true,
     //     type: 'object',

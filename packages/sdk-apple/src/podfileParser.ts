@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    RnvPluginPlatform,
     RnvPlugin,
     RenativeConfigPluginPlatform,
     OverridesOptions,
@@ -19,11 +18,12 @@ import {
     doResolvePath,
     executeAsync,
     writeCleanFile,
+    RnvPlatform,
 } from '@rnv/core';
 import compareVersions from 'compare-versions';
 import { Context } from './types';
 
-export const parsePodFile = async (c: Context, platform: string) => {
+export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     logTask('parsePodFile');
 
     const appFolder = getAppFolder(c);
@@ -31,7 +31,7 @@ export const parsePodFile = async (c: Context, platform: string) => {
 
     // PLUGINS
     c.payload.pluginConfigiOS.podfileInject = '';
-    parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         const podName = getFlavouredProp(c, pluginPlat, 'podName');
         if (podName) {
             pluginInject += _injectPod(podName, pluginPlat, plugin, key);
@@ -199,7 +199,7 @@ export const parsePodFile = async (c: Context, platform: string) => {
     addSystemInjects(c, injects);
 
     writeCleanFile(
-        path.join(getAppTemplateFolder(c, platform), 'Podfile'),
+        path.join(getAppTemplateFolder(c, platform)!, 'Podfile'),
         path.join(appFolder, 'Podfile'),
         injects,
         undefined,
