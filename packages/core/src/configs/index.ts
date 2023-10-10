@@ -24,6 +24,7 @@ import { RnvContextFileObj, RnvContextPathObj, RnvContext, RnvContextFileKey } f
 import { generateRnvConfigPathObj } from '../context/defaults';
 import { generateContextPaths } from '../context';
 import { getContext } from '../context/provider';
+import { RnvPlatform } from '../types';
 // import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
@@ -417,25 +418,29 @@ const _generatePlatformTemplatePaths = (c: RnvContext) => {
         };
     }
 
-    const pt = c.buildConfig.paths?.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
+    const pt = c.buildConfig.paths?.platformTemplatesDirs || {};
     const result: Record<string, string> = {};
 
     if (c.buildConfig.defaults) {
-        c.buildConfig.defaults?.supportedPlatforms?.forEach((platform: string) => {
-            const engine = c.runtime.enginesByPlatform[platform];
-            if (engine) {
-                const originalPath = engine.originalTemplatePlatformsDir;
+        c.buildConfig.defaults?.supportedPlatforms?.forEach((platform: RnvPlatform) => {
+            if (platform) {
+                const engine = c.runtime.enginesByPlatform[platform];
+                if (engine) {
+                    const originalPath = engine.originalTemplatePlatformsDir;
 
-                if (originalPath) {
-                    if (!pt[platform]) {
-                        const pt1 = getRealPath(c, originalPath, 'platformTemplatesDir', originalPath);
-                        if (pt1) result[platform] = pt1;
+                    if (originalPath) {
+                        if (!pt[platform]) {
+                            const pt1 = getRealPath(c, originalPath, 'platformTemplatesDir', originalPath);
+                            if (pt1) result[platform] = pt1;
+                        } else {
+                            const pt2 = getRealPath(c, pt[platform], 'platformTemplatesDir', originalPath);
+                            if (pt2) result[platform] = pt2;
+                        }
                     } else {
-                        const pt2 = getRealPath(c, pt[platform], 'platformTemplatesDir', originalPath);
-                        if (pt2) result[platform] = pt2;
+                        logWarning(
+                            `Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`
+                        );
                     }
-                } else {
-                    logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
                 }
             }
         });

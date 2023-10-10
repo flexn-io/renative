@@ -3,7 +3,7 @@ import { RnvTaskMap } from '../tasks/types';
 export type RnvEngine = {
     originalTemplatePlatformsDir?: string;
     platforms: Record<string, RnvEnginePlatform>;
-    config: RnvEngineConfig;
+    config: RenativeEngineConfig;
     tasks: RnvTaskMap;
     // initializeRuntimeConfig: (c: RnvContext) => void;
     rootPath?: string;
@@ -23,16 +23,21 @@ export type RnvEnginePlatform = {
     defaultPort: number;
 };
 
-export type RnvEngineConfig = {
-    title: string;
+export type RnvEngineTemplate = {
     id: string;
-    platforms: any;
-    npm: any;
-    plugins?: any;
     packageName?: string;
 };
 
-export type RnvEngineConfigMap = Record<string, RnvEngineConfig>;
+// export type RnvEngineConfig = RnvEngineConfigUnloaded & {
+//     title: string;
+//     platforms: any;
+//     npm: any;
+//     plugins?: any;
+// };
+
+// export type RnvEngineConfigMap = Record<string, RnvEngineConfig>;
+
+export type RnvEngineTemplateMap = Record<string, RnvEngineTemplate>;
 
 export type RnvEngineInstallConfig = {
     key: string;

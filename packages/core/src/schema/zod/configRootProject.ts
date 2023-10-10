@@ -166,6 +166,14 @@ const ProjectName = z
 const Paths = z
     .object({
         appConfigsDir: z.optional(z.string().describe('Custom path to appConfigs. defaults to `./appConfigs`')),
+        platformTemplatesDirs: z.optional(
+            z
+                .record(PlatformsKeys, z.string())
+                .describe(
+                    'Custom location of ejected platform templates. this is populated after you run `rnv platform eject`'
+                )
+        ),
+        appConfigsDirs: z.optional(z.array(z.string()).describe('Array of custom location app configs directories`')),
         platformAssetsDir: z.optional(
             z.string().describe('Custom path to platformAssets folder. defaults to `./platformAssets`')
         ),

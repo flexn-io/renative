@@ -10,14 +10,20 @@ import { configurePlugins } from '../plugins';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap } from '../tasks/types';
 import { RenativeConfigVersion, RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
-import { RenativeEngineConfig, RnvEngine, RnvEngineConfig, RnvEngineConfigMap, RnvEngineInstallConfig } from './types';
+import {
+    RenativeEngineConfig,
+    RnvEngine,
+    RnvEngineInstallConfig,
+    RnvEngineTemplate,
+    RnvEngineTemplateMap,
+} from './types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
 import { RnvEnvContext, RnvEnvContextOptions } from '../env/types';
 
 const ENGINE_CORE = 'engine-core';
 
-export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineConfig) => {
+export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, engConfig?: RnvEngineTemplate) => {
     const c = getContext();
     logTask(`registerEngine:${engine.config.id}`);
     c.runtime.enginesById[engine.config.id] = engine;
@@ -424,7 +430,7 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
 const _getMergedEngineConfigs = (c: RnvContext) => {
     const engines = c.buildConfig?.engines;
     const engineTemplates = c.buildConfig?.engineTemplates || {};
-    const mergedEngineConfigs: RnvEngineConfigMap = {};
+    const mergedEngineConfigs: RnvEngineTemplateMap = {};
     Object.keys(engineTemplates).forEach((packageName) => {
         const engTemplate = engineTemplates[packageName];
         mergedEngineConfigs[packageName] = {
@@ -450,10 +456,10 @@ const _getMergedEngineConfigs = (c: RnvContext) => {
     return mergedEngineConfigs;
 };
 
-const _getEngineConfigByPlatform = (c: RnvContext, platform: RnvPlatform): RnvEngineConfig | null => {
+const _getEngineTemplateByPlatform = (c: RnvContext, platform: RnvPlatform): RnvEngineTemplate | null => {
     const mergedEngineConfigs = _getMergedEngineConfigs(c);
     const engineId = c.program.engine || getConfigProp(c, platform, 'engine');
-    let selectedEngineConfig: RnvEngineConfig | null = null;
+    let selectedEngineConfig: RnvEngineTemplate | null = null;
     Object.values(mergedEngineConfigs).forEach((engineConfig) => {
         if (engineConfig.id === engineId) {
             selectedEngineConfig = engineConfig;
@@ -496,15 +502,15 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
 const _registerPlatformEngine = async (c: RnvContext, platform: RnvPlatform | boolean): Promise<void> => {
     // Only register active platform engine to be faster
     if (platform === true || !platform) return;
-    const selectedEngineConfig = _getEngineConfigByPlatform(c, platform);
-    if (selectedEngineConfig) {
-        const existingEngine = c.runtime.enginesById[selectedEngineConfig.id];
+    const selectedEngineTemplate = _getEngineTemplateByPlatform(c, platform);
+    if (selectedEngineTemplate) {
+        const existingEngine = c.runtime.enginesById[selectedEngineTemplate.id];
         if (!existingEngine) {
-            if (selectedEngineConfig.packageName) {
+            if (selectedEngineTemplate.packageName) {
                 registerEngine(
-                    require(_resolvePkgPath(c, selectedEngineConfig.packageName))?.default,
+                    require(_resolvePkgPath(c, selectedEngineTemplate.packageName))?.default,
                     platform,
-                    selectedEngineConfig
+                    selectedEngineTemplate
                 );
             }
         } else {
