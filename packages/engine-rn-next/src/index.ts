@@ -1,5 +1,6 @@
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
-import { withRNVNext, withRNVBabel } from './adapter';
+import { withRNVNext } from './adapters/nextAdapter';
+import { withRNVBabel } from './adapters/babelAdapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRnvRun from './tasks/task.rnv.run';

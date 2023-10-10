@@ -53,7 +53,11 @@
         "renative.template.json",
         "src",
         "static",
-        "tsconfig.json"
+        "tsconfig.json",
+        "Gemfile",
+        "metro.config.js",
+        "react-native.config.js",
+        "next-env.d.ts"
     ],
     "repository": {
         "type": "git",

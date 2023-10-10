@@ -1,5 +1,6 @@
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
-import { withRNVBabel, withRNVMetro } from './adapter';
+import { withRNVMetro } from './adapters/metroAdapter';
+import { withRNVBabel } from './adapters/babelAdapter';
 //@ts-ignore
 import CNF from '../renative.engine.json';
 import taskRnvRun from './tasks/task.rnv.run';
@@ -9,6 +10,7 @@ import taskRnvConfigure from './tasks/task.rnv.configure';
 import taskRnvStart from './tasks/task.rnv.start';
 import taskRnvExport from './tasks/task.rnv.export';
 import taskRnvDeploy from './tasks/task.rnv.deploy';
+import { withRNVRNConfig } from "@rnv/sdk-react-native";
 // import taskRnvLog from './tasks/task.rnv.log';
 
 const Engine: RnvEngine = {
@@ -45,6 +47,6 @@ const Engine: RnvEngine = {
 // Backward compatibility
 const withRNV = withRNVMetro;
 
-export { withRNV, withRNVMetro, withRNVBabel };
+export { withRNV, withRNVMetro, withRNVBabel, withRNVRNConfig };
 
 export default Engine;

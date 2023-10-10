@@ -18,6 +18,7 @@ import taskRnvCryptoInstallProfiles from './tasks/task.rnv.crypto.installProfile
 import taskRnvLog from './tasks/task.rnv.log';
 import taskRnvEject from './tasks/task.rnv.eject';
 import { generateEngineExtensions, generateEngineTasks, RnvEngine } from '@rnv/core';
+import { withRNVRNConfig } from "@rnv/sdk-react-native";
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
@@ -95,4 +96,4 @@ export default Engine;
 // Backward compatibility
 const withRNV = withRNVMetro;
 
-export { withRNV, withRNVMetro, withRNVBabel };
+export { withRNV, withRNVMetro, withRNVBabel, withRNVRNConfig };
