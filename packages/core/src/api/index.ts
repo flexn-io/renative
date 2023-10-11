@@ -1,14 +1,7 @@
-import {
-    DoResolveFn,
-    GetConfigPropFn,
-    RnvApi,
-    RnvApiLogger,
-    RnvApiPrompt,
-    RnvApiSpinner,
-    RnvContextAnalytics,
-} from './types';
+import { GetConfigPropFn, RnvApi, RnvApiLogger, RnvApiPrompt, RnvApiSpinner, RnvContextAnalytics } from './types';
 import { generateApiDefaults } from './defaults';
 import { getApi } from './provider';
+import { DoResolveFn } from '../system/types';
 
 export const createRnvApi = (_api?: {
     spinner: RnvApiSpinner;
@@ -25,7 +18,7 @@ export const createRnvApi = (_api?: {
 
     if (!global.RNV_API?.isDefault) return;
     const api: RnvApi = generateApiDefaults();
-    
+
     api.spinner = _api?.spinner || api.spinner;
     api.prompt = _api?.prompt || api.prompt;
     api.analytics = _api?.analytics || api.analytics;

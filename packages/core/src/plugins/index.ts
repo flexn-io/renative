@@ -21,9 +21,9 @@ import { PluginCallback, RnvPlugin, RnvPluginScope, RnvPluginWebpackKey } from '
 import { RenativeConfigPlugin, RenativeWebpackConfig } from '../schema/ts/types';
 import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
-import { ResolveOptions } from '../api/types';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { installPackageDependencies } from '../projects/npm';
+import { ResolveOptions } from '../system/types';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {

@@ -79,6 +79,7 @@
         "sanity": "yarn compile && yarn lint && yarn test",
         "test": "jest",
         "test-cover": "jest --coverage",
+        "circular": "npx madge --circular --extensions ts --exclude '\\.(d.ts)$' ./packages",
         "watch": "npx lerna exec yarn watch --parallel",
         "watch-alt": "npx lerna run compile & npx lerna watch -- lerna run compile"
     },
@@ -115,7 +116,8 @@
         "prettier": "2.3.1",
         "ts-jest": "^27.0.7",
         "ttab": "^0.7.2",
-        "typescript": "5.2.2"
+        "typescript": "5.2.2",
+        "madge": "6.1.0"
     },
     "engines": {
         "node": ">=18.0.0",

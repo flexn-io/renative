@@ -1,7 +1,7 @@
 import resolve from 'resolve';
 import fs from 'fs';
 import path from 'path';
-import type { DoResolveFn, ResolveOptions } from '../api/types';
+import type { DoResolveFn, ResolveOptions } from './types';
 /**
  * An attempt at drying out filesystem references to [external packages](https://tinyurl.com/mao2dy6).
  *

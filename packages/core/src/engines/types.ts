@@ -1,5 +1,5 @@
-import { RenativeEngineConfig } from '../schema/ts/types';
-import { RnvTaskMap } from '../tasks/types';
+import type { RenativeEngineConfig } from '../schema/ts/types';
+import type { RnvTaskMap } from '../tasks/types';
 
 export type RnvEngine = {
     originalTemplatePlatformsDir?: string;

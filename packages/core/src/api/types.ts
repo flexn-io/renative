@@ -1,4 +1,5 @@
 import { RnvContext } from '../context/types';
+import { DoResolveFn } from '../system/types';
 import { RnvPlatform } from '../types';
 
 // export type AnalyticsApi = {
@@ -125,14 +126,5 @@ export type PromptParams = {
 };
 
 export type PromptRenderFn = (i: number, obj: any, mapping: any, defaultVal: string) => string;
-
-export type DoResolveFn = (aPath?: string, mandatory?: boolean, options?: ResolveOptions) => string | undefined;
-
-export type ResolveOptions = {
-    basedir?: string;
-    forceForwardPaths?: boolean;
-    extensions?: Array<string>;
-    keepSuffix?: boolean;
-};
 
 export type GetConfigPropFn = <T = any>(c: RnvContext, platform: RnvPlatform, key: string, defaultVal?: any) => T;

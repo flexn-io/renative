@@ -29,11 +29,13 @@ export * from './projects/npm';
 export * from './projects/package';
 export * from './projects/dependencyManager';
 
+export * from './tasks';
+export * from './tasks/constants';
+
 export * from './schema/zod';
 export * from './context/runtime';
 export * from './templates';
 export * from './integrations';
-export * from './tasks';
 export * from './utils/is';
 export * from './system/exec';
 export * from './system/fs';
