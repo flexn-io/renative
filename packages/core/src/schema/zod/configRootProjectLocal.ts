@@ -5,6 +5,7 @@ const WorkspaceAppConfigsDir = z.string().describe('Defines app configs dir outs
 
 const Meta = z.object({
     currentAppConfigId: z.optional(z.string()),
+    requiresJetify: z.optional(z.boolean()),
 });
 
 //LEVEl 0 (ROOT)

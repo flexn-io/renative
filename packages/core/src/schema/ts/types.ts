@@ -1,6 +1,7 @@
 import type { _PluginPlatformMergedType } from '../zod/configPlugins';
 import { _ConfigRootEngineType } from '../zod/configRootEngine';
 import { _RootProjectLocalSchemaPartialType } from '../zod/configRootProjectLocal';
+import { _AppDelegateMethodType } from '../zod/ios/configPlatformSharediOS';
 import type { _PlatformsKeysType } from '../zod/shared/configShared';
 import type { ConfigRootMerged } from './configRootMerged';
 
@@ -23,3 +24,5 @@ export type RenativeConfigTaskKey = keyof Required<Required<RenativeConfigFile>[
 export type RenativeEngineConfig = _ConfigRootEngineType;
 
 export type RenativeConfigLocal = _RootProjectLocalSchemaPartialType;
+
+export type RenativeConfigAppDelegateMethod = _AppDelegateMethodType;

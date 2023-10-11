@@ -107,17 +107,17 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
             'includedPermissions'
         );
         if (includedPermissions && c.buildConfig.permissions) {
-            const platPrem = c.buildConfig.permissions[platform] ? platform : 'ios';
-            const pc = c.buildConfig.permissions[platPrem];
+            const platPrem = 'ios'; // c.buildConfig.permissions[platform] ? platform : 'ios';
+            const pc = c.buildConfig.permissions[platPrem] || {};
             if (includedPermissions?.length && includedPermissions[0] === '*') {
                 Object.keys(pc).forEach((v) => {
-                    const key = pc[v].key || v;
+                    const key = v;
                     plistObj[key] = pc[v].desc;
                 });
             } else if (includedPermissions?.forEach) {
                 includedPermissions.forEach((v) => {
                     if (pc[v]) {
-                        const key = pc[v].key || v;
+                        const key = v;
                         plistObj[key] = pc[v].desc;
                     }
                 });

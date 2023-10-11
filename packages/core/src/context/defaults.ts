@@ -175,9 +175,9 @@ export const generateContextDefaults = (): RnvContext => ({
             },
         },
         defaultWorkspace: {
-            ...generateRnvConfigPathObj(),
+            ...generateRnvConfigFileObj(),
             project: {
-                ...generateRnvConfigPathObj(),
+                ...generateRnvConfigFileObj(),
                 appConfigBase: {},
                 builds: {},
                 assets: {},

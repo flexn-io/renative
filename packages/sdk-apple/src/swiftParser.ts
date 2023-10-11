@@ -15,6 +15,7 @@ import {
     parsePlugins,
     writeCleanFile,
     RnvPlatform,
+    RenativeConfigAppDelegateMethod,
 } from '@rnv/core';
 import {
     Context,
@@ -284,7 +285,11 @@ export const injectPluginSwiftSync = (c: Context, plugin: RenativeConfigPluginPl
         });
     }
 
-    const appDelegateMethods = getFlavouredProp<RenativeConfigAppDelegateMethods>(c, plugin, 'appDelegateMethods');
+    const appDelegateMethods = getFlavouredProp<RenativeConfigPluginPlatform['appDelegateMethods']>(
+        c,
+        plugin,
+        'appDelegateMethods'
+    );
     if (appDelegateMethods) {
         const admk = Object.keys(appDelegateMethods) as Array<PayloadAppDelegateKey>;
         admk.forEach((delKey) => {
