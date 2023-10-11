@@ -38,7 +38,7 @@ test('Execute task.rnv.start with no parent', async () => {
     // WHEN
     await taskRnvStart.fn(ctx, undefined, originTask);
     // THEN
-    await expect(taskRnvRun.fn(ctx, undefined, originTask)).resolves.toEqual(true);
+    await expect(taskRnvStart.fn(ctx, undefined, originTask)).resolves.toEqual(true);
 });
 
 test('Execute task.rnv.start', async () => {
@@ -49,7 +49,7 @@ test('Execute task.rnv.start', async () => {
     await taskRnvStart.fn(ctx, 'parent', originTask);
     // THEN
     expect(executeAsync).toHaveBeenCalledWith(ctx, 'node undefined/local-cli/cli.js start --port undefined --config=metro.config.js', { env: {}, silent: true, stdio: 'inherit' });
-    await expect(taskRnvRun.fn(ctx, undefined, originTask)).resolves.toEqual(true);
+    await expect(taskRnvStart.fn(ctx, undefined, originTask)).resolves.toEqual(true);
 });
 
 test('Execute task.rnv.start with metro failure', async () => {
@@ -61,5 +61,5 @@ test('Execute task.rnv.start with metro failure', async () => {
     // THEN
     expect(executeAsync).toHaveBeenCalledWith(ctx, 'node undefined/local-cli/cli.js start --port undefined --config=metro.config.js', { env: {}, silent: true, stdio: 'inherit' });
     expect(logError).toHaveBeenCalledWith('Metro failed', true);
-    await expect(taskRnvRun.fn(ctx, undefined, originTask)).resolves.toEqual(true);
+    await expect(taskRnvStart.fn(ctx, undefined, originTask)).resolves.toEqual(true);
 });
