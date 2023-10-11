@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Ext, HexColor, Runtime } from './shared/configShared';
+import { BundleId, Ext, HexColor, Runtime } from './shared/configShared';
 import { PlatformShared } from './shared/configPlatformShared';
 import { BuildSchemeShared } from './configBuildSchemes';
 
@@ -10,6 +10,13 @@ const IncludedPermissions = z
     .array(z.string())
     .describe(
         "Allows you to include specific permissions by their KEY defined in `permissions` object. Use: `['*']` to include all"
+    );
+
+//DEPRECATED??
+const ExcludedPermissions = z
+    .array(z.string())
+    .describe(
+        "Allows you to exclude specific permissions by their KEY defined in `permissions` object. Use: `['*']` to exclude all"
     );
 
 const IncludedPlugins = z
@@ -23,8 +30,6 @@ const ExcludedPlugins = z
     .describe(
         "Defines an array of all excluded plugins for specific config or buildScheme. only full keys as defined in `plugin` should be used.\n\nNOTE: excludedPlugins is evaluated after includedPlugins. Use: `['*']` to exclude all"
     );
-
-const BundleId = z.string().describe('Bundle ID of application. ie: com.example.myapp');
 
 const Title = z
     .string()
@@ -68,6 +73,7 @@ export const Common = z
     .object({
         buildSchemes: z.optional(CommonBuildSchemes),
         includedPermissions: z.optional(IncludedPermissions),
+        excludedPermissions: z.optional(ExcludedPermissions),
         id: z.optional(BundleId),
         title: z.optional(Title),
         description: z.optional(Description),

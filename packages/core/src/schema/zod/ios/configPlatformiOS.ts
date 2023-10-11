@@ -7,20 +7,41 @@ const IgnoreLogs = z.boolean().describe('Passes `-quiet` to xcodebuild command')
 
 const DeploymentTarget = z.string().describe('Deployment target for xcodepoj');
 
+const OrientationSupport = z.object({
+    phone: z.optional(z.array(z.string())),
+    // phone: [
+    //                 'UIInterfaceOrientationPortrait',
+    //                 'UIInterfaceOrientationPortraitUpsideDown',
+    //                 'UIInterfaceOrientationLandscapeLeft',
+    //                 'UIInterfaceOrientationLandscapeRight',
+    //             ],
+    tab: z.optional(z.array(z.string())),
+    //             tab: [
+    //                 'UIInterfaceOrientationPortrait',
+    //                 'UIInterfaceOrientationPortraitUpsideDown',
+    //                 'UIInterfaceOrientationLandscapeLeft',
+    //                 'UIInterfaceOrientationLandscapeRight',
+    //             ],
+});
+
+const ExcludedArchs = z
+    .array(z.string())
+    .describe('Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`'); //['arm64']
+
+const URLScheme = z.string().describe('URL Scheme for the app used for deeplinking');
+
+const TeamID = z.string().describe('Apple teamID');
+
 export const PlatformiOS = PlatformSharediOS.merge(
     z.object({
         ignoreWarnings: z.optional(IgnoreWarnings),
         ignoreLogs: z.optional(IgnoreLogs),
         deploymentTarget: z.optional(DeploymentTarget),
-        // teamID: {
-        //     type: 'string',
-        // },
-        // excludedArchs: {
-        //     type: 'array',
-        //     description: 'Defines excluded architectures. This transforms to xcodeproj: `EXCLUDED_ARCHS="<VAL VAL ...>"`',
-        //     default: null,
-        //     examples: [['arm64']],
-        // },
+        orientationSupport: z.optional(OrientationSupport),
+        teamID: z.optional(TeamID),
+        excludedArchs: z.optional(ExcludedArchs),
+        urlScheme: z.optional(URLScheme),
+
         // teamIdentifier: {
         //     type: 'string',
         // },
@@ -30,33 +51,6 @@ export const PlatformiOS = PlatformSharediOS.merge(
 
         // appleId: {
         //     type: 'string',
-        // },
-        // orientationSupport: {
-        //     type: 'object',
-        //     properties: {
-        //         phone: {
-        //             type: 'array',
-        //         },
-        //         tab: {
-        //             type: 'array',
-        //         },
-        //     },
-        //     examples: [
-        //         {
-        //             phone: [
-        //                 'UIInterfaceOrientationPortrait',
-        //                 'UIInterfaceOrientationPortraitUpsideDown',
-        //                 'UIInterfaceOrientationLandscapeLeft',
-        //                 'UIInterfaceOrientationLandscapeRight',
-        //             ],
-        //             tab: [
-        //                 'UIInterfaceOrientationPortrait',
-        //                 'UIInterfaceOrientationPortraitUpsideDown',
-        //                 'UIInterfaceOrientationLandscapeLeft',
-        //                 'UIInterfaceOrientationLandscapeRight',
-        //             ],
-        //         },
-        //     ],
         // },
 
         // provisioningStyle: {

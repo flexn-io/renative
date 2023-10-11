@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Runtime } from './configShared';
+import { BundleId, Ext, Runtime } from './configShared';
 
 export const PlatformEngine = z
     .string()
@@ -31,6 +31,7 @@ export const AssetFolderPlatform = z
     );
 
 export const PlatformShared = z.object({
+    id: z.optional(BundleId),
     assetFolderPlatform: z.optional(AssetFolderPlatform),
     runtime: z.optional(Runtime),
     engine: z.optional(PlatformEngine),
@@ -39,4 +40,5 @@ export const PlatformShared = z.object({
     enableSourceMaps: z.optional(EnableSourceMaps),
     bundleIsDev: z.optional(BundleIsDev),
     license: z.optional(License),
+    ext: z.optional(Ext),
 });

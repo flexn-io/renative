@@ -1,5 +1,6 @@
 import {
     PARAMS,
+    PlatformKey,
     RnvContext,
     RnvTaskFn,
     TASK_APP_CONFIGURE,
@@ -20,7 +21,7 @@ export const taskRnvKill: RnvTaskFn = async (c, _parentTask, originTask) => {
     const usedPorts: RnvContext['runtime']['supportedPlatforms'] = [];
     let platArray: RnvContext['runtime']['supportedPlatforms'] = [];
     const results = [];
-    let ports: Record<string, number> = {};
+    let ports: Record<PlatformKey, number> = {};
 
     await configureRuntimeDefaults(c);
 

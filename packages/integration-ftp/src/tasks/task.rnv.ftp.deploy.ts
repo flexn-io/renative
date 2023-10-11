@@ -11,6 +11,7 @@ import {
     fsWriteFileSync,
     fsReadFile,
     inquirerPrompt,
+    RnvPlatform,
 } from '@rnv/core';
 
 const DEPLOY_TARGET_FTP = 'ftp';
@@ -18,7 +19,7 @@ const DEPLOY_TARGET_FTP = 'ftp';
 const FtpDeploy = require('ftp-deploy');
 const dotEnv = require('dotenv');
 
-const _deployToFtp = (c: RnvContext, platform: string) =>
+const _deployToFtp = (c: RnvContext, platform: RnvPlatform) =>
     new Promise((resolve, reject) => {
         logTask('_deployToFtp');
         let promise;
@@ -56,21 +57,23 @@ const _deployToFtp = (c: RnvContext, platform: string) =>
                 return envPromise;
             })
             .then(() => {
-                dotEnv.config();
-                const config = {
-                    user: process.env.RNV_DEPLOY_WEB_FTP_USER,
-                    password: process.env.RNV_DEPLOY_WEB_FTP_PASSWORD, // optional, prompted if none given
-                    host: process.env.RNV_DEPLOY_WEB_FTP_SERVER,
-                    port: process.env.RNV_DEPLOY_WEB_FTP_PORT || 21,
-                    localRoot: c.buildConfig.platforms?.[platform].deploy?.[DEPLOY_TARGET_FTP]?.localRoot,
-                    remoteRoot: c.buildConfig.platforms?.[platform].deploy?.[DEPLOY_TARGET_FTP]?.remoteRoot || '/',
-                    include: c.buildConfig.platforms?.[platform].deploy?.[DEPLOY_TARGET_FTP]?.include || ['*', '**/*'], // this would upload everything except dot files
-                    exclude: c.buildConfig.platforms?.[platform].deploy?.[DEPLOY_TARGET_FTP]?.exclude || [], // e.g. exclude sourcemaps - ** exclude: [] if nothing to exclude **
-                    deleteRemote:
-                        c.buildConfig.platforms?.[platform].deploy?.[DEPLOY_TARGET_FTP]?.deleteRemote || false, // delete ALL existing files at destination before uploading, if true
-                    forcePasv: true, // Passive mode is forced (EPSV command is not sent)
-                };
-                return config;
+                if (platform) {
+                    dotEnv.config();
+                    const ftp = c.buildConfig.platforms?.[platform].ext?.deploy?.[DEPLOY_TARGET_FTP];
+                    const config = {
+                        user: process.env.RNV_DEPLOY_WEB_FTP_USER,
+                        password: process.env.RNV_DEPLOY_WEB_FTP_PASSWORD, // optional, prompted if none given
+                        host: process.env.RNV_DEPLOY_WEB_FTP_SERVER,
+                        port: process.env.RNV_DEPLOY_WEB_FTP_PORT || 21,
+                        localRoot: ftp?.localRoot,
+                        remoteRoot: ftp?.remoteRoot || '/',
+                        include: ftp?.include || ['*', '**/*'], // this would upload everything except dot files
+                        exclude: ftp?.exclude || [], // e.g. exclude sourcemaps - ** exclude: [] if nothing to exclude **
+                        deleteRemote: ftp?.deleteRemote || false, // delete ALL existing files at destination before uploading, if true
+                        forcePasv: true, // Passive mode is forced (EPSV command is not sent)
+                    };
+                    return config;
+                }
             })
             .then((config) => {
                 const ftpDeploy = new FtpDeploy();
@@ -122,7 +125,9 @@ const _createEnvFtpConfig = async (configFilePath: string, previousContent = '')
 const _createDeployConfig = async (c: RnvContext, platform: string) => {
     logTask('_createDeployConfig');
 
-    const deploy = c.buildConfig.platforms?.[platform].deploy || {};
+    if (!platform) return;
+
+    const deploy = c.buildConfig.platforms?.[platform].ext?.deploy || {};
 
     deploy[DEPLOY_TARGET_FTP] = {};
     deploy[DEPLOY_TARGET_FTP].type = DEPLOY_TARGET_FTP;
@@ -181,8 +186,9 @@ const _createDeployConfig = async (c: RnvContext, platform: string) => {
 
 const taskRnvFtpDeploy = (c: RnvContext) => {
     logTask('taskRnvFtpDeploy');
+    if (!c.platform) return;
     const targetConfig = c.buildConfig.platforms?.[c.platform];
-    if (targetConfig?.deploy?.[DEPLOY_TARGET_FTP]?.type) {
+    if (targetConfig?.ext?.deploy?.[DEPLOY_TARGET_FTP]?.type) {
         return _deployToFtp(c, c.platform);
     }
     return _createDeployConfig(c, c.platform).then(() => _deployToFtp(c, c.platform));

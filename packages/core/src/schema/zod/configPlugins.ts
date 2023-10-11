@@ -42,6 +42,7 @@ const Webpack = z
                 ])
             ),
         ]),
+        nextTranspileModules: z.optional(z.array(z.string())),
     })
     .describe('Allows you to configure webpack bahaviour per each individual plugin');
 

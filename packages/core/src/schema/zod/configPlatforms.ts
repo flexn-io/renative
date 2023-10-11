@@ -10,6 +10,7 @@ import { PlatformWindows } from './windows/configPlatformWindows';
 import { PlatformWebpack } from './webpack/configPlatformWebpack';
 
 const PlatformMerged = PlatformShared.merge(PlatformiOS)
+    .merge(PlatformAndroid)
     .merge(PlatformWeb)
     .merge(PlatformTizen)
     .merge(PlatformWebpack)

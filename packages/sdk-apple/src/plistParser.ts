@@ -21,8 +21,8 @@ import {
     mergeObjects,
     writeCleanFile,
     fsWriteFileSync,
-    RenativeConfigPermissionsList,
     RnvPlatform,
+    RenativeConfigFile,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context } from './types';
@@ -101,7 +101,11 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
             plistObj.UIAppFonts = c.payload.pluginConfigiOS.embeddedFonts;
         }
         // PERMISSIONS
-        const includedPermissions = getConfigProp<RenativeConfigPermissionsList>(c, platform, 'includedPermissions');
+        const includedPermissions = getConfigProp<RenativeConfigFile['common']['includedPermissions']>(
+            c,
+            platform,
+            'includedPermissions'
+        );
         if (includedPermissions && c.buildConfig.permissions) {
             const platPrem = c.buildConfig.permissions[platform] ? platform : 'ios';
             const pc = c.buildConfig.permissions[platPrem];
@@ -151,7 +155,7 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
         }
 
         // PLUGINS
-        parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat) => {
+        parsePlugins(c, platform, (plugin, pluginPlat) => {
             const plistPlug = getFlavouredProp(c, pluginPlat, 'plist');
             if (plistPlug) {
                 plistObj = mergeObjects(c, plistObj, plistPlug, true, false);

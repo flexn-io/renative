@@ -60,6 +60,8 @@ export const buildLightningProject = async (c: RnvContext) => {
     logTask('buildLightningProject');
 
     const { platform } = c;
+    if (!platform) return;
+
     const platformConfig = c.buildConfig.platforms?.[platform];
 
     const entryFile = getConfigProp(c, c.platform, 'entryFile');
@@ -107,7 +109,13 @@ export const configureLightningProject = async (c: RnvContext) => {
 const _configureProject = (c: RnvContext) =>
     new Promise<void>((resolve) => {
         logTask('_configureProject');
+
         const { platform } = c;
+        if (!platform) {
+            resolve();
+            return;
+        }
+
         const p = c.buildConfig.platforms?.[platform];
 
         const injects =

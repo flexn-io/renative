@@ -1,4 +1,4 @@
-import { RenativeConfigFile, RenativeConfigLocal } from '../schema/ts/types';
+import { PlatformKey, RenativeConfigFile, RenativeConfigLocal } from '../schema/ts/types';
 import { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import { OverridesOptions } from '../system/types';
 import { RnvPlatform } from '../types';
@@ -273,7 +273,7 @@ export interface RnvContextFileObj {
 }
 
 export interface RnvContextPlatform {
-    platform: string;
+    platform: PlatformKey;
     isConnected: boolean;
     engine?: any;
     port?: number;

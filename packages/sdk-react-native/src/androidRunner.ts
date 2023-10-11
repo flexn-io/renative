@@ -18,6 +18,8 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
     logTask('packageAndroid');
     const { platform } = c;
 
+    if (!c.platform) return;
+
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
 
     if (!bundleAssets && platform !== ANDROID_WEAR) {

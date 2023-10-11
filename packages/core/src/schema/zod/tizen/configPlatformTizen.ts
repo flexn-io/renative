@@ -1,13 +1,11 @@
 import { z } from 'zod';
 
+const AppName = z.string();
+
+const CertificateProfile = z.string();
+
 export const PlatformTizen = z.object({
-    // package: {
-    //     type: 'string',
-    // },
-    // certificateProfile: {
-    //     type: 'string',
-    // },
-    // appName: {
-    //     type: 'string',
-    // },
+    package: z.optional(z.string()),
+    certificateProfile: z.optional(CertificateProfile),
+    appName: z.optional(AppName),
 });
