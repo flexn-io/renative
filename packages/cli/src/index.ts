@@ -6,7 +6,7 @@ import Spinner from './ora';
 import Prompt from './prompt';
 import Logger from './logger';
 
-//Using require here to avoid circular dependency issue rnv => @rnv/cli => rnv
+//IMPORTANT: Using require instead of import here to avoid circular dependency issue rnv => @rnv/cli => rnv
 const { executeRnv } = require('rnv');
 
 export const run = () => {
