@@ -6,8 +6,6 @@ import {
     chalk,
     logTask,
     logInfo,
-    checkIsRenativeProject,
-    generateRuntimeConfig,
     updateRenativeConfigs,
     configureRuntimeDefaults,
     applyTemplate,
@@ -34,7 +32,21 @@ import {
     initializeTask,
     findSuitableTask,
     RnvTaskFn,
+    RnvContext,
 } from '@rnv/core';
+
+const checkIsRenativeProject = (c: RnvContext) =>
+    new Promise((resolve, reject) => {
+        if (!c.paths.project.configExists) {
+            return reject(
+                `This directory is not ReNative project. Project config ${chalk().white(
+                    c.paths.project.config
+                )} is missing!. You can create new project with ${chalk().white('rnv new')}`
+            );
+        }
+
+        return resolve(true);
+    });
 
 export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvProjectConfigure');

@@ -1,6 +1,6 @@
 import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../logger';
 import { executePipe } from '../buildHooks';
-import { checkIfProjectAndNodeModulesExists } from '../npm';
+import { checkIfProjectAndNodeModulesExists } from '../projects/npm';
 import {
     getEngineRunner,
     getEngineTask,

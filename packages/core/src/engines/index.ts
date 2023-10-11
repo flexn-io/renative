@@ -1,11 +1,10 @@
 import path from 'path';
 import { fsExistsSync, getRelativePath, readObjectSync, writeFileSync } from '../system/fs';
-import { checkAndCreateProjectPackage, installPackageDependencies } from '../npm';
+import { installPackageDependencies } from '../projects/npm';
 import { TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
 import { getAppFolder, getAppId, getConfigProp } from '../common';
 import { doResolve } from '../system/resolve';
-import { writeRenativeConfigFile } from '../configs';
 import { configurePlugins } from '../plugins';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap } from '../tasks/types';
@@ -15,6 +14,8 @@ import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
 import { RnvEnvContext, RnvEnvContextOptions } from '../env/types';
 import { RenativeEngineConfig } from '../schema/ts/types';
+import { writeRenativeConfigFile } from '../configs/utils';
+import { checkAndCreateProjectPackage } from '../projects/package';
 
 const ENGINE_CORE = 'engine-core';
 

@@ -9,7 +9,7 @@ import * as RuntimeManager from './runtime';
 import * as TemplateManager from './templates';
 import * as TaskManager from './tasks';
 // SUB-MODULES
-import * as NPMUtils from './npm';
+import * as NPMUtils from './projects/npm';
 import * as ObjectUtils from './utils/is';
 import * as Exec from './system/exec';
 import * as FileUtils from './system/fs';

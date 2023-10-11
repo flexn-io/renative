@@ -24,7 +24,7 @@ import {
     fsReadFileSync,
     resolvePackage,
 } from '../system/fs';
-import { installPackageDependencies, isYarnInstalled } from '../npm';
+import { installPackageDependencies, isYarnInstalled } from './npm';
 import { executeAsync } from '../system/exec';
 
 import { chalk, logTask, logWarning, logDebug, logInfo, getCurrentCommand } from '../logger';
@@ -36,7 +36,7 @@ import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
 import { RenativeConfigFile } from '../schema/ts/types';
 import { inquirerPrompt } from '../api';
-import { NpmPackageFile } from '../configs/types';
+import { upgradeProjectDependencies } from '../configs/configProject';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');
@@ -611,22 +611,6 @@ Move your files to: ${chalk().white(sourcePath1sec)} instead`);
         resolve();
     });
 
-const SYNCED_DEPS = [
-    'rnv',
-    '@rnv/engine-rn',
-    '@rnv/engine-rn-next',
-    '@rnv/engine-lightning',
-    '@rnv/engine-rn-web',
-    '@rnv/engine-rn-electron',
-    '@rnv/engine-rn-macos',
-    '@rnv/engine-rn-windows',
-    '@rnv/engine-rn-tvos',
-    '@rnv/renative',
-    '@rnv/template-starter',
-];
-
-const SYNCED_TEMPLATES = ['@rnv/template-starter'];
-
 export const versionCheck = async (c: RnvContext) => {
     logTask('versionCheck');
 
@@ -669,64 +653,6 @@ It is recommended that you run your rnv command with npx prefix: ${recCmd} . or 
         }
     }
     return true;
-};
-
-export const upgradeProjectDependencies = (c: RnvContext, version: string) => {
-    logTask('upgradeProjectDependencies');
-
-    // const templates = c.files.project.config?.templates;
-    // TODO: Make this dynamically injected
-    // SYNC DEPS
-    const result = upgradeDependencies(
-        c.files.project.package,
-        c.paths.project.package,
-        c.files.project.config,
-        c.paths.project.config,
-        version
-    );
-    c._requiresNpmInstall = true;
-    return result;
-};
-
-export const upgradeDependencies = (
-    packageFile: NpmPackageFile,
-    packagesPath: string | undefined,
-    configFile: RenativeConfigFile | null,
-    configPath: string | null,
-    version: string
-) => {
-    // logTask('upgradeDependencies');
-
-    const result = [];
-
-    _fixDeps(packageFile?.devDependencies, version);
-    _fixDeps(packageFile?.dependencies, version);
-    _fixDeps(packageFile?.peerDependencies, version);
-    SYNCED_TEMPLATES.forEach((templ) => {
-        if (configFile?.templates?.[templ]?.version) {
-            configFile.templates[templ].version = version;
-        }
-    });
-
-    if (packageFile) {
-        writeFileSync(packagesPath, packageFile);
-        result.push(packagesPath);
-    }
-    if (configFile && configPath) {
-        writeFileSync(configPath, configFile);
-        result.push(configPath);
-    }
-    return result;
-};
-
-const _fixDeps = (deps: Record<string, string>, version: string) => {
-    SYNCED_DEPS.forEach((dep) => {
-        const d = deps?.[dep];
-        if (d) {
-            const prefix = d.match(/~|>|>=|\^|<|<=/) || '';
-            deps[dep] = `${prefix}${version}`;
-        }
-    });
 };
 
 export const cleanPlaformAssets = async (c: RnvContext) => {

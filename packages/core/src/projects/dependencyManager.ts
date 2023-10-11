@@ -2,15 +2,26 @@ import semver from 'semver';
 import merge from 'deepmerge';
 
 import { executeAsync } from '../system/exec';
-import { installPackageDependencies } from '../npm';
+import { installPackageDependencies } from './npm';
 import { chalk, logInfo, logDebug, logTask } from '../logger';
 import { getEngineRunnerByPlatform } from '../engines';
-import { writeRenativeConfigFile } from './index';
 import { overrideTemplatePlugins } from '../plugins';
-import { configureFonts } from '../projects';
+import { configureFonts } from '.';
 import { getConfigProp } from '../common';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
+import { writeRenativeConfigFile } from '../configs/utils';
+import { fsExistsSync } from '../system/fs';
+
+export const checkIfProjectAndNodeModulesExists = async (c: RnvContext) => {
+    logTask('checkIfProjectAndNodeModulesExists');
+
+    if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
+        c._requiresNpmInstall = false;
+        logInfo('node_modules folder is missing. INSTALLING...');
+        await installPackageDependencies(c);
+    }
+};
 
 const injectProjectDependency = async (
     c: RnvContext,

@@ -15,47 +15,15 @@ import {
 } from '../system/fs';
 import { chalk, logError, logInfo, logWarning, logTask, logDebug } from '../logger';
 import { getConfigProp } from '../common';
-import { listAppConfigsFoldersSync, generateBuildConfig, loadFileExtended } from '../configs';
+import { loadFileExtended } from '../configs';
 import { doResolve } from '../system/resolve';
-import { checkIfProjectAndNodeModulesExists } from '../npm';
 import { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
 import { PromptOptions } from '../api/types';
 import { RnvPlatform } from '../types';
-
-export const checkIfTemplateConfigured = async (c: RnvContext) => {
-    logTask('checkIfTemplateConfigured');
-    if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return true;
-    if (!c.buildConfig.templates) {
-        logWarning(
-            `Your ${chalk().white(c.paths.project.config)} does not contain ${chalk().white(
-                'templates'
-            )} object. ReNative will skip template generation`
-        );
-        return false;
-    }
-    Object.keys(c.buildConfig.templates).forEach((k) => {
-        const obj = c.buildConfig.templates?.[k] || { version: 'unknown template version' };
-        if (!doResolve(k, false, { basedir: '../' }) && !doResolve(k, false)) {
-            logInfo(
-                `Your ${chalk().white(`${k}@${obj.version}`)} template is missing in renative.json. CONFIGURING...DONE`
-            );
-            c._requiresNpmInstall = true;
-            c.runtime.requiresBootstrap = true;
-        }
-        if (c.files.project.package.devDependencies) {
-            if (c.files.project.package.devDependencies[k] !== obj.version) {
-                logInfo(`Updating template ${chalk().white(`${k}`)} => ${chalk().green(obj.version)}. ...DONE`);
-            }
-
-            c.files.project.package.devDependencies[k] = obj.version;
-        }
-    });
-
-    _writeObjectSync(c, c.paths.project.package, c.files.project.package);
-
-    return true;
-};
+import { listAppConfigsFoldersSync } from '../configs/appConfigs';
+import { writeRenativeConfigFile } from '../configs/utils';
+import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
     logTask('_cleanProjectTemplateSync');
@@ -181,7 +149,7 @@ const _configureAppConfigs = async (c: RnvContext) => {
                             });
                         }
 
-                        _writeObjectSync(c, appConfigPath, appConfig);
+                        writeRenativeConfigFile(c, appConfigPath, appConfig);
                     }
                 }
             });
@@ -229,7 +197,7 @@ const _configureRenativeConfig = async (c: RnvContext) => {
         delete mergedObj.isNew;
         delete mergedObj.templateConfig;
         // c.files.project.config = mergedObj;
-        _writeObjectSync(c, c.paths.project.config, mergedObj);
+        writeRenativeConfigFile(c, c.paths.project.config, mergedObj);
         loadFileExtended(c, c.files.project, c.paths.project, 'config');
     }
 
@@ -302,26 +270,6 @@ export const configureEntryPoint = async (c: RnvContext, platform: RnvPlatform) 
     return true;
 };
 
-const _writeObjectSync = (c: RnvContext, p: string | undefined, s: string) => {
-    writeFileSync(p, s);
-    generateBuildConfig(c);
-};
-
-export const getTemplateOptions = (c: RnvContext, isGlobalScope?: boolean) => {
-    let defaultProjectTemplates;
-    if (isGlobalScope) {
-        defaultProjectTemplates = c.files.rnv.projectTemplates.config.projectTemplates;
-    } else {
-        defaultProjectTemplates = c.buildConfig.projectTemplates || {};
-    }
-
-    return generateOptions(defaultProjectTemplates, false, null, (i, obj, mapping, defaultVal) => {
-        const exists = c.buildConfig.templates?.[defaultVal];
-        const installed = exists ? chalk().yellow(' (installed)') : '';
-        return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)}${installed} \n`;
-    });
-};
-
 export const getInstalledTemplateOptions = (c: RnvContext): PromptOptions | null => {
     if (c.files.project.config.isTemplate) return null;
     if (c.buildConfig.templates) {
@@ -353,7 +301,7 @@ export const applyTemplate = async (c: RnvContext, selectedTemplate?: string) =>
             });
             c.buildConfig.currentTemplate = template;
             c.files.project.config.currentTemplate = template;
-            _writeObjectSync(c, c.paths.project.config, c.files.project.config);
+            writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
         } else {
             logError('Could not find any installed templates');
         }

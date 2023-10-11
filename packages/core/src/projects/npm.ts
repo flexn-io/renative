@@ -1,30 +1,13 @@
 import path from 'path';
 import { executeAsync, commandExistsSync } from '../system/exec';
-import {
-    fsExistsSync,
-    invalidatePodsChecksum,
-    removeDirs,
-    writeFileSync,
-    fsWriteFileSync,
-    loadFile,
-    readObjectSync,
-} from '../system/fs';
+import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync } from '../system/fs';
 import { logTask, logWarning, logError, logInfo, logDebug, logSuccess } from '../logger';
-import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
+import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR } from '../constants';
 import { doResolve } from '../system/resolve';
 
 import { getConfigProp } from '../common';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
-
-const packageJsonIsValid = (c: RnvContext) => {
-    if (!fsExistsSync(c.paths.project.package)) return false;
-    const pkg = readObjectSync(c.paths.project.package);
-    if (!pkg) return false;
-    // yarn add creates a package.json with only dependencies, that is not valid
-    if (Object.keys(pkg).length === 1 && Object.keys(pkg)[0] === 'dependencies') return false;
-    return true;
-};
 
 export const checkNpxIsInstalled = async () => {
     logTask('checkNpxIsInstalled');
@@ -43,48 +26,6 @@ export const checkNpxIsInstalled = async () => {
 
         throw new Error('npx is not installed');
     }
-};
-
-export const checkAndCreateProjectPackage = async (c: RnvContext) => {
-    logTask('checkAndCreateProjectPackage');
-
-    if (!packageJsonIsValid(c)) {
-        logInfo(`Your ${c.paths.project.package} is missing. CREATING...DONE`);
-
-        const packageName = c.files.project.config.projectName || c.paths.project.dir.split('/').pop();
-        const version = c.files.project.config.defaults?.package?.version || '0.1.0';
-        const templateName = c.files.project.config?.currentTemplate;
-        if (!templateName) {
-            logWarning('You are missing currentTemplate in your renative.json');
-        }
-        const rnvVersion = c.files.rnv.package.version;
-
-        c.paths.template.configTemplate = path.join(
-            c.paths.project.dir,
-            'node_modules',
-            templateName,
-            RENATIVE_CONFIG_TEMPLATE_NAME
-        );
-
-        const templateObj = readObjectSync(c.paths.template.configTemplate);
-
-        const pkgJson = templateObj?.templateConfig?.packageTemplate || {};
-        pkgJson.name = packageName;
-        pkgJson.version = version;
-        pkgJson.dependencies = pkgJson.dependencies || {};
-        // No longer good option to assume same version
-        // pkgJson.dependencies.renative = rnvVersion;
-        pkgJson.devDependencies = pkgJson.devDependencies || {};
-        pkgJson.devDependencies.rnv = rnvVersion;
-
-        pkgJson.devDependencies[templateName] = c.files.project.config?.templates[templateName]?.version;
-        const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
-        fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);
-    }
-
-    loadFile(c.files.project, c.paths.project, 'package');
-
-    return true;
 };
 
 export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
@@ -140,16 +81,6 @@ export const listAndSelectNpmVersion = async (c: RnvContext, npmPackage: string)
     });
 
     return inputTemplateVersion;
-};
-
-export const checkIfProjectAndNodeModulesExists = async (c: RnvContext) => {
-    logTask('checkIfProjectAndNodeModulesExists');
-
-    if (c.paths.project.configExists && !fsExistsSync(c.paths.project.nodeModulesDir)) {
-        c._requiresNpmInstall = false;
-        logInfo('node_modules folder is missing. INSTALLING...');
-        await installPackageDependencies(c);
-    }
 };
 
 const _getInstallScript = (c: RnvContext) => {
