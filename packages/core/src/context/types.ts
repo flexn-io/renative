@@ -58,7 +58,7 @@ export type RnvContextBuildConfig = Partial<RenativeConfigFile> & {
 
 export type RnvContextRuntime = {
     platform: RnvPlatform;
-    appId: string | null;
+    appId?: string;
     appDir: string;
     enginesByPlatform: Record<string, RnvEngine>;
     enginesByIndex: Array<RnvEngine>;

@@ -24,7 +24,7 @@ import {
     getAppId,
     getAppTitle,
     getAppDescription,
-    copyFileSync
+    copyFileSync,
 } from '@rnv/core';
 import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
@@ -62,7 +62,9 @@ export const runWebOS = async (c: RnvContext) => {
         await runWebosSimOrDevice(c);
     } else {
         const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
-        const isWeinreEnabled = REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted;
+        const isWeinreEnabled = platform
+            ? REMOTE_DEBUGGER_ENABLED_PLATFORMS.includes(platform) && !bundleAssets && !hosted
+            : false;
 
         if (!isPortActive) {
             logInfo(
@@ -95,19 +97,21 @@ export const buildWebOSProject = async (c: RnvContext) => {
 
     await buildCoreWebpackProject(c);
 
-    
     if (!c.program.hosted) {
         const tDir = path.join(getPlatformProjectDir(c)!, 'build');
         const tOut = path.join(getPlatformBuildDir(c)!, 'output');
 
         const appinfoSrc = path.join(getPlatformProjectDir(c)!, 'appinfo.json');
         const appinfoDest = path.join(tDir, 'appinfo.json');
-        
+
         copyFileSync(appinfoSrc, appinfoDest);
         copyFileSync(path.join(getPlatformProjectDir(c)!, 'icon.png'), path.join(tDir, 'icon.png'));
         copyFileSync(path.join(getPlatformProjectDir(c)!, 'largeIcon.png'), path.join(tDir, 'largeIcon.png'));
-        copyFileSync(path.join(getPlatformProjectDir(c)!, 'splashBackground.png'), path.join(tDir, 'splashBackground.png'));
-        
+        copyFileSync(
+            path.join(getPlatformProjectDir(c)!, 'splashBackground.png'),
+            path.join(tDir, 'splashBackground.png')
+        );
+
         await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
         logSuccess(`Your IPK package is located in ${chalk().cyan(tOut)} .`);

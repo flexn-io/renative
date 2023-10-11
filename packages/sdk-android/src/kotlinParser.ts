@@ -51,6 +51,8 @@ export const parseMainApplicationSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
 
+    if (!platform) return;
+
     const appId = getAppId(c, c.platform);
     // console.log('appId', appId);
     const javaPackageArray = appId.split('.');

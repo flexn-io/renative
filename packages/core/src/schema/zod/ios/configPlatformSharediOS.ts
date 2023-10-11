@@ -8,16 +8,30 @@ const Podfile = z
     })
     .describe('Allows to manipulate Podfile');
 
+const XcodeProj = z.object({
+    sourceFiles: z.optional(z.array(z.string())),
+    resourceFiles: z.optional(z.array(z.string())),
+    headerFiles: z.optional(z.array(z.string())),
+    buildPhases: z.optional(
+        z.array(
+            z.object({
+                shellPath: z.string(),
+                shellScript: z.string(),
+                inputPaths: z.array(z.string()),
+            })
+        )
+    ),
+    frameworks: z.optional(z.array(z.string())),
+    buildSettings: z.optional(z.record(z.string(), z.string())),
+});
+
 export const PlatformSharediOS = z.object({
     Podfile: z.optional(Podfile),
     staticPods: z.optional(z.array(z.string())),
 
     podNames: z.optional(z.array(z.string())),
     podDependencies: z.optional(z.array(z.string())),
-    // xcodeproj: {
-    //     additionalProperties: true,
-    //     type: 'object',
-    // },
+    xcodeproj: z.optional(XcodeProj),
     // plist: {
     //     additionalProperties: true,
     //     type: 'object',

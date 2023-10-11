@@ -586,6 +586,12 @@ export const checkForActiveEmulator = (c: RnvContext) =>
     new Promise((resolve, reject) => {
         logTask('checkForActiveEmulator');
         const { platform } = c;
+
+        if (!platform) {
+            resolve(false);
+            return;
+        }
+
         let attempts = 1;
         const maxAttempts = isSystemWin ? 20 : 10;
         let running = false;

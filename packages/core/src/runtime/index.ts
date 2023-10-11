@@ -15,7 +15,7 @@ export const updateRenativeConfigs = async (c: RnvContext) => {
 };
 
 export const configureRuntimeDefaults = async (c: RnvContext) => {
-    c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId || null;
+    c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId;
     // c.runtime.appConfigDir = c.files.project?.configLocal?._meta?.currentAppConfigDir || null;
 
     logTask('configureRuntimeDefaults', `appId:${c.runtime.appId}`);

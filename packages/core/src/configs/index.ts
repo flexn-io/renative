@@ -264,7 +264,7 @@ const _loadConfigFiles = (
     }
 
     if (loadFileExtended(c, fileObj, pathObj, 'configLocal')) {
-        extendAppId = fileObj.configLocal.extend || extendAppId;
+        extendAppId = fileObj.configLocal?.extend || extendAppId;
         result = true;
     }
 

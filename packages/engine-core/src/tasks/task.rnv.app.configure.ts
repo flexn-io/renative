@@ -138,7 +138,7 @@ const _findAndSwitchAppConfigDir = async (c: RnvContext) => {
 };
 
 const _setAppId = (c: RnvContext, appId: string) => {
-    const currentAppConfigId = c.files.project?.configLocal?._meta?.currentAppConfigId || null;
+    const currentAppConfigId = c.files.project?.configLocal?._meta?.currentAppConfigId;
 
     logTask('_setAppId', `appId:${appId} runtime.appId:${c.runtime.appId} _meta.appId:${currentAppConfigId}`);
     c.runtime.appId = appId || c.runtime.appId || currentAppConfigId;
@@ -166,7 +166,7 @@ export const taskRnvAppConfigure = async (c: RnvContext) => {
 
     // Reset appId if appConfig no longer exists but renative.local.json still has reference to it
     if (c.runtime.appId && !c.paths.project.appConfigsDirNames.includes(c.runtime.appId)) {
-        c.runtime.appId = null;
+        c.runtime.appId = undefined;
     }
 
     if (c.program.appConfigID === true || (!c.program.appConfigID && !c.runtime.appId)) {

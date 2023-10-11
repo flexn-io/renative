@@ -178,6 +178,8 @@ export const parseAppBuildGradleSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
 
+    if (!platform) return;
+
     // ANDROID PROPS
     c.payload.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 24);
     c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
@@ -537,6 +539,8 @@ export const parseSettingsGradleSync = (c: Context) => {
 export const parseGradlePropertiesSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
+
+    if (!platform) return;
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
     const pluginConfigAndroid: RenativeConfigPlatform = c.buildConfig?.platforms?.[platform] || {};

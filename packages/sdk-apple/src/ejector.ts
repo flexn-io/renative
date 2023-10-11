@@ -1,6 +1,5 @@
 import path from 'path';
 import {
-    RnvPluginPlatform,
     fsExistsSync,
     copyFileSync,
     fsWriteFileSync,
@@ -80,7 +79,7 @@ export const ejectXcodeProject = async (c: Context) => {
     // Plugins
     //= ==========
 
-    parsePlugins(c, c.platform as RnvPluginPlatform, (_plugin, pluginPlat, key) => {
+    parsePlugins(c, c.platform, (_plugin, pluginPlat, key) => {
         const podPath = doResolvePath(key);
         const extensionsFilter = ['.h', '.m', '.swift', '.c', '.podspec', '.rb', '.mm'];
         // const excludeFolders = ['node_modules', 'android'];

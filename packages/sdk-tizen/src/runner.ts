@@ -70,6 +70,8 @@ export const runTizen = async (c: RnvContext, target: string) => {
     const { platform } = c;
     const { hosted } = c.program;
 
+    if (!platform) return;
+
     const isHosted = hosted && !getConfigProp(c, platform, 'bundleAssets');
 
     if (isHosted) {
@@ -122,6 +124,8 @@ export const buildTizenProject = async (c: RnvContext) => {
 
     const { platform } = c;
 
+    if (!platform) return;
+
     const platformConfig = c.buildConfig.platforms?.[platform];
     const tDir = getPlatformProjectDir(c)!;
 
@@ -168,6 +172,8 @@ const _configureProject = (c: RnvContext) =>
     new Promise<void>((resolve) => {
         logTask('_configureProject');
         const { platform } = c;
+
+        if (!platform) return;
 
         const configFile = 'config.xml';
         const p = c.buildConfig.platforms?.[platform];

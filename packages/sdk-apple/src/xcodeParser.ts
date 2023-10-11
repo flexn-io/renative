@@ -26,6 +26,7 @@ import { Context } from './types';
 export const parseXcodeProject = async (c: Context) => {
     logTask('parseXcodeProject');
     const { platform } = c;
+    if (!platform) return;
     // PROJECT
     c.payload.xcodeProj = {};
     c.payload.xcodeProj.provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
@@ -256,7 +257,7 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
                     }
                     if (xcodeprojObj.buildSettings) {
                         Object.keys(xcodeprojObj.buildSettings).forEach((k) => {
-                            xcodeProj.addToBuildSettings(k, xcodeprojObj.buildSettings[k]);
+                            xcodeProj.addToBuildSettings(k, xcodeprojObj.buildSettings?.[k]);
                         });
                     }
                 }

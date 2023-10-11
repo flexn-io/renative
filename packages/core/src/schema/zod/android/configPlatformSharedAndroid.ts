@@ -43,11 +43,16 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 > IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
  `);
 
+const Gradle = z.object({
+    buildTypes: z.optional(z.object({})),
+});
+
 export const PlatformSharedAndroid = z.object({
     'gradle.properties': z.optional(GradleProperties),
     'build.gradle': z.optional(BuildGradle),
     'app/build.gradle': z.optional(AppBuildGradle),
     AndroidManifest: z.optional(AndroidManifest),
+    gradle: z.optional(Gradle),
     //     applyPlugin: {
     //         type: 'array',
     //     },
