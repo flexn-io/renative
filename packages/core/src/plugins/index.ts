@@ -443,21 +443,22 @@ export const parsePlugins = (
                         const plugin = getMergedPlugin(c, key);
 
                         if (plugin) {
-                            const pluginPlat = plugin[platform] || {
-                                skipLinking: true,
-                                disabled: true,
-                                enabled: false,
-                            };
+                            const pluginPlat = plugin[platform] || {};
+                            // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
+                            // {
+                            //     skipLinking: true,
+                            //     disabled: true,
+                            //     enabled: false,
+                            // };
                             if (ignorePlatformObjectCheck) {
                                 // totalIncludedPlugins++;
                                 pluginCallback(plugin, pluginPlat, key);
                             } else if (pluginPlat) {
-                                if (
-                                    plugin.disabled !== true &&
-                                    plugin.enabled !== false &&
-                                    pluginPlat.disabled !== true &&
-                                    pluginPlat.enabled !== false
-                                ) {
+                                const isPluginDisabled = plugin.disabled === true || plugin.enabled === false;
+                                //DEPreCATED
+                                const isPluginPlatDisabled =
+                                    pluginPlat.disabled === true || pluginPlat.enabled === false;
+                                if (!isPluginDisabled && !isPluginPlatDisabled) {
                                     if (plugin.deprecated) {
                                         logWarning(plugin.deprecated);
                                     }
@@ -466,7 +467,11 @@ export const parsePlugins = (
                                         pluginCallback(plugin, pluginPlat, key);
                                     }
                                 } else {
-                                    logWarning(`Plugin ${key} is marked disabled. skipping.`);
+                                    if (isPluginDisabled) {
+                                        logInfo(`Plugin ${key} is marked disabled. skipping.`);
+                                    } else if (isPluginPlatDisabled) {
+                                        logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
+                                    }
                                 }
                             }
                         }
