@@ -121,13 +121,11 @@ export const getMergedPlugin = (c: RnvContext, key: string) => {
     const plugin = c.buildConfig.plugins?.[key];
     if (!plugin) return null;
 
-    const scopes: Array<string> = ['rnv'];
+    const scopes: Array<string> = [];
+
     const mergedPlugin = _getMergedPlugin(c, plugin, key, undefined, scopes);
     scopes.reverse();
-    // if (!mergedPlugin.version) {
-    //     logWarning(`Plugin ${key} has no version`);
-    //     // return null;
-    // }
+
     mergedPlugin._scopes = scopes;
     mergedPlugin._id = key;
     return mergedPlugin;
@@ -146,8 +144,11 @@ const _getMergedPlugin = (
     }
 
     const { scope, npmVersion } = _getPluginScope(plugin);
+
     const mergedPlgn: RnvPlugin = typeof plugin !== 'string' ? plugin : {};
-    if (scope === parentScope) return mergedPlgn;
+    if (scope === parentScope) {
+        return mergedPlgn;
+    }
 
     if (npmVersion) {
         return {
@@ -161,14 +162,18 @@ const _getMergedPlugin = (
         !c.runtime._skipPluginScopeWarnings
     ) {
         logWarning(`Plugin ${pluginKey} is not recognized plugin in ${scope} scope`);
-    } else if (scope && parentScope) {
-        const skipRnvOverrides = c.buildConfig.pluginTemplates?.[parentScope]?.disableRnvDefaultOverrides;
+    } else if (scope && scopes) {
+        let skipScope = false;
+        if (parentScope) {
+            const skipRnvOverrides = c.buildConfig.pluginTemplates?.[parentScope]?.disableRnvDefaultOverrides;
 
-        if (skipRnvOverrides && scope === 'rnv') {
-            // Merges down to RNV defaults will be skipped
-        } else if (scopes) {
-            scopes.push(scope);
+            if (skipRnvOverrides && scope === 'rnv') {
+                // Merges down to RNV defaults will be skipped
+                skipScope = true;
+            }
         }
+
+        if (!skipScope) scopes.push(scope);
     }
 
     const parentPlugin = _getMergedPlugin(
