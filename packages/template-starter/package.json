@@ -57,7 +57,9 @@
         "renative.template.json",
         "src",
         "static",
-        "tsconfig.json"
+        "tsconfig.json",
+        ".bundle",
+        "babel.config.js"
     ],
     "repository": {
         "type": "git",

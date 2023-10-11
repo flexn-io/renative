@@ -4,7 +4,12 @@
             "buildHooks",
             "src",
             "index.js",
-            "tsconfig.json"
+            "tsconfig.json",
+            "Gemfile",
+            "metro.config.js",
+            ".bundle",
+            "react-native.config.js",
+            "babel.config.js"
         ],
         "packageTemplate": {
             "devDependencies": {
