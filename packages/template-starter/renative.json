@@ -67,7 +67,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^1.0.0-canary.2"
+            "version": "^1.0.0-canary.3"
         }
     },
     "platforms": {
