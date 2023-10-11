@@ -1,8 +1,5 @@
 import path from 'path';
 import {
-    RnvPluginPlatform,
-    RenativeConfigAppDelegateMethod,
-    RenativeConfigAppDelegateMethods,
     RenativeConfigPluginPlatform,
     getEntryFile,
     getAppTemplateFolder,
@@ -17,6 +14,8 @@ import {
     logWarning,
     parsePlugins,
     writeCleanFile,
+    RnvPlatform,
+    RenativeConfigAppDelegateMethod,
 } from '@rnv/core';
 import {
     Context,
@@ -31,7 +30,7 @@ import {
 
 export const parseAppDelegate = (
     c: Context,
-    platform: string,
+    platform: RnvPlatform,
     appFolder: string,
     appFolderName: string,
     isBundled = false,
@@ -55,7 +54,7 @@ export const parseAppDelegate = (
         }
 
         // PLUGINS
-        parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
+        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
             injectPluginSwiftSync(c, pluginPlat, key);
         });
 
@@ -248,7 +247,7 @@ export const parseAppDelegate = (
         addSystemInjects(c, injects);
 
         writeCleanFile(
-            path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
+            path.join(getAppTemplateFolder(c, platform)!, appFolderName, appDelegate),
             path.join(appFolder, appFolderName, appDelegate),
             injects,
             undefined,
@@ -286,7 +285,11 @@ export const injectPluginSwiftSync = (c: Context, plugin: RenativeConfigPluginPl
         });
     }
 
-    const appDelegateMethods = getFlavouredProp<RenativeConfigAppDelegateMethods>(c, plugin, 'appDelegateMethods');
+    const appDelegateMethods = getFlavouredProp<RenativeConfigPluginPlatform['appDelegateMethods']>(
+        c,
+        plugin,
+        'appDelegateMethods'
+    );
     if (appDelegateMethods) {
         const admk = Object.keys(appDelegateMethods) as Array<PayloadAppDelegateKey>;
         admk.forEach((delKey) => {

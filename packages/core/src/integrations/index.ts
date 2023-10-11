@@ -1,7 +1,6 @@
 import path from 'path';
 import { RnvContext } from '../context/types';
 import { fsExistsSync } from '../system/fs';
-// import { getScopedVersion } from '../system/utils';
 import { logTask, logWarning } from '../logger';
 import { registerCustomTask } from '../tasks';
 
@@ -11,8 +10,6 @@ export const loadIntegrations = async (c: RnvContext) => {
 
     if (integrations) {
         Object.keys(integrations).forEach((integration) => {
-            // const ver = getScopedVersion(c, k, integrations[k], 'integrationTemplates');
-
             // Local node modules take precedence
             let intPath = path.join(c.paths.project.nodeModulesDir, integration);
             if (!fsExistsSync(intPath)) {

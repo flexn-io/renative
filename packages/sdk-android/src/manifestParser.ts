@@ -1,7 +1,5 @@
 import path from 'path';
 import {
-    RenativeConfigPermissionsList,
-    RnvPluginPlatform,
     getAppFolder,
     getAppId,
     getBuildFilePath,
@@ -16,6 +14,7 @@ import {
     readObjectSync,
     writeCleanFile,
     parsePlugins,
+    RenativeConfigFile,
 } from '@rnv/core';
 import { Context } from './types';
 
@@ -157,6 +156,8 @@ export const parseAndroidManifestSync = (c: Context) => {
     logTask('parseAndroidManifestSync');
     const { platform } = c;
 
+    if (!platform) return;
+
     try {
         const baseManifestFilePath = path.join(__dirname, `../supportFiles/AndroidManifest_${platform}.json`);
         const baseManifestFile = readObjectSync(baseManifestFilePath);
@@ -173,7 +174,7 @@ export const parseAndroidManifestSync = (c: Context) => {
         });
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
-        parsePlugins(c, platform as RnvPluginPlatform, (_plugin, pluginPlat) => {
+        parsePlugins(c, platform, (_plugin, pluginPlat) => {
             const androidManifestPlugin = getFlavouredProp(c, pluginPlat, 'AndroidManifest');
             if (androidManifestPlugin) {
                 _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
@@ -186,31 +187,41 @@ export const parseAndroidManifestSync = (c: Context) => {
         // appConfig PERMISSIONS OVERRIDES
         const configPermissions = c.buildConfig?.permissions;
 
-        const includedPermissions = getConfigProp<RenativeConfigPermissionsList>(c, platform, 'includedPermissions');
-        const excludedPermissions = getConfigProp<RenativeConfigPermissionsList>(c, platform, 'excludedPermissions');
+        const includedPermissions = getConfigProp<RenativeConfigFile['common']['includedPermissions']>(
+            c,
+            platform,
+            'includedPermissions'
+        );
+        const excludedPermissions = getConfigProp<RenativeConfigFile['common']['excludedPermissions']>(
+            c,
+            platform,
+            'excludedPermissions'
+        );
         if (includedPermissions?.forEach && configPermissions) {
-            const platPerm = configPermissions[platform] ? platform : 'android';
+            const platPerm = 'android'; //configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
-            if (includedPermissions[0] === '*') {
-                Object.keys(pc).forEach((k) => {
-                    if (!(excludedPermissions && excludedPermissions.includes(k))) {
-                        const key = pc[k].key || k;
-                        baseManifestFile.children.push({
-                            tag: 'uses-permission',
-                            'android:name': key,
-                        });
-                    }
-                });
-            } else {
-                includedPermissions.forEach((v) => {
-                    if (pc[v]) {
-                        const key = pc[v].key || v;
-                        baseManifestFile.children.push({
-                            tag: 'uses-permission',
-                            'android:name': key,
-                        });
-                    }
-                });
+            if (pc) {
+                if (includedPermissions[0] === '*') {
+                    Object.keys(pc).forEach((k) => {
+                        if (!(excludedPermissions && excludedPermissions.includes(k))) {
+                            const key = pc[k].key || k;
+                            baseManifestFile.children.push({
+                                tag: 'uses-permission',
+                                'android:name': key,
+                            });
+                        }
+                    });
+                } else {
+                    includedPermissions.forEach((v) => {
+                        if (pc[v]) {
+                            const key = pc[v].key || v;
+                            baseManifestFile.children.push({
+                                tag: 'uses-permission',
+                                'android:name': key,
+                            });
+                        }
+                    });
+                }
             }
         } else if (includedPermissions) {
             logWarning('includedPermissions not parsed. make sure it an array format!');

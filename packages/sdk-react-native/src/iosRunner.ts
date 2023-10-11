@@ -5,6 +5,8 @@ import shellQuote from 'shell-quote';
 
 export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
     logTask('packageBundleForXcode');
+
+    if (!c.platform) return;
     // const { maxErrorLength } = c.program;
     const args = [
         'bundle',

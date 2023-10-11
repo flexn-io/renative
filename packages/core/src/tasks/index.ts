@@ -15,6 +15,7 @@ import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engines/types';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
+import { RenativeConfigTaskKey } from '../schema/ts/types';
 
 let executedTasks: Record<string, number> = {};
 
@@ -346,7 +347,9 @@ const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
 };
 
-export const shouldSkipTask = (c: RnvContext, task: string, originTask?: string) => {
+export const shouldSkipTask = (c: RnvContext, taskKey: string, originTaskKey?: string) => {
+    const task = taskKey as RenativeConfigTaskKey;
+    const originTask = originTaskKey as RenativeConfigTaskKey;
     const tasks = c.buildConfig?.tasks;
     c.runtime.platform = c.platform;
     if (!tasks) return;
@@ -390,7 +393,7 @@ export const shouldSkipTask = (c: RnvContext, task: string, originTask?: string)
                 }
             }
         }
-    } else {
+    } else if (c.platform) {
         const ignoreTask = tasks[task]?.platform?.[c.platform]?.ignore;
         if (ignoreTask) {
             _logSkip(task);

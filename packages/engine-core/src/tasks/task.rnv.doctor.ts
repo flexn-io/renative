@@ -10,8 +10,8 @@ import {
     configureRuntimeDefaults,
     readObjectSync,
     fsExistsSync,
-    validateRenativeJsonSchema,
     RnvTaskFn,
+    validateRenativeProjectSchema,
 } from '@rnv/core';
 
 const configTargets = [
@@ -48,40 +48,41 @@ export const taskRnvDoctor: RnvTaskFn = async (c, parentTask, originTask) => {
     configPaths.forEach((cPath) => {
         if (fsExistsSync(cPath)) {
             const cObj = readObjectSync(cPath);
-
-            const [valid, ajv] = validateRenativeJsonSchema(cObj);
-            if (!valid) {
+            const result = validateRenativeProjectSchema(cObj);
+            if (!result.success) {
                 hasErrors = true;
-                // console.log('ERROR', ajv.errors);
-                errMsg += chalk().yellow(
-                    `\nInvalid schema in ${
-                        // cPath}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}\n`);
-                        cPath
-                    }. ISSUES:\n\n`
-                );
-                if (typeof ajv !== 'boolean' && ajv) {
-                    ajv.errors?.forEach((err) => {
-                        errMsg += chalk().yellow(
-                            `${chalk().grey(err.dataPath === '' ? '/' : err.dataPath)}: ${err.message} ${Object.keys(
-                                err.params
-                            )
-                                .map((k) => `=> ${chalk().red(err.params[k])}`)
-                                .join('\n')}\n`
-                        );
-                    });
-                }
+                errMsg += chalk().yellow(`\nInvalid schema in ${cPath}. ISSUES:\n\n`);
+                result.error.errors?.forEach((err) => {
+                    errMsg += chalk().yellow(`${chalk().grey(err.path)}: ${err.message}`);
+                });
             }
+            // if (!valid) {
+            //     hasErrors = true;
+            //     // console.log('ERROR', ajv.errors);
+            //     errMsg += chalk().yellow(
+            //         `\nInvalid schema in ${
+            //             // cPath}. ISSUES: ${JSON.stringify(ajv.errors, null, 2)}\n`);
+            //             cPath
+            //         }. ISSUES:\n\n`
+            //     );
+            //     if (typeof ajv !== 'boolean' && ajv) {
+            //         ajv.errors?.forEach((err) => {
+            //             errMsg += chalk().yellow(
+            //                 `${chalk().grey(err.dataPath === '' ? '/' : err.dataPath)}: ${err.message} ${Object.keys(
+            //                     err.params
+            //                 )
+            //                     .map((k) => `=> ${chalk().red(err.params[k])}`)
+            //                     .join('\n')}\n`
+            //             );
+            //         });
+            //     }
+            // }
         }
     });
 
     if (!hasErrors) {
         errMsg += chalk().green(`PASSED ${configPaths.length} files`);
     }
-
-    // const [valid, ajv] = validateRuntimeObjectSchema(c);
-    // if (!valid) {
-    //     console.log('ERROR', ajv.errors);
-    // }
 
     logToSummary(errMsg);
 };

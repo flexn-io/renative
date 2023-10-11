@@ -21,6 +21,7 @@ import { checkIfProjectAndNodeModulesExists } from '../npm';
 import { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
 import { PromptOptions } from '../api/types';
+import { RnvPlatform } from '../types';
 
 export const checkIfTemplateConfigured = async (c: RnvContext) => {
     logTask('checkIfTemplateConfigured');
@@ -266,7 +267,7 @@ export const configureTemplateFiles = async (c: RnvContext) => {
     }
 };
 
-export const configureEntryPoint = async (c: RnvContext, platform: string) => {
+export const configureEntryPoint = async (c: RnvContext, platform: RnvPlatform) => {
     logTask('configureEntryPoint');
 
     if (c.files.project.config.isTemplate) return true;

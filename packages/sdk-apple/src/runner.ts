@@ -29,6 +29,7 @@ import {
     logSuccess,
     logRaw,
     inquirerPrompt,
+    RnvPlatform,
 } from '@rnv/core';
 import { getAppleDevices } from './deviceManager';
 
@@ -107,7 +108,7 @@ const runCocoaPods = async (c: Context) => {
         return Promise.reject(`Location ${appFolder} does not exists!`);
     }
     const podsRequired = c.program.updatePods || (await checkIfPodsIsRequired(c));
-    const permissions = c.buildConfig.permissions?.[c.platform];
+    const permissions = c.platform === 'ios' ? c.buildConfig.permissions?.[c.platform] : {};
     let requiredPodPermissions = permissions
         ? Object.keys(permissions).map((key) => RNPermissionsMap[key]?.podPermissionKey)
         : '';
@@ -124,7 +125,7 @@ const runCocoaPods = async (c: Context) => {
         ...generateEnvVars(c),
     };
 
-    const printableEnvKeys = ['RCT_NEW_ARCH_ENABLED', 'REACT_NATIVE_PERMISSIONS_REQUIRED', 'RNV_APP_BUILD_DIR']
+    const printableEnvKeys = ['RCT_NEW_ARCH_ENABLED', 'REACT_NATIVE_PERMISSIONS_REQUIRED', 'RNV_APP_BUILD_DIR'];
 
     if (podsRequired) {
         if (!commandExistsSync('pod')) {
@@ -134,7 +135,7 @@ const runCocoaPods = async (c: Context) => {
         try {
             await executeAsync(c, 'bundle install', {
                 env: process.env,
-                printableEnvKeys
+                printableEnvKeys,
             });
             await executeAsync(c, 'bundle exec pod install', {
                 cwd: appFolder,
@@ -159,7 +160,7 @@ const runCocoaPods = async (c: Context) => {
             return executeAsync(c, 'bundle exec pod update', {
                 cwd: appFolder,
                 env,
-                printableEnvKeys
+                printableEnvKeys,
             })
                 .then(() => updatePodsChecksum(c))
                 .catch((er) => Promise.reject(er));
@@ -170,7 +171,7 @@ const runCocoaPods = async (c: Context) => {
     }
 };
 
-const copyAppleAssets = (c: Context, platform: string, appFolderName: string) =>
+const copyAppleAssets = (c: Context, platform: RnvPlatform, appFolderName: string) =>
     new Promise<void>((resolve) => {
         logTask('copyAppleAssets');
         if (!isPlatformActive(c, platform, resolve)) return;
@@ -187,7 +188,9 @@ const copyAppleAssets = (c: Context, platform: string, appFolderName: string) =>
 
 export const getDeviceToRunOn = async (c: Context) => {
     logTask('getDeviceToRunOn');
-    
+
+    if (!c.platform) return;
+
     const { device } = c.program;
     let devicesArr: AppleDevice[] = [];
     if (device === true) {
@@ -350,7 +353,7 @@ export const runXcodeProject = async (c: Context, runDeviceArguments?: string) =
         //const allowProvisioningUpdates = getConfigProp(c, c.platform, 'allowProvisioningUpdates', true);
         //if (allowProvisioningUpdates) p = `${p} --allowProvisioningUpdates`;
         if (bundleAssets) {
-           await packageReactNativeIOS(c, bundleIsDev)
+            await packageReactNativeIOS(c, bundleIsDev);
         }
         return _checkLockAndExec(c, appPath, schemeTarget, runScheme, runDeviceArguments);
     }
@@ -382,6 +385,8 @@ const _checkLockAndExec = async (
     extraParamsString = ''
 ) => {
     logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme} p:${extraParamsString}`);
+    if (!c.platform) return;
+
     const appFolderName = getAppFolderName(c, c.platform);
 
     try {
@@ -522,6 +527,8 @@ ${proAutoText}`);
 const _setAutomaticSigning = async (c: Context) => {
     logTask(`_setAutomaticSigning:${c.platform}`);
 
+    if (!c.platform) return;
+
     const scheme = c.files.appConfig?.config?.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
     if (scheme) {
         scheme.provisioningStyle = 'Automatic';
@@ -536,6 +543,8 @@ const _setAutomaticSigning = async (c: Context) => {
 
 const _setDevelopmentTeam = async (c: Context, teamID: string) => {
     logTask(`_setDevelopmentTeam:${teamID}`);
+
+    if (!c.platform) return;
 
     try {
         // initialize if it doesn't exist, assume everything is set up, if it throws yell
@@ -651,9 +660,12 @@ export const buildXcodeProject = async (c: Context) => {
 
     logDebug('xcodebuild args', args);
 
-    return executeAsync('xcodebuild', { rawCommand: { args }, env: {
-        RCT_NO_LAUNCH_PACKAGER: true
-    } }).then(() => {
+    return executeAsync('xcodebuild', {
+        rawCommand: { args },
+        env: {
+            RCT_NO_LAUNCH_PACKAGER: true,
+        },
+    }).then(() => {
         logSuccess(`Your Build is located in ${chalk().cyan(buildPath)} .`);
     });
 };

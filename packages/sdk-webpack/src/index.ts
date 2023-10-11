@@ -26,6 +26,7 @@ import {
     copyFileSync,
     fsExistsSync,
     RnvContext,
+    RnvPlatform,
 } from '@rnv/core';
 
 export const REMOTE_DEBUG_PORT = 8079;
@@ -54,7 +55,7 @@ export const waitForUrl = (url: string) =>
 
 const _runWebBrowser = (
     c: RnvContext,
-    platform: string,
+    platform: RnvPlatform,
     devServerHost: string,
     port: number,
     alreadyStarted: boolean

@@ -50,10 +50,13 @@ export const checkAndConfigureTizenSdks = async (c: RnvContext) => {
     }
 };
 
-const _getCurrentSdkPath = (c: RnvContext) => c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]];
+const _getCurrentSdkPath = (c: RnvContext) =>
+    c.platform ? c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]] : undefined;
 
 const _isSdkInstalled = (c: RnvContext) => {
     logTask('_isSdkInstalled');
+
+    if (!c.platform) return false;
 
     if (!SDK_PLATFORMS[c.platform]) return true;
 

@@ -19,16 +19,9 @@ import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } f
 import { installPackageDependencies } from '../npm';
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';
-import {
-    PluginCallback,
-    PluginListResponse,
-    RnvPlugin,
-    RnvPluginPlatform,
-    RnvPluginScope,
-    RnvPluginWebpackKey,
-} from './types';
-import { RenativeConfigPlugin, RenativeWebpackConfig } from '../configs/types';
-import { RnvModuleConfig } from '../types';
+import { PluginCallback, PluginListResponse, RnvPlugin, RnvPluginScope, RnvPluginWebpackKey } from './types';
+import { RenativeConfigPlugin, RenativeWebpackConfig } from '../schema/ts/types';
+import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { ResolveOptions } from '../api/types';
 
@@ -142,7 +135,7 @@ export const getMergedPlugin = (c: RnvContext, key: string) => {
 
 const _getMergedPlugin = (
     c: RnvContext,
-    plugin: RenativeConfigPlugin | string,
+    plugin: RenativeConfigPlugin | string | undefined,
     pluginKey: string,
     parentScope?: string,
     scopes?: Array<string>,
@@ -266,7 +259,7 @@ export const configurePlugins = async (c: RnvContext) => {
                 );
             }
         } else if (dependencies && dependencies[k]) {
-            if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
+            if (plugin.disabled !== true && plugin['no-npm'] !== true) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -284,7 +277,7 @@ ${ovMsg}`
                 }
             }
         } else if (devDependencies && devDependencies[k]) {
-            if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
+            if (plugin.disabled !== true && plugin['no-npm'] !== true) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -299,7 +292,7 @@ ${ovMsg}`
                     newDevDeps[k] = plugin.version;
                 }
             }
-        } else if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
+        } else if (plugin.disabled !== true && plugin['no-npm'] !== true) {
             // Dependency does not exists
             if (plugin.version) {
                 logInfo(
@@ -420,7 +413,9 @@ const _resolvePluginDependencies = async (
         for (let i = 0; i < depsKeys.length; i++) {
             const depKey = depsKeys[i];
             const depScope = deps[depKey];
-            await _resolvePluginDependencies(c, depKey, depScope, key);
+            if (depScope) {
+                await _resolvePluginDependencies(c, depKey, depScope, key);
+            }
         }
     }
     return true;
@@ -428,12 +423,12 @@ const _resolvePluginDependencies = async (
 
 export const parsePlugins = (
     c: RnvContext,
-    platform: RnvPluginPlatform,
+    platform: RnvPlatform,
     pluginCallback: PluginCallback,
     ignorePlatformObjectCheck?: boolean
 ) => {
     logTask('parsePlugins');
-    if (c.buildConfig) {
+    if (c.buildConfig && platform) {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
         if (includedPlugins) {
@@ -448,16 +443,22 @@ export const parsePlugins = (
                         const plugin = getMergedPlugin(c, key);
 
                         if (plugin) {
-                            const pluginPlat = plugin[platform] || { skipLinking: true };
+                            const pluginPlat = plugin[platform] || {};
+                            // NOTE: we do not want to disable plugin just because object is missing. instead we will let people to do it explicitly
+                            // {
+                            //     skipLinking: true,
+                            //     disabled: true,
+                            //     enabled: false,
+                            // };
                             if (ignorePlatformObjectCheck) {
                                 // totalIncludedPlugins++;
                                 pluginCallback(plugin, pluginPlat, key);
                             } else if (pluginPlat) {
-                                if (
-                                    plugin['no-active'] !== true &&
-                                    plugin.enabled !== false &&
-                                    pluginPlat.enabled !== false
-                                ) {
+                                const isPluginDisabled = plugin.disabled === true || plugin.enabled === false;
+                                //DEPreCATED
+                                const isPluginPlatDisabled =
+                                    pluginPlat.disabled === true || pluginPlat.enabled === false;
+                                if (!isPluginDisabled && !isPluginPlatDisabled) {
                                     if (plugin.deprecated) {
                                         logWarning(plugin.deprecated);
                                     }
@@ -466,7 +467,11 @@ export const parsePlugins = (
                                         pluginCallback(plugin, pluginPlat, key);
                                     }
                                 } else {
-                                    logWarning(`Plugin ${key} is marked disabled. skipping.`);
+                                    if (isPluginDisabled) {
+                                        logInfo(`Plugin ${key} is marked disabled. skipping.`);
+                                    } else if (isPluginPlatDisabled) {
+                                        logInfo(`Plugin ${key} is marked disabled for platform ${platform} skipping.`);
+                                    }
                                 }
                             }
                         }
@@ -848,7 +853,7 @@ export const overrideTemplatePlugins = async (c: RnvContext) => {
 
     parsePlugins(
         c,
-        c.platform as RnvPluginPlatform,
+        c.platform,
         (plugin, pluginPlat, key) => {
             if (!plugin.disablePluginTemplateOverrides) {
                 if (plugin?._scopes?.length) {
@@ -886,7 +891,7 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
 
     logTask('copyTemplatePluginsSync', `(${destPath})`);
 
-    parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         const objectInject = [...c.configPropsInjects];
         if (plugin.props) {
             Object.keys(plugin.props).forEach((v) => {
@@ -995,7 +1000,7 @@ export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey
     // PLUGINS
     parsePlugins(
         c,
-        c.platform as RnvPluginPlatform,
+        c.platform,
         (plugin, pluginPlat, key) => {
             let webpackConfig: RenativeWebpackConfig | undefined;
 
@@ -1013,13 +1018,7 @@ export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey
                         }
                     } else {
                         webpackConfig.modulePaths.forEach((v) => {
-                            if (typeof v === 'string') {
-                                modulePaths.push(v);
-                            } else if (includesPluginPath(v.projectPath)) {
-                                doNotResolveModulePaths.push(sanitizePluginPath(v.projectPath, key));
-                            } else if (v?.projectPath) {
-                                doNotResolveModulePaths.push(path.join(c.paths.project.dir, v.projectPath));
-                            }
+                            modulePaths.push(v);
                         });
                     }
                 }
@@ -1032,8 +1031,9 @@ export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey
                             const mAlias = wpMa[aKey];
                             if (typeof mAlias === 'string') {
                                 moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
-                            } else if (mAlias.path) {
-                                moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
+                                // DEPRECATED use => projectPath
+                                // } else if (mAlias.path) {
+                                //     moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
                             } else if (includesPluginPath(mAlias.projectPath)) {
                                 moduleAliases[key] = sanitizePluginPath(mAlias.projectPath, key);
                             } else if (mAlias.projectPath) {

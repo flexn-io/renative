@@ -34,9 +34,9 @@ import { parseRenativeConfigs } from '../configs';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
-import { RnvPluginPlatform } from '../plugins/types';
-import { NpmPackageFile, RenativeConfigFile } from '../configs/types';
+import { RenativeConfigFile } from '../schema/ts/types';
 import { inquirerPrompt } from '../api';
+import { NpmPackageFile } from '../configs/types';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');
@@ -326,7 +326,7 @@ export const parseFonts = (c: RnvContext, callback: ParseFontsCallback) => {
         // PLUGIN FONTS
         parsePlugins(
             c,
-            c.platform as RnvPluginPlatform,
+            c.platform,
             (plugin) => {
                 if (plugin.config?.fontSources) {
                     _parseFontSources(c, plugin.config?.fontSources, callback);
@@ -418,7 +418,7 @@ export const copyAssetsFolder = async (
     c: RnvContext,
     platform: RnvPlatform,
     subPath?: string,
-    customFn?: (c: RnvContext, platform: string) => void
+    customFn?: (c: RnvContext, platform: RnvPlatform) => void
 ) => {
     logTask('copyAssetsFolder');
 
@@ -525,7 +525,7 @@ export const copyAssetsFolder = async (
 // }
 // };
 
-export const copyBuildsFolder = (c: RnvContext, platform: string) =>
+export const copyBuildsFolder = (c: RnvContext, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
         logTask('copyBuildsFolder');
         if (!isPlatformActive(c, platform, resolve)) return;

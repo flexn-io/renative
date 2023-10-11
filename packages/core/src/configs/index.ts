@@ -20,11 +20,11 @@ import { getConfigProp } from '../common';
 import { getWorkspaceDirPath } from '../workspaces';
 import { chalk, logTask, logWarning, logDebug } from '../logger';
 import { doResolve } from '../system/resolve';
-import { RnvContextFileObj, RnvContextPathObj, RnvContext } from '../context/types';
+import { RnvContextFileObj, RnvContextPathObj, RnvContext, RnvContextFileKey } from '../context/types';
 import { generateRnvConfigPathObj } from '../context/defaults';
-import { RnvFileKey } from './types';
 import { generateContextPaths } from '../context';
 import { getContext } from '../context/provider';
+import { RnvPlatform } from '../types';
 // import { loadPluginTemplates } from '../pluginManager';
 
 const IGNORE_FOLDERS = ['.git'];
@@ -52,16 +52,16 @@ const getEnginesPluginDelta = (c: RnvContext) => {
     const enginePlugins: Record<string, any> = {};
     const missingEnginePlugins: Record<string, any> = {};
 
-    const engineConfig = c.runtime.enginesByPlatform[c.platform]?.config;
+    const engineConfig = c.platform ? c.runtime.enginesByPlatform[c.platform]?.config : undefined;
     if (engineConfig?.plugins) {
         const ePlugins = Object.keys(engineConfig.plugins);
 
         if (ePlugins?.length) {
             ePlugins.forEach((pluginKey) => {
                 if (!c.files?.project?.config?.[pluginKey]) {
-                    missingEnginePlugins[pluginKey] = engineConfig.plugins[pluginKey];
+                    missingEnginePlugins[pluginKey] = engineConfig.plugins?.[pluginKey];
                 }
-                enginePlugins[pluginKey] = engineConfig.plugins[pluginKey];
+                enginePlugins[pluginKey] = engineConfig.plugins?.[pluginKey];
             });
         }
     }
@@ -206,7 +206,7 @@ export const loadFileExtended = (
     c: RnvContext,
     fileObj: Record<string, any>,
     pathObj: RnvContextPathObj,
-    key: RnvFileKey
+    key: RnvContextFileKey
 ) => {
     const result = loadFile(fileObj, pathObj, key);
     if (fileObj[key]) {
@@ -264,7 +264,7 @@ const _loadConfigFiles = (
     }
 
     if (loadFileExtended(c, fileObj, pathObj, 'configLocal')) {
-        extendAppId = fileObj.configLocal.extend || extendAppId;
+        extendAppId = fileObj.configLocal?.extend || extendAppId;
         result = true;
     }
 
@@ -375,7 +375,11 @@ export const generateRuntimeConfig = async (c: RnvContext) => {
     // };
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.runtime || {});
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.common?.runtime || {});
-    c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.platforms?.[c.platform]?.runtime || {});
+    c.assetConfig = mergeObjects(
+        c,
+        c.assetConfig,
+        c.platform ? c.buildConfig.platforms?.[c.platform]?.runtime || {} : {}
+    );
     c.assetConfig = mergeObjects(c, c.assetConfig, getConfigProp(c, c.platform, 'runtime') || {});
 
     if (fsExistsSync(c.paths.project.assets.dir)) {
@@ -414,25 +418,29 @@ const _generatePlatformTemplatePaths = (c: RnvContext) => {
         };
     }
 
-    const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
+    const pt = c.buildConfig.paths?.platformTemplatesDirs || {};
     const result: Record<string, string> = {};
 
     if (c.buildConfig.defaults) {
-        c.buildConfig.defaults?.supportedPlatforms?.forEach((platform: string) => {
-            const engine = c.runtime.enginesByPlatform[platform];
-            if (engine) {
-                const originalPath = engine.originalTemplatePlatformsDir;
+        c.buildConfig.defaults?.supportedPlatforms?.forEach((platform: RnvPlatform) => {
+            if (platform) {
+                const engine = c.runtime.enginesByPlatform[platform];
+                if (engine) {
+                    const originalPath = engine.originalTemplatePlatformsDir;
 
-                if (originalPath) {
-                    if (!pt[platform]) {
-                        const pt1 = getRealPath(c, originalPath, 'platformTemplatesDir', originalPath);
-                        if (pt1) result[platform] = pt1;
+                    if (originalPath) {
+                        if (!pt[platform]) {
+                            const pt1 = getRealPath(c, originalPath, 'platformTemplatesDir', originalPath);
+                            if (pt1) result[platform] = pt1;
+                        } else {
+                            const pt2 = getRealPath(c, pt[platform], 'platformTemplatesDir', originalPath);
+                            if (pt2) result[platform] = pt2;
+                        }
                     } else {
-                        const pt2 = getRealPath(c, pt[platform], 'platformTemplatesDir', originalPath);
-                        if (pt2) result[platform] = pt2;
+                        logWarning(
+                            `Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`
+                        );
                     }
-                } else {
-                    logWarning(`Platform ${chalk().red(platform)} not supported by any registered engine. SKIPPING...`);
                 }
             }
         });

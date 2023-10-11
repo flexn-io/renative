@@ -1,9 +1,10 @@
+import { RenativeEngineConfig } from '../schema/ts/types';
 import { RnvTaskMap } from '../tasks/types';
 
 export type RnvEngine = {
     originalTemplatePlatformsDir?: string;
     platforms: Record<string, RnvEnginePlatform>;
-    config: RnvEngineConfig;
+    config: RenativeEngineConfig;
     tasks: RnvTaskMap;
     // initializeRuntimeConfig: (c: RnvContext) => void;
     rootPath?: string;
@@ -23,45 +24,16 @@ export type RnvEnginePlatform = {
     defaultPort: number;
 };
 
-export type RnvEngineConfig = {
-    title: string;
+export type RnvEngineTemplate = {
     id: string;
-    platforms: any;
-    npm: any;
-    plugins?: any;
     packageName?: string;
 };
 
-export type RnvEngineConfigMap = Record<string, RnvEngineConfig>;
+export type RnvEngineTemplateMap = Record<string, RnvEngineTemplate>;
 
 export type RnvEngineInstallConfig = {
     key: string;
     version?: string;
     engineRootPath?: string;
     configPath?: string;
-};
-
-export type RenativeEngineConfig = {
-    id: string;
-    engineExtension: string;
-    overview: string;
-    plugins: Record<string, string>;
-    npm: Record<string, Record<string, string>>;
-    platforms: {
-        ios: RenativeEngineConfigPlatform;
-        macos: RenativeEngineConfigPlatform;
-        android: RenativeEngineConfigPlatform;
-        androidwear: RenativeEngineConfigPlatform;
-        androidtv: RenativeEngineConfigPlatform;
-        firetv: RenativeEngineConfigPlatform;
-    };
-};
-
-export type RenativeEngineConfigPlatform = {
-    engine: string;
-    npm: {
-        dependencies?: Record<string, string>;
-        devDependencies?: Record<string, string>;
-        peerDependencies?: Record<string, string>;
-    };
 };

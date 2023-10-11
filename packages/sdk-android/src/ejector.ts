@@ -1,7 +1,6 @@
 import path from 'path';
 import {
     RnvContext,
-    RnvPluginPlatform,
     fsExistsSync,
     copyFileSync,
     fsWriteFileSync,
@@ -114,7 +113,7 @@ export const ejectGradleProject = async (c: RnvContext) => {
 
     const afterEvaluateFix: Array<{ match: string; replace: string }> = [];
 
-    parsePlugins(c, c.platform as RnvPluginPlatform, (_plugin: any, pluginPlat: any, key: string) => {
+    parsePlugins(c, c.platform, (_plugin: any, pluginPlat: any, key: string) => {
         const pluginPath = doResolvePath(key);
 
         if (!pluginPath) return;

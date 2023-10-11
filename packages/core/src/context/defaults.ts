@@ -50,7 +50,7 @@ export const generateContextDefaults = (): RnvContext => ({
     buildConfig: {},
     command: '',
     subCommand: '',
-    platform: '',
+    platform: null,
     process: {},
     //==========
     _renativePluginCache: {},
@@ -175,9 +175,9 @@ export const generateContextDefaults = (): RnvContext => ({
             },
         },
         defaultWorkspace: {
-            ...generateRnvConfigPathObj(),
+            ...generateRnvConfigFileObj(),
             project: {
-                ...generateRnvConfigPathObj(),
+                ...generateRnvConfigFileObj(),
                 appConfigBase: {},
                 builds: {},
                 assets: {},

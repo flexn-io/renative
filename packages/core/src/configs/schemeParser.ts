@@ -8,6 +8,8 @@ export const isBuildSchemeSupported = async (c: RnvContext) => {
 
     const { scheme } = c.program;
 
+    if (!c.platform) return;
+
     const platforms = c.buildConfig.platforms || {};
 
     if (!platforms[c.platform]) {

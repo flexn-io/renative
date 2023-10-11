@@ -1,4 +1,4 @@
-import { RenativeConfigFile } from '../configs/types';
+import { PlatformKey, RenativeConfigFile, RenativeConfigLocal } from '../schema/ts/types';
 import { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import { OverridesOptions } from '../system/types';
 import { RnvPlatform } from '../types';
@@ -57,8 +57,8 @@ export type RnvContextBuildConfig = Partial<RenativeConfigFile> & {
 };
 
 export type RnvContextRuntime = {
-    platform: string;
-    appId: string | null;
+    platform: RnvPlatform;
+    appId?: string;
     appDir: string;
     enginesByPlatform: Record<string, RnvEngine>;
     enginesByIndex: Array<RnvEngine>;
@@ -265,17 +265,19 @@ export interface RnvContextPathObj {
 export interface RnvContextFileObj {
     config?: any;
     config_original?: any;
-    configLocal?: any;
+    configLocal?: RenativeConfigLocal;
     configPrivate?: any;
     configs: Array<any>;
-    configsLocal: Array<any>;
+    configsLocal: Array<RenativeConfigLocal>;
     configsPrivate: Array<any>;
 }
 
 export interface RnvContextPlatform {
-    platform: string;
+    platform: PlatformKey;
     isConnected: boolean;
     engine?: any;
     port?: number;
     isValid?: boolean;
 }
+
+export type RnvContextFileKey = 'config' | 'configLocal' | 'configPrivate';

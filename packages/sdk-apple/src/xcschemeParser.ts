@@ -6,6 +6,7 @@ import {
     getConfigProp,
     logTask,
     writeCleanFile,
+    RnvPlatform,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context } from './types';
@@ -13,7 +14,7 @@ import { Context } from './types';
 // const xml2js = require('xml2js');
 // const parser = new xml2js.Parser();
 
-export const parseXcscheme = async (c: Context, platform: string) => {
+export const parseXcscheme = async (c: Context, platform: RnvPlatform) => {
     logTask('parseXcscheme');
     // XCSCHEME
     // const allowProvisioningUpdates = getConfigProp(
@@ -62,7 +63,7 @@ export const parseXcscheme = async (c: Context, platform: string) => {
 
     addSystemInjects(c, injects);
 
-    writeCleanFile(path.join(appTemplateFolder, schemePath), path.join(appFolder, schemePath), injects, undefined, c);
+    writeCleanFile(path.join(appTemplateFolder!, schemePath), path.join(appFolder, schemePath), injects, undefined, c);
 
     // const parseObj = await parser.parseStringPromise(path.join(appFolder, schemePath));
 };

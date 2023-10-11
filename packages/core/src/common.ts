@@ -11,11 +11,12 @@ import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
 import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
-import { RenativeConfigBuildScheme, RenativeConfigFile } from './configs/types';
+import { RenativeConfigBuildScheme, RenativeConfigFile } from './schema/ts/types';
 import { inquirerPrompt } from './api';
 import { GetConfigPropFn } from './api/types';
+import { RnvPlatform } from './types';
 
-export const getTimestampPathsConfig = (c: RnvContext, platform: string): TimestampPathsConfig | undefined => {
+export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
     if (platform === 'web') {
@@ -216,7 +217,7 @@ export const getPlatformServerDir = (c: RnvContext) => {
 };
 
 export const getTemplateDir = (c: RnvContext) =>
-    path.join(c.paths.project.platformTemplatesDirs[c.platform], `${c.platform}`);
+    c.platform ? path.join(c.paths.project.platformTemplatesDirs[c.platform], `${c.platform}`) : undefined;
 
 export const getTemplateProjectDir = (c: RnvContext) => {
     if (!c.runtime.engine) {
@@ -227,7 +228,7 @@ export const getTemplateProjectDir = (c: RnvContext) => {
         logError('c.runtime.engine.projectDirName missing');
         return null;
     }
-    return path.join(getTemplateDir(c), c.runtime.engine.projectDirName);
+    return path.join(getTemplateDir(c)!, c.runtime.engine.projectDirName);
 };
 
 // DEPRECATED
@@ -242,8 +243,8 @@ export const getAppFolder = (c: RnvContext, isRelativePath?: boolean) => {
 };
 
 // DEPRECATED
-export const getAppTemplateFolder = (c: RnvContext, platform: string) =>
-    path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+export const getAppTemplateFolder = (c: RnvContext, platform: RnvPlatform) =>
+    platform ? path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`) : undefined;
 
 const _getValueOrMergedObject = (resultCli: any, resultScheme: any, resultPlatforms: any, resultCommon: any) => {
     if (resultCli !== undefined) {
@@ -276,7 +277,7 @@ export const getConfigProp: GetConfigPropFn = (c, platform, key, defaultVal?) =>
 
 export const _getConfigProp = (
     c: RnvContext,
-    platform: string,
+    platform: RnvPlatform,
     key: string,
     defaultVal?: any,
     sourceObj?: Partial<RenativeConfigFile>
@@ -287,7 +288,8 @@ export const _getConfigProp = (
         logError('getConfigProp: invalid key!');
         return null;
     }
-    const p = sourceObj.platforms?.[platform];
+
+    const p = platform ? sourceObj.platforms?.[platform] : undefined;
     const ps = c.runtime.scheme;
     const keyArr = key.split('.');
     const baseKey = keyArr.shift() || '';
@@ -297,13 +299,13 @@ export const _getConfigProp = (
     let scheme: RenativeConfigBuildScheme;
     if (p) {
         scheme = p.buildSchemes?.[ps] || {};
-        resultPlatforms = getFlavouredProp(c, sourceObj.platforms?.[platform] || {}, baseKey);
+        resultPlatforms = getFlavouredProp(c, p, baseKey);
     } else {
         scheme = {};
     }
 
     const resultCli = baseKey && CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
-    const resultScheme = baseKey && scheme[baseKey];
+    const resultScheme = baseKey && scheme[baseKey as keyof RenativeConfigBuildScheme];
     const resultCommonRoot = getFlavouredProp(c, sourceObj.common || {}, baseKey);
     const resultCommonScheme = getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, baseKey);
     const resultCommon = resultCommonScheme || resultCommonRoot;
@@ -320,7 +322,7 @@ export const _getConfigProp = (
     return result;
 };
 
-export const getConfigPropArray = <T = any>(c: RnvContext, platform: string, key: string) => {
+export const getConfigPropArray = <T = any>(c: RnvContext, platform: RnvPlatform, key: string) => {
     const result: Array<T> = [];
     const configArr = [
         c.files.defaultWorkspace.config,
@@ -353,28 +355,30 @@ export const getConfigPropArray = <T = any>(c: RnvContext, platform: string, key
     return result;
 };
 
-export const getAppId = (c: RnvContext, platform: string) => {
+export const getAppId = (c: RnvContext, platform: RnvPlatform) => {
     const id = getConfigProp<string>(c, platform, 'id');
     const idSuffix = getConfigProp<string>(c, platform, 'idSuffix');
     return idSuffix ? `${id}${idSuffix}` : id;
 };
 
-export const getAppTitle = (c: RnvContext, platform: string) => getConfigProp<string>(c, platform, 'title');
+export const getAppTitle = (c: RnvContext, platform: RnvPlatform) => getConfigProp<string>(c, platform, 'title');
 
-export const getAppAuthor = (c: RnvContext, platform: string) =>
+export const getAppAuthor = (c: RnvContext, platform: RnvPlatform) =>
     getConfigProp(c, platform, 'author') || c.files.project.package?.author;
 
-export const getAppLicense = (c: RnvContext, platform: string) =>
+export const getAppLicense = (c: RnvContext, platform: RnvPlatform) =>
     getConfigProp(c, platform, 'license') || c.files.project.package?.license;
 
-export const getEntryFile = (c: RnvContext, platform: string) => c.buildConfig.platforms?.[platform]?.entryFile;
+export const getEntryFile = (c: RnvContext, platform: RnvPlatform) =>
+    platform ? c.buildConfig.platforms?.[platform]?.entryFile : undefined;
 
-export const getGetJsBundleFile = (c: RnvContext, platform: string) => getConfigProp(c, platform, 'getJsBundleFile');
+export const getGetJsBundleFile = (c: RnvContext, platform: RnvPlatform) =>
+    getConfigProp(c, platform, 'getJsBundleFile');
 
-export const getAppDescription = (c: RnvContext, platform: string) =>
+export const getAppDescription = (c: RnvContext, platform: RnvPlatform) =>
     getConfigProp(c, platform, 'description') || c.files.project.package?.description;
 
-export const getAppVersion = (c: RnvContext, platform: string) => {
+export const getAppVersion = (c: RnvContext, platform: RnvPlatform) => {
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
     if (!version) {
         logWarning('You are missing version prop in your config. will default to 0');
@@ -411,7 +415,7 @@ export const getAppVersion = (c: RnvContext, platform: string) => {
     return output;
 };
 
-export const getAppVersionCode = (c: RnvContext, platform: string) => {
+export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
     if (versionCode) return versionCode;
     const version = getConfigProp(c, platform, 'version') || c.files.project.package?.version;
@@ -481,7 +485,7 @@ export const getMonorepoRoot = () => {
     }
 };
 
-export const getBuildsFolder = (c: RnvContext, platform: string, customPath?: string) => {
+export const getBuildsFolder = (c: RnvContext, platform: RnvPlatform, customPath?: string) => {
     const pp = customPath || c.paths.appConfig.dir;
     // if (!fsExistsSync(pp)) {
     //     logWarning(`Path ${chalk().white(pp)} does not exist! creating one for you..`);
@@ -501,7 +505,7 @@ export const getBuildsFolder = (c: RnvContext, platform: string, customPath?: st
 
 export const getIP = () => ip.address();
 
-export const checkPortInUse = (c: RnvContext, platform: string, port: number) =>
+export const checkPortInUse = (c: RnvContext, platform: RnvPlatform, port: number) =>
     new Promise((resolve, reject) => {
         if (port === undefined || port === null) {
             resolve(false);
@@ -528,9 +532,14 @@ export const getFlavouredProp = <T = any>(
     return obj[key];
 };
 
-export const getBuildFilePath = (c: RnvContext, platform: string, filePath: string, altTemplateFolder?: string) => {
+export const getBuildFilePath = (
+    c: RnvContext,
+    platform: RnvPlatform,
+    filePath: string,
+    altTemplateFolder?: string
+) => {
     // P1 => platformTemplates
-    let sp = path.join(altTemplateFolder || getAppTemplateFolder(c, platform), filePath);
+    let sp = path.join(altTemplateFolder || getAppTemplateFolder(c, platform)!, filePath);
     // P2 => appConfigs/base + @buildSchemes
     const sp2bf = getBuildsFolder(c, platform, c.paths.project.appConfigBase.dir);
     if (sp2bf) {

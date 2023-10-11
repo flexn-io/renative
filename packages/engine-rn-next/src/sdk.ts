@@ -2,7 +2,6 @@ import path from 'path';
 import open from 'better-opn';
 import {
     RnvContext,
-    RnvPluginPlatform,
     executeAsync,
     checkPortInUse,
     getConfigProp,
@@ -24,11 +23,15 @@ import {
     copyAssetsFolder,
     parsePlugins,
     getModuleConfigs,
+    RnvPlatform,
 } from '@rnv/core';
 import { NEXT_CONFIG_NAME } from './constants';
 
 export const configureNextIfRequired = async (c: RnvContext) => {
     logTask('configureNextIfRequired');
+
+    if (!c.platform) return;
+
     c.runtime.platformBuildsProjectPath = `${getPlatformBuildDir(c)}`;
     const { platformTemplatesDirs, dir } = c.paths.project;
 
@@ -60,6 +63,8 @@ export const runWebNext = async (c: RnvContext) => {
     const { port } = c.runtime;
     logTask('runWebNext', `port:${port}`);
     const { platform } = c;
+
+    if (!c.platform) return;
 
     const devServerHost = getDevServerHost(c);
 
@@ -95,7 +100,7 @@ export const runWebNext = async (c: RnvContext) => {
 
 const _runWebBrowser = (
     c: RnvContext,
-    _platform: string,
+    _platform: RnvPlatform,
     devServerHost: string,
     port: number,
     alreadyStarted: boolean
@@ -156,7 +161,7 @@ export const getTranspileModules = (c: RnvContext) => {
 
     parsePlugins(
         c,
-        c.platform as RnvPluginPlatform,
+        c.platform,
         (plugin, pluginPlat, key) => {
             const webpackConfig = plugin.webpack || plugin.webpackConfig;
             if (webpackConfig) {

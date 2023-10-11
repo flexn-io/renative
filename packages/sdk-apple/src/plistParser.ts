@@ -21,13 +21,13 @@ import {
     mergeObjects,
     writeCleanFile,
     fsWriteFileSync,
-    RnvPluginPlatform,
-    RenativeConfigPermissionsList,
+    RnvPlatform,
+    RenativeConfigFile,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context } from './types';
 
-export const parseExportOptionsPlist = (c: Context, platform: string) =>
+export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
         // EXPORT OPTIONS
         const tId = getConfigProp(c, platform, 'teamID');
@@ -62,7 +62,7 @@ export const parseExportOptionsPlist = (c: Context, platform: string) =>
         resolve();
     });
 
-export const parseEntitlementsPlist = (c: Context, platform: string) =>
+export const parseEntitlementsPlist = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
         logTask('parseEntitlementsPlist');
 
@@ -79,9 +79,11 @@ export const parseEntitlementsPlist = (c: Context, platform: string) =>
         resolve();
     });
 
-export const parseInfoPlist = (c: Context, platform: string) =>
+export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
         logTask('parseInfoPlist');
+
+        if (!platform) return;
 
         const appFolder = getAppFolder(c);
         const appFolderName = getAppFolderName(c, platform);
@@ -99,19 +101,23 @@ export const parseInfoPlist = (c: Context, platform: string) =>
             plistObj.UIAppFonts = c.payload.pluginConfigiOS.embeddedFonts;
         }
         // PERMISSIONS
-        const includedPermissions = getConfigProp<RenativeConfigPermissionsList>(c, platform, 'includedPermissions');
+        const includedPermissions = getConfigProp<RenativeConfigFile['common']['includedPermissions']>(
+            c,
+            platform,
+            'includedPermissions'
+        );
         if (includedPermissions && c.buildConfig.permissions) {
-            const platPrem = c.buildConfig.permissions[platform] ? platform : 'ios';
-            const pc = c.buildConfig.permissions[platPrem];
+            const platPrem = 'ios'; // c.buildConfig.permissions[platform] ? platform : 'ios';
+            const pc = c.buildConfig.permissions[platPrem] || {};
             if (includedPermissions?.length && includedPermissions[0] === '*') {
                 Object.keys(pc).forEach((v) => {
-                    const key = pc[v].key || v;
+                    const key = v;
                     plistObj[key] = pc[v].desc;
                 });
             } else if (includedPermissions?.forEach) {
                 includedPermissions.forEach((v) => {
                     if (pc[v]) {
-                        const key = pc[v].key || v;
+                        const key = v;
                         plistObj[key] = pc[v].desc;
                     }
                 });
@@ -149,7 +155,7 @@ export const parseInfoPlist = (c: Context, platform: string) =>
         }
 
         // PLUGINS
-        parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat) => {
+        parsePlugins(c, platform, (plugin, pluginPlat) => {
             const plistPlug = getFlavouredProp(c, pluginPlat, 'plist');
             if (plistPlug) {
                 plistObj = mergeObjects(c, plistObj, plistPlug, true, false);

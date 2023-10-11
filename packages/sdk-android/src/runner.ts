@@ -1,7 +1,6 @@
 import path from 'path';
 import net from 'net';
 import {
-    RnvPluginPlatform,
     inquirerPrompt,
     execaCommand,
     copyAssetsFolder,
@@ -77,6 +76,8 @@ export const runAndroid = async (c: Context) => {
     const { platform } = c;
     const defaultTarget = c.runtime.target;
     logTask('runAndroid', `target:${target} default:${defaultTarget}`);
+
+    if (!platform) return;
 
     await resetAdb(c);
 
@@ -175,6 +176,8 @@ const _checkSigningCerts = async (c: Context) => {
     logTask('_checkSigningCerts');
     const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
     const isRelease = signingConfig === 'Release';
+
+    if (!c.platform) return;
 
     if (isRelease && !c.payload.pluginConfigAndroid?.store?.storeFile) {
         const msg = `You're attempting to ${
@@ -458,7 +461,7 @@ export const configureProject = async (c: Context) => {
     };
 
     // PLUGINS
-    parsePlugins(c, platform as RnvPluginPlatform, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         injectPluginGradleSync(c, plugin, pluginPlat, key);
         injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync();

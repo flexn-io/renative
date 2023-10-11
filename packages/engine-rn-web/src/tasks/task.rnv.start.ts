@@ -28,6 +28,8 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { port } = c.runtime;
     const { hosted } = c.program;
 
+    if (!platform) return;
+
     logTask('taskRnvStart', `parent:${parentTask} port:${port} hosted:${!!hosted}`);
 
     if (!parentTask) {

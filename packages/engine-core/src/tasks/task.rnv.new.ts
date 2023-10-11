@@ -34,6 +34,7 @@ import {
     RenativeConfigFile,
     getApi,
     inquirerPrompt,
+    PlatformKey,
 } from '@rnv/core';
 
 type NewProjectData = {
@@ -641,7 +642,7 @@ export const taskRnvNew = async (c: RnvContext) => {
 
     // Remove unused platforms
     Object.keys(config.platforms).forEach((k) => {
-        if (!supPlats.includes(k)) {
+        if (!supPlats.includes(k as PlatformKey)) {
             delete config.platforms[k];
         }
     });

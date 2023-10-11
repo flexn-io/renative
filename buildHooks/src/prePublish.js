@@ -1,7 +1,6 @@
 import path from 'path';
 import { copyFileSync, fixPackageObject, fsExistsSync, readObjectSync, writeFileSync } from '@rnv/core';
 import fs from 'fs';
-// import { setPackageVersions } from '@flexn/build-hooks-version';
 
 const merge = require('deepmerge');
 

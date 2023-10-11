@@ -1,4 +1,5 @@
 import { RnvContext } from '../context/types';
+import { RnvPlatform } from '../types';
 
 // export type AnalyticsApi = {
 //     captureException: (e: string | Error, context: { extra: any }) => void;
@@ -41,7 +42,7 @@ export type RnvApiPrompt = {
 };
 
 export type RnvContextAnalytics = {
-    captureEvent: (ops: { type: string; platform?: string; template?: string; platforms?: Array<string> }) => void;
+    captureEvent: (ops: { type: string; platform?: RnvPlatform; template?: string; platforms?: Array<string> }) => void;
     captureException: (e: string | Error, context: { extra: any }) => void;
     teardown: () => Promise<void>;
 };
@@ -134,4 +135,4 @@ export type ResolveOptions = {
     keepSuffix?: boolean;
 };
 
-export type GetConfigPropFn = <T = any>(c: RnvContext, platform: string, key: string, defaultVal?: any) => T;
+export type GetConfigPropFn = <T = any>(c: RnvContext, platform: RnvPlatform, key: string, defaultVal?: any) => T;
