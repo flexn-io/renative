@@ -1,21 +1,20 @@
 import path from 'path';
-import { fsExistsSync, getRelativePath, readObjectSync, writeFileSync } from '../system/fs';
+import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
 import { installPackageDependencies } from '../projects/npm';
-import { TVOS, ANDROID_TV, FIRE_TV } from '../constants';
 import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
-import { getAppFolder, getAppId, getConfigProp } from '../common';
+import { getConfigProp } from '../common';
 import { doResolve } from '../system/resolve';
 import { configurePlugins } from '../plugins';
 import { RnvContext } from '../context/types';
 import { RnvTask, RnvTaskMap } from '../tasks/types';
-import { RenativeConfigVersion, RnvModuleConfig, RnvNextJSConfig, RnvPlatform } from '../types';
-import { RnvEngine, RnvEngineInstallConfig, RnvEngineTemplate, RnvEngineTemplateMap } from './types';
+import { RenativeConfigVersion, RnvPlatform } from '../types';
+import { RnvEngine, RnvEngineInstallConfig, RnvEngineTemplate } from './types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
-import { RnvEnvContext, RnvEnvContextOptions } from '../env/types';
 import { RenativeEngineConfig } from '../schema/ts/types';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { checkAndCreateProjectPackage } from '../projects/package';
+import { getEngineTemplateByPlatform } from '../configs/engines';
 
 const ENGINE_CORE = 'engine-core';
 
@@ -423,48 +422,6 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
     return true;
 };
 
-const _getMergedEngineConfigs = (c: RnvContext) => {
-    const engines = c.buildConfig?.engines;
-    const engineTemplates = c.buildConfig?.engineTemplates || {};
-    const mergedEngineConfigs: RnvEngineTemplateMap = {};
-    Object.keys(engineTemplates).forEach((packageName) => {
-        const engTemplate = engineTemplates[packageName];
-        mergedEngineConfigs[packageName] = {
-            packageName,
-            ...engTemplate,
-        };
-    });
-
-    const engineTemplatesKeys = Object.keys(engineTemplates);
-    if (engines) {
-        Object.keys(engines).forEach((enginePackageName) => {
-            const engineVal = engines[enginePackageName];
-            if (engineVal === 'source:rnv') {
-                if (!engineTemplatesKeys.includes(enginePackageName)) {
-                    logWarning(`Engine ${enginePackageName} not found in default engineTemplates`);
-                }
-            }
-            // else {
-            //     mergedEngineConfigs[enginePackageName] = engineVal;
-            // }
-        });
-    }
-    return mergedEngineConfigs;
-};
-
-const _getEngineTemplateByPlatform = (c: RnvContext, platform: RnvPlatform): RnvEngineTemplate | null => {
-    const mergedEngineConfigs = _getMergedEngineConfigs(c);
-    const engineId = c.program.engine || getConfigProp(c, platform, 'engine');
-    let selectedEngineConfig: RnvEngineTemplate | null = null;
-    Object.values(mergedEngineConfigs).forEach((engineConfig) => {
-        if (engineConfig.id === engineId) {
-            selectedEngineConfig = engineConfig;
-        }
-    });
-
-    return selectedEngineConfig;
-};
-
 const _resolvePkgPath = (c: RnvContext, packageName: string) => {
     if (c.paths.IS_LINKED && !c.program.unlinked) {
         // In the instances of running linked rnv instead of installed one load local packages
@@ -498,7 +455,7 @@ const _resolvePkgPath = (c: RnvContext, packageName: string) => {
 const _registerPlatformEngine = async (c: RnvContext, platform: RnvPlatform | boolean): Promise<void> => {
     // Only register active platform engine to be faster
     if (platform === true || !platform) return;
-    const selectedEngineTemplate = _getEngineTemplateByPlatform(c, platform);
+    const selectedEngineTemplate = getEngineTemplateByPlatform(c, platform);
     if (selectedEngineTemplate) {
         const existingEngine = c.runtime.enginesById[selectedEngineTemplate.id];
         if (!existingEngine) {
@@ -516,57 +473,6 @@ const _registerPlatformEngine = async (c: RnvContext, platform: RnvPlatform | bo
         logWarning(`Could not find suitable engine for platform ${platform}
 Maybe you forgot to define platforms.${platform}.engine in your renative.json?`);
     }
-};
-
-export const generateEnvVars = (
-    c: RnvContext,
-    moduleConfig?: RnvModuleConfig,
-    nextConfig?: RnvNextJSConfig,
-    opts: RnvEnvContextOptions = {}
-) => {
-    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
-    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
-
-    const envConfig: RnvEnvContext = {
-        // RNV_EXTENSIONS: getPlatformExtensions(c),
-        RNV_ENGINE_PATH: c.runtime.engine?.rootPath,
-        RNV_MODULE_PATHS: moduleConfig?.modulePaths || [],
-        RNV_MODULE_ALIASES: moduleConfig?.moduleAliasesArray || [],
-        RNV_NEXT_TRANSPILE_MODULES: nextConfig,
-        RNV_PROJECT_ROOT: c.paths.project.dir,
-        RNV_APP_BUILD_DIR: getRelativePath(c.paths.project.dir, getAppFolder(c)),
-        RNV_IS_MONOREPO: isMonorepo,
-        RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir,
-        RNV_ENGINE: c.runtime.engine?.config.id,
-        RNV_IS_NATIVE_TV: c.platform ? [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform) : false,
-        RNV_APP_ID: getAppId(c, c.platform),
-        RNV_REACT_NATIVE_PATH: getRelativePath(
-            c.paths.project.dir,
-            doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native')!
-        ),
-    };
-    const excl = opts.exludeEnvKeys || [];
-    if (!excl.includes('RNV_EXTENSIONS')) {
-        envConfig.RNV_EXTENSIONS = getPlatformExtensions(c);
-    }
-
-    return envConfig;
-};
-
-export const getPlatformExtensions = (c: RnvContext, excludeServer = false, addDotPrefix = false): Array<string> => {
-    const { engine } = c.runtime;
-    let output;
-    if (!engine || !c.platform) return [];
-    const { platforms } = engine;
-
-    if (addDotPrefix) {
-        output = platforms[c.platform].extensions
-            .map((v) => `.${v}`)
-            .filter((ext) => !excludeServer || !ext.includes('server.'));
-    } else {
-        output = platforms[c.platform].extensions.filter((ext) => !excludeServer || !ext.includes('server.'));
-    }
-    return output;
 };
 
 export const getEngineRunnerByPlatform = (c: RnvContext, platform: RnvPlatform, ignoreMissingError?: boolean) => {

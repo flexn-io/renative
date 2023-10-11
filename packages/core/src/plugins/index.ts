@@ -15,7 +15,6 @@ import {
     sanitizeDynamicProps,
 } from '../system/fs';
 import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../logger';
-import { installPackageDependencies } from '../projects/npm';
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { PluginCallback, RnvPlugin, RnvPluginScope, RnvPluginWebpackKey } from './types';
@@ -24,6 +23,7 @@ import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { ResolveOptions } from '../api/types';
 import { writeRenativeConfigFile } from '../configs/utils';
+import { installPackageDependencies } from '../projects/npm';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -987,4 +987,10 @@ export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey
         .filter(Boolean);
 
     return { modulePaths, moduleAliases, moduleAliasesArray };
+};
+
+export const updateRenativeConfigs = async (c: RnvContext) => {
+    await loadPluginTemplates(c);
+    await parseRenativeConfigs(c);
+    return true;
 };

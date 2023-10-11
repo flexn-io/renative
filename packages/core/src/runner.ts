@@ -3,8 +3,9 @@ import { loadEngines, registerMissingPlatformEngines } from './engines';
 import { loadIntegrations } from './integrations';
 import { checkAndMigrateProject } from './migrator';
 import { checkAndBootstrapIfRequired } from './projects';
-import { configureRuntimeDefaults, updateRenativeConfigs } from './runtime';
+import { configureRuntimeDefaults } from './context/runtime';
 import { findSuitableTask, initializeTask } from './tasks';
+import { updateRenativeConfigs } from './plugins';
 
 const IGNORE_MISSING_ENGINES_TASKS = ['link', 'unlink'];
 

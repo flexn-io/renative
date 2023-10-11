@@ -2,12 +2,12 @@ import {
     logTask,
     configureFonts,
     copyRuntimeAssets,
-    generateRuntimeConfig,
     executeTask,
     TASK_SWITCH,
     TASK_PROJECT_CONFIGURE,
     PARAMS,
     RnvTaskFn,
+    generatePlatformAssetsRuntimeConfig,
 } from '@rnv/core';
 
 export const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -16,7 +16,7 @@ export const taskRnvSwitch: RnvTaskFn = async (c, _parentTask, originTask) => {
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_SWITCH, originTask);
 
     await copyRuntimeAssets(c);
-    await generateRuntimeConfig(c);
+    await generatePlatformAssetsRuntimeConfig(c);
     await configureFonts(c);
 
     return true;

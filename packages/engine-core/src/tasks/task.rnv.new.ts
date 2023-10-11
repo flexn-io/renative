@@ -16,7 +16,6 @@ import {
     getWorkspaceOptions,
     updateRenativeConfigs,
     executeAsync,
-    configureGit,
     chalk,
     logDebug,
     logInfo,
@@ -35,6 +34,7 @@ import {
     getApi,
     inquirerPrompt,
     PlatformKey,
+    commandExistsSync,
 } from '@rnv/core';
 
 type NewProjectData = {
@@ -77,6 +77,22 @@ type NewProjectData = {
     defaultWorkspace?: string;
     inputSupportedPlatforms?: Array<string>;
     inputWorkspace?: string;
+};
+
+export const configureGit = async (c: RnvContext) => {
+    const projectPath = c.paths.project.dir;
+    logTask(`configureGit:${projectPath}`);
+
+    if (!fsExistsSync(path.join(projectPath, '.git'))) {
+        logInfo('Your project does not have a git repo. Creating one...DONE');
+        if (commandExistsSync('git')) {
+            await executeAsync('git init', { cwd: projectPath });
+            await executeAsync('git add -A', { cwd: projectPath });
+            await executeAsync('git commit -m "Initial"', { cwd: projectPath });
+        } else {
+            logWarning("We tried to create a git repo inside your project but you don't seem to have git installed");
+        }
+    }
 };
 
 const _prepareProjectOverview = (c: RnvContext, data: NewProjectData) => {
