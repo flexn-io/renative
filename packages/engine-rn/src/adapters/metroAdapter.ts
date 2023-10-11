@@ -1,4 +1,3 @@
-const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const path = require('path');
 
 const sharedBlacklist = [
@@ -28,6 +27,10 @@ function blacklist(additionalBlacklist: RegExp[]) {
 
 export const withRNVMetro = (config: any) => {
     const projectPath = env.RNV_PROJECT_ROOT || process.cwd();
+
+    const mc = require(require.resolve('@react-native/metro-config', { paths: [projectPath] }));
+
+    const { getDefaultConfig, mergeConfig } = mc;
 
     const watchFolders = [path.resolve(projectPath, 'node_modules')];
 
