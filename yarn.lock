@@ -12435,11 +12435,6 @@ iocane@4.0.0:
   dependencies:
     pbkdf2 "~3.0.17"
 
-ios-deploy@1.11.4:
-  version "1.11.4"
-  resolved "https://registry.npmjs.org/ios-deploy/-/ios-deploy-1.11.4.tgz#d1813b11c9f292d757be33fa63399b510a64980a"
-  integrity sha512-NZ96/s7klyWySKTI8rTU+vXEIxIMrv6K+7j5VMcqUVShaAUdDX+Ov4nVdSStYOAGFVpl8q56SpAwjEDIvBrswQ==
-
 ios-mobileprovision-finder@1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/ios-mobileprovision-finder/-/ios-mobileprovision-finder-1.1.0.tgz#132d1b35155845ec3bb3efa3fb740c33548ab312"
