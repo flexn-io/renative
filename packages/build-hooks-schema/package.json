@@ -30,7 +30,7 @@
         "zod-to-json-schema": "3.21.4"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-canary.1"
+        "@rnv/core": "^1.0.0-canary.4"
     },
     "publishConfig": {
         "access": "public"

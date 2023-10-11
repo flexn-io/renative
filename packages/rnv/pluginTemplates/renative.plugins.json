@@ -1,7 +1,7 @@
 {
     "pluginTemplates": {
         "@rnv/renative": {
-            "version": "1.0.0-canary.3",
+            "version": "1.0.0-canary.4",
             "webpack": {
                 "moduleAliases": true,
                 "modulePaths": true

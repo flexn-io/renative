@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-webpack",
-    "version": "1.0.0-canary.3",
+    "version": "1.0.0-canary.4",
     "description": "ReNative Webpack SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -77,7 +77,7 @@
         "workbox-webpack-plugin": "6.5.4"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-canary.3"
+        "@rnv/core": "^1.0.0-canary.4"
     },
     "private": false,
     "publishConfig": {
