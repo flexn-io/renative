@@ -198,28 +198,30 @@ export const parseAndroidManifestSync = (c: Context) => {
             'excludedPermissions'
         );
         if (includedPermissions?.forEach && configPermissions) {
-            const platPerm = configPermissions[platform] ? platform : 'android';
+            const platPerm = 'android'; //configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
-            if (includedPermissions[0] === '*') {
-                Object.keys(pc).forEach((k) => {
-                    if (!(excludedPermissions && excludedPermissions.includes(k))) {
-                        const key = pc[k].key || k;
-                        baseManifestFile.children.push({
-                            tag: 'uses-permission',
-                            'android:name': key,
-                        });
-                    }
-                });
-            } else {
-                includedPermissions.forEach((v) => {
-                    if (pc[v]) {
-                        const key = pc[v].key || v;
-                        baseManifestFile.children.push({
-                            tag: 'uses-permission',
-                            'android:name': key,
-                        });
-                    }
-                });
+            if (pc) {
+                if (includedPermissions[0] === '*') {
+                    Object.keys(pc).forEach((k) => {
+                        if (!(excludedPermissions && excludedPermissions.includes(k))) {
+                            const key = pc[k].key || k;
+                            baseManifestFile.children.push({
+                                tag: 'uses-permission',
+                                'android:name': key,
+                            });
+                        }
+                    });
+                } else {
+                    includedPermissions.forEach((v) => {
+                        if (pc[v]) {
+                            const key = pc[v].key || v;
+                            baseManifestFile.children.push({
+                                tag: 'uses-permission',
+                                'android:name': key,
+                            });
+                        }
+                    });
+                }
             }
         } else if (includedPermissions) {
             logWarning('includedPermissions not parsed. make sure it an array format!');
