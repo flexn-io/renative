@@ -173,6 +173,7 @@ export const parseMainActivitySync = (c: any) => {
 export const parseSplashActivitySync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
+    const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.java.tpl';
     const splashPath = 'app/src/main/java/rnv/SplashActivity.java';
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
@@ -195,7 +196,13 @@ export const parseSplashActivitySync = (c: Context) => {
 
     addSystemInjects(c, injects);
 
-    writeCleanFile(getBuildFilePath(c, platform, splashPath), path.join(appFolder, splashPath), injects, undefined, c);
+    writeCleanFile(
+        getBuildFilePath(c, platform, splashTemplatePath),
+        path.join(appFolder, splashPath),
+        injects,
+        undefined,
+        c
+    );
 };
 
 export const injectPluginKotlinSync = (c: any, plugin: any, key: any, pkg: any) => {
