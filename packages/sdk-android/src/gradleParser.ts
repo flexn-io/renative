@@ -525,6 +525,7 @@ export const parseSettingsGradleSync = (c: Context) => {
         },
     ];
 
+  // console.log(injects, 'PLUGIN_INCLUDES, PLUGIN_PATHS')
     addSystemInjects(c, injects);
 
     writeCleanFile(
@@ -632,7 +633,7 @@ export const injectPluginGradleSync = (
             }
         }
     } else {
-        if (!plugin.skipLinking && !skipPathResolutions) {
+        if (!plugin.skipLinking && !skipPathResolutions && !c.platform==='androidwear') {
             c.payload.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
             c.payload.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File('${pathAbsolute}')\n`;
         }
