@@ -80,6 +80,10 @@ export const parseBuildGradleSync = (c: Context) => {
             override: c.payload.pluginConfigAndroid.minSdkVersion,
         },
         {
+            pattern: '{{NDK_VERSION}}',
+            override: c.payload.pluginConfigAndroid.ndkVersion,
+        },
+        {
             pattern: '{{INJECT_AFTER_ALL}}',
             override: c.payload.pluginConfigAndroid.buildGradleAfterAll,
         },
@@ -184,6 +188,7 @@ export const parseAppBuildGradleSync = (c: Context) => {
     c.payload.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 24);
     c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
     c.payload.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 28);
+    c.payload.pluginConfigAndroid.ndkVersion = getConfigProp(c, platform, 'ndkVersion', '23.1.7779620');
     c.payload.pluginConfigAndroid.gradleBuildToolsVersion = getConfigProp(
         c,
         platform,

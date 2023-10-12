@@ -450,6 +450,7 @@ export const configureProject = async (c: Context) => {
         buildTypes: '',
         compileOptions: '',
         compileSdkVersion: '',
+        ndkVersion: '',
         gradleBuildToolsVersion: '',
         gradleWrapperVersion: '',
         localProperties: '',
