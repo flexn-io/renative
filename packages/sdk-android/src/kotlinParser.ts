@@ -1,18 +1,18 @@
-import path from 'path';
 import {
+    OverridesOptions,
+    addSystemInjects,
     getAppFolder,
     getAppId,
     getBuildFilePath,
+    getConfigProp,
     getEntryFile,
     getGetJsBundleFile,
-    getConfigProp,
     getIP,
-    addSystemInjects,
     logWarning,
     writeCleanFile,
-    OverridesOptions,
 } from '@rnv/core';
 import { mkdirSync } from 'fs';
+import path from 'path';
 import { Context } from './types';
 
 const JS_BUNDLE_DEFAULTS: any = {
@@ -173,13 +173,13 @@ export const parseMainActivitySync = (c: any) => {
 export const parseSplashActivitySync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
-    const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
+    const splashPath = 'app/src/main/java/rnv/SplashActivity.java';
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
     const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
     if (enableAndroidX === true) {
         c.payload.pluginConfigAndroid.pluginSplashActivityImports +=
-            'import androidx.appcompat.app.AppCompatActivity\n';
+            'import androidx.appcompat.app.AppCompatActivity;\n';
     } else {
         c.payload.pluginConfigAndroid.pluginSplashActivityImports +=
             'import android.support.v7.app.AppCompatActivity\n';
