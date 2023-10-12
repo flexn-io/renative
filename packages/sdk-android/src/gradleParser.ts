@@ -633,7 +633,7 @@ export const injectPluginGradleSync = (
             }
         }
     } else {
-        if (!plugin.skipLinking && !skipPathResolutions && !c.platform==='androidwear') {
+        if (!plugin.skipLinking && !skipPathResolutions ) {
             c.payload.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
             c.payload.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File('${pathAbsolute}')\n`;
         }
