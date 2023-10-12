@@ -1,6 +1,5 @@
 import { logTask, logInitTask, logExitTask, chalk, logRaw, logInfo, logWarning } from '../logger';
 import { executePipe } from '../buildHooks';
-import { checkIfProjectAndNodeModulesExists } from '../npm';
 import {
     getEngineRunner,
     getEngineTask,
@@ -16,6 +15,7 @@ import { RnvEngine } from '../engines/types';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
 import { RenativeConfigTaskKey } from '../schema/ts/types';
+import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
 
 let executedTasks: Record<string, number> = {};
 

@@ -1,8 +1,7 @@
 import merge from 'deepmerge';
 import path from 'path';
-import intersection from 'lodash.intersection';
 import { getAppFolder, getBuildsFolder, getConfigProp } from '../common';
-import { parseRenativeConfigs, writeRenativeConfigFile } from '../configs';
+import { parseRenativeConfigs } from '../configs';
 import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import { configureFonts } from '../projects';
 import {
@@ -16,91 +15,15 @@ import {
     sanitizeDynamicProps,
 } from '../system/fs';
 import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../logger';
-import { installPackageDependencies } from '../npm';
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';
-import { PluginCallback, PluginListResponse, RnvPlugin, RnvPluginScope, RnvPluginWebpackKey } from './types';
+import { PluginCallback, RnvPlugin, RnvPluginScope, RnvPluginWebpackKey } from './types';
 import { RenativeConfigPlugin, RenativeWebpackConfig } from '../schema/ts/types';
 import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
-import { ResolveOptions } from '../api/types';
-
-export const getPluginList = (c: RnvContext, isUpdate = false) => {
-    const output: PluginListResponse = {
-        asString: '',
-        asArray: [],
-        plugins: [],
-        allPlugins: {}, // this is used by taskRnvPluginAdd
-    };
-
-    let i = 1;
-
-    Object.keys(c.files.rnv.pluginTemplates.configs).forEach((pk) => {
-        const plugins = c.files.rnv.pluginTemplates.configs[pk].pluginTemplates;
-        Object.keys(plugins).forEach((k) => {
-            const p = plugins[k];
-
-            let platforms = '';
-            const pluginPlatforms = intersection(
-                c.runtime.supportedPlatforms.map((pl) => pl.platform),
-                Object.keys(p)
-            );
-            pluginPlatforms.forEach((v) => {
-                platforms += `${v}, `;
-            });
-            if (platforms.length) {
-                platforms = platforms.slice(0, platforms.length - 2);
-            }
-            const installedPlugin = c.buildConfig && c.buildConfig.plugins && c.buildConfig.plugins[k];
-            const installedString = installedPlugin ? chalk().yellow('installed') : chalk().green('not installed');
-            if (isUpdate && installedPlugin) {
-                output.plugins.push(k);
-                let versionString;
-                const installedPluginVersion =
-                    typeof installedPlugin !== 'string' ? installedPlugin.version : installedPlugin;
-                if (installedPluginVersion !== p.version) {
-                    versionString = `(${chalk().yellow(installedPluginVersion)}) => (${chalk().green(p.version)})`;
-                } else {
-                    versionString = `(${chalk().green(installedPluginVersion)})`;
-                }
-                output.asString += ` [${i}]> ${chalk().bold(k)} ${versionString}\n`;
-                output.asArray.push({
-                    name: `${k} ${versionString}`,
-                    value: k,
-                });
-                output.allPlugins[k] = p; // this is used by taskRnvPluginAdd
-                i++;
-            } else if (!isUpdate) {
-                output.plugins.push(k);
-                output.asString += ` [${i}]> ${chalk().bold(k)} (${chalk().grey(
-                    p['no-npm'] ? 'no-npm' : p.version
-                )}) [${platforms}] - ${installedString}\n`;
-                output.asArray.push({
-                    name: `${k} (${chalk().grey(
-                        p['no-npm'] ? 'no-npm' : p.version
-                    )}) [${platforms}] - ${installedString}`,
-                    value: k,
-                });
-                output.allPlugins[k] = p; // this is used by taskRnvPluginAdd
-
-                i++;
-            }
-            output.asArray.sort((a, b) => {
-                const aStr = a.name.toLowerCase();
-                const bStr = b.name.toLowerCase();
-                let com = 0;
-                if (aStr > bStr) {
-                    com = 1;
-                } else if (aStr < bStr) {
-                    com = -1;
-                }
-                return com;
-            });
-        });
-    });
-
-    return output;
-};
+import { writeRenativeConfigFile } from '../configs/utils';
+import { installPackageDependencies } from '../projects/npm';
+import { ResolveOptions } from '../system/types';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -1064,4 +987,10 @@ export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey
         .filter(Boolean);
 
     return { modulePaths, moduleAliases, moduleAliasesArray };
+};
+
+export const updateRenativeConfigs = async (c: RnvContext) => {
+    await loadPluginTemplates(c);
+    await parseRenativeConfigs(c);
+    return true;
 };

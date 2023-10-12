@@ -25,6 +25,18 @@ export const generateContextPaths = (pathObj: RnvContextPathObj, dir: string, co
     pathObj.appConfigsDir = path.join(dir, '..');
 };
 
+const populateLinkingInfo = (ctx: RnvContext) => {
+    //TODO: find better way to deal with linking?
+    ctx.paths.IS_LINKED = path.dirname(ctx.paths.rnv.dir).split(path.sep).pop() === 'packages';
+
+    const npxLoc = '/node_modules/.bin/rnv';
+    const rnvPath = process.argv[1];
+    const rnvExecWorkspaceRoot = rnvPath.split(npxLoc)[0];
+    const isNpxMode = ctx.paths.project.dir.includes(rnvExecWorkspaceRoot);
+
+    ctx.paths.IS_NPX_MODE = isNpxMode;
+};
+
 export const createRnvContext = (ctx?: {
     program?: any;
     process?: any;
@@ -49,8 +61,6 @@ export const createRnvContext = (ctx?: {
 
     c.paths.rnv.dir = ctx?.RNV_HOME_DIR || c.paths.rnv.dir;
 
-    //TODO: find better way to deal with linking
-    c.paths.IS_LINKED = path.dirname(c.paths.rnv.dir).split(path.sep).pop() === 'packages';
     c.paths.CURRENT_DIR = path.resolve('.');
     c.paths.RNV_NODE_MODULES_DIR = path.join(c.paths.rnv.dir, 'node_modules');
 
@@ -79,6 +89,8 @@ export const createRnvContext = (ctx?: {
     }
 
     generateContextPaths(c.paths.project, c.paths.CURRENT_DIR, c.program.configName);
+
+    populateLinkingInfo(c);
 
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
     c.paths.buildHooks.dist.dir = path.join(c.paths.project.dir, 'buildHooks/dist');

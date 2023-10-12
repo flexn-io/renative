@@ -1,11 +1,12 @@
 import path from 'path';
 import { chalk, logTask, logError, logWarning } from '../logger';
-import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync } from '../system/fs';
+import { cleanFolder, copyFolderContentsRecursiveSync } from '../system/fs';
 import { getTimestampPathsConfig, getPlatformBuildDir, getAppFolder } from '../common';
 import { SUPPORTED_PLATFORMS } from '../constants';
-import { RnvContext } from '../context/types';
+import type { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
-import { RnvPlatform, RnvPlatformWithAll } from '../types';
+import type { RnvPlatform, RnvPlatformWithAll } from '../types';
+import { updateProjectPlatforms } from '../configs/configProject';
 
 export const logErrorPlatform = (c: RnvContext) => {
     logError(
@@ -13,16 +14,6 @@ export const logErrorPlatform = (c: RnvContext) => {
         true // kill it if we're not supporting this
     );
     return false;
-};
-
-export const updateProjectPlatforms = (c: RnvContext, platforms: Array<string>) => {
-    const {
-        project: { config },
-    } = c.paths;
-    const currentConfig = c.files.project.config;
-    currentConfig.defaults = currentConfig.defaults || {};
-    currentConfig.defaults.supportedPlatforms = platforms;
-    writeFileSync(config, currentConfig);
 };
 
 export const generatePlatformChoices = (c: RnvContext) => {

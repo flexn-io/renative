@@ -8,20 +8,34 @@ export * from './context/provider';
 export * from './engines';
 export * from './platforms';
 export * from './plugins';
-export * from './projects';
-export * from './workspaces';
 export * from './buildHooks';
 export * from './migrator';
+
 export * from './configs';
-export * from './configs/schemeParser';
-export * from './configs/packageParser';
+export * from './configs/buildSchemes';
+export * from './configs/buildConfig';
+export * from './configs/workspaces';
+export * from './configs/appConfigs';
+export * from './configs/configLocal';
+export * from './configs/engines';
+export * from './configs/configProject';
+export * from './configs/platformAssets';
+export * from './configs/pluginTemplates';
+export * from './configs/templates';
+export * from './configs/utils';
+
+export * from './projects';
+export * from './projects/npm';
+export * from './projects/package';
+export * from './projects/dependencyManager';
+
+export * from './tasks';
+export * from './tasks/constants';
+
 export * from './schema/zod';
-export * from './runtime';
+export * from './context/runtime';
 export * from './templates';
 export * from './integrations';
-export * from './tasks';
-export * from './npm';
-export * from './git';
 export * from './utils/is';
 export * from './system/exec';
 export * from './system/fs';
@@ -33,6 +47,7 @@ export * from './crypto';
 export * from './common';
 export * from './utils/utils';
 export * from './constants';
+export * from './env';
 
 //TYPES
 export * from './engines/types';

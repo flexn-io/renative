@@ -8,7 +8,7 @@ import {
     doResolve,
     executeRnvCore,
     getConfigProp,
-    loadWorkspacesSync,
+    loadWorkspacesConfigSync,
     logInitialize,
     registerEngine,
 } from '@rnv/core';
@@ -43,7 +43,7 @@ export const executeRnv = async ({
         createRnvContext({ program, process, cmd, subCmd, RNV_HOME_DIR });
 
         logInitialize();
-        loadWorkspacesSync();
+        loadWorkspacesConfigSync();
 
         Analytics.initialize();
 

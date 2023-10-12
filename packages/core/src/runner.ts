@@ -3,8 +3,9 @@ import { loadEngines, registerMissingPlatformEngines } from './engines';
 import { loadIntegrations } from './integrations';
 import { checkAndMigrateProject } from './migrator';
 import { checkAndBootstrapIfRequired } from './projects';
-import { configureRuntimeDefaults, updateRenativeConfigs } from './runtime';
+import { configureRuntimeDefaults } from './context/runtime';
 import { findSuitableTask, initializeTask } from './tasks';
+import { updateRenativeConfigs } from './plugins';
 
 const IGNORE_MISSING_ENGINES_TASKS = ['link', 'unlink'];
 
@@ -27,7 +28,9 @@ export const executeRnvCore = async () => {
         await updateRenativeConfigs(c);
     }
     // for root rnv we simply load all engines upfront
-    if (!c.command && c.paths.project.configExists) {
+    const { configExists } = c.paths.project;
+
+    if (!c.command && configExists) {
         await registerMissingPlatformEngines(c);
     }
     const taskInstance = await findSuitableTask(c);
@@ -35,7 +38,6 @@ export const executeRnvCore = async () => {
     if (c.command && !IGNORE_MISSING_ENGINES_TASKS.includes(c.command)) {
         await registerMissingPlatformEngines(c, taskInstance);
     }
-    // Skip babel.config creation until template check
-    // await checkAndCreateBabelConfig(c);
+
     if (taskInstance?.task) await initializeTask(c, taskInstance?.task);
 };

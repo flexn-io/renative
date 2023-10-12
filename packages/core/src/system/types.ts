@@ -1,3 +1,12 @@
+export type DoResolveFn = (aPath?: string, mandatory?: boolean, options?: ResolveOptions) => string | undefined;
+
+export type ResolveOptions = {
+    basedir?: string;
+    forceForwardPaths?: boolean;
+    extensions?: Array<string>;
+    keepSuffix?: boolean;
+};
+
 export type ExecOptions = {
     interactive?: boolean;
     silent?: boolean;

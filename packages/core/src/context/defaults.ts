@@ -60,6 +60,7 @@ export const generateContextDefaults = (): RnvContext => ({
     paths: {
         CURRENT_DIR: '',
         IS_LINKED: false,
+        IS_NPX_MODE: false,
         RNV_HOME_DIR: '',
         RNV_NODE_MODULES_DIR: '',
         appConfigBase: '',

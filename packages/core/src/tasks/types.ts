@@ -1,4 +1,4 @@
-import { RnvContext } from '../context/types';
+import type { RnvContext } from '../context/types';
 
 export type RnvTask = {
     task: string;

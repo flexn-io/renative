@@ -1,4 +1,4 @@
-import { generateBuildConfig } from '../configs';
+import { generateBuildConfig } from '../configs/buildConfig';
 import { createRnvContext } from '../context';
 import { getAppVersionCode } from '../common';
 import { createRnvApi } from '../api';
@@ -48,7 +48,7 @@ describe('Bootstrapping the CLI', () => {
             'supportedPlatforms',
             'systemPropsInjects',
             'timeEnd',
-            'timeStart'
+            'timeStart',
         ];
 
         expect(cKeys).toEqual(expectKeys);

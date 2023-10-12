@@ -1,7 +1,7 @@
-import { PlatformKey, RenativeConfigFile, RenativeConfigLocal } from '../schema/ts/types';
-import { RnvEngine, RnvEnginePlatform } from '../engines/types';
-import { OverridesOptions } from '../system/types';
-import { RnvPlatform } from '../types';
+import type { PlatformKey, RenativeConfigFile, RenativeConfigLocal } from '../schema/ts/types';
+import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
+import type { OverridesOptions } from '../system/types';
+import type { RnvPlatform } from '../types';
 
 export interface RnvContext<Payload = any> {
     /**
@@ -155,6 +155,7 @@ export type RnvContextPaths = {
     GLOBAL_RNV_DIR: string;
     RNV_HOME_DIR: string;
     IS_LINKED: boolean;
+    IS_NPX_MODE: boolean;
     CURRENT_DIR: string;
     RNV_NODE_MODULES_DIR: string;
     //=======

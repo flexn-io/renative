@@ -5,11 +5,11 @@ import * as PluginManager from './plugins';
 import * as ProjectManager from './projects';
 import * as ConfigManager from './configs';
 import * as SchemaManager from './schema/zod';
-import * as RuntimeManager from './runtime';
+import * as RuntimeManager from './context/runtime';
 import * as TemplateManager from './templates';
 import * as TaskManager from './tasks';
 // SUB-MODULES
-import * as NPMUtils from './npm';
+import * as NPMUtils from './projects/npm';
 import * as ObjectUtils from './utils/is';
 import * as Exec from './system/exec';
 import * as FileUtils from './system/fs';

@@ -1,6 +1,9 @@
+import { fsExistsSync, writeFileSync, readObjectSync, mkdirSync } from '../system/fs';
+
+import { getContext } from '../context/provider';
+
 import path from 'path';
-import { chalk, logTask, logDebug, logInfo } from '../logger';
-import { writeFileSync, mkdirSync, fsExistsSync } from '../system/fs';
+import { chalk, logTask, logDebug, logInfo, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
 
@@ -79,3 +82,37 @@ export const getWorkspaceOptions = (c: RnvContext) =>
 
         return ` [${chalk().grey(i + 1)}]> ${chalk().bold(defaultVal)} ${getWorkspaceConnectionString(obj)}\n`;
     });
+
+export const loadWorkspacesConfigSync = () => {
+    const c = getContext();
+    // CHECK WORKSPACES
+    if (fsExistsSync(c.paths.rnv.configWorkspaces)) {
+        logDebug(`${c.paths.rnv.configWorkspaces} file exists!`);
+        c.files.rnv.configWorkspaces = readObjectSync(c.paths.rnv.configWorkspaces);
+
+        if (!c.files.rnv.configWorkspaces) c.files.rnv.configWorkspaces = {};
+
+        if (!c.files.rnv.configWorkspaces?.workspaces) {
+            c.files.rnv.configWorkspaces.workspaces = {};
+        }
+        if (Object.keys(c.files.rnv.configWorkspaces.workspaces).length === 0) {
+            logWarning(`No workspace found in ${c.paths.rnv.configWorkspaces}. Creating default rnv one for you`);
+            c.files.rnv.configWorkspaces.workspaces = {
+                rnv: {
+                    path: c.paths.workspace.dir,
+                },
+            };
+            writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
+        }
+    } else {
+        logWarning(`Cannot find ${c.paths.rnv.configWorkspaces}. creating one..`);
+        c.files.rnv.configWorkspaces = {
+            workspaces: {
+                rnv: {
+                    path: c.paths.workspace.dir,
+                },
+            },
+        };
+        writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
+    }
+};

@@ -1,12 +1,6 @@
-const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
-
 const path = require('path');
 const os = require('os');
 const { doResolve } = require('@rnv/core');
-
-const _require2 = require('metro-cache');
-
-const { FileStore } = _require2;
 
 const sharedBlacklist = [
     /node_modules\/react\/dist\/.*/,
@@ -36,7 +30,15 @@ function blacklist(additionalBlacklist: RegExp[]) {
 export const withRNVMetro = (config: any) => {
     const projectPath = env.RNV_PROJECT_ROOT || process.cwd();
 
+    const mc = require(require.resolve('@react-native/metro-config', { paths: [projectPath] }));
+
+    const { getDefaultConfig, mergeConfig } = mc;
+
     const watchFolders = [path.resolve(projectPath, 'node_modules')];
+
+    const metroCache = require(require.resolve('metro-cache', { paths: [projectPath] }));
+
+    const { FileStore } = metroCache;
 
     if (env.RNV_IS_MONOREPO === 'true' || env.RNV_IS_MONOREPO === true) {
         const monoRootPath = env.RNV_MONO_ROOT || projectPath;

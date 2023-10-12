@@ -4,15 +4,7 @@ import { isSystemWin } from '../utils/utils';
 import { getRealPath } from '../system/fs';
 import { getConfigProp } from '../common';
 import { logTask } from '../logger';
-import { loadPluginTemplates } from '../plugins';
-import { parseRenativeConfigs } from '../configs/index';
-import { RnvContext, RnvContextPlatform } from '../context/types';
-
-export const updateRenativeConfigs = async (c: RnvContext) => {
-    await loadPluginTemplates(c);
-    await parseRenativeConfigs(c);
-    return true;
-};
+import { RnvContext, RnvContextPlatform } from './types';
 
 export const configureRuntimeDefaults = async (c: RnvContext) => {
     c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId;

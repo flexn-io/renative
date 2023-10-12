@@ -165,7 +165,8 @@ export const getCurrentCommand = (excludeDollar = false) => {
         })
         .join(' ');
     const dollar = excludeDollar ? '' : '$ ';
-    return `${dollar}rnv ${output}`;
+    const npx = ctx.paths.IS_NPX_MODE ? 'npx ' : '';
+    return `${dollar}${npx}rnv ${output}`;
 };
 
 export const logToSummary = (v: string, sanitizePaths?: () => string) => {
@@ -189,6 +190,14 @@ export const logSummary = (header = 'SUMMARY') => {
     const ctx = getContext();
 
     if (_jsonOnly) return;
+
+    if (ctx.paths.project.configExists && !ctx.paths.IS_NPX_MODE) {
+        logAndSave(chalk().yellow('You are trying to run global rnv command in your current project.'), true);
+        logAndSave(chalk().yellow('This might lead to unexpected behaviour.'), true);
+        logAndSave(chalk().yellow('Run your rnv command with npx prefix:'), true);
+        logAndSave(chalk().white('npx ' + getCurrentCommand(true)), true);
+    }
+
     let logContent = printIntoBox(`All good as ${ICN_UNICORN} `);
     if (ctx.logMessages && ctx.logMessages.length) {
         logContent = '';
@@ -265,13 +274,13 @@ export const logSummary = (header = 'SUMMARY') => {
     }
 
     if (ctx.timeEnd) {
-        str += printIntoBox(
-            `Executed Time: ${currentChalk.yellow(_msToTime(ctx.timeEnd.getTime() - ctx.timeStart.getTime()))}`
-        );
+        str += printIntoBox(`Executed Time: ${_msToTime(ctx.timeEnd.getTime() - ctx.timeStart.getTime())}`);
     }
 
     str += printIntoBox('');
+
     str += logContent.replace(/\n\s*\n\s*\n/g, '\n\n');
+
     str += printIntoBox('');
     if (ctx.runtime?.platformBuildsProjectPath) {
         str += printIntoBox('Project location:');

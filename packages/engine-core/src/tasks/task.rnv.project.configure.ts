@@ -6,8 +6,6 @@ import {
     chalk,
     logTask,
     logInfo,
-    checkIsRenativeProject,
-    generateRuntimeConfig,
     updateRenativeConfigs,
     configureRuntimeDefaults,
     applyTemplate,
@@ -34,7 +32,22 @@ import {
     initializeTask,
     findSuitableTask,
     RnvTaskFn,
+    RnvContext,
+    generatePlatformAssetsRuntimeConfig,
 } from '@rnv/core';
+
+const checkIsRenativeProject = (c: RnvContext) =>
+    new Promise((resolve, reject) => {
+        if (!c.paths.project.configExists) {
+            return reject(
+                `This directory is not ReNative project. Project config ${chalk().white(
+                    c.paths.project.config
+                )} is missing!. You can create new project with ${chalk().white('rnv new')}`
+            );
+        }
+
+        return resolve(true);
+    });
 
 export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTask) => {
     logTask('taskRnvProjectConfigure');
@@ -52,7 +65,7 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
     if (c.program.only && !!parentTask) {
         await configureRuntimeDefaults(c);
         await executeTask(c, TASK_APP_CONFIGURE, TASK_PROJECT_CONFIGURE, originTask);
-        await generateRuntimeConfig(c);
+        await generatePlatformAssetsRuntimeConfig(c);
         return true;
     }
 
@@ -108,7 +121,7 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
         if (!c.buildConfig.platforms) {
             await updateRenativeConfigs(c);
         }
-        await generateRuntimeConfig(c);
+        await generatePlatformAssetsRuntimeConfig(c);
         await overrideTemplatePlugins(c);
         // NOTE: this is needed to ensure missing rnv plugin sub-deps are caught
         await checkForPluginDependencies(c);
