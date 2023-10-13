@@ -1,0 +1,98 @@
+// $RNV.ADD_LINE($configProps.projectTemplate.app_build_gradle.linesStart)
+apply plugin: "com.android.application"
+apply plugin: "com.facebook.react"
+
+
+react {
+ 
+    // $RNV.REPLACE_NEXT_LINE($env.PROJECT_DIR)
+    root = file("../../")
+    // $RNV.REPLACE_NEXT_LINE($env.REACT_NATIVE_PATH)
+    reactNativeDir = file("../../../../../node_modules/react-native")
+    // $RNV.REPLACE_NEXT_LINE($env.REACT_NATIVE_PATH,'../@react-native/codegen')
+    codegenDir = file("../../../../../node_modules/@react-native/codegen")
+    // $RNV.REPLACE_NEXT_LINE('cliFile = file("',$env.REACT_NATIVE_PATH,'/cli.js','")')
+    cliFile = file("../../../../../node_modules/react-native/cli.js")
+}
+
+// $RNV.REPLACE_NEXT_LINE($configProps.projectTemplate.app_build_gradle.def.enableProguardInReleaseBuilds.replace)
+def enableProguardInReleaseBuilds = false
+
+// $RNV.REPLACE_NEXT_LINE($configProps.projectTemplate.app_build_gradle.def.jscFlavor.replace)
+def jscFlavor = 'org.webkit:android-jsc:+'
+
+android {
+    // $RNV.ADD_LINE($configProps.projectTemplate.app_build_gradle.android.linesStart)
+
+    // $RNV.REPLACE_NEXT_LINE($configProps.projectTemplate.app_build_gradle.android.ndkVersion)
+    ndkVersion rootProject.ext.ndkVersion
+
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    // $RNV.REPLACE_NEXT_LINE($configProps.projectTemplate.app_build_gradle.android.namespace)
+    namespace 'appX' // $RNV.REPLACE_LINE('namespace ',$configProps.id)
+    defaultConfig {
+        // $RNV.ADD_LINE($configProps.projectTemplate.app_build_gradle.android.defaultConfig.linesStart)
+        applicationId 'my.app.id' // $RNV.REPLACE_LINE('applicationId ',$configProps.id)
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1 // $RNV.REPLACE_LINE('versionCode ',$configProps.versionName)
+        versionName "1.0" // $RNV.REPLACE_LINE('versionName "',$configProps.versionName, '"')
+        // $RNV.ADD_LINE($configProps.projectTemplate.app_build_gradle.android.defaultConfig.linesEnd)
+    }
+
+    // $RNV.REPLACE_GROUP_START($configProps.projectTemplate.app_build_gradle.android.signingConfigs.replace)
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+        release {
+            if (project.hasProperty('STORE_FILE')) {
+                storeFile file(STORE_FILE)
+                storePassword STORE_PASSWORD
+                keyAlias KEY_ALIAS
+                keyPassword KEY_PASSWORD
+            }
+        }
+    }
+    // $RNV.REPLACE_GROUP_END($configProps.projectTemplate.app_build_gradle.android.signingConfigs.replace)
+
+    // $RNV.REPLACE_GROUP_START($configProps.projectTemplate.app_build_gradle.android.buildTypes.replace)
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://reactnative.dev/docs/signed-apk-android.
+            signingConfig signingConfigs.release
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+    // $RNV.REPLACE_GROUP_END($configProps.projectTemplate.app_build_gradle.android.buildTypes.replace)
+    // $RNV.ADD_LINE($configProps.projectTemplate.app_build_gradle.android.linesEnd)
+}
+
+dependencies {
+    // The version of react-native is set by the React Native Gradle Plugin
+    implementation("com.facebook.react:react-android")
+
+    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
+        exclude group:'com.squareup.okhttp3', module:'okhttp'
+    }
+
+    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
+    if (hermesEnabled.toBoolean()) {
+        implementation("com.facebook.react:hermes-android")
+    } else {
+        implementation jscFlavor
+    }
+}
+
+apply from: file("../../../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+// $RNV.ADD_LINE($configProps.projectTemplate.app_build_gradle.linesEnd)
