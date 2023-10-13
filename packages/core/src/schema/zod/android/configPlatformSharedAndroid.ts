@@ -23,6 +23,13 @@ const AppBuildGradle = z
     .object({
         apply: z.array(z.string()),
         defaultConfig: z.array(z.string()),
+        buildTypes: z.optional(
+            z.object({
+                debug: z.optional(z.array(z.string())),
+                release: z.optional(z.array(z.string())),
+            })
+        ),
+        afterEvaluate: z.optional(z.array(z.string())),
     })
     .describe('Overrides values in `app/build.gradle` file of generated android based project');
 
@@ -51,22 +58,31 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 > IMPORTANT: always ensure that your object contains \`tag\` and \`android:name\` to target correct tag to merge into
  `);
 
-const Gradle = z.object({
-    buildTypes: z.optional(
-        z.object({
-            debug: z.optional(z.array(z.string())),
-            release: z.optional(z.array(z.string())),
-        })
-    ),
-});
+// const Gradle = z.object({
+
+// });
 
 export const PlatformSharedAndroid = z.object({
-    'gradle.properties': z.optional(GradleProperties),
-    'build.gradle': z.optional(BuildGradle),
-    'app/build.gradle': z.optional(AppBuildGradle),
-    AndroidManifest: z.optional(AndroidManifest),
-    gradle: z.optional(Gradle),
-    afterEvaluate: z.optional(z.array(z.string())),
+    nativeAndroidTemplate: z.object({
+        gradle_properties: z.optional(GradleProperties),
+        build_gradle: z.optional(BuildGradle),
+        app_build_gradle: z.optional(AppBuildGradle),
+        AndroidManifest_xml: z.optional(AndroidManifest),
+        strings_xml: z.optional(
+            z.object({
+                children: z.optional(
+                    z.array(
+                        z.object({
+                            tag: z.string(),
+                            name: z.string(),
+                            child_value: z.string(),
+                        })
+                    )
+                ),
+            })
+        ),
+    }),
+
     //     applyPlugin: {
     //         type: 'array',
     //     },

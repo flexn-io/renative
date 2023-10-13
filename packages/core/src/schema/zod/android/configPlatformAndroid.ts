@@ -7,6 +7,31 @@ export const PlatformAndroid = PlatformSharedAndroid.merge(
     z.object({
         enableAndroidX: z.optional(EnableAndroidX),
 
+        projectTemplate: z.object({
+            settings_gradle: z.object({}),
+            gradle_wrapper_properties: z.object({}),
+            MainActivity_java: z.object({}),
+            MainApplication_java: z.object({}),
+            SplashActivity_java: z.object({}),
+            styles_xml: z.object({}),
+            colors_xml: z.object({}),
+            strings_xml: z.object({}),
+            proguard_rules_pro: z.object({}),
+            // mainActivity: {
+            //     type: 'object',
+            //     description: 'Allows you to configure behaviour of MainActivity.kt',
+            //     default: '{}',
+            //     properties: {
+            //         onCreate: {
+            //             type: 'string',
+            //             description: 'Overrides super.onCreate method handler of MainActivity.kt',
+            //             default: 'super.onCreate(savedInstanceState)',
+            //             examples: ['super.onCreate(null)', 'super.onCreate(savedInstanceState)'],
+            //         },
+            //     },
+            // },
+        }),
+
         // enableHermes: {
         //     type: 'boolean',
         //     default: false,
@@ -77,19 +102,6 @@ export const PlatformAndroid = PlatformSharedAndroid.merge(
         //         'Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`',
         //     default: '5.5',
         //     examples: ['5.5', '6.7.1'],
-        // },
-        // mainActivity: {
-        //     type: 'object',
-        //     description: 'Allows you to configure behaviour of MainActivity.kt',
-        //     default: '{}',
-        //     properties: {
-        //         onCreate: {
-        //             type: 'string',
-        //             description: 'Overrides super.onCreate method handler of MainActivity.kt',
-        //             default: 'super.onCreate(savedInstanceState)',
-        //             examples: ['super.onCreate(null)', 'super.onCreate(savedInstanceState)'],
-        //         },
-        //     },
         // },
         // storeFile: {
         //     type: 'string',

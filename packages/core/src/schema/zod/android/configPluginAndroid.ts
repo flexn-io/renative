@@ -9,18 +9,5 @@ export const PluginAndroid = PluginShared.merge(PlatformSharedAndroid).merge(
         skipImplementation: z.optional(z.boolean()),
         implementation: z.optional(z.string()),
         package: z.optional(z.string()),
-        ResourceStrings: z.optional(
-            z.object({
-                children: z.optional(
-                    z.array(
-                        z.object({
-                            tag: z.string(),
-                            name: z.string(),
-                            child_value: z.string(),
-                        })
-                    )
-                ),
-            })
-        ),
     })
 );
