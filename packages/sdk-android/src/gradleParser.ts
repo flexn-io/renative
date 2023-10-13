@@ -1,30 +1,30 @@
-import path from 'path';
 import {
     OverridesOptions,
     RenativeConfigPlatform,
     RenativeConfigPluginPlatform,
     RnvContext,
     RnvPlugin,
-    getAppFolder,
-    getAppVersion,
-    getAppVersionCode,
-    getAppId,
-    getBuildFilePath,
-    getConfigProp,
     addSystemInjects,
-    fsExistsSync,
-    writeCleanFile,
-    fsWriteFileSync,
+    chalk,
     doResolve,
     doResolvePath,
-    chalk,
-    logTask,
-    logWarning,
-    logDebug,
-    sanitizePluginPath,
+    fsExistsSync,
+    fsWriteFileSync,
+    getAppFolder,
+    getAppId,
+    getAppVersion,
+    getAppVersionCode,
+    getBuildFilePath,
+    getConfigProp,
     includesPluginPath,
     isSystemWin,
+    logDebug,
+    logTask,
+    logWarning,
+    sanitizePluginPath,
+    writeCleanFile,
 } from '@rnv/core';
+import path from 'path';
 import { Context } from './types';
 
 export const parseBuildGradleSync = (c: Context) => {
@@ -78,6 +78,10 @@ export const parseBuildGradleSync = (c: Context) => {
         {
             pattern: '{{MIN_SDK_VERSION}}',
             override: c.payload.pluginConfigAndroid.minSdkVersion,
+        },
+        {
+            pattern: '{{NDK_VERSION}}',
+            override: c.payload.pluginConfigAndroid.ndkVersion,
         },
         {
             pattern: '{{INJECT_AFTER_ALL}}',
@@ -182,8 +186,9 @@ export const parseAppBuildGradleSync = (c: Context) => {
 
     // ANDROID PROPS
     c.payload.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 24);
-    c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
-    c.payload.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 28);
+    c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 33);
+    c.payload.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 33);
+    c.payload.pluginConfigAndroid.ndkVersion = getConfigProp(c, platform, 'ndkVersion', '23.1.7779620');
     c.payload.pluginConfigAndroid.gradleBuildToolsVersion = getConfigProp(
         c,
         platform,
@@ -191,7 +196,7 @@ export const parseAppBuildGradleSync = (c: Context) => {
         '4.2.2'
     );
     c.payload.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion', '28.0.0');
-    c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '28.0.0');
+    c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '33.0.0');
     c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp(c, platform, 'kotlinVersion', '1.4.20');
     c.payload.pluginConfigAndroid.googleServicesVersion = getConfigProp(c, platform, 'googleServicesVersion', '4.2.0');
 

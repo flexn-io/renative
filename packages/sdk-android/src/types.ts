@@ -15,6 +15,7 @@ export type Payload = {
         buildTypes: string;
         multiAPKs: string;
         minSdkVersion: string;
+        ndkVersion: string;
         targetSdkVersion: string;
         compileSdkVersion: string;
         compileOptions: string;
