@@ -80,7 +80,8 @@ export default async () =>
                     );
                     logInfo(`To ignore, add ${chalk.cyan('// eslint-disable-next-line')} to the line before.\n`);
                 } else {
-                    logSuccess('Compiled successfully.\n');
+                  logSuccess(`Your Build is located in ${chalk.cyan(`./${process.env.RNV_APP_BUILD_DIR}`)} . \n`);
+
                 }
 
                 logInfo('File sizes after gzip:\n');
@@ -182,7 +183,6 @@ function build(previousFileSizes) {
                     .then(() => resolve(resolveArgs))
                     .catch((error) => reject(new Error(error)));
             }
-
             return resolve(resolveArgs);
         });
     });
