@@ -173,8 +173,11 @@ export const parseMainActivitySync = (c: any) => {
 export const parseSplashActivitySync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
+    const appId = getAppId(c, c.platform);
+    const javaPackageArray = appId.split('.');
+
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.java.tpl';
-    const splashPath = 'app/src/main/java/rnv/SplashActivity.java';
+    const splashPath = `app/src/main/java/${javaPackageArray.join('/')}/SplashActivity.java`;
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
     const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
