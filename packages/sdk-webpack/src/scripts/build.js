@@ -2,7 +2,7 @@
 
 // Do this as the first thing so that any code reading it knows the right env.
 
-import { logError, logInfo, logSuccess, logWarning } from '@rnv/core';
+import { logError, logInfo, logWarning} from '@rnv/core';
 
 process.env.BABEL_ENV = 'production';
 process.env.NODE_ENV = 'production';
@@ -79,10 +79,7 @@ export default async () =>
                         )} to learn more about each warning.`
                     );
                     logInfo(`To ignore, add ${chalk.cyan('// eslint-disable-next-line')} to the line before.\n`);
-                } else {
-                  logSuccess(`Your Build is located in ${chalk.cyan(`./${process.env.RNV_APP_BUILD_DIR}`)} . \n`);
-
-                }
+                } 
 
                 logInfo('File sizes after gzip:\n');
                 printFileSizesAfterBuild(

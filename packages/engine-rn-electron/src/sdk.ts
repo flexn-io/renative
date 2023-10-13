@@ -38,6 +38,7 @@ import {
     copyAssetsFolder,
     MACOS,
     LINUX,
+    TASK_EXPORT,
 } from '@rnv/core';
 
 export const configureElectronProject = async (c: RnvContext, exitOnFail?: boolean) => {
@@ -270,6 +271,7 @@ const buildElectron = async (c: RnvContext) => {
     const menuPathDest = path.join(platformBuildDir, 'build', 'contextMenu.js');
     copyFileSync(menuPathSrc, menuPathDest);
 
+ if(c.command !== TASK_EXPORT)logSuccess(`Your Build is located in ${chalk().cyan(path.join(platformBuildDir, 'build'))} .`);
     return true;
 };
 
