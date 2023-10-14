@@ -25,7 +25,7 @@ import {
     writeCleanFile,
 } from '@rnv/core';
 import path from 'path';
-import { Context } from './types';
+import { Context, TemplateAndroid } from './types';
 
 export const parseBuildGradleSync = (c: Context) => {
     const appFolder = getAppFolder(c);
@@ -328,8 +328,9 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
 
     // BUILD_TYPES
     const pluginConfig = c.buildConfig ?? {};
-    const debugBuildTypes = pluginConfig?.platforms?.[platform]?.gradle?.buildTypes?.debug ?? [];
-    const releaseBuildTypes: string[] = pluginConfig?.platforms?.[platform]?.gradle?.buildTypes?.release ?? [];
+    const appBuildGradle = pluginConfig?.platforms?.[platform]?.templateAndroid?.app_build_gradle;
+    const debugBuildTypes = appBuildGradle?.buildTypes?.debug ?? [];
+    const releaseBuildTypes: string[] = appBuildGradle?.buildTypes?.release ?? [];
     const isSigningDisabled = getConfigProp(c, platform, 'disableSigning') === true;
     c.payload.pluginConfigAndroid.buildTypes = `
     debug {
@@ -550,7 +551,7 @@ export const parseGradlePropertiesSync = (c: Context) => {
     let pluginGradleProperties = '';
     const pluginConfigAndroid: RenativeConfigPlatform = c.buildConfig?.platforms?.[platform] || {};
 
-    const gradleProps = pluginConfigAndroid['gradle.properties'];
+    const gradleProps = pluginConfigAndroid.templateAndroid?.gradle_properties;
 
     if (gradleProps) {
         const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
@@ -657,27 +658,11 @@ export const injectPluginGradleSync = (
     }
 };
 
-const getObj = <T = any>(c: RnvContext, obj: any, keys: Array<string>): T | undefined => {
-    for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        const val = obj ? obj[key] : getConfigProp(c, c.platform, key);
-        if (val) return val;
-    }
-};
-
 export const parseAndroidConfigObject = (c: RnvContext, obj?: any, key = '') => {
-    const implementations = getObj<string[]>(c, obj, ['implementations']);
-    if (implementations) {
-        implementations.forEach((v) => {
-            c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation ${sanitizePluginPath(
-                v,
-                key
-            )}\n`;
-        });
-    }
-
     // APP/BUILD.GRADLE
-    const appBuildGradle = getObj<RenativeConfigPluginPlatform['app/build.gradle']>(c, obj, ['app/build.gradle']);
+    const templateAndroid = getConfigProp<TemplateAndroid>(c, obj, 'templateAndroid');
+
+    const appBuildGradle = templateAndroid.app_build_gradle;
     if (appBuildGradle) {
         if (appBuildGradle.apply) {
             appBuildGradle.apply.forEach((v) => {
@@ -690,17 +675,27 @@ export const parseAndroidConfigObject = (c: RnvContext, obj?: any, key = '') => 
                 c.payload.pluginConfigAndroid.defaultConfig += `${sanitizePluginPath(v, key)}\n`;
             });
         }
-    }
 
-    const afterEvaluate = getObj<RenativeConfigPluginPlatform['afterEvaluate']>(c, obj, ['afterEvaluate']);
-    if (afterEvaluate) {
-        afterEvaluate.forEach((v) => {
-            c.payload.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${sanitizePluginPath(v, key)}\n`;
-        });
+        const { implementations } = appBuildGradle;
+        if (implementations) {
+            implementations.forEach((v) => {
+                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation ${sanitizePluginPath(
+                    v,
+                    key
+                )}\n`;
+            });
+        }
+
+        const afterEvaluate = appBuildGradle?.afterEvaluate;
+        if (afterEvaluate) {
+            afterEvaluate.forEach((v) => {
+                c.payload.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${sanitizePluginPath(v, key)}\n`;
+            });
+        }
     }
 
     // BUILD.GRADLE
-    const buildGradle = getObj<RenativeConfigPluginPlatform['build.gradle']>(c, obj, ['BuildGradle', 'build.gradle']);
+    const buildGradle = templateAndroid.build_gradle;
 
     const allProjRepos = buildGradle?.allprojects?.repositories;
     if (allProjRepos) {

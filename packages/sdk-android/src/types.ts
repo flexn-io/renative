@@ -44,7 +44,7 @@ export type Payload = {
         pluginActivityResultMethods: string;
         pluginApplicationCreateMethods: string;
         pluginSplashActivityImports: string;
-        resourceStrings: Required<Required<RenativeConfigPluginPlatform>['ResourceStrings']>['children'];
+        resourceStrings: Required<TemplateAndroid['strings_xml']>['children'];
         store?: {
             storeFile: string;
             keyAlias: string;
@@ -74,3 +74,5 @@ export type AndroidDevice = {
     isActive: boolean;
     isRunning?: boolean;
 };
+
+export type TemplateAndroid = Required<Required<RenativeConfigPluginPlatform>['templateAndroid']>;

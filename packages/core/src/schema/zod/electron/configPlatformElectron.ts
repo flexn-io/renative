@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const PlatformElectron = z.object({
-    electronTemplate: z.object({}),
+    electronTemplate: z.optional(z.object({})),
     // electronConfig: {
     //     additionalProperties: true,
     //     type: 'object',

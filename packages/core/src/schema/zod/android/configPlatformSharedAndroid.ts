@@ -30,6 +30,7 @@ const AppBuildGradle = z
             })
         ),
         afterEvaluate: z.optional(z.array(z.string())),
+        implementations: z.optional(z.array(z.string())),
     })
     .describe('Overrides values in `app/build.gradle` file of generated android based project');
 
@@ -62,26 +63,28 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 // });
 
+export const TemplateAndroidShared = z.object({
+    gradle_properties: z.optional(GradleProperties),
+    build_gradle: z.optional(BuildGradle),
+    app_build_gradle: z.optional(AppBuildGradle),
+    AndroidManifest_xml: z.optional(AndroidManifest),
+    strings_xml: z.optional(
+        z.object({
+            children: z.optional(
+                z.array(
+                    z.object({
+                        tag: z.string(),
+                        name: z.string(),
+                        child_value: z.string(),
+                    })
+                )
+            ),
+        })
+    ),
+});
+
 export const PlatformSharedAndroid = z.object({
-    nativeAndroidTemplate: z.object({
-        gradle_properties: z.optional(GradleProperties),
-        build_gradle: z.optional(BuildGradle),
-        app_build_gradle: z.optional(AppBuildGradle),
-        AndroidManifest_xml: z.optional(AndroidManifest),
-        strings_xml: z.optional(
-            z.object({
-                children: z.optional(
-                    z.array(
-                        z.object({
-                            tag: z.string(),
-                            name: z.string(),
-                            child_value: z.string(),
-                        })
-                    )
-                ),
-            })
-        ),
-    }),
+    templateAndroid: z.optional(TemplateAndroidShared),
 
     //     applyPlugin: {
     //         type: 'array',
