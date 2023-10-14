@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PlatformWeb = z.object({
+export const PlatformNextJs = z.object({
     // pagesDir: {
     //     type: 'string',
     //     description: 'Custom pages directory used by nextjs. Use relative paths',
@@ -17,11 +17,5 @@ export const PlatformWeb = z.object({
     //     description:
     //         'Custom export directory used by nextjs equivalent to "npx next export --outdir <exportDir>". Use relative paths',
     //     examples: ['output', 'custom/location'],
-    // },
-    // environment: {
-    //     type: 'string',
-    // },
-    // devServerHost: {
-    //     type: 'string',
     // },
 });

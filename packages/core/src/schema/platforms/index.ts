@@ -1,15 +1,15 @@
 import { z } from 'zod';
-import { PlatformShared } from './base';
+import { PlatformBase } from './base';
 import { PlatformAndroid } from './android';
 import { PlatformiOS } from './ios';
-import { PlatformWeb } from '../web/configPlatformWeb';
-import { PlatformTizen } from '../tizen/configPlatformTizen';
+import { PlatformWeb } from './web';
+import { PlatformTizen } from './tizen';
 import { PlatformElectron } from './electron';
-import { PlatformWindows } from '../windows/configPlatformWindows';
-import { PlatformWebpack } from '../webpack/configPlatformWebpack';
+import { PlatformWindows } from './windows';
+import { PlatformWebpack } from './webpack';
 import { BuildSchemeBase } from '../shared';
 
-const BuildScheme = BuildSchemeBase.merge(PlatformShared)
+const PlatformBuildScheme = BuildSchemeBase.merge(PlatformBase)
     .merge(PlatformiOS)
     .merge(PlatformWeb)
     .merge(PlatformTizen)
@@ -19,11 +19,11 @@ const BuildScheme = BuildSchemeBase.merge(PlatformShared)
 
 // LEVEL 2
 
-export const BuildSchemes = z
-    .record(z.string(), BuildScheme)
+export const PlatformBuildSchemes = z
+    .record(z.string(), PlatformBuildScheme)
     .describe('Allows to customize platforms configurations based on chosen build scheme `-s`');
 
-const PlatformMerged = PlatformShared.merge(PlatformiOS)
+const PlatformMerged = PlatformBase.merge(PlatformiOS)
     .merge(PlatformAndroid)
     .merge(PlatformWeb)
     .merge(PlatformTizen)
@@ -32,7 +32,7 @@ const PlatformMerged = PlatformShared.merge(PlatformiOS)
     .merge(PlatformWindows)
     .merge(
         z.object({
-            buildSchemes: z.optional(BuildSchemes),
+            buildSchemes: z.optional(PlatformBuildSchemes),
         })
     );
 
@@ -54,9 +54,9 @@ export type _PlatformMergedType = z.infer<typeof PlatformMerged>;
 
 const Base = z
     .object({
-        buildSchemes: z.optional(BuildSchemes),
+        buildSchemes: z.optional(PlatformBuildSchemes),
     })
-    .merge(PlatformShared);
+    .merge(PlatformBase);
 
 export const Platforms = z
     .object({

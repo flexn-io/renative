@@ -18,7 +18,7 @@ import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } f
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { PluginCallback, RnvPlugin, RnvPluginScope, RnvPluginWebpackKey } from './types';
-import { RenativeConfigPlugin, RenativeWebpackConfig } from '../schema/ts/types';
+import { RenativeConfigPlugin, RenativeWebpackConfig } from '../schema/types';
 import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';

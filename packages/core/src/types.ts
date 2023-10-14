@@ -1,4 +1,4 @@
-import type { PlatformKey } from './schema/ts/types';
+import type { PlatformKey } from './schema/types';
 
 export type RnvPlatform = PlatformKey | null;
 

@@ -73,8 +73,8 @@ export const TemplateXcodeShared = z
     })
     .describe('Allows more advanced modifications to Xcode based project template');
 
-export const PlatformSharediOS = z.object({
-    templateXcode: z.optional(TemplateXcodeShared),
-});
+// export const PlatformSharediOS = z.object({
+//     templateXcode: z.optional(TemplateXcodeShared),
+// });
 
 export type _AppDelegateMethodType = z.infer<typeof AppDelegateMethod>;

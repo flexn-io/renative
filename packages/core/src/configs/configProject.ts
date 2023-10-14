@@ -2,7 +2,7 @@ import { getRealPath, writeFileSync } from '../system/fs';
 import { chalk, logTask, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
-import { RenativeConfigFile } from '../schema/ts/types';
+import { RenativeConfigFile } from '../schema/types';
 import { NpmPackageFile } from './types';
 
 const SYNCED_DEPS = [

@@ -85,34 +85,34 @@ export const TemplateAndroidShared = z
     })
     .describe('Allows more advanced modifications to Android based project template');
 
-export const PlatformSharedAndroid = z.object({
-    templateAndroid: z.optional(TemplateAndroidShared),
+// export const PlatformSharedAndroid = z.object({
+//     templateAndroid: z.optional(TemplateAndroidShared),
 
-    //     applyPlugin: {
-    //         type: 'array',
-    //     },
-    //     BuildGradle: {
-    //         type: 'object',
-    //         description: 'Allows you to customize `build.gradle` file',
-    //         properties: {
-    //             allprojects: {
-    //                 type: 'object',
-    //                 properties: {
-    //                     repositories: {
-    //                         type: 'object',
-    //                         description: 'Customize repositories section of build.gradle',
-    //                         additionalProperties: true,
-    //                         examples: [
-    //                             {
-    //                                 "flatDir { dirs 'libs'}": true,
-    //                             },
-    //                         ],
-    //                     },
-    //                 },
-    //             },
-    //         },
-    //     },
-    //     implementation: {
-    //         type: 'object',
-    //     },
-});
+//     //     applyPlugin: {
+//     //         type: 'array',
+//     //     },
+//     //     BuildGradle: {
+//     //         type: 'object',
+//     //         description: 'Allows you to customize `build.gradle` file',
+//     //         properties: {
+//     //             allprojects: {
+//     //                 type: 'object',
+//     //                 properties: {
+//     //                     repositories: {
+//     //                         type: 'object',
+//     //                         description: 'Customize repositories section of build.gradle',
+//     //                         additionalProperties: true,
+//     //                         examples: [
+//     //                             {
+//     //                                 "flatDir { dirs 'libs'}": true,
+//     //                             },
+//     //                         ],
+//     //                     },
+//     //                 },
+//     //             },
+//     //         },
+//     //     },
+//     //     implementation: {
+//     //         type: 'object',
+//     //     },
+// });

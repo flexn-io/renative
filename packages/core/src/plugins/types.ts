@@ -1,4 +1,4 @@
-import { RenativeConfigPlugin, RenativeConfigPluginPlatform } from '../schema/ts/types';
+import { RenativeConfigPlugin, RenativeConfigPluginPlatform } from '../schema/types';
 
 export type PluginCallback = (plugin: RnvPlugin, pluginPlat: RenativeConfigPluginPlatform, key: string) => void;
 

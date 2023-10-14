@@ -34,7 +34,7 @@ import { parseRenativeConfigs } from '../configs';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
-import { RenativeConfigFile } from '../schema/ts/types';
+import { RenativeConfigFile } from '../schema/types';
 import { inquirerPrompt } from '../api';
 import { upgradeProjectDependencies } from '../configs/configProject';
 

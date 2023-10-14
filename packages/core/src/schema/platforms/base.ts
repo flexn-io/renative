@@ -30,7 +30,7 @@ export const AssetFolderPlatform = z
         'Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets'
     );
 
-export const PlatformShared = z.object({
+export const PlatformBase = z.object({
     id: z.optional(BundleId),
     assetFolderPlatform: z.optional(AssetFolderPlatform),
     runtime: z.optional(Runtime),

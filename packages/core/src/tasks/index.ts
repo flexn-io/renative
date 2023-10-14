@@ -14,7 +14,7 @@ import { RnvTask, RnvTaskMap, TaskItemMap, TaskObj } from './types';
 import { RnvEngine } from '../engines/types';
 import { inquirerPrompt, pressAnyKeyToContinue } from '../api';
 import { getApi } from '../api/provider';
-import { RenativeConfigTaskKey } from '../schema/ts/types';
+import { RenativeConfigTaskKey } from '../schema/types';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
 
 let executedTasks: Record<string, number> = {};

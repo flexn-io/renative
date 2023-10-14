@@ -4,7 +4,7 @@ import * as PlatformManager from './platforms';
 import * as PluginManager from './plugins';
 import * as ProjectManager from './projects';
 import * as ConfigManager from './configs';
-import * as SchemaManager from './schema/zod';
+import * as SchemaManager from './schema';
 import * as RuntimeManager from './context/runtime';
 import * as TemplateManager from './templates';
 import * as TaskManager from './tasks';

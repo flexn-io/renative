@@ -11,7 +11,7 @@ import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
 import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
-import { RenativeConfigBuildScheme, RenativeConfigFile } from './schema/ts/types';
+import { RenativeConfigBuildScheme, RenativeConfigFile } from './schema/types';
 import { inquirerPrompt } from './api';
 import { GetConfigPropFn } from './api/types';
 import { RnvPlatform } from './types';

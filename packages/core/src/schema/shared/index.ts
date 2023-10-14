@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { SUPPORTED_PLATFORMS } from '../../../constants';
+import { SUPPORTED_PLATFORMS } from '../../constants';
 
 export const Runtime = z
     .any()

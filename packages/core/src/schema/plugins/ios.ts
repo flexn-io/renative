@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { PluginShared } from './base';
-import { PlatformSharediOS } from '../platforms/iosBase';
+import { PluginPlatformBase } from './platformBase';
+import { TemplateXcodeShared } from '../platforms/templateXcode';
 
 const Git = z.string().describe('Alternative git url for pod instead of version');
 
@@ -8,7 +8,7 @@ const Commit = z.string().describe('Alternative git commit reference string');
 
 const Version = z.string().describe('Version of pod');
 
-export const PluginiOS = PluginShared.merge(PlatformSharediOS).merge(
+export const PluginiOS = PluginPlatformBase.merge(
     z.object({
         git: z.optional(Git),
         commit: z.optional(Commit),
@@ -16,6 +16,7 @@ export const PluginiOS = PluginShared.merge(PlatformSharediOS).merge(
         podNames: z.optional(z.array(z.string())),
         podName: z.optional(z.string()),
         staticFrameworks: z.optional(z.array(z.string())),
+        templateXcode: z.optional(TemplateXcodeShared),
     })
 );
 

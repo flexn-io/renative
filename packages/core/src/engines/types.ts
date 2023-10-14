@@ -1,4 +1,4 @@
-import type { RenativeEngineConfig } from '../schema/ts/types';
+import type { RenativeEngineConfig } from '../schema/types';
 import type { RnvTaskMap } from '../tasks/types';
 
 export type RnvEngine = {

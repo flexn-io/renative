@@ -11,7 +11,7 @@ import { RenativeConfigVersion, RnvPlatform } from '../types';
 import { RnvEngine, RnvEngineInstallConfig, RnvEngineTemplate } from './types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
-import { RenativeEngineConfig } from '../schema/ts/types';
+import { RenativeEngineConfig } from '../schema/types';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { checkAndCreateProjectPackage } from '../projects/package';
 import { getEngineTemplateByPlatform } from '../configs/engines';

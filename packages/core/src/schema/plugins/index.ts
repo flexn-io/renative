@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { PluginAndroid } from './android';
 import { PluginiOS } from './ios';
-import { PluginShared } from './base';
+import { PluginPlatformBase } from './platformBase';
 
 // DEPRECATED?
 const Enabled = z.boolean().default(true).describe('Marks plugin enabled or disabled');
@@ -79,18 +79,18 @@ export const Plugin = z.object({
     firetv: z.optional(PluginAndroid),
     ios: z.optional(PluginiOS),
     tvos: z.optional(PluginiOS),
-    tizen: z.optional(PluginShared),
-    tizenmobile: z.optional(PluginShared),
-    tizenwatch: z.optional(PluginShared),
-    webos: z.optional(PluginShared),
-    web: z.optional(PluginShared),
-    webtv: z.optional(PluginShared),
-    chromecast: z.optional(PluginShared),
-    kaios: z.optional(PluginShared),
-    macos: z.optional(PluginShared),
-    linux: z.optional(PluginShared),
-    windows: z.optional(PluginShared),
-    xbox: z.optional(PluginShared),
+    tizen: z.optional(PluginPlatformBase),
+    tizenmobile: z.optional(PluginPlatformBase),
+    tizenwatch: z.optional(PluginPlatformBase),
+    webos: z.optional(PluginPlatformBase),
+    web: z.optional(PluginPlatformBase),
+    webtv: z.optional(PluginPlatformBase),
+    chromecast: z.optional(PluginPlatformBase),
+    kaios: z.optional(PluginPlatformBase),
+    macos: z.optional(PluginPlatformBase),
+    linux: z.optional(PluginPlatformBase),
+    windows: z.optional(PluginPlatformBase),
+    xbox: z.optional(PluginPlatformBase),
 });
 
 export type _PluginPlatformMergedType = z.infer<typeof PluginAndroid> & z.infer<typeof PluginiOS>;
