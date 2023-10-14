@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PlatformSharediOS } from './configPlatformSharediOS';
+import { PlatformSharediOS, TemplateXcodeShared } from './configPlatformSharediOS';
 
 const IgnoreWarnings = z.boolean().describe('Injects `inhibit_all_warnings` into Podfile');
 
@@ -41,6 +41,8 @@ export const PlatformiOS = PlatformSharediOS.merge(
         teamID: z.optional(TeamID),
         excludedArchs: z.optional(ExcludedArchs),
         urlScheme: z.optional(URLScheme),
+
+        templateXcode: z.optional(TemplateXcodeShared.merge(z.object({}))),
 
         // teamIdentifier: {
         //     type: 'string',

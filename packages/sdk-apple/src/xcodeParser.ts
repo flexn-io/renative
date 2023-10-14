@@ -2,7 +2,6 @@ import { provision } from 'ios-mobileprovision-finder';
 import path from 'path';
 import {
     logError,
-    RenativeConfigPlatform,
     inquirerPrompt,
     getAppFolder,
     getAppId,
@@ -21,7 +20,7 @@ import {
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
-import { Context } from './types';
+import { Context, TemplateXcode } from './types';
 
 export const parseXcodeProject = async (c: Context) => {
     logTask('parseXcodeProject');
@@ -189,7 +188,9 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
                 xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
             }
 
-            const xcodeprojObj1 = getConfigProp<RenativeConfigPlatform['xcodeproj']>(c, c.platform, 'xcodeproj');
+            const templateXcode = getConfigProp<TemplateXcode>(c, c.platform, 'templateXcode');
+
+            const xcodeprojObj1 = templateXcode.project_pbxproj;
 
             if (xcodeprojObj1?.sourceFiles) {
                 xcodeprojObj1.sourceFiles.forEach((v) => {
@@ -208,7 +209,9 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
 
             // PLUGINS
             parsePlugins(c, platform, (plugin, pluginPlat) => {
-                const xcodeprojObj = getFlavouredProp<RenativeConfigPlatform['xcodeproj']>(c, pluginPlat, 'xcodeproj');
+                const templateXcode = getFlavouredProp<TemplateXcode>(c, pluginPlat, 'templateXcode');
+
+                const xcodeprojObj = templateXcode?.project_pbxproj;
                 if (xcodeprojObj) {
                     if (xcodeprojObj.resourceFiles) {
                         xcodeprojObj.resourceFiles.forEach((v) => {

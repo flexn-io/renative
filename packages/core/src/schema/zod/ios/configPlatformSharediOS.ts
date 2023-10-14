@@ -5,6 +5,8 @@ const Podfile = z
         injectLines: z.optional(z.array(z.string())),
         post_install: z.optional(z.array(z.string())),
         sources: z.optional(z.array(z.string())),
+        podDependencies: z.optional(z.array(z.string())),
+        staticPods: z.optional(z.array(z.string())),
     })
     .describe('Allows to manipulate Podfile');
 
@@ -34,13 +36,7 @@ const AppDelegateMethod = z.union([
     }),
 ]);
 
-export const PlatformSharediOS = z.object({
-    Podfile: z.optional(Podfile),
-    staticPods: z.optional(z.array(z.string())),
-
-    podNames: z.optional(z.array(z.string())),
-    podDependencies: z.optional(z.array(z.string())),
-    xcodeproj: z.optional(XcodeProj),
+const AppDelegateMm = z.object({
     appDelegateMethods: z.optional(
         z.object({
             application: z.object({
@@ -62,55 +58,23 @@ export const PlatformSharediOS = z.object({
             }),
         })
     ),
-    // plist: {
-    //     additionalProperties: true,
-    //     type: 'object',
-    // },
-    // appDelegateApplicationMethods: {
-    //     type: 'object',
-    //     properties: {
-    //         didFinishLaunchingWithOptions: {
-    //             type: 'array',
-    //         },
-    //         open: {
-    //             type: 'array',
-    //         },
-    //         supportedInterfaceOrientationsFor: {
-    //             type: 'array',
-    //         },
-    //         didReceiveRemoteNotification: {
-    //             type: 'array',
-    //         },
-    //         didFailToRegisterForRemoteNotificationsWithError: {
-    //             type: 'array',
-    //         },
-    //         didReceive: {
-    //             type: 'array',
-    //         },
-    //         didRegister: {
-    //             type: 'array',
-    //         },
-    //         didRegisterForRemoteNotificationsWithDeviceToken: {
-    //             type: 'array',
-    //         },
-    //         didConnectCarInterfaceController: {
-    //             type: 'array',
-    //         },
-    //         didDisconnectCarInterfaceController: {
-    //             type: 'array',
-    //         },
-    //     },
-    // },
-    // appDelegateMethods: {
-    //     additionalProperties: true,
-    //     type: 'object',
-    // },
-    // appDelegateImports: {
-    //     type: 'array',
-    // },
-    // appDelegateExtensions: {
-    //     type: 'array',
-    // },
+    appDelegateImports: z.optional(z.array(z.string())),
+    appDelegateExtensions: z.optional(z.array(z.string())),
+});
+
+const InfoPlist = z.object({});
+
+export const TemplateXcodeShared = z
+    .object({
+        Podfile: z.optional(Podfile),
+        project_pbxproj: z.optional(XcodeProj),
+        AppDelegate_mm: z.optional(AppDelegateMm),
+        Info_plist: z.optional(InfoPlist),
+    })
+    .describe('Allows more advanced modifications to Xcode based project template');
+
+export const PlatformSharediOS = z.object({
+    templateXcode: z.optional(TemplateXcodeShared),
 });
 
 export type _AppDelegateMethodType = z.infer<typeof AppDelegateMethod>;

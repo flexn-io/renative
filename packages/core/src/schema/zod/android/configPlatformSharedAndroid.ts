@@ -63,25 +63,27 @@ Injects / Overrides values in AndroidManifest.xml file of generated android base
 
 // });
 
-export const TemplateAndroidShared = z.object({
-    gradle_properties: z.optional(GradleProperties),
-    build_gradle: z.optional(BuildGradle),
-    app_build_gradle: z.optional(AppBuildGradle),
-    AndroidManifest_xml: z.optional(AndroidManifest),
-    strings_xml: z.optional(
-        z.object({
-            children: z.optional(
-                z.array(
-                    z.object({
-                        tag: z.string(),
-                        name: z.string(),
-                        child_value: z.string(),
-                    })
-                )
-            ),
-        })
-    ),
-});
+export const TemplateAndroidShared = z
+    .object({
+        gradle_properties: z.optional(GradleProperties),
+        build_gradle: z.optional(BuildGradle),
+        app_build_gradle: z.optional(AppBuildGradle),
+        AndroidManifest_xml: z.optional(AndroidManifest),
+        strings_xml: z.optional(
+            z.object({
+                children: z.optional(
+                    z.array(
+                        z.object({
+                            tag: z.string(),
+                            name: z.string(),
+                            child_value: z.string(),
+                        })
+                    )
+                ),
+            })
+        ),
+    })
+    .describe('Allows more advanced modifications to Android based project template');
 
 export const PlatformSharedAndroid = z.object({
     templateAndroid: z.optional(TemplateAndroidShared),

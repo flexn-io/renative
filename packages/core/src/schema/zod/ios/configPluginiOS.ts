@@ -13,5 +13,10 @@ export const PluginiOS = PluginShared.merge(PlatformSharediOS).merge(
         git: z.optional(Git),
         commit: z.optional(Commit),
         version: z.optional(Version),
+        podNames: z.optional(z.array(z.string())),
+        podName: z.optional(z.string()),
+        staticFrameworks: z.optional(z.array(z.string())),
     })
 );
+
+export type _PluginiOSType = z.infer<typeof PluginiOS>;
