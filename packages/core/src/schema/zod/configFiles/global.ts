@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { DefaultTargets } from './shared/configShared';
+import { DefaultTargets } from '../shared';
 
 export const SDKs = z.record(z.string(), z.string()).describe('Define your sdk configurations');
 

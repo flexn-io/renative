@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { Ext } from './shared/configShared';
-import { Plugin } from './configPlugins';
+import { Ext } from '../shared';
+import { Plugin } from '../plugins';
 
 export const PluginTemplates = z
     .record(z.string(), Plugin)

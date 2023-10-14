@@ -1,3 +1,3 @@
-export { RootAppSchema } from './configRootApp';
-export { RootProjectSchema } from './configRootProject';
+export { RootAppSchema } from './configFiles/appConfig';
+export { RootProjectSchema } from './configFiles/project';
 export * from './validators';

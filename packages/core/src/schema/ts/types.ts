@@ -1,9 +1,9 @@
-import type { _PluginPlatformMergedType } from '../zod/configPlugins';
-import type { _ConfigRootEngineType } from '../zod/configRootEngine';
-import type { _RootProjectLocalSchemaPartialType } from '../zod/configRootProjectLocal';
-import type { _AppDelegateMethodType } from '../zod/ios/configPlatformSharediOS';
-import type { _PluginiOSType } from '../zod/ios/configPluginiOS';
-import type { _PlatformsKeysType } from '../zod/shared/configShared';
+import type { _PluginPlatformMergedType } from '../zod/plugins';
+import type { _ConfigRootEngineType } from '../zod/configFiles/engine';
+import type { _RootProjectLocalSchemaPartialType } from '../zod/configFiles/local';
+import type { _AppDelegateMethodType } from '../zod/platforms/iosBase';
+import type { _PluginiOSType } from '../zod/plugins/ios';
+import type { _PlatformsKeysType } from '../zod/shared';
 import type { ConfigRootMerged } from './configRootMerged';
 
 export type RenativeConfigFile = ConfigRootMerged;

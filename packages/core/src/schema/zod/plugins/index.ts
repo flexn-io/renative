@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { PluginAndroid } from './android/configPluginAndroid';
-import { PluginiOS } from './ios/configPluginiOS';
-import { PluginShared } from './shared/configPluginShared';
+import { PluginAndroid } from './android';
+import { PluginiOS } from './ios';
+import { PluginShared } from './base';
 
 // DEPRECATED?
 const Enabled = z.boolean().default(true).describe('Marks plugin enabled or disabled');

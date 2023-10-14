@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { PluginShared } from '../shared/configPluginShared';
-import { PlatformSharedAndroid } from './configPlatformSharedAndroid';
+import { PluginShared } from './base';
+import { PlatformSharedAndroid } from '../platforms/androidBase';
 
 export const PluginAndroid = PluginShared.merge(PlatformSharedAndroid).merge(
     z.object({

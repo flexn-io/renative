@@ -1,11 +1,11 @@
 import type { NpmPackageFile } from '../../configs/types';
-import type { _PlatformMergedType } from '../zod/configPlatforms';
-import type { _PluginType } from '../zod/configPlugins';
-import type { _RootAppSchemaPartialType } from '../zod/configRootApp';
-import type { _RootGlobalSchemaType } from '../zod/configRootGlobal';
-import type { _RootProjectSchemaPartialType } from '../zod/configRootProject';
-import type { _RootProjectLocalSchemaPartialType } from '../zod/configRootProjectLocal';
-import type { _RootTemplatesSchemaType } from '../zod/configRootTemplates';
+import type { _PlatformMergedType } from '../zod/platforms';
+import type { _PluginType } from '../zod/plugins';
+import type { _RootAppSchemaPartialType } from '../zod/configFiles/appConfig';
+import type { _RootGlobalSchemaType } from '../zod/configFiles/global';
+import type { _RootProjectSchemaPartialType } from '../zod/configFiles/project';
+import type { _RootProjectLocalSchemaPartialType } from '../zod/configFiles/local';
+import type { _RootTemplatesSchemaType } from '../zod/configFiles/pluginTemplates';
 // import type { RenativeConfigFile } from './types';
 
 // NOTE: Why am I bothered with all this nonsense instead of just exporting root schema types?

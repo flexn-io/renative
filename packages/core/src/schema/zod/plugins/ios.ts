@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { PluginShared } from '../shared/configPluginShared';
-import { PlatformSharediOS } from './configPlatformSharediOS';
+import { PluginShared } from './base';
+import { PlatformSharediOS } from '../platforms/iosBase';
 
 const Git = z.string().describe('Alternative git url for pod instead of version');
 

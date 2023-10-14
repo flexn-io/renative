@@ -1,7 +1,6 @@
 import { z } from 'zod';
-import { BundleId, Ext, HexColor, Runtime } from './shared/configShared';
-import { PlatformShared } from './shared/configPlatformShared';
-import { BuildSchemeShared } from './configBuildSchemes';
+import { BuildSchemeBase, BundleId, Ext, HexColor, Runtime } from '../shared';
+import { PlatformShared } from '../platforms/base';
 
 // DEPRECATED?
 export const SplashScreen = z.boolean().describe('Enable or disable splash screen');
@@ -51,7 +50,7 @@ const IncludedFonts = z
         'Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all'
     );
 
-const CommonBuildSchemes = z.record(z.string(), BuildSchemeShared.merge(PlatformShared));
+const CommonBuildSchemes = z.record(z.string(), BuildSchemeBase.merge(PlatformShared));
 
 const BackgroundColor = HexColor.describe('Defines root view backgroundColor for all platforms in HEX format');
 

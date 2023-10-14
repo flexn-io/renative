@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { DefaultTargets } from './shared/configShared';
+import { DefaultTargets } from '../shared';
 
 const WorkspaceAppConfigsDir = z.string().describe('Defines app configs dir outside of current project');
 

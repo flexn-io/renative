@@ -1,7 +1,7 @@
-import type { _RootAppSchemaType } from './configRootApp';
-import { _ConfigRootEngineType } from './configRootEngine';
-import { _ConfigRootPlugin } from './configRootPlugin';
-import type { _RootProjectSchemaType } from './configRootProject';
+import type { _RootAppSchemaType } from './configFiles/appConfig';
+import { _ConfigRootEngineType } from './configFiles/engine';
+import { _ConfigRootPlugin } from './configFiles/plugin';
+import type { _RootProjectSchemaType } from './configFiles/project';
 // import { _ConfigRootTemplates } from './configRootTemplates';
 
 export type ConfigRootProject = _RootProjectSchemaType;

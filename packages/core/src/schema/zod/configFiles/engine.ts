@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Ext, PlatformsKeys } from './shared/configShared';
+import { Ext, PlatformsKeys } from '../shared';
 
 // export type RenativeEngineConfig = {
 //     id: string;

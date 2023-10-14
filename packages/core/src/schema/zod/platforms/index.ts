@@ -1,13 +1,27 @@
 import { z } from 'zod';
-import { PlatformShared } from './shared/configPlatformShared';
-import { PlatformAndroid } from './android/configPlatformAndroid';
-import { PlatformiOS } from './ios/configPlatformiOS';
-import { PlatformWeb } from './web/configPlatformWeb';
-import { PlatformTizen } from './tizen/configPlatformTizen';
-import { BuildSchemes } from './configBuildSchemes';
-import { PlatformElectron } from './electron/configPlatformElectron';
-import { PlatformWindows } from './windows/configPlatformWindows';
-import { PlatformWebpack } from './webpack/configPlatformWebpack';
+import { PlatformShared } from './base';
+import { PlatformAndroid } from './android';
+import { PlatformiOS } from './ios';
+import { PlatformWeb } from '../web/configPlatformWeb';
+import { PlatformTizen } from '../tizen/configPlatformTizen';
+import { PlatformElectron } from './electron';
+import { PlatformWindows } from '../windows/configPlatformWindows';
+import { PlatformWebpack } from '../webpack/configPlatformWebpack';
+import { BuildSchemeBase } from '../shared';
+
+const BuildScheme = BuildSchemeBase.merge(PlatformShared)
+    .merge(PlatformiOS)
+    .merge(PlatformWeb)
+    .merge(PlatformTizen)
+    .merge(PlatformWebpack)
+    .merge(PlatformElectron)
+    .merge(PlatformWindows);
+
+// LEVEL 2
+
+export const BuildSchemes = z
+    .record(z.string(), BuildScheme)
+    .describe('Allows to customize platforms configurations based on chosen build scheme `-s`');
 
 const PlatformMerged = PlatformShared.merge(PlatformiOS)
     .merge(PlatformAndroid)

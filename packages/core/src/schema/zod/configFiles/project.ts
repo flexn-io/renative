@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { Common } from './configCommon';
-import { Ext, ExtendTemplate, PlatformsKeys, Runtime } from './shared/configShared';
-import { Platforms } from './configPlatforms';
-import { Plugins } from './configPlugins';
+import { Common } from '../common';
+import { Ext, ExtendTemplate, PlatformsKeys, Runtime } from '../shared';
+import { Platforms } from '../platforms';
+import { Plugins } from '../plugins';
 
 const Schemes = z
     .record(PlatformsKeys, z.string())

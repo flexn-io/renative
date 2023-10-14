@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { Common } from './configCommon';
-import { Ext, ExtendTemplate } from './shared/configShared';
-import { Platforms } from './configPlatforms';
-import { Plugins } from './configPlugins';
+import { Common } from '../common';
+import { Ext, ExtendTemplate } from '../shared';
+import { Platforms } from '../platforms';
+import { Plugins } from '../plugins';
 
 export const Extend = z.string().describe('extend another appConfig by id');
 

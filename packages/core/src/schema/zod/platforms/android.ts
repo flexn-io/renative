@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { PlatformSharedAndroid, TemplateAndroidShared } from './configPlatformSharedAndroid';
+import { PlatformSharedAndroid, TemplateAndroidShared } from './androidBase';
 
 const EnableAndroidX = z.boolean().default(true).describe('Enables new android X architecture');
 

@@ -30,3 +30,14 @@ export const DefaultTargets = z
     .describe('Define targets to be used when -t is not set on any project run');
 
 export const BundleId = z.string().describe('Bundle ID of application. ie: com.example.myapp');
+
+export const BuildSchemeBase = z.object({
+    enabled: z.optional(z.boolean().describe('Defines whether build scheme shows up in options to run')),
+    description: z.optional(
+        z
+            .string()
+            .describe(
+                'Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`'
+            )
+    ),
+});
