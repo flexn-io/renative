@@ -64,7 +64,7 @@ const AppDelegateMm = z.object({
 
 const InfoPlist = z.object({});
 
-export const TemplateXcodeShared = z
+export const TemplateXcodeBase = z
     .object({
         Podfile: z.optional(Podfile),
         project_pbxproj: z.optional(XcodeProj),
@@ -72,9 +72,5 @@ export const TemplateXcodeShared = z
         Info_plist: z.optional(InfoPlist),
     })
     .describe('Allows more advanced modifications to Xcode based project template');
-
-// export const PlatformSharediOS = z.object({
-//     templateXcode: z.optional(TemplateXcodeShared),
-// });
 
 export type _AppDelegateMethodType = z.infer<typeof AppDelegateMethod>;

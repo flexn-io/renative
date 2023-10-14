@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TemplateAndroidShared } from './templateAndroid';
+import { TemplateAndroidBase } from './templateAndroidBase';
 
 const EnableAndroidX = z.boolean().default(true).describe('Enables new android X architecture');
 
@@ -28,7 +28,7 @@ export const PlatformAndroid = z.object({
             )
     ),
     templateAndroid: z.optional(
-        TemplateAndroidShared.merge(
+        TemplateAndroidBase.merge(
             z.object({
                 settings_gradle: z.object({}),
                 gradle_wrapper_properties: z.object({}),

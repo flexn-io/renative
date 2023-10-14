@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TemplateXcodeShared } from './templateXcode';
+import { TemplateXcodeBase } from './templateXcodeBase';
 
 const IgnoreWarnings = z.boolean().describe('Injects `inhibit_all_warnings` into Podfile');
 
@@ -40,7 +40,7 @@ export const PlatformiOS = z.object({
     teamID: z.optional(TeamID),
     excludedArchs: z.optional(ExcludedArchs),
     urlScheme: z.optional(URLScheme),
-    templateXcode: z.optional(TemplateXcodeShared.merge(z.object({}))),
+    templateXcode: z.optional(TemplateXcodeBase.merge(z.object({}))),
     teamIdentifier: z.optional(z.string().describe('Apple developer team ID')),
 
     // scheme: {

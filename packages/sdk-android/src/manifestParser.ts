@@ -15,8 +15,9 @@ import {
     writeCleanFile,
     parsePlugins,
     RenativeConfigFile,
+    ManifestFeature,
 } from '@rnv/core';
-import { Context } from './types';
+import { Context, TemplateAndroid } from './types';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
@@ -125,12 +126,12 @@ const _mergeNodeChildren = (node: any, nodeChildrenExt: Array<ManifestFeature> =
     });
 };
 
-type ManifestFeature = {
-    tag: string;
-    'android:name': string;
-    'android:required': boolean;
-    children?: Array<ManifestFeature>;
-};
+// type ManifestFeature = {
+//     tag: string;
+//     'android:name': string;
+//     'android:required': boolean;
+//     children?: Array<ManifestFeature>;
+// };
 
 // type ManufestNode = {
 //     children:
@@ -175,7 +176,11 @@ export const parseAndroidManifestSync = (c: Context) => {
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins(c, platform, (_plugin, pluginPlat) => {
-            const androidManifestPlugin = getFlavouredProp(c, pluginPlat, 'AndroidManifest');
+            const androidManifestPlugin = getFlavouredProp<TemplateAndroid>(
+                c,
+                pluginPlat,
+                'templateAndroid'
+            )?.AndroidManifest_xml;
             if (androidManifestPlugin) {
                 _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
                 if (androidManifestPlugin.children) {

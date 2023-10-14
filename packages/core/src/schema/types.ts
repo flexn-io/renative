@@ -1,7 +1,7 @@
 import type { _PluginPlatformMergedType } from './plugins';
 import type { _ConfigRootEngineType } from './configFiles/engine';
 import type { _RootProjectLocalSchemaPartialType } from './configFiles/local';
-import type { _AppDelegateMethodType } from './platforms/templateXcode';
+import type { _AppDelegateMethodType } from './platforms/templateXcodeBase';
 import type { _PluginiOSType } from './plugins/ios';
 import type { _PlatformsKeysType } from './shared';
 import type { NpmPackageFile } from '../configs/types';
@@ -13,6 +13,7 @@ import type { _RootProjectSchemaPartialType } from './configFiles/project';
 import type { _RootTemplatesSchemaType } from './configFiles/pluginTemplates';
 import type { _ConfigRootPlugin } from './configFiles/plugin';
 import type { _RootProjectSchemaType } from './configFiles/project';
+import { _ManifestChildWithChildrenType } from './platforms/templateAndroidBase';
 // import type { RenativeConfigFile } from './types';
 
 // NOTE: Why am I bothered with all this nonsense instead of just exporting root schema types?
@@ -82,3 +83,5 @@ export type RenativeEngineConfig = _ConfigRootEngineType;
 export type RenativeConfigLocal = _RootProjectLocalSchemaPartialType;
 
 export type RenativeConfigAppDelegateMethod = _AppDelegateMethodType;
+
+export type ManifestFeature = _ManifestChildWithChildrenType;
