@@ -229,7 +229,7 @@ export const RootProjectSchemaPartial = z.object({
     paths: z.optional(Paths),
     permissions: z.optional(Permissions),
     engines: z.optional(Engines),
-    ext: z.optional(Ext),
+    custom: z.optional(Ext),
     enableHookRebuild: z.optional(EnableHookRebuild),
     monoRoot: z.optional(MonoRoot),
     enableAnalytics: z.optional(EnableAnalytics),

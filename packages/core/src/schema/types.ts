@@ -5,7 +5,7 @@ import type { _AppDelegateMethodType } from './platforms/templateXcodeBase';
 import type { _PluginiOSType } from './plugins/ios';
 import type { _PlatformsKeysType } from './shared';
 import type { NpmPackageFile } from '../configs/types';
-import type { _PlatformMergedType } from './platforms';
+import type { _MergedPlatformObjectType, _PlatformMergedType } from './platforms';
 import type { _PluginType } from './plugins';
 import type { _RootAppSchemaPartialType, _RootAppSchemaType } from './configFiles/appConfig';
 import type { _RootGlobalSchemaType } from './configFiles/global';
@@ -13,8 +13,8 @@ import type { _RootProjectSchemaPartialType } from './configFiles/project';
 import type { _RootTemplatesSchemaType } from './configFiles/pluginTemplates';
 import type { _ConfigRootPlugin } from './configFiles/plugin';
 import type { _RootProjectSchemaType } from './configFiles/project';
-import { _ManifestChildWithChildrenType } from './platforms/templateAndroidBase';
-import { _CommonBuildSchemesSchemaType, _CommonSchemaPartialType } from './common';
+import type { _ManifestChildWithChildrenType } from './platforms/templateAndroidBase';
+import type { _CommonBuildSchemesSchemaType, _CommonSchemaPartialType } from './common';
 // import type { RenativeConfigFile } from './types';
 
 // NOTE: Why am I bothered with all this nonsense instead of just exporting root schema types?
@@ -107,3 +107,5 @@ export type RenativeConfigLocal = _RootProjectLocalSchemaPartialType;
 export type RenativeConfigAppDelegateMethod = _AppDelegateMethodType;
 
 export type ManifestFeature = _ManifestChildWithChildrenType;
+
+export type ConfigProp = _MergedPlatformObjectType;

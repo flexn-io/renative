@@ -9,7 +9,7 @@ import { PlatformWindows } from './windows';
 import { PlatformWebpack } from './webpack';
 import { BuildSchemeBase } from '../shared';
 
-const PlatformBuildScheme = BuildSchemeBase.merge(PlatformBase)
+const MergedPlatformObject = BuildSchemeBase.merge(PlatformBase)
     .merge(PlatformiOS)
     .merge(PlatformWeb)
     .merge(PlatformTizen)
@@ -17,10 +17,12 @@ const PlatformBuildScheme = BuildSchemeBase.merge(PlatformBase)
     .merge(PlatformElectron)
     .merge(PlatformWindows);
 
+export type _MergedPlatformObjectType = z.infer<typeof MergedPlatformObject>;
+
 // LEVEL 2
 
 export const PlatformBuildSchemes = z
-    .record(z.string(), PlatformBuildScheme)
+    .record(z.string(), MergedPlatformObject)
     .describe('Allows to customize platforms configurations based on chosen build scheme `-s`');
 
 const PlatformMerged = PlatformBase.merge(PlatformiOS)

@@ -87,7 +87,7 @@ export const RootAppSchemaPartial = z.object({
     versionFormat: z.optional(VersionFormat),
     versionCodeFormat: z.optional(VersionCodeFormat),
 
-    ext: z.optional(Ext),
+    custom: z.optional(Ext),
     hidden: z.optional(Hidden),
     extendsTemplate: z.optional(ExtendTemplate),
     extend: z.optional(Extend),

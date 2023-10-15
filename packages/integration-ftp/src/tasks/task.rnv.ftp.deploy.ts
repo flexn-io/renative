@@ -59,7 +59,7 @@ const _deployToFtp = (c: RnvContext, platform: RnvPlatform) =>
             .then(() => {
                 if (platform) {
                     dotEnv.config();
-                    const ftp = c.buildConfig.platforms?.[platform].ext?.deploy?.[DEPLOY_TARGET_FTP];
+                    const ftp = c.buildConfig.platforms?.[platform].custom?.deploy?.[DEPLOY_TARGET_FTP];
                     const config = {
                         user: process.env.RNV_DEPLOY_WEB_FTP_USER,
                         password: process.env.RNV_DEPLOY_WEB_FTP_PASSWORD, // optional, prompted if none given
@@ -127,7 +127,7 @@ const _createDeployConfig = async (c: RnvContext, platform: string) => {
 
     if (!platform) return;
 
-    const deploy = c.buildConfig.platforms?.[platform].ext?.deploy || {};
+    const deploy = c.buildConfig.platforms?.[platform].custom?.deploy || {};
 
     deploy[DEPLOY_TARGET_FTP] = {};
     deploy[DEPLOY_TARGET_FTP].type = DEPLOY_TARGET_FTP;
@@ -188,7 +188,7 @@ const taskRnvFtpDeploy = (c: RnvContext) => {
     logTask('taskRnvFtpDeploy');
     if (!c.platform) return;
     const targetConfig = c.buildConfig.platforms?.[c.platform];
-    if (targetConfig?.ext?.deploy?.[DEPLOY_TARGET_FTP]?.type) {
+    if (targetConfig?.custom?.deploy?.[DEPLOY_TARGET_FTP]?.type) {
         return _deployToFtp(c, c.platform);
     }
     return _createDeployConfig(c, c.platform).then(() => _deployToFtp(c, c.platform));

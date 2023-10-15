@@ -52,7 +52,7 @@ const Deprecated = z
 
 const DisablePluginTemplateOverrides = z.string().describe('Disables plugin overrides for selected plugin');
 
-export const Plugin = z.object({
+const PluginPartial = z.object({
     //DEPRECATED
     enabled: z.optional(Enabled),
     disabled: z.optional(Disabled),
@@ -72,7 +72,9 @@ export const Plugin = z.object({
     webpackConfig: z.optional(Webpack), //Should this be at root plugin???
     'engine-rn-next': z.optional(Webpack), //Should this be at root plugin???
     disablePluginTemplateOverrides: z.optional(DisablePluginTemplateOverrides),
-    // PLATFORMS
+});
+
+export const Plugin = PluginPartial.extend({
     android: z.optional(PluginAndroid),
     androidtv: z.optional(PluginAndroid),
     androidwear: z.optional(PluginAndroid),
@@ -96,6 +98,8 @@ export const Plugin = z.object({
 export type _PluginPlatformMergedType = z.infer<typeof PluginAndroid> & z.infer<typeof PluginiOS>;
 
 export type _PluginType = z.infer<typeof Plugin>;
+
+export type _PluginPartialType = z.infer<typeof PluginPartial>;
 
 export const Plugins = z
     .record(z.string(), z.union([Plugin, z.string()]))

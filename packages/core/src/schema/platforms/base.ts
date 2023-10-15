@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { BundleId, Ext, PlatformsKeys, Runtime } from '../shared';
+import { PlatformsKeys } from '../shared';
+import { CommonSchemaPartial } from '../common';
 
 export const PlatformEngine = z
     .string()
@@ -22,22 +23,16 @@ export const EnableSourceMaps = z
 
 export const BundleIsDev = z.boolean().describe('If set to `true` debug build will be generated');
 
-export const License = z.string().describe('Injects license information into app');
-
 export const AssetFolderPlatform = z
     .string()
     .describe(
         'Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets'
     );
 
-export const PlatformBase = z.object({
+export const PlatformBase = CommonSchemaPartial.extend({
     extendPlatform: z.optional(PlatformsKeys),
-    id: z.optional(BundleId),
     assetFolderPlatform: z.optional(AssetFolderPlatform),
-    runtime: z.optional(Runtime),
     engine: z.optional(PlatformEngine),
-    license: z.optional(License),
-    extra: z.optional(Ext),
     //ReactNative specific?
     entryFile: z.optional(PlatformEntryFile),
     bundleAssets: z.optional(BundleAssets),

@@ -63,7 +63,7 @@ const Npm = z.object({});
 const Platforms = z.record(PlatformsKeys, EnginePlatform);
 
 export const RootEngineSchema = z.object({
-    ext: z.optional(Ext),
+    custom: z.optional(Ext),
     id: Id,
     engineExtension: EngineExtension,
     overview: Overview,

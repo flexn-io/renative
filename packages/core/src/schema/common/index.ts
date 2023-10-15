@@ -68,6 +68,8 @@ const AssetSources = z
         'Array of paths to alternative external assets. this will take priority over ./appConfigs/base/assets folder on your local project. You can use resolve function here example: `{{resolvePackage(@flexn/template-starter)}}/appConfigs/base/assets`'
     );
 
+export const License = z.string().describe('Injects license information into app');
+
 //LEVEl 1
 
 export const CommonSchemaPartial = z.object({
@@ -77,6 +79,7 @@ export const CommonSchemaPartial = z.object({
     title: z.optional(Title),
     description: z.optional(Description),
     author: z.optional(Author),
+    license: z.optional(License),
     includedFonts: z.optional(IncludedFonts),
     backgroundColor: z.optional(BackgroundColor),
     splashScreen: z.optional(SplashScreen),
@@ -85,7 +88,7 @@ export const CommonSchemaPartial = z.object({
     includedPlugins: z.optional(IncludedPlugins),
     excludedPlugins: z.optional(ExcludedPlugins),
     runtime: z.optional(Runtime),
-    ext: z.optional(Ext),
+    custom: z.optional(Ext),
 });
 
 export type _CommonSchemaPartialType = z.infer<typeof CommonSchemaPartial>;
