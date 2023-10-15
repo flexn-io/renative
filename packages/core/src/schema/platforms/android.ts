@@ -30,26 +30,28 @@ export const PlatformAndroid = z.object({
     templateAndroid: z.optional(
         TemplateAndroidBase.merge(
             z.object({
-                settings_gradle: z.object({}),
-                gradle_wrapper_properties: z.object({}),
-                MainActivity_java: z.object({}),
-                MainApplication_java: z
-                    .object({
-                        onCreate: z.object({
-                            //         onCreate: {
-                            //             type: 'string',
-                            //             description: 'Overrides super.onCreate method handler of MainActivity.kt',
-                            //             default: 'super.onCreate(savedInstanceState)',
-                            //             examples: ['super.onCreate(null)', 'super.onCreate(savedInstanceState)'],
-                            //         },
-                        }),
-                    })
-                    .describe('Allows you to configure behaviour of MainActivity'),
-                SplashActivity_java: z.object({}),
-                styles_xml: z.object({}),
-                colors_xml: z.object({}),
-                strings_xml: z.object({}),
-                proguard_rules_pro: z.object({}),
+                settings_gradle: z.optional(z.object({})),
+                gradle_wrapper_properties: z.optional(z.object({})),
+                MainActivity_java: z.optional(z.object({})),
+                MainApplication_java: z.optional(
+                    z
+                        .object({
+                            onCreate: z.object({
+                                //         onCreate: {
+                                //             type: 'string',
+                                //             description: 'Overrides super.onCreate method handler of MainActivity.kt',
+                                //             default: 'super.onCreate(savedInstanceState)',
+                                //             examples: ['super.onCreate(null)', 'super.onCreate(savedInstanceState)'],
+                                //         },
+                            }),
+                        })
+                        .describe('Allows you to configure behaviour of MainActivity')
+                ),
+                SplashActivity_java: z.optional(z.object({})),
+                styles_xml: z.optional(z.object({})),
+                colors_xml: z.optional(z.object({})),
+                strings_xml: z.optional(z.object({})),
+                proguard_rules_pro: z.optional(z.object({})),
             })
         )
     ),
@@ -58,18 +60,19 @@ export const PlatformAndroid = z.object({
     minifyEnabled: z.optional(z.boolean().describe('Sets minifyEnabled buildType property in app/build.gradle')),
     targetSdkVersion: z.optional(
         z
-            .string()
+            .number()
             .describe(
                 'Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` in build.gradle'
             )
     ),
     compileSdkVersion: z.optional(
         z
-            .string()
+            .number()
             .describe(
                 'Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` in build.gradle'
             )
     ),
+    kotlinVersion: z.optional(z.string().default('1.7.10').describe('Allows you define custom kotlin version')),
     gradleBuildToolsVersion: z.optional(
         z
             .string()
@@ -90,6 +93,7 @@ export const PlatformAndroid = z.object({
     includedFeatures: z.optional(
         z.array(z.string()).describe('Override features definitions in AndroidManifest.xml by inclusion')
     ),
+    buildToolsVersion: z.optional(z.string().default('30.0.0').describe('Override android build tools version')),
     // storeFile: {
     //     type: 'string',
     // },

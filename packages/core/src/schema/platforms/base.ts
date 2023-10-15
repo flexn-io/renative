@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { BundleId, Ext, Runtime } from '../shared';
+import { BundleId, Ext, PlatformsKeys, Runtime } from '../shared';
 
 export const PlatformEngine = z
     .string()
@@ -31,12 +31,13 @@ export const AssetFolderPlatform = z
     );
 
 export const PlatformBase = z.object({
+    extendPlatform: z.optional(PlatformsKeys),
     id: z.optional(BundleId),
     assetFolderPlatform: z.optional(AssetFolderPlatform),
     runtime: z.optional(Runtime),
     engine: z.optional(PlatformEngine),
     license: z.optional(License),
-    ext: z.optional(Ext),
+    extra: z.optional(Ext),
     //ReactNative specific?
     entryFile: z.optional(PlatformEntryFile),
     bundleAssets: z.optional(BundleAssets),
