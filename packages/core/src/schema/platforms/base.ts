@@ -38,4 +38,5 @@ export const PlatformBase = CommonSchemaPartial.extend({
     bundleAssets: z.optional(BundleAssets),
     enableSourceMaps: z.optional(EnableSourceMaps),
     bundleIsDev: z.optional(BundleIsDev),
+    getJsBundleFile: z.string().optional(),
 });

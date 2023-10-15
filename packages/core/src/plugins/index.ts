@@ -357,8 +357,8 @@ export const parsePlugins = (
 ) => {
     logTask('parsePlugins');
     if (c.buildConfig && platform) {
-        const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
-        const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
+        const includedPlugins = getConfigProp(c, platform, 'includedPlugins') || [];
+        const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins') || [];
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
             if (plugins) {

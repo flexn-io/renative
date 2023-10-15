@@ -50,7 +50,7 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
         });
     });
     if (c.buildConfig) {
-        c.runtime.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+        c.runtime.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') || false;
         const { hosted } = c.program;
         c.runtime.hosted = hosted && c.runtime.currentPlatform?.isWebHosted;
 

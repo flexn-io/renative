@@ -55,6 +55,7 @@ export const PlatformiOS = z.object({
         .optional(),
     provisionProfileSpecifier: z.string().optional(),
     provisioningProfiles: z.optional(provisioningProfiles),
+    codeSignIdentities: z.optional(z.record(z.string(), z.string())),
     systemCapabilities: z.optional(SystemCapabilities),
     entitlements: z.record(z.string()).optional(),
     runScheme: z.string().optional(),

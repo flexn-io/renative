@@ -331,7 +331,7 @@ export const buildAndroid = async (c: Context) => {
 
     logSuccess(
         `Your APK is located in ${chalk().cyan(
-            path.join(appFolder, `app/build/outputs/apk/${signingConfig.toLowerCase()}`)
+            path.join(appFolder, `app/build/outputs/apk/${signingConfig?.toLowerCase()}`)
         )} .`
     );
     return true;

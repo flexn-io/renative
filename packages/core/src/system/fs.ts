@@ -6,11 +6,12 @@ import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import ncp from 'ncp';
 import { chalk, logDebug, logError, logWarning } from '../logger';
-import { RnvContext } from '../context/types';
+import type { RnvContext } from '../context/types';
 import type { FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from './types';
 import { getApi } from '../api/provider';
 import { getContext } from '../context/provider';
 import { matchRegEx } from './regEx';
+import type { ConfigProp } from '../schema/types';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {
@@ -131,8 +132,10 @@ export const writeCleanFile = (
             let pFileClean = pFile;
             if (overrides?.forEach) {
                 overrides.forEach((v) => {
-                    const regEx = new RegExp(v.pattern, 'g');
-                    pFileClean = pFileClean.replace(regEx, v.override);
+                    if (v.override) {
+                        const regEx = new RegExp(v.pattern, 'g');
+                        pFileClean = pFileClean.replace(regEx, v.override);
+                    }
                 });
             }
             if (c) {
@@ -140,7 +143,7 @@ export const writeCleanFile = (
                 const occurences = pFileClean.match(regEx);
                 if (occurences) {
                     occurences.forEach((occ) => {
-                        const val = occ.replace('{{configProps.', '').replace('}}', '');
+                        const val = occ.replace('{{configProps.', '').replace('}}', '') as keyof ConfigProp;
                         const configVal = api.getConfigProp(c, c.platform, val, '');
                         pFileClean = pFileClean.replace(occ, configVal);
                     });
@@ -163,8 +166,10 @@ export const readCleanFile = (source: string, overrides?: OverridesOptions) => {
     let pFileClean = pFile;
     if (overrides?.forEach) {
         overrides.forEach((v) => {
-            const regEx = new RegExp(v.pattern, 'g');
-            pFileClean = pFileClean.replace(regEx, v.override);
+            if (v.override) {
+                const regEx = new RegExp(v.pattern, 'g');
+                pFileClean = pFileClean.replace(regEx, v.override);
+            }
         });
     }
 

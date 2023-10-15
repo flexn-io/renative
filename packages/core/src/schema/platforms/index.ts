@@ -8,36 +8,29 @@ import { PlatformElectron } from './electron';
 import { PlatformWindows } from './windows';
 import { PlatformWebpack } from './webpack';
 import { BuildSchemeBase } from '../shared';
+import { PlatformNextJs } from './nextjs';
 
-const MergedPlatformObject = BuildSchemeBase.merge(PlatformBase)
+const MergedPlatformPlainObject = BuildSchemeBase.merge(PlatformBase)
     .merge(PlatformiOS)
-    .merge(PlatformWeb)
-    .merge(PlatformTizen)
-    .merge(PlatformWebpack)
-    .merge(PlatformElectron)
-    .merge(PlatformWindows);
-
-export type _MergedPlatformObjectType = z.infer<typeof MergedPlatformObject>;
-
-// LEVEL 2
-
-export const PlatformBuildSchemes = z
-    .record(z.string(), MergedPlatformObject)
-    .describe('Allows to customize platforms configurations based on chosen build scheme `-s`');
-
-const PlatformMerged = PlatformBase.merge(PlatformiOS)
     .merge(PlatformAndroid)
     .merge(PlatformWeb)
     .merge(PlatformTizen)
     .merge(PlatformWebpack)
     .merge(PlatformElectron)
     .merge(PlatformWindows)
-    .merge(
-        z.object({
-            buildSchemes: z.optional(PlatformBuildSchemes),
-        })
-    );
+    .merge(PlatformNextJs);
 
+export type _MergedPlatformObjectType = z.infer<typeof MergedPlatformPlainObject>;
+
+// LEVEL 2
+
+export const PlatformBuildSchemes = z
+    .record(z.string(), MergedPlatformPlainObject)
+    .describe('Allows to customize platforms configurations based on chosen build scheme `-s`');
+
+const PlatformMerged = MergedPlatformPlainObject.extend({
+    buildSchemes: z.optional(PlatformBuildSchemes),
+});
 export type _PlatformMergedType = z.infer<typeof PlatformMerged>;
 
 // const generatePlatform = <T extends ZodObject>(schema: T) => {

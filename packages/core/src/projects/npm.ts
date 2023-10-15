@@ -4,8 +4,6 @@ import { fsExistsSync, invalidatePodsChecksum, removeDirs, writeFileSync } from 
 import { logTask, logWarning, logError, logInfo, logDebug, logSuccess } from '../logger';
 import { ANDROID, ANDROID_TV, FIRE_TV, ANDROID_WEAR } from '../constants';
 import { doResolve } from '../system/resolve';
-
-import { getConfigProp } from '../common';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 
@@ -111,7 +109,7 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
         return true;
     }
 
-    const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
+    const { isMonorepo } = c.buildConfig;
     if (isMonorepo) {
         logSuccess(
             'This project is marked as part of monorepo and it has no custom install tasks. Run your usual monorepo bootstrap procedure and re-run command again.'

@@ -22,7 +22,7 @@ const SupportedPlatforms = z.array(PlatformsKeys).describe('Array list of all su
 
 const PortOffset = z.number().describe('Offset each port default value by increment');
 
-const MonoRoot = z.boolean().describe('Define custom path to monorepo root where starting point is project directory');
+const MonoRoot = z.string().describe('Define custom path to monorepo root where starting point is project directory');
 
 const Env = z.record(z.string(), z.any()).describe('Object containing injected env variables');
 

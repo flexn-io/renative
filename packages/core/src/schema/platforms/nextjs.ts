@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const PlatformNextJs = z.object({
+    pagesDir: z.string().optional(),
     // pagesDir: {
     //     type: 'string',
     //     description: 'Custom pages directory used by nextjs. Use relative paths',

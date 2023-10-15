@@ -108,4 +108,4 @@ export type RenativeConfigAppDelegateMethod = _AppDelegateMethodType;
 
 export type ManifestFeature = _ManifestChildWithChildrenType;
 
-export type ConfigProp = _MergedPlatformObjectType;
+export type ConfigProp = _RootProjectSchemaPartialType & _RootAppSchemaPartialType & _MergedPlatformObjectType;

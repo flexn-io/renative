@@ -1,13 +1,14 @@
 import { z } from 'zod';
 
+const WebpackConfig = z.object({});
+
 export const PlatformWebpack = z.object({
+    webpackConfig: z.optional(WebpackConfig),
+
     // webpackConfig: {
     //     additionalProperties: true,
     //     type: 'object',
     //     properties: {
-    //         devServerHost: {
-    //             type: 'string',
-    //         },
     //         publicUrl: {
     //             type: 'string',
     //         },
@@ -40,8 +41,5 @@ export const PlatformWebpack = z.object({
     //             ],
     //         },
     //     },
-    // },
-    // devServerHost: {
-    //     type: 'string',
     // },
 });

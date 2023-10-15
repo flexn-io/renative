@@ -22,7 +22,6 @@ import {
     writeCleanFile,
     fsWriteFileSync,
     RnvPlatform,
-    RenativeConfigFile,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context } from './types';
@@ -37,7 +36,7 @@ export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
 
         c.payload.pluginConfigiOS.exportOptions = objToPlist(exportOptions);
 
-        if (exportOptions.provisioningProfiles) {
+        if (exportOptions.provisioningProfiles && id) {
             const expProvProfile = exportOptions.provisioningProfiles[id];
             if (!expProvProfile) {
                 logError(

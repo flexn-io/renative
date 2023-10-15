@@ -1,5 +1,6 @@
 // PLATFORM
 import { homedir } from 'os';
+import { ConfigProp } from './schema/types';
 
 export const USER_HOME_DIR = homedir();
 
@@ -181,7 +182,7 @@ export const configSchema: Record<string, any> = {
     },
 };
 
-export const INJECTABLE_CONFIG_PROPS = [
+export const INJECTABLE_CONFIG_PROPS: Array<keyof ConfigProp> = [
     'id',
     'title',
     'entryFile',

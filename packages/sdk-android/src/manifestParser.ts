@@ -14,7 +14,6 @@ import {
     readObjectSync,
     writeCleanFile,
     parsePlugins,
-    RenativeConfigFile,
     ManifestFeature,
 } from '@rnv/core';
 import { Context, TemplateAndroid } from './types';
@@ -137,7 +136,12 @@ const _mergeNodeChildren = (node: any, nodeChildrenExt: Array<ManifestFeature> =
 //     children:
 // }
 
-const _mergeFeatures = (c: Context, baseManifestFile: any, configKey: string, value: boolean) => {
+const _mergeFeatures = (
+    c: Context,
+    baseManifestFile: any,
+    configKey: 'includedFeatures' | 'excludedFeatures',
+    value: boolean
+) => {
     const features = getConfigProp(c, c.platform, configKey);
 
     if (features) {
@@ -164,12 +168,13 @@ export const parseAndroidManifestSync = (c: Context) => {
         const baseManifestFile = readObjectSync(baseManifestFilePath);
         baseManifestFile.package = getAppId(c, platform);
 
-        const objArr = getConfigPropArray(c, c.platform, 'AndroidManifest');
+        const objArr = getConfigPropArray(c, c.platform, 'templateAndroid');
 
         // PARSE all standard renative.*.json files in correct mergeOrder
-        objArr.forEach((manifestObj) => {
+        objArr.forEach((tpl) => {
+            const manifestObj = tpl?.AndroidManifest_xml;
             _mergeNodeParameters(baseManifestFile, manifestObj);
-            if (manifestObj.children) {
+            if (manifestObj?.children) {
                 _mergeNodeChildren(baseManifestFile, manifestObj.children);
             }
         });

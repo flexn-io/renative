@@ -13,14 +13,13 @@ import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
 import { ConfigProp, RenativeConfigBuildScheme, RenativeConfigFile } from './schema/types';
 import { inquirerPrompt } from './api';
-import { GetConfigPropFn } from './api/types';
 import { RnvPlatform } from './types';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
     if (platform === 'web') {
-        timestampBuildFiles = getConfigProp(c, platform, 'timestampBuildFiles', []).map((v) => path.join(pPath, v));
+        timestampBuildFiles = (getConfigProp(c, platform, 'timestampBuildFiles') || []).map((v) => path.join(pPath, v));
     }
     if (timestampBuildFiles?.length) {
         return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
@@ -53,7 +52,7 @@ export const addSystemInjects = (c: RnvContext, injects: OverridesOptions) => {
     }
 };
 
-export const sanitizeColor = (val: string, key: string) => {
+export const sanitizeColor = (val: string | undefined, key: string) => {
     if (!val) {
         logWarning(`You are missing ${chalk().white(key)} in your renative config. will use default #FFFFFF instead`);
         return {
@@ -74,22 +73,11 @@ export const sanitizeColor = (val: string, key: string) => {
 };
 
 export const getDevServerHost = (c: RnvContext) => {
-    let devServerHostOrig = getConfigProp(c, c.platform, 'devServerHost');
-    if (!devServerHostOrig) {
-        devServerHostOrig = getConfigProp(c, c.platform, 'webpack', {}).devServerHost;
-        if (devServerHostOrig) {
-            logWarning('DEPRECATED: webpack.devServerHost. use devServerHost directly instead');
-        }
-    }
-    if (!devServerHostOrig) {
-        if (!devServerHostOrig) {
-            devServerHostOrig = getConfigProp(c, c.platform, 'webpackConfig', {}).devServerHost;
-            if (devServerHostOrig) {
-                logWarning('DEPRECATED: webpackConfig.devServerHost. use devServerHost directly instead');
-            }
-        }
-    }
-    const devServerHostFixed = getValidLocalhost(devServerHostOrig, c.runtime.localhost);
+    const devServerHostOrig = getConfigProp(c, c.platform, 'devServerHost');
+
+    const devServerHostFixed = devServerHostOrig
+        ? getValidLocalhost(devServerHostOrig, c.runtime.localhost)
+        : undefined;
 
     return devServerHostFixed;
 };
@@ -270,7 +258,7 @@ export const getConfigProp = <T extends keyof ConfigProp>(
     platform: RnvPlatform,
     key: T,
     defaultVal?: ConfigProp[T]
-) => {
+): ConfigProp[T] => {
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
         return undefined;
@@ -325,8 +313,8 @@ export const _getConfigProp = <T extends keyof ConfigProp>(
     return result as ConfigProp[T];
 };
 
-export const getConfigPropArray = <T = any>(c: RnvContext, platform: RnvPlatform, key: string) => {
-    const result: Array<T> = [];
+export const getConfigPropArray = <T extends keyof ConfigProp>(c: RnvContext, platform: RnvPlatform, key: T) => {
+    const result: Array<ConfigProp[T]> = [];
     const configArr = [
         c.files.defaultWorkspace.config,
         c.files.rnv.projectTemplates.config,
@@ -426,7 +414,7 @@ export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
         logWarning('You are missing version prop in your config. will default to 0');
         return '0';
     }
-    const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat', '00.00.00');
+    const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat') || '00.00.00';
     const vFormatArr = versionCodeFormat.split('.').map((v: string) => v.length);
     const versionCodeMaxCount = vFormatArr.length;
     const verArr = [];
