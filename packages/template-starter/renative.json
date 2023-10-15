@@ -1,4 +1,5 @@
 {
+    "$schema": "../../.rnv/schema/project.rnv.json",
     "engines": {
         "@rnv/engine-lightning": "source:rnv",
         "@rnv/engine-rn": "source:rnv",
@@ -7,7 +8,6 @@
         "@rnv/engine-rn-tvos": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv"
     },
-    "$schema": "../../.rnv/schema/renative.project.json",
     "isTemplate": true,
     "projectName": "renative",
     "enableHookRebuild": false,

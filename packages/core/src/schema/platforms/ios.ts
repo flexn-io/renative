@@ -32,6 +32,9 @@ const URLScheme = z.string().describe('URL Scheme for the app used for deeplinki
 
 const TeamID = z.string().describe('Apple teamID');
 
+const SystemCapabilities = z.record(z.string(), z.string());
+const provisioningProfiles = z.record(z.string());
+
 export const PlatformiOS = z.object({
     ignoreWarnings: z.optional(IgnoreWarnings),
     ignoreLogs: z.optional(IgnoreLogs),
@@ -42,35 +45,35 @@ export const PlatformiOS = z.object({
     urlScheme: z.optional(URLScheme),
     templateXcode: z.optional(TemplateXcodeBase.merge(z.object({}))),
     teamIdentifier: z.optional(z.string().describe('Apple developer team ID')),
+    scheme: z.string().optional(),
+    appleId: z.string().optional(),
+    provisioningStyle: z.string().optional(),
+    codeSignIdentity: z.string().describe('Special property which tells Xcode how to build your project').optional(),
+    commandLineArguments: z
+        .array(z.string())
+        .describe('Allows you to pass launch arguments to active scheme')
+        .optional(),
+    provisionProfileSpecifier: z.string().optional(),
+    provisioningProfiles: z.optional(provisioningProfiles),
+    systemCapabilities: z.optional(SystemCapabilities),
+    entitlements: z.record(z.string()).optional(),
+    runScheme: z.string().optional(),
+    sdk: z.string().optional(),
+    testFlightId: z.string().optional(),
+    firebaseId: z.string().optional(),
+    exportOptions: z
+        .object({
+            method: z.string().optional(),
+            teamID: z.string().optional(),
+            uploadBitcode: z.boolean().optional(),
+            compileBitcode: z.boolean().optional(),
+            uploadSymbols: z.boolean().optional(),
+            signingStyle: z.string().optional(),
+            signingCertificate: z.string().optional(),
+            provisioningProfiles: z.record(z.string()).optional(),
+        })
+        .optional(),
 
-    // scheme: {
-    //     type: 'string',
-    // },
-
-    // appleId: {
-    //     type: 'string',
-    // },
-
-    // provisioningStyle: {
-    //     type: 'string',
-    // },
-    // codeSignIdentity: {
-    //     type: 'string',
-    //     description: 'Special property which tells Xcode how to build your project',
-    //     examples: ['iPhone Developer', 'iPhone Distribution'],
-    // },
-    // commandLineArguments: {
-    //     type: 'array',
-    //     description: 'Allows you to pass launch arguments to active scheme',
-    //     examples: [['-FIRAnalyticsDebugEnabled', 'MyCustomLaunchArgument']],
-    // },
-    // provisionProfileSpecifier: {
-    //     type: 'string',
-    // },
-    // provisioningProfiles: {
-    //     additionalProperties: true,
-    //     type: 'object',
-    // },
     // systemCapabilities: {
     //     additionalProperties: true,
     //     type: 'object',
@@ -103,52 +106,5 @@ export const PlatformiOS = z.object({
     //             'com.apple.NetworkExtensions.iOS': false,
     //         },
     //     ],
-    // },
-    // entitlements: {
-    //     additionalProperties: true,
-    //     type: 'object',
-    // },
-    // runScheme: {
-    //     type: 'string',
-    // },
-    // sdk: {
-    //     type: 'string',
-    // },
-    // testFlightId: {
-    //     type: 'string',
-    // },
-    // firebaseId: {
-    //     type: 'string',
-    // },
-    // exportOptions: {
-    //     type: 'object',
-    //     additionalProperties: false,
-    //     properties: {
-    //         method: {
-    //             type: 'string',
-    //         },
-    //         teamID: {
-    //             type: 'string',
-    //         },
-    //         uploadBitcode: {
-    //             type: 'boolean',
-    //         },
-    //         compileBitcode: {
-    //             type: 'boolean',
-    //         },
-    //         uploadSymbols: {
-    //             type: 'boolean',
-    //         },
-    //         signingStyle: {
-    //             type: 'string',
-    //         },
-    //         signingCertificate: {
-    //             type: 'string',
-    //         },
-    //         provisioningProfiles: {
-    //             additionalProperties: true,
-    //             type: 'object',
-    //         },
-    //     },
     // },
 });

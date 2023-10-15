@@ -26,7 +26,7 @@ export const ExtendTemplate = z
     );
 
 export const DefaultTargets = z
-    .record(z.string(), z.string())
+    .record(PlatformsKeys, z.string())
     .describe('Define targets to be used when -t is not set on any project run');
 
 export const BundleId = z.string().describe('Bundle ID of application. ie: com.example.myapp');

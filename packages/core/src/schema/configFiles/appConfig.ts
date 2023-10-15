@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { ZodObject, z } from 'zod';
 import { Common } from '../common';
 import { Ext, ExtendTemplate } from '../shared';
 import { Platforms } from '../platforms';
@@ -93,13 +93,13 @@ export const RootAppSchemaPartial = z.object({
     extend: z.optional(Extend),
 });
 
-export const RootAppSchema = RootAppSchemaPartial.merge(
-    z.object({
-        platforms: z.optional(Platforms),
-        plugins: z.optional(Plugins),
-    })
-);
-
 export type _RootAppSchemaPartialType = z.infer<typeof RootAppSchemaPartial>;
+
+export const RootAppSchemaPart2 = z.object({
+    platforms: z.optional(Platforms),
+    plugins: z.optional(Plugins),
+});
+
+export const RootAppSchema = RootAppSchemaPartial.merge(RootAppSchemaPart2);
 
 export type _RootAppSchemaType = z.infer<typeof RootAppSchema>;

@@ -62,7 +62,7 @@ const Npm = z.object({});
 
 const Platforms = z.record(PlatformsKeys, EnginePlatform);
 
-const RootEngine = z.object({
+export const RootEngineSchema = z.object({
     ext: z.optional(Ext),
     id: Id,
     engineExtension: EngineExtension,
@@ -72,4 +72,4 @@ const RootEngine = z.object({
     platforms: z.optional(Platforms),
 });
 
-export type _ConfigRootEngineType = z.infer<typeof RootEngine>;
+export type _ConfigRootEngineType = z.infer<typeof RootEngineSchema>;
