@@ -660,7 +660,7 @@ export const injectPluginGradleSync = (
 
 export const parseAndroidConfigObject = (c: RnvContext, obj?: any, key = '') => {
     // APP/BUILD.GRADLE
-    const templateAndroid = getConfigProp<TemplateAndroid>(c, obj, 'templateAndroid');
+    const templateAndroid = getConfigProp(c, obj, 'templateAndroid');
 
     const appBuildGradle = templateAndroid.app_build_gradle;
     if (appBuildGradle) {

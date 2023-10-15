@@ -11,7 +11,7 @@ import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
 import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
-import { RenativeConfigBuildScheme, RenativeConfigFile } from './schema/types';
+import { ConfigProp, RenativeConfigBuildScheme, RenativeConfigFile } from './schema/types';
 import { inquirerPrompt } from './api';
 import { GetConfigPropFn } from './api/types';
 import { RnvPlatform } from './types';
@@ -20,9 +20,7 @@ export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): T
     let timestampBuildFiles: Array<string> = [];
     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
     if (platform === 'web') {
-        timestampBuildFiles = getConfigProp<Array<string>>(c, platform, 'timestampBuildFiles', []).map((v) =>
-            path.join(pPath, v)
-        );
+        timestampBuildFiles = getConfigProp(c, platform, 'timestampBuildFiles', []).map((v) => path.join(pPath, v));
     }
     if (timestampBuildFiles?.length) {
         return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
@@ -267,21 +265,26 @@ const _getValueOrMergedObject = (resultCli: any, resultScheme: any, resultPlatfo
     return resultCommon;
 };
 
-export const getConfigProp: GetConfigPropFn = (c, platform, key, defaultVal?) => {
-    if (!c.buildConfig) {
-        logError('getConfigProp: c.buildConfig is undefined!');
-        return null;
-    }
-    return _getConfigProp(c, platform, key, defaultVal, c.buildConfig);
-};
-
-export const _getConfigProp = (
+export const getConfigProp = <T extends keyof ConfigProp>(
     c: RnvContext,
     platform: RnvPlatform,
-    key: string,
-    defaultVal?: any,
-    sourceObj?: Partial<RenativeConfigFile>
+    key: T,
+    defaultVal?: ConfigProp[T]
 ) => {
+    if (!c.buildConfig) {
+        logError('getConfigProp: c.buildConfig is undefined!');
+        return undefined;
+    }
+    return _getConfigProp<T>(c, platform, key, defaultVal, c.buildConfig);
+};
+
+export const _getConfigProp = <T extends keyof ConfigProp>(
+    c: RnvContext,
+    platform: RnvPlatform,
+    key: T,
+    defaultVal?: ConfigProp[T],
+    sourceObj?: Partial<RenativeConfigFile>
+): ConfigProp[T] => {
     if (!sourceObj) return null;
 
     if (!key || !key.split) {
@@ -319,7 +322,7 @@ export const _getConfigProp = (
     if (typeof result === 'object' && subKey.length) {
         return lGet(result, subKey);
     }
-    return result;
+    return result as ConfigProp[T];
 };
 
 export const getConfigPropArray = <T = any>(c: RnvContext, platform: RnvPlatform, key: string) => {
@@ -356,12 +359,12 @@ export const getConfigPropArray = <T = any>(c: RnvContext, platform: RnvPlatform
 };
 
 export const getAppId = (c: RnvContext, platform: RnvPlatform) => {
-    const id = getConfigProp<string>(c, platform, 'id');
-    const idSuffix = getConfigProp<string>(c, platform, 'idSuffix');
+    const id = getConfigProp(c, platform, 'id');
+    const idSuffix = getConfigProp(c, platform, 'idSuffix');
     return idSuffix ? `${id}${idSuffix}` : id;
 };
 
-export const getAppTitle = (c: RnvContext, platform: RnvPlatform) => getConfigProp<string>(c, platform, 'title');
+export const getAppTitle = (c: RnvContext, platform: RnvPlatform) => getConfigProp(c, platform, 'title');
 
 export const getAppAuthor = (c: RnvContext, platform: RnvPlatform) =>
     getConfigProp(c, platform, 'author') || c.files.project.package?.author;

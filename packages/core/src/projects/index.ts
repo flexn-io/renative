@@ -436,7 +436,7 @@ export const copyAssetsFolder = async (
 
     const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
-    const assetSources = getConfigProp<Array<string>>(c, platform, 'assetSources', []);
+    const assetSources = getConfigProp(c, platform, 'assetSources', []);
 
     const validAssetSources: Array<string> = [];
     assetSources.forEach((v) => {

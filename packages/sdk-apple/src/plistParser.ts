@@ -101,11 +101,7 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
             plistObj.UIAppFonts = c.payload.pluginConfigiOS.embeddedFonts;
         }
         // PERMISSIONS
-        const includedPermissions = getConfigProp<RenativeConfigFile['common']['includedPermissions']>(
-            c,
-            platform,
-            'includedPermissions'
-        );
+        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
         if (includedPermissions && c.buildConfig.permissions) {
             const platPrem = 'ios'; // c.buildConfig.permissions[platform] ? platform : 'ios';
             const pc = c.buildConfig.permissions[platPrem] || {};

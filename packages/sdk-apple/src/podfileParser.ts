@@ -104,7 +104,7 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     const ignoreWarnings = getConfigProp(c, platform, 'ignoreWarnings');
     const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
 
-    const templateXcode = getConfigProp<TemplateXcode>(c, c.platform, 'templateXcode');
+    const templateXcode = getConfigProp(c, c.platform, 'templateXcode');
     const podfile = templateXcode.Podfile;
     if (podfile) {
         const { injectLines, post_install } = podfile;

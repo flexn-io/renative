@@ -138,7 +138,7 @@ const _mergeNodeChildren = (node: any, nodeChildrenExt: Array<ManifestFeature> =
 // }
 
 const _mergeFeatures = (c: Context, baseManifestFile: any, configKey: string, value: boolean) => {
-    const features = getConfigProp<string[]>(c, c.platform, configKey);
+    const features = getConfigProp(c, c.platform, configKey);
 
     if (features) {
         const featuresObj: Array<ManifestFeature> = [];
@@ -192,16 +192,8 @@ export const parseAndroidManifestSync = (c: Context) => {
         // appConfig PERMISSIONS OVERRIDES
         const configPermissions = c.buildConfig?.permissions;
 
-        const includedPermissions = getConfigProp<RenativeConfigFile['common']['includedPermissions']>(
-            c,
-            platform,
-            'includedPermissions'
-        );
-        const excludedPermissions = getConfigProp<RenativeConfigFile['common']['excludedPermissions']>(
-            c,
-            platform,
-            'excludedPermissions'
-        );
+        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
+        const excludedPermissions = getConfigProp(c, platform, 'excludedPermissions');
         if (includedPermissions?.forEach && configPermissions) {
             const platPerm = 'android'; //configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];

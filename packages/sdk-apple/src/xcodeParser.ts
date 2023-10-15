@@ -188,9 +188,9 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
                 xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
             }
 
-            const templateXcode = getConfigProp<TemplateXcode>(c, c.platform, 'templateXcode');
+            const templateXcode = getConfigProp(c, c.platform, 'templateXcode');
 
-            const xcodeprojObj1 = templateXcode.project_pbxproj;
+            const xcodeprojObj1 = templateXcode?.project_pbxproj;
 
             if (xcodeprojObj1?.sourceFiles) {
                 xcodeprojObj1.sourceFiles.forEach((v) => {
