@@ -36,45 +36,47 @@ const PlatformMerged = PlatformBase.merge(PlatformiOS)
         })
     );
 
-// export const Platform = z
-//     .object({
-//         buildSchemes: z.optional(BuildSchemes),
-//     })
-//     .merge(PlatformCommon)
-//     .merge(PlatformiOS)
-//     .merge(PlatformWeb)
-//     .merge(PlatformTizen)
-//     .merge(PlatformWebpack)
-//     .merge(PlatformElectron)
-//     .merge(PlatformWindows);
-
 export type _PlatformMergedType = z.infer<typeof PlatformMerged>;
 
-// export const Platforms = z.record(PlatformsKeys, Platform).describe('Object containing platform configurations');
+// const generatePlatform = <T extends ZodObject>(schema: T) => {
+//     return z.optional(
+//         schema.extend({
+//             buildSchemes: z
+//                 .record(z.string(), schema)
+//                 .optional()
+//                 .describe('Allows to customize platforms configurations based on chosen build scheme `-s`'),
+//         })
+//     );
+// };
+const desc = 'Allows to customize platforms configurations based on chosen build scheme `-s`';
 
-const Base = z
-    .object({
-        buildSchemes: z.optional(PlatformBuildSchemes),
-    })
-    .merge(PlatformBase);
+const androidSchema = z
+    .optional(PlatformAndroid.extend({ buildSchemes: z.record(z.string(), PlatformAndroid) }))
+    .describe(desc);
+// const androidSchema = generatePlatform(PlatformAndroid);
+const iosSchema = z.optional(PlatformiOS.extend({ buildSchemes: z.record(z.string(), PlatformiOS) })).describe(desc);
+const tizenSchema = z
+    .optional(PlatformTizen.extend({ buildSchemes: z.record(z.string(), PlatformTizen) }))
+    .describe(desc);
+const webSchema = z.optional(PlatformWeb.extend({ buildSchemes: z.record(z.string(), PlatformWeb) })).describe(desc);
 
 export const Platforms = z
     .object({
-        android: z.optional(Base.merge(PlatformAndroid)),
-        androidtv: z.optional(Base.merge(PlatformAndroid)),
-        androidwear: z.optional(Base.merge(PlatformAndroid)),
-        firetv: z.optional(Base.merge(PlatformAndroid)),
-        ios: z.optional(Base.merge(PlatformiOS)),
-        tvos: z.optional(Base.merge(PlatformiOS)),
-        tizen: z.optional(Base.merge(PlatformTizen)),
-        webos: z.optional(Base.merge(PlatformWeb)),
-        web: z.optional(Base.merge(PlatformWeb)),
-        webtv: z.optional(Base.merge(PlatformWeb)),
-        chromecast: z.optional(Base.merge(PlatformWeb)),
-        kaios: z.optional(Base.merge(PlatformWeb)),
-        macos: z.optional(Base.merge(PlatformWeb)),
-        linux: z.optional(Base.merge(PlatformWeb)),
-        windows: z.optional(Base.merge(PlatformWeb)),
-        xbox: z.optional(Base.merge(PlatformWeb)),
+        android: androidSchema,
+        androidtv: androidSchema,
+        androidwear: androidSchema,
+        firetv: androidSchema,
+        ios: iosSchema,
+        tvos: iosSchema,
+        tizen: tizenSchema,
+        webos: webSchema,
+        web: webSchema,
+        webtv: webSchema,
+        chromecast: webSchema,
+        kaios: webSchema,
+        macos: webSchema,
+        linux: webSchema,
+        windows: webSchema,
+        xbox: webSchema,
     })
     .describe('Object containing platform configurations');

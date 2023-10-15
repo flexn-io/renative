@@ -52,6 +52,8 @@ const IncludedFonts = z
 
 const CommonBuildSchemes = z.record(z.string(), BuildSchemeBase.merge(PlatformBase));
 
+export type _CommonBuildSchemesSchemaType = z.infer<typeof CommonBuildSchemes>;
+
 const BackgroundColor = HexColor.describe('Defines root view backgroundColor for all platforms in HEX format');
 
 const FontSources = z
@@ -68,23 +70,26 @@ const AssetSources = z
 
 //LEVEl 1
 
-export const Common = z
-    .object({
-        buildSchemes: z.optional(CommonBuildSchemes),
-        includedPermissions: z.optional(IncludedPermissions),
-        excludedPermissions: z.optional(ExcludedPermissions),
-        id: z.optional(BundleId),
-        title: z.optional(Title),
-        description: z.optional(Description),
-        author: z.optional(Author),
-        includedFonts: z.optional(IncludedFonts),
-        backgroundColor: z.optional(BackgroundColor),
-        splashScreen: z.optional(SplashScreen),
-        fontSources: z.optional(FontSources),
-        assetSources: z.optional(AssetSources),
-        includedPlugins: z.optional(IncludedPlugins),
-        excludedPlugins: z.optional(ExcludedPlugins),
-        runtime: z.optional(Runtime),
-        ext: z.optional(Ext),
-    })
-    .describe('Common config props used as default props for all available buildSchemes');
+export const CommonSchemaPartial = z.object({
+    includedPermissions: z.optional(IncludedPermissions),
+    excludedPermissions: z.optional(ExcludedPermissions),
+    id: z.optional(BundleId),
+    title: z.optional(Title),
+    description: z.optional(Description),
+    author: z.optional(Author),
+    includedFonts: z.optional(IncludedFonts),
+    backgroundColor: z.optional(BackgroundColor),
+    splashScreen: z.optional(SplashScreen),
+    fontSources: z.optional(FontSources),
+    assetSources: z.optional(AssetSources),
+    includedPlugins: z.optional(IncludedPlugins),
+    excludedPlugins: z.optional(ExcludedPlugins),
+    runtime: z.optional(Runtime),
+    ext: z.optional(Ext),
+});
+
+export type _CommonSchemaPartialType = z.infer<typeof CommonSchemaPartial>;
+
+export const CommonSchema = CommonSchemaPartial.extend({
+    buildSchemes: z.optional(CommonBuildSchemes),
+}).describe('Common config props used as default props for all available buildSchemes');

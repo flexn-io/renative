@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Common } from '../common';
+import { CommonSchema } from '../common';
 import { Ext, ExtendTemplate, PlatformsKeys, Runtime } from '../shared';
 import { Platforms } from '../platforms';
 import { Plugins } from '../plugins';
@@ -221,7 +221,6 @@ export const RootProjectSchemaPartial = z.object({
     workspaceID: WorkspaceID,
     projectName: ProjectName,
     isMonorepo: z.optional(IsMonoRepo),
-    common: Common,
     defaults: z.optional(Defaults),
     pipes: z.optional(Pipes),
     templates: Templates,
@@ -245,6 +244,7 @@ export const RootProjectSchema = RootProjectSchemaPartial.merge(
     z.object({
         platforms: z.optional(Platforms),
         plugins: z.optional(Plugins),
+        common: z.optional(CommonSchema),
     })
 );
 //.catchall(z.never());

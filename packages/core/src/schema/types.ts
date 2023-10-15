@@ -14,6 +14,7 @@ import type { _RootTemplatesSchemaType } from './configFiles/pluginTemplates';
 import type { _ConfigRootPlugin } from './configFiles/plugin';
 import type { _RootProjectSchemaType } from './configFiles/project';
 import { _ManifestChildWithChildrenType } from './platforms/templateAndroidBase';
+import { _CommonBuildSchemesSchemaType, _CommonSchemaPartialType } from './common';
 // import type { RenativeConfigFile } from './types';
 
 // NOTE: Why am I bothered with all this nonsense instead of just exporting root schema types?
@@ -21,29 +22,50 @@ import { _ManifestChildWithChildrenType } from './platforms/templateAndroidBase'
 // here I'm giving TS hand by offloading some of the heavy computations to predefined types and removing unions
 // When all reantive json get merged into one file this happens conceptually anyway
 
-type _ConfigRootMerged = _RootGlobalSchemaType & {
+type MergedPluginTemplates = {
     pluginTemplates: Record<string, _RootTemplatesSchemaType>;
-} & Required<_RootProjectSchemaPartialType> &
-    _RootProjectLocalSchemaPartialType &
-    _RootAppSchemaPartialType & {
-        plugins: Record<string, _PluginType>;
-        platforms: Record<string, _PlatformMergedType>;
-    } & {
-        projectTemplates?: object;
-        engineTemplates?: Record<
-            string,
-            {
-                version: string;
-                id: string;
-            }
-        >;
-        templateConfig?: {
-            includedPaths?: string[];
-            packageTemplate?: NpmPackageFile;
-        };
-    };
+};
 
-// export const test = (test: ConfigRootMerged) => {
+type Common = {
+    common: _CommonSchemaPartialType & {
+        buildSchemes: _CommonBuildSchemesSchemaType;
+    };
+};
+
+type PluginsMap = {
+    plugins: Record<string, _PluginType>;
+};
+
+type PlatformsMap = {
+    platforms: Record<string, _PlatformMergedType>;
+};
+
+type ProjectTemplate = {
+    projectTemplates?: object;
+    engineTemplates?: Record<
+        string,
+        {
+            version: string;
+            id: string;
+        }
+    >;
+    templateConfig?: {
+        includedPaths?: string[];
+        packageTemplate?: NpmPackageFile;
+    };
+};
+
+type _ConfigRootMerged = _RootGlobalSchemaType &
+    MergedPluginTemplates &
+    Required<_RootProjectSchemaPartialType> &
+    _RootProjectLocalSchemaPartialType &
+    _RootAppSchemaPartialType &
+    Common &
+    PluginsMap &
+    PlatformsMap &
+    ProjectTemplate;
+
+// export const test = (test: _ConfigRootMerged) => {
 //     console.log(test);
 
 //     const plugin = test.plugins['ss'];
