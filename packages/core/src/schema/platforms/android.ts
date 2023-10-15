@@ -53,48 +53,43 @@ export const PlatformAndroid = z.object({
             })
         )
     ),
-
-    // aab: {
-    //     type: 'boolean',
-    //     description: 'If set to true, android project will generate app.aab instead of apk',
-    //     default: false,
-    //     examples: [false, true],
-    // },
-    // extraGradleParams: {
-    //     type: 'string',
-    //     description: 'Allows passing extra params to gradle command',
-    //     examples: ['assembleAndroidTest -DtestBuildType=debug'],
-    // },
-    // minifyEnabled: {
-    //     type: 'boolean',
-    //     description: 'Sets minifyEnabled buildType property in app/build.gradle',
-    //     default: false,
-    //     examples: [false, true],
-    // },
-    // targetSdkVersion: {
-    //     type: 'integer',
-    //     description: 'Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` ',
-    //     examples: [28, 29],
-    // },
-    // compileSdkVersion: {
-    //     type: 'integer',
-    //     description: 'Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` ',
-    //     examples: [28, 29],
-    // },
-    // gradleBuildToolsVersion: {
-    //     type: 'integer',
-    //     description:
-    //         "Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`",
-    //     default: '3.3.1',
-    //     examples: ['3.3.1', '4.1.0'],
-    // },
-    // gradleWrapperVersion: {
-    //     type: 'integer',
-    //     description:
-    //         'Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`',
-    //     default: '5.5',
-    //     examples: ['5.5', '6.7.1'],
-    // },
+    aab: z.optional(z.boolean().describe('If set to true, android project will generate app.aab instead of apk')),
+    extraGradleParams: z.optional(z.string().describe('Allows passing extra params to gradle command')), //assembleAndroidTest -DtestBuildType=debug
+    minifyEnabled: z.optional(z.boolean().describe('Sets minifyEnabled buildType property in app/build.gradle')),
+    targetSdkVersion: z.optional(
+        z
+            .string()
+            .describe(
+                'Allows you define custom targetSdkVersion equivalent to: `targetSdkVersion = [VERSION]` in build.gradle'
+            )
+    ),
+    compileSdkVersion: z.optional(
+        z
+            .string()
+            .describe(
+                'Allows you define custom compileSdkVersion equivalent to: `compileSdkVersion = [VERSION]` in build.gradle'
+            )
+    ),
+    gradleBuildToolsVersion: z.optional(
+        z
+            .string()
+            .describe(
+                "Allows you define custom gradle build tools version equivalent to:  `classpath 'com.android.tools.build:gradle:[VERSION]'`"
+            )
+    ),
+    gradleWrapperVersion: z.optional(
+        z
+            .string()
+            .describe(
+                'Allows you define custom gradle wrapper version equivalent to: `distributionUrl=https\\://services.gradle.org/distributions/gradle-[VERSION]-all.zip`'
+            )
+    ),
+    excludedFeatures: z.optional(
+        z.array(z.string()).describe('Override features definitions in AndroidManifest.xml by exclusion')
+    ),
+    includedFeatures: z.optional(
+        z.array(z.string()).describe('Override features definitions in AndroidManifest.xml by inclusion')
+    ),
     // storeFile: {
     //     type: 'string',
     // },
@@ -108,11 +103,5 @@ export const PlatformAndroid = z.object({
     // keyPassword: {
     //     type: 'string',
     //     description: `${SENSITIVE}keyPassword for keystore file`,
-    // },
-    // excludedFeatures: {
-    //     type: 'array',
-    // },
-    // includedFeatures: {
-    //     type: 'array',
     // },
 });

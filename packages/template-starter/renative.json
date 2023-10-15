@@ -106,6 +106,7 @@
             "kotlinVersion": "1.7.10",
             "reactNativeEngine": "hermes",
             "enableAndroidX": true,
+            "entryFile": "index",
             "gradle.properties": {
                 "android.useDeprecatedNdk": true,
                 "android.enableJetifier": true,
