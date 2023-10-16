@@ -157,7 +157,7 @@ Alternatively you can configure custom entry folder via ${c.platform}.pagesDir i
 };
 
 export const getTranspileModules = (c: RnvContext) => {
-    const transModules = getConfigProp(c, c.platform, 'webpackConfig', {}).nextTranspileModules || [];
+    const transModules = getConfigProp(c, c.platform, 'nextTranspileModules') || [];
 
     parsePlugins(
         c,

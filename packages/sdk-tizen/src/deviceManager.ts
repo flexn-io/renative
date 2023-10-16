@@ -42,8 +42,6 @@ const formatXMLObject = (obj: Record<string, any>) => {
     return {};
 };
 
-export const DEFAULT_SECURITY_PROFILE_NAME = 'RNVanillaCert';
-
 export const launchTizenSimulator = (c: RnvContext, name: string) => {
     logTask(`launchTizenSimulator:${name}`);
 

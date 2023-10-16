@@ -317,8 +317,9 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     }
 
     // BUILD_TYPES
-    const pluginConfig = c.buildConfig ?? {};
-    const appBuildGradle = pluginConfig?.platforms?.[platform]?.templateAndroid?.app_build_gradle;
+    const templateAndroid = getConfigProp(c, c.platform, 'templateAndroid');
+    // const pluginConfig = c.buildConfig ?? {};
+    const appBuildGradle = templateAndroid?.app_build_gradle;
     const debugBuildTypes = appBuildGradle?.buildTypes?.debug ?? [];
     const releaseBuildTypes: string[] = appBuildGradle?.buildTypes?.release ?? [];
     const isSigningDisabled = getConfigProp(c, platform, 'disableSigning') === true;

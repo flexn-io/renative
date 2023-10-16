@@ -155,8 +155,6 @@ export const CommonSchemaFragment = {
     custom: z.optional(Ext),
 };
 
-// export type _CommonSchemaPartialType = z.infer<typeof CommonSchemaFragment>;
-
 // const CommonBuildSchemes = z.record(z.string(), BuildSchemeBase.merge(PlatformBaseFragment));
 
 // export type _CommonBuildSchemesSchemaType = z.infer<typeof CommonBuildSchemes>;
@@ -175,3 +173,5 @@ export const CommonSchema = z
         ),
     })
     .describe('Common config props used as default props for all available buildSchemes');
+
+export type _CommonSchemaType = z.infer<typeof CommonSchema>;

@@ -11,7 +11,7 @@ import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
 import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
-import { ConfigProp, RenativeConfigFile } from './schema/types';
+import { ConfigProp, ConfigPropKey, RenativeConfigFile } from './schema/types';
 import { inquirerPrompt } from './api';
 import { RnvPlatform } from './types';
 import { DEFAULTS } from './schema/defaults';
@@ -254,7 +254,7 @@ const _getValueOrMergedObject = (resultCli: any, resultScheme: any, resultPlatfo
     return resultCommon;
 };
 
-export const getConfigProp = <T extends keyof ConfigProp>(
+export const getConfigProp = <T extends ConfigPropKey>(
     c: RnvContext,
     platform: RnvPlatform,
     key: T,

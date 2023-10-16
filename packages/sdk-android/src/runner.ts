@@ -476,11 +476,11 @@ export const configureProject = async (c: Context) => {
     );
 
     // FONTS
+    const includedFonts = getConfigProp(c, c.platform, 'includedFonts') || [];
     parseFonts(c, (font: any, dir: any) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
 
-            const { includedFonts } = c.buildConfig.common || {};
             if (includedFonts) {
                 if (includedFonts.includes('*') || includedFonts.includes(key)) {
                     if (font) {

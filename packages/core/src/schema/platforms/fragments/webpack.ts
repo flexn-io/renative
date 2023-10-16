@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
-const WebpackConfig = z.object({});
+const WebpackConfig = z.object({
+    publicUrl: z.string().optional(),
+});
 
 export const PlatformWebpackFragment = {
     webpackConfig: z.optional(WebpackConfig),

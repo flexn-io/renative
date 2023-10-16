@@ -5,7 +5,7 @@ import type { _AppDelegateMethodType } from './platforms/fragments/templateXcode
 import type { _PluginiOSType } from './plugins/ios';
 import type { _PlatformsKeysType } from './shared';
 import type { NpmPackageFile } from '../configs/types';
-import type { _MergedPlatformObjectType, _PlatformMergedType, _PlatformsType } from './platforms';
+import type { _MergedPlatformObjectType, _PlatformsType } from './platforms';
 import type { _PluginType } from './plugins';
 import type { _RootAppSchemaPartialType, _RootAppSchemaType } from './configFiles/appConfig';
 import type { _RootGlobalSchemaType } from './configFiles/global';
@@ -14,7 +14,9 @@ import type { _RootTemplatesSchemaType } from './configFiles/pluginTemplates';
 import type { _ConfigRootPlugin } from './configFiles/plugin';
 import type { _RootProjectSchemaType } from './configFiles/project';
 import type { _ManifestChildWithChildrenType } from './platforms/fragments/templateAndroidBase';
-import type { _CommonBuildSchemesSchemaType, _CommonSchemaPartialType } from './common';
+import { _RootPrivateSchemaType } from './configFiles/private';
+import { _CommonSchemaType } from './common';
+// import type { _CommonBuildSchemesSchemaType, _CommonSchemaPartialType } from './common';
 // import type { RenativeConfigFile } from './types';
 
 // NOTE: Why am I bothered with all this nonsense instead of just exporting root schema types?
@@ -26,10 +28,14 @@ type MergedPluginTemplates = {
     pluginTemplates: Record<string, _RootTemplatesSchemaType>;
 };
 
+// type Common = {
+//     common: _CommonSchemaPartialType & {
+//         buildSchemes: _CommonBuildSchemesSchemaType;
+//     };
+// };
+
 type Common = {
-    common: _CommonSchemaPartialType & {
-        buildSchemes: _CommonBuildSchemesSchemaType;
-    };
+    common: _CommonSchemaType;
 };
 
 type PluginsMap = {
@@ -108,4 +114,9 @@ export type RenativeConfigAppDelegateMethod = _AppDelegateMethodType;
 
 export type ManifestFeature = _ManifestChildWithChildrenType;
 
-export type ConfigProp = _RootProjectSchemaPartialType & _RootAppSchemaPartialType & _MergedPlatformObjectType;
+export type ConfigProp = _RootProjectSchemaPartialType &
+    _RootAppSchemaPartialType &
+    _RootPrivateSchemaType &
+    _MergedPlatformObjectType;
+
+export type ConfigPropKey = keyof ConfigProp;

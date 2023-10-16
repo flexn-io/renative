@@ -1,7 +1,24 @@
 import { z } from 'zod';
 
 export const PlatformElectronFragment = {
-    electronTemplate: z.optional(z.object({})),
+    electronConfig: z
+        .any()
+        .optional()
+        .describe('Allows you to configure electron app as per https://www.electron.build/'),
+    BrowserWindow: z
+        .object({
+            width: z.number().optional(),
+            height: z.number().optional(),
+            webPreferences: z
+                .object({
+                    devTools: z.boolean().optional(),
+                })
+                .optional()
+                .describe('Extra web preferences of electron app'),
+        })
+        .optional()
+        .describe('Allows you to configure electron wrapper app window'),
+    // electronTemplate: z.optional(z.object({})),
     // electronConfig: {
     //     additionalProperties: true,
     //     type: 'object',

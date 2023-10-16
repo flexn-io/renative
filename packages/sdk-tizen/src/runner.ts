@@ -24,16 +24,12 @@ import {
     copyAssetsFolder,
     copyBuildsFolder,
     OverridesOptions,
+    DEFAULTS,
 } from '@rnv/core';
 import semver from 'semver';
 import { CLI_TIZEN } from './constants';
 
-import {
-    runTizenSimOrDevice,
-    createDevelopTizenCertificate,
-    DEFAULT_CERTIFICATE_NAME,
-    DEFAULT_SECURITY_PROFILE_NAME,
-} from './deviceManager';
+import { runTizenSimOrDevice, createDevelopTizenCertificate, DEFAULT_CERTIFICATE_NAME } from './deviceManager';
 
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
 
@@ -126,14 +122,13 @@ export const buildTizenProject = async (c: RnvContext) => {
 
     if (!platform) return;
 
-    const platformConfig = c.buildConfig.platforms?.[platform];
+    const certProfile = getConfigProp(c, c.platform, 'certificateProfile') || DEFAULTS.certificateProfile;
     const tDir = getPlatformProjectDir(c)!;
 
     await buildCoreWebpackProject(c);
     if (!c.program.hosted) {
         const tOut = path.join(tDir, 'output');
         const tBuild = path.join(tDir, 'build');
-        const certProfile = platformConfig?.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
         await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
         await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
@@ -176,12 +171,16 @@ const _configureProject = (c: RnvContext) =>
         if (!platform) return;
 
         const configFile = 'config.xml';
-        const p = c.buildConfig.platforms?.[platform];
+        // const p = c.buildConfig.platforms?.[platform];
+
+        const pkg = getConfigProp(c, c.platform, 'package') || '';
+        const id = getConfigProp(c, c.platform, 'id') || '';
+        const appName = getConfigProp(c, c.platform, 'appName') || '';
 
         const injects: OverridesOptions = [
-            { pattern: '{{PACKAGE}}', override: p?.package || '' },
-            { pattern: '{{ID}}', override: p?.id || '' },
-            { pattern: '{{APP_NAME}}', override: p?.appName || '' },
+            { pattern: '{{PACKAGE}}', override: pkg },
+            { pattern: '{{ID}}', override: id },
+            { pattern: '{{APP_NAME}}', override: appName },
             { pattern: '{{APP_VERSION}}', override: semver.valid(semver.coerce(getAppVersion(c, platform))) || '' },
         ];
 
