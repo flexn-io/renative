@@ -49,30 +49,30 @@ export type _MergedPlatformObjectType = z.infer<typeof MergedPlatformPlainObject
 const desc = 'Allows to customize platforms configurations based on chosen build scheme `-s`';
 
 const androidSchema = z
-    .optional(PlatformAndroidSchema.extend({ buildSchemes: z.record(z.string(), PlatformAndroidSchema) }))
+    .optional(PlatformAndroidSchema.extend({ buildSchemes: z.record(z.string(), PlatformAndroidSchema).optional() }))
     .describe(desc);
 // const androidSchema = generatePlatform(PlatformAndroid);
 const iosSchema = z
-    .optional(PlatformiOSSchema.extend({ buildSchemes: z.record(z.string(), PlatformiOSSchema) }))
+    .optional(PlatformiOSSchema.extend({ buildSchemes: z.record(z.string(), PlatformiOSSchema).optional() }))
     .describe(desc);
 const macosSchema = z
-    .optional(PlatformMacosSchema.extend({ buildSchemes: z.record(z.string(), PlatformMacosSchema) }))
+    .optional(PlatformMacosSchema.extend({ buildSchemes: z.record(z.string(), PlatformMacosSchema).optional() }))
     .describe(desc);
 const windowsSchema = z
-    .optional(PlatformWindowsSchema.extend({ buildSchemes: z.record(z.string(), PlatformWindowsSchema) }))
+    .optional(PlatformWindowsSchema.extend({ buildSchemes: z.record(z.string(), PlatformWindowsSchema).optional() }))
     .describe(desc);
 const tizenSchema = z
-    .optional(PlatformTizenSchema.extend({ buildSchemes: z.record(z.string(), PlatformTizenSchema) }))
+    .optional(PlatformTizenSchema.extend({ buildSchemes: z.record(z.string(), PlatformTizenSchema).optional() }))
     .describe(desc);
 const webSchema = z
-    .optional(PlatformWebSchema.extend({ buildSchemes: z.record(z.string(), PlatformWebSchema) }))
+    .optional(PlatformWebSchema.extend({ buildSchemes: z.record(z.string(), PlatformWebSchema).optional() }))
     .describe(desc);
 
 const webosSchema = z
-    .optional(PlatformWebosSchema.extend({ buildSchemes: z.record(z.string(), PlatformWebosSchema) }))
+    .optional(PlatformWebosSchema.extend({ buildSchemes: z.record(z.string(), PlatformWebosSchema).optional() }))
     .describe(desc);
 
-export const Platforms = z
+export const PlatformsSchema = z
     .object({
         android: androidSchema,
         androidtv: androidSchema,
@@ -95,4 +95,4 @@ export const Platforms = z
     })
     .describe('Object containing platform configurations');
 
-export type _PlatformsType = z.infer<typeof Platforms>;
+export type _PlatformsSchemaType = z.infer<typeof PlatformsSchema>;

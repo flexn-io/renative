@@ -1,7 +1,7 @@
 {
-  "$ref": "#/definitions/rnv.pluginTemplates",
+  "$ref": "#/definitions/rnv.plugins",
   "definitions": {
-    "rnv.pluginTemplates": {
+    "rnv.plugins": {
       "type": "object",
       "properties": {
         "custom": {
@@ -65,7 +65,7 @@
                 "description": "List of other Renative plugins this plugin depends on"
               },
               "plugins": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/pluginDependencies"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/pluginDependencies"
               },
               "webpack": {
                 "type": "object",
@@ -127,10 +127,10 @@
                 "description": "Allows you to configure webpack bahaviour per each individual plugin"
               },
               "webpackConfig": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/webpack"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/webpack"
               },
               "engine-rn-next": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/webpack"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/webpack"
               },
               "disablePluginTemplateOverrides": {
                 "type": "string",
@@ -328,7 +328,7 @@
                                 "children": {
                                   "type": "array",
                                   "items": {
-                                    "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/android/properties/templateAndroid/properties/AndroidManifest_xml/properties/children/items"
+                                    "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/android/properties/templateAndroid/properties/AndroidManifest_xml/properties/children/items"
                                   }
                                 }
                               },
@@ -383,25 +383,25 @@
                 "additionalProperties": false
               },
               "androidtv": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/android"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/android"
               },
               "androidwear": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/android"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/android"
               },
               "firetv": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/android"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/android"
               },
               "ios": {
                 "type": "object",
                 "properties": {
                   "enabled": {
-                    "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/android/properties/enabled"
+                    "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/android/properties/enabled"
                   },
                   "disabled": {
-                    "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/android/properties/disabled"
+                    "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/android/properties/disabled"
                   },
                   "path": {
-                    "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/android/properties/path"
+                    "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/android/properties/path"
                   },
                   "git": {
                     "type": "string",
@@ -574,67 +574,67 @@
                                   "applicationDidBecomeActive": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   },
                                   "open": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   },
                                   "supportedInterfaceOrientationsFor": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   },
                                   "didReceiveRemoteNotification": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   },
                                   "didFailToRegisterForRemoteNotificationsWithError": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   },
                                   "didReceive": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   },
                                   "didRegister": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   },
                                   "didRegisterForRemoteNotificationsWithDeviceToken": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   },
                                   "continue": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   },
                                   "didConnectCarInterfaceController": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   },
                                   "didDisconnectCarInterfaceController": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   }
                                 },
@@ -660,7 +660,7 @@
                                   "willPresent": {
                                     "type": "array",
                                     "items": {
-                                      "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
+                                      "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios/properties/templateXcode/properties/AppDelegate_mm/properties/appDelegateMethods/properties/application/properties/didFinishLaunchingWithOptions/items"
                                     }
                                   }
                                 },
@@ -703,55 +703,55 @@
                 "additionalProperties": false
               },
               "tvos": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/ios"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/ios"
               },
               "tizen": {
                 "type": "object",
                 "properties": {
                   "enabled": {
-                    "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/android/properties/enabled"
+                    "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/android/properties/enabled"
                   },
                   "disabled": {
-                    "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/android/properties/disabled"
+                    "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/android/properties/disabled"
                   },
                   "path": {
-                    "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/android/properties/path"
+                    "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/android/properties/path"
                   }
                 },
                 "additionalProperties": false
               },
               "tizenmobile": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/tizen"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/tizen"
               },
               "tizenwatch": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/tizen"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/tizen"
               },
               "webos": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/tizen"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/tizen"
               },
               "web": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/tizen"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/tizen"
               },
               "webtv": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/tizen"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/tizen"
               },
               "chromecast": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/tizen"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/tizen"
               },
               "kaios": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/tizen"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/tizen"
               },
               "macos": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/tizen"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/tizen"
               },
               "linux": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/tizen"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/tizen"
               },
               "windows": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/tizen"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/tizen"
               },
               "xbox": {
-                "$ref": "#/definitions/rnv.pluginTemplates/properties/pluginTemplates/additionalProperties/properties/tizen"
+                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/tizen"
               }
             },
             "additionalProperties": false

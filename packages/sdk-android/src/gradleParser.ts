@@ -604,7 +604,7 @@ export const injectPluginGradleSync = (
     // }
     const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     const pathFixed = plugin.path ? `${plugin.path}` : `${key}/android`;
-    const skipPathResolutions = pluginRoot['no-npm'];
+    const skipPathResolutions = pluginRoot.disableNpm;
     let pathAbsolute;
 
     if (!skipPathResolutions) {

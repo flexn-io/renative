@@ -66,7 +66,7 @@
                 "com.apple.iCloud": false
             },
             "entitlements": {},
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
@@ -90,7 +90,7 @@
             "entryFile": "index",
             "provisioningStyle": "Automatic",
             "entitlements": {},
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
@@ -113,7 +113,7 @@
         "macos": {
             "entryFile": "index",
             "provisioningStyle": "Automatic",
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
@@ -140,9 +140,6 @@
             "reactNativeEngine": "hermes",
             "includedPermissions": [
                 "INTERNET"
-            ],
-            "permissions": [
-                "*"
             ],
             "buildSchemes": {
                 "debug": {
@@ -171,7 +168,7 @@
             "entryFile": "index",
             "multipleAPKs": false,
             "assetFolderPlatform": "android",
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
@@ -195,7 +192,7 @@
             "entryFile": "index",
             "multipleAPKs": false,
             "assetFolderPlatform": "android",
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
@@ -219,7 +216,7 @@
             "entryFile": "index",
             "multipleAPKs": false,
             "assetFolderPlatform": "android",
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
@@ -308,8 +305,10 @@
                     "environment": "production"
                 }
             },
-            "deploy": {
-                "type": "none"
+            "custom": {
+                "deploy": {
+                    "type": "none"
+                }
             }
         },
         "webtv": {
@@ -330,8 +329,10 @@
                     "environment": "production"
                 }
             },
-            "deploy": {
-                "type": "none"
+            "custom": {
+                "deploy": {
+                    "type": "none"
+                }
             }
         },
         "webos": {

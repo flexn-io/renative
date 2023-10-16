@@ -19,7 +19,6 @@ import {
     executeAsync,
     writeCleanFile,
     RnvPlatform,
-    RenativeConfigPluginiOS,
     DEFAULTS,
 } from '@rnv/core';
 import compareVersions from 'compare-versions';
@@ -226,7 +225,7 @@ const _injectPod = (
     const podName = _podName;
     let pluginInject = '';
     let podPath;
-    const isNpm = plugin['no-npm'] !== true;
+    const isNpm = plugin.disableNpm !== true;
     if (isNpm) {
         if (includesPluginPath(pluginPlat.path)) {
             podPath = sanitizePluginPath(pluginPlat.path || '', key);

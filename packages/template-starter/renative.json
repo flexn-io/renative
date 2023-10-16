@@ -59,7 +59,7 @@
             "kaios",
             "chromecast"
         ],
-        "schemes": {
+        "defaultCommandSchemes": {
             "run": "debug",
             "build": "release",
             "export": "release"
@@ -141,7 +141,7 @@
         "@react-native-community/cli-platform-ios": {
             "version": "11.3.7",
             "disablePluginTemplateOverrides": false,
-            "optionalDependency": true
+            "skipNpm": true
         },
         "react-native": {
             "version": "0.72.4"

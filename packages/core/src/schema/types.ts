@@ -1,17 +1,16 @@
-import type { _PluginPlatformMergedType } from './plugins';
+import type { _PluginPlatformMergedSchemaType } from './plugins';
 import type { _ConfigRootEngineType } from './configFiles/engine';
 import type { _RootProjectLocalSchemaPartialType } from './configFiles/local';
 import type { _AppDelegateMethodType } from './platforms/fragments/templateXcodeBase';
-import type { _PluginiOSType } from './plugins/ios';
 import type { _PlatformsKeysType } from './shared';
 import type { NpmPackageFile } from '../configs/types';
-import type { _MergedPlatformObjectType, _PlatformsType } from './platforms';
+import type { _MergedPlatformObjectType, _PlatformsSchemaType } from './platforms';
 import type { _PluginType } from './plugins';
 import type { _RootAppSchemaPartialType, _RootAppSchemaType } from './configFiles/appConfig';
 import type { _RootGlobalSchemaType } from './configFiles/global';
 import type { _RootProjectSchemaPartialType } from './configFiles/project';
 import type { _RootTemplatesSchemaType } from './configFiles/pluginTemplates';
-import type { _ConfigRootPlugin } from './configFiles/plugin';
+import type { _RootPluginSchemaType } from './configFiles/plugin';
 import type { _RootProjectSchemaType } from './configFiles/project';
 import type { _ManifestChildWithChildrenType } from './platforms/fragments/templateAndroidBase';
 import { _RootPrivateSchemaType } from './configFiles/private';
@@ -47,7 +46,7 @@ type PluginsMap = {
 // };
 
 type PlatformsMap = {
-    platforms: _PlatformsType;
+    platforms: _PlatformsSchemaType;
 };
 
 type ProjectTemplate = {
@@ -90,15 +89,15 @@ export type ConfigRootApp = _RootAppSchemaType;
 
 export type ConfigRootEngine = _ConfigRootEngineType;
 
-export type ConfigRootPlugin = _ConfigRootPlugin;
+export type ConfigRootPlugin = _RootPluginSchemaType;
 
 export type RenativeConfigFile = _ConfigRootMerged;
 
 export type RenativeConfigPlugin = RenativeConfigFile['plugins'][string];
 
-export type RenativeConfigPluginiOS = _PluginiOSType;
+// export type RenativeConfigPluginiOS = _PluginiOSType;
 
-export type RenativeConfigPluginPlatform = _PluginPlatformMergedType;
+export type RenativeConfigPluginPlatform = _PluginPlatformMergedSchemaType;
 
 export type RenativeWebpackConfig = RenativeConfigFile['plugins'][string]['webpackConfig'];
 

@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { CommonSchema } from '../common';
 import { Ext, ExtendTemplate, PlatformsKeys, Runtime } from '../shared';
-import { Platforms } from '../platforms';
+import { PlatformsSchema } from '../platforms';
 import { Plugins } from '../plugins';
 
-const Schemes = z
-    .record(PlatformsKeys, z.string())
+const DefaultCommandSchemes = z
+    .record(z.enum(['run', 'export', 'build']), z.string())
     .describe(
-        'List of default schemes for each platform. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`'
+        'List of default schemes for each rnv command. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`'
     );
 
 const Targets = z.record(PlatformsKeys, z.string()).describe('Override of default targets specific to this project');
@@ -31,7 +31,7 @@ const Defaults = z
         ports: z.optional(Ports),
         supportedPlatforms: z.optional(SupportedPlatforms),
         portOffset: z.optional(PortOffset),
-        schemes: z.optional(Schemes),
+        defaultCommandSchemes: z.optional(DefaultCommandSchemes),
         targets: z.optional(Targets),
     })
     .describe('Default system config for this project');
@@ -221,6 +221,7 @@ export const RootProjectSchemaPartial = z.object({
     workspaceID: WorkspaceID,
     projectName: ProjectName,
     isMonorepo: z.optional(IsMonoRepo),
+    isTemplate: z.boolean().optional(),
     defaults: z.optional(Defaults),
     pipes: z.optional(Pipes),
     templates: Templates,
@@ -242,7 +243,7 @@ export const RootProjectSchemaPartial = z.object({
 
 export const RootProjectSchema = RootProjectSchemaPartial.merge(
     z.object({
-        platforms: z.optional(Platforms),
+        platforms: z.optional(PlatformsSchema),
         plugins: z.optional(Plugins),
         common: z.optional(CommonSchema),
     })

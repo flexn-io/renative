@@ -1,11 +1,9 @@
 import { z } from 'zod';
 import { Ext } from '../shared';
+import { PluginSchema } from '../plugins';
 
-//LEVEl 0 (ROOT)
-
-export const RootPluginSchema = z.object({
+export const RootPluginSchema = PluginSchema.extend({
     custom: z.optional(Ext),
 });
-//.catchall(z.never());
 
-export type _ConfigRootPlugin = z.infer<typeof RootPluginSchema>;
+export type _RootPluginSchemaType = z.infer<typeof RootPluginSchema>;

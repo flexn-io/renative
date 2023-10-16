@@ -16,6 +16,9 @@
           "type": "boolean",
           "description": "Mark if your project is part of monorepo"
         },
+        "isTemplate": {
+          "type": "boolean"
+        },
         "defaults": {
           "type": "object",
           "properties": {
@@ -79,34 +82,19 @@
               "type": "number",
               "description": "Offset each port default value by increment"
             },
-            "schemes": {
+            "defaultCommandSchemes": {
               "type": "object",
               "additionalProperties": {
                 "type": "string"
               },
               "propertyNames": {
                 "enum": [
-                  "ios",
-                  "android",
-                  "firetv",
-                  "androidtv",
-                  "androidwear",
-                  "web",
-                  "webtv",
-                  "tizen",
-                  "tizenmobile",
-                  "tvos",
-                  "webos",
-                  "macos",
-                  "windows",
-                  "linux",
-                  "tizenwatch",
-                  "kaios",
-                  "chromecast",
-                  "xbox"
+                  "run",
+                  "export",
+                  "build"
                 ]
               },
-              "description": "List of default schemes for each platform. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`"
+              "description": "List of default schemes for each rnv command. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`"
             },
             "targets": {
               "type": "object",
@@ -1089,9 +1077,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -1800,9 +1785,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -1931,6 +1913,13 @@
                   "properties": {
                     "publicUrl": {
                       "type": "string"
+                    },
+                    "customScripts": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Allows you to inject custom script into html header"
                     }
                   },
                   "additionalProperties": false
@@ -2059,9 +2048,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -2300,9 +2286,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -2559,9 +2542,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -2961,9 +2941,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -3069,8 +3046,19 @@
                 "BrowserWindow": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/macos/properties/BrowserWindow"
                 },
-                "experimentalNuGetDependency": {
-                  "type": "boolean"
+                "templateVSProject": {
+                  "type": "object",
+                  "properties": {
+                    "language": {
+                      "type": "string",
+                      "description": "Specify generated project language: cpp for C++ or cs for C#"
+                    },
+                    "arch": {
+                      "type": "string",
+                      "description": "Specification of targeted architecture"
+                    }
+                  },
+                  "additionalProperties": false
                 },
                 "buildSchemes": {
                   "type": "object",
@@ -3173,17 +3161,14 @@
                       "BrowserWindow": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/macos/properties/BrowserWindow"
                       },
-                      "experimentalNuGetDependency": {
-                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/windows/properties/experimentalNuGetDependency"
+                      "templateVSProject": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/windows/properties/templateVSProject"
                       }
                     },
                     "additionalProperties": false
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -3611,13 +3596,76 @@
               "additionalProperties": {
                 "type": "object",
                 "properties": {
-                  "enabled": {
-                    "type": "boolean",
-                    "description": "Defines whether build scheme shows up in options to run"
+                  "includedPermissions": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/includedPermissions"
+                  },
+                  "excludedPermissions": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/excludedPermissions"
+                  },
+                  "id": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/id"
+                  },
+                  "idSuffix": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/idSuffix"
+                  },
+                  "version": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/version"
+                  },
+                  "versionCode": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/versionCode"
+                  },
+                  "versionFormat": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/versionFormat"
+                  },
+                  "versionCodeFormat": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/versionCodeFormat"
+                  },
+                  "versionCodeOffset": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/versionCodeOffset"
+                  },
+                  "title": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/title"
                   },
                   "description": {
                     "type": "string",
                     "description": "Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`"
+                  },
+                  "author": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/author"
+                  },
+                  "license": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/license"
+                  },
+                  "includedFonts": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/includedFonts"
+                  },
+                  "backgroundColor": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/backgroundColor"
+                  },
+                  "splashScreen": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/splashScreen"
+                  },
+                  "fontSources": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/fontSources"
+                  },
+                  "assetSources": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/assetSources"
+                  },
+                  "includedPlugins": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/includedPlugins"
+                  },
+                  "excludedPlugins": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/excludedPlugins"
+                  },
+                  "runtime": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/runtime"
+                  },
+                  "custom": {
+                    "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/custom"
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Defines whether build scheme shows up in options to run"
                   },
                   "extendPlatform": {
                     "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/extendPlatform"

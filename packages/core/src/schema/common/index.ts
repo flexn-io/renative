@@ -166,6 +166,7 @@ export const CommonSchema = z
             z.record(
                 z.string(),
                 z.object({
+                    ...CommonSchemaFragment,
                     ...BuildSchemeFragment,
                     ...PlatformBaseFragment,
                 })

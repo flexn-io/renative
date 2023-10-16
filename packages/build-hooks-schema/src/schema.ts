@@ -1,12 +1,20 @@
-import { RootAppSchema, RootProjectSchema, getContext, logSuccess } from '@rnv/core';
+import {
+    RootAppSchema,
+    RootEngineSchema,
+    RootGlobalSchema,
+    RootPluginSchema,
+    RootPluginTemplatesSchema,
+    RootPrivateSchema,
+    RootProjectLocalSchema,
+    RootProjectSchema,
+    RootProjectTemplateSchema,
+    getContext,
+    logSuccess,
+} from '@rnv/core';
 import { zodToJsonSchema } from 'zod-to-json-schema';
 import { z } from 'zod';
 import path from 'path';
 import fs from 'fs';
-import { RootProjectLocalSchema } from '@rnv/core/lib/schema/configFiles/local';
-import { RootEngineSchema } from '@rnv/core/lib/schema/configFiles/engine';
-import { RootGlobalSchema } from '@rnv/core/lib/schema/configFiles/global';
-import { RootPluginTemplatesSchema } from '@rnv/core/lib/schema/configFiles/pluginTemplates';
 
 export const generateSchema = async () => {
     _generateSchemaFile({ schema: RootProjectSchema, schemaId: 'rnv.project' });
@@ -14,7 +22,10 @@ export const generateSchema = async () => {
     _generateSchemaFile({ schema: RootProjectLocalSchema, schemaId: 'rnv.local' });
     _generateSchemaFile({ schema: RootEngineSchema, schemaId: 'rnv.engine' });
     _generateSchemaFile({ schema: RootGlobalSchema, schemaId: 'rnv.global' });
-    _generateSchemaFile({ schema: RootPluginTemplatesSchema, schemaId: 'rnv.pluginTemplates' });
+    _generateSchemaFile({ schema: RootPluginTemplatesSchema, schemaId: 'rnv.plugins' });
+    _generateSchemaFile({ schema: RootProjectTemplateSchema, schemaId: 'rnv.template' });
+    _generateSchemaFile({ schema: RootPrivateSchema, schemaId: 'rnv.private' });
+    _generateSchemaFile({ schema: RootPluginSchema, schemaId: 'rnv.plugin' });
 
     logSuccess('Sucessfully exported renative.project.json schema');
 };

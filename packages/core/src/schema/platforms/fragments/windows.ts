@@ -1,122 +1,67 @@
 import { z } from 'zod';
 
 export const PlatformWindowsFragment = {
-    experimentalNuGetDependency: z.boolean().optional(),
-    // language: {
-    //     type: 'string',
-    //     description: 'Specify generated project language: cpp for C++ or cs for C#',
-    // },
-    // experimentalNuGetDependency: {
-    //     type: 'boolean',
-    // },
-    // useWinUI3: {
-    //     type: 'boolean',
-    // },
-    // nuGetTestVersion: {
-    //     type: 'string',
-    // },
-    // reactNativeEngine: {
-    //     type: 'string',
-    // },
-    // nuGetTestFeed: {
-    //     type: 'string',
-    // },
-    // overwrite: {
-    //     type: 'boolean',
-    //     description: 'Whether to attempt to override the existing builds files when running a build once more',
-    // },
-    // release: {
-    //     type: 'boolean',
-    //     description: 'Enables full packaging of the app for release',
-    // },
-    // root: {
-    //     type: 'string',
-    //     description: 'Project root folder location (not the app itself, which is in platformBuilds)',
-    // },
-    // arch: {
-    //     type: 'string',
-    //     description: 'Specification of targeted architecture',
-    //     examples: ['x86', 'x64', 'ARM', 'ARM64'],
-    // },
-    // singleproc: {
-    //     type: 'boolean',
-    //     description: 'Opt out of multi-proc builds (only available in 0.64 and newer versions of react-native-windows)',
-    // },
-    // emulator: {
-    //     type: 'boolean',
-    // },
-    // device: {
-    //     type: 'boolean',
-    // },
-    // target: {
-    //     type: 'string',
-    // },
-    // remoteDebugging: {
-    //     type: 'boolean',
-    // },
-    // logging: {
-    //     type: 'boolean',
-    //     description: 'Logging all the build proccesses to console',
-    // },
-    // packager: {
-    //     type: 'boolean',
-    // },
-    // bundle: {
-    //     type: 'boolean',
-    // },
-    // launch: {
-    //     type: 'boolean',
-    //     description: 'Launches the application once the build process is finished',
-    // },
-    // autolink: {
-    //     type: 'boolean',
-    //     description: 'Launches the application once the build process is finished',
-    // },
-    // build: {
-    //     type: 'boolean',
-    //     description: 'Builds the application before launching it',
-    // },
-    // deploy: {
-    //     type: 'boolean',
-    // },
-    // sln: {
-    //     type: 'string',
-    //     description: 'Location of Visual Studio solution .sln file (wraps multiple projects)',
-    // },
-    // proj: {
-    //     type: 'string',
-    //     description: 'Root project directory for your React Native Windows project (not Visual Studio project)',
-    // },
-    // appPath: {
-    //     type: 'string',
-    //     description: 'Full path to windows plaform build directory',
-    // },
-    // msbuildprops: {
-    //     type: 'string',
-    //     description: 'Comma separated props to pass to msbuild, eg: prop1=value1,prop2=value2',
-    // },
-    // buildLogDirectory: {
-    //     type: 'string',
-    //     description: 'Full path to directory where builds logs should be stored, default - project path',
-    // },
-    // info: {
-    //     type: 'boolean',
-    //     description: 'Print information about the build machine to console',
-    // },
-    // directDebugging: {
-    //     type: 'boolean',
-    // },
-    // telemetry: {
-    //     type: 'boolean',
-    //     description: 'Send analytics data of @react-native-windows/cli usage to Microsoft',
-    // },
-    // devPort: {
-    //     type: 'string',
-    // },
-    // additionalMetroOptions: {
-    //     type: 'object',
-    // },
-    // packageExtension: {
-    //     type: 'string',
-    // },
+    templateVSProject: z.optional(
+        z.object({
+            language: z.string().describe('Specify generated project language: cpp for C++ or cs for C#').optional(),
+            arch: z.string().describe('Specification of targeted architecture').optional(),
+            // experimentalNuGetDependency: z.boolean().optional(),
+            // useWinUI3: z.boolean().optional(),
+            // nuGetTestVersion: z.string().optional(),
+            // reactNativeEngine: z.string().optional(),
+            // nuGetTestFeed: z.string().optional(),
+            // overwrite: z
+            //     .boolean()
+            //     .describe('Whether to attempt to override the existing builds files when running a build once more')
+            //     .optional(),
+            // release: z.boolean().describe('Enables full packaging of the app for release').optional(),
+            // root: z
+            //     .string()
+            //     .describe('Project root folder location (not the app itself, which is in platformBuilds)')
+            //     .optional(),
+
+            // singleproc: z
+            //     .boolean()
+            //     .describe(
+            //         'Opt out of multi-proc builds (only available in 0.64 and newer versions of react-native-windows)'
+            //     )
+            //     .optional(),
+            // emulator: z.boolean().optional(),
+            // device: z.boolean().optional(),
+            // target: z.string().optional(),
+            // remoteDebugging: z.boolean().optional(),
+            // logging: z.boolean().describe('Logging all the build proccesses to console').optional(),
+            // packager: z.boolean().optional(),
+            // bundle: z.boolean().optional(),
+            // launch: z.boolean().describe('Launches the application once the build process is finished').optional(),
+            // autolink: z.boolean().describe('Launches the application once the build process is finished').optional(),
+            // build: z.boolean().describe('Builds the application before launching it').optional(),
+            // sln: z
+            //     .string()
+            //     .describe('Location of Visual Studio solution .sln file (wraps multiple projects)')
+            //     .optional(),
+            // proj: z
+            //     .string()
+            //     .describe('Root project directory for your React Native Windows project (not Visual Studio project)')
+            //     .optional(),
+            // appPath: z.string().describe('Full path to windows plaform build directory').optional(),
+            // msbuildprops: z
+            //     .string()
+            //     .describe('Comma separated props to pass to msbuild, eg: prop1=value1,prop2=value2')
+            //     .optional(),
+            // buildLogDirectory: z
+            //     .string()
+            //     .describe('Full path to directory where builds logs should be stored, default - project path')
+            //     .optional(),
+            // info: z.boolean().describe('Print information about the build machine to console').optional(),
+            // directDebugging: z.boolean().optional(),
+            // telemetry: z
+            //     .boolean()
+            //     .describe('Send analytics data of @react-native-windows/cli usage to Microsoft')
+            //     .optional(),
+            // devPort: z.string().optional(),
+            // additionalMetroOptions: z.record(z.any()).optional(),
+            // packageExtension: z.string().optional(),
+        })
+    ),
 };

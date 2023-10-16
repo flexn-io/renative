@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const WebpackConfig = z.object({
     publicUrl: z.string().optional(),
+    customScripts: z.array(z.string()).optional().describe('Allows you to inject custom script into html header'),
 });
 
 export const PlatformWebpackFragment = {

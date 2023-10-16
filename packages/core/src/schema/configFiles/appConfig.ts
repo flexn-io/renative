@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { CommonSchema } from '../common';
 import { Ext, ExtendTemplate } from '../shared';
-import { Platforms } from '../platforms';
+import { PlatformsSchema } from '../platforms';
 import { Plugins } from '../plugins';
 
 export const Extend = z.string().describe('extend another appConfig by id');
@@ -24,12 +24,13 @@ export const RootAppSchemaPartial = z.object({
     hidden: z.optional(Hidden),
     extendsTemplate: z.optional(ExtendTemplate),
     extend: z.optional(Extend),
+    skipBootstrapCopy: z.boolean().optional(),
 });
 
 export const RootAppSchema = RootAppSchemaPartial.merge(
     z.object({
         common: z.optional(CommonSchema),
-        platforms: z.optional(Platforms),
+        platforms: z.optional(PlatformsSchema),
         plugins: z.optional(Plugins),
     })
 );

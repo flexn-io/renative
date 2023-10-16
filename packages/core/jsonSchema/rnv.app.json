@@ -23,6 +23,9 @@
           "type": "string",
           "description": "extend another appConfig by id"
         },
+        "skipBootstrapCopy": {
+          "type": "boolean"
+        },
         "common": {
           "type": "object",
           "properties": {
@@ -139,13 +142,76 @@
               "additionalProperties": {
                 "type": "object",
                 "properties": {
-                  "enabled": {
-                    "type": "boolean",
-                    "description": "Defines whether build scheme shows up in options to run"
+                  "includedPermissions": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/includedPermissions"
+                  },
+                  "excludedPermissions": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/excludedPermissions"
+                  },
+                  "id": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/id"
+                  },
+                  "idSuffix": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/idSuffix"
+                  },
+                  "version": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/version"
+                  },
+                  "versionCode": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/versionCode"
+                  },
+                  "versionFormat": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/versionFormat"
+                  },
+                  "versionCodeFormat": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/versionCodeFormat"
+                  },
+                  "versionCodeOffset": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/versionCodeOffset"
+                  },
+                  "title": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/title"
                   },
                   "description": {
                     "type": "string",
                     "description": "Custom description of the buildScheme will be displayed directly in cli if you run rnv with an empty paramener `-s`"
+                  },
+                  "author": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/author"
+                  },
+                  "license": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/license"
+                  },
+                  "includedFonts": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/includedFonts"
+                  },
+                  "backgroundColor": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/backgroundColor"
+                  },
+                  "splashScreen": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/splashScreen"
+                  },
+                  "fontSources": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/fontSources"
+                  },
+                  "assetSources": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/assetSources"
+                  },
+                  "includedPlugins": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/includedPlugins"
+                  },
+                  "excludedPlugins": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/excludedPlugins"
+                  },
+                  "runtime": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/runtime"
+                  },
+                  "custom": {
+                    "$ref": "#/definitions/rnv.app/properties/common/properties/custom"
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Defines whether build scheme shows up in options to run"
                   },
                   "extendPlatform": {
                     "type": "string",
@@ -821,9 +887,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -1532,9 +1595,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -1663,6 +1723,13 @@
                   "properties": {
                     "publicUrl": {
                       "type": "string"
+                    },
+                    "customScripts": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Allows you to inject custom script into html header"
                     }
                   },
                   "additionalProperties": false
@@ -1791,9 +1858,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -2032,9 +2096,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -2291,9 +2352,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -2693,9 +2751,6 @@
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },
@@ -2801,8 +2856,19 @@
                 "BrowserWindow": {
                   "$ref": "#/definitions/rnv.app/properties/platforms/properties/macos/properties/BrowserWindow"
                 },
-                "experimentalNuGetDependency": {
-                  "type": "boolean"
+                "templateVSProject": {
+                  "type": "object",
+                  "properties": {
+                    "language": {
+                      "type": "string",
+                      "description": "Specify generated project language: cpp for C++ or cs for C#"
+                    },
+                    "arch": {
+                      "type": "string",
+                      "description": "Specification of targeted architecture"
+                    }
+                  },
+                  "additionalProperties": false
                 },
                 "buildSchemes": {
                   "type": "object",
@@ -2905,17 +2971,14 @@
                       "BrowserWindow": {
                         "$ref": "#/definitions/rnv.app/properties/platforms/properties/macos/properties/BrowserWindow"
                       },
-                      "experimentalNuGetDependency": {
-                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/windows/properties/experimentalNuGetDependency"
+                      "templateVSProject": {
+                        "$ref": "#/definitions/rnv.app/properties/platforms/properties/windows/properties/templateVSProject"
                       }
                     },
                     "additionalProperties": false
                   }
                 }
               },
-              "required": [
-                "buildSchemes"
-              ],
               "additionalProperties": false,
               "description": "Allows to customize platforms configurations based on chosen build scheme `-s`"
             },

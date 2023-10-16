@@ -18,7 +18,7 @@ import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } f
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { PluginCallback, RnvPlugin, RnvPluginScope, RnvPluginWebpackKey } from './types';
-import { RenativeConfigPlugin, RenativeWebpackConfig } from '../schema/types';
+import { ConfigRootPlugin, RenativeConfigPlugin, RenativeWebpackConfig } from '../schema/types';
 import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
@@ -187,7 +187,7 @@ export const configurePlugins = async (c: RnvContext) => {
                 );
             }
         } else if (dependencies && dependencies[k]) {
-            if (plugin.disabled !== true && plugin['no-npm'] !== true) {
+            if (plugin.disabled !== true && plugin.disableNpm !== true) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -205,7 +205,7 @@ ${ovMsg}`
                 }
             }
         } else if (devDependencies && devDependencies[k]) {
-            if (plugin.disabled !== true && plugin['no-npm'] !== true) {
+            if (plugin.disabled !== true && plugin.disableNpm !== true) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -220,7 +220,7 @@ ${ovMsg}`
                     newDevDeps[k] = plugin.version;
                 }
             }
-        } else if (plugin.disabled !== true && plugin['no-npm'] !== true) {
+        } else if (plugin.disabled !== true && plugin.disableNpm !== true) {
             // Dependency does not exists
             if (plugin.version) {
                 logInfo(
@@ -701,6 +701,7 @@ export const installPackageDependenciesAndPlugins = async (c: RnvContext) => {
 };
 
 const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
+    let renativePlugin: ConfigRootPlugin | undefined;
     let renativePluginPath;
     try {
         renativePluginPath = require.resolve(`${pluginName}/renative.plugin.json`, { paths: [c.paths.project.dir] });
@@ -709,9 +710,9 @@ const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
     }
 
     if (renativePluginPath) {
-        return readObjectSync(renativePluginPath);
+        renativePlugin = readObjectSync(renativePluginPath);
     }
-    return null;
+    return renativePlugin;
 };
 
 export const checkForPluginDependencies = async (c: RnvContext) => {
@@ -731,7 +732,7 @@ export const checkForPluginDependencies = async (c: RnvContext) => {
             // we have dependencies for this plugin
             Object.keys(renativePluginConfig.plugins).forEach((p) => {
                 const plg = bcPlugins[pluginName];
-                if (!bcPlugins[p] && typeof plg !== 'string' && plg.plugins?.[p] !== null) {
+                if (!bcPlugins[p] && typeof plg !== 'string' && plg.pluginDependencies?.[p] !== null) {
                     logWarning(`Plugin ${p} is not installed yet.`);
                     toAdd[p] = renativePluginConfig.plugins[p];
                     bcPlugins[p] = renativePluginConfig.plugins[p];

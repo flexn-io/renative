@@ -1,0 +1,19 @@
+{
+  "$ref": "#/definitions/rnv.plugin",
+  "definitions": {
+    "rnv.plugin": {
+      "type": "object",
+      "properties": {
+        "custom": {
+          "description": "Object ysed to extend your renative with custom props. This allows renative json schema to be validated"
+        },
+        "$schema": {
+          "type": "string",
+          "description": "schema definition"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}
