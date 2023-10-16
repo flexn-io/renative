@@ -1,6 +1,5 @@
 import { z } from 'zod';
-import { PlatformsKeys } from '../shared';
-import { CommonSchemaPartial } from '../common';
+import { PlatformsKeys } from '../../shared';
 
 export const PlatformEngine = z
     .string()
@@ -29,7 +28,7 @@ export const AssetFolderPlatform = z
         'Alternative platform assets. This is useful for example when you want to use same android assets in androidtv and want to avoid duplicating assets'
     );
 
-export const PlatformBase = CommonSchemaPartial.extend({
+export const PlatformBaseFragment = {
     extendPlatform: z.optional(PlatformsKeys),
     assetFolderPlatform: z.optional(AssetFolderPlatform),
     engine: z.optional(PlatformEngine),
@@ -39,4 +38,4 @@ export const PlatformBase = CommonSchemaPartial.extend({
     enableSourceMaps: z.optional(EnableSourceMaps),
     bundleIsDev: z.optional(BundleIsDev),
     getJsBundleFile: z.string().optional(),
-});
+};

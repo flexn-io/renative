@@ -1,8 +1,14 @@
 import { z } from 'zod';
-import { PlatformBase } from './base';
+import { PlatformBaseFragment } from './fragments/base';
+import { CommonSchemaFragment } from '../common';
+import { PlatformWebpackFragment } from './fragments/webpack';
+import { PlatformWebFragment } from './fragments/web';
+import { PlatformWebOSFragment } from './fragments/webos';
 
-export const PlatformWebOSPartialSchema = {
-    iconColor: z.string().optional(),
-};
-
-export const PlatformWebOS = PlatformBase.extend(PlatformWebOSPartialSchema);
+export const PlatformWebosSchema = z.object({
+    ...CommonSchemaFragment,
+    ...PlatformBaseFragment,
+    ...PlatformWebFragment,
+    ...PlatformWebpackFragment,
+    ...PlatformWebOSFragment,
+});

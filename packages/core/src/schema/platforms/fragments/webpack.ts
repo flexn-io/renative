@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const WebpackConfig = z.object({});
 
-export const PlatformDecoratorWebpackSchema = {
+export const PlatformWebpackFragment = {
     webpackConfig: z.optional(WebpackConfig),
 
     // webpackConfig: {

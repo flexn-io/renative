@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { BuildSchemeBase, BundleId, Ext, HexColor, Runtime } from '../shared';
-import { PlatformBase } from '../platforms/base';
+import { BuildSchemeFragment, BundleId, Ext, HexColor, Runtime } from '../shared';
+import { PlatformBaseFragment } from '../platforms/fragments/base';
 
 // DEPRECATED?
 export const SplashScreen = z.boolean().describe('Enable or disable splash screen');
@@ -49,10 +49,6 @@ const IncludedFonts = z
     .describe(
         'Array of fonts you want to include in specific app or scheme. Should use exact font file (without the extension) located in `./appConfigs/base/fonts` or `*` to mark all'
     );
-
-const CommonBuildSchemes = z.record(z.string(), BuildSchemeBase.merge(PlatformBase));
-
-export type _CommonBuildSchemesSchemaType = z.infer<typeof CommonBuildSchemes>;
 
 const BackgroundColor = HexColor.describe('Defines root view backgroundColor for all platforms in HEX format');
 
@@ -134,7 +130,7 @@ IN: 1.0.23 OUT: 100230000
 
 //LEVEl 1
 
-export const CommonSchemaPartial = z.object({
+export const CommonSchemaFragment = {
     includedPermissions: z.optional(IncludedPermissions),
     excludedPermissions: z.optional(ExcludedPermissions),
     id: z.optional(BundleId),
@@ -157,10 +153,25 @@ export const CommonSchemaPartial = z.object({
     excludedPlugins: z.optional(ExcludedPlugins),
     runtime: z.optional(Runtime),
     custom: z.optional(Ext),
-});
+};
 
-export type _CommonSchemaPartialType = z.infer<typeof CommonSchemaPartial>;
+// export type _CommonSchemaPartialType = z.infer<typeof CommonSchemaFragment>;
 
-export const CommonSchema = CommonSchemaPartial.extend({
-    buildSchemes: z.optional(CommonBuildSchemes),
-}).describe('Common config props used as default props for all available buildSchemes');
+// const CommonBuildSchemes = z.record(z.string(), BuildSchemeBase.merge(PlatformBaseFragment));
+
+// export type _CommonBuildSchemesSchemaType = z.infer<typeof CommonBuildSchemes>;
+
+export const CommonSchema = z
+    .object({
+        ...CommonSchemaFragment,
+        buildSchemes: z.optional(
+            z.record(
+                z.string(),
+                z.object({
+                    ...BuildSchemeFragment,
+                    ...PlatformBaseFragment,
+                })
+            )
+        ),
+    })
+    .describe('Common config props used as default props for all available buildSchemes');

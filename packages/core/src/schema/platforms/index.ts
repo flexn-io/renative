@@ -1,69 +1,75 @@
 import { z } from 'zod';
-import { PlatformAndroid, PlatformAndroidPartialSchema } from './android';
-import { PlatformiOS, PlatformiOSPartialSchema } from './ios';
-import { PlatformWeb, PlatformWebPartialSchema } from './web';
-import { PlatformTizen, PlatformTizenPartialSchema } from './tizen';
-import { PlatformDecoratorElectronSchema } from './decorators/electron';
-import { PlatformWindowsPartialSchema } from './windows';
-import { PlatformDecoratorWebpackSchema } from './decorators/webpack';
-import { PlatformDecoratorNextJsSchema } from './decorators/nextjs';
-import { PlatformWebOS, PlatformWebOSPartialSchema } from './webos';
-import { PlatformDecoratorLightningSchema } from './decorators/lightning';
-import { PlatformDecoratorReactNativeSchema } from './decorators/reactNative';
-import { PlatformBase } from './base';
-// import { PlatformSharedReactNative } from './decorators/reactNative';
+import { PlatformAndroidSchema } from './android';
+import { PlatformiOSSchema } from './ios';
+import { PlatformElectronFragment } from './fragments/electron';
+import { PlatformWindowsSchema } from './windows';
+import { PlatformWebpackFragment } from './fragments/webpack';
+import { PlatformNextJsFragment } from './fragments/nextjs';
+import { PlatformLightningFragment } from './fragments/lightning';
+import { PlatformReactNativeFragment } from './fragments/reactNative';
+import { PlatformBaseFragment } from './fragments/base';
+import { PlatformMacosSchema } from './macos';
+import { PlatformWebSchema } from './web';
+import { PlatformTizenSchema } from './tizen';
+import { PlatformWebosSchema } from './webos';
+import { CommonSchemaFragment } from '../common';
+import { PlatformWebOSFragment } from './fragments/webos';
+import { PlatformWindowsFragment } from './fragments/windows';
+import { PlatformTizenFragment } from './fragments/tizen';
+import { PlatformWebFragment } from './fragments/web';
+import { PlatformAndroidFragment } from './fragments/android';
+import { PlatformiOSFragment } from './fragments/ios';
+import { TemplateAndroidFragment } from './fragments/templateAndroid';
+import { TemplateXcodeFragment } from './fragments/templateXcode';
 
-const MergedPlatformPlainObject = PlatformBase.extend({
-    ...PlatformiOSPartialSchema,
-    ...PlatformAndroidPartialSchema,
-    ...PlatformWebPartialSchema,
-    ...PlatformTizenPartialSchema,
-    ...PlatformWindowsPartialSchema,
-    ...PlatformWebOSPartialSchema,
-    ...PlatformDecoratorLightningSchema,
-    ...PlatformDecoratorReactNativeSchema,
-    ...PlatformDecoratorWebpackSchema,
-    ...PlatformDecoratorElectronSchema,
-    ...PlatformDecoratorNextJsSchema,
+const MergedPlatformPlainObject = z.object({
+    //BASE
+    ...CommonSchemaFragment,
+    ...PlatformBaseFragment,
+    //PLATFORMS
+    ...PlatformiOSFragment,
+    ...PlatformAndroidFragment,
+    ...PlatformWebFragment,
+    ...PlatformTizenFragment,
+    ...PlatformWindowsFragment,
+    ...PlatformWebOSFragment,
+    //ENGINES
+    ...PlatformLightningFragment,
+    ...PlatformReactNativeFragment,
+    ...PlatformWebpackFragment,
+    ...PlatformElectronFragment,
+    ...PlatformNextJsFragment,
+    ...TemplateAndroidFragment,
+    ...TemplateXcodeFragment,
+    ...PlatformLightningFragment,
 });
 
 export type _MergedPlatformObjectType = z.infer<typeof MergedPlatformPlainObject>;
 
-// LEVEL 2
-
-// export const PlatformBuildSchemes = z
-//     .record(z.string(), MergedPlatformPlainObject)
-//     .describe('Allows to customize platforms configurations based on chosen build scheme `-s`');
-
-// const PlatformMerged = MergedPlatformPlainObject.extend({
-//     buildSchemes: z.optional(PlatformBuildSchemes),
-// });
-// export type _PlatformMergedType = z.infer<typeof PlatformMerged>;
-
-// const generatePlatform = <T extends ZodObject>(schema: T) => {
-//     return z.optional(
-//         schema.extend({
-//             buildSchemes: z
-//                 .record(z.string(), schema)
-//                 .optional()
-//                 .describe('Allows to customize platforms configurations based on chosen build scheme `-s`'),
-//         })
-//     );
-// };
 const desc = 'Allows to customize platforms configurations based on chosen build scheme `-s`';
 
 const androidSchema = z
-    .optional(PlatformAndroid.extend({ buildSchemes: z.record(z.string(), PlatformAndroid) }))
+    .optional(PlatformAndroidSchema.extend({ buildSchemes: z.record(z.string(), PlatformAndroidSchema) }))
     .describe(desc);
 // const androidSchema = generatePlatform(PlatformAndroid);
-const iosSchema = z.optional(PlatformiOS.extend({ buildSchemes: z.record(z.string(), PlatformiOS) })).describe(desc);
-const tizenSchema = z
-    .optional(PlatformTizen.extend({ buildSchemes: z.record(z.string(), PlatformTizen) }))
+const iosSchema = z
+    .optional(PlatformiOSSchema.extend({ buildSchemes: z.record(z.string(), PlatformiOSSchema) }))
     .describe(desc);
-const webSchema = z.optional(PlatformWeb.extend({ buildSchemes: z.record(z.string(), PlatformWeb) })).describe(desc);
+const macosSchema = z
+    .optional(PlatformMacosSchema.extend({ buildSchemes: z.record(z.string(), PlatformMacosSchema) }))
+    .describe(desc);
+const windowsSchema = z
+    .optional(PlatformWindowsSchema.extend({ buildSchemes: z.record(z.string(), PlatformWindowsSchema) }))
+    .describe(desc);
+const tizenSchema = z
+    .optional(PlatformTizenSchema.extend({ buildSchemes: z.record(z.string(), PlatformTizenSchema) }))
+    .describe(desc);
+const webSchema = z
+    .optional(PlatformWebSchema.extend({ buildSchemes: z.record(z.string(), PlatformWebSchema) }))
+    .describe(desc);
 
 const webosSchema = z
-    .optional(PlatformWebOS.extend({ buildSchemes: z.record(z.string(), PlatformWebOS) }))
+    .optional(PlatformWebosSchema.extend({ buildSchemes: z.record(z.string(), PlatformWebosSchema) }))
     .describe(desc);
 
 export const Platforms = z
@@ -82,10 +88,10 @@ export const Platforms = z
         webtv: webSchema,
         chromecast: webSchema,
         kaios: webSchema,
-        macos: webSchema,
+        macos: macosSchema,
         linux: webSchema,
-        windows: webSchema,
-        xbox: webSchema,
+        windows: windowsSchema,
+        xbox: windowsSchema,
     })
     .describe('Object containing platform configurations');
 

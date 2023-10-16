@@ -1,7 +1,7 @@
 import type { _PluginPlatformMergedType } from './plugins';
 import type { _ConfigRootEngineType } from './configFiles/engine';
 import type { _RootProjectLocalSchemaPartialType } from './configFiles/local';
-import type { _AppDelegateMethodType } from './platforms/decorators/templateXcodeBase';
+import type { _AppDelegateMethodType } from './platforms/fragments/templateXcodeBase';
 import type { _PluginiOSType } from './plugins/ios';
 import type { _PlatformsKeysType } from './shared';
 import type { NpmPackageFile } from '../configs/types';
@@ -13,7 +13,7 @@ import type { _RootProjectSchemaPartialType } from './configFiles/project';
 import type { _RootTemplatesSchemaType } from './configFiles/pluginTemplates';
 import type { _ConfigRootPlugin } from './configFiles/plugin';
 import type { _RootProjectSchemaType } from './configFiles/project';
-import type { _ManifestChildWithChildrenType } from './platforms/decorators/templateAndroidBase';
+import type { _ManifestChildWithChildrenType } from './platforms/fragments/templateAndroidBase';
 import type { _CommonBuildSchemesSchemaType, _CommonSchemaPartialType } from './common';
 // import type { RenativeConfigFile } from './types';
 

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { PluginPlatformBase } from './platformBase';
-import { TemplateXcodeBase } from '../platforms/decorators/templateXcodeBase';
+import { TemplateXcodeBaseFragment } from '../platforms/fragments/templateXcodeBase';
 
 const Git = z.string().describe('Alternative git url for pod instead of version');
 
@@ -16,7 +16,7 @@ export const PluginiOS = PluginPlatformBase.merge(
         podNames: z.optional(z.array(z.string())),
         podName: z.optional(z.string()),
         staticFrameworks: z.optional(z.array(z.string())),
-        templateXcode: z.optional(TemplateXcodeBase),
+        templateXcode: z.optional(z.object(TemplateXcodeBaseFragment)),
     })
 );
 

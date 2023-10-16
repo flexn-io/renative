@@ -1,14 +1,14 @@
 import { z } from 'zod';
-import { PlatformBase } from './base';
+import { PlatformBaseFragment } from './fragments/base';
+import { PlatformTizenFragment } from './fragments/tizen';
+import { CommonSchemaFragment } from '../common';
+import { PlatformWebpackFragment } from './fragments/webpack';
+import { PlatformWebFragment } from './fragments/web';
 
-const AppName = z.string();
-
-const CertificateProfile = z.string();
-
-export const PlatformTizenPartialSchema = {
-    package: z.optional(z.string()),
-    certificateProfile: z.optional(CertificateProfile),
-    appName: z.optional(AppName),
-};
-
-export const PlatformTizen = PlatformBase.extend(PlatformTizenPartialSchema);
+export const PlatformTizenSchema = z.object({
+    ...CommonSchemaFragment,
+    ...PlatformBaseFragment,
+    ...PlatformTizenFragment,
+    ...PlatformWebFragment,
+    ...PlatformWebpackFragment,
+});

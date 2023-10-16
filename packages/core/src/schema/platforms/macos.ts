@@ -1,12 +1,14 @@
 import { z } from 'zod';
 import { PlatformBaseFragment } from './fragments/base';
-import { PlatformiOSFragment } from './fragments/ios';
 import { CommonSchemaFragment } from '../common';
+import { PlatformiOSFragment } from './fragments/ios';
+import { PlatformElectronFragment } from './fragments/electron';
 import { TemplateXcodeFragment } from './fragments/templateXcode';
 
-export const PlatformiOSSchema = z.object({
+export const PlatformMacosSchema = z.object({
     ...CommonSchemaFragment,
     ...PlatformBaseFragment,
     ...PlatformiOSFragment,
     ...TemplateXcodeFragment,
+    ...PlatformElectronFragment,
 });

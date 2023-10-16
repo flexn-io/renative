@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PlatformDecoratorNextJsSchema = {
+export const PlatformNextJsFragment = {
     pagesDir: z.string().optional(),
     // pagesDir: {
     //     type: 'string',
