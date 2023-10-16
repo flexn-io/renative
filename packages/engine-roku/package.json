@@ -13,9 +13,9 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
+        "LICENSE",
         "lib",
-        "renative.engine.json",
-        "LICENSE"
+        "renative.engine.json"
     ],
     "main": "lib/index.js",
     "repository": {
@@ -33,7 +33,7 @@
     "dependencies": {},
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-canary.6"
+        "@rnv/core": "^1.0.0-canary.7"
     },
     "private": false,
     "publishConfig": {

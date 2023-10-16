@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "1.0.0-canary.6",
+    "version": "1.0.0-canary.7",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"
@@ -13,10 +13,10 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
+        "LICENSE",
         "lib",
         "renative.engine.json",
-        "templates",
-        "LICENSE"
+        "templates"
     ],
     "main": "lib/index.js",
     "repository": {
@@ -32,9 +32,9 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-tizen": "1.0.0-canary.6",
-        "@rnv/sdk-webos": "1.0.0-canary.6",
-        "@rnv/sdk-webpack": "1.0.0-canary.6",
+        "@rnv/sdk-tizen": "1.0.0-canary.7",
+        "@rnv/sdk-webos": "1.0.0-canary.7",
+        "@rnv/sdk-webpack": "1.0.0-canary.7",
         "better-opn": "1.0.0",
         "html-webpack-harddisk-plugin": "1.0.2",
         "html-webpack-plugin": "4.5.1",
@@ -43,7 +43,7 @@
     },
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-canary.6"
+        "@rnv/core": "^1.0.0-canary.7"
     },
     "private": false,
     "publishConfig": {
