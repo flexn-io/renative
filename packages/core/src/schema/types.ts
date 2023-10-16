@@ -88,8 +88,6 @@ export type ConfigRootPlugin = _ConfigRootPlugin;
 
 export type RenativeConfigFile = _ConfigRootMerged;
 
-export type RenativeConfigBuildScheme = Required<RenativeConfigFile['platforms'][string]>['buildSchemes'][string];
-
 export type RenativeConfigPlugin = RenativeConfigFile['plugins'][string];
 
 export type RenativeConfigPluginiOS = _PluginiOSType;

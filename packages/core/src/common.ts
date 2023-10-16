@@ -11,7 +11,7 @@ import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
 import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
-import { ConfigProp, RenativeConfigBuildScheme, RenativeConfigFile } from './schema/types';
+import { ConfigProp } from './schema/types';
 import { inquirerPrompt } from './api';
 import { RnvPlatform } from './types';
 
@@ -266,6 +266,12 @@ export const getConfigProp = <T extends keyof ConfigProp>(
     return _getConfigProp<T>(c, platform, key, defaultVal, c.buildConfig);
 };
 
+type PlatformGeneric =
+    | {
+          buildSchemes?: Record<string, any>;
+      }
+    | undefined;
+
 export const _getConfigProp = <T extends keyof ConfigProp>(
     c: RnvContext,
     platform: RnvPlatform,
@@ -273,30 +279,30 @@ export const _getConfigProp = <T extends keyof ConfigProp>(
     defaultVal?: ConfigProp[T],
     sourceObj?: Partial<RenativeConfigFile>
 ): ConfigProp[T] => {
-    if (!sourceObj) return null;
+    if (!sourceObj || !platform) return undefined;
 
     if (!key || !key.split) {
         logError('getConfigProp: invalid key!');
         return null;
     }
 
-    const p = platform ? sourceObj.platforms?.[platform] : undefined;
+    const platformObj: PlatformGeneric = sourceObj.platforms?.[platform];
     const ps = c.runtime.scheme;
     const keyArr = key.split('.');
     const baseKey = keyArr.shift() || '';
     const subKey = keyArr.join('.');
 
     let resultPlatforms;
-    let scheme: RenativeConfigBuildScheme;
-    if (p) {
-        scheme = p.buildSchemes?.[ps] || {};
-        resultPlatforms = getFlavouredProp(c, p, baseKey);
+    let scheme;
+    if (platformObj) {
+        scheme = platformObj.buildSchemes?.[ps] || {};
+        resultPlatforms = getFlavouredProp(c, platformObj, baseKey);
     } else {
         scheme = {};
     }
 
     const resultCli = baseKey && CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
-    const resultScheme = baseKey && scheme[baseKey as keyof RenativeConfigBuildScheme];
+    const resultScheme = baseKey && scheme[baseKey];
     const resultCommonRoot = getFlavouredProp(c, sourceObj.common || {}, baseKey);
     const resultCommonScheme = getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, baseKey);
     const resultCommon = resultCommonScheme || resultCommonRoot;

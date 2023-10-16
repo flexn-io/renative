@@ -70,6 +70,8 @@ export const Platforms = z
         ios: iosSchema,
         tvos: iosSchema,
         tizen: tizenSchema,
+        tizenmobile: tizenSchema,
+        tizenwatch: tizenSchema,
         webos: webosSchema,
         web: webSchema,
         webtv: webSchema,
