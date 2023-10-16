@@ -11,7 +11,8 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
-        "lib"
+        "lib",
+        "LICENSE"
     ],
     "main": "lib/index.js",
     "repository": {

@@ -12,7 +12,9 @@
     "files": [
         "lib",
         "supportFiles",
-        "types.d.ts"
+        "templates",
+        "types.d.ts",
+        "LICENSE"
     ],
     "main": "lib/index.js",
     "repository": {

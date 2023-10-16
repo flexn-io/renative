@@ -11,7 +11,7 @@
     "bugs": {
         "url": "https://github.com/flexn-io/renative/issues"
     },
-    "license": "ISC",
+    "license": "MIT",
     "author": "Mihai Blaga <mihai.blaga@hey.com> (https://github.com/mihaiblaga89)",
     "contributors": [],
     "main": "lib/index.js",

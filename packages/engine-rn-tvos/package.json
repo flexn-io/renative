@@ -15,8 +15,8 @@
     "files": [
         "lib",
         "renative.engine.json",
-        "supportFiles",
-        "templates"
+        "templates",
+        "LICENSE"
     ],
     "main": "lib/index.js",
     "repository": {

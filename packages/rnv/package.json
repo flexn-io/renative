@@ -51,7 +51,8 @@
         "bin",
         "coreTemplateFiles",
         "lib",
-        "pluginTemplates"
+        "pluginTemplates",
+        "LICENSE"
     ],
     "main": "lib/index.js",
     "bin": {
