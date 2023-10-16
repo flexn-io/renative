@@ -14,10 +14,10 @@ export const DisableRnvDefaultOverrides = z
 
 //LEVEl 0 (ROOT)
 
-export const RootPluginTemplatesSchema = z.object({
+export const RootPluginsSchema = z.object({
     custom: z.optional(Ext),
     pluginTemplates: PluginTemplates,
     disableRnvDefaultOverrides: z.optional(DisableRnvDefaultOverrides),
 });
 
-export type _RootTemplatesSchemaType = z.infer<typeof RootPluginTemplatesSchema>;
+export type _RootPluginsSchemaType = z.infer<typeof RootPluginsSchema>;

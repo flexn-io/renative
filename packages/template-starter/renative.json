@@ -141,7 +141,7 @@
         "@react-native-community/cli-platform-ios": {
             "version": "11.3.7",
             "disablePluginTemplateOverrides": false,
-            "skipNpm": true
+            "disableNpm": true
         },
         "react-native": {
             "version": "0.72.4"

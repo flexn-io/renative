@@ -56,11 +56,7 @@ export type _PluginPlatformMergedSchemaType = z.infer<typeof PluginPlatformMerge
 
 export type _PluginType = z.infer<typeof PluginSchema>;
 
-// export type _PluginiOSType = z.infer<typeof PluginPlatformiOSFragment>;
-
-// export type _PluginPartialType = z.infer<typeof PluginPartial>;
-
-export const Plugins = z
+export const PluginsSchema = z
     .record(z.string(), z.union([PluginSchema, z.string()]))
     .describe(
         'Define all plugins available in your project. you can then use `includedPlugins` and `excludedPlugins` props to define active and inactive plugins per each app config'

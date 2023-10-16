@@ -349,7 +349,9 @@
         },
         "windows": {
             "entryFile": "index",
-            "language": "cpp",
+            "templateVSProject": {
+                "language": "cpp"
+            },
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false

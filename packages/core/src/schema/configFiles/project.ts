@@ -1,8 +1,8 @@
-import { z } from 'zod';
+import { AnyZodObject, z } from 'zod';
 import { CommonSchema } from '../common';
 import { Ext, ExtendTemplate, PlatformsKeys, Runtime } from '../shared';
 import { PlatformsSchema } from '../platforms';
-import { Plugins } from '../plugins';
+import { PluginsSchema } from '../plugins';
 
 const DefaultCommandSchemes = z
     .record(z.enum(['run', 'export', 'build']), z.string())
@@ -217,7 +217,7 @@ const Paths = z
 
 //LEVEl 0 (ROOT)
 
-export const RootProjectSchemaPartial = z.object({
+const RootProjectBaseFragment = {
     workspaceID: WorkspaceID,
     projectName: ProjectName,
     isMonorepo: z.optional(IsMonoRepo),
@@ -239,17 +239,23 @@ export const RootProjectSchemaPartial = z.object({
     integrations: z.optional(Integrations),
     env: z.optional(Env),
     runtime: z.optional(Runtime),
-});
+};
 
-export const RootProjectSchema = RootProjectSchemaPartial.merge(
-    z.object({
-        platforms: z.optional(PlatformsSchema),
-        plugins: z.optional(Plugins),
-        common: z.optional(CommonSchema),
-    })
-);
-//.catchall(z.never());
+const RootProjectBaseSchema = z.object(RootProjectBaseFragment);
+const RootProjectCommonSchema = z.object({ common: z.optional(CommonSchema) });
+const RootProjectPlatformsSchema = z.object({ platforms: z.optional(PlatformsSchema) });
+const RootProjectPluginsSchema = z.object({ plugins: z.optional(PluginsSchema) });
 
-export type _RootProjectSchemaType = z.infer<typeof RootProjectSchema>;
+// NOTE: Need to explictly type this to generic zod object to avoid TS error:
+// The inferred type of this node exceeds the maximum length the compiler will serialize...
+// This is ok we only use this full schema for runtime validations. actual types
+export const RootProjectSchema: AnyZodObject = RootProjectBaseSchema.merge(RootProjectCommonSchema)
+    .merge(RootProjectPlatformsSchema)
+    .merge(RootProjectPluginsSchema);
 
-export type _RootProjectSchemaPartialType = z.infer<typeof RootProjectSchemaPartial>;
+export type _RootProjectBaseSchemaType = z.infer<typeof RootProjectBaseSchema>;
+
+export type _RootProjectSchemaType = z.infer<typeof RootProjectBaseSchema> &
+    z.infer<typeof RootProjectCommonSchema> &
+    z.infer<typeof RootProjectPlatformsSchema> &
+    z.infer<typeof RootProjectPluginsSchema>;

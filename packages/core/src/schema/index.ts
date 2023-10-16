@@ -1,11 +1,13 @@
-export { RootAppSchema } from './configFiles/appConfig';
+export { RootAppSchema } from './configFiles/app';
 export { RootProjectSchema } from './configFiles/project';
 export { RootEngineSchema } from './configFiles/engine';
 export { RootGlobalSchema } from './configFiles/global';
-export { RootProjectLocalSchema } from './configFiles/local';
+export { RootLocalSchema } from './configFiles/local';
 export { RootPluginSchema } from './configFiles/plugin';
-export { RootPluginTemplatesSchema } from './configFiles/pluginTemplates';
+export { RootPluginsSchema } from './configFiles/plugins';
 export { RootPrivateSchema } from './configFiles/private';
-export { RootProjectTemplateSchema } from './configFiles/template';
+export { RootTemplateSchema } from './configFiles/template';
+export { RootTemplatesSchema } from './configFiles/templates';
+export { RootIntegrationSchema } from './configFiles/integration';
 
 export * from './validators';

@@ -39,7 +39,7 @@
                 "type": "string",
                 "description": "Will define custom scope for your plugin config to extend from.\n\nNOTE: custom scopes can be defined via paths.pluginTemplates.[CUSTOM_SCOPE].{}"
               },
-              "no-npm": {
+              "disableNpm": {
                 "type": "boolean",
                 "description": "Will skip including plugin in package.json and installing it via npm/yarn etc"
               },
@@ -64,10 +64,7 @@
                 },
                 "description": "List of other Renative plugins this plugin depends on"
               },
-              "plugins": {
-                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/pluginDependencies"
-              },
-              "webpack": {
+              "webpackConfig": {
                 "type": "object",
                 "properties": {
                   "modulePaths": {
@@ -126,14 +123,8 @@
                 "additionalProperties": false,
                 "description": "Allows you to configure webpack bahaviour per each individual plugin"
               },
-              "webpackConfig": {
-                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/webpack"
-              },
-              "engine-rn-next": {
-                "$ref": "#/definitions/rnv.plugins/properties/pluginTemplates/additionalProperties/properties/webpack"
-              },
               "disablePluginTemplateOverrides": {
-                "type": "string",
+                "type": "boolean",
                 "description": "Disables plugin overrides for selected plugin"
               },
               "android": {
@@ -698,6 +689,9 @@
                       }
                     },
                     "additionalProperties": false
+                  },
+                  "isStatic": {
+                    "type": "boolean"
                   }
                 },
                 "additionalProperties": false

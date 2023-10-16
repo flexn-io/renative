@@ -1,4 +1,5 @@
 {
+    "$schema": "../../.rnv/schema/rnv.template.json",
     "templateConfig": {
         "includedPaths": [
             "buildHooks",

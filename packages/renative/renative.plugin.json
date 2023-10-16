@@ -1,3 +1,4 @@
 {
+    "$schema": "../../.rnv/schema/rnv.plugin.json",
     "plugins": {}
 }

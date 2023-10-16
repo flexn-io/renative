@@ -10,11 +10,11 @@ const Meta = z.object({
 
 //LEVEl 0 (ROOT)
 
-export const RootProjectLocalSchema = z.object({
+export const RootLocalSchema = z.object({
     workspaceAppConfigsDir: z.optional(WorkspaceAppConfigsDir),
     defaultTargets: z.optional(DefaultTargets),
     _meta: z.optional(Meta),
     extend: z.optional(z.string()),
 });
 
-export type _RootProjectLocalSchemaPartialType = z.infer<typeof RootProjectLocalSchema>;
+export type _RootLocalSchemaType = z.infer<typeof RootLocalSchema>;

@@ -1,20 +1,20 @@
 import type { _PluginPlatformMergedSchemaType } from './plugins';
 import type { _ConfigRootEngineType } from './configFiles/engine';
-import type { _RootProjectLocalSchemaPartialType } from './configFiles/local';
+import type { _RootLocalSchemaType } from './configFiles/local';
 import type { _AppDelegateMethodType } from './platforms/fragments/templateXcodeBase';
 import type { _PlatformsKeysType } from './shared';
 import type { NpmPackageFile } from '../configs/types';
 import type { _MergedPlatformObjectType, _PlatformsSchemaType } from './platforms';
 import type { _PluginType } from './plugins';
-import type { _RootAppSchemaPartialType, _RootAppSchemaType } from './configFiles/appConfig';
+import type { _RootAppBaseSchemalType, _RootAppSchemaType } from './configFiles/app';
 import type { _RootGlobalSchemaType } from './configFiles/global';
-import type { _RootProjectSchemaPartialType } from './configFiles/project';
-import type { _RootTemplatesSchemaType } from './configFiles/pluginTemplates';
+import type { _RootProjectBaseSchemaType } from './configFiles/project';
+import type { _RootPluginsSchemaType } from './configFiles/plugins';
 import type { _RootPluginSchemaType } from './configFiles/plugin';
 import type { _RootProjectSchemaType } from './configFiles/project';
 import type { _ManifestChildWithChildrenType } from './platforms/fragments/templateAndroidBase';
-import { _RootPrivateSchemaType } from './configFiles/private';
-import { _CommonSchemaType } from './common';
+import type { _RootPrivateSchemaType } from './configFiles/private';
+import type { _CommonSchemaType } from './common';
 // import type { _CommonBuildSchemesSchemaType, _CommonSchemaPartialType } from './common';
 // import type { RenativeConfigFile } from './types';
 
@@ -24,7 +24,7 @@ import { _CommonSchemaType } from './common';
 // When all reantive json get merged into one file this happens conceptually anyway
 
 type MergedPluginTemplates = {
-    pluginTemplates: Record<string, _RootTemplatesSchemaType>;
+    pluginTemplates: Record<string, _RootPluginsSchemaType>;
 };
 
 // type Common = {
@@ -66,9 +66,9 @@ type ProjectTemplate = {
 
 type _ConfigRootMerged = _RootGlobalSchemaType &
     MergedPluginTemplates &
-    Required<_RootProjectSchemaPartialType> &
-    _RootProjectLocalSchemaPartialType &
-    _RootAppSchemaPartialType &
+    Required<_RootProjectBaseSchemaType> &
+    _RootLocalSchemaType &
+    _RootAppBaseSchemalType &
     Common &
     PluginsMap &
     PlatformsMap &
@@ -107,14 +107,14 @@ export type RenativeConfigTaskKey = keyof Required<Required<RenativeConfigFile>[
 
 export type RenativeEngineConfig = _ConfigRootEngineType;
 
-export type RenativeConfigLocal = _RootProjectLocalSchemaPartialType;
+export type RenativeConfigLocal = _RootLocalSchemaType;
 
 export type RenativeConfigAppDelegateMethod = _AppDelegateMethodType;
 
 export type ManifestFeature = _ManifestChildWithChildrenType;
 
-export type ConfigProp = _RootProjectSchemaPartialType &
-    _RootAppSchemaPartialType &
+export type ConfigProp = _RootProjectBaseSchemaType &
+    _RootAppBaseSchemalType &
     _RootPrivateSchemaType &
     _MergedPlatformObjectType;
 

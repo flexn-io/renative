@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const RootProjectTemplateSchema = z.object({
+export const RootTemplateSchema = z.object({
     templateConfig: z
         .object({
             includedPaths: z
@@ -39,4 +39,4 @@ export const RootProjectTemplateSchema = z.object({
 //     ],
 // },
 
-export type _RootProjectTemplateSchemaType = z.infer<typeof RootProjectTemplateSchema>;
+export type _RootTemplateSchemaType = z.infer<typeof RootTemplateSchema>;

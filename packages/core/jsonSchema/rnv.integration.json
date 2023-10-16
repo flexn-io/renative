@@ -1,0 +1,16 @@
+{
+  "$ref": "#/definitions/rnv.integration",
+  "definitions": {
+    "rnv.integration": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "description": "schema definition"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}
