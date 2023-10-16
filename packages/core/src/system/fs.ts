@@ -134,7 +134,11 @@ export const writeCleanFile = (
                 overrides.forEach((v) => {
                     if (v.override) {
                         const regEx = new RegExp(v.pattern, 'g');
-                        pFileClean = pFileClean.replace(regEx, v.override);
+                        if (typeof v.override === 'number') {
+                            pFileClean = pFileClean.replace(regEx, v.override.toString());
+                        } else {
+                            pFileClean = pFileClean.replace(regEx, v.override);
+                        }
                     }
                 });
             }
@@ -168,7 +172,11 @@ export const readCleanFile = (source: string, overrides?: OverridesOptions) => {
         overrides.forEach((v) => {
             if (v.override) {
                 const regEx = new RegExp(v.pattern, 'g');
-                pFileClean = pFileClean.replace(regEx, v.override);
+                if (typeof v.override === 'number') {
+                    pFileClean = pFileClean.replace(regEx, v.override.toString());
+                } else {
+                    pFileClean = pFileClean.replace(regEx, v.override);
+                }
             }
         });
     }

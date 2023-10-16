@@ -9,4 +9,5 @@ export const DEFAULTS = {
     gradleWrapperVersion: '6.9.1',
     author: 'Unknown',
     certificateProfile: 'RNVanillaCert',
+    signingConfig: 'Debug',
 };

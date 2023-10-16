@@ -16,6 +16,7 @@ import {
     logWarning,
     waitForExecCLI,
     inquirerPrompt,
+    DEFAULTS,
 } from '@rnv/core';
 import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
@@ -81,7 +82,7 @@ export const createDevelopTizenCertificate = (c: RnvContext) =>
         )
             .then(() =>
                 addDevelopTizenCertificate(c, {
-                    profileName: DEFAULT_SECURITY_PROFILE_NAME,
+                    profileName: DEFAULTS.certificateProfile,
                     certPath: path.join(certDirPath, `${certFilename}.p12`),
                     certPassword,
                 })
@@ -231,7 +232,7 @@ export const runTizenSimOrDevice = async (
 
     if (!platform) return;
 
-    const platformConfig = c.buildConfig.platforms?.[platform];
+    // const platformConfig = c.buildConfig.platforms?.[platform];
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const isHosted = hosted ?? !bundleAssets;
     const isLightningEngine = engine?.config.id === 'engine-lightning';
@@ -239,12 +240,15 @@ export const runTizenSimOrDevice = async (
         // console.log('RUN WEINRE');
     }
 
-    if (!platformConfig) {
-        throw new Error(
-            `runTizen: ${chalk().grey(platform)} not defined in your ${chalk().white(c.paths.appConfig.config)}`
-        );
-    }
-    if (!platformConfig.appName) {
+    // if (!platformConfig) {
+    //     throw new Error(
+    //         `runTizen: ${chalk().grey(platform)} not defined in your ${chalk().white(c.paths.appConfig.config)}`
+    //     );
+    // }
+
+    const appName = getConfigProp(c, platform, 'appName');
+
+    if (!appName) {
         throw new Error(
             `runTizen: ${chalk().grey(platform)}.appName not defined in your ${chalk().white(c.paths.appConfig.config)}`
         );
@@ -253,11 +257,12 @@ export const runTizenSimOrDevice = async (
     const tDir = getPlatformProjectDir(c)!;
     const tBuild = path.join(tDir, 'build');
     const tOut = path.join(tDir, 'output');
-    const tId = platformConfig.id;
-    const wgt = `${platformConfig.appName}.wgt`;
+    const tId = getConfigProp(c, platform, 'id');
+    const certProfile = getConfigProp(c, platform, 'certificateProfile') || DEFAULTS.certificateProfile;
+
+    const wgt = `${appName}.wgt`;
     // the tizen CLI cannot handle .wgt files with spaces correctly.
-    const wgtClean = `${platformConfig.appName.replace(/[^a-z0-9]/gi, '_')}.wgt`;
-    const certProfile = platformConfig.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
+    const wgtClean = `${appName.replace(/[^a-z0-9]/gi, '_')}.wgt`;
 
     let deviceID: string;
 

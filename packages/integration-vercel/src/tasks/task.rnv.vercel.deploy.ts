@@ -22,7 +22,7 @@ const _runDeploymentTask = (c: RnvContext, nowConfigPath: string) =>
         const defaultBuildFolder = path.join(getAppFolder(c), c.platform?.includes('next') ? 'out' : 'public');
         const params = [defaultBuildFolder, '-A', nowConfigPath];
         if (process.env.NOW_TOKEN) params.push('-t', process.env.NOW_TOKEN);
-        const nowIsProduction = getConfigProp(c, c.platform, 'nowIsProduction', false) === true;
+        const nowIsProduction = getConfigProp(c, c.platform, 'custom').nowIsProduction === true;
 
         if (nowIsProduction) params.push('--prod');
 
