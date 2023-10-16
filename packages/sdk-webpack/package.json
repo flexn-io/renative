@@ -12,7 +12,8 @@
     "files": [
         "lib",
         "nodeModuleOverrides",
-        "types.d.ts"
+        "types.d.ts",
+        "LICENSE"
     ],
     "main": "lib/index.js",
     "repository": {

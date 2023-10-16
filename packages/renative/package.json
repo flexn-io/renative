@@ -43,7 +43,8 @@
     "contributors": [],
     "files": [
         "lib",
-        "renative.plugin.json"
+        "renative.plugin.json",
+        "LICENSE"
     ],
     "main": "lib/index",
     "repository": {

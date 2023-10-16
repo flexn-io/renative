@@ -59,7 +59,8 @@
         "renative.template.json",
         "src",
         "static",
-        "tsconfig.json"
+        "tsconfig.json",
+        "LICENSE"
     ],
     "repository": {
         "type": "git",
