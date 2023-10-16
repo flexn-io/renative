@@ -1,18 +1,18 @@
-import path from 'path';
 import {
+    OverridesOptions,
+    addSystemInjects,
     getAppFolder,
     getAppId,
     getBuildFilePath,
+    getConfigProp,
     getEntryFile,
     getGetJsBundleFile,
-    getConfigProp,
     getIP,
-    addSystemInjects,
     logWarning,
     writeCleanFile,
-    OverridesOptions,
 } from '@rnv/core';
 import { mkdirSync } from 'fs';
+import path from 'path';
 import { Context } from './types';
 
 const JS_BUNDLE_DEFAULTS: any = {
@@ -173,13 +173,17 @@ export const parseMainActivitySync = (c: any) => {
 export const parseSplashActivitySync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
-    const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
+    const appId = getAppId(c, c.platform);
+    const javaPackageArray = appId.split('.');
+
+    const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.java.tpl';
+    const splashPath = `app/src/main/java/${javaPackageArray.join('/')}/SplashActivity.java`;
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
     const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
     if (enableAndroidX === true) {
         c.payload.pluginConfigAndroid.pluginSplashActivityImports +=
-            'import androidx.appcompat.app.AppCompatActivity\n';
+            'import androidx.appcompat.app.AppCompatActivity;\n';
     } else {
         c.payload.pluginConfigAndroid.pluginSplashActivityImports +=
             'import android.support.v7.app.AppCompatActivity\n';
@@ -195,7 +199,13 @@ export const parseSplashActivitySync = (c: Context) => {
 
     addSystemInjects(c, injects);
 
-    writeCleanFile(getBuildFilePath(c, platform, splashPath), path.join(appFolder, splashPath), injects, undefined, c);
+    writeCleanFile(
+        getBuildFilePath(c, platform, splashTemplatePath),
+        path.join(appFolder, splashPath),
+        injects,
+        undefined,
+        c
+    );
 };
 
 export const injectPluginKotlinSync = (c: any, plugin: any, key: any, pkg: any) => {
