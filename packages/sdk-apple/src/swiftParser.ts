@@ -26,7 +26,6 @@ import {
     SwiftAppDelegateKey,
     SwiftAppDelegateSubKey,
     SwiftMethod,
-    TemplateXcode,
 } from './types';
 
 export const parseAppDelegate = (
@@ -259,8 +258,8 @@ export const parseAppDelegate = (
 
 export const injectPluginSwiftSync = (c: Context, plugin: RenativeConfigPluginPlatform, key: string) => {
     logDebug(`injectPluginSwiftSync:${c.platform}:${key}`);
-    const templateXcode = getFlavouredProp<TemplateXcode>(c, plugin, 'templateXcode');
-    const appDelegateImports = templateXcode?.AppDelegate_mm.appDelegateImports;
+    const templateXcode = getFlavouredProp(c, plugin, 'templateXcode');
+    const appDelegateImports = templateXcode?.AppDelegate_mm?.appDelegateImports;
     if (appDelegateImports) {
         appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
@@ -275,7 +274,7 @@ export const injectPluginSwiftSync = (c: Context, plugin: RenativeConfigPluginPl
     //     c.payload.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     // }
 
-    const appDelegateExtensions = templateXcode?.AppDelegate_mm.appDelegateExtensions;
+    const appDelegateExtensions = templateXcode?.AppDelegate_mm?.appDelegateExtensions;
     if (appDelegateExtensions instanceof Array) {
         appDelegateExtensions.forEach((appDelegateExtension) => {
             // Avoid duplicate imports
@@ -287,7 +286,7 @@ export const injectPluginSwiftSync = (c: Context, plugin: RenativeConfigPluginPl
         });
     }
 
-    const appDelegateMethods = templateXcode?.AppDelegate_mm.appDelegateMethods;
+    const appDelegateMethods = templateXcode?.AppDelegate_mm?.appDelegateMethods;
     if (appDelegateMethods) {
         const admk = Object.keys(appDelegateMethods) as Array<PayloadAppDelegateKey>;
         admk.forEach((delKey) => {

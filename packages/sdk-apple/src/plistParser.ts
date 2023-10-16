@@ -153,7 +153,7 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
 
         // PLUGINS
         parsePlugins(c, platform, (plugin, pluginPlat) => {
-            const plistPlug = getFlavouredProp(c, pluginPlat, 'plist');
+            const plistPlug = getFlavouredProp(c, pluginPlat, 'templateXcode')?.Info_plist;
             if (plistPlug) {
                 plistObj = mergeObjects(c, plistObj, plistPlug, true, false);
             }

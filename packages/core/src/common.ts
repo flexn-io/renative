@@ -273,6 +273,8 @@ type PlatformGeneric =
       }
     | undefined;
 
+// type PlatformGeneric = any;
+
 export const _getConfigProp = <T extends keyof ConfigProp>(
     c: RnvContext,
     platform: RnvPlatform,
@@ -297,20 +299,24 @@ export const _getConfigProp = <T extends keyof ConfigProp>(
     let scheme;
     if (platformObj) {
         scheme = platformObj.buildSchemes?.[ps] || {};
-        resultPlatforms = getFlavouredProp(c, platformObj, baseKey);
+        resultPlatforms = getFlavouredProp<any, any>(c, platformObj, baseKey);
     } else {
         scheme = {};
     }
 
     const resultCli = baseKey && CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
     const resultScheme = baseKey && scheme[baseKey];
-    const resultCommonRoot = getFlavouredProp(c, sourceObj.common || {}, baseKey);
-    const resultCommonScheme = getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, baseKey);
+    const resultCommonRoot = getFlavouredProp<any, any>(c, sourceObj.common || {}, baseKey);
+    const resultCommonScheme = getFlavouredProp<any, any>(
+        c,
+        sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {},
+        baseKey
+    );
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
     let result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
     if (result === undefined || result === null) {
-        result = getFlavouredProp(c, sourceObj, baseKey);
+        result = getFlavouredProp<any, any>(c, sourceObj, baseKey);
     }
 
     if (result === undefined || result === null) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
@@ -519,13 +525,10 @@ export const checkPortInUse = (c: RnvContext, platform: RnvPlatform, port: numbe
         });
     });
 
-export const getFlavouredProp = <T = unknown>(
-    c: RnvContext,
-    obj: Record<string, any> | undefined,
-    key: string
-): T | null => {
-    if (!key || !obj) return null;
-    const val1 = obj[`${key}@${c.runtime.scheme}`];
+export const getFlavouredProp = <T, K extends keyof T>(c: RnvContext, obj: T, key: K): T[K] | undefined => {
+    if (!key || !obj || typeof key !== 'string') return undefined;
+    const keyScoped = `${key}@${c.runtime.scheme}` as K;
+    const val1 = obj[keyScoped];
     if (val1) return val1;
     return obj[key];
 };

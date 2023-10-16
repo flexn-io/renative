@@ -163,7 +163,7 @@ export const getTranspileModules = (c: RnvContext) => {
         c,
         c.platform,
         (plugin, pluginPlat, key) => {
-            const webpackConfig = plugin.webpack || plugin.webpackConfig;
+            const { webpackConfig } = plugin;
             if (webpackConfig) {
                 transModules.push(key);
                 if (webpackConfig.nextTranspileModules?.length) {
@@ -193,7 +193,7 @@ export const buildWebNext = async (c: RnvContext) => {
         env: {
             NODE_ENV: env || 'development',
             ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c)),
+            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c)),
         },
     });
     logSuccess(`Your build is located in ${chalk().cyan(getOutputDir(c))} .`);
@@ -219,7 +219,7 @@ Dev server running at: ${url}
         env: {
             NODE_ENV: env || 'development',
             ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c)),
+            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c)),
         },
         interactive: !c.program?.json,
     });
@@ -249,7 +249,7 @@ export const exportWebNext = async (c: RnvContext) => {
         env: {
             NODE_ENV: env || 'development',
             ...envExt,
-            ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c)),
+            ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c)),
         },
     });
     logSuccess(`Your export is located in ${chalk().cyan(exportDir)} .`);

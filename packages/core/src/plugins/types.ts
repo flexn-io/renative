@@ -31,7 +31,3 @@ export type RnvPlugin = RenativeConfigPlugin & {
         fontSources: Array<string>;
     };
 };
-
-// export type RnvPluginPlatform = 'ios' | 'android' | 'web';
-
-export type RnvPluginWebpackKey = 'webpack' | 'webpackConfig' | 'engine-rn-next';

@@ -20,7 +20,7 @@ import {
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
-import { Context, TemplateXcode } from './types';
+import { Context } from './types';
 
 export const parseXcodeProject = async (c: Context) => {
     logTask('parseXcodeProject');
@@ -209,7 +209,7 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
 
             // PLUGINS
             parsePlugins(c, platform, (plugin, pluginPlat) => {
-                const templateXcode = getFlavouredProp<TemplateXcode>(c, pluginPlat, 'templateXcode');
+                const templateXcode = getFlavouredProp(c, pluginPlat, 'templateXcode');
 
                 const xcodeprojObj = templateXcode?.project_pbxproj;
                 if (xcodeprojObj) {

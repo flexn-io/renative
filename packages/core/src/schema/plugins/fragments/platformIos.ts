@@ -15,4 +15,5 @@ export const PluginPlatformiOSFragment = {
     podName: z.optional(z.string()),
     staticFrameworks: z.optional(z.array(z.string())),
     templateXcode: z.optional(z.object(TemplateXcodeBaseFragment)),
+    isStatic: z.boolean().optional(),
 };

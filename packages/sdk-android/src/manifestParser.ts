@@ -16,7 +16,7 @@ import {
     parsePlugins,
     ManifestFeature,
 } from '@rnv/core';
-import { Context, TemplateAndroid } from './types';
+import { Context } from './types';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
@@ -181,11 +181,7 @@ export const parseAndroidManifestSync = (c: Context) => {
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins(c, platform, (_plugin, pluginPlat) => {
-            const androidManifestPlugin = getFlavouredProp<TemplateAndroid>(
-                c,
-                pluginPlat,
-                'templateAndroid'
-            )?.AndroidManifest_xml;
+            const androidManifestPlugin = getFlavouredProp(c, pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
             if (androidManifestPlugin) {
                 _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
                 if (androidManifestPlugin.children) {

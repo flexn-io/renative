@@ -17,8 +17,8 @@ import {
 import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../logger';
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';
-import { PluginCallback, RnvPlugin, RnvPluginScope, RnvPluginWebpackKey } from './types';
-import { ConfigRootPlugin, RenativeConfigPlugin, RenativeWebpackConfig } from '../schema/types';
+import { PluginCallback, RnvPlugin, RnvPluginScope } from './types';
+import { ConfigRootPlugin, RenativeConfigPlugin } from '../schema/types';
 import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
@@ -728,14 +728,18 @@ export const checkForPluginDependencies = async (c: RnvContext) => {
             c._renativePluginCache[pluginName] = renativePluginConfig;
         }
 
-        if (renativePluginConfig?.plugins) {
+        const pluginDeps = renativePluginConfig?.pluginDependencies;
+        if (pluginDeps) {
             // we have dependencies for this plugin
-            Object.keys(renativePluginConfig.plugins).forEach((p) => {
+            Object.keys(pluginDeps).forEach((p) => {
                 const plg = bcPlugins[pluginName];
                 if (!bcPlugins[p] && typeof plg !== 'string' && plg.pluginDependencies?.[p] !== null) {
                     logWarning(`Plugin ${p} is not installed yet.`);
-                    toAdd[p] = renativePluginConfig.plugins[p];
-                    bcPlugins[p] = renativePluginConfig.plugins[p];
+                    const pluginDep = pluginDeps[p];
+                    if (pluginDep) {
+                        toAdd[p] = pluginDep;
+                        bcPlugins[p] = pluginDep;
+                    }
                 }
             });
         }
@@ -920,7 +924,7 @@ export const getLocalRenativePlugin = () => ({
     },
 });
 
-export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey): RnvModuleConfig => {
+export const getModuleConfigs = (c: RnvContext): RnvModuleConfig => {
     let modulePaths: Array<string> = [];
     const moduleAliases: Record<string, string | undefined> = {};
 
@@ -931,13 +935,7 @@ export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey
         c,
         c.platform,
         (plugin, pluginPlat, key) => {
-            let webpackConfig: RenativeWebpackConfig | undefined;
-
-            if (primaryKey && plugin[primaryKey]) {
-                webpackConfig = plugin[primaryKey];
-            } else {
-                webpackConfig = plugin.webpack || plugin.webpackConfig;
-            }
+            const { webpackConfig } = plugin;
 
             if (webpackConfig) {
                 if (webpackConfig.modulePaths) {

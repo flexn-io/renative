@@ -9,7 +9,6 @@ import {
     getFlavouredProp,
     addSystemInjects,
     logTask,
-    logWarning,
     parsePlugins,
     sanitizePluginPath,
     overrideFileContents,
@@ -22,7 +21,7 @@ import {
     DEFAULTS,
 } from '@rnv/core';
 import compareVersions from 'compare-versions';
-import { Context, TemplateXcode } from './types';
+import { Context } from './types';
 
 export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     logTask('parsePodFile');
@@ -33,19 +32,19 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     // PLUGINS
     c.payload.pluginConfigiOS.podfileInject = '';
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        const podName = getFlavouredProp<RenativeConfigPluginiOS['podName']>(c, pluginPlat, 'podName');
+        const podName = getFlavouredProp(c, pluginPlat, 'podName');
         if (podName) {
             pluginInject += _injectPod(podName, pluginPlat, plugin, key);
         }
 
-        const templateXcode = getFlavouredProp<TemplateXcode>(c, pluginPlat, 'templateXcode');
-        const podNames = getFlavouredProp<RenativeConfigPluginiOS['podNames']>(c, pluginPlat, 'podNames');
+        const templateXcode = getFlavouredProp(c, pluginPlat, 'templateXcode');
+        const podNames = getFlavouredProp(c, pluginPlat, 'podNames');
         if (podNames) {
             podNames.forEach((v) => {
                 pluginInject += _injectPod(v, pluginPlat, plugin, key);
             });
         }
-        const podDependencies = templateXcode?.Podfile.podDependencies;
+        const podDependencies = templateXcode?.Podfile?.podDependencies;
         if (podDependencies) {
             podDependencies.forEach((v) => {
                 pluginInject += `  pod ${v}\n`;
@@ -57,7 +56,7 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
                 c.payload.pluginConfigiOS.staticFrameworks.push(`'${podName}'`);
             }
         }
-        const staticPods = templateXcode?.Podfile.staticPods;
+        const staticPods = templateXcode?.Podfile?.staticPods;
         if (staticPods?.forEach) {
             staticPods.forEach((sPod) => {
                 if (sPod.startsWith('::startsWith::')) {
@@ -67,11 +66,6 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
                     )}')`;
                 }
             });
-        }
-
-        const reactSubSpecs = getFlavouredProp(c, pluginPlat, 'reactSubSpecs');
-        if (reactSubSpecs) {
-            logWarning('reactSubSpecs prop is deprecated. You can safely remove it');
         }
 
         const podfile = templateXcode?.Podfile;
