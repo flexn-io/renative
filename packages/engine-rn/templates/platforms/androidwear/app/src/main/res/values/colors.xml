@@ -1,3 +1,4 @@
+<!-- HARDCODED -->
 <resources>
-    <color name="bg">{{PLUGIN_COLORS_BG}}</color>
+    <color name="bg">#FFFFFF</color>
 </resources>

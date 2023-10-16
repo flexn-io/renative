@@ -236,7 +236,6 @@ export const parseAndroidManifestSync = (c: Context) => {
         const manifestFile = 'app/src/main/AndroidManifest.xml';
 
         const injects = [{ pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml || '' }];
-
         addSystemInjects(c, injects);
 
         const appFolder = getAppFolder(c);
