@@ -1,6 +1,6 @@
 {
     "name": "@rnv/core",
-    "version": "1.0.0-canary.4",
+    "version": "1.0.0-canary.7",
     "description": "RNV Core SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -11,6 +11,7 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
+        "LICENSE",
         "lib"
     ],
     "main": "lib/index.js",

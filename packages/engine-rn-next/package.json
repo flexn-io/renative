@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "1.0.0-canary.4",
+    "version": "1.0.0-canary.7",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",
@@ -14,10 +14,10 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
+        "LICENSE",
         "lib",
         "renative.engine.json",
-        "supportFiles",
-        "templates"
+        "supportFiles"
     ],
     "main": "lib/index.js",
     "repository": {
@@ -42,7 +42,7 @@
     },
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-canary.4"
+        "@rnv/core": "^1.0.0-canary.7"
     },
     "private": false,
     "publishConfig": {
