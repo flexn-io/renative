@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PlatformElectron = z.object({
+export const PlatformDecoratorElectronSchema = {
     electronTemplate: z.optional(z.object({})),
     // electronConfig: {
     //     additionalProperties: true,
@@ -58,4 +58,4 @@ export const PlatformElectron = z.object({
     //         },
     //     },
     // },
-});
+};

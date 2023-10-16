@@ -1,25 +1,31 @@
 import { z } from 'zod';
-import { PlatformAndroid } from './android';
-import { PlatformiOS } from './ios';
-import { PlatformWeb } from './web';
-import { PlatformTizen } from './tizen';
-import { PlatformElectron } from './decorators/electron';
-import { PlatformWindows } from './windows';
-import { PlatformWebpack } from './decorators/webpack';
-import { PlatformNextJs } from './decorators/nextjs';
-import { PlatformWebOS } from './webos';
+import { PlatformAndroid, PlatformAndroidPartialSchema } from './android';
+import { PlatformiOS, PlatformiOSPartialSchema } from './ios';
+import { PlatformWeb, PlatformWebPartialSchema } from './web';
+import { PlatformTizen, PlatformTizenPartialSchema } from './tizen';
+import { PlatformDecoratorElectronSchema } from './decorators/electron';
+import { PlatformWindowsPartialSchema } from './windows';
+import { PlatformDecoratorWebpackSchema } from './decorators/webpack';
+import { PlatformDecoratorNextJsSchema } from './decorators/nextjs';
+import { PlatformWebOS, PlatformWebOSPartialSchema } from './webos';
+import { PlatformDecoratorLightningSchema } from './decorators/lightning';
+import { PlatformDecoratorReactNativeSchema } from './decorators/reactNative';
+import { PlatformBase } from './base';
 // import { PlatformSharedReactNative } from './decorators/reactNative';
 
-const MergedPlatformPlainObject = PlatformiOS.merge(PlatformAndroid)
-    .merge(PlatformWeb)
-    .merge(PlatformTizen)
-    .merge(PlatformWindows)
-    .merge(PlatformWebOS)
-    //Decorators
-    // .merge(PlatformSharedReactNative)
-    .merge(PlatformWebpack)
-    .merge(PlatformElectron)
-    .merge(PlatformNextJs);
+const MergedPlatformPlainObject = PlatformBase.extend({
+    ...PlatformiOSPartialSchema,
+    ...PlatformAndroidPartialSchema,
+    ...PlatformWebPartialSchema,
+    ...PlatformTizenPartialSchema,
+    ...PlatformWindowsPartialSchema,
+    ...PlatformWebOSPartialSchema,
+    ...PlatformDecoratorLightningSchema,
+    ...PlatformDecoratorReactNativeSchema,
+    ...PlatformDecoratorWebpackSchema,
+    ...PlatformDecoratorElectronSchema,
+    ...PlatformDecoratorNextJsSchema,
+});
 
 export type _MergedPlatformObjectType = z.infer<typeof MergedPlatformPlainObject>;
 

@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import { TemplateAndroidBase } from './decorators/templateAndroidBase';
 import { PlatformBase } from './base';
+import { DEFAULTS } from '../defaults';
 
 const EnableAndroidX = z.union([z.boolean(), z.string()]).default(true).describe('Enables new android X architecture');
 
-export const PlatformAndroid = PlatformBase.extend({
+export const PlatformAndroidPartialSchema = {
     enableAndroidX: z.optional(EnableAndroidX),
     signingConfig: z.optional(
         z
@@ -29,37 +30,37 @@ export const PlatformAndroid = PlatformBase.extend({
             )
     ),
     templateAndroid: z.optional(
-        TemplateAndroidBase.merge(
-            z.object({
-                settings_gradle: z.optional(z.object({})),
-                gradle_wrapper_properties: z.optional(z.object({})),
-                MainActivity_java: z.optional(
-                    z.object({
-                        onCreate: z
-                            .string({})
-                            .optional()
-                            .default('super.onCreate(savedInstanceState)')
-                            .describe('Overrides super.onCreate method handler of MainActivity.java'),
+        z.object({
+            ...TemplateAndroidBase,
+
+            settings_gradle: z.optional(z.object({})),
+            gradle_wrapper_properties: z.optional(z.object({})),
+            MainActivity_java: z.optional(
+                z.object({
+                    onCreate: z
+                        .string({})
+                        .optional()
+                        .default('super.onCreate(savedInstanceState)')
+                        .describe('Overrides super.onCreate method handler of MainActivity.java'),
+                })
+            ),
+            MainApplication_java: z.optional(
+                z
+                    .object({
+                        // onCreate: z
+                        //     .string({})
+                        //     .optional()
+                        //     .default('super.onCreate(savedInstanceState)')
+                        //     .describe('Overrides super.onCreate method handler of MainActivity.java'),
                     })
-                ),
-                MainApplication_java: z.optional(
-                    z
-                        .object({
-                            // onCreate: z
-                            //     .string({})
-                            //     .optional()
-                            //     .default('super.onCreate(savedInstanceState)')
-                            //     .describe('Overrides super.onCreate method handler of MainActivity.java'),
-                        })
-                        .describe('Allows you to configure behaviour of MainActivity')
-                ),
-                SplashActivity_java: z.optional(z.object({})),
-                styles_xml: z.optional(z.object({})),
-                colors_xml: z.optional(z.object({})),
-                strings_xml: z.optional(z.object({})),
-                proguard_rules_pro: z.optional(z.object({})),
-            })
-        )
+                    .describe('Allows you to configure behaviour of MainActivity')
+            ),
+            SplashActivity_java: z.optional(z.object({})),
+            styles_xml: z.optional(z.object({})),
+            colors_xml: z.optional(z.object({})),
+            strings_xml: z.optional(z.object({})),
+            proguard_rules_pro: z.optional(z.object({})),
+        })
     ),
     aab: z.optional(z.boolean().describe('If set to true, android project will generate app.aab instead of apk')),
     extraGradleParams: z.optional(z.string().describe('Allows passing extra params to gradle command')), //assembleAndroidTest -DtestBuildType=debug
@@ -118,8 +119,12 @@ export const PlatformAndroid = PlatformBase.extend({
     includedFeatures: z.optional(
         z.array(z.string()).describe('Override features definitions in AndroidManifest.xml by inclusion')
     ),
-    buildToolsVersion: z.optional(z.string().default('30.0.0').describe('Override android build tools version')),
+    buildToolsVersion: z.optional(
+        z.string().default(DEFAULTS.buildToolsVersion).describe('Override android build tools version')
+    ),
     disableSigning: z.boolean().optional(),
     storeFile: z.array(z.string()).describe('Name of the store file in android project').optional(),
     keyAlias: z.array(z.string()).describe('Key alias of the store file in android project').optional(),
-});
+};
+
+export const PlatformAndroid = PlatformBase.extend(PlatformAndroidPartialSchema);

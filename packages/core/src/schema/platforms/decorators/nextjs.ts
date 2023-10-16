@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PlatformNextJs = z.object({
+export const PlatformDecoratorNextJsSchema = {
     pagesDir: z.string().optional(),
     // pagesDir: {
     //     type: 'string',
@@ -19,4 +19,4 @@ export const PlatformNextJs = z.object({
     //         'Custom export directory used by nextjs equivalent to "npx next export --outdir <exportDir>". Use relative paths',
     //     examples: ['output', 'custom/location'],
     // },
-});
+};

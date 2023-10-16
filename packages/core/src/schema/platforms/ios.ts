@@ -36,7 +36,7 @@ const TeamID = z.string().describe('Apple teamID');
 const SystemCapabilities = z.record(z.string(), z.boolean());
 const provisioningProfiles = z.record(z.string());
 
-export const PlatformiOS = PlatformBase.extend({
+export const PlatformiOSPartialSchema = {
     ignoreWarnings: z.optional(IgnoreWarnings),
     ignoreLogs: z.optional(IgnoreLogs),
     deploymentTarget: z.optional(DeploymentTarget),
@@ -44,7 +44,7 @@ export const PlatformiOS = PlatformBase.extend({
     teamID: z.optional(TeamID),
     excludedArchs: z.optional(ExcludedArchs),
     urlScheme: z.optional(URLScheme),
-    templateXcode: z.optional(TemplateXcodeBase.merge(z.object({}))),
+    templateXcode: z.optional(z.object(TemplateXcodeBase)),
     teamIdentifier: z.optional(z.string().describe('Apple developer team ID')),
     scheme: z.string().optional(),
     schemeTarget: z.string().optional(),
@@ -112,4 +112,6 @@ export const PlatformiOS = PlatformBase.extend({
     //         },
     //     ],
     // },
-});
+};
+
+export const PlatformiOS = PlatformBase.extend(PlatformiOSPartialSchema);

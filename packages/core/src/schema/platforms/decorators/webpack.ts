@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const WebpackConfig = z.object({});
 
-export const PlatformWebpack = z.object({
+export const PlatformDecoratorWebpackSchema = {
     webpackConfig: z.optional(WebpackConfig),
 
     // webpackConfig: {
@@ -42,4 +42,4 @@ export const PlatformWebpack = z.object({
     //         },
     //     },
     // },
-});
+};

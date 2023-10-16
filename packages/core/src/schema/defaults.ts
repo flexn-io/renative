@@ -5,4 +5,5 @@ export const DEFAULTS = {
     backgroundColor: '#FFFFFF',
     deploymentTarget: '11.0',
     devServerHost: 'localhost',
+    buildToolsVersion: '30.0.0',
 };

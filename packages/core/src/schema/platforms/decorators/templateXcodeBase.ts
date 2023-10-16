@@ -64,13 +64,12 @@ const AppDelegateMm = z.object({
 
 const InfoPlist = z.object({});
 
-export const TemplateXcodeBase = z
-    .object({
-        Podfile: z.optional(Podfile),
-        project_pbxproj: z.optional(XcodeProj),
-        AppDelegate_mm: z.optional(AppDelegateMm),
-        Info_plist: z.optional(InfoPlist),
-    })
-    .describe('Allows more advanced modifications to Xcode based project template');
+export const TemplateXcodeBase = {
+    Podfile: z.optional(Podfile),
+    project_pbxproj: z.optional(XcodeProj),
+    AppDelegate_mm: z.optional(AppDelegateMm),
+    Info_plist: z.optional(InfoPlist),
+};
+// .describe('Allows more advanced modifications to Xcode based project template');
 
 export type _AppDelegateMethodType = z.infer<typeof AppDelegateMethod>;

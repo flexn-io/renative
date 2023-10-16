@@ -1,6 +1,8 @@
+import { z } from 'zod';
 import { PlatformBase } from './base';
 
-export const PlatformWindows = PlatformBase.extend({
+export const PlatformWindowsPartialSchema = {
+    experimentalNuGetDependency: z.boolean().optional(),
     // language: {
     //     type: 'string',
     //     description: 'Specify generated project language: cpp for C++ or cs for C#',
@@ -118,4 +120,6 @@ export const PlatformWindows = PlatformBase.extend({
     // packageExtension: {
     //     type: 'string',
     // },
-});
+};
+
+export const PlatformWindows = PlatformBase.extend(PlatformWindowsPartialSchema);
