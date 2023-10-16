@@ -38,7 +38,7 @@ type Common = {
 };
 
 type PluginsMap = {
-    plugins: Record<string, _PluginType>;
+    plugins: Record<string, _PluginType | string>;
 };
 
 // type PlatformsMap = {
@@ -93,13 +93,13 @@ export type ConfigRootPlugin = _RootPluginSchemaType;
 
 export type RenativeConfigFile = _ConfigRootMerged;
 
-export type RenativeConfigPlugin = RenativeConfigFile['plugins'][string];
+export type RenativeConfigPlugin = Exclude<RenativeConfigFile['plugins'][string], string>;
 
 // export type RenativeConfigPluginiOS = _PluginiOSType;
 
 export type RenativeConfigPluginPlatform = _PluginPlatformMergedSchemaType;
 
-export type RenativeWebpackConfig = RenativeConfigFile['plugins'][string]['webpackConfig'];
+export type RenativeWebpackConfig = RenativeConfigPlugin['webpackConfig'];
 
 export type PlatformKey = _PlatformsKeysType;
 
