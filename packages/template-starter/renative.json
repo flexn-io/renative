@@ -1,5 +1,5 @@
 {
-    "$schema": "../../.rnv/schema/project.rnv.json",
+    "$schema": "../../.rnv/schema/rnv.project.json",
     "engines": {
         "@rnv/engine-lightning": "source:rnv",
         "@rnv/engine-rn": "source:rnv",

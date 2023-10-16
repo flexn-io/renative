@@ -1,5 +1,5 @@
 {
-    "$schema": "../../../../.rnv/schema/app.rnv.json",
+    "$schema": "../../../../.rnv/schema/rnv.app.json",
     "extendsTemplate": "@rnv/template-starter/appConfigs/base/renative.json",
     "id": "app",
     "common": {

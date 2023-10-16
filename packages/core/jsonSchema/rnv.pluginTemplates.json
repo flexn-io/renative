@@ -4,7 +4,7 @@
     "rnv.pluginTemplates": {
       "type": "object",
       "properties": {
-        "ext": {
+        "custom": {
           "description": "Object ysed to extend your renative with custom props. This allows renative json schema to be validated"
         },
         "pluginTemplates": {
@@ -377,8 +377,7 @@
                         "additionalProperties": false
                       }
                     },
-                    "additionalProperties": false,
-                    "description": "Allows more advanced modifications to Android based project template"
+                    "additionalProperties": false
                   }
                 },
                 "additionalProperties": false
@@ -698,8 +697,7 @@
                         "additionalProperties": false
                       }
                     },
-                    "additionalProperties": false,
-                    "description": "Allows more advanced modifications to Xcode based project template"
+                    "additionalProperties": false
                   }
                 },
                 "additionalProperties": false

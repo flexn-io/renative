@@ -4,7 +4,7 @@
     "rnv.engine": {
       "type": "object",
       "properties": {
-        "ext": {
+        "custom": {
           "description": "Object ysed to extend your renative with custom props. This allows renative json schema to be validated"
         },
         "id": {
