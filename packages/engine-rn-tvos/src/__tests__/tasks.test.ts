@@ -25,9 +25,9 @@ test('Execute task.rnv.run', async () => {
     const ctx = getContext();
     executeAsync.mockReturnValue(Promise.resolve('{}'));
     // WHEN
-    await taskRnvRun.fn(ctx, undefined, originTask);
+    const result = await taskRnvRun.fn(ctx, undefined, originTask);
     // THEN
-    await expect(taskRnvRun.fn(ctx, undefined, originTask)).resolves.toEqual(true);
+    expect(result).toEqual(true);
     // expect(taskManager.executeTask).toHaveBeenCalledWith(c, 'project configure', 'platform list', originTask);
 });
 
@@ -36,9 +36,9 @@ test('Execute task.rnv.start with no parent', async () => {
     const ctx = getContext();
     executeAsync.mockReturnValue(Promise.resolve('{}'));
     // WHEN
-    await taskRnvStart.fn(ctx, undefined, originTask);
+    const result = await taskRnvStart.fn(ctx, undefined, originTask);
     // THEN
-    await expect(taskRnvStart.fn(ctx, undefined, originTask)).resolves.toEqual(true);
+    expect(result).toEqual(true);
 });
 
 test('Execute task.rnv.start', async () => {
@@ -46,10 +46,10 @@ test('Execute task.rnv.start', async () => {
     const ctx = getContext();
     executeAsync.mockReturnValue(Promise.resolve('{}'));
     // WHEN
-    await taskRnvStart.fn(ctx, 'parent', originTask);
+    const result = await taskRnvStart.fn(ctx, 'parent', originTask);
     // THEN
     expect(executeAsync).toHaveBeenCalledWith(ctx, 'node undefined/local-cli/cli.js start --port undefined --config=metro.config.js', { env: {}, silent: true, stdio: 'inherit' });
-    await expect(taskRnvStart.fn(ctx, undefined, originTask)).resolves.toEqual(true);
+    expect(result).toEqual(true);
 });
 
 test('Execute task.rnv.start with metro failure', async () => {
@@ -57,9 +57,9 @@ test('Execute task.rnv.start with metro failure', async () => {
     const ctx = getContext();
     executeAsync.mockReturnValue(new Promise((resolve, reject) => reject('Metro failed')));
     // WHEN
-    await taskRnvStart.fn(ctx, 'parent', originTask);
+    const result = await taskRnvStart.fn(ctx, 'parent', originTask);
     // THEN
     expect(executeAsync).toHaveBeenCalledWith(ctx, 'node undefined/local-cli/cli.js start --port undefined --config=metro.config.js', { env: {}, silent: true, stdio: 'inherit' });
     expect(logError).toHaveBeenCalledWith('Metro failed', true);
-    await expect(taskRnvStart.fn(ctx, undefined, originTask)).resolves.toEqual(true);
+    expect(result).toEqual(true);
 });
