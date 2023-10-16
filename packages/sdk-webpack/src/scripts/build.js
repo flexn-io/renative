@@ -2,7 +2,7 @@
 
 // Do this as the first thing so that any code reading it knows the right env.
 
-import { logError, logInfo, logSuccess, logWarning } from '@rnv/core';
+import { logError, logInfo, logWarning} from '@rnv/core';
 
 process.env.BABEL_ENV = 'production';
 process.env.NODE_ENV = 'production';
@@ -79,9 +79,7 @@ export default async () =>
                         )} to learn more about each warning.`
                     );
                     logInfo(`To ignore, add ${chalk.cyan('// eslint-disable-next-line')} to the line before.\n`);
-                } else {
-                    logSuccess('Compiled successfully.\n');
-                }
+                } 
 
                 logInfo('File sizes after gzip:\n');
                 printFileSizesAfterBuild(
@@ -182,7 +180,6 @@ function build(previousFileSizes) {
                     .then(() => resolve(resolveArgs))
                     .catch((error) => reject(new Error(error)));
             }
-
             return resolve(resolveArgs);
         });
     });
