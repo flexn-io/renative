@@ -86,8 +86,9 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
 
         const appFolder = getAppFolder(c);
         const appFolderName = getAppFolderName(c, platform);
-        const plat = c.buildConfig.platforms?.[platform] || {};
-        const { orientationSupport, urlScheme } = plat;
+        const orientationSupport = getConfigProp(c, c.platform, 'orientationSupport');
+        const urlScheme = getConfigProp(c, c.platform, 'urlScheme');
+
         const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
         // PLIST
@@ -144,7 +145,8 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
         }
 
         // PLIST
-        const plist = getConfigProp(c, platform, 'plist');
+
+        const plist = getConfigProp(c, platform, 'templateXcode')?.Info_plist;
         if (plist) {
             plistObj = mergeObjects(c, plistObj, plist, true, true);
         }

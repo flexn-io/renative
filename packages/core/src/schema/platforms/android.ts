@@ -1,9 +1,10 @@
 import { z } from 'zod';
-import { TemplateAndroidBase } from './templateAndroidBase';
+import { TemplateAndroidBase } from './decorators/templateAndroidBase';
+import { PlatformBase } from './base';
 
 const EnableAndroidX = z.union([z.boolean(), z.string()]).default(true).describe('Enables new android X architecture');
 
-export const PlatformAndroid = z.object({
+export const PlatformAndroid = PlatformBase.extend({
     enableAndroidX: z.optional(EnableAndroidX),
     signingConfig: z.optional(
         z

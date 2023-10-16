@@ -611,7 +611,7 @@ export const buildXcodeProject = async (c: Context) => {
     if (c.program.xcodebuildArgs) {
         ps = c.program.xcodebuildArgs;
     }
-    const p = [];
+    const p: string[] = [];
 
     if (!ps.includes('-workspace')) {
         p.push('-workspace');
@@ -621,10 +621,13 @@ export const buildXcodeProject = async (c: Context) => {
         p.push('-scheme');
         p.push(appFolderName);
     }
-    if (!ps.includes('-configuration')) {
-        p.push('-configuration');
-        p.push(runScheme);
+    if (runScheme) {
+        if (!ps.includes('-configuration')) {
+            p.push('-configuration');
+            p.push(runScheme);
+        }
     }
+
     if (!ps.includes('-derivedDataPath')) {
         p.push('-derivedDataPath');
         p.push(buildPath);
@@ -697,7 +700,7 @@ const archiveXcodeProject = (c: Context) => {
     if (c.program.xcodebuildArchiveArgs) {
         ps = c.program.xcodebuildArchiveArgs;
     }
-    const p = [];
+    const p: string[] = [];
 
     if (!ps.includes('-workspace')) {
         p.push('-workspace');
@@ -711,10 +714,13 @@ const archiveXcodeProject = (c: Context) => {
         p.push('-sdk');
         p.push(...sdkArr);
     }
-    if (!ps.includes('-configuration')) {
-        p.push('-configuration');
-        p.push(runScheme);
+    if (runScheme) {
+        if (!ps.includes('-configuration')) {
+            p.push('-configuration');
+            p.push(runScheme);
+        }
     }
+
     p.push('archive');
     if (!ps.includes('-archivePath')) {
         p.push('-archivePath');

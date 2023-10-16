@@ -3,4 +3,6 @@ export const DEFAULTS = {
     minSdkVersion: 0,
     targetSdkVersion: 0,
     backgroundColor: '#FFFFFF',
+    deploymentTarget: '11.0',
+    devServerHost: 'localhost',
 };

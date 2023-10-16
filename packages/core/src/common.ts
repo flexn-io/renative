@@ -11,9 +11,10 @@ import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
 import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
-import { ConfigProp } from './schema/types';
+import { ConfigProp, RenativeConfigFile } from './schema/types';
 import { inquirerPrompt } from './api';
 import { RnvPlatform } from './types';
+import { DEFAULTS } from './schema/defaults';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
@@ -77,7 +78,7 @@ export const getDevServerHost = (c: RnvContext) => {
 
     const devServerHostFixed = devServerHostOrig
         ? getValidLocalhost(devServerHostOrig, c.runtime.localhost)
-        : undefined;
+        : DEFAULTS.devServerHost;
 
     return devServerHostFixed;
 };

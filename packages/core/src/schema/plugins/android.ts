@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { PluginPlatformBase } from './platformBase';
-import { TemplateAndroidBase } from '../platforms/templateAndroidBase';
+import { TemplateAndroidBase } from '../platforms/decorators/templateAndroidBase';
 
 export const PluginAndroid = PluginPlatformBase.merge(
     z.object({

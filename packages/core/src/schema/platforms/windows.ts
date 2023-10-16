@@ -1,6 +1,6 @@
-import { z } from 'zod';
+import { PlatformBase } from './base';
 
-export const PlatformWindows = z.object({
+export const PlatformWindows = PlatformBase.extend({
     // language: {
     //     type: 'string',
     //     description: 'Specify generated project language: cpp for C++ or cs for C#',

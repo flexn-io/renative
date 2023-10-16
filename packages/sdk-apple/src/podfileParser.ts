@@ -20,6 +20,7 @@ import {
     writeCleanFile,
     RnvPlatform,
     RenativeConfigPluginiOS,
+    DEFAULTS,
 } from '@rnv/core';
 import compareVersions from 'compare-versions';
 import { Context, TemplateXcode } from './types';
@@ -132,7 +133,7 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     }
 
     // DEPLOYMENT TARGET
-    const deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '11.0');
+    const deploymentTarget = getConfigProp(c, platform, 'deploymentTarget') || DEFAULTS.deploymentTarget;
     c.payload.pluginConfigiOS.deploymentTarget = deploymentTarget;
 
     // STATIC POD INJECT VERSION

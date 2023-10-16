@@ -35,7 +35,7 @@ export type ExecCallback2 = (result: any, isError: boolean) => void;
 
 export type OverridesOptions = Array<{
     pattern: string;
-    override: string | undefined;
+    override: string | number | undefined;
 }>;
 
 export type TimestampPathsConfig = {

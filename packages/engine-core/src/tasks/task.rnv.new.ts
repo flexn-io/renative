@@ -658,8 +658,9 @@ export const taskRnvNew = async (c: RnvContext) => {
 
     // Remove unused platforms
     Object.keys(config.platforms).forEach((k) => {
-        if (!supPlats.includes(k as PlatformKey)) {
-            delete config.platforms[k];
+        const key = k as PlatformKey;
+        if (!supPlats.includes(key)) {
+            delete config.platforms[key];
         }
     });
 

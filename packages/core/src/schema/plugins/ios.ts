@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { PluginPlatformBase } from './platformBase';
-import { TemplateXcodeBase } from '../platforms/templateXcodeBase';
+import { TemplateXcodeBase } from '../platforms/decorators/templateXcodeBase';
 
 const Git = z.string().describe('Alternative git url for pod instead of version');
 

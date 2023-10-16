@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { TemplateXcodeBase } from './templateXcodeBase';
+import { TemplateXcodeBase } from './decorators/templateXcodeBase';
+import { PlatformBase } from './base';
 
 const IgnoreWarnings = z.boolean().describe('Injects `inhibit_all_warnings` into Podfile');
 
@@ -35,7 +36,7 @@ const TeamID = z.string().describe('Apple teamID');
 const SystemCapabilities = z.record(z.string(), z.boolean());
 const provisioningProfiles = z.record(z.string());
 
-export const PlatformiOS = z.object({
+export const PlatformiOS = PlatformBase.extend({
     ignoreWarnings: z.optional(IgnoreWarnings),
     ignoreLogs: z.optional(IgnoreLogs),
     deploymentTarget: z.optional(DeploymentTarget),

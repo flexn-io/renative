@@ -1,25 +1,24 @@
 import { z } from 'zod';
-import { PlatformBase } from './base';
 import { PlatformAndroid } from './android';
 import { PlatformiOS } from './ios';
 import { PlatformWeb } from './web';
 import { PlatformTizen } from './tizen';
-import { PlatformElectron } from './electron';
+import { PlatformElectron } from './decorators/electron';
 import { PlatformWindows } from './windows';
-import { PlatformWebpack } from './webpack';
-import { BuildSchemeBase } from '../shared';
-import { PlatformNextJs } from './nextjs';
+import { PlatformWebpack } from './decorators/webpack';
+import { PlatformNextJs } from './decorators/nextjs';
 import { PlatformWebOS } from './webos';
+// import { PlatformSharedReactNative } from './decorators/reactNative';
 
-const MergedPlatformPlainObject = BuildSchemeBase.merge(PlatformBase)
-    .merge(PlatformiOS)
-    .merge(PlatformAndroid)
+const MergedPlatformPlainObject = PlatformiOS.merge(PlatformAndroid)
     .merge(PlatformWeb)
     .merge(PlatformTizen)
-    .merge(PlatformWebpack)
-    .merge(PlatformElectron)
     .merge(PlatformWindows)
     .merge(PlatformWebOS)
+    //Decorators
+    // .merge(PlatformSharedReactNative)
+    .merge(PlatformWebpack)
+    .merge(PlatformElectron)
     .merge(PlatformNextJs);
 
 export type _MergedPlatformObjectType = z.infer<typeof MergedPlatformPlainObject>;
