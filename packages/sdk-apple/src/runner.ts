@@ -342,8 +342,8 @@ export const runXcodeProject = async (c: Context, runDeviceArguments?: string) =
     logTask('runXcodeProject', `targetArgs:${runDeviceArguments}`);
 
     const appPath = getAppFolder(c);
-    const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget', 'RNVApp');
-    const runScheme = getConfigProp(c, c.platform, 'runScheme');
+    const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget') || 'RNVApp';
+    const runScheme = getConfigProp(c, c.platform, 'runScheme') || 'Debug';
     const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
 
@@ -605,7 +605,7 @@ export const buildXcodeProject = async (c: Context) => {
 
     const appPath = getAppFolder(c);
     const buildPath = path.join(appPath, `build/${appFolderName}`);
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates') || true;
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
     let ps = '';
     if (c.program.xcodebuildArgs) {

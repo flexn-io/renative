@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { TemplateAndroidBase } from './templateAndroidBase';
 
-const EnableAndroidX = z.boolean().default(true).describe('Enables new android X architecture');
+const EnableAndroidX = z.union([z.boolean(), z.string()]).default(true).describe('Enables new android X architecture');
 
 export const PlatformAndroid = z.object({
     enableAndroidX: z.optional(EnableAndroidX),
@@ -13,7 +13,7 @@ export const PlatformAndroid = z.object({
     ),
     reactNativeEngine: z.optional(
         z
-            .enum(['v8-android', 'v8-android-nointl', 'v8-android-jit', 'v8-android-jit-nointl', 'hermes'])
+            .enum(['jsc', 'v8-android', 'v8-android-nointl', 'v8-android-jit', 'v8-android-jit-nointl', 'hermes'])
             .default('hermes')
             .describe('Allows you to define specific native render engine to be used')
     ),
@@ -32,18 +32,23 @@ export const PlatformAndroid = z.object({
             z.object({
                 settings_gradle: z.optional(z.object({})),
                 gradle_wrapper_properties: z.optional(z.object({})),
-                MainActivity_java: z.optional(z.object({})),
+                MainActivity_java: z.optional(
+                    z.object({
+                        onCreate: z
+                            .string({})
+                            .optional()
+                            .default('super.onCreate(savedInstanceState)')
+                            .describe('Overrides super.onCreate method handler of MainActivity.java'),
+                    })
+                ),
                 MainApplication_java: z.optional(
                     z
                         .object({
-                            onCreate: z.object({
-                                //         onCreate: {
-                                //             type: 'string',
-                                //             description: 'Overrides super.onCreate method handler of MainActivity.kt',
-                                //             default: 'super.onCreate(savedInstanceState)',
-                                //             examples: ['super.onCreate(null)', 'super.onCreate(savedInstanceState)'],
-                                //         },
-                            }),
+                            // onCreate: z
+                            //     .string({})
+                            //     .optional()
+                            //     .default('super.onCreate(savedInstanceState)')
+                            //     .describe('Overrides super.onCreate method handler of MainActivity.java'),
                         })
                         .describe('Allows you to configure behaviour of MainActivity')
                 ),
@@ -73,6 +78,25 @@ export const PlatformAndroid = z.object({
             )
     ),
     kotlinVersion: z.optional(z.string().default('1.7.10').describe('Allows you define custom kotlin version')),
+    ndkVersion: z.optional(
+        z
+            .string()
+            .describe('Allows you define custom ndkVersion equivalent to: `ndkVersion = [VERSION]` in build.gradle')
+    ),
+    supportLibVersion: z.optional(
+        z
+            .string()
+            .describe(
+                'Allows you define custom supportLibVersion equivalent to: `supportLibVersion = [VERSION]` in build.gradle'
+            )
+    ),
+    googleServicesVersion: z.optional(
+        z
+            .string()
+            .describe(
+                'Allows you define custom googleServicesVersion equivalent to: `googleServicesVersion = [VERSION]` in build.gradle'
+            )
+    ),
     gradleBuildToolsVersion: z.optional(
         z
             .string()
@@ -94,18 +118,7 @@ export const PlatformAndroid = z.object({
         z.array(z.string()).describe('Override features definitions in AndroidManifest.xml by inclusion')
     ),
     buildToolsVersion: z.optional(z.string().default('30.0.0').describe('Override android build tools version')),
-    // storeFile: {
-    //     type: 'string',
-    // },
-    // storePassword: {
-    //     type: 'string',
-    //     description: `${SENSITIVE}storePassword for keystore file`,
-    // },
-    // keyAlias: {
-    //     type: 'string',
-    // },
-    // keyPassword: {
-    //     type: 'string',
-    //     description: `${SENSITIVE}keyPassword for keystore file`,
-    // },
+    disableSigning: z.boolean().optional(),
+    storeFile: z.array(z.string()).describe('Name of the store file in android project').optional(),
+    keyAlias: z.array(z.string()).describe('Key alias of the store file in android project').optional(),
 });

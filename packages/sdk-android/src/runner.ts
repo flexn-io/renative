@@ -32,6 +32,7 @@ import {
     ANDROID,
     ANDROID_TV,
     FIRE_TV,
+    DEFAULTS,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -449,16 +450,16 @@ export const configureProject = async (c: Context) => {
         buildToolsVersion: '',
         buildTypes: '',
         compileOptions: '',
-        compileSdkVersion: '',
+        compileSdkVersion: DEFAULTS.compileSdkVersion,
         ndkVersion: '',
         gradleBuildToolsVersion: '',
         gradleWrapperVersion: '',
         localProperties: '',
-        minSdkVersion: '',
+        minSdkVersion: DEFAULTS.minSdkVersion,
         multiAPKs: '',
         splits: '',
         supportLibVersion: '',
-        targetSdkVersion: '',
+        targetSdkVersion: DEFAULTS.targetSdkVersion,
     };
 
     // PLUGINS

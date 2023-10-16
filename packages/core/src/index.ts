@@ -33,6 +33,7 @@ export * from './tasks';
 export * from './tasks/constants';
 
 export * from './schema';
+export * from './schema/defaults';
 export * from './context/runtime';
 export * from './templates';
 export * from './integrations';

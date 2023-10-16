@@ -5,7 +5,7 @@ import type { _AppDelegateMethodType } from './platforms/templateXcodeBase';
 import type { _PluginiOSType } from './plugins/ios';
 import type { _PlatformsKeysType } from './shared';
 import type { NpmPackageFile } from '../configs/types';
-import type { _MergedPlatformObjectType, _PlatformMergedType } from './platforms';
+import type { _MergedPlatformObjectType, _PlatformMergedType, _PlatformsType } from './platforms';
 import type { _PluginType } from './plugins';
 import type { _RootAppSchemaPartialType, _RootAppSchemaType } from './configFiles/appConfig';
 import type { _RootGlobalSchemaType } from './configFiles/global';
@@ -36,8 +36,12 @@ type PluginsMap = {
     plugins: Record<string, _PluginType>;
 };
 
+// type PlatformsMap = {
+//     platforms: Record<string, _PlatformMergedType>;
+// };
+
 type PlatformsMap = {
-    platforms: Record<string, _PlatformMergedType>;
+    platforms: _PlatformsType;
 };
 
 type ProjectTemplate = {
@@ -89,8 +93,6 @@ export type RenativeConfigBuildScheme = Required<RenativeConfigFile['platforms']
 export type RenativeConfigPlugin = RenativeConfigFile['plugins'][string];
 
 export type RenativeConfigPluginiOS = _PluginiOSType;
-
-export type RenativeConfigPlatform = RenativeConfigFile['platforms'][string];
 
 export type RenativeConfigPluginPlatform = _PluginPlatformMergedType;
 

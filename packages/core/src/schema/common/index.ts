@@ -143,6 +143,7 @@ export const CommonSchemaPartial = z.object({
     versionCode: z.optional(VersionCode),
     versionFormat: z.optional(VersionFormat),
     versionCodeFormat: z.optional(VersionCodeFormat),
+    versionCodeOffset: z.number().optional(),
     title: z.optional(Title),
     description: z.optional(Description),
     author: z.optional(Author),

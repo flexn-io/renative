@@ -14,10 +14,10 @@ export type Payload = {
         appBuildGradleAfterEvaluate: string;
         buildTypes: string;
         multiAPKs: string;
-        minSdkVersion: string;
+        minSdkVersion: number;
         ndkVersion: string;
-        targetSdkVersion: string;
-        compileSdkVersion: string;
+        targetSdkVersion: number;
+        compileSdkVersion: number;
         compileOptions: string;
         localProperties: string;
         kotlinVersion: string;

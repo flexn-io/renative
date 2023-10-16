@@ -32,7 +32,7 @@ const URLScheme = z.string().describe('URL Scheme for the app used for deeplinki
 
 const TeamID = z.string().describe('Apple teamID');
 
-const SystemCapabilities = z.record(z.string(), z.string());
+const SystemCapabilities = z.record(z.string(), z.boolean());
 const provisioningProfiles = z.record(z.string());
 
 export const PlatformiOS = z.object({
@@ -46,6 +46,7 @@ export const PlatformiOS = z.object({
     templateXcode: z.optional(TemplateXcodeBase.merge(z.object({}))),
     teamIdentifier: z.optional(z.string().describe('Apple developer team ID')),
     scheme: z.string().optional(),
+    schemeTarget: z.string().optional(),
     appleId: z.string().optional(),
     provisioningStyle: z.string().optional(),
     codeSignIdentity: z.string().describe('Special property which tells Xcode how to build your project').optional(),
@@ -54,6 +55,8 @@ export const PlatformiOS = z.object({
         .describe('Allows you to pass launch arguments to active scheme')
         .optional(),
     provisionProfileSpecifier: z.string().optional(),
+    provisionProfileSpecifiers: z.array(z.string()).optional(),
+    allowProvisioningUpdates: z.boolean().optional(),
     provisioningProfiles: z.optional(provisioningProfiles),
     codeSignIdentities: z.optional(z.record(z.string(), z.string())),
     systemCapabilities: z.optional(SystemCapabilities),

@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
+const SENSITIVE =
+    '> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!\n\n';
+
 export const RootPrivateSchema = z.object({
+    storePassword: z.array(z.string()).describe(`${SENSITIVE}storePassword for keystore file`),
+    keyPassword: z.array(z.string()).describe(`${SENSITIVE}keyPassword for keystore file`),
     private: z
         .record(z.any())
         .describe(

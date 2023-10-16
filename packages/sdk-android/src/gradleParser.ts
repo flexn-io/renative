@@ -1,6 +1,5 @@
 import {
     OverridesOptions,
-    RenativeConfigPlatform,
     RenativeConfigPluginPlatform,
     RnvContext,
     RnvPlugin,
@@ -25,7 +24,7 @@ import {
     writeCleanFile,
 } from '@rnv/core';
 import path from 'path';
-import { Context, TemplateAndroid } from './types';
+import { Context } from './types';
 
 export const parseBuildGradleSync = (c: Context) => {
     const appFolder = getAppFolder(c);
@@ -185,31 +184,22 @@ export const parseAppBuildGradleSync = (c: Context) => {
     if (!platform) return;
 
     // ANDROID PROPS
-    c.payload.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 24);
-    c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 33);
-    c.payload.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 33);
-    c.payload.pluginConfigAndroid.ndkVersion = getConfigProp(c, platform, 'ndkVersion', '23.1.7779620');
-    c.payload.pluginConfigAndroid.gradleBuildToolsVersion = getConfigProp(
-        c,
-        platform,
-        'gradleBuildToolsVersion',
-        '4.2.2'
-    );
-    c.payload.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion', '28.0.0');
-    c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '33.0.0');
-    c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp(c, platform, 'kotlinVersion', '1.4.20');
-    c.payload.pluginConfigAndroid.googleServicesVersion = getConfigProp(c, platform, 'googleServicesVersion', '4.2.0');
+    c.payload.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion') || 24;
+    c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion') || 33;
+    c.payload.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion') || 33;
+    c.payload.pluginConfigAndroid.ndkVersion = getConfigProp(c, platform, 'ndkVersion') || '23.1.7779620';
+    c.payload.pluginConfigAndroid.gradleBuildToolsVersion =
+        getConfigProp(c, platform, 'gradleBuildToolsVersion') || '4.2.2';
+    c.payload.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion') || '28.0.0';
+    c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion') || '33.0.0';
+    c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp(c, platform, 'kotlinVersion') || '1.4.20';
+    c.payload.pluginConfigAndroid.googleServicesVersion =
+        getConfigProp(c, platform, 'googleServicesVersion') || '4.2.0';
 
-    // REACT NATIVE ENGINE
-    const enableHermes = getConfigProp(c, platform, 'enableHermes');
-    if (enableHermes === true) {
-        logWarning('enableHermes is DEPRECATED. use "reactNativeEngine": "hermes" instead.');
-    }
-
-    const reactNativeEngine = getConfigProp(c, c.platform, 'reactNativeEngine', 'default');
+    const reactNativeEngine = getConfigProp(c, c.platform, 'reactNativeEngine') || 'hermes';
 
     switch (reactNativeEngine) {
-        case 'default': {
+        case 'jsc': {
             setReactNativeEngineDefault(c);
             break;
         }
@@ -235,7 +225,7 @@ export const parseAppBuildGradleSync = (c: Context) => {
         }
         default: {
             logWarning(`Unsupported react native engine ${reactNativeEngine}. Will use default instead`);
-            setReactNativeEngineDefault(c);
+            setReactNativeEngineHermes(c);
         }
     }
 
@@ -549,9 +539,10 @@ export const parseGradlePropertiesSync = (c: Context) => {
     if (!platform) return;
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
-    const pluginConfigAndroid: RenativeConfigPlatform = c.buildConfig?.platforms?.[platform] || {};
 
-    const gradleProps = pluginConfigAndroid.templateAndroid?.gradle_properties;
+    const templateAndroid = getConfigProp(c, c.platform, 'templateAndroid');
+
+    const gradleProps = templateAndroid?.gradle_properties;
 
     if (gradleProps) {
         const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
@@ -662,7 +653,7 @@ export const parseAndroidConfigObject = (c: RnvContext, obj?: any, key = '') => 
     // APP/BUILD.GRADLE
     const templateAndroid = getConfigProp(c, obj, 'templateAndroid');
 
-    const appBuildGradle = templateAndroid.app_build_gradle;
+    const appBuildGradle = templateAndroid?.app_build_gradle;
     if (appBuildGradle) {
         if (appBuildGradle.apply) {
             appBuildGradle.apply.forEach((v) => {
@@ -695,7 +686,7 @@ export const parseAndroidConfigObject = (c: RnvContext, obj?: any, key = '') => 
     }
 
     // BUILD.GRADLE
-    const buildGradle = templateAndroid.build_gradle;
+    const buildGradle = templateAndroid?.build_gradle;
 
     const allProjRepos = buildGradle?.allprojects?.repositories;
     if (allProjRepos) {

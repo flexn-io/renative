@@ -9,6 +9,7 @@ import { PlatformWindows } from './windows';
 import { PlatformWebpack } from './webpack';
 import { BuildSchemeBase } from '../shared';
 import { PlatformNextJs } from './nextjs';
+import { PlatformWebOS } from './webos';
 
 const MergedPlatformPlainObject = BuildSchemeBase.merge(PlatformBase)
     .merge(PlatformiOS)
@@ -18,20 +19,21 @@ const MergedPlatformPlainObject = BuildSchemeBase.merge(PlatformBase)
     .merge(PlatformWebpack)
     .merge(PlatformElectron)
     .merge(PlatformWindows)
+    .merge(PlatformWebOS)
     .merge(PlatformNextJs);
 
 export type _MergedPlatformObjectType = z.infer<typeof MergedPlatformPlainObject>;
 
 // LEVEL 2
 
-export const PlatformBuildSchemes = z
-    .record(z.string(), MergedPlatformPlainObject)
-    .describe('Allows to customize platforms configurations based on chosen build scheme `-s`');
+// export const PlatformBuildSchemes = z
+//     .record(z.string(), MergedPlatformPlainObject)
+//     .describe('Allows to customize platforms configurations based on chosen build scheme `-s`');
 
-const PlatformMerged = MergedPlatformPlainObject.extend({
-    buildSchemes: z.optional(PlatformBuildSchemes),
-});
-export type _PlatformMergedType = z.infer<typeof PlatformMerged>;
+// const PlatformMerged = MergedPlatformPlainObject.extend({
+//     buildSchemes: z.optional(PlatformBuildSchemes),
+// });
+// export type _PlatformMergedType = z.infer<typeof PlatformMerged>;
 
 // const generatePlatform = <T extends ZodObject>(schema: T) => {
 //     return z.optional(
@@ -55,6 +57,10 @@ const tizenSchema = z
     .describe(desc);
 const webSchema = z.optional(PlatformWeb.extend({ buildSchemes: z.record(z.string(), PlatformWeb) })).describe(desc);
 
+const webosSchema = z
+    .optional(PlatformWebOS.extend({ buildSchemes: z.record(z.string(), PlatformWebOS) }))
+    .describe(desc);
+
 export const Platforms = z
     .object({
         android: androidSchema,
@@ -64,7 +70,7 @@ export const Platforms = z
         ios: iosSchema,
         tvos: iosSchema,
         tizen: tizenSchema,
-        webos: webSchema,
+        webos: webosSchema,
         web: webSchema,
         webtv: webSchema,
         chromecast: webSchema,
@@ -75,3 +81,5 @@ export const Platforms = z
         xbox: webSchema,
     })
     .describe('Object containing platform configurations');
+
+export type _PlatformsType = z.infer<typeof Platforms>;
