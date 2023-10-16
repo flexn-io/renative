@@ -275,7 +275,7 @@ type PlatformGeneric =
 
 // type PlatformGeneric = any;
 
-export const _getConfigProp = <T extends keyof ConfigProp>(
+export const _getConfigProp = <T extends ConfigPropKey>(
     c: RnvContext,
     platform: RnvPlatform,
     key: T,
@@ -326,7 +326,7 @@ export const _getConfigProp = <T extends keyof ConfigProp>(
     return result as ConfigProp[T];
 };
 
-export const getConfigPropArray = <T extends keyof ConfigProp>(c: RnvContext, platform: RnvPlatform, key: T) => {
+export const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: RnvPlatform, key: T) => {
     const result: Array<ConfigProp[T]> = [];
     const configArr = [
         c.files.defaultWorkspace.config,

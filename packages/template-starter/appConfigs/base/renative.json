@@ -119,19 +119,16 @@
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
-                    "bundleAssets": false,
-                    "environment": "development"
+                    "bundleAssets": false
                 },
                 "test": {
                     "runScheme": "Debug",
-                    "bundleAssets": true,
-                    "environment": "development"
+                    "bundleAssets": true
                 },
                 "release": {
                     "runScheme": "Release",
                     "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "environment": "production"
+                    "bundleIsDev": false
                 }
             }
         },
@@ -287,9 +284,6 @@
             "entryFile": "index",
             "pagesDir": "src/pages",
             "devServerHost": "0.0.0.0",
-            "webpackConfig": {
-                "baseUrl": ""
-            },
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false,
@@ -315,9 +309,6 @@
             "entryFile": "index",
             "pagesDir": "src/pages",
             "devServerHost": "0.0.0.0",
-            "webpackConfig": {
-                "baseUrl": ""
-            },
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false,
@@ -357,7 +348,6 @@
                     "bundleAssets": false
                 },
                 "release": {
-                    "release": true,
                     "bundleAssets": true,
                     "bundleIsDev": false,
                     "enableSourceMaps": true
@@ -371,7 +361,6 @@
                     "bundleAssets": false
                 },
                 "release": {
-                    "release": true,
                     "bundleAssets": true,
                     "bundleIsDev": false,
                     "enableSourceMaps": true
@@ -380,14 +369,15 @@
         },
         "xbox": {
             "entryFile": "index",
-            "language": "cpp",
-            "arch": "x64",
+            "templateVSProject": {
+                "language": "cpp",
+                "arch": "x64"
+            },
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
                 },
                 "release": {
-                    "release": true,
                     "bundleAssets": true,
                     "bundleIsDev": false,
                     "enableSourceMaps": true

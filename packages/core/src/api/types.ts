@@ -1,5 +1,5 @@
 import type { RnvContext } from '../context/types';
-import type { ConfigProp } from '../schema/types';
+import type { ConfigProp, ConfigPropKey } from '../schema/types';
 import type { DoResolveFn } from '../system/types';
 import type { RnvPlatform } from '../types';
 
@@ -128,9 +128,9 @@ export type PromptParams = {
 
 export type PromptRenderFn = (i: number, obj: any, mapping: any, defaultVal: string) => string;
 
-export type GetConfigPropFn = <T extends keyof ConfigProp>(
+export type GetConfigPropFn = <T extends ConfigPropKey>(
     c: RnvContext,
     platform: RnvPlatform,
-    key: keyof ConfigProp,
+    key: ConfigPropKey,
     defaultVal?: ConfigProp[T]
 ) => ConfigProp[T];

@@ -11,7 +11,7 @@ import type { FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from
 import { getApi } from '../api/provider';
 import { getContext } from '../context/provider';
 import { matchRegEx } from './regEx';
-import type { ConfigProp } from '../schema/types';
+import type { ConfigPropKey } from '../schema/types';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {
@@ -147,7 +147,7 @@ export const writeCleanFile = (
                 const occurences = pFileClean.match(regEx);
                 if (occurences) {
                     occurences.forEach((occ) => {
-                        const val = occ.replace('{{configProps.', '').replace('}}', '') as keyof ConfigProp;
+                        const val = occ.replace('{{configProps.', '').replace('}}', '') as ConfigPropKey;
                         const configVal = api.getConfigProp(c, c.platform, val, '');
                         pFileClean = pFileClean.replace(occ, configVal);
                     });
