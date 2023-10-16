@@ -1,0 +1,81 @@
+{
+    "name": "@rnv/sdk-astro",
+    "version": "1.0.0-canary.4",
+    "description": "ReNative Astro SDK",
+    "keywords": [],
+    "homepage": "https://github.com/flexn-io/renative#readme",
+    "bugs": {
+        "url": "https://github.com/flexn-io/renative/issues"
+    },
+    "license": "MIT",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "files": [
+        "lib",
+        "nodeModuleOverrides",
+        "types.d.ts"
+    ],
+    "main": "lib/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/flexn-io/renative.git"
+    },
+    "scripts": {
+        "bootstrap": "yarn && yarn build && npm link",
+        "build": "yarn clean && yarn compile",
+        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.json",
+        "lint": "eslint . --ext .ts",
+        "watch": "tsc --watch --preserveWatchOutput"
+    },
+    "dependencies": {
+        "astro": "^3.3.0",
+        "@astrojs/react": "^3.0.3",
+        "axios": "0.21.2",
+        "better-opn": "1.0.0",
+        "bfj": "^7.0.2",
+        "browserslist": "^4.18.1",
+        "camelcase": "^6.2.1",
+        "case-sensitive-paths-webpack-plugin": "^2.4.0",
+        "command-exists": "1.2.9",
+        "cross-env": "5.2.0",
+        "css-loader": "^6.5.1",
+        "css-minimizer-webpack-plugin": "^3.2.0",
+        "dotenv": "^10.0.0",
+        "dotenv-expand": "^5.1.0",
+        "eslint-webpack-plugin": "^3.1.1",
+        "file-loader": "^6.2.0",
+        "fs-extra": "^10.0.0",
+        "html-webpack-plugin": "^5.5.0",
+        "identity-obj-proxy": "^3.0.0",
+        "ip": "1.1.5",
+        "mini-css-extract-plugin": "^2.4.5",
+        "postcss": "^8.4.4",
+        "postcss-flexbugs-fixes": "^5.0.2",
+        "postcss-loader": "^6.2.1",
+        "postcss-normalize": "^10.0.1",
+        "postcss-preset-env": "^7.0.1",
+        "prompts": "^2.4.2",
+        "react": "^18.0.2",
+        "react-app-polyfill": "^3.0.0",
+        "react-dev-utils": "^12.0.0",
+        "react-dom": "^18.0.2",
+        "react-refresh": "^0.11.0",
+        "resolve": "^1.20.0",
+        "resolve-url-loader": "^4.0.0",
+        "sass-loader": "^12.3.0",
+        "semver": "^7.5.3",
+        "source-map-loader": "4.0.0",
+        "style-loader": "^3.3.1",
+        "tailwindcss": "^3.0.2",
+        "terser-webpack-plugin": "^5.2.5",
+        "web-vitals": "^2.1.4"
+    },
+    "peerDependencies": {
+        "@rnv/core": "^1.0.0-canary.4"
+    },
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    }
+}

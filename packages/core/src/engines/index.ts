@@ -292,6 +292,7 @@ const ENGINE_ID_MAP: Record<string, string> = {
     'engine-rn-tvos': '@rnv/engine-rn-tvos',
     'engine-rn-web': '@rnv/engine-rn-web',
     'engine-rn-windows': '@rnv/engine-rn-windows',
+    'engine-rn-astro': '@rnv/engine-rn-astro',
 };
 
 const _getFilteredEngines = (c: RnvContext) => {

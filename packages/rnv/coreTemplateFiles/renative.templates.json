@@ -39,6 +39,10 @@
         "@rnv/engine-rn-windows": {
             "version": "1.0.0-canary.4",
             "id": "engine-rn-windows"
+        },
+        "@rnv/engine-rn-astro": {
+            "version": "1.0.0-canary.4",
+            "id": "engine-rn-astro"
         }
     },
     "integrationTemplates": {

@@ -1,0 +1,11 @@
+{
+    "extends": "@flexn/typescript-config/tsconfig.lib.node.json",
+    "compilerOptions": {
+        "outDir": "./lib",
+        "rootDir": "./src",
+        "allowJs": true,
+        "resolveJsonModule": false
+    },
+    "include": ["./src/**/*", "./src/**/*.json", "./types.d.ts"],
+    "exclude": ["node_modules", "./src/__tests__", "./lib/**/*"]
+}

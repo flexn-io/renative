@@ -109,7 +109,8 @@
         "react-native-tvos": "0.72.4-0",
         "react-native-web": "0.19.9",
         "rnv": "1.0.0-canary.4",
-        "xcode": "2.1.0"
+        "xcode": "2.1.0",
+        "@rnv/engine-rn-astro": "1.0.0-canary.4"
     },
     "private": false,
     "publishConfig": {
