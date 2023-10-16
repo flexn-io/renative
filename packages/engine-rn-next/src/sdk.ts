@@ -184,14 +184,12 @@ export const getTranspileModules = (c: RnvContext) => {
 
 export const buildWebNext = async (c: RnvContext) => {
     logTask('buildWebNext');
-    // const env = getConfigProp(c, c.platform, 'environment');
 
     const envExt = await _checkPagesDir(c);
 
     await executeAsync(c, 'npx next build', {
         ...process.env,
         env: {
-            // NODE_ENV: env || 'development',
             ...envExt,
             ...generateEnvVars(c, getModuleConfigs(c, 'engine-rn-next'), getTranspileModules(c)),
         },
