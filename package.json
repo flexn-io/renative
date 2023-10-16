@@ -1,6 +1,6 @@
 {
     "name": "@flexn/renative-monorepo",
-    "version": "1.0.0-canary.4",
+    "version": "1.0.0-canary.5",
     "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `Fire TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Linux` and `Chromecast` platforms",
     "keywords": [
         "android tv",
@@ -59,6 +59,7 @@
         "bootstrap": "yarn run link:rnv && npx lerna bootstrap && yarn build",
         "bootstrap-clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run build",
+        "circular": "npx madge --circular --extensions ts --exclude '\\.(d.ts)$' ./packages",
         "compile": "npx lerna run compile",
         "deploy:canary": "yarn pre-publish && npx lerna publish from-package --dist-tag canary && git push origin HEAD",
         "deploy:feat": "yarn pre-publish && npx lerna publish from-package --dist-tag feat && git push origin HEAD",
@@ -79,7 +80,6 @@
         "sanity": "yarn compile && yarn lint && yarn test",
         "test": "jest",
         "test-cover": "jest --coverage",
-        "circular": "npx madge --circular --extensions ts --exclude '\\.(d.ts)$' ./packages",
         "watch": "npx lerna exec yarn watch --parallel",
         "watch-alt": "npx lerna run compile & npx lerna watch -- lerna run compile"
     },
@@ -88,8 +88,8 @@
         "@flexn/eslint-config": "1.0.0",
         "@flexn/prettier-config": "1.0.0",
         "@flexn/typescript-config": "1.0.0",
-        "@rnv/build-hooks-git": "1.0.0-canary.4",
-        "@rnv/core": "1.0.0-canary.4",
+        "@rnv/build-hooks-git": "1.0.0-canary.5",
+        "@rnv/core": "1.0.0-canary.5",
         "@types/jest": "~27.0.2",
         "@types/kill-port": "2.0.0",
         "@types/lodash.get": "4.4.7",
@@ -113,11 +113,11 @@
         "jest-environment-jsdom": "29.7.0",
         "lerna": "^6.6.2",
         "lint-staged": "12.3.4",
+        "madge": "6.1.0",
         "prettier": "2.3.1",
         "ts-jest": "^27.0.7",
         "ttab": "^0.7.2",
-        "typescript": "5.2.2",
-        "madge": "6.1.0"
+        "typescript": "5.2.2"
     },
     "engines": {
         "node": ">=18.0.0",
