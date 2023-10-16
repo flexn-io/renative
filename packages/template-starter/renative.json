@@ -218,6 +218,9 @@
         },
         "react-native-tvos": {
             "version": "0.72.4-0"
+        },
+        "@react-native/metro-config": {
+            "version": "^0.73.1"
         }
     },
     "permissions": {
