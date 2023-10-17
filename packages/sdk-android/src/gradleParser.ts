@@ -242,29 +242,23 @@ export const parseAppBuildGradleSync = (c: Context) => {
     release`;
     c.payload.pluginConfigAndroid.localProperties = '';
 
-    const obj = c.files.workspace?.appConfig?.configPrivate?.[platform];
-    if (obj) {
-        logWarning(`DEPRECATED structure in ${chalk().white(c.paths.workspace.appConfig.configPrivate)}.
-Your ${chalk().red(platform)} object needs to be located under ${chalk().green('platforms')} object.`);
-    }
-
-    const storeFile = getConfigProp(c, c.platform, 'storeFile') || obj?.storeFile;
-    const keyAlias = getConfigProp(c, c.platform, 'keyAlias') || obj?.keyAlias;
-    const storePassword = getConfigProp(c, c.platform, 'storePassword') || obj?.storePassword;
-    const keyPassword = getConfigProp(c, c.platform, 'keyPassword') || obj?.keyPassword;
+    const storeFile = getConfigProp(c, c.platform, 'storeFile');
+    const keyAlias = getConfigProp(c, c.platform, 'keyAlias');
+    const storePassword = getConfigProp(c, c.platform, 'storePassword');
+    const keyPassword = getConfigProp(c, c.platform, 'keyPassword');
     const minifyEnabled = getConfigProp(c, c.platform, 'minifyEnabled', false);
 
     c.payload.pluginConfigAndroid.store = {
-        storeFile,
-        keyAlias,
-        storePassword,
-        keyPassword,
+        storeFile: storeFile,
+        // keyAlias,
+        // storePassword,
+        // keyPassword,
     };
 
     if (!!storeFile && !!keyAlias && !!storePassword && !!keyPassword) {
         const keystorePath = storeFile;
         let keystorePathFull = keystorePath;
-        if (keystorePath) {
+        if (keystorePath && keystorePathFull) {
             if (keystorePath.startsWith('.')) {
                 keystorePathFull = path.join(c.paths.workspace.appConfig.dir, keystorePath);
             } else if (!fsExistsSync(keystorePath)) {
@@ -522,7 +516,7 @@ export const parseSettingsGradleSync = (c: Context) => {
         },
     ];
 
-  // console.log(injects, 'PLUGIN_INCLUDES, PLUGIN_PATHS')
+    // console.log(injects, 'PLUGIN_INCLUDES, PLUGIN_PATHS')
     addSystemInjects(c, injects);
 
     writeCleanFile(
@@ -631,7 +625,7 @@ export const injectPluginGradleSync = (
             }
         }
     } else {
-        if (!plugin.skipLinking && !skipPathResolutions ) {
+        if (!plugin.skipLinking && !skipPathResolutions) {
             c.payload.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
             c.payload.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File('${pathAbsolute}')\n`;
         }

@@ -88,6 +88,6 @@ export const PlatformAndroidFragment = {
         z.string().default(DEFAULTS.buildToolsVersion).describe('Override android build tools version')
     ),
     disableSigning: z.boolean().optional(),
-    storeFile: z.array(z.string()).describe('Name of the store file in android project').optional(),
-    keyAlias: z.array(z.string()).describe('Key alias of the store file in android project').optional(),
+    storeFile: z.string().describe('Name of the store file in android project').optional(),
+    keyAlias: z.string().describe('Key alias of the store file in android project').optional(),
 };

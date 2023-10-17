@@ -1,4 +1,11 @@
-import type { ConfigProp, ConfigPropKey, PlatformKey, RenativeConfigFile, RenativeConfigLocal } from '../schema/types';
+import type {
+    ConfigProp,
+    ConfigPropKey,
+    PlatformKey,
+    RenativeConfigFile,
+    RenativeConfigLocal,
+    RenativeConfigPrivate,
+} from '../schema/types';
 import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import type { OverridesOptions } from '../system/types';
 import type { RnvPlatform } from '../types';
@@ -284,8 +291,8 @@ export interface RnvContextPathObj {
 export interface RnvContextFileObj {
     config?: any;
     config_original?: any;
-    configLocal?: any; // RenativeConfigLocal;
-    configPrivate?: any; // RenativeConfigPrivate;
+    configLocal?: RenativeConfigLocal; // RenativeConfigLocal;
+    configPrivate?: RenativeConfigPrivate; // RenativeConfigPrivate;
     configs: Array<any>;
     configsLocal: Array<RenativeConfigLocal>;
     configsPrivate: Array<any>;

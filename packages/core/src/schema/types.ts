@@ -13,7 +13,7 @@ import type { _RootPluginsSchemaType } from './configFiles/plugins';
 import type { _RootPluginSchemaType } from './configFiles/plugin';
 import type { _RootProjectSchemaType } from './configFiles/project';
 import type { _ManifestChildWithChildrenType } from './platforms/fragments/templateAndroidBase';
-import type { _RootPrivateSchemaType } from './configFiles/private';
+import type { _MergedPlatformPrivateObjectType, _RootPrivateSchemaType } from './configFiles/private';
 import type { _CommonSchemaType } from './common';
 // import type { _CommonBuildSchemesSchemaType, _CommonSchemaPartialType } from './common';
 // import type { RenativeConfigFile } from './types';
@@ -117,7 +117,7 @@ export type ManifestFeature = _ManifestChildWithChildrenType;
 
 export type ConfigProp = _RootProjectBaseSchemaType &
     _RootAppBaseSchemalType &
-    _RootPrivateSchemaType &
+    _MergedPlatformPrivateObjectType &
     _MergedPlatformObjectType;
 
 export type ConfigPropKey = keyof ConfigProp;

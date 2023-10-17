@@ -33,6 +33,7 @@ import {
     ANDROID_TV,
     FIRE_TV,
     DEFAULTS,
+    RnvPlatform,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -179,6 +180,7 @@ const _checkSigningCerts = async (c: Context) => {
     const isRelease = signingConfig === 'Release';
 
     if (!c.platform) return;
+    if (!c.files.workspace.appConfig.configPrivate) return;
 
     if (isRelease && !c.payload.pluginConfigAndroid?.store?.storeFile) {
         const msg = `You're attempting to ${
@@ -199,18 +201,20 @@ const _checkSigningCerts = async (c: Context) => {
 
         if (confirm) {
             let confirmCopy = false;
-            let platCandidate = 'undefined';
+            let platCandidate: RnvPlatform = null;
             const { confirmNewKeystore } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'confirmNewKeystore',
                 message: 'Do you want to generate new keystore as well?',
             });
 
+            const platforms = c.files.workspace.appConfig.configPrivate?.platforms || {};
+
             if (c.files.workspace.appConfig.configPrivate) {
-                const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID, FIRE_TV];
+                const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID, FIRE_TV] as const;
 
                 platCandidates.forEach((v) => {
-                    if (c.files.workspace.appConfig.configPrivate?.[v]) {
+                    if (c.files.workspace.appConfig.configPrivate?.platforms?.[v]) {
                         platCandidate = v;
                     }
                 });
@@ -224,11 +228,10 @@ const _checkSigningCerts = async (c: Context) => {
                 }
             }
 
-            if (confirmCopy) {
-                c.files.workspace.appConfig.configPrivate[c.platform] =
-                    c.files.workspace.appConfig.configPrivate?.[platCandidate];
+            if (confirmCopy && platCandidate) {
+                platforms[c.platform] = platforms[platCandidate];
             } else {
-                let storeFile;
+                let storeFile: string | undefined;
 
                 if (!confirmNewKeystore) {
                     const result = await inquirerPrompt({
@@ -278,12 +281,14 @@ const _checkSigningCerts = async (c: Context) => {
                     c.files.workspace.appConfig.configPrivate = {
                         platforms: {},
                     };
-                    c.files.workspace.appConfig.configPrivate.platforms[c.platform] = {
-                        storeFile,
-                        storePassword,
-                        keyAlias,
-                        keyPassword,
-                    };
+                    if (storeFile) {
+                        platforms[c.platform] = {
+                            storeFile,
+                            storePassword,
+                            keyAlias,
+                            keyPassword,
+                        };
+                    }
                 }
             }
 
