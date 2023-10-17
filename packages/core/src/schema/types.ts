@@ -109,6 +109,8 @@ export type RenativeEngineConfig = _ConfigRootEngineType;
 
 export type RenativeConfigLocal = _RootLocalSchemaType;
 
+export type RenativeConfigPrivate = _RootPrivateSchemaType;
+
 export type RenativeConfigAppDelegateMethod = _AppDelegateMethodType;
 
 export type ManifestFeature = _ManifestChildWithChildrenType;

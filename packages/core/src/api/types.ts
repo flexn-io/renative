@@ -3,11 +3,6 @@ import type { ConfigProp, ConfigPropKey } from '../schema/types';
 import type { DoResolveFn } from '../system/types';
 import type { RnvPlatform } from '../types';
 
-// export type AnalyticsApi = {
-//     captureException: (e: string | Error, context: { extra: any }) => void;
-//     teardown: () => Promise<void>;
-// };
-
 export interface RnvApi {
     isDefault: boolean;
     spinner: RnvApiSpinner;

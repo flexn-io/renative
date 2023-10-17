@@ -233,7 +233,12 @@ export const getAppFolder = (c: RnvContext, isRelativePath?: boolean) => {
 export const getAppTemplateFolder = (c: RnvContext, platform: RnvPlatform) =>
     platform ? path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`) : undefined;
 
-const _getValueOrMergedObject = (resultCli: any, resultScheme: any, resultPlatforms: any, resultCommon: any) => {
+const _getValueOrMergedObject = (
+    resultCli: any,
+    resultScheme: object,
+    resultPlatforms: object,
+    resultCommon: object
+) => {
     if (resultCli !== undefined) {
         return resultCli;
     }

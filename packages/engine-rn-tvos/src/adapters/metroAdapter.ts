@@ -1,3 +1,5 @@
+import { Env } from '@rnv/core';
+
 const path = require('path');
 const os = require('os');
 const { doResolve } = require('@rnv/core');
@@ -9,7 +11,7 @@ const sharedBlacklist = [
     /.*\/__tests__\/.*/,
 ];
 
-const env: any = process?.env;
+const env: Env = process?.env;
 
 function escapeRegExp(pattern: RegExp | string) {
     if (typeof pattern === 'string') {

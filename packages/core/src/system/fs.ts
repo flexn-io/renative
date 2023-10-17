@@ -132,8 +132,9 @@ export const writeCleanFile = (
             let pFileClean = pFile;
             if (overrides?.forEach) {
                 overrides.forEach((v) => {
-                    if (v.override) {
+                    if (v.override !== undefined) {
                         const regEx = new RegExp(v.pattern, 'g');
+
                         if (typeof v.override === 'number') {
                             pFileClean = pFileClean.replace(regEx, v.override.toString());
                         } else {
