@@ -43,6 +43,10 @@ export const parseBuildGradleSync = (c: Context) => {
             override: c.payload.pluginConfigAndroid.compileSdkVersion,
         },
         {
+            pattern: '{{TARGET_SDK_VERSION}}',
+            override: c.payload.pluginConfigAndroid.targetSdkVersion,
+        },
+        {
             pattern: '{{INJECT_BUILD_TOOLS_VERSION}}',
             override: c.payload.pluginConfigAndroid.gradleBuildToolsVersion,
         },
@@ -522,7 +526,7 @@ export const parseSettingsGradleSync = (c: Context) => {
         },
     ];
 
-  // console.log(injects, 'PLUGIN_INCLUDES, PLUGIN_PATHS')
+    // console.log(injects, 'PLUGIN_INCLUDES, PLUGIN_PATHS')
     addSystemInjects(c, injects);
 
     writeCleanFile(
@@ -631,7 +635,7 @@ export const injectPluginGradleSync = (
             }
         }
     } else {
-        if (!plugin.skipLinking && !skipPathResolutions ) {
+        if (!plugin.skipLinking && !skipPathResolutions) {
             c.payload.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
             c.payload.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File('${pathAbsolute}')\n`;
         }
