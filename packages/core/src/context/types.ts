@@ -164,39 +164,44 @@ export type RnvContextPaths = {
     rnv: {
         configWorkspaces: string;
         pluginTemplates: {
-            configs: Record<string, any>;
-            //ADDON
             overrideDir?: string;
             config?: string;
             dirs: Record<string, string>;
         };
-        projectTemplates: RnvContextPathObj;
-        platformTemplate: RnvContextPathObj;
-        engines: RnvContextPathObj;
-        projectTemplate: RnvContextPathObj;
-        //ADDON
+        projectTemplates: {
+            config: string;
+            dir: string;
+        };
+        engines: {
+            dir: string;
+        };
+        projectTemplate: {
+            dir: string;
+        };
         dir: string;
         package: string;
     };
     workspace: RnvContextPathObj & {
         project: RnvContextPathObj & {
-            appConfigBase: RnvContextPathObj;
+            appConfigBase: {
+                dir: string;
+            };
             builds: string;
             assets: string;
-            platformTemplates: Record<string, any>;
-            appConfigsDirs: Array<string>;
-            appConfigsDirNames: Array<string>;
         };
         appConfig: RnvContextPathObj;
     };
     defaultWorkspace: RnvContextPathObj & {
         project: {
-            appConfigBase: Record<string, any>;
-            builds: Record<string, any>;
-            assets: Record<string, any>;
-            platformTemplates: Record<string, any>;
-            appConfigsDirs: Array<string>;
-            appConfigsDirNames: Array<string>;
+            appConfigBase: {
+                dir: string;
+            };
+            builds: {
+                dir: string;
+            };
+            assets: {
+                dir: string;
+            };
         };
         appConfig: {
             configs: Array<string>;
@@ -211,12 +216,17 @@ export type RnvContextPaths = {
             fontsDir: string;
             fontsDirs: Array<string>;
         };
-        builds: Record<string, any>;
-        assets: Record<string, any>;
-        platformTemplates: Record<string, any>;
+        builds: {
+            dir: string;
+            config: string;
+        };
+        assets: {
+            dir: string;
+            config: string;
+            runtimeDir: string;
+        };
         appConfigsDirs: Array<string>;
         appConfigsDirNames: Array<string>;
-        //ADDON
         dir: string;
         nodeModulesDir: string;
         srcDir?: string;
@@ -226,19 +236,27 @@ export type RnvContextPaths = {
         fontSourceDirs?: Array<string>;
     };
     appConfig: RnvContextPathObj;
-    // EXTRA
     buildHooks: {
-        dist: Record<string, any>;
-        //ADDON
+        dist: {
+            dir: string;
+            index: string;
+        };
         dir: string;
         index: string;
     };
-    home: Record<string, any>;
+    home: {
+        dir: string;
+    };
     template: {
-        appConfigBase: Record<string, any>;
-        builds: Record<string, any>;
-        assets: Record<string, any>;
-        platformTemplates: Record<string, any>;
+        appConfigBase: {
+            dir: string;
+        };
+        builds: {
+            dir: string;
+        };
+        assets: {
+            dir: string;
+        };
         appConfigsDir: string;
         configTemplate: string;
         config: string;
@@ -253,14 +271,14 @@ export interface RnvContextPathObj {
     configLocal: string;
     configPrivate: string;
     appConfigsDir: string;
-    fontsDir: string;
     dirs: Array<string>;
-    fontsDirs: Array<string>;
-    pluginDirs: Array<string>;
     configs: Array<string>;
     configsLocal: Array<string>;
     configsPrivate: Array<string>;
     configExists?: boolean;
+    pluginDirs: Array<string>;
+    fontsDir: string;
+    fontsDirs: Array<string>;
 }
 
 export interface RnvContextFileObj {
