@@ -1,7 +1,8 @@
-import type { PlatformKey, RenativeConfigFile, RenativeConfigLocal } from '../schema/types';
+import type { ConfigProp, ConfigPropKey, PlatformKey, RenativeConfigFile, RenativeConfigLocal } from '../schema/types';
 import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import type { OverridesOptions } from '../system/types';
 import type { RnvPlatform } from '../types';
+import { RnvPlugin } from '../plugins/types';
 
 export interface RnvContext<Payload = any> {
     /**
@@ -36,10 +37,11 @@ export interface RnvContext<Payload = any> {
     isBuildHooksReady: boolean;
     supportedPlatforms: Array<string>;
     runtimePropsInjects: OverridesOptions;
-    _renativePluginCache: any;
+    _renativePluginCache: Record<string, RnvPlugin>;
     cli: any;
     buildHooks: Record<string, (c: RnvContext) => Promise<void>>;
-    configPropsInjects: any;
+    configPropsInjects: OverridesOptions;
+    injectableConfigProps: Record<string, ConfigProp[ConfigPropKey]>;
     runtime: RnvContextRuntime;
     paths: RnvContextPaths;
     files: RnvContextFiles;

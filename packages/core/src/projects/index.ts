@@ -8,7 +8,7 @@ import {
     getPlatformProjectDir,
     getTimestampPathsConfig,
 } from '../common';
-import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
+import { RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { isPlatformActive } from '../platforms';
 import { copyTemplatePluginsSync, parsePlugins } from '../plugins';
 import {
@@ -37,6 +37,7 @@ import { ParseFontsCallback } from './types';
 import { RenativeConfigFile } from '../schema/types';
 import { inquirerPrompt } from '../api';
 import { upgradeProjectDependencies } from '../configs/configProject';
+import { generateConfigPropInjects } from '../system/injectors';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');
@@ -535,14 +536,7 @@ export const copyBuildsFolder = (c: RnvContext, platform: RnvPlatform) =>
         const destPath = path.join(getAppFolder(c));
         const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
-        const configPropsInjects: Array<any> = [];
-        INJECTABLE_CONFIG_PROPS.forEach((v) => {
-            configPropsInjects.push({
-                pattern: `{{configProps.${v}}}`,
-                override: getConfigProp<any>(c, c.platform, v),
-            });
-        });
-        c.configPropsInjects = configPropsInjects;
+        generateConfigPropInjects();
         const allInjects = [...c.configPropsInjects, ...c.systemPropsInjects, ...c.runtimePropsInjects];
 
         // FOLDER MERGERS PROJECT CONFIG

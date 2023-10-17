@@ -2,7 +2,7 @@ import merge from 'deepmerge';
 import path from 'path';
 import { getAppFolder, getBuildsFolder, getConfigProp } from '../common';
 import { parseRenativeConfigs } from '../configs';
-import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
+import { RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import { configureFonts } from '../projects';
 import {
     copyFolderContentsRecursiveSync,
@@ -23,7 +23,7 @@ import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { installPackageDependencies } from '../projects/npm';
-import { ResolveOptions } from '../system/types';
+import { OverridesOptions, ResolveOptions } from '../system/types';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -113,9 +113,7 @@ const _getMergedPlugin = (
     } else {
         currentPlugin = plugin;
     }
-    INJECTABLE_CONFIG_PROPS.forEach((v) => {
-        c.configPropsInjects[v] = getConfigProp(c, c.platform, v);
-    });
+
     if (currentPlugin.pluginDependencies) {
         Object.keys(currentPlugin.pluginDependencies).forEach((plugDepKey) => {
             if (currentPlugin.pluginDependencies?.[plugDepKey] === 'source:self') {
@@ -135,7 +133,7 @@ const _getMergedPlugin = (
               files: c.files,
               runtimeProps: c.runtime,
               props: c.buildConfig?._refs,
-              configProps: c.configPropsInjects,
+              configProps: c.injectableConfigProps,
           });
 
     // IMPORTANT: only final top level merge should be sanitized
@@ -145,7 +143,7 @@ const _getMergedPlugin = (
               files: c.files,
               runtimeProps: c.runtime,
               props: obj.props,
-              configProps: c.configPropsInjects,
+              configProps: c.injectableConfigProps,
           });
 
     return mergedPlugin;
@@ -829,7 +827,7 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
     logTask('copyTemplatePluginsSync', `(${destPath})`);
 
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        const objectInject = [...c.configPropsInjects];
+        const objectInject: OverridesOptions = []; // = { ...c.configPropsInjects };
         if (plugin.props) {
             Object.keys(plugin.props).forEach((v) => {
                 objectInject.push({

@@ -513,7 +513,7 @@ export const readObjectSync = (filePath?: string, sanitize?: boolean, c?: RnvCon
                     files: c?.files,
                     runtimeProps: c?.runtime,
                     props: obj._refs,
-                    configProps: c?.configPropsInjects,
+                    configProps: c?.injectableConfigProps,
                 });
             }
         }

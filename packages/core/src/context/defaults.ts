@@ -55,7 +55,8 @@ export const generateContextDefaults = (): RnvContext => ({
     //==========
     _renativePluginCache: {},
     cli: {},
-    configPropsInjects: {},
+    configPropsInjects: [],
+    injectableConfigProps: {},
     runtime,
     paths: {
         CURRENT_DIR: '',

@@ -47,7 +47,7 @@ export type RnvCLI = Record<string, object>;
 
 export type FileUtilsPropConfig = {
     props: Record<string, string>;
-    configProps?: Record<string, string>;
+    configProps?: Record<string, any>;
     runtimeProps?: Record<string, any>;
     files?: Record<string, any>;
 };
