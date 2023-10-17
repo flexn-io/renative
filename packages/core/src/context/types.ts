@@ -289,13 +289,13 @@ export interface RnvContextPathObj {
 }
 
 export interface RnvContextFileObj {
-    config?: any;
+    config?: any; //RenativeConfigFile
     config_original?: any;
-    configLocal?: RenativeConfigLocal; // RenativeConfigLocal;
-    configPrivate?: RenativeConfigPrivate; // RenativeConfigPrivate;
+    configLocal?: RenativeConfigLocal;
+    configPrivate?: RenativeConfigPrivate;
     configs: Array<any>;
     configsLocal: Array<RenativeConfigLocal>;
-    configsPrivate: Array<any>;
+    configsPrivate: Array<RenativeConfigPrivate>;
 }
 
 export interface RnvContextPlatform {
