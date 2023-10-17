@@ -210,7 +210,7 @@ const _checkSigningCerts = async (c: Context) => {
                 const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID, FIRE_TV];
 
                 platCandidates.forEach((v) => {
-                    if (c.files.workspace.appConfig.configPrivate[v]) {
+                    if (c.files.workspace.appConfig.configPrivate?.[v]) {
                         platCandidate = v;
                     }
                 });
@@ -226,7 +226,7 @@ const _checkSigningCerts = async (c: Context) => {
 
             if (confirmCopy) {
                 c.files.workspace.appConfig.configPrivate[c.platform] =
-                    c.files.workspace.appConfig.configPrivate[platCandidate];
+                    c.files.workspace.appConfig.configPrivate?.[platCandidate];
             } else {
                 let storeFile;
 
