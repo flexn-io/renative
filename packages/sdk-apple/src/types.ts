@@ -1,4 +1,4 @@
-import { RnvContext } from '@rnv/core';
+import { RenativeConfigPluginPlatform, RnvContext } from '@rnv/core';
 
 export type AppleDevice = {
     udid?: string;
@@ -110,3 +110,5 @@ export type SwiftAppDelegateSubKey = keyof SwiftAppDelegate['application'] &
     keyof SwiftAppDelegate['userNotificationCenter'];
 
 export type SwiftAppDelegateKey = keyof SwiftAppDelegate;
+
+export type TemplateXcode = Required<Required<RenativeConfigPluginPlatform>['templateXcode']>;

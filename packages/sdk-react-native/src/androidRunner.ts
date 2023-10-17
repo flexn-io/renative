@@ -12,6 +12,7 @@ import {
     logSuccess,
     ANDROID_WEAR,
     RnvContext,
+    DEFAULTS,
 } from '@rnv/core';
 
 export const packageReactNativeAndroid = async (c: RnvContext) => {
@@ -106,7 +107,7 @@ export const buildAndroid = async (c: RnvContext) => {
     const { platform } = c;
 
     const appFolder = getAppFolder(c);
-    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
+    const signingConfig = getConfigProp(c, platform, 'signingConfig') || DEFAULTS.signingConfig;
 
     const outputAab = getConfigProp(c, platform, 'aab', false);
     // shortcircuit devices logic since aabs can't be installed on a device

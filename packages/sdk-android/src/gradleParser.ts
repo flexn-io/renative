@@ -1,6 +1,5 @@
 import {
     OverridesOptions,
-    RenativeConfigPlatform,
     RenativeConfigPluginPlatform,
     RnvContext,
     RnvPlugin,
@@ -185,31 +184,22 @@ export const parseAppBuildGradleSync = (c: Context) => {
     if (!platform) return;
 
     // ANDROID PROPS
-    c.payload.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 24);
-    c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 33);
-    c.payload.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 33);
-    c.payload.pluginConfigAndroid.ndkVersion = getConfigProp(c, platform, 'ndkVersion', '23.1.7779620');
-    c.payload.pluginConfigAndroid.gradleBuildToolsVersion = getConfigProp(
-        c,
-        platform,
-        'gradleBuildToolsVersion',
-        '4.2.2'
-    );
-    c.payload.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion', '28.0.0');
-    c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '33.0.0');
-    c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp(c, platform, 'kotlinVersion', '1.4.20');
-    c.payload.pluginConfigAndroid.googleServicesVersion = getConfigProp(c, platform, 'googleServicesVersion', '4.2.0');
+    c.payload.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion') || 24;
+    c.payload.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion') || 33;
+    c.payload.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion') || 33;
+    c.payload.pluginConfigAndroid.ndkVersion = getConfigProp(c, platform, 'ndkVersion') || '23.1.7779620';
+    c.payload.pluginConfigAndroid.gradleBuildToolsVersion =
+        getConfigProp(c, platform, 'gradleBuildToolsVersion') || '4.2.2';
+    c.payload.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion') || '28.0.0';
+    c.payload.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion') || '33.0.0';
+    c.payload.pluginConfigAndroid.kotlinVersion = getConfigProp(c, platform, 'kotlinVersion') || '1.4.20';
+    c.payload.pluginConfigAndroid.googleServicesVersion =
+        getConfigProp(c, platform, 'googleServicesVersion') || '4.2.0';
 
-    // REACT NATIVE ENGINE
-    const enableHermes = getConfigProp(c, platform, 'enableHermes');
-    if (enableHermes === true) {
-        logWarning('enableHermes is DEPRECATED. use "reactNativeEngine": "hermes" instead.');
-    }
-
-    const reactNativeEngine = getConfigProp(c, c.platform, 'reactNativeEngine', 'default');
+    const reactNativeEngine = getConfigProp(c, c.platform, 'reactNativeEngine') || 'hermes';
 
     switch (reactNativeEngine) {
-        case 'default': {
+        case 'jsc': {
             setReactNativeEngineDefault(c);
             break;
         }
@@ -235,7 +225,7 @@ export const parseAppBuildGradleSync = (c: Context) => {
         }
         default: {
             logWarning(`Unsupported react native engine ${reactNativeEngine}. Will use default instead`);
-            setReactNativeEngineDefault(c);
+            setReactNativeEngineHermes(c);
         }
     }
 
@@ -327,9 +317,11 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
     }
 
     // BUILD_TYPES
-    const pluginConfig = c.buildConfig ?? {};
-    const debugBuildTypes = pluginConfig?.platforms?.[platform]?.gradle?.buildTypes?.debug ?? [];
-    const releaseBuildTypes: string[] = pluginConfig?.platforms?.[platform]?.gradle?.buildTypes?.release ?? [];
+    const templateAndroid = getConfigProp(c, c.platform, 'templateAndroid');
+    // const pluginConfig = c.buildConfig ?? {};
+    const appBuildGradle = templateAndroid?.app_build_gradle;
+    const debugBuildTypes = appBuildGradle?.buildTypes?.debug ?? [];
+    const releaseBuildTypes: string[] = appBuildGradle?.buildTypes?.release ?? [];
     const isSigningDisabled = getConfigProp(c, platform, 'disableSigning') === true;
     c.payload.pluginConfigAndroid.buildTypes = `
     debug {
@@ -549,9 +541,10 @@ export const parseGradlePropertiesSync = (c: Context) => {
     if (!platform) return;
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
-    const pluginConfigAndroid: RenativeConfigPlatform = c.buildConfig?.platforms?.[platform] || {};
 
-    const gradleProps = pluginConfigAndroid['gradle.properties'];
+    const templateAndroid = getConfigProp(c, c.platform, 'templateAndroid');
+
+    const gradleProps = templateAndroid?.gradle_properties;
 
     if (gradleProps) {
         const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
@@ -612,7 +605,7 @@ export const injectPluginGradleSync = (
     // }
     const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     const pathFixed = plugin.path ? `${plugin.path}` : `${key}/android`;
-    const skipPathResolutions = pluginRoot['no-npm'];
+    const skipPathResolutions = pluginRoot.disableNpm;
     let pathAbsolute;
 
     if (!skipPathResolutions) {
@@ -658,27 +651,11 @@ export const injectPluginGradleSync = (
     }
 };
 
-const getObj = <T = any>(c: RnvContext, obj: any, keys: Array<string>): T | undefined => {
-    for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        const val = obj ? obj[key] : getConfigProp(c, c.platform, key);
-        if (val) return val;
-    }
-};
-
 export const parseAndroidConfigObject = (c: RnvContext, obj?: any, key = '') => {
-    const implementations = getObj<string[]>(c, obj, ['implementations']);
-    if (implementations) {
-        implementations.forEach((v) => {
-            c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation ${sanitizePluginPath(
-                v,
-                key
-            )}\n`;
-        });
-    }
-
     // APP/BUILD.GRADLE
-    const appBuildGradle = getObj<RenativeConfigPluginPlatform['app/build.gradle']>(c, obj, ['app/build.gradle']);
+    const templateAndroid = getConfigProp(c, obj, 'templateAndroid');
+
+    const appBuildGradle = templateAndroid?.app_build_gradle;
     if (appBuildGradle) {
         if (appBuildGradle.apply) {
             appBuildGradle.apply.forEach((v) => {
@@ -691,17 +668,27 @@ export const parseAndroidConfigObject = (c: RnvContext, obj?: any, key = '') => 
                 c.payload.pluginConfigAndroid.defaultConfig += `${sanitizePluginPath(v, key)}\n`;
             });
         }
-    }
 
-    const afterEvaluate = getObj<RenativeConfigPluginPlatform['afterEvaluate']>(c, obj, ['afterEvaluate']);
-    if (afterEvaluate) {
-        afterEvaluate.forEach((v) => {
-            c.payload.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${sanitizePluginPath(v, key)}\n`;
-        });
+        const { implementations } = appBuildGradle;
+        if (implementations) {
+            implementations.forEach((v) => {
+                c.payload.pluginConfigAndroid.appBuildGradleImplementations += `    implementation ${sanitizePluginPath(
+                    v,
+                    key
+                )}\n`;
+            });
+        }
+
+        const afterEvaluate = appBuildGradle?.afterEvaluate;
+        if (afterEvaluate) {
+            afterEvaluate.forEach((v) => {
+                c.payload.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${sanitizePluginPath(v, key)}\n`;
+            });
+        }
     }
 
     // BUILD.GRADLE
-    const buildGradle = getObj<RenativeConfigPluginPlatform['build.gradle']>(c, obj, ['BuildGradle', 'build.gradle']);
+    const buildGradle = templateAndroid?.build_gradle;
 
     const allProjRepos = buildGradle?.allprojects?.repositories;
     if (allProjRepos) {

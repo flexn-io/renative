@@ -1,0 +1,5 @@
+<resources>
+    <!-- $RNV.ADD($configProps.projectTemplate.colors_xml.linesStart) -->
+    <!-- $RNV.REPLACE_NEXT_LINE('<color name="bg">',$configProps.backgroundColor,'</color>') -->
+    <color name="bg">#FF0000</color>
+</resources>

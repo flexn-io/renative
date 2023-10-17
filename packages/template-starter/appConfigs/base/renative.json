@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../../.rnv/schema/rnv.app.json",
     "id": "base",
     "skipBootstrapCopy": true,
     "hidden": true,
@@ -65,7 +66,7 @@
                 "com.apple.iCloud": false
             },
             "entitlements": {},
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
@@ -89,7 +90,7 @@
             "entryFile": "index",
             "provisioningStyle": "Automatic",
             "entitlements": {},
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
@@ -112,25 +113,22 @@
         "macos": {
             "entryFile": "index",
             "provisioningStyle": "Automatic",
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
-                    "bundleAssets": false,
-                    "environment": "development"
+                    "bundleAssets": false
                 },
                 "test": {
                     "runScheme": "Debug",
-                    "bundleAssets": true,
-                    "environment": "development"
+                    "bundleAssets": true
                 },
                 "release": {
                     "runScheme": "Release",
                     "bundleAssets": true,
-                    "bundleIsDev": false,
-                    "environment": "production"
+                    "bundleIsDev": false
                 }
             }
         },
@@ -139,9 +137,6 @@
             "reactNativeEngine": "hermes",
             "includedPermissions": [
                 "INTERNET"
-            ],
-            "permissions": [
-                "*"
             ],
             "buildSchemes": {
                 "debug": {
@@ -170,7 +165,7 @@
             "entryFile": "index",
             "multipleAPKs": false,
             "assetFolderPlatform": "android",
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
@@ -194,7 +189,7 @@
             "entryFile": "index",
             "multipleAPKs": false,
             "assetFolderPlatform": "android",
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
@@ -218,7 +213,7 @@
             "entryFile": "index",
             "multipleAPKs": false,
             "assetFolderPlatform": "android",
-            "permissions": [
+            "includedPermissions": [
                 "*"
             ],
             "buildSchemes": {
@@ -289,9 +284,6 @@
             "entryFile": "index",
             "pagesDir": "src/pages",
             "devServerHost": "0.0.0.0",
-            "webpackConfig": {
-                "baseUrl": ""
-            },
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false,
@@ -307,17 +299,16 @@
                     "environment": "production"
                 }
             },
-            "deploy": {
-                "type": "none"
+            "custom": {
+                "deploy": {
+                    "type": "none"
+                }
             }
         },
         "webtv": {
             "entryFile": "index",
             "pagesDir": "src/pages",
             "devServerHost": "0.0.0.0",
-            "webpackConfig": {
-                "baseUrl": ""
-            },
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false,
@@ -329,8 +320,10 @@
                     "environment": "production"
                 }
             },
-            "deploy": {
-                "type": "none"
+            "custom": {
+                "deploy": {
+                    "type": "none"
+                }
             }
         },
         "webos": {
@@ -347,13 +340,14 @@
         },
         "windows": {
             "entryFile": "index",
-            "language": "cpp",
+            "templateVSProject": {
+                "language": "cpp"
+            },
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
                 },
                 "release": {
-                    "release": true,
                     "bundleAssets": true,
                     "bundleIsDev": false,
                     "enableSourceMaps": true
@@ -367,7 +361,6 @@
                     "bundleAssets": false
                 },
                 "release": {
-                    "release": true,
                     "bundleAssets": true,
                     "bundleIsDev": false,
                     "enableSourceMaps": true
@@ -376,14 +369,15 @@
         },
         "xbox": {
             "entryFile": "index",
-            "language": "cpp",
-            "arch": "x64",
+            "templateVSProject": {
+                "language": "cpp",
+                "arch": "x64"
+            },
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
                 },
                 "release": {
-                    "release": true,
                     "bundleAssets": true,
                     "bundleIsDev": false,
                     "enableSourceMaps": true

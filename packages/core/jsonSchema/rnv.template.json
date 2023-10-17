@@ -1,0 +1,38 @@
+{
+  "$ref": "#/definitions/rnv.template",
+  "definitions": {
+    "rnv.template": {
+      "type": "object",
+      "properties": {
+        "templateConfig": {
+          "type": "object",
+          "properties": {
+            "includedPaths": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Defines list of all file/dir paths you want to include in template"
+            },
+            "bootstrapQuestions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": {}
+              },
+              "description": "Defines list of custom bootstrap questions"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Used in `renative.template.json` allows you to define template behaviour."
+        },
+        "$schema": {
+          "type": "string",
+          "description": "schema definition"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

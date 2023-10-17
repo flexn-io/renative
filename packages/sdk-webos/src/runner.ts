@@ -25,6 +25,7 @@ import {
     getAppTitle,
     getAppDescription,
     copyFileSync,
+    DEFAULTS,
 } from '@rnv/core';
 import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
@@ -142,7 +143,7 @@ const _configureProject = async (c: RnvContext) => {
     const injects = [
         {
             pattern: '{{APPLICATION_ID}}',
-            override: getAppId(c, platform).toLowerCase(),
+            override: getAppId(c, platform)?.toLowerCase(),
         },
         {
             pattern: '{{APP_TITLE}}',
@@ -158,7 +159,7 @@ const _configureProject = async (c: RnvContext) => {
         },
         {
             pattern: '{{APP_BG_COLOR}}',
-            override: getConfigProp(c, platform, 'bgColor', '#fff'),
+            override: getConfigProp(c, platform, 'backgroundColor') || DEFAULTS.backgroundColor,
         },
         {
             pattern: '{{APP_ICON_COLOR}}',
@@ -166,7 +167,7 @@ const _configureProject = async (c: RnvContext) => {
         },
         {
             pattern: '{{APP_VENDOR}}',
-            override: getConfigProp(c, platform, 'vendor', 'Pavel Jacko'),
+            override: getConfigProp(c, platform, 'author', 'Unspecified'),
         },
     ];
 

@@ -11,18 +11,16 @@ import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
 import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
-import { RenativeConfigBuildScheme, RenativeConfigFile } from './schema/ts/types';
+import { ConfigProp, ConfigPropKey, RenativeConfigFile } from './schema/types';
 import { inquirerPrompt } from './api';
-import { GetConfigPropFn } from './api/types';
 import { RnvPlatform } from './types';
+import { DEFAULTS } from './schema/defaults';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
     if (platform === 'web') {
-        timestampBuildFiles = getConfigProp<Array<string>>(c, platform, 'timestampBuildFiles', []).map((v) =>
-            path.join(pPath, v)
-        );
+        timestampBuildFiles = (getConfigProp(c, platform, 'timestampBuildFiles') || []).map((v) => path.join(pPath, v));
     }
     if (timestampBuildFiles?.length) {
         return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
@@ -55,7 +53,7 @@ export const addSystemInjects = (c: RnvContext, injects: OverridesOptions) => {
     }
 };
 
-export const sanitizeColor = (val: string, key: string) => {
+export const sanitizeColor = (val: string | undefined, key: string) => {
     if (!val) {
         logWarning(`You are missing ${chalk().white(key)} in your renative config. will use default #FFFFFF instead`);
         return {
@@ -76,22 +74,11 @@ export const sanitizeColor = (val: string, key: string) => {
 };
 
 export const getDevServerHost = (c: RnvContext) => {
-    let devServerHostOrig = getConfigProp(c, c.platform, 'devServerHost');
-    if (!devServerHostOrig) {
-        devServerHostOrig = getConfigProp(c, c.platform, 'webpack', {}).devServerHost;
-        if (devServerHostOrig) {
-            logWarning('DEPRECATED: webpack.devServerHost. use devServerHost directly instead');
-        }
-    }
-    if (!devServerHostOrig) {
-        if (!devServerHostOrig) {
-            devServerHostOrig = getConfigProp(c, c.platform, 'webpackConfig', {}).devServerHost;
-            if (devServerHostOrig) {
-                logWarning('DEPRECATED: webpackConfig.devServerHost. use devServerHost directly instead');
-            }
-        }
-    }
-    const devServerHostFixed = getValidLocalhost(devServerHostOrig, c.runtime.localhost);
+    const devServerHostOrig = getConfigProp(c, c.platform, 'devServerHost');
+
+    const devServerHostFixed = devServerHostOrig
+        ? getValidLocalhost(devServerHostOrig, c.runtime.localhost)
+        : DEFAULTS.devServerHost;
 
     return devServerHostFixed;
 };
@@ -246,7 +233,12 @@ export const getAppFolder = (c: RnvContext, isRelativePath?: boolean) => {
 export const getAppTemplateFolder = (c: RnvContext, platform: RnvPlatform) =>
     platform ? path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`) : undefined;
 
-const _getValueOrMergedObject = (resultCli: any, resultScheme: any, resultPlatforms: any, resultCommon: any) => {
+const _getValueOrMergedObject = (
+    resultCli: any,
+    resultScheme: object,
+    resultPlatforms: object,
+    resultCommon: object
+) => {
     if (resultCli !== undefined) {
         return resultCli;
     }
@@ -267,63 +259,80 @@ const _getValueOrMergedObject = (resultCli: any, resultScheme: any, resultPlatfo
     return resultCommon;
 };
 
-export const getConfigProp: GetConfigPropFn = (c, platform, key, defaultVal?) => {
-    if (!c.buildConfig) {
-        logError('getConfigProp: c.buildConfig is undefined!');
-        return null;
-    }
-    return _getConfigProp(c, platform, key, defaultVal, c.buildConfig);
-};
-
-export const _getConfigProp = (
+export const getConfigProp = <T extends ConfigPropKey>(
     c: RnvContext,
     platform: RnvPlatform,
-    key: string,
-    defaultVal?: any,
+    key: T,
+    defaultVal?: ConfigProp[T]
+): ConfigProp[T] => {
+    if (!c.buildConfig) {
+        logError('getConfigProp: c.buildConfig is undefined!');
+        return undefined;
+    }
+    return _getConfigProp<T>(c, platform, key, defaultVal, c.buildConfig);
+};
+
+type PlatformGeneric =
+    | {
+          buildSchemes?: Record<string, any>;
+      }
+    | undefined;
+
+// type PlatformGeneric = any;
+
+export const _getConfigProp = <T extends ConfigPropKey>(
+    c: RnvContext,
+    platform: RnvPlatform,
+    key: T,
+    defaultVal?: ConfigProp[T],
     sourceObj?: Partial<RenativeConfigFile>
-) => {
-    if (!sourceObj) return null;
+): ConfigProp[T] => {
+    if (!sourceObj || !platform) return undefined;
 
     if (!key || !key.split) {
         logError('getConfigProp: invalid key!');
         return null;
     }
 
-    const p = platform ? sourceObj.platforms?.[platform] : undefined;
+    const platformObj: PlatformGeneric = sourceObj.platforms?.[platform];
     const ps = c.runtime.scheme;
     const keyArr = key.split('.');
     const baseKey = keyArr.shift() || '';
     const subKey = keyArr.join('.');
 
     let resultPlatforms;
-    let scheme: RenativeConfigBuildScheme;
-    if (p) {
-        scheme = p.buildSchemes?.[ps] || {};
-        resultPlatforms = getFlavouredProp(c, p, baseKey);
+    let scheme;
+    if (platformObj) {
+        scheme = platformObj.buildSchemes?.[ps] || {};
+        resultPlatforms = getFlavouredProp<any, any>(c, platformObj, baseKey);
     } else {
         scheme = {};
     }
 
     const resultCli = baseKey && CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
-    const resultScheme = baseKey && scheme[baseKey as keyof RenativeConfigBuildScheme];
-    const resultCommonRoot = getFlavouredProp(c, sourceObj.common || {}, baseKey);
-    const resultCommonScheme = getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, baseKey);
+    const resultScheme = baseKey && scheme[baseKey];
+    const resultCommonRoot = getFlavouredProp<any, any>(c, sourceObj.common || {}, baseKey);
+    const resultCommonScheme = getFlavouredProp<any, any>(
+        c,
+        sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {},
+        baseKey
+    );
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
     let result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
     if (result === undefined || result === null) {
-        result = getFlavouredProp(c, sourceObj, baseKey);
+        result = getFlavouredProp<any, any>(c, sourceObj, baseKey);
     }
 
     if (result === undefined || result === null) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
     if (typeof result === 'object' && subKey.length) {
         return lGet(result, subKey);
     }
-    return result;
+    return result as ConfigProp[T];
 };
 
-export const getConfigPropArray = <T = any>(c: RnvContext, platform: RnvPlatform, key: string) => {
-    const result: Array<T> = [];
+export const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platform: RnvPlatform, key: T) => {
+    const result: Array<ConfigProp[T]> = [];
     const configArr = [
         c.files.defaultWorkspace.config,
         c.files.rnv.projectTemplates.config,
@@ -356,12 +365,12 @@ export const getConfigPropArray = <T = any>(c: RnvContext, platform: RnvPlatform
 };
 
 export const getAppId = (c: RnvContext, platform: RnvPlatform) => {
-    const id = getConfigProp<string>(c, platform, 'id');
-    const idSuffix = getConfigProp<string>(c, platform, 'idSuffix');
+    const id = getConfigProp(c, platform, 'id');
+    const idSuffix = getConfigProp(c, platform, 'idSuffix');
     return idSuffix ? `${id}${idSuffix}` : id;
 };
 
-export const getAppTitle = (c: RnvContext, platform: RnvPlatform) => getConfigProp<string>(c, platform, 'title');
+export const getAppTitle = (c: RnvContext, platform: RnvPlatform) => getConfigProp(c, platform, 'title');
 
 export const getAppAuthor = (c: RnvContext, platform: RnvPlatform) =>
     getConfigProp(c, platform, 'author') || c.files.project.package?.author;
@@ -423,7 +432,7 @@ export const getAppVersionCode = (c: RnvContext, platform: RnvPlatform) => {
         logWarning('You are missing version prop in your config. will default to 0');
         return '0';
     }
-    const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat', '00.00.00');
+    const versionCodeFormat = getConfigProp(c, platform, 'versionCodeFormat') || '00.00.00';
     const vFormatArr = versionCodeFormat.split('.').map((v: string) => v.length);
     const versionCodeMaxCount = vFormatArr.length;
     const verArr = [];
@@ -521,13 +530,10 @@ export const checkPortInUse = (c: RnvContext, platform: RnvPlatform, port: numbe
         });
     });
 
-export const getFlavouredProp = <T = any>(
-    c: RnvContext,
-    obj: Record<string, any> | undefined,
-    key: string
-): T | null => {
-    if (!key || !obj) return null;
-    const val1 = obj[`${key}@${c.runtime.scheme}`];
+export const getFlavouredProp = <T, K extends keyof T>(c: RnvContext, obj: T, key: K): T[K] | undefined => {
+    if (!key || !obj || typeof key !== 'string') return undefined;
+    const keyScoped = `${key}@${c.runtime.scheme}` as K;
+    const val1 = obj[keyScoped];
     if (val1) return val1;
     return obj[key];
 };

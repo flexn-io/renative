@@ -22,7 +22,6 @@ import {
     writeCleanFile,
     fsWriteFileSync,
     RnvPlatform,
-    RenativeConfigFile,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
 import { Context } from './types';
@@ -37,7 +36,7 @@ export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
 
         c.payload.pluginConfigiOS.exportOptions = objToPlist(exportOptions);
 
-        if (exportOptions.provisioningProfiles) {
+        if (exportOptions.provisioningProfiles && id) {
             const expProvProfile = exportOptions.provisioningProfiles[id];
             if (!expProvProfile) {
                 logError(
@@ -87,8 +86,9 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
 
         const appFolder = getAppFolder(c);
         const appFolderName = getAppFolderName(c, platform);
-        const plat = c.buildConfig.platforms?.[platform] || {};
-        const { orientationSupport, urlScheme } = plat;
+        const orientationSupport = getConfigProp(c, c.platform, 'orientationSupport');
+        const urlScheme = getConfigProp(c, c.platform, 'urlScheme');
+
         const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
         // PLIST
@@ -101,11 +101,7 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
             plistObj.UIAppFonts = c.payload.pluginConfigiOS.embeddedFonts;
         }
         // PERMISSIONS
-        const includedPermissions = getConfigProp<RenativeConfigFile['common']['includedPermissions']>(
-            c,
-            platform,
-            'includedPermissions'
-        );
+        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
         if (includedPermissions && c.buildConfig.permissions) {
             const platPrem = 'ios'; // c.buildConfig.permissions[platform] ? platform : 'ios';
             const pc = c.buildConfig.permissions[platPrem] || {};
@@ -149,14 +145,15 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
         }
 
         // PLIST
-        const plist = getConfigProp(c, platform, 'plist');
+
+        const plist = getConfigProp(c, platform, 'templateXcode')?.Info_plist;
         if (plist) {
             plistObj = mergeObjects(c, plistObj, plist, true, true);
         }
 
         // PLUGINS
         parsePlugins(c, platform, (plugin, pluginPlat) => {
-            const plistPlug = getFlavouredProp(c, pluginPlat, 'plist');
+            const plistPlug = getFlavouredProp(c, pluginPlat, 'templateXcode')?.Info_plist;
             if (plistPlug) {
                 plistObj = mergeObjects(c, plistObj, plistPlug, true, false);
             }

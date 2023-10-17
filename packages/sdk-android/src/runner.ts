@@ -32,6 +32,7 @@ import {
     ANDROID,
     ANDROID_TV,
     FIRE_TV,
+    DEFAULTS,
 } from '@rnv/core';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import {
@@ -209,7 +210,7 @@ const _checkSigningCerts = async (c: Context) => {
                 const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID, FIRE_TV];
 
                 platCandidates.forEach((v) => {
-                    if (c.files.workspace.appConfig.configPrivate[v]) {
+                    if (c.files.workspace.appConfig.configPrivate?.[v]) {
                         platCandidate = v;
                     }
                 });
@@ -225,7 +226,7 @@ const _checkSigningCerts = async (c: Context) => {
 
             if (confirmCopy) {
                 c.files.workspace.appConfig.configPrivate[c.platform] =
-                    c.files.workspace.appConfig.configPrivate[platCandidate];
+                    c.files.workspace.appConfig.configPrivate?.[platCandidate];
             } else {
                 let storeFile;
 
@@ -331,7 +332,7 @@ export const buildAndroid = async (c: Context) => {
 
     logSuccess(
         `Your APK is located in ${chalk().cyan(
-            path.join(appFolder, `app/build/outputs/apk/${signingConfig.toLowerCase()}`)
+            path.join(appFolder, `app/build/outputs/apk/${signingConfig?.toLowerCase()}`)
         )} .`
     );
     return true;
@@ -449,16 +450,16 @@ export const configureProject = async (c: Context) => {
         buildToolsVersion: '',
         buildTypes: '',
         compileOptions: '',
-        compileSdkVersion: '',
+        compileSdkVersion: DEFAULTS.compileSdkVersion,
         ndkVersion: '',
         gradleBuildToolsVersion: '',
         gradleWrapperVersion: '',
         localProperties: '',
-        minSdkVersion: '',
+        minSdkVersion: DEFAULTS.minSdkVersion,
         multiAPKs: '',
         splits: '',
         supportLibVersion: '',
-        targetSdkVersion: '',
+        targetSdkVersion: DEFAULTS.targetSdkVersion,
     };
 
     // PLUGINS
@@ -475,11 +476,11 @@ export const configureProject = async (c: Context) => {
     );
 
     // FONTS
+    const includedFonts = getConfigProp(c, c.platform, 'includedFonts') || [];
     parseFonts(c, (font: any, dir: any) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
 
-            const { includedFonts } = c.buildConfig.common || {};
             if (includedFonts) {
                 if (includedFonts.includes('*') || includedFonts.includes(key)) {
                     if (font) {

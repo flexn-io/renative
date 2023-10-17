@@ -8,6 +8,7 @@ import {
     getBuildFilePath,
     copyFolderContentsRecursiveSync,
     fsChmodSync,
+    DEFAULTS,
 } from '@rnv/core';
 import { Context } from './types';
 
@@ -32,7 +33,8 @@ export const parseGradleWrapperSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
 
-    c.payload.pluginConfigAndroid.gradleWrapperVersion = getConfigProp(c, platform, 'gradleWrapperVersion', '6.9.1');
+    c.payload.pluginConfigAndroid.gradleWrapperVersion =
+        getConfigProp(c, platform, 'gradleWrapperVersion') || DEFAULTS.gradleWrapperVersion;
     const injects = [
         {
             pattern: '{{INJECT_GRADLE_WRAPPER_VERSION}}',

@@ -14,7 +14,7 @@ import {
     readObjectSync,
     writeCleanFile,
     parsePlugins,
-    RenativeConfigFile,
+    ManifestFeature,
 } from '@rnv/core';
 import { Context } from './types';
 
@@ -125,19 +125,24 @@ const _mergeNodeChildren = (node: any, nodeChildrenExt: Array<ManifestFeature> =
     });
 };
 
-type ManifestFeature = {
-    tag: string;
-    'android:name': string;
-    'android:required': boolean;
-    children?: Array<ManifestFeature>;
-};
+// type ManifestFeature = {
+//     tag: string;
+//     'android:name': string;
+//     'android:required': boolean;
+//     children?: Array<ManifestFeature>;
+// };
 
 // type ManufestNode = {
 //     children:
 // }
 
-const _mergeFeatures = (c: Context, baseManifestFile: any, configKey: string, value: boolean) => {
-    const features = getConfigProp<string[]>(c, c.platform, configKey);
+const _mergeFeatures = (
+    c: Context,
+    baseManifestFile: any,
+    configKey: 'includedFeatures' | 'excludedFeatures',
+    value: boolean
+) => {
+    const features = getConfigProp(c, c.platform, configKey);
 
     if (features) {
         const featuresObj: Array<ManifestFeature> = [];
@@ -163,19 +168,20 @@ export const parseAndroidManifestSync = (c: Context) => {
         const baseManifestFile = readObjectSync(baseManifestFilePath);
         baseManifestFile.package = getAppId(c, platform);
 
-        const objArr = getConfigPropArray(c, c.platform, 'AndroidManifest');
+        const objArr = getConfigPropArray(c, c.platform, 'templateAndroid');
 
         // PARSE all standard renative.*.json files in correct mergeOrder
-        objArr.forEach((manifestObj) => {
+        objArr.forEach((tpl) => {
+            const manifestObj = tpl?.AndroidManifest_xml;
             _mergeNodeParameters(baseManifestFile, manifestObj);
-            if (manifestObj.children) {
+            if (manifestObj?.children) {
                 _mergeNodeChildren(baseManifestFile, manifestObj.children);
             }
         });
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins(c, platform, (_plugin, pluginPlat) => {
-            const androidManifestPlugin = getFlavouredProp(c, pluginPlat, 'AndroidManifest');
+            const androidManifestPlugin = getFlavouredProp(c, pluginPlat, 'templateAndroid')?.AndroidManifest_xml;
             if (androidManifestPlugin) {
                 _mergeNodeChildren(baseManifestFile, androidManifestPlugin.children);
                 if (androidManifestPlugin.children) {
@@ -187,16 +193,8 @@ export const parseAndroidManifestSync = (c: Context) => {
         // appConfig PERMISSIONS OVERRIDES
         const configPermissions = c.buildConfig?.permissions;
 
-        const includedPermissions = getConfigProp<RenativeConfigFile['common']['includedPermissions']>(
-            c,
-            platform,
-            'includedPermissions'
-        );
-        const excludedPermissions = getConfigProp<RenativeConfigFile['common']['excludedPermissions']>(
-            c,
-            platform,
-            'excludedPermissions'
-        );
+        const includedPermissions = getConfigProp(c, platform, 'includedPermissions');
+        const excludedPermissions = getConfigProp(c, platform, 'excludedPermissions');
         if (includedPermissions?.forEach && configPermissions) {
             const platPerm = 'android'; //configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];

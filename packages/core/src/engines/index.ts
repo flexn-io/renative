@@ -11,7 +11,7 @@ import { RenativeConfigVersion, RnvPlatform } from '../types';
 import { RnvEngine, RnvEngineInstallConfig, RnvEngineTemplate } from './types';
 import { inquirerPrompt } from '../api';
 import { getContext } from '../context/provider';
-import { RenativeEngineConfig } from '../schema/ts/types';
+import { RenativeEngineConfig } from '../schema/types';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { checkAndCreateProjectPackage } from '../projects/package';
 import { getEngineTemplateByPlatform } from '../configs/engines';
@@ -331,8 +331,11 @@ const getScopedVersion = (
     if (typeof val === 'string') {
         if (val.startsWith('source:')) {
             const sourceObj = c.buildConfig?.[sourceObjKey];
-            if (sourceObj) {
-                return sourceObj[key]?.version;
+            const sourceObjVal = sourceObj?.[key];
+            if (typeof sourceObjVal !== 'string') {
+                return sourceObjVal?.version;
+            } else {
+                //TODO: should we warnd about this state?
             }
         } else {
             return val;

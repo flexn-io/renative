@@ -47,7 +47,7 @@ export const parseValuesColorsSync = (c: Context) => {
 };
 
 export const injectPluginXmlValuesSync = (c: Context, plugin: RenativeConfigPluginPlatform) => {
-    const rStrings = plugin.ResourceStrings?.children;
+    const rStrings = plugin.templateAndroid?.strings_xml?.children;
     if (rStrings) {
         rStrings.forEach((obj) => {
             c.payload.pluginConfigAndroid.resourceStrings.push(obj);

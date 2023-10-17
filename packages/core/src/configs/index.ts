@@ -78,10 +78,11 @@ const _loadConfigFiles = (
         result = true;
     }
 
-    if (loadFileExtended(c, fileObj, pathObj, 'configPrivate')) {
-        extendAppId = fileObj.configPrivate.extend || extendAppId;
-        result = true;
-    }
+    //Do not Extend private configs
+    // if (loadFileExtended(c, fileObj, pathObj, 'configPrivate')) {
+    //     extendAppId = fileObj?.configPrivate?.extend || extendAppId;
+    //     result = true;
+    // }
 
     if (parseAppConfigs) {
         pathObj.dirs = [];

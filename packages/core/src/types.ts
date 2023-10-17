@@ -1,4 +1,4 @@
-import type { PlatformKey } from './schema/ts/types';
+import type { PlatformKey } from './schema/types';
 
 export type RnvPlatform = PlatformKey | null;
 
@@ -15,3 +15,5 @@ export type RnvNextJSConfig = any;
 export type RenativeConfigVersion = string | { version: string };
 
 export type RnvError = any;
+
+export type Env = any;

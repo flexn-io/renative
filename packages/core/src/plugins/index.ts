@@ -17,8 +17,8 @@ import {
 import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } from '../logger';
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';
-import { PluginCallback, RnvPlugin, RnvPluginScope, RnvPluginWebpackKey } from './types';
-import { RenativeConfigPlugin, RenativeWebpackConfig } from '../schema/ts/types';
+import { PluginCallback, RnvPlugin, RnvPluginScope } from './types';
+import { ConfigRootPlugin, RenativeConfigPlugin } from '../schema/types';
 import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
@@ -187,7 +187,7 @@ export const configurePlugins = async (c: RnvContext) => {
                 );
             }
         } else if (dependencies && dependencies[k]) {
-            if (plugin.disabled !== true && plugin['no-npm'] !== true) {
+            if (plugin.disabled !== true && plugin.disableNpm !== true) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -205,7 +205,7 @@ ${ovMsg}`
                 }
             }
         } else if (devDependencies && devDependencies[k]) {
-            if (plugin.disabled !== true && plugin['no-npm'] !== true) {
+            if (plugin.disabled !== true && plugin.disableNpm !== true) {
                 if (!plugin.version) {
                     if (!c.runtime._skipPluginScopeWarnings) {
                         logInfo(`Plugin ${k} not ready yet (waiting for scope ${plugin.scope}). SKIPPING...`);
@@ -220,7 +220,7 @@ ${ovMsg}`
                     newDevDeps[k] = plugin.version;
                 }
             }
-        } else if (plugin.disabled !== true && plugin['no-npm'] !== true) {
+        } else if (plugin.disabled !== true && plugin.disableNpm !== true) {
             // Dependency does not exists
             if (plugin.version) {
                 logInfo(
@@ -357,8 +357,8 @@ export const parsePlugins = (
 ) => {
     logTask('parsePlugins');
     if (c.buildConfig && platform) {
-        const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
-        const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
+        const includedPlugins = getConfigProp(c, platform, 'includedPlugins') || [];
+        const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins') || [];
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
             if (plugins) {
@@ -705,6 +705,7 @@ export const installPackageDependenciesAndPlugins = async (c: RnvContext) => {
 };
 
 const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
+    let renativePlugin: ConfigRootPlugin | undefined;
     let renativePluginPath;
     try {
         renativePluginPath = require.resolve(`${pluginName}/renative.plugin.json`, { paths: [c.paths.project.dir] });
@@ -713,9 +714,9 @@ const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
     }
 
     if (renativePluginPath) {
-        return readObjectSync(renativePluginPath);
+        renativePlugin = readObjectSync(renativePluginPath);
     }
-    return null;
+    return renativePlugin;
 };
 
 export const checkForPluginDependencies = async (c: RnvContext) => {
@@ -731,14 +732,18 @@ export const checkForPluginDependencies = async (c: RnvContext) => {
             c._renativePluginCache[pluginName] = renativePluginConfig;
         }
 
-        if (renativePluginConfig?.plugins) {
+        const pluginDeps = renativePluginConfig?.pluginDependencies;
+        if (pluginDeps) {
             // we have dependencies for this plugin
-            Object.keys(renativePluginConfig.plugins).forEach((p) => {
+            Object.keys(pluginDeps).forEach((p) => {
                 const plg = bcPlugins[pluginName];
-                if (!bcPlugins[p] && typeof plg !== 'string' && plg.plugins?.[p] !== null) {
+                if (!bcPlugins[p] && typeof plg !== 'string' && plg.pluginDependencies?.[p] !== null) {
                     logWarning(`Plugin ${p} is not installed yet.`);
-                    toAdd[p] = renativePluginConfig.plugins[p];
-                    bcPlugins[p] = renativePluginConfig.plugins[p];
+                    const pluginDep = pluginDeps[p];
+                    if (pluginDep) {
+                        toAdd[p] = pluginDep;
+                        bcPlugins[p] = pluginDep;
+                    }
                 }
             });
         }
@@ -923,7 +928,7 @@ export const getLocalRenativePlugin = () => ({
     },
 });
 
-export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey): RnvModuleConfig => {
+export const getModuleConfigs = (c: RnvContext): RnvModuleConfig => {
     let modulePaths: Array<string> = [];
     const moduleAliases: Record<string, string | undefined> = {};
 
@@ -934,13 +939,7 @@ export const getModuleConfigs = (c: RnvContext, primaryKey?: RnvPluginWebpackKey
         c,
         c.platform,
         (plugin, pluginPlat, key) => {
-            let webpackConfig: RenativeWebpackConfig | undefined;
-
-            if (primaryKey && plugin[primaryKey]) {
-                webpackConfig = plugin[primaryKey];
-            } else {
-                webpackConfig = plugin.webpack || plugin.webpackConfig;
-            }
+            const { webpackConfig } = plugin;
 
             if (webpackConfig) {
                 if (webpackConfig.modulePaths) {

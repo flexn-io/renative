@@ -1,3 +1,5 @@
+import { Env } from '@rnv/core';
+
 const fs = require('fs');
 const path = require('path');
 
@@ -8,7 +10,7 @@ const sharedBlacklist = [
     /.*\/__tests__\/.*/,
 ];
 
-const env: any = process?.env;
+const env: Env = process?.env;
 
 function escapeRegExp(pattern: RegExp | string) {
     if (typeof pattern === 'string') {
@@ -48,7 +50,7 @@ export const withRNV = (config: any) => {
             blockList: exclusionList([
                 // This stops "react-native run-windows" from causing the metro server to crash if its already running
                 // TODO. Project name should be dynamically injected here somehow
-                new RegExp(`${env.RNV_APP_BUILD_DIR.replace(/[/\\]/g, '/')}.*`),
+                new RegExp(escapeRegExp(`${env.RNV_APP_BUILD_DIR.replace(/[/\\]/g, '/')}.*`)),
                 // This prevents "react-native run-windows" from hitting: EBUSY: resource busy or locked, open msbuild.ProjectImports.zip
                 /.*\.ProjectImports\.zip/,
                 /platformBuilds\/.*/,

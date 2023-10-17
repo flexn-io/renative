@@ -14,7 +14,7 @@ export const generateEnvVars = (
     opts: RnvEnvContextOptions = {}
 ) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
-    const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
+    const monoRoot = getConfigProp(c, c.platform, 'monoRoot') || '../..';
 
     const envConfig: RnvEnvContext = {
         // RNV_EXTENSIONS: getPlatformExtensions(c),
@@ -25,7 +25,7 @@ export const generateEnvVars = (
         RNV_PROJECT_ROOT: c.paths.project.dir,
         RNV_APP_BUILD_DIR: getRelativePath(c.paths.project.dir, getAppFolder(c)),
         RNV_IS_MONOREPO: isMonorepo,
-        RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot || '../..') : c.paths.project.dir,
+        RNV_MONO_ROOT: isMonorepo ? path.join(c.paths.project.dir, monoRoot) : c.paths.project.dir,
         RNV_ENGINE: c.runtime.engine?.config.id,
         RNV_IS_NATIVE_TV: c.platform ? [TVOS, ANDROID_TV, FIRE_TV].includes(c.platform) : false,
         RNV_APP_ID: getAppId(c, c.platform),

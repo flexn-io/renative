@@ -6,6 +6,8 @@ import shellQuote from 'shell-quote';
 export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
     logTask('packageBundleForXcode');
 
+    const entryFile = getConfigProp(c, c.platform, 'entryFile');
+
     if (!c.platform) return;
     // const { maxErrorLength } = c.program;
     const args = [
@@ -18,7 +20,7 @@ export const packageReactNativeIOS = (c: RnvContext, isDev = false) => {
         `platformBuilds/${c.runtime.appId}_${c.platform}${c.runtime._platformBuildsSuffix || ''}`,
         '--entry-file',
         // SECURITY-PATCH https://github.com/flexn-io/renative/security/code-scanning/112
-        shellQuote.quote([`${c.buildConfig.platforms?.[c.platform].entryFile}.js`]),
+        shellQuote.quote([`${entryFile}.js`]),
         '--bundle-output',
         `${getAppFolder(c)}/main.jsbundle`,
     ];

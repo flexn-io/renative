@@ -43,7 +43,7 @@ export const parseXcscheme = async (c: Context, platform: RnvPlatform) => {
     const schemePath = `${appFolderName}.xcodeproj/xcshareddata/xcschemes/${appFolderName}.xcscheme`;
 
     let _commandLineArguments = '';
-    const commandLineArguments = getConfigProp<string[]>(c, c.platform, 'commandLineArguments');
+    const commandLineArguments = getConfigProp(c, c.platform, 'commandLineArguments');
     if (commandLineArguments?.length) {
         commandLineArguments.forEach((arg) => {
             _commandLineArguments += `

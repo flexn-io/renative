@@ -14,10 +14,10 @@ export type Payload = {
         appBuildGradleAfterEvaluate: string;
         buildTypes: string;
         multiAPKs: string;
-        minSdkVersion: string;
+        minSdkVersion: number;
         ndkVersion: string;
-        targetSdkVersion: string;
-        compileSdkVersion: string;
+        targetSdkVersion: number;
+        compileSdkVersion: number;
         compileOptions: string;
         localProperties: string;
         kotlinVersion: string;
@@ -44,7 +44,7 @@ export type Payload = {
         pluginActivityResultMethods: string;
         pluginApplicationCreateMethods: string;
         pluginSplashActivityImports: string;
-        resourceStrings: Required<Required<RenativeConfigPluginPlatform>['ResourceStrings']>['children'];
+        resourceStrings: Required<TemplateAndroid['strings_xml']>['children'];
         store?: {
             storeFile: string;
             keyAlias: string;
@@ -74,3 +74,5 @@ export type AndroidDevice = {
     isActive: boolean;
     isRunning?: boolean;
 };
+
+export type TemplateAndroid = Required<Required<RenativeConfigPluginPlatform>['templateAndroid']>;

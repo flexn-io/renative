@@ -1,11 +1,7 @@
-import { RnvContext } from '../context/types';
-import { DoResolveFn } from '../system/types';
-import { RnvPlatform } from '../types';
-
-// export type AnalyticsApi = {
-//     captureException: (e: string | Error, context: { extra: any }) => void;
-//     teardown: () => Promise<void>;
-// };
+import type { RnvContext } from '../context/types';
+import type { ConfigProp, ConfigPropKey } from '../schema/types';
+import type { DoResolveFn } from '../system/types';
+import type { RnvPlatform } from '../types';
 
 export interface RnvApi {
     isDefault: boolean;
@@ -127,4 +123,9 @@ export type PromptParams = {
 
 export type PromptRenderFn = (i: number, obj: any, mapping: any, defaultVal: string) => string;
 
-export type GetConfigPropFn = <T = any>(c: RnvContext, platform: RnvPlatform, key: string, defaultVal?: any) => T;
+export type GetConfigPropFn = <T extends ConfigPropKey>(
+    c: RnvContext,
+    platform: RnvPlatform,
+    key: ConfigPropKey,
+    defaultVal?: ConfigProp[T]
+) => ConfigProp[T];

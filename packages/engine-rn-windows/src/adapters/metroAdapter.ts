@@ -1,4 +1,5 @@
 const path = require('path');
+import { Env } from '@rnv/core';
 import fs from 'fs';
 
 const sharedBlacklist = [
@@ -8,7 +9,7 @@ const sharedBlacklist = [
     /.*\/__tests__\/.*/,
 ];
 
-const env: any = process?.env;
+const env: Env = process?.env;
 
 function escapeRegExp(pattern: RegExp | string) {
     if (typeof pattern === 'string') {
@@ -82,4 +83,3 @@ export const withRNVMetro = (config: any) => {
 
     return cnf;
 };
-

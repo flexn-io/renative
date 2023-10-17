@@ -55,11 +55,11 @@ export const taskRnvTerraformDeploy = async (c: RnvContext) => {
         logInfo('Terraform init complete');
     }
 
-    if (c.buildConfig.ext.backendServiceConfig) {
+    if (c.buildConfig.custom.backendServiceConfig) {
         logInfo('Config found, copying to backend');
         fsWriteFileSync(
             path.join(backendFolder, 'config.auto.tfvars.json'),
-            JSON.stringify(c.buildConfig.ext.backendServiceConfig, null, 2)
+            JSON.stringify(c.buildConfig.custom.backendServiceConfig, null, 2)
         );
     }
 
@@ -71,14 +71,16 @@ export const taskRnvTerraformDeploy = async (c: RnvContext) => {
 
     const tfStateFile = JSON.parse(fsReadFileSync(tfStateFilePath).toString());
 
-    c.buildConfig.ext.requiredBackendOutputs?.forEach((output: { fromKey: string; toFile: string; toKey: string }) => {
-        const value = lGet(tfStateFile, output.fromKey);
-        const targetFile = path.join(c.paths.project.dir, output.toFile);
-        const targetFileContent = fsReadFileSync(targetFile).toString();
-        const targetFileContentJson = JSON.parse(targetFileContent);
-        lSet(targetFileContentJson, output.toKey, value);
-        writeFileSync(targetFile, targetFileContentJson);
-    });
+    c.buildConfig.custom.requiredBackendOutputs?.forEach(
+        (output: { fromKey: string; toFile: string; toKey: string }) => {
+            const value = lGet(tfStateFile, output.fromKey);
+            const targetFile = path.join(c.paths.project.dir, output.toFile);
+            const targetFileContent = fsReadFileSync(targetFile).toString();
+            const targetFileContentJson = JSON.parse(targetFileContent);
+            lSet(targetFileContentJson, output.toKey, value);
+            writeFileSync(targetFile, targetFileContentJson);
+        }
+    );
 
     logSuccess('Backend service runtime config updated');
 };

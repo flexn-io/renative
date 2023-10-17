@@ -7,7 +7,6 @@ import { chalk, logInfo, logDebug, logTask } from '../logger';
 import { getEngineRunnerByPlatform } from '../engines';
 import { overrideTemplatePlugins } from '../plugins';
 import { configureFonts } from '.';
-import { getConfigProp } from '../common';
 import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
@@ -140,7 +139,7 @@ export const injectPlatformDependencies = async (c: RnvContext) => {
         const installed = await Promise.all(promises);
 
         if (installed.some((i) => i === true)) {
-            const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
+            const { isMonorepo } = c.buildConfig;
             if (isMonorepo) {
                 logInfo(
                     `Found extra npm dependencies required by ${chalk().white(

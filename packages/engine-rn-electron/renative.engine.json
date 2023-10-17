@@ -1,4 +1,5 @@
 {
+    "$schema": "../../.rnv/schema/rnv.engine.json",
     "id": "engine-rn-electron",
     "engineExtension": "rne",
     "overview": "React native based engine with web transpiler provided by react-native-web and native desktop wrapper provided by electron",

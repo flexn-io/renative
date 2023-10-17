@@ -20,10 +20,11 @@ import {
     copyAssetsFolder,
     copyBuildsFolder,
     writeCleanFile,
+    DEFAULTS,
 } from '@rnv/core';
 import semver from 'semver';
 
-import { runTizenSimOrDevice, DEFAULT_SECURITY_PROFILE_NAME, CLI_TIZEN } from '@rnv/sdk-tizen';
+import { runTizenSimOrDevice, CLI_TIZEN } from '@rnv/sdk-tizen';
 import { CLI_WEBOS_ARES_PACKAGE, runWebosSimOrDevice } from '@rnv/sdk-webos';
 
 export const runLightningProject = async (c: RnvContext) => {
@@ -62,14 +63,13 @@ export const buildLightningProject = async (c: RnvContext) => {
     const { platform } = c;
     if (!platform) return;
 
-    const platformConfig = c.buildConfig.platforms?.[platform];
+    const certProfile = getConfigProp(c, c.platform, 'certificateProfile') || DEFAULTS.certificateProfile;
 
     const entryFile = getConfigProp(c, c.platform, 'entryFile');
     const target = getConfigProp(c, platform, 'target', 'es6');
     const tBuild = getPlatformProjectDir(c);
 
     const tOut = path.join(tBuild || '', 'output');
-    const certProfile = platformConfig?.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
     await executeAsync(c, `lng dist --${target}`, {
         stdio: 'inherit',
@@ -116,24 +116,26 @@ const _configureProject = (c: RnvContext) =>
             return;
         }
 
-        const p = c.buildConfig.platforms?.[platform];
+        const pkg = getConfigProp(c, c.platform, 'package') || '';
+        const id = getConfigProp(c, c.platform, 'id') || '';
+        const appName = getConfigProp(c, c.platform, 'appName') || '';
 
         const injects =
             platform === TIZEN
                 ? [
-                      { pattern: '{{PACKAGE}}', override: p?.package },
-                      { pattern: '{{ID}}', override: p?.id },
-                      { pattern: '{{APP_NAME}}', override: p?.appName },
+                      { pattern: '{{PACKAGE}}', override: pkg },
+                      { pattern: '{{ID}}', override: id },
+                      { pattern: '{{APP_NAME}}', override: appName },
                       { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) },
                   ]
                 : [
-                      { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform).toLowerCase() },
+                      { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform)?.toLowerCase() },
                       { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
                       { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) },
                       { pattern: '{{APP_DESCRIPTION}}', override: getAppDescription(c, platform) },
-                      { pattern: '{{APP_BG_COLOR}}', override: getConfigProp(c, platform, 'bgColor', '#fff') },
+                      { pattern: '{{APP_BG_COLOR}}', override: getConfigProp(c, platform, 'backgroundColor', '#fff') },
                       { pattern: '{{APP_ICON_COLOR}}', override: getConfigProp(c, platform, 'iconColor', '#000') },
-                      { pattern: '{{APP_VENDOR}}', override: getConfigProp(c, platform, 'vendor', 'Pavel Jacko') },
+                      { pattern: '{{APP_VENDOR}}', override: getConfigProp(c, platform, 'author') || DEFAULTS.author },
                   ];
 
         addSystemInjects(c, injects);

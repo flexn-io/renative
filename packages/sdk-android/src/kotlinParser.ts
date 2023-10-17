@@ -26,7 +26,7 @@ export const parseFlipperSync = (c: Context, scheme: 'debug' | 'release') => {
 
     const appId = getAppId(c, c.platform);
     // console.log('appId', appId);
-    const javaPackageArray = appId.split('.');
+    const javaPackageArray = appId?.split('.') || [];
 
     const javaPackagePath = `app/src/${scheme}/java/${javaPackageArray.join('/')}`;
     mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
@@ -55,7 +55,7 @@ export const parseMainApplicationSync = (c: Context) => {
 
     const appId = getAppId(c, c.platform);
     // console.log('appId', appId);
-    const javaPackageArray = appId.split('.');
+    const javaPackageArray = appId?.split('.') || [];
 
     const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
     mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
@@ -122,7 +122,7 @@ export const parseMainActivitySync = (c: any) => {
 
     const appId = getAppId(c, c.platform);
     // console.log('appId', appId);
-    const javaPackageArray = appId.split('.');
+    const javaPackageArray = appId?.split('.') || [];
 
     const javaPackagePath = `app/src/main/java/${javaPackageArray.join('/')}`;
     mkdirSync(path.join(appFolder, javaPackagePath), { recursive: true });
@@ -130,10 +130,12 @@ export const parseMainActivitySync = (c: any) => {
     const templatePath = 'app/src/main/java/rnv_template/MainActivity.java.tpl';
     const activityPath = `${javaPackagePath}/MainActivity.java`;
 
-    const mainActivity = getConfigProp(c, platform, 'mainActivity', {});
+    const templateAndroid = getConfigProp(c, platform, 'templateAndroid', {});
+
+    const mainActivity = templateAndroid?.MainActivity_java;
 
     c.payload.pluginConfigAndroid.injectActivityOnCreate =
-        mainActivity.onCreate || 'super.onCreate(savedInstanceState)';
+        mainActivity?.onCreate || 'super.onCreate(savedInstanceState)';
 
     const injects = [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
@@ -174,7 +176,7 @@ export const parseSplashActivitySync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
     const appId = getAppId(c, c.platform);
-    const javaPackageArray = appId.split('.');
+    const javaPackageArray = appId?.split('.') || [];
 
     const splashTemplatePath = 'app/src/main/java/rnv_template/SplashActivity.java.tpl';
     const splashPath = `app/src/main/java/${javaPackageArray.join('/')}/SplashActivity.java`;

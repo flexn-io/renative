@@ -34,7 +34,7 @@ import { parseRenativeConfigs } from '../configs';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
-import { RenativeConfigFile } from '../schema/ts/types';
+import { RenativeConfigFile } from '../schema/types';
 import { inquirerPrompt } from '../api';
 import { upgradeProjectDependencies } from '../configs/configProject';
 
@@ -322,7 +322,7 @@ export const parseFonts = (c: RnvContext, callback: ParseFontsCallback) => {
                 if (callback) callback(font, c.paths.appConfig.fontsDir);
             });
         }
-        _parseFontSources(c, getConfigProp(c, c.platform, 'fontSources', []), callback);
+        _parseFontSources(c, getConfigProp(c, c.platform, 'fontSources') || [], callback);
         // PLUGIN FONTS
         parsePlugins(
             c,
@@ -424,7 +424,7 @@ export const copyAssetsFolder = async (
 
     if (!isPlatformActive(c, platform)) return;
 
-    const assetFolderPlatform = getConfigProp(c, platform, 'assetFolderPlatform', platform);
+    const assetFolderPlatform = (getConfigProp(c, platform, 'assetFolderPlatform') || platform) as RnvPlatform;
 
     if (assetFolderPlatform !== platform) {
         logInfo(
@@ -436,15 +436,17 @@ export const copyAssetsFolder = async (
 
     const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
-    const assetSources = getConfigProp<Array<string>>(c, platform, 'assetSources', []);
+    const assetSources = getConfigProp(c, platform, 'assetSources') || [];
 
     const validAssetSources: Array<string> = [];
-    assetSources.forEach((v) => {
-        const assetsPath = path.join(_resolvePackage(c, v), assetFolderPlatform);
-        if (fsExistsSync(assetsPath)) {
-            validAssetSources.push(assetsPath);
-        }
-    });
+    if (assetFolderPlatform) {
+        assetSources.forEach((v) => {
+            const assetsPath = path.join(_resolvePackage(c, v), assetFolderPlatform);
+            if (fsExistsSync(assetsPath)) {
+                validAssetSources.push(assetsPath);
+            }
+        });
+    }
 
     const destPath = path.join(getPlatformProjectDir(c)!, subPath || '');
 
@@ -537,7 +539,7 @@ export const copyBuildsFolder = (c: RnvContext, platform: RnvPlatform) =>
         INJECTABLE_CONFIG_PROPS.forEach((v) => {
             configPropsInjects.push({
                 pattern: `{{configProps.${v}}}`,
-                override: getConfigProp(c, c.platform, v),
+                override: getConfigProp<any>(c, c.platform, v),
             });
         });
         c.configPropsInjects = configPropsInjects;
