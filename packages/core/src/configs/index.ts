@@ -229,8 +229,6 @@ export const parseRenativeConfigs = async (c: RnvContext) => {
 
     c.paths.workspace.project.appConfigBase.dir = path.join(c.paths.workspace.project.dir, 'appConfigs', 'base');
 
-    c.paths.workspace.project.appConfigBase.dir_LEGACY = path.join(c.paths.workspace.project.dir, 'projectConfig');
-
     generatePlatformTemplatePaths(c);
 
     if (c.runtime.appId) {

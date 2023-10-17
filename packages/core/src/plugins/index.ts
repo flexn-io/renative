@@ -850,14 +850,6 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
         );
         copyFolderContentsRecursiveSync(sourcePath3, destPath, true, undefined, false, objectInject);
 
-        // FOLDER MERGERS FROM PROJECT CONFIG (PRIVATE)
-        const sourcePath3secLegacy = getBuildsFolder(
-            c,
-            platform,
-            path.join(c.paths.workspace.project.appConfigBase.dir_LEGACY, `plugins/${key}`)
-        );
-        copyFolderContentsRecursiveSync(sourcePath3secLegacy, destPath, true, undefined, false, objectInject);
-
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
         const sourcePath3sec = getBuildsFolder(
             c,
@@ -865,11 +857,6 @@ export const copyTemplatePluginsSync = (c: RnvContext) => {
             path.join(c.paths.workspace.project.appConfigBase.dir, `plugins/${key}`)
         );
         copyFolderContentsRecursiveSync(sourcePath3sec, destPath, true, undefined, false, objectInject);
-
-        if (sourcePath3secLegacy && fsExistsSync(sourcePath3secLegacy)) {
-            logWarning(`Path: ${chalk().red(sourcePath3secLegacy)} is DEPRECATED.
-    Move your files to: ${chalk().white(sourcePath3sec)} instead`);
-        }
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN
         const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfig.dir, `plugins/${key}`));

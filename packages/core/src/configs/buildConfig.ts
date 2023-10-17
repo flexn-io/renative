@@ -49,7 +49,6 @@ export const generateBuildConfig = (_c?: RnvContext) => {
         c.paths.defaultWorkspace.config,
         c.paths.rnv.projectTemplates.config,
         c.paths.rnv.pluginTemplates.config,
-        // c.paths.rnv.platformTemplates.config,
         c.paths.workspace.config,
         c.paths.workspace.configPrivate,
         c.paths.workspace.configLocal,

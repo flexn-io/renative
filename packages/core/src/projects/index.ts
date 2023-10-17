@@ -544,25 +544,8 @@ export const copyBuildsFolder = (c: RnvContext, platform: RnvPlatform) =>
         copyFolderContentsRecursiveSync(sourcePath1, destPath, true, undefined, false, allInjects, tsPathsConfig);
 
         // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
-        const sourcePath1secLegacy = getBuildsFolder(c, platform, c.paths.workspace.project.appConfigBase.dir_LEGACY);
-        copyFolderContentsRecursiveSync(
-            sourcePath1secLegacy,
-            destPath,
-            true,
-            undefined,
-            false,
-            allInjects,
-            tsPathsConfig
-        );
-
-        // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
         const sourcePath1sec = getBuildsFolder(c, platform, c.paths.workspace.project.appConfigBase.dir);
         copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, undefined, false, allInjects, tsPathsConfig);
-
-        if (sourcePath1secLegacy && fsExistsSync(sourcePath1secLegacy)) {
-            logWarning(`Path: ${chalk().red(sourcePath1secLegacy)} is DEPRECATED.
-Move your files to: ${chalk().white(sourcePath1sec)} instead`);
-        }
 
         // DEPRECATED SHARED
         if (c.runtime.currentPlatform?.isWebHosted) {

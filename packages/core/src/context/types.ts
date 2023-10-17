@@ -162,7 +162,7 @@ export type RnvContextPaths = {
     RNV_NODE_MODULES_DIR: string;
     //=======
     rnv: {
-        configWorkspaces: any;
+        configWorkspaces: string;
         pluginTemplates: {
             configs: Record<string, any>;
             //ADDON
@@ -170,21 +170,19 @@ export type RnvContextPaths = {
             config?: string;
             dirs: Record<string, string>;
         };
-        platformTemplates: Record<string, any>;
-        projectTemplates: Record<string, any>;
-        platformTemplate: Record<string, any>;
-        plugins: Record<string, any>;
-        engines: Record<string, any>;
-        projectTemplate: Record<string, any>;
+        projectTemplates: RnvContextPathObj;
+        platformTemplate: RnvContextPathObj;
+        engines: RnvContextPathObj;
+        projectTemplate: RnvContextPathObj;
         //ADDON
         dir: string;
         package: string;
     };
     workspace: RnvContextPathObj & {
         project: RnvContextPathObj & {
-            appConfigBase: Record<string, any>;
-            builds: Record<string, any>;
-            assets: Record<string, any>;
+            appConfigBase: RnvContextPathObj;
+            builds: string;
+            assets: string;
             platformTemplates: Record<string, any>;
             appConfigsDirs: Array<string>;
             appConfigsDirNames: Array<string>;
