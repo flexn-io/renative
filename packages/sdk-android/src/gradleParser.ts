@@ -43,6 +43,10 @@ export const parseBuildGradleSync = (c: Context) => {
             override: c.payload.pluginConfigAndroid.compileSdkVersion,
         },
         {
+            pattern: '{{TARGET_SDK_VERSION}}',
+            override: c.payload.pluginConfigAndroid.targetSdkVersion,
+        },
+        {
             pattern: '{{INJECT_BUILD_TOOLS_VERSION}}',
             override: c.payload.pluginConfigAndroid.gradleBuildToolsVersion,
         },
