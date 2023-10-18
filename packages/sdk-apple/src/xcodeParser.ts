@@ -66,10 +66,10 @@ export const parseXcodeProject = async (c: Context) => {
                 warningMessage:
                     'No provisionProfileSpecifier configured in appConfig despite setting provisioningStyle to manual',
             });
-            if (autoFix && c.files.appConfig.config) {
+            const schemeToUpdate = c.files.appConfig.config?.platforms?.[platform]?.buildSchemes?.[c.program.scheme];
+            if (autoFix && schemeToUpdate && c.files.appConfig.config) {
                 c.payload.xcodeProj.provisionProfileSpecifier = eligibleProfile.Name;
-                c.files.appConfig.config.platforms[platform].buildSchemes[c.program.scheme].provisionProfileSpecifier =
-                    eligibleProfile.Name;
+                schemeToUpdate.provisionProfileSpecifier = eligibleProfile.Name;
                 writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
             }
         } else {

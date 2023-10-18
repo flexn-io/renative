@@ -465,15 +465,19 @@ export const taskRnvNew = async (c: RnvContext) => {
             } workspace template list?`,
         });
 
-        if (confirmAddTemplate) {
-            if (!c.files.workspace.config?.projectTemplates) {
-                c.files.workspace.config.projectTemplates = {};
-            }
-            c.files.workspace.config.projectTemplates[selectedInputTemplate] = {};
-            writeFileSync(c.paths.workspace.config, c.files.workspace.config);
-            await updateRenativeConfigs(c);
+        const configFile = c.files.workspace.config;
 
-            logInfo(`Updating ${c.paths.workspace.config}...DONE`);
+        if (configFile) {
+            if (confirmAddTemplate) {
+                if (!configFile.projectTemplates) {
+                    configFile.projectTemplates = {};
+                }
+                configFile.projectTemplates[selectedInputTemplate] = {};
+                writeFileSync(c.paths.workspace.config, configFile);
+                await updateRenativeConfigs(c);
+
+                logInfo(`Updating ${c.paths.workspace.config}...DONE`);
+            }
         }
     }
 
