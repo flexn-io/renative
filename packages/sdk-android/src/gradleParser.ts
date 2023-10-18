@@ -513,8 +513,9 @@ export const parseSettingsGradleSync = (c: Context) => {
     const rnCliLocation = doResolve('@react-native-community/cli-platform-android', true, { forceForwardPaths: true });
     const rnGradlePluginLocation = doResolve('@react-native/gradle-plugin', true, { forceForwardPaths: true });
 
-    const rnCliRelativePath = path.relative(appFolder, rnCliLocation);
-    const rnGradlePluginRelativePath = path.relative(appFolder, rnGradlePluginLocation);
+    const rnCliRelativePath = (!!rnCliLocation && path.relative(appFolder, rnCliLocation)) || '';
+    const rnGradlePluginRelativePath =
+        (!!rnGradlePluginLocation && path.relative(appFolder, rnGradlePluginLocation)) || '';
 
     const injects = [
         {
@@ -532,7 +533,7 @@ export const parseSettingsGradleSync = (c: Context) => {
         {
             pattern: '{{RN_GRADLE_PLUGIN_LOCATION}}',
             override: rnGradlePluginRelativePath,
-        }
+        },
     ];
 
     addSystemInjects(c, injects);
