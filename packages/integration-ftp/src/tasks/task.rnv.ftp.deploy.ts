@@ -181,10 +181,12 @@ const _createDeployConfig = async (c: RnvContext, platform: RnvPlatform) => {
                     on ${c.paths.appConfig.config}
                 `);
 
-    // TODO: Review this (where to put what props renative.*.json)
-    c.files.appConfig.config.platforms[platform]?.custom.deploy = deploy;
-    //TODO: we need to override config_original
-    writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
+    if (c.files.appConfig.config.platforms[platform].custom) {
+        // TODO: Review this (where to put what props renative.*.json)
+        c.files.appConfig.config.platforms[platform].custom.deploy = deploy;
+        //TODO: we need to override config_original
+        writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
+    }
 };
 
 const taskRnvFtpDeploy = (c: RnvContext) => {

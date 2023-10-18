@@ -18,12 +18,13 @@ import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } f
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { PluginCallback, RnvPlugin, RnvPluginScope } from './types';
-import { ConfigRootPlugin, RenativeConfigPaths, RenativeConfigPlugin } from '../schema/types';
+import { RenativeConfigPaths, RenativeConfigPlugin } from '../schema/types';
 import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { installPackageDependencies } from '../projects/npm';
 import { OverridesOptions, ResolveOptions } from '../system/types';
+import { ConfigFilePlugin } from '../schema/configFiles/types';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -706,7 +707,7 @@ export const installPackageDependenciesAndPlugins = async (c: RnvContext) => {
 };
 
 const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
-    let renativePlugin: ConfigRootPlugin | undefined;
+    let renativePlugin: ConfigFilePlugin | undefined;
     let renativePluginPath;
     try {
         renativePluginPath = require.resolve(`${pluginName}/renative.plugin.json`, { paths: [c.paths.project.dir] });

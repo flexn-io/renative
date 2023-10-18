@@ -21,7 +21,7 @@ export const RootTemplatesSchema = z.object({
             version: z.string(),
         })
     ),
-    platforms: z.record(
+    platformTemplates: z.record(
         PlatformsKeys,
         z.object({
             engine: z.string(),

@@ -1,10 +1,10 @@
-import type { RenativeEngineConfig } from '../schema/types';
+import { ConfigFileEngine } from '../schema/configFiles/types';
 import type { RnvTaskMap } from '../tasks/types';
 
 export type RnvEngine = {
     originalTemplatePlatformsDir?: string;
     platforms: Record<string, RnvEnginePlatform>;
-    config: RenativeEngineConfig;
+    config: ConfigFileEngine;
     tasks: RnvTaskMap;
     // initializeRuntimeConfig: (c: RnvContext) => void;
     rootPath?: string;

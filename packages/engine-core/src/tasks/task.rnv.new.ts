@@ -30,12 +30,12 @@ import {
     isYarnInstalled,
     listAndSelectNpmVersion,
     RnvContext,
-    RenativeConfigFile,
     getApi,
     inquirerPrompt,
     PlatformKey,
     commandExistsSync,
 } from '@rnv/core';
+import { ConfigFileProject } from '@rnv/core/lib/schema/configFiles/types';
 
 type NewProjectData = {
     appTitle?: string;
@@ -634,7 +634,9 @@ export const taskRnvNew = async (c: RnvContext) => {
         };
     }
 
-    const config: RenativeConfigFile = {
+    delete renativeTemplateConfig.templateConfig;
+
+    const config: ConfigFileProject = {
         platforms: {},
         ...renativeTemplateConfig,
         ...renativeTemplateConfigExt,
@@ -658,32 +660,34 @@ export const taskRnvNew = async (c: RnvContext) => {
         isMonorepo: false,
     };
 
-    const supPlats = config.defaults.supportedPlatforms || [];
+    const platforms: ConfigFileProject['platforms'] = config.platforms || {};
+    const engines: ConfigFileProject['engines'] = config.engines || {};
+    const defaults: ConfigFileProject['defaults'] = config.defaults || {};
+
+    const supPlats = defaults.supportedPlatforms || [];
 
     // Remove unused platforms
-    Object.keys(config.platforms).forEach((k) => {
+    Object.keys(platforms).forEach((k) => {
         const key = k as PlatformKey;
         if (!supPlats.includes(key)) {
-            delete config.platforms[key];
+            delete platforms[key];
         }
     });
 
     if (renativeTemplateConfig.engines) {
         // Remove unused engines based on selected platforms
         supPlats.forEach((k) => {
-            const selectedEngineId =
-                config.platforms[k]?.engine || c.files.rnv.projectTemplates.config.platforms[k]?.engine;
+            const selectedEngineId = platforms[k]?.engine || c.files.rnv.projectTemplates.config.platforms[k]?.engine;
             if (selectedEngineId) {
                 const selectedEngine = findEngineKeyById(c, selectedEngineId);
-                config.engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
+                engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
             }
         });
     }
 
-    delete config.templateConfig;
-    if (!config.platforms) {
-        config.platforms = {};
-    }
+    config.platforms = platforms;
+    config.engines = engines;
+    config.defaults = defaults;
 
     writeFileSync(c.paths.project.config, config);
 
