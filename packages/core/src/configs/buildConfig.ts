@@ -20,8 +20,8 @@ const getEnginesPluginDelta = (c: RnvContext) => {
 
     if (!c.buildConfig) return;
 
-    const enginePlugins: Record<string, any> = {};
-    const missingEnginePlugins: Record<string, any> = {};
+    const enginePlugins: Record<string, string> = {};
+    const missingEnginePlugins: Record<string, string> = {};
 
     const engineConfig = c.platform ? c.runtime.enginesByPlatform[c.platform]?.config : undefined;
     if (engineConfig?.plugins) {
@@ -29,10 +29,12 @@ const getEnginesPluginDelta = (c: RnvContext) => {
 
         if (ePlugins?.length) {
             ePlugins.forEach((pluginKey) => {
-                if (!c.files?.project?.config?.[pluginKey]) {
+                if (!c.files?.project?.config?.[pluginKey] && engineConfig.plugins?.[pluginKey]) {
                     missingEnginePlugins[pluginKey] = engineConfig.plugins?.[pluginKey];
                 }
-                enginePlugins[pluginKey] = engineConfig.plugins?.[pluginKey];
+                if (engineConfig.plugins?.[pluginKey]) {
+                    enginePlugins[pluginKey] = engineConfig.plugins?.[pluginKey];
+                }
             });
         }
     }

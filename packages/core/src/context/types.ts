@@ -72,7 +72,7 @@ export type RnvContextRuntime = {
     enginesByPlatform: Record<string, RnvEngine>;
     enginesByIndex: Array<RnvEngine>;
     enginesById: Record<string, RnvEngine>;
-    missingEnginePlugins: Record<string, any>;
+    missingEnginePlugins: Record<string, string>;
     localhost: string;
     scheme: string;
     bundleAssets: boolean;
@@ -126,15 +126,12 @@ export type RnvContextFiles = {
         plugins: Record<string, any>;
         engines: Record<string, any>;
         projectTemplate: Record<string, any>;
-        //ADDON
         configWorkspaces: any;
         package: any;
     };
     workspace: RnvContextFileObj & {
         project: RnvContextFileObj & {
             appConfigBase: Record<string, any>;
-            builds: Record<string, any>;
-            assets: Record<string, any>;
             platformTemplates: Record<string, any>;
         };
         appConfig: RnvContextFileObj;
@@ -142,8 +139,6 @@ export type RnvContextFiles = {
     defaultWorkspace: RnvContextFileObj & {
         project: RnvContextFileObj & {
             appConfigBase: Record<string, any>;
-            builds: Record<string, any>;
-            assets: Record<string, any>;
             platformTemplates: Record<string, any>;
         };
         appConfig: RnvContextFileObj;
@@ -153,7 +148,6 @@ export type RnvContextFiles = {
         builds: Record<string, any>;
         assets: Record<string, any>;
         platformTemplates: Record<string, any>;
-        //ADDON
         package: any;
     };
     appConfig: RnvContextFileObj;
@@ -301,7 +295,7 @@ export interface RnvContextFileObj {
 export interface RnvContextPlatform {
     platform: PlatformKey;
     isConnected: boolean;
-    engine?: any;
+    engine?: RnvEngine;
     port?: number;
     isValid?: boolean;
 }

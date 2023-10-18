@@ -188,8 +188,6 @@ export const generateContextDefaults = (): RnvContext => ({
                 ...generateRnvConfigFileObj(),
                 configs: [],
                 appConfigBase: {},
-                builds: {},
-                assets: {},
                 platformTemplates: {},
             },
             appConfig: {
@@ -201,8 +199,6 @@ export const generateContextDefaults = (): RnvContext => ({
             project: {
                 ...generateRnvConfigFileObj(),
                 appConfigBase: {},
-                builds: {},
-                assets: {},
                 platformTemplates: {},
             },
             appConfig: {
