@@ -128,5 +128,8 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "dependencies": {
+        "raf": "3.4.1"
     }
 }
