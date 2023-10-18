@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { logInfo } from '@rnv/core';
 
 export const withDefaultRNVBabel = (cnf: any) => ({
     retainLines: true,
@@ -17,7 +16,6 @@ export const withDefaultRNVBabel = (cnf: any) => ({
 
 export const withRNVBabel = (cnf: any) => (api: any) => {
     if (process.env.RNV_ENGINE_PATH && !fs.existsSync(process.env.RNV_ENGINE_PATH)) {
-        logInfo(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);
         api.cache(false);
         return withDefaultRNVBabel(cnf);
     }
