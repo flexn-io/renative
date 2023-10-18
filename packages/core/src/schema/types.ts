@@ -64,7 +64,7 @@ type ProjectTemplate = {
     };
 };
 
-type _ConfigRootMerged = _RootGlobalSchemaType &
+type _ConfigRootMerged = _RootGlobalSchemaType & //Global
     MergedPluginTemplates &
     Required<_RootProjectBaseSchemaType> &
     _RootLocalSchemaType &

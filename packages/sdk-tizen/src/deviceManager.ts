@@ -276,7 +276,7 @@ export const runTizenSimOrDevice = async (
         });
 
         if (startEmulator) {
-            const defaultTarget = c.files.workspace.config.defaultTargets[platform];
+            const defaultTarget = c.files.workspace.config?.defaultTargets?.[platform];
             try {
                 await launchTizenSimulator(c, defaultTarget);
                 deviceID = defaultTarget;

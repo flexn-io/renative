@@ -182,7 +182,7 @@ const _configureRenativeConfig = async (c: RnvContext) => {
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
     logDebug('configureProject:check renative.json');
 
-    if (c.runtime.selectedTemplate || c.runtime.requiresForcedTemplateApply || c.files.project.config.isNew) {
+    if (c.runtime.selectedTemplate || c.runtime.requiresForcedTemplateApply || c.files.project.config?.isNew) {
         logInfo(
             `Your ${c.paths.project.config} needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
         );
@@ -241,7 +241,7 @@ export const configureTemplateFiles = async (c: RnvContext) => {
 export const configureEntryPoint = async (c: RnvContext, platform: RnvPlatform) => {
     logTask('configureEntryPoint');
 
-    if (c.files.project.config.isTemplate) return true;
+    if (c.files.project.config?.isTemplate) return true;
 
     const entryFile = getConfigProp(c, platform, 'entryFile');
 
@@ -274,7 +274,7 @@ export const configureEntryPoint = async (c: RnvContext, platform: RnvPlatform) 
 };
 
 export const getInstalledTemplateOptions = (c: RnvContext): PromptOptions | null => {
-    if (c.files.project.config.isTemplate) return null;
+    if (c.files.project.config?.isTemplate) return null;
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
     }
@@ -287,7 +287,12 @@ export const isTemplateInstalled = (c: RnvContext) =>
 
 export const applyTemplate = async (c: RnvContext, selectedTemplate?: string) => {
     logTask('applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`);
-    if (c.files.project.config.isTemplate) return true;
+    if (c.files.project.config?.isTemplate) return true;
+
+    if (!c.files.project.config) {
+        logError('Project config not loaded. cannot apply template');
+        return false;
+    }
 
     c.runtime.selectedTemplate = selectedTemplate;
 

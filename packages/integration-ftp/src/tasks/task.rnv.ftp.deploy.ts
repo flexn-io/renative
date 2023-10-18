@@ -124,7 +124,7 @@ const _createEnvFtpConfig = async (configFilePath: string, previousContent = '')
     logInfo(`Writing .env config to ${configFilePath}`);
 };
 
-const _createDeployConfig = async (c: RnvContext, platform: string) => {
+const _createDeployConfig = async (c: RnvContext, platform: RnvPlatform) => {
     logTask('_createDeployConfig');
 
     if (!platform) return;
@@ -182,7 +182,8 @@ const _createDeployConfig = async (c: RnvContext, platform: string) => {
                 `);
 
     // TODO: Review this (where to put what props renative.*.json)
-    c.files.appConfig.config.platforms[platform].deploy = deploy;
+    c.files.appConfig.config.platforms[platform]?.custom.deploy = deploy;
+    //TODO: we need to override config_original
     writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
 };
 
