@@ -95,6 +95,8 @@ export type RenativeConfigFile = _ConfigRootMerged;
 
 export type RenativeConfigPlugin = Exclude<RenativeConfigFile['plugins'][string], string>;
 
+export type RenativeConfigPaths = RenativeConfigFile['paths'];
+
 // export type RenativeConfigPluginiOS = _PluginiOSType;
 
 export type RenativeConfigPluginPlatform = _PluginPlatformMergedSchemaType;

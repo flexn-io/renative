@@ -82,9 +82,12 @@ const _applyTemplate = async (c: RnvContext) => {
 
     if (c.paths.template.dir) c.paths.template.appConfigsDir = path.join(c.paths.template.dir, 'appConfigs');
     c.paths.template.appConfigBase.dir = path.join(c.paths.template.appConfigsDir, 'base');
-    c.runtime.currentTemplate = c.files.project.config.currentTemplate;
+    c.runtime.currentTemplate = c.files.project.config?.currentTemplate;
     if (!c.runtime.currentTemplate) {
-        c.runtime.currentTemplate = Object.keys(c.files.project.config.templates)[0];
+        if (c.files.project.config?.templates) {
+            c.runtime.currentTemplate = Object.keys(c.files.project.config.templates)[0];
+        }
+
         c.runtime.requiresForcedTemplateApply = true;
     }
 

@@ -239,6 +239,9 @@ const RootProjectBaseFragment = {
     integrations: z.optional(Integrations),
     env: z.optional(Env),
     runtime: z.optional(Runtime),
+    isNew: z
+        .string()
+        .describe('Marker indicating that this project has just been bootstrapped. this prop is managed by rnv'),
 };
 
 const RootProjectBaseSchema = z.object(RootProjectBaseFragment);

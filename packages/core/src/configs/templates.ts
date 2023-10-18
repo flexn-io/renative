@@ -6,7 +6,7 @@ import { writeRenativeConfigFile } from './utils';
 
 export const checkIfTemplateConfigured = async (c: RnvContext) => {
     logTask('checkIfTemplateConfigured');
-    if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return true;
+    if (c.program.skipDependencyCheck || c.files.project.config?.isTemplate) return true;
     if (!c.buildConfig.templates) {
         logWarning(
             `Your ${chalk().white(c.paths.project.config)} does not contain ${chalk().white(

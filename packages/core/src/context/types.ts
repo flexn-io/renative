@@ -283,7 +283,7 @@ export interface RnvContextPathObj {
 }
 
 export interface RnvContextFileObj {
-    config?: any; //RenativeConfigFile
+    config?: RenativeConfigFile;
     config_original?: any;
     configLocal?: RenativeConfigLocal;
     configPrivate?: RenativeConfigPrivate;

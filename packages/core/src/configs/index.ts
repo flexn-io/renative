@@ -23,8 +23,9 @@ export const loadFileExtended = (
         fileObj[`${key}_original`] = { ...fileObj[key] };
     }
     const extendsTemplate = fileObj[key]?.extendsTemplate;
-    if (extendsTemplate) {
-        let currTemplate = c.files.project[key].currentTemplate || fileObj[key].currentTemplate;
+    if (key === 'config' && extendsTemplate) {
+        // extendsTemplate only applies to standard 'config'
+        let currTemplate = c.files.project[key]?.currentTemplate || fileObj[key].currentTemplate;
         if (!currTemplate) {
             if (extendsTemplate.startsWith('@')) {
                 currTemplate = extendsTemplate.split('/').slice(0, 2).join('/');
@@ -69,7 +70,7 @@ const _loadConfigFiles = (
     let result = false;
     let extendAppId;
     if (loadFileExtended(c, fileObj, pathObj, 'config')) {
-        extendAppId = fileObj.config.extend || extendAppId;
+        extendAppId = fileObj.config?.extend || extendAppId;
         result = true;
     }
 

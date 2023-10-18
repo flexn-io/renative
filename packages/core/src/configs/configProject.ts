@@ -2,7 +2,7 @@ import { getRealPath, writeFileSync } from '../system/fs';
 import { chalk, logTask, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
-import { RenativeConfigFile } from '../schema/types';
+import { PlatformKey, RenativeConfigFile } from '../schema/types';
 import { NpmPackageFile } from './types';
 
 const SYNCED_DEPS = [
@@ -41,7 +41,7 @@ export const upgradeProjectDependencies = (c: RnvContext, version: string) => {
 export const upgradeDependencies = (
     packageFile: NpmPackageFile,
     packagesPath: string | undefined,
-    configFile: RenativeConfigFile | null,
+    configFile: RenativeConfigFile | undefined,
     configPath: string | null,
     version: string
 ) => {
@@ -79,14 +79,18 @@ const _fixDeps = (deps: Record<string, string>, version: string) => {
     });
 };
 
-export const updateProjectPlatforms = (c: RnvContext, platforms: Array<string>) => {
+export const updateProjectPlatforms = (c: RnvContext, platforms: Array<PlatformKey>) => {
     const {
         project: { config },
     } = c.paths;
     const currentConfig = c.files.project.config;
-    currentConfig.defaults = currentConfig.defaults || {};
-    currentConfig.defaults.supportedPlatforms = platforms;
-    writeFileSync(config, currentConfig);
+    if (currentConfig) {
+        currentConfig.defaults = currentConfig.defaults || {};
+        currentConfig.defaults.supportedPlatforms = platforms;
+        writeFileSync(config, currentConfig);
+    } else {
+        logWarning('Config not loaded yet. skipping updateProjectPlatforms');
+    }
 };
 
 export const generatePlatformTemplatePaths = (c: RnvContext) => {

@@ -20,8 +20,8 @@ export const checkAndCreateProjectPackage = async (c: RnvContext) => {
     if (!packageJsonIsValid(c)) {
         logInfo(`Your ${c.paths.project.package} is missing. CREATING...DONE`);
 
-        const packageName = c.files.project.config.projectName || c.paths.project.dir.split('/').pop();
-        const version = c.files.project.config.defaults?.package?.version || '0.1.0';
+        const packageName = c.files.project.config?.projectName || c.paths.project.dir.split('/').pop();
+        const version = c.files.project.config?.defaults?.package?.version || '0.1.0';
         const templateName = c.files.project.config?.currentTemplate;
         if (!templateName) {
             logWarning('You are missing currentTemplate in your renative.json');

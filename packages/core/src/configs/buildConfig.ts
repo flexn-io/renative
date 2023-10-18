@@ -29,7 +29,7 @@ const getEnginesPluginDelta = (c: RnvContext) => {
 
         if (ePlugins?.length) {
             ePlugins.forEach((pluginKey) => {
-                if (!c.files?.project?.config?.[pluginKey] && engineConfig.plugins?.[pluginKey]) {
+                if (!c.files?.project?.config?.plugins?.[pluginKey] && engineConfig.plugins?.[pluginKey]) {
                     missingEnginePlugins[pluginKey] = engineConfig.plugins?.[pluginKey];
                 }
                 if (engineConfig.plugins?.[pluginKey]) {

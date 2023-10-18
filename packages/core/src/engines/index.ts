@@ -157,7 +157,7 @@ export const registerAllPlatformEngines = async (c: RnvContext) => {
 
 export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<RnvEngineInstallConfig>) => {
     logTask('loadEnginePluginDeps');
-    if (c.files.project.config.isTemplate) return 0;
+    if (c.files.project.config?.isTemplate) return 0;
 
     // Check engine dependencies
     const addedPlugins: Record<string, Array<string>> = {};
@@ -167,18 +167,19 @@ export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<R
         const engineConfig = readObjectSync(ecf.configPath);
 
         if (engineConfig?.plugins) {
-            const projectPlugins = c.files.project.config.plugins;
+            const projectPlugins = c.files.project.config?.plugins;
             // Comparing original config causes engine think that template is not extended with additional deps
             // const projectPlugins = c.files.project.config_original.plugins;
-
-            Object.keys(engineConfig?.plugins).forEach((k) => {
-                if (!projectPlugins[k]) {
-                    hasAddedPlugins = true;
-                    originalProjectPlugins[k] = engineConfig?.plugins[k];
-                    addedPlugins[k] = addedPlugins[k] || [];
-                    addedPlugins[k].push(k);
-                }
-            });
+            if (projectPlugins) {
+                Object.keys(engineConfig?.plugins).forEach((k) => {
+                    if (!projectPlugins[k]) {
+                        hasAddedPlugins = true;
+                        originalProjectPlugins[k] = engineConfig?.plugins[k];
+                        addedPlugins[k] = addedPlugins[k] || [];
+                        addedPlugins[k].push(k);
+                    }
+                });
+            }
         }
     });
     if (hasAddedPlugins) {
@@ -207,7 +208,7 @@ If you don't want to use this dependency make sure you remove platform which req
 
 export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<RnvEngineInstallConfig>) => {
     logTask('loadEnginePackageDeps');
-    if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return 0;
+    if (c.program.skipDependencyCheck || c.files.project.config?.isTemplate) return 0;
     // Check engine dependencies
     const addedDeps = [];
     engineConfigs.forEach((ecf) => {
@@ -239,7 +240,7 @@ export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<
                     const deps = c.files.project.package.dependencies || {};
                     Object.keys(npm.dependencies).forEach((k) => {
                         if (!deps[k]) {
-                            if (c.files.project.config.isTemplate) {
+                            if (c.files.project.config?.isTemplate) {
                                 if (!c.files.project.package.devDependencies[k]) {
                                     logWarning(
                                         `Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. which in template project should be placed in devDependencies`
@@ -301,11 +302,11 @@ const _getFilteredEngines = (c: RnvContext) => {
         return {};
     }
     const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
-    const supportedPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
+    const supportedPlatforms = c.files.project.config?.defaults?.supportedPlatforms || [];
 
     const filteredEngines: Record<string, string> = {};
-    supportedPlatforms.forEach((v: string) => {
-        const platforms = c.files.project.config.platforms || {};
+    supportedPlatforms.forEach((v) => {
+        const platforms = c.files.project.config?.platforms || {};
         const engineKey = platforms[v]?.engine || rnvPlatforms[v]?.engine;
 
         const engKey = ENGINE_ID_MAP[engineKey] || engineKey;

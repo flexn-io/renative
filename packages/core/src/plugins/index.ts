@@ -18,7 +18,7 @@ import { chalk, logDebug, logError, logInfo, logSuccess, logTask, logWarning } f
 import { doResolve, doResolvePath } from '../system/resolve';
 import { RnvContext } from '../context/types';
 import { PluginCallback, RnvPlugin, RnvPluginScope } from './types';
-import { ConfigRootPlugin, RenativeConfigPlugin } from '../schema/types';
+import { ConfigRootPlugin, RenativeConfigPaths, RenativeConfigPlugin } from '../schema/types';
 import { RnvModuleConfig, RnvPlatform } from '../types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
@@ -164,7 +164,7 @@ export const configurePlugins = async (c: RnvContext) => {
         return;
     }
 
-    const { isTemplate } = c.files.project.config;
+    const isTemplate = c.files.project.config?.isTemplate;
     const newDeps: Record<string, string | undefined> = {};
     const newDevDeps: Record<string, string> = {};
     const { dependencies, devDependencies } = c.files.project.package;
@@ -463,38 +463,41 @@ export const loadPluginTemplates = async (c: RnvContext) => {
     };
 
     const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
-    const missingDeps = _parsePluginTemplateDependencies(c, customPluginTemplates);
-    if (missingDeps.length) {
-        const { dependencies } = c.files.project.package;
-        let hasPackageChanged = false;
-        missingDeps.forEach((dep) => {
-            const plugin = getMergedPlugin(c, dep);
-            if (plugin) {
-                hasPackageChanged = true;
-                dependencies[dep] = plugin.version;
-            } else {
-                // Unresolved Plugin
-            }
-        });
-        // CHECK IF paths.pluginTemplates SCOPES are INSTALLED
-        // This must be installed to avoid scoped plugins errors
-        if (hasPackageChanged) {
-            _updatePackage(c, { dependencies });
-            logInfo('Found missing dependency scopes. INSTALLING...');
-            await installPackageDependencies(c);
-            await loadPluginTemplates(c);
-        } else {
-            missingDeps.forEach((npmDep) => {
-                logWarning(`Plugin scope ${npmDep} does not exists in package.json.`);
+    if (customPluginTemplates) {
+        const missingDeps = _parsePluginTemplateDependencies(c, customPluginTemplates);
+        if (missingDeps.length) {
+            const { dependencies } = c.files.project.package;
+            let hasPackageChanged = false;
+            missingDeps.forEach((dep) => {
+                const plugin = getMergedPlugin(c, dep);
+                if (plugin) {
+                    hasPackageChanged = true;
+                    dependencies[dep] = plugin.version;
+                } else {
+                    // Unresolved Plugin
+                }
             });
+            // CHECK IF paths.pluginTemplates SCOPES are INSTALLED
+            // This must be installed to avoid scoped plugins errors
+            if (hasPackageChanged) {
+                _updatePackage(c, { dependencies });
+                logInfo('Found missing dependency scopes. INSTALLING...');
+                await installPackageDependencies(c);
+                await loadPluginTemplates(c);
+            } else {
+                missingDeps.forEach((npmDep) => {
+                    logWarning(`Plugin scope ${npmDep} does not exists in package.json.`);
+                });
+            }
         }
     }
+
     return true;
 };
 
 const _parsePluginTemplateDependencies = (
     c: RnvContext,
-    customPluginTemplates: Record<string, { npm: string; path: string }>,
+    customPluginTemplates: RenativeConfigPaths['pluginTemplates'],
     scope = 'root'
 ) => {
     logTask('_parsePluginTemplateDependencies', `scope:${scope}`);
