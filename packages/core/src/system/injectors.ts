@@ -8,6 +8,7 @@ export const generateConfigPropInjects = () => {
     const configPropsInjects: OverridesOptions = [];
     INJECTABLE_CONFIG_PROPS.forEach((v) => {
         const configProp = getConfigProp(ctx, ctx.platform, v);
+        if (!ctx.injectableConfigProps) ctx.injectableConfigProps = {};
         ctx.injectableConfigProps[v] = configProp;
         configPropsInjects.push({
             pattern: `{{configProps.${v}}}`,
