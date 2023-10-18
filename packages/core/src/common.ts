@@ -90,7 +90,7 @@ export const waitForHost = async (c: RnvContext, suffix = 'assets/bundle.js') =>
     const CHECK_INTEVAL = 2000;
     // const spinner = ora('Waiting for webpack to finish...').start();
 
-    const devServerHost = getDevServerHost(c);
+    const devServerHost = '127.0.0.1';
     const url = `http://${devServerHost}:${c.runtime.port}/${suffix}`;
 
     return new Promise((resolve, reject) => {
