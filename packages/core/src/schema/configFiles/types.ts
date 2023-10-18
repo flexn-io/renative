@@ -38,7 +38,7 @@ export type ConfigFileTemplate = _RootTemplateSchemaType;
 export type ConfigFileTemplates = _RootTemplatesSchemaType;
 
 // renative.workspace.json
-export type ConfigFileWorkspaces = _RootGlobalSchemaType;
+export type ConfigFileWorkspace = _RootGlobalSchemaType;
 
 // renative.integration.json
 export type ConfigFileIntegration = _RootIntegrationSchemaType;

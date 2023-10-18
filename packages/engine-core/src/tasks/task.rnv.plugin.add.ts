@@ -48,12 +48,20 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
 
     const questionPlugins: Record<string, PluginListResponseItem> = {};
 
+    const cnfOriginal = c.files.project.config_original;
+    if (!cnfOriginal) {
+        return;
+    }
+
+    const cnfPlugins = cnfOriginal.plugins || {};
+    cnfOriginal.plugins = cnfPlugins;
+
     Object.keys(selectedPlugins).forEach((key) => {
         // c.buildConfig.plugins[key] = 'source:rnv';
         const plugin = selectedPlugins[key];
         if (plugin.props) questionPlugins[key] = plugin;
 
-        c.files.project.config_original.plugins[key] = 'source:rnv';
+        cnfPlugins[key] = 'source:rnv';
 
         // c.buildConfig.plugins[key] = selectedPlugins[key];
     });
@@ -72,15 +80,15 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
             });
             finalProps[pluginProps[i2]] = propValue;
         }
-        c.files.project.config_original.plugins[pluginKey] = {};
-        c.files.project.config.config_original[pluginKey].props = finalProps;
+        cnfPlugins[pluginKey] = {};
+        cnfPlugins[pluginKey].props = finalProps;
     }
 
     const spinner = getApi()
         .spinner(`Installing: ${installMessage.join(', ')}`)
         .start('');
 
-    writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
+    writeRenativeConfigFile(c, c.paths.project.config, cnfOriginal);
 
     await resolvePluginDependants(c);
 

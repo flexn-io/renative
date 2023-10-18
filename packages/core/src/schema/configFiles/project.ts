@@ -239,6 +239,12 @@ const RootProjectBaseFragment = {
     integrations: z.optional(Integrations),
     env: z.optional(Env),
     runtime: z.optional(Runtime),
+    skipAutoUpdate: z
+        .boolean()
+        .optional()
+        .describe(
+            "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
+        ),
     isNew: z
         .string()
         .describe('Marker indicating that this project has just been bootstrapped. this prop is managed by rnv'),

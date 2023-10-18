@@ -13,6 +13,7 @@ export const SDKs = z.record(z.string(), z.string()).describe('Define your sdk c
 export const RootGlobalSchema = z.object({
     defaultTargets: z.optional(DefaultTargets),
     sdks: z.optional(SDKs),
+    // projectTemplates:
 });
 
 export type _RootGlobalSchemaType = z.infer<typeof RootGlobalSchema>;

@@ -34,10 +34,10 @@ import { parseRenativeConfigs } from '../configs';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
-import { RenativeConfigFile } from '../schema/types';
 import { inquirerPrompt } from '../api';
 import { upgradeProjectDependencies } from '../configs/configProject';
 import { generateConfigPropInjects } from '../system/injectors';
+import { ConfigFileApp, ConfigFileProject } from '../schema/configFiles/types';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');
@@ -56,8 +56,10 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
 
         const templateObj = readObjectSync(c.paths.template.configTemplate);
         const appConfigPath = path.join(c.paths.project.appConfigsDir, c.program.appConfigID, 'renative.json');
-        const appConfigObj: RenativeConfigFile = readObjectSync(appConfigPath);
+        //TODO: Investigate whether we really need to support this: supportedPlatforms inside appconfig
+        const appConfigObj = readObjectSync<ConfigFileApp & ConfigFileProject>(appConfigPath);
         const supportedPlatforms = appConfigObj?.defaults?.supportedPlatforms || [];
+        //=========
         const engineTemplates = c.files.rnv.projectTemplates?.config?.engineTemplates;
         const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
         const activeEngineKeys: Array<string> = [];

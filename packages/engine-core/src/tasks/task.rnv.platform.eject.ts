@@ -13,13 +13,21 @@ import {
     executeTask,
     RnvTaskFn,
     inquirerPrompt,
+    PlatformKey,
 } from '@rnv/core';
 
 export const taskRnvPlatformEject: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvPlatformEject');
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_EJECT, originTask);
-    let selectedPlatforms: Array<string>;
+
+    const configOriginal = c.files.project.config_original;
+
+    if (!configOriginal) {
+        return;
+    }
+
+    let selectedPlatforms: Array<PlatformKey>;
     if (c.platform) {
         selectedPlatforms = [c.platform];
     } else {
@@ -44,17 +52,16 @@ export const taskRnvPlatformEject: RnvTaskFn = async (c, _parentTask, originTask
             // engine.ejectPlatform(c, platform, destDir);
             ejectPlatform(c, platform);
 
-            c.files.project.config_original.paths = c.files.project.config_original.paths || {};
+            configOriginal.paths = configOriginal.paths || {};
 
-            c.files.project.config_original.paths.platformTemplatesDirs =
-                c.files.project.config_original.paths.platformTemplatesDirs || {};
-            c.files.project.config_original.paths.platformTemplatesDirs[platform] = `./${'platformTemplates'}`;
-            writeFileSync(c.paths.project.config, c.files.project.config_original);
+            configOriginal.paths.platformTemplatesDirs = configOriginal.paths.platformTemplatesDirs || {};
+            configOriginal.paths.platformTemplatesDirs[platform] = `./${'platformTemplates'}`;
+            writeFileSync(c.paths.project.config, configOriginal);
         });
 
         logSuccess(
             `${chalk().white(selectedPlatforms.join(','))} platform templates are located in ${chalk().white(
-                c.files.project.config.paths.platformTemplatesDirs[selectedPlatforms[0]]
+                c.files.project.config?.paths?.platformTemplatesDirs?.[selectedPlatforms[0]]
             )} now. You can edit them directly!`
         );
     } else {

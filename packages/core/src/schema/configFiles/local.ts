@@ -14,7 +14,7 @@ export const RootLocalSchema = z.object({
     workspaceAppConfigsDir: z.optional(WorkspaceAppConfigsDir),
     defaultTargets: z.optional(DefaultTargets),
     _meta: z.optional(Meta),
-    extend: z.optional(z.string()),
+    // extend: z.optional(z.string()),
 });
 
 export type _RootLocalSchemaType = z.infer<typeof RootLocalSchema>;

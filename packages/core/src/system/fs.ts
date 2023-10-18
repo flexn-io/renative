@@ -490,7 +490,7 @@ export const writeObjectSync = (filePath: string, obj: string | object, spaces: 
     return writeFileSync(filePath, obj, spaces, addNewLine);
 };
 
-export const readObjectSync = (filePath?: string, sanitize?: boolean, c?: RnvContext) => {
+export const readObjectSync = <T = any>(filePath?: string, sanitize?: boolean, c?: RnvContext) => {
     logDebug(`readObjectSync:${sanitize}:${filePath}`);
     if (!filePath) {
         logDebug('readObjectSync: filePath is undefined');
@@ -521,7 +521,7 @@ export const readObjectSync = (filePath?: string, sanitize?: boolean, c?: RnvCon
         logError(`readObjectSync: Parsing of ${chalk().white(filePath)} failed with ${e}`);
         return null;
     }
-    return obj;
+    return obj as T;
 };
 
 export const updateObjectSync = (filePath: string, updateObj: object) => {

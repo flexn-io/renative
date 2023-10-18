@@ -319,7 +319,7 @@ const _resolvePluginDependencies = async (
                     parentKey
                 )} is not installed`,
             });
-            if (confirm) {
+            if (confirm && c.files.project.config_original?.plugins) {
                 c.files.project.config_original.plugins[key] = `source:${scope}`;
                 writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
                 logSuccess(`Plugin ${key} sucessfully installed`);
@@ -716,7 +716,7 @@ const _getPluginConfiguration = (c: RnvContext, pluginName: string) => {
     }
 
     if (renativePluginPath) {
-        renativePlugin = readObjectSync(renativePluginPath);
+        renativePlugin = readObjectSync<ConfigFilePlugin>(renativePluginPath) || undefined;
     }
     return renativePlugin;
 };
@@ -768,9 +768,9 @@ export const checkForPluginDependencies = async (c: RnvContext) => {
             install = true;
         }
 
-        if (install) {
+        if (install && c.files.project.config_original) {
             c.files.project.config_original.plugins = {
-                ...c.files.project.config_original.plugins,
+                ...(c.files.project.config_original.plugins || {}),
                 ...toAdd,
             };
             writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);

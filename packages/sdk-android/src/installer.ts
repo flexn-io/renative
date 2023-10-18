@@ -165,9 +165,9 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
             confirmSdk = confirm;
         }
 
-        if (confirmSdk) {
+        if (confirmSdk && c.files.workspace.config) {
             try {
-                if (!c.files.workspace.config.sdks) c.files.workspace.config.sdks = {};
+                if (!c.files.workspace.config?.sdks) c.files.workspace.config.sdks = {};
                 c.files.workspace.config.sdks[sdkKey] = result;
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
                 generateBuildConfig(c);

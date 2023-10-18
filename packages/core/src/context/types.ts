@@ -3,7 +3,13 @@ import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import type { OverridesOptions } from '../system/types';
 import type { RnvPlatform } from '../types';
 import { RnvPlugin } from '../plugins/types';
-import { ConfigFileLocal, ConfigFilePrivate } from '../schema/configFiles/types';
+import {
+    ConfigFileApp,
+    ConfigFileLocal,
+    ConfigFilePrivate,
+    ConfigFileProject,
+    ConfigFileWorkspace,
+} from '../schema/configFiles/types';
 
 export interface RnvContext<Payload = any> {
     /**
@@ -123,29 +129,39 @@ export type RnvContextFiles = {
         configWorkspaces: any;
         package: any;
     };
-    workspace: RnvContextFileObj & {
-        project: RnvContextFileObj & {
+    workspace: RnvContextFileObj<ConfigFileWorkspace> & {
+        project: RnvContextFileObj<ConfigFileProject> & {
             appConfigBase: Record<string, any>;
             platformTemplates: Record<string, any>;
         };
-        appConfig: RnvContextFileObj;
+        appConfig: RnvContextFileObj<ConfigFileApp>;
     };
-    defaultWorkspace: RnvContextFileObj & {
-        project: RnvContextFileObj & {
+    defaultWorkspace: RnvContextFileObj<ConfigFileWorkspace> & {
+        project: RnvContextFileObj<ConfigFileProject> & {
             appConfigBase: Record<string, any>;
             platformTemplates: Record<string, any>;
         };
-        appConfig: RnvContextFileObj;
+        appConfig: RnvContextFileObj<ConfigFileApp>;
     };
-    project: RnvContextFileObj & {
+    project: RnvContextFileObj<ConfigFileProject> & {
         appConfigBase: Record<string, any>;
         builds: Record<string, any>;
         assets: Record<string, any>;
         platformTemplates: Record<string, any>;
         package: any;
     };
-    appConfig: RnvContextFileObj;
+    appConfig: RnvContextFileObj<ConfigFileApp>;
 };
+
+export interface RnvContextFileObj<T> {
+    config?: T; // RenativeConfigFile;
+    config_original?: T;
+    configLocal?: ConfigFileLocal;
+    configPrivate?: ConfigFilePrivate;
+    configs: Array<T>;
+    configsLocal: Array<ConfigFileLocal>;
+    configsPrivate: Array<ConfigFilePrivate>;
+}
 
 export type RnvContextPaths = {
     GLOBAL_RNV_CONFIG: string;
@@ -274,16 +290,6 @@ export interface RnvContextPathObj {
     pluginDirs: Array<string>;
     fontsDir: string;
     fontsDirs: Array<string>;
-}
-
-export interface RnvContextFileObj {
-    config?: any; // RenativeConfigFile;
-    config_original?: any;
-    configLocal?: ConfigFileLocal;
-    configPrivate?: ConfigFilePrivate;
-    configs: Array<any>;
-    configsLocal: Array<ConfigFileLocal>;
-    configsPrivate: Array<ConfigFilePrivate>;
 }
 
 export interface RnvContextPlatform {

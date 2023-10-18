@@ -24,6 +24,8 @@ import { RnvPlatform } from '../types';
 import { listAppConfigsFoldersSync } from '../configs/appConfigs';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
+import { ConfigFileApp, ConfigFileTemplate } from '../schema/configFiles/types';
+import { PlatformKey } from '../schema/types';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
     logTask('_cleanProjectTemplateSync');
@@ -132,7 +134,7 @@ const _configureAppConfigs = async (c: RnvContext) => {
             const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
             appConfigIds.forEach((v) => {
                 const appConfigPath = path.join(c.paths.project.appConfigsDir, v, RENATIVE_CONFIG_NAME);
-                const appConfig = readObjectSync(appConfigPath);
+                const appConfig = readObjectSync<ConfigFileApp>(appConfigPath);
                 if (appConfig) {
                     if (appConfig.skipBootstrapCopy) {
                         fsUnlinkSync(appConfigPath);
@@ -141,13 +143,13 @@ const _configureAppConfigs = async (c: RnvContext) => {
                         }
                     } else if (!appConfig.hidden) {
                         appConfig.common = appConfig.common || {};
-                        appConfig.common.title = c.files.project.config?.defaults?.title;
-                        appConfig.common.id = c.files.project.config?.defaults?.id;
+                        // appConfig.common.title = c.files.project.config?.defaults?.title;
+                        // appConfig.common.id = c.files.project.config?.defaults?.id;
 
-                        if (supPlats) {
-                            Object.keys(appConfig.platforms).forEach((pk) => {
+                        if (supPlats && appConfig.platforms) {
+                            (Object.keys(appConfig.platforms) as PlatformKey[]).forEach((pk) => {
                                 if (!supPlats.includes(pk)) {
-                                    delete appConfig.platforms[pk];
+                                    delete appConfig.platforms?.[pk];
                                 }
                             });
                         }
@@ -179,7 +181,7 @@ const _configureProjectConfig = (c: RnvContext) =>
 
 const _configureRenativeConfig = async (c: RnvContext) => {
     // renative.json
-    const templateConfig = readObjectSync(c.paths.template.configTemplate);
+    const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
     logDebug('configureProject:check renative.json');
 
     if (c.runtime.selectedTemplate || c.runtime.requiresForcedTemplateApply || c.files.project.config?.isNew) {
@@ -188,9 +190,9 @@ const _configureRenativeConfig = async (c: RnvContext) => {
         );
         const mergedObj = mergeObjects(c, templateConfig, c.files.project.config_original, false, true);
         // Do not override supportedPlatforms
-        mergedObj.defaults.supportedPlatforms = c.files.project.config_original.defaults.supportedPlatforms;
+        mergedObj.defaults.supportedPlatforms = c.files.project.config_original?.defaults?.supportedPlatforms;
         // Do not override engines
-        mergedObj.engines = c.files.project.config_original.engines;
+        mergedObj.engines = c.files.project.config_original?.engines;
         // Set current template
         mergedObj.currentTemplate = c.runtime.currentTemplate;
         if (mergedObj.isNew) {
