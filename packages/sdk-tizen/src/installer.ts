@@ -86,6 +86,8 @@ const _findFolderWithFile = (dir: string, fileToFind: string) => {
 const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: string, traverseUntilFoundFile?: string) => {
     logTask('_attemptAutoFix');
 
+    if (!c.files.workspace.config) return;
+
     if (c.program.hosted) {
         logInfo('HOSTED Mode. Skipping SDK checks');
         return true;
@@ -118,8 +120,9 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
 
         if (confirmSdk) {
             try {
-                if (!c.files.workspace.config.sdks) c.files.workspace.config.sdks = {};
+                if (!c.files.workspace.config?.sdks) c.files.workspace.config.sdks = {};
                 c.files.workspace.config.sdks[sdkKey] = result;
+                //TODO: use config_original here?
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
                 generateBuildConfig(c);
                 await checkAndConfigureTizenSdks(c);
