@@ -1,5 +1,5 @@
 import path from 'path';
-import { chalk, logWarning, logTask, logDebug } from '../logger';
+import { chalk, logWarning, logTask, logDebug, logError } from '../logger';
 import { isSystemWin } from '../utils/utils';
 import { getRealPath, fsExistsSync, fsReadFileSync } from '../system/fs';
 import { TASK_CRYPTO_DECRYPT } from '../constants';
@@ -14,6 +14,10 @@ export const getEnvExportCmd = (envVar: string, key: string) => {
 };
 
 export const getEnvVar = (c: RnvContext) => {
+    if (!c.files.project.package.name) {
+        logError('package.json requires `name` field. cannot generate ENV variables for crypto');
+        return;
+    }
     const p1 = c.paths.workspace.dir.split('/').pop()?.replace?.('.', '');
     const p2 = c.files.project.package.name.replace('@', '').replace('/', '_').replace(/-/g, '_');
     const envVar = `CRYPTO_${p1}_${p2}`.toUpperCase();
@@ -28,6 +32,10 @@ export const checkCrypto = async (c: RnvContext, parentTask?: string, originTask
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
+    if (!c.files.project.package.name) {
+        logError('package.json requires `name` field. cannot check crypto');
+        return;
+    }
 
     if (destRaw) {
         if (sourceRaw && destRaw) {

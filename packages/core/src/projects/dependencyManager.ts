@@ -11,7 +11,7 @@ import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { fsExistsSync } from '../system/fs';
-import { NpmDepKey } from '../configs/types';
+import { NpmDepKey, NpmPackageFile } from '../configs/types';
 
 export const checkIfProjectAndNodeModulesExists = async (c: RnvContext) => {
     logTask('checkIfProjectAndNodeModulesExists');
@@ -132,15 +132,19 @@ export const injectPlatformDependencies = async (c: RnvContext) => {
     const npmDepsBase = engine?.config?.npm || {};
     const npmDepsExt = platform ? engine?.config?.platforms?.[platform]?.npm || {} : {};
 
-    const npmDeps = merge<any>(npmDepsBase, npmDepsExt);
+    const npmDeps = merge<Pick<NpmPackageFile, NpmDepKey>>(npmDepsBase, npmDepsExt);
 
     if (engine && npmDeps) {
-        const promises = Object.keys(npmDeps).reduce<Array<Promise<boolean>>>((acc, type) => {
+        const promises = (Object.keys(npmDeps) as NpmDepKey[]).reduce<Array<Promise<boolean>>>((acc, type) => {
             // iterate over dependencies, devDepencencies or optionalDependencies
-            Object.keys(npmDeps[type]).forEach((dep) => {
-                // iterate over deps
-                acc.push(checkRequiredPackage(c, dep, npmDeps[type][dep], type, true, true));
-            });
+            const deps = npmDeps[type];
+            if (deps) {
+                Object.keys(deps).forEach((dep) => {
+                    // iterate over deps
+                    acc.push(checkRequiredPackage(c, dep, deps[dep], type, true, true));
+                });
+            }
+
             return acc;
         }, []);
 

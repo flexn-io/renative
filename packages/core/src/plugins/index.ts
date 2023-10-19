@@ -472,11 +472,12 @@ export const loadPluginTemplates = async (c: RnvContext) => {
     if (customPluginTemplates) {
         const missingDeps = _parsePluginTemplateDependencies(c, customPluginTemplates);
         if (missingDeps.length) {
-            const { dependencies } = c.files.project.package;
+            const dependencies = c.files.project.package.dependencies || {};
+            c.files.project.package.dependencies = dependencies;
             let hasPackageChanged = false;
             missingDeps.forEach((dep) => {
                 const plugin = getMergedPlugin(c, dep);
-                if (plugin) {
+                if (plugin?.version) {
                     hasPackageChanged = true;
                     dependencies[dep] = plugin.version;
                 } else {
@@ -514,7 +515,7 @@ const _parsePluginTemplateDependencies = (
             if (val.npm) {
                 const npmDep =
                     c.files.project.package?.dependencies?.[val.npm] ||
-                    c.files.project.package?.devDependencies[val.npm];
+                    c.files.project.package?.devDependencies?.[val.npm];
 
                 if (npmDep) {
                     let ptPath;

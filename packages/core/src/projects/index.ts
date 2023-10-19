@@ -601,7 +601,7 @@ export const versionCheck = async (c: RnvContext) => {
         return true;
     }
     c.runtime.rnvVersionRunner = c.files.rnv?.package?.version || 'unknown';
-    c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv;
+    c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv || 'unknown';
     logTask(
         `versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${c.runtime.rnvVersionProject}`,
         chalk().grey

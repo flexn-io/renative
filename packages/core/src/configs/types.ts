@@ -8,7 +8,7 @@ export type NpmPackageFile = {
     license?: string;
     description?: string;
     'release-it'?: Record<string, any>;
-    name: string;
+    name?: string;
 };
 
 export type NpmPackageFileKey = keyof NpmPackageFile;
