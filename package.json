@@ -57,7 +57,7 @@
     },
     "scripts": {
         "bootstrap": "yarn run link:rnv && npx lerna bootstrap && yarn build",
-        "bootstrap-clean": "rimraf ./node_modules; npx lerna clean --yes && yarn bootstrap",
+        "bootstrap-clean": "rimraf -I ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run build",
         "circular": "npx madge --circular --extensions ts --exclude '\\.(d.ts)$' ./packages",
         "compile": "npx lerna run compile",
