@@ -64,7 +64,7 @@ export const taskRnvWorkspaceConfigure: RnvTaskFn = async (c) => {
         }
 
         // Check config sanity
-        if (c.files.workspace.config.defaultTargets === undefined) {
+        if (c.files.workspace.config?.defaultTargets === undefined) {
             logWarning(
                 `You're missing defaultTargets in your config ${chalk().white(
                     c.paths.workspace.config

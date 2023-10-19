@@ -25,6 +25,7 @@ import {
     RnvContext,
     waitForExecCLI,
     inquirerPrompt,
+    RnvPlatform,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
@@ -523,9 +524,11 @@ const _getDeviceProp = (arr: Array<string>, prop: string) => {
     return '';
 };
 
-export const askForNewEmulator = async (c: RnvContext, platform: string) => {
+export const askForNewEmulator = async (c: RnvContext, platform: RnvPlatform) => {
     logTask('askForNewEmulator');
-    const emuName = c.files.workspace.config.defaultTargets[platform];
+    if (!platform) return;
+
+    let emuName = c.files.workspace.config?.defaultTargets?.[platform];
 
     const { confirm } = await inquirerPrompt({
         name: 'confirm',
@@ -533,22 +536,34 @@ export const askForNewEmulator = async (c: RnvContext, platform: string) => {
         message: `Do you want ReNative to create new Emulator (${chalk().white(emuName)}) for you?`,
     });
 
+    if (!emuName) {
+        const { newEmuName } = await inquirerPrompt({
+            name: 'confirm',
+            type: 'input',
+            message: `Type name of the emulator to launch`,
+        });
+        emuName = newEmuName;
+    }
+
     const sdk = os.arch() === 'arm64' ? '30' : '28'; // go 30 if Apple Silicon
     const arch = os.arch() === 'arm64' ? 'arm64-v8a' : 'x86';
 
-    if (confirm) {
+    if (confirm && emuName !== undefined) {
+        const emuLaunch = {
+            name: emuName,
+        };
         switch (platform) {
             case 'android':
                 return _createEmulator(c, sdk, 'google_apis', emuName, arch).then(() =>
-                    launchAndroidSimulator(c, emuName, true)
+                    launchAndroidSimulator(c, emuLaunch, true)
                 );
             case 'androidtv':
                 return _createEmulator(c, sdk, 'android-tv', emuName, arch).then(() =>
-                    launchAndroidSimulator(c, emuName, true)
+                    launchAndroidSimulator(c, emuLaunch, true)
                 );
             case 'androidwear':
                 return _createEmulator(c, sdk, 'android-wear', emuName, arch).then(() =>
-                    launchAndroidSimulator(c, emuName, true)
+                    launchAndroidSimulator(c, emuLaunch, true)
                 );
             default:
                 return Promise.reject('Cannot find any active or created emulators');

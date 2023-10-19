@@ -321,12 +321,14 @@ export const getDeviceToRunOn = async (c: Context) => {
             }
 
             if (chosenAction === actionGlobalUpdate) {
-                const configGlobal = c.files.workspace.config || {};
-                if (!configGlobal.defaultTargets) configGlobal.defaultTargets = {};
-                configGlobal.defaultTargets[c.platform] = sim.name;
+                const configGlobal = c.files.workspace.config;
+                if (configGlobal) {
+                    if (!configGlobal.defaultTargets) configGlobal.defaultTargets = {};
+                    configGlobal.defaultTargets[c.platform] = sim.name;
 
-                c.files.workspace.config = configGlobal;
-                writeFileSync(c.paths.workspace.config, configGlobal);
+                    c.files.workspace.config = configGlobal;
+                    writeFileSync(c.paths.workspace.config, configGlobal);
+                }
             }
         }
 
@@ -529,10 +531,13 @@ const _setAutomaticSigning = async (c: Context) => {
 
     if (!c.platform) return;
 
-    const scheme = c.files.appConfig?.config?.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
-    if (scheme) {
+    const cnf = c.files.appConfig.config;
+    if (!cnf) return;
+
+    const scheme = cnf.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
+    if (scheme && 'provisioningStyle' in scheme) {
         scheme.provisioningStyle = 'Automatic';
-        writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
+        writeFileSync(c.paths.appConfig.config, cnf);
         logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
     } else {
         return Promise.reject(
@@ -545,19 +550,29 @@ const _setDevelopmentTeam = async (c: Context, teamID: string) => {
     logTask(`_setDevelopmentTeam:${teamID}`);
 
     if (!c.platform) return;
+    const cnf = c.files.appConfig.config_original;
+    if (!cnf) return;
 
     try {
         // initialize if it doesn't exist, assume everything is set up, if it throws yell
-        if (!c.files.appConfig.config_original.platforms[c.platform]) {
-            c.files.appConfig.config_original.platforms[c.platform] = {};
+        const platforms = cnf.platforms || {};
+        const plat = platforms[c.platform] || {};
+        cnf.platforms = platforms;
+        platforms[c.platform] = plat;
+        if (!platforms[c.platform]) {
+            cnf.platforms[c.platform] = {};
         }
-        c.files.appConfig.config_original.platforms[c.platform].teamID = teamID;
+        if ('teamID' in plat) {
+            plat.teamID = teamID;
+        } else {
+            return;
+        }
     } catch (e) {
         return Promise.reject(
             `Failed to update ${c.paths.appConfig?.config}."platforms": { "${c.platform}" ... Object is null. Try update file manually`
         );
     }
-    writeFileSync(c.paths.appConfig.config, c.files.appConfig.config_original);
+    writeFileSync(c.paths.appConfig.config, cnf);
     logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
 };
 

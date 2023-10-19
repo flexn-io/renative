@@ -116,6 +116,7 @@ const Crypto = z
                     'Location of encrypted file in your project used as source of decryption into your workspace'
                 ),
         }),
+        isOptional: z.boolean().optional().describe('Mark if crypto object should not checked every run'),
     })
     .describe('This prop enables automatic encrypt and decrypt of sensitive information in your project');
 

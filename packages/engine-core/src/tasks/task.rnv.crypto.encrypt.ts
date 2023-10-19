@@ -40,6 +40,9 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
     // handle missing config
     const source = `./${c.files.project.package.name}`;
 
+    const cnf = c.files.project.config_original;
+    if (!cnf) return;
+
     if (c.files.project.config && !c.files.project.config.crypto) {
         const { location } = await inquirerPrompt({
             type: 'input',
@@ -48,7 +51,7 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
                 'Where would you like your secrets to be residing? (path relative to root, without leading or trailing slash. Ex. `myPrivateConfig/encrypt`)',
             default: 'secrets',
         });
-        c.files.project.config_original.crypto = {
+        cnf.crypto = {
             encrypt: {
                 dest: `PROJECT_HOME/${location}/privateConfigs.enc`,
             },
@@ -56,7 +59,7 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
                 source: `PROJECT_HOME/${location}/privateConfigs.enc`,
             },
         };
-        writeFileSync(c.paths.project.config, c.files.project.config_original);
+        writeFileSync(c.paths.project.config, cnf);
     }
 
     // check if src folder actually exists

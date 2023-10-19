@@ -14,7 +14,7 @@ export const taskRnvPlatformSetup: RnvTaskFn = async (c, _parentTask, originTask
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_SETUP, originTask);
 
-    const currentPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
+    const currentPlatforms = c.files.project.config?.defaults?.supportedPlatforms || [];
 
     const { inputSupportedPlatforms } = await inquirerPrompt({
         name: 'inputSupportedPlatforms',

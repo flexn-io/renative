@@ -5,7 +5,7 @@ import type { _PlatformsKeysType } from './shared';
 import type { _MergedPlatformObjectType, _PlatformsSchemaType } from './platforms';
 import type { _PluginType } from './plugins';
 import type { _RootAppBaseSchemalType } from './configFiles/app';
-import type { _RootGlobalSchemaType } from './configFiles/global';
+import type { _RootWorkspaceSchemaType } from './configFiles/workspace';
 import type { _RootProjectBaseSchemaType } from './configFiles/project';
 import type { _RootPluginsSchemaType } from './configFiles/plugins';
 import type { _ManifestChildWithChildrenType } from './platforms/fragments/templateAndroidBase';
@@ -44,7 +44,7 @@ type _ConfigRootMerged =
     //Templates
     _RootTemplatesSchemaType &
         //Global
-        _RootGlobalSchemaType &
+        _RootWorkspaceSchemaType &
         //Plugins (multiple roots merged under scope object)
         RootPluginsMerged &
         //Project + App

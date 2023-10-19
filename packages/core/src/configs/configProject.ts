@@ -2,8 +2,9 @@ import { getRealPath, writeFileSync } from '../system/fs';
 import { chalk, logTask, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
-import { PlatformKey, RenativeConfigFile } from '../schema/types';
+import { PlatformKey } from '../schema/types';
 import { NpmPackageFile } from './types';
+import { ConfigFileProject } from '../schema/configFiles/types';
 
 const SYNCED_DEPS = [
     'rnv',
@@ -41,7 +42,7 @@ export const upgradeProjectDependencies = (c: RnvContext, version: string) => {
 export const upgradeDependencies = (
     packageFile: NpmPackageFile,
     packagesPath: string | undefined,
-    configFile: RenativeConfigFile | undefined,
+    configFile: ConfigFileProject | undefined,
     configPath: string | null,
     version: string
 ) => {

@@ -59,7 +59,7 @@ export const taskRnvCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask)
     const crypto = c.files.project.config?.crypto;
     const sourceRaw = crypto?.decrypt?.source;
 
-    if (!crypto.isOptional && sourceRaw) {
+    if (!crypto?.isOptional && sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
         const ts = `${source}.timestamp`;
         const destFolder = path.join(c.paths.workspace.dir, c.files.project.package.name);

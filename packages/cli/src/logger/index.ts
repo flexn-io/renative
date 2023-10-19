@@ -262,9 +262,9 @@ export const logSummary = (header = 'SUMMARY') => {
     }
 
     if (ctx.files?.project?.config?.defaults) {
-        const defaultProjectConfigs = ctx.files.project.config.defaults;
-        if (defaultProjectConfigs?.template) {
-            str += printIntoBox(`Master Template: ${_highlightColor(defaultProjectConfigs.template)}`);
+        const currentTemplate = ctx.files.project.config?.currentTemplate;
+        if (currentTemplate) {
+            str += printIntoBox(`Master Template: ${_highlightColor(currentTemplate)}`);
         }
     }
 

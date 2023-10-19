@@ -14,6 +14,7 @@ import {
     PluginListResponseItem,
     getApi,
     inquirerPrompt,
+    RenativeConfigPlugin,
 } from '@rnv/core';
 
 /* eslint-disable no-await-in-loop */
@@ -80,8 +81,9 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
             });
             finalProps[pluginProps[i2]] = propValue;
         }
-        cnfPlugins[pluginKey] = {};
-        cnfPlugins[pluginKey].props = finalProps;
+        const pluginToAdd: RenativeConfigPlugin = {};
+        pluginToAdd.props = finalProps;
+        cnfPlugins[pluginKey] = pluginToAdd;
     }
 
     const spinner = getApi()

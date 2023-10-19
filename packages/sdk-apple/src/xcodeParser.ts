@@ -69,7 +69,10 @@ export const parseXcodeProject = async (c: Context) => {
             const schemeToUpdate = c.files.appConfig.config?.platforms?.[platform]?.buildSchemes?.[c.program.scheme];
             if (autoFix && schemeToUpdate && c.files.appConfig.config) {
                 c.payload.xcodeProj.provisionProfileSpecifier = eligibleProfile.Name;
-                schemeToUpdate.provisionProfileSpecifier = eligibleProfile.Name;
+                if ('provisionProfileSpecifier' in schemeToUpdate) {
+                    schemeToUpdate.provisionProfileSpecifier = eligibleProfile.Name;
+                }
+
                 writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
             }
         } else {
