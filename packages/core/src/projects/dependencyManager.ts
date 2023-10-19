@@ -11,6 +11,7 @@ import { RnvContext } from '../context/types';
 import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { fsExistsSync } from '../system/fs';
+import { NpmDepKey } from '../configs/types';
 
 export const checkIfProjectAndNodeModulesExists = async (c: RnvContext) => {
     logTask('checkIfProjectAndNodeModulesExists');
@@ -26,29 +27,33 @@ const injectProjectDependency = async (
     c: RnvContext,
     dependency: string,
     version: string,
-    type: string,
+    type: NpmDepKey,
     skipInstall = false
 ) => {
     logTask('injectProjectDependency');
 
     const currentPackage = c.files.project.package;
-    const existingPath = c.paths.project.package;
-    if (!currentPackage[type]) currentPackage[type] = {};
-    currentPackage[type][dependency] = version;
-    writeRenativeConfigFile(c, existingPath, currentPackage);
-    if (!skipInstall) {
-        await installPackageDependencies(c);
-        await overrideTemplatePlugins(c);
-        await configureFonts(c);
+    if (currentPackage) {
+        const existingPath = c.paths.project.package;
+        const dep = currentPackage[type] || {};
+        currentPackage[type] = dep;
+        dep[dependency] = version;
+        writeRenativeConfigFile(c, existingPath, currentPackage);
+        if (!skipInstall) {
+            await installPackageDependencies(c);
+            await overrideTemplatePlugins(c);
+            await configureFonts(c);
+        }
+        return true;
     }
-    return true;
+    return false;
 };
 
 export const checkRequiredPackage = async (
     c: RnvContext,
     pkg: string,
     version = '',
-    type: string,
+    type: NpmDepKey,
     skipAsking = false,
     skipInstall = false,
     skipVersionCheck = false
@@ -57,7 +62,7 @@ export const checkRequiredPackage = async (
     if (!pkg) return false;
     const projectConfig = c.files.project;
 
-    if (!projectConfig.package[type]?.[pkg]) {
+    if (!projectConfig.package?.[type]?.[pkg]) {
         // package does not exist, adding it
         let confirm = skipAsking;
         if (!confirm) {
@@ -81,7 +86,7 @@ export const checkRequiredPackage = async (
         }
     } else if (version === '') {
         // package exists, checking version only if version is not
-        const currentVersion = projectConfig.package[type][pkg];
+        const currentVersion = projectConfig.package[type]?.[pkg];
         let latestVersion;
         try {
             latestVersion = await executeAsync(`npm show ${pkg} version`);
@@ -92,9 +97,12 @@ export const checkRequiredPackage = async (
 
             try {
                 // semver might fail if you have a path instead of a version (like when you are developing)
-                updateAvailable = semver.lt(currentVersion, latestVersion);
-                // eslint-disable-next-line no-empty
-            } catch (e) {}
+                if (currentVersion) {
+                    updateAvailable = semver.lt(currentVersion, latestVersion);
+                }
+            } catch (e) {
+                //NOOP
+            }
 
             if (updateAvailable) {
                 let confirm = skipAsking;

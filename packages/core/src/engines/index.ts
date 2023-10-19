@@ -244,7 +244,7 @@ export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<
                     Object.keys(npm.dependencies).forEach((k) => {
                         if (!deps[k]) {
                             if (c.files.project.config?.isTemplate) {
-                                if (!c.files.project.package.devDependencies[k]) {
+                                if (!c.files.project.package.devDependencies?.[k]) {
                                     logWarning(
                                         `Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. which in template project should be placed in devDependencies`
                                     );
@@ -391,10 +391,16 @@ ${enginesToInstall.map((v) => `> ${v.key}@${v.version}`).join('\n')}
  ADDING TO PACKAGE.JSON...DONE`);
 
         await checkAndCreateProjectPackage(c);
+        const pkg = c.files.project.package;
+        const devDeps = pkg.devDependencies || {};
+        pkg.devDependencies = devDeps;
         enginesToInstall.forEach((v) => {
-            c.files.project.package.devDependencies[v.key] = v.version;
-            writeFileSync(c.paths.project.package, c.files.project.package);
+            if (v.key && v.version) {
+                devDeps[v.key] = v.version;
+            }
         });
+        writeFileSync(c.paths.project.package, c.files.project.package);
+
         await installPackageDependencies(c);
         return loadEngines(c, true);
     }
