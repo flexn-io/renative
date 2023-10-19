@@ -16,12 +16,17 @@ import {
 } from '../schema/configFiles/types';
 import { NpmPackageFile } from '../configs/types';
 import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
+import type { ParamKeys } from '../tasks/constants';
+
+type RnvContextProgram = ParamKeys & {
+    args: string[];
+    rawArgs: string[];
+    option: (cmd: string, desc: string) => void;
+    parse: (arg: string[]) => void;
+};
 
 export interface RnvContext<Payload = any> {
-    /**
-     * Commander program object
-     */
-    program: any;
+    program: RnvContextProgram;
     /**
      * Extra payload object used by 3rd party (ie @rnv/sdk-apple) to decorate context with extra typed information
      */

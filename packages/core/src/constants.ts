@@ -172,8 +172,6 @@ export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
 export const TASK_CONFIGURE_SOFT = 'configureSoft';
 export const TASK_KILL = 'kill';
 
-export const CLI_PROPS = ['provisioningStyle', 'codeSignIdentity', 'provisionProfileSpecifier'];
-
 export const configSchema: Record<string, any> = {
     analytics: {
         values: ['true', 'false'],

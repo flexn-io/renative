@@ -46,7 +46,16 @@ export const generateContextDefaults = (): RnvContext => ({
     runtimePropsInjects: [],
     supportedPlatforms: [],
     systemPropsInjects: [],
-    program: {},
+    program: {
+        args: [],
+        rawArgs: [],
+        option: () => {
+            //NOOP
+        },
+        parse: () => {
+            //NOOP
+        },
+    },
     buildConfig: {},
     command: '',
     subCommand: '',

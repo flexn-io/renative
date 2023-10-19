@@ -28,11 +28,14 @@ export const parseXcodeProject = async (c: Context) => {
     if (!platform) return;
     // PROJECT
     c.payload.xcodeProj = {};
-    c.payload.xcodeProj.provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
+    c.payload.xcodeProj.provisioningStyle =
+        c.program.provisioningStyle || getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
     c.payload.xcodeProj.deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '14.0');
-    c.payload.xcodeProj.provisionProfileSpecifier = getConfigProp(c, platform, 'provisionProfileSpecifier');
+    c.payload.xcodeProj.provisionProfileSpecifier =
+        c.program.provisionProfileSpecifier || getConfigProp(c, platform, 'provisionProfileSpecifier');
     c.payload.xcodeProj.provisionProfileSpecifiers = getConfigProp(c, platform, 'provisionProfileSpecifiers');
-    c.payload.xcodeProj.codeSignIdentity = getConfigProp(c, platform, 'codeSignIdentity', 'iPhone Developer');
+    c.payload.xcodeProj.codeSignIdentity =
+        c.program.codeSignIdentity || getConfigProp(c, platform, 'codeSignIdentity', 'iPhone Developer');
 
     c.payload.xcodeProj.codeSignIdentities = getConfigProp(c, platform, 'codeSignIdentities');
 

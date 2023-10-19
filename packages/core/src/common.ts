@@ -5,7 +5,6 @@ import killPort from 'kill-port';
 import axios from 'axios';
 import lGet from 'lodash.get';
 import path from 'path';
-import { CLI_PROPS } from './constants';
 import { fsExistsSync, writeCleanFile } from './system/fs';
 import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
@@ -31,11 +30,11 @@ export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): T
 
 export const getCliArguments = (c: RnvContext) => {
     const { args, rawArgs } = c.program;
-    const argsCopy = [...args];
-    let missingArg = rawArgs[rawArgs.indexOf(argsCopy[1]) + 1];
+    const argsCopy: Array<string | undefined> = [...args];
+    let missingArg: string | undefined = rawArgs[rawArgs.indexOf(args[1]) + 1];
     if (missingArg?.[0] === '-') {
-        if (rawArgs[rawArgs.indexOf(argsCopy[1]) + 2]) {
-            missingArg = rawArgs[rawArgs.indexOf(argsCopy[1]) + 2];
+        if (rawArgs[rawArgs.indexOf(args[1]) + 2]) {
+            missingArg = rawArgs[rawArgs.indexOf(args[1]) + 2];
         } else {
             missingArg = undefined;
         }
@@ -310,7 +309,6 @@ export const _getConfigProp = <T extends ConfigPropKey>(
         scheme = {};
     }
 
-    const resultCli = baseKey && CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
     const resultScheme = baseKey && scheme[baseKey];
     const resultCommonRoot = getFlavouredProp<any, any>(c, sourceObj.common || {}, baseKey);
     const resultCommonScheme = getFlavouredProp<any, any>(
@@ -320,7 +318,7 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     );
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
-    let result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
+    let result = _getValueOrMergedObject({}, resultScheme, resultPlatforms, resultCommon);
     if (result === undefined || result === null) {
         result = getFlavouredProp<any, any>(c, sourceObj, baseKey);
     }
