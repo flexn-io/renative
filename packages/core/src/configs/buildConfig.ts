@@ -122,7 +122,12 @@ export const generateBuildConfig = (_c?: RnvContext) => {
             },
         },
     ];
-    const existsFiles = mergeFiles.filter((v) => v);
+    const existsFiles: object[] = [];
+    mergeFiles.forEach((v) => {
+        if (v !== undefined) {
+            existsFiles.push(v);
+        }
+    });
 
     logDebug(
         `generateBuildConfig:mergeOrder.length:${mergeOrder.length},cleanPaths.length:${cleanPaths.length},existsPaths.length:${existsPaths.length},existsFiles.length:${existsFiles.length}`

@@ -61,16 +61,18 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
         const supportedPlatforms = appConfigObj?.defaults?.supportedPlatforms || [];
         //=========
         const engineTemplates = c.files.rnv.projectTemplates?.config?.engineTemplates;
-        const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
+        const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platformTemplates || {};
         const activeEngineKeys: Array<string> = [];
 
-        supportedPlatforms.forEach((supPlat) => {
-            Object.keys(engineTemplates).forEach((eKey) => {
-                if (engineTemplates[eKey].id === rnvPlatforms[supPlat]?.engine) {
-                    activeEngineKeys.push(eKey);
-                }
+        if (engineTemplates) {
+            supportedPlatforms.forEach((supPlat) => {
+                Object.keys(engineTemplates).forEach((eKey) => {
+                    if (engineTemplates[eKey].id === rnvPlatforms[supPlat]?.engine) {
+                        activeEngineKeys.push(eKey);
+                    }
+                });
             });
-        });
+        }
 
         const config = {
             ...templateObj,

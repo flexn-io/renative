@@ -41,7 +41,7 @@ export const checkIfTemplateConfigured = async (c: RnvContext) => {
 export const getTemplateOptions = (c: RnvContext, isGlobalScope?: boolean) => {
     let defaultProjectTemplates;
     if (isGlobalScope) {
-        defaultProjectTemplates = c.files.rnv.projectTemplates.config.projectTemplates;
+        defaultProjectTemplates = c.files.rnv.projectTemplates.config?.projectTemplates;
     } else {
         defaultProjectTemplates = c.buildConfig.projectTemplates || {};
     }

@@ -355,9 +355,12 @@ export const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platf
         ...c.files.appConfig.configsLocal,
     ];
     configArr.forEach((config) => {
-        const val = _getConfigProp(c, platform, key, null, config);
-        if (val) {
-            result.push(val);
+        if (config) {
+            //TODO: this is bit of a hack. _getConfigProp expectes already merged obj needs to be redone
+            const val = _getConfigProp(c, platform, key, null, config as RenativeConfigFile);
+            if (val) {
+                result.push(val);
+            }
         }
     });
 

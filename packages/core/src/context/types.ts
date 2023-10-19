@@ -9,6 +9,7 @@ import {
     ConfigFilePlugins,
     ConfigFilePrivate,
     ConfigFileProject,
+    ConfigFileTemplates,
     ConfigFileWorkspace,
 } from '../schema/configFiles/types';
 
@@ -125,7 +126,9 @@ export type RnvContextFiles = {
             configs: Record<string, ConfigFilePlugins>;
         };
         platformTemplates: Record<string, any>;
-        projectTemplates: Record<string, any>;
+        projectTemplates: {
+            config?: ConfigFileTemplates;
+        };
         platformTemplate: Record<string, any>;
         plugins: Record<string, any>;
         engines: Record<string, any>;

@@ -677,10 +677,13 @@ export const taskRnvNew = async (c: RnvContext) => {
     if (renativeTemplateConfig.engines) {
         // Remove unused engines based on selected platforms
         supPlats.forEach((k) => {
-            const selectedEngineId = platforms[k]?.engine || c.files.rnv.projectTemplates.config.platforms[k]?.engine;
+            const selectedEngineId =
+                platforms[k]?.engine || c.files.rnv.projectTemplates.config?.platformTemplates?.[k]?.engine;
             if (selectedEngineId) {
                 const selectedEngine = findEngineKeyById(c, selectedEngineId);
-                engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
+                if (selectedEngine?.key) {
+                    engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
+                }
             }
         });
     }
@@ -703,13 +706,17 @@ export const taskRnvNew = async (c: RnvContext) => {
 };
 
 const findEngineKeyById = (c: RnvContext, id: string) => {
-    const { engineTemplates } = c.files.rnv.projectTemplates.config;
-    const etk = Object.keys(engineTemplates);
-    for (let i = 0; i < etk.length; i++) {
-        const engine = engineTemplates[etk[i]];
-        if (engine.id === id) {
-            engine.key = etk[i];
-            return engine;
+    const engineTemplates = c.files.rnv.projectTemplates.config?.engineTemplates;
+    if (engineTemplates) {
+        const etk = Object.keys(engineTemplates);
+        for (let i = 0; i < etk.length; i++) {
+            const engine = engineTemplates[etk[i]];
+            if (engine) {
+                if (engine.id === id) {
+                    engine.key = etk[i];
+                    return engine;
+                }
+            }
         }
     }
 };

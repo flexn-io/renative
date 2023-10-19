@@ -32,6 +32,7 @@ describe('Bootstrapping the CLI', () => {
             'command',
             'configPropsInjects',
             'files',
+            'injectableConfigProps',
             'isBuildHooksReady',
             'isDefault',
             'isSystemWin',

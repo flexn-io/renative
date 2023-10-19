@@ -11,6 +11,7 @@ import { generateBuildConfig } from './buildConfig';
 import { generateLocalConfig } from './configLocal';
 import { getWorkspaceDirPath } from './workspaces';
 import { generatePlatformTemplatePaths } from './configProject';
+import { ConfigFileTemplates } from '../schema/configFiles/types';
 
 export const loadFileExtended = (
     c: RnvContext,
@@ -212,7 +213,8 @@ export const parseRenativeConfigs = async (c: RnvContext) => {
     _loadConfigFiles(c, c.files.defaultWorkspace, c.paths.defaultWorkspace);
 
     // LOAD PROJECT TEMPLATES
-    c.files.rnv.projectTemplates.config = readObjectSync(c.paths.rnv.projectTemplates.config);
+    c.files.rnv.projectTemplates.config =
+        readObjectSync<ConfigFileTemplates>(c.paths.rnv.projectTemplates.config) || undefined;
 
     // // LOAD PLUGIN TEMPLATES
     // await loadPluginTemplates(c);

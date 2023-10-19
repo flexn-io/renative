@@ -13,6 +13,7 @@ export const RootTemplatesSchema = z.object({
         z.object({
             version: z.string(),
             id: z.string(),
+            key: z.string().optional(),
         })
     ),
     integrationTemplates: z.record(

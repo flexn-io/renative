@@ -304,16 +304,16 @@ const _getFilteredEngines = (c: RnvContext) => {
         logError('Engine configs missing in your renative.json. FIXING...DONE');
         return {};
     }
-    const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
+    const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platformTemplates;
     const supportedPlatforms = c.files.project.config?.defaults?.supportedPlatforms || [];
 
     const filteredEngines: Record<string, string> = {};
     supportedPlatforms.forEach((v) => {
         const platforms = c.files.project.config?.platforms || {};
-        const engineKey = platforms[v]?.engine || rnvPlatforms[v]?.engine;
+        const engineKey = platforms[v]?.engine || rnvPlatforms?.[v]?.engine;
 
-        const engKey = ENGINE_ID_MAP[engineKey] || engineKey;
         if (engineKey) {
+            const engKey = ENGINE_ID_MAP[engineKey] || engineKey;
             if (engines[engKey]) {
                 filteredEngines[engKey] = engines[engKey];
             } else {
