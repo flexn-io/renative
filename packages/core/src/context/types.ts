@@ -1,4 +1,4 @@
-import type { ConfigProp, ConfigPropKey, PlatformKey, RenativeConfigFile } from '../schema/types';
+import type { ConfigProp, ConfigPropKey, PlatformKey } from '../schema/types';
 import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import type { OverridesOptions } from '../system/types';
 import type { RnvPlatform } from '../types';
@@ -15,6 +15,7 @@ import {
     ConfigFileWorkspaces,
 } from '../schema/configFiles/types';
 import { NpmPackageFile } from '../configs/types';
+import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
 
 export interface RnvContext<Payload = any> {
     /**
@@ -63,7 +64,7 @@ export interface RnvContext<Payload = any> {
     isDefault: boolean;
 }
 
-export type RnvContextBuildConfig = Partial<RenativeConfigFile> & {
+export type RnvContextBuildConfig = Partial<ConfigFileBuildConfig> & {
     _meta?: {
         currentAppConfigId: string;
     };
@@ -143,7 +144,7 @@ export type RnvContextFiles = {
         appConfig: RnvContextFileObj<ConfigFileApp>;
     };
     project: RnvContextFileObj<ConfigFileProject> & {
-        builds: Record<string, RenativeConfigFile>;
+        builds: Record<string, ConfigFileBuildConfig>;
         assets: {
             config?: ConfigFileRuntime;
         };

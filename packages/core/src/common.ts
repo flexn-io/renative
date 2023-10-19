@@ -11,10 +11,11 @@ import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
 import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
-import { ConfigProp, ConfigPropKey, RenativeConfigFile } from './schema/types';
+import { ConfigProp, ConfigPropKey } from './schema/types';
 import { inquirerPrompt } from './api';
 import { RnvPlatform } from './types';
 import { DEFAULTS } from './schema/defaults';
+import { ConfigFileBuildConfig } from './schema/configFiles/buildConfig';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
@@ -285,7 +286,7 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     platform: RnvPlatform,
     key: T,
     defaultVal?: ConfigProp[T],
-    sourceObj?: Partial<RenativeConfigFile>
+    sourceObj?: Partial<ConfigFileBuildConfig>
 ): ConfigProp[T] => {
     if (!sourceObj || !platform) return undefined;
 
@@ -357,7 +358,7 @@ export const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platf
     configArr.forEach((config) => {
         if (config) {
             //TODO: this is bit of a hack. _getConfigProp expectes already merged obj needs to be redone
-            const val = _getConfigProp(c, platform, key, null, config as RenativeConfigFile);
+            const val = _getConfigProp(c, platform, key, null, config as ConfigFileBuildConfig);
             if (val) {
                 result.push(val);
             }
