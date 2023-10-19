@@ -78,6 +78,8 @@ const _loadConfigFiles = (
         // result = true;
     }
 
+    loadFileExtended(c, fileObj, pathObj, 'configLocal');
+    loadFileExtended(c, fileObj, pathObj, 'configPrivate');
     //Do not Extend local configs
     // if (loadFileExtended(c, fileObj, pathObj, 'configLocal')) {
     //     extendAppId = fileObj.configLocal?.extend || extendAppId;

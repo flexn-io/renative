@@ -471,17 +471,11 @@
                   "type": "boolean"
                 },
                 "storeFile": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
+                  "type": "string",
                   "description": "Name of the store file in android project"
                 },
                 "keyAlias": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
+                  "type": "string",
                   "description": "Key alias of the store file in android project"
                 },
                 "templateAndroid": {
