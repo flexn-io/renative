@@ -71,7 +71,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
     for (let i = 0; i < pluginKeys.length; i++) {
         const pluginKey = pluginKeys[i];
         const plugin = questionPlugins[pluginKey];
-        const pluginProps = Object.keys(plugin.props);
+        const pluginProps = Object.keys(plugin.props || {});
         const finalProps: Record<string, string> = {};
         for (let i2 = 0; i2 < pluginProps.length; i2++) {
             const { propValue } = await inquirerPrompt({

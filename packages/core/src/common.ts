@@ -3,7 +3,6 @@ import detectPort from 'detect-port';
 import ip from 'ip';
 import killPort from 'kill-port';
 import axios from 'axios';
-import lGet from 'lodash.get';
 import path from 'path';
 import { fsExistsSync, writeCleanFile } from './system/fs';
 import { chalk, logError, logTask, logWarning } from './logger';
@@ -281,16 +280,9 @@ export const _getConfigProp = <T extends ConfigPropKey>(
 ): ConfigProp[T] => {
     if (!sourceObj || !platform) return undefined;
 
-    if (!key || !key.split) {
-        logError('getConfigProp: invalid key!');
-        return null;
-    }
-
     const platformObj: PlatformGeneric = sourceObj.platforms?.[platform];
     const ps = c.runtime.scheme;
-    const keyArr = key.split('.');
-    const baseKey = keyArr.shift() || '';
-    const subKey = keyArr.join('.');
+    const baseKey = key;
 
     let resultPlatforms;
     let scheme;
@@ -316,9 +308,7 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     }
 
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-    if (typeof result === 'object' && subKey.length) {
-        return lGet(result, subKey);
-    }
+
     return result as ConfigProp[T];
 };
 

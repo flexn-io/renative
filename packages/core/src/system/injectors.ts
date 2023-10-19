@@ -21,7 +21,7 @@ export const generateConfigPropInjects = () => {
 export const generateRuntimePropInjects = () => {
     const ctx = getContext();
 
-    const rt: any = ctx.runtime;
+    const rt = ctx.runtime;
 
     INJECTABLE_RUNTIME_PROPS.forEach((key) => {
         ctx.runtimePropsInjects.push({

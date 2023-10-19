@@ -6,16 +6,12 @@ export type RnvEngine = {
     platforms: Record<string, RnvEnginePlatform>;
     config: ConfigFileEngine;
     tasks: RnvTaskMap;
-    // initializeRuntimeConfig: (c: RnvContext) => void;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
     projectDirName: string;
     runtimeExtraProps: Record<string, string>;
     outputDirName?: string;
     serverDirName: string;
-    getAliases?: (alias: any) => any;
-    // package: string;
-    // ejectPlatform: null;
 };
 
 export type RnvEnginePlatform = {

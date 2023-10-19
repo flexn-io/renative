@@ -118,10 +118,11 @@ ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
         let data;
         try {
             data = await iocane.createSession().use('cbc').decrypt(fsReadFileSync(source), key);
-        } catch (e: any) {
-            if (e?.message?.includes) {
-                if (e.message.includes('Signature mismatch')) {
-                    const err = `You're trying to decode crypto file encoded with previous version of crypto.
+        } catch (e) {
+            if (e instanceof Error) {
+                if (e?.message?.includes) {
+                    if (e.message.includes('Signature mismatch')) {
+                        const err = `You're trying to decode crypto file encoded with previous version of crypto.
 this change was introduced in "rnv@0.29.0"
 
 ${e}
@@ -141,10 +142,10 @@ ${e}
 
       `;
 
-                    return Promise.reject(err);
-                }
-                if (e.message.includes('Authentication failed')) {
-                    return Promise.reject(`It seems like you provided invalid decryption key.
+                        return Promise.reject(err);
+                    }
+                    if (e.message.includes('Authentication failed')) {
+                        return Promise.reject(`It seems like you provided invalid decryption key.
 
 ${e.stack}
 
@@ -163,6 +164,7 @@ ${chalk().white('https://github.com/flexn-io/renative/issues')}
 and we will try to help!
 
 `);
+                    }
                 }
             }
 

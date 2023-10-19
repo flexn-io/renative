@@ -395,7 +395,7 @@ export const removeFilesSync = (filePaths: Array<string>) => {
             } else {
                 logDebug(`Path ${filePath} does not exist`);
             }
-        } catch (e: any) {
+        } catch (e) {
             logError(e);
         }
     });
@@ -407,7 +407,7 @@ export const removeDirsSync = (dirPaths: Array<string>) => {
     for (let i = 0; i < dirPaths.length; i++) {
         try {
             removeDirSync(dirPaths[i]);
-        } catch (e: any) {
+        } catch (e) {
             logError(e);
         }
     }

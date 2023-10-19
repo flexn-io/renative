@@ -3,7 +3,6 @@ import {
     logSuccess,
     logTask,
     logWarning,
-    getPluginList,
     executeTask,
     TASK_PLUGIN_UPDATE,
     TASK_PROJECT_CONFIGURE,
@@ -17,7 +16,7 @@ export const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask)
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLUGIN_UPDATE, originTask);
 
-    const pluginList = getPluginList(c, true);
+    // const pluginList = getPluginList(c, true);
 
     // console.log(o.asString);
 
@@ -33,10 +32,11 @@ export const taskRnvPluginUpdate: RnvTaskFn = async (c, _parentTask, originTask)
             const cnf = c.files.project.config_original;
 
             if (!cnf) return;
-            Object.keys(plugins).forEach((key) => {
+            Object.keys(plugins).forEach((_key) => {
+                //TODO: fix this. not working
                 // c.buildConfig.plugins[key] = o.json[key];
                 cnf.plugins = cnf.plugins || {};
-                cnf.plugins[key] = pluginList.json[key];
+                // cnf.plugins[key] = pluginList.json[key];
             });
 
             writeFileSync(c.paths.project.config, cnf);

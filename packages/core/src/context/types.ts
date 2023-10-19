@@ -137,6 +137,8 @@ export type RnvContextRuntime = {
     shouldOpenBrowser?: boolean;
 };
 
+export type RuntimePropKey = keyof RnvContextRuntime;
+
 export type RnvContextFiles = {
     rnv: {
         pluginTemplates: {

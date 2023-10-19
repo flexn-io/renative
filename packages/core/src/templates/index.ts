@@ -158,7 +158,7 @@ const _configureAppConfigs = async (c: RnvContext) => {
                     }
                 }
             });
-        } catch (e: any) {
+        } catch (e) {
             logError(e);
         }
     }

@@ -209,7 +209,7 @@ const _waitForEmulatorToBeReady = (c: RnvContext, target: string): Promise<boole
         return res;
     });
 
-const _composeDevicesString = (devices: Array<any>) =>
+const _composeDevicesString = (devices: Array<TizenDevice>) =>
     devices.map((device) => ({
         key: device.id,
         name: device.name,

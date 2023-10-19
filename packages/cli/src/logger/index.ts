@@ -8,18 +8,19 @@ import {
     generateDefaultChalk,
     RnvApiLogger,
     RnvApiChalk,
+    RnvApiChalkFn,
 } from '@rnv/core';
 
 const ICN_ROCKET = isSystemWin ? 'RNV' : '🚀';
 const ICN_UNICORN = isSystemWin ? 'unicorn' : '🦄';
 const _chalkCols = generateDefaultChalk();
-const _chalkMono: any = {
+const _chalkMono = {
     ..._chalkCols,
 };
 let currentChalk: RnvApiChalk = _chalk;
 let RNV = 'ReNative';
 const PRIVATE_PARAMS = ['-k', '--key'];
-let _currentProcess: any;
+let _currentProcess: NodeJS.Process;
 let _isInfoEnabled = false;
 let _infoFilter: Array<string> = [];
 // let _c: RnvContext;
@@ -323,7 +324,7 @@ const _sanitizePaths = (msg: string) => {
 
 const TASK_COUNTER: Record<string, number> = {};
 
-export const logTask = (task: string, customChalk?: any) => {
+export const logTask = (task: string, customChalk?: string | RnvApiChalkFn) => {
     if (!TASK_COUNTER[task]) TASK_COUNTER[task] = 0;
     TASK_COUNTER[task] += 1;
     const taskCount = currentChalk.grey(`[${TASK_COUNTER[task]}]`);
@@ -374,7 +375,7 @@ type PrintJsonPayload = {
     type: string;
     task?: string;
     message: string;
-    hook?: any;
+    hook?: string;
     level?: string;
 };
 
@@ -411,7 +412,7 @@ export const logHook = (hook = '', msg = '') => {
     );
 };
 
-export const logWarning = (msg: string | boolean) => {
+export const logWarning = (msg: string | boolean | unknown) => {
     const msgSn = typeof msg === 'string' ? _sanitizePaths(msg) : String(msg);
     if (_jsonOnly) {
         return _printJson({
@@ -477,7 +478,13 @@ export const logSuccess = (msg: string) => {
     logAndSave(currentChalk.magenta(`[ success ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
-export const logError = (e: Error | string, isEnd = false, skipAnalytics = false) => {
+export const logError = (e: Error | string | unknown, isEnd = false, skipAnalytics = false) => {
+    let err = '';
+    if (typeof e === 'string') {
+        err = e;
+    } else if (e instanceof Error) {
+        err = e.message;
+    }
     const ctx = getContext();
     const api = getApi();
     if (!skipAnalytics) {
@@ -491,7 +498,7 @@ export const logError = (e: Error | string, isEnd = false, skipAnalytics = false
             arch: ctx.process?.arch,
             node: ctx.process?.versions?.node,
         };
-        api.analytics.captureException(e, { extra });
+        api.analytics.captureException(err, { extra });
     }
 
     if (_jsonOnly) {
@@ -499,7 +506,7 @@ export const logError = (e: Error | string, isEnd = false, skipAnalytics = false
             type: 'log',
             level: 'error',
             task: stripAnsi(_getCurrentTask()),
-            message: stripAnsi(_sanitizePaths(e instanceof Error ? e.message : e)),
+            message: stripAnsi(_sanitizePaths(err)),
         });
     } else if (e && e instanceof Error && e.message) {
         logAndSave(currentChalk.red(`[ error ]${_getCurrentTask()} ${e.message}\n${e.stack}`), isEnd);

@@ -74,13 +74,13 @@ export type RnvApiLogger = {
     logInitTask: (task: string, customChalk?: string | ((s: string) => string)) => void;
     logExitTask: (task: string, customChalk?: (s: string) => string) => void;
     logHook: (hook: string, msg?: string) => void;
-    logWarning: (msg: string | boolean) => void;
+    logWarning: (msg: string | boolean | unknown) => void;
     logInfo: (msg: string) => void;
     logDebug: (...args: Array<any>) => void;
     isInfoEnabled: () => boolean;
     logComplete: (isEnd?: boolean) => void;
     logSuccess: (msg: string) => void;
-    logError: (e: Error | string, isEnd?: boolean, skipAnalytics?: boolean) => void;
+    logError: (e: Error | string | unknown, isEnd?: boolean, skipAnalytics?: boolean) => void;
     logEnd: (code: number) => void;
     logInitialize: () => void;
     logAppInfo: (c: RnvContext) => void;

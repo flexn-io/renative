@@ -159,7 +159,7 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
     try {
         await executeAsync(command);
         await invalidatePodsChecksum(c);
-    } catch (e: any) {
+    } catch (e) {
         if (failOnError) {
             logError(e);
             throw e;
@@ -170,7 +170,7 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
         try {
             await cleanNodeModules();
             await installPackageDependencies(c, true);
-        } catch (npmErr: any) {
+        } catch (npmErr) {
             logError(npmErr);
             throw npmErr;
         }
@@ -195,7 +195,7 @@ export const installPackageDependencies = async (c: RnvContext, failOnError = fa
         }
         c._requiresNpmInstall = false;
         return true;
-    } catch (jetErr: any) {
+    } catch (jetErr) {
         logError(jetErr);
         return false;
     }
