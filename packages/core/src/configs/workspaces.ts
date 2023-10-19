@@ -6,9 +6,14 @@ import path from 'path';
 import { chalk, logTask, logDebug, logInfo, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
+import { ConfigFileWorkspaces } from '../schema/configFiles/types';
 
 export const createWorkspace = async (c: RnvContext, workspaceID: string, workspacePath: string) => {
-    c.files.rnv.configWorkspaces.workspaces[workspaceID] = {
+    const cnf = c.files.rnv.configWorkspaces;
+
+    if (!cnf) return;
+
+    cnf.workspaces[workspaceID] = {
         path: workspacePath,
     };
 
@@ -20,7 +25,7 @@ export const createWorkspace = async (c: RnvContext, workspaceID: string, worksp
     mkdirSync(workspacePath);
     writeFileSync(path.join(workspacePath, 'renative.json'), workspaceConfig);
 
-    writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
+    writeFileSync(c.paths.rnv.configWorkspaces, cnf);
     return true;
 };
 
@@ -88,21 +93,24 @@ export const loadWorkspacesConfigSync = () => {
     // CHECK WORKSPACES
     if (fsExistsSync(c.paths.rnv.configWorkspaces)) {
         logDebug(`${c.paths.rnv.configWorkspaces} file exists!`);
-        c.files.rnv.configWorkspaces = readObjectSync(c.paths.rnv.configWorkspaces);
 
-        if (!c.files.rnv.configWorkspaces) c.files.rnv.configWorkspaces = {};
+        const cnf = readObjectSync<ConfigFileWorkspaces>(c.paths.rnv.configWorkspaces);
 
-        if (!c.files.rnv.configWorkspaces?.workspaces) {
-            c.files.rnv.configWorkspaces.workspaces = {};
+        if (!cnf) return;
+
+        c.files.rnv.configWorkspaces = cnf;
+
+        if (!cnf.workspaces) {
+            cnf.workspaces = {};
         }
-        if (Object.keys(c.files.rnv.configWorkspaces.workspaces).length === 0) {
+        if (Object.keys(cnf.workspaces).length === 0) {
             logWarning(`No workspace found in ${c.paths.rnv.configWorkspaces}. Creating default rnv one for you`);
-            c.files.rnv.configWorkspaces.workspaces = {
+            cnf.workspaces = {
                 rnv: {
                     path: c.paths.workspace.dir,
                 },
             };
-            writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
+            writeFileSync(c.paths.rnv.configWorkspaces, cnf);
         }
     } else {
         logWarning(`Cannot find ${c.paths.rnv.configWorkspaces}. creating one..`);

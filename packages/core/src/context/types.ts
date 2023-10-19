@@ -11,7 +11,9 @@ import {
     ConfigFileProject,
     ConfigFileTemplates,
     ConfigFileWorkspace,
+    ConfigFileWorkspaces,
 } from '../schema/configFiles/types';
+import { NpmPackageFile } from '../configs/types';
 
 export interface RnvContext<Payload = any> {
     /**
@@ -125,16 +127,11 @@ export type RnvContextFiles = {
             config?: ConfigFilePlugins;
             configs: Record<string, ConfigFilePlugins>;
         };
-        platformTemplates: Record<string, any>;
         projectTemplates: {
             config?: ConfigFileTemplates;
         };
-        platformTemplate: Record<string, any>;
-        plugins: Record<string, any>;
-        engines: Record<string, any>;
-        projectTemplate: Record<string, any>;
-        configWorkspaces: any;
-        package: any;
+        configWorkspaces?: ConfigFileWorkspaces;
+        package: NpmPackageFile;
     };
     workspace: RnvContextFileObj<ConfigFileWorkspace> & {
         project: RnvContextFileObj<ConfigFileProject> & {
@@ -155,7 +152,7 @@ export type RnvContextFiles = {
         builds: Record<string, any>;
         assets: Record<string, any>;
         platformTemplates: Record<string, any>;
-        package: any;
+        package: NpmPackageFile;
     };
     appConfig: RnvContextFileObj<ConfigFileApp>;
 };

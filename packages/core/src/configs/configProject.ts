@@ -70,7 +70,8 @@ export const upgradeDependencies = (
     return result;
 };
 
-const _fixDeps = (deps: Record<string, string>, version: string) => {
+const _fixDeps = (deps: Record<string, string> | undefined, version: string) => {
+    if (!deps) return;
     SYNCED_DEPS.forEach((dep) => {
         const d = deps?.[dep];
         if (d) {
