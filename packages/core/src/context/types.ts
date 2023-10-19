@@ -6,6 +6,7 @@ import { RnvPlugin } from '../plugins/types';
 import {
     ConfigFileApp,
     ConfigFileLocal,
+    ConfigFilePlugins,
     ConfigFilePrivate,
     ConfigFileProject,
     ConfigFileWorkspace,
@@ -119,7 +120,10 @@ export type RnvContextRuntime = {
 
 export type RnvContextFiles = {
     rnv: {
-        pluginTemplates: Record<string, any>;
+        pluginTemplates: {
+            config?: ConfigFilePlugins;
+            configs: Record<string, ConfigFilePlugins>;
+        };
         platformTemplates: Record<string, any>;
         projectTemplates: Record<string, any>;
         platformTemplate: Record<string, any>;

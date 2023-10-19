@@ -24,7 +24,7 @@ import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { installPackageDependencies } from '../projects/npm';
 import { OverridesOptions, ResolveOptions } from '../system/types';
-import { ConfigFilePlugin } from '../schema/configFiles/types';
+import { ConfigFilePlugin, ConfigFilePlugins } from '../schema/configFiles/types';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -449,14 +449,19 @@ export const loadPluginTemplates = async (c: RnvContext) => {
 
     const flexnPluginTemplatesPath = path.join(flexnPluginsPath, 'pluginTemplates');
 
-    const flexnPluginTemplates = readObjectSync(path.join(flexnPluginTemplatesPath, 'renative.plugins.json'));
-    const rnvPluginTemplates = readObjectSync(c.paths.rnv.pluginTemplates.config);
+    const flexnPluginTemplates = readObjectSync<ConfigFilePlugins>(
+        path.join(flexnPluginTemplatesPath, 'renative.plugins.json')
+    );
+    const rnvPluginTemplates = readObjectSync<ConfigFilePlugins>(c.paths.rnv.pluginTemplates.config);
 
-    c.files.rnv.pluginTemplates.config = merge(flexnPluginTemplates, rnvPluginTemplates);
+    const cnf = merge(flexnPluginTemplates || {}, rnvPluginTemplates || {});
 
-    c.files.rnv.pluginTemplates.configs = {
-        rnv: c.files.rnv.pluginTemplates.config,
-    };
+    if (cnf) {
+        c.files.rnv.pluginTemplates.config = cnf;
+        c.files.rnv.pluginTemplates.configs = {
+            rnv: cnf,
+        };
+    }
 
     //Override default rnv path with flexn one and add it rnv as overrider
     c.paths.rnv.pluginTemplates.dirs = {
@@ -523,12 +528,17 @@ const _parsePluginTemplateDependencies = (
                     const ptConfig = path.join(ptPath, RENATIVE_CONFIG_PLUGINS_NAME);
                     c.paths.rnv.pluginTemplates.dirs[k] = ptPath;
                     if (fsExistsSync(ptConfig)) {
-                        c.files.rnv.pluginTemplates.configs[k] = readObjectSync(ptConfig);
-                        _parsePluginTemplateDependencies(
-                            c,
-                            c.files.rnv.pluginTemplates.configs[k].pluginTemplateDependencies,
-                            k
-                        );
+                        const ptConfigs = c.files.rnv.pluginTemplates.configs;
+                        const ptConfigFile = readObjectSync<ConfigFilePlugins>(ptConfig);
+                        if (ptConfigFile) {
+                            ptConfigs[k] = ptConfigFile;
+                        }
+
+                        // _parsePluginTemplateDependencies(
+                        //     c,
+                        //     c.files.rnv.pluginTemplates.configs[k].pluginTemplateDependencies,
+                        //     k
+                        // );
                     } else {
                         logWarning(`Plugin scope ${val.npm} is not installed yet.`);
                     }

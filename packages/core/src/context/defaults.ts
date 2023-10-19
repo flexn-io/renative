@@ -172,7 +172,9 @@ export const generateContextDefaults = (): RnvContext => ({
     },
     files: {
         rnv: {
-            pluginTemplates: {},
+            pluginTemplates: {
+                configs: {},
+            },
             platformTemplates: {},
             projectTemplates: {},
             platformTemplate: {},
