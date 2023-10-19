@@ -21731,11 +21731,6 @@ tsutils@^3.21.0:
   dependencies:
     tslib "^1.8.1"
 
-ttab@^0.7.2:
-  version "0.7.3"
-  resolved "https://registry.npmjs.org/ttab/-/ttab-0.7.3.tgz#402bc7a07ccdc6ed7800449868664ab4a3b22aec"
-  integrity sha512-R3vtCd+C11wgA+qAoyxDNuRItVPrgP04PMbAKD2nvs3lSCgPFRpSmu0Rlb8yOhxU3Q6n8GZUHMd5txrzfBTceg==
-
 tuf-js@^1.1.7:
   version "1.1.7"
   resolved "https://registry.npmjs.org/tuf-js/-/tuf-js-1.1.7.tgz#21b7ae92a9373015be77dfe0cb282a80ec3bbe43"
