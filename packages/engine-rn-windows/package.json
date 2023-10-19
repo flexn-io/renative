@@ -27,7 +27,7 @@
     },
     "scripts": {
         "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "clean": "rimraf ./lib && rimraf tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "prepublishOnly": "yarn clean && yarn compile:prod",

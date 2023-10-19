@@ -57,7 +57,7 @@
     },
     "scripts": {
         "bootstrap": "yarn run link:rnv && npx lerna bootstrap && yarn build",
-        "bootstrap-clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
+        "bootstrap-clean": "rimraf ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run build",
         "circular": "npx madge --circular --extensions ts --exclude '\\.(d.ts)$' ./packages",
         "compile": "npx lerna run compile",
@@ -115,6 +115,7 @@
         "lint-staged": "12.3.4",
         "madge": "6.1.0",
         "prettier": "2.3.1",
+        "rimraf": "5.0.5",
         "ts-jest": "^27.0.7",
         "typescript": "5.2.2"
     },
