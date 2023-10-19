@@ -1,11 +1,13 @@
-import { Logger } from 'rnv';
+import { logHook } from '@rnv/core';
 
 const hooks = {
     hello: async () => {
-        Logger.logHook('Hello build hook!');
+        logHook('Hello build hook!');
     },
 };
 
-const pipes = {};
+const pipes = {
+    'configure:before': [hooks.hello],
+};
 
 export { pipes, hooks };

@@ -93,6 +93,7 @@
         "@rnv/engine-rn-tvos": "1.0.0-canary.7",
         "@rnv/engine-rn-web": "1.0.0-canary.7",
         "@rnv/renative": "1.0.0-canary.7",
+        "@rnv/core": "1.0.0-canary.7",
         "@types/react": "18.2.22",
         "@types/react-dom": "18.2.7",
         "@types/react-native": "0.72.2",
