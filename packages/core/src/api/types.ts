@@ -108,7 +108,7 @@ export type PromptParams = {
     validate?: (i: string) => string | boolean;
     logMessage?: string;
     warningMessage?: string;
-    default?: any;
+    default?: any; // string | boolean | (() => string) | string[] | number | { name: string; value: any };
     pageSize?: number;
     loop?: boolean;
 };

@@ -42,7 +42,7 @@ export const taskRnvCryptoInstallProfiles: RnvTaskFn = async (c, _parentTask, or
             logDebug(`taskRnvCryptoInstallProfiles: Installing: ${v}`);
             copyFileSync(v, ppFolder);
         });
-    } catch (e: any) {
+    } catch (e) {
         logError(e);
     }
 

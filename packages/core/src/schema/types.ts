@@ -38,7 +38,9 @@ export type RenativeConfigTaskKey = keyof Required<Required<ConfigFileBuildConfi
 
 export type RenativeConfigAppDelegateMethod = _AppDelegateMethodType;
 
-export type ManifestFeature = _ManifestChildWithChildrenType;
+export type AndroidManifestNode = _ManifestChildWithChildrenType;
+
+// export type ManifestNode = _ManifestChildType;
 
 // export const test = (test: _ConfigRootMerged) => {
 //     console.log(test);

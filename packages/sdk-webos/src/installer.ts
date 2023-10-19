@@ -147,7 +147,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
                 writeFileSync(c.paths.workspace.config, cnf);
                 generateBuildConfig(c);
                 await checkAndConfigureWebosSdks(c);
-            } catch (e: any) {
+            } catch (e) {
                 logError(e);
             }
 

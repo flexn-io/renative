@@ -142,7 +142,7 @@ export const resetAdb = async (c: RnvContext, forceRun?: boolean, ranBefore?: bo
     if (!c.program.resetAdb && !forceRun) return;
     try {
         if (!ranBefore) await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
-    } catch (e: any) {
+    } catch (e) {
         logWarning(e);
     }
     try {
@@ -456,7 +456,7 @@ const _parseDevicesResult = async (c: RnvContext, devicesString: string, avdsStr
 
                 try {
                     avdDetails = getAvdDetails(c, line);
-                } catch (e: any) {
+                } catch (e) {
                     logError(e);
                 }
 

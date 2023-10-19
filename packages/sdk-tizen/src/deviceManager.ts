@@ -319,8 +319,8 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
             await execCLI(c, CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, { ignoreErrors: true });
             hasDevice = true;
-        } catch (e: any) {
-            if (e && e.includes && e.includes('No device matching')) {
+        } catch (e) {
+            if (typeof e === 'string' && e.includes('No device matching')) {
                 await launchTizenSimulator(c, target);
                 hasDevice = await _waitForEmulatorToBeReady(c, target);
             }

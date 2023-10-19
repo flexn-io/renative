@@ -393,8 +393,8 @@ const _checkLockAndExec = async (
 
     try {
         return runReactNativeIOS(c, scheme, runScheme, extraParamsString);
-    } catch (e: any) {
-        if (e && e.includes) {
+    } catch (e) {
+        if (typeof e === 'string') {
             const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
             if (isDeviceLocked) {
                 await inquirerPrompt({

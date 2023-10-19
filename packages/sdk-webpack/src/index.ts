@@ -95,7 +95,7 @@ const _runRemoteDebuggerChii = async (c: RnvContext, obj: any) => {
 
 Debugger running at: ${debugUrl}`);
             open(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/`);
-        } catch (e: any) {
+        } catch (e) {
             logError(e);
         }
         obj.remoteDebuggerActive = true;
@@ -132,7 +132,7 @@ const _runRemoteDebuggerWeinre = async (c: RnvContext, obj: any) => {
 
 Debugger running at: ${debugUrl}`);
             open(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/client/#${c.platform}`);
-        } catch (e: any) {
+        } catch (e) {
             logError(e);
         }
         obj.remoteDebuggerActive = true;
@@ -162,8 +162,7 @@ export const _runWebDevServer = async (c: RnvContext, enableRemoteDebugger?: boo
                 reactDevUtilsPath
             );
         }
-    } catch (e: any) {
-        // Do nothing
+    } catch (e) {
         logError(e);
     }
 

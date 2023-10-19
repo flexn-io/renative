@@ -172,7 +172,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
                 generateBuildConfig(c);
                 await checkAndConfigureAndroidSdks(c);
-            } catch (e: any) {
+            } catch (e) {
                 logError(e);
             }
 

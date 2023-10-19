@@ -54,7 +54,14 @@ type NewProjectData = {
     optionTemplates: {
         selectedOption?: string;
         selectedVersion?: string;
-        valuesAsObject?: any;
+        valuesAsObject?: Record<
+            string,
+            {
+                title: string;
+                key: string;
+                description: string;
+            }
+        >;
         valuesAsArray?: Array<{
             title: string;
             key: string;
@@ -64,7 +71,13 @@ type NewProjectData = {
     projectName?: string;
     optionWorkspaces: {
         selectedOption?: string;
-        valuesAsObject?: any;
+        valuesAsObject?: Record<
+            string,
+            {
+                title: string;
+                key: string;
+            }
+        >;
         valuesAsArray?: Array<string>;
         keysAsArray?: Array<string>;
     };
@@ -385,18 +398,20 @@ export const taskRnvNew = async (c: RnvContext) => {
     data.optionTemplates = getTemplateOptions(c);
 
     const options = [];
+    const values = data.optionTemplates.valuesAsObject;
+    if (values) {
+        Object.keys(values).forEach((k) => {
+            const val = values[k];
+            if (val.description) {
+                val.title = `${k} ${chalk().grey(`- ${val.description}`)}`;
+            } else {
+                val.title = k;
+            }
 
-    Object.keys(data.optionTemplates.valuesAsObject).forEach((k) => {
-        const val = data.optionTemplates.valuesAsObject[k];
-        if (val.description) {
-            val.title = `${k} ${chalk().grey(`- ${val.description}`)}`;
-        } else {
-            val.title = k;
-        }
-
-        val.key = k;
-        options.push(val.title);
-    });
+            val.key = k;
+            options.push(val.title);
+        });
+    }
 
     const getTemplateKey = (val: string) => data.optionTemplates.valuesAsArray?.find((v) => v.title === val)?.key;
 
