@@ -1,7 +1,9 @@
+import path from 'path';
 import type { RnvContext } from '../context/types';
 import type { ConfigProp, ConfigPropKey } from '../schema/types';
 import type { DoResolveFn } from '../system/types';
 import type { RnvPlatform } from '../types';
+import fs from 'fs';
 
 export interface RnvApi {
     isDefault: boolean;
@@ -10,11 +12,11 @@ export interface RnvApi {
     analytics: RnvContextAnalytics;
     // chalk: RnvApiChalk;
     logger: RnvApiLogger;
-    fsExistsSync: any;
-    fsReadFileSync: any;
-    fsReaddirSync: any;
-    fsWriteFileSync: any;
-    path: any;
+    fsExistsSync: typeof fs.existsSync;
+    fsReadFileSync: (dest: fs.PathLike | undefined) => Buffer;
+    fsReaddirSync: (dest: fs.PathLike | undefined) => string[];
+    fsWriteFileSync: (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => void;
+    path: typeof path;
     doResolve: DoResolveFn;
     getConfigProp: GetConfigPropFn;
 }
@@ -90,25 +92,15 @@ export type RnvApiLogger = {
 };
 
 export type PromptOptions = {
-    keysAsArray: any;
-    valuesAsArray: any;
-    keysAsObject: any;
-    valuesAsObject: any;
-    asString: any;
-    optionsAsArray: any;
+    keysAsArray: string[];
+    valuesAsArray: Array<any>;
+    keysAsObject: Record<string, string>;
+    valuesAsObject: Record<string, any>;
+    asString: string;
+    optionsAsArray: Array<any>;
 };
 
 export type PromptParams = {
-    // logMessage?: string;
-    // warningMessage?: string;
-    // message?: string;
-    // choices?: any;
-    // default?: any;
-    // name?: string;
-    // type: string;
-    // pageSize?: number;
-    // validate?: (i: string) => string | boolean;
-
     name?: string;
     type: string;
     message?: string;

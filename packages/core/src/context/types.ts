@@ -19,7 +19,7 @@ import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
 
 export interface RnvContext<Payload = any> {
     /**
-     * Node program object
+     * Commander program object
      */
     program: any;
     /**

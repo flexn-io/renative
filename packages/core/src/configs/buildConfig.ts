@@ -12,6 +12,7 @@ import {
 import { chalk, logTask, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
 import type { RnvContext } from '../context/types';
+import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
@@ -133,7 +134,7 @@ export const generateBuildConfig = (_c?: RnvContext) => {
         `generateBuildConfig:mergeOrder.length:${mergeOrder.length},cleanPaths.length:${cleanPaths.length},existsPaths.length:${existsPaths.length},existsFiles.length:${existsFiles.length}`
     );
 
-    let out: any = merge.all([...meta, ...existsFiles], {
+    let out: ConfigFileBuildConfig = merge.all<ConfigFileBuildConfig>([...meta, ...existsFiles], {
         arrayMerge: _arrayMergeOverride,
     });
     out = merge({}, out);
