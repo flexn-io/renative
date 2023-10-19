@@ -24,7 +24,7 @@ export const getEnvVar = (c: RnvContext) => {
 export const checkCrypto = async (c: RnvContext, parentTask?: string, originTask?: string) => {
     logTask('checkCrypto');
 
-    if (c.program.ci || c.files.project.config?.crypto?.optional) return;
+    if (c.program.ci || c.files.project.config?.crypto?.isOptional) return;
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;

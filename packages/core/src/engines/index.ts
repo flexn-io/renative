@@ -159,10 +159,13 @@ export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<R
     logTask('loadEnginePluginDeps');
     if (c.files.project.config?.isTemplate) return 0;
 
+    const cnf = c.files.project.config_original;
+    if (!cnf) return 0;
+
     // Check engine dependencies
     const addedPlugins: Record<string, Array<string>> = {};
     let hasAddedPlugins = false;
-    const originalProjectPlugins = c.files.project.config_original.plugins || {};
+    const originalProjectPlugins = cnf.plugins || {};
     engineConfigs.forEach((ecf) => {
         const engineConfig = readObjectSync(ecf.configPath);
 
@@ -199,8 +202,8 @@ If you don't want to use this dependency make sure you remove platform which req
         if (confirm) {
             logInfo(`Adding ${allPlugins.join(',')}. ...DONE`);
             // Prepare original file to be decorated (as addon plugins as we can't edit template itself)
-            c.files.project.config_original.plugins = originalProjectPlugins;
-            writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
+            cnf.plugins = originalProjectPlugins;
+            writeRenativeConfigFile(c, c.paths.project.config, cnf);
         }
     }
     return Object.keys(addedPlugins).length;

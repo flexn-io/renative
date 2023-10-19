@@ -1,4 +1,4 @@
-import type { RnvContext, RnvContextFileObj, RnvContextPathObj } from './types';
+import type { RnvContext, RnvContextPathObj } from './types';
 
 export const generateRnvConfigPathObj = (): RnvContextPathObj => {
     return {
@@ -17,7 +17,7 @@ export const generateRnvConfigPathObj = (): RnvContextPathObj => {
     };
 };
 
-export const generateRnvConfigFileObj = (): RnvContextFileObj => {
+export const generateRnvConfigFileObj = () => {
     return {
         configs: [],
         configsLocal: [],
