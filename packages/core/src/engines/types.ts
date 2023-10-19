@@ -10,7 +10,7 @@ export type RnvEngine = {
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
     projectDirName: string;
-    runtimeExtraProps: any;
+    runtimeExtraProps: Record<string, string>;
     outputDirName?: string;
     serverDirName: string;
     getAliases?: (alias: any) => any;

@@ -18,6 +18,14 @@ import { NpmPackageFile } from '../configs/types';
 import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
 import type { ParamKeys } from '../tasks/constants';
 
+export type CreateContextOptions = {
+    program: RnvContextProgram;
+    process: NodeJS.Process;
+    cmd?: string;
+    subCmd?: string;
+    RNV_HOME_DIR?: string;
+};
+
 type RnvContextProgram = ParamKeys & {
     args: string[];
     rawArgs: string[];
@@ -45,7 +53,7 @@ export interface RnvContext<Payload = any> {
     buildConfig: RnvContextBuildConfig;
     assetConfig: object;
     platform: RnvPlatform;
-    process: any;
+    process: NodeJS.Process;
     rnvVersion: string;
     isSystemWin: boolean;
     _currentTask?: string;
@@ -102,7 +110,7 @@ export type RnvContextRuntime = {
     hasAllEnginesRegistered: boolean;
     skipPackageUpdate?: boolean;
     selectedTemplate?: string;
-    runtimeExtraProps: any;
+    runtimeExtraProps: Record<string, string>;
     requiresBootstrap: boolean;
     currentTemplate: string;
     requiresForcedTemplateApply: boolean;

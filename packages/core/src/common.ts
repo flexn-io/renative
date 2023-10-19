@@ -233,15 +233,7 @@ export const getAppFolder = (c: RnvContext, isRelativePath?: boolean) => {
 export const getAppTemplateFolder = (c: RnvContext, platform: RnvPlatform) =>
     platform ? path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`) : undefined;
 
-const _getValueOrMergedObject = (
-    resultCli: any,
-    resultScheme: object,
-    resultPlatforms: object,
-    resultCommon: object
-) => {
-    if (resultCli !== undefined) {
-        return resultCli;
-    }
+const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, resultCommon: object) => {
     if (resultScheme !== undefined) {
         if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') {
             return resultScheme;
@@ -255,7 +247,7 @@ const _getValueOrMergedObject = (
         }
         return Object.assign(resultCommon || {}, resultPlatforms);
     }
-    if (resultPlatforms === null) return null;
+    if (resultPlatforms === null) return undefined;
     return resultCommon;
 };
 
@@ -318,12 +310,12 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     );
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
-    let result = _getValueOrMergedObject({}, resultScheme, resultPlatforms, resultCommon);
-    if (result === undefined || result === null) {
+    let result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
+    if (result === undefined) {
         result = getFlavouredProp<any, any>(c, sourceObj, baseKey);
     }
 
-    if (result === undefined || result === null) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
+    if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
     if (typeof result === 'object' && subKey.length) {
         return lGet(result, subKey);
     }

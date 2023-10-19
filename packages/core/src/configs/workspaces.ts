@@ -75,9 +75,9 @@ export const getWorkspaceDirPath = async (c: RnvContext) => {
     return dirPath;
 };
 
-export const getWorkspaceConnectionString = (obj: any) => {
-    const remoteUrl = obj.remote?.url;
-    const connectMsg = remoteUrl ? chalk().green(`(${obj.remote.type}:${remoteUrl})`) : '';
+export const getWorkspaceConnectionString = (obj?: ConfigFileWorkspaces['workspaces'][string]) => {
+    const remoteUrl = obj?.remote?.url;
+    const connectMsg = remoteUrl ? chalk().green(`(${obj.remote?.type}:${remoteUrl})`) : '';
     return connectMsg;
 };
 
