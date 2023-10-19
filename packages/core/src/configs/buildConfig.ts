@@ -13,6 +13,7 @@ import { chalk, logTask, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
 import type { RnvContext } from '../context/types';
 import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
+import { FileUtilsPropConfig } from '../system/types';
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
@@ -141,10 +142,10 @@ export const generateBuildConfig = (_c?: RnvContext) => {
     out.pluginTemplates = pluginTemplates;
 
     c.buildConfig = sanitizeDynamicRefs(c, out);
-    const propConfig = {
+    const propConfig: FileUtilsPropConfig = {
         files: c.files,
         runtimeProps: c.runtime,
-        props: c.buildConfig._refs,
+        props: c.buildConfig._refs || {},
         configProps: c.configPropsInjects,
     };
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, propConfig);

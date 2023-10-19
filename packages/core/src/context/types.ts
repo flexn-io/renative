@@ -56,7 +56,7 @@ export interface RnvContext<Payload = any> {
     supportedPlatforms: Array<string>;
     runtimePropsInjects: OverridesOptions;
     _renativePluginCache: Record<string, RnvPlugin>;
-    cli: any;
+    cli: Record<string, string | undefined>;
     buildHooks: Record<string, (c: RnvContext) => Promise<void>>;
     configPropsInjects: OverridesOptions;
     injectableConfigProps: Record<string, ConfigProp[ConfigPropKey]>;
@@ -73,7 +73,8 @@ export type RnvContextBuildConfig = Partial<ConfigFileBuildConfig> & {
     _meta?: {
         currentAppConfigId: string;
     };
-    _refs?: any;
+    //TODO: validate if this is really needed
+    _refs?: Record<string, string>;
 };
 
 export type RnvContextRuntime = {

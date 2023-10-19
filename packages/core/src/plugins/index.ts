@@ -133,7 +133,7 @@ const _getMergedPlugin = (
         : sanitizeDynamicProps(mergedObj, {
               files: c.files,
               runtimeProps: c.runtime,
-              props: c.buildConfig?._refs,
+              props: c.buildConfig?._refs || {},
               configProps: c.injectableConfigProps,
           });
 
