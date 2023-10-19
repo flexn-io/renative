@@ -2,13 +2,13 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "33.0.0"
-        minSdkVersion = 21
-        compileSdkVersion = 33
-        targetSdkVersion = 33
+        buildToolsVersion = '{{BUILD_TOOLS_VERSION}}'
+        minSdkVersion = {{MIN_SDK_VERSION}}
+        compileSdkVersion = {{COMPILE_SDK_VERSION}}
+        targetSdkVersion = {{TARGET_SDK_VERSION}}
 
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
-        ndkVersion = "23.1.7779620"
+        ndkVersion = '{{NDK_VERSION}}'
     }
     repositories {
         google()

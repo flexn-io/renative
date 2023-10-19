@@ -494,7 +494,7 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
             override: c.payload.pluginConfigAndroid.kotlinVersion,
         },
     ];
-
+    // console.log(c.payload);
     addSystemInjects(c, injects);
 
     writeCleanFile(

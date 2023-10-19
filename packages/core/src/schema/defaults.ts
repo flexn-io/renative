@@ -6,7 +6,7 @@ export const DEFAULTS = {
     deploymentTarget: '11.0',
     devServerHost: 'localhost',
     buildToolsVersion: '30.0.0',
-    gradleWrapperVersion: '6.9.1',
+    gradleWrapperVersion: '8.0.1',
     author: 'Unknown',
     certificateProfile: 'RNVanillaCert',
     signingConfig: 'Debug',
