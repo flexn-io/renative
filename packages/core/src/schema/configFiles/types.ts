@@ -10,6 +10,7 @@ import { _RootProjectSchemaType } from './project';
 import { _RootTemplateSchemaType } from './template';
 import { _RootTemplatesSchemaType } from './templates';
 import { _RootWorkspacesSchemaType } from './workspaces';
+import { _RootRuntimeSchemaType } from './runtime';
 
 // renative.json
 export type ConfigFileProject = _RootProjectSchemaType;
@@ -46,3 +47,6 @@ export type ConfigFileWorkspaces = _RootWorkspacesSchemaType;
 
 // renative.integration.json
 export type ConfigFileIntegration = _RootIntegrationSchemaType;
+
+// renative.runtime.json
+export type ConfigFileRuntime = _RootRuntimeSchemaType;

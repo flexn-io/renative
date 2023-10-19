@@ -9,6 +9,7 @@ import {
     ConfigFilePlugins,
     ConfigFilePrivate,
     ConfigFileProject,
+    ConfigFileRuntime,
     ConfigFileTemplates,
     ConfigFileWorkspace,
     ConfigFileWorkspaces,
@@ -134,31 +135,25 @@ export type RnvContextFiles = {
         package: NpmPackageFile;
     };
     workspace: RnvContextFileObj<ConfigFileWorkspace> & {
-        project: RnvContextFileObj<ConfigFileProject> & {
-            appConfigBase: Record<string, any>;
-            platformTemplates: Record<string, any>;
-        };
+        project: RnvContextFileObj<ConfigFileProject>;
         appConfig: RnvContextFileObj<ConfigFileApp>;
     };
     defaultWorkspace: RnvContextFileObj<ConfigFileWorkspace> & {
-        project: RnvContextFileObj<ConfigFileProject> & {
-            appConfigBase: Record<string, any>;
-            platformTemplates: Record<string, any>;
-        };
+        project: RnvContextFileObj<ConfigFileProject>;
         appConfig: RnvContextFileObj<ConfigFileApp>;
     };
     project: RnvContextFileObj<ConfigFileProject> & {
-        appConfigBase: Record<string, any>;
-        builds: Record<string, any>;
-        assets: Record<string, any>;
-        platformTemplates: Record<string, any>;
+        builds: Record<string, RenativeConfigFile>;
+        assets: {
+            config?: ConfigFileRuntime;
+        };
         package: NpmPackageFile;
     };
     appConfig: RnvContextFileObj<ConfigFileApp>;
 };
 
 export interface RnvContextFileObj<T> {
-    config?: T; // RenativeConfigFile;
+    config?: T;
     config_original?: T;
     configLocal?: ConfigFileLocal;
     configPrivate?: ConfigFilePrivate;
