@@ -6,8 +6,6 @@ const hooks = {
     },
 };
 
-const pipes = {
-    'configure:before': [hooks.hello],
-};
+const pipes = {};
 
 export { pipes, hooks };
