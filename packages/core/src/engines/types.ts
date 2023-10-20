@@ -1,21 +1,17 @@
-import type { RenativeEngineConfig } from '../schema/types';
+import { ConfigFileEngine } from '../schema/configFiles/types';
 import type { RnvTaskMap } from '../tasks/types';
 
 export type RnvEngine = {
     originalTemplatePlatformsDir?: string;
     platforms: Record<string, RnvEnginePlatform>;
-    config: RenativeEngineConfig;
+    config: ConfigFileEngine;
     tasks: RnvTaskMap;
-    // initializeRuntimeConfig: (c: RnvContext) => void;
     rootPath?: string;
     originalTemplatePlatformProjectDir?: string;
     projectDirName: string;
-    runtimeExtraProps: any;
+    runtimeExtraProps: Record<string, string>;
     outputDirName?: string;
     serverDirName: string;
-    getAliases?: (alias: any) => any;
-    // package: string;
-    // ejectPlatform: null;
 };
 
 export type RnvEnginePlatform = {

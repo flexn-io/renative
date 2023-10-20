@@ -30,7 +30,7 @@ export const taskRnvCryptoInstallCerts: RnvTaskFn = async (c, _parentTask, origi
 
     try {
         Promise.all(cerArr.map((v) => executeAsync(c, `security import ${v} -k ${kChain} -A`)));
-    } catch (e: any) {
+    } catch (e) {
         logWarning(e);
         return true;
     }

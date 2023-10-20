@@ -40,11 +40,26 @@
           },
           "description": "Define your sdk configurations"
         },
+        "projectTemplates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        "appConfigsPath": {
+          "type": "string",
+          "description": "Enables you to define custom global appConfigs location that every project will automatically use"
+        },
         "$schema": {
           "type": "string",
           "description": "schema definition"
         }
       },
+      "required": [
+        "projectTemplates"
+      ],
       "additionalProperties": false
     }
   },

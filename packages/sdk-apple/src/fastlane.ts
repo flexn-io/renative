@@ -19,7 +19,7 @@ export const registerDevice = async (c: Context) => {
         });
         logSuccess(`Succesfully registered device ${deviceName}:${udid}:${teamID}`);
         return true;
-    } catch (e: any) {
+    } catch (e) {
         logWarning(e);
         return true;
     }
@@ -85,7 +85,7 @@ export const updateProfile = async (c: Context): Promise<boolean> => {
         });
         logSuccess(`Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`);
         return true;
-    } catch (e: any) {
+    } catch (e) {
         logWarning(e);
         return true;
     }

@@ -184,6 +184,10 @@
                 "source"
               ],
               "additionalProperties": false
+            },
+            "isOptional": {
+              "type": "boolean",
+              "description": "Mark if crypto object should not checked every run"
             }
           },
           "required": [
@@ -412,6 +416,14 @@
         },
         "runtime": {
           "description": "This object will be automatically injected into `./platfromAssets/renative.runtime.json` making it possible to inject the values directly to JS source code"
+        },
+        "skipAutoUpdate": {
+          "type": "boolean",
+          "description": "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
+        },
+        "isNew": {
+          "type": "string",
+          "description": "Marker indicating that this project has just been bootstrapped. this prop is managed by rnv"
         },
         "common": {
           "type": "object",
@@ -838,17 +850,11 @@
                   "type": "boolean"
                 },
                 "storeFile": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
+                  "type": "string",
                   "description": "Name of the store file in android project"
                 },
                 "keyAlias": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
+                  "type": "string",
                   "description": "Key alias of the store file in android project"
                 },
                 "templateAndroid": {
@@ -3808,7 +3814,8 @@
         "workspaceID",
         "projectName",
         "templates",
-        "currentTemplate"
+        "currentTemplate",
+        "isNew"
       ],
       "additionalProperties": false
     }

@@ -6,7 +6,7 @@ import { writeRenativeConfigFile } from './utils';
 
 export const checkIfTemplateConfigured = async (c: RnvContext) => {
     logTask('checkIfTemplateConfigured');
-    if (c.program.skipDependencyCheck || c.files.project.config.isTemplate) return true;
+    if (c.program.skipDependencyCheck || c.files.project.config?.isTemplate) return true;
     if (!c.buildConfig.templates) {
         logWarning(
             `Your ${chalk().white(c.paths.project.config)} does not contain ${chalk().white(
@@ -41,7 +41,7 @@ export const checkIfTemplateConfigured = async (c: RnvContext) => {
 export const getTemplateOptions = (c: RnvContext, isGlobalScope?: boolean) => {
     let defaultProjectTemplates;
     if (isGlobalScope) {
-        defaultProjectTemplates = c.files.rnv.projectTemplates.config.projectTemplates;
+        defaultProjectTemplates = c.files.rnv.projectTemplates.config?.projectTemplates;
     } else {
         defaultProjectTemplates = c.buildConfig.projectTemplates || {};
     }

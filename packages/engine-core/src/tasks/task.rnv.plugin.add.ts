@@ -14,6 +14,7 @@ import {
     PluginListResponseItem,
     getApi,
     inquirerPrompt,
+    RenativeConfigPlugin,
 } from '@rnv/core';
 
 /* eslint-disable no-await-in-loop */
@@ -48,12 +49,20 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
 
     const questionPlugins: Record<string, PluginListResponseItem> = {};
 
+    const cnfOriginal = c.files.project.config_original;
+    if (!cnfOriginal) {
+        return;
+    }
+
+    const cnfPlugins = cnfOriginal.plugins || {};
+    cnfOriginal.plugins = cnfPlugins;
+
     Object.keys(selectedPlugins).forEach((key) => {
         // c.buildConfig.plugins[key] = 'source:rnv';
         const plugin = selectedPlugins[key];
         if (plugin.props) questionPlugins[key] = plugin;
 
-        c.files.project.config_original.plugins[key] = 'source:rnv';
+        cnfPlugins[key] = 'source:rnv';
 
         // c.buildConfig.plugins[key] = selectedPlugins[key];
     });
@@ -62,7 +71,7 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
     for (let i = 0; i < pluginKeys.length; i++) {
         const pluginKey = pluginKeys[i];
         const plugin = questionPlugins[pluginKey];
-        const pluginProps = Object.keys(plugin.props);
+        const pluginProps = Object.keys(plugin.props || {});
         const finalProps: Record<string, string> = {};
         for (let i2 = 0; i2 < pluginProps.length; i2++) {
             const { propValue } = await inquirerPrompt({
@@ -72,15 +81,16 @@ export const taskRnvPluginAdd: RnvTaskFn = async (c, _parentTask, originTask) =>
             });
             finalProps[pluginProps[i2]] = propValue;
         }
-        c.files.project.config_original.plugins[pluginKey] = {};
-        c.files.project.config.config_original[pluginKey].props = finalProps;
+        const pluginToAdd: RenativeConfigPlugin = {};
+        pluginToAdd.props = finalProps;
+        cnfPlugins[pluginKey] = pluginToAdd;
     }
 
     const spinner = getApi()
         .spinner(`Installing: ${installMessage.join(', ')}`)
         .start('');
 
-    writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config_original);
+    writeRenativeConfigFile(c, c.paths.project.config, cnfOriginal);
 
     await resolvePluginDependants(c);
 

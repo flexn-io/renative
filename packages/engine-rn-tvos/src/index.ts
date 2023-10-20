@@ -16,7 +16,7 @@ import taskRnvLog from './tasks/task.rnv.log';
 import CNF from '../renative.engine.json';
 import { withRNVBabel } from './adapters/babelAdapter';
 import { withRNVMetro } from './adapters/metroAdapter';
-import { withRNVRNConfig } from "@rnv/sdk-react-native";
+import { withRNVRNConfig } from '@rnv/sdk-react-native';
 
 const Engine: RnvEngine = {
     // initializeRuntimeConfig: (c) => Context.initializeConfig(c),
@@ -35,7 +35,6 @@ const Engine: RnvEngine = {
         taskRnvCryptoInstallProfiles,
         taskRnvLog,
     ]),
-    // getAliases: createEngineAlias,
     config: CNF,
     runtimeExtraProps: {
         reactNativePackageName: 'react-native-tvos',
@@ -44,7 +43,6 @@ const Engine: RnvEngine = {
     },
     projectDirName: '',
     serverDirName: '',
-    // ejectPlatform: null,
     platforms: {
         tvos: {
             defaultPort: 8089,

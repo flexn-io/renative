@@ -49,9 +49,6 @@
           },
           "additionalProperties": false
         },
-        "extend": {
-          "type": "string"
-        },
         "$schema": {
           "type": "string",
           "description": "schema definition"

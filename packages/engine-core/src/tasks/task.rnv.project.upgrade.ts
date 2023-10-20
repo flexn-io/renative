@@ -34,7 +34,13 @@ export const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTas
             const selectedVersion = await listAndSelectNpmVersion(c, 'rnv');
 
             upgradedPaths.push(
-                ...upgradeDependencies(c.files.project.package, c.paths.project.package, null, null, selectedVersion)
+                ...upgradeDependencies(
+                    c.files.project.package,
+                    c.paths.project.package,
+                    undefined,
+                    null,
+                    selectedVersion
+                )
             );
 
             const dirs = fs.readdirSync(packagesPath);

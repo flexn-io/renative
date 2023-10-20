@@ -1,6 +1,6 @@
 import { fsExistsSync, fsReadFileSync } from '../system/fs';
 import { RENATIVE_CONFIG_LOCAL_NAME, RENATIVE_CONFIG_PRIVATE_NAME } from '../constants';
-import { RnvContext, RnvContextPathObj } from './types';
+import { CreateContextOptions, RnvContext, RnvContextPathObj } from './types';
 import { generateContextDefaults } from './defaults';
 
 import {
@@ -37,13 +37,7 @@ const populateLinkingInfo = (ctx: RnvContext) => {
     ctx.paths.IS_NPX_MODE = isNpxMode;
 };
 
-export const createRnvContext = (ctx?: {
-    program?: any;
-    process?: any;
-    cmd?: string;
-    subCmd?: string;
-    RNV_HOME_DIR?: string;
-}) => {
+export const createRnvContext = (ctx?: CreateContextOptions) => {
     if (!ctx && !global.RNV_CONTEXT) {
         global.RNV_CONTEXT = generateContextDefaults();
         return;

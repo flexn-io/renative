@@ -40,6 +40,11 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
     // handle missing config
     const source = `./${c.files.project.package.name}`;
 
+    const cnf = c.files.project.config_original;
+    if (!cnf) return;
+    const envVar = getEnvVar(c);
+    if (!envVar) return;
+
     if (c.files.project.config && !c.files.project.config.crypto) {
         const { location } = await inquirerPrompt({
             type: 'input',
@@ -48,7 +53,7 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
                 'Where would you like your secrets to be residing? (path relative to root, without leading or trailing slash. Ex. `myPrivateConfig/encrypt`)',
             default: 'secrets',
         });
-        c.files.project.config_original.crypto = {
+        cnf.crypto = {
             encrypt: {
                 dest: `PROJECT_HOME/${location}/privateConfigs.enc`,
             },
@@ -56,7 +61,7 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
                 source: `PROJECT_HOME/${location}/privateConfigs.enc`,
             },
         };
-        writeFileSync(c.paths.project.config, c.files.project.config_original);
+        writeFileSync(c.paths.project.config, cnf);
     }
 
     // check if src folder actually exists
@@ -91,7 +96,6 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
         // if (confirm) return true;
     }
 
-    const envVar = getEnvVar(c);
     let key = c.program.key || c.process.env[envVar];
     let keyGenerated = false;
     if (!key) {
@@ -129,6 +133,8 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_ENCRYPT, originTask);
 
+    if (!c.files.project.package.name) return;
+
     const source = `./${c.files.project.package.name}`;
 
     await _checkAndConfigureCrypto(c);
@@ -136,6 +142,9 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
     const tsWorkspacePath = path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp');
     const envVar = getEnvVar(c);
+
+    if (!envVar) return;
+
     const key = c.program.key || c.process.env[envVar];
 
     if (destRaw) {

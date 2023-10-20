@@ -308,7 +308,7 @@ const executeTelnet = (c: RnvContext, port: string, command: string) =>
                 if (output.includes('OK')) nc2.close();
             });
             nc2.on('close', () => resolve(output));
-        } catch (e: any) {
+        } catch (e) {
             logError(e);
             resolve('');
         }
@@ -440,7 +440,7 @@ const commandExistsUnix = (commandName: string, cleanedCommandName: string, call
         if (!isFile) {
             exec(
                 `command -v ${cleanedCommandName} 2>/dev/null` + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`,
-                (_error: any, stdout: any) => {
+                (_error: unknown, stdout: unknown) => {
                     callback && callback(null, !!stdout);
                 }
             );
@@ -456,7 +456,7 @@ const commandExistsWindows = (commandName: string, cleanedCommandName: string, c
         callback && callback(null, false);
         return;
     }
-    exec(`where ${cleanedCommandName}`, (error: any) => {
+    exec(`where ${cleanedCommandName}`, (error: unknown) => {
         if (error !== null) {
             callback && callback(null, false);
         } else {

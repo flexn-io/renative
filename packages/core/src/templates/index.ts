@@ -24,6 +24,8 @@ import { RnvPlatform } from '../types';
 import { listAppConfigsFoldersSync } from '../configs/appConfigs';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
+import { ConfigFileApp, ConfigFileTemplate } from '../schema/configFiles/types';
+import { PlatformKey } from '../schema/types';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
     logTask('_cleanProjectTemplateSync');
@@ -82,9 +84,12 @@ const _applyTemplate = async (c: RnvContext) => {
 
     if (c.paths.template.dir) c.paths.template.appConfigsDir = path.join(c.paths.template.dir, 'appConfigs');
     c.paths.template.appConfigBase.dir = path.join(c.paths.template.appConfigsDir, 'base');
-    c.runtime.currentTemplate = c.files.project.config.currentTemplate;
+    c.runtime.currentTemplate = c.files.project.config?.currentTemplate || c.runtime.currentTemplate;
     if (!c.runtime.currentTemplate) {
-        c.runtime.currentTemplate = Object.keys(c.files.project.config.templates)[0];
+        if (c.files.project.config?.templates) {
+            c.runtime.currentTemplate = Object.keys(c.files.project.config.templates)[0];
+        }
+
         c.runtime.requiresForcedTemplateApply = true;
     }
 
@@ -129,7 +134,7 @@ const _configureAppConfigs = async (c: RnvContext) => {
             const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
             appConfigIds.forEach((v) => {
                 const appConfigPath = path.join(c.paths.project.appConfigsDir, v, RENATIVE_CONFIG_NAME);
-                const appConfig = readObjectSync(appConfigPath);
+                const appConfig = readObjectSync<ConfigFileApp>(appConfigPath);
                 if (appConfig) {
                     if (appConfig.skipBootstrapCopy) {
                         fsUnlinkSync(appConfigPath);
@@ -138,13 +143,13 @@ const _configureAppConfigs = async (c: RnvContext) => {
                         }
                     } else if (!appConfig.hidden) {
                         appConfig.common = appConfig.common || {};
-                        appConfig.common.title = c.files.project.config?.defaults?.title;
-                        appConfig.common.id = c.files.project.config?.defaults?.id;
+                        // appConfig.common.title = c.files.project.config?.defaults?.title;
+                        // appConfig.common.id = c.files.project.config?.defaults?.id;
 
-                        if (supPlats) {
-                            Object.keys(appConfig.platforms).forEach((pk) => {
+                        if (supPlats && appConfig.platforms) {
+                            (Object.keys(appConfig.platforms) as PlatformKey[]).forEach((pk) => {
                                 if (!supPlats.includes(pk)) {
-                                    delete appConfig.platforms[pk];
+                                    delete appConfig.platforms?.[pk];
                                 }
                             });
                         }
@@ -153,7 +158,7 @@ const _configureAppConfigs = async (c: RnvContext) => {
                     }
                 }
             });
-        } catch (e: any) {
+        } catch (e) {
             logError(e);
         }
     }
@@ -176,18 +181,18 @@ const _configureProjectConfig = (c: RnvContext) =>
 
 const _configureRenativeConfig = async (c: RnvContext) => {
     // renative.json
-    const templateConfig = readObjectSync(c.paths.template.configTemplate);
+    const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
     logDebug('configureProject:check renative.json');
 
-    if (c.runtime.selectedTemplate || c.runtime.requiresForcedTemplateApply || c.files.project.config.isNew) {
+    if (c.runtime.selectedTemplate || c.runtime.requiresForcedTemplateApply || c.files.project.config?.isNew) {
         logInfo(
             `Your ${c.paths.project.config} needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
         );
         const mergedObj = mergeObjects(c, templateConfig, c.files.project.config_original, false, true);
         // Do not override supportedPlatforms
-        mergedObj.defaults.supportedPlatforms = c.files.project.config_original.defaults.supportedPlatforms;
+        mergedObj.defaults.supportedPlatforms = c.files.project.config_original?.defaults?.supportedPlatforms;
         // Do not override engines
-        mergedObj.engines = c.files.project.config_original.engines;
+        mergedObj.engines = c.files.project.config_original?.engines;
         // Set current template
         mergedObj.currentTemplate = c.runtime.currentTemplate;
         if (mergedObj.isNew) {
@@ -238,7 +243,7 @@ export const configureTemplateFiles = async (c: RnvContext) => {
 export const configureEntryPoint = async (c: RnvContext, platform: RnvPlatform) => {
     logTask('configureEntryPoint');
 
-    if (c.files.project.config.isTemplate) return true;
+    if (c.files.project.config?.isTemplate) return true;
 
     const entryFile = getConfigProp(c, platform, 'entryFile');
 
@@ -271,7 +276,7 @@ export const configureEntryPoint = async (c: RnvContext, platform: RnvPlatform) 
 };
 
 export const getInstalledTemplateOptions = (c: RnvContext): PromptOptions | null => {
-    if (c.files.project.config.isTemplate) return null;
+    if (c.files.project.config?.isTemplate) return null;
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
     }
@@ -284,7 +289,12 @@ export const isTemplateInstalled = (c: RnvContext) =>
 
 export const applyTemplate = async (c: RnvContext, selectedTemplate?: string) => {
     logTask('applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`);
-    if (c.files.project.config.isTemplate) return true;
+    if (c.files.project.config?.isTemplate) return true;
+
+    if (!c.files.project.config) {
+        logError('Project config not loaded. cannot apply template');
+        return false;
+    }
 
     c.runtime.selectedTemplate = selectedTemplate;
 

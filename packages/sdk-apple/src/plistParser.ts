@@ -71,7 +71,8 @@ export const parseEntitlementsPlist = (c: Context, platform: RnvPlatform) =>
         // PLUGIN ENTITLEMENTS
         let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
         if (!pluginsEntitlementsObj) {
-            pluginsEntitlementsObj = readObjectSync(path.join(__dirname, '../supportFiles/entitlements.json'));
+            pluginsEntitlementsObj =
+                readObjectSync(path.join(__dirname, '../supportFiles/entitlements.json')) || undefined;
         }
 
         saveObjToPlistSync(c, entitlementsPath, pluginsEntitlementsObj);

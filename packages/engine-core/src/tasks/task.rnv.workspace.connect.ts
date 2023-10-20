@@ -18,9 +18,10 @@ export const taskRnvWorkspaceConnect: RnvTaskFn = async (c, _parentTask, originT
     }
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_WORKSPACE_CONNECT, originTask);
 
-    const opts = Object.keys(c.files.rnv.configWorkspaces?.workspaces).map(
-        (v) => `${v} ${getWorkspaceConnectionString(c.files.rnv.configWorkspaces?.workspaces[v])}`
-    );
+    const cnf = c.files.rnv.configWorkspaces;
+    if (!cnf) return;
+
+    const opts = Object.keys(cnf.workspaces).map((v) => `${v} ${getWorkspaceConnectionString(cnf.workspaces[v])}`);
 
     const { selectedWS } = await inquirerPrompt({
         type: 'list',

@@ -30,12 +30,12 @@ import {
     isYarnInstalled,
     listAndSelectNpmVersion,
     RnvContext,
-    RenativeConfigFile,
     getApi,
     inquirerPrompt,
     PlatformKey,
     commandExistsSync,
 } from '@rnv/core';
+import { ConfigFileProject } from '@rnv/core/lib/schema/configFiles/types';
 
 type NewProjectData = {
     appTitle?: string;
@@ -54,7 +54,14 @@ type NewProjectData = {
     optionTemplates: {
         selectedOption?: string;
         selectedVersion?: string;
-        valuesAsObject?: any;
+        valuesAsObject?: Record<
+            string,
+            {
+                title: string;
+                key: string;
+                description: string;
+            }
+        >;
         valuesAsArray?: Array<{
             title: string;
             key: string;
@@ -64,7 +71,13 @@ type NewProjectData = {
     projectName?: string;
     optionWorkspaces: {
         selectedOption?: string;
-        valuesAsObject?: any;
+        valuesAsObject?: Record<
+            string,
+            {
+                title: string;
+                key: string;
+            }
+        >;
         valuesAsArray?: Array<string>;
         keysAsArray?: Array<string>;
     };
@@ -385,18 +398,20 @@ export const taskRnvNew = async (c: RnvContext) => {
     data.optionTemplates = getTemplateOptions(c);
 
     const options = [];
+    const values = data.optionTemplates.valuesAsObject;
+    if (values) {
+        Object.keys(values).forEach((k) => {
+            const val = values[k];
+            if (val.description) {
+                val.title = `${k} ${chalk().grey(`- ${val.description}`)}`;
+            } else {
+                val.title = k;
+            }
 
-    Object.keys(data.optionTemplates.valuesAsObject).forEach((k) => {
-        const val = data.optionTemplates.valuesAsObject[k];
-        if (val.description) {
-            val.title = `${k} ${chalk().grey(`- ${val.description}`)}`;
-        } else {
-            val.title = k;
-        }
-
-        val.key = k;
-        options.push(val.title);
-    });
+            val.key = k;
+            options.push(val.title);
+        });
+    }
 
     const getTemplateKey = (val: string) => data.optionTemplates.valuesAsArray?.find((v) => v.title === val)?.key;
 
@@ -465,15 +480,19 @@ export const taskRnvNew = async (c: RnvContext) => {
             } workspace template list?`,
         });
 
-        if (confirmAddTemplate) {
-            if (!c.files.workspace.config?.projectTemplates) {
-                c.files.workspace.config.projectTemplates = {};
-            }
-            c.files.workspace.config.projectTemplates[selectedInputTemplate] = {};
-            writeFileSync(c.paths.workspace.config, c.files.workspace.config);
-            await updateRenativeConfigs(c);
+        const configFile = c.files.workspace.config;
 
-            logInfo(`Updating ${c.paths.workspace.config}...DONE`);
+        if (configFile) {
+            if (confirmAddTemplate) {
+                if (!configFile.projectTemplates) {
+                    configFile.projectTemplates = {};
+                }
+                configFile.projectTemplates[selectedInputTemplate] = {};
+                writeFileSync(c.paths.workspace.config, configFile);
+                await updateRenativeConfigs(c);
+
+                logInfo(`Updating ${c.paths.workspace.config}...DONE`);
+            }
         }
     }
 
@@ -630,7 +649,9 @@ export const taskRnvNew = async (c: RnvContext) => {
         };
     }
 
-    const config: RenativeConfigFile = {
+    delete renativeTemplateConfig.templateConfig;
+
+    const config: ConfigFileProject = {
         platforms: {},
         ...renativeTemplateConfig,
         ...renativeTemplateConfigExt,
@@ -654,13 +675,17 @@ export const taskRnvNew = async (c: RnvContext) => {
         isMonorepo: false,
     };
 
-    const supPlats = config.defaults.supportedPlatforms || [];
+    const platforms: ConfigFileProject['platforms'] = config.platforms || {};
+    const engines: ConfigFileProject['engines'] = config.engines || {};
+    const defaults: ConfigFileProject['defaults'] = config.defaults || {};
+
+    const supPlats = defaults.supportedPlatforms || [];
 
     // Remove unused platforms
-    Object.keys(config.platforms).forEach((k) => {
+    Object.keys(platforms).forEach((k) => {
         const key = k as PlatformKey;
         if (!supPlats.includes(key)) {
-            delete config.platforms[key];
+            delete platforms[key];
         }
     });
 
@@ -668,18 +693,19 @@ export const taskRnvNew = async (c: RnvContext) => {
         // Remove unused engines based on selected platforms
         supPlats.forEach((k) => {
             const selectedEngineId =
-                config.platforms[k]?.engine || c.files.rnv.projectTemplates.config.platforms[k]?.engine;
+                platforms[k]?.engine || c.files.rnv.projectTemplates.config?.platformTemplates?.[k]?.engine;
             if (selectedEngineId) {
                 const selectedEngine = findEngineKeyById(c, selectedEngineId);
-                config.engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
+                if (selectedEngine?.key) {
+                    engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
+                }
             }
         });
     }
 
-    delete config.templateConfig;
-    if (!config.platforms) {
-        config.platforms = {};
-    }
+    config.platforms = platforms;
+    config.engines = engines;
+    config.defaults = defaults;
 
     writeFileSync(c.paths.project.config, config);
 
@@ -695,13 +721,17 @@ export const taskRnvNew = async (c: RnvContext) => {
 };
 
 const findEngineKeyById = (c: RnvContext, id: string) => {
-    const { engineTemplates } = c.files.rnv.projectTemplates.config;
-    const etk = Object.keys(engineTemplates);
-    for (let i = 0; i < etk.length; i++) {
-        const engine = engineTemplates[etk[i]];
-        if (engine.id === id) {
-            engine.key = etk[i];
-            return engine;
+    const engineTemplates = c.files.rnv.projectTemplates.config?.engineTemplates;
+    if (engineTemplates) {
+        const etk = Object.keys(engineTemplates);
+        for (let i = 0; i < etk.length; i++) {
+            const engine = engineTemplates[etk[i]];
+            if (engine) {
+                if (engine.id === id) {
+                    engine.key = etk[i];
+                    return engine;
+                }
+            }
         }
     }
 };

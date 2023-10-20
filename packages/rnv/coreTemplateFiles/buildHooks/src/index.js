@@ -1,8 +1,8 @@
-import { Logger } from 'rnv';
+import { logHook } from '@rnv/core';
 
 const hooks = {
     hello: async (c) => {
-        Logger.logHook('Hello build hook!');
+        logHook('Hello build hook!');
     },
 };
 

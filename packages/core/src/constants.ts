@@ -172,8 +172,6 @@ export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
 export const TASK_CONFIGURE_SOFT = 'configureSoft';
 export const TASK_KILL = 'kill';
 
-export const CLI_PROPS = ['provisioningStyle', 'codeSignIdentity', 'provisionProfileSpecifier'];
-
 export const configSchema: Record<string, any> = {
     analytics: {
         values: ['true', 'false'],
@@ -194,6 +192,6 @@ export const INJECTABLE_CONFIG_PROPS: Array<ConfigPropKey> = [
     'multipleAPKs',
     'pagesDir',
 ];
-export const INJECTABLE_RUNTIME_PROPS = ['appId', 'scheme', 'timestamp', 'localhost', 'target', 'port'];
+export const INJECTABLE_RUNTIME_PROPS = ['appId', 'scheme', 'timestamp', 'localhost', 'target', 'port'] as const;
 
 export const REMOTE_DEBUGGER_ENABLED_PLATFORMS = [TIZEN, TIZEN_MOBILE, TIZEN_WATCH];

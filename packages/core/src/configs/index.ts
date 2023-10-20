@@ -11,6 +11,7 @@ import { generateBuildConfig } from './buildConfig';
 import { generateLocalConfig } from './configLocal';
 import { getWorkspaceDirPath } from './workspaces';
 import { generatePlatformTemplatePaths } from './configProject';
+import { ConfigFileTemplates } from '../schema/configFiles/types';
 
 export const loadFileExtended = (
     c: RnvContext,
@@ -23,8 +24,9 @@ export const loadFileExtended = (
         fileObj[`${key}_original`] = { ...fileObj[key] };
     }
     const extendsTemplate = fileObj[key]?.extendsTemplate;
-    if (extendsTemplate) {
-        let currTemplate = c.files.project[key].currentTemplate || fileObj[key].currentTemplate;
+    if (key === 'config' && extendsTemplate) {
+        // extendsTemplate only applies to standard 'config'
+        let currTemplate = c.files.project[key]?.currentTemplate || fileObj[key].currentTemplate;
         if (!currTemplate) {
             if (extendsTemplate.startsWith('@')) {
                 currTemplate = extendsTemplate.split('/').slice(0, 2).join('/');
@@ -62,21 +64,27 @@ export const loadFileExtended = (
 
 const _loadConfigFiles = (
     c: RnvContext,
-    fileObj: RnvContextFileObj,
+    fileObj: RnvContextFileObj<object>,
     pathObj: RnvContextPathObj,
     parseAppConfigs?: boolean
 ) => {
-    let result = false;
-    let extendAppId;
-    if (loadFileExtended(c, fileObj, pathObj, 'config')) {
-        extendAppId = fileObj.config.extend || extendAppId;
-        result = true;
+    // let result = false;
+    let extendAppId: string | undefined;
+
+    const extendedFileLoadResult = loadFileExtended(c, fileObj, pathObj, 'config');
+    const fileObjConfig = fileObj.config;
+    if (fileObjConfig && 'extend' in fileObjConfig && extendedFileLoadResult) {
+        extendAppId = (fileObjConfig.extend as string) || extendAppId;
+        // result = true;
     }
 
-    if (loadFileExtended(c, fileObj, pathObj, 'configLocal')) {
-        extendAppId = fileObj.configLocal?.extend || extendAppId;
-        result = true;
-    }
+    loadFileExtended(c, fileObj, pathObj, 'configLocal');
+    loadFileExtended(c, fileObj, pathObj, 'configPrivate');
+    //Do not Extend local configs
+    // if (loadFileExtended(c, fileObj, pathObj, 'configLocal')) {
+    //     extendAppId = fileObj.configLocal?.extend || extendAppId;
+    //     result = true;
+    // }
 
     //Do not Extend private configs
     // if (loadFileExtended(c, fileObj, pathObj, 'configPrivate')) {
@@ -95,7 +103,7 @@ const _loadConfigFiles = (
         fileObj.configs = [];
         fileObj.configsLocal = [];
         fileObj.configsPrivate = [];
-        const fileObj1: RnvContextFileObj = {
+        const fileObj1: RnvContextFileObj<object> = {
             configs: [],
             configsLocal: [],
             configsPrivate: [],
@@ -134,7 +142,7 @@ const _loadConfigFiles = (
                     configLocal: path.join(path2, RENATIVE_CONFIG_LOCAL_NAME),
                     configPrivate: path.join(path2, RENATIVE_CONFIG_PRIVATE_NAME),
                 };
-                const fileObj2: RnvContextFileObj = {
+                const fileObj2: RnvContextFileObj<unknown> = {
                     configs: [],
                     configsLocal: [],
                     configsPrivate: [],
@@ -175,7 +183,7 @@ const _loadConfigFiles = (
     }
 
     generateBuildConfig(c);
-    return result;
+    // return result;
 };
 
 export const parseRenativeConfigs = async (c: RnvContext) => {
@@ -207,7 +215,8 @@ export const parseRenativeConfigs = async (c: RnvContext) => {
     _loadConfigFiles(c, c.files.defaultWorkspace, c.paths.defaultWorkspace);
 
     // LOAD PROJECT TEMPLATES
-    c.files.rnv.projectTemplates.config = readObjectSync(c.paths.rnv.projectTemplates.config);
+    c.files.rnv.projectTemplates.config =
+        readObjectSync<ConfigFileTemplates>(c.paths.rnv.projectTemplates.config) || undefined;
 
     // // LOAD PLUGIN TEMPLATES
     // await loadPluginTemplates(c);
@@ -228,8 +237,6 @@ export const parseRenativeConfigs = async (c: RnvContext) => {
     _loadConfigFiles(c, c.files.workspace.project, c.paths.workspace.project);
 
     c.paths.workspace.project.appConfigBase.dir = path.join(c.paths.workspace.project.dir, 'appConfigs', 'base');
-
-    c.paths.workspace.project.appConfigBase.dir_LEGACY = path.join(c.paths.workspace.project.dir, 'projectConfig');
 
     generatePlatformTemplatePaths(c);
 

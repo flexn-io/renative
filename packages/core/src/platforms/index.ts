@@ -104,7 +104,7 @@ export const isPlatformSupported = async (c: RnvContext, isGlobalScope = false) 
 
     const configuredPlatforms = c.files.project.config?.defaults?.supportedPlatforms;
 
-    if (Array.isArray(configuredPlatforms) && !configuredPlatforms.includes(c.platform)) {
+    if (c.platform && Array.isArray(configuredPlatforms) && !configuredPlatforms.includes(c.platform)) {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
             message: `Platform ${c.platform} is not supported by your project. Would you like to enable it?`,

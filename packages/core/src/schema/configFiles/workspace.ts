@@ -10,9 +10,14 @@ export const SDKs = z.record(z.string(), z.string()).describe('Define your sdk c
 
 //LEVEl 0 (ROOT)
 
-export const RootGlobalSchema = z.object({
+export const RootWorkspaceSchema = z.object({
     defaultTargets: z.optional(DefaultTargets),
     sdks: z.optional(SDKs),
+    projectTemplates: z.record(z.string(), z.object({})),
+    appConfigsPath: z
+        .string()
+        .optional()
+        .describe('Enables you to define custom global appConfigs location that every project will automatically use'),
 });
 
-export type _RootGlobalSchemaType = z.infer<typeof RootGlobalSchema>;
+export type _RootWorkspaceSchemaType = z.infer<typeof RootWorkspaceSchema>;

@@ -8,7 +8,7 @@ import {
     getPlatformProjectDir,
     getTimestampPathsConfig,
 } from '../common';
-import { INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
+import { RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { isPlatformActive } from '../platforms';
 import { copyTemplatePluginsSync, parsePlugins } from '../plugins';
 import {
@@ -34,9 +34,10 @@ import { parseRenativeConfigs } from '../configs';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
 import { ParseFontsCallback } from './types';
-import { RenativeConfigFile } from '../schema/types';
 import { inquirerPrompt } from '../api';
 import { upgradeProjectDependencies } from '../configs/configProject';
+import { generateConfigPropInjects } from '../system/injectors';
+import { ConfigFileApp, ConfigFileProject } from '../schema/configFiles/types';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');
@@ -55,19 +56,23 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
 
         const templateObj = readObjectSync(c.paths.template.configTemplate);
         const appConfigPath = path.join(c.paths.project.appConfigsDir, c.program.appConfigID, 'renative.json');
-        const appConfigObj: RenativeConfigFile = readObjectSync(appConfigPath);
+        //TODO: Investigate whether we really need to support this: supportedPlatforms inside appconfig
+        const appConfigObj = readObjectSync<ConfigFileApp & ConfigFileProject>(appConfigPath);
         const supportedPlatforms = appConfigObj?.defaults?.supportedPlatforms || [];
+        //=========
         const engineTemplates = c.files.rnv.projectTemplates?.config?.engineTemplates;
-        const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platforms;
+        const rnvPlatforms = c.files.rnv.projectTemplates?.config?.platformTemplates || {};
         const activeEngineKeys: Array<string> = [];
 
-        supportedPlatforms.forEach((supPlat) => {
-            Object.keys(engineTemplates).forEach((eKey) => {
-                if (engineTemplates[eKey].id === rnvPlatforms[supPlat]?.engine) {
-                    activeEngineKeys.push(eKey);
-                }
+        if (engineTemplates) {
+            supportedPlatforms.forEach((supPlat) => {
+                Object.keys(engineTemplates).forEach((eKey) => {
+                    if (engineTemplates[eKey].id === rnvPlatforms[supPlat]?.engine) {
+                        activeEngineKeys.push(eKey);
+                    }
+                });
             });
-        });
+        }
 
         const config = {
             ...templateObj,
@@ -535,14 +540,7 @@ export const copyBuildsFolder = (c: RnvContext, platform: RnvPlatform) =>
         const destPath = path.join(getAppFolder(c));
         const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
-        const configPropsInjects: Array<any> = [];
-        INJECTABLE_CONFIG_PROPS.forEach((v) => {
-            configPropsInjects.push({
-                pattern: `{{configProps.${v}}}`,
-                override: getConfigProp<any>(c, c.platform, v),
-            });
-        });
-        c.configPropsInjects = configPropsInjects;
+        generateConfigPropInjects();
         const allInjects = [...c.configPropsInjects, ...c.systemPropsInjects, ...c.runtimePropsInjects];
 
         // FOLDER MERGERS PROJECT CONFIG
@@ -550,25 +548,8 @@ export const copyBuildsFolder = (c: RnvContext, platform: RnvPlatform) =>
         copyFolderContentsRecursiveSync(sourcePath1, destPath, true, undefined, false, allInjects, tsPathsConfig);
 
         // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
-        const sourcePath1secLegacy = getBuildsFolder(c, platform, c.paths.workspace.project.appConfigBase.dir_LEGACY);
-        copyFolderContentsRecursiveSync(
-            sourcePath1secLegacy,
-            destPath,
-            true,
-            undefined,
-            false,
-            allInjects,
-            tsPathsConfig
-        );
-
-        // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
         const sourcePath1sec = getBuildsFolder(c, platform, c.paths.workspace.project.appConfigBase.dir);
         copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, undefined, false, allInjects, tsPathsConfig);
-
-        if (sourcePath1secLegacy && fsExistsSync(sourcePath1secLegacy)) {
-            logWarning(`Path: ${chalk().red(sourcePath1secLegacy)} is DEPRECATED.
-Move your files to: ${chalk().white(sourcePath1sec)} instead`);
-        }
 
         // DEPRECATED SHARED
         if (c.runtime.currentPlatform?.isWebHosted) {
@@ -619,8 +600,8 @@ export const versionCheck = async (c: RnvContext) => {
     if (c.runtime.versionCheckCompleted || c.files.project?.config?.skipAutoUpdate || c.program.skipDependencyCheck) {
         return true;
     }
-    c.runtime.rnvVersionRunner = c.files.rnv?.package?.version;
-    c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv;
+    c.runtime.rnvVersionRunner = c.files.rnv?.package?.version || 'unknown';
+    c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv || 'unknown';
     logTask(
         `versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${c.runtime.rnvVersionProject}`,
         chalk().grey

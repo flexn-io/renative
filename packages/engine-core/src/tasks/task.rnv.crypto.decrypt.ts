@@ -43,7 +43,7 @@ const _unzipAndCopy = async (
     });
 
     removeFilesSync([destTemp]);
-    if (fsExistsSync(ts)) {
+    if (c.files.project.package.name && fsExistsSync(ts)) {
         copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
     }
     logSuccess(`Files succesfully extracted into ${destFolder}`);
@@ -58,15 +58,19 @@ export const taskRnvCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask)
 
     const crypto = c.files.project.config?.crypto;
     const sourceRaw = crypto?.decrypt?.source;
+    const pkgName = c.files.project.package.name;
 
-    if (!crypto.isOptional && sourceRaw) {
+    if (!crypto?.isOptional && sourceRaw) {
+        const envVar = getEnvVar(c);
+        if (!pkgName || !envVar) return;
+
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
         const ts = `${source}.timestamp`;
-        const destFolder = path.join(c.paths.workspace.dir, c.files.project.package.name);
-        const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
-        const envVar = getEnvVar(c);
+        const destFolder = path.join(c.paths.workspace.dir, pkgName);
+        const destTemp = `${path.join(c.paths.workspace.dir, pkgName.replace('/', '-'))}.tgz`;
+
         let shouldCleanFolder = false;
-        const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
+        const wsPath = path.join(c.paths.workspace.dir, pkgName);
         const isCryptoReset = c.command === 'crypto' && c.program.reset === true;
 
         if (c.program.ci !== true && !isCryptoReset) {
@@ -114,10 +118,11 @@ ${getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
         let data;
         try {
             data = await iocane.createSession().use('cbc').decrypt(fsReadFileSync(source), key);
-        } catch (e: any) {
-            if (e?.message?.includes) {
-                if (e.message.includes('Signature mismatch')) {
-                    const err = `You're trying to decode crypto file encoded with previous version of crypto.
+        } catch (e) {
+            if (e instanceof Error) {
+                if (e?.message?.includes) {
+                    if (e.message.includes('Signature mismatch')) {
+                        const err = `You're trying to decode crypto file encoded with previous version of crypto.
 this change was introduced in "rnv@0.29.0"
 
 ${e}
@@ -137,10 +142,10 @@ ${e}
 
       `;
 
-                    return Promise.reject(err);
-                }
-                if (e.message.includes('Authentication failed')) {
-                    return Promise.reject(`It seems like you provided invalid decryption key.
+                        return Promise.reject(err);
+                    }
+                    if (e.message.includes('Authentication failed')) {
+                        return Promise.reject(`It seems like you provided invalid decryption key.
 
 ${e.stack}
 
@@ -159,6 +164,7 @@ ${chalk().white('https://github.com/flexn-io/renative/issues')}
 and we will try to help!
 
 `);
+                    }
                 }
             }
 

@@ -53,11 +53,11 @@ const ManifestChildBase = z.object({
 //     children?: Array<ManifestFeature>;
 // };
 
-type ManifestChildType = z.infer<typeof ManifestChildBase> & {
-    children?: ManifestChildType[];
+export type _ManifestChildType = z.infer<typeof ManifestChildBase> & {
+    children?: _ManifestChildType[];
 };
 
-const ManifestChildWithChildren: z.ZodType<ManifestChildType> = ManifestChildBase.extend({
+const ManifestChildWithChildren: z.ZodType<_ManifestChildType> = ManifestChildBase.extend({
     children: z.lazy(() => ManifestChildWithChildren.array()),
 });
 

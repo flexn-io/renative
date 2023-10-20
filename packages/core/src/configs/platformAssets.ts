@@ -23,7 +23,7 @@ export const generatePlatformAssetsRuntimeConfig = async (c: RnvContext) => {
             files: c.files,
             runtimeProps: c.runtime,
             props: {},
-            configProps: c.configPropsInjects,
+            configProps: c.injectableConfigProps,
         });
         writeFileSync(c.paths.project.assets.config, sanitizedConfig);
         c.files.project.assets.config = sanitizedConfig;

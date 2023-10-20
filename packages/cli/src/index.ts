@@ -16,7 +16,7 @@ export const run = () => {
 
     program.version(packageJson.version, '-v, --version', 'output current version');
 
-    PARAMS.withAll().forEach((param: any) => {
+    PARAMS.withAll().forEach((param) => {
         let cmd = '';
         if (param.shortcut) {
             cmd += `-${param.shortcut}, `;
@@ -34,7 +34,7 @@ export const run = () => {
         program.option(cmd, param.description);
     });
 
-    program.arguments('<cmd> [option]').action((cmd: any, option: any) => {
+    program.arguments('<cmd> [option]').action((cmd, option) => {
         cmdValue = cmd;
         cmdOption = option;
     });
@@ -43,5 +43,5 @@ export const run = () => {
 
     executeRnv({ cmd: cmdValue, subCmd: cmdOption, program, process, spinner: Spinner, prompt: Prompt, logger: Logger })
         .then(() => logComplete(!getContext().runtime.keepSessionActive))
-        .catch((e: any) => logError(e, true));
+        .catch((e: unknown) => logError(e, true));
 };

@@ -1,7 +1,7 @@
 export { RootAppSchema } from './configFiles/app';
 export { RootProjectSchema } from './configFiles/project';
 export { RootEngineSchema } from './configFiles/engine';
-export { RootGlobalSchema } from './configFiles/global';
+export { RootWorkspaceSchema as RootGlobalSchema } from './configFiles/workspace';
 export { RootLocalSchema } from './configFiles/local';
 export { RootPluginSchema } from './configFiles/plugin';
 export { RootPluginsSchema } from './configFiles/plugins';

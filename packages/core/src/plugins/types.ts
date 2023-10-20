@@ -7,13 +7,13 @@ export type PluginListResponse = {
     asArray: PluginListResponseItem[];
     plugins: string[];
     allPlugins: Record<string, PluginListResponseItem>;
-    json?: any;
+    // json?: object;
 };
 
 export type PluginListResponseItem = {
     name: string;
     value: string;
-    props?: any;
+    props?: Record<string, string>;
     version?: string;
 };
 
