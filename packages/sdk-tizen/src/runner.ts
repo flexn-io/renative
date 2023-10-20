@@ -25,6 +25,7 @@ import {
     copyBuildsFolder,
     OverridesOptions,
     DEFAULTS,
+    copyFileSync,
 } from '@rnv/core';
 import semver from 'semver';
 import { CLI_TIZEN } from './constants';
@@ -127,11 +128,21 @@ export const buildTizenProject = async (c: RnvContext) => {
 
     await buildCoreWebpackProject(c);
     if (!c.program.hosted) {
+
         const tOut = path.join(tDir, 'output');
+        const tIntermediate = path.join(tDir, 'intermediate');
         const tBuild = path.join(tDir, 'build');
 
-        await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
-        await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
+        const projectFile = path.join(tDir, '.project');
+        const tProjectFile = path.join(tDir, '.tproject');
+        const configXml = path.join(tDir, 'config.xml');
+
+        copyFileSync(projectFile, path.join(tBuild, '.project'));
+        copyFileSync(tProjectFile, path.join(tBuild, '.tproject'));
+        copyFileSync(configXml, path.join(tBuild, 'config.xml'));
+
+        await execCLI(c, CLI_TIZEN, `build-web -- ${tBuild} -out ${tIntermediate}`);
+        await execCLI(c, CLI_TIZEN, `package -- ${tIntermediate} -s ${certProfile} -t wgt -o ${tOut}`);
 
         logSuccess(`Your WGT package is located in ${chalk().cyan(tOut)} .`);
     }

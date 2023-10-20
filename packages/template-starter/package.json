@@ -130,11 +130,5 @@
             "last 1 safari version"
         ]
     },
-    "dependencies": {
-        "@rnv/engine-rn": "1.0.0-canary.7",
-        "@rnv/engine-rn-tvos": "1.0.0-canary.7",
-        "@rnv/engine-rn-next": "1.0.0-canary.7",
-        "@rnv/engine-rn-electron": "1.0.0-canary.7",
-        "@rnv/engine-rn-web": "1.0.0-canary.7"
-    }
+    "dependencies": {}
 }
