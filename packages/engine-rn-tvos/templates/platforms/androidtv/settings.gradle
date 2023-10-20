@@ -1,4 +1,4 @@
 rootProject.name = "testRNProject"
-apply from: file("../../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+apply from: file("{{RN_CLI_LOCATION}}/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'
-includeBuild('../../../../node_modules/@react-native/gradle-plugin')
+includeBuild('{{RN_GRADLE_PLUGIN_LOCATION}}')
