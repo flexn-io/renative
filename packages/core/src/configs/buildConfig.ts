@@ -12,6 +12,8 @@ import {
 import { chalk, logTask, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
 import type { RnvContext } from '../context/types';
+import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
+import { FileUtilsPropConfig } from '../system/types';
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
@@ -20,8 +22,8 @@ const getEnginesPluginDelta = (c: RnvContext) => {
 
     if (!c.buildConfig) return;
 
-    const enginePlugins: Record<string, any> = {};
-    const missingEnginePlugins: Record<string, any> = {};
+    const enginePlugins: Record<string, string> = {};
+    const missingEnginePlugins: Record<string, string> = {};
 
     const engineConfig = c.platform ? c.runtime.enginesByPlatform[c.platform]?.config : undefined;
     if (engineConfig?.plugins) {
@@ -29,10 +31,12 @@ const getEnginesPluginDelta = (c: RnvContext) => {
 
         if (ePlugins?.length) {
             ePlugins.forEach((pluginKey) => {
-                if (!c.files?.project?.config?.[pluginKey]) {
+                if (!c.files?.project?.config?.plugins?.[pluginKey] && engineConfig.plugins?.[pluginKey]) {
                     missingEnginePlugins[pluginKey] = engineConfig.plugins?.[pluginKey];
                 }
-                enginePlugins[pluginKey] = engineConfig.plugins?.[pluginKey];
+                if (engineConfig.plugins?.[pluginKey]) {
+                    enginePlugins[pluginKey] = engineConfig.plugins?.[pluginKey];
+                }
             });
         }
     }
@@ -49,7 +53,6 @@ export const generateBuildConfig = (_c?: RnvContext) => {
         c.paths.defaultWorkspace.config,
         c.paths.rnv.projectTemplates.config,
         c.paths.rnv.pluginTemplates.config,
-        // c.paths.rnv.platformTemplates.config,
         c.paths.workspace.config,
         c.paths.workspace.configPrivate,
         c.paths.workspace.configLocal,
@@ -121,23 +124,28 @@ export const generateBuildConfig = (_c?: RnvContext) => {
             },
         },
     ];
-    const existsFiles = mergeFiles.filter((v) => v);
+    const existsFiles: object[] = [];
+    mergeFiles.forEach((v) => {
+        if (v !== undefined) {
+            existsFiles.push(v);
+        }
+    });
 
     logDebug(
         `generateBuildConfig:mergeOrder.length:${mergeOrder.length},cleanPaths.length:${cleanPaths.length},existsPaths.length:${existsPaths.length},existsFiles.length:${existsFiles.length}`
     );
 
-    let out: any = merge.all([...meta, ...existsFiles], {
+    let out: ConfigFileBuildConfig = merge.all<ConfigFileBuildConfig>([...meta, ...existsFiles], {
         arrayMerge: _arrayMergeOverride,
     });
     out = merge({}, out);
     out.pluginTemplates = pluginTemplates;
 
     c.buildConfig = sanitizeDynamicRefs(c, out);
-    const propConfig = {
+    const propConfig: FileUtilsPropConfig = {
         files: c.files,
         runtimeProps: c.runtime,
-        props: c.buildConfig._refs,
+        props: c.buildConfig._refs || {},
         configProps: c.configPropsInjects,
     };
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, propConfig);

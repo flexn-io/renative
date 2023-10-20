@@ -2,8 +2,9 @@ import { getRealPath, writeFileSync } from '../system/fs';
 import { chalk, logTask, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { RnvPlatform } from '../types';
-import { RenativeConfigFile } from '../schema/types';
+import { PlatformKey } from '../schema/types';
 import { NpmPackageFile } from './types';
+import { ConfigFileProject } from '../schema/configFiles/types';
 
 const SYNCED_DEPS = [
     'rnv',
@@ -41,7 +42,7 @@ export const upgradeProjectDependencies = (c: RnvContext, version: string) => {
 export const upgradeDependencies = (
     packageFile: NpmPackageFile,
     packagesPath: string | undefined,
-    configFile: RenativeConfigFile | null,
+    configFile: ConfigFileProject | undefined,
     configPath: string | null,
     version: string
 ) => {
@@ -69,7 +70,8 @@ export const upgradeDependencies = (
     return result;
 };
 
-const _fixDeps = (deps: Record<string, string>, version: string) => {
+const _fixDeps = (deps: Record<string, string> | undefined, version: string) => {
+    if (!deps) return;
     SYNCED_DEPS.forEach((dep) => {
         const d = deps?.[dep];
         if (d) {
@@ -79,14 +81,18 @@ const _fixDeps = (deps: Record<string, string>, version: string) => {
     });
 };
 
-export const updateProjectPlatforms = (c: RnvContext, platforms: Array<string>) => {
+export const updateProjectPlatforms = (c: RnvContext, platforms: Array<PlatformKey>) => {
     const {
         project: { config },
     } = c.paths;
     const currentConfig = c.files.project.config;
-    currentConfig.defaults = currentConfig.defaults || {};
-    currentConfig.defaults.supportedPlatforms = platforms;
-    writeFileSync(config, currentConfig);
+    if (currentConfig) {
+        currentConfig.defaults = currentConfig.defaults || {};
+        currentConfig.defaults.supportedPlatforms = platforms;
+        writeFileSync(config, currentConfig);
+    } else {
+        logWarning('Config not loaded yet. skipping updateProjectPlatforms');
+    }
 };
 
 export const generatePlatformTemplatePaths = (c: RnvContext) => {

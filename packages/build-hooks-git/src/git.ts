@@ -1,9 +1,14 @@
-import { RnvContext, logHook } from '@rnv/core';
+import { RnvContext, logError, logHook } from '@rnv/core';
 import path from 'path';
 import simpleGit from 'simple-git';
 
 export const gitCommit = async (c: RnvContext) => {
     const v = c.files.project?.package?.version;
+
+    if (!v) {
+        logError('Version not found in package.json. cannot perform git commit');
+        return;
+    }
 
     const baseDir = path.join(c.paths.project.dir);
     logHook(`gitCommitAndTagVersion v${v}`);
@@ -17,6 +22,11 @@ export const gitCommit = async (c: RnvContext) => {
 
 export const gitTag = async (c: RnvContext) => {
     const v = c.files.project.package.version;
+
+    if (!v) {
+        logError('Version not found in package.json. cannot perform git tag');
+        return;
+    }
 
     const baseDir = path.join(c.paths.project.dir);
     logHook(`gitTagAndPush v${v}`);

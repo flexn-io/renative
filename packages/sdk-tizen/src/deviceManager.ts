@@ -209,7 +209,7 @@ const _waitForEmulatorToBeReady = (c: RnvContext, target: string): Promise<boole
         return res;
     });
 
-const _composeDevicesString = (devices: Array<any>) =>
+const _composeDevicesString = (devices: Array<TizenDevice>) =>
     devices.map((device) => ({
         key: device.id,
         name: device.name,
@@ -276,7 +276,11 @@ export const runTizenSimOrDevice = async (
         });
 
         if (startEmulator) {
-            const defaultTarget = c.files.workspace.config.defaultTargets[platform];
+            const defaultTarget = c.files.workspace.config?.defaultTargets?.[platform];
+            if (!defaultTarget) {
+                logError('No default target found for tizen. please provide one using -t option');
+                return;
+            }
             try {
                 await launchTizenSimulator(c, defaultTarget);
                 deviceID = defaultTarget;
@@ -315,8 +319,8 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
             await execCLI(c, CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, { ignoreErrors: true });
             hasDevice = true;
-        } catch (e: any) {
-            if (e && e.includes && e.includes('No device matching')) {
+        } catch (e) {
+            if (typeof e === 'string' && e.includes('No device matching')) {
                 await launchTizenSimulator(c, target);
                 hasDevice = await _waitForEmulatorToBeReady(c, target);
             }

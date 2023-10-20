@@ -21,6 +21,7 @@ import {
     copyBuildsFolder,
     writeCleanFile,
     DEFAULTS,
+    OverridesOptions,
 } from '@rnv/core';
 import semver from 'semver';
 
@@ -120,18 +121,21 @@ const _configureProject = (c: RnvContext) =>
         const id = getConfigProp(c, c.platform, 'id') || '';
         const appName = getConfigProp(c, c.platform, 'appName') || '';
 
-        const injects =
+        const injects: OverridesOptions =
             platform === TIZEN
                 ? [
                       { pattern: '{{PACKAGE}}', override: pkg },
                       { pattern: '{{ID}}', override: id },
                       { pattern: '{{APP_NAME}}', override: appName },
-                      { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) },
+                      {
+                          pattern: '{{APP_VERSION}}',
+                          override: semver.coerce(getAppVersion(c, platform))?.format(),
+                      },
                   ]
                 : [
                       { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform)?.toLowerCase() },
                       { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
-                      { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) },
+                      { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform))?.format() },
                       { pattern: '{{APP_DESCRIPTION}}', override: getAppDescription(c, platform) },
                       { pattern: '{{APP_BG_COLOR}}', override: getConfigProp(c, platform, 'backgroundColor', '#fff') },
                       { pattern: '{{APP_ICON_COLOR}}', override: getConfigProp(c, platform, 'iconColor', '#000') },

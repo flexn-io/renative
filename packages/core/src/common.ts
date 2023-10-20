@@ -3,18 +3,17 @@ import detectPort from 'detect-port';
 import ip from 'ip';
 import killPort from 'kill-port';
 import axios from 'axios';
-import lGet from 'lodash.get';
 import path from 'path';
-import { CLI_PROPS } from './constants';
 import { fsExistsSync, writeCleanFile } from './system/fs';
 import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
 import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
-import { ConfigProp, ConfigPropKey, RenativeConfigFile } from './schema/types';
+import { ConfigProp, ConfigPropKey } from './schema/types';
 import { inquirerPrompt } from './api';
 import { RnvPlatform } from './types';
 import { DEFAULTS } from './schema/defaults';
+import { ConfigFileBuildConfig } from './schema/configFiles/buildConfig';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
@@ -30,11 +29,11 @@ export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): T
 
 export const getCliArguments = (c: RnvContext) => {
     const { args, rawArgs } = c.program;
-    const argsCopy = [...args];
-    let missingArg = rawArgs[rawArgs.indexOf(argsCopy[1]) + 1];
+    const argsCopy: Array<string | undefined> = [...args];
+    let missingArg: string | undefined = rawArgs[rawArgs.indexOf(args[1]) + 1];
     if (missingArg?.[0] === '-') {
-        if (rawArgs[rawArgs.indexOf(argsCopy[1]) + 2]) {
-            missingArg = rawArgs[rawArgs.indexOf(argsCopy[1]) + 2];
+        if (rawArgs[rawArgs.indexOf(args[1]) + 2]) {
+            missingArg = rawArgs[rawArgs.indexOf(args[1]) + 2];
         } else {
             missingArg = undefined;
         }
@@ -233,15 +232,7 @@ export const getAppFolder = (c: RnvContext, isRelativePath?: boolean) => {
 export const getAppTemplateFolder = (c: RnvContext, platform: RnvPlatform) =>
     platform ? path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`) : undefined;
 
-const _getValueOrMergedObject = (
-    resultCli: any,
-    resultScheme: object,
-    resultPlatforms: object,
-    resultCommon: object
-) => {
-    if (resultCli !== undefined) {
-        return resultCli;
-    }
+const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, resultCommon: object) => {
     if (resultScheme !== undefined) {
         if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') {
             return resultScheme;
@@ -255,7 +246,7 @@ const _getValueOrMergedObject = (
         }
         return Object.assign(resultCommon || {}, resultPlatforms);
     }
-    if (resultPlatforms === null) return null;
+    if (resultPlatforms === null) return undefined;
     return resultCommon;
 };
 
@@ -285,20 +276,13 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     platform: RnvPlatform,
     key: T,
     defaultVal?: ConfigProp[T],
-    sourceObj?: Partial<RenativeConfigFile>
+    sourceObj?: Partial<ConfigFileBuildConfig>
 ): ConfigProp[T] => {
     if (!sourceObj || !platform) return undefined;
 
-    if (!key || !key.split) {
-        logError('getConfigProp: invalid key!');
-        return null;
-    }
-
     const platformObj: PlatformGeneric = sourceObj.platforms?.[platform];
     const ps = c.runtime.scheme;
-    const keyArr = key.split('.');
-    const baseKey = keyArr.shift() || '';
-    const subKey = keyArr.join('.');
+    const baseKey = key;
 
     let resultPlatforms;
     let scheme;
@@ -309,7 +293,6 @@ export const _getConfigProp = <T extends ConfigPropKey>(
         scheme = {};
     }
 
-    const resultCli = baseKey && CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
     const resultScheme = baseKey && scheme[baseKey];
     const resultCommonRoot = getFlavouredProp<any, any>(c, sourceObj.common || {}, baseKey);
     const resultCommonScheme = getFlavouredProp<any, any>(
@@ -319,15 +302,13 @@ export const _getConfigProp = <T extends ConfigPropKey>(
     );
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
-    let result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
-    if (result === undefined || result === null) {
+    let result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
+    if (result === undefined) {
         result = getFlavouredProp<any, any>(c, sourceObj, baseKey);
     }
 
-    if (result === undefined || result === null) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-    if (typeof result === 'object' && subKey.length) {
-        return lGet(result, subKey);
-    }
+    if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
+
     return result as ConfigProp[T];
 };
 
@@ -355,9 +336,12 @@ export const getConfigPropArray = <T extends ConfigPropKey>(c: RnvContext, platf
         ...c.files.appConfig.configsLocal,
     ];
     configArr.forEach((config) => {
-        const val = _getConfigProp(c, platform, key, null, config);
-        if (val) {
-            result.push(val);
+        if (config) {
+            //TODO: this is bit of a hack. _getConfigProp expectes already merged obj needs to be redone
+            const val = _getConfigProp(c, platform, key, null, config as ConfigFileBuildConfig);
+            if (val) {
+                result.push(val);
+            }
         }
     });
 

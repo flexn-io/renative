@@ -1,6 +1,6 @@
 import type { RnvTaskParameter } from './types';
 
-export const PARAM_KEYS: Record<string, RnvTaskParameter> = {
+const PARAM_KEYS_ENUM = {
     info: {
         shortcut: 'i',
         value: 'value',
@@ -278,7 +278,15 @@ export const PARAM_KEYS: Record<string, RnvTaskParameter> = {
     },
 };
 
-Object.keys(PARAM_KEYS).forEach((k) => {
+export const PARAM_KEYS = PARAM_KEYS_ENUM as Record<string, RnvTaskParameter>;
+
+type ParamKeysType = typeof PARAM_KEYS_ENUM;
+
+type ProgramOptionsKey = keyof ParamKeysType;
+
+export type ParamKeys = Partial<Record<ProgramOptionsKey, any>>;
+
+(Object.keys(PARAM_KEYS) as ProgramOptionsKey[]).forEach((k) => {
     PARAM_KEYS[k].key = k;
 });
 

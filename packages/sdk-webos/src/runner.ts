@@ -26,6 +26,7 @@ import {
     getAppDescription,
     copyFileSync,
     DEFAULTS,
+    OverridesOptions,
 } from '@rnv/core';
 import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
@@ -140,7 +141,7 @@ const _configureProject = async (c: RnvContext) => {
 
     const configFile = 'appinfo.json';
 
-    const injects = [
+    const injects: OverridesOptions = [
         {
             pattern: '{{APPLICATION_ID}}',
             override: getAppId(c, platform)?.toLowerCase(),
@@ -151,7 +152,7 @@ const _configureProject = async (c: RnvContext) => {
         },
         {
             pattern: '{{APP_VERSION}}',
-            override: semver.coerce(getAppVersion(c, platform)),
+            override: semver.coerce(getAppVersion(c, platform))?.format(),
         },
         {
             pattern: '{{APP_DESCRIPTION}}',
@@ -167,7 +168,7 @@ const _configureProject = async (c: RnvContext) => {
         },
         {
             pattern: '{{APP_VENDOR}}',
-            override: getConfigProp(c, platform, 'author', 'Unspecified'),
+            override: getConfigProp(c, platform, 'author') || 'Unspecified',
         },
     ];
 

@@ -75,7 +75,7 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
     await configureRuntimeDefaults(c);
 
     if (originTask !== TASK_TEMPLATE_APPLY) {
-        if ((c.runtime.requiresBootstrap || !isTemplateInstalled(c)) && !c.files.project.config.isTemplate) {
+        if ((c.runtime.requiresBootstrap || !isTemplateInstalled(c)) && !c.files.project.config?.isTemplate) {
             await applyTemplate(c);
             // We'll have to install the template first and reset current engine
             logInfo('Your template has been bootstraped. Command reset is required. RESTRATING...DONE');

@@ -46,10 +46,10 @@ export type Payload = {
         pluginSplashActivityImports: string;
         resourceStrings: Required<TemplateAndroid['strings_xml']>['children'];
         store?: {
-            storeFile: string;
-            keyAlias: string;
-            storePassword: string;
-            keyPassword: string;
+            storeFile?: string;
+            // keyAlias: string;
+            // storePassword: string;
+            // keyPassword: string;
         };
     };
 };

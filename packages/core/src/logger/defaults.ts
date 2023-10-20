@@ -2,6 +2,7 @@ import { RnvApiChalk } from '../api/types';
 
 const _chalkPass = (v: string | boolean): string => (typeof v === 'string' ? v : String(v));
 
+//TODO: convert this to properly overloaded class
 export const generateDefaultChalk = (): RnvApiChalk => {
     const chalk: any = {
         white: (v: string | boolean) => _chalkPass(v),

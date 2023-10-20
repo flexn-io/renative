@@ -1,4 +1,4 @@
-import type { RnvContext, RnvContextFileObj, RnvContextPathObj } from './types';
+import type { RnvContext, RnvContextPathObj } from './types';
 
 export const generateRnvConfigPathObj = (): RnvContextPathObj => {
     return {
@@ -17,7 +17,7 @@ export const generateRnvConfigPathObj = (): RnvContextPathObj => {
     };
 };
 
-export const generateRnvConfigFileObj = (): RnvContextFileObj => {
+export const generateRnvConfigFileObj = () => {
     return {
         configs: [],
         configsLocal: [],
@@ -46,16 +46,26 @@ export const generateContextDefaults = (): RnvContext => ({
     runtimePropsInjects: [],
     supportedPlatforms: [],
     systemPropsInjects: [],
-    program: {},
+    program: {
+        args: [],
+        rawArgs: [],
+        option: () => {
+            //NOOP
+        },
+        parse: () => {
+            //NOOP
+        },
+    },
     buildConfig: {},
     command: '',
     subCommand: '',
     platform: null,
-    process: {},
+    process: process,
     //==========
     _renativePluginCache: {},
     cli: {},
-    configPropsInjects: {},
+    configPropsInjects: [],
+    injectableConfigProps: {},
     runtime,
     paths: {
         CURRENT_DIR: '',
@@ -66,30 +76,30 @@ export const generateContextDefaults = (): RnvContext => ({
         appConfigBase: '',
         GLOBAL_RNV_CONFIG: '',
         rnv: {
-            configWorkspaces: {},
+            configWorkspaces: '',
             dir: '',
             package: '',
             pluginTemplates: {
-                configs: {},
                 dirs: {},
             },
-            platformTemplates: {},
-            projectTemplates: {},
-            platformTemplate: {},
-            plugins: {},
-            engines: {},
-            projectTemplate: {},
+            projectTemplates: {
+                config: '',
+                dir: '',
+            },
+            engines: {
+                dir: '',
+            },
+            projectTemplate: { dir: '' },
         },
         workspace: {
             ...generateRnvConfigPathObj(),
             project: {
                 ...generateRnvConfigPathObj(),
-                appConfigBase: {},
-                builds: {},
-                assets: {},
-                platformTemplates: {},
-                appConfigsDirs: [],
-                appConfigsDirNames: [],
+                appConfigBase: {
+                    dir: '',
+                },
+                builds: '',
+                assets: '',
             },
             appConfig: {
                 ...generateRnvConfigPathObj(),
@@ -98,12 +108,15 @@ export const generateContextDefaults = (): RnvContext => ({
         defaultWorkspace: {
             ...generateRnvConfigPathObj(),
             project: {
-                appConfigBase: {},
-                builds: {},
-                assets: {},
-                platformTemplates: {},
-                appConfigsDirs: [],
-                appConfigsDirNames: [],
+                appConfigBase: {
+                    dir: '',
+                },
+                builds: {
+                    dir: '',
+                },
+                assets: {
+                    dir: '',
+                },
             },
             appConfig: {
                 configs: [],
@@ -120,9 +133,15 @@ export const generateContextDefaults = (): RnvContext => ({
                 fontsDirs: [],
                 pluginsDir: '',
             },
-            builds: {},
-            assets: {},
-            platformTemplates: {},
+            builds: {
+                dir: '',
+                config: '',
+            },
+            assets: {
+                dir: '',
+                config: '',
+                runtimeDir: '',
+            },
             appConfigsDirs: [],
             appConfigsDirNames: [],
             dir: '',
@@ -132,44 +151,46 @@ export const generateContextDefaults = (): RnvContext => ({
         appConfig: {
             ...generateRnvConfigPathObj(),
         },
-        // EXTRA
         GLOBAL_RNV_DIR: '',
         buildHooks: {
-            dist: {},
+            dist: {
+                dir: '',
+                index: '',
+            },
             dir: '',
             index: '',
         },
-        home: {},
+        home: {
+            dir: '',
+        },
         template: {
-            ...generateRnvConfigPathObj(),
             configTemplate: '',
-            appConfigBase: {},
-            builds: {},
-            assets: {},
-            platformTemplates: {},
+            appConfigBase: {
+                dir: '',
+            },
+            builds: {
+                dir: '',
+            },
+            assets: {
+                dir: '',
+            },
+            appConfigsDir: '',
+            config: '',
+            dir: '',
         },
     },
     files: {
         rnv: {
-            pluginTemplates: {},
-            platformTemplates: {},
+            pluginTemplates: {
+                configs: {},
+            },
             projectTemplates: {},
-            platformTemplate: {},
-            plugins: {},
-            engines: {},
-            projectTemplate: {},
-            configWorkspaces: {},
             package: {},
         },
         workspace: {
             ...generateRnvConfigFileObj(),
             project: {
                 ...generateRnvConfigFileObj(),
-                configs: [],
-                appConfigBase: {},
-                builds: {},
-                assets: {},
-                platformTemplates: {},
             },
             appConfig: {
                 ...generateRnvConfigFileObj(),
@@ -179,10 +200,6 @@ export const generateContextDefaults = (): RnvContext => ({
             ...generateRnvConfigFileObj(),
             project: {
                 ...generateRnvConfigFileObj(),
-                appConfigBase: {},
-                builds: {},
-                assets: {},
-                platformTemplates: {},
             },
             appConfig: {
                 configs: [],
@@ -192,10 +209,8 @@ export const generateContextDefaults = (): RnvContext => ({
         },
         project: {
             ...generateRnvConfigFileObj(),
-            appConfigBase: {},
             builds: {},
             assets: {},
-            platformTemplates: {},
             package: {},
         },
         appConfig: {

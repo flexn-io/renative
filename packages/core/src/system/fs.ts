@@ -395,7 +395,7 @@ export const removeFilesSync = (filePaths: Array<string>) => {
             } else {
                 logDebug(`Path ${filePath} does not exist`);
             }
-        } catch (e: any) {
+        } catch (e) {
             logError(e);
         }
     });
@@ -407,7 +407,7 @@ export const removeDirsSync = (dirPaths: Array<string>) => {
     for (let i = 0; i < dirPaths.length; i++) {
         try {
             removeDirSync(dirPaths[i]);
-        } catch (e: any) {
+        } catch (e) {
             logError(e);
         }
     }
@@ -490,7 +490,7 @@ export const writeObjectSync = (filePath: string, obj: string | object, spaces: 
     return writeFileSync(filePath, obj, spaces, addNewLine);
 };
 
-export const readObjectSync = (filePath?: string, sanitize?: boolean, c?: RnvContext) => {
+export const readObjectSync = <T = any>(filePath?: string, sanitize?: boolean, c?: RnvContext) => {
     logDebug(`readObjectSync:${sanitize}:${filePath}`);
     if (!filePath) {
         logDebug('readObjectSync: filePath is undefined');
@@ -513,7 +513,7 @@ export const readObjectSync = (filePath?: string, sanitize?: boolean, c?: RnvCon
                     files: c?.files,
                     runtimeProps: c?.runtime,
                     props: obj._refs,
-                    configProps: c?.configPropsInjects,
+                    configProps: c?.injectableConfigProps,
                 });
             }
         }
@@ -521,7 +521,7 @@ export const readObjectSync = (filePath?: string, sanitize?: boolean, c?: RnvCon
         logError(`readObjectSync: Parsing of ${chalk().white(filePath)} failed with ${e}`);
         return null;
     }
-    return obj;
+    return obj as T;
 };
 
 export const updateObjectSync = (filePath: string, updateObj: object) => {

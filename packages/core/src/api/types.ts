@@ -1,7 +1,9 @@
+import path from 'path';
 import type { RnvContext } from '../context/types';
 import type { ConfigProp, ConfigPropKey } from '../schema/types';
 import type { DoResolveFn } from '../system/types';
 import type { RnvPlatform } from '../types';
+import fs from 'fs';
 
 export interface RnvApi {
     isDefault: boolean;
@@ -10,11 +12,11 @@ export interface RnvApi {
     analytics: RnvContextAnalytics;
     // chalk: RnvApiChalk;
     logger: RnvApiLogger;
-    fsExistsSync: any;
-    fsReadFileSync: any;
-    fsReaddirSync: any;
-    fsWriteFileSync: any;
-    path: any;
+    fsExistsSync: typeof fs.existsSync;
+    fsReadFileSync: (dest: fs.PathLike | undefined) => Buffer;
+    fsReaddirSync: (dest: fs.PathLike | undefined) => string[];
+    fsWriteFileSync: (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => void;
+    path: typeof path;
     doResolve: DoResolveFn;
     getConfigProp: GetConfigPropFn;
 }
@@ -72,13 +74,13 @@ export type RnvApiLogger = {
     logInitTask: (task: string, customChalk?: string | ((s: string) => string)) => void;
     logExitTask: (task: string, customChalk?: (s: string) => string) => void;
     logHook: (hook: string, msg?: string) => void;
-    logWarning: (msg: string | boolean) => void;
+    logWarning: (msg: string | boolean | unknown) => void;
     logInfo: (msg: string) => void;
     logDebug: (...args: Array<any>) => void;
     isInfoEnabled: () => boolean;
     logComplete: (isEnd?: boolean) => void;
     logSuccess: (msg: string) => void;
-    logError: (e: Error | string, isEnd?: boolean, skipAnalytics?: boolean) => void;
+    logError: (e: Error | string | unknown, isEnd?: boolean, skipAnalytics?: boolean) => void;
     logEnd: (code: number) => void;
     logInitialize: () => void;
     logAppInfo: (c: RnvContext) => void;
@@ -90,25 +92,15 @@ export type RnvApiLogger = {
 };
 
 export type PromptOptions = {
-    keysAsArray: any;
-    valuesAsArray: any;
-    keysAsObject: any;
-    valuesAsObject: any;
-    asString: any;
-    optionsAsArray: any;
+    keysAsArray: string[];
+    valuesAsArray: Array<any>;
+    keysAsObject: Record<string, string>;
+    valuesAsObject: Record<string, any>;
+    asString: string;
+    optionsAsArray: Array<any>;
 };
 
 export type PromptParams = {
-    // logMessage?: string;
-    // warningMessage?: string;
-    // message?: string;
-    // choices?: any;
-    // default?: any;
-    // name?: string;
-    // type: string;
-    // pageSize?: number;
-    // validate?: (i: string) => string | boolean;
-
     name?: string;
     type: string;
     message?: string;
@@ -116,7 +108,7 @@ export type PromptParams = {
     validate?: (i: string) => string | boolean;
     logMessage?: string;
     warningMessage?: string;
-    default?: any;
+    default?: any; // string | boolean | (() => string) | string[] | number | { name: string; value: any };
     pageSize?: number;
     loop?: boolean;
 };

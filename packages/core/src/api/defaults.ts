@@ -9,9 +9,14 @@ const spinner: any = () => ({
     start: () => {
         //NOOP
     },
+    fail: () => {
+        //NOOP
+    },
+    succeed: () => {
+        //NOOP
+    },
 });
 
-// const chalk: any = () => ({});
 const logger: any = {};
 
 export const generateApiDefaults = (): RnvApi => ({

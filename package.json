@@ -59,7 +59,9 @@
         "bootstrap": "yarn run link:rnv && npx lerna bootstrap && yarn build",
         "bootstrap-clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run build",
-        "circular": "npx madge --circular --extensions ts --exclude '\\.(d.ts)$' ./packages",
+        "report-circular": "npx madge --circular --extensions ts --exclude '\\.(d.ts)$' ./packages",
+        "report-ts-coverage": "typescript-coverage-report -p ./packages/core/tsconfig.json  -t 99 -i lib",
+        "report-jest": "jest --coverage",
         "compile": "npx lerna run compile",
         "deploy:canary": "yarn pre-publish && npx lerna publish from-package --dist-tag canary && git push origin HEAD",
         "deploy:feat": "yarn pre-publish && npx lerna publish from-package --dist-tag feat && git push origin HEAD",
@@ -79,7 +81,6 @@
         "prettier-write-json": "npx prettier '**/{package.json,renative.plugins.json,renative.json}' --write --config .prettierrc.js",
         "sanity": "yarn compile && yarn lint && yarn test",
         "test": "jest",
-        "test-cover": "jest --coverage",
         "watch": "npx lerna exec yarn watch --parallel",
         "watch-alt": "npx lerna run compile & npx lerna watch -- lerna run compile"
     },
@@ -116,7 +117,8 @@
         "madge": "6.1.0",
         "prettier": "2.3.1",
         "ts-jest": "^27.0.7",
-        "typescript": "5.2.2"
+        "typescript": "5.2.2",
+        "typescript-coverage-report": "0.8.0"
     },
     "engines": {
         "node": ">=18.0.0",

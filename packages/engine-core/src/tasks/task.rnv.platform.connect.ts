@@ -14,6 +14,7 @@ import {
     PARAMS,
     RnvTaskFn,
     inquirerPrompt,
+    PlatformKey,
 } from '@rnv/core';
 
 export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTask) => {
@@ -21,12 +22,17 @@ export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTa
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_PLATFORM_CONNECT, originTask);
 
-    if (!c.files.project.config.paths.platformTemplatesDirs) {
+    const configOriginal = c.files.project.config_original;
+    if (!configOriginal) {
+        return;
+    }
+
+    if (!c.files.project.config?.paths?.platformTemplatesDirs) {
         logToSummary('All supported platforms are connected. nothing to do.');
         return;
     }
 
-    let selectedPlatforms: Array<string>;
+    let selectedPlatforms: Array<PlatformKey>;
     if (c.platform) {
         selectedPlatforms = [c.platform];
     } else {
@@ -45,15 +51,15 @@ export const taskRnvPlatformConnect: RnvTaskFn = async (c, _parentTask, originTa
 
     if (selectedPlatforms.length) {
         selectedPlatforms.forEach((platform) => {
-            if (c.files.project.config_original.paths?.platformTemplatesDirs?.[platform]) {
-                delete c.files.project.config_original.paths.platformTemplatesDirs[platform];
+            if (configOriginal.paths?.platformTemplatesDirs?.[platform]) {
+                delete configOriginal.paths.platformTemplatesDirs[platform];
             }
 
-            if (!Object.keys(c.files.project.config_original.paths?.platformTemplatesDirs || {}).length) {
-                delete c.files.project.config_original.paths.platformTemplatesDirs; // also cleanup the empty object
+            if (!Object.keys(configOriginal.paths?.platformTemplatesDirs || {}).length) {
+                delete configOriginal.paths?.platformTemplatesDirs; // also cleanup the empty object
             }
 
-            writeFileSync(c.paths.project.config, c.files.project.config_original);
+            writeFileSync(c.paths.project.config, configOriginal);
         });
     }
 

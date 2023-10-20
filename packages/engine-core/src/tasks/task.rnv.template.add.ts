@@ -12,7 +12,7 @@ import {
     inquirerPrompt,
 } from '@rnv/core';
 
-const _writeObjectSync = (c: RnvContext, p: string, s: string) => {
+const _writeObjectSync = (c: RnvContext, p: string, s: object) => {
     writeFileSync(p, s);
     generateBuildConfig(c);
 };
@@ -20,15 +20,18 @@ const _writeObjectSync = (c: RnvContext, p: string, s: string) => {
 export const _addTemplate = (c: RnvContext, template: string) => {
     logTask('addTemplate');
 
-    c.files.project.config.templates = c.files.project.config.templates || {};
+    const cnf = c.files.project.config;
+    if (!cnf) return;
 
-    if (!c.files.project.config.templates[template]) {
-        c.files.project.config.templates[template] = {
+    cnf.templates = cnf.templates || {};
+
+    if (!cnf.templates[template]) {
+        cnf.templates[template] = {
             version: 'latest',
         };
     }
 
-    _writeObjectSync(c, c.paths.project.config, c.files.project.config);
+    _writeObjectSync(c, c.paths.project.config, cnf);
 };
 
 export const taskRnvTemplateAdd: RnvTaskFn = async (c, _parentTask, originTask) => {

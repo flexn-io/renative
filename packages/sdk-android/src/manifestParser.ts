@@ -14,7 +14,7 @@ import {
     readObjectSync,
     writeCleanFile,
     parsePlugins,
-    ManifestFeature,
+    AndroidManifestNode,
 } from '@rnv/core';
 import { Context } from './types';
 
@@ -102,7 +102,7 @@ const _mergeNodeParameters = (node: any, nodeParamsExt: any) => {
     });
 };
 
-const _mergeNodeChildren = (node: any, nodeChildrenExt: Array<ManifestFeature> = []) => {
+const _mergeNodeChildren = (node: any, nodeChildrenExt: Array<AndroidManifestNode> = []) => {
     // console.log('_mergeNodeChildren', node, 'OVERRIDE', nodeChildrenExt);
     if (!node) {
         logWarning('_mergeNodeChildren: Node is undefined');
@@ -145,7 +145,7 @@ const _mergeFeatures = (
     const features = getConfigProp(c, c.platform, configKey);
 
     if (features) {
-        const featuresObj: Array<ManifestFeature> = [];
+        const featuresObj: Array<AndroidManifestNode> = [];
         features.forEach((key) => {
             featuresObj.push({
                 tag: 'uses-feature',
@@ -247,7 +247,7 @@ export const parseAndroidManifestSync = (c: Context) => {
         );
 
         return;
-    } catch (e: any) {
+    } catch (e) {
         logError(e);
     }
 };

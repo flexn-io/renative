@@ -1,10 +1,10 @@
-import { INJECTABLE_RUNTIME_PROPS } from '../constants';
 import { getEngineRunnerByPlatform } from '../engines';
 import { isSystemWin } from '../utils/utils';
 import { getRealPath } from '../system/fs';
 import { getConfigProp } from '../common';
 import { logTask } from '../logger';
 import { RnvContext, RnvContextPlatform } from './types';
+import { generateRuntimePropInjects } from '../system/injectors';
 
 export const configureRuntimeDefaults = async (c: RnvContext) => {
     c.runtime.appId = c.files.project?.configLocal?._meta?.currentAppConfigId;
@@ -42,13 +42,7 @@ export const configureRuntimeDefaults = async (c: RnvContext) => {
     c.systemPropsInjects = c.systemPropsInjects || [];
     c.runtimePropsInjects = [];
 
-    const rt: any = c.runtime;
-    INJECTABLE_RUNTIME_PROPS.forEach((key) => {
-        c.runtimePropsInjects.push({
-            pattern: `{{runtimeProps.${key}}}`,
-            override: rt[key],
-        });
-    });
+    generateRuntimePropInjects();
     if (c.buildConfig) {
         c.runtime.bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') || false;
         const { hosted } = c.program;
