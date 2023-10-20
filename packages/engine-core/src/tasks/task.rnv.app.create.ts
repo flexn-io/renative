@@ -16,6 +16,7 @@ import {
     TASK_APP_CREATE,
     PARAMS,
 } from '@rnv/core';
+import { ConfigFileApp } from '@rnv/core/lib/schema/configFiles/types';
 
 export const taskRnvAppCreate: RnvTaskFn = async (c) => {
     logTask('taskRnvAppCreate');
@@ -120,7 +121,7 @@ export const taskRnvAppCreate: RnvTaskFn = async (c) => {
     logInfo('Copying new app config...DONE');
 
     const confObjPath = path.join(destPath, 'renative.json');
-    const confObj = readObjectSync(confObjPath);
+    const confObj = readObjectSync<ConfigFileApp>(confObjPath) || {};
 
     confObj.id = appConfigId;
     confObj.common = confObj.common || {};

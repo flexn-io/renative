@@ -24,7 +24,7 @@ import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { installPackageDependencies } from '../projects/npm';
 import { OverridesOptions, ResolveOptions } from '../system/types';
-import { ConfigFilePlugin, ConfigFilePlugins } from '../schema/configFiles/types';
+import { ConfigFileOverrides, ConfigFilePlugin, ConfigFilePlugins } from '../schema/configFiles/types';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -631,7 +631,7 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     if (overridePath && !fsExistsSync(overridePath)) {
         overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
     }
-    const overrideConfig = overridePath ? readObjectSync(overridePath) : null;
+    const overrideConfig = overridePath ? readObjectSync<ConfigFileOverrides>(overridePath) : null;
     const overrides = overrideConfig?.overrides;
     if (overrides) {
         Object.keys(overrides).forEach((k) => {

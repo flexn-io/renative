@@ -40,6 +40,8 @@ import {
     LINUX,
     TASK_EXPORT,
 } from '@rnv/core';
+import { FileElectronPackage } from './types';
+import { NpmPackageFile } from '@rnv/core/lib/configs/types';
 
 export const configureElectronProject = async (c: RnvContext, exitOnFail?: boolean) => {
     logTask('configureElectronProject');
@@ -99,7 +101,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             return;
         }
         const pkgJson = path.join(engine.originalTemplatePlatformsDir!, platform, 'package.json');
-        const packageJson = readObjectSync(pkgJson);
+        const packageJson = readObjectSync<FileElectronPackage>(pkgJson) || {};
 
         packageJson.name = `${c.runtime.appId}-${platform}`;
         packageJson.productName = `${getAppTitle(c, platform)}`;
@@ -223,7 +225,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
         // Fix `Cannot compute electron version from installed node modules - none of the possible electron modules are installed.`
         // See https://github.com/electron-userland/electron-builder/issues/3984#issuecomment-505307933
         const enginePkgJson = path.join(engine.rootPath!, 'package.json');
-        const enginePackageJson = readObjectSync(enginePkgJson);
+        const enginePackageJson = readObjectSync<NpmPackageFile>(enginePkgJson);
 
         let electronConfig = merge(
             {
@@ -234,7 +236,7 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
                     output: path.join(platformBuildDir, 'export'),
                 },
                 files: ['!export/*'],
-                electronVersion: enginePackageJson.dependencies.electron,
+                electronVersion: enginePackageJson?.dependencies?.electron,
             },
             macConfig
         );

@@ -490,7 +490,7 @@ export const writeObjectSync = (filePath: string, obj: string | object, spaces: 
     return writeFileSync(filePath, obj, spaces, addNewLine);
 };
 
-export const readObjectSync = <T = any>(filePath?: string, sanitize?: boolean, c?: RnvContext) => {
+export const readObjectSync = <T = object>(filePath?: string, sanitize?: boolean, c?: RnvContext) => {
     logDebug(`readObjectSync:${sanitize}:${filePath}`);
     if (!filePath) {
         logDebug('readObjectSync: filePath is undefined');

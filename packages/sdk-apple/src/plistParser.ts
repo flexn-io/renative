@@ -24,7 +24,7 @@ import {
     RnvPlatform,
 } from '@rnv/core';
 import { getAppFolderName } from './common';
-import { Context } from './types';
+import { Context, FilePlistJSON } from './types';
 
 export const parseExportOptionsPlist = (c: Context, platform: RnvPlatform) =>
     new Promise<void>((resolve) => {
@@ -93,7 +93,8 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
         const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
         // PLIST
-        let plistObj = readObjectSync(path.join(__dirname, `../supportFiles/info.plist.${platform}.json`));
+        let plistObj =
+            readObjectSync<FilePlistJSON>(path.join(__dirname, `../supportFiles/info.plist.${platform}.json`)) || {};
         plistObj.CFBundleDisplayName = getAppTitle(c, platform);
         plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
         plistObj.CFBundleVersion = getAppVersionCode(c, platform);
@@ -138,7 +139,7 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
         // URL_SCHEMES (LEGACY)
         if (urlScheme) {
             logWarning('urlScheme is DEPRECATED. use "plist:{ CFBundleURLTypes: []}" object instead');
-            plistObj.CFBundleURLTypes.push({
+            plistObj.CFBundleURLTypes?.push({
                 CFBundleTypeRole: 'Editor',
                 CFBundleURLName: urlScheme,
                 CFBundleURLSchemes: [urlScheme],

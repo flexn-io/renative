@@ -35,7 +35,7 @@ import {
     PlatformKey,
     commandExistsSync,
 } from '@rnv/core';
-import { ConfigFileProject } from '@rnv/core/lib/schema/configFiles/types';
+import { ConfigFileProject, ConfigFileTemplate } from '@rnv/core/lib/schema/configFiles/types';
 
 type NewProjectData = {
     appTitle?: string;
@@ -83,7 +83,7 @@ type NewProjectData = {
     };
     gitEnabled?: boolean;
     optionPlatforms: {
-        selectedOptions?: Array<string>;
+        selectedOptions?: Array<PlatformKey>;
     };
     confirmString?: string;
     defaultProjectName?: string;
@@ -162,17 +162,7 @@ type QuestionResults = Record<
     }
 >;
 
-type BootstrapQuestions = Array<{
-    options: Array<{
-        title: string;
-    }>;
-    configProp: {
-        prop: string;
-        key: string;
-    };
-    type: string;
-    title: string;
-}>;
+type BootstrapQuestions = Required<ConfigFileTemplate>['templateConfig']['bootstrapQuestions'];
 
 const interactiveQuestion = async (
     results: QuestionResults,
@@ -182,7 +172,7 @@ const interactiveQuestion = async (
     if (bootstrapQuestions?.length) {
         for (let i = 0; i < bootstrapQuestions.length; i++) {
             const q = bootstrapQuestions[i];
-            const qKey = q.configProp.key;
+            const qKey = q?.configProp?.key || '';
             // inquirer will nest them if they look like an object
             const qKeyClean = qKey.replace('.', '__');
 
@@ -496,11 +486,12 @@ export const taskRnvNew = async (c: RnvContext) => {
         }
     }
 
-    const renativeTemplateConfig = readObjectSync(
-        path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, RENATIVE_CONFIG_TEMPLATE_NAME)
-    );
+    const renativeTemplateConfig =
+        readObjectSync<ConfigFileTemplate>(
+            path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, RENATIVE_CONFIG_TEMPLATE_NAME)
+        ) || {};
 
-    const renativeConfig = readObjectSync(
+    const renativeConfig = readObjectSync<ConfigFileProject>(
         path.join(c.paths.project.dir, 'node_modules', selectedInputTemplate, RENATIVE_CONFIG_NAME)
     );
 
@@ -537,7 +528,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     // INPUT: Custom Questions
     // ==================================================
     const renativeTemplateConfigExt = {};
-    const bootstrapQuestions = renativeTemplateConfig?.templateConfig?.bootstrapQuestions;
+    const bootstrapQuestions = renativeTemplateConfig?.templateConfig?.bootstrapQuestions || [];
     const results: QuestionResults = {};
     const providedAnswers: Record<string, any> = {};
 
@@ -634,7 +625,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     const templates: Record<
         string,
         {
-            version?: string;
+            version: string;
         }
     > = {};
 
@@ -642,6 +633,10 @@ export const taskRnvNew = async (c: RnvContext) => {
         `_generateProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
         chalk().grey
     );
+
+    if (!data.optionTemplates.selectedVersion) {
+        return;
+    }
 
     if (data.optionTemplates.selectedOption) {
         templates[data.optionTemplates.selectedOption] = {
@@ -651,12 +646,17 @@ export const taskRnvNew = async (c: RnvContext) => {
 
     delete renativeTemplateConfig.templateConfig;
 
+    if (!data.optionTemplates.selectedOption) {
+        logError('Current template not selected!');
+        return;
+    }
+
     const config: ConfigFileProject = {
         platforms: {},
         ...renativeTemplateConfig,
         ...renativeTemplateConfigExt,
-        projectName: data.projectName,
-        workspaceID: data.optionWorkspaces.selectedOption,
+        projectName: data.projectName || 'my-project',
+        workspaceID: data.optionWorkspaces.selectedOption || 'project description',
         // paths: {
         //     appConfigsDir: './appConfigs',
         //     entryDir: './',
@@ -664,8 +664,9 @@ export const taskRnvNew = async (c: RnvContext) => {
         //     platformBuildsDir: './platformBuilds',
         // },
         defaults: {
-            title: data.appTitle,
-            id: data.appID,
+            // TODO: these need to move into NEW metadata
+            // title: data.appTitle,
+            // id: data.appID,
             supportedPlatforms: data.optionPlatforms.selectedOptions,
         },
         engines: {},
@@ -689,7 +690,8 @@ export const taskRnvNew = async (c: RnvContext) => {
         }
     });
 
-    if (renativeTemplateConfig.engines) {
+    const tplEngines = renativeTemplateConfig.engines;
+    if (tplEngines) {
         // Remove unused engines based on selected platforms
         supPlats.forEach((k) => {
             const selectedEngineId =
@@ -697,7 +699,7 @@ export const taskRnvNew = async (c: RnvContext) => {
             if (selectedEngineId) {
                 const selectedEngine = findEngineKeyById(c, selectedEngineId);
                 if (selectedEngine?.key) {
-                    engines[selectedEngine.key] = renativeTemplateConfig.engines[selectedEngine.key];
+                    engines[selectedEngine.key] = tplEngines[selectedEngine.key];
                 }
             }
         });
