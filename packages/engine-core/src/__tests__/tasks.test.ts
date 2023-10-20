@@ -57,7 +57,7 @@ test('Execute task.rnv.clean', async () => {
     expect(executeAsync).toHaveBeenCalledWith(ctx, 'watchman watch-del-all');
     expect(executeAsync).toHaveBeenCalledWith(
         ctx,
-        'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*'
+        'npx rimraf -I $TMPDIR/metro-* && npx rimraf -I $TMPDIR/react-* && npx rimraf -I $TMPDIR/haste-*'
     );
 });
 

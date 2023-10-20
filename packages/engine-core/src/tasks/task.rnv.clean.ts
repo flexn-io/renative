@@ -198,7 +198,7 @@ export const taskRnvClean: RnvTaskFn = async (c) => {
                 logDebug('watchman not installed. skipping');
             }
 
-            await executeAsync(c, 'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*');
+            await executeAsync(c, 'npx rimraf -I $TMPDIR/metro-* && npx rimraf -I $TMPDIR/react-* && npx rimraf -I $TMPDIR/haste-*');
         }
     }
     return true;

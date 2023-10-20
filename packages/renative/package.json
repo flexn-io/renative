@@ -53,7 +53,7 @@
     },
     "scripts": {
         "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "watch": "tsc --watch --preserveWatchOutput"
