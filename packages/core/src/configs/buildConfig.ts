@@ -14,6 +14,7 @@ import { getContext } from '../context/provider';
 import type { RnvContext } from '../context/types';
 import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
 import { FileUtilsPropConfig } from '../system/types';
+import { PlatformKey } from '../schema/types';
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
@@ -149,6 +150,18 @@ export const generateBuildConfig = (_c?: RnvContext) => {
         configProps: c.configPropsInjects,
     };
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, propConfig);
+
+    //Merge extendPlatform
+    const platforms = c.buildConfig.platforms || {};
+    (Object.keys(platforms) as PlatformKey[]).forEach((k) => {
+        const plat = platforms[k];
+        if (plat?.extendPlatform) {
+            const extPlat = platforms[plat?.extendPlatform];
+            if (extPlat) {
+                platforms[k] = merge(plat, extPlat);
+            }
+        }
+    });
 
     logDebug('BUILD_CONFIG', Object.keys(c.buildConfig));
 

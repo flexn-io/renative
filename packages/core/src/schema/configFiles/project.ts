@@ -248,6 +248,7 @@ const RootProjectBaseFragment = {
         ),
     isNew: z
         .string()
+        .optional()
         .describe('Marker indicating that this project has just been bootstrapped. this prop is managed by rnv'),
 };
 
