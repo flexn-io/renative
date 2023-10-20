@@ -35,8 +35,14 @@ const _getMergedEngineConfigs = (c: RnvContext) => {
 
 export const getEngineTemplateByPlatform = (c: RnvContext, platform: RnvPlatform): RnvEngineTemplate | null => {
     const mergedEngineConfigs = _getMergedEngineConfigs(c);
-    const engineId = c.program.engine || getConfigProp(c, platform, 'engine');
+    if (!platform) return null;
+    const engineId =
+        c.program.engine ||
+        getConfigProp(c, platform, 'engine') ||
+        //Adding this as default engines moved from platforms into platformTemplates
+        c.files.rnv.projectTemplates.config?.platformTemplates?.[platform]?.engine;
     let selectedEngineConfig: RnvEngineTemplate | null = null;
+
     Object.values(mergedEngineConfigs).forEach((engineConfig) => {
         if (engineConfig.id === engineId) {
             selectedEngineConfig = engineConfig;

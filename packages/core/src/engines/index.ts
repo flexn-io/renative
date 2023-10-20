@@ -87,8 +87,8 @@ export const configureEngines = async (c: RnvContext) => {
     logTask('configureEngines');
     // const { engines } = c.files.project.config;
     const engines = _getFilteredEngines(c);
-    const devDependencies = c.files.project.package.dependencies || {};
-    c.files.project.package.dependencies = devDependencies;
+    const devDependencies = c.files.project.package.devDependencies || {};
+    c.files.project.package.devDependencies = devDependencies;
     let needsPackageUpdate = false;
     if (engines && !c.runtime.skipPackageUpdate && !c.program.skipDependencyCheck && !c.program.skipRnvCheck) {
         Object.keys(engines).forEach((k) => {
