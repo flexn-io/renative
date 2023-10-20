@@ -6,6 +6,7 @@ import { fsExistsSync, fsReaddirSync, fsLstatSync, readObjectSync } from '../sys
 import { logTask, logWarning } from '../logger';
 
 import { RnvContext } from '../context/types';
+import { ConfigFileApp } from '../schema/configFiles/types';
 
 const IGNORE_FOLDERS = ['.git'];
 
@@ -25,7 +26,7 @@ export const listAppConfigsFoldersSync = (c: RnvContext, ignoreHiddenConfigs: bo
                 const appConfig = path.join(appConfigDir, RENATIVE_CONFIG_NAME);
                 if (fsExistsSync(appConfig)) {
                     try {
-                        const config = readObjectSync(appConfig);
+                        const config = readObjectSync<ConfigFileApp>(appConfig);
                         if (config?.hidden !== true) {
                             appConfigsDirs.push(dir);
                         }

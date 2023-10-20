@@ -212,7 +212,7 @@ const _configureRenativeConfig = async (c: RnvContext) => {
 export const configureTemplateFiles = async (c: RnvContext) => {
     logTask('configureTemplateFiles');
 
-    const templateConfig = readObjectSync(c.paths.template.configTemplate);
+    const templateConfig = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
     const includedPaths = templateConfig?.templateConfig?.includedPaths;
     if (includedPaths) {

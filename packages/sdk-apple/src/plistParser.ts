@@ -109,14 +109,12 @@ export const parseInfoPlist = (c: Context, platform: RnvPlatform) =>
             const pc = c.buildConfig.permissions[platPrem] || {};
             if (includedPermissions?.length && includedPermissions[0] === '*') {
                 Object.keys(pc).forEach((v) => {
-                    const key = v;
-                    plistObj[key] = pc[v].desc;
+                    (plistObj as Record<string, string>)[v] = pc[v].desc;
                 });
             } else if (includedPermissions?.forEach) {
                 includedPermissions.forEach((v) => {
                     if (pc[v]) {
-                        const key = v;
-                        plistObj[key] = pc[v].desc;
+                        (plistObj as Record<string, string>)[v] = pc[v].desc;
                     }
                 });
             } else if (includedPermissions) {

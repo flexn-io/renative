@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { DefaultsSchema, EnginesSchema } from './project';
 
+const NpmDep = z.record(z.string(), z.string());
+
 const BootstrapQuestionsSchema = z
     .array(
         z.object({
@@ -34,6 +36,15 @@ export const RootTemplateSchema = z.object({
                 .describe('Defines list of all file/dir paths you want to include in template')
                 .optional(),
             bootstrapQuestions: BootstrapQuestionsSchema,
+            packageTemplate: z.optional(
+                z.object({
+                    dependencies: z.optional(NpmDep),
+                    devDependencies: z.optional(NpmDep),
+                    peerDependencies: z.optional(NpmDep),
+                    optionalDependencies: z.optional(NpmDep),
+                    name: z.string().optional(),
+                })
+            ),
         })
         .describe('Used in `renative.template.json` allows you to define template behaviour.')
         .optional(),

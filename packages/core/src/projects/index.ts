@@ -37,7 +37,7 @@ import { ParseFontsCallback } from './types';
 import { inquirerPrompt } from '../api';
 import { upgradeProjectDependencies } from '../configs/configProject';
 import { generateConfigPropInjects } from '../system/injectors';
-import { ConfigFileApp, ConfigFileProject } from '../schema/configFiles/types';
+import { ConfigFileApp, ConfigFileEngine, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 
 export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
     logTask('checkAndBootstrapIfRequired');
@@ -54,7 +54,7 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
         c.paths.template.dir = templatePath;
         c.paths.template.configTemplate = path.join(templatePath, RENATIVE_CONFIG_TEMPLATE_NAME);
 
-        const templateObj = readObjectSync(c.paths.template.configTemplate);
+        const templateObj = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
         const appConfigPath = path.join(c.paths.project.appConfigsDir, c.program.appConfigID, 'renative.json');
         //TODO: Investigate whether we really need to support this: supportedPlatforms inside appconfig
         const appConfigObj = readObjectSync<ConfigFileApp & ConfigFileProject>(appConfigPath);
@@ -74,18 +74,24 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
             });
         }
 
+        if (!templateObj) {
+            return;
+        }
+
         const config = {
             ...templateObj,
         };
 
         // Clean unused engines
-        Object.keys(config.engines).forEach((k) => {
-            if (!activeEngineKeys.includes(k)) {
-                delete config.engines[k];
-            }
-        });
+        if (config.engines) {
+            Object.keys(config.engines).forEach((k) => {
+                if (!activeEngineKeys.includes(k)) {
+                    delete config.engines?.[k];
+                }
+            });
+        }
 
-        if (config.templateConfig.packageTemplate) {
+        if (config.templateConfig?.packageTemplate) {
             const pkgJson = config.templateConfig.packageTemplate;
             if (!pkgJson.devDependencies) pkgJson.devDependencies = {};
             if (!pkgJson.dependencies) pkgJson.dependencies = {};
@@ -95,7 +101,7 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
             Object.keys(pkgJson.devDependencies).forEach((devDepKey) => {
                 if (activeEngineKeys.includes(devDepKey)) {
                     installPromises.push(
-                        executeAsync(`npx yarn add ${devDepKey}@${pkgJson.devDependencies[devDepKey]}`, {
+                        executeAsync(`npx yarn add ${devDepKey}@${pkgJson.devDependencies?.[devDepKey]}`, {
                             cwd: c.paths.project.dir,
                         })
                     );
@@ -114,18 +120,19 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
                         aek,
                         'renative.engine.json'
                     );
-                    const eConfig = readObjectSync(engineConfigPath);
-                    if (eConfig.platforms) {
+                    const eConfig = readObjectSync<ConfigFileEngine>(engineConfigPath);
+                    if (eConfig?.platforms) {
                         supportedPlatforms.forEach((supPlat) => {
-                            const engPlatNpm = eConfig.platforms[supPlat]?.npm;
+                            const engPlatNpm = eConfig.platforms?.[supPlat]?.npm;
                             if (engPlatNpm) {
                                 const engPlatDeps = engPlatNpm.dependencies;
-                                pkgJson.dependencies = pkgJson.dependencies || {};
+                                const deps = pkgJson.dependencies || {};
+                                pkgJson.dependencies = deps;
                                 if (engPlatDeps) {
                                     Object.keys(engPlatDeps).forEach((engPlatDepKey) => {
-                                        if (!pkgJson.dependencies[engPlatDepKey]) {
+                                        if (!deps[engPlatDepKey]) {
                                             logInfo(`Installing active engine dependency ${engPlatDepKey}`);
-                                            pkgJson.dependencies[engPlatDepKey] = engPlatDeps[engPlatDepKey];
+                                            deps[engPlatDepKey] = engPlatDeps[engPlatDepKey];
                                         }
                                     });
                                 }

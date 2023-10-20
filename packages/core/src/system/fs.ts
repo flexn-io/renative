@@ -12,6 +12,7 @@ import { getApi } from '../api/provider';
 import { getContext } from '../context/provider';
 import { matchRegEx } from './regEx';
 import type { ConfigPropKey } from '../schema/types';
+import lGet from 'lodash.get';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {
@@ -559,20 +560,17 @@ export const getRealPath = (c: RnvContext, p: string | undefined, key = 'undefin
 };
 
 const _refToValue = (c: RnvContext, ref: string, key: string) => {
+    // ref=> '$REF$:./my/path/to/file.json$...prop.subProp'
     const val = ref.replace('$REF$:', '').split('$...');
-
+    // val=> ['./my/path/to/file.json', 'prop.subProp']
     const realPath = getRealPath(c, val[0], key);
 
     if (realPath && realPath.includes('.json') && val.length === 2) {
         if (fs.existsSync(realPath)) {
             const obj = readObjectSync(realPath);
-
-            try {
-                const output = val[1].split('.').reduce((o, i) => o[i], obj);
-                return output;
-            } catch (e) {
-                logWarning(`_refToValue: ${e}`);
-            }
+            const valPath = val[1]; // valPath=> 'prop.subProp'
+            const output = lGet(obj, valPath);
+            return output;
         } else {
             logWarning(`_refToValue: ${chalk().white(realPath)} does not exist!`);
         }

@@ -16,7 +16,7 @@ import {
     parsePlugins,
     AndroidManifestNode,
 } from '@rnv/core';
-import { Context } from './types';
+import { AndroidManifestJSON, Context } from './types';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
@@ -165,7 +165,12 @@ export const parseAndroidManifestSync = (c: Context) => {
 
     try {
         const baseManifestFilePath = path.join(__dirname, `../supportFiles/AndroidManifest_${platform}.json`);
-        const baseManifestFile = readObjectSync(baseManifestFilePath);
+        const baseManifestFile = readObjectSync<AndroidManifestJSON>(baseManifestFilePath);
+
+        if (!baseManifestFile) {
+            return;
+        }
+
         baseManifestFile.package = getAppId(c, platform);
 
         const objArr = getConfigPropArray(c, c.platform, 'templateAndroid');

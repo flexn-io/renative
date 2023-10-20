@@ -2,6 +2,7 @@ import { writeFileSync, readObjectSync } from '../system/fs';
 import { PACKAGE_JSON_FILEDS } from '../constants';
 import { chalk, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
+import { NpmPackageFile } from '../configs/types';
 
 const getSortedObject = (obj: any) => {
     if (obj !== null && typeof obj === 'object' && !Array.isArray(obj)) {
@@ -39,15 +40,18 @@ const checkForDuplicates = (arr: Array<any>) => {
 const fixPackageJson = (c: RnvContext, pkgPath: string) =>
     new Promise<void>((resolve) => {
         const pth = pkgPath || c.paths.project.package;
-        const pp = readObjectSync(pth);
-        const output = fixPackageObject(pp);
-        writeFileSync(pth, output, 4);
+        const pp = readObjectSync<NpmPackageFile>(pth);
+        if (pp) {
+            const output = fixPackageObject(pp);
+            writeFileSync(pth, output, 4);
+        }
+
         resolve();
     });
 
-const fixPackageObject = (pp: Record<string, string | boolean>) => {
-    const output: Record<string, string | boolean> = {};
-    const usedKeys: Record<string, string | boolean> = {};
+const fixPackageObject = (pp: Record<string, unknown>) => {
+    const output: Record<string, unknown> = {};
+    const usedKeys: Record<string, unknown> = {};
 
     PACKAGE_JSON_FILEDS.forEach((v) => {
         if (pp[v] !== null) {
