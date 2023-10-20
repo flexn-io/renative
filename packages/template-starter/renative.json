@@ -71,6 +71,7 @@
             "version": "^1.0.0-canary.7"
         }
     },
+    "currentTemplate": "@rnv/template-starter",
     "platforms": {
         "android": {
             "minSdkVersion": 26,

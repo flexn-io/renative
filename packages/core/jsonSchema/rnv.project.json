@@ -3814,8 +3814,7 @@
         "workspaceID",
         "projectName",
         "templates",
-        "currentTemplate",
-        "isNew"
+        "currentTemplate"
       ],
       "additionalProperties": false
     }
