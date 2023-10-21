@@ -24,7 +24,7 @@ import { RnvPlatform } from '../types';
 import { listAppConfigsFoldersSync } from '../configs/appConfigs';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { checkIfProjectAndNodeModulesExists } from '../projects/dependencyManager';
-import { ConfigFileApp, ConfigFileTemplate } from '../schema/configFiles/types';
+import { ConfigFileApp, ConfigFileProject, ConfigFileTemplate } from '../schema/configFiles/types';
 import { PlatformKey } from '../schema/types';
 
 const _cleanProjectTemplateSync = (c: RnvContext) => {
@@ -188,22 +188,36 @@ const _configureRenativeConfig = async (c: RnvContext) => {
         logInfo(
             `Your ${c.paths.project.config} needs to be updated with ${c.paths.template.configTemplate}. UPDATING...DONE`
         );
-        const mergedObj = mergeObjects(c, templateConfig, c.files.project.config_original, false, true);
-        // Do not override supportedPlatforms
-        mergedObj.defaults.supportedPlatforms = c.files.project.config_original?.defaults?.supportedPlatforms;
-        // Do not override engines
-        mergedObj.engines = c.files.project.config_original?.engines;
-        // Set current template
-        mergedObj.currentTemplate = c.runtime.currentTemplate;
-        if (mergedObj.isNew) {
-            c.runtime.isFirstRunAfterNew = true;
+        if (c.files.project.config_original && templateConfig) {
+            const mergedObj = mergeObjects<ConfigFileTemplate & ConfigFileProject>(
+                c,
+                templateConfig,
+                c.files.project.config_original,
+                false,
+                true
+            );
+
+            // Do not override supportedPlatforms
+            mergedObj.defaults = mergedObj.defaults || {};
+            mergedObj.defaults.supportedPlatforms = c.files.project.config_original?.defaults?.supportedPlatforms;
+            // Do not override engines
+            mergedObj.engines = c.files.project.config_original?.engines;
+            // Set current template
+            if (c.runtime.currentTemplate) {
+                mergedObj.currentTemplate = c.runtime.currentTemplate;
+            }
+
+            if (mergedObj.isNew) {
+                c.runtime.isFirstRunAfterNew = true;
+            }
+
+            // mergedObj.isNew = null;
+            delete mergedObj.isNew;
+            delete mergedObj.templateConfig;
+            // c.files.project.config = mergedObj;
+            writeRenativeConfigFile(c, c.paths.project.config, mergedObj);
+            loadFileExtended(c, c.files.project, c.paths.project, 'config');
         }
-        // mergedObj.isNew = null;
-        delete mergedObj.isNew;
-        delete mergedObj.templateConfig;
-        // c.files.project.config = mergedObj;
-        writeRenativeConfigFile(c, c.paths.project.config, mergedObj);
-        loadFileExtended(c, c.files.project, c.paths.project, 'config');
     }
 
     return true;

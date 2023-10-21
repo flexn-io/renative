@@ -1,3 +1,4 @@
+import { ConfigFilePlugin } from '../schema/configFiles/types';
 import { RenativeConfigPlugin, RenativeConfigPluginPlatform } from '../schema/types';
 
 export type PluginCallback = (plugin: RnvPlugin, pluginPlat: RenativeConfigPluginPlatform, key: string) => void;
@@ -27,7 +28,5 @@ export type RnvPlugin = RenativeConfigPlugin & {
     scope?: string;
     _scopes?: Array<string>;
     _id?: string;
-    config?: {
-        fontSources: Array<string>;
-    };
+    config?: ConfigFilePlugin;
 };

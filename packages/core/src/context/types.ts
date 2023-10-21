@@ -2,10 +2,10 @@ import type { ConfigProp, ConfigPropKey, PlatformKey } from '../schema/types';
 import type { RnvEngine, RnvEnginePlatform } from '../engines/types';
 import type { OverridesOptions } from '../system/types';
 import type { RnvPlatform } from '../types';
-import { RnvPlugin } from '../plugins/types';
 import {
     ConfigFileApp,
     ConfigFileLocal,
+    ConfigFilePlugin,
     ConfigFilePlugins,
     ConfigFilePrivate,
     ConfigFileProject,
@@ -63,7 +63,7 @@ export interface RnvContext<Payload = any> {
     isBuildHooksReady: boolean;
     supportedPlatforms: Array<string>;
     runtimePropsInjects: OverridesOptions;
-    _renativePluginCache: Record<string, RnvPlugin>;
+    _renativePluginCache: Record<string, ConfigFilePlugin>;
     cli: Record<string, string | undefined>;
     buildHooks: Record<string, (c: RnvContext) => Promise<void>>;
     configPropsInjects: OverridesOptions;
@@ -135,9 +135,6 @@ export type RnvContextRuntime = {
     currentTemplate?: string;
     task?: string;
     selectedWorkspace?: string;
-
-    //TOFIX
-
     target?: string;
 };
 

@@ -70,4 +70,5 @@ export const PluginBaseFragment = {
     webpackConfig: z.optional(Webpack), //Should this be at root plugin???
     // 'engine-rn-next': z.optional(Webpack), //Should this be at root plugin???
     disablePluginTemplateOverrides: z.optional(DisablePluginTemplateOverrides),
+    fontSources: z.array(z.string()).optional(),
 };

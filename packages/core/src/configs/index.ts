@@ -45,7 +45,7 @@ export const loadFileExtended = (
                 }
 
                 if (fsExistsSync(extendsPath)) {
-                    const extendsFile = readObjectSync(extendsPath);
+                    const extendsFile = readObjectSync(extendsPath) || {};
 
                     fileObj[key] = mergeObjects(c, extendsFile, fileObj[key], false, true);
                     // CLEAN props which should not be inherited

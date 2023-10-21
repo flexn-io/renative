@@ -122,7 +122,7 @@ const _getMergedPlugin = (
             }
         });
     }
-    const mergedObj = mergeObjects(c, parentPlugin, currentPlugin, true, true);
+    const mergedObj = mergeObjects<RnvPlugin>(c, parentPlugin, currentPlugin, true, true);
     if (c._renativePluginCache[pluginKey]) {
         mergedObj.config = c._renativePluginCache[pluginKey];
     }
