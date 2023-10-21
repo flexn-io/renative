@@ -5,8 +5,6 @@ import {
     getRealPath,
     writeFileSync,
     fsExistsSync,
-    fsReaddirSync,
-    fsLstatSync,
     chalk,
     logTask,
     logWarning,
@@ -26,13 +24,9 @@ import {
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE,
     CLI_WEBOS_ARES_DEVICE_INFO,
-    WEBOS_SDK,
-    SDK_PLATFORMS,
 } from './constants';
 
-const SDK_LOCATIONS: Record<string, Array<string>> = {
-    webos: [path.join('/opt/webOS_TV_SDK'), path.join('C:\\webOS_TV_SDK')],
-};
+const SDK_LOCATIONS = [path.join('/opt/webOS_TV_SDK'), path.join('C:\\webOS_TV_SDK')];
 
 const _logSdkWarning = (c: RnvContext) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
@@ -72,40 +66,19 @@ export const checkAndConfigureWebosSdks = async (c: RnvContext) => {
     }
 };
 
-const _getCurrentSdkPath = (c: RnvContext) =>
-    c.platform ? c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]] : undefined;
+const _getCurrentSdkPath = (c: RnvContext) => (c.platform ? c.buildConfig?.sdks?.WEBOS_SDK : undefined);
 
 const _isSdkInstalled = (c: RnvContext) => {
     logTask('_isSdkInstalled');
 
     if (!c.platform) return;
 
-    if (!SDK_PLATFORMS[c.platform]) return true;
-
     const sdkPath = _getCurrentSdkPath(c);
 
     return fsExistsSync(getRealPath(c, sdkPath));
 };
 
-const _findFolderWithFile = (dir: string, fileToFind: string) => {
-    const opt = path.join(dir, fileToFind);
-    if (fsExistsSync(opt)) {
-        return dir;
-    }
-    let foundDir;
-    fsReaddirSync(dir).forEach((subDirName) => {
-        // not a directory check
-        if (!fsLstatSync(subDirName).isDirectory()) return;
-        const subDir = path.join(dir, subDirName);
-        const foundSubDir = _findFolderWithFile(subDir, fileToFind);
-        if (foundSubDir) {
-            foundDir = foundSubDir;
-        }
-    });
-    return foundDir;
-};
-
-const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: string, traverseUntilFoundFile?: string) => {
+const _attemptAutoFix = async (c: RnvContext) => {
     logTask('_attemptAutoFix');
 
     if (c.program.hosted) {
@@ -113,18 +86,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
         return true;
     }
 
-    const locations: Array<string | undefined> = SDK_LOCATIONS[sdkPlatform];
-
-    let result = locations.find((v) => fsExistsSync(v));
-
-    if (result && traverseUntilFoundFile) {
-        const subResult = _findFolderWithFile(result, traverseUntilFoundFile);
-        if (subResult) {
-            result = subResult;
-        } else {
-            // result = null;
-        }
-    }
+    const result = SDK_LOCATIONS.find((v) => fsExistsSync(v));
 
     if (result) {
         logSuccess(`Found existing ${c.platform} SDK location at ${chalk().white(result)}`);
@@ -143,7 +105,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
             if (!cnf) return false;
             try {
                 if (!cnf.sdks) cnf.sdks = {};
-                cnf.sdks[sdkKey] = result;
+                cnf.sdks.WEBOS_SDK = result;
                 writeFileSync(c.paths.workspace.config, cnf);
                 generateBuildConfig(c);
                 await checkAndConfigureWebosSdks(c);
@@ -155,7 +117,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
         }
     }
 
-    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS[sdkPlatform].join(', ')}`);
+    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
@@ -174,7 +136,7 @@ export const checkWebosSdk = async (c: RnvContext) => {
 
         switch (c.platform) {
             case WEBOS:
-                return _attemptAutoFix(c, 'webos', WEBOS_SDK);
+                return _attemptAutoFix(c);
             default:
                 return true;
         }

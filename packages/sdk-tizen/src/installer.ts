@@ -8,8 +8,6 @@ import {
     getRealPath,
     writeFileSync,
     fsExistsSync,
-    fsReaddirSync,
-    fsLstatSync,
     chalk,
     logTask,
     logWarning,
@@ -20,16 +18,13 @@ import {
     RnvContext,
     inquirerPrompt,
 } from '@rnv/core';
-import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR, SDK_PLATFORMS, TIZEN_SDK } from './constants';
+import { CLI_SDB_TIZEN, CLI_TIZEN, CLI_TIZEN_EMULATOR } from './constants';
 
-const SDK_LOCATIONS: Record<string, Array<string>> = {
-    tizen: [
-        path.join('usr/local/tizen-studio'),
-        path.join(USER_HOME_DIR, 'tizen-studio'),
-        path.join('C:\\tizen-studio'),
-    ],
-    webos: [path.join('/opt/webOS_TV_SDK'), path.join('C:\\webOS_TV_SDK')],
-};
+const SDK_LOCATIONS = [
+    path.join('usr/local/tizen-studio'),
+    path.join(USER_HOME_DIR, 'tizen-studio'),
+    path.join('C:\\tizen-studio'),
+];
 
 const _logSdkWarning = (c: RnvContext) => {
     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
@@ -50,40 +45,19 @@ export const checkAndConfigureTizenSdks = async (c: RnvContext) => {
     }
 };
 
-const _getCurrentSdkPath = (c: RnvContext) =>
-    c.platform ? c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]] : undefined;
+const _getCurrentSdkPath = (c: RnvContext) => (c.platform ? c.buildConfig?.sdks?.TIZEN_SDK : undefined);
 
 const _isSdkInstalled = (c: RnvContext) => {
     logTask('_isSdkInstalled');
 
     if (!c.platform) return false;
 
-    if (!SDK_PLATFORMS[c.platform]) return true;
-
     const sdkPath = _getCurrentSdkPath(c);
 
     return fsExistsSync(getRealPath(c, sdkPath));
 };
 
-const _findFolderWithFile = (dir: string, fileToFind: string) => {
-    const opt = path.join(dir, fileToFind);
-    if (fsExistsSync(opt)) {
-        return dir;
-    }
-    let foundDir;
-    fsReaddirSync(dir).forEach((subDirName) => {
-        // not a directory check
-        if (!fsLstatSync(subDirName).isDirectory()) return;
-        const subDir = path.join(dir, subDirName);
-        const foundSubDir = _findFolderWithFile(subDir, fileToFind);
-        if (foundSubDir) {
-            foundDir = foundSubDir;
-        }
-    });
-    return foundDir;
-};
-
-const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: string, traverseUntilFoundFile?: string) => {
+const _attemptAutoFix = async (c: RnvContext) => {
     logTask('_attemptAutoFix');
 
     if (!c.files.workspace.config) return;
@@ -93,18 +67,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
         return true;
     }
 
-    const locations: Array<string | undefined> = SDK_LOCATIONS[sdkPlatform];
-
-    let result = locations.find((v) => fsExistsSync(v));
-
-    if (result && traverseUntilFoundFile) {
-        const subResult = _findFolderWithFile(result, traverseUntilFoundFile);
-        if (subResult) {
-            result = subResult;
-        } else {
-            // result = null;
-        }
-    }
+    const result = SDK_LOCATIONS.find((v) => fsExistsSync(v));
 
     if (result) {
         logSuccess(`Found existing ${c.platform} SDK location at ${chalk().white(result)}`);
@@ -121,7 +84,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
         if (confirmSdk) {
             try {
                 if (!c.files.workspace.config?.sdks) c.files.workspace.config.sdks = {};
-                c.files.workspace.config.sdks[sdkKey] = result;
+                c.files.workspace.config.sdks.TIZEN_SDK = result;
                 //TODO: use config_original here?
                 writeFileSync(c.paths.workspace.config, c.files.workspace.config);
                 generateBuildConfig(c);
@@ -134,7 +97,7 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
         }
     }
 
-    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS[sdkPlatform].join(', ')}`);
+    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOCATIONS.join(', ')}`);
 
     // const setupInstance = PlatformSetup(c);
     // await setupInstance.askToInstallSDK(sdkPlatform);
@@ -155,7 +118,7 @@ export const checkTizenSdk = async (c: RnvContext) => {
             case TIZEN:
             case TIZEN_MOBILE:
             case TIZEN_WATCH:
-                return _attemptAutoFix(c, 'tizen', TIZEN_SDK);
+                return _attemptAutoFix(c);
             default:
                 return true;
         }

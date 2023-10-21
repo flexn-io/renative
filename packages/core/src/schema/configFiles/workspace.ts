@@ -1,7 +1,15 @@
 import { z } from 'zod';
 import { DefaultTargets } from '../shared';
 
-export const SDKs = z.record(z.string(), z.string()).describe('Define your sdk configurations');
+const SDKsSchema = z
+    .object({
+        ANDROID_SDK: z.string().optional(),
+        ANDROID_NDK: z.string().optional(),
+        TIZEN_SDK: z.string().optional(),
+        WEBOS_SDK: z.string().optional(),
+        KAIOS_SDK: z.string().optional(),
+    })
+    .describe('Define your sdk configurations');
 // ANDROID_SDK: '~/Library/Android/sdk',
 // ANDROID_NDK: '~/Library/Android/sdk/ndk-bundle',
 // TIZEN_SDK: '~/tizen-studio',
@@ -12,7 +20,7 @@ export const SDKs = z.record(z.string(), z.string()).describe('Define your sdk c
 
 export const RootWorkspaceSchema = z.object({
     defaultTargets: z.optional(DefaultTargets),
-    sdks: z.optional(SDKs),
+    sdks: z.optional(SDKsSchema),
     projectTemplates: z.record(z.string(), z.object({})),
     appConfigsPath: z
         .string()
