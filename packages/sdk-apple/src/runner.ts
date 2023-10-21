@@ -332,7 +332,7 @@ export const getDeviceToRunOn = async (c: Context) => {
             }
         }
 
-        const target = c.runtime.target.replace(/(\s+)/g, '\\$1');
+        const target = c.runtime.target?.replace(/(\s+)/g, '\\$1');
 
         p = `--simulator ${target}`;
     }
@@ -534,7 +534,7 @@ const _setAutomaticSigning = async (c: Context) => {
     const cnf = c.files.appConfig.config;
     if (!cnf) return;
 
-    const scheme = cnf.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
+    const scheme = c.runtime.scheme && cnf.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
     if (scheme && 'provisioningStyle' in scheme) {
         scheme.provisioningStyle = 'Automatic';
         writeFileSync(c.paths.appConfig.config, cnf);

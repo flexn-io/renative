@@ -41,22 +41,24 @@ const _configureHostedIfRequired = async (c: RnvContext) => {
         logDebug('Running hosted build');
         const ipAddress = c.program.hostIp || ip.address();
 
-        writeCleanFile(
-            path.join(c.runtime.currentEngine.rootPath!, 'templates', 'appShell', 'index.html'),
-            path.join(getPlatformProjectDir(c)!, 'index.html'),
-            [
-                {
-                    pattern: '{{DEV_SERVER}}',
-                    override: `http://${ipAddress}:${c.runtime.port}`,
-                },
-                {
-                    pattern: '{{APPSHELL_HTML_HEADER}}',
-                    override: String(hostedShellHeaders || ''),
-                },
-            ],
-            undefined,
-            c
-        );
+        if (c.runtime.currentEngine?.rootPath) {
+            writeCleanFile(
+                path.join(c.runtime.currentEngine.rootPath, 'templates', 'appShell', 'index.html'),
+                path.join(getPlatformProjectDir(c)!, 'index.html'),
+                [
+                    {
+                        pattern: '{{DEV_SERVER}}',
+                        override: `http://${ipAddress}:${c.runtime.port}`,
+                    },
+                    {
+                        pattern: '{{APPSHELL_HTML_HEADER}}',
+                        override: String(hostedShellHeaders || ''),
+                    },
+                ],
+                undefined,
+                c
+            );
+        }
     }
 };
 

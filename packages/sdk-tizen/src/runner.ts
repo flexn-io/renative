@@ -62,7 +62,7 @@ const _runTizenSimOrDevice = async (c: RnvContext) => {
     return true;
 };
 
-export const runTizen = async (c: RnvContext, target: string) => {
+export const runTizen = async (c: RnvContext, target?: string) => {
     logTask('runTizen', `target:${target}`);
     const { platform } = c;
     const { hosted } = c.program;
@@ -128,7 +128,6 @@ export const buildTizenProject = async (c: RnvContext) => {
 
     await buildCoreWebpackProject(c);
     if (!c.program.hosted) {
-
         const tOut = path.join(tDir, 'output');
         const tIntermediate = path.join(tDir, 'intermediate');
         const tBuild = path.join(tDir, 'build');

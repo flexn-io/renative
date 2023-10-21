@@ -21,7 +21,7 @@ export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): T
     if (platform === 'web') {
         timestampBuildFiles = (getConfigProp(c, platform, 'timestampBuildFiles') || []).map((v) => path.join(pPath, v));
     }
-    if (timestampBuildFiles?.length) {
+    if (timestampBuildFiles?.length && c.runtime.timestamp) {
         return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
     }
     return undefined;
@@ -76,7 +76,7 @@ export const getDevServerHost = (c: RnvContext) => {
     const devServerHostOrig = getConfigProp(c, c.platform, 'devServerHost');
 
     const devServerHostFixed = devServerHostOrig
-        ? getValidLocalhost(devServerHostOrig, c.runtime.localhost)
+        ? getValidLocalhost(devServerHostOrig, c.runtime.localhost || DEFAULTS.devServerHost)
         : DEFAULTS.devServerHost;
 
     return devServerHostFixed;
@@ -286,7 +286,7 @@ export const _getConfigProp = <T extends ConfigPropKey>(
 
     let resultPlatforms;
     let scheme;
-    if (platformObj) {
+    if (platformObj && ps) {
         scheme = platformObj.buildSchemes?.[ps] || {};
         resultPlatforms = getFlavouredProp<any, any>(c, platformObj, baseKey);
     } else {
@@ -295,11 +295,10 @@ export const _getConfigProp = <T extends ConfigPropKey>(
 
     const resultScheme = baseKey && scheme[baseKey];
     const resultCommonRoot = getFlavouredProp<any, any>(c, sourceObj.common || {}, baseKey);
-    const resultCommonScheme = getFlavouredProp<any, any>(
-        c,
-        sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {},
-        baseKey
-    );
+    const resultCommonScheme =
+        c.runtime.scheme &&
+        getFlavouredProp<any, any>(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, baseKey);
+
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
     let result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);

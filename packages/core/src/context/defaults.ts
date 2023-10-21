@@ -25,10 +25,32 @@ export const generateRnvConfigFileObj = () => {
     };
 };
 
-const runtime: any = {
+const runtime: RnvContext['runtime'] = {
     enginesByPlatform: {},
+    missingEnginePlugins: {},
     enginesByIndex: [],
     enginesById: {},
+    supportedPlatforms: [],
+    availablePlatforms: [],
+    platform: null,
+    _skipNativeDepResolutions: false,
+    _skipPluginScopeWarnings: false,
+    bundleAssets: false,
+    disableReset: false,
+    hosted: false,
+    isFirstRunAfterNew: false,
+    hasAllEnginesRegistered: false,
+    isTargetTrue: false,
+    isWSConfirmed: false,
+    skipBuildHooks: false,
+    skipActiveServerCheck: false,
+    versionCheckCompleted: false,
+    requiresForcedTemplateApply: false,
+    forceBuildHookRebuild: false,
+    keepSessionActive: false,
+    requiresBootstrap: false,
+    port: 3000,
+    runtimeExtraProps: {},
 };
 
 export const generateContextDefaults = (): RnvContext => ({

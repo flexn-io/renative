@@ -321,8 +321,12 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             hasDevice = true;
         } catch (e) {
             if (typeof e === 'string' && e.includes('No device matching')) {
-                await launchTizenSimulator(c, target);
-                hasDevice = await _waitForEmulatorToBeReady(c, target);
+                if (target) {
+                    await launchTizenSimulator(c, target);
+                    hasDevice = await _waitForEmulatorToBeReady(c, target);
+                } else {
+                    return Promise.reject('Not target specified. (-t)');
+                }
             }
         }
         try {
@@ -346,8 +350,12 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
                 )}"`
             );
 
-            await launchTizenSimulator(c, target);
-            hasDevice = await _waitForEmulatorToBeReady(c, target);
+            if (target) {
+                await launchTizenSimulator(c, target);
+                hasDevice = await _waitForEmulatorToBeReady(c, target);
+            } else {
+                return Promise.reject('Not target specified. (-t)');
+            }
         }
 
         const toReturn = true;
@@ -367,7 +375,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
     };
 
     // Check if target is present or it's the default one
-    const isTargetSpecified = c.program.target;
+    const isTargetSpecified = !!target;
 
     // Check for running devices
     const devices = await _getRunningDevices(c);

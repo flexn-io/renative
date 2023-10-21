@@ -246,8 +246,10 @@ export const parseRenativeConfigs = async (c: RnvContext) => {
             //     c.paths.appConfig,
             //     path.join(c.paths.project.appConfigsDir, c.runtime.appId)
             // );
-            generateContextPaths(c.paths.appConfig, c.runtime.appConfigDir);
-            _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, true);
+            if (c.runtime.appConfigDir) {
+                generateContextPaths(c.paths.appConfig, c.runtime.appConfigDir);
+                _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, true);
+            }
         }
 
         const workspaceAppConfigsDir = getRealPath(c, c.buildConfig.workspaceAppConfigsDir);
