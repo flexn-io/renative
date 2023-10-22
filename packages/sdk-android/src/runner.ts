@@ -94,8 +94,8 @@ export const runAndroid = async (c: Context) => {
         return Promise.reject(e);
     }
 
-    const activeDevices = devicesAndEmulators.filter((d: any) => d.isActive);
-    const inactiveDevices = devicesAndEmulators.filter((d: any) => !d.isActive);
+    const activeDevices = devicesAndEmulators.filter((d) => d.isActive);
+    const inactiveDevices = devicesAndEmulators.filter((d) => !d.isActive);
 
     const askWhereToRun = async () => {
         if (activeDevices.length === 0 && inactiveDevices.length > 0) {
@@ -123,7 +123,7 @@ export const runAndroid = async (c: Context) => {
                 choices,
             });
             if (response.chosenEmulator) {
-                const dev = activeDevices.find((d: any) => d.name === response.chosenEmulator);
+                const dev = activeDevices.find((d) => d.name === response.chosenEmulator);
                 await runReactNativeAndroid(c, platform, dev);
             }
         } else {
@@ -136,7 +136,7 @@ export const runAndroid = async (c: Context) => {
     if (target) {
         // a target is provided
         logDebug('Target provided', target);
-        const foundDevice = devicesAndEmulators.find((d: any) => d.udid.includes(target) || d.name.includes(target));
+        const foundDevice = devicesAndEmulators.find((d) => d.udid.includes(target) || d.name.includes(target));
         if (foundDevice) {
             if (foundDevice.isActive) {
                 await runReactNativeAndroid(c, platform, foundDevice);
@@ -157,7 +157,7 @@ export const runAndroid = async (c: Context) => {
         // neither a target nor an active device is found, revert to default target if available
         logDebug('Default target used', defaultTarget);
         const foundDevice = devicesAndEmulators.find(
-            (d: any) => d.udid.includes(defaultTarget) || d.name.includes(defaultTarget)
+            (d) => d.udid.includes(defaultTarget) || d.name.includes(defaultTarget)
         );
         if (!foundDevice) {
             logDebug('Target not provided, asking where to run');
@@ -482,7 +482,7 @@ export const configureProject = async (c: Context) => {
 
     // FONTS
     const includedFonts = getConfigProp(c, c.platform, 'includedFonts') || [];
-    parseFonts(c, (font: any, dir: any) => {
+    parseFonts(c, (font: string, dir: string) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
 

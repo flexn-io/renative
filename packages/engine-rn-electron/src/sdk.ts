@@ -207,7 +207,10 @@ const configureProject = (c: RnvContext, exitOnFail?: boolean) =>
             );
         }
 
-        const macConfig: any = {};
+        const macConfig: {
+            mac?: Record<string, string | boolean>;
+            mas?: Record<string, string | boolean>;
+        } = {};
         if (platform === MACOS) {
             macConfig.mac = {
                 entitlements: path.join(platformProjectDir, 'entitlements.mac.plist'),

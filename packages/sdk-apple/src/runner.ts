@@ -491,7 +491,7 @@ Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.con
     }
 };
 
-const _handleProvisioningIssues = async (c: Context, e: any, msg: string) => {
+const _handleProvisioningIssues = async (c: Context, e: unknown, msg: string) => {
     const provisioningStyle = c.program.provisioningStyle || getConfigProp(c, c.platform, 'provisioningStyle');
     const appFolderName = getAppFolderName(c, c.platform); // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
     const isProvAutomatic = provisioningStyle === 'Automatic';

@@ -70,7 +70,11 @@ export const runReactNativeIOS = async (
             env,
             printableEnvKeys: ['RNV_REACT_NATIVE_PATH', 'RNV_APP_ID', 'RNV_PROJECT_ROOT', 'RNV_APP_BUILD_DIR'],
         });
-    } catch (e: any) {
-        return Promise.reject(e);
+    } catch (e) {
+        if (typeof e === 'string') {
+            return Promise.reject(e);
+        } else if (e instanceof Error) {
+            return Promise.reject(e.message);
+        }
     }
 };

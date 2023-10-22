@@ -79,8 +79,12 @@ const parseDevices = (c: RnvContext, devicesResponse: string): Promise<Array<Web
                     silent: true,
                     timeout: 10000,
                 });
-            } catch (e: any) {
-                deviceInfo = e;
+            } catch (e) {
+                if (typeof e === 'string') {
+                    deviceInfo = e;
+                } else if (e instanceof Error) {
+                    deviceInfo = e.message;
+                }
             }
 
             return {

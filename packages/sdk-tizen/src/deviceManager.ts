@@ -116,8 +116,14 @@ const _getDeviceID = async (c: RnvContext, target: string) => {
         let connectResponse: string;
         try {
             connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
-        } catch (e: any) {
-            connectResponse = e;
+        } catch (e) {
+            if (typeof e === 'string') {
+                connectResponse = e;
+            } else if (e instanceof Error) {
+                connectResponse = e.message;
+            } else {
+                connectResponse = 'Unknown error';
+            }
         }
         if (connectResponse.includes('EPERM')) {
             throw new Error(
@@ -336,13 +342,13 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
                 );
                 fsRenameSync(path.join(tOut, wgt), path.join(tOut, wgtClean));
             }
-        } catch (err: any) {
+        } catch (err) {
             logError(err);
         }
         try {
             await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${wgtClean} -t ${deviceID}`);
             hasDevice = true;
-        } catch (err: any) {
+        } catch (err) {
             logError(err);
             logWarning(
                 `There is no emulator or device connected! Let's try to launch it. "${chalk().white.bold(
