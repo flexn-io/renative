@@ -113,7 +113,7 @@ export const ejectGradleProject = async (c: RnvContext) => {
 
     const afterEvaluateFix: Array<{ match: string; replace: string }> = [];
 
-    parsePlugins(c, c.platform, (_plugin: any, pluginPlat: any, key: string) => {
+    parsePlugins(c, c.platform, (_plugin, pluginPlat, key: string) => {
         const pluginPath = doResolvePath(key);
 
         if (!pluginPath) return;
@@ -131,8 +131,8 @@ export const ejectGradleProject = async (c: RnvContext) => {
         ];
         // const excludeFolders = ['node_modules', 'android'];
 
-        if (pluginPlat.afterEvaluate) {
-            pluginPlat.afterEvaluate.forEach((v: any) => {
+        if (pluginPlat.templateAndroid?.app_build_gradle?.afterEvaluate) {
+            pluginPlat.templateAndroid?.app_build_gradle?.afterEvaluate.forEach((v) => {
                 afterEvaluateFix.push({
                     match: v.replace('{{PLUGIN_ROOT}}', pluginPath),
                     replace: v.replace('{{PLUGIN_ROOT}}', `../../node_modules/${key}`),

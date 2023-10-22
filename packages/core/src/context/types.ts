@@ -26,7 +26,7 @@ export type CreateContextOptions = {
     RNV_HOME_DIR?: string;
 };
 
-type RnvContextProgram = ParamKeys & {
+export type RnvContextProgram = ParamKeys & {
     args: string[];
     rawArgs: string[];
     option: (cmd: string, desc: string) => void;

@@ -1,5 +1,8 @@
 import {
     OverridesOptions,
+    PlatformKey,
+    RenativeConfigPluginPlatform,
+    RnvContext,
     addSystemInjects,
     getAppFolder,
     getAppId,
@@ -8,14 +11,13 @@ import {
     getEntryFile,
     getGetJsBundleFile,
     getIP,
-    logWarning,
     writeCleanFile,
 } from '@rnv/core';
 import { mkdirSync } from 'fs';
 import path from 'path';
 import { Context } from './types';
 
-const JS_BUNDLE_DEFAULTS: any = {
+const JS_BUNDLE_DEFAULTS: Partial<Record<PlatformKey, string>> = {
     // Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     androidwear: '"assets://index.androidwear.bundle"',
 };
@@ -116,7 +118,7 @@ export const parseMainApplicationSync = (c: Context) => {
     );
 };
 
-export const parseMainActivitySync = (c: any) => {
+export const parseMainActivitySync = (c: RnvContext) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
 
@@ -210,9 +212,16 @@ export const parseSplashActivitySync = (c: Context) => {
     );
 };
 
-export const injectPluginKotlinSync = (c: any, plugin: any, key: any, pkg: any) => {
-    if (plugin.activityImports instanceof Array) {
-        plugin.activityImports.forEach((activityImport: any) => {
+export const injectPluginKotlinSync = (
+    c: RnvContext,
+    plugin: RenativeConfigPluginPlatform,
+    key: string,
+    pkg: string | undefined
+) => {
+    const templ = plugin.templateAndroid;
+    const mainActivity = templ?.MainActivity_java;
+    if (mainActivity?.imports) {
+        mainActivity.imports.forEach((activityImport) => {
             // Avoid duplicate imports
             if (c.payload.pluginConfigAndroid.pluginActivityImports.indexOf(activityImport) === -1) {
                 c.payload.pluginConfigAndroid.pluginActivityImports += `import ${activityImport}\n`;
@@ -220,93 +229,68 @@ export const injectPluginKotlinSync = (c: any, plugin: any, key: any, pkg: any) 
         });
     }
 
-    if (plugin.activityMethods instanceof Array) {
+    if (mainActivity?.methods) {
         c.payload.pluginConfigAndroid.pluginActivityMethods += '\n';
-        c.payload.pluginConfigAndroid.pluginActivityMethods += `${plugin.activityMethods.join('\n    ')}`;
+        c.payload.pluginConfigAndroid.pluginActivityMethods += `${mainActivity.methods.join('\n    ')}`;
     }
 
-    const { mainActivity } = plugin;
     if (mainActivity) {
-        if (mainActivity.createMethods instanceof Array) {
+        if (mainActivity.createMethods) {
             c.payload.pluginConfigAndroid.pluginActivityCreateMethods += '\n';
             c.payload.pluginConfigAndroid.pluginActivityCreateMethods += `${mainActivity.createMethods.join('\n    ')}`;
         }
 
-        if (mainActivity.resultMethods instanceof Array) {
+        if (mainActivity.resultMethods) {
             c.payload.pluginConfigAndroid.pluginActivityResultMethods += '\n';
             c.payload.pluginConfigAndroid.pluginActivityResultMethods += `${mainActivity.resultMethods.join('\n    ')}`;
         }
-
-        if (mainActivity.imports instanceof Array) {
-            mainActivity.imports.forEach((v: any) => {
-                c.payload.pluginConfigAndroid.pluginActivityImports += `import ${v}\n`;
-            });
-        }
-
-        if (mainActivity.methods instanceof Array) {
-            c.payload.pluginConfigAndroid.pluginActivityMethods += '\n';
-            c.payload.pluginConfigAndroid.pluginActivityMethods += `${mainActivity.methods.join('\n    ')}`;
-        }
-    }
-
-    if (plugin.imports) {
-        plugin.imports.forEach((v: any) => {
-            c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
-        });
     }
 
     _injectPackage(c, plugin, pkg);
 
-    if (plugin.MainApplication) {
-        if (plugin.MainApplication.packages) {
-            plugin.MainApplication.packages.forEach((v: any) => {
-                _injectPackage(c, plugin, v);
-            });
-        }
+    const mainApplication = templ?.MainApplication_java;
+
+    if (mainApplication?.packages) {
+        mainApplication.packages.forEach((v) => {
+            _injectPackage(c, plugin, v);
+        });
     }
 
-    const { mainApplication } = plugin;
-    if (mainApplication) {
-        if (mainApplication.createMethods instanceof Array) {
-            c.payload.pluginConfigAndroid.pluginApplicationCreateMethods += '\n';
-            c.payload.pluginConfigAndroid.pluginApplicationCreateMethods += `${mainApplication.createMethods.join(
-                '\n    '
-            )}`;
-        }
-
-        if (mainApplication.imports instanceof Array) {
-            mainApplication.imports.forEach((v: any) => {
-                c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
-            });
-        }
-
-        if (mainApplication.methods instanceof Array) {
-            c.payload.pluginConfigAndroid.pluginApplicationMethods += '\n';
-            c.payload.pluginConfigAndroid.pluginApplicationMethods += `${mainApplication.methods.join('\n    ')}`;
-        }
+    if (mainApplication?.createMethods) {
+        c.payload.pluginConfigAndroid.pluginApplicationCreateMethods += '\n';
+        c.payload.pluginConfigAndroid.pluginApplicationCreateMethods += `${mainApplication.createMethods.join(
+            '\n    '
+        )}`;
     }
 
-    if (plugin.mainApplicationMethods) {
-        logWarning(
-            `Plugin ${key} in ${c.paths.project.config} is using DEPRECATED "${c.platform}": { MainApplicationMethods }. Use "${c.platform}": { "mainApplication": { "methods": []}} instead`
-        );
-        c.payload.pluginConfigAndroid.pluginApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
+    if (mainApplication?.imports) {
+        mainApplication.imports.forEach((v) => {
+            c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
+        });
+    }
+
+    if (mainApplication?.methods) {
+        c.payload.pluginConfigAndroid.pluginApplicationMethods += '\n';
+        c.payload.pluginConfigAndroid.pluginApplicationMethods += `${mainApplication.methods.join('\n    ')}`;
     }
 };
 
-const _injectPackage = (c: any, plugin: any, pkg: any) => {
+const _injectPackage = (c: RnvContext, plugin: RenativeConfigPluginPlatform, pkg: string | undefined) => {
     if (pkg) {
         c.payload.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     }
     let packageParams = '';
-    if (plugin.packageParams) {
-        packageParams = plugin.packageParams.join(',');
+    const mainApplication = plugin.templateAndroid?.MainApplication_java;
+    if (mainApplication?.packageParams) {
+        packageParams = mainApplication.packageParams.join(',');
     }
 
-    const className = _extractClassName(pkg);
-    if (className) {
-        c.payload.pluginConfigAndroid.pluginPackages += `${className}(${packageParams}),\n`;
+    if (pkg) {
+        const className = _extractClassName(pkg);
+        if (className) {
+            c.payload.pluginConfigAndroid.pluginPackages += `${className}(${packageParams}),\n`;
+        }
     }
 };
 
-const _extractClassName = (pkg: any) => (pkg ? pkg.split('.').pop() : null);
+const _extractClassName = (pkg: string) => (pkg ? pkg.split('.').pop() : null);

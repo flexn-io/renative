@@ -153,11 +153,13 @@ const _prepareProjectOverview = (c: RnvContext, data: NewProjectData) => {
     data.confirmString = str;
 };
 
+type ConfigProp = Required<ConfigFileTemplate>['templateConfig']['bootstrapQuestions'][number]['configProp'];
+
 type QuestionResults = Record<
     string,
     {
         answer: string;
-        configProp: any;
+        configProp: ConfigProp;
         value: any;
     }
 >;

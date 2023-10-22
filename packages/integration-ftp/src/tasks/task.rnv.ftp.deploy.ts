@@ -30,24 +30,27 @@ const _deployToFtp = (c: RnvContext, platform: RnvPlatform) =>
             promise = _createEnvFtpConfig(envPath);
         } else {
             promise = new Promise((resolve2) => {
-                fsReadFile(envPath, (err: any, data: any) => {
+                fsReadFile(envPath, (err: unknown, data) => {
                     if (err) return reject(err);
                     resolve2(data.toString());
                 });
             });
         }
         promise
-            .then((envContent: any) => {
+            .then((envContent) => {
                 let matches = 0;
                 const targetMatches = 2;
-                envContent
-                    .split('\n')
-                    .map((line: string) => line.split('='))
-                    .forEach(([key]: any) => {
-                        if (['RNV_DEPLOY_WEB_FTP_SERVER', 'RNV_DEPLOY_WEB_FTP_USER'].indexOf(key) > -1) {
-                            matches++;
-                        }
-                    });
+                if (typeof envContent === 'string') {
+                    envContent
+                        .split('\n')
+                        .map((line: string) => line.split('='))
+                        .forEach(([key]: any) => {
+                            if (['RNV_DEPLOY_WEB_FTP_SERVER', 'RNV_DEPLOY_WEB_FTP_USER'].indexOf(key) > -1) {
+                                matches++;
+                            }
+                        });
+                }
+
                 let envPromise;
                 if (matches >= targetMatches) {
                     envPromise = Promise.resolve();

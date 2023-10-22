@@ -90,6 +90,36 @@ export const TemplateAndroidBaseFragment = {
             ),
         })
     ),
+    MainActivity_java: z.optional(
+        z.object({
+            onCreate: z
+                .string({})
+                .optional()
+                .default('super.onCreate(savedInstanceState)')
+                .describe('Overrides super.onCreate method handler of MainActivity.java'),
+            imports: z.array(z.string()).optional(),
+            methods: z.array(z.string()).optional(),
+            createMethods: z.array(z.string()).optional(),
+            resultMethods: z.array(z.string()).optional(),
+        })
+    ),
+    MainApplication_java: z.optional(
+        z
+            .object({
+                imports: z.array(z.string()).optional(),
+                methods: z.array(z.string()).optional(),
+                createMethods: z.array(z.string()).optional(),
+                packages: z.array(z.string()).optional(),
+                packageParams: z.array(z.string()).optional(),
+
+                // onCreate: z
+                //     .string({})
+                //     .optional()
+                //     .default('super.onCreate(savedInstanceState)')
+                //     .describe('Overrides super.onCreate method handler of MainActivity.java'),
+            })
+            .describe('Allows you to configure behaviour of MainActivity')
+    ),
 };
 // .describe('Allows more advanced modifications to Android based project template');
 
