@@ -61,7 +61,8 @@ const ManifestChildWithChildren: z.ZodType<_ManifestChildType> = ManifestChildBa
     children: z.lazy(() => ManifestChildWithChildren.array()),
 });
 
-const AndroidManifest = z.object({
+const AndroidManifest = ManifestChildBase.extend({
+    package: z.string().optional(),
     children: z.array(ManifestChildWithChildren),
 }).describe(`Allows you to directly manipulate \`AndroidManifest.xml\` via json override mechanism
 Injects / Overrides values in AndroidManifest.xml file of generated android based project
@@ -124,3 +125,5 @@ export const TemplateAndroidBaseFragment = {
 // .describe('Allows more advanced modifications to Android based project template');
 
 export type _ManifestChildWithChildrenType = z.infer<typeof ManifestChildWithChildren>;
+
+export type _AndroidManifestType = z.infer<typeof AndroidManifest>;

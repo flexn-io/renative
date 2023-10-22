@@ -33,7 +33,7 @@ export const parseXcodeProject = async (c: Context) => {
     c.payload.xcodeProj.deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '14.0');
     c.payload.xcodeProj.provisionProfileSpecifier =
         c.program.provisionProfileSpecifier || getConfigProp(c, platform, 'provisionProfileSpecifier');
-    c.payload.xcodeProj.provisionProfileSpecifiers = getConfigProp(c, platform, 'provisionProfileSpecifiers');
+    c.payload.xcodeProj.provisionProfileSpecifiers = getConfigProp(c, platform, 'provisionProfileSpecifiers') || {};
     c.payload.xcodeProj.codeSignIdentity =
         c.program.codeSignIdentity || getConfigProp(c, platform, 'codeSignIdentity', 'iPhone Developer');
 

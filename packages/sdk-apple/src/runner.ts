@@ -463,7 +463,8 @@ and we will try to help!
     }
 };
 
-const _handleMissingTeam = async (c: Context, e: any) => {
+const _handleMissingTeam = async (c: Context, e: unknown) => {
+    if (typeof e !== 'string') return;
     const isDevelopmentTeamMissing = e.includes('requires a development team. Select a development team');
     if (isDevelopmentTeamMissing) {
         const loc = `./appConfigs/${c.runtime.appId}/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;

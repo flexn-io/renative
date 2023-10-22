@@ -5,7 +5,7 @@ import type { _MergedPlatformObjectType } from './platforms';
 import type { _RootAppBaseSchemalType } from './configFiles/app';
 
 import type { _RootProjectBaseSchemaType } from './configFiles/project';
-import type { _ManifestChildWithChildrenType } from './platforms/fragments/templateAndroidBase';
+import type { _AndroidManifestType, _ManifestChildWithChildrenType } from './platforms/fragments/templateAndroidBase';
 import type { _MergedPlatformPrivateObjectType } from './configFiles/private';
 import { ConfigFileBuildConfig } from './configFiles/buildConfig';
 
@@ -39,6 +39,8 @@ export type RenativeConfigTaskKey = keyof Required<Required<ConfigFileBuildConfi
 export type RenativeConfigAppDelegateMethod = _AppDelegateMethodType;
 
 export type AndroidManifestNode = _ManifestChildWithChildrenType;
+
+export type AndroidManifest = _AndroidManifestType;
 
 // export type ManifestNode = _ManifestChildType;
 

@@ -53,7 +53,7 @@ export const PlatformiOSFragment = {
         .describe('Allows you to pass launch arguments to active scheme')
         .optional(),
     provisionProfileSpecifier: z.string().optional(),
-    provisionProfileSpecifiers: z.array(z.string()).optional(),
+    provisionProfileSpecifiers: z.record(z.string(), z.string()).optional(),
     allowProvisioningUpdates: z.boolean().optional(),
     provisioningProfiles: z.optional(provisioningProfiles),
     codeSignIdentities: z.optional(z.record(z.string(), z.string())),

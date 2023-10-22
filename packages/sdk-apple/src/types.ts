@@ -54,14 +54,14 @@ export type Payload = {
         runScheme?: string;
         provisioningStyle?: string;
         deploymentTarget?: string;
-        provisionProfileSpecifier?: any;
-        provisionProfileSpecifiers?: any;
+        provisionProfileSpecifier?: string;
+        provisionProfileSpecifiers?: Record<string, string>;
         excludedArchs?: Array<string>;
         codeSignIdentity?: string;
         codeSignIdentities?: Record<string, string>;
         systemCapabilities?: Record<string, boolean>;
-        teamID?: any;
-        appId?: any;
+        teamID?: string;
+        appId?: string;
     };
 };
 
