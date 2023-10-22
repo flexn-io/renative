@@ -629,7 +629,7 @@ export const resolvePackage = (text: string) => {
     return newText;
 };
 
-export const sanitizeDynamicProps = <T = unknown>(obj: T, propConfig: FileUtilsPropConfig): any => {
+export const sanitizeDynamicProps = <T = unknown>(obj: T, propConfig: FileUtilsPropConfig): T => {
     if (!obj) {
         return obj;
     }
@@ -659,7 +659,7 @@ export const sanitizeDynamicProps = <T = unknown>(obj: T, propConfig: FileUtilsP
             }
         });
     } else if (typeof obj === 'string') {
-        return resolvePackage(obj);
+        return resolvePackage(obj) as T;
     }
 
     return obj;
@@ -740,7 +740,7 @@ export const getFileListSync = (dir: fs.PathLike) => {
 
 export const loadFile = <T, K extends Extract<keyof T, string>>(
     fileObj: T,
-    pathObj: Partial<Record<K, any>>,
+    pathObj: Partial<Record<K, unknown>>,
     key: K
 ) => {
     const pKey = `${key}Exists` as K;
