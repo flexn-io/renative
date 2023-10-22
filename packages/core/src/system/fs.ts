@@ -150,7 +150,7 @@ export const writeCleanFile = (
                 if (occurences) {
                     occurences.forEach((occ) => {
                         const val = occ.replace('{{configProps.', '').replace('}}', '') as ConfigPropKey;
-                        const configVal = api.getConfigProp(c, c.platform, val, '');
+                        const configVal = api.getConfigProp(c, c.platform, val) || '';
                         pFileClean = pFileClean.replace(occ, configVal);
                     });
                 }

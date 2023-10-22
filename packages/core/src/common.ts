@@ -14,6 +14,7 @@ import { inquirerPrompt } from './api';
 import { RnvPlatform } from './types';
 import { DEFAULTS } from './schema/defaults';
 import { ConfigFileBuildConfig } from './schema/configFiles/buildConfig';
+import { GetConfigPropFn } from './api/types';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
@@ -250,7 +251,7 @@ const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, 
     return resultCommon;
 };
 
-export const getConfigProp = <T extends ConfigPropKey>(
+export const getConfigProp: GetConfigPropFn = <T extends ConfigPropKey>(
     c: RnvContext,
     platform: RnvPlatform,
     key: T,
