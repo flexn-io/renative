@@ -168,17 +168,18 @@ export const loadEnginePluginDeps = async (c: RnvContext, engineConfigs: Array<R
     let hasAddedPlugins = false;
     const originalProjectPlugins = cnf.plugins || {};
     engineConfigs.forEach((ecf) => {
-        const engineConfig = readObjectSync(ecf.configPath);
+        const engineConfig = readObjectSync<ConfigFileEngine>(ecf.configPath);
 
-        if (engineConfig?.plugins) {
+        const engPlugins = engineConfig?.plugins;
+        if (engPlugins) {
             const projectPlugins = c.files.project.config?.plugins;
             // Comparing original config causes engine think that template is not extended with additional deps
             // const projectPlugins = c.files.project.config_original.plugins;
             if (projectPlugins) {
-                Object.keys(engineConfig?.plugins).forEach((k) => {
+                Object.keys(engPlugins).forEach((k) => {
                     if (!projectPlugins[k]) {
                         hasAddedPlugins = true;
-                        originalProjectPlugins[k] = engineConfig?.plugins[k];
+                        originalProjectPlugins[k] = engPlugins[k];
                         addedPlugins[k] = addedPlugins[k] || [];
                         addedPlugins[k].push(k);
                     }
@@ -216,9 +217,9 @@ export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<
     // Check engine dependencies
     const addedDeps = [];
     engineConfigs.forEach((ecf) => {
-        const engineConfig = readObjectSync(ecf.configPath);
+        const engineConfig = readObjectSync<ConfigFileEngine>(ecf.configPath);
         c.buildConfig.defaults?.supportedPlatforms?.forEach((platform) => {
-            const npm = engineConfig?.platforms?.[platform]?.npm;
+            const npm = engineConfig?.platforms?.[platform]?.npm || {};
             if (npm) {
                 if (npm.devDependencies) {
                     const deps = c.files.project.package.devDependencies || {};
@@ -233,8 +234,10 @@ export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<
                                 logInfo(
                                     `Engine ${ecf.key} requires npm devDependency ${k} for platform ${platform}. ADDING...DONE`
                                 );
-                                deps[k] = npm?.devDependencies[k];
-                                addedDeps.push(k);
+                                if (npm.devDependencies?.[k]) {
+                                    deps[k] = npm.devDependencies[k];
+                                    addedDeps.push(k);
+                                }
                             }
                         }
                     });
@@ -254,8 +257,10 @@ export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<
                                 logInfo(
                                     `Engine ${ecf.key} requires npm dependency ${k} for platform ${platform}. ADDING...DONE`
                                 );
-                                deps[k] = npm?.dependencies[k];
-                                addedDeps.push(k);
+                                if (npm.dependencies?.[k]) {
+                                    deps[k] = npm.dependencies[k];
+                                    addedDeps.push(k);
+                                }
                             }
                         }
                     });
@@ -268,8 +273,10 @@ export const loadEnginePackageDeps = async (c: RnvContext, engineConfigs: Array<
                             logInfo(
                                 `Engine ${ecf.key} requires npm optionalDependency ${k} for platform ${platform}. ADDING...DONE`
                             );
-                            deps[k] = npm?.optionalDependencies[k];
-                            addedDeps.push(k);
+                            if (npm.optionalDependencies?.[k]) {
+                                deps[k] = npm.optionalDependencies[k];
+                                addedDeps.push(k);
+                            }
                         }
                     });
                     c.files.project.package.optionalDependencies = deps;

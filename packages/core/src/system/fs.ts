@@ -12,6 +12,7 @@ import { getApi } from '../api/provider';
 import { getContext } from '../context/provider';
 import { matchRegEx } from './regEx';
 import type { ConfigPropKey } from '../schema/types';
+import lGet from 'lodash.get';
 
 export const fsWriteFileSync = (dest: string | undefined, data: string, options?: fs.WriteFileOptions) => {
     // if (dest && dest.includes('renative.json')) {
@@ -48,11 +49,11 @@ export const fsSymlinkSync = (arg1: fs.PathLike | undefined, arg2: fs.PathLike) 
     fs.symlinkSync(arg1!, arg2);
 };
 
-export const fsReadFile = (arg1: fs.PathLike, arg2: any) => {
+export const fsReadFile = (arg1: fs.PathLike, arg2: (err: unknown, data: Buffer) => void) => {
     fs.readFile(arg1, arg2);
 };
 
-export const fsReaddir = (arg1: fs.PathLike, arg2: any) => fs.readdir(arg1, arg2);
+export const fsReaddir = (arg1: fs.PathLike, arg2: (err: unknown, files: string[]) => void) => fs.readdir(arg1, arg2);
 
 const _getSanitizedPath = (origPath: string, timestampPathsConfig?: TimestampPathsConfig) => {
     if (timestampPathsConfig?.paths?.length && timestampPathsConfig?.timestamp) {
@@ -149,7 +150,7 @@ export const writeCleanFile = (
                 if (occurences) {
                     occurences.forEach((occ) => {
                         const val = occ.replace('{{configProps.', '').replace('}}', '') as ConfigPropKey;
-                        const configVal = api.getConfigProp(c, c.platform, val, '');
+                        const configVal = api.getConfigProp(c, c.platform, val) || '';
                         pFileClean = pFileClean.replace(occ, configVal);
                     });
                 }
@@ -490,7 +491,7 @@ export const writeObjectSync = (filePath: string, obj: string | object, spaces: 
     return writeFileSync(filePath, obj, spaces, addNewLine);
 };
 
-export const readObjectSync = <T = any>(filePath?: string, sanitize?: boolean, c?: RnvContext) => {
+export const readObjectSync = <T = object>(filePath?: string, sanitize?: boolean, c?: RnvContext) => {
     logDebug(`readObjectSync:${sanitize}:${filePath}`);
     if (!filePath) {
         logDebug('readObjectSync: filePath is undefined');
@@ -506,7 +507,7 @@ export const readObjectSync = <T = any>(filePath?: string, sanitize?: boolean, c
         if (sanitize) {
             logDebug(`readObjectSync: will sanitize file at: ${filePath}`);
             if (c) {
-                obj = sanitizeDynamicRefs(c, obj);
+                obj = sanitizeDynamicRefs<T>(c, obj);
             }
             if (obj._refs) {
                 obj = sanitizeDynamicProps(obj, {
@@ -559,20 +560,17 @@ export const getRealPath = (c: RnvContext, p: string | undefined, key = 'undefin
 };
 
 const _refToValue = (c: RnvContext, ref: string, key: string) => {
+    // ref=> '$REF$:./my/path/to/file.json$...prop.subProp'
     const val = ref.replace('$REF$:', '').split('$...');
-
+    // val=> ['./my/path/to/file.json', 'prop.subProp']
     const realPath = getRealPath(c, val[0], key);
 
     if (realPath && realPath.includes('.json') && val.length === 2) {
         if (fs.existsSync(realPath)) {
             const obj = readObjectSync(realPath);
-
-            try {
-                const output = val[1].split('.').reduce((o, i) => o[i], obj);
-                return output;
-            } catch (e) {
-                logWarning(`_refToValue: ${e}`);
-            }
+            const valPath = val[1]; // valPath=> 'prop.subProp'
+            const output = lGet(obj, valPath);
+            return output;
         } else {
             logWarning(`_refToValue: ${chalk().white(realPath)} does not exist!`);
         }
@@ -588,26 +586,29 @@ export const arrayMerge = (destinationArray: Array<string>, sourceArray: Array<s
 
 const _arrayMergeOverride = (_destinationArray: Array<string>, sourceArray: Array<string>) => sourceArray;
 
-export const sanitizeDynamicRefs = (c: RnvContext, obj: any) => {
+type DynaObj = Record<string, unknown> | Array<unknown>;
+export const sanitizeDynamicRefs = <T = unknown>(c: RnvContext, obj: T) => {
     if (!obj) return obj;
     if (Array.isArray(obj)) {
         obj.forEach((v) => {
             sanitizeDynamicRefs(c, v);
         });
         return obj;
-    }
-    Object.keys(obj).forEach((key) => {
-        const val = obj[key];
-        if (val) {
-            if (typeof val === 'string') {
-                if (val.startsWith('$REF$:')) {
-                    obj[key] = _refToValue(c, val, key);
+    } else if (typeof obj === 'object') {
+        Object.keys(obj).forEach((key) => {
+            const val = obj[key as keyof T];
+            if (val) {
+                if (typeof val === 'string') {
+                    if (val.startsWith('$REF$:')) {
+                        obj[key as keyof T] = _refToValue(c, val, key);
+                    }
+                } else if (Array.isArray(val) || typeof val === 'object') {
+                    sanitizeDynamicRefs(c, val as DynaObj);
                 }
-            } else {
-                sanitizeDynamicRefs(c, val);
             }
-        }
-    });
+        });
+    }
+
     return obj;
 };
 
@@ -628,7 +629,7 @@ export const resolvePackage = (text: string) => {
     return newText;
 };
 
-export const sanitizeDynamicProps = (obj: any, propConfig: FileUtilsPropConfig): any => {
+export const sanitizeDynamicProps = <T = unknown>(obj: T, propConfig: FileUtilsPropConfig): T => {
     if (!obj) {
         return obj;
     }
@@ -643,10 +644,11 @@ export const sanitizeDynamicProps = (obj: any, propConfig: FileUtilsPropConfig):
         });
     } else if (typeof obj === 'object') {
         Object.keys(obj).forEach((key) => {
-            const val = obj[key];
+            const val = obj[key as keyof T];
+            // TODO: evaluate if this is still needed
             // Some values are passed as keys so have to validate keys as well
-            const newKey = resolvePackage(key);
-            delete obj[key];
+            const newKey = resolvePackage(key) as keyof T;
+            delete obj[key as keyof T];
             obj[newKey] = val;
             if (val) {
                 if (typeof val === 'string') {
@@ -657,7 +659,7 @@ export const sanitizeDynamicProps = (obj: any, propConfig: FileUtilsPropConfig):
             }
         });
     } else if (typeof obj === 'string') {
-        return resolvePackage(obj);
+        return resolvePackage(obj) as T;
     }
 
     return obj;
@@ -669,42 +671,50 @@ const BIND_CONFIG_PROPS = '{{configProps.';
 const BIND_RUNTIME_PROPS = '{{runtimeProps.';
 const BIND_ENV = '{{env.';
 
-const _bindStringVals = (obj: any, _val: string, newKey: string | number, propConfig: FileUtilsPropConfig) => {
+const _bindStringVals = <T, K extends keyof T>(obj: T, _val: string, newKey: K, propConfig: FileUtilsPropConfig) => {
     const { props = {}, configProps = {}, runtimeProps = {} } = propConfig;
     let val = _val;
     if (val.includes(BIND_FILES)) {
         const key = val.replace(BIND_FILES, '').replace('}}', '');
         //TODO: this any not good
-        const nVal: any = key.split('.').reduce((o, i) => o?.[i], propConfig.files);
-        obj[newKey] = resolvePackage(nVal);
+
+        const nVal = lGet(propConfig.files, key);
+        obj[newKey] = resolvePackage(nVal) as T[K];
     } else if (val.includes(BIND_PROPS)) {
         Object.keys(props).forEach((pk) => {
             val = val.replace(`${BIND_PROPS}${pk}}}`, props?.[pk]);
-            obj[newKey] = resolvePackage(val);
+            obj[newKey] = resolvePackage(val) as T[K];
         });
     } else if (val.includes(BIND_CONFIG_PROPS)) {
         Object.keys(configProps).forEach((pk2) => {
             val = val.replace(`${BIND_CONFIG_PROPS}${pk2}}}`, configProps[pk2]);
-            obj[newKey] = resolvePackage(val);
+            obj[newKey] = resolvePackage(val) as T[K];
         });
     } else if (val.includes(BIND_RUNTIME_PROPS)) {
         Object.keys(runtimeProps).forEach((pk3) => {
             val = val.replace(`${BIND_RUNTIME_PROPS}${pk3}}}`, runtimeProps[pk3]);
-            obj[newKey] = resolvePackage(val);
+            obj[newKey] = resolvePackage(val) as T[K];
         });
     } else if (val.includes(BIND_ENV)) {
         const key = val.replace(BIND_ENV, '').replace('}}', '');
-        obj[newKey] = process.env[key];
+        obj[newKey] = process.env[key] as T[K];
     }
 };
 
-export const mergeObjects = (c: RnvContext, obj1: any, obj2: any, dynamicRefs = true, replaceArrays = false) => {
-    if (!obj2) return obj1;
-    if (!obj1) return obj2;
+export const mergeObjects = <T1>(
+    c: RnvContext,
+    obj1: Partial<T1>,
+    obj2: Partial<T1>,
+    dynamicRefs = true,
+    replaceArrays = false
+) => {
+    if (!obj2) return obj1 as T1;
+    if (!obj1) return obj2 as T1;
     const obj = merge(obj1, obj2, {
         arrayMerge: replaceArrays ? _arrayMergeOverride : arrayMerge,
     });
-    return dynamicRefs ? sanitizeDynamicRefs(c, obj) : obj;
+    const out = dynamicRefs ? sanitizeDynamicRefs(c, obj) : obj;
+    return out as T1;
 };
 
 export const replaceHomeFolder = (p: string) => {
@@ -729,8 +739,12 @@ export const getFileListSync = (dir: fs.PathLike) => {
     return results;
 };
 
-export const loadFile = (fileObj: any, pathObj: Record<string, any>, key: string) => {
-    const pKey = `${key}Exists`;
+export const loadFile = <T, K extends Extract<keyof T, string>>(
+    fileObj: T,
+    pathObj: Partial<Record<K, unknown>>,
+    key: K
+) => {
+    const pKey = `${key}Exists` as K;
     const pth = pathObj[key];
 
     if (typeof pth === 'string' && !fsExistsSync(pth)) {

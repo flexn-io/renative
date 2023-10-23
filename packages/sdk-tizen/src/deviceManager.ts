@@ -116,8 +116,14 @@ const _getDeviceID = async (c: RnvContext, target: string) => {
         let connectResponse: string;
         try {
             connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
-        } catch (e: any) {
-            connectResponse = e;
+        } catch (e) {
+            if (typeof e === 'string') {
+                connectResponse = e;
+            } else if (e instanceof Error) {
+                connectResponse = e.message;
+            } else {
+                connectResponse = 'Unknown error';
+            }
         }
         if (connectResponse.includes('EPERM')) {
             throw new Error(
@@ -321,8 +327,12 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
             hasDevice = true;
         } catch (e) {
             if (typeof e === 'string' && e.includes('No device matching')) {
-                await launchTizenSimulator(c, target);
-                hasDevice = await _waitForEmulatorToBeReady(c, target);
+                if (target) {
+                    await launchTizenSimulator(c, target);
+                    hasDevice = await _waitForEmulatorToBeReady(c, target);
+                } else {
+                    return Promise.reject('Not target specified. (-t)');
+                }
             }
         }
         try {
@@ -332,13 +342,13 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
                 );
                 fsRenameSync(path.join(tOut, wgt), path.join(tOut, wgtClean));
             }
-        } catch (err: any) {
+        } catch (err) {
             logError(err);
         }
         try {
             await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${wgtClean} -t ${deviceID}`);
             hasDevice = true;
-        } catch (err: any) {
+        } catch (err) {
             logError(err);
             logWarning(
                 `There is no emulator or device connected! Let's try to launch it. "${chalk().white.bold(
@@ -346,8 +356,12 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
                 )}"`
             );
 
-            await launchTizenSimulator(c, target);
-            hasDevice = await _waitForEmulatorToBeReady(c, target);
+            if (target) {
+                await launchTizenSimulator(c, target);
+                hasDevice = await _waitForEmulatorToBeReady(c, target);
+            } else {
+                return Promise.reject('Not target specified. (-t)');
+            }
         }
 
         const toReturn = true;
@@ -367,7 +381,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
     };
 
     // Check if target is present or it's the default one
-    const isTargetSpecified = c.program.target;
+    const isTargetSpecified = !!target;
 
     // Check for running devices
     const devices = await _getRunningDevices(c);

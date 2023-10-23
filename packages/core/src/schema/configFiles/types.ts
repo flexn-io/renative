@@ -11,6 +11,7 @@ import { _RootTemplateSchemaType } from './template';
 import { _RootTemplatesSchemaType } from './templates';
 import { _RootWorkspacesSchemaType } from './workspaces';
 import { _RootRuntimeSchemaType } from './runtime';
+import { _RootOverridesSchemaType } from './overrides';
 
 // renative.json
 export type ConfigFileProject = _RootProjectSchemaType;
@@ -50,3 +51,6 @@ export type ConfigFileIntegration = _RootIntegrationSchemaType;
 
 // renative.runtime.json
 export type ConfigFileRuntime = _RootRuntimeSchemaType;
+
+//overrides.json
+export type ConfigFileOverrides = _RootOverridesSchemaType;

@@ -26,7 +26,7 @@ const MonoRoot = z.string().describe('Define custom path to monorepo root where 
 
 const Env = z.record(z.string(), z.any()).describe('Object containing injected env variables');
 
-const Defaults = z
+export const DefaultsSchema = z
     .object({
         ports: z.optional(Ports),
         supportedPlatforms: z.optional(SupportedPlatforms),
@@ -148,7 +148,7 @@ const Permissions = z
         'Permission definititions which can be used by app configs via `includedPermissions` and `excludedPermissions` to customize permissions for each app'
     );
 
-const Engines = z.record(z.string(), Engine).describe('List of engines available in this project');
+export const EnginesSchema = z.record(z.string(), Engine).describe('List of engines available in this project');
 
 const EnableHookRebuild = z
     .boolean()
@@ -223,14 +223,14 @@ const RootProjectBaseFragment = {
     projectName: ProjectName,
     isMonorepo: z.optional(IsMonoRepo),
     isTemplate: z.boolean().optional(),
-    defaults: z.optional(Defaults),
+    defaults: z.optional(DefaultsSchema),
     pipes: z.optional(Pipes),
     templates: Templates,
     currentTemplate: CurrentTemplate,
     crypto: z.optional(Crypto),
     paths: z.optional(Paths),
     permissions: z.optional(Permissions),
-    engines: z.optional(Engines),
+    engines: z.optional(EnginesSchema),
     custom: z.optional(Ext),
     enableHookRebuild: z.optional(EnableHookRebuild),
     monoRoot: z.optional(MonoRoot),
@@ -247,7 +247,7 @@ const RootProjectBaseFragment = {
             "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
         ),
     isNew: z
-        .string()
+        .boolean()
         .optional()
         .describe('Marker indicating that this project has just been bootstrapped. this prop is managed by rnv'),
 };

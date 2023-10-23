@@ -9,11 +9,12 @@ import { chalk, logError, logTask, logWarning } from './logger';
 import { getValidLocalhost } from './utils/utils';
 import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
-import { ConfigProp, ConfigPropKey } from './schema/types';
+import { ConfigProp, ConfigPropKey, PlatformKey } from './schema/types';
 import { inquirerPrompt } from './api';
 import { RnvPlatform } from './types';
 import { DEFAULTS } from './schema/defaults';
 import { ConfigFileBuildConfig } from './schema/configFiles/buildConfig';
+import { GetConfigPropFn } from './api/types';
 
 export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): TimestampPathsConfig | undefined => {
     let timestampBuildFiles: Array<string> = [];
@@ -21,7 +22,7 @@ export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): T
     if (platform === 'web') {
         timestampBuildFiles = (getConfigProp(c, platform, 'timestampBuildFiles') || []).map((v) => path.join(pPath, v));
     }
-    if (timestampBuildFiles?.length) {
+    if (timestampBuildFiles?.length && c.runtime.timestamp) {
         return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
     }
     return undefined;
@@ -76,7 +77,7 @@ export const getDevServerHost = (c: RnvContext) => {
     const devServerHostOrig = getConfigProp(c, c.platform, 'devServerHost');
 
     const devServerHostFixed = devServerHostOrig
-        ? getValidLocalhost(devServerHostOrig, c.runtime.localhost)
+        ? getValidLocalhost(devServerHostOrig, c.runtime.localhost || DEFAULTS.devServerHost)
         : DEFAULTS.devServerHost;
 
     return devServerHostFixed;
@@ -250,7 +251,7 @@ const _getValueOrMergedObject = (resultScheme: object, resultPlatforms: object, 
     return resultCommon;
 };
 
-export const getConfigProp = <T extends ConfigPropKey>(
+export const getConfigProp: GetConfigPropFn = <T extends ConfigPropKey>(
     c: RnvContext,
     platform: RnvPlatform,
     key: T,
@@ -263,13 +264,11 @@ export const getConfigProp = <T extends ConfigPropKey>(
     return _getConfigProp<T>(c, platform, key, defaultVal, c.buildConfig);
 };
 
-type PlatformGeneric =
-    | {
-          buildSchemes?: Record<string, any>;
-      }
-    | undefined;
-
-// type PlatformGeneric = any;
+type Plat = Required<Required<ConfigFileBuildConfig>['platforms']>[PlatformKey];
+type PlatPropKey = keyof Plat;
+type BuildSchemePropKey = keyof Required<Plat>['buildSchemes'][string];
+type CommonPropKey = keyof ConfigFileBuildConfig['common'];
+type BuildConfigPropKey = keyof ConfigFileBuildConfig;
 
 export const _getConfigProp = <T extends ConfigPropKey>(
     c: RnvContext,
@@ -280,31 +279,30 @@ export const _getConfigProp = <T extends ConfigPropKey>(
 ): ConfigProp[T] => {
     if (!sourceObj || !platform) return undefined;
 
-    const platformObj: PlatformGeneric = sourceObj.platforms?.[platform];
+    const platformObj = sourceObj.platforms?.[platform];
     const ps = c.runtime.scheme;
-    const baseKey = key;
+    // const baseKey = key as PlatPropKey;
 
     let resultPlatforms;
     let scheme;
-    if (platformObj) {
+    if (platformObj && ps) {
         scheme = platformObj.buildSchemes?.[ps] || {};
-        resultPlatforms = getFlavouredProp<any, any>(c, platformObj, baseKey);
+        resultPlatforms = getFlavouredProp(c, platformObj, key as PlatPropKey);
     } else {
         scheme = {};
     }
 
-    const resultScheme = baseKey && scheme[baseKey];
-    const resultCommonRoot = getFlavouredProp<any, any>(c, sourceObj.common || {}, baseKey);
-    const resultCommonScheme = getFlavouredProp<any, any>(
-        c,
-        sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {},
-        baseKey
-    );
+    const resultScheme = key && scheme[key as BuildSchemePropKey];
+    const resultCommonRoot = getFlavouredProp(c, sourceObj.common || {}, key as CommonPropKey);
+    const resultCommonScheme =
+        c.runtime.scheme &&
+        getFlavouredProp(c, sourceObj.common?.buildSchemes?.[c.runtime.scheme] || {}, key as BuildSchemePropKey);
+
     const resultCommon = resultCommonScheme || resultCommonRoot;
 
     let result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
     if (result === undefined) {
-        result = getFlavouredProp<any, any>(c, sourceObj, baseKey);
+        result = getFlavouredProp(c, sourceObj, key as BuildConfigPropKey);
     }
 
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined

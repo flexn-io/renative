@@ -8,7 +8,7 @@ import { chalk, logDebug, logRaw, logError } from '../logger';
 import { fsExistsSync } from './fs';
 import { replaceOverridesInString } from '../utils/utils';
 import { RnvContext } from '../context/types';
-import { ExecCallback, ExecCallback2, ExecOptions } from './types';
+import { ExecCallback, ExecOptions } from './types';
 import { getContext } from '../context/provider';
 import { getApi } from '../api/provider';
 
@@ -405,7 +405,7 @@ export const parseErrorMessage = (text: string, maxErrorLength = 800) => {
 
 const isUsingWindows = process.platform === 'win32';
 
-const fileNotExists = (commandName: string, callback: ExecCallback) => {
+const fileNotExists = (commandName: string, callback: (isError: boolean) => void) => {
     access(commandName, constants.F_OK, (err) => {
         callback(!err);
     });
@@ -420,7 +420,7 @@ const fileNotExistsSync = (commandName: string) => {
     }
 };
 
-const localExecutable = (commandName: string, callback?: ExecCallback2) => {
+const localExecutable = (commandName: string, callback?: ExecCallback) => {
     access(commandName, constants.F_OK | constants.X_OK, (err) => {
         callback && callback(null, !err);
     });
@@ -435,7 +435,7 @@ const localExecutableSync = (commandName: string) => {
     }
 };
 
-const commandExistsUnix = (commandName: string, cleanedCommandName: string, callback?: ExecCallback2) => {
+const commandExistsUnix = (commandName: string, cleanedCommandName: string, callback?: ExecCallback) => {
     fileNotExists(commandName, (isFile: boolean) => {
         if (!isFile) {
             exec(
@@ -451,7 +451,7 @@ const commandExistsUnix = (commandName: string, cleanedCommandName: string, call
     });
 };
 
-const commandExistsWindows = (commandName: string, cleanedCommandName: string, callback?: ExecCallback2) => {
+const commandExistsWindows = (commandName: string, cleanedCommandName: string, callback?: ExecCallback) => {
     if (/[\x00-\x1f<>:"|?*]/.test(commandName)) {
         callback && callback(null, false);
         return;
@@ -514,7 +514,7 @@ if (isUsingWindows) {
     };
 }
 
-const commandExists = (commandName: string, callback?: ExecCallback2) => {
+const commandExists = (commandName: string, callback?: ExecCallback) => {
     const cleanedCommandName = cleanInput(commandName);
     if (!callback && typeof Promise !== 'undefined') {
         return new Promise((resolve, reject) => {

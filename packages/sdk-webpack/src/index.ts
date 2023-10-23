@@ -74,7 +74,7 @@ const _runWebBrowser = (
         return resolve();
     });
 
-const _runRemoteDebuggerChii = async (c: RnvContext, obj: any) => {
+const _runRemoteDebuggerChii = async (c: RnvContext, obj: { remoteDebuggerActive: boolean }) => {
     const { debugIp } = c.program;
     try {
         await commandExists('chii');
@@ -111,7 +111,7 @@ Debugger running at: ${debugUrl}`);
     return true;
 };
 
-const _runRemoteDebuggerWeinre = async (c: RnvContext, obj: any) => {
+const _runRemoteDebuggerWeinre = async (c: RnvContext, obj: { remoteDebuggerActive: boolean }) => {
     const { debugIp } = c.program;
     try {
         await commandExists('weinre');

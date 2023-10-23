@@ -20,17 +20,12 @@ import {
     generateBuildConfig,
     RnvContext,
     inquirerPrompt,
+    ConfigFileWorkspace,
 } from '@rnv/core';
 
-import {
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_ADB,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_SDKMANAGER,
-    SDK_PLATFORMS,
-    ANDROID_SDK,
-    ANDROID_NDK,
-} from './constants';
+import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
+
+type SDKKey = keyof Required<ConfigFileWorkspace>['sdks'];
 
 const SDK_LOCATIONS: Record<string, Array<string>> = {
     android: [
@@ -88,15 +83,12 @@ export const checkAndConfigureAndroidSdks = async (c: RnvContext) => {
     c.cli[CLI_ANDROID_SDKMANAGER] = sdkManagerPath;
 };
 
-const _getCurrentSdkPath = (c: RnvContext) =>
-    c.platform ? c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]] : undefined;
+const _getCurrentSdkPath = (c: RnvContext) => (c.platform ? c.buildConfig?.sdks?.ANDROID_SDK : undefined);
 
 const _isSdkInstalled = (c: RnvContext) => {
     logTask('_isSdkInstalled');
 
     if (!c.platform) return false;
-
-    if (!SDK_PLATFORMS[c.platform]) return true;
 
     const sdkPath = _getCurrentSdkPath(c);
 
@@ -121,7 +113,7 @@ const _findFolderWithFile = (dir: string, fileToFind: string) => {
     return foundDir;
 };
 
-const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: string, traverseUntilFoundFile?: string) => {
+const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: SDKKey, traverseUntilFoundFile?: string) => {
     logTask('_attemptAutoFix');
 
     if (c.program.hosted) {
@@ -132,12 +124,12 @@ const _attemptAutoFix = async (c: RnvContext, sdkPlatform: string, sdkKey: strin
     let locations: Array<string | undefined> = SDK_LOCATIONS[sdkPlatform];
 
     // try common Android SDK env variables
-    if (sdkKey === ANDROID_SDK) {
+    if (sdkKey === 'ANDROID_SDK') {
         const { ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK: ANDROID_SDK_ENV } = process.env;
         locations = locations.concat([ANDROID_SDK_HOME, ANDROID_SDK_ROOT, ANDROID_HOME, ANDROID_SDK_ENV]);
     }
 
-    if (sdkKey === ANDROID_NDK) {
+    if (sdkKey === 'ANDROID_NDK') {
         const { ANDROID_NDK_HOME } = process.env;
         locations.push(ANDROID_NDK_HOME);
     }
@@ -202,8 +194,8 @@ export const checkAndroidSdk = async (c: RnvContext) => {
             case ANDROID_TV:
             case FIRE_TV:
             case ANDROID_WEAR:
-                await _attemptAutoFix(c, 'android', ANDROID_SDK);
-                return _attemptAutoFix(c, 'android-ndk', ANDROID_NDK, 'source.properties');
+                await _attemptAutoFix(c, 'android', 'ANDROID_SDK');
+                return _attemptAutoFix(c, 'android-ndk', 'ANDROID_NDK', 'source.properties');
             default:
                 return true;
         }

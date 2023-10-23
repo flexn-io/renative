@@ -4,7 +4,7 @@ import { z } from 'zod';
 const Enabled = z.boolean().default(true).describe('Marks plugin enabled or disabled');
 const Disabled = z.boolean().default(false).describe('Marks plugin disabled');
 
-const Props = z.record(z.string(), z.any()).describe('Custom props passed to plugin');
+const Props = z.record(z.string(), z.string()).describe('Custom props passed to plugin');
 const Version = z.string().describe('Version of plugin. Typically package version');
 const Source = z
     .string()
@@ -70,4 +70,5 @@ export const PluginBaseFragment = {
     webpackConfig: z.optional(Webpack), //Should this be at root plugin???
     // 'engine-rn-next': z.optional(Webpack), //Should this be at root plugin???
     disablePluginTemplateOverrides: z.optional(DisablePluginTemplateOverrides),
+    fontSources: z.array(z.string()).optional(),
 };

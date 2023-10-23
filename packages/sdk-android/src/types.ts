@@ -76,3 +76,12 @@ export type AndroidDevice = {
 };
 
 export type TemplateAndroid = Required<Required<RenativeConfigPluginPlatform>['templateAndroid']>;
+
+// export type AndroidManifestJSONNode = {
+//     tag: string;
+//     'android:name': string;
+//     children?: AndroidManifestJSONNode[];
+// };
+// export type AndroidManifestJSON = AndroidManifestJSONNode & {
+//     package?: string;
+// };

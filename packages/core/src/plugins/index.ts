@@ -24,7 +24,8 @@ import { inquirerPrompt } from '../api';
 import { writeRenativeConfigFile } from '../configs/utils';
 import { installPackageDependencies } from '../projects/npm';
 import { OverridesOptions, ResolveOptions } from '../system/types';
-import { ConfigFilePlugin, ConfigFilePlugins } from '../schema/configFiles/types';
+import { ConfigFileOverrides, ConfigFilePlugin, ConfigFilePlugins } from '../schema/configFiles/types';
+import { NpmPackageFile } from '../configs/types';
 
 const _getPluginScope = (plugin: RenativeConfigPlugin | string): RnvPluginScope => {
     if (typeof plugin === 'string') {
@@ -122,7 +123,7 @@ const _getMergedPlugin = (
             }
         });
     }
-    const mergedObj = mergeObjects(c, parentPlugin, currentPlugin, true, true);
+    const mergedObj = mergeObjects<RnvPlugin>(c, parentPlugin, currentPlugin, true, true);
     if (c._renativePluginCache[pluginKey]) {
         mergedObj.config = c._renativePluginCache[pluginKey];
     }
@@ -143,7 +144,7 @@ const _getMergedPlugin = (
         : sanitizeDynamicProps(obj, {
               files: c.files,
               runtimeProps: c.runtime,
-              props: obj.props,
+              props: obj.props || {},
               configProps: c.injectableConfigProps,
           });
 
@@ -166,7 +167,7 @@ export const configurePlugins = async (c: RnvContext) => {
     }
 
     const isTemplate = c.files.project.config?.isTemplate;
-    const newDeps: Record<string, string | undefined> = {};
+    const newDeps: Record<string, string> = {};
     const newDevDeps: Record<string, string> = {};
     const { dependencies, devDependencies } = c.files.project.package;
     const ovMsg = isTemplate ? 'This is template. NO ACTION' : 'package.json will be overriden';
@@ -227,7 +228,9 @@ ${ovMsg}`
                 );
 
                 hasPackageChanged = true;
-                newDeps[k] = plugin.version;
+                if (plugin.version) {
+                    newDeps[k] = plugin.version;
+                }
             }
         }
 
@@ -243,16 +246,20 @@ ${ovMsg}`
    |- ${npmKey}@${chalk().red(npmDep)}`);
                 } else if (!dependencies[npmKey]) {
                     logInfo(`Plugin ${chalk().white(k)} requires npm dependency ${chalk().white(npmKey)}. ${ovMsg}`);
-                    newDeps[npmKey] = npmDep;
-                    hasPackageChanged = true;
+                    if (npmDep) {
+                        newDeps[npmKey] = npmDep;
+                        hasPackageChanged = true;
+                    }
                 } else if (dependencies[npmKey] !== npmDep) {
                     logWarning(
                         `Plugin ${chalk().white(k)} npm dependency ${chalk().white(npmKey)} mismatch (${chalk().red(
                             dependencies[npmKey]
                         )}) => (${chalk().green(npmDep)}) .${ovMsg}`
                     );
-                    newDeps[npmKey] = npmDep;
-                    hasPackageChanged = true;
+                    if (npmDep) {
+                        newDeps[npmKey] = npmDep;
+                        hasPackageChanged = true;
+                    }
                 }
             });
         }
@@ -269,8 +276,8 @@ ${ovMsg}`
     return true;
 };
 
-const _updatePackage = (c: RnvContext, override: any) => {
-    const newPackage: any = merge(c.files.project.package, override);
+const _updatePackage = (c: RnvContext, override: Partial<NpmPackageFile>) => {
+    const newPackage: NpmPackageFile = merge(c.files.project.package, override);
     writeRenativeConfigFile(c, c.paths.project.package, newPackage);
     c.files.project.package = newPackage;
     c._requiresNpmInstall = true;
@@ -631,7 +638,7 @@ const _overridePlugin = (c: RnvContext, pluginsPath: string, dir: string) => {
     if (overridePath && !fsExistsSync(overridePath)) {
         overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
     }
-    const overrideConfig = overridePath ? readObjectSync(overridePath) : null;
+    const overrideConfig = overridePath ? readObjectSync<ConfigFileOverrides>(overridePath) : null;
     const overrides = overrideConfig?.overrides;
     if (overrides) {
         Object.keys(overrides).forEach((k) => {

@@ -1,5 +1,7 @@
 import type { PlatformKey } from './schema/types';
 
+export * from './schema/configFiles/types';
+
 export type RnvPlatform = PlatformKey | null;
 
 export type RnvPlatformWithAll = PlatformKey | 'all';

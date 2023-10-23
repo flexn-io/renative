@@ -39,14 +39,14 @@ const currentDeviceProps: Record<string, Record<string, string>> = {};
 export const composeDevicesString = (devices: Array<AndroidDevice>) => {
     logTask('composeDevicesString', `numDevices:${devices ? devices.length : null}`);
     const devicesArray: Array<string> = [];
-    devices.forEach((v, i) => devicesArray.push(_getDeviceString(v, i)));
+    devices.forEach((v, i) => devicesArray.push(_getDeviceAsString(v, i)));
     return `\n${devicesArray.join('')}`;
 };
 
 export const composeDevicesArray = (devices: Array<AndroidDevice>) => {
     logTask('composeDevicesString', `numDevices:${devices ? devices.length : null}`);
-    const devicesArray: Array<string> = [];
-    devices.forEach((v) => devicesArray.push(_getDeviceString(v, null)));
+    const devicesArray: Array<DeviceInfo> = [];
+    devices.forEach((v) => devicesArray.push(_getDeviceAsObject(v)));
     return devicesArray;
 };
 
@@ -116,9 +116,11 @@ export const listAndroidTargets = async (c: RnvContext) => {
     return devices;
 };
 
-//Fuck it, I just any this return until complete refactor
-const _getDeviceString = (device: AndroidDevice, i: number | null): any => {
-    const { isTV, isTablet, name, udid, isDevice, isActive, avdConfig, isWear, arch } = device;
+type DeviceInfo = { key: string; name: string; value: string; icon: string };
+
+const getDeviceIcon = (device: AndroidDevice) => {
+    const { isTV, isTablet, udid, avdConfig, isWear } = device;
+
     let deviceIcon = '';
     if (isTablet) deviceIcon = 'Tablet 💊 ';
     if (isTV) deviceIcon = 'TV 📺 ';
@@ -126,16 +128,30 @@ const _getDeviceString = (device: AndroidDevice, i: number | null): any => {
     if (!deviceIcon && (udid !== 'unknown' || avdConfig)) {
         deviceIcon = 'Phone 📱 ';
     }
+    return deviceIcon;
+};
+
+//Fuck it, I just any this return until complete refactor
+const _getDeviceAsString = (device: AndroidDevice, i: number): string => {
+    const { name, udid, isDevice, isActive, arch } = device;
+    const deviceIcon = getDeviceIcon(device);
 
     const deviceString = `${chalk().white(name)} | ${deviceIcon} | arch: ${arch} | udid: ${chalk().grey(udid)}${
         isDevice ? chalk().red(' (device)') : ''
     } ${isActive ? chalk().magenta(' (active)') : ''}`;
 
-    if (i === null) {
-        return { key: name, name: deviceString, value: name, icon: deviceIcon };
-    }
-
     return ` [${i + 1}]> ${deviceString}\n`;
+};
+
+const _getDeviceAsObject = (device: AndroidDevice): DeviceInfo => {
+    const { name, udid, isDevice, isActive, arch } = device;
+    const deviceIcon = getDeviceIcon(device);
+
+    const deviceString = `${chalk().white(name)} | ${deviceIcon} | arch: ${arch} | udid: ${chalk().grey(udid)}${
+        isDevice ? chalk().red(' (device)') : ''
+    } ${isActive ? chalk().magenta(' (active)') : ''}`;
+
+    return { key: name, name: deviceString, value: name, icon: deviceIcon };
 };
 
 export const resetAdb = async (c: RnvContext, forceRun?: boolean, ranBefore?: boolean) => {
@@ -162,8 +178,8 @@ export const getAndroidTargets = async (c: RnvContext, skipDevices: boolean, ski
     await new Promise((r) => setTimeout(r, 1000));
 
     try {
-        let devicesResult: any;
-        let avdResult: any;
+        let devicesResult: string | undefined;
+        let avdResult: string | undefined;
 
         if (!skipDevices) {
             devicesResult = await execCLI(c, CLI_ANDROID_ADB, 'devices -l');
@@ -399,7 +415,12 @@ export const connectToWifiDevice = async (c: RnvContext, target: string) => {
     return false;
 };
 
-const _parseDevicesResult = async (c: RnvContext, devicesString: string, avdsString: string, deviceOnly: boolean) => {
+const _parseDevicesResult = async (
+    c: RnvContext,
+    devicesString: string | undefined,
+    avdsString: string | undefined,
+    deviceOnly: boolean
+) => {
     logDebug(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
     const devices: Array<AndroidDevice> = [];
     const { skipTargetCheck } = c.program;
@@ -598,12 +619,12 @@ const waitForEmulatorToBeReady = (c: RnvContext, emulator: string) =>
     });
 
 export const checkForActiveEmulator = (c: RnvContext) =>
-    new Promise((resolve, reject) => {
+    new Promise<AndroidDevice | undefined>((resolve, reject) => {
         logTask('checkForActiveEmulator');
         const { platform } = c;
 
         if (!platform) {
-            resolve(false);
+            resolve(undefined);
             return;
         }
 

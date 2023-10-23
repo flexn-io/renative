@@ -35,9 +35,24 @@
         },
         "sdks": {
           "type": "object",
-          "additionalProperties": {
-            "type": "string"
+          "properties": {
+            "ANDROID_SDK": {
+              "type": "string"
+            },
+            "ANDROID_NDK": {
+              "type": "string"
+            },
+            "TIZEN_SDK": {
+              "type": "string"
+            },
+            "WEBOS_SDK": {
+              "type": "string"
+            },
+            "KAIOS_SDK": {
+              "type": "string"
+            }
           },
+          "additionalProperties": false,
           "description": "Define your sdk configurations"
         },
         "projectTemplates": {

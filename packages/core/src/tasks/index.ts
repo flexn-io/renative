@@ -341,7 +341,9 @@ export const executeOrSkipTask = async (c: RnvContext, task: string, parentTask:
     return executeTask(c, TASK_CONFIGURE_SOFT, parentTask, originTask);
 };
 
-const ACCEPTED_CONDITIONS = ['platform', 'target', 'appId', 'scheme'];
+const ACCEPTED_CONDITIONS = ['platform', 'target', 'appId', 'scheme'] as const;
+
+type ACKey = typeof ACCEPTED_CONDITIONS[number];
 
 const _logSkip = (task: string) => {
     logInfo(`Original RNV task ${chalk().white(task)} marked to ignore. SKIPPING...`);
@@ -368,9 +370,10 @@ export const shouldSkipTask = (c: RnvContext, taskKey: string, originTaskKey?: s
                     let conditionsToMatch = conditions.length;
                     conditions.forEach((con: string) => {
                         const conArr = con.split('=');
-                        if (ACCEPTED_CONDITIONS.includes(conArr[0])) {
-                            const rt: any = c.runtime;
-                            if (rt[conArr[0]] === conArr[1]) {
+                        const conKey = conArr[0] as ACKey;
+                        if (ACCEPTED_CONDITIONS.includes(conKey)) {
+                            const rt = c.runtime;
+                            if (rt[conKey] === conArr[1]) {
                                 conditionsToMatch--;
                             }
                         } else {

@@ -54,14 +54,14 @@ export type Payload = {
         runScheme?: string;
         provisioningStyle?: string;
         deploymentTarget?: string;
-        provisionProfileSpecifier?: any;
-        provisionProfileSpecifiers?: any;
+        provisionProfileSpecifier?: string;
+        provisionProfileSpecifiers?: Record<string, string>;
         excludedArchs?: Array<string>;
         codeSignIdentity?: string;
         codeSignIdentities?: Record<string, string>;
         systemCapabilities?: Record<string, boolean>;
-        teamID?: any;
-        appId?: any;
+        teamID?: string;
+        appId?: string;
     };
 };
 
@@ -112,3 +112,17 @@ export type SwiftAppDelegateSubKey = keyof SwiftAppDelegate['application'] &
 export type SwiftAppDelegateKey = keyof SwiftAppDelegate;
 
 export type TemplateXcode = Required<Required<RenativeConfigPluginPlatform>['templateXcode']>;
+
+export type FilePlistJSON = {
+    CFBundleDisplayName?: string;
+    CFBundleShortVersionString?: string;
+    CFBundleVersion?: string;
+    UIAppFonts?: string[];
+    UISupportedInterfaceOrientations?: string[];
+    'UISupportedInterfaceOrientations~ipad'?: string[];
+    CFBundleURLTypes?: Array<{
+        CFBundleTypeRole: string;
+        CFBundleURLName: string;
+        CFBundleURLSchemes: string[];
+    }>;
+};

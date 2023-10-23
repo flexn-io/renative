@@ -94,9 +94,13 @@ const poll = (fn: () => Promise<boolean>, timeout = 10000, interval = 1000) => {
                 spinner.fail("Can't connect to bundler. Try restarting it.");
                 reject("Can't connect to bundler. Try restarting it.");
             }
-        } catch (e: any) {
+        } catch (e: unknown) {
             spinner.fail("Can't connect to bundler. Try restarting it.");
-            reject(e);
+            if (typeof e === 'string') {
+                reject(e);
+            } else if (e instanceof Error) {
+                reject(e.message);
+            }
         }
     };
 

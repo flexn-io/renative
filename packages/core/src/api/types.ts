@@ -118,6 +118,6 @@ export type PromptRenderFn = (i: number, obj: any, mapping: any, defaultVal: str
 export type GetConfigPropFn = <T extends ConfigPropKey>(
     c: RnvContext,
     platform: RnvPlatform,
-    key: ConfigPropKey,
+    key: T,
     defaultVal?: ConfigProp[T]
 ) => ConfigProp[T];

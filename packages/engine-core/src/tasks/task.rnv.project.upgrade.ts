@@ -16,6 +16,8 @@ import {
     readObjectSync,
     RnvTaskFn,
 } from '@rnv/core';
+import { NpmPackageFile } from '@rnv/core/lib/configs/types';
+import { ConfigFileProject } from '@rnv/core/lib/schema/configFiles/types';
 
 export const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTask) => {
     logTask('taskRnvProjectUpgrade');
@@ -53,13 +55,15 @@ export const taskRnvProjectUpgrade: RnvTaskFn = async (c, _parentTask, originTas
                     let pkgFile;
                     let rnvFile;
                     if (fsExistsSync(pkgPath)) {
-                        pkgFile = readObjectSync(pkgPath);
+                        pkgFile = readObjectSync<NpmPackageFile>(pkgPath);
                     }
 
                     if (fsExistsSync(rnvPath)) {
-                        rnvFile = readObjectSync(rnvPath);
+                        rnvFile = readObjectSync<ConfigFileProject>(rnvPath);
                     }
-                    upgradedPaths.push(...upgradeDependencies(pkgFile, pkgPath, rnvFile, rnvPath, selectedVersion));
+                    if (pkgFile && rnvFile) {
+                        upgradedPaths.push(...upgradeDependencies(pkgFile, pkgPath, rnvFile, rnvPath, selectedVersion));
+                    }
                 }
             });
         }

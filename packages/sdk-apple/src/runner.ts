@@ -332,7 +332,7 @@ export const getDeviceToRunOn = async (c: Context) => {
             }
         }
 
-        const target = c.runtime.target.replace(/(\s+)/g, '\\$1');
+        const target = c.runtime.target?.replace(/(\s+)/g, '\\$1');
 
         p = `--simulator ${target}`;
     }
@@ -463,7 +463,8 @@ and we will try to help!
     }
 };
 
-const _handleMissingTeam = async (c: Context, e: any) => {
+const _handleMissingTeam = async (c: Context, e: unknown) => {
+    if (typeof e !== 'string') return;
     const isDevelopmentTeamMissing = e.includes('requires a development team. Select a development team');
     if (isDevelopmentTeamMissing) {
         const loc = `./appConfigs/${c.runtime.appId}/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
@@ -490,7 +491,7 @@ Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.con
     }
 };
 
-const _handleProvisioningIssues = async (c: Context, e: any, msg: string) => {
+const _handleProvisioningIssues = async (c: Context, e: unknown, msg: string) => {
     const provisioningStyle = c.program.provisioningStyle || getConfigProp(c, c.platform, 'provisioningStyle');
     const appFolderName = getAppFolderName(c, c.platform); // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
     const isProvAutomatic = provisioningStyle === 'Automatic';
@@ -534,7 +535,7 @@ const _setAutomaticSigning = async (c: Context) => {
     const cnf = c.files.appConfig.config;
     if (!cnf) return;
 
-    const scheme = cnf.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
+    const scheme = c.runtime.scheme && cnf.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
     if (scheme && 'provisioningStyle' in scheme) {
         scheme.provisioningStyle = 'Automatic';
         writeFileSync(c.paths.appConfig.config, cnf);

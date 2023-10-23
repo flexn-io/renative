@@ -4,6 +4,7 @@ import { logTask, logWarning, logInfo } from '../logger';
 import { RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 
 import { RnvContext } from '../context/types';
+import { ConfigFileTemplate } from '../schema/configFiles/types';
 
 const packageJsonIsValid = (c: RnvContext) => {
     if (!fsExistsSync(c.paths.project.package)) return false;
@@ -37,7 +38,7 @@ export const checkAndCreateProjectPackage = async (c: RnvContext) => {
             );
         }
 
-        const templateObj = readObjectSync(c.paths.template.configTemplate);
+        const templateObj = readObjectSync<ConfigFileTemplate>(c.paths.template.configTemplate);
 
         const pkgJson = templateObj?.templateConfig?.packageTemplate || {};
         pkgJson.name = packageName;
@@ -46,10 +47,13 @@ export const checkAndCreateProjectPackage = async (c: RnvContext) => {
         // No longer good option to assume same version
         // pkgJson.dependencies.renative = rnvVersion;
         pkgJson.devDependencies = pkgJson.devDependencies || {};
-        pkgJson.devDependencies.rnv = rnvVersion;
+        if (rnvVersion) {
+            pkgJson.devDependencies.rnv = rnvVersion;
+        }
 
         if (templateName) {
-            pkgJson.devDependencies[templateName] = c.files.project.config?.templates[templateName]?.version;
+            pkgJson.devDependencies[templateName] =
+                c.files.project.config?.templates[templateName]?.version || 'latest';
         }
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
         fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);

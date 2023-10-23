@@ -29,9 +29,7 @@ export type ExecOptions = {
     printableEnvKeys?: Array<string>;
 };
 
-export type ExecCallback = (isError: boolean) => void;
-
-export type ExecCallback2 = (result: any, isError: boolean) => void;
+export type ExecCallback = (result: unknown, isError: boolean) => void;
 
 export type OverridesOptions = Array<{
     pattern: string;
@@ -47,7 +45,7 @@ export type RnvCLI = Record<string, object>;
 
 export type FileUtilsPropConfig = {
     props: Record<string, string>;
-    configProps?: Record<string, any>;
-    runtimeProps?: Record<string, any>;
-    files?: Record<string, any>;
+    configProps?: Record<string, any> | undefined;
+    runtimeProps?: Record<string, any> | undefined;
+    files?: Record<string, any> | undefined;
 };

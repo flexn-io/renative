@@ -11,8 +11,7 @@ import {
 } from '../system/fs';
 import { chalk, logTask, logWarning, logDebug } from '../logger';
 import { getContext } from '../context/provider';
-import type { RnvContext } from '../context/types';
-import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
+import type { RnvContext, RnvContextBuildConfig } from '../context/types';
 import { FileUtilsPropConfig } from '../system/types';
 import { PlatformKey } from '../schema/types';
 
@@ -136,13 +135,13 @@ export const generateBuildConfig = (_c?: RnvContext) => {
         `generateBuildConfig:mergeOrder.length:${mergeOrder.length},cleanPaths.length:${cleanPaths.length},existsPaths.length:${existsPaths.length},existsFiles.length:${existsFiles.length}`
     );
 
-    let out: ConfigFileBuildConfig = merge.all<ConfigFileBuildConfig>([...meta, ...existsFiles], {
+    let out: RnvContextBuildConfig = merge.all<RnvContextBuildConfig>([...meta, ...existsFiles], {
         arrayMerge: _arrayMergeOverride,
     });
     out = merge({}, out);
     out.pluginTemplates = pluginTemplates;
 
-    c.buildConfig = sanitizeDynamicRefs(c, out);
+    c.buildConfig = sanitizeDynamicRefs<RnvContextBuildConfig>(c, out);
     const propConfig: FileUtilsPropConfig = {
         files: c.files,
         runtimeProps: c.runtime,

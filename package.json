@@ -60,7 +60,7 @@
         "bootstrap-clean": "rimraf -I ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run build",
         "report-circular": "npx madge --circular --extensions ts --exclude '\\.(d.ts)$' ./packages",
-        "report-ts-coverage": "typescript-coverage-report -p ./packages/core/tsconfig.json  -t 99 -i lib",
+        "report-ts-coverage": "typescript-coverage-report -p ./packages/core/tsconfig.json  -t 99",
         "report-jest": "jest --coverage",
         "compile": "npx lerna run compile",
         "deploy:canary": "yarn pre-publish && npx lerna publish from-package --dist-tag canary && git push origin HEAD",

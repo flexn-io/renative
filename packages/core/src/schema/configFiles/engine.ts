@@ -44,6 +44,7 @@ const EnginePlatform = z.object({
             dependencies: z.optional(NpmDep),
             devDependencies: z.optional(NpmDep),
             peerDependencies: z.optional(NpmDep),
+            optionalDependencies: z.optional(NpmDep),
         })
     ),
 });

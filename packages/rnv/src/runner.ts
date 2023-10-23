@@ -3,6 +3,7 @@ import {
     RnvApiLogger,
     RnvApiPrompt,
     RnvApiSpinner,
+    RnvContextProgram,
     createRnvApi,
     createRnvContext,
     doResolve,
@@ -26,8 +27,8 @@ export const executeRnv = async ({
 }: {
     cmd: string;
     subCmd: string;
-    process: any;
-    program: any;
+    process: NodeJS.Process;
+    program: RnvContextProgram;
     spinner: RnvApiSpinner;
     prompt: RnvApiPrompt;
     logger: RnvApiLogger;

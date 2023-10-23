@@ -61,7 +61,8 @@ const ManifestChildWithChildren: z.ZodType<_ManifestChildType> = ManifestChildBa
     children: z.lazy(() => ManifestChildWithChildren.array()),
 });
 
-const AndroidManifest = z.object({
+const AndroidManifest = ManifestChildBase.extend({
+    package: z.string().optional(),
     children: z.array(ManifestChildWithChildren),
 }).describe(`Allows you to directly manipulate \`AndroidManifest.xml\` via json override mechanism
 Injects / Overrides values in AndroidManifest.xml file of generated android based project
@@ -90,7 +91,39 @@ export const TemplateAndroidBaseFragment = {
             ),
         })
     ),
+    MainActivity_java: z.optional(
+        z.object({
+            onCreate: z
+                .string({})
+                .optional()
+                .default('super.onCreate(savedInstanceState)')
+                .describe('Overrides super.onCreate method handler of MainActivity.java'),
+            imports: z.array(z.string()).optional(),
+            methods: z.array(z.string()).optional(),
+            createMethods: z.array(z.string()).optional(),
+            resultMethods: z.array(z.string()).optional(),
+        })
+    ),
+    MainApplication_java: z.optional(
+        z
+            .object({
+                imports: z.array(z.string()).optional(),
+                methods: z.array(z.string()).optional(),
+                createMethods: z.array(z.string()).optional(),
+                packages: z.array(z.string()).optional(),
+                packageParams: z.array(z.string()).optional(),
+
+                // onCreate: z
+                //     .string({})
+                //     .optional()
+                //     .default('super.onCreate(savedInstanceState)')
+                //     .describe('Overrides super.onCreate method handler of MainActivity.java'),
+            })
+            .describe('Allows you to configure behaviour of MainActivity')
+    ),
 };
 // .describe('Allows more advanced modifications to Android based project template');
 
 export type _ManifestChildWithChildrenType = z.infer<typeof ManifestChildWithChildren>;
+
+export type _AndroidManifestType = z.infer<typeof AndroidManifest>;

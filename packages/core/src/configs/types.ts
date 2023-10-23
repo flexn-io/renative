@@ -9,6 +9,7 @@ export type NpmPackageFile = {
     description?: string;
     'release-it'?: Record<string, any>;
     name?: string;
+    main?: string;
 };
 
 export type NpmPackageFileKey = keyof NpmPackageFile;

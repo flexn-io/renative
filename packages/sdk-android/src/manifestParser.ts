@@ -15,32 +15,38 @@ import {
     writeCleanFile,
     parsePlugins,
     AndroidManifestNode,
+    AndroidManifest,
 } from '@rnv/core';
 import { Context } from './types';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
 
-const _findChildNode = (tag: string, name: string, node: any) => {
+const _findChildNode = (tag: string, name: string, node: AndroidManifestNode) => {
     if (!node) {
         logWarning('_findChildNode: Node is undefined');
         return;
     }
     if (!name && !PROHIBITED_DUPLICATE_TAGS.includes(tag)) return null; // Can't determine reused child nodes without unique name identifier
-    for (let i = 0; i < node.children.length; i++) {
-        const ch = node.children[i];
-        if (ch.tag === tag) {
-            if (ch['android:name'] === name || PROHIBITED_DUPLICATE_TAGS.includes(tag)) {
-                return ch;
+    if (node.children) {
+        for (let i = 0; i < node.children.length; i++) {
+            const ch = node.children?.[i];
+            if (ch && ch.tag === tag) {
+                if (ch['android:name'] === name || PROHIBITED_DUPLICATE_TAGS.includes(tag)) {
+                    return ch;
+                }
             }
         }
     }
+
     return null;
 };
 
-const _convertToXML = (manifestObj: any) => _parseNode(manifestObj, 0);
+const _convertToXML = (manifestObj: AndroidManifestNode) => _parseNode(manifestObj, 0);
 
-const _parseNode = (n: any, level: number) => {
+type NodeKey = keyof AndroidManifestNode;
+
+const _parseNode = (n: AndroidManifestNode, level: number) => {
     let output = '';
     let space = '';
     for (let i = 0; i < level; i++) {
@@ -63,12 +69,13 @@ const _parseNode = (n: any, level: number) => {
         output += `${space}<${n.tag}${endLine}`;
         Object.keys(n).forEach((k) => {
             if (!SYSTEM_TAGS.includes(k)) {
-                output += `${isSingleLine ? '' : `${space}  `}${k}="${n[k]}"${endLine}`;
+                output += `${isSingleLine ? '' : `${space}  `}${k}="${n[k as NodeKey]}"${endLine}`;
             }
         });
-    } else {
-        output += `${space}<${n.tag}`;
     }
+    // else {
+    //     output += `${space}<${n.tag}`;
+    // }
     if (n.children && n.children.length) {
         if (isSingleLine) {
             output += '>\n';
@@ -77,7 +84,7 @@ const _parseNode = (n: any, level: number) => {
         }
 
         const nextLevel = level + 1;
-        n.children.forEach((v: any) => {
+        n.children.forEach((v) => {
             output += _parseNode(v, nextLevel);
         });
         output += `${space}</${n.tag}>\n`;
@@ -87,7 +94,10 @@ const _parseNode = (n: any, level: number) => {
     return output;
 };
 
-const _mergeNodeParameters = (node: any, nodeParamsExt: any) => {
+const _mergeNodeParameters = (
+    node: AndroidManifestNode | undefined,
+    nodeParamsExt: AndroidManifestNode | undefined
+) => {
     if (!nodeParamsExt) {
         logWarning('_mergeNodeParameters: nodeParamsExt value is null');
         return;
@@ -98,11 +108,17 @@ const _mergeNodeParameters = (node: any, nodeParamsExt: any) => {
     }
 
     Object.keys(nodeParamsExt).forEach((k) => {
-        if (!SYSTEM_TAGS.includes(k)) node[k] = nodeParamsExt[k];
+        const key = k as NodeKey;
+        const val = nodeParamsExt[key];
+
+        if (val && !SYSTEM_TAGS.includes(k)) {
+            //TODO: fix this
+            (node as Record<string, any>)[key] = val;
+        }
     });
 };
 
-const _mergeNodeChildren = (node: any, nodeChildrenExt: Array<AndroidManifestNode> = []) => {
+const _mergeNodeChildren = (node: AndroidManifestNode, nodeChildrenExt: Array<AndroidManifestNode> = []) => {
     // console.log('_mergeNodeChildren', node, 'OVERRIDE', nodeChildrenExt);
     if (!node) {
         logWarning('_mergeNodeChildren: Node is undefined');
@@ -119,7 +135,7 @@ const _mergeNodeChildren = (node: any, nodeChildrenExt: Array<AndroidManifestNod
                 _mergeNodeChildren(childNode, v.children);
             } else {
                 logDebug(`_mergeNodeChildren: NO android:name found. adding to children ${nameExt} ${v.tag}`);
-                node.children.push(v);
+                if (node.children) node.children.push(v);
             }
         }
     });
@@ -138,7 +154,7 @@ const _mergeNodeChildren = (node: any, nodeChildrenExt: Array<AndroidManifestNod
 
 const _mergeFeatures = (
     c: Context,
-    baseManifestFile: any,
+    baseManifestFile: AndroidManifest,
     configKey: 'includedFeatures' | 'excludedFeatures',
     value: boolean
 ) => {
@@ -165,7 +181,12 @@ export const parseAndroidManifestSync = (c: Context) => {
 
     try {
         const baseManifestFilePath = path.join(__dirname, `../supportFiles/AndroidManifest_${platform}.json`);
-        const baseManifestFile = readObjectSync(baseManifestFilePath);
+        const baseManifestFile = readObjectSync<AndroidManifest>(baseManifestFilePath);
+
+        if (!baseManifestFile) {
+            return;
+        }
+
         baseManifestFile.package = getAppId(c, platform);
 
         const objArr = getConfigPropArray(c, c.platform, 'templateAndroid');
@@ -203,6 +224,7 @@ export const parseAndroidManifestSync = (c: Context) => {
                     Object.keys(pc).forEach((k) => {
                         if (!(excludedPermissions && excludedPermissions.includes(k))) {
                             const key = pc[k].key || k;
+                            baseManifestFile.children = baseManifestFile.children || [];
                             baseManifestFile.children.push({
                                 tag: 'uses-permission',
                                 'android:name': key,
@@ -213,6 +235,7 @@ export const parseAndroidManifestSync = (c: Context) => {
                     includedPermissions.forEach((v) => {
                         if (pc[v]) {
                             const key = pc[v].key || v;
+                            baseManifestFile.children = baseManifestFile.children || [];
                             baseManifestFile.children.push({
                                 tag: 'uses-permission',
                                 'android:name': key,
