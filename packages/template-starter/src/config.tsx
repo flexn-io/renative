@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
+
 import { getScaledValue, isPlatformMacos, isPlatformIos, isPlatformTvos, isPlatformWeb } from '@rnv/renative';
 import CONFIG from '../platformAssets/renative.runtime.json';
 import '../platformAssets/runtime/fontManager';
@@ -15,8 +16,6 @@ export function testProps(testId: string | undefined) {
     }
     return { accessibilityLabel: testId, accessible: true };
 }
-
-console.disableYellowBox = true; // eslint-disable-line
 
 if (!global.performance) {
     // @ts-expect-error Performance needs to be typed

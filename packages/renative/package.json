@@ -1,7 +1,7 @@
 {
     "name": "@rnv/renative",
-    "version": "0.37.2",
-    "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Linux` and `Firefox TV` platforms",
+    "version": "1.0.0-canary.7",
+    "description": "🚀🚀🚀 Unified Development Platform. Bootstrap, Develop & Deploy `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, and `Linux` platforms",
     "keywords": [
         "android tv",
         "android wear",
@@ -11,8 +11,6 @@
         "cross-platform",
         "desktop",
         "electron",
-        "firefox tv",
-        "firefoxox",
         "kaios",
         "kit",
         "kotlin",
@@ -44,6 +42,7 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
+        "LICENSE",
         "lib",
         "renative.plugin.json"
     ],
@@ -54,24 +53,14 @@
     },
     "scripts": {
         "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
-    },
-    "engines": {
-        "node": ">=6.0.0",
-        "npm": ">=4.0.0"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
     },
-    "types": "lib/index",
-    "husky": {
-        "hooks": {
-            "pre-commit": "pretty-quick --staged"
-        }
-    },
-    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
+    "types": "lib/index"
 }

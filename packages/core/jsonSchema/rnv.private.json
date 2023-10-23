@@ -1,0 +1,102 @@
+{
+  "$ref": "#/definitions/rnv.private",
+  "definitions": {
+    "rnv.private": {
+      "type": "object",
+      "properties": {
+        "private": {
+          "type": "object",
+          "additionalProperties": {},
+          "description": "Special object which contains private info. this object should be used only in `renative.private.json` files and never commited to your repository. Private files usually reside in your workspace and are subject to crypto encryption if enabled. RNV will warn you if it finds private key in your regular `renative.json` file"
+        },
+        "platforms": {
+          "type": "object",
+          "properties": {
+            "android": {
+              "type": "object",
+              "properties": {
+                "storePassword": {
+                  "type": "string",
+                  "description": "> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!\n\nstorePassword for keystore file"
+                },
+                "keyPassword": {
+                  "type": "string",
+                  "description": "> WARNING. this prop is sensitive and should not be stored in standard `renative.json` configs. use `renative.private.json` files instead!\n\nkeyPassword for keystore file"
+                },
+                "storeFile": {
+                  "type": "string",
+                  "description": "Name of the store file in android project"
+                },
+                "keyAlias": {
+                  "type": "string",
+                  "description": "Key alias of the store file in android project"
+                }
+              },
+              "additionalProperties": false
+            },
+            "androidtv": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/android"
+            },
+            "androidwear": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/android"
+            },
+            "firetv": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/android"
+            },
+            "ios": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "tvos": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "tizen": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "tizenmobile": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "tizenwatch": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "webos": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "web": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "webtv": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "chromecast": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "kaios": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "macos": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "linux": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "windows": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            },
+            "xbox": {
+              "$ref": "#/definitions/rnv.private/properties/platforms/properties/ios"
+            }
+          },
+          "additionalProperties": false
+        },
+        "$schema": {
+          "type": "string",
+          "description": "schema definition"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

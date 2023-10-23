@@ -1,4 +1,5 @@
 {
+    "$schema": "../../.rnv/schema/rnv.project.json",
     "engines": {
         "@rnv/engine-lightning": "source:rnv",
         "@rnv/engine-rn": "source:rnv",
@@ -38,9 +39,7 @@
             "tizenmobile": 8091,
             "windows": 8092,
             "xbox": 8099,
-            "kaios": 8093,
-            "firefoxos": 8094,
-            "firefoxtv": 8014
+            "kaios": 8093
         },
         "supportedPlatforms": [
             "ios",
@@ -58,11 +57,9 @@
             "tizenwatch",
             "tizenmobile",
             "kaios",
-            "firefoxos",
-            "firefoxtv",
             "chromecast"
         ],
-        "schemes": {
+        "defaultCommandSchemes": {
             "run": "debug",
             "build": "release",
             "export": "release"
@@ -71,9 +68,10 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^0.37.2"
+            "version": "^1.0.0-canary.7"
         }
     },
+    "currentTemplate": "@rnv/template-starter",
     "platforms": {
         "android": {
             "minSdkVersion": 26,
@@ -81,106 +79,44 @@
             "compileSdkVersion": 33,
             "buildToolsVersion": "30.0.0",
             "gradleBuildToolsVersion": "4.2.2",
-            "gradleWrapperVersion": "6.7.1",
+            "gradleWrapperVersion": "8.0.1",
             "kotlinVersion": "1.7.10",
             "reactNativeEngine": "hermes",
             "enableAndroidX": true,
-            "gradle.properties": {
-                "android.useDeprecatedNdk": true,
-                "android.enableJetifier": true,
-                "android.useAndroidX": true,
-                "android.debug.obsoleteApi": true,
-                "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
-                "org.gradle.daemon": true,
-                "org.gradle.parallel": true,
-                "org.gradle.configureondemand": true
-            },
-            "mainActivity": {
-                "onCreate": "super.onCreate(null)"
+            "templateAndroid": {
+                "gradle_properties": {
+                    "android.useDeprecatedNdk": true,
+                    "android.enableJetifier": true,
+                    "android.useAndroidX": true,
+                    "android.debug.obsoleteApi": true,
+                    "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
+                    "org.gradle.daemon": true,
+                    "org.gradle.parallel": true,
+                    "org.gradle.configureondemand": true
+                },
+                "MainActivity_java": {
+                    "onCreate": "super.onCreate(null)"
+                }
             }
         },
         "androidtv": {
-            "minSdkVersion": 26,
-            "targetSdkVersion": 33,
-            "compileSdkVersion": 33,
-            "buildToolsVersion": "30.0.0",
-            "gradleBuildToolsVersion": "4.2.2",
-            "gradleWrapperVersion": "6.7.1",
-            "kotlinVersion": "1.7.10",
-            "reactNativeEngine": "hermes",
-            "enableAndroidX": true,
-            "gradle.properties": {
-                "android.useDeprecatedNdk": true,
-                "android.enableJetifier": true,
-                "android.useAndroidX": true,
-                "android.debug.obsoleteApi": true,
-                "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
-                "org.gradle.daemon": true,
-                "org.gradle.parallel": true,
-                "org.gradle.configureondemand": true
-            },
-            "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "extendPlatform": "android",
+            "engine": "engine-rn-tvos"
         },
         "androidwear": {
-            "minSdkVersion": 26,
-            "targetSdkVersion": 33,
-            "compileSdkVersion": 33,
-            "buildToolsVersion": "30.0.0",
-            "gradleBuildToolsVersion": "4.2.2",
-            "gradleWrapperVersion": "6.7.1",
-            "kotlinVersion": "1.7.10",
-            "reactNativeEngine": "hermes",
-            "enableAndroidX": true,
-            "gradle.properties": {
-                "android.useDeprecatedNdk": true,
-                "android.enableJetifier": true,
-                "android.useAndroidX": true,
-                "android.debug.obsoleteApi": true,
-                "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
-                "org.gradle.daemon": true,
-                "org.gradle.parallel": true,
-                "org.gradle.configureondemand": true
-            },
-            "includedPermissions": [
-                "INTERNET"
-            ],
-            "mainActivity": {
-                "onCreate": "super.onCreate(null)"
-            }
+            "extendPlatform": "android"
         },
         "firetv": {
-            "minSdkVersion": 26,
-            "targetSdkVersion": 33,
-            "compileSdkVersion": 33,
-            "buildToolsVersion": "30.0.0",
-            "gradleBuildToolsVersion": "4.2.2",
-            "gradleWrapperVersion": "6.7.1",
-            "kotlinVersion": "1.7.10",
-            "reactNativeEngine": "hermes",
-            "enableAndroidX": true,
-            "gradle.properties": {
-                "android.useDeprecatedNdk": true,
-                "android.enableJetifier": true,
-                "android.useAndroidX": true,
-                "android.debug.obsoleteApi": true,
-                "org.gradle.jvmargs": "-Xmx3g -XX:MaxPermSize=2048m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8",
-                "org.gradle.daemon": true,
-                "org.gradle.parallel": true,
-                "org.gradle.configureondemand": true
-            },
+            "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
         },
         "tvos": {
             "engine": "engine-rn-tvos",
+            "schemeTarget": "RNVApp-tvOS",
             "deploymentTarget": "14.0"
         },
         "macos": {
@@ -199,8 +135,31 @@
         "react": "source:rnv",
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
-        "react-native": "source:rnv",
-        "react-native-gesture-handler": "source:rnv"
+        "react-native-gesture-handler": {
+            "version": "2.13.1",
+            "disablePluginTemplateOverrides": false
+        },
+        "@react-native-community/cli-platform-ios": {
+            "version": "11.3.7",
+            "disablePluginTemplateOverrides": false,
+            "disableNpm": true
+        },
+        "react-native": {
+            "version": "0.72.4"
+        },
+        "next": {
+            "version": "13.5.2",
+            "disablePluginTemplateOverrides": true
+        },
+        "react-native-web": {
+            "version": "0.19.9"
+        },
+        "react-native-tvos": {
+            "version": "0.72.4-0"
+        },
+        "@react-native/metro-config": {
+            "version": "^0.73.1"
+        }
     },
     "permissions": {
         "ios": {},

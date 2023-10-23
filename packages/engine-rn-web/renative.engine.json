@@ -1,4 +1,5 @@
 {
+    "$schema": "../../.rnv/schema/rnv.engine.json",
     "id": "engine-rn-web",
     "overview": "React native based engine with web transpiler provided by react-native-web",
     "plugins": {
@@ -27,8 +28,6 @@
         "tizenwatch": {},
         "tizenmobile": {},
         "chromecast": {},
-        "kaios": {},
-        "firefoxos": {},
-        "firefoxtv": {}
+        "kaios": {}
     }
 }

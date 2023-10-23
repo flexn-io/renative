@@ -1,4 +1,5 @@
 {
+    "$schema": "../../.rnv/schema/rnv.engine.json",
     "id": "engine-roku",
     "engineExtension": "rk",
     "overview": "ReNative Roku Engine",

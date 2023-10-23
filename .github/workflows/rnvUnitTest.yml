@@ -3,29 +3,29 @@ name: Node CI
 on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x]
+        strategy:
+            matrix:
+                node-version: [18.x]
 
-    steps:
-      - uses: actions/checkout@master
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm install and test
-        run: |
-          yarn
-          yarn bootstrap
-          yarn test
-        env:
-          CI: true
-      - uses: codecov/codecov-action@v3
-        with:
-          token: ${{secrets.CODECOV_TOKEN}} #required
-          file: ./packages/rnv/coverage/clover.xml #optional
-          flags: rnvunittests #optional
-          name: rnv #optional
+        steps:
+            - uses: actions/checkout@master
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: npm install and test
+              run: |
+                  yarn
+                  yarn bootstrap
+                  yarn test
+              env:
+                  CI: true
+            - uses: codecov/codecov-action@v3
+              with:
+                  token: ${{secrets.CODECOV_TOKEN}} #required
+                  file: ./packages/rnv/coverage/clover.xml #optional
+                  flags: rnvunittests #optional
+                  name: rnv #optional

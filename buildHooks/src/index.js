@@ -1,18 +1,14 @@
-import { updateVersions } from './updateVersions';
-import { gitCommit, gitTag } from './git';
+import { prePublish } from './prePublish';
+
+import { gitCommit, gitTag, gitCommitAndTag } from '@rnv/build-hooks-git';
+import { generateSchema } from '@rnv/build-hooks-schema';
 
 const hooks = {
-    prePublish: async (c) => {
-        await updateVersions(c);
-        return true;
-    },
+    prePublish,
+    gitCommitAndTag,
     gitCommit,
     gitTag,
-    gitCommitAndTag: async (c) => {
-        await gitCommit(c);
-        await gitTag(c);
-        return true;
-    },
+    generateSchema,
 };
 
 const pipes = {};

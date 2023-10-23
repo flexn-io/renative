@@ -1,0 +1,32 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// {{INJECT.START}}
+
+buildscript {
+    // {{INJECT.START.buildscript}}
+    ext {
+        // {{INJECT.START.buildscript.ext}}
+        buildToolsVersion = '{{BUILD_TOOLS_VERSION}}'
+        minSdkVersion = {{MIN_SDK_VERSION}}
+        compileSdkVersion = {{COMPILE_SDK_VERSION}}
+        targetSdkVersion = {{TARGET_SDK_VERSION}}
+
+        // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
+        ndkVersion = {{NDK_VERSION}}
+        // {{INJECT.END.buildscript.ext}}
+    }
+    repositories {
+        // {{INJECT.START.buildscript.repositories}}
+        google()
+        mavenCentral()
+        // {{INJECT.END.buildscript.repositories}}
+    }
+    dependencies {
+        // {{INJECT.START.buildscript.dependencies}}
+        classpath("com.android.tools.build:gradle")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        // {{INJECT.END.buildscript.dependencies}}
+    }
+    // {{INJECT.END.buildscript}}
+}
+
+// {{INJECT.END}}

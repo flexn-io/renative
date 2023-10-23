@@ -1,0 +1,103 @@
+{
+  "$ref": "#/definitions/rnv.engine",
+  "definitions": {
+    "rnv.engine": {
+      "type": "object",
+      "properties": {
+        "custom": {
+          "description": "Object ysed to extend your renative with custom props. This allows renative json schema to be validated"
+        },
+        "id": {
+          "type": "string",
+          "description": "ID of engine"
+        },
+        "engineExtension": {
+          "type": "string",
+          "description": "Engine extension ised by rnv during compilation"
+        },
+        "overview": {
+          "type": "string",
+          "description": "Overview description of engine"
+        },
+        "plugins": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "List of required plugins for this engine to work properly"
+        },
+        "npm": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        },
+        "platforms": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "engine": {
+                "type": "string"
+              },
+              "npm": {
+                "type": "object",
+                "properties": {
+                  "dependencies": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  },
+                  "devDependencies": {
+                    "$ref": "#/definitions/rnv.engine/properties/platforms/additionalProperties/properties/npm/properties/dependencies"
+                  },
+                  "peerDependencies": {
+                    "$ref": "#/definitions/rnv.engine/properties/platforms/additionalProperties/properties/npm/properties/dependencies"
+                  },
+                  "optionalDependencies": {
+                    "$ref": "#/definitions/rnv.engine/properties/platforms/additionalProperties/properties/npm/properties/dependencies"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "propertyNames": {
+            "enum": [
+              "ios",
+              "android",
+              "firetv",
+              "androidtv",
+              "androidwear",
+              "web",
+              "webtv",
+              "tizen",
+              "tizenmobile",
+              "tvos",
+              "webos",
+              "macos",
+              "windows",
+              "linux",
+              "tizenwatch",
+              "kaios",
+              "chromecast",
+              "xbox"
+            ]
+          }
+        },
+        "$schema": {
+          "type": "string",
+          "description": "schema definition"
+        }
+      },
+      "required": [
+        "id",
+        "engineExtension",
+        "overview"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

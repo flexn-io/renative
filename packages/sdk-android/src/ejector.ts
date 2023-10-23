@@ -1,25 +1,18 @@
 import path from 'path';
-import { Common, FileUtils, PluginManager, Resolver } from 'rnv';
-// import { logWarning } from 'rnv/dist/core/systemManager/logger';
-
-const {
+import {
+    RnvContext,
     fsExistsSync,
     copyFileSync,
     fsWriteFileSync,
     fsReadFileSync,
     copyFolderContentsRecursiveSync,
-    // cleanEmptyFoldersRecursively,
-    // fsMkdirSync,
-} = FileUtils;
-const { getAppFolder, getConfigProp } = Common;
-const { doResolvePath } = Resolver;
-
-const {
+    getAppFolder,
+    getConfigProp,
+    doResolvePath,
     parsePlugins,
-    // sanitizePluginPath, includesPluginPath
-} = PluginManager;
+} from '@rnv/core';
 
-export const ejectGradleProject = async (c: any) => {
+export const ejectGradleProject = async (c: RnvContext) => {
     const isMonorepo = getConfigProp(c, c.platform, 'isMonorepo');
     const monoRoot = getConfigProp(c, c.platform, 'monoRoot');
 
@@ -120,8 +113,11 @@ export const ejectGradleProject = async (c: any) => {
 
     const afterEvaluateFix: Array<{ match: string; replace: string }> = [];
 
-    parsePlugins(c, c.platform, (_plugin: any, pluginPlat: any, key: string) => {
+    parsePlugins(c, c.platform, (_plugin, pluginPlat, key: string) => {
         const pluginPath = doResolvePath(key);
+
+        if (!pluginPath) return;
+
         const extensionsFilter = [
             '.java',
             '.gradle',
@@ -135,8 +131,8 @@ export const ejectGradleProject = async (c: any) => {
         ];
         // const excludeFolders = ['node_modules', 'android'];
 
-        if (pluginPlat.afterEvaluate) {
-            pluginPlat.afterEvaluate.forEach((v: any) => {
+        if (pluginPlat.templateAndroid?.app_build_gradle?.afterEvaluate) {
+            pluginPlat.templateAndroid?.app_build_gradle?.afterEvaluate.forEach((v) => {
                 afterEvaluateFix.push({
                     match: v.replace('{{PLUGIN_ROOT}}', pluginPath),
                     replace: v.replace('{{PLUGIN_ROOT}}', `../../node_modules/${key}`),
@@ -147,7 +143,17 @@ export const ejectGradleProject = async (c: any) => {
         }
 
         const destPath = path.join(appFolder, 'node_modules', key);
-        copyFolderContentsRecursiveSync(pluginPath, destPath, false, null, false, null, null, c, extensionsFilter);
+        copyFolderContentsRecursiveSync(
+            pluginPath,
+            destPath,
+            false,
+            undefined,
+            false,
+            undefined,
+            undefined,
+            c,
+            extensionsFilter
+        );
         copyFileSync(path.join(pluginPath, 'package.json'), path.join(destPath, 'package.json'));
     });
 

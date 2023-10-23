@@ -53,6 +53,8 @@ buck-out/
 # Testing
 /packages/**/coverage
 /packages/**/dist
+/packages/**/lib
+
 .expo
 coverage
 
@@ -65,3 +67,8 @@ packages/**/*.binlog
 
 dist
 lib
+
+lerna-debug.log
+yarn-error.log
+.rnv
+coverage-ts

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-android",
-    "version": "0.37.2",
+    "version": "1.0.0-canary.7",
     "description": "ReNative Android SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -10,14 +10,13 @@
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "files": [
-        "dist",
+        "LICENSE",
+        "lib",
         "supportFiles",
+        "templates",
         "types.d.ts"
     ],
-    "main": "dist/index.js",
-    "bin": {
-        "sdk-android": "./dist/cli.js"
-    },
+    "main": "lib/index.js",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/flexn-io/renative.git"
@@ -25,35 +24,22 @@
     "scripts": {
         "bootstrap": "yarn && yarn build && npm link",
         "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./lib && rm -rf tsconfig.tsbuildinfo",
+        "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "lint": "eslint . --ext .ts",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@react-native-community/cli": "^6.0.0",
-        "@react-native-community/cli-platform-android": "^6.0.0",
-        "execa": "5.1.1",
-        "inquirer": "8.2.0",
-        "shelljs": "0.8.5"
+        "@react-native-community/cli": "^11.3.8",
+        "@react-native-community/cli-platform-android": "^11.3.8",
+        "@rnv/sdk-react-native": "1.0.0-canary.7"
     },
     "peerDependencies": {
-        "rnv": "^0.37.2"
+        "@rnv/core": "^1.0.0-canary.7"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "yarn lint && yarn test"
-        }
-    },
-    "lint-staged": {
-        "*.ts": [
-            "eslint"
-        ]
-    },
-    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
+    }
 }

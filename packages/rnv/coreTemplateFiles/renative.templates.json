@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../.rnv/schema/rnv.templates.json",
     "projectTemplates": {
         "@rnv/template-starter": {
             "description": "Multiplatform 'hello world' template"
@@ -9,35 +10,35 @@
     },
     "engineTemplates": {
         "@rnv/engine-rn": {
-            "version": "0.37.2",
+            "version": "1.0.0-canary.7",
             "id": "engine-rn"
         },
         "@rnv/engine-rn-tvos": {
-            "version": "0.37.2",
+            "version": "1.0.0-canary.7",
             "id": "engine-rn-tvos"
         },
         "@rnv/engine-rn-web": {
-            "version": "0.37.2",
+            "version": "1.0.0-canary.7",
             "id": "engine-rn-web"
         },
         "@rnv/engine-rn-next": {
-            "version": "0.37.2",
+            "version": "1.0.0-canary.7",
             "id": "engine-rn-next"
         },
         "@rnv/engine-rn-electron": {
-            "version": "0.37.2",
+            "version": "1.0.0-canary.7",
             "id": "engine-rn-electron"
         },
         "@rnv/engine-lightning": {
-            "version": "0.37.2",
+            "version": "1.0.0-canary.7",
             "id": "engine-lightning"
         },
         "@rnv/engine-rn-macos": {
-            "version": "0.37.2",
+            "version": "1.0.0-canary.7",
             "id": "engine-rn-macos"
         },
         "@rnv/engine-rn-windows": {
-            "version": "0.37.2",
+            "version": "1.0.0-canary.7",
             "id": "engine-rn-windows"
         }
     },
@@ -49,7 +50,7 @@
             "version": "0.1.0-alpha.0"
         }
     },
-    "platforms": {
+    "platformTemplates": {
         "ios": {
             "engine": "engine-rn"
         },
@@ -93,12 +94,6 @@
             "engine": "engine-rn-web"
         },
         "chromecast": {
-            "engine": "engine-rn-web"
-        },
-        "firefoxos": {
-            "engine": "engine-rn-web"
-        },
-        "firefoxtv": {
             "engine": "engine-rn-web"
         },
         "kaios": {

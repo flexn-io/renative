@@ -1,0 +1,232 @@
+{
+  "$ref": "#/definitions/rnv.template",
+  "definitions": {
+    "rnv.template": {
+      "type": "object",
+      "properties": {
+        "defaults": {
+          "type": "object",
+          "properties": {
+            "ports": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number"
+              },
+              "propertyNames": {
+                "enum": [
+                  "ios",
+                  "android",
+                  "firetv",
+                  "androidtv",
+                  "androidwear",
+                  "web",
+                  "webtv",
+                  "tizen",
+                  "tizenmobile",
+                  "tvos",
+                  "webos",
+                  "macos",
+                  "windows",
+                  "linux",
+                  "tizenwatch",
+                  "kaios",
+                  "chromecast",
+                  "xbox"
+                ]
+              },
+              "description": "Allows you to assign custom port per each supported platform specific to this project. this is useful if you foten switch between multiple projects and do not want to experience constant port conflicts"
+            },
+            "supportedPlatforms": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "ios",
+                  "android",
+                  "firetv",
+                  "androidtv",
+                  "androidwear",
+                  "web",
+                  "webtv",
+                  "tizen",
+                  "tizenmobile",
+                  "tvos",
+                  "webos",
+                  "macos",
+                  "windows",
+                  "linux",
+                  "tizenwatch",
+                  "kaios",
+                  "chromecast",
+                  "xbox"
+                ]
+              },
+              "description": "Array list of all supported platforms in current project"
+            },
+            "portOffset": {
+              "type": "number",
+              "description": "Offset each port default value by increment"
+            },
+            "defaultCommandSchemes": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              },
+              "propertyNames": {
+                "enum": [
+                  "run",
+                  "export",
+                  "build"
+                ]
+              },
+              "description": "List of default schemes for each rnv command. This is useful if you want to avoid specifying `-s ...` every time your run rnv command. bu default rnv uses `-s debug`. NOTE: you can only use schemes you defined in `buildSchemes`"
+            },
+            "targets": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              },
+              "propertyNames": {
+                "enum": [
+                  "ios",
+                  "android",
+                  "firetv",
+                  "androidtv",
+                  "androidwear",
+                  "web",
+                  "webtv",
+                  "tizen",
+                  "tizenmobile",
+                  "tvos",
+                  "webos",
+                  "macos",
+                  "windows",
+                  "linux",
+                  "tizenwatch",
+                  "kaios",
+                  "chromecast",
+                  "xbox"
+                ]
+              },
+              "description": "Override of default targets specific to this project"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Default system config for this project"
+        },
+        "engines": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "const": "source:rnv"
+          },
+          "description": "List of engines available in this project"
+        },
+        "templateConfig": {
+          "type": "object",
+          "properties": {
+            "includedPaths": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Defines list of all file/dir paths you want to include in template"
+            },
+            "bootstrapQuestions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "options": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "object",
+                          "properties": {},
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "configProp": {
+                    "type": "object",
+                    "properties": {
+                      "prop": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "prop",
+                      "key"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "title"
+                ],
+                "additionalProperties": false
+              },
+              "description": "Defines list of custom bootstrap questions"
+            },
+            "packageTemplate": {
+              "type": "object",
+              "properties": {
+                "dependencies": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "devDependencies": {
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                },
+                "peerDependencies": {
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                },
+                "optionalDependencies": {
+                  "$ref": "#/definitions/rnv.template/properties/templateConfig/properties/packageTemplate/properties/dependencies"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "bootstrapQuestions"
+          ],
+          "additionalProperties": false,
+          "description": "Used in `renative.template.json` allows you to define template behaviour."
+        },
+        "$schema": {
+          "type": "string",
+          "description": "schema definition"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

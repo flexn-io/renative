@@ -1,4 +1,5 @@
 {
+    "$schema": "../../.rnv/schema/rnv.engine.json",
     "id": "engine-rn-windows",
     "engineExtension": "rnwin",
     "overview": "React native based engine with react-native-windows cli tool",

@@ -1,0 +1,61 @@
+{
+  "$ref": "#/definitions/rnv.local",
+  "definitions": {
+    "rnv.local": {
+      "type": "object",
+      "properties": {
+        "workspaceAppConfigsDir": {
+          "type": "string",
+          "description": "Defines app configs dir outside of current project"
+        },
+        "defaultTargets": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "propertyNames": {
+            "enum": [
+              "ios",
+              "android",
+              "firetv",
+              "androidtv",
+              "androidwear",
+              "web",
+              "webtv",
+              "tizen",
+              "tizenmobile",
+              "tvos",
+              "webos",
+              "macos",
+              "windows",
+              "linux",
+              "tizenwatch",
+              "kaios",
+              "chromecast",
+              "xbox"
+            ]
+          },
+          "description": "Define targets to be used when -t is not set on any project run"
+        },
+        "_meta": {
+          "type": "object",
+          "properties": {
+            "currentAppConfigId": {
+              "type": "string"
+            },
+            "requiresJetify": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "$schema": {
+          "type": "string",
+          "description": "schema definition"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

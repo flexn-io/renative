@@ -1,0 +1,111 @@
+{
+  "$ref": "#/definitions/rnv.templates",
+  "definitions": {
+    "rnv.templates": {
+      "type": "object",
+      "properties": {
+        "projectTemplates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "description"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "engineTemplates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "version",
+              "id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "integrationTemplates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "version"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "platformTemplates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "engine": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "engine"
+            ],
+            "additionalProperties": false
+          },
+          "propertyNames": {
+            "enum": [
+              "ios",
+              "android",
+              "firetv",
+              "androidtv",
+              "androidwear",
+              "web",
+              "webtv",
+              "tizen",
+              "tizenmobile",
+              "tvos",
+              "webos",
+              "macos",
+              "windows",
+              "linux",
+              "tizenwatch",
+              "kaios",
+              "chromecast",
+              "xbox"
+            ]
+          }
+        },
+        "$schema": {
+          "type": "string",
+          "description": "schema definition"
+        }
+      },
+      "required": [
+        "projectTemplates",
+        "engineTemplates",
+        "integrationTemplates",
+        "platformTemplates"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

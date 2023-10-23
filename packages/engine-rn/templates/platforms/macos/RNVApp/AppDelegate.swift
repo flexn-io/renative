@@ -16,7 +16,7 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {{APPDELEGATE_EXTENSIONS}} {
 
     var window: UIWindow?
-    let moduleName = "App"
+    let moduleName = "RNVApp"
 
     var uiView: RCTRootView!
     let bundleUrl = {{BUNDLE}}

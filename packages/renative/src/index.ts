@@ -1,7 +1,7 @@
-import Api from './Api';
+import Api from './api';
 
-export * from './Api';
-export * from './Constants';
+export * from './api';
+export * from './constants';
 export * from './is';
 
 export { Api };

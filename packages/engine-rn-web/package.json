@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "0.37.2",
+    "version": "1.0.0-canary.7",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"
@@ -13,50 +13,40 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
-        "dist",
+        "LICENSE",
+        "lib",
         "renative.engine.json",
-        "supportFiles",
         "templates"
     ],
-    "main": "dist/index.js",
+    "main": "lib/index.js",
     "repository": {
         "type": "git",
         "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
         "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./dist && rm -rf tsconfig.tsbuildinfo",
+        "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "prepublishOnly": "yarn clean && yarn compile:prod",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@babel/preset-react": "7.16.0",
-        "@rnv/sdk-webpack": "0.37.2",
-        "babel-loader": "8.3.0",
-        "babel-preset-expo": "9.5.0",
+        "@rnv/sdk-tizen": "1.0.0-canary.7",
+        "@rnv/sdk-webos": "1.0.0-canary.7",
+        "@rnv/sdk-webpack": "1.0.0-canary.7",
         "better-opn": "1.0.0",
         "html-webpack-harddisk-plugin": "1.0.2",
         "html-webpack-plugin": "4.5.1",
         "mini-css-extract-plugin": "0.8.0",
-        "react-native-web": "0.18.0",
-        "webpack-bundle-analyzer": "3.5.1"
+        "webpack-bundle-analyzer": "4.9.1"
     },
-    "devDependencies": {
-        "@babel/cli": "^7.16.0",
-        "@babel/core": "^7.16.0",
-        "@babel/node": "^7.16.0",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.0",
-        "@babel/plugin-proposal-optional-chaining": "^7.16.0",
-        "@babel/preset-env": "^7.16.0"
-    },
+    "devDependencies": {},
     "peerDependencies": {
-        "rnv": "^0.37.2"
+        "@rnv/core": "^1.0.0-canary.7"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
+    }
 }

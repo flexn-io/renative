@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-windows",
-    "version": "0.37.2",
+    "version": "1.0.0-canary.7",
     "description": "ReNative Engine to build for Windows platform with react native support.",
     "keywords": [
         "react-native",
@@ -14,46 +14,38 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
-        "dist",
+        "LICENSE",
+        "lib",
+        "pluginTemplates",
         "renative.engine.json",
-        "supportFiles",
-        "templates"
+        "supportFiles"
     ],
-    "main": "dist/index.js",
+    "main": "lib/index.js",
     "repository": {
         "type": "git",
         "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
         "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./dist && rm -rf tsconfig.tsbuildinfo",
+        "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "prepublishOnly": "yarn clean && yarn compile:prod",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
+        "@rnv/sdk-react-native": "1.0.0-canary.7",
         "@xmldom/xmldom": "0.7.7",
-        "react-native-windows": "0.69.4"
+        "react-native-windows": "0.72.10"
     },
-    "devDependencies": {
-        "@babel/cli": "7.17.6",
-        "@babel/core": "7.8.3",
-        "@babel/node": "7.8.3",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
-        "@babel/plugin-proposal-optional-chaining": "7.8.3",
-        "@babel/preset-env": "7.8.7",
-        "@react-native-windows/cli": "0.67.1",
-        "metro": "0.67.0"
-    },
+    "devDependencies": {},
     "peerDependencies": {
         "@react-native-community/cli": "*",
-        "react-native": "*",
-        "rnv": "^0.37.2"
+        "@rnv/core": "^1.0.0-canary.7",
+        "react-native": "*"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
+    }
 }

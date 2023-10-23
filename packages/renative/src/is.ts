@@ -1,7 +1,7 @@
-import engine from './Api/engine';
-import factor from './Api/factor';
-import platform from './Api/platform';
-import { Platform, FormFactor, Engine } from './Constants';
+import engine from './api/engine';
+import factor from './api/factor';
+import platform from './api/platform';
+import { Platform, FormFactor, Engine } from './constants';
 
 // PLATFORM
 export const isPlatformAndroid = platform === Platform.android;
@@ -18,8 +18,6 @@ export const isPlatformTizenmobile = platform === Platform.tizenmobile;
 export const isPlatformMacos = platform === Platform.macos;
 export const isPlatformWindows = platform === Platform.windows;
 export const isPlatformLinux = platform === Platform.linux;
-export const isPlatformFirefoxos = platform === Platform.firefoxos;
-export const isPlatformFirefoxtv = platform === Platform.firefoxtv;
 export const isPlatformKaios = platform === Platform.kaios;
 export const isPlatformWebtv = platform === Platform.webtv;
 export const isPlatformXbox = platform === Platform.xbox;
@@ -57,7 +55,5 @@ export const isTizenwatch = () => platform === Platform.tizenwatch;
 export const isTizenmobile = () => platform === Platform.tizenmobile;
 export const isMacos = () => platform === Platform.macos;
 export const isWindows = () => platform === Platform.windows;
-export const isFirefoxos = () => platform === Platform.firefoxos;
-export const isFirefoxtv = () => platform === Platform.firefoxtv;
 export const isKaios = () => platform === Platform.kaios;
 export const isWebtv = () => platform === Platform.webtv;

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "0.37.2",
+    "version": "1.0.0-canary.7",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",
@@ -14,51 +14,38 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
-        "dist",
+        "LICENSE",
+        "lib",
         "renative.engine.json",
-        "supportFiles",
-        "templates"
+        "supportFiles"
     ],
-    "main": "dist/index.js",
+    "main": "lib/index.js",
     "repository": {
         "type": "git",
         "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
         "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./dist && rm -rf tsconfig.tsbuildinfo",
+        "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "prepublishOnly": "yarn clean && yarn compile:prod",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
         "@expo/config": "8.1.2",
-        "@expo/next-adapter": "4.0.13",
-        "ally.js": "1.4.1",
+        "@expo/next-adapter": "5.0.2",
+        "babel-preset-expo": "9.5.2",
         "better-opn": "1.0.0",
-        "next": "12.1.6",
         "next-fonts": "1.5.1",
-        "next-images": "1.8.4",
-        "next-transpile-modules": "9.0.0",
-        "react-native-web": "0.18.0",
-        "webpack": "5.76.0"
+        "next-images": "1.8.4"
     },
-    "devDependencies": {
-        "@babel/cli": "7.17.6",
-        "@babel/core": "7.8.3",
-        "@babel/node": "7.8.3",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
-        "@babel/plugin-proposal-optional-chaining": "7.8.3",
-        "@babel/preset-env": "7.8.7"
-    },
+    "devDependencies": {},
     "peerDependencies": {
-        "next": ">=12.0.8",
-        "rnv": "^0.37.2"
+        "@rnv/core": "^1.0.0-canary.7"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    },
-    "gitHead": "930edaf234cc321ad9f1e296c5d394e3144845e2"
+    }
 }

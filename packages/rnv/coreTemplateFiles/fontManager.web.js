@@ -1,4 +1,5 @@
 function registerFonts(fonts) {
+    if (typeof document === 'undefined') return;
     fonts.forEach((f) => {
         registerFont(f.fontFamily, f.file);
     });

@@ -1,4 +1,5 @@
 {
+    "$schema": "../../.rnv/schema/rnv.engine.json",
     "id": "engine-rn-macos",
     "engineExtension": "rnm",
     "overview": "React native based engine with react-native-macos extension which adds support for macOS platform.",

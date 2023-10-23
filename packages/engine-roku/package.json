@@ -13,35 +13,27 @@
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
     "contributors": [],
     "files": [
-        "dist",
-        "renative.engine.json",
-        "supportFiles",
-        "templates"
+        "LICENSE",
+        "lib",
+        "renative.engine.json"
     ],
-    "main": "dist/index.js",
+    "main": "lib/index.js",
     "repository": {
         "type": "git",
         "url": "git://github.com/flexn-io/renative.git"
     },
     "scripts": {
         "build": "yarn clean && yarn compile",
-        "clean": "rm -rf ./dist && rm -rf tsconfig.tsbuildinfo",
+        "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
         "prepublishOnly": "yarn clean && yarn compile:prod",
-        "watch": "tsc --watch --preserveWatchOutput --allowJs"
+        "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {},
-    "devDependencies": {
-        "@babel/cli": "7.17.6",
-        "@babel/core": "7.8.3",
-        "@babel/node": "7.8.3",
-        "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
-        "@babel/plugin-proposal-optional-chaining": "7.8.3",
-        "@babel/preset-env": "7.8.7"
-    },
+    "devDependencies": {},
     "peerDependencies": {
-        "rnv": "^0.37.2"
+        "@rnv/core": "^1.0.0-canary.7"
     },
     "private": false,
     "publishConfig": {
