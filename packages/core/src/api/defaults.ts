@@ -15,6 +15,7 @@ const spinner: any = () => ({
     succeed: () => {
         //NOOP
     },
+    text: '',
 });
 
 const logger: any = {};

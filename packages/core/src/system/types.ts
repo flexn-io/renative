@@ -29,9 +29,7 @@ export type ExecOptions = {
     printableEnvKeys?: Array<string>;
 };
 
-export type ExecCallback = (isError: boolean) => void;
-
-export type ExecCallback2 = (result: any, isError: boolean) => void;
+export type ExecCallback = (result: unknown, isError: boolean) => void;
 
 export type OverridesOptions = Array<{
     pattern: string;

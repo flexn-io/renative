@@ -619,12 +619,12 @@ const waitForEmulatorToBeReady = (c: RnvContext, emulator: string) =>
     });
 
 export const checkForActiveEmulator = (c: RnvContext) =>
-    new Promise((resolve, reject) => {
+    new Promise<AndroidDevice | undefined>((resolve, reject) => {
         logTask('checkForActiveEmulator');
         const { platform } = c;
 
         if (!platform) {
-            resolve(false);
+            resolve(undefined);
             return;
         }
 

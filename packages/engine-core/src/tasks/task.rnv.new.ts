@@ -34,6 +34,7 @@ import {
     inquirerPrompt,
     PlatformKey,
     commandExistsSync,
+    PromptParams,
 } from '@rnv/core';
 import { ConfigFileProject, ConfigFileTemplate } from '@rnv/core/lib/schema/configFiles/types';
 
@@ -160,7 +161,7 @@ type QuestionResults = Record<
     {
         answer: string;
         configProp: ConfigProp;
-        value: any;
+        value: string;
     }
 >;
 
@@ -201,7 +202,7 @@ const interactiveQuestion = async (
                     value,
                 };
             } else {
-                const inqQuestion: any = {
+                const inqQuestion: PromptParams = {
                     name: qKeyClean,
                     type: q.type,
                     message: q.title,

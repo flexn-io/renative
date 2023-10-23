@@ -13,6 +13,7 @@ import {
     ANDROID_WEAR,
     RnvContext,
     DEFAULTS,
+    RnvPlatform,
 } from '@rnv/core';
 
 export const packageReactNativeAndroid = async (c: RnvContext) => {
@@ -75,13 +76,17 @@ export const packageReactNativeAndroid = async (c: RnvContext) => {
     }
 };
 
-export const runReactNativeAndroid = async (c: RnvContext, platform: any, device: any) => {
+export const runReactNativeAndroid = async (
+    c: RnvContext,
+    platform: RnvPlatform,
+    device: { udid?: string } | undefined
+) => {
     logTask('_runGradleApp');
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
     const appFolder = getAppFolder(c);
 
-    const { udid } = device;
+    const udid = device?.udid;
 
     let command = `npx react-native run-android --mode=${signingConfig} --no-packager`;
 

@@ -18,7 +18,7 @@ const _updateProfile = (c: RnvContext, v: string) =>
         logTask(`_updateProfile:${v}`, chalk().grey);
         updateProfile(c)
             .then(() => resolve())
-            .catch((e: any) => reject(e));
+            .catch((e) => reject(e));
     });
 
 const _updateProfiles = (c: RnvContext) => {
