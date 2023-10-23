@@ -677,7 +677,8 @@ const _bindStringVals = <T, K extends keyof T>(obj: T, _val: string, newKey: K, 
     if (val.includes(BIND_FILES)) {
         const key = val.replace(BIND_FILES, '').replace('}}', '');
         //TODO: this any not good
-        const nVal = lGet(propConfig, key);
+
+        const nVal = lGet(propConfig.files, key);
         obj[newKey] = resolvePackage(nVal) as T[K];
     } else if (val.includes(BIND_PROPS)) {
         Object.keys(props).forEach((pk) => {

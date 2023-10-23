@@ -422,7 +422,7 @@
           "description": "Enables the equivalent to passing --skipDependencyCheck parameter on every rnv run so you don't have to use it"
         },
         "isNew": {
-          "type": "string",
+          "type": "boolean",
           "description": "Marker indicating that this project has just been bootstrapped. this prop is managed by rnv"
         },
         "common": {
@@ -1000,19 +1000,31 @@
                     "AndroidManifest_xml": {
                       "type": "object",
                       "properties": {
+                        "tag": {
+                          "type": "string"
+                        },
+                        "android:name": {
+                          "type": "string"
+                        },
+                        "android:required": {
+                          "type": "boolean"
+                        },
+                        "package": {
+                          "type": "string"
+                        },
                         "children": {
                           "type": "array",
                           "items": {
                             "type": "object",
                             "properties": {
                               "tag": {
-                                "type": "string"
+                                "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/templateAndroid/properties/AndroidManifest_xml/properties/tag"
                               },
                               "android:name": {
-                                "type": "string"
+                                "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/templateAndroid/properties/AndroidManifest_xml/properties/android:name"
                               },
                               "android:required": {
-                                "type": "boolean"
+                                "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/templateAndroid/properties/AndroidManifest_xml/properties/android:required"
                               },
                               "children": {
                                 "type": "array",
@@ -1031,22 +1043,14 @@
                         }
                       },
                       "required": [
+                        "tag",
+                        "android:name",
                         "children"
                       ],
                       "additionalProperties": false,
                       "description": "Allows you to directly manipulate `AndroidManifest.xml` via json override mechanism\nInjects / Overrides values in AndroidManifest.xml file of generated android based project\n> IMPORTANT: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into\n "
                     },
                     "strings_xml": {
-                      "type": "object",
-                      "properties": {},
-                      "additionalProperties": false
-                    },
-                    "settings_gradle": {
-                      "type": "object",
-                      "properties": {},
-                      "additionalProperties": false
-                    },
-                    "gradle_wrapper_properties": {
                       "type": "object",
                       "properties": {},
                       "additionalProperties": false
@@ -1058,15 +1062,80 @@
                           "type": "string",
                           "default": "super.onCreate(savedInstanceState)",
                           "description": "Overrides super.onCreate method handler of MainActivity.java"
+                        },
+                        "imports": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "methods": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "createMethods": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "resultMethods": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
                         }
                       },
                       "additionalProperties": false
                     },
                     "MainApplication_java": {
                       "type": "object",
-                      "properties": {},
+                      "properties": {
+                        "imports": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "methods": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "createMethods": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "packages": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "packageParams": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
                       "additionalProperties": false,
                       "description": "Allows you to configure behaviour of MainActivity"
+                    },
+                    "settings_gradle": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": false
+                    },
+                    "gradle_wrapper_properties": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": false
                     },
                     "SplashActivity_java": {
                       "type": "object",
@@ -1441,8 +1510,8 @@
                   "type": "string"
                 },
                 "provisionProfileSpecifiers": {
-                  "type": "array",
-                  "items": {
+                  "type": "object",
+                  "additionalProperties": {
                     "type": "string"
                   }
                 },
@@ -3487,7 +3556,9 @@
                   },
                   "props": {
                     "type": "object",
-                    "additionalProperties": {},
+                    "additionalProperties": {
+                      "type": "string"
+                    },
                     "description": "Custom props passed to plugin"
                   },
                   "version": {
@@ -3590,6 +3661,12 @@
                     "type": "boolean",
                     "description": "Disables plugin overrides for selected plugin"
                   },
+                  "fontSources": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
                   "android": {
                     "type": "object",
                     "properties": {
@@ -3665,6 +3742,12 @@
                               }
                             },
                             "additionalProperties": false
+                          },
+                          "MainActivity_java": {
+                            "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/templateAndroid/properties/MainActivity_java"
+                          },
+                          "MainApplication_java": {
+                            "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/templateAndroid/properties/MainApplication_java"
                           }
                         },
                         "additionalProperties": false

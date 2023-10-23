@@ -16,7 +16,9 @@
         },
         "props": {
           "type": "object",
-          "additionalProperties": {},
+          "additionalProperties": {
+            "type": "string"
+          },
           "description": "Custom props passed to plugin"
         },
         "version": {
@@ -118,6 +120,12 @@
         "disablePluginTemplateOverrides": {
           "type": "boolean",
           "description": "Disables plugin overrides for selected plugin"
+        },
+        "fontSources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "android": {
           "type": "object",
@@ -294,19 +302,31 @@
                 "AndroidManifest_xml": {
                   "type": "object",
                   "properties": {
+                    "tag": {
+                      "type": "string"
+                    },
+                    "android:name": {
+                      "type": "string"
+                    },
+                    "android:required": {
+                      "type": "boolean"
+                    },
+                    "package": {
+                      "type": "string"
+                    },
                     "children": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
                           "tag": {
-                            "type": "string"
+                            "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/AndroidManifest_xml/properties/tag"
                           },
                           "android:name": {
-                            "type": "string"
+                            "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/AndroidManifest_xml/properties/android:name"
                           },
                           "android:required": {
-                            "type": "boolean"
+                            "$ref": "#/definitions/rnv.plugin/properties/android/properties/templateAndroid/properties/AndroidManifest_xml/properties/android:required"
                           },
                           "children": {
                             "type": "array",
@@ -325,6 +345,8 @@
                     }
                   },
                   "required": [
+                    "tag",
+                    "android:name",
                     "children"
                   ],
                   "additionalProperties": false,
@@ -358,6 +380,78 @@
                     }
                   },
                   "additionalProperties": false
+                },
+                "MainActivity_java": {
+                  "type": "object",
+                  "properties": {
+                    "onCreate": {
+                      "type": "string",
+                      "default": "super.onCreate(savedInstanceState)",
+                      "description": "Overrides super.onCreate method handler of MainActivity.java"
+                    },
+                    "imports": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "methods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createMethods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "resultMethods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "MainApplication_java": {
+                  "type": "object",
+                  "properties": {
+                    "imports": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "methods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "createMethods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "packages": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "packageParams": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "additionalProperties": false,
+                  "description": "Allows you to configure behaviour of MainActivity"
                 }
               },
               "additionalProperties": false

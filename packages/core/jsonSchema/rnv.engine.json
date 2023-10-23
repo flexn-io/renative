@@ -53,6 +53,9 @@
                   },
                   "peerDependencies": {
                     "$ref": "#/definitions/rnv.engine/properties/platforms/additionalProperties/properties/npm/properties/dependencies"
+                  },
+                  "optionalDependencies": {
+                    "$ref": "#/definitions/rnv.engine/properties/platforms/additionalProperties/properties/npm/properties/dependencies"
                   }
                 },
                 "additionalProperties": false
