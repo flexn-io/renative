@@ -215,7 +215,6 @@ Dev server running at: ${url}
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
     return executeAsync(c, `npx next ${bundleAssets ? 'start' : 'dev'} --port ${c.runtime.port}`, {
         env: {
-            NODE_ENV: env || 'development',
             ...envExt,
             ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c)),
         },
@@ -245,7 +244,6 @@ export const exportWebNext = async (c: RnvContext) => {
     await executeAsync(c, `npx next export --outdir ${exportDir}`, {
         ...process.env,
         env: {
-            NODE_ENV: env || 'development',
             ...envExt,
             ...generateEnvVars(c, getModuleConfigs(c), getTranspileModules(c)),
         },

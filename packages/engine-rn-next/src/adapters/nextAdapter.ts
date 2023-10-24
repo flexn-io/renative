@@ -19,6 +19,23 @@ export const withRNVNext = (config: any, opts: any) => {
                     .map((e) => `.${e}`)
                     .filter((ext) => isServer || !ext.includes('server.'));
             }
+
+            // add babel loader
+            // if (!cfg.module) {
+            //     cfg.module = { rules: [] };
+            // }
+            // console.log('loaders', props.defaultLoaders);
+            // console.log('rules', cfg.module.rules);
+            cfg.module.rules.push({
+                test: /\.*.js?$/,
+                exclude: /process/,
+                use: [
+                    props.defaultLoaders.babel,
+                    // {
+                    //     loader: 'babel-loader',
+                    // },
+                ],
+            });
             return cfg;
         },
         // webpack: (cfg: any, props: any) => {
@@ -96,6 +113,6 @@ export const withRNVNext = (config: any, opts: any) => {
         transModules = process.env.RNV_NEXT_TRANSPILE_MODULES.split(',');
         cnf1.transpilePackages = transModules;
     }
-
+    // console.log('cnf1', cnf1);
     return cnf1;
 };
