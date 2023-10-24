@@ -103,7 +103,13 @@ export const runReactNativeAndroid = async (
         //This is required to make rn cli logs visible in rnv executed terminal
         interactive: true,
         stdio: 'inherit',
-        printableEnvKeys: ['RNV_REACT_NATIVE_PATH', 'RNV_APP_ID', 'RNV_PROJECT_ROOT', 'RNV_APP_BUILD_DIR'],
+        printableEnvKeys: [
+            'RNV_REACT_NATIVE_PATH',
+            'RNV_APP_ID',
+            'RNV_PROJECT_ROOT',
+            'RNV_APP_BUILD_DIR',
+            'RNV_ENGINE_PATH',
+        ],
     });
 };
 

@@ -125,7 +125,12 @@ const runCocoaPods = async (c: Context) => {
         ...generateEnvVars(c),
     };
 
-    const printableEnvKeys = ['RCT_NEW_ARCH_ENABLED', 'REACT_NATIVE_PERMISSIONS_REQUIRED', 'RNV_APP_BUILD_DIR'];
+    const printableEnvKeys = [
+        'RCT_NEW_ARCH_ENABLED',
+        'REACT_NATIVE_PERMISSIONS_REQUIRED',
+        'RNV_APP_BUILD_DIR',
+        'RNV_ENGINE_PATH',
+    ];
 
     if (podsRequired) {
         if (!commandExistsSync('pod')) {

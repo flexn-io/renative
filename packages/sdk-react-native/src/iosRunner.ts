@@ -68,7 +68,13 @@ export const runReactNativeIOS = async (
         // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
         return executeAsync(c, cmd, {
             env,
-            printableEnvKeys: ['RNV_REACT_NATIVE_PATH', 'RNV_APP_ID', 'RNV_PROJECT_ROOT', 'RNV_APP_BUILD_DIR'],
+            printableEnvKeys: [
+                'RNV_REACT_NATIVE_PATH',
+                'RNV_APP_ID',
+                'RNV_PROJECT_ROOT',
+                'RNV_APP_BUILD_DIR',
+                'RNV_ENGINE_PATH',
+            ],
         });
     } catch (e) {
         if (typeof e === 'string') {
