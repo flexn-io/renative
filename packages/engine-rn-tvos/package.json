@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-tvos",
-    "version": "0.37.0-feat-eject.11",
+    "version": "0.37.0-feat-eject.12",
     "description": "ReNative Engine to build react-native tvos platform.",
     "keywords": [
         "react-native"
@@ -32,8 +32,8 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-android": "0.37.0-feat-eject.11",
-        "@rnv/sdk-apple": "0.37.0-feat-eject.11"
+        "@rnv/sdk-android": "0.37.0-feat-eject.12",
+        "@rnv/sdk-apple": "0.37.0-feat-eject.12"
     },
     "devDependencies": {
         "@babel/cli": "7.17.6",
@@ -44,7 +44,7 @@
         "@babel/preset-env": "7.8.7"
     },
     "peerDependencies": {
-        "rnv": "^0.37.0-feat-eject.11"
+        "rnv": "^0.37.0-feat-eject.12"
     },
     "private": false,
     "publishConfig": {
