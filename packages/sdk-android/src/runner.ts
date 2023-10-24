@@ -14,6 +14,7 @@ import {
     updateObjectSync,
     fsWriteFileSync,
     executeAsync,
+    generateEnvVars,
     getAppFolder,
     getConfigProp,
     getEntryFile,
@@ -311,6 +312,7 @@ export const buildAndroid = async (c: Context) => {
     const { platform } = c;
 
     const appFolder = getAppFolder(c);
+
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
 
     const outputAab = getConfigProp(c, platform, 'aab', false);
@@ -325,7 +327,12 @@ export const buildAndroid = async (c: Context) => {
         command += ` --extra-params ${extraGradleParams}`;
     }
 
-    await executeAsync(c, command, { cwd: appFolder });
+    await executeAsync(c, command, {
+        cwd: appFolder,
+        env: {
+            ...generateEnvVars(c),
+        },
+    });
 
     // await _checkSigningCerts(c);
     // await executeAsync(
