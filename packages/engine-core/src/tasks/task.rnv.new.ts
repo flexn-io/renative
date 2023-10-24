@@ -720,9 +720,11 @@ export const taskRnvNew = async (c: RnvContext) => {
     }
     logSuccess(
         `Your project is ready! navigate to project ${chalk().white(`cd ${data.projectName}`)} and run ${chalk().white(
-            'rnv run'
+            'npx rnv run'
         )} to see magic happen!`
     );
+
+    return true;
 };
 
 const findEngineKeyById = (c: RnvContext, id: string) => {
