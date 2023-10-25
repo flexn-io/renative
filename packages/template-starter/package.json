@@ -130,5 +130,7 @@
             "last 1 safari version"
         ]
     },
-    "dependencies": {}
+    "dependencies": {
+        "raf": "3.4.1"
+    }
 }
