@@ -1,14 +1,3 @@
-# sdk-apple
+# sdk-utils
 
-## Setup
 
-```
-yarn bootstrap
-yarn watch
-```
-
-## Run CLI
-
-```
-sdk-apple
-```
