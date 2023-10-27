@@ -20,6 +20,7 @@
 		752A9765F8A14465B24BF97C /* libPods-RNVApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C717EEC7024EA4A970A8C0B /* libPods-RNVApp.a */; };
 		9408A38A2A97997800B2E736 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9408A3872A97997800B2E736 /* AppDelegate.mm */; };
 		9408A38B2A97997800B2E736 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9408A3882A97997800B2E736 /* main.m */; };
+		D938F9032AEA8C09006F7BB1 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = D938F9022AEA8C09006F7BB1 /* main.jsbundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		96722C6F859B298386E53EEC /* libPods-RNVApp-RNVAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNVApp-RNVAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF8EFAC6D34EF718C410C11B /* Pods_RNVAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNVAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7A51880565C9437FC383DF0 /* Pods-RNVApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNVApp/Pods-RNVApp.debug.xcconfig"; sourceTree = "<group>"; };
+		D938F9022AEA8C09006F7BB1 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		FA2535CB3354D16A4910CDF1 /* Pods-RNVAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNVAppTests/Pods-RNVAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB345A890161D745CEEFDE63 /* Pods-RNVApp-RNVAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVApp-RNVAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNVApp-RNVAppTests/Pods-RNVApp-RNVAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -102,6 +104,7 @@
 		200132E71F6BF9CF00450340 = {
 			isa = PBXGroup;
 			children = (
+				D938F9022AEA8C09006F7BB1 /* main.jsbundle */,
 				2030C437224AE567002469E4 /* Resources */,
 				207888241FCD3A000015651F /* assets */,
 				200132F21F6BF9CF00450340 /* RNVApp */,
@@ -139,7 +142,8 @@
 		};
 		2030C437224AE567002469E4 /* Resources */ = {
 			isa = PBXGroup;
-			children = ();
+			children = (
+			);
 			path = Resources;
 			sourceTree = "<group>";
 		};
@@ -348,6 +352,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D938F9032AEA8C09006F7BB1 /* main.jsbundle in Resources */,
 				20A3B6EF2252512D0084A50B /* assets in Resources */,
 				200132FE1F6BF9CF00450340 /* Assets.xcassets in Resources */,
 				207BDA4024AB543F00F32013 /* LaunchScreen.storyboard in Resources */,
