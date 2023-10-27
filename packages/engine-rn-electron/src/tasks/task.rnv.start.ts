@@ -1,5 +1,4 @@
 import { runWebpackServer } from '@rnv/sdk-webpack';
-import open from 'better-opn';
 import {
     RnvTaskFn,
     logErrorPlatform,
@@ -11,10 +10,10 @@ import {
     TASK_START,
     TASK_CONFIGURE,
     PARAMS,
-    waitForHost,
     executeTask,
     shouldSkipTask,
 } from '@rnv/core';
+import { openBrowser, waitForHost } from '@rnv/sdk-utils';
 
 export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -25,7 +24,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
 
     if (hosted) {
         waitForHost(c, '')
-            .then(() => open(`http://${c.runtime.localhost}:${port}/`))
+            .then(() => openBrowser(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }
 

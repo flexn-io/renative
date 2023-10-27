@@ -29,7 +29,8 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-webos": "1.0.0-canary.7",
+        "@rnv/sdk-webpack": "1.0.0-canary.7",
+        "@rnv/sdk-utils": "1.0.0-canary.7",
         "xml2js": "0.6.0"
     },
     "peerDependencies": {

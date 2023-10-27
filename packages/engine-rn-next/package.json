@@ -33,8 +33,8 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
+        "@rnv/sdk-utils": "1.0.0-canary.7",
         "babel-preset-expo": "9.5.2",
-        "better-opn": "1.0.0",
         "next-fonts": "1.5.1",
         "next-images": "1.8.4"
     },

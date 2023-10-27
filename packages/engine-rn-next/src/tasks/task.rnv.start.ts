@@ -1,4 +1,3 @@
-import open from 'better-opn';
 import {
     RnvTaskFn,
     logErrorPlatform,
@@ -11,9 +10,9 @@ import {
     PARAMS,
     executeTask,
     shouldSkipTask,
-    waitForHost,
 } from '@rnv/core';
 import { runWebNext } from '../sdk';
+import { openBrowser, waitForHost } from '@rnv/sdk-utils';
 
 export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
     const { platform } = c;
@@ -24,7 +23,7 @@ export const taskRnvStart: RnvTaskFn = async (c, parentTask, originTask) => {
 
     if (hosted) {
         waitForHost(c)
-            .then(() => open(`http://${c.runtime.localhost}:${port}/`))
+            .then(() => openBrowser(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }
 
