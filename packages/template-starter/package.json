@@ -131,6 +131,7 @@
         ]
     },
     "dependencies": {
-        "raf": "3.4.1"
+        "raf": "3.4.1",
+        "@lightningjs/sdk": "^5.4.1"
     }
 }

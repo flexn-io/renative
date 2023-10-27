@@ -2759,7 +2759,7 @@
   resolved "https://registry.npmjs.org/@lightningjs/core/-/core-2.11.0.tgz#ba4451094972eadb43d798a4190d469d4a4a0b9c"
   integrity sha512-i5MVd9845igNEcMFrsTOxPJVwZGyxCIv70VC/W8RNPDsTP7Hehzdn++TVky+7XQ6gdkBfpxBM5/k+IKIpn83NQ==
 
-"@lightningjs/sdk@5.4.1":
+"@lightningjs/sdk@5.4.1", "@lightningjs/sdk@^5.4.1":
   version "5.4.1"
   resolved "https://registry.npmjs.org/@lightningjs/sdk/-/sdk-5.4.1.tgz#44335ee10ec014beccc1644f88a410efd638689e"
   integrity sha512-8yJ6h4IEflH7A3mDGrjkjABtuAVPKmHotEGg9/75g1nv7aK5ShZHQ3PS1633JIpJCFiYFEhxqAkeq1DUblfqnw==
