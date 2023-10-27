@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-// DEPRECATED?
-const Enabled = z.boolean().default(true).describe('Marks plugin enabled or disabled');
 const Disabled = z.boolean().default(false).describe('Marks plugin disabled');
 
 const Props = z.record(z.string(), z.string()).describe('Custom props passed to plugin');
@@ -26,19 +24,21 @@ const PluginDependencies = z
 
 const Webpack = z
     .object({
-        modulePaths: z.union([z.boolean(), z.array(z.string())]),
-        moduleAliases: z.union([
-            z.boolean(),
-            z.record(
-                z.string(),
-                z.union([
+        modulePaths: z.union([z.boolean(), z.array(z.string())]).optional(),
+        moduleAliases: z
+            .union([
+                z.boolean(),
+                z.record(
                     z.string(),
-                    z.object({
-                        projectPath: z.string(),
-                    }),
-                ])
-            ),
-        ]),
+                    z.union([
+                        z.string(),
+                        z.object({
+                            projectPath: z.string(),
+                        }),
+                    ])
+                ),
+            ])
+            .optional(),
         nextTranspileModules: z.optional(z.array(z.string())),
     })
     .describe('Allows you to configure webpack bahaviour per each individual plugin');
@@ -50,25 +50,21 @@ const Deprecated = z
 const DisablePluginTemplateOverrides = z.boolean().describe('Disables plugin overrides for selected plugin');
 
 export const PluginBaseFragment = {
-    //DEPRECATED
-    enabled: z.optional(Enabled),
     disabled: z.optional(Disabled),
     props: z.optional(Props),
     version: z.optional(Version),
     deprecated: z.optional(Deprecated),
     source: z.optional(Source),
-    //DEPRECATED => disableNpm
-    // 'no-npm': z.optional(NoNpm),
     disableNpm: z.optional(NoNpm),
     skipMerge: z.optional(SkipMerge),
     npm: z.optional(Npm), //=> npmDependencies
     pluginDependencies: z.optional(PluginDependencies),
-    //DEPRECATED => pluginDependencies
-    // plugins: z.optional(PluginDependencies),
-    // DEPRECATED
-    // webpack: z.optional(Webpack), //Should this be at root plugin???
     webpackConfig: z.optional(Webpack), //Should this be at root plugin???
-    // 'engine-rn-next': z.optional(Webpack), //Should this be at root plugin???
     disablePluginTemplateOverrides: z.optional(DisablePluginTemplateOverrides),
     fontSources: z.array(z.string()).optional(),
+    // enabled: z.optional(Enabled), //DEPRECATED => disabled
+    // 'no-npm': z.optional(NoNpm),//DEPRECATED => disableNpm
+    // plugins: z.optional(PluginDependencies),  //DEPRECATED => pluginDependencies
+    // webpack: z.optional(Webpack), //Should this be at root plugin??? // DEPRECATED
+    // 'engine-rn-next': z.optional(Webpack), //Should this be at root plugin??? // DEPRECATED
 };
