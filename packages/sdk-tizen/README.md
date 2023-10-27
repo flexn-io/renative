@@ -1,2 +1,2 @@
-# sdk-tizen
+# @rnv/sdk-tizen
 

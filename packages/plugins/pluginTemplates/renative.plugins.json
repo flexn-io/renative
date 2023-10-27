@@ -88,9 +88,11 @@
         "@flexn/recyclerlistview": {
             "version": "4.2.7",
             "webpack": {
-                "modulePaths": true,
                 "moduleAliases": true,
-                "nextTranspileModules": ["@flexn/recyclerlistview"]
+                "modulePaths": true,
+                "nextTranspileModules": [
+                    "@flexn/recyclerlistview"
+                ]
             }
         },
         "@flexn/sdk": {
@@ -124,18 +126,20 @@
             "ios": {
                 "podName": "RNFlashList"
             },
-            "tvos": {
-                "podName": "RNFlashList"
-            },
             "macos": {
                 "podName": "RNFlashList"
             },
-            "webpack": {
-                "modulePaths": true,
-                "moduleAliases": true,
-                "nextTranspileModules": ["@flexn/shopify-flash-list"]
+            "tvos": {
+                "podName": "RNFlashList"
             },
-            "version": "1.4.8"
+            "version": "1.4.8",
+            "webpack": {
+                "moduleAliases": true,
+                "modulePaths": true,
+                "nextTranspileModules": [
+                    "@flexn/shopify-flash-list"
+                ]
+            }
         },
         "@flexn/typescript": {
             "version": "0.2.4"
@@ -143,11 +147,11 @@
         "@lightningjs/cli": {
             "version": "2.11.0"
         },
-        "@lightningjs/sdk": {
-            "version": "5.2.0"
-        },
         "@lightningjs/core": {
             "version": "2.8.0"
+        },
+        "@lightningjs/sdk": {
+            "version": "5.2.0"
         },
         "@lightningjs/ui": {
             "version": "1.3.1"
@@ -877,6 +881,7 @@
         "@react-navigation/bottom-tabs": "5.1.1",
         "@react-navigation/core": "6.1.0",
         "@react-navigation/drawer": "6.1.8",
+        "@react-navigation/elements": "1.3.17",
         "@react-navigation/material-bottom-tabs": "6.0.9",
         "@react-navigation/material-top-tabs": "5.3.10",
         "@react-navigation/native": "6.0.6",
@@ -884,7 +889,6 @@
         "@react-navigation/routers": "5.1.0",
         "@react-navigation/stack": "6.0.11",
         "@react-navigation/web": "1.0.0-alpha.9",
-        "@react-navigation/elements": "1.3.17",
         "@reduxjs/toolkit": {
             "version": "^1.8.1"
         },
@@ -964,17 +968,17 @@
             "ios": {
                 "podName": "RNFlashList"
             },
-            "tvos": {
-                "podName": "RNFlashList"
-            },
             "macos": {
                 "podName": "RNFlashList"
             },
-            "webpack": {
-                "modulePaths": true,
-                "moduleAliases": true
+            "tvos": {
+                "podName": "RNFlashList"
             },
-            "version": "1.4.1"
+            "version": "1.4.1",
+            "webpack": {
+                "moduleAliases": true,
+                "modulePaths": true
+            }
         },
         "amazon-cognito-identity-js": {
             "android": {
@@ -987,31 +991,6 @@
         },
         "aws-amplify": "4.3.13",
         "axios": "0.24.0",
-        "crashlytics": {
-            "android": {
-                "mainActivity": {
-                    "createMethods": [
-                        "val core = CrashlyticsCore.Builder().listener {}.build()",
-                        "val crashlyticsKit = Crashlytics.Builder().core(core).build()",
-                        "Fabric.with(this, crashlyticsKit)"
-                    ],
-                    "imports": [
-                        "com.crashlytics.android.Crashlytics",
-                        "com.crashlytics.android.core.CrashlyticsCore"
-                    ]
-                },
-                "skipImplementation": true
-            },
-            "deprecated": "crashlytics plugin is deprecated use Crashlytics (uppercase) in combination with Firebase",
-            "ios": {
-                "appDelegateImports": [
-                    "Crashlytics"
-                ],
-                "podName": "Crashlytics",
-                "version": "3.13.4"
-            },
-            "no-npm": true
-        },
         "Crashlytics": {
             "android": {
                 "mainActivity": {
@@ -1069,6 +1048,31 @@
             },
             "no-npm": true
         },
+        "crashlytics": {
+            "android": {
+                "mainActivity": {
+                    "createMethods": [
+                        "val core = CrashlyticsCore.Builder().listener {}.build()",
+                        "val crashlyticsKit = Crashlytics.Builder().core(core).build()",
+                        "Fabric.with(this, crashlyticsKit)"
+                    ],
+                    "imports": [
+                        "com.crashlytics.android.Crashlytics",
+                        "com.crashlytics.android.core.CrashlyticsCore"
+                    ]
+                },
+                "skipImplementation": true
+            },
+            "deprecated": "crashlytics plugin is deprecated use Crashlytics (uppercase) in combination with Firebase",
+            "ios": {
+                "appDelegateImports": [
+                    "Crashlytics"
+                ],
+                "podName": "Crashlytics",
+                "version": "3.13.4"
+            },
+            "no-npm": true
+        },
         "deepmerge": "4.2.2",
         "detox": {
             "android": {
@@ -1086,6 +1090,97 @@
             },
             "implementation": "androidTestImplementation('com.wix:detox:+') { transitive = true }\nandroidTestImplementation 'junit:junit:4.12'",
             "version": "19.5.3"
+        },
+        "Fabric": {
+            "android": {
+                "app/build.gradle": {
+                    "apply": [
+                        "plugin: 'io.fabric'"
+                    ]
+                },
+                "build.gradle": {
+                    "buildscript": {
+                        "dependencies": [
+                            "classpath 'io.fabric.tools:gradle:1.25.4'"
+                        ]
+                    },
+                    "repositories": [
+                        "maven { url 'https://maven.fabric.io/public' }"
+                    ]
+                },
+                "BuildGradle": {
+                    "allprojects": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        }
+                    },
+                    "buildscript": {
+                        "dependencies": {
+                            "classpath 'io.fabric.tools:gradle:1.25.4'": true
+                        },
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        }
+                    }
+                },
+                "implementation": "implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {\n transitive = true\n }",
+                "mainActivity": {
+                    "imports": [
+                        "io.fabric.sdk.android.Fabric"
+                    ]
+                }
+            },
+            "androidtv": {
+                "app/build.gradle": {
+                    "apply": [
+                        "plugin: 'io.fabric'"
+                    ]
+                },
+                "build.gradle": {
+                    "buildscript": {
+                        "dependencies": [
+                            "classpath 'io.fabric.tools:gradle:1.25.4'"
+                        ]
+                    },
+                    "repositories": [
+                        "maven { url 'https://maven.fabric.io/public' }"
+                    ]
+                },
+                "BuildGradle": {
+                    "allprojects": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        }
+                    },
+                    "buildscript": {
+                        "dependencies": {
+                            "classpath 'io.fabric.tools:gradle:1.25.4'": true
+                        },
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        }
+                    }
+                },
+                "implementation": "implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {\n transitive = true\n }",
+                "mainActivity": {
+                    "imports": [
+                        "io.fabric.sdk.android.Fabric"
+                    ]
+                }
+            },
+            "ios": {
+                "podName": "Fabric",
+                "version": "1.10.2",
+                "xcodeproj": {
+                    "buildPhases": [
+                        {
+                            "shellPath": "/bin/sh",
+                            "shellScript": "\"${PODS_ROOT}/Fabric/run\""
+                        }
+                    ]
+                }
+            },
+            "no-npm": true
         },
         "fabric": {
             "android": {
@@ -1217,97 +1312,6 @@
                 },
                 "podName": "Fabric",
                 "version": "1.10.2"
-            },
-            "no-npm": true
-        },
-        "Fabric": {
-            "android": {
-                "app/build.gradle": {
-                    "apply": [
-                        "plugin: 'io.fabric'"
-                    ]
-                },
-                "build.gradle": {
-                    "buildscript": {
-                        "dependencies": [
-                            "classpath 'io.fabric.tools:gradle:1.25.4'"
-                        ]
-                    },
-                    "repositories": [
-                        "maven { url 'https://maven.fabric.io/public' }"
-                    ]
-                },
-                "BuildGradle": {
-                    "allprojects": {
-                        "repositories": {
-                            "maven { url 'https://maven.fabric.io/public' }": true
-                        }
-                    },
-                    "buildscript": {
-                        "dependencies": {
-                            "classpath 'io.fabric.tools:gradle:1.25.4'": true
-                        },
-                        "repositories": {
-                            "maven { url 'https://maven.fabric.io/public' }": true
-                        }
-                    }
-                },
-                "implementation": "implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {\n transitive = true\n }",
-                "mainActivity": {
-                    "imports": [
-                        "io.fabric.sdk.android.Fabric"
-                    ]
-                }
-            },
-            "androidtv": {
-                "app/build.gradle": {
-                    "apply": [
-                        "plugin: 'io.fabric'"
-                    ]
-                },
-                "build.gradle": {
-                    "buildscript": {
-                        "dependencies": [
-                            "classpath 'io.fabric.tools:gradle:1.25.4'"
-                        ]
-                    },
-                    "repositories": [
-                        "maven { url 'https://maven.fabric.io/public' }"
-                    ]
-                },
-                "BuildGradle": {
-                    "allprojects": {
-                        "repositories": {
-                            "maven { url 'https://maven.fabric.io/public' }": true
-                        }
-                    },
-                    "buildscript": {
-                        "dependencies": {
-                            "classpath 'io.fabric.tools:gradle:1.25.4'": true
-                        },
-                        "repositories": {
-                            "maven { url 'https://maven.fabric.io/public' }": true
-                        }
-                    }
-                },
-                "implementation": "implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {\n transitive = true\n }",
-                "mainActivity": {
-                    "imports": [
-                        "io.fabric.sdk.android.Fabric"
-                    ]
-                }
-            },
-            "ios": {
-                "podName": "Fabric",
-                "version": "1.10.2",
-                "xcodeproj": {
-                    "buildPhases": [
-                        {
-                            "shellPath": "/bin/sh",
-                            "shellScript": "\"${PODS_ROOT}/Fabric/run\""
-                        }
-                    ]
-                }
             },
             "no-npm": true
         },
@@ -2612,11 +2616,10 @@
             }
         },
         "react-native-gesture-handler": {
-            "source": "",
             "android": {
+                "mainActivity": null,
                 "package": "com.swmansion.gesturehandler.RNGestureHandlerPackage",
-                "path": "{{PLUGIN_ROOT}}/android",
-                "mainActivity": null
+                "path": "{{PLUGIN_ROOT}}/android"
             },
             "androidtv": {
                 "package": "com.swmansion.gesturehandler.RNGestureHandlerPackage",
@@ -2636,6 +2639,7 @@
             "macos": {
                 "podName": "RNGestureHandler"
             },
+            "source": "",
             "tvos": {
                 "podName": "RNGestureHandler"
             },
