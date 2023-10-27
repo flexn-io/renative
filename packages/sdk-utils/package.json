@@ -1,44 +1,34 @@
 {
-    "name": "@rnv/engine-rn-web",
+    "name": "@rnv/sdk-utils",
     "version": "1.0.0-canary.7",
-    "description": "ReNative Engine to build web based platforms with react native support.",
-    "keywords": [
-        "react-native"
-    ],
+    "description": "ReNative SDK Utils",
+    "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
     "bugs": {
         "url": "https://github.com/flexn-io/renative/issues"
     },
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
-    "contributors": [],
     "files": [
         "LICENSE",
         "lib",
-        "renative.engine.json",
-        "templates"
+        "types.d.ts"
     ],
     "main": "lib/index.js",
     "repository": {
         "type": "git",
-        "url": "git://github.com/flexn-io/renative.git"
+        "url": "git+https://github.com/flexn-io/renative.git"
     },
     "scripts": {
+        "bootstrap": "yarn && yarn build && npm link",
         "build": "yarn clean && yarn compile",
         "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
         "compile": "tsc -b tsconfig.json",
         "compile:prod": "tsc -b tsconfig.json",
-        "prepublishOnly": "yarn clean && yarn compile:prod",
+        "lint": "eslint . --ext .ts",
         "watch": "tsc --watch --preserveWatchOutput"
     },
-    "dependencies": {
-        "@rnv/sdk-tizen": "1.0.0-canary.7",
-        "@rnv/sdk-webos": "1.0.0-canary.7",
-        "@rnv/sdk-webpack": "1.0.0-canary.7",
-        "better-opn": "1.0.0",
-        "webpack-bundle-analyzer": "4.9.1"
-    },
-    "devDependencies": {},
+    "dependencies": {},
     "peerDependencies": {
         "@rnv/core": "^1.0.0-canary.7"
     },
