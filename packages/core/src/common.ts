@@ -25,22 +25,6 @@ export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): T
     return undefined;
 };
 
-export const getCliArguments = (c: RnvContext) => {
-    const { args, rawArgs } = c.program;
-    const argsCopy: Array<string | undefined> = [...args];
-    let missingArg: string | undefined = rawArgs[rawArgs.indexOf(args[1]) + 1];
-    if (missingArg?.[0] === '-') {
-        if (rawArgs[rawArgs.indexOf(args[1]) + 2]) {
-            missingArg = rawArgs[rawArgs.indexOf(args[1]) + 2];
-        } else {
-            missingArg = undefined;
-        }
-    }
-    if (rawArgs.length === 3) missingArg = undefined;
-    argsCopy[2] = missingArg;
-    return argsCopy.filter((arg) => !!arg);
-};
-
 export const addSystemInjects = (c: RnvContext, injects: OverridesOptions) => {
     if (!c.systemPropsInjects) c.systemPropsInjects = [];
     if (injects) {
