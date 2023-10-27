@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../.rnv/schema/rnv.plugins.json",
     "pluginTemplates": {
         "@bam.tech/react-native-image-resizer": {
             "android": {
