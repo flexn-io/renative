@@ -1,8 +1,8 @@
-import taskRnvVercelDeploy from './tasks/task.rnv.ftp.deploy';
+import taskRnvStarterHello from './tasks/task.rnv.starter.hello';
 //@ts-ignore
 import config from '../renative.integration.json';
 
-const TASKS = [taskRnvVercelDeploy];
+const TASKS = [taskRnvStarterHello];
 
 const getTasks = () => TASKS;
 

@@ -1,7 +1,7 @@
 {
-    "name": "@rnv/integration-vercel",
-    "version": "0.2.0-alpha.0",
-    "description": "Gives RNV the possibility to deploy artifacts to Vercel",
+    "name": "@rnv/integration-starter",
+    "version": "1.0.0-canary.7",
+    "description": "ReNative Example Integration",
     "keywords": [
         "renative",
         "rnv",
@@ -13,9 +13,7 @@
     },
     "license": "MIT",
     "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
-    "contributors": [
-        "Mihai Blaga <https://github.com/mihaiblaga89>"
-    ],
+    "contributors": [],
     "main": "lib/index.js",
     "repository": {
         "type": "git",
@@ -29,9 +27,7 @@
         "prepublishOnly": "yarn clean && yarn compile:prod",
         "watch": "tsc --watch --preserveWatchOutput"
     },
-    "dependencies": {
-        "dotenv": "8.1.0"
-    },
+    "dependencies": {},
     "devDependencies": {},
     "peerDependencies": {
         "@rnv/core": "^1.0.0-canary.7"
