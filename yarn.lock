@@ -8534,11 +8534,6 @@ console-control-strings@^1.0.0, console-control-strings@^1.1.0, console-control-
   resolved "https://registry.npmjs.org/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
   integrity sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==
 
-console-table-printer@1.1.10:
-  version "1.1.10"
-  resolved "https://registry.npmjs.org/console-table-printer/-/console-table-printer-1.1.10.tgz#d3258680693aa0c71c3700d487cd98402266afbb"
-  integrity sha512-XFGpqfCbw53y7+TsBfFiiMpyC27K2bc9c2FhCK9uGlDSgI90FoBGmxMhs/delAIa0fFGoA7P+ZDlUff8NgVizg==
-
 content-disposition@0.5.4:
   version "0.5.4"
   resolved "https://registry.npmjs.org/content-disposition/-/content-disposition-0.5.4.tgz#8b82b4efac82512a02bb0b1dcec9d2c5e8eb5bfe"
