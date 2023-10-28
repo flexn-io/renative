@@ -2,6 +2,7 @@ import React, { createContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { getScaledValue, isPlatformMacos, isPlatformIos, isPlatformTvos, isPlatformWeb } from '@rnv/renative';
+// @ts-ignore
 import CONFIG from '../platformAssets/renative.runtime.json';
 import '../platformAssets/runtime/fontManager';
 import ICON_LOGO from '../platformAssets/runtime/logo.png';
