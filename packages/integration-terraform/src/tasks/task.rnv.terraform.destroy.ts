@@ -23,6 +23,10 @@ const _checkPrereqs = (c: RnvContext) => {
             true
         );
     }
+
+    if (!fsExistsSync(path.resolve(backendFolder, '.terraform'))) {
+        logError('You don\'t seem to have a terraform state file. Can\'t destory.', true);
+    }
 };
 
 export const taskRnvTerraformDestroy = async (c: RnvContext) => {

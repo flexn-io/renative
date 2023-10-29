@@ -8,35 +8,13 @@ import {
     fsReadFileSync,
     fsWriteFileSync,
     executeAsync,
-    commandExistsSync,
     logInfo,
     logTask,
-    logError,
     logSuccess,
     PARAMS,
 } from '@rnv/core';
+import { _checkPrereqs } from './task.rnv.terraform.status';
 
-const _checkPrereqs = (c: RnvContext) => {
-    const backendFolder = path.resolve(c.paths.project.dir, 'backend');
-
-    if (!fsExistsSync(backendFolder)) {
-        logError('No backend folder found.', true);
-    }
-
-    if (!commandExistsSync('terraform')) {
-        logError(
-            'Terraform not found. Please install it then continue (https://learn.hashicorp.com/tutorials/terraform/install-cli)',
-            true
-        );
-    }
-
-    if (!c.buildConfig.runtime?.backendServiceEnabled) {
-        logError(
-            'Backend service is not enabled, nothing to do here. Change renative.json runtime.backendServiceEnabled = true to get started',
-            true
-        );
-    }
-};
 
 export const taskRnvTerraformDeploy = async (c: RnvContext) => {
     logTask('taskRnvTerraformDeploy');
