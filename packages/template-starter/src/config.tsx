@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 import { getScaledValue, isPlatformMacos, isPlatformIos, isPlatformTvos, isPlatformWeb } from '@rnv/renative';
 import CONFIG from '../platformAssets/renative.runtime.json';
@@ -115,13 +115,38 @@ const themes = {
     },
 };
 
-// interface ThemeContextInterface {
-//     //Do nothing
-// }
+export type ThemeInterface = {
+    theme: {
+        static: {
+            primaryFontFamily: string;
+            iconSize: number;
+            buttonSize: number;
+            colorLight: string;
+            colorBrand: string;
+            colorBgPrimary: string;
+            colorTextPrimary: string;
+            colorTextSecondary: string;
+        };
+        styles: {
+            container: ViewStyle;
+            textH2: TextStyle;
+            textH3: TextStyle;
+            image: ImageStyle;
+            button: ViewStyle;
+            buttonText: TextStyle;
+        };
+    };
+    dark: boolean;
+    toggle: () => void;
+};
 
-export const ThemeContext = createContext<any | null>(
-    themes.dark // default value
-);
+export const ThemeContext = createContext<ThemeInterface>({
+    dark: false,
+    toggle: () => {
+        //Do nothing by default
+    },
+    theme: themes.dark,
+});
 
 export function ThemeProvider({ children }) {
     const [dark, setDark] = useState(false);

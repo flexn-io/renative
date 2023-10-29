@@ -28,12 +28,32 @@ const parser = new xml2js.Parser();
 
 export const DEFAULT_CERTIFICATE_NAME = 'tizen_author';
 
-const formatXMLObject = (obj: Record<string, any>) => {
+type PlatKeyObj = {
+    _: string;
+    $: {
+        name: string;
+    };
+};
+
+const formatXMLObject = (
+    obj: Record<
+        string,
+        {
+            platform?:
+                | Array<{
+                      key: PlatKeyObj[];
+                  }>
+                | {
+                      key: PlatKeyObj[];
+                  };
+        }
+    >
+) => {
     const platArr = obj['model-config']?.platform;
-    const platKeyArr = platArr?.[0]?.key || platArr?.key;
+    const platKeyArr = Array.isArray(platArr) ? platArr?.[0]?.key : platArr?.key;
     if (platKeyArr) {
         return {
-            ...platKeyArr.reduce((acc: Record<string, any>, cur: any) => {
+            ...platKeyArr.reduce((acc: Record<string, string>, cur) => {
                 acc[cur.$.name] = cur._;
                 return acc;
             }, {}),
@@ -175,7 +195,7 @@ const _getRunningDevices = async (c: RnvContext) => {
                 );
 
                 let deviceInfo;
-                let deviceType;
+                let deviceType = 'tv';
 
                 if (deviceInfoXML !== '') {
                     // for some reason the tv does not connect through sdb
@@ -189,7 +209,7 @@ const _getRunningDevices = async (c: RnvContext) => {
                 if (
                     (platform === 'tizenmobile' && deviceType === 'mobile') ||
                     (platform === 'tizenwatch' && deviceType === 'wearable') ||
-                    (platform === 'tizen' && !deviceType)
+                    (platform === 'tizen' && (!deviceType || deviceType === 'tv'))
                 ) {
                     devices.push({
                         name,

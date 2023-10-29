@@ -1,19 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
-import { ThemeProvider, ThemeContext } from '../config';
 
-const App = () => (
-    <ThemeProvider>
-        <AppThemed />
-    </ThemeProvider>
-);
-
-const AppThemed = () => {
-    const { theme } = useContext(ThemeContext);
-
+const App = () => {
     return (
-        <View style={theme.styles.container}>
-            <Text style={theme.styles.buttonText}>ReNative Harness</Text>
+        <View>
+            <Text>ReNative Harness</Text>
         </View>
     );
 };
