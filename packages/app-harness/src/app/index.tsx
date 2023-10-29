@@ -9,7 +9,7 @@ const App = () => (
 );
 
 const AppThemed = () => {
-    const { theme }: any = useContext(ThemeContext);
+    const { theme } = useContext(ThemeContext);
 
     return (
         <View style={theme.styles.container}>

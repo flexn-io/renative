@@ -1,8 +1,9 @@
 const withImages = require('next-images');
 const withFonts = require('next-fonts');
 import { Configuration, DefinePlugin } from 'webpack';
+import { NextConfig } from 'next';
 
-export function withRNWNext(nextConfig: any = {}): any {
+export function withRNWNext(nextConfig: NextConfig = {}): NextConfig {
     return {
         ...nextConfig,
         webpack(config: Configuration, options: any): Configuration {
@@ -55,7 +56,7 @@ export function withRNWNext(nextConfig: any = {}): any {
 
 //TODO: https://turbo.build/pack/docs/features/customizing-turbopack
 
-export const withRNVNext = (config: any) => {
+export const withRNVNext = (config: NextConfig) => {
     const cnf = {
         ...config,
         images: {
@@ -63,8 +64,12 @@ export const withRNVNext = (config: any) => {
             ...(config?.images || {}),
         },
         distDir: process.env.NEXT_DIST_DIR,
-        webpack: (cfg: any, props: any) => {
+        webpack: (cfg: Configuration, props: any) => {
             const { isServer } = props;
+
+            if (!cfg.resolve) {
+                cfg.resolve = {};
+            }
             if (process.env.RNV_EXTENSIONS) {
                 cfg.resolve.extensions = process.env.RNV_EXTENSIONS.split(',')
                     .map((e) => `.${e}`)

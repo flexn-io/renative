@@ -1,4 +1,6 @@
-export const withRNVBabel = (cnf: any) => {
+import { BabelConfig } from '@rnv/core';
+
+export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
     const plugins = cnf?.plugins || [];
     return {
         retainLines: true,

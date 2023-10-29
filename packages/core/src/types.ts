@@ -19,3 +19,29 @@ export type RenativeConfigVersion = string | { version: string };
 export type RnvError = any;
 
 export type Env = any;
+
+export type BabelConfig = {
+    retainLines?: boolean;
+    plugins?: Array<
+        [
+            string,
+            {
+                root?: Array<string | undefined>;
+                alias?: Record<string, string | undefined>;
+            }
+        ]
+    >;
+    presets?: Array<
+        | string
+        | [
+              string,
+              {
+                  useTransformReactJSXExperimental?: boolean;
+              }
+          ]
+    >;
+};
+
+export type BabelApi = {
+    cache: (value: boolean) => void;
+};

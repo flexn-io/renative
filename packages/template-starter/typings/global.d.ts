@@ -1,7 +1,7 @@
 export {};
 
-declare global {
-    interface Window {
-        theme: any;
-    }
-}
+// declare global {
+//     interface Window {
+//         theme: any;
+//     }
+// }
