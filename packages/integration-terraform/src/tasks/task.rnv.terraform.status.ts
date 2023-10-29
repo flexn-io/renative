@@ -16,25 +16,25 @@ export const _checkPrereqs = async (c: RnvContext) => {
     const backendFolder = path.resolve(c.paths.project.dir, 'backend');
 
     if (!c.buildConfig.custom?.backendServiceEnabled) {
-        logError(
+        return logError(
             'Backend service is not enabled, nothing to do here. Change renative.json custom.backendServiceEnabled = true to get started',
             true
         );
     }
 
     if (!fsExistsSync(backendFolder)) {
-        logError('No backend folder found.', true);
+        return logError('No backend folder found.', true);
     }
 
     if (!commandExistsSync('terraform')) {
-        logError(
+        return logError(
             'Terraform not found. Please install it then continue (https://learn.hashicorp.com/tutorials/terraform/install-cli)',
             true
         );
     }
 
     if (!commandExistsSync('aws')) {
-        logError(
+        return logError(
             'AWS CLI not found. Please install it then continue (https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html)',
             true
         );

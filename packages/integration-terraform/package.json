@@ -1,6 +1,6 @@
 {
     "name": "@rnv/integration-terraform",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "Gives RNV the possibility to deploy terraform projects",
     "keywords": [
         "renative",
