@@ -73,7 +73,7 @@ export const taskRnvTerraformStatus = async (c: RnvContext) => {
         .split('\n')
         .map(jp);
 
-    const changeSummary: any = lines.filter((line: any) => line.type === 'change_summary');
+    const changeSummary: any = lines.find((line: any) => line.type === 'change_summary');
 
     if (!changeSummary) {
         return logError('Could not get change summary from terraform plan', true);
