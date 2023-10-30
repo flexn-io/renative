@@ -716,13 +716,13 @@ export const taskRnvNew = async (c: RnvContext) => {
     config.platforms = platforms;
     config.engines = engines;
     config.defaults = defaults;
-
     writeFileSync(c.paths.project.config, config);
 
     if (data.gitEnabled) {
         await checkAndCreateGitignore(c);
         await configureGit(c);
     }
+
     logSuccess(
         `Your project is ready! navigate to project ${chalk().white(`cd ${data.projectName}`)} and run ${chalk().white(
             'npx rnv run'

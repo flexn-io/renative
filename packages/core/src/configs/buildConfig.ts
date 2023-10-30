@@ -157,7 +157,7 @@ export const generateBuildConfig = (_c?: RnvContext) => {
         if (plat?.extendPlatform) {
             const extPlat = platforms[plat?.extendPlatform];
             if (extPlat) {
-                platforms[k] = merge(plat, extPlat);
+                platforms[k] = merge(extPlat, plat);
             }
         }
     });
