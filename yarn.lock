@@ -3624,6 +3624,18 @@
     glob "^7.1.3"
     ora "^5.4.1"
 
+"@react-native-community/cli-platform-ios@^11.3.8":
+  version "11.3.9"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cli-platform-ios/-/cli-platform-ios-11.3.9.tgz#6fca497a52698770e53282451c58aaefdb478e68"
+  integrity sha512-dnGeqBWPMu2cacQEPE0/K87+YN/C/iKydhsu/FSO0wEG2Yg6i/w+hQRCf5M3ZhStpCpvo+Vg1AeFgZ43IoAP4g==
+  dependencies:
+    "@react-native-community/cli-tools" "11.3.9"
+    chalk "^4.1.2"
+    execa "^5.0.0"
+    fast-xml-parser "^4.0.12"
+    glob "^7.1.3"
+    ora "^5.4.1"
+
 "@react-native-community/cli-plugin-metro@11.3.6":
   version "11.3.6"
   resolved "https://registry.npmjs.org/@react-native-community/cli-plugin-metro/-/cli-plugin-metro-11.3.6.tgz#2d632c304313435c9ea104086901fbbeba0f1882"
@@ -3754,6 +3766,21 @@
   version "11.3.8"
   resolved "https://registry.npmjs.org/@react-native-community/cli-tools/-/cli-tools-11.3.8.tgz#7de84286032a2fc826b06c64744a7c2b39a99ef4"
   integrity sha512-O4bOnocCNcVfiAZ3r4jdRx088+jo8nz+47Z5MA06EValJVDAOZRblm3OFzI+oxKQiOA/QmR0+hFUtIIw2BxuYA==
+  dependencies:
+    appdirsjs "^1.2.4"
+    chalk "^4.1.2"
+    find-up "^5.0.0"
+    mime "^2.4.1"
+    node-fetch "^2.6.0"
+    open "^6.2.0"
+    ora "^5.4.1"
+    semver "^7.5.2"
+    shell-quote "^1.7.3"
+
+"@react-native-community/cli-tools@11.3.9":
+  version "11.3.9"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cli-tools/-/cli-tools-11.3.9.tgz#5e20610dcb0a381947a35eabd8ffa5d936590eb6"
+  integrity sha512-qWEUo/HQll/aj5xHYCw6itXGkPgultxTHa4UYSaBIRSfU15aSiwonJ/JP7fe+fHKbaFh6IdhaaRhj4ArfEOxuQ==
   dependencies:
     appdirsjs "^1.2.4"
     chalk "^4.1.2"
