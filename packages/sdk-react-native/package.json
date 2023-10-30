@@ -1,6 +1,6 @@
 {
     "name": "@rnv/sdk-react-native",
-    "version": "1.0.0-feat-pin-cli.1",
+    "version": "1.0.0-feat-pin-cli.2",
     "description": "ReNative React-Native SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -32,10 +32,11 @@
         "shell-quote": "1.8.1"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-feat-pin-cli.1"
+        "@rnv/core": "^1.0.0-feat-pin-cli.2"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
 }

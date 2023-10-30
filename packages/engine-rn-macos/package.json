@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-macos",
-    "version": "1.0.0-feat-pin-cli.1",
+    "version": "1.0.0-feat-pin-cli.2",
     "description": "ReNative Engine to build react-native macOS platform.",
     "keywords": [
         "react-native-macos"
@@ -32,15 +32,15 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-apple": "1.0.0-feat-pin-cli.1",
-        "@rnv/sdk-react-native": "1.0.0-feat-pin-cli.1"
+        "@rnv/sdk-apple": "1.0.0-feat-pin-cli.2",
+        "@rnv/sdk-react-native": "1.0.0-feat-pin-cli.2"
     },
-    "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-feat-pin-cli.1"
+        "@rnv/core": "^1.0.0-feat-pin-cli.2"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
 }

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/core",
-    "version": "1.0.0-feat-pin-cli.1",
+    "version": "1.0.0-feat-pin-cli.2",
     "description": "RNV Core SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -57,5 +57,6 @@
     "publishConfig": {
         "access": "public"
     },
-    "title": "ReNative Core SDK"
+    "title": "ReNative Core SDK",
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
 }

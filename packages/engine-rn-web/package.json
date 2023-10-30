@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-web",
-    "version": "1.0.0-feat-pin-cli.1",
+    "version": "1.0.0-feat-pin-cli.2",
     "description": "ReNative Engine to build web based platforms with react native support.",
     "keywords": [
         "react-native"
@@ -32,21 +32,21 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-tizen": "1.0.0-feat-pin-cli.1",
-        "@rnv/sdk-webos": "1.0.0-feat-pin-cli.1",
-        "@rnv/sdk-webpack": "1.0.0-feat-pin-cli.1",
+        "@rnv/sdk-tizen": "1.0.0-feat-pin-cli.2",
+        "@rnv/sdk-webos": "1.0.0-feat-pin-cli.2",
+        "@rnv/sdk-webpack": "1.0.0-feat-pin-cli.2",
         "better-opn": "1.0.0",
         "html-webpack-harddisk-plugin": "1.0.2",
         "html-webpack-plugin": "4.5.1",
         "mini-css-extract-plugin": "0.8.0",
         "webpack-bundle-analyzer": "4.9.1"
     },
-    "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-feat-pin-cli.1"
+        "@rnv/core": "^1.0.0-feat-pin-cli.2"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
 }
