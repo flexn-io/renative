@@ -1,6 +1,6 @@
 {
     "name": "@rnv/cli",
-    "version": "1.0.0-feat-pin-cli.2",
+    "version": "1.0.0-feat-pin-cli.3",
     "description": "ReNative CLI",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",
@@ -37,7 +37,7 @@
         "inquirer": "8.2.0"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-feat-pin-cli.2"
+        "@rnv/core": "^1.0.0-feat-pin-cli.3"
     },
     "private": false,
     "publishConfig": {

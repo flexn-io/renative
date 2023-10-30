@@ -68,7 +68,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^1.0.0-feat-pin-cli.2"
+            "version": "^1.0.0-feat-pin-cli.3"
         }
     },
     "currentTemplate": "@rnv/template-starter",
