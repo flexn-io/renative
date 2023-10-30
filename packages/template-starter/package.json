@@ -81,9 +81,7 @@
         "tsc": "tsc --noEmit --composite false",
         "watch": "tsc --watch --preserveWatchOutput --noEmit"
     },
-    "dependencies": {
-        "rnv": "1.0.0-canary.7"
-    },
+    "dependencies": {},
     "devDependencies": {
         "@flexn/assets-renative-outline": "0.3.2",
         "@flexn/graybox": "0.21.1",
@@ -114,6 +112,7 @@
         "react-native-gesture-handler": "2.13.1",
         "react-native-tvos": "0.72.4-0",
         "react-native-web": "0.19.9",
+        "rnv": "1.0.0-canary.7",
         "xcode": "2.1.0"
     },
     "private": false,
