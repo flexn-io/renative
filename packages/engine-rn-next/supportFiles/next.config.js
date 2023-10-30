@@ -1,5 +1,10 @@
 const { withRNV } = require('@rnv/engine-rn-next');
 
-const config = {};
+const config = {
+    compress: false,
+    experimental: {
+        forceSwcTransforms: true,
+    },
+};
 
 module.exports = withRNV(config);
