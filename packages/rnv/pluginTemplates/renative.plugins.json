@@ -2,7 +2,7 @@
     "$schema": "../../../.rnv/schema/rnv.plugins.json",
     "pluginTemplates": {
         "@rnv/renative": {
-            "version": "1.0.0-canary.7",
+            "version": "1.0.0-feat-pin-cli.1",
             "webpack": {
                 "moduleAliases": true,
                 "modulePaths": true

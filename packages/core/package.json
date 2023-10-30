@@ -1,6 +1,6 @@
 {
     "name": "@rnv/core",
-    "version": "1.0.0-canary.7",
+    "version": "1.0.0-feat-pin-cli.1",
     "description": "RNV Core SDK",
     "keywords": [],
     "homepage": "https://github.com/flexn-io/renative#readme",

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn",
-    "version": "1.0.0-canary.7",
+    "version": "1.0.0-feat-pin-cli.1",
     "description": "ReNative Engine to build react-native based platforms.",
     "keywords": [
         "react-native"
@@ -32,14 +32,14 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-android": "1.0.0-canary.7",
-        "@rnv/sdk-apple": "1.0.0-canary.7",
-        "@rnv/sdk-react-native": "1.0.0-canary.7"
+        "@rnv/sdk-android": "1.0.0-feat-pin-cli.1",
+        "@rnv/sdk-apple": "1.0.0-feat-pin-cli.1",
+        "@rnv/sdk-react-native": "1.0.0-feat-pin-cli.1"
     },
     "devDependencies": {},
     "peerDependencies": {
         "@react-native/metro-config": "^0.73.1",
-        "@rnv/core": "^1.0.0-canary.7"
+        "@rnv/core": "^1.0.0-feat-pin-cli.1"
     },
     "private": false,
     "publishConfig": {

@@ -1,5 +1,4 @@
 {
-    "$schema": "../../.rnv/schema/rnv.project.json",
     "engines": {
         "@rnv/engine-lightning": "source:rnv",
         "@rnv/engine-rn": "source:rnv",
@@ -8,6 +7,7 @@
         "@rnv/engine-rn-tvos": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv"
     },
+    "$schema": "../../.rnv/schema/rnv.project.json",
     "isTemplate": true,
     "projectName": "renative",
     "enableHookRebuild": false,
@@ -68,7 +68,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^1.0.0-canary.7"
+            "version": "^1.0.0-feat-pin-cli.1"
         }
     },
     "currentTemplate": "@rnv/template-starter",
@@ -110,7 +110,9 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "web": {
             "engine": "engine-rn-next"
