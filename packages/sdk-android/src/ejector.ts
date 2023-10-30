@@ -14,6 +14,8 @@ const {
 const {
   getAppFolder,
   getConfigProp,
+  getAppVersionCode,
+  getAppVersion
 } = Common;
 const { doResolvePath } = Resolver;
 
@@ -138,6 +140,20 @@ export const ejectGradleProject = async (c: any) => {
       .replaceAll(match1, replace1);
 
     fsWriteFileSync(buildGradlePath, sanitised);
+  }
+
+
+  //= ==========
+  // gradle.properties
+  //= ==========
+  const gradlePropertiesPath = path.join(appFolder, 'android', 'gradle.properties');
+
+  if (fsExistsSync(gradlePropertiesPath)) {
+    let gradlePropertiesAsString = fsReadFileSync(gradlePropertiesPath).toString();
+
+    gradlePropertiesAsString += `versionCode=${getAppVersionCode(c, c.platform)} \nversionName=${getAppVersion(c, c.platform)}`
+
+    fsWriteFileSync(gradlePropertiesPath, gradlePropertiesAsString);
   }
 
   //= ==========
