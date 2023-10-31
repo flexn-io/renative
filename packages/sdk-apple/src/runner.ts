@@ -597,6 +597,7 @@ export const buildXcodeProject = async (c: Context) => {
 
     const appFolderName = getAppFolderName(c, platform);
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
+    const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget') || 'RNVApp';
 
     let destinationPlatform = '';
     switch (c.platform) {
@@ -640,7 +641,7 @@ export const buildXcodeProject = async (c: Context) => {
     }
     if (!ps.includes('-scheme')) {
         p.push('-scheme');
-        p.push(appFolderName);
+        p.push(schemeTarget);
     }
     if (runScheme) {
         if (!ps.includes('-configuration')) {

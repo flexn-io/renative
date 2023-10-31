@@ -274,6 +274,7 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
 
             // FONTS
             // Cocoapods take care of this
+            xcodeProj.pbxCreateGroup('Resources');
             c.payload.pluginConfigiOS.embeddedFontSources.forEach((v) => {
                 xcodeProj.addResourceFile(v, { variantGroup: false });
             });
