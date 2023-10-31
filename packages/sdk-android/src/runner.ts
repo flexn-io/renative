@@ -14,7 +14,6 @@ import {
     updateObjectSync,
     fsWriteFileSync,
     executeAsync,
-    generateEnvVars,
     getAppFolder,
     getConfigProp,
     getEntryFile,
@@ -305,49 +304,6 @@ const _checkSigningCerts = async (c: Context) => {
             return Promise.reject("You selected no. Can't proceed");
         }
     }
-};
-
-export const buildAndroid = async (c: Context) => {
-    logTask('buildAndroid');
-    const { platform } = c;
-
-    const appFolder = getAppFolder(c);
-
-    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
-
-    const outputAab = getConfigProp(c, platform, 'aab', false);
-    // shortcircuit devices logic since aabs can't be installed on a device
-    if (outputAab) return runReactNativeAndroid(c, platform, {});
-
-    const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
-
-    let command = `npx react-native build-android --mode=${signingConfig} --no-packager`;
-
-    if (extraGradleParams) {
-        command += ` --extra-params ${extraGradleParams}`;
-    }
-
-    await executeAsync(c, command, {
-        cwd: appFolder,
-        env: {
-            ...generateEnvVars(c),
-        },
-    });
-
-    // await _checkSigningCerts(c);
-    // await executeAsync(
-    //     c,
-    //     `${
-    //         isSystemWin ? 'gradlew.bat' : './gradlew'
-    //     } assemble${signingConfig} -x bundleReleaseJsAndAssets ${extraGradleParams}`
-    // );
-
-    logSuccess(
-        `Your APK is located in ${chalk().cyan(
-            path.join(appFolder, `app/build/outputs/apk/${signingConfig?.toLowerCase()}`)
-        )} .`
-    );
-    return true;
 };
 
 export const configureAndroidProperties = async (c: Context) => {

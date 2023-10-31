@@ -113,30 +113,31 @@ export const runReactNativeAndroid = async (
     });
 };
 
-export const buildAndroid = async (c: RnvContext) => {
+export const buildReactNativeAndroid = async (c: RnvContext) => {
     logTask('buildAndroid');
     const { platform } = c;
 
     const appFolder = getAppFolder(c);
     const signingConfig = getConfigProp(c, platform, 'signingConfig') || DEFAULTS.signingConfig;
-
     const outputAab = getConfigProp(c, platform, 'aab', false);
-    // shortcircuit devices logic since aabs can't be installed on a device
-    if (outputAab) return runReactNativeAndroid(c, platform, {});
-
     const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
 
-    let command = `npx react-native build-android --mode=${signingConfig} --no-packager`;
+    let command = `npx react-native build-android --mode=${signingConfig} --no-packager --tasks ${outputAab ? 'bundle' : 'assemble'}${signingConfig}`;
 
     if (extraGradleParams) {
         command += ` --extra-params ${extraGradleParams}`;
     }
 
-    await executeAsync(c, command, { cwd: appFolder });
+    await executeAsync(c, command, { 
+        cwd: appFolder, 
+        env: {
+            ...generateEnvVars(c),
+        }, 
+    });
 
     logSuccess(
         `Your APK is located in ${chalk().cyan(
-            path.join(appFolder, `app/build/outputs/apk/${signingConfig.toLowerCase()}`)
+            path.join(appFolder, `app/build/outputs/${outputAab ? 'bundle' : 'apk'}/${signingConfig.toLowerCase()}`)
         )} .`
     );
     return true;
