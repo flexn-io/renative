@@ -16,18 +16,6 @@ export const replaceOverridesInString = (string: string | undefined, overrides: 
     return replacedString;
 };
 
-export const getValidLocalhost = (value: string, localhost: string) => {
-    if (!value) return localhost;
-    switch (value) {
-        case 'localhost':
-        case '0.0.0.0':
-        case '127.0.0.1':
-            return localhost;
-        default:
-            return value;
-    }
-};
-
 export const isUrlLocalhost = (value: string) => {
     if (value?.includes) {
         if (value.includes('localhost')) return true;

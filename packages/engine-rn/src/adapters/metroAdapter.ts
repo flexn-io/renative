@@ -1,4 +1,5 @@
 import { Env } from '@rnv/core';
+import { InputConfigT } from 'metro-config';
 
 const path = require('path');
 
@@ -27,7 +28,7 @@ function blacklist(additionalBlacklist: RegExp[]) {
     return new RegExp(`(${(additionalBlacklist || []).concat(sharedBlacklist).map(escapeRegExp).join('|')})$`);
 }
 
-export const withRNVMetro = (config: any) => {
+export const withRNVMetro = (config: InputConfigT): InputConfigT => {
     const projectPath = env.RNV_PROJECT_ROOT || process.cwd();
 
     const mc = require(require.resolve('@react-native/metro-config', { paths: [projectPath] }));

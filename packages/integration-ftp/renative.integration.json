@@ -1,5 +1,0 @@
-{
-    "$schema": "../../.rnv/schema/rnv.integration.json",
-    "id": "ftp",
-    "npmPackage": "@rnv/integration-ftp"
-}

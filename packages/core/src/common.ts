@@ -2,17 +2,14 @@ import colorString from 'color-string';
 import detectPort from 'detect-port';
 import ip from 'ip';
 import killPort from 'kill-port';
-import axios from 'axios';
 import path from 'path';
 import { fsExistsSync, writeCleanFile } from './system/fs';
-import { chalk, logError, logTask, logWarning } from './logger';
-import { getValidLocalhost } from './utils/utils';
+import { chalk, logError, logWarning } from './logger';
 import { RnvContext } from './context/types';
 import { OverridesOptions, TimestampPathsConfig } from './system/types';
 import { ConfigProp, ConfigPropKey, PlatformKey } from './schema/types';
 import { inquirerPrompt } from './api';
 import { RnvPlatform } from './types';
-import { DEFAULTS } from './schema/defaults';
 import { ConfigFileBuildConfig } from './schema/configFiles/buildConfig';
 import { GetConfigPropFn } from './api/types';
 
@@ -26,22 +23,6 @@ export const getTimestampPathsConfig = (c: RnvContext, platform: RnvPlatform): T
         return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
     }
     return undefined;
-};
-
-export const getCliArguments = (c: RnvContext) => {
-    const { args, rawArgs } = c.program;
-    const argsCopy: Array<string | undefined> = [...args];
-    let missingArg: string | undefined = rawArgs[rawArgs.indexOf(args[1]) + 1];
-    if (missingArg?.[0] === '-') {
-        if (rawArgs[rawArgs.indexOf(args[1]) + 2]) {
-            missingArg = rawArgs[rawArgs.indexOf(args[1]) + 2];
-        } else {
-            missingArg = undefined;
-        }
-    }
-    if (rawArgs.length === 3) missingArg = undefined;
-    argsCopy[2] = missingArg;
-    return argsCopy.filter((arg) => !!arg);
 };
 
 export const addSystemInjects = (c: RnvContext, injects: OverridesOptions) => {
@@ -71,55 +52,6 @@ export const sanitizeColor = (val: string | undefined, key: string) => {
         rgbDecimal: rgb.map((v: number) => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
         hex,
     };
-};
-
-export const getDevServerHost = (c: RnvContext) => {
-    const devServerHostOrig = getConfigProp(c, c.platform, 'devServerHost');
-
-    const devServerHostFixed = devServerHostOrig
-        ? getValidLocalhost(devServerHostOrig, c.runtime.localhost || DEFAULTS.devServerHost)
-        : DEFAULTS.devServerHost;
-
-    return devServerHostFixed;
-};
-
-export const waitForHost = async (c: RnvContext, suffix = 'assets/bundle.js') => {
-    logTask('waitForHost', `port:${c.runtime.port}`);
-    let attempts = 0;
-    const maxAttempts = 10;
-    const CHECK_INTEVAL = 2000;
-    // const spinner = ora('Waiting for webpack to finish...').start();
-
-    const devServerHost = getDevServerHost(c);
-    const url = `http://${devServerHost}:${c.runtime.port}/${suffix}`;
-
-    return new Promise((resolve, reject) => {
-        const interval = setInterval(() => {
-            axios
-                .get(url)
-                .then((res) => {
-                    if (res.status === 200) {
-                        clearInterval(interval);
-                        // spinner.succeed();
-                        return resolve(true);
-                    }
-                    attempts++;
-                    if (attempts === maxAttempts) {
-                        clearInterval(interval);
-                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                        return reject(`Can't connect to host ${url}. Try restarting it.`);
-                    }
-                })
-                .catch(() => {
-                    attempts++;
-                    if (attempts > maxAttempts) {
-                        clearInterval(interval);
-                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                        return reject(`Can't connect to host ${url}. Try restarting it.`);
-                    }
-                });
-        }, CHECK_INTEVAL);
-    });
 };
 
 export const existBuildsOverrideForTargetPathSync = (c: RnvContext, destPath: string) => {

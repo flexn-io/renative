@@ -388,7 +388,7 @@ export const parsePlugins = (
                                 // totalIncludedPlugins++;
                                 pluginCallback(plugin, pluginPlat, key);
                             } else if (pluginPlat) {
-                                const isPluginDisabled = plugin.disabled === true || plugin.enabled === false;
+                                const isPluginDisabled = plugin.disabled === true;
                                 //DEPreCATED
                                 const isPluginPlatDisabled =
                                     pluginPlat.disabled === true || pluginPlat.enabled === false;

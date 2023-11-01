@@ -4,9 +4,9 @@ import { chalk, logWarning } from '../logger';
 import { RnvContext } from '../context/types';
 import { NpmPackageFile } from '../configs/types';
 
-const getSortedObject = (obj: any) => {
+const getSortedObject = (obj: unknown) => {
     if (obj !== null && typeof obj === 'object' && !Array.isArray(obj)) {
-        const keys = Object.keys(obj).sort();
+        const keys = (Object.keys(obj) as Array<keyof typeof obj>).sort();
         const newObj: Record<string, string | boolean> = {};
         const addedKeys: Record<string, string | boolean> = {};
         keys.forEach((v) => {

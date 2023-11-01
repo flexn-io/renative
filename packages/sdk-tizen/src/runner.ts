@@ -10,7 +10,6 @@ import {
     checkPortInUse,
     confirmActiveBundler,
     addSystemInjects,
-    waitForHost,
     chalk,
     logTask,
     logDebug,
@@ -31,6 +30,7 @@ import semver from 'semver';
 import { CLI_TIZEN } from './constants';
 
 import { runTizenSimOrDevice, createDevelopTizenCertificate, DEFAULT_CERTIFICATE_NAME } from './deviceManager';
+import { waitForHost } from '@rnv/sdk-utils';
 
 const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
 

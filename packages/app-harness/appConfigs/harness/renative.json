@@ -1,0 +1,78 @@
+{
+    "$schema": "../../../../.rnv/schema/rnv.app.json",
+    "extend": "base",
+    "id": "template",
+    "skipBootstrapCopy": true,
+    "common": {
+        "id": "renative.helloworld",
+        "title": "ReNative",
+        "description": "Cross-platform application project based on ReNative",
+        "buildSchemes": {
+            "debug": {    
+                "id": "renative.helloworld.debug",
+                "title": "ReNative Debug"
+            },
+            "test": {
+                "id": "renative.helloworld.test",
+                "title": "ReNative Test"
+            }
+        },
+        "runtime": {
+            "welcomeMessage": "Hello ReNative!"
+        }
+    },
+    "platforms": {
+        "android": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "androidtv": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "firetv": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "androidwear": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "ios": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "tvos": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "macos": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "linux": {
+            "buildSchemes": {
+                "debug": {}
+            }
+        },
+        "tizen": {
+            "package": "NkVRhWHJST",
+            "id": "NkVRhWHJST.RNVanillaTV"
+        },
+        "tizenwatch": {
+            "package": "cHIP2fIRQZ",
+            "id": "cHIP2fIRQZ.RNVanillaWatch"
+        },
+        "tizenmobile": {
+            "package": "PauodvCU2r",
+            "id": "PauodvCU2r.RNVanillaMobile"
+        }
+    }
+}

@@ -7,7 +7,6 @@ export type NpmPackageFile = {
     author?: string;
     license?: string;
     description?: string;
-    'release-it'?: Record<string, any>;
     name?: string;
     main?: string;
 };

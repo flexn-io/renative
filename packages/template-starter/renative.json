@@ -153,7 +153,10 @@
             "disablePluginTemplateOverrides": true
         },
         "react-native-web": {
-            "version": "0.19.9"
+            "version": "0.19.9",
+            "webpackConfig": {
+                "modulePaths": true
+            }
         },
         "react-native-tvos": {
             "version": "0.72.4-0"

@@ -10,7 +10,6 @@ import {
     checkPortInUse,
     confirmActiveBundler,
     addSystemInjects,
-    waitForHost,
     chalk,
     logTask,
     logError,
@@ -31,6 +30,7 @@ import {
 import semver from 'semver';
 import { runWebosSimOrDevice } from './deviceManager';
 import { CLI_WEBOS_ARES_PACKAGE } from './constants';
+import { waitForHost } from '@rnv/sdk-utils';
 
 export const runWebOS = async (c: RnvContext) => {
     const { hosted } = c.program;

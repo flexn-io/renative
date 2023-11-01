@@ -1,2 +1,2 @@
-# sdk-webos
+# @rnv/sdk-webos
 

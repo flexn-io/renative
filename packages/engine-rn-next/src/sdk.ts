@@ -1,5 +1,4 @@
 import path from 'path';
-import open from 'better-opn';
 import {
     RnvContext,
     executeAsync,
@@ -7,8 +6,6 @@ import {
     getConfigProp,
     confirmActiveBundler,
     getPlatformBuildDir,
-    getDevServerHost,
-    waitForHost,
     fsExistsSync,
     writeCleanFile,
     copyFolderContentsRecursiveSync,
@@ -26,6 +23,7 @@ import {
     RnvPlatform,
 } from '@rnv/core';
 import { NEXT_CONFIG_NAME } from './constants';
+import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 
 export const configureNextIfRequired = async (c: RnvContext) => {
     logTask('configureNextIfRequired');
@@ -110,7 +108,7 @@ const _runWebBrowser = (
         if (!c.runtime.shouldOpenBrowser) return resolve();
         const wait = waitForHost(c, '')
             .then(() => {
-                open(`http://${devServerHost}:${port}/`);
+                openBrowser(`http://${devServerHost}:${port}/`);
             })
             .catch((e) => {
                 logWarning(e);
