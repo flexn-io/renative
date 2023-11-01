@@ -33,7 +33,7 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-utils": "1.0.0-feat-pin-cli.5",
+        "@rnv/sdk-utils": "1.0.0-feat-pin-cli.6",
         "babel-preset-expo": "9.5.2",
         "next-fonts": "1.5.1",
         "next-images": "1.8.4"

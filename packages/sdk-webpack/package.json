@@ -31,7 +31,7 @@
     },
     "dependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
-        "@rnv/sdk-utils": "1.0.0-feat-pin-cli.5",
+        "@rnv/sdk-utils": "1.0.0-feat-pin-cli.6",
         "@svgr/webpack": "6.3.1",
         "axios": "0.21.2",
         "bfj": "^7.0.2",

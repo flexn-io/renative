@@ -33,7 +33,7 @@
     },
     "dependencies": {
         "@rnv/sdk-tizen": "1.0.0-feat-pin-cli.6",
-        "@rnv/sdk-utils": "1.0.0-feat-pin-cli.5",
+        "@rnv/sdk-utils": "1.0.0-feat-pin-cli.6",
         "@rnv/sdk-webos": "1.0.0-feat-pin-cli.6",
         "@rnv/sdk-webpack": "1.0.0-feat-pin-cli.6"
     },
