@@ -717,7 +717,7 @@ export const taskRnvNew = async (c: RnvContext) => {
     config.platforms = platforms;
     config.engines = engines;
     config.defaults = defaults;
-    console.log(c.paths.project.config, ' =========> c.paths.project.config @@@@@');
+
     writeFileSync(c.paths.project.config, config);
 
     if (data.gitEnabled) {
