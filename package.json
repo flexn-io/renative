@@ -146,9 +146,6 @@
             "html-webpack-harddisk-plugin",
             "webpack",
             "mini-css-extract-plugin",
-            "@expo/next-adapter",
-            "@expo/webpack-config",
-            "@expo/**",
             "execa",
             "**/@flexn/plugins"
         ]

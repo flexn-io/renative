@@ -1,8 +1,6 @@
 {
     "tag": "manifest",
     "xmlns:android": "http://schemas.android.com/apk/res/android",
-    "package": "{{APPLICATION_ID}}",
-    "xmlns:tools": "http://schemas.android.com/tools",
     "children": [
         {
             "tag": "uses-feature",

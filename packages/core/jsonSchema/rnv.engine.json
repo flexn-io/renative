@@ -28,8 +28,25 @@
         },
         "npm": {
           "type": "object",
-          "properties": {},
-          "additionalProperties": false
+          "properties": {
+            "dependencies": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "devDependencies": {
+              "$ref": "#/definitions/rnv.engine/properties/npm/properties/dependencies"
+            },
+            "peerDependencies": {
+              "$ref": "#/definitions/rnv.engine/properties/npm/properties/dependencies"
+            },
+            "optionalDependencies": {
+              "$ref": "#/definitions/rnv.engine/properties/npm/properties/dependencies"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Npm dependencies required for this plugin to work"
         },
         "platforms": {
           "type": "object",
@@ -40,25 +57,7 @@
                 "type": "string"
               },
               "npm": {
-                "type": "object",
-                "properties": {
-                  "dependencies": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "string"
-                    }
-                  },
-                  "devDependencies": {
-                    "$ref": "#/definitions/rnv.engine/properties/platforms/additionalProperties/properties/npm/properties/dependencies"
-                  },
-                  "peerDependencies": {
-                    "$ref": "#/definitions/rnv.engine/properties/platforms/additionalProperties/properties/npm/properties/dependencies"
-                  },
-                  "optionalDependencies": {
-                    "$ref": "#/definitions/rnv.engine/properties/platforms/additionalProperties/properties/npm/properties/dependencies"
-                  }
-                },
-                "additionalProperties": false
+                "$ref": "#/definitions/rnv.engine/properties/npm"
               }
             },
             "additionalProperties": false

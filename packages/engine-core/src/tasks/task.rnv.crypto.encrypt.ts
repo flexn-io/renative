@@ -78,7 +78,7 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
         mkdirSync(path.join(sourceFolder, 'certs'));
         writeFileSync(path.join(sourceFolder, 'renative.private.json'), {});
 
-        const appConfigsDirs: any = await readdirAsync(c.paths.project.appConfigsDir);
+        const appConfigsDirs = await readdirAsync(c.paths.project.appConfigsDir);
 
         appConfigsDirs.forEach((item: string) => {
             const appConfigDir = path.join(sourceFolder, item);

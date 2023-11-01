@@ -97,7 +97,7 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
             if (!pkgJson.dependencies) pkgJson.dependencies = {};
             c.files.project.package = pkgJson;
 
-            const installPromises: Array<Promise<any>> = [];
+            const installPromises: Array<Promise<string>> = [];
             Object.keys(pkgJson.devDependencies).forEach((devDepKey) => {
                 if (activeEngineKeys.includes(devDepKey)) {
                     installPromises.push(

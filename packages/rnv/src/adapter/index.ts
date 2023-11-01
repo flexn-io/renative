@@ -1,7 +1,7 @@
 import fs from 'fs';
-import { logInfo } from '@rnv/core';
+import { BabelApi, BabelConfig, logInfo } from '@rnv/core';
 
-export const withDefaultRNVBabel = (cnf: any) => ({
+export const withDefaultRNVBabel = (cnf: BabelConfig): BabelConfig => ({
     retainLines: true,
     presets: [['@babel/preset-env', {}]],
     plugins: [
@@ -15,25 +15,27 @@ export const withDefaultRNVBabel = (cnf: any) => ({
     ...cnf,
 });
 
-export const withRNVBabel = (cnf: any) => (api: any) => {
-    if (process.env.RNV_ENGINE_PATH && !fs.existsSync(process.env.RNV_ENGINE_PATH)) {
-        logInfo(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);
-        api.cache(false);
-        return withDefaultRNVBabel(cnf);
-    }
-
-    if (process.env.RNV_ENGINE_PATH) {
-        const engine = require(process.env.RNV_ENGINE_PATH);
-        api.cache(true);
-        if (engine.withRNVBabel) {
-            return engine.withRNVBabel(cnf);
+export const withRNVBabel =
+    (cnf: BabelConfig) =>
+    (api: BabelApi): BabelConfig => {
+        if (process.env.RNV_ENGINE_PATH && !fs.existsSync(process.env.RNV_ENGINE_PATH)) {
+            logInfo(`Path to engine cannot be resolved: ${process.env.RNV_ENGINE_PATH}. Will use default one`);
+            api.cache(false);
+            return withDefaultRNVBabel(cnf);
         }
-    }
 
-    return cnf;
-};
+        if (process.env.RNV_ENGINE_PATH) {
+            const engine = require(process.env.RNV_ENGINE_PATH);
+            api.cache(true);
+            if (engine.withRNVBabel) {
+                return engine.withRNVBabel(cnf);
+            }
+        }
 
-export const withRNVMetro = (cnf: any) => {
+        return cnf;
+    };
+
+export const withRNVMetro = (cnf: unknown) => {
     if (process.env.RNV_ENGINE_PATH) {
         const engine = require(process.env.RNV_ENGINE_PATH);
         if (engine.withRNV) {
@@ -44,7 +46,7 @@ export const withRNVMetro = (cnf: any) => {
     return cnf;
 };
 
-export const withRNVRNConfig = (cnf: any) => {
+export const withRNVRNConfig = (cnf: unknown) => {
     if (process.env.RNV_ENGINE_PATH) {
         const engine = require(process.env.RNV_ENGINE_PATH);
         if (engine.withRNVRNConfig) {

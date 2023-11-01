@@ -1,0 +1,38 @@
+{
+    "name": "@rnv/integration-starter",
+    "version": "1.0.0-feat-pin-cli.5",
+    "description": "ReNative Example Integration",
+    "keywords": [
+        "renative",
+        "rnv",
+        "vercel"
+    ],
+    "homepage": "https://github.com/flexn-io/renative#readme",
+    "bugs": {
+        "url": "https://github.com/flexn-io/renative/issues"
+    },
+    "license": "MIT",
+    "author": "Pavel Jacko <pavel.jacko@gmail.com> (https://github.com/pavjacko)",
+    "contributors": [],
+    "main": "lib/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/flexn-io/renative.git"
+    },
+    "scripts": {
+        "build": "yarn clean && yarn compile",
+        "clean": "rimraf -I ./lib && rimraf -I tsconfig.tsbuildinfo",
+        "compile": "tsc -b tsconfig.json",
+        "compile:prod": "tsc -b tsconfig.json",
+        "prepublishOnly": "yarn clean && yarn compile:prod",
+        "watch": "tsc --watch --preserveWatchOutput"
+    },
+    "dependencies": {},
+    "devDependencies": {},
+    "peerDependencies": {
+        "@rnv/core": "^1.0.0-feat-pin-cli.5"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

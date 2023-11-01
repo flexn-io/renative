@@ -1,2 +1,2 @@
-# cli
+# @rnv/cli
 

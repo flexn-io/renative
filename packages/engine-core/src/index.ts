@@ -21,9 +21,6 @@ import taskRnvHooksList from './tasks/task.rnv.hooks.list';
 import taskRnvHooksRun from './tasks/task.rnv.hooks.run';
 import taskRnvHooksPipes from './tasks/task.rnv.hooks.pipes';
 import taskRnvClean from './tasks/task.rnv.clean';
-import rnvFastlane from './tasks/task.rnv.fastlane';
-import taskRnvPublish from './tasks/task.rnv.publish';
-import taskRnvPkg from './tasks/task.rnv.pkg';
 import taskRnvStatus from './tasks/task.rnv.status';
 import taskRnvConfig from './tasks/task.rnv.config';
 import taskRnvHelp from './tasks/task.rnv.help';
@@ -70,9 +67,6 @@ const Engine: RnvEngine = {
         taskRnvHooksRun,
         taskRnvHooksPipes,
         taskRnvClean,
-        rnvFastlane,
-        taskRnvPublish,
-        taskRnvPkg,
         taskRnvStatus,
         taskRnvConfig,
         taskRnvHelp,

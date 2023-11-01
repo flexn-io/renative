@@ -3544,11 +3544,6 @@
               {
                 "type": "object",
                 "properties": {
-                  "enabled": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Marks plugin enabled or disabled"
-                  },
                   "disabled": {
                     "type": "boolean",
                     "default": false,
@@ -3650,10 +3645,6 @@
                         }
                       }
                     },
-                    "required": [
-                      "modulePaths",
-                      "moduleAliases"
-                    ],
                     "additionalProperties": false,
                     "description": "Allows you to configure webpack bahaviour per each individual plugin"
                   },

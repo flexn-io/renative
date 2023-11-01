@@ -492,9 +492,9 @@ export const runAndroidLog = async (c: Context) => {
     const filter = c.program.filter || '';
     const child = execaCommand(`${c.cli[CLI_ANDROID_ADB]} logcat`);
     // use event hooks to provide a callback to execute when data are available:
-    child.stdout?.on('data', (data: any) => {
+    child.stdout?.on('data', (data: Buffer) => {
         const d = data.toString().split('\n');
-        d.forEach((v: any) => {
+        d.forEach((v) => {
             if (v.includes(' E ') && v.includes(filter)) {
                 logRaw(chalk().red(v));
             } else if (v.includes(' W ') && v.includes(filter)) {
@@ -504,7 +504,7 @@ export const runAndroidLog = async (c: Context) => {
             }
         });
     });
-    return child.then((res: any) => res.stdout).catch((err: any) => Promise.reject(`Error: ${err}`));
+    return child.then((res) => res.stdout).catch((err) => Promise.reject(`Error: ${err}`));
 };
 
 export { ejectGradleProject };

@@ -1,0 +1,27 @@
+{
+    "ignore_dirs": [
+        "platformBuilds",
+        "buildHooks/dist",
+        "../rnv",
+        "../engine-core",
+        "../engine-lightning",
+        "../engine-rn",
+        "../engine-rn-electron",
+        "../engine-rn-macos",
+        "../engine-rn-next",
+        "../engine-rn-tvos",
+        "../engine-rn-web",
+        "../engine-rn-windows",
+        "../engine-roku",
+        "../integration-docker",
+        "../integration-ftp",
+        "../integration-terraform",
+        "../integration-vercel",
+        "../sdk-android",
+        "../sdk-apple",
+        "../sdk-kaios",
+        "../sdk-tizen",
+        "../sdk-webos",
+        "../sdk-webpak"
+    ]
+}

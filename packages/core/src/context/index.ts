@@ -39,11 +39,33 @@ const populateLinkingInfo = (ctx: RnvContext) => {
 
 export const createRnvContext = (ctx?: CreateContextOptions) => {
     if (!ctx && !global.RNV_CONTEXT) {
+        // Initial empty context to be initialized
         global.RNV_CONTEXT = generateContextDefaults();
         return;
     }
 
-    if (!global.RNV_CONTEXT?.isDefault) return;
+    if (!global.RNV_CONTEXT?.isDefault) {
+        // Full Context already initialized. Another RNV is trying to initialize
+
+        if (global.RNV_CONTEXT.paths.rnv.dir !== ctx?.RNV_HOME_DIR) {
+            // If locations of RNV do not match throw warning as this might produce problems!
+            console.log(`
+=======
+WARNING: it seems your project is executed with 2 different versions of RNV: 
+INITIAL (Will be used) located at: ${global.RNV_CONTEXT.paths.rnv.dir}.
+NEW: (Will NOT be used) located at: v${ctx?.RNV_HOME_DIR}.
+--
+This usually happens if:
+A) you have multiple versions of rnv dependencies located in your repository
+B) you are running project with global rnv (without npx).
+--
+This might result in unexpected issues! 
+Make sure all your rnv dependencies are of same version and you are executing with npx prefix
+=======
+`);
+        }
+        return;
+    }
     const c: RnvContext = generateContextDefaults();
 
     c.program = ctx?.program || c.program;

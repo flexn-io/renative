@@ -437,7 +437,7 @@ export const logInfo = (msg: string) => {
     console.log(currentChalk.cyan(`[ info ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
-export const logDebug = (...args: Array<any>) => {
+export const logDebug = (...args: Array<string>) => {
     if (_isInfoEnabled) {
         if (_jsonOnly) {
             return _printJson({

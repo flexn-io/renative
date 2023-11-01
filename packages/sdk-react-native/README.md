@@ -1,2 +1,2 @@
-# sdk-react-native
+# @rnv/sdk-react-native
 

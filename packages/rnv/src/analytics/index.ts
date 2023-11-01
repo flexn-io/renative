@@ -4,7 +4,7 @@ import axios from 'axios';
 import os from 'os';
 import path from 'path';
 
-import { getContext } from '@rnv/core';
+import { RnvPlatform, getContext } from '@rnv/core';
 //@ts-ignore
 import pkg from '../../package.json';
 import { REDASH_KEY, REDASH_URL, SENTRY_ENDPOINT } from '../constants';
@@ -24,7 +24,7 @@ const sanitizeError = (err: string) => {
 };
 
 class Redash {
-    captureEvent(e: any) {
+    captureEvent(e: object) {
         const defaultProps = {
             fingerprint: machineIdSync(),
             os: os.platform(),
@@ -46,7 +46,7 @@ class Redash {
 
 export class AnalyticsCls {
     errorFixer: any;
-    knowItAll: any;
+    knowItAll: Redash | null;
 
     constructor() {
         this.errorFixer = null;
@@ -95,7 +95,7 @@ export class AnalyticsCls {
         }
     }
 
-    captureException(e: any, context: any = {}) {
+    captureException(e: unknown, context: { tags?: object; extra?: object } = {}) {
         if (this.isAnalyticsEnabled && this.errorFixer) {
             this.errorFixer.withScope((scope: any) => {
                 const { extra = {}, tags = {} } = context;
@@ -103,14 +103,14 @@ export class AnalyticsCls {
                 scope.setExtras({ ...extra, fingerprint: machineIdSync() });
                 if (e instanceof Error) {
                     this.errorFixer.captureException(e);
-                } else {
+                } else if (typeof e === 'string') {
                     this.errorFixer.captureException(new Error(sanitizeError(e)));
                 }
             });
         }
     }
 
-    async captureEvent(e: any) {
+    async captureEvent(e: { type: string; platform?: RnvPlatform; template?: string; platforms?: Array<string> }) {
         if (this.isAnalyticsEnabled && this.knowItAll) {
             return this.knowItAll.captureEvent(e);
         }

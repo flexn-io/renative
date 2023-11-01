@@ -35,7 +35,7 @@
     "dependencies": {
         "@rnv/sdk-react-native": "1.0.0-feat-pin-cli.5",
         "@rnv/sdk-webpack": "1.0.0-feat-pin-cli.5",
-        "better-opn": "1.0.0",
+        "@rnv/sdk-utils": "1.0.0-feat-pin-cli.5",
         "electron": "26.3.0",
         "electron-builder": "24.6.4",
         "electron-notarize": "1.2.2"
