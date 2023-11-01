@@ -160,6 +160,7 @@ test('Execute task.rnv.new', async () => {
         isNew: true,
         platforms: {},
         projectName: 'test',
+        projectVersion: '1.0.0',
         templates: {
             '@rnv/template-starter': {
                 version: '1.0.0-canary.7',
