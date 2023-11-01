@@ -43,6 +43,7 @@ export const RootTemplateSchema = z.object({
                     peerDependencies: z.optional(NpmDep),
                     optionalDependencies: z.optional(NpmDep),
                     name: z.string().optional(),
+                    version: z.string().optional(),
                 })
             ),
         })
