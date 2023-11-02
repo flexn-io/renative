@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-lightning",
-    "version": "1.0.0-feat-pin-cli.6",
+    "version": "1.0.0-feat-pin-cli.7",
     "description": "ReNative Engine to build lightning based apps.",
     "keywords": [
         "lightning"
@@ -34,11 +34,11 @@
     "dependencies": {
         "@lightningjs/cli": "2.12.0",
         "@lightningjs/sdk": "5.4.1",
-        "@rnv/sdk-tizen": "1.0.0-feat-pin-cli.6",
-        "@rnv/sdk-webos": "1.0.0-feat-pin-cli.6"
+        "@rnv/sdk-tizen": "1.0.0-feat-pin-cli.7",
+        "@rnv/sdk-webos": "1.0.0-feat-pin-cli.7"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-feat-pin-cli.6"
+        "@rnv/core": "^1.0.0-feat-pin-cli.7"
     },
     "private": false,
     "publishConfig": {
