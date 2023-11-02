@@ -29,10 +29,13 @@ const Overview = z.string().describe('Overview description of engine');
 
 const Platforms = z.record(PlatformsKeys, EnginePlatform);
 
+const Extends = z.string().describe('ID of engine to extend. Not being used yet');
+
 export const RootEngineSchema = z.object({
     custom: z.optional(Ext),
     id: Id,
     engineExtension: EngineExtension,
+    extends: z.optional(Extends),
     overview: Overview,
     plugins: z.optional(Plugins),
     npm: z.optional(Npm),

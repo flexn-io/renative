@@ -5,7 +5,7 @@ import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import ncp from 'ncp';
-import { chalk, logDebug, logError, logWarning } from '../logger';
+import { chalk, logDebug, logError, logWarning, logInfo } from '../logger';
 import type { RnvContext } from '../context/types';
 import type { FileUtilsPropConfig, OverridesOptions, TimestampPathsConfig } from './types';
 import { getApi } from '../api/provider';
@@ -823,6 +823,23 @@ export const getRelativePath = (from: string, to: string) => {
     return path.relative(from, to);
 };
 
+export const copyIfNotExistsRecursiveSync = (src: string | string[], dest: string) => {
+    const filesOrDirs = Array.isArray(src) ? src : fsReaddirSync(src);
+    for (const fd of filesOrDirs) {
+        const srcPath = path.join(src, fd);
+        const destPath = path.join(dest, fd);
+
+        if (!fsExistsSync(destPath)) {
+            logInfo(`Copying ${fd} to ${dest}`);
+            if (fsStatSync(srcPath).isDirectory()) {
+                copyFolderRecursiveSync(srcPath, dest);
+            } else {
+                fsCopyFileSync(srcPath, destPath);
+            }
+        }
+    }
+}
+
 export default {
     sanitizeDynamicRefs,
     getFileListSync,
@@ -846,4 +863,5 @@ export default {
     getDirectories,
     resolvePackage,
     cleanEmptyFoldersRecursively,
+    copyIfNotExistsRecursiveSync
 };

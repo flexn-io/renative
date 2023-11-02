@@ -15,6 +15,10 @@
           "type": "string",
           "description": "Engine extension ised by rnv during compilation"
         },
+        "extends": {
+          "type": "string",
+          "description": "ID of engine to extend. Not being used yet"
+        },
         "overview": {
           "type": "string",
           "description": "Overview description of engine"

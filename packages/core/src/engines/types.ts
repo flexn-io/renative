@@ -3,6 +3,7 @@ import type { RnvTaskMap } from '../tasks/types';
 
 export type RnvEngine = {
     originalTemplatePlatformsDir?: string;
+    originalTemplateProjectDir?: string;
     platforms: Record<string, RnvEnginePlatform>;
     config: ConfigFileEngine;
     tasks: RnvTaskMap;
