@@ -1,0 +1,6 @@
+{
+    "ignore_dirs": [
+        "platformBuilds",
+        "buildHooks/dist"
+    ]
+}

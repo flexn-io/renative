@@ -8,6 +8,9 @@
           "type": "string",
           "description": "Workspace ID your project belongs to. This will mach same folder name in the root of your user directory. ie `~/` on macOS"
         },
+        "projectVersion": {
+          "type": "string"
+        },
         "projectName": {
           "type": "string",
           "description": "Name of the project which will be used in workspace as folder name. this will also be used as part of the KEY in crypto env var generator"
@@ -3886,6 +3889,7 @@
       },
       "required": [
         "workspaceID",
+        "projectVersion",
         "projectName",
         "templates",
         "currentTemplate"
