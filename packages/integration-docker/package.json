@@ -32,7 +32,7 @@
     "dependencies": {},
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-feat-pin-cli.7"
+        "@rnv/core": "^1.0.0-feat-bonanza.1"
     },
     "publishConfig": {
         "access": "public"
