@@ -823,8 +823,8 @@ export const getRelativePath = (from: string, to: string) => {
     return path.relative(from, to);
 };
 
-export const copyIfNotExistsRecursiveSync = (src: string | string[], dest: string) => {
-    const filesOrDirs = Array.isArray(src) ? src : fsReaddirSync(src);
+export const copyContentsIfNotExistsRecursiveSync = (src: string, dest: string) => {
+    const filesOrDirs = fsReaddirSync(src);
     for (const fd of filesOrDirs) {
         const srcPath = path.join(src, fd);
         const destPath = path.join(dest, fd);
@@ -863,5 +863,5 @@ export default {
     getDirectories,
     resolvePackage,
     cleanEmptyFoldersRecursively,
-    copyIfNotExistsRecursiveSync
+    copyContentsIfNotExistsRecursiveSync
 };

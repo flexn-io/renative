@@ -1,5 +1,5 @@
 import path from 'path';
-import { fsExistsSync, readObjectSync, writeFileSync, copyIfNotExistsRecursiveSync } from '../system/fs';
+import { fsExistsSync, readObjectSync, writeFileSync, copyContentsIfNotExistsRecursiveSync } from '../system/fs';
 import { installPackageDependencies } from '../projects/npm';
 import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
 import { getConfigProp } from '../common';
@@ -565,12 +565,12 @@ export const getRegisteredEngines = (c: RnvContext) => c.runtime.enginesByIndex;
  */
 export const applyEnginePrerequisites = async (c: RnvContext) => {
     logTask('applyEnginePrerequisites');
-    const currentEngine = c.runtime.enginesByPlatform[c.platform];
+    const currentEngine = c.runtime.enginesByPlatform[c.platform!];
     
     const projectPrerequisitesDir = currentEngine?.originalTemplateProjectDir;
     
     if (projectPrerequisitesDir && fsExistsSync(projectPrerequisitesDir)) {
         // iterate over every file and copy it if it doesn't already exist
-        copyIfNotExistsRecursiveSync(projectPrerequisitesDir, c.paths.project.dir);
+        copyContentsIfNotExistsRecursiveSync(projectPrerequisitesDir, c.paths.project.dir);
     }
 }
