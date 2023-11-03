@@ -82,6 +82,15 @@ export const withRNVMetro = (config: InputConfigT) => {
                 /.expo\/.*/,
                 /.rollup.cache\/.*/,
             ]),
+             // fix Could not resolve "node_modules/react-native-tvos" for tvos
+            resolveRequest: (context: any, moduleName: string, platform: string) => {
+                if (moduleName.startsWith('node_modules/')) {
+                    const actualModuleName = moduleName.split('node_modules/')[1];
+                    return {type: 'sourceFile', filePath: require.resolve(actualModuleName)};
+                } else {
+                    return context.resolveRequest(context, moduleName, platform);
+                }
+            },
             ...(config?.resolver || {}),
             sourceExts: [...(config?.resolver?.sourceExts || []), ...exts.split(',')],
             extraNodeModules: config?.resolver?.extraNodeModules,
