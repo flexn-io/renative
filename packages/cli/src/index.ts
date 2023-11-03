@@ -9,6 +9,18 @@ import Logger from './logger';
 //IMPORTANT: Using require instead of import here to avoid circular dependency issue rnv => @rnv/cli => rnv
 const { executeRnv } = require('rnv');
 
+const terminateProcesses = () => {
+    const { runningProcesses } = getContext();
+    try {
+        runningProcesses.forEach((p) => {
+            p.kill();
+        });
+    } catch (e) {
+        console.log(e);
+    }
+    process.exit();
+};
+
 export const run = () => {
     const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')).toString());
     let cmdValue = '';
@@ -41,7 +53,14 @@ export const run = () => {
 
     program.parse(process.argv);
 
+    process.on('SIGINT', () => {
+        terminateProcesses();
+    });
+
     executeRnv({ cmd: cmdValue, subCmd: cmdOption, program, process, spinner: Spinner, prompt: Prompt, logger: Logger })
         .then(() => logComplete(!getContext().runtime.keepSessionActive))
-        .catch((e: unknown) => logError(e, true));
+        .catch((e: unknown) => {
+            terminateProcesses();
+            logError(e, true);
+        });
 };
