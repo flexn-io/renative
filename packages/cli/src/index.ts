@@ -18,7 +18,9 @@ const terminateProcesses = () => {
     } catch (e) {
         console.log(e);
     }
-    process.exit();
+    runningProcesses.length = 0;
+
+    // process.exit();
 };
 
 export const run = () => {
