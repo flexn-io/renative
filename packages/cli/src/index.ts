@@ -20,7 +20,7 @@ const terminateProcesses = () => {
     }
     runningProcesses.length = 0;
 
-    // process.exit();
+    process.exit(0);
 };
 
 export const run = () => {
