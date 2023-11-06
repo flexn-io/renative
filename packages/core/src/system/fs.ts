@@ -820,7 +820,11 @@ export const cleanEmptyFoldersRecursively = (folder: string) => {
 };
 
 export const getRelativePath = (from: string, to: string) => {
-    return path.relative(from, to);
+    const relativePath = path.relative(from, to);
+    if (!relativePath.startsWith('.')) {
+        return `.${path.sep}${relativePath}`;
+    }
+    return relativePath;
 };
 
 export const copyContentsIfNotExistsRecursiveSync = (src: string, dest: string) => {

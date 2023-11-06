@@ -1,6 +1,6 @@
 import { createRnvApi } from '../api';
 import { createRnvContext } from '../context';
-import { sanitizeDynamicProps } from '../system/fs';
+import { sanitizeDynamicProps, getRelativePath } from '../system/fs';
 
 jest.mock('../logger/index.ts');
 
@@ -104,4 +104,22 @@ describe('sanitizeDynamicProps', () => {
         const result = sanitizeDynamicProps(buildConfig, propConfig);
         expect(result.common.foo).toEqual('bar');
     });
+});
+
+describe('getRelativePath', () => {
+  it('returns the correct relative path when path is a subdirectory', () => {
+    const from = '/Users/user/some/path/packages/core/src';
+    const to = '/Users/user/some/path/packages/core/src/system/fs.ts';
+    const expected = './system/fs.ts';
+    const result = getRelativePath(from, to);
+    expect(result).toEqual(expected);
+  });
+
+  it('returns the correct relative path when path is a parent directory', () => {
+    const from = '/Users/user/some/path/packages/core/src/system/fs.ts';
+    const to = '/Users/user/some/path/packages/core/src';
+    const expected = '../..';
+    const result = getRelativePath(from, to);
+    expect(result).toEqual(expected);
+  });
 });
