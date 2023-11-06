@@ -90,7 +90,6 @@
         "@flexn/graybox": "0.21.1",
         "@flexn/typescript-config": "1.0.0",
         "@lightningjs/sdk": "^5.4.1",
-        "@react-native/metro-config": "^0.73.1",
         "@rnv/core": "1.0.0-feat-bonanza.4",
         "@rnv/engine-lightning": "1.0.0-feat-bonanza.4",
         "@rnv/engine-rn": "1.0.0-feat-bonanza.4",

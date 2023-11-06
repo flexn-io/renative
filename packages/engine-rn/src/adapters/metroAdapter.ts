@@ -1,6 +1,8 @@
 import { Env } from '@rnv/core';
+import { withMetroConfig, mergeConfig } from '@rnv/sdk-react-native'
 import { InputConfigT } from 'metro-config';
 
+// TODO merge with packages/engine-rn-macos/src/adapters/metroAdapter.ts and place in @rnv/sdk-react-native
 const path = require('path');
 
 const sharedBlacklist = [
@@ -31,9 +33,7 @@ function blacklist(additionalBlacklist: RegExp[]) {
 export const withRNVMetro = (config: InputConfigT): InputConfigT => {
     const projectPath = env.RNV_PROJECT_ROOT || process.cwd();
 
-    const mc = require(require.resolve('@react-native/metro-config', { paths: [projectPath] }));
-
-    const { getDefaultConfig, mergeConfig } = mc;
+    const defaultConfig = withMetroConfig(projectPath);
 
     const watchFolders = [path.resolve(projectPath, 'node_modules')];
 
@@ -69,7 +69,7 @@ export const withRNVMetro = (config: InputConfigT): InputConfigT => {
         projectRoot: path.resolve(projectPath),
     };
 
-    const cnfWithRnv = mergeConfig(getDefaultConfig(projectPath), cnfRnv);
+    const cnfWithRnv = mergeConfig(defaultConfig, cnfRnv);
 
     const cnf = mergeConfig(cnfWithRnv, config);
 
