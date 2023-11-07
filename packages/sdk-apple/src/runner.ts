@@ -761,7 +761,13 @@ const archiveXcodeProject = (c: Context) => {
 
     logDebug('xcodebuild args', args);
 
-    return executeAsync('xcodebuild', { rawCommand: { args } }).then(() => {
+    return executeAsync('xcodebuild', {
+        rawCommand: { args },
+        env: {
+            ...generateEnvVars(c),
+            RCT_NO_LAUNCH_PACKAGER: true,
+        },
+    }).then(() => {
         logSuccess(`Your Archive is located in ${chalk().cyan(exportPath)} .`);
     });
 };
