@@ -30,7 +30,7 @@
     "dependencies": {},
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-feat-metro-config.1"
+        "@rnv/core": "^1.0.0-feat-metro-config.2"
     },
     "publishConfig": {
         "access": "public"
