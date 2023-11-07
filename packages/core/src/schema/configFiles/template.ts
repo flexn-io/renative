@@ -35,7 +35,7 @@ export const RootTemplateSchema = z.object({
                 .array(z.string())
                 .describe('Defines list of all file/dir paths you want to include in template')
                 .optional(),
-            bootstrapQuestions: BootstrapQuestionsSchema,
+            bootstrapQuestions: z.optional(BootstrapQuestionsSchema),
             packageTemplate: z.optional(
                 z.object({
                     dependencies: z.optional(NpmDep),

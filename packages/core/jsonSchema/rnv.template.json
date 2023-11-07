@@ -217,9 +217,6 @@
               "additionalProperties": false
             }
           },
-          "required": [
-            "bootstrapQuestions"
-          ],
           "additionalProperties": false,
           "description": "Used in `renative.template.json` allows you to define template behaviour."
         },

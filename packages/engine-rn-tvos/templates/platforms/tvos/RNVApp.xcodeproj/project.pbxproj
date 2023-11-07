@@ -382,7 +382,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../../../../node_modules/react-native-tvos/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../../../../node_modules/react-native-tvos/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"{{PATH_REACT_NATIVE}}/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"{{PATH_REACT_NATIVE}}/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
 		0D7507D506130F6246FD97BE /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
