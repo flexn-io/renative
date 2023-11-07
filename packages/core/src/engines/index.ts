@@ -1,5 +1,5 @@
 import path from 'path';
-import { fsExistsSync, readObjectSync, writeFileSync, copyContentsIfNotExistsRecursiveSync } from '../system/fs';
+import { fsExistsSync, readObjectSync, writeFileSync } from '../system/fs';
 import { installPackageDependencies } from '../projects/npm';
 import { logDebug, logTask, chalk, logInfo, logWarning, logError } from '../logger';
 import { getConfigProp } from '../common';
@@ -28,7 +28,6 @@ export const registerEngine = async (engine: RnvEngine, platform?: RnvPlatform, 
     if (engConfig?.packageName) {
         engine.rootPath = _resolvePkgPath(c, engConfig.packageName);
         engine.originalTemplatePlatformsDir = path.join(engine.rootPath, 'templates/platforms');
-        engine.originalTemplateProjectDir = path.join(engine.rootPath, 'templates/project');
         engine.originalTemplatePlatformProjectDir = path.join(
             engine.originalTemplatePlatformsDir,
             engine.projectDirName
@@ -558,19 +557,3 @@ export const getEngineRunner = (c: RnvContext, task: string, customTasks?: RnvTa
 };
 
 export const getRegisteredEngines = (c: RnvContext) => c.runtime.enginesByIndex;
-
-/*
- * Look for ${enginePath}/templates/project and if it exists make sure files from there are copied to project
- * It will only copy files if they don't already exist in project, it will not overwrite existing files
- */
-export const applyEnginePrerequisites = async (c: RnvContext) => {
-    logTask('applyEnginePrerequisites');
-    const currentEngine = c.runtime.enginesByPlatform[c.platform!];
-    
-    const projectPrerequisitesDir = currentEngine?.originalTemplateProjectDir;
-    
-    if (projectPrerequisitesDir && fsExistsSync(projectPrerequisitesDir)) {
-        // iterate over every file and copy it if it doesn't already exist
-        copyContentsIfNotExistsRecursiveSync(projectPrerequisitesDir, c.paths.project.dir);
-    }
-}

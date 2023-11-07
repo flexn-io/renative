@@ -33,7 +33,6 @@ import {
     findSuitableTask,
     RnvTaskFn,
     RnvContext,
-    applyEnginePrerequisites,
     generatePlatformAssetsRuntimeConfig,
 } from '@rnv/core';
 
@@ -75,8 +74,6 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
     await checkCrypto(c, parentTask, originTask);
     await configureRuntimeDefaults(c);
     
-    await applyEnginePrerequisites(c);
-
     if (originTask !== TASK_TEMPLATE_APPLY) {
         if ((c.runtime.requiresBootstrap || !isTemplateInstalled(c)) && !c.files.project.config?.isTemplate) {
             await applyTemplate(c);
