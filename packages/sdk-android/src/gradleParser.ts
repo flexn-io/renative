@@ -109,6 +109,16 @@ export const parseBuildGradleSync = (c: Context) => {
                     forceForwardPaths: true,
                 }) || '',
         },
+        {
+            pattern: '{{PATH_REACT_NATIVE_CODEGEN}}',
+            override: doResolve('@react-native/codegen', true, { forceForwardPaths: true }) || '',
+        },
+        {
+            pattern: '{{PATH_REACT_NATIVE_CLI_ANDROID}}',
+            override: doResolve('@react-native-community/cli-platform-android', true, {
+                forceForwardPaths: true,
+            }) || '',
+        }
     ];
     addSystemInjects(c, injects);
 
@@ -493,6 +503,16 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
             pattern: '{{INJECT_KOTLIN_VERSION}}',
             override: c.payload.pluginConfigAndroid.kotlinVersion,
         },
+        {
+            pattern: '{{PATH_REACT_NATIVE_CODEGEN}}',
+            override: doResolve('@react-native/codegen', true, { forceForwardPaths: true }) || '',
+        },
+        {
+            pattern: '{{PATH_REACT_NATIVE_CLI_ANDROID}}',
+            override: doResolve('@react-native-community/cli-platform-android', true, {
+                forceForwardPaths: true,
+            }) || '',
+        }
     ];
 
     addSystemInjects(c, injects);
