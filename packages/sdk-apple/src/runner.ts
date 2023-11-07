@@ -764,6 +764,7 @@ const archiveXcodeProject = (c: Context) => {
     return executeAsync('xcodebuild', {
         rawCommand: { args },
         env: {
+            ...generateEnvVars(c),
             RCT_NO_LAUNCH_PACKAGER: true,
         },
     }).then(() => {
