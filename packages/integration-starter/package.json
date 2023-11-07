@@ -30,7 +30,7 @@
     "dependencies": {},
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-feat-bonanza.4"
+        "@rnv/core": "^1.0.0-feat-metro-config.1"
     },
     "publishConfig": {
         "access": "public"
