@@ -147,7 +147,8 @@
             "webpack",
             "mini-css-extract-plugin",
             "execa",
-            "**/@flexn/plugins"
+            "**/@flexn/plugins",
+            "**/@react-native/metro-babel-transformer"
         ]
     },
     "resolutions": {}
