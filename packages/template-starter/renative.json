@@ -68,7 +68,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^1.0.0-feat-metro-config.2"
+            "version": "^1.0.0-feat-bonanza.5"
         }
     },
     "currentTemplate": "@rnv/template-starter",
