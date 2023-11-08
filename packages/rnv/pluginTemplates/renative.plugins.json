@@ -2,7 +2,7 @@
     "$schema": "../../../.rnv/schema/rnv.plugins.json",
     "pluginTemplates": {
         "@rnv/renative": {
-            "version": "1.0.0-feat-bonanza.5",
+            "version": "1.0.0-feat-bonanza.6",
             "webpack": {
                 "moduleAliases": true,
                 "modulePaths": true

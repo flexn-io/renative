@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "1.0.0-feat-bonanza.5",
+    "version": "1.0.0-feat-bonanza.6",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",
@@ -39,7 +39,7 @@
         "next-images": "1.8.4"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-feat-bonanza.5",
+        "@rnv/core": "^1.0.0-feat-bonanza.6",
         "next": "^13",
         "react": "^18",
         "react-native-web": "~0.18.0",

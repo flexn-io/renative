@@ -68,7 +68,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^1.0.0-feat-bonanza.5"
+            "version": "^1.0.0-feat-bonanza.6"
         }
     },
     "currentTemplate": "@rnv/template-starter",
