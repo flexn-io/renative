@@ -118,12 +118,18 @@ const runCocoaPods = async (c: Context) => {
         requiredPodPermissions = Array.from(new Set(requiredPodPermissions));
     }
 
-    const env = {
+    // new arch support 
+    const newArchEnabled = getConfigProp(c, c.platform, 'newArchEnabled', false);
+
+    const env: any = {
         ...process.env,
-        RCT_NEW_ARCH_ENABLED: 1,
         REACT_NATIVE_PERMISSIONS_REQUIRED: requiredPodPermissions,
         ...generateEnvVars(c),
     };
+
+    if (newArchEnabled) {
+        env.RCT_NEW_ARCH_ENABLED = 1;
+    }
 
     const printableEnvKeys = [
         'RCT_NEW_ARCH_ENABLED',

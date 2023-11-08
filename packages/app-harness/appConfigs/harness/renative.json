@@ -8,7 +8,7 @@
         "title": "ReNative",
         "description": "Cross-platform application project based on ReNative",
         "buildSchemes": {
-            "debug": {    
+            "debug": {
                 "id": "renative.helloworld.debug",
                 "title": "ReNative Debug"
             },

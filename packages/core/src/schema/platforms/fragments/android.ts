@@ -90,4 +90,5 @@ export const PlatformAndroidFragment = {
     disableSigning: z.boolean().optional(),
     storeFile: z.string().describe('Name of the store file in android project').optional(),
     keyAlias: z.string().describe('Key alias of the store file in android project').optional(),
+    newArchEnabled: z.boolean().optional().describe('Enables new arch for android. Default: false'),
 };

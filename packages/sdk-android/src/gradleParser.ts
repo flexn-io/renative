@@ -604,11 +604,17 @@ export const parseGradlePropertiesSync = (c: Context) => {
 
     const gradleProperties = 'gradle.properties';
 
+    const newArchEnabled = getConfigProp(c, c.platform, 'newArchEnabled', false);
+
     const injects = [
         {
             pattern: '{{PLUGIN_GRADLE_PROPERTIES}}',
             override: pluginGradleProperties,
         },
+        {
+            pattern: '{{NEW_ARCH_ENABLED}}',
+            override: newArchEnabled ? 'true' : 'false',
+        }
     ];
 
     addSystemInjects(c, injects);
