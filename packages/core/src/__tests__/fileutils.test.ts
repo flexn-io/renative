@@ -1,8 +1,30 @@
+import { createPlatformBuild } from '../platforms';
 import { createRnvApi } from '../api';
 import { createRnvContext } from '../context';
 import { sanitizeDynamicProps, getRelativePath } from '../system/fs';
+import { RnvPlatform } from '../types';
+import { getContext } from '../context/provider';
+import { doResolve } from '../system/resolve';
 
-jest.mock('../logger/index.ts');
+jest.mock('../logger/index.ts', () => {
+    return {
+        logTask: jest.fn(),
+        logDebug: jest.fn(),
+        chalk: () => ({
+            red: jest.fn(),
+            white: jest.fn(),
+        }),
+    };
+});
+
+jest.mock('../system/fs.ts', () => {
+    const original = jest.requireActual('../system/fs.ts');
+
+    return {
+        ...original,
+        copyFolderContentsRecursiveSync: jest.fn(),
+    }
+})
 
 describe('sanitizeDynamicProps', () => {
     beforeAll(() => {
@@ -122,4 +144,41 @@ describe('getRelativePath', () => {
     const result = getRelativePath(from, to);
     expect(result).toEqual(expected);
   });
+});
+
+describe('createPlatformBuild', () => {
+    // GIVEN
+    const platform: RnvPlatform = 'ios';
+    const c = getContext();
+    c.runtime.availablePlatforms = ['ios', 'android'];
+    c.paths.project.platformTemplatesDirs[platform] = '/path/to/pt';
+    const { copyFolderContentsRecursiveSync } = require('../system/fs');
+
+    it('should copy platform template files to app folder', async () => {
+        
+        // WHEN
+        await createPlatformBuild(
+            c,
+            platform,
+        );
+
+        // THEN
+        expect(copyFolderContentsRecursiveSync).toHaveBeenCalledWith(
+            '/path/to/pt/ios',
+            'undefined_null', // TODO: fix this
+            false,
+            ['/path/to/pt/ios/_privateConfig'],
+            false,
+            [
+                {
+                    pattern: '{{PATH_REACT_NATIVE}}',
+                    override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
+                    forceForwardPaths: true,
+                }) || '',
+                },
+            ],
+            undefined,
+            c
+        );
+    });
 });
