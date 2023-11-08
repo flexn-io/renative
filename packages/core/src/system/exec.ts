@@ -102,6 +102,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
     } else {
         child = execa.command(cleanCommand, mergedOpts);
     }
+    c.runningProcesses.push(child);
 
     const MAX_OUTPUT_LENGTH = 200;
 
@@ -136,6 +137,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
             !silent && !mono && !!spinner && spinner.succeed(`Executing: ${logMessage}`);
             logDebug(replaceOverridesInString(res.all, privateParams, privateMask));
             interval && clearInterval(interval);
+            c.runningProcesses.splice(c.runningProcesses.indexOf(child), 1);
             // logDebug(res);
             return res.stdout;
         })
@@ -176,6 +178,7 @@ const _execute = (c: RnvContext, command: string | Array<string>, opts: ExecOpti
             }
 
             errMessage = replaceOverridesInString(errMessage, privateParams, privateMask);
+            c.runningProcesses.splice(c.runningProcesses.indexOf(child), 1);
 
             return Promise.reject(`COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
         });
@@ -278,7 +281,6 @@ const executeAsync = async (
     //     }
     // }
     const result = await _execute(c, cmd, opts);
-
     return result;
 };
 
