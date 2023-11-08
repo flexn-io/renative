@@ -9,7 +9,7 @@ import Logger from './logger';
 //IMPORTANT: Using require instead of import here to avoid circular dependency issue rnv => @rnv/cli => rnv
 const { executeRnv } = require('rnv');
 
-const terminateProcesses = () => {
+const terminateProcesses = (): void => {
     const { runningProcesses } = getContext();
     try {
         runningProcesses.forEach((p) => {
@@ -62,7 +62,7 @@ export const run = () => {
     executeRnv({ cmd: cmdValue, subCmd: cmdOption, program, process, spinner: Spinner, prompt: Prompt, logger: Logger })
         .then(() => logComplete(!getContext().runtime.keepSessionActive))
         .catch((e: unknown) => {
+            logError(e);
             terminateProcesses();
-            logError(e, true);
         });
 };
