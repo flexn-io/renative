@@ -220,6 +220,7 @@ const Paths = z
 
 const RootProjectBaseFragment = {
     workspaceID: WorkspaceID,
+    projectVersion: z.string(),
     projectName: ProjectName,
     isMonorepo: z.optional(IsMonoRepo),
     isTemplate: z.boolean().optional(),

@@ -9,8 +9,7 @@
         "react-dom": "source:rnv",
         "react-native": "source:rnv",
         "react-native-macos": "source:rnv",
-        "@react-native-community/cli-platform-ios": "source:rnv",
-        "@react-native-community/cli": "source:rnv"
+        "@react-native-community/cli": "^11.3.8"
     },
     "npm": {
         "devDependencies": {}

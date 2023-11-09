@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-lightning",
-    "version": "1.0.0-canary.7",
+    "version": "1.0.0-feat-bonanza.7",
     "description": "ReNative Engine to build lightning based apps.",
     "keywords": [
         "lightning"
@@ -34,15 +34,15 @@
     "dependencies": {
         "@lightningjs/cli": "2.12.0",
         "@lightningjs/sdk": "5.4.1",
-        "@rnv/sdk-tizen": "1.0.0-canary.7",
-        "@rnv/sdk-webos": "1.0.0-canary.7"
+        "@rnv/sdk-tizen": "1.0.0-feat-bonanza.7",
+        "@rnv/sdk-webos": "1.0.0-feat-bonanza.7"
     },
-    "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-canary.7"
+        "@rnv/core": "^1.0.0-feat-bonanza.7"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
 }

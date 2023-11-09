@@ -1,5 +1,7 @@
 {
     "$schema": "../../.rnv/schema/rnv.project.json",
     "extendsTemplate": "@rnv/template-starter/renative.json",
-    "plugins": {}
+    "plugins": {
+        "@react-native-community/cli": "^11.3.8"
+    }
 }

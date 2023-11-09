@@ -1,6 +1,6 @@
 {
     "name": "@rnv/template-starter",
-    "version": "1.0.0-canary.7",
+    "version": "1.0.0-feat-bonanza.7",
     "description": "🚧 Starter Template for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `FireTV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Linux",
     "keywords": [
         "android tv",
@@ -81,19 +81,23 @@
         "tsc": "tsc --noEmit --composite false",
         "watch": "tsc --watch --preserveWatchOutput --noEmit"
     },
+    "dependencies": {
+        "@lightningjs/sdk": "^5.4.1",
+        "raf": "3.4.1"
+    },
     "devDependencies": {
         "@flexn/assets-renative-outline": "0.3.2",
         "@flexn/graybox": "0.21.1",
         "@flexn/typescript-config": "1.0.0",
-        "@react-native/metro-config": "^0.73.1",
-        "@rnv/engine-lightning": "1.0.0-canary.7",
-        "@rnv/engine-rn": "1.0.0-canary.7",
-        "@rnv/engine-rn-electron": "1.0.0-canary.7",
-        "@rnv/engine-rn-next": "1.0.0-canary.7",
-        "@rnv/engine-rn-tvos": "1.0.0-canary.7",
-        "@rnv/engine-rn-web": "1.0.0-canary.7",
-        "@rnv/renative": "1.0.0-canary.7",
-        "@rnv/core": "1.0.0-canary.7",
+        "@lightningjs/sdk": "^5.4.1",
+        "@rnv/core": "1.0.0-feat-bonanza.7",
+        "@rnv/engine-lightning": "1.0.0-feat-bonanza.7",
+        "@rnv/engine-rn": "1.0.0-feat-bonanza.7",
+        "@rnv/engine-rn-electron": "1.0.0-feat-bonanza.7",
+        "@rnv/engine-rn-next": "1.0.0-feat-bonanza.7",
+        "@rnv/engine-rn-tvos": "1.0.0-feat-bonanza.7",
+        "@rnv/engine-rn-web": "1.0.0-feat-bonanza.7",
+        "@rnv/renative": "1.0.0-feat-bonanza.7",
         "@types/react": "18.2.22",
         "@types/react-dom": "18.2.7",
         "@types/react-native": "0.72.2",
@@ -104,7 +108,6 @@
         "metro-react-native-babel-preset": "0.76.8",
         "next": "13.5.2",
         "raf": "3.4.1",
-        "@lightningjs/sdk": "^5.4.1",
         "react": "18.2.0",
         "react-art": "18.2.0",
         "react-dom": "18.2.0",
@@ -112,7 +115,7 @@
         "react-native-gesture-handler": "2.13.1",
         "react-native-tvos": "0.72.4-0",
         "react-native-web": "0.19.9",
-        "rnv": "1.0.0-canary.7",
+        "rnv": "1.0.0-feat-bonanza.7",
         "xcode": "2.1.0"
     },
     "private": false,
@@ -130,6 +133,5 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    },
-    "dependencies": {}
+    }
 }

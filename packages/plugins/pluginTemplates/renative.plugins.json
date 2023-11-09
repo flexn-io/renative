@@ -362,13 +362,13 @@
             "version": "0.5.9"
         },
         "@react-native-community/cli": {
-            "version": "^6.0.0"
+            "version": "^11.3.0"
         },
         "@react-native-community/cli-platform-android": {
-            "version": "^6.0.0"
+            "version": "^11.3.0"
         },
         "@react-native-community/cli-platform-ios": {
-            "version": "^6.0.0"
+            "version": "^11.3.0"
         },
         "@react-native-community/clipboard": {
             "android": {
@@ -1648,7 +1648,7 @@
                 "URL_NAME": "",
                 "URL_SCHEME": ""
             },
-            "version": "0.67.2"
+            "version": "0.72.4"
         },
         "react-native-actionsheet": {
             "version": "2.4.2"

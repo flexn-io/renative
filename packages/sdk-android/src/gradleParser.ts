@@ -26,6 +26,8 @@ import {
 import path from 'path';
 import { Context } from './types';
 
+const currentOs = process.platform === 'darwin' ? 'osx' : process.platform === 'win32' ? 'win64' : 'linux64';
+
 export const parseBuildGradleSync = (c: Context) => {
     const appFolder = getAppFolder(c);
     const { platform } = c;
@@ -37,6 +39,7 @@ export const parseBuildGradleSync = (c: Context) => {
             ${c.payload.pluginConfigAndroid.buildGradleBuildScriptDexOptions}
         }`;
     }
+
     const injects: OverridesOptions = [
         {
             pattern: '{{COMPILE_SDK_VERSION}}',
@@ -109,6 +112,20 @@ export const parseBuildGradleSync = (c: Context) => {
                     forceForwardPaths: true,
                 }) || '',
         },
+        {
+            pattern: '{{PATH_REACT_NATIVE_CODEGEN}}',
+            override: doResolve('@react-native/codegen', true, { forceForwardPaths: true }) || '',
+        },
+        {
+            pattern: '{{PATH_REACT_NATIVE_CLI_ANDROID}}',
+            override: doResolve('@react-native-community/cli-platform-android', true, {
+                forceForwardPaths: true,
+            }) || '',
+        },
+        {
+            pattern: '{{PATH_HERMESC}}',
+            override: `${doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'}/sdks/hermesc/${currentOs}-bin/hermesc`,
+        }
     ];
     addSystemInjects(c, injects);
 
@@ -493,6 +510,20 @@ ${chalk().white(c.paths.workspace?.appConfig?.configsPrivate?.join('\n'))}`);
             pattern: '{{INJECT_KOTLIN_VERSION}}',
             override: c.payload.pluginConfigAndroid.kotlinVersion,
         },
+        {
+            pattern: '{{PATH_REACT_NATIVE_CODEGEN}}',
+            override: doResolve('@react-native/codegen', true, { forceForwardPaths: true }) || '',
+        },
+        {
+            pattern: '{{PATH_REACT_NATIVE_CLI_ANDROID}}',
+            override: doResolve('@react-native-community/cli-platform-android', true, {
+                forceForwardPaths: true,
+            }) || '',
+        },
+        {
+            pattern: '{{PATH_HERMESC}}',
+            override: `${doResolve('react-native', true, { forceForwardPaths: true }) || 'react-native'}/sdks/hermesc/${currentOs}-bin/hermesc`,
+        }
     ];
 
     addSystemInjects(c, injects);
@@ -573,11 +604,17 @@ export const parseGradlePropertiesSync = (c: Context) => {
 
     const gradleProperties = 'gradle.properties';
 
+    const newArchEnabled = getConfigProp(c, c.platform, 'newArchEnabled', false);
+
     const injects = [
         {
             pattern: '{{PLUGIN_GRADLE_PROPERTIES}}',
             override: pluginGradleProperties,
         },
+        {
+            pattern: '{{NEW_ARCH_ENABLED}}',
+            override: newArchEnabled ? 'true' : 'false',
+        }
     ];
 
     addSystemInjects(c, injects);

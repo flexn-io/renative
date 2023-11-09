@@ -1,5 +1,4 @@
 {
-    "$schema": "../../.rnv/schema/rnv.project.json",
     "engines": {
         "@rnv/engine-lightning": "source:rnv",
         "@rnv/engine-rn": "source:rnv",
@@ -8,6 +7,7 @@
         "@rnv/engine-rn-tvos": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv"
     },
+    "$schema": "../../.rnv/schema/rnv.project.json",
     "isTemplate": true,
     "projectName": "renative",
     "enableHookRebuild": false,
@@ -68,7 +68,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^1.0.0-canary.7"
+            "version": "^1.0.0-feat-bonanza.7"
         }
     },
     "currentTemplate": "@rnv/template-starter",
@@ -110,7 +110,9 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -160,9 +162,6 @@
         },
         "react-native-tvos": {
             "version": "0.72.4-0"
-        },
-        "@react-native/metro-config": {
-            "version": "^0.73.1"
         }
     },
     "permissions": {

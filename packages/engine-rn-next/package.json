@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-next",
-    "version": "1.0.0-canary.7",
+    "version": "1.0.0-feat-bonanza.7",
     "description": "ReNative Engine to build next based platforms with react native support.",
     "keywords": [
         "nextjs",
@@ -17,7 +17,7 @@
         "LICENSE",
         "lib",
         "renative.engine.json",
-        "supportFiles"
+        "templates"
     ],
     "main": "lib/index.js",
     "repository": {
@@ -33,14 +33,13 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-utils": "1.0.0-canary.7",
+        "@rnv/sdk-utils": "1.0.0-feat-pin-cli.6",
         "babel-preset-expo": "9.5.2",
         "next-fonts": "1.5.1",
         "next-images": "1.8.4"
     },
-    "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-canary.7",
+        "@rnv/core": "^1.0.0-feat-bonanza.7",
         "next": "^13",
         "react": "^18",
         "react-native-web": "~0.18.0",

@@ -22,6 +22,6 @@
         "../sdk-kaios",
         "../sdk-tizen",
         "../sdk-webos",
-        "../sdk-webpak"
+        "../sdk-webpack"
     ]
 }

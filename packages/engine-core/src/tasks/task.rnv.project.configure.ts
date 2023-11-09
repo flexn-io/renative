@@ -73,7 +73,7 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
     await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);
     await checkCrypto(c, parentTask, originTask);
     await configureRuntimeDefaults(c);
-
+    
     if (originTask !== TASK_TEMPLATE_APPLY) {
         if ((c.runtime.requiresBootstrap || !isTemplateInstalled(c)) && !c.files.project.config?.isTemplate) {
             await applyTemplate(c);

@@ -7,6 +7,7 @@ import type { RnvContext } from '../context/types';
 import { generateOptions, inquirerPrompt } from '../api';
 import type { RnvPlatform, RnvPlatformWithAll } from '../types';
 import { updateProjectPlatforms } from '../configs/configProject';
+import { doResolve } from '../system/resolve';
 
 export const logErrorPlatform = (c: RnvContext) => {
     logError(
@@ -65,7 +66,12 @@ export const createPlatformBuild = (c: RnvContext, platform: RnvPlatform) =>
             false,
             [path.join(ptPath, '_privateConfig')],
             false,
-            [],
+            [{
+                pattern: '{{PATH_REACT_NATIVE}}',
+                override: doResolve(c.runtime.runtimeExtraProps?.reactNativePackageName || 'react-native', true, {
+                    forceForwardPaths: true,
+                }) || '',
+            }],
             getTimestampPathsConfig(c, platform),
             c
         );

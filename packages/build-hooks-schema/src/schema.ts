@@ -42,12 +42,21 @@ const _generateSchemaFile = (opts: { schema: z.ZodObject<any>; schemaId: string 
 
     jsonSchema.definitions[schemaId].properties['$schema'] = {
         type: 'string',
-        description: 'schema definition',
+        description: 'schema definition', 
     };
 
-    const destPath = path.join(ctx.paths.project.dir, `packages/core/jsonSchema/${schemaId}.json`);
+    const destFolder = path.join(ctx.paths.project.dir, `packages/core/jsonSchema`);
+    if (!fs.existsSync(destFolder)) {
+        fs.mkdirSync(destFolder, { recursive: true });
+    }
+    const destPath = path.join(destFolder, `${schemaId}.json`);
     fs.writeFileSync(destPath, JSON.stringify(jsonSchema, null, 2));
 
-    const destPath2 = path.join(ctx.paths.project.dir, `.rnv/schema/${schemaId}.json`);
+    const destFolder2 = path.join(ctx.paths.project.dir, `.rnv/schema`);
+    if (!fs.existsSync(destFolder2)) {
+        fs.mkdirSync(destFolder2, { recursive: true });
+    }
+    const destPath2 = path.join(destFolder2, `${schemaId}.json`);
+
     fs.writeFileSync(destPath2, JSON.stringify(jsonSchema, null, 2));
 };

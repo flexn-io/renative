@@ -17,6 +17,7 @@ import {
 import { NpmPackageFile } from '../configs/types';
 import { ConfigFileBuildConfig } from '../schema/configFiles/buildConfig';
 import type { ParamKeys } from '../tasks/constants';
+import { ExecaChildProcess } from 'execa';
 
 export type CreateContextOptions = {
     program: RnvContextProgram;
@@ -54,6 +55,7 @@ export interface RnvContext<Payload = any> {
     assetConfig: object;
     platform: RnvPlatform;
     process: NodeJS.Process;
+    runningProcesses: ExecaChildProcess[];
     rnvVersion: string;
     isSystemWin: boolean;
     _currentTask?: string;

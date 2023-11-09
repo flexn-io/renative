@@ -7,7 +7,6 @@ import {
     confirmActiveBundler,
     getPlatformBuildDir,
     fsExistsSync,
-    writeCleanFile,
     copyFolderContentsRecursiveSync,
     chalk,
     logTask,
@@ -22,7 +21,6 @@ import {
     getModuleConfigs,
     RnvPlatform,
 } from '@rnv/core';
-import { NEXT_CONFIG_NAME } from './constants';
 import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 
 export const configureNextIfRequired = async (c: RnvContext) => {
@@ -31,11 +29,6 @@ export const configureNextIfRequired = async (c: RnvContext) => {
     if (!c.platform) return;
 
     c.runtime.platformBuildsProjectPath = `${getPlatformBuildDir(c)}`;
-    const { platformTemplatesDirs, dir } = c.paths.project;
-
-    const supportFilesDir = path.join(platformTemplatesDirs[c.platform], '../../supportFiles');
-
-    const configFile = path.join(dir, NEXT_CONFIG_NAME);
 
     await copyAssetsFolder(c, c.platform);
 
@@ -49,11 +42,6 @@ export const configureNextIfRequired = async (c: RnvContext) => {
     } else {
         const sourcePath = path.join(c.paths.appConfig.dir, `assets/${c.platform}`);
         copyFolderContentsRecursiveSync(sourcePath, destPath);
-    }
-
-    // add config
-    if (!fsExistsSync(configFile)) {
-        writeCleanFile(path.join(supportFilesDir, NEXT_CONFIG_NAME), configFile, undefined, undefined, c);
     }
 };
 

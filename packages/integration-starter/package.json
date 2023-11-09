@@ -1,6 +1,6 @@
 {
     "name": "@rnv/integration-starter",
-    "version": "1.0.0-canary.7",
+    "version": "1.0.0-feat-pin-cli.6",
     "description": "ReNative Example Integration",
     "keywords": [
         "renative",
@@ -30,7 +30,7 @@
     "dependencies": {},
     "devDependencies": {},
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-canary.7"
+        "@rnv/core": "^1.0.0-feat-bonanza.7"
     },
     "publishConfig": {
         "access": "public"
