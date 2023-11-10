@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn",
-    "version": "1.0.0-feat-bonanza.10",
+    "version": "1.0.0-feat-bonanza.11",
     "description": "ReNative Engine to build react-native based platforms.",
     "keywords": [
         "react-native"
@@ -32,12 +32,12 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-android": "1.0.0-feat-bonanza.10",
-        "@rnv/sdk-apple": "1.0.0-feat-bonanza.10",
-        "@rnv/sdk-react-native": "1.0.0-feat-bonanza.10"
+        "@rnv/sdk-android": "1.0.0-feat-bonanza.11",
+        "@rnv/sdk-apple": "1.0.0-feat-bonanza.11",
+        "@rnv/sdk-react-native": "1.0.0-feat-bonanza.11"
     },
     "peerDependencies": {
-        "@rnv/core": "^1.0.0-feat-bonanza.10"
+        "@rnv/core": "^1.0.0-feat-bonanza.11"
     },
     "private": false,
     "publishConfig": {
