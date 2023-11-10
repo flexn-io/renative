@@ -134,7 +134,12 @@
         }
     },
     "plugins": {
-        "@rnv/renative": "source:rnv",
+        "@rnv/renative": {
+            "source": "rnv",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
         "react": "source:rnv",
         "react-art": "source:rnv",
         "react-dom": "source:rnv",

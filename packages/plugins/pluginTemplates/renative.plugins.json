@@ -895,7 +895,7 @@
         },
         "@rnv/renative": {
             "version": "0.37.0-canary.7",
-            "webpack": {
+            "webpackConfig": {
                 "moduleAliases": true,
                 "modulePaths": true
             }
