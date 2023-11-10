@@ -13,7 +13,7 @@ export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
                 {
                     root: [process.env.RNV_MONO_ROOT],
                     alias: {
-                        'react-native': process.env.RNV_REACT_NATIVE_PATH,
+                        'react-native': 'react-native-tvos',
                     },
                 },
             ],
