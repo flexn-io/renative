@@ -1,6 +1,14 @@
 {
     "$schema": "../../.rnv/schema/rnv.project.json",
     "extendsTemplate": "@rnv/template-starter/renative.json",
+    "crypto": {
+        "encrypt": {
+            "dest": "PROJECT_HOME/ci/privateConfigs.enc"
+        },
+        "decrypt": {
+            "source": "PROJECT_HOME/ci/privateConfigs.enc"
+        }
+    },
     "plugins": {
         "@react-native-community/cli": "^11.3.8"
     }
