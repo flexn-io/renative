@@ -27,6 +27,8 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
     logTask('parsePodFile');
 
     const appFolder = getAppFolder(c);
+    const useHermes = getConfigProp(c, c.platform, 'reactNativeEngine') === 'hermes';
+
     let pluginInject = '';
 
     // PLUGINS
@@ -187,6 +189,10 @@ export const parsePodFile = async (c: Context, platform: RnvPlatform) => {
         {
             pattern: '{{PLUGIN_NODE_REQUIRE}}',
             override: c.payload.pluginConfigiOS.podfileNodeRequire || '',
+        },
+        {
+            pattern: '{{HERMES_ENABLED}}',
+            override: `${useHermes}`,
         },
     ];
 
