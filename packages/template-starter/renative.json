@@ -68,7 +68,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^1.0.0-feat-bonanza.7"
+            "version": "^1.0.0-feat-bonanza.11"
         }
     },
     "currentTemplate": "@rnv/template-starter",
@@ -134,7 +134,12 @@
         }
     },
     "plugins": {
-        "@rnv/renative": "source:rnv",
+        "@rnv/renative": {
+            "source": "rnv",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
         "react": "source:rnv",
         "react-art": "source:rnv",
         "react-dom": "source:rnv",

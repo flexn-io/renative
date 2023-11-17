@@ -87,7 +87,7 @@ export const withMetroConfig = (projectRoot: string): ConfigT => {
             '/node_modules/react-refresh/.+\\.js$',
             '/node_modules/scheduler/.+\\.js$',
             '^\\[native code\\]$',
-        ].join('|'),
+        ].join('|')
     );
 
     const config = {
@@ -95,36 +95,42 @@ export const withMetroConfig = (projectRoot: string): ConfigT => {
             resolverMainFields: ['react-native', 'browser', 'main'],
             platforms: ['android', 'ios'],
             unstable_conditionNames: ['require', 'import', 'react-native'],
+            emptyModulePath: require.resolve('metro-runtime/src/modules/empty-module.js', {
+                paths: [process.env.RNV_PROJECT_ROOT || process.cwd()],
+            }),
         },
         serializer: {
             // Note: This option is overridden in cli-plugin-metro (getOverrideConfig)
             getModulesRunBeforeMainModule: () => [
-                require.resolve('react-native/Libraries/Core/InitializeCore'),
+                require.resolve('react-native/Libraries/Core/InitializeCore', {
+                    paths: [process.env.RNV_PROJECT_ROOT || process.cwd()],
+                }),
             ],
-            getPolyfills: () => require('@react-native/js-polyfills')(),
+            getPolyfills: () =>
+                require(require.resolve('@react-native/js-polyfills', {
+                    paths: [process.env.RNV_PROJECT_ROOT || process.cwd()],
+                }))(),
         },
         server: {
             port: Number(process.env.RCT_METRO_PORT) || 8081,
         },
         symbolicator: {
-            customizeFrame: (frame: Readonly<{file?: string }>) => {
+            customizeFrame: (frame: Readonly<{ file?: string }>) => {
                 const collapse = Boolean(frame.file && INTERNAL_CALLSITES_REGEX.test(frame.file));
-                return {collapse};
+                return { collapse };
             },
         },
         transformer: {
             allowOptionalDependencies: true,
             assetRegistryPath: 'react-native/Libraries/Image/AssetRegistry',
-            asyncRequireModulePath: require.resolve(
-                'metro-runtime/src/modules/asyncRequire',
-            ),
-            babelTransformerPath: require.resolve(
-                '@react-native/metro-babel-transformer',
-            ),
+            asyncRequireModulePath: require.resolve('metro-runtime/src/modules/asyncRequire', {
+                paths: [process.env.RNV_PROJECT_ROOT || process.cwd()],
+            }),
+            babelTransformerPath: require.resolve('@react-native/metro-babel-transformer'),
             getTransformOptions: async () => ({
                 transform: {
-                experimentalImportSupport: false,
-                inlineRequires: true,
+                    experimentalImportSupport: false,
+                    inlineRequires: true,
                 },
             }),
         },
@@ -134,8 +140,8 @@ export const withMetroConfig = (projectRoot: string): ConfigT => {
     return mergeConfig(
         // @ts-expect-error: `getDefaultConfig` is not typed correctly
         getDefaultConfig.getDefaultValues(projectRoot),
-        config,
-    )
-}
+        config
+    );
+};
 
-export { mergeConfig }
+export { mergeConfig };

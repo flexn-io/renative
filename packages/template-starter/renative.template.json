@@ -12,7 +12,8 @@
             "react-native.config.js",
             "babel.config.js",
             "next.config.js",
-            "next-env.d.ts"
+            "next-env.d.ts",
+            "typings"
         ],
         "packageTemplate": {
             "devDependencies": {
