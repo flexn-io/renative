@@ -9,9 +9,12 @@ jest.mock('../logger/index.ts', () => {
         logTask: jest.fn(),
         logWarning: jest.fn(),
         logInfo: jest.fn(),
+        logError: jest.fn(),
+
         chalk: () => ({
             red: jest.fn(),
             white: jest.fn(),
+            blue: jest.fn(),
         }),
     };
 });
@@ -19,14 +22,6 @@ jest.mock('../logger/index.ts', () => {
 jest.mock('../platforms', () => ({
     isPlatformActive: jest.fn() as jest.Mock<boolean>,
 }));
-
-// jest.mock('../common.ts', () => ({
-//     getConfigProp: jest.fn() as jest.Mock<string[]>,
-// }));
-
-// async function throwingFunction() {
-//     throw new Error('This failed');
-// }
 
 describe('copyAssetsFolder', () => {
     const platform: RnvPlatform = 'web';
@@ -44,13 +39,16 @@ describe('copyAssetsFolder', () => {
         expect(result).toBeUndefined();
     });
     it('should throws an error when assetSources is declared but not specified', async () => {
-        // (commonModule.getConfigProp as jest.Mock<[]>).mockReturnValue([]);
+        //GIVEN
         const spy = jest.spyOn(commonModule, 'getConfigProp').mockReturnValueOnce('web').mockReturnValueOnce([]);
+        (platformsModule.isPlatformActive as jest.Mock<boolean>).mockReturnValue(true);
+        //WHEN
+        await expect(copyAssetsFolder(c, platform)).rejects.toMatch(`AssetSources is declared but not specified.`);
+
+        //THEN
         expect(spy).toHaveBeenCalledWith(c, platform, 'assetFolderPlatform');
         expect(spy).toHaveBeenCalledWith(c, platform, 'assetSources');
 
-        // await expect(throwingFunction()).rejects.toThrow();
-        await expect(copyAssetsFolder(c, platform)).rejects.toThrowError(`AssetSources is declared but not specified.`);
         expect(spy).toHaveBeenCalledTimes(2);
         spy.mockRestore();
     });

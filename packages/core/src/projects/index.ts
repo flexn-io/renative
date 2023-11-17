@@ -433,7 +433,6 @@ export const copyAssetsFolder = async (
     customFn?: (c: RnvContext, platform: RnvPlatform) => void
 ) => {
     logTask('copyAssetsFolder');
-
     if (!isPlatformActive(c, platform)) return;
 
     const assetFolderPlatform = (getConfigProp(c, platform, 'assetFolderPlatform') || platform) as RnvPlatform;
@@ -449,8 +448,11 @@ export const copyAssetsFolder = async (
     const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
     const assetSources = getConfigProp(c, platform, 'assetSources') || [];
-    if (!assetSources.length)
-        throw new Error(`AssetSources is declared but not specified.Check ${chalk().blue(c.paths.appConfig.dir)} .`);
+    if (!assetSources.length) {
+        return Promise.reject(
+            `AssetSources is declared but not specified.Check ${chalk().blue(c.paths.appConfig.dir)} .`
+        );
+    }
 
     const validAssetSources: Array<string> = [];
     if (assetFolderPlatform) {
@@ -459,7 +461,7 @@ export const copyAssetsFolder = async (
             if (fsExistsSync(assetsPath)) {
                 validAssetSources.push(assetsPath);
             } else {
-                throw new Error(`AssetSources is specified as  ${chalk().red(v)}. But it was not found.`);
+                return Promise.reject(`AssetSources is specified as  ${chalk().red(v)}. But it was not found.`);
             }
         });
     }
