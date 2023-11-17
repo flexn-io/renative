@@ -1,6 +1,8 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
+{{PLUGIN_LOCAL_PROPERTIES}}
+
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -83,22 +85,17 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+{{PLUGIN_SPLITS}}
+
     signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
-        release {
-            if (project.hasProperty('STORE_FILE')) {
-                storeFile file(STORE_FILE)
-                storePassword STORE_PASSWORD
-                keyAlias KEY_ALIAS
-                keyPassword KEY_PASSWORD
-            }
-        }
+{{PLUGIN_SIGNING_CONFIGS}}
     }
+
+    packagingOptions {
+{{PLUGIN_PACKAGING_OPTIONS}}
+    }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -110,6 +107,10 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
+    }
+
+    compileOptions {
+{{PLUGIN_COMPILE_OPTIONS}}
     }
 }
 

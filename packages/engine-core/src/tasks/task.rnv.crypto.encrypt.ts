@@ -38,7 +38,7 @@ const generateRandomKey = (length: number) =>
 
 const _checkAndConfigureCrypto = async (c: RnvContext) => {
     // handle missing config
-    const source = `./${c.files.project.package.name}`;
+    const source = `./${c.files.project.config!.projectName}`;
 
     const cnf = c.files.project.config_original;
     if (!cnf) return;
