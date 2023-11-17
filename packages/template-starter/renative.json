@@ -110,9 +110,7 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -120,7 +118,8 @@
         "tvos": {
             "engine": "engine-rn-tvos",
             "schemeTarget": "RNVApp-tvOS",
-            "deploymentTarget": "14.0"
+            "deploymentTarget": "14.0",
+            "reactNativeEngine": "hermes"
         },
         "macos": {
             "engine": "engine-rn-electron"
@@ -130,7 +129,8 @@
         },
         "ios": {
             "engine": "engine-rn",
-            "deploymentTarget": "14.0"
+            "deploymentTarget": "14.0",
+            "reactNativeEngine": "hermes"
         }
     },
     "plugins": {
