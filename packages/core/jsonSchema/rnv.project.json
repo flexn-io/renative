@@ -860,6 +860,10 @@
                   "type": "string",
                   "description": "Key alias of the store file in android project"
                 },
+                "newArchEnabled": {
+                  "type": "boolean",
+                  "description": "Enables new arch for android. Default: false"
+                },
                 "templateAndroid": {
                   "type": "object",
                   "properties": {
@@ -1324,6 +1328,9 @@
                       "keyAlias": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/keyAlias"
                       },
+                      "newArchEnabled": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/newArchEnabled"
+                      },
                       "templateAndroid": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/android/properties/templateAndroid"
                       }
@@ -1497,6 +1504,10 @@
                 },
                 "provisioningStyle": {
                   "type": "string"
+                },
+                "newArchEnabled": {
+                  "type": "boolean",
+                  "description": "Enables new archs for iOS. Default: false"
                 },
                 "codeSignIdentity": {
                   "type": "string",
@@ -1989,6 +2000,9 @@
                       },
                       "provisioningStyle": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/provisioningStyle"
+                      },
+                      "newArchEnabled": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/newArchEnabled"
                       },
                       "codeSignIdentity": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/codeSignIdentity"
@@ -2938,6 +2952,9 @@
                 "provisioningStyle": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/provisioningStyle"
                 },
+                "newArchEnabled": {
+                  "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/newArchEnabled"
+                },
                 "codeSignIdentity": {
                   "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/codeSignIdentity"
                 },
@@ -3139,6 +3156,9 @@
                       },
                       "provisioningStyle": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/provisioningStyle"
+                      },
+                      "newArchEnabled": {
+                        "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/newArchEnabled"
                       },
                       "codeSignIdentity": {
                         "$ref": "#/definitions/rnv.project/properties/platforms/properties/ios/properties/codeSignIdentity"
