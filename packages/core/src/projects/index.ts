@@ -448,11 +448,6 @@ export const copyAssetsFolder = async (
     const tsPathsConfig = getTimestampPathsConfig(c, platform);
 
     const assetSources = getConfigProp(c, platform, 'assetSources') || [];
-    if (!assetSources.length) {
-        return Promise.reject(
-            `AssetSources is declared but not specified.Check ${chalk().blue(c.paths.appConfig.dir)} .`
-        );
-    }
 
     const validAssetSources: Array<string> = [];
     if (assetFolderPlatform) {
