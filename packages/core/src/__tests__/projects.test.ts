@@ -3,6 +3,8 @@ import { getContext } from '../context/provider';
 import { RnvPlatform } from '../types';
 import * as platformsModule from '../platforms';
 import * as commonModule from '../common';
+import { logWarning } from '../logger';
+import path from 'path';
 
 jest.mock('../logger/index.ts', () => {
     return {
@@ -12,15 +14,18 @@ jest.mock('../logger/index.ts', () => {
         logError: jest.fn(),
 
         chalk: () => ({
-            red: jest.fn(),
-            white: jest.fn(),
-            blue: jest.fn(),
+            red: (v) => v,
+            white: (v) => v,
+            blue: (v) => v,
         }),
     };
 });
 
 jest.mock('../platforms', () => ({
     isPlatformActive: jest.fn() as jest.Mock<boolean>,
+}));
+jest.mock('path', () => ({
+    join: jest.fn(),
 }));
 
 describe('copyAssetsFolder', () => {
@@ -38,14 +43,25 @@ describe('copyAssetsFolder', () => {
         expect(platformsModule.isPlatformActive).toHaveBeenCalled();
         expect(result).toBeUndefined();
     });
-    it('should throws an error when assetSources is declared but not specified', async () => {
+    it('shows warning when assetSources is declared but actual folder is missing', async () => {
         //GIVEN
-        const spy = jest.spyOn(commonModule, 'getConfigProp').mockReturnValueOnce('web').mockReturnValueOnce([]);
+        const spy = jest
+            .spyOn(commonModule, 'getConfigProp')
+            .mockReturnValueOnce('web')
+            .mockReturnValueOnce(['./MOCK_PATH']);
         (platformsModule.isPlatformActive as jest.Mock<boolean>).mockReturnValue(true);
+
+        // (path.join as jest.Mock<string>).mockReturnValue('MOST_JOINED_PATH');
+
+        jest.spyOn(path, 'join').mockReturnValue('MOCK_JOINED_PATH');
+
         //WHEN
-        await expect(copyAssetsFolder(c, platform)).rejects.toMatch(`AssetSources is declared but not specified.`);
+        await copyAssetsFolder(c, platform);
 
         //THEN
+        expect(logWarning).toBeCalledWith(
+            'AssetSources is specified as ./MOCK_PATH. But path MOCK_JOINED_PATH was not found.'
+        );
         expect(spy).toHaveBeenCalledWith(c, platform, 'assetFolderPlatform');
         expect(spy).toHaveBeenCalledWith(c, platform, 'assetSources');
 

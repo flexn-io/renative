@@ -433,6 +433,7 @@ export const copyAssetsFolder = async (
     customFn?: (c: RnvContext, platform: RnvPlatform) => void
 ) => {
     logTask('copyAssetsFolder');
+
     if (!isPlatformActive(c, platform)) return;
 
     const assetFolderPlatform = (getConfigProp(c, platform, 'assetFolderPlatform') || platform) as RnvPlatform;
@@ -456,7 +457,9 @@ export const copyAssetsFolder = async (
             if (fsExistsSync(assetsPath)) {
                 validAssetSources.push(assetsPath);
             } else {
-                return Promise.reject(`AssetSources is specified as  ${chalk().red(v)}. But it was not found.`);
+                logWarning(
+                    `AssetSources is specified as ${chalk().red(v)}. But path ${chalk().red(assetsPath)} was not found.`
+                );
             }
         });
     }
