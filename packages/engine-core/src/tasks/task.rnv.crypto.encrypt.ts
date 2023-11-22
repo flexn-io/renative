@@ -38,7 +38,7 @@ const generateRandomKey = (length: number) =>
 
 const _checkAndConfigureCrypto = async (c: RnvContext) => {
     // handle missing config
-    const source = `./${c.files.project.config!.projectName}`;
+    const source = `./${c.files.project.package.name}`;
 
     const cnf = c.files.project.config_original;
     if (!cnf) return;
@@ -153,7 +153,8 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
         const timestamp = new Date().getTime();
 
         // check if dest folder actually exists
-        const destFolder = path.join(dest, '../../core/');
+        const destFolder = dest.slice(0, dest.lastIndexOf('/'));
+
         !fsExistsSync(destFolder) && mkdirSync(destFolder);
 
         await tar.c(
