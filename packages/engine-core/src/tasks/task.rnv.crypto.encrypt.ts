@@ -67,7 +67,7 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
 
     // check if src folder actually exists
     const sourceFolder = path.join(c.paths.workspace.dir, source);
-    console.log(sourceFolder, 'sourceFolder');
+
     if (!fsExistsSync(sourceFolder)) {
         logInfo(
             `It seems you are running encrypt for the first time. Directory ${chalk().white(
@@ -75,19 +75,21 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
             )} does not exist yet.
 RNV will create it for you, make sure you add whatever you want encrypted in it and then run the command again`
         );
-
+        const configDir = path.join(sourceFolder, 'appConfigs');
         mkdirSync(sourceFolder);
+        mkdirSync(configDir);
 
         const appConfigsDirs = await readdirAsync(c.paths.project.appConfigsDir);
         appConfigsDirs.forEach(async (item: string) => {
             const targetFile = 'renative.private.json';
-            const appConfigDir = path.join(sourceFolder, item);
+            const appConfigDir = path.join(configDir, item);
 
-            const existingFiles = await readdirAsync(`${c.paths.project.appConfigsDir}/${item}`);
+            const existingFiles: string[] = await readdirAsync(`${c.paths.project.appConfigsDir}/${item}`);
 
             existingFiles.map((file) => {
                 if (file === targetFile) {
                     mkdirSync(appConfigDir);
+                    mkdirSync(path.join(appConfigDir, 'certs'));
 
                     copyFileSync(
                         path.join(c.paths.project.appConfigsDir, item, targetFile),

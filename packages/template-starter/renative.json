@@ -110,9 +110,7 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -182,14 +180,6 @@
                 "key": "android.permission.SYSTEM_ALERT_WINDOW",
                 "security": "signature"
             }
-        }
-    },
-    "crypto": {
-        "encrypt": {
-            "dest": "PROJECT_HOME/secrets/privateConfigs.enc"
-        },
-        "decrypt": {
-            "source": "PROJECT_HOME/secrets/privateConfigs.enc"
         }
     }
 }
