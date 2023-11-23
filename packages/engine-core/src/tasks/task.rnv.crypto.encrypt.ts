@@ -24,6 +24,7 @@ import {
     PARAMS,
     RnvContext,
     RnvTaskFn,
+    copyFileSync,
 } from '@rnv/core';
 
 const iocane = require('iocane');
@@ -66,6 +67,7 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
 
     // check if src folder actually exists
     const sourceFolder = path.join(c.paths.workspace.dir, source);
+    console.log(sourceFolder, 'sourceFolder');
     if (!fsExistsSync(sourceFolder)) {
         logInfo(
             `It seems you are running encrypt for the first time. Directory ${chalk().white(
@@ -75,16 +77,24 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
         );
 
         mkdirSync(sourceFolder);
-        mkdirSync(path.join(sourceFolder, 'certs'));
-        writeFileSync(path.join(sourceFolder, 'renative.private.json'), {});
 
         const appConfigsDirs = await readdirAsync(c.paths.project.appConfigsDir);
-
-        appConfigsDirs.forEach((item: string) => {
+        appConfigsDirs.forEach(async (item: string) => {
+            const targetFile = 'renative.private.json';
             const appConfigDir = path.join(sourceFolder, item);
-            mkdirSync(appConfigDir);
-            mkdirSync(path.join(appConfigDir, 'certs'));
-            writeFileSync(path.join(appConfigDir, 'renative.private.json'), {});
+
+            const existingFiles = await readdirAsync(`${c.paths.project.appConfigsDir}/${item}`);
+
+            existingFiles.map((file) => {
+                if (file === targetFile) {
+                    mkdirSync(appConfigDir);
+
+                    copyFileSync(
+                        path.join(c.paths.project.appConfigsDir, item, targetFile),
+                        path.join(appConfigDir, 'renative.private.json')
+                    );
+                }
+            });
         });
 
         // writeFileSync(path.join(sourceFolder), c.files.project.config);
