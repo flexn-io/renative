@@ -34,6 +34,7 @@ import {
     RnvTaskFn,
     RnvContext,
     generatePlatformAssetsRuntimeConfig,
+    TASK_CRYPTO_DECRYPT,
 } from '@rnv/core';
 
 const checkIsRenativeProject = (c: RnvContext) =>
@@ -71,9 +72,13 @@ export const taskRnvProjectConfigure: RnvTaskFn = async (c, parentTask, originTa
 
     await checkIfTemplateConfigured(c);
     await executeTask(c, TASK_INSTALL, TASK_PROJECT_CONFIGURE, originTask);
-    await checkCrypto(c, parentTask, originTask);
+    if (originTask !== TASK_CRYPTO_DECRYPT) {
+        //If we explicitly running rnv crypto decrypt there is no need to check crypto
+        await checkCrypto(c, parentTask, originTask);
+    }
+
     await configureRuntimeDefaults(c);
-    
+
     if (originTask !== TASK_TEMPLATE_APPLY) {
         if ((c.runtime.requiresBootstrap || !isTemplateInstalled(c)) && !c.files.project.config?.isTemplate) {
             await applyTemplate(c);
