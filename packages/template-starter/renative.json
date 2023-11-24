@@ -9,7 +9,7 @@
     },
     "$schema": "../../.rnv/schema/rnv.project.json",
     "isTemplate": true,
-    "projectName": "renative",
+    "projectName": "@rnv/template-starter",
     "enableHookRebuild": false,
     "workspaceID": "rnv",
     "isMonorepo": true,

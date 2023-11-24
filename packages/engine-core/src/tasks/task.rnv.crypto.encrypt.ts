@@ -39,7 +39,7 @@ const generateRandomKey = (length: number) =>
 
 const _checkAndConfigureCrypto = async (c: RnvContext) => {
     // handle missing config
-    const source = `./${c.files.project.package.name}`;
+    const source = `./${c.files.project.config?.projectName}`;
 
     const cnf = c.files.project.config_original;
     if (!cnf) return;
@@ -145,14 +145,16 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_ENCRYPT, originTask);
 
-    if (!c.files.project.package.name) return;
+    const projectName = c.files.project.config?.projectName;
 
-    const source = `./${c.files.project.package.name}`;
+    if (!projectName) return;
+
+    const source = `./${projectName}`;
 
     await _checkAndConfigureCrypto(c);
 
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
-    const tsWorkspacePath = path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp');
+    const tsWorkspacePath = path.join(c.paths.workspace.dir, projectName, 'timestamp');
     const envVar = getEnvVar(c);
 
     if (!envVar) return;
@@ -161,7 +163,7 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
 
     if (destRaw) {
         const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
-        const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
+        const destTemp = `${path.join(c.paths.workspace.dir, projectName.replace('/', '-'))}.tgz`;
         const timestamp = new Date().getTime();
 
         // check if dest folder actually exists

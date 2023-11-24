@@ -58,7 +58,7 @@ export const taskRnvCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask)
 
     const crypto = c.files.project.config?.crypto;
     const sourceRaw = crypto?.decrypt?.source;
-    const pkgName = c.files.project.package.name;
+    const pkgName = c.files.project.config?.projectName;
 
     if (!crypto?.isOptional && sourceRaw) {
         const envVar = getEnvVar(c);

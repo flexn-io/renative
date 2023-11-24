@@ -1,12 +1,13 @@
 {
     "$schema": "../../.rnv/schema/rnv.project.json",
     "extendsTemplate": "@rnv/template-starter/renative.json",
+    "projectName": "@rnv/app-harness",
     "crypto": {
         "encrypt": {
-            "dest": "PROJECT_HOME/ci/privateConfigs.enc"
+            "dest": "PROJECT_HOME/secrets/privateConfigs.enc"
         },
         "decrypt": {
-            "source": "PROJECT_HOME/ci/privateConfigs.enc"
+            "source": "PROJECT_HOME/secrets/privateConfigs.enc"
         }
     },
     "plugins": {
