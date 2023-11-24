@@ -62,7 +62,7 @@
         "compile": "npx lerna run compile",
         "deploy:canary": "yarn pre-publish && npx lerna publish from-package --dist-tag canary && git push origin HEAD",
         "deploy:feat": "yarn pre-publish && npx lerna publish from-package --dist-tag feat && git push origin HEAD",
-        "deploy:preview": "yarn pre-publish && npx lerna publish from-package --dist-tag preview && git push origin HEAD",
+        "deploy:next": "yarn pre-publish && npx lerna publish from-package --dist-tag next && git push origin HEAD",
         "deploy:prod": "yarn pre-publish && npx lerna publish from-package && git push origin HEAD",
         "e2e-template-starter-android": "cd packages/template-starter && npx rnv build -p android -s test -c template --packageManager yarn && yarn e2e:android",
         "e2e-template-starter-androidtv": "cd packages/template-starter && npx rnv build -p androidtv -s test -c template --packageManager yarn && yarn e2e:androidtv",
