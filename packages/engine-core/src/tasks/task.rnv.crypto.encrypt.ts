@@ -51,16 +51,11 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
             type: 'input',
             name: 'location',
             message:
-                'Where would you like your secrets to be residing? (path relative to root, without leading or trailing slash. Ex. `myPrivateConfig/encrypt`)',
+                'Where would you like your secrets to be residing? (path relative to renative project root, without leading or trailing slash. Ex. `myPrivateConfig/encrypt`)',
             default: 'secrets',
         });
         cnf.crypto = {
-            encrypt: {
-                dest: `PROJECT_HOME/${location}/privateConfigs.enc`,
-            },
-            decrypt: {
-                source: `PROJECT_HOME/${location}/privateConfigs.enc`,
-            },
+            path: `./${location}/privateConfigs.enc`,
         };
         writeFileSync(c.paths.project.config, cnf);
     }
@@ -153,7 +148,7 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
 
     await _checkAndConfigureCrypto(c);
 
-    const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
+    const destRaw = c.files.project.config?.crypto?.path;
     const tsWorkspacePath = path.join(c.paths.workspace.dir, projectName, 'timestamp');
     const envVar = getEnvVar(c);
 
@@ -162,7 +157,7 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
     const key = c.program.key || c.process.env[envVar];
 
     if (destRaw) {
-        const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
+        const dest = `${getRealPath(c, destRaw, 'crypto.path')}`;
         const destTemp = `${path.join(c.paths.workspace.dir, projectName.replace('/', '-'))}.tgz`;
         const timestamp = new Date().getTime();
 
@@ -196,7 +191,7 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
         fsWriteFileSync(`${tsWorkspacePath}`, `${timestamp}`);
         logSuccess(`Files succesfully encrypted into ${dest}`);
     } else {
-        logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk().white(c.paths.appConfigBase)}`);
+        logWarning(`You don't have {{ crypto.path }} specificed in ${chalk().white(c.paths.appConfigBase)}`);
     }
 };
 

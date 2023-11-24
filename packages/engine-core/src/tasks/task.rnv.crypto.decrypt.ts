@@ -57,20 +57,20 @@ export const taskRnvCryptoDecrypt: RnvTaskFn = async (c, parentTask, originTask)
     }
 
     const crypto = c.files.project.config?.crypto;
-    const sourceRaw = crypto?.decrypt?.source;
-    const pkgName = c.files.project.config?.projectName;
+    const sourceRaw = crypto?.path;
+    const projectName = c.files.project.config?.projectName;
 
     if (!crypto?.isOptional && sourceRaw) {
         const envVar = getEnvVar(c);
-        if (!pkgName || !envVar) return;
+        if (!projectName || !envVar) return;
 
-        const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
+        const source = `${getRealPath(c, sourceRaw, 'crypto.path')}`;
         const ts = `${source}.timestamp`;
-        const destFolder = path.join(c.paths.workspace.dir, pkgName);
-        const destTemp = `${path.join(c.paths.workspace.dir, pkgName.replace('/', '-'))}.tgz`;
+        const destFolder = path.join(c.paths.workspace.dir, projectName);
+        const destTemp = `${path.join(c.paths.workspace.dir, projectName.replace('/', '-'))}.tgz`;
 
         let shouldCleanFolder = false;
-        const wsPath = path.join(c.paths.workspace.dir, pkgName);
+        const wsPath = path.join(c.paths.workspace.dir, projectName);
         const isCryptoReset = c.command === 'crypto' && c.program.reset === true;
 
         if (c.program.ci !== true && !isCryptoReset) {
@@ -200,7 +200,7 @@ and we will try to help!
 
         await _unzipAndCopy(c, shouldCleanFolder, destTemp, wsPath, ts, destFolder);
     } else {
-        logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk().white(c.paths.appConfigBase)}`);
+        logWarning(`You don't have {{ crypto.path }} specificed in ${chalk().white(c.paths.appConfigBase)}`);
         return true;
     }
 };

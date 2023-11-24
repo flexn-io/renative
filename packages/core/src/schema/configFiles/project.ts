@@ -102,20 +102,9 @@ const CurrentTemplate = z
 
 const Crypto = z
     .object({
-        encrypt: z.object({
-            dest: z
-                .string()
-                .describe(
-                    'Location of encrypted file in your project used as destination of encryption from your workspace'
-                ),
-        }),
-        decrypt: z.object({
-            source: z
-                .string()
-                .describe(
-                    'Location of encrypted file in your project used as source of decryption into your workspace'
-                ),
-        }),
+        path: z
+            .string()
+            .describe('Relative path to encrypted file in your renative project. Example: "./secrets/mySecrets.enc"'),
         isOptional: z.boolean().optional().describe('Mark if crypto object should not checked every run'),
     })
     .describe('This prop enables automatic encrypt and decrypt of sensitive information in your project');
