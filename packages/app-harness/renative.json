@@ -1,13 +1,9 @@
 {
     "$schema": "../../.rnv/schema/rnv.project.json",
     "extendsTemplate": "@rnv/template-starter/renative.json",
+    "projectName": "@rnv/app-harness",
     "crypto": {
-        "encrypt": {
-            "dest": "PROJECT_HOME/ci/privateConfigs.enc"
-        },
-        "decrypt": {
-            "source": "PROJECT_HOME/ci/privateConfigs.enc"
-        }
+        "path": "./secrets/privateConfigs.enc"
     },
     "plugins": {
         "@react-native-community/cli": "^11.3.8"

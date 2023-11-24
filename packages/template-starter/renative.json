@@ -9,7 +9,7 @@
     },
     "$schema": "../../.rnv/schema/rnv.project.json",
     "isTemplate": true,
-    "projectName": "renative",
+    "projectName": "@rnv/template-starter",
     "enableHookRebuild": false,
     "workspaceID": "rnv",
     "isMonorepo": true,
@@ -110,9 +110,7 @@
             "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": [
-                "INTERNET"
-            ]
+            "includedPermissions": ["INTERNET"]
         },
         "web": {
             "engine": "engine-rn-next"
