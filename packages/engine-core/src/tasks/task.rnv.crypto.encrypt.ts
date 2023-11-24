@@ -26,6 +26,7 @@ import {
     RnvTaskFn,
     copyFileSync,
 } from '@rnv/core';
+import { statSync } from 'fs';
 
 const iocane = require('iocane');
 
@@ -36,6 +37,40 @@ const generateRandomKey = (length: number) =>
         .fill('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%^&*')
         .map((x) => x[Math.floor(Math.random() * x.length)])
         .join('');
+
+const initializeCryptoDirectory = async (c: RnvContext, sourceFolder: string) => {
+    const configDir = path.join(sourceFolder, 'appConfigs');
+    mkdirSync(sourceFolder);
+    mkdirSync(configDir);
+
+    const appConfigsDirs = await readdirAsync(c.paths.project.appConfigsDir);
+
+    appConfigsDirs.forEach(async (item: string) => {
+        const targetFile = 'renative.private.json';
+        if (item == targetFile) {
+            copyFileSync(path.join(c.paths.project.appConfigsDir, item), path.join(configDir, targetFile));
+        }
+        const appConfigDir = path.join(configDir, item);
+        const itemPath = path.join(c.paths.project.appConfigsDir, item);
+
+        const stat = statSync(itemPath);
+        if (stat && stat.isDirectory()) {
+            const existingFiles: string[] = await readdirAsync(itemPath);
+
+            existingFiles.map((file) => {
+                if (file === targetFile) {
+                    mkdirSync(appConfigDir);
+                    mkdirSync(path.join(appConfigDir, 'certs'));
+
+                    copyFileSync(
+                        path.join(c.paths.project.appConfigsDir, item, targetFile),
+                        path.join(appConfigDir, targetFile)
+                    );
+                }
+            });
+        }
+    });
+};
 
 const _checkAndConfigureCrypto = async (c: RnvContext) => {
     // handle missing config
@@ -70,30 +105,7 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
             )} does not exist yet.
 RNV will create it for you, make sure you add whatever you want encrypted in it and then run the command again`
         );
-        const configDir = path.join(sourceFolder, 'appConfigs');
-        mkdirSync(sourceFolder);
-        mkdirSync(configDir);
-
-        const appConfigsDirs = await readdirAsync(c.paths.project.appConfigsDir);
-        appConfigsDirs.forEach(async (item: string) => {
-            const targetFile = 'renative.private.json';
-            const appConfigDir = path.join(configDir, item);
-
-            const existingFiles: string[] = await readdirAsync(`${c.paths.project.appConfigsDir}/${item}`);
-
-            existingFiles.map((file) => {
-                if (file === targetFile) {
-                    mkdirSync(appConfigDir);
-                    mkdirSync(path.join(appConfigDir, 'certs'));
-
-                    copyFileSync(
-                        path.join(c.paths.project.appConfigsDir, item, targetFile),
-                        path.join(appConfigDir, 'renative.private.json')
-                    );
-                }
-            });
-        });
-
+        await initializeCryptoDirectory(c, sourceFolder);
         // writeFileSync(path.join(sourceFolder), c.files.project.config);
         await inquirerPrompt({
             type: 'confirm',
