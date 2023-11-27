@@ -43,6 +43,7 @@ describe('Bootstrapping the CLI', () => {
             'process',
             'program',
             'rnvVersion',
+            'runningProcesses',
             'runtime',
             'runtimePropsInjects',
             'subCommand',

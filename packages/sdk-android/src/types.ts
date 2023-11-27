@@ -65,9 +65,24 @@ export type AndroidDevice = {
     isWear?: boolean;
     isTV?: boolean;
     isMobile?: boolean;
-    screenProps?: any;
+    screenProps?: {
+        width: number;
+        height: number;
+        density: number;
+    };
     arch?: string;
-    avdConfig?: any;
+    avdConfig?: Record<string, string>;
+    // {
+    //     'hw.lcd.density': string;
+    //     'hw.lcd.width': string;
+    //     'hw.lcd.height': string;
+    //     'abi.type': string;
+    //     'image.sysdir.1': string;
+    //     'tag.id': string;
+    //     'tag.display': string;
+    //     'hw.device.name': string;
+    //     'skin.name': string;
+    // };
     isNotEligibleAndroid?: boolean;
     name: string;
     isDevice?: boolean;

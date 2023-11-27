@@ -1,6 +1,6 @@
 {
     "name": "@rnv/engine-rn-windows",
-    "version": "1.0.0-canary.7",
+    "version": "1.0.0-rc.0",
     "description": "ReNative Engine to build for Windows platform with react native support.",
     "keywords": [
         "react-native",
@@ -34,18 +34,18 @@
         "watch": "tsc --watch --preserveWatchOutput"
     },
     "dependencies": {
-        "@rnv/sdk-react-native": "1.0.0-canary.7",
+        "@rnv/sdk-react-native": "1.0.0-rc.0",
         "@xmldom/xmldom": "0.7.7",
         "react-native-windows": "0.72.10"
     },
-    "devDependencies": {},
     "peerDependencies": {
         "@react-native-community/cli": "*",
-        "@rnv/core": "^1.0.0-canary.7",
+        "@rnv/core": "^1.0.0-rc.0",
         "react-native": "*"
     },
     "private": false,
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "gitHead": "48ef244c6ec2e206cbfd72fe8770d8dc03387591"
 }

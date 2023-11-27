@@ -1,23 +1,23 @@
-import { provision } from 'ios-mobileprovision-finder';
-import path from 'path';
 import {
-    logError,
-    inquirerPrompt,
+    IOS,
+    RnvPlatform,
+    chalk,
+    doResolve,
+    fsExistsSync,
+    fsWriteFileSync,
     getAppFolder,
     getAppId,
     getConfigProp,
     getFlavouredProp,
-    fsExistsSync,
-    writeFileSync,
-    fsWriteFileSync,
-    doResolve,
-    chalk,
+    inquirerPrompt,
+    logError,
     logTask,
     logWarning,
-    IOS,
     parsePlugins,
-    RnvPlatform,
+    writeFileSync,
 } from '@rnv/core';
+import { provision } from 'ios-mobileprovision-finder';
+import path from 'path';
 import { getAppFolderName } from './common';
 import { parseProvisioningProfiles } from './provisionParser';
 import { Context } from './types';
@@ -274,10 +274,10 @@ const _parseXcodeProject = (c: Context, platform: RnvPlatform) =>
 
             // FONTS
             // Cocoapods take care of this
-            //TODO: DISABLED TEMORARILY DURING RN UPGRADE. investigating built in rn options for this
-            // c.payload.pluginConfigiOS.embeddedFontSources.forEach((v) => {
-            //     xcodeProj.addResourceFile(v, { variantGroup: false });
-            // });
+            xcodeProj.pbxCreateGroup('Resources');
+            c.payload.pluginConfigiOS.embeddedFontSources.forEach((v) => {
+                xcodeProj.addResourceFile(v, { variantGroup: false });
+            });
 
             fsWriteFileSync(projectPath, xcodeProj.writeSync());
             resolve();

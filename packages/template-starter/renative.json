@@ -1,5 +1,4 @@
 {
-    "$schema": "../../.rnv/schema/rnv.project.json",
     "engines": {
         "@rnv/engine-lightning": "source:rnv",
         "@rnv/engine-rn": "source:rnv",
@@ -8,8 +7,9 @@
         "@rnv/engine-rn-tvos": "source:rnv",
         "@rnv/engine-rn-web": "source:rnv"
     },
+    "$schema": "../../.rnv/schema/rnv.project.json",
     "isTemplate": true,
-    "projectName": "renative",
+    "projectName": "@rnv/template-starter",
     "enableHookRebuild": false,
     "workspaceID": "rnv",
     "isMonorepo": true,
@@ -68,7 +68,7 @@
     },
     "templates": {
         "@rnv/template-starter": {
-            "version": "^1.0.0-canary.7"
+            "version": "^1.0.0-rc.0"
         }
     },
     "currentTemplate": "@rnv/template-starter",
@@ -107,9 +107,12 @@
             "extendPlatform": "android"
         },
         "firetv": {
+            "minSdkVersion": 21,
             "extendPlatform": "android",
             "engine": "engine-rn-tvos",
-            "includedPermissions": ["INTERNET"]
+            "includedPermissions": [
+                "INTERNET"
+            ]
         },
         "web": {
             "engine": "engine-rn-next"
@@ -117,7 +120,8 @@
         "tvos": {
             "engine": "engine-rn-tvos",
             "schemeTarget": "RNVApp-tvOS",
-            "deploymentTarget": "14.0"
+            "deploymentTarget": "14.0",
+            "reactNativeEngine": "hermes"
         },
         "macos": {
             "engine": "engine-rn-electron"
@@ -127,11 +131,17 @@
         },
         "ios": {
             "engine": "engine-rn",
-            "deploymentTarget": "14.0"
+            "deploymentTarget": "14.0",
+            "reactNativeEngine": "hermes"
         }
     },
     "plugins": {
-        "@rnv/renative": "source:rnv",
+        "@rnv/renative": {
+            "source": "rnv",
+            "webpackConfig": {
+                "modulePaths": true
+            }
+        },
         "react": "source:rnv",
         "react-art": "source:rnv",
         "react-dom": "source:rnv",
@@ -152,13 +162,13 @@
             "disablePluginTemplateOverrides": true
         },
         "react-native-web": {
-            "version": "0.19.9"
+            "version": "0.19.9",
+            "webpackConfig": {
+                "modulePaths": true
+            }
         },
         "react-native-tvos": {
             "version": "0.72.4-0"
-        },
-        "@react-native/metro-config": {
-            "version": "^0.73.1"
         }
     },
     "permissions": {

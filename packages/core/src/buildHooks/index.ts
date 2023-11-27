@@ -89,6 +89,7 @@ export const buildHooks = async (c: RnvContext) => {
                     platform: 'node',
                     logLimit: c.program.json ? 0 : 10,
                     external: [
+                        '@rnv/core', // exclude rnv core from build
                         ...Object.keys(c.files.project.package.dependencies || {}),
                         ...Object.keys(c.files.project.package.devDependencies || {}),
                     ], // exclude everything that's present in node_modules

@@ -30,44 +30,41 @@ export const checkCrypto = async (c: RnvContext, parentTask?: string, originTask
 
     if (c.program.ci || c.files.project.config?.crypto?.isOptional) return;
 
-    const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
-    const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
+    const sourceRaw = c.files.project.config?.crypto?.path;
     if (!c.files.project.package.name) {
         logError('package.json requires `name` field. cannot check crypto');
         return;
     }
 
-    if (destRaw) {
-        if (sourceRaw && destRaw) {
-            const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
-            const tsProjectPath = `${source}.timestamp`;
-            const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
-            const tsWorkspacePath = path.join(wsPath, 'timestamp');
-            if (!fsExistsSync(source)) {
-                logWarning("This project uses encrypted files but you don't have them installed");
-            } else {
-                let tsWorkspace = 0;
-                let tsProject = 0;
-                if (fsExistsSync(tsWorkspacePath)) {
-                    tsWorkspace = parseInt(fsReadFileSync(tsWorkspacePath).toString(), 10);
-                }
+    if (sourceRaw) {
+        const source = `${getRealPath(c, sourceRaw, 'crypto.path')}`;
+        const tsProjectPath = `${source}.timestamp`;
+        const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
+        const tsWorkspacePath = path.join(wsPath, 'timestamp');
+        if (!fsExistsSync(source)) {
+            logWarning("This project uses encrypted files but you don't have them installed");
+        } else {
+            let tsWorkspace = 0;
+            let tsProject = 0;
+            if (fsExistsSync(tsWorkspacePath)) {
+                tsWorkspace = parseInt(fsReadFileSync(tsWorkspacePath).toString(), 10);
+            }
 
-                if (fsExistsSync(tsProjectPath)) {
-                    tsProject = parseInt(fsReadFileSync(tsProjectPath).toString(), 10);
-                }
+            if (fsExistsSync(tsProjectPath)) {
+                tsProject = parseInt(fsReadFileSync(tsProjectPath).toString(), 10);
+            }
 
-                if (tsProject > tsWorkspace) {
-                    logWarning(`Your ${tsWorkspacePath} is out of date.
+            if (tsProject > tsWorkspace) {
+                logWarning(`Your ${tsWorkspacePath} is out of date.
 project timestamp: ${chalk().grey(`${tsProject} - ${new Date(tsProject)}`)}
 workspace timestamp: ${chalk().grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
 you should run decrypt`);
-                    await executeTask(c, TASK_CRYPTO_DECRYPT, parentTask, originTask);
-                    return;
-                }
+                await executeTask(c, TASK_CRYPTO_DECRYPT, parentTask, originTask);
+                return;
+            }
 
-                if (tsProject < tsWorkspace) {
-                    logWarning(`Your ${tsWorkspacePath} is newer than your project one.`);
-                }
+            if (tsProject < tsWorkspace) {
+                logWarning(`Your ${tsWorkspacePath} is newer than your project one.`);
             }
         }
     }

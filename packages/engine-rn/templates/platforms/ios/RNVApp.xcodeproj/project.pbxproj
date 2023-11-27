@@ -20,6 +20,7 @@
 		752A9765F8A14465B24BF97C /* libPods-RNVApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C717EEC7024EA4A970A8C0B /* libPods-RNVApp.a */; };
 		9408A38A2A97997800B2E736 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9408A3872A97997800B2E736 /* AppDelegate.mm */; };
 		9408A38B2A97997800B2E736 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9408A3882A97997800B2E736 /* main.m */; };
+		D938F9032AEA8C09006F7BB1 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = D938F9022AEA8C09006F7BB1 /* main.jsbundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +73,7 @@
 		96722C6F859B298386E53EEC /* libPods-RNVApp-RNVAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNVApp-RNVAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF8EFAC6D34EF718C410C11B /* Pods_RNVAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNVAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7A51880565C9437FC383DF0 /* Pods-RNVApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNVApp/Pods-RNVApp.debug.xcconfig"; sourceTree = "<group>"; };
+		D938F9022AEA8C09006F7BB1 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		FA2535CB3354D16A4910CDF1 /* Pods-RNVAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNVAppTests/Pods-RNVAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB345A890161D745CEEFDE63 /* Pods-RNVApp-RNVAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVApp-RNVAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNVApp-RNVAppTests/Pods-RNVApp-RNVAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -102,6 +104,7 @@
 		200132E71F6BF9CF00450340 = {
 			isa = PBXGroup;
 			children = (
+				D938F9022AEA8C09006F7BB1 /* main.jsbundle */,
 				2030C437224AE567002469E4 /* Resources */,
 				207888241FCD3A000015651F /* assets */,
 				200132F21F6BF9CF00450340 /* RNVApp */,
@@ -139,7 +142,8 @@
 		};
 		2030C437224AE567002469E4 /* Resources */ = {
 			isa = PBXGroup;
-			children = ();
+			children = (
+			);
 			path = Resources;
 			sourceTree = "<group>";
 		};
@@ -348,6 +352,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D938F9032AEA8C09006F7BB1 /* main.jsbundle in Resources */,
 				20A3B6EF2252512D0084A50B /* assets in Resources */,
 				200132FE1F6BF9CF00450340 /* Assets.xcassets in Resources */,
 				207BDA4024AB543F00F32013 /* LaunchScreen.storyboard in Resources */,
@@ -411,14 +416,12 @@
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -463,7 +466,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../../../../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../../../../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"{{PATH_REACT_NATIVE}}/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"{{PATH_REACT_NATIVE}}/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		9408A38F2AA0DF7700B2E736 /* Bundle React Native code and images */ = {
@@ -484,7 +487,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../../../../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../../../../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+			shellScript = "set -e\nWITH_ENVIRONMENT=\"{{PATH_REACT_NATIVE}}/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"{{PATH_REACT_NATIVE}}/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
 		DF530FE9BA2EFAF0A1689966 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -514,14 +517,12 @@
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -620,7 +621,7 @@
 					"$(inherited)",
 					"-DRN_FABRIC_ENABLED",
 				);
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../../node_modules/react-native";
+				REACT_NATIVE_PATH = "{{PATH_REACT_NATIVE}}";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -684,7 +685,7 @@
 					"$(inherited)",
 					"-DRN_FABRIC_ENABLED",
 				);
-				REACT_NATIVE_PATH = "${PODS_ROOT}/../../../../../node_modules/react-native";
+				REACT_NATIVE_PATH = "{{PATH_REACT_NATIVE}}";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;

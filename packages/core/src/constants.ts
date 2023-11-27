@@ -172,14 +172,6 @@ export const TASK_WORKSPACE_CONFIGURE = 'workspace configure';
 export const TASK_CONFIGURE_SOFT = 'configureSoft';
 export const TASK_KILL = 'kill';
 
-export const configSchema: Record<string, any> = {
-    analytics: {
-        values: ['true', 'false'],
-        key: 'enableAnalytics',
-        default: true,
-    },
-};
-
 export const INJECTABLE_CONFIG_PROPS: Array<ConfigPropKey> = [
     'id',
     'title',

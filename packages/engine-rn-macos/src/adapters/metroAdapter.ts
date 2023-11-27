@@ -1,4 +1,5 @@
 import { Env } from '@rnv/core';
+import { InputConfigT } from 'metro-config';
 
 const path = require('path');
 
@@ -27,7 +28,7 @@ function blacklist(additionalBlacklist: RegExp[]) {
     return new RegExp(`(${(additionalBlacklist || []).concat(sharedBlacklist).map(escapeRegExp).join('|')})$`);
 }
 
-export const withRNVMetro = (config: any) => {
+export const withRNVMetro = (config: InputConfigT): InputConfigT => {
     const projectPath = process.env.RNV_PROJECT_ROOT || process.cwd();
 
     const watchFolders = [path.resolve(projectPath, 'node_modules')];

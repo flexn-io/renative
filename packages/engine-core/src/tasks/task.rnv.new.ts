@@ -454,6 +454,11 @@ export const taskRnvNew = async (c: RnvContext) => {
         cwd: c.paths.project.dir,
     });
 
+    // Add rnv to package.json
+    await executeAsync(`${isYarnInstalled() ? 'yarn' : 'npm'} add rnv@${c.rnvVersion}`, {
+        cwd: c.paths.project.dir,
+    });
+
     // Check if node_modules folder exists
     if (!fsExistsSync(path.join(c.paths.project.dir, 'node_modules'))) {
         logError(
@@ -659,6 +664,7 @@ export const taskRnvNew = async (c: RnvContext) => {
         ...renativeTemplateConfig,
         ...renativeTemplateConfigExt,
         projectName: data.projectName || 'my-project',
+        projectVersion: data.inputVersion || '0.1.0',
         workspaceID: data.optionWorkspaces.selectedOption || 'project description',
         // paths: {
         //     appConfigsDir: './appConfigs',
@@ -718,11 +724,14 @@ export const taskRnvNew = async (c: RnvContext) => {
         await checkAndCreateGitignore(c);
         await configureGit(c);
     }
+
     logSuccess(
         `Your project is ready! navigate to project ${chalk().white(`cd ${data.projectName}`)} and run ${chalk().white(
-            'rnv run'
+            'npx rnv run'
         )} to see magic happen!`
     );
+
+    return true;
 };
 
 const findEngineKeyById = (c: RnvContext, id: string) => {

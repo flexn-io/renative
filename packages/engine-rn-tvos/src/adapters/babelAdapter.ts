@@ -1,4 +1,6 @@
-export const withRNVBabel = (cnf: any) => {
+import { BabelConfig } from '@rnv/core';
+
+export const withRNVBabel = (cnf: BabelConfig): BabelConfig => {
     const plugins = cnf?.plugins || [];
 
     return {
@@ -11,7 +13,7 @@ export const withRNVBabel = (cnf: any) => {
                 {
                     root: [process.env.RNV_MONO_ROOT],
                     alias: {
-                        'react-native': process.env.RNV_REACT_NATIVE_PATH,
+                        'react-native': 'react-native-tvos',
                     },
                 },
             ],

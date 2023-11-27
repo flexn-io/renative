@@ -10,7 +10,10 @@
             "metro.config.js",
             ".bundle",
             "react-native.config.js",
-            "babel.config.js"
+            "babel.config.js",
+            "next.config.js",
+            "next-env.d.ts",
+            "typings"
         ],
         "packageTemplate": {
             "devDependencies": {
@@ -19,14 +22,24 @@
                 "@types/react-dom": "18.2.6",
                 "@types/react-native": "0.72.3",
                 "@flexn/typescript-config": "1.0.0",
-                "@flexn/assets-renative-outline": "0.3.2"
+                "@flexn/assets-renative-outline": "0.3.2",
+                "babel-loader": "9.1.3"
             },
             "browserslist": {
-                "production": [">0.2%", "not dead", "not op_mini all"],
-                "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+                "production": [
+                    ">0.2%",
+                    "not dead",
+                    "not op_mini all"
+                ],
+                "development": [
+                    "last 1 chrome version",
+                    "last 1 firefox version",
+                    "last 1 safari version"
+                ]
             },
             "resolutions": {
-                "@babel/traverse": "7.15.0"
+                "@babel/traverse": "7.15.0",
+                "@types/react": "18.2.6"
             }
         }
     },

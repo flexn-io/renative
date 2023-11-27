@@ -26,7 +26,6 @@ import {
     checkPortInUse,
     confirmActiveBundler,
     addSystemInjects,
-    waitForHost,
     doResolve,
     chalk,
     logTask,
@@ -42,6 +41,7 @@ import {
 } from '@rnv/core';
 import { FileElectronPackage } from './types';
 import { NpmPackageFile } from '@rnv/core/lib/configs/types';
+import { waitForHost } from '@rnv/sdk-utils';
 
 export const configureElectronProject = async (c: RnvContext, exitOnFail?: boolean) => {
     logTask('configureElectronProject');

@@ -97,7 +97,7 @@ export const checkAndBootstrapIfRequired = async (c: RnvContext) => {
             if (!pkgJson.dependencies) pkgJson.dependencies = {};
             c.files.project.package = pkgJson;
 
-            const installPromises: Array<Promise<any>> = [];
+            const installPromises: Array<Promise<string>> = [];
             Object.keys(pkgJson.devDependencies).forEach((devDepKey) => {
                 if (activeEngineKeys.includes(devDepKey)) {
                     installPromises.push(
@@ -456,6 +456,10 @@ export const copyAssetsFolder = async (
             const assetsPath = path.join(_resolvePackage(c, v), assetFolderPlatform);
             if (fsExistsSync(assetsPath)) {
                 validAssetSources.push(assetsPath);
+            } else {
+                logWarning(
+                    `AssetSources is specified as ${chalk().red(v)}. But path ${chalk().red(assetsPath)} was not found.`
+                );
             }
         });
     }

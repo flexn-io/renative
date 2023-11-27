@@ -47,6 +47,7 @@ export const PlatformiOSFragment = {
     schemeTarget: z.string().optional(),
     appleId: z.string().optional(),
     provisioningStyle: z.string().optional(),
+    newArchEnabled: z.boolean().optional().describe('Enables new archs for iOS. Default: false'),
     codeSignIdentity: z.string().describe('Special property which tells Xcode how to build your project').optional(),
     commandLineArguments: z
         .array(z.string())

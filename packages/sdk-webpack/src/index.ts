@@ -1,5 +1,4 @@
 import axios from 'axios';
-import open from 'better-opn';
 import path from 'path';
 import commandExists from 'command-exists';
 import {
@@ -10,8 +9,6 @@ import {
     getConfigProp,
     confirmActiveBundler,
     getPlatformProjectDir,
-    getDevServerHost,
-    waitForHost,
     chalk,
     logTask,
     logInfo,
@@ -28,6 +25,7 @@ import {
     RnvContext,
     RnvPlatform,
 } from '@rnv/core';
+import { getDevServerHost, openBrowser, waitForHost } from '@rnv/sdk-utils';
 
 export const REMOTE_DEBUG_PORT = 8079;
 
@@ -65,7 +63,7 @@ const _runWebBrowser = (
         if (!c.runtime.shouldOpenBrowser) return resolve();
         const wait = waitForHost(c, '')
             .then(() => {
-                open(`http://${devServerHost}:${port}/`);
+                openBrowser(`http://${devServerHost}:${port}/`);
             })
             .catch((e) => {
                 logWarning(e);
@@ -94,7 +92,7 @@ const _runRemoteDebuggerChii = async (c: RnvContext, obj: { remoteDebuggerActive
             logRaw(`
 
 Debugger running at: ${debugUrl}`);
-            open(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/`);
+            openBrowser(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/`);
         } catch (e) {
             logError(e);
         }
@@ -131,7 +129,7 @@ const _runRemoteDebuggerWeinre = async (c: RnvContext, obj: { remoteDebuggerActi
             logRaw(`
 
 Debugger running at: ${debugUrl}`);
-            open(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/client/#${c.platform}`);
+            openBrowser(`http://${resolvedDebugIp}:${REMOTE_DEBUG_PORT}/client/#${c.platform}`);
         } catch (e) {
             logError(e);
         }

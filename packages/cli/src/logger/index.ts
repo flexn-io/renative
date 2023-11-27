@@ -214,7 +214,7 @@ export const logSummary = (header = 'SUMMARY') => {
     let str = printBoxStart(`${ICN_ROCKET}  ${header} ${timeString}`, getCurrentCommand());
 
     str += printIntoBox(`ReNative Version: ${_highlightColor(ctx.rnvVersion)}`);
-    if (ctx.files?.project?.package) {
+    if (ctx.files?.project?.package?.name && ctx.files?.project?.package?.version) {
         str += printIntoBox(`Project Name ($package.name): ${_highlightColor(ctx.files.project.package.name)}`);
         str += printIntoBox(
             `Project Version ($package.version): ${_highlightColor(ctx.files.project.package.version)}`
@@ -437,7 +437,7 @@ export const logInfo = (msg: string) => {
     console.log(currentChalk.cyan(`[ info ]${_getCurrentTask()} ${_sanitizePaths(msg)}`));
 };
 
-export const logDebug = (...args: Array<any>) => {
+export const logDebug = (...args: Array<string>) => {
     if (_isInfoEnabled) {
         if (_jsonOnly) {
             return _printJson({

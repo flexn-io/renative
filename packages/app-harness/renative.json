@@ -1,0 +1,11 @@
+{
+    "$schema": "../../.rnv/schema/rnv.project.json",
+    "extendsTemplate": "@rnv/template-starter/renative.json",
+    "projectName": "@rnv/app-harness",
+    "crypto": {
+        "path": "./secrets/privateConfigs.enc"
+    },
+    "plugins": {
+        "@react-native-community/cli": "^11.3.8"
+    }
+}

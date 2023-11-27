@@ -24,7 +24,9 @@ import {
     PARAMS,
     RnvContext,
     RnvTaskFn,
+    copyFileSync,
 } from '@rnv/core';
+import { statSync } from 'fs';
 
 const iocane = require('iocane');
 
@@ -36,9 +38,43 @@ const generateRandomKey = (length: number) =>
         .map((x) => x[Math.floor(Math.random() * x.length)])
         .join('');
 
+const initializeCryptoDirectory = async (c: RnvContext, sourceFolder: string) => {
+    const configDir = path.join(sourceFolder, 'appConfigs');
+    mkdirSync(sourceFolder);
+    mkdirSync(configDir);
+
+    const appConfigsDirs = await readdirAsync(c.paths.project.appConfigsDir);
+
+    appConfigsDirs.forEach(async (item: string) => {
+        const targetFile = 'renative.private.json';
+        if (item == targetFile) {
+            copyFileSync(path.join(c.paths.project.appConfigsDir, item), path.join(configDir, targetFile));
+        }
+        const appConfigDir = path.join(configDir, item);
+        const itemPath = path.join(c.paths.project.appConfigsDir, item);
+
+        const stat = statSync(itemPath);
+        if (stat && stat.isDirectory()) {
+            const existingFiles: string[] = await readdirAsync(itemPath);
+
+            existingFiles.map((file) => {
+                if (file === targetFile) {
+                    mkdirSync(appConfigDir);
+                    mkdirSync(path.join(appConfigDir, 'certs'));
+
+                    copyFileSync(
+                        path.join(c.paths.project.appConfigsDir, item, targetFile),
+                        path.join(appConfigDir, targetFile)
+                    );
+                }
+            });
+        }
+    });
+};
+
 const _checkAndConfigureCrypto = async (c: RnvContext) => {
     // handle missing config
-    const source = `./${c.files.project.package.name}`;
+    const source = `./${c.files.project.config?.projectName}`;
 
     const cnf = c.files.project.config_original;
     if (!cnf) return;
@@ -50,22 +86,18 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
             type: 'input',
             name: 'location',
             message:
-                'Where would you like your secrets to be residing? (path relative to root, without leading or trailing slash. Ex. `myPrivateConfig/encrypt`)',
+                'Where would you like your secrets to be residing? (path relative to renative project root, without leading or trailing slash. Ex. `myPrivateConfig/encrypt`)',
             default: 'secrets',
         });
         cnf.crypto = {
-            encrypt: {
-                dest: `PROJECT_HOME/${location}/privateConfigs.enc`,
-            },
-            decrypt: {
-                source: `PROJECT_HOME/${location}/privateConfigs.enc`,
-            },
+            path: `./${location}/privateConfigs.enc`,
         };
         writeFileSync(c.paths.project.config, cnf);
     }
 
     // check if src folder actually exists
     const sourceFolder = path.join(c.paths.workspace.dir, source);
+
     if (!fsExistsSync(sourceFolder)) {
         logInfo(
             `It seems you are running encrypt for the first time. Directory ${chalk().white(
@@ -73,20 +105,7 @@ const _checkAndConfigureCrypto = async (c: RnvContext) => {
             )} does not exist yet.
 RNV will create it for you, make sure you add whatever you want encrypted in it and then run the command again`
         );
-
-        mkdirSync(sourceFolder);
-        mkdirSync(path.join(sourceFolder, 'certs'));
-        writeFileSync(path.join(sourceFolder, 'renative.private.json'), {});
-
-        const appConfigsDirs: any = await readdirAsync(c.paths.project.appConfigsDir);
-
-        appConfigsDirs.forEach((item: string) => {
-            const appConfigDir = path.join(sourceFolder, item);
-            mkdirSync(appConfigDir);
-            mkdirSync(path.join(appConfigDir, 'certs'));
-            writeFileSync(path.join(appConfigDir, 'renative.private.json'), {});
-        });
-
+        await initializeCryptoDirectory(c, sourceFolder);
         // writeFileSync(path.join(sourceFolder), c.files.project.config);
         await inquirerPrompt({
             type: 'confirm',
@@ -133,14 +152,16 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
 
     await executeTask(c, TASK_PROJECT_CONFIGURE, TASK_CRYPTO_ENCRYPT, originTask);
 
-    if (!c.files.project.package.name) return;
+    const projectName = c.files.project.config?.projectName;
 
-    const source = `./${c.files.project.package.name}`;
+    if (!projectName) return;
+
+    const source = `./${projectName}`;
 
     await _checkAndConfigureCrypto(c);
 
-    const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
-    const tsWorkspacePath = path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp');
+    const destRaw = c.files.project.config?.crypto?.path;
+    const tsWorkspacePath = path.join(c.paths.workspace.dir, projectName, 'timestamp');
     const envVar = getEnvVar(c);
 
     if (!envVar) return;
@@ -148,12 +169,13 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
     const key = c.program.key || c.process.env[envVar];
 
     if (destRaw) {
-        const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
-        const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
+        const dest = `${getRealPath(c, destRaw, 'crypto.path')}`;
+        const destTemp = `${path.join(c.paths.workspace.dir, projectName.replace('/', '-'))}.tgz`;
         const timestamp = new Date().getTime();
 
         // check if dest folder actually exists
-        const destFolder = path.join(dest, '../../core/');
+        const destFolder = dest.slice(0, dest.lastIndexOf('/'));
+
         !fsExistsSync(destFolder) && mkdirSync(destFolder);
 
         await tar.c(
@@ -181,7 +203,7 @@ export const taskRnvCryptoEncrypt: RnvTaskFn = async (c, _parentTask, originTask
         fsWriteFileSync(`${tsWorkspacePath}`, `${timestamp}`);
         logSuccess(`Files succesfully encrypted into ${dest}`);
     } else {
-        logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk().white(c.paths.appConfigBase)}`);
+        logWarning(`You don't have {{ crypto.path }} specificed in ${chalk().white(c.paths.appConfigBase)}`);
     }
 };
 

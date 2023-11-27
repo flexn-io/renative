@@ -11,7 +11,7 @@ const App = () => (
 );
 
 const AppThemed = () => {
-    const { theme, toggle }: any = useContext(ThemeContext);
+    const { theme, toggle } = useContext(ThemeContext);
 
     const [pixelRatio, setPixelRatio] = useState(1);
     const [fontScale, setFontScale] = useState(1);

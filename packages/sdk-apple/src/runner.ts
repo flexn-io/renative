@@ -118,14 +118,25 @@ const runCocoaPods = async (c: Context) => {
         requiredPodPermissions = Array.from(new Set(requiredPodPermissions));
     }
 
-    const env = {
+    // new arch support 
+    const newArchEnabled = getConfigProp(c, c.platform, 'newArchEnabled', false);
+
+    const env: any = {
         ...process.env,
-        RCT_NEW_ARCH_ENABLED: 1,
         REACT_NATIVE_PERMISSIONS_REQUIRED: requiredPodPermissions,
         ...generateEnvVars(c),
     };
 
-    const printableEnvKeys = ['RCT_NEW_ARCH_ENABLED', 'REACT_NATIVE_PERMISSIONS_REQUIRED', 'RNV_APP_BUILD_DIR'];
+    if (newArchEnabled) {
+        env.RCT_NEW_ARCH_ENABLED = 1;
+    }
+
+    const printableEnvKeys = [
+        'RCT_NEW_ARCH_ENABLED',
+        'REACT_NATIVE_PERMISSIONS_REQUIRED',
+        'RNV_APP_BUILD_DIR',
+        'RNV_ENGINE_PATH',
+    ];
 
     if (podsRequired) {
         if (!commandExistsSync('pod')) {
@@ -592,6 +603,7 @@ export const buildXcodeProject = async (c: Context) => {
 
     const appFolderName = getAppFolderName(c, platform);
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
+    const schemeTarget = getConfigProp(c, c.platform, 'schemeTarget') || 'RNVApp';
 
     let destinationPlatform = '';
     switch (c.platform) {
@@ -635,7 +647,7 @@ export const buildXcodeProject = async (c: Context) => {
     }
     if (!ps.includes('-scheme')) {
         p.push('-scheme');
-        p.push(appFolderName);
+        p.push(schemeTarget);
     }
     if (runScheme) {
         if (!ps.includes('-configuration')) {
@@ -755,7 +767,13 @@ const archiveXcodeProject = (c: Context) => {
 
     logDebug('xcodebuild args', args);
 
-    return executeAsync('xcodebuild', { rawCommand: { args } }).then(() => {
+    return executeAsync('xcodebuild', {
+        rawCommand: { args },
+        env: {
+            ...generateEnvVars(c),
+            RCT_NO_LAUNCH_PACKAGER: true,
+        },
+    }).then(() => {
         logSuccess(`Your Archive is located in ${chalk().cyan(exportPath)} .`);
     });
 };

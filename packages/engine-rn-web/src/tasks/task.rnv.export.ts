@@ -14,6 +14,7 @@ import {
     PARAMS,
     executeOrSkipTask,
     shouldSkipTask,
+    WEBTV,
 } from '@rnv/core';
 import { exportWeb } from '@rnv/sdk-webpack';
 
@@ -29,6 +30,14 @@ export const taskRnvExport: RnvTaskFn = async (c, parentTask, originTask) => {
     switch (platform) {
         case WEB:
             return exportWeb();
+        case TIZEN:
+        case TIZEN_WATCH:
+        case TIZEN_MOBILE:
+        case WEBOS:
+        case KAIOS:
+        case WEBTV:
+        case CHROMECAST:
+            return true;
         default:
             logErrorPlatform(c);
     }

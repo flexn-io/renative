@@ -1,5 +1,0 @@
-{
-    "$schema": "../../.rnv/schema/rnv.integration.json",
-    "id": "vercel",
-    "npmPackage": "@rnv/integration-vercel"
-}

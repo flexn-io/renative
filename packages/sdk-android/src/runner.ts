@@ -65,12 +65,14 @@ import {
     composeDevicesArray,
 } from './deviceManager';
 import { CLI_ANDROID_ADB } from './constants';
-import { packageReactNativeAndroid, runReactNativeAndroid } from '@rnv/sdk-react-native';
+import { runReactNativeAndroid } from '@rnv/sdk-react-native';
 
-export const packageAndroid = async (c: Context) => {
+export const packageAndroid = async (_c: Context) => {
     logTask('packageAndroid');
 
-    return packageReactNativeAndroid(c);
+    // TODO disabled for now, doesn't make sense to pack it if gradle does it again and it triggers errors about duplicate resources
+    // return packageReactNativeAndroid(c);
+    return true;
 };
 
 export const runAndroid = async (c: Context) => {
@@ -306,43 +308,6 @@ const _checkSigningCerts = async (c: Context) => {
     }
 };
 
-export const buildAndroid = async (c: Context) => {
-    logTask('buildAndroid');
-    const { platform } = c;
-
-    const appFolder = getAppFolder(c);
-    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
-
-    const outputAab = getConfigProp(c, platform, 'aab', false);
-    // shortcircuit devices logic since aabs can't be installed on a device
-    if (outputAab) return runReactNativeAndroid(c, platform, {});
-
-    const extraGradleParams = getConfigProp(c, platform, 'extraGradleParams', '');
-
-    let command = `npx react-native build-android --mode=${signingConfig} --no-packager`;
-
-    if (extraGradleParams) {
-        command += ` --extra-params ${extraGradleParams}`;
-    }
-
-    await executeAsync(c, command, { cwd: appFolder });
-
-    // await _checkSigningCerts(c);
-    // await executeAsync(
-    //     c,
-    //     `${
-    //         isSystemWin ? 'gradlew.bat' : './gradlew'
-    //     } assemble${signingConfig} -x bundleReleaseJsAndAssets ${extraGradleParams}`
-    // );
-
-    logSuccess(
-        `Your APK is located in ${chalk().cyan(
-            path.join(appFolder, `app/build/outputs/apk/${signingConfig?.toLowerCase()}`)
-        )} .`
-    );
-    return true;
-};
-
 export const configureAndroidProperties = async (c: Context) => {
     logTask('configureAndroidProperties');
 
@@ -529,9 +494,9 @@ export const runAndroidLog = async (c: Context) => {
     const filter = c.program.filter || '';
     const child = execaCommand(`${c.cli[CLI_ANDROID_ADB]} logcat`);
     // use event hooks to provide a callback to execute when data are available:
-    child.stdout?.on('data', (data: any) => {
+    child.stdout?.on('data', (data: Buffer) => {
         const d = data.toString().split('\n');
-        d.forEach((v: any) => {
+        d.forEach((v) => {
             if (v.includes(' E ') && v.includes(filter)) {
                 logRaw(chalk().red(v));
             } else if (v.includes(' W ') && v.includes(filter)) {
@@ -541,7 +506,7 @@ export const runAndroidLog = async (c: Context) => {
             }
         });
     });
-    return child.then((res: any) => res.stdout).catch((err: any) => Promise.reject(`Error: ${err}`));
+    return child.then((res) => res.stdout).catch((err) => Promise.reject(`Error: ${err}`));
 };
 
 export { ejectGradleProject };
