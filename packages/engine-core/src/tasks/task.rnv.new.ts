@@ -347,7 +347,7 @@ export const taskRnvNew = async (c: RnvContext) => {
                 return data.appID;
             },
             validate: (appId) =>
-                !!appId.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/) || 'Please enter a valid appID (com.test.app)',
+                !!appId.match(/^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$/) || 'Please enter a valid appID (com.test.app)',
             message: "What's your App ID?",
         });
 
@@ -665,6 +665,10 @@ export const taskRnvNew = async (c: RnvContext) => {
         ...renativeTemplateConfigExt,
         projectName: data.projectName || 'my-project',
         projectVersion: data.inputVersion || '0.1.0',
+        common: {
+            id: data.inputAppID || 'com.mycompany.myapp',
+            title: data.inputAppTitle || 'My App',
+        },
         workspaceID: data.optionWorkspaces.selectedOption || 'project description',
         // paths: {
         //     appConfigsDir: './appConfigs',
