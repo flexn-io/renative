@@ -26,6 +26,7 @@ import {
     waitForExecCLI,
     inquirerPrompt,
     RnvPlatform,
+    executeAsync,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
@@ -79,7 +80,10 @@ export const launchAndroidSimulator = async (
     if (newTarget) {
         const actualTarget = typeof newTarget === 'string' ? newTarget : newTarget.name;
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, {
+            executeAsync(c.cli[CLI_ANDROID_EMULATOR]!, {
+                rawCommand: {
+                    args: [`-avd '${actualTarget}'`, '> /dev/null', '&'],
+                },
                 detached: isIndependentThread,
             }).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {

@@ -54,7 +54,7 @@ import {
 import { parseGradleWrapperSync } from './gradleWrapperParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { ejectGradleProject } from './ejector';
-import { Context } from './types';
+import { AndroidDevice, Context } from './types';
 import {
     resetAdb,
     getAndroidTargets,
@@ -75,14 +75,14 @@ export const packageAndroid = async (_c: Context) => {
     return true;
 };
 
-export const getDeviceToRunOn = async (c: Context) => {
-    logTask('getDeviceToRunOn');
+export const getAndroidDeviceToRunOn = async (c: Context) => {
+    const defaultTarget = c.runtime.target;
+    logTask('getAndroidDeviceToRunOn', `default:${defaultTarget}`);
 
     if (!c.platform) return;
 
     const { target } = c.program;
     const { platform } = c;
-    const defaultTarget = c.runtime.target;
 
     await resetAdb(c);
 
@@ -90,12 +90,7 @@ export const getDeviceToRunOn = async (c: Context) => {
         await connectToWifiDevice(c, target);
     }
 
-    let devicesAndEmulators;
-    try {
-        devicesAndEmulators = await getAndroidTargets(c, false, false, c.program.device !== undefined);
-    } catch (e) {
-        return Promise.reject(e);
-    }
+    const devicesAndEmulators = await getAndroidTargets(c, false, false, c.program.device !== undefined);
 
     const activeDevices = devicesAndEmulators.filter((d) => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter((d) => !d.isActive);
@@ -113,8 +108,6 @@ export const getDeviceToRunOn = async (c: Context) => {
             });
             if (response.chosenEmulator) {
                 await launchAndroidSimulator(c, response.chosenEmulator, true);
-                const devices = await checkForActiveEmulator(c);
-                await runReactNativeAndroid(c, platform, devices);
             }
         } else if (activeDevices.length > 1) {
             const devicesString = composeDevicesArray(activeDevices);
@@ -131,9 +124,10 @@ export const getDeviceToRunOn = async (c: Context) => {
             }
         } else {
             await askForNewEmulator(c, platform);
-            const device = await checkForActiveEmulator(c);
-            return device;
         }
+
+        const device = await checkForActiveEmulator(c);
+        return device;
     };
 
     if (target) {
@@ -145,17 +139,16 @@ export const getDeviceToRunOn = async (c: Context) => {
                return foundDevice;
             } else {
                 await launchAndroidSimulator(c, foundDevice, true);
-                const device = await checkForActiveEmulator(c);
-                return device;
             }
         } else {
-            await askWhereToRun();
+            logDebug('Target not found, asking where to run');
+            return askWhereToRun();
         }
     } else if (activeDevices.length === 1) {
         // Only one that is active, running on that one
-        const dv = activeDevices[0];
-        logInfo(`Found device ${dv.name}:${dv.udid}!`);
-        return dv;
+        const activeDevice = activeDevices[0];
+        logInfo(`Found active device ${activeDevice.name}:${activeDevice.udid}!`);
+        return activeDevice;
     } else if (defaultTarget) {
         // neither a target nor an active device is found, revert to default target if available
         logDebug('Default target used', defaultTarget);
@@ -164,21 +157,22 @@ export const getDeviceToRunOn = async (c: Context) => {
         );
         if (!foundDevice) {
             logDebug('Target not provided, asking where to run');
-            await askWhereToRun();
+            return askWhereToRun();
         } else {
             await launchAndroidSimulator(c, foundDevice, true);
-            const device = await checkForActiveEmulator(c);
-            return device;
         }
     } else {
         // we don't know what to do, ask the user
         logDebug('Target not provided, asking where to run');
-        await askWhereToRun();
+        return askWhereToRun();
     }
+
+    const device = await checkForActiveEmulator(c);
+    return device;
 }
 
-export const runAndroid = async (c: Context) => {
-    logTask('runAndroid', `target:${target} default:${defaultTarget}`);
+export const runAndroid = async (c: Context, device: AndroidDevice) => {
+    logTask('runAndroid', `target:${device.udid}`);
     const { platform } = c;
 
     if (!platform) return;

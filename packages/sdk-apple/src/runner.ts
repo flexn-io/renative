@@ -197,8 +197,8 @@ const copyAppleAssets = (c: Context, platform: RnvPlatform, appFolderName: strin
         resolve();
     });
 
-export const getDeviceToRunOn = async (c: Context) => {
-    logTask('getDeviceToRunOn');
+export const getIosDeviceToRunOn = async (c: Context) => {
+    logTask('getIosDeviceToRunOn');
 
     if (!c.platform) return;
 
