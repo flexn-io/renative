@@ -509,7 +509,11 @@ const _parseDevicesResult = async (
                 }
 
                 if (avdDetails) {
-                    devices.push(device);
+                    // exclude duplicate sims (running ones + avdconfig)
+                    const potentialDuplicate = devices.find((v) => v.name === device.name);
+                    if (!potentialDuplicate || potentialDuplicate.isDevice) {
+                        devices.push(device);
+                    }
                 }
             })
         );
