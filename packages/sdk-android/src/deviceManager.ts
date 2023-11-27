@@ -26,7 +26,6 @@ import {
     waitForExecCLI,
     inquirerPrompt,
     RnvPlatform,
-    executeAsync,
 } from '@rnv/core';
 import { CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from './constants';
 
@@ -80,11 +79,9 @@ export const launchAndroidSimulator = async (
     if (newTarget) {
         const actualTarget = typeof newTarget === 'string' ? newTarget : newTarget.name;
         if (isIndependentThread) {
-            executeAsync(c.cli[CLI_ANDROID_EMULATOR]!, {
-                rawCommand: {
-                    args: [`-avd '${actualTarget}'`, '> /dev/null', '&'],
-                },
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, {
                 detached: isIndependentThread,
+                silent: true,
             }).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
@@ -99,6 +96,7 @@ export const launchAndroidSimulator = async (
         }
         return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, {
             detached: isIndependentThread,
+            silent: true,
         });
     }
     return Promise.reject('No simulator -t target name specified!');
